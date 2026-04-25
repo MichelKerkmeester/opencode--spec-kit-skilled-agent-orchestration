@@ -861,6 +861,78 @@ describe('code-graph-query handler', () => {
     expect(mocks.queryFileImportDependents).not.toHaveBeenCalled();
   });
 
+  // 008/D10: pin failureFallback.code field shape end-to-end through the
+  // handler. The 010/007/T-F R-007-P2-6 closure added a stable `code`
+  // field with a 5-value literal union; this test verifies the field
+  // appears on the response (currently `unresolved_subject` is the
+  // most-reachable code from a unit test; other codes are exercised by
+  // their respective fault paths but require deeper fixtures).
+  it('D10: failureFallback.code is set to "unresolved_subject" for missing subject', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce(null);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'GhostSymbol',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.failureFallback).toBeDefined();
+    expect(parsed.data.failureFallback.code).toBe('unresolved_subject');
+  });
+
+  // 008/D10: pin minConfidence runtime echo. The Zod schema accepts
+  // [0, 1]; the handler receives it and threads it through to
+  // computeBlastRadius. This test verifies the runtime path echoes
+  // the value back (proving the parameter flowed end-to-end and was
+  // not dropped after schema validation).
+  it('D10: minConfidence is echoed back on response (runtime threading)', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce('src/a.ts');
+    mocks.queryFileImportDependents.mockReturnValue([]);
+    mocks.queryFileDegrees.mockReturnValue([]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      minConfidence: 0.75,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.minConfidence).toBe(0.75);
+  });
+
+  it('D10: minConfidence boundary 0 echoes as 0', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce('src/a.ts');
+    mocks.queryFileImportDependents.mockReturnValue([]);
+    mocks.queryFileDegrees.mockReturnValue([]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+      minConfidence: 0,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.minConfidence).toBe(0);
+  });
+
+  it('D10: minConfidence omitted defaults to 0', async () => {
+    mocks.resolveSubjectFilePath.mockReturnValueOnce('src/a.ts');
+    mocks.queryFileImportDependents.mockReturnValue([]);
+    mocks.queryFileDegrees.mockReturnValue([]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'blast_radius',
+      subject: 'src/a.ts',
+    });
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.minConfidence).toBe(0);
+  });
+
   it('returns only the seed node when blast-radius maxDepth is zero', async () => {
     mocks.queryFileImportDependents.mockReturnValue([
       { importedFilePath: 'src/a.ts', importerFilePath: 'src/b.ts' },

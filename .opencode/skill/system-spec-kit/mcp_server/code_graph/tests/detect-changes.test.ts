@@ -276,6 +276,61 @@ describe('detect_changes handler — adversarial path containment (010/007/T-D R
     const delParsed = JSON.parse(delResult.content[0].text);
     expect(delParsed.status).toBe('ok');
   });
+
+  // 008/D2 byte-safety contract: reject diff paths containing control
+  // characters or exceeding the reasonable path-length cap.
+  it('D2: rejects diff path containing NUL byte', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/safe hidden.ts\n+++ b/src/safe.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+    expect(parsed.blockedReason).toMatch(/control characters|byte-safety/i);
+  });
+
+  it('D2: rejects diff path with C0 control character (BEL)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/normalbell.ts\n+++ b/src/normalbell.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+  });
+
+  it('D2: rejects diff path with DEL (\\x7F)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/delpath.ts\n+++ b/src/delpath.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+  });
+
+  it('D2: rejects diff path exceeding 4096-byte cap', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const longSegment = 'a'.repeat(5000);
+    const result = await handleDetectChanges({
+      diff: `--- a/${longSegment}.ts\n+++ b/${longSegment}.ts\n@@ -1,1 +1,1 @@\n+x\n`,
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('parse_error');
+    expect(parsed.blockedReason).toMatch(/exceeds.*4096|byte-safety/i);
+  });
+
+  it('D2: accepts unicode path characters above the control band (negative control)', async () => {
+    mocks.queryOutline.mockReturnValue([]);
+    const result = await handleDetectChanges({
+      diff: '--- a/src/中文/файл.ts\n+++ b/src/中文/файл.ts\n@@ -1,1 +1,1 @@\n+x\n',
+      rootDir: workspaceRoot,
+    });
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('ok');
+  });
 });
 
 describe('detect_changes handler — affected-symbol attribution', () => {
@@ -448,6 +503,114 @@ describe('parseUnifiedDiff', () => {
     expect(r.status).toBe('ok');
     if (r.status !== 'ok') return;
     expect(r.files).toEqual([]);
+  });
+
+  // 008/D6: rename / copy / binary header handling. Per the documented
+  // contract, these headers are tolerated as preamble lines and the
+  // resulting file entries have `hunks: []`. Pin that contract with
+  // regression tests so a future "tighter" parser doesn't accidentally
+  // break rename-only patches.
+  it('D6: tolerates rename-only diffs (no hunks)', () => {
+    const diff = [
+      'diff --git a/old.ts b/new.ts',
+      'similarity index 100%',
+      'rename from old.ts',
+      'rename to new.ts',
+      '',
+    ].join('\n');
+    const r = parseUnifiedDiff(diff);
+    expect(r.status).toBe('ok');
+    // Rename-only with no `--- a/` / `+++ b/` headers does NOT
+    // produce a file entry — the parser only attributes touched
+    // files when `--- ` and `+++ ` headers are both present.
+    if (r.status !== 'ok') return;
+  });
+
+  it('D6: tolerates rename + minor edit (file entry produced)', () => {
+    const diff = [
+      'diff --git a/old.ts b/new.ts',
+      'similarity index 95%',
+      'rename from old.ts',
+      'rename to new.ts',
+      '--- a/old.ts',
+      '+++ b/new.ts',
+      '@@ -1,1 +1,1 @@',
+      '-x',
+      '+y',
+      '',
+    ].join('\n');
+    const r = parseUnifiedDiff(diff);
+    expect(r.status).toBe('ok');
+    if (r.status !== 'ok') return;
+    expect(r.files).toHaveLength(1);
+    expect(r.files[0]).toMatchObject({ oldPath: 'old.ts', newPath: 'new.ts' });
+    expect(r.files[0].hunks).toHaveLength(1);
+  });
+
+  it('D6: tolerates "Binary files differ" with no hunks', () => {
+    const diff = [
+      'diff --git a/image.png b/image.png',
+      'Binary files a/image.png and b/image.png differ',
+      '',
+    ].join('\n');
+    const r = parseUnifiedDiff(diff);
+    expect(r.status).toBe('ok');
+    if (r.status !== 'ok') return;
+    // No `--- a/` / `+++ b/` headers — no file entry produced.
+    expect(r.files).toEqual([]);
+  });
+
+  it('D6: tolerates declared-greater-than-delivered hunk count (parser stays in ok status)', () => {
+    // Declares 5 lines but only 2 arrive. The parser does not error
+    // on this (graceful tolerance) but should NOT consume subsequent
+    // structural lines as hunk-body. Verify by including a follow-up
+    // section that the parser MUST recognize.
+    const diff = [
+      '--- a/a.ts',
+      '+++ b/a.ts',
+      '@@ -1,5 +1,5 @@',
+      '-x',
+      '+y',
+      // body short-arrived (only 2 lines instead of 5+5); next file
+      // header should still parse:
+      '--- a/b.ts',
+      '+++ b/b.ts',
+      '@@ -1,1 +1,1 @@',
+      '-old',
+      '+new',
+      '',
+    ].join('\n');
+    const r = parseUnifiedDiff(diff);
+    expect(r.status).toBe('ok');
+    if (r.status !== 'ok') return;
+    // Both files attributed even though the first hunk was under-budget.
+    expect(r.files.map((f) => f.newPath)).toEqual(['a.ts', 'b.ts']);
+  });
+
+  it('D6: tolerates declared-less-than-delivered hunk count (graceful termination)', () => {
+    // Declares 1 line but 3 arrive. Out-of-budget '-' / '+' triggers
+    // re-process; final lines either start a new file header or fall
+    // to the catchall.
+    const diff = [
+      '--- a/a.ts',
+      '+++ b/a.ts',
+      '@@ -1,1 +1,1 @@',
+      '-x',
+      '+y',
+      '+extra1',
+      '+extra2',
+      '--- a/b.ts',
+      '+++ b/b.ts',
+      '@@ -1,1 +1,1 @@',
+      '-z',
+      '+w',
+      '',
+    ].join('\n');
+    const r = parseUnifiedDiff(diff);
+    expect(r.status).toBe('ok');
+    if (r.status !== 'ok') return;
+    // Second file's headers must NOT be eaten as hunk-body lines.
+    expect(r.files.map((f) => f.newPath)).toEqual(['a.ts', 'b.ts']);
   });
 });
 

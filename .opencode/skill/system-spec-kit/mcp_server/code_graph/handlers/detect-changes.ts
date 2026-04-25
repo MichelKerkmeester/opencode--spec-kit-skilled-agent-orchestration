@@ -134,10 +134,43 @@ type CandidatePathResult =
   | { readonly kind: 'skip' }
   | { readonly kind: 'reject'; readonly reason: string };
 
+// 008/D2 — Diff path byte-safety contract.
+// Reject paths containing NUL, C0/C1 control characters, DEL, raw newlines
+// or tabs, or exceeding the platform's reasonable path-length cap. These
+// inputs cannot escape the workspace by themselves (containment handles
+// that) but they would propagate corrupted attribution into downstream
+// rendering, logging, and graph storage.
+const DIFF_PATH_MAX_LENGTH = 4096;
+const DIFF_PATH_BLOCKED_BYTES = /[\x00-\x1F\x7F]/;
+
+function checkPathByteSafety(
+  candidate: string,
+): { kind: 'ok' } | { kind: 'reject'; reason: string } {
+  if (candidate.length > DIFF_PATH_MAX_LENGTH) {
+    return {
+      kind: 'reject',
+      reason: `diff path exceeds ${DIFF_PATH_MAX_LENGTH}-byte cap (D2 byte-safety)`,
+    };
+  }
+  if (DIFF_PATH_BLOCKED_BYTES.test(candidate)) {
+    return {
+      kind: 'reject',
+      reason: 'diff path contains control characters (D2 byte-safety)',
+    };
+  }
+  return { kind: 'ok' };
+}
+
 function checkPathContainment(
   candidate: string,
   canonicalRootDir: string,
 ): { kind: 'ok'; path: string } | { kind: 'reject'; reason: string } {
+  // 008/D2: byte-safety check FIRST so corrupt strings never reach
+  // path normalization (which can produce surprising results on inputs
+  // with embedded NULs or control characters).
+  const safety = checkPathByteSafety(candidate);
+  if (safety.kind === 'reject') return safety;
+
   const normalized = normalize(candidate);
   const resolved = isAbsolute(normalized) ? normalized : resolve(canonicalRootDir, normalized);
   const rootWithSep = canonicalRootDir.endsWith(sep) ? canonicalRootDir : `${canonicalRootDir}${sep}`;

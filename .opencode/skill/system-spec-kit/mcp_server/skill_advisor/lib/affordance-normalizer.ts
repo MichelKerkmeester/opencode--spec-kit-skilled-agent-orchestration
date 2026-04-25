@@ -120,6 +120,30 @@ const MAX_EDGES_PER_AFFORDANCE = 12;
 // The list intentionally remains a denylist because affordance
 // triggers are free-form short phrases — we cannot enumerate the
 // allowed grammar without breaking valid skill descriptions.
+//
+// 008/D11 — BOUNDED SCOPE CONTRACT (do not let scope creep on this):
+//   COVERED:
+//     - ASCII regex variants of "ignore/disregard/override/bypass
+//       previous/prior/all instructions"
+//     - Role prefixes (system:, user:, [INST], <system>, etc.)
+//     - URL / email / token-shaped strings (privacy strip)
+//     - Control characters and non-ASCII bytes (stripped via the
+//       cleanPhrase allowlist `/[^A-Za-z0-9:/._ -]+/g`, which
+//       INCIDENTALLY removes zero-width / RTL-override / homoglyph
+//       characters since they're outside ASCII)
+//   NOT COVERED:
+//     - Semantic equivalence ("please disregard the rules above" via
+//       paraphrase that omits all keywords)
+//     - Multilingual prompt injection (the ASCII allowlist drops
+//       non-ASCII characters wholesale, so a Cyrillic / CJK injection
+//       attempt would just become whitespace; multilingual SUPPORT for
+//       legitimate triggers is also not provided — by design)
+//     - Encoded payloads (HTML entities, base64, percent-encoding) —
+//       no decode pass; the encoded payload is treated as literal text
+//   The scoped denylist is correct for the affordance-derivation
+//   threat model (compile-time skill descriptions). Operators relying
+//   on this for a broader threat surface should add an upstream
+//   sanitizer.
 const INSTRUCTION_PATTERN =
   /(?:(?:^|\s|\b)(?:(?:ignore|disregard|forget|skip|bypass|override)\s+(?:the\s+)?(?:previous|prior|earlier|above|all|any)(?:\s+(?:and\s+)?(?:previous|prior|earlier|above|all|any))*\s+(?:instruction|instructions|prompt|prompts|directions?|rule|rules|context|guidance|message|messages|system\s+prompt)|override\s+system\s+(?:prompt|message|instructions)|new\s+instructions?\s*:|reveal\s+(?:the\s+)?(?:system|developer)\s+(?:prompt|instruction|instructions)|system\s*:|developer\s*:|assistant\s*:|user\s*:|human\s*:|execute\s*:|instruction\s*:)|\[\s*(?:system|developer|assistant|user|human|inst|instruction)\s*\]|<\s*(?:system|developer|assistant|user|human)\s*>)/i;
 const EMAIL_PATTERN = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/gi;

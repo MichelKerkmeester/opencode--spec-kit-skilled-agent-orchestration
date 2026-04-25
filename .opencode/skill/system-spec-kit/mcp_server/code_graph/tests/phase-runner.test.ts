@@ -139,6 +139,73 @@ describe('phase-runner: topologicalSort', () => {
       expect(e.kind).toBe('duplicate-output');
     }
   });
+
+  // 008/D3: runtime key validation. TypeScript erases at runtime, so
+  // callers passing phases through JSON / JS bridges may bypass the
+  // compile-time contract. Validate at topologicalSort entry.
+  it('D3: rejects empty phase name', () => {
+    const phases = [
+      { name: '', inputs: [], run: () => 1 } as unknown as Phase,
+    ];
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      expect((err as PhaseRunnerError).kind).toBe('invalid-key');
+      expect((err as Error).message).toMatch(/non-empty/);
+    }
+  });
+
+  it('D3: rejects non-string phase name (number passed via JS bridge)', () => {
+    const phases = [
+      { name: 42 as unknown as string, inputs: [], run: () => 1 } as Phase,
+    ];
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      expect((err as PhaseRunnerError).kind).toBe('invalid-key');
+      expect((err as Error).message).toMatch(/must be a string/);
+    }
+  });
+
+  it('D3: rejects phase output containing control characters', () => {
+    const phases = [
+      { name: 'producer', inputs: [], output: 'has\x07bell', run: () => 1 } as Phase,
+    ];
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      expect((err as PhaseRunnerError).kind).toBe('invalid-key');
+      expect((err as Error).message).toMatch(/control characters/);
+    }
+  });
+
+  it('D3: rejects phase key exceeding 256-character cap', () => {
+    const phases = [
+      { name: 'a'.repeat(300), inputs: [], run: () => 1 } as Phase,
+    ];
+    try {
+      topologicalSort(phases);
+      throw new Error('expected throw');
+    } catch (err) {
+      expect(err).toBeInstanceOf(PhaseRunnerError);
+      expect((err as PhaseRunnerError).kind).toBe('invalid-key');
+      expect((err as Error).message).toMatch(/256/);
+    }
+  });
+
+  it('D3: accepts unicode phase names above the control band (negative control)', () => {
+    const phases = [
+      phase('фаза', [], () => 1),
+      phase('段階', ['фаза'], () => 2),
+    ];
+    expect(topologicalSort(phases)).toEqual(['фаза', '段階']);
+  });
 });
 
 describe('phase-runner: runPhases', () => {

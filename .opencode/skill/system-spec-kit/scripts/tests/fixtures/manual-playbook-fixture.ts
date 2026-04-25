@@ -621,16 +621,22 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
       title: 'Sandbox Temporary Memory A',
       filePath: path.join(sandboxSpecAbsolute, 'memory', 'temporary-a.md'),
       specFolder: sandboxSpecFolder,
-      content: buildMemoryDoc('Sandbox Temporary Memory A', 'Temporary sandbox memory for deletion.', [
-        'Temporary sandbox record A used for checkpoint and delete coverage.',
+      // 008/D18: differentiated from Memory B to drop similarity below 92% threshold.
+      content: buildMemoryDoc('Sandbox Temporary Memory A', 'Sandbox checkpoint coverage fixture.', [
+        'Single-record checkpoint fixture exercising the create→list→restore→delete path.',
+        'Useful for verifying checkpoint metadata round-trip and per-record audit hooks.',
+        'Relies on the checkpoints SQLite store and does not interact with bulk deletion paths.',
       ]),
     },
     {
       title: 'Sandbox Temporary Memory B',
       filePath: path.join(sandboxSpecAbsolute, 'memory', 'temporary-b.md'),
       specFolder: sandboxSpecFolder,
-      content: buildMemoryDoc('Sandbox Temporary Memory B', 'Temporary sandbox memory for bulk delete.', [
-        'Temporary sandbox record B used for bulk delete coverage.',
+      // 008/D18: differentiated from Memory A to drop similarity below 92% threshold.
+      content: buildMemoryDoc('Sandbox Temporary Memory B', 'Sandbox bulk-deletion fixture.', [
+        'Multi-record bulk-deletion fixture that drives memory_bulk_delete with predicate filters.',
+        'Validates spec-folder scoped predicates plus orphan-row cleanup downstream of the bulk delete.',
+        'Distinct from Memory A which exclusively exercises single-checkpoint flows.',
       ]),
     },
     {
@@ -655,16 +661,22 @@ export async function createManualPlaybookFixture(specFolder: string): Promise<F
       title: 'Ingest Alpha',
       filePath: ingestFiles[0],
       specFolder: sandboxSpecFolder,
-      content: buildMemoryDoc('Ingest Alpha', 'Ingest fixture alpha.', [
-        'Async ingest alpha file for lifecycle coverage.',
+      // 008/D18: differentiated from Beta with corpus-distinct vocabulary.
+      content: buildMemoryDoc('Ingest Alpha', 'Async ingest start fixture.', [
+        'First-stage ingest record covering memory_ingest_start handler validation.',
+        'Targets the queueing and dedup-by-content-hash branch of the ingest lifecycle.',
+        'Distinct corpus from Ingest Beta which covers cancellation and resume.',
       ]),
     },
     {
       title: 'Ingest Beta',
       filePath: ingestFiles[1],
       specFolder: sandboxSpecFolder,
-      content: buildMemoryDoc('Ingest Beta', 'Ingest fixture beta.', [
-        'Async ingest beta file for lifecycle coverage.',
+      // 008/D18: differentiated from Alpha with corpus-distinct vocabulary.
+      content: buildMemoryDoc('Ingest Beta', 'Ingest cancel + resume fixture.', [
+        'Cancellation-stage ingest record exercising memory_ingest_cancel and the resume path.',
+        'Confirms partial-progress checkpoint emission survives an explicit cancel.',
+        'Distinct corpus from Ingest Alpha which covers the start path only.',
       ]),
     },
     {

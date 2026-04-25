@@ -42,7 +42,8 @@ export class PhaseRunnerError extends Error {
     | 'duplicate-output'
     | 'missing-dependency'
     | 'cycle-detected'
-    | 'phase-failure';
+    | 'phase-failure'
+    | 'invalid-key';
   readonly phaseName?: string;
 
   constructor(
@@ -51,7 +52,8 @@ export class PhaseRunnerError extends Error {
       | 'duplicate-output'
       | 'missing-dependency'
       | 'cycle-detected'
-      | 'phase-failure',
+      | 'phase-failure'
+      | 'invalid-key',
     message: string,
     phaseName?: string,
     options?: { cause?: unknown },
@@ -61,6 +63,46 @@ export class PhaseRunnerError extends Error {
     this.kind = kind;
     this.phaseName = phaseName;
   }
+}
+
+// 008/D3: Runtime guards for phase keys. TypeScript enforces these at
+// compile time, but consumers of the exported API may pass values
+// through type-erased boundaries (JSON, dynamic loading, JS callers).
+// Reject empty strings, non-strings, and strings containing control
+// characters BEFORE DAG construction so the failure path is predictable.
+const PHASE_KEY_BLOCKED = /[\x00-\x1F\x7F]/;
+const PHASE_KEY_MAX_LENGTH = 256;
+
+function validatePhaseKey(value: unknown, role: string, phaseName?: string): string {
+  if (typeof value !== 'string') {
+    throw new PhaseRunnerError(
+      'invalid-key',
+      `Phase runner rejected: ${role} must be a string, got ${value === null ? 'null' : typeof value}`,
+      phaseName,
+    );
+  }
+  if (value.length === 0) {
+    throw new PhaseRunnerError(
+      'invalid-key',
+      `Phase runner rejected: ${role} must be a non-empty string`,
+      phaseName,
+    );
+  }
+  if (value.length > PHASE_KEY_MAX_LENGTH) {
+    throw new PhaseRunnerError(
+      'invalid-key',
+      `Phase runner rejected: ${role} exceeds ${PHASE_KEY_MAX_LENGTH}-character cap`,
+      phaseName,
+    );
+  }
+  if (PHASE_KEY_BLOCKED.test(value)) {
+    throw new PhaseRunnerError(
+      'invalid-key',
+      `Phase runner rejected: ${role} contains control characters`,
+      phaseName,
+    );
+  }
+  return value;
 }
 
 /** Map of phase output keys to the value produced by that phase. */
@@ -82,6 +124,20 @@ function outputKey(phase: Phase): string {
  *   4. Any cycle                    → PhaseRunnerError('cycle-detected')
  */
 export function topologicalSort(phases: readonly Phase[]): string[] {
+  // 008/D3: Validate every phase's runtime keys BEFORE DAG construction.
+  // TypeScript erases at runtime, so callers loading phases through
+  // JSON / dynamic imports / JS bridges may bypass the compile-time
+  // contract and reach this function with malformed shapes.
+  for (const phase of phases) {
+    validatePhaseKey(phase.name, 'phase.name');
+    if (phase.output !== undefined) {
+      validatePhaseKey(phase.output, 'phase.output', phase.name);
+    }
+    for (const input of phase.inputs ?? []) {
+      validatePhaseKey(input, 'phase.inputs entry', phase.name);
+    }
+  }
+
   const phasesByName = new Map<string, Phase>();
   for (const phase of phases) {
     if (phasesByName.has(phase.name)) {
