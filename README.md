@@ -415,19 +415,19 @@ Six relationship types: `caused`, `enabled`, `supersedes`, `contradicts`, `deriv
 - **LLM backfill** - Background discovery of missed causal links
 
 &nbsp;
-#### Causal Trust Display Badges (012/005)
+#### Trust Badges on Search Results
 
-Each `MemoryResultEnvelope` result on `memory_search` now carries an additive `trustBadges` payload derived at response time from existing causal-edge columns. The badges are display-only — no schema change, no new relation types, no new storage of code/process/tool facts (ADR-012-005):
+Every search result now ships with a small `trustBadges` block that tells you how reliable the hit is at a glance. The badges are display-only — they read existing causal links and don't add new storage:
 
-| Badge | Source |
-|-------|--------|
-| `confidence` | clamped from the strongest connected edge `strength` |
-| `extractionAge` | human-readable age from the newest connected `extracted_at` |
-| `lastAccessAge` | human-readable age from the newest connected `last_accessed` |
-| `orphan` | `true` when the result has no incoming causal edges |
-| `weightHistoryChanged` | `true` when any connected edge has a `weight_history` row |
+| Badge | What it tells you |
+|-------|-------------------|
+| `confidence` | How strong the strongest causal link to this result is |
+| `extractionAge` | How long ago the supporting evidence was extracted |
+| `lastAccessAge` | How recently anything in the chain was used |
+| `orphan` | True when nothing else in the graph points at this result |
+| `weightHistoryChanged` | True when the underlying edge weight has been re-tuned |
 
-The formatter fails open when the DB handle or `weight_history` table is unavailable, preserves any precomputed `trustBadges` payload a caller already supplied, and the response-profile layer (`quick`, `research`, `resume`) preserves the badge payload on `results[]` and `topResult` rather than dropping it during shaping.
+If the database is unreachable the formatter quietly skips badges instead of failing. Caller-provided badges pass through untouched, and every response profile (`quick`, `research`, `resume`) keeps the badges on the top result and the result list.
 
 &nbsp;
 #### Save Intelligence
@@ -530,14 +530,30 @@ The indexer uses tree-sitter to parse source files and extract functions, classe
 Success payloads of `code_graph_context` carry structured `data.metadata.partialOutput` (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) and an explicit `deadlineMs` field so callers can distinguish a complete answer from one trimmed by deadline or budget pressure. `code_graph_status` exposes `graphQualitySummary` (detector provenance + edge-enrichment confidence). CALLS queries on ambiguous subjects (e.g. `handle*`) now prefer callable implementation nodes over wrapper-shadow candidates, and return ambiguity / selected-candidate metadata so callers can audit the choice.
 
 &nbsp;
-#### Edge Explanation and Blast-Radius Uplift (012/003)
+#### Edge Explanations and Better Blast Radius
 
-Relationship rows on `code_graph_query` now surface graph-local `reason` and `step` fields next to the existing `confidence`, `detectorProvenance`, and `evidenceClass` metadata, and `code_graph_context` propagates the same fields through structured edges and compact text briefs. `blast_radius` keeps the prior file-oriented payload (`nodes`, `affectedFiles`, `sourceFiles`, `hotFileBreadcrumbs`, `multiFileUnion`, `unionMode`, `maxDepth`) while adding `depthGroups`, `riskLevel` (graph-local: `high` on ambiguity or depth-one fanout >10, `medium` on 4-10, `low` otherwise), an optional `minConfidence` traversal filter, `ambiguityCandidates` for unresolved subjects, and a structured `failureFallback` so callers never get a bare error string when resolution cannot continue. The SQLite schema is unchanged; the new fields ride inside the existing `code_edges.metadata` JSON blob.
+Relationship answers from `code_graph_query` now include short `reason` and `step` fields alongside the existing confidence and provenance, so you can see *why* an edge is there instead of just *that* it exists. `code_graph_context` carries those same fields through to structured edges and text briefs.
+
+`blast_radius` keeps the prior payload (affected files, source files, hot files, multi-file union, depth) and adds:
+
+- **`depthGroups`** — affected nodes bucketed by how far they sit from the change
+- **`riskLevel`** — `high` when the subject is ambiguous or fans out to more than 10 things at depth one, `medium` for 4–10, `low` otherwise
+- **`minConfidence`** filter — drop traversals below a confidence floor
+- **`ambiguityCandidates`** — list of plausible matches when the subject can't be resolved
+- **`failureFallback`** — structured info instead of a bare error string when resolution can't continue
+
+All of this rides inside the existing `code_edges.metadata` JSON blob — no SQLite schema changes.
 
 &nbsp;
-#### `detect_changes` Preflight (012/002)
+#### `detect_changes` — Preflight Impact Check
 
-A read-only `detect_changes` MCP tool is wired into the Code Graph surface alongside `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context`. It accepts `{ diff: string, rootDir?: string }`, walks each unified-diff hunk against persisted `code_nodes` via line-range overlap, and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed — callers never receive a false-safe "no impact" answer on a stale graph. The handler is registered in `handlers/index.ts`, dispatched via `code_graph/tools/code-graph-tools.ts`, and validated by the JSON schema in `tool-schemas.ts` plus the strict Zod schema in `schemas/tool-input-schemas.ts` (010/007 T-A wiring; ADR-012-003 governs the deferred new route/tool/shape graph entities, not this handler's exposure). The accompanying phase-DAG runner wraps `indexFiles()` in four declared phases (`find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`) without changing the SQLite schema.
+`detect_changes` is a read-only Code Graph tool that takes a diff and tells you which symbols and files it touches. It runs alongside `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context`.
+
+You hand it `{ diff: string, rootDir?: string }`. It walks each diff hunk, overlaps the line ranges with stored symbols, and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`.
+
+Safety is non-negotiable: the tool checks the graph is fresh before parsing the diff. If the graph is stale or unavailable, it returns `status: 'blocked'` immediately — you never get a false "nothing impacted" answer from an out-of-date index. Inline indexing is explicitly disabled here, so the read-only contract is enforced.
+
+Under the hood the scan runner is split into four declared phases (`find-candidates` → `parse-candidates` → `finalize` → `emit-metrics`) for clearer instrumentation, with no SQLite schema changes.
 
 &nbsp;
 #### What Each System Does
@@ -571,9 +587,9 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skill Advisor
 
-The Skill Advisor is the native Gate 2 routing system that matches user requests to the right skill. Phase 027 moved routing into the TypeScript MCP package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`, with three tools: `advisor_recommend`, `advisor_status`, and `advisor_validate`. The Python script remains as a compatibility shim with native-first routing and local fallback.
+The Skill Advisor matches what you type to the right skill before any tool runs. It's the native gate-2 router, packaged as a TypeScript MCP module at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. Three tools cover the surface: `advisor_recommend` for routing, `advisor_status` for health, and `advisor_validate` for measurement. A small Python compatibility shim still works as a fallback when the native path is unavailable.
 
-Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accuracy**, **UNKNOWN <= 10**, and **0 regressions on Python-correct prompts**.
+Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accuracy**, **UNKNOWN ≤ 10**, **0 regressions on previously-correct prompts**.
 
 #### How It Works
 
@@ -582,84 +598,83 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
                       │
                       ▼
            ┌──────────────────────┐
-      1.   │  NORMALIZE           │  Prompt-safe canonicalization
-           │                      │  with no raw prompt persistence
+      1.   │  NORMALIZE           │  Clean up the prompt; never store
+           │                      │  the raw text
            └──────────┬───────────┘
                       ▼
            ┌──────────────────────┐
-      2.   │  5-LANE FUSION       │  explicit_author 0.45
-           │                      │  lexical 0.30
-           │                      │  graph_causal 0.15
-           │                      │  derived_generated 0.10
-           │                      │  semantic_shadow 0.00
+      2.   │  5-LANE FUSION       │  Explicit author signals 0.45
+           │                      │  Lexical match 0.30
+           │                      │  Causal graph 0.15
+           │                      │  Derived hints 0.10
+           │                      │  Semantic shadow 0.00
            └──────────┬───────────┘
                       ▼
       ┌───────────────────────────────┐
-      │  3. FRESHNESS + LIFECYCLE     │  live/stale/absent/unavailable
-      │                               │  superseded / archived /
-      │  SQLite-backed skill graph    │  future redirect metadata
-      │  plus generated metadata      │  fail-open trust states
+      │  3. FRESHNESS + LIFECYCLE     │  Is each candidate still alive?
+      │                               │  live / stale / absent / archived
+      │  Reads SQLite skill graph     │  with redirect metadata
+      │  + generated metadata         │  Falls open on errors
       └───────────────┬───────────────┘
                       ▼
            ┌──────────────────────┐
-      4.   │  VALIDATE + FILTER   │  Confidence + uncertainty
-           │                      │  prompt-safe attribution
-           │                      │  cache and trust envelope
+      4.   │  VALIDATE + FILTER   │  Apply confidence + uncertainty
+           │                      │  thresholds; cache the trust
+           │                      │  envelope
            └──────────┬───────────┘
                       ▼
            ┌──────────────────────┐
-      5.   │  RENDER              │  runtime hook brief or
-           │                      │  MCP recommendation JSON
+      5.   │  RENDER              │  Either a one-line hook brief
+           │                      │  or a JSON recommendation list
            └──────────┬───────────┘
                       ▼
                 RESULT:
-           advisor_recommend -> recommendations[]
+           advisor_recommend -> list of skill recommendations
            hook adapter -> "Advisor: live; use ..."
-           shim fallback -> legacy JSON array
+           shim fallback -> legacy JSON
 ```
 
 &nbsp;
-#### Native Advisor Package
-
-The native package is self-contained:
+#### Native Package Layout
 
 ```text
 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/
-├── bench/
-├── compat/
-├── handlers/
-├── lib/
-├── schemas/
-├── tests/
-└── tools/
+├── bench/      benchmarks
+├── compat/     stable compatibility entry for runtimes
+├── handlers/   the three MCP tool handlers
+├── lib/        scorer, normalizer, freshness, cache
+├── schemas/    JSON + Zod schemas
+├── tests/      test suite
+└── tools/      tool registration
 ```
 
-| Tool | Purpose |
-|------|---------|
-| `advisor_recommend` | Prompt-safe recommendations, lane attribution, lifecycle redirects, cache and freshness trust. Accepts explicit `workspaceRoot`; output surfaces the resolved `workspaceRoot` and `effectiveThresholds` used for routing. |
-| `advisor_status` | Freshness, generation, trust state, lane weights, `skillCount`, `lastScanAt`, daemon status |
-| `advisor_validate` | Real corpus, holdout, parity, safety, and latency slice measurements. Accepts explicit `workspaceRoot`; output surfaces `workspaceRoot`, `effectiveThresholds`, `thresholdSemantics` (aggregate-vs-runtime), and a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`). |
+| Tool | What it does |
+|------|--------------|
+| `advisor_recommend` | Recommends skills for a prompt with lane breakdown, lifecycle redirects, and a freshness trust signal. Returns the workspace root and the effective thresholds it used. |
+| `advisor_status` | Reports freshness, generation, trust state, lane weights, skill count, last scan time, and background daemon status. |
+| `advisor_validate` | Runs measurement slices: corpus accuracy, holdout, parity, safety, latency. Surfaces the workspace root, effective thresholds, threshold semantics (aggregate vs runtime), and prompt-safe outcome counts (accepted / corrected / ignored). |
 
 &nbsp;
-#### Runtime Integrations
+#### How Runtimes Talk To It
 
-Claude Code, Copilot CLI, Gemini CLI, and Codex CLI call prompt-time hook adapters under `.opencode/skill/system-spec-kit/mcp_server/hooks/`. OpenCode uses `.opencode/plugins/spec-kit-skill-advisor.js` with `spec-kit-skill-advisor-bridge.mjs`, which imports the stable native compatibility entrypoint at `skill-advisor/compat/index.ts`.
+- **Claude Code, Copilot CLI, Gemini CLI, Codex CLI** — call prompt-time hook adapters under `.opencode/skill/system-spec-kit/mcp_server/hooks/`.
+- **OpenCode** — uses `.opencode/plugins/spec-kit-skill-advisor.js` with `spec-kit-skill-advisor-bridge.mjs`, which imports the stable compat entry at `skill-advisor/compat/index.ts`.
+- **Disable everywhere** — set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to turn off all prompt-time advisor surfaces.
+- **Threshold contract at the prompt** — confidence ≥ 0.8 and uncertainty ≤ 0.35 by default.
 
 &nbsp;
 #### Validation and Testing
 
-- `advisor_validate({"skillSlug":null})` returns measured corpus, holdout, parity, safety, and latency slices, plus `thresholdSemantics` and prompt-safe `telemetry.outcomes.totals` (`accepted` / `corrected` / `ignored`)
-- Python compatibility regression suite passed 52/52
-- Native package baseline: 23 advisor test files / 167 tests
-- Manual testing playbook now contains 17 scenarios across native MCP tools, runtime hooks/plugin, compatibility controls, and H5 operator states
-- Hook diagnostics persist to bounded JSONL sinks under the temp metrics root; validator analysis reads those sinks back across processes
-- OpenCode runs the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/plugin-helpers/spec-kit-skill-advisor-bridge.mjs` against the native compat entrypoint, with the default prompt-time threshold contract of `0.8 / 0.35`
-- `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` disables all prompt-time advisor surfaces
+- `advisor_validate({"skillSlug":null})` returns measured corpus / holdout / parity / safety / latency slices plus prompt-safe outcome totals.
+- Python compatibility regression suite: 52 / 52 passing.
+- Native package: 23 advisor test files, 167 tests.
+- Manual testing playbook: 17 scenarios spanning native MCP tools, runtime hooks, the OpenCode plugin, compatibility controls, and operator-state edge cases.
+- Hook diagnostics write to bounded JSONL sinks under the temp metrics root; the validator reads those sinks back across processes.
 
 &nbsp;
-#### Affordance Evidence (012/004)
+#### Affordance Evidence
 
-Callers can now provide structured tool/resource hints (`skillId`, `name`, `triggers[]`, `category`, `dependsOn[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`, `conflictsWith[]`) as affordance evidence. An allowlist normalizer in `affordance-normalizer.ts` strips URLs, email addresses, token-shaped fragments, control characters, and instruction-shaped strings before the scorer ever sees them; free-form `description` text is intentionally ignored. Sanitized affordance triggers contribute through the existing **`derived_generated`** lane with reduced weight, and normalized affordance relations become temporary edges in the existing **`graph_causal`** lane reusing the existing `depends_on` / `enhances` / `siblings` / `prerequisite_for` / `conflicts_with` multipliers. No new scoring lane, no new `entity_kind`, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers (ADR-012-006).
+Callers can now pass structured tool and resource hints — `skillId`, `name`, `triggers[]`, `category`, `dependsOn[]`, `enhances[]`, `siblings[]`, `prerequisiteFor[]`, `conflictsWith[]` — as affordance evidence. A normalizer strips URLs, emails, token-shaped fragments, control characters, and instruction-shaped strings before the scorer sees anything; free-form `description` text is ignored on purpose. Sanitized triggers feed the existing derived-hints lane at reduced weight, and normalized relations become temporary edges in the existing causal-graph lane reusing the standard relation multipliers (`depends_on`, `enhances`, `siblings`, `prerequisite_for`, `conflicts_with`). No new scoring lane, no new entity kind, no raw matched phrases in recommendation payloads — evidence labels stay as stable `affordance:<skillId>:<index>` identifiers.
 
 For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_server/skill_advisor/README.md).
 
