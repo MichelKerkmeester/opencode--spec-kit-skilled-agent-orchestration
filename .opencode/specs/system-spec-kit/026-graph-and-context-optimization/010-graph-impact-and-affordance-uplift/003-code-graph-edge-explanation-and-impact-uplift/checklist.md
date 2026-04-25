@@ -24,12 +24,12 @@ contextType: "implementation"
 ## P2 — Documentation
 - [x] feature_catalog entry in `06--analysis/` — `08-code-graph-edge-explanation-blast-radius-uplift.md`.
 - [x] manual_testing_playbook entry in `06--analysis/` — `026-code-graph-edge-explanation-blast-radius-uplift.md`.
-- [x] sk-doc DQI ≥85 — feature catalog DQI 87; playbook DQI 89 via `extract_structure.py`.
+- [ ] sk-doc DQI ≥85 — OPERATOR-PENDING. The original `[x]` cited feature catalog DQI 87 and playbook DQI 89 via `extract_structure.py`, but those scores were captured outside the canonical Wave-3 channel and are not reproducible from the current rubric without re-running `python3 .opencode/skill/sk-doc/scripts/validate_document.py <doc> --json` for both entries. Marked R-007-20 — premature PASS until script-backed scoring is captured.
 
 ## Phase Hand-off
-- [ ] `validate.sh --strict` passes — blocked: validator reports scaffold/template deviations in existing spec docs and missing local `tsx` runtime.
-- [ ] code-graph vitest suite passes unchanged — blocked: local Vitest binary absent and `npx` cannot fetch from npm under restricted network.
-- [x] `implementation-summary.md` populated — Status, risk rules, build summary and verification evidence filled.
+- [ ] `validate.sh --strict` passes — OPERATOR-PENDING-COSMETIC. Wave-3 canonical (010/007/T-B, 2026-04-25): FAILED on template-section conformance only (extra/non-canonical section headers from per-sub-phase scaffold). Cosmetic, NOT a contract violation: required Level-2 files present, anchors balanced, no `[TBD]` placeholders. Tracked as deferred P2 cleanup in 010/007. See `implementation-summary.md` §Verification Evidence for full canonical evidence.
+- [x] code-graph vitest suite passes unchanged — Wave-3 canonical (010/007/T-B, 2026-04-25): `npx --no-install vitest run code_graph/tests/code-graph-context-handler.vitest.ts code_graph/tests/code-graph-indexer.vitest.ts code_graph/tests/code-graph-query-handler.vitest.ts ...` → 9 passed | 1 skipped (10) test files, 90 passed | 3 skipped (93) tests, 1.34s. The 003 surfaces (`code-graph-context-handler.vitest.ts`, `code-graph-indexer.vitest.ts`, `code-graph-query-handler.vitest.ts`) are inside the 9 PASSED files with all 003 cases passing. Skips are the documented trust-badges SQL-mock describe block (R-007-13 / T-E remediation), not 003's surface.
+- [x] `implementation-summary.md` populated — Status, risk rules, build summary, and Wave-3 canonical verification evidence filled (Status updated to "Complete & verified" 010/007/T-B 2026-04-25).
 
 ## References
 - spec.md §4 (requirements), §5 (verification)

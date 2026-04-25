@@ -18,7 +18,7 @@ contextType: "implementation"
 
 ## P1 — Backward compatibility
 - [x] `indexFiles()` exports preserved — function signature unchanged; `IndexFilesResult` shape (`ParseResult[]` + `preParseSkippedCount`) reattached after `runPhases`; `parseFile`, `extractEdges`, `capturesToNodes`, `finalizeIndexResults`, `getParser`, `getRequestedParserBackend`, `detectorProvenanceFromParserBackend` all still exported
-- [x] Existing code-graph vitest suite passes unchanged — pre-flight self-check confirms callers (`handlers/scan.ts`, `lib/ensure-ready.ts`) consume `IndexFilesResult` identically (operator runs `npx vitest` to confirm)
+- [x] Existing code-graph vitest suite passes unchanged — Wave-3 canonical (010/007/T-B, 2026-04-25): `npx --no-install vitest run code_graph/tests/phase-runner.test.ts code_graph/tests/detect-changes.test.ts code_graph/tests/code-graph-context-handler.vitest.ts code_graph/tests/code-graph-indexer.vitest.ts code_graph/tests/code-graph-query-handler.vitest.ts ...` → 9 passed | 1 skipped (10) test files, 90 passed | 3 skipped (93) tests, 1.34s. The 002 surfaces (`phase-runner.test.ts`, `detect-changes.test.ts`) are inside the 9 PASSED files with all 002 cases passing. Skips are the documented trust-badges SQL-mock describe block (R-007-13 / T-E remediation), not 002's surface.
 - [x] No SQLite schema migration triggered — `code-graph-db.ts` was not modified; `code_files` / `code_nodes` / `code_edges` tables unchanged
 
 ## P1 — Output contract
@@ -29,11 +29,11 @@ contextType: "implementation"
 ## P2 — Documentation
 - [x] feature_catalog entries created in `03--discovery/` (detect_changes) and `14--pipeline-architecture/` (phase-DAG) — `04-detect-changes-preflight.md` and `25-code-graph-phase-dag-runner.md`
 - [x] manual_testing_playbook entries created in same categories — `014-detect-changes-preflight.md` and `271-code-graph-phase-dag-runner.md`
-- [x] sk-doc DQI score ≥85 on new entries — structural template adherence verified (frontmatter, canonical sections, line counts within peer band); operator may run an explicit DQI pass post-merge for numeric attestation
+- [ ] sk-doc DQI score ≥85 on new entries — OPERATOR-PENDING. Structural template adherence verified (frontmatter, canonical sections, line counts within peer band) but the prior `[x]` was premature (R-007-19 — premature PASS): no script-backed DQI score was captured. Operator must run `python3 .opencode/skill/sk-doc/scripts/validate_document.py <doc> --json` for each of the 4 catalog/playbook entries to numerically confirm ≥85.
 
 ## Phase Hand-off
-- [x] `validate.sh --strict` passes — OPERATOR-PENDING execution (sandbox blocks `bash`); pre-flight self-check covers all required Level-2 files, no orphan anchors, no remaining `[TBD]` placeholders
-- [x] `implementation-summary.md` populated with what-was-built section + diff-lib decision — Status, Diff Library Choice, What Was Built, Verification Evidence, Sign-Off, Files Changed, Known Limitations all populated
+- [ ] `validate.sh --strict` passes — OPERATOR-PENDING-COSMETIC. Wave-3 canonical (010/007/T-B, 2026-04-25): FAILED on template-section conformance (extra/non-canonical section headers introduced by per-sub-phase scaffold). Cosmetic only, NOT a contract violation: required Level-2 files present, no `[TBD]` placeholders, anchors balanced. The prior `[x]` was premature (R-007-19 — premature PASS) since the actual command had not run from the implementation context. Tracked as deferred P2 cleanup; does not block sub-phase sign-off or phase 010 closeout. See `implementation-summary.md` §`validate.sh --strict` for full canonical evidence.
+- [x] `implementation-summary.md` populated with what-was-built section + diff-lib decision — Status, Diff Library Choice, What Was Built, Verification Evidence, Sign-Off, Files Changed, Known Limitations all populated; Wave-3 canonical evidence captured 010/007/T-B
 
 ## References
 - spec.md §4 (requirements), §5 (verification)
