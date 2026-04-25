@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code graph doctor command",
+      "/doctor:code-graph",
+      "code graph doctor setup",
+      "006-code-graph-doctor-command",
+      "code graph diagnostic"
+    ],
+    "key_topics": [
+      "doctor",
+      "code-graph",
+      "diagnostic",
+      "staleness",
+      "exclude-rules",
+      "scan-health"
+    ],
+    "importance_tier": "important",
+    "status": "draft",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase A diagnostic-only /doctor:code-graph command. Phase B (apply mode) is gated on the resilience-research sibling packet 007 producing the verification battery, staleness model, recovery playbook, and exclude-rule confidence tiers.",
+    "created_at": "2026-04-25T20:30:00Z",
+    "last_save_at": "2026-04-25T20:30:00Z",
+    "save_lineage": "initial",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
+      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "code graph resilience research",
+      "code graph staleness research",
+      "code graph error resilience",
+      "007-code-graph-resilience-research",
+      "verification battery code graph",
+      "exclude-rule confidence model"
+    ],
+    "key_topics": [
+      "research",
+      "code-graph",
+      "resilience",
+      "staleness",
+      "verification-battery",
+      "recovery-playbook",
+      "exclude-rules",
+      "self-healing"
+    ],
+    "importance_tier": "important",
+    "status": "research-queued",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Deep-research packet investigating code-graph staleness, error resilience, recovery playbooks, and exclude-rule confidence tiers. Outputs (verification battery JSON, staleness model, recovery playbook, confidence tiers) gate Phase B of the 006 sibling /doctor:code-graph command.",
+    "created_at": "2026-04-25T20:30:00Z",
+    "last_save_at": "2026-04-25T20:30:00Z",
+    "save_lineage": "initial",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
+  "description": "Feature Specification: Code Graph Doctor Command",
+  "keywords": [
+    "feature",
+    "specification",
+    "code",
+    "graph",
+    "doctor",
+    "command"
+  ],
+  "lastUpdated": "2026-04-25T18:18:45.554Z",
+  "specId": "006",
+  "folderSlug": "code-graph-doctor-command",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "007-code-graph"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

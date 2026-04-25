@@ -7,6 +7,9 @@ trigger_phrases:
   - "001-code-graph-upgrades"
   - "002-code-graph-self-contained-package"
   - "003-code-graph-context-and-scan-scope"
+  - "006-code-graph-doctor-command"
+  - "007-code-graph-resilience-research"
+  - "/doctor:code-graph"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
@@ -69,6 +72,8 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 - [x] T011 Regenerate `context-index.md` for this theme.
 - [x] T012 Refresh parent and child metadata paths.
 - [x] T013 Move code-graph context and scan-scope packet from `007-deep-review-remediation/` to `003-code-graph-package/003`.
+- [x] T014 Add `006-code-graph-doctor-command/` child phase (created 2026-04-25): new `/doctor:code-graph` diagnostic-first slash command with auto + confirm YAML workflows planned. Phase A diagnostic-only ships independent; Phase B apply mode gated on T015.
+- [x] T015 Add `007-code-graph-resilience-research/` child phase (created 2026-04-25): deep-research packet investigating staleness, error resilience, recovery playbooks, exclude-rule confidence tiers. Outputs feed T014's Phase B.
 <!-- /ANCHOR:phase-2 -->
 
 ---

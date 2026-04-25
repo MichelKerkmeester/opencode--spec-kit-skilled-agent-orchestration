@@ -7,6 +7,9 @@ trigger_phrases:
   - "001-code-graph-upgrades"
   - "002-code-graph-self-contained-package"
   - "003-code-graph-context-and-scan-scope"
+  - "006-code-graph-doctor-command"
+  - "007-code-graph-resilience-research"
+  - "/doctor:code-graph"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
