@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "019 system hardening",
+      "post-consolidation hardening train",
+      "026 post-ship research wave",
+      "tier 1 research and remediation",
+      "system-spec-kit hardening charter",
+      "019 research umbrella",
+      "019 parent plan",
+      "system hardening plan",
+      "019 research wave coordination",
+      "019 tasks",
+      "system hardening tasks",
+      "019 parent checklist"
+    ],
+    "key_topics": [
+      "019",
+      "system",
+      "hardening",
+      "post-consolidation",
+      "train",
+      "026",
+      "post-ship",
+      "research",
+      "wave",
+      "tier",
+      "remediation",
+      "system-spec-kit"
+    ],
+    "importance_tier": "critical",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "shared/unicode-normalization.ts",
+      "mcp_server/lib/description/description-schema.ts",
+      "mcp_server/lib/description/description-merge.ts",
+      "mcp_server/lib/search/folder-discovery.ts",
+      "mcp_server/lib/description/repair.ts",
+      "core/config.ts",
+      "handlers/session-resume.ts",
+      "handlers/coverage-graph/query.ts",
+      "hooks/claude/session-prime.ts",
+      "scripts/lib/validator-registry.json",
+      "rules/README.md",
+      "templates/level_3/decision-record.md",
+      "scripts/spec/validate.sh"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "unicode-normalization.ts",
+        "kind": "code",
+        "path": "shared/unicode-normalization.ts",
+        "source": "derived"
+      },
+      {
+        "name": "description-schema.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/description/description-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "description-merge.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/description/description-merge.ts",
+        "source": "derived"
+      },
+      {
+        "name": "folder-discovery.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/folder-discovery.ts",
+        "source": "derived"
+      },
+      {
+        "name": "repair.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/description/repair.ts",
+        "source": "derived"
+      },
+      {
+        "name": "config.ts",
+        "kind": "code",
+        "path": "core/config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-resume.ts",
+        "kind": "code",
+        "path": "handlers/session-resume.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "handlers/coverage-graph/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": "hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validator-registry.json",
+        "kind": "config",
+        "path": "scripts/lib/validator-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "rules/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": "scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "System Hardening",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Consolidation Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Remediation Train",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet `019-system-hardening` is the research-first umbrella for the post-026-consolidation hardening train. The 2026-04-18 consolidation that collapsed the former 015-020 range into four thematic packets (015, 016, 017, 018) left six high-leverage investigation items unaddressed: three 026 close-out candidates (`DR-1` 015 delta-review, `RR-1` Q4 NFKC robustness, `RR-2` description.json regen strategy) and three system-spec-kit-wide candidates (`SSK-RR-1` Gate 3 + skill-advisor routing accuracy, `SSK-DR-1` template v2.2 + validator joint audit, `SSK-RR-2` canonical-save pipeline invariants). This packet coordinates them as one research wave plus follow-on implementation children.",
+    "created_at": "2026-04-18T16:46:13.781Z",
+    "last_save_at": "2026-04-25T10:34:53.192Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ]
+  }
+}

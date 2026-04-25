@@ -28,7 +28,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
-template_source_hint: ""
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
 # Feature Specification: Skill Advisor Setup Command
 

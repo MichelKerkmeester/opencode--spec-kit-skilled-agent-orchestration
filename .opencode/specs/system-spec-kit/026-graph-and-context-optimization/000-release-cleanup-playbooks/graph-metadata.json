@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "aliases": [],
+  "migration": {
+    "consolidated_at": "2026-04-24T00:00:00Z",
+    "active_phase": "005-release-cleanup-playbooks",
+    "merged_phase_folders": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/001-release-alignment-revisits",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/003-playbook-and-remediation"
+    ],
+    "layout": "root-only"
+  },
+  "manual": {
+    "depends_on": [],
+    "supersedes": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/001-release-alignment-revisits",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/001-release-alignment-revisits"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/003-playbook-and-remediation",
+        "reason": "merged into root-only docs during phase-folder consolidation",
+        "source": "026-phase-005-merge-root-only-2026-04-24",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/003-playbook-and-remediation"
+      }
+    ],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-release-cleanup-playbooks",
+      "release cleanup playbooks",
+      "phase 5 026 closeout",
+      "release alignment revisits",
+      "cleanup and audit",
+      "playbook and remediation",
+      "phase 018 continuity contract",
+      "shared memory removal",
+      "graph-metadata rollout",
+      "mcp config cleanup",
+      "dead code audit",
+      "deep review remediation",
+      "manual testing playbook rewrite"
+    ],
+    "key_topics": [
+      "release",
+      "cleanup",
+      "playbooks",
+      "phase 018 continuity",
+      "shared memory",
+      "graph-metadata",
+      "mcp config",
+      "dead code",
+      "deep review",
+      "playbook"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [],
+    "causal_summary": "Phase 5 of 026 closed: documentation parity revisits (141 reviewed / 71 updated), runtime cleanup and audit (shared-memory deleted, graph-metadata.json shipped tree-wide with 515-root backfill, five Public MCP configs aligned, dead code removed), and playbook plus 22-finding deep-review remediation. Now consolidated into root-only docs.",
+    "created_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-24T00:00:00Z",
+    "save_lineage": "phase-folder-consolidation",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  },
+  "migrated": true,
+  "migration_source": "phase-folder-consolidation"
+}

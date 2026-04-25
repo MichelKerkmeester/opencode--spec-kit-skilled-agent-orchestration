@@ -1,0 +1,95 @@
+{
+  "topic": "Wiki-Style Spec Kit Updates \u2014 HOW to implement Option C with UX and usefulness at the forefront, preserving all 13 advanced memory features via retargeting onto spec doc anchors and a thin continuity layer",
+  "maxIterations": 40,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 480,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 12,
+  "progressiveSynthesis": true,
+  "specFolder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates",
+  "createdAt": "2026-04-11T13:30:00Z",
+  "status": "initialized",
+  "executionMode": "in-session-rerun",
+  "orchestrator": "claude-opus-4-6 (Claude Code session)",
+  "worker": "claude-opus-4-6 (same session, acting as per-iteration worker)",
+  "workerModelRequested": "gpt-5.4 high fast (user request) \u2014 substituted to in-session claude-opus-4-6 after phase 017 generation 2 demonstrated cli-codex instability in this session",
+  "seed_file": "../phase-017-rerun-seed.md",
+  "predecessor_research": "../017-memory-refactor-or-deprecation/research/iterations/ (10-iteration rerun, 2026-04-11)",
+  "lineage": {
+    "sessionId": "018-implementation-design-2026-04-11",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": [
+      "new",
+      "resume",
+      "restart",
+      "fork",
+      "completed-continue"
+    ],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  },
+  "deliverables": {
+    "primary": [
+      "research/research.md",
+      "findings/routing-rules.md",
+      "findings/feature-retargeting-map.md",
+      "findings/resume-journey.md",
+      "findings/save-journey.md",
+      "findings/conflict-handling.md",
+      "findings/migration-strategy.md",
+      "findings/validation-contract.md",
+      "findings/thin-continuity-schema.md",
+      "findings/testing-strategy.md",
+      "findings/rollout-plan.md",
+      "implementation-design.md"
+    ],
+    "state": [
+      "research/deep-research-config.json",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-strategy.md",
+      "research/deep-research-dashboard.md",
+      "research/findings-registry.json"
+    ]
+  },
+  "constraints": {
+    "preserve_all_13_advanced_memory_features": true,
+    "option_C_fixed": true,
+    "migration_strategy_M4_fixed": true,
+    "no_generator_edits": true,
+    "no_memory_file_edits": true,
+    "no_mcp_handler_edits": true,
+    "read_only_research": true
+  }
+}

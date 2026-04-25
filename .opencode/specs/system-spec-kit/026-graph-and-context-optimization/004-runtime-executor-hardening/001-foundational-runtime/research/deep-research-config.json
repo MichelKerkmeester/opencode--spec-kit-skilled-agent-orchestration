@@ -1,0 +1,188 @@
+{
+  "topic": "Foundational runtime deep review -- investigate 19 under-audited runtime seams across 5 cross-cutting domains",
+  "spec_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime/001-initial-research",
+  "research_folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/016-foundational-runtime-001-initial-research",
+  "execution_mode": "MANUAL_WAVE_DISPATCH",
+  "dispatched_by": "cli-copilot gpt-5.4 high (manual wave dispatch)",
+  "worker_runtime": "gh copilot --model gpt-5.4 (manual batch-prompt execution, not `/spec_kit:deep-research`)",
+  "note_on_dispatch": "Iterations were dispatched as batch waves directly via copilot CLI rather than through the `/spec_kit:deep-research` skill loop. This metadata was back-filled after the 50-iteration run completed so the research folder matches the standard deep-research artifact shape produced by the skill.",
+  "max_iterations": 50,
+  "iteration_cap": 50,
+  "convergence": {
+    "composite_threshold": 0.08,
+    "new_info_ratio_threshold": 0.08,
+    "sliding_window": 3,
+    "rationale": "Convergence threshold aligned with the batch prompt's declared 0.08 new-info-per-iteration floor; final 3 iterations (48-50) fell below the threshold with only 4 net-new findings."
+  },
+  "charter_path": "016-foundational-runtime/001-initial-research/scratch/deep-research-batch-prompt.md",
+  "deliverables": {
+    "primary": [
+      "research/research.md",
+      "research/findings-registry.json",
+      "research/FINAL-synthesis-and-review.md"
+    ],
+    "interim_syntheses": [
+      "research/interim-synthesis-32-iterations.md",
+      "research/interim-synthesis-38-iterations.md",
+      "research/interim-synthesis-41-iterations.md",
+      "research/interim-synthesis-44-iterations.md",
+      "research/interim-synthesis-47-iterations.md"
+    ],
+    "state": [
+      "research/deep-research-config.json",
+      "research/deep-research-strategy.md",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-dashboard.md"
+    ]
+  },
+  "research_question": "Investigate the foundational runtime seams of the system-spec-kit MCP server that were under-reviewed by Phase 015's 120-iteration audit. Phase 015 concentrated audit pressure on packets 009/010/012/014 but left earlier phases (002, 003, 005, 008) with less scrutiny. A copilot gpt-5.4 deep-dive identified 19 candidates (7 HIGH, 8 MEDIUM, 4 LOW) and 4 cross-cutting systemic themes. Research these themes across the actual codebase to produce actionable findings that directly feed deep-review iterations and Phase 017+ remediation.",
+  "domains": [
+    {
+      "id": 1,
+      "name": "Silent Fail-Open Patterns",
+      "nominal_iterations": "1-10",
+      "actual_iterations": "1-20 (foundational + D1 extension)",
+      "focus": "Catalog every fail-open/silent-degrade path; classify by blast radius and caller vs reality perception gap",
+      "files_of_interest": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "State Contract Honesty",
+      "nominal_iterations": "11-20",
+      "actual_iterations": "21-30 (shifted after foundational spanned iters 1-10 and D1 absorbed iters 11-20)",
+      "focus": "Map which files conflate semantically distinct states (success/skip/defer/fail; missing/empty/stale) and trace downstream consumers",
+      "files_of_interest": [
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Concurrency & Write Coordination",
+      "nominal_iterations": "21-30",
+      "actual_iterations": "31-40",
+      "focus": "Enumerate RMW paths without locks, shared temp paths, pre-transaction snapshot reuse, TOCTOU identity races, byte-level collisions",
+      "files_of_interest": [
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+        ".opencode/skill/system-spec-kit/mcp_server/scripts/loaders/data-loader.ts",
+        "AGENTS.md",
+        "CLAUDE.md",
+        "CODEX.md",
+        "GEMINI.md"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Stringly Typed Governance",
+      "nominal_iterations": "31-40",
+      "actual_iterations": "41-47 plus spill-over to 48-50",
+      "focus": "Identify prose/string contracts lacking mechanical validation; routing, Gate 3 classifier, YAML predicates, playbook runner eval",
+      "files_of_interest": [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "CODEX.md",
+        "GEMINI.md",
+        ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+        ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
+        ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        ".opencode/skill/skill-advisor/scripts/skill_advisor_runtime.py",
+        ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+        ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Test Coverage Gaps",
+      "nominal_iterations": "41-50",
+      "actual_iterations": "48-50 plus transversal evidence across all prior iterations",
+      "focus": "Adversarial coverage matrix across all 19 candidates; classify direct vs indirect vs missing coverage; identify tests that codify degraded contracts",
+      "note": "Domain 5 was not dispatched as a dedicated batch pass; coverage evidence was gathered transversally across iterations 1-47 and consolidated in the final synthesis (FINAL-synthesis-and-review.md section 6.3 + 8.2). Phase 017 should do a dedicated 5-iteration Domain-5 pass in parallel with P0 remediation.",
+      "files_of_interest": [
+        ".opencode/skill/system-spec-kit/mcp_server/tests/",
+        ".opencode/skill/skill-advisor/tests/test_skill_advisor.py",
+        ".opencode/skill/system-spec-kit/scripts/tests/"
+      ]
+    }
+  ],
+  "scope_files": {
+    "count": 19,
+    "high_priority": [
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/graph/graph-metadata-parser.ts",
+      ".opencode/skill/system-spec-kit/shared/algorithms/adaptive-fusion.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/reconsolidation-bridge.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/save/post-insert.ts"
+    ],
+    "medium_priority": [
+      ".opencode/skill/system-spec-kit/scripts/core/post-save-review.ts",
+      ".opencode/skill/system-spec-kit/scripts/lib/trigger-phrase-sanitizer.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/handlers/code-graph/query.ts",
+      ".opencode/skill/system-spec-kit/scripts/graph/backfill-graph-metadata.ts",
+      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+      ".opencode/skill/skill-advisor/scripts/skill_graph_compiler.py",
+      ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-deep-review-remediation/001-deep-review-and-remediation/implementation-summary.md"
+    ],
+    "low_priority": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/research/001-research-graph-context-systems/recommendations.md",
+      "AGENTS.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates/implementation-summary.md",
+      ".opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts"
+    ]
+  },
+  "started_at": "2026-04-16T16:12:22Z",
+  "completed_at": "2026-04-16T18:59:11Z",
+  "final_synthesis_completed_at": "2026-04-16T19:17:00Z",
+  "metadata_backfilled_at": "2026-04-16T20:00:00Z",
+  "continuation": {
+    "segment_2": {
+      "topic": "Deep-dive on deep-review findings from 2026-04-17T120827Z session (review-report.md, 7 iterations, converged 0.0923). 10 P1 + 18 P2 across 3 clusters (A scope-normalization, B canonical-save-surface, C ASCII-only sanitization) + 4 standalones. Validate Cluster B infrastructure gap reach, R6-P1-001 sibling-asymmetry recurrence, P0 escalation scenarios. Produce prioritized Phase 017 remediation plan.",
+      "started_at": "2026-04-17T11:27:20Z",
+      "iteration_range": "51-57",
+      "iteration_cap_extended_to": 57,
+      "max_iterations_this_segment": 7,
+      "convergence_threshold": 0.05,
+      "execution_mode": "PARALLEL_OPUS_SUBAGENT_WAVES",
+      "dispatched_by": "Task tool @general / Opus 4.7 (claude-opus-4-7) / waves of 3 per CLAUDE.md concurrency feedback",
+      "worker_model": "opus",
+      "dimensions": ["root-cause", "remediation-feasibility", "blast-radius", "cross-cutting-coverage"],
+      "input_sources": {
+        "reviewReport": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-001-initial-research/review-report.md",
+        "reviewIterations": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/review/016-foundational-runtime-001-initial-research/iterations/",
+        "priorResearchPacket": "research/016-foundational-runtime-001-initial-research/ (iterations 1-50, FINAL-synthesis-and-review.md)",
+        "phase017Commits": "afbb3bc7f..HEAD (27 fix(016) commits)",
+        "phaseSpec": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime/001-initial-research/"
+      },
+      "key_questions": {
+        "KQ-51-1": "Does the Cluster B infrastructure gap extend to other canonical-save surfaces not yet audited (graph-metadata.json.derived, implementation-summary.md._memory.continuity, checklist.md CHK evidence)?",
+        "KQ-51-2": "Does the R6-P1-001 sibling-asymmetry pattern recur in code-graph tool family (scan.ts, status.ts), memory_* handlers, or session_resume variants?",
+        "KQ-51-3": "Can any P1 escalate to P0 under expanded attack scenarios (multi-UID, non-POSIX, MCP transport-layer injection, supply-chain)?",
+        "KQ-51-4": "What cross-cluster dependencies among Cluster A/B/C should inform Phase 017 task ordering?",
+        "KQ-51-5": "Do P2 findings (god function, missing assertNever, duplicate transaction blocks, malformed evidence markers) mask latent P1-class risks?"
+      },
+      "non_goals": [
+        "Re-auditing the 4 P0 composites (A/B/C/D) — already verified in review iter 5",
+        "Expanding scope beyond 24 focus files + 9 regression tests from review manifest",
+        "Implementing fixes — research only; remediation belongs to Phase 017",
+        "Reviewing Phase 016 seams (Phase 015/016) — covered by segment_1 iterations 1-50",
+        "Second-guessing 0 P0 / 10 P1 / 18 P2 severity triage — iter 6 adversarial self-check validated"
+      ]
+    }
+  }
+}

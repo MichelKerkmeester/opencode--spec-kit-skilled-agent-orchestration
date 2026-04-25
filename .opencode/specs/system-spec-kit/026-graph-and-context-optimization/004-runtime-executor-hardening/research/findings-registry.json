@@ -1,0 +1,100 @@
+{
+  "phase": "008-runtime-executor-hardening",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P0",
+      "category": "correctness",
+      "summary": "Non-native executor provenance is internally inconsistent: the prompt-pack contract omits `executor`, validation requires it on the final iteration record, and YAML only adds audit metadata after validation.",
+      "evidence": [
+        "iteration-01.md#Findings",
+        "iteration-10.md#Findings",
+        ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl:38-48",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts:145-150",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:586-617"
+      ],
+      "recommended_fix": "Require `executor` in the first canonical non-native iteration record or inject it via a shared writer before post-dispatch validation."
+    },
+    {
+      "id": "F-002",
+      "severity": "P0",
+      "category": "correctness",
+      "summary": "Timeout/crash handling is specified but not wired: failure helpers and timeout events exist in code/docs, but the executor workflow does not call them during live dispatch.",
+      "evidence": [
+        "iteration-05.md#Findings",
+        "iteration-06.md#Findings",
+        "iteration-10.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts:128-149",
+        ".opencode/skill/sk-deep-research/references/loop_protocol.md:232-241",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:836-840"
+      ],
+      "recommended_fix": "Wire a shared dispatch-failure/timeout emitter into every CLI branch so typed failure events land before validation and recovery logic runs."
+    },
+    {
+      "id": "F-003",
+      "severity": "P1",
+      "category": "security",
+      "summary": "`sandboxMode` is accepted for several executors but ignored by the YAML branches, while Copilot always runs with `--allow-all-tools` and no shared narrowing control.",
+      "evidence": [
+        "iteration-02.md#Findings",
+        "iteration-04.md#Findings",
+        ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts:30-35",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:516-585"
+      ],
+      "recommended_fix": "Either make per-kind sandbox/permission settings executable in the branches or remove them from the public config surface until they are real."
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "category": "architecture",
+      "summary": "Copilot's large-prompt wrapper remains an evidence gap: the `@path` fallback exists syntactically, but only command-shape tests cover it and prior research already treated it as unresolved hardening.",
+      "evidence": [
+        "iteration-03.md#Findings",
+        "iteration-08.md#Findings",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:528-551",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts:8-160",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/017-sk-deep-cli-runtime-execution/001-executor-feature/research/017-sk-deep-cli-runtime-execution-pt-01/research.md:57-60"
+      ],
+      "recommended_fix": "Add a real Copilot large-prompt smoke harness that forces the wrapper path and verifies full artifact creation."
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "category": "docs",
+      "summary": "Recovery naming drift persists: YAML and reducer use `stuckRecovery`, while some deep-research references still describe persisted `stuck_recovery` events.",
+      "evidence": [
+        "iteration-07.md#Findings",
+        ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:454-470",
+        ".opencode/skill/sk-deep-research/references/convergence.md:711-757",
+        ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs:324-383"
+      ],
+      "recommended_fix": "Normalize all references and tests to the frozen camelCase event names, and add a schema-level stop-reason parity test."
+    },
+    {
+      "id": "F-006",
+      "severity": "P1",
+      "category": "performance",
+      "summary": "The shipped matrix still lacks live smoke coverage for timeout wiring, non-native artifact success, and consecutive-failure recovery, despite packet specs/checklists that expected those proofs.",
+      "evidence": [
+        "iteration-08.md#Findings",
+        "iteration-09.md#Findings",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/001-executor-feature/checklist.md:86-119",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/implementation-summary.md:180-199"
+      ],
+      "recommended_fix": "Add targeted end-to-end executor harness tests for provenance success, timeout/crash failure logging, and recovery escalation before further matrix expansion."
+    },
+    {
+      "id": "F-007",
+      "severity": "P2",
+      "category": "other",
+      "summary": "Merged operator surfaces still mix reserved, shipped, and deferred-language artifacts, which weakens expectation-setting around timeout defaults and recursion handling.",
+      "evidence": [
+        "iteration-05.md#Findings",
+        "iteration-09.md#Findings",
+        ".opencode/skill/sk-deep-research/SKILL.md:68-71",
+        ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution/002-runtime-matrix/implementation-summary.md:194-199"
+      ],
+      "recommended_fix": "Tighten doc language so only executable behavior is described as shipped, and move backlog-only items into a clearly deferred section."
+    }
+  ]
+}

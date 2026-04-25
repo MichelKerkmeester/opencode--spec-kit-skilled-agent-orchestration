@@ -1,0 +1,56 @@
+{
+  "packet": "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/002-resource-map-template-creation",
+  "executor": "cli-copilot",
+  "model": "gpt-5.4",
+  "reasoning_effort": "high",
+  "total_iterations": 7,
+  "concurrency_cap": 3,
+  "convergence_strategy": "all-dimensions-covered",
+  "severity_tiers": ["P0", "P1", "P2"],
+  "scope_constraint": "Review delivered artifacts (template file, MCP runtime code edits, YAML wiring, skill docs, AGENTS triad, feature_catalog + playbook entries, end-to-end UX). DO NOT over-analyze the phase packet's own spec.md / plan.md / tasks.md / checklist.md / implementation-summary.md — those are scaffolding, not the deliverable.",
+  "dimensions": {
+    "01": {
+      "title": "Template design quality",
+      "focus": "resource-map.md at .opencode/skill/system-spec-kit/templates/",
+      "questions": "Is the shape correct? Are the 10 categories complete and non-overlapping? Is the Action/Status vocabulary clear? Are the author instructions actionable? Would a first-time user produce a useful catalog by copying and filling this template?",
+      "out_of_scope": "Spec docs for the phase (spec/plan/tasks/checklist/impl-summary)."
+    },
+    "02": {
+      "title": "MCP runtime code correctness",
+      "focus": "9 TypeScript files edited in mcp_server/ (memory-types, memory-parser, graph-metadata-parser, resume-ladder, spec-doc-structure, memory-save, tool-schemas, 2 vitest files)",
+      "questions": "Is the new filename consistently registered across all classifier sets, regexes, and priority lists? Are there remaining code paths that hardcode the old 9-doc list? Are the tier/weight defaults for resource_map appropriate? Does the classifier correctly distinguish resource-map.md from similar filenames?",
+      "out_of_scope": "Spec docs for the phase."
+    },
+    "03": {
+      "title": "Test coverage adequacy",
+      "focus": "Existing vitest fixtures + any tests that should gain a resource-map.md case (per AUDIT-C: memory-types.vitest.ts:114-122 was flagged possible-miss; spec-doc-classification.vitest.ts; thin-continuity-record.vitest.ts)",
+      "questions": "Does every test that enumerates canonical docs now include resource-map.md? Are there missing test cases for the new FILENAME_TO_DOC_TYPE entry? What about negative tests (files NOT matching resource-map regex)?",
+      "out_of_scope": "Spec docs for the phase."
+    },
+    "04": {
+      "title": "Command + YAML wiring consistency",
+      "focus": "8 YAML workflow assets + command/memory/save.md + command/spec_kit/resume.md",
+      "questions": "Do all 8 YAMLs include resource-map in consistent places (shared block, supporting-docs enumeration)? Is the YAML syntax valid? Do the two `save.md` edits align with each other and with the handler enumeration in memory-save.ts? Does resume.md agree with resume_auto.yaml?",
+      "out_of_scope": "Spec docs for the phase."
+    },
+    "05": {
+      "title": "Skill docs + references coherence",
+      "focus": "SKILL.md, skill README.md, references/templates/*, references/structure/*, references/workflows/*, assets/*",
+      "questions": "Does every table/tree/list that enumerates docs now include resource-map? Are there older references (pre-phase-012) still pointing at a 9-doc list that we missed? Does the ToC policy language include resource-map? Is wording consistent across files?",
+      "out_of_scope": "Spec docs for the phase."
+    },
+    "06": {
+      "title": "AGENTS triad sync + distributed governance rule",
+      "focus": "AGENTS.md, AGENTS_example_fs_enterprises.md, AGENTS_Barter.md",
+      "questions": "Does the updated governance rule still make sense grammatically and semantically? Did we break the `research/iterations/*.md` exemption or the debug-delegation exclusive-access clause? Is the Barter sibling's slimmer phrasing still valid? Is the example-fs-enterprises documentation-levels note consistent?",
+      "out_of_scope": "Spec docs for the phase."
+    },
+    "07": {
+      "title": "End-to-end UX + feature-catalog/playbook fidelity",
+      "focus": "feature_catalog/22.../25-resource-map-template.md + manual_testing_playbook/22.../270-resource-map-template.md + the operator journey (copy template -> fill -> memory:save)",
+      "questions": "Do the feature catalog and playbook entries accurately describe the template and its wiring? Do they follow the neighbor-entry format (23-tool-routing-enforcement.md / 267-tool-routing-enforcement.md) closely? If an operator follows the updated docs end-to-end, does the workflow actually land cleanly (copy -> fill -> save -> index)? Where is the UX friction?",
+      "out_of_scope": "Spec docs for the phase."
+    }
+  },
+  "created_at": "2026-04-24T00:45:00Z"
+}

@@ -62,7 +62,7 @@ Each scenario is paste-ready. Replace `__PLACEHOLDERS__` before running.
 
 **Example filled-in:**
 ```
-/spec_kit:deep-research :auto "Compare the claims in .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/003-hook-parity-remediation/spec.md against the actual implementation of .opencode/skill/system-spec-kit/mcp_server/hooks/codex/**/*.ts. ..." --max-iterations=12 ...
+/spec_kit:deep-research :auto "Compare the claims in .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-hook-parity/001-hook-parity-remediation/spec.md against the actual implementation of .opencode/skill/system-spec-kit/mcp_server/hooks/codex/**/*.ts. ..." --max-iterations=12 ...
 ```
 
 ---

@@ -1,0 +1,107 @@
+{
+  "topic": "Follow-up deep review of memory deprecation remediation",
+  "sessionId": "review-memory-deprecation-v2-20260414T110341Z",
+  "parentSessionId": "review-memory-deprecation-20260414T092851Z",
+  "lineageMode": "new",
+  "generation": 2,
+  "continuedFromRun": 20,
+  "migrationWindowEndsAt": "",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": false,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit",
+  "createdAt": "2026-04-14T11:03:41.970Z",
+  "status": "initialized",
+  "releaseReadinessState": "in-progress",
+  "executionMode": "auto",
+  "mode": "review",
+  "reviewTarget": "Follow-up verification that the shared-memory retirement remediation actually closed the prior four findings without introducing new residual issues",
+  "reviewTargetType": "track",
+  "targetType": "track",
+  "reviewDimensions": [
+    "correctness",
+    "security",
+    "traceability",
+    "maintainability"
+  ],
+  "severityThreshold": "P2",
+  "crossReference": {
+    "core": [
+      "spec_code",
+      "checklist_evidence"
+    ],
+    "overlay": [
+      "skill_agent",
+      "agent_cross_runtime",
+      "feature_catalog_code",
+      "playbook_capability"
+    ]
+  },
+  "qualityGateThreshold": true,
+  "runtimeCapabilityResolver": ".claude/skills/sk-deep-review/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".claude/skills/sk-deep-review/scripts/reduce-state.cjs",
+  "fileProtection": {
+    "deep-review-config.json": "immutable",
+    "deep-review-state.jsonl": "append-only",
+    "deep-review-findings-registry.json": "auto-generated",
+    "deep-review-strategy.md": "mutable",
+    "deep-review-dashboard.md": "auto-generated",
+    ".deep-review-pause": "operator-controlled",
+    "review-report.md": "mutable",
+    "iteration-*.md": "write-once"
+  },
+  "reducer": {
+    "enabled": true,
+    "inputs": [
+      "latestJSONLDelta",
+      "newIterationFile",
+      "priorReducedState"
+    ],
+    "outputs": [
+      "findingsRegistry",
+      "dashboardMetrics",
+      "strategyUpdates"
+    ],
+    "metrics": [
+      "dimensionsCovered",
+      "findingsBySeverity",
+      "openFindings",
+      "resolvedFindings",
+      "convergenceScore"
+    ]
+  },
+  "scope": [
+    ".opencode/skill/system-spec-kit/mcp_server/**",
+    ".opencode/skill/system-spec-kit/scripts/**",
+    ".opencode/skill/system-spec-kit/shared/**",
+    ".opencode/skill/system-spec-kit/templates/**",
+    ".opencode/skill/system-spec-kit/feature_catalog/**",
+    ".opencode/skill/system-spec-kit/manual_testing_playbook/**",
+    ".opencode/command/**",
+    ".opencode/agent/**",
+    ".claude/agents/**",
+    ".codex/agents/**",
+    ".gemini/agents/**",
+    "AGENTS.md",
+    "CLAUDE.md",
+    ".opencode/changelog/01--system-spec-kit/v3.4.0.0.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/checklist.md"
+  ],
+  "priorFindingsToVerify": [
+    "F001",
+    "F002",
+    "F003",
+    "F004"
+  ],
+  "sessionLineage": {
+    "classification": "fresh-follow-up",
+    "reviewPacketPath": "review/v2/",
+    "priorReviewPacketPath": "review/",
+    "priorReviewVerdict": "FAIL"
+  }
+}

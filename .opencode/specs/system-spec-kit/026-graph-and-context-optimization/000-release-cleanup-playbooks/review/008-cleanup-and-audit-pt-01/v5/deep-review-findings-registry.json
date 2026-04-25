@@ -1,0 +1,231 @@
+{
+  "sessionId": "review-v5-20260414T153445Z",
+  "generation": 1,
+  "lineageMode": "new",
+  "openFindings": [
+    {
+      "findingId": "F005",
+      "severity": "P0",
+      "title": "F005 remains open: spec.md still mixes every-startup semantics with one-time and first-launch wording",
+      "file": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks/002-cleanup-and-audit/001-remove-shared-memory/spec.md",
+      "line": 47,
+      "description": "The runtime, checklist, and changelog now match the every-startup idempotent retry contract, but spec.md still describes the drop as one-time / first launch in multiple places.",
+      "dimension": "traceability",
+      "firstSeen": 2,
+      "lastSeen": 2,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 2,
+          "from": null,
+          "to": "P0",
+          "reason": "Prior closure blocker not actually fixed because spec.md still contradicts the shipped contract"
+        }
+      ]
+    },
+    {
+      "findingId": "F006",
+      "severity": "P0",
+      "title": "F006 remains open: memory/save.md still uses retired continuity-artifact framing",
+      "file": ".opencode/command/memory/save.md",
+      "line": 302,
+      "description": "The memory save command still tells operators about continuity artifacts and standalone continuity artifacts instead of only canonical packet docs and _memory.continuity.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 3,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P0",
+          "reason": "Prior closure blocker not actually fixed because save.md still preserves retired continuity-artifact wording"
+        }
+      ]
+    },
+    {
+      "findingId": "NF002",
+      "severity": "P0",
+      "title": "NF002 remains open: README.txt and confirm workflow wording still diverge from the runtime contract",
+      "file": ".opencode/command/memory/README.txt",
+      "line": 157,
+      "description": "manage.md and most workflow YAMLs are aligned, but README.txt still uses continuity-artifact framing and the plan/implement confirm variants still use generated continuity artifact wording, so the prior expected-closed drift remains blocker-class.",
+      "dimension": "traceability",
+      "firstSeen": 3,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 3,
+          "from": null,
+          "to": "P1",
+          "reason": "Broader command-doc workflow contract still diverges from runtime discovery wording"
+        },
+        {
+          "iteration": 4,
+          "from": "P1",
+          "to": "P1",
+          "reason": "Workflow drift is narrower than v4 but still present in plan_confirm and implement_confirm wording"
+        },
+        {
+          "iteration": 10,
+          "from": "P1",
+          "to": "P0",
+          "reason": "Packet severity rule treats prior expected-closed findings still open as blockers"
+        }
+      ]
+    },
+    {
+      "findingId": "F003",
+      "severity": "P0",
+      "title": "F003 reopened: cross-runtime deep-review manuals diverge on the iteration artifact schema",
+      "file": ".opencode/agent/deep-review.md",
+      "line": 140,
+      "description": ".claude/.gemini use the canonical reducer-readable iteration template, while .opencode/.codex still prescribe the older Scope/Scorecard/Cross-Reference format.",
+      "dimension": "traceability",
+      "firstSeen": 6,
+      "lastSeen": 10,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 6,
+          "from": null,
+          "to": "P1",
+          "reason": "Cross-runtime manual parity drift reappeared after the remediation sweep"
+        },
+        {
+          "iteration": 10,
+          "from": "P1",
+          "to": "P0",
+          "reason": "Packet severity rule treats prior expected-closed findings still open as blockers"
+        }
+      ]
+    },
+    {
+      "findingId": "F012",
+      "severity": "P2",
+      "title": "F012 remains open: master feature catalog still describes older incremental scan mechanics",
+      "file": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      "line": 651,
+      "description": "The consolidated catalog describes older mtime-only/cooldown scan mechanics while the dedicated entry and handler now describe content-hash-sensitive bucketing plus an atomic scan lease.",
+      "dimension": "traceability",
+      "firstSeen": 7,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 7,
+          "from": null,
+          "to": "P2",
+          "reason": "Master feature catalog did not fully catch up to the current lease-based discovery mechanics"
+        }
+      ]
+    },
+    {
+      "findingId": "F013",
+      "severity": "P2",
+      "title": "F013 remains open: operator-facing verification surfaces do not fully reflect the three-source scan contract",
+      "file": ".opencode/skill/system-spec-kit/feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md",
+      "line": 22,
+      "description": "The reviewed catalog entries describe three scan sources, including graph metadata, but the handler hints and summary playbook coverage do not surface that full contract consistently.",
+      "dimension": "traceability",
+      "firstSeen": 7,
+      "lastSeen": 7,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 7,
+          "from": null,
+          "to": "P2",
+          "reason": "Feature catalog and playbook summaries are narrower than the full three-source discovery contract"
+        }
+      ]
+    },
+    {
+      "findingId": "F014",
+      "severity": "P2",
+      "title": "F014 remains open: save and handover docs still mix hard-coded /tmp examples with normalized temp-path guidance",
+      "file": ".opencode/command/memory/save.md",
+      "line": 121,
+      "description": "The save workflow already documents the normalized ${TMPDIR:-/tmp} form, but several examples still hard-code /tmp/save-context-data.json.",
+      "dimension": "maintainability",
+      "firstSeen": 9,
+      "lastSeen": 9,
+      "status": "active",
+      "transitions": [
+        {
+          "iteration": 9,
+          "from": null,
+          "to": "P2",
+          "reason": "Mixed temp-path examples survived the broader continuity cleanup"
+        }
+      ]
+    }
+  ],
+  "resolvedFindings": [
+    {
+      "findingId": "F007",
+      "severity": "P0",
+      "title": "F007 closed: the complete workflow pair now routes save and index steps through canonical spec documents",
+      "file": ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+      "line": 1031,
+      "resolutionIteration": 4,
+      "status": "resolved",
+      "notes": "The original complete-workflow defect is gone; remaining workflow drift is limited to NF002 prose in the plan/implement confirm variants."
+    },
+    {
+      "findingId": "F010",
+      "severity": "P1",
+      "title": "F010 closed: create folder-readme workflows now route save steps through implementation-summary.md",
+      "file": ".opencode/command/create/assets/create_folder_readme_auto.yaml",
+      "line": 661,
+      "resolutionIteration": 5,
+      "status": "resolved",
+      "notes": "Both folder-readme workflow variants now save/index the canonical implementation-summary.md target and explicitly retire standalone memory/*.md files."
+    },
+    {
+      "findingId": "F009",
+      "severity": "P2",
+      "title": "F009 closed: stale save-pipeline test comment now matches canonical spec-document classification behavior",
+      "file": ".opencode/skill/system-spec-kit/mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts",
+      "line": 396,
+      "resolutionIteration": 9,
+      "status": "resolved",
+      "notes": "The inline comment now reflects the live canonical spec-document classification logic rather than the retired specs/*/memory pattern."
+    },
+    {
+      "findingId": "F011",
+      "severity": "P1",
+      "title": "F011 closed: create/agent.md prior-session prompt is now canonical-doc based",
+      "file": ".opencode/command/create/agent.md",
+      "line": 125,
+      "resolutionIteration": 10,
+      "status": "resolved",
+      "notes": "The current wording routes prior-session loading through handover.md, _memory.continuity, and canonical spec docs instead of legacy memory files."
+    }
+  ],
+  "blockedStopHistory": [],
+  "persistentSameSeverity": [],
+  "severityChanged": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true,
+    "traceability": true,
+    "maintainability": true
+  },
+  "findingsBySeverity": {
+    "P0": 4,
+    "P1": 0,
+    "P2": 3
+  },
+  "openFindingsCount": 7,
+  "resolvedFindingsCount": 4,
+  "convergenceScore": 0.14,
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [
+    "active-p0"
+  ],
+  "corruptionWarnings": []
+}

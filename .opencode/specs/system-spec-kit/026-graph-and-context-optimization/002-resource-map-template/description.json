@@ -1,0 +1,33 @@
+{
+  "title": "Resource Map Template",
+  "type": "feature",
+  "trigger_phrases": [
+    "011-resource-map-template",
+    "resource map template packet",
+    "resource map template and deep loop integration",
+    "reverse parent folders resource map",
+    "resource-map.md template",
+    "local owner deep loop artifact placement",
+    "convergence time resource map emission",
+    "extract from evidence extractor",
+    "review-research-paths rollback"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template",
+  "description": "Feature Specification: Resource Map Template",
+  "keywords": [
+    "feature",
+    "specification",
+    "resource",
+    "map",
+    "template"
+  ],
+  "lastUpdated": "2026-04-25T06:16:27.818Z",
+  "specId": "011",
+  "folderSlug": "resource-map-template",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

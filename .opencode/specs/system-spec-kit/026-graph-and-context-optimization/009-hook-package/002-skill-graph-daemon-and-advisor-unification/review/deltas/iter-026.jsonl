@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":26,"dimensions":["security"],"filesReviewed":23,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":[],"traceabilityChecks":{"a7WriteBoundariesRechecked":true,"mcpPromptLeakageRechecked":true,"adversarialStuffingGuardStable":true,"redirectSanitizerGapNew":false},"newFindingsRatio":0,"graphEvents":[]}

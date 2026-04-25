@@ -26,7 +26,7 @@ _memory:
     completion_pct: 0
     open_questions: []
     answered_questions: []
-template_source_hint: ""
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 ---
 # Verification Checklist: Skill Advisor Setup Command
 

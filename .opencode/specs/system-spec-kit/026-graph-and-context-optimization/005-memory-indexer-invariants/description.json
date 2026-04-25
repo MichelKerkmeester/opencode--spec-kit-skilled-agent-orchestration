@@ -1,0 +1,37 @@
+{
+  "title": "Memory Indexer Invariants",
+  "trigger_phrases": [
+    "026/010 memory indexer invariants",
+    "memory indexer lineage fix",
+    "constitutional tier pollution fix",
+    "index scope invariants",
+    "indexer correctness",
+    "fromScan recheck bypass",
+    "e_lineage fix",
+    "candidate_changed fix",
+    "z_future indexing exclusion",
+    "constitutional path gate"
+  ],
+  "summary": "Level 3 packet covering the two memory-indexer invariant tracks: Track A closes the E_LINEAGE and candidate_changed save-path failures (canonical-path PE guard + fromScan recheck bypass); Track B enforces permanent index-scope exclusions (z_future, external) and constitutional-tier invariants through a shared SSOT, SQL-layer + post-insert + checkpoint-restore defense-in-depth, a transactional cleanup CLI, and Wave-2 hardening (realpath, walker DoS caps, shared governance-audit helpers). Track B fully live-verified; Track A pending live MCP rescan.",
+  "level": 3,
+  "status": "code-complete-pending-track-a-live-rescan",
+  "importance_tier": "important",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants",
+  "description": "Feature Specification: Memory Indexer Invariants",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "indexer",
+    "invariants"
+  ],
+  "lastUpdated": "2026-04-25T06:16:27.812Z",
+  "specId": "010",
+  "folderSlug": "memory-indexer-invariants",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

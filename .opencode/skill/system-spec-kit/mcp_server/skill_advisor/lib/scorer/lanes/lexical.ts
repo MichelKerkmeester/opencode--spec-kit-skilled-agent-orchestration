@@ -31,10 +31,11 @@ const CATEGORY_HINTS: Readonly<Record<string, readonly string[]>> = {
   'sk-deep-research': ['deep research', 'research loop', 'overnight research', 'delta record', 'state log', 'lineage'],
   'sk-deep-review': ['deep review', 'review loop', 'release readiness', 'canonical jsonl', 'convergence tracked'],
   'mcp-figma': ['figma design', 'component screenshots', 'component hierarchy', 'main frame'],
-  'mcp-chrome-devtools': ['chrome devtools', 'har', 'console errors', 'browser', 'staging'],
+  'mcp-chrome-devtools': ['chrome devtools', 'har', 'console errors', 'staging'],
   'sk-improve-prompt': ['better prompt', 'cleaner prompt', 'prompt package', 'system prompt', 'prompt variant'],
   'sk-git': ['git worktree', 'experiment branch', 'clean branch'],
   'mcp-clickup': ['clickup', 'sprint tasks', 'blockers'],
+  'sk-code-web': ['css', 'html', 'javascript', 'webflow', 'browser', 'frontend', 'layout', 'viewport', 'responsive', 'mobile', 'cdn'],
 };
 
 function expandedTokens(prompt: string): string[] {

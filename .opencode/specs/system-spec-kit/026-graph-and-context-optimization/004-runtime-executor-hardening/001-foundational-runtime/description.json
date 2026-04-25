@@ -1,0 +1,40 @@
+{
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/016-foundational-runtime",
+    "local_phase_slug": "001-foundational-runtime",
+    "original_phase_slug": "016-foundational-runtime",
+    "renumbered_at": "2026-04-21T14:00:00Z",
+    "aliases": [
+      "system-spec-kit/026-graph-and-context-optimization/016-foundational-runtime",
+      "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/016-foundational-runtime",
+      "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime"
+    ]
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime",
+  "description": "Feature Specification: Foundational Runtime (merged)",
+  "keywords": [
+    "feature",
+    "specification",
+    "foundational",
+    "runtime",
+    "merged"
+  ],
+  "lastUpdated": "2026-04-25T10:34:52.514Z",
+  "specId": "001",
+  "folderSlug": "foundational-runtime",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "008-runtime-executor-hardening"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "25-04-26_11-34__metadata-refresh-rewrite-children-ids-in-graph.md"
+  ]
+}

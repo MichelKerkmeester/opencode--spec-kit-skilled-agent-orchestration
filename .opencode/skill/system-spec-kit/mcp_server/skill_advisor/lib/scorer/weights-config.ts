@@ -8,7 +8,7 @@ import type { ScorerLane } from './types.js';
 export const EXPLICIT_AUTHOR_WEIGHT = 0.45;
 export const LEXICAL_WEIGHT = 0.30;
 export const GRAPH_CAUSAL_WEIGHT = 0.15;
-export const DERIVED_GENERATED_WEIGHT = 0.10;
+export const DERIVED_GENERATED_WEIGHT = 0.15;
 export const SEMANTIC_SHADOW_WEIGHT = 0.00;
 
 export const DEFAULT_SCORER_WEIGHTS = {

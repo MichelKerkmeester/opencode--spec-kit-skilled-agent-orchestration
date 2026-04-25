@@ -1,1 +1,0 @@
-{"type":"iteration","iteration":24,"dimensions":["maintainability"],"filesReviewed":20,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":[],"traceabilityChecks":{"packageSelfContained":true,"testsColocated":true,"privateDistBoundaryStillAdvisory":true,"noNewMaintainabilityRegression":true},"newFindingsRatio":0,"graphEvents":[]}

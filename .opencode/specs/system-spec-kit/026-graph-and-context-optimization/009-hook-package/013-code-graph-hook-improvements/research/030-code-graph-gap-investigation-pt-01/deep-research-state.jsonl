@@ -1,5 +1,0 @@
-{"type":"seed","iteration":0,"status":"initialized","focus":"Packet 013 exclusion baseline seeded from resource-map.md plus tasks.md and implementation-summary.md because applied/T-*.md targets are missing on disk","timestamp":"2026-04-24T10:56:00Z"}
-{"type":"iteration","iteration":1,"newInfoRatio":0.64,"status":"new-territory","focus":"Central README, install, and tool-schema surfaces for startup/status/context contract drift","timestamp":"2026-04-24T11:04:00Z"}
-{"type":"iteration","iteration":2,"newInfoRatio":0.43,"status":"new-territory","focus":"Feature-catalog cross-refs and stale code-graph test-path references","timestamp":"2026-04-24T11:15:00Z"}
-{"type":"iteration","iteration":3,"newInfoRatio":0.28,"status":"converging","focus":"Manual-testing playbooks for startup priming, storage/query routing, and auto-trigger behavior","timestamp":"2026-04-24T11:27:00Z"}
-{"type":"iteration","iteration":4,"newInfoRatio":0.12,"status":"converging","focus":"Dedup pass, low-confidence auto-trigger docs, and final missed-file boundary check","timestamp":"2026-04-24T11:39:00Z"}

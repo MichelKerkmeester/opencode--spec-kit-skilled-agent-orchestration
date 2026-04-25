@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "memory save planner first default",
+      "planner-first memory save",
+      "SPECKIT_SAVE_PLANNER_MODE",
+      "full-auto fallback",
+      "memory folder retirement",
+      "content-router scoped exception",
+      "refreshGraphMetadata reindexSpecDocs runEnrichmentBackfill",
+      "save flow trim targeted",
+      "v3.4.1.0 save flow"
+    ],
+    "key_topics": [
+      "memory",
+      "save",
+      "planner",
+      "first",
+      "default",
+      "full-auto",
+      "fallback",
+      "retirement",
+      "router",
+      "reconsolidation",
+      "enrichment",
+      "quality-loop",
+      "follow-up"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/013-audit-snapshot/review-report.md",
+      "research/014-research-snapshot/research.md",
+      "review/015-deep-review-snapshot/review-report.md",
+      "scratch/transcripts-snapshot/transcript-1.md",
+      ".opencode/changelog/01--system-spec-kit/v3.4.1.0.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "audit review-report.md",
+        "kind": "doc",
+        "path": "research/013-audit-snapshot/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/014-research-snapshot/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review review-report.md",
+        "kind": "doc",
+        "path": "review/015-deep-review-snapshot/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "transcript-1.md",
+        "kind": "doc",
+        "path": "scratch/transcripts-snapshot/transcript-1.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Save Planner First Default",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "This packet ships the planner-first default for /memory:save while preserving full-auto as an explicit fallback. The default path now computes route + legality + advisory data and returns structured planner output without mutating files; SPECKIT_SAVE_PLANNER_MODE=full-auto activates the canonical atomic writer with POST_SAVE_FINGERPRINT parity, promotion, rollback, and same-path identity intact. The legacy [spec]/memory/*.md write path is retired runtime-wide. Tier 3 routing, quality-loop auto-fix, reconsolidation-on-save, and post-insert enrichment are gated behind per-subsystem env flags (default OFF). Three explicit follow-up APIs (refreshGraphMetadata, reindexSpecDocs, runEnrichmentBackfill) move freshness work out of the hot path. The content-router eight-category contract is preserved with one honest scoped exception: a Tier 3 default-disable + manual-review guard documented in ADR-007. hybrid is reserved and currently behaves like plan-only. 43 implementation tasks shipped under v3.4.1.0; deep review surfaced 9 findings (3 P0, 5 P1, 1 P2) which were all resolved before closeout. Delivery spanned M1-M10: audit + retirement, 20-iteration relevance research, planner contract + trim, verification with transcript prototypes, release alignment, and deep-review remediation.",
+    "created_at": "2026-04-15T10:00:01Z",
+    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md"
+    ],
+    "save_lineage": "same_pass"
+  },
+  "aliases": [
+    "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/014-memory-save-rewrite",
+    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
+  ],
+  "migration": {
+    "moved_at": "2026-04-21T12:00:00Z",
+    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/014-memory-save-rewrite",
+    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite",
+    "consolidation": "026-phase-surface-29-to-9",
+    "flattened_at": "2026-04-21T13:00:00Z",
+    "layout": "phase-root-local-sequence",
+    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/014-memory-save-rewrite",
+    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/014-memory-save-rewrite",
+    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite",
+    "local_phase_slug": "004-memory-save-rewrite",
+    "original_phase_slug": "014-memory-save-rewrite",
+    "renumbered_at": "2026-04-21T14:00:00Z"
+  },
+  "migrated": true,
+  "migration_source": "legacy"
+}
