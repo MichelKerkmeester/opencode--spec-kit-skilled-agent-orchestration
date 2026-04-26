@@ -5,17 +5,17 @@ description: "This scenario validates background execution for `CC-027`. It focu
 
 # CC-027 -- Background execution
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-027`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-027`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates Background execution for `CC-027`. It focuses on confirming a Claude Code dispatch backgrounded with `&` runs without blocking the parent shell, that `wait` collects the exit code cleanly, and that captured stdout contains the expected response. The companion comparative validation (incremental vs batch streaming) lives at `01--cli-invocation/004-stream-json-incremental-output.md`.
+This scenario validates Background execution for `CC-027`. It focuses on confirming a Claude Code dispatch backgrounded with `&` runs without blocking the parent shell, that `wait` collects the exit code cleanly and that captured stdout contains the expected response. The companion comparative validation (incremental vs batch streaming) lives at `01--cli-invocation/004-stream-json-incremental-output.md`.
 
 ### Why This Matters
 
-Background execution is the load-bearing pattern for parallel cross-AI workloads documented in SKILL.md §3 (How It Works). Operators that run multiple Claude Code dispatches in parallel rely on `&` plus `wait` to fan out without blocking. If a backgrounded dispatch silently consumes stdin from the parent loop, the canonical `</dev/null` redirect breaks, or the parent cannot collect the exit code, parallel workloads regress to serial execution and budgets blow out.
+Background execution is the load-bearing pattern for parallel cross-AI workloads documented in SKILL.md §3 (How It Works). Operators that run multiple Claude Code dispatches in parallel rely on `&` plus `wait` to fan out without blocking. If a backgrounded dispatch silently consumes stdin from the parent loop, the canonical `</dev/null` redirect breaks or the parent cannot collect the exit code, parallel workloads regress to serial execution and budgets blow out.
 
 ---
 
@@ -23,13 +23,13 @@ Background execution is the load-bearing pattern for parallel cross-AI workloads
 
 Operators run the exact prompt and command sequence for `CC-027` and confirm the expected signals without contradictory evidence.
 
-- Objective: Confirm a backgrounded `claude -p` dispatch with `</dev/null` runs without blocking, that `wait` collects exit 0, and that the captured stdout file contains the expected response.
+- Objective: Confirm a backgrounded `claude -p` dispatch with `</dev/null` runs without blocking, that `wait` collects exit 0 and that the captured stdout file contains the expected response.
 - Real user request: `Kick off a quick Claude Code analysis in the background while I keep working in this shell, then collect the answer when it finishes.`
 - Prompt: `As an external-AI conductor running a parallel workload, dispatch claude -p in the background with stdout captured to a temp file and stdin redirected from /dev/null so the parent shell does not block. Run a small read-only analysis prompt. Verify wait returns exit 0, the temp file contains a non-empty response, and the parent shell remained responsive. Return a verdict naming the temp file, the wait exit code, and the first 80 characters of the captured response.`
 - Expected execution process: External-AI orchestrator dispatches a small read-only prompt with `&` plus `</dev/null` plus output redirection, runs an unrelated quick command in the parent while the dispatch runs, then `wait`s and verifies the captured response.
 - Expected signals: `wait` returns exit 0. Captured stdout file is non-empty. Parent shell remained responsive (the unrelated command between dispatch and wait completed normally). Dispatched command line includes `&` and `</dev/null`.
 - Desired user-visible outcome: A backgrounded analysis result the operator can use as proof the parallel-execution pattern works.
-- Pass/fail: PASS if `wait` exits 0 AND captured file is non-empty AND parent shell stayed responsive. FAIL if `wait` errors, output is empty, or parent shell blocked.
+- Pass/fail: PASS if `wait` exits 0 AND captured file is non-empty AND parent shell stayed responsive. FAIL if `wait` errors, output is empty or parent shell blocked.
 
 ---
 
@@ -42,7 +42,7 @@ Operators run the exact prompt and command sequence for `CC-027` and confirm the
 3. Dispatch in the background with `</dev/null` and output redirection.
 4. Run an unrelated quick command in the parent shell to confirm responsiveness.
 5. `wait` for the background dispatch and verify exit 0.
-6. Return a verdict naming the temp file, the wait exit code, and a short response snippet.
+6. Return a verdict naming the temp file, the wait exit code and a short response snippet.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|

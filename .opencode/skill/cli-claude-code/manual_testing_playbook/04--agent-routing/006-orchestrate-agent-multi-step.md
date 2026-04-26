@@ -5,7 +5,7 @@ description: "This scenario validates Orchestrate agent multi-step coordination 
 
 # CC-022 -- Orchestrate agent multi-step coordination
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-022`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-022`.
 
 ---
 
@@ -29,7 +29,7 @@ Operators run the exact prompt and command sequence for `CC-022` and confirm the
 - Expected execution process: External-AI orchestrator picks a synthetic complex task that maps to multiple specialists, dispatches with `--agent orchestrate --permission-mode plan`, captures the decomposition, then validates the plan names at least 3 agents and describes handoffs.
 - Expected signals: Response names at least 3 distinct Claude Code agents from the documented roster. Sequences them in a clear order (Step 1, Step 2, Step 3 or equivalent). Describes handoff content between steps. No file mtimes change.
 - Desired user-visible outcome: A multi-agent decomposition the operator can dispatch step by step.
-- Pass/fail: PASS if plan names >= 3 agents in sequence with handoffs AND no mtimes changed. FAIL if plan is monolithic, names fewer than 3 agents, or any mtime advances.
+- Pass/fail: PASS if plan names >= 3 agents in sequence with handoffs AND no mtimes changed. FAIL if plan is monolithic, names fewer than 3 agents or any mtime advances.
 
 ---
 

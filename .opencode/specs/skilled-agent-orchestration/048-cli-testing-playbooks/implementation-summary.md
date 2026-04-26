@@ -58,23 +58,23 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-Five CLI orchestrator skills now ship matching `manual_testing_playbook/` packages: 115 per-feature scenarios across 38 numbered category folders, every root playbook validator-clean, every link resolving, every feature ID accounted for, and the cross-CLI taxonomy invariants (categories 01, 06, 07) holding across all five. Operators can now validate any CLI orchestrator end-to-end without inventing test scenarios. Sibling-CLI comparison works because the shared category numbering reads the same in every playbook. Note: a 5-iteration deep review surfaced P0 + P1 findings that are being closed in a remediation pass. The cross-cutting closures (template-source headers, anchor blocks, accurate residual counts, decoupled section names, content-shape contracts) live in this folder; CLI-specific findings are dispatched to per-CLI agents.
+Five CLI orchestrator skills now ship matching `manual_testing_playbook/` packages: 129 per-feature scenarios across 40 numbered category folders, every root playbook validator-clean, every link resolving, every feature ID accounted for, and the cross-CLI taxonomy invariants (categories 01, 06, 07) holding across all five. Operators can now validate any CLI orchestrator end-to-end without inventing test scenarios. Sibling-CLI comparison works because the shared category numbering reads the same in every playbook. Note: a 5-iteration deep review surfaced P0 + P1 findings that were closed in a remediation pass. The cross-cutting closures (template-source headers, anchor blocks, accurate residual counts, decoupled section names, content-shape contracts) live in this folder; CLI-specific findings were dispatched to per-CLI agents. The deferred CLI surface coverage gap originally pointed at follow-up spec 050-cli-playbook-coverage-uplift was closed in this same packet through a final remediation pass that added 14 new per-feature scenarios across 4 CLIs.
 
 ### cli-gemini Manual Testing Playbook
 
-You can now grade cli-gemini against 18 deterministic scenarios spread across 6 category folders (numeric gap at 05 documented inline — cli-gemini has no first-class session-continuity surface). The playbook covers direct prompt invocation, output formats, `--yolo` auto-approve, the three built-in tools (`google_web_search`, `codebase_investigator`, `save_memory`), the 6-agent `As @<agent>:` routing surface, cross-AI integration patterns, and prompt-template usage with CLEAR-card grading.
+You can now grade cli-gemini against 19 deterministic scenarios spread across 6 category folders (numeric gap at 05 documented inline — cli-gemini has no first-class session-continuity surface). The playbook covers direct prompt invocation, output formats, `--yolo` auto-approve, the three built-in tools (`google_web_search`, `codebase_investigator`, `save_memory`), the FULL 6-agent `As @<agent>:` routing surface (context, review, deep-research, write, ultra-think, debug — the new CG-019 closes the @debug surface gap), cross-AI integration patterns, and prompt-template usage with CLEAR-card grading.
 
 Path: `.opencode/skill/cli-gemini/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 
 ### cli-claude-code Manual Testing Playbook
 
-Twenty scenarios across 7 categories cover the Claude Code CLI surface: base `-p` invocation with text/json/stream-json output, the three permission modes (plan, accept-edits, bypass-permissions), Opus/Sonnet/Haiku model selection with extended thinking, four highest-leverage agents (context, debug, review, ultra-think) from the documented 9-agent roster, `--continue`/`--resume` session continuity, structured-output integration patterns, and prompt-template + CLEAR-card scenarios.
+Twenty-seven scenarios across 8 categories cover the Claude Code CLI surface: base `-p` invocation with text/json/stream-json output, the three permission modes (plan, accept-edits, bypass-permissions), Opus/Sonnet/Haiku model selection with extended thinking, ALL nine agents from the documented roster (context, debug, review, ultra-think, handover, orchestrate, research, speckit, write), `--continue`/`--resume` session continuity, structured-output integration patterns, prompt-template + CLEAR-card scenarios, and the new cost-and-background category covering `--max-budget-usd` cost cap behavior plus `&` plus `</dev/null` background execution.
 
 Path: `.opencode/skill/cli-claude-code/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 
 ### cli-codex Manual Testing Playbook
 
-Twenty-five scenarios across 8 categories validate Codex CLI: `codex exec` and `codex exec review` invocation with explicit `service_tier="fast"` (per the auto-memory rule), three sandbox modes with approval policies, the six reasoning-effort levels, four agent profiles, `--full-auto` + hook integration session continuity, web-search/image-input integration patterns, prompt templates, and four built-in tools (`/review`, `--search`, `--image`, MCP).
+Twenty-eight scenarios across 9 categories validate Codex CLI: `codex exec` and `codex exec review` invocation with explicit `service_tier="fast"` (per the auto-memory rule), three sandbox modes with approval policies, the six reasoning-effort levels, six agent profiles (review, context, debug, ultra-think, research, write), `--full-auto` + hook integration session continuity, web-search/image-input integration patterns, prompt templates, four built-in tools (`/review`, `--search`, `--image`, MCP), and the new codex-cloud category exercising the `codex cloud` remote-task-execution surface.
 
 Path: `.opencode/skill/cli-codex/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 
@@ -86,7 +86,7 @@ Path: `.opencode/skill/cli-copilot/manual_testing_playbook/MANUAL_TESTING_PLAYBO
 
 ### cli-opencode Manual Testing Playbook
 
-Thirty-one scenarios across 9 categories cover the largest surface: `opencode run` with full flag inventory; external AI runtimes dispatching `opencode run`; multi-provider (anthropic/openai/google) dispatch with five variant levels; the 8-agent roster (general/context/review/ultra-think/deep-research/deep-review/write/orchestrate); `-c`/`-s`/`--fork`/`--share` session continuity; cross-AI handback integration patterns (isolated per ADR-004 — companion CLI execution is out of scope for default scenarios); 13 prompt templates with CLEAR-card grading; `--port` parallel-detached worker farms and ablation; and `--dir` cross-repo + cross-server dispatch with self-invocation guard.
+Thirty-four scenarios across 9 categories cover the largest surface: `opencode run` with full flag inventory; external AI runtimes dispatching `opencode run`; multi-provider (anthropic/openai/google) dispatch with five variant levels; the FULL 9-agent roster (general/context/review/ultra-think/deep-research/deep-review/write/orchestrate plus debug — CO-032/033/034 close the deferred deep-research, deep-review, and orchestrate surface gaps); `-c`/`-s`/`--fork`/`--share` session continuity; cross-AI handback integration patterns (isolated per ADR-004 — companion CLI execution is out of scope for default scenarios); 13 prompt templates with CLEAR-card grading; `--port` parallel-detached worker farms and ablation; and `--dir` cross-repo + cross-server dispatch with self-invocation guard.
 
 Path: `.opencode/skill/cli-opencode/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`
 
@@ -94,11 +94,11 @@ Path: `.opencode/skill/cli-opencode/manual_testing_playbook/MANUAL_TESTING_PLAYB
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/cli-gemini/manual_testing_playbook/` (1 root + 6 categories + 18 per-feature files) | Created | Operator validation matrix for cli-gemini |
-| `.opencode/skill/cli-claude-code/manual_testing_playbook/` (1 root + 7 categories + 20 per-feature files) | Created | Operator validation matrix for cli-claude-code |
-| `.opencode/skill/cli-codex/manual_testing_playbook/` (1 root + 8 categories + 25 per-feature files) | Created | Operator validation matrix for cli-codex |
+| `.opencode/skill/cli-gemini/manual_testing_playbook/` (1 root + 6 categories + 19 per-feature files) | Created | Operator validation matrix for cli-gemini |
+| `.opencode/skill/cli-claude-code/manual_testing_playbook/` (1 root + 8 categories + 27 per-feature files) | Created | Operator validation matrix for cli-claude-code |
+| `.opencode/skill/cli-codex/manual_testing_playbook/` (1 root + 9 categories + 28 per-feature files) | Created | Operator validation matrix for cli-codex |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/` (1 root + 8 categories + 21 per-feature files) | Created | Operator validation matrix for cli-copilot |
-| `.opencode/skill/cli-opencode/manual_testing_playbook/` (1 root + 9 categories + 31 per-feature files) | Created | Operator validation matrix for cli-opencode |
+| `.opencode/skill/cli-opencode/manual_testing_playbook/` (1 root + 9 categories + 34 per-feature files) | Created | Operator validation matrix for cli-opencode |
 | `.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/spec.md` | Created | Level 3 spec scaffolding |
 | `.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/plan.md` | Created | Wave-based delivery plan |
 | `.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/tasks.md` | Created | Linear task list |
@@ -170,7 +170,7 @@ A 5-iteration deep review (executor: cli-copilot/gpt-5.5/high) was run against t
 
 4. **Per-feature file counts landed at the top of every target band** (cli-gemini 18/15-18, cli-claude-code 20/18-20, cli-codex 25/22-25, cli-copilot 21/20-23, cli-opencode 31/28-32). Total 115 falls inside the 103-118 spec target. Future CLI surface additions can extend any playbook via `/create:testing-playbook <skill> update`.
 
-5. **CLI surface coverage gaps deferred to a follow-up spec** (e.g. 050-cli-playbook-coverage-uplift). Documented gaps: cli-claude-code missing 5 agents + cost/background scenarios; cli-codex missing research/write profiles + codex cloud; cli-gemini missing @debug; cli-opencode missing deep-research + deep-review + orchestrate. These are intentionally out of scope for this packet because they require per-CLI surface enumeration plus new scenarios; the cross-cutting category taxonomy and per-feature scaffold are stable enough to accept the additions in a follow-up.
+5. **CLI surface coverage gaps closed in this spec; see new scenarios CC-021..025+026..027, CX-026..028, CG-019, CO-032..034.** Originally documented as deferred to follow-up spec 050-cli-playbook-coverage-uplift, the closure pass added 14 new per-feature files across 4 CLIs in a single remediation cycle. Final per-CLI counts: cli-claude-code 27 (was 20, +7 covering 5 missing agents plus the new 08--cost-and-background category for cost cap and background execution); cli-codex 28 (was 25, +3 covering research and write profiles plus the new 09--codex-cloud category); cli-gemini 19 (was 18, +1 closing @debug); cli-opencode 34 (was 31, +3 covering deep-research, deep-review, and orchestrate). All 14 new files pass the validator, the 9-col parser at BAD ROWS=0, and the HVR scanner at 0 body-text hits. Sibling spec 050 is no longer needed.
 
 6. **Root-prompt-text contract** (per ADR-006): root summary prompts in each MANUAL_TESTING_PLAYBOOK file are intentionally a paraphrased subset of the per-feature canonical prompts. The 76 drift entries surfaced in iter-005 are not bugs; they reflect the contracted relationship that root summaries trade fidelity for navigability while per-feature files carry the full Role then Context then Action then Format prompt.
 <!-- /ANCHOR:limitations -->

@@ -256,8 +256,56 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 1. Given the closed spec, When I read `implementation-summary.md`, Then it contains per-CLI counts, validator exit codes, and links to all 5 playbook roots.
 
 ---
+## 12. ACCEPTANCE SCENARIOS
+
+The seven BDD scenarios below pin REQ-001..REQ-006 + REQ-010 (taxonomy invariants) to operator-runnable acceptance. They satisfy the Level 3 SECTION_COUNTS expectation of at least six `**Given**`-anchored scenarios in the spec.
+
+### AS-001: Root playbook exists per CLI (REQ-001)
+
+- **Given** the five CLI orchestrator skills `cli-claude-code`, `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-opencode`
+- **When** an operator runs `ls <skill>/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md` for each skill
+- **Then** the file exists and is non-empty for all five CLIs
+
+### AS-002: Root playbook structure validates (REQ-002)
+
+- **Given** the five root playbook files written by `/create:testing-playbook`
+- **When** an operator runs `python3 .opencode/skill/sk-doc/scripts/validate_document.py <path>` against each root file
+- **Then** the script exits 0 for all five files
+
+### AS-003: Per-feature scaffold + 9-column table present (REQ-003)
+
+- **Given** any per-feature file under `<skill>/manual_testing_playbook/NN--category/NNN-feature.md`
+- **When** an operator opens the file and counts numbered H2 sections + scenario-table columns
+- **Then** the file contains the 5-section scaffold (OVERVIEW, SCENARIO CONTRACT, TEST EXECUTION, SOURCE FILES, SOURCE METADATA) and the scenario table has exactly 9 columns
+
+### AS-004: Feature-ID parity in cross-reference index (REQ-004)
+
+- **Given** the cross-reference index inside any of the five root playbooks
+- **When** an operator counts feature-ID rows in the index and compares against `find <skill>/manual_testing_playbook/[0-9][0-9]--*/[0-9][0-9][0-9]-*.md | wc -l`
+- **Then** the two counts are equal for that CLI (CC=20, CX=25, CP=21, CG=18, CO=31)
+
+### AS-005: No forbidden sidecars in any playbook tree (REQ-005)
+
+- **Given** the `manual_testing_playbook/` tree for any of the five CLIs
+- **When** an operator runs `find <tree> -name "review-protocol*" -o -name "subagent-utilization-ledger*" -o -path "*/snippets/*"`
+- **Then** the command returns no matches for all five trees
+
+### AS-006: Per-feature links resolve from root playbook (REQ-006)
+
+- **Given** the cross-reference index in any of the five root playbooks containing markdown links of the form `(NN--category/NNN-feature.md)`
+- **When** an operator follows each link in the index
+- **Then** every link resolves to an existing per-feature file (115/115 across all 5 playbooks)
+
+### AS-007: Cross-CLI taxonomy invariants hold (REQ-010 / ADR-001)
+
+- **Given** the five root playbooks side-by-side
+- **When** an operator inspects category numbering for `01--cli-invocation`, `06--integration-patterns`, and `07--prompt-templates`
+- **Then** the three categories have the same name AND the same numeric position in all five playbooks (cli-gemini's documented gap at `05--session-continuity` does not affect 01/06/07 invariants)
+
+---
+
 <!-- ANCHOR:questions -->
-## 12. OPEN QUESTIONS
+## 13. OPEN QUESTIONS
 
 - Should opencode's "cross-AI handback" scenarios exercise companion CLIs as integration tests, or remain isolated unit-style scenarios? (See ADR-004; recommendation: integration-tier with explicit dependency note.)
 - Final per-CLI feature counts may shift slightly during @write dispatch; the spec records targets, not contracts. Document final counts in implementation-summary.md.

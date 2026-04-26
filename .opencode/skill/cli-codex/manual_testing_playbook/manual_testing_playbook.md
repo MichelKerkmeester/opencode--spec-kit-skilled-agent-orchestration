@@ -25,6 +25,7 @@ Canonical package artifacts:
 - `06--integration-patterns/`
 - `07--prompt-templates/`
 - `08--built-in-tools/`
+- `09--codex-cloud/`
 
 ---
 
@@ -39,19 +40,20 @@ Canonical package artifacts:
 - [7. CLI INVOCATION (`CX-001..CX-004`)](#7--cli-invocation-cx-001cx-004)
 - [8. SANDBOX MODES (`CX-005..CX-008`)](#8--sandbox-modes-cx-005cx-008)
 - [9. REASONING EFFORT (`CX-009..CX-011`)](#9--reasoning-effort-cx-009cx-011)
-- [10. AGENT ROUTING (`CX-012..CX-015`)](#10--agent-routing-cx-012cx-015)
+- [10. AGENT ROUTING (`CX-012..CX-015`, `CX-026..CX-027`)](#10--agent-routing-cx-012cx-015-cx-026cx-027)
 - [11. SESSION CONTINUITY (`CX-016..CX-017`)](#11--session-continuity-cx-016cx-017)
 - [12. INTEGRATION PATTERNS (`CX-018..CX-020`)](#12--integration-patterns-cx-018cx-020)
 - [13. PROMPT TEMPLATES (`CX-021..CX-022`)](#13--prompt-templates-cx-021cx-022)
 - [14. BUILT-IN TOOLS (`CX-023..CX-025`)](#14--built-in-tools-cx-023cx-025)
-- [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
-- [16. FEATURE FILE INDEX](#16--feature-file-index)
+- [15. CODEX CLOUD (`CX-028`)](#15--codex-cloud-cx-028)
+- [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
+- [17. FEATURE FILE INDEX](#17--feature-file-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 25 deterministic scenarios across 8 categories validating the `cli-codex` skill surface. Each feature keeps its global `CX-NNN` ID and links to a dedicated feature file with the full execution contract.
+This playbook provides 28 deterministic scenarios across 9 categories validating the `cli-codex` skill surface. Each feature keeps its global `CX-NNN` ID and links to a dedicated feature file with the full execution contract.
 
 Coverage note (2026-04-26): Covers the canonical default invocation (`gpt-5.5` + `medium` reasoning + `service_tier="fast"`), every documented sandbox mode, every reasoning-effort level, every agent profile (`review`, `context`, `research`, `write`, `debug`, `ultra-think`), session continuity surfaces (`--full-auto`, native hooks, resume, fork), unique built-in capabilities (`/review`, `--search`, `--image`, `codex mcp`), prompt-template usage with the CLEAR quality card and cross-AI delegation patterns. Self-invocation refusal is enforced upstream by the skill's detection guard and is not retested here.
 
@@ -147,7 +149,7 @@ Release is `READY` only when:
 
 1. No feature verdict is `FAIL`.
 2. All critical scenarios (`CX-001`, `CX-005`, `CX-006`) are `PASS`.
-3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES`, currently 25).
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES`, currently 28).
 4. No unresolved blocking triage item remains.
 
 ### Root-vs-Feature Rule
@@ -410,9 +412,9 @@ Desired user-visible outcome: An audit-quality output the operator can hand to a
 
 ---
 
-## 10. AGENT ROUTING (`CX-012..CX-015`)
+## 10. AGENT ROUTING (`CX-012..CX-015`, `CX-026..CX-027`)
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract.
+This category covers 6 scenario summaries while the linked feature files remain the canonical execution contract. CX-012 through CX-015 cover the four primary profiles (review, context, debug, ultra-think). CX-026 and CX-027 close the deferred surface gap by exercising the research and write profiles.
 
 ### CX-012 | @review profile (read-only)
 
@@ -485,6 +487,42 @@ Desired user-visible outcome: A planning brief the operator can hand to an archi
 #### Test Execution
 
 > **Feature File:** [CX-015](04--agent-routing/004-ultra-think-profile.md)
+
+### CX-026 | @research profile (web-grounded investigation)
+
+#### Description
+
+Verify `codex exec -p research --search` returns a citation-backed comparative analysis covering at least 2 candidates across at least 3 trade-off dimensions with a recommendation, and the response cites at least one HTTPS URL as evidence.
+
+#### Scenario Contract
+
+Prompt: `As a cross-AI orchestrator delegating an evidence-backed investigation, dispatch codex exec -p research --search --model gpt-5.5 -c model_reasoning_effort="high" -c service_tier="fast" --sandbox read-only "Compare current Bun and Deno major releases across runtime performance, package ecosystem, and operational stability. Cite at least one HTTPS source URL per candidate. End with a recommendation plus rationale." Verify the dispatch routes via -p research, cites at least 2 HTTPS URLs, names both candidates with explicit pros and cons, and ends with a recommendation. Return a verdict naming the cited URLs, the trade-off dimensions covered, and the recommendation.`
+
+Expected signals: `codex exec -p research --search` exits 0. Stdout names both candidates explicitly. >= 3 trade-off dimensions covered. >= 2 distinct HTTPS URLs cited. Explicit recommendation surfaces. Dispatch line includes both `-p research` and `--search`.
+
+Desired user-visible outcome: A citation-backed comparison brief the operator can paste into an architecture-decision-record entry.
+
+#### Test Execution
+
+> **Feature File:** [CX-026](04--agent-routing/005-research-profile.md)
+
+### CX-027 | @write profile (documentation-only edits)
+
+#### Description
+
+Verify `codex exec -p write` writes a README to a requested temp path with at least 3 H2 headers and a non-empty body, and no files are touched outside the temp directory.
+
+#### Scenario Contract
+
+Prompt: `As a cross-AI orchestrator delegating documentation generation, dispatch codex exec -p write --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast" --sandbox workspace-write "Generate /tmp/cli-codex-playbook-cx027/README.md for a fictional Demo Skill. Include OVERVIEW, USAGE, and TROUBLESHOOTING H2 sections plus a one-paragraph description. Do not modify any files outside /tmp/cli-codex-playbook-cx027/." Verify the dispatch routes via -p write, the README is written at the requested path, the file contains at least 3 H2 headers, the body is non-empty, and no files outside the temp directory are touched. Return a verdict naming the file path, the H2 header count, and confirming the sandbox boundary.`
+
+Expected signals: `codex exec -p write` exits 0. README file exists at `/tmp/cli-codex-playbook-cx027/README.md`. README contains at least 3 H2 headers. Body line count > 5. `git status --porcelain` reports no working-tree changes. Dispatch line includes `-p write`.
+
+Desired user-visible outcome: A working README file the operator can review and commit, with provable evidence the sandbox boundary held.
+
+#### Test Execution
+
+> **Feature File:** [CX-027](04--agent-routing/006-write-profile.md)
 
 ---
 
@@ -692,7 +730,31 @@ Desired user-visible outcome: Confirmation that the MCP integration surface is r
 
 ---
 
-## 15. AUTOMATED TEST CROSS-REFERENCE
+## 15. CODEX CLOUD (`CX-028`)
+
+This category covers 1 scenario summary while the linked feature file remains the canonical execution contract. The category exercises the documented `codex cloud` subcommand surface for remote-task execution.
+
+### CX-028 | codex cloud dispatch
+
+#### Description
+
+Verify `codex cloud` is a documented subcommand in the live binary's help output, the SKILL.md references it under §3 Unique Codex Capabilities, and the help output names the auth and dispatch flags.
+
+#### Scenario Contract
+
+Prompt: `As a cross-AI orchestrator preparing to use Codex cloud for a long-running task, verify the cloud subcommand surface is intact. Run codex --help to confirm cloud appears as a subcommand, then run codex cloud --help and confirm auth and dispatch flags are documented. Grep the cli-codex SKILL.md for "codex cloud" to confirm the skill references the subcommand. Return a verdict naming the help-output flags found and confirming SKILL.md references codex cloud.`
+
+Expected signals: `codex cloud --help` exits 0. Help output names at least one auth-related flag. Help output names at least one dispatch-related flag. SKILL.md mentions `codex cloud` at least once in §3.
+
+Desired user-visible outcome: Confirmation that the cloud subcommand is reachable end to end with a documented auth and dispatch contract operators can use for follow-up runs.
+
+#### Test Execution
+
+> **Feature File:** [CX-028](09--codex-cloud/001-codex-cloud-dispatch.md)
+
+---
+
+## 16. AUTOMATED TEST CROSS-REFERENCE
 
 The `cli-codex` skill is an orchestrator wrapper around a third-party binary (`codex`) and does not own a Python or JavaScript test suite of its own. Cross-references in this section point at upstream and adjacent test surfaces:
 
@@ -707,7 +769,7 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 
 ---
 
-## 16. FEATURE FILE INDEX
+## 17. FEATURE FILE INDEX
 
 ### CLI INVOCATION
 
@@ -735,6 +797,8 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 - CX-013: [@context profile (architecture mapping)](04--agent-routing/002-context-profile.md)
 - CX-014: [@debug profile (workspace-write fix)](04--agent-routing/003-debug-profile.md)
 - CX-015: [@ultra-think profile (multi-strategy planning)](04--agent-routing/004-ultra-think-profile.md)
+- CX-026: [@research profile (web-grounded investigation)](04--agent-routing/005-research-profile.md)
+- CX-027: [@write profile (documentation-only edits)](04--agent-routing/006-write-profile.md)
 
 ### SESSION CONTINUITY
 
@@ -757,3 +821,7 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 - CX-023: [/review TUI command](08--built-in-tools/001-review-tui-command.md)
 - CX-024: [--search live browsing in exec](08--built-in-tools/002-search-exec-mode.md)
 - CX-025: [codex mcp server registration](08--built-in-tools/003-mcp-server-registration.md)
+
+### CODEX CLOUD
+
+- CX-028: [codex cloud dispatch](09--codex-cloud/001-codex-cloud-dispatch.md)

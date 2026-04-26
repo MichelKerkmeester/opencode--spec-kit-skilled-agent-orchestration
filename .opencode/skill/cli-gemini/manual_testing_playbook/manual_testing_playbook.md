@@ -47,7 +47,7 @@ The numeric gap at `05` is intentional. cli-gemini has no first-class session-co
 
 ## 1. OVERVIEW
 
-This playbook provides 18 deterministic scenarios across 6 categories validating the `cli-gemini` skill surface. Each feature keeps its stable `CG-NNN` ID and links to a dedicated feature file with the full execution contract.
+This playbook provides 19 deterministic scenarios across 6 categories validating the `cli-gemini` skill surface. Each feature keeps its stable `CG-NNN` ID and links to a dedicated feature file with the full execution contract.
 
 Coverage note (2026-04-26): the playbook covers cli-gemini's documented behaviour at SKILL.md v1.2.3, including non-interactive invocation, output formats, the `gemini-3.1-pro-preview` model lock, `--yolo` and approval modes, the three Gemini-only tools (`google_web_search`, `codebase_investigator`, `save_memory`) plus the `@` file-reference syntax, agent routing for `@context` / `@review` / `@deep-research` / `@write` / `@ultra-think` (with documented Task-tool routing for `@debug`), three core integration patterns (generate-review-fix, JSON output processing, parallel background execution) and the two ALWAYS-loaded prompt assets. Position `05` is reserved across the cli-* playbook family for session-continuity surfaces. cli-gemini does not expose one and skips that slot intentionally.
 
@@ -145,7 +145,7 @@ Release is `READY` only when:
 
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
-3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES = 18`).
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES = 19`).
 4. No unresolved blocking triage item remains.
 5. Both destructive scenarios (`CG-004`, `CG-008`) are PASS with empty tripwire diffs.
 
@@ -361,7 +361,7 @@ Desired user-visible outcome: PASS verdict + a one-line quote naming the support
 
 ## 10. AGENT ROUTING
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans 5 of the 6 documented Gemini agents (`@context`, `@review`, `@deep-research`, `@write`, `@ultra-think`). The 6th agent `@debug` is dispatched via the calling AI's Task tool per `references/agent_delegation.md` §3 and is documented in CG-013 rather than tested by inline dispatch.
+This category covers 5 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans all 6 documented Gemini agents (`@context`, `@review`, `@deep-research`, `@write`, `@ultra-think`, `@debug`). CG-013 documents the `@debug` Task-tool routing path and CG-019 closes the deferred surface gap by exercising an inline `As @debug agent:` dispatch end to end.
 
 ### CG-010 | @context agent for codebase exploration
 
@@ -430,6 +430,23 @@ Desired user-visible outcome: PASS verdict + a one-line summary per agent.
 
 #### Test Execution
 > **Feature File:** [CG-013](04--agent-routing/004-write-and-ultra-think-roster-coverage.md)
+
+### CG-019 | @debug agent fresh-perspective root cause
+
+#### Description
+
+Verify `As @debug agent:` produces a ranked root-cause analysis with at least 2 root-cause hypotheses, at least 2 diagnostic next steps per hypothesis, and explicit acknowledgment of the prior-attempts context, AND the working tree remains unchanged.
+
+#### Scenario Contract
+
+Prompt summary: As a cross-AI orchestrator handing off a stuck bug after 3+ failed attempts, FIRST create /tmp/cg-019-snippet.py with a deliberate off-by-one bug, THEN dispatch `gemini "As @debug agent: Investigate the off-by-one bug in @./tmp/cg-019-snippet.py. Prior attempts: verified loop bounds twice, checked input data type, confirmed environment. Provide ranked root-cause hypotheses with at least 2 diagnostic next steps each. Distinguish your analysis from the prior attempts." -m gemini-3.1-pro-preview -o text`. Verify the response ranks at least 2 root-cause hypotheses, names at least 2 concrete diagnostic next steps per hypothesis, and explicitly distinguishes from the "already tried" set. Return a verdict naming the highest-ranked hypothesis and the diagnostic next-step count.
+
+Expected signals: dispatch exits 0, response ranks >= 2 hypotheses, each carries >= 2 diagnostic next steps, prior-attempts acknowledgment present, working tree mtime unchanged.
+
+Desired user-visible outcome: PASS verdict plus the highest-ranked hypothesis and the diagnostic step count.
+
+#### Test Execution
+> **Feature File:** [CG-019](04--agent-routing/005-debug-agent-root-cause.md)
 
 ---
 
@@ -572,6 +589,7 @@ If automated tests for cli-gemini's smart-router pseudocode are added in a futur
 - CG-011: [@review agent for cross-AI second opinion](04--agent-routing/002-review-agent-second-opinion.md)
 - CG-012: [@deep-research agent with web grounding](04--agent-routing/003-deep-research-agent-grounding.md)
 - CG-013: [@write and @ultra-think roster coverage](04--agent-routing/004-write-and-ultra-think-roster-coverage.md)
+- CG-019: [@debug agent fresh-perspective root cause](04--agent-routing/005-debug-agent-root-cause.md)
 
 ### INTEGRATION PATTERNS
 

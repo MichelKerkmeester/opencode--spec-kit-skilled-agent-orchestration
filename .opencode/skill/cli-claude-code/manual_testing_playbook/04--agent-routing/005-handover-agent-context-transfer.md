@@ -5,13 +5,13 @@ description: "This scenario validates Handover agent context transfer for `CC-02
 
 # CC-021 -- Handover agent context transfer
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-021`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-021`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates Handover agent context transfer for `CC-021`. It focuses on confirming `--agent handover` produces a structured session-state capture covering active work, modified files, recent decisions, and next steps so a follow-up session can resume without re-discovery.
+This scenario validates Handover agent context transfer for `CC-021`. It focuses on confirming `--agent handover` produces a structured session-state capture covering active work, modified files, recent decisions and next steps so a follow-up session can resume without re-discovery.
 
 ### Why This Matters
 
@@ -23,13 +23,13 @@ The `handover` agent is the documented bridge for cross-session work transfer in
 
 Operators run the exact prompt and command sequence for `CC-021` and confirm the expected signals without contradictory evidence.
 
-- Objective: Confirm `--agent handover` produces a structured session-state capture covering active work, modified files, recent decisions, and next steps in a single read-only dispatch.
+- Objective: Confirm `--agent handover` produces a structured session-state capture covering active work, modified files, recent decisions and next steps in a single read-only dispatch.
 - Real user request: `Use Claude Code to capture a handover for the work I just finished on the auth refactor so the next session can pick it up tomorrow.`
 - Prompt: `As an external-AI conductor closing out a multi-step task and preparing handoff for a follow-up session, dispatch claude -p --agent handover --permission-mode plan against the active task scope and capture a structured handover document. Verify the response identifies active work, modified files, key decisions, blockers, and next steps. Return a concise pass/fail verdict naming the captured fields and confirming no file writes.`
 - Expected execution process: External-AI orchestrator selects a real recent change set in the repo as the synthetic task scope, snapshots mtimes of all candidate files, dispatches with `--agent handover --permission-mode plan`, then verifies the response covers the canonical handover fields and that no mtimes advanced.
 - Expected signals: Response names the active task in plain language. Lists at least 2 modified or referenced files. Surfaces at least 1 decision or rationale. Declares at least 1 blocker or open question (or attests to none). Names at least 1 concrete next step. No file mtimes change.
 - Desired user-visible outcome: A structured handover summary the operator can paste into a continuation prompt for tomorrow's session.
-- Pass/fail: PASS if response covers active work, modified files, decisions, blockers, and next steps AND no mtimes changed. FAIL if any canonical field is missing or any mtime advances.
+- Pass/fail: PASS if response covers active work, modified files, decisions, blockers and next steps AND no mtimes changed. FAIL if any canonical field is missing or any mtime advances.
 
 ---
 

@@ -5,7 +5,7 @@ description: "This scenario validates Research agent deep investigation for `CC-
 
 # CC-023 -- Research agent deep investigation
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-023`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-023`.
 
 ---
 
@@ -41,7 +41,7 @@ Operators run the exact prompt and command sequence for `CC-023` and confirm the
 2. Identify the two candidates and the trade-off dimensions.
 3. Dispatch with `--agent research` and a prompt asking for comparative analysis.
 4. Verify the response covers >= 3 dimensions and ends with a recommendation.
-5. Return a verdict naming the candidates, dimensions covered, and the recommendation.
+5. Return a verdict naming the candidates, dimensions covered and the recommendation.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|

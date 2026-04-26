@@ -5,13 +5,13 @@ description: "This scenario validates `--max-budget-usd` cost cap behavior for `
 
 # CC-026 -- Max budget USD cap behavior
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-026`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-026`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates Max budget USD cap behavior for `CC-026`. It focuses on confirming `--max-budget-usd <value>` is accepted by the CLI, that the dispatched session honors the cap, and that JSON output metadata reports a `cost` value not exceeding the supplied budget for a small read-only prompt.
+This scenario validates Max budget USD cap behavior for `CC-026`. It focuses on confirming `--max-budget-usd <value>` is accepted by the CLI, that the dispatched session honors the cap and that JSON output metadata reports a `cost` value not exceeding the supplied budget for a small read-only prompt.
 
 ### Why This Matters
 
@@ -23,13 +23,13 @@ The `--max-budget-usd` flag is the documented cost-control surface for cross-AI 
 
 Operators run the exact prompt and command sequence for `CC-026` and confirm the expected signals without contradictory evidence.
 
-- Objective: Confirm `--max-budget-usd 0.50` is accepted by the CLI, that the dispatch completes successfully for a small read-only prompt, and that the JSON output reports a `cost` value not exceeding the cap.
+- Objective: Confirm `--max-budget-usd 0.50` is accepted by the CLI, that the dispatch completes successfully for a small read-only prompt and that the JSON output reports a `cost` value not exceeding the cap.
 - Real user request: `Run a quick code review with a 50-cent budget cap so I can guarantee unattended runs do not run away.`
 - Prompt: `As an external-AI conductor enforcing cost discipline on an unattended run, dispatch claude -p --max-budget-usd 0.50 --output-format json --permission-mode plan against a small TypeScript file. Verify the dispatch exits 0, the JSON output contains a numeric cost field, and that cost is at or below 0.50. Return a verdict naming the cost value reported and confirming it is within the cap.`
 - Expected execution process: External-AI orchestrator picks a small target file, dispatches with `--max-budget-usd 0.50 --output-format json`, captures the JSON envelope, then validates the `cost` field is present and within the cap.
 - Expected signals: Dispatch exits 0. JSON output is parseable via `jq`. JSON output contains a numeric `cost` (or `total_cost_usd`) field. Reported cost is at or below 0.50. Dispatched command line includes `--max-budget-usd 0.50`.
 - Desired user-visible outcome: A successful review output plus provable cost evidence the operator can attach to a budget audit.
-- Pass/fail: PASS if exit 0 AND JSON parseable AND cost <= 0.50. FAIL if dispatch errors, JSON malformed, or cost exceeds the cap.
+- Pass/fail: PASS if exit 0 AND JSON parseable AND cost <= 0.50. FAIL if dispatch errors, JSON malformed or cost exceeds the cap.
 
 ---
 

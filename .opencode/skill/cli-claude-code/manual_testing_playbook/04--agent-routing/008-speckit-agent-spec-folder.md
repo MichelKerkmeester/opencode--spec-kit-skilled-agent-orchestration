@@ -5,7 +5,7 @@ description: "This scenario validates Speckit agent spec folder workflow for `CC
 
 # CC-024 -- Speckit agent spec folder workflow
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-024`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-024`.
 
 ---
 
@@ -27,9 +27,9 @@ Operators run the exact prompt and command sequence for `CC-024` and confirm the
 - Real user request: `Help me scaffold a spec folder for a tiny CLI flag addition. Less than 100 lines of code change. Pick the right level and tell me which files I need.`
 - Prompt: `As an external-AI conductor preparing a spec folder for a small feature, dispatch claude -p --agent speckit and ask for a Level recommendation plus a file list. Verify the response names a documentation level (1, 2, or 3), lists the required canonical files for that level (spec.md, plan.md, tasks.md, implementation-summary.md at minimum), and explains the level choice in one sentence. Return a verdict naming the level, the files, and the rationale.`
 - Expected execution process: External-AI orchestrator describes a small feature (under 100 LOC), dispatches with `--agent speckit`, captures the recommendation, then validates the level choice plus canonical file list.
-- Expected signals: Response names a documentation level explicitly (Level 1, 2, or 3). Lists at least 4 canonical files (spec.md, plan.md, tasks.md, implementation-summary.md). Provides level rationale tied to LOC or risk. Surfaces the spec-folder path convention (`.opencode/specs/[###-short-name]/`).
+- Expected signals: Response names a documentation level explicitly (Level 1, 2 or 3). Lists at least 4 canonical files (spec.md, plan.md, tasks.md, implementation-summary.md). Provides level rationale tied to LOC or risk. Surfaces the spec-folder path convention (`.opencode/specs/[###-short-name]/`).
 - Desired user-visible outcome: A scaffolding plan the operator can hand to a follow-up dispatch that creates the actual spec folder.
-- Pass/fail: PASS if response names a level, lists >= 4 canonical files, and provides rationale. FAIL if level is missing or fewer than 4 files are named.
+- Pass/fail: PASS if response names a level, lists >= 4 canonical files and provides rationale. FAIL if level is missing or fewer than 4 files are named.
 
 ---
 
@@ -40,8 +40,8 @@ Operators run the exact prompt and command sequence for `CC-024` and confirm the
 1. Restate the user request in plain user language.
 2. Define the synthetic feature scope (e.g., "add --verbose flag, under 50 LOC").
 3. Dispatch with `--agent speckit` and a prompt asking for level plus file list.
-4. Verify the response names a level, lists required files, and provides rationale.
-5. Return a verdict naming the level, files, and rationale.
+4. Verify the response names a level, lists required files and provides rationale.
+5. Return a verdict naming the level, files and rationale.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|

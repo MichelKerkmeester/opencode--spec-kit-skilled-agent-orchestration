@@ -5,7 +5,7 @@ description: "This scenario validates Write agent doc generation for `CC-025`. I
 
 # CC-025 -- Write agent doc generation
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `CC-025`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CC-025`.
 
 ---
 

@@ -22,6 +22,7 @@ Canonical package artifacts:
 - `05--session-continuity/`
 - `06--integration-patterns/`
 - `07--prompt-templates/`
+- `08--cost-and-background/`
 
 ---
 
@@ -40,14 +41,15 @@ Canonical package artifacts:
 - [11. SESSION CONTINUITY](#11--session-continuity)
 - [12. INTEGRATION PATTERNS](#12--integration-patterns)
 - [13. PROMPT TEMPLATES](#13--prompt-templates)
-- [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
-- [15. FEATURE FILE INDEX](#15--feature-file-index)
+- [14. COST AND BACKGROUND](#14--cost-and-background)
+- [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
+- [16. FEATURE FILE INDEX](#16--feature-file-index)
 
 ---
 
 ## 1. OVERVIEW
 
-This playbook provides 20 deterministic scenarios across 7 categories validating the `cli-claude-code` cross-AI delegation skill. Each scenario maps to a dedicated feature file with the canonical objective, prompt summary, expected signals and feature-file reference.
+This playbook provides 27 deterministic scenarios across 8 categories validating the `cli-claude-code` cross-AI delegation skill. Each scenario maps to a dedicated feature file with the canonical objective, prompt summary, expected signals and feature-file reference.
 
 Coverage note (2026-04-26): all categories validate the orchestrator-led cross-AI delegation contract where an external AI (Gemini, Codex, Copilot, OpenCode) acts as conductor and dispatches the `claude` binary for supplementary tasks. Scenarios CC-006 (acceptEdits permission mode) and CC-007 (bypassPermissions) are destructive and MUST run only against rebuildable, non-production scratch files.
 
@@ -142,7 +144,7 @@ Release is `READY` only when:
 
 1. No feature verdict is `FAIL`.
 2. All critical scenarios are `PASS`.
-3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES == 20`).
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES == 27`).
 4. No unresolved blocking triage item remains.
 5. Self-invocation guard has been tested at least once and refused correctly.
 
@@ -364,7 +366,7 @@ Expected signals: Every input error message receives a category label. Response 
 
 ## 10. AGENT ROUTING
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. Claude Code agents are defined in `.opencode/agent/<name>.md` and dispatched via the `--agent` flag. The cli-claude-code skill documents 9 agent slots (context, debug, handover, orchestrate, research, review, speckit, ultra-think, write). These scenarios cover the four primary routes for cross-AI delegation.
+This category covers 9 scenario summaries while the linked feature files remain the canonical execution contract. Claude Code agents are defined in `.opencode/agent/<name>.md` and dispatched via the `--agent` flag. The cli-claude-code skill documents 9 agent slots (context, debug, handover, orchestrate, research, review, speckit, ultra-think, write) and this section covers all 9.
 
 ### CC-011 | Context agent codebase exploration
 
@@ -429,6 +431,86 @@ Expected signals: Response presents at least 3 distinct strategies. Each strateg
 #### Test Execution
 
 > **Feature File:** [CC-014](04--agent-routing/004-ultra-think-multi-strategy-planning.md)
+
+### CC-021 | Handover agent context transfer
+
+#### Description
+
+Verify `--agent handover --permission-mode plan` produces a structured session-state capture covering active work, modified files, decisions, blockers, and next steps in a single read-only dispatch.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor closing out a multi-step task and preparing handoff for a follow-up session, dispatch `claude -p --agent handover --permission-mode plan` against the active task scope and capture a structured handover document. Verify the response identifies active work, modified files, key decisions, blockers, and next steps. Return a concise pass/fail verdict naming the captured fields and confirming no file writes.
+
+Expected signals: Response names the active task. Lists at least 2 modified or referenced files. Surfaces at least 1 decision or rationale. Declares at least 1 blocker or open question (or attests to none). Names at least 1 concrete next step. No file mtimes change.
+
+#### Test Execution
+
+> **Feature File:** [CC-021](04--agent-routing/005-handover-agent-context-transfer.md)
+
+### CC-022 | Orchestrate agent multi-step coordination
+
+#### Description
+
+Verify `--agent orchestrate --permission-mode plan` decomposes a complex task into a sequenced multi-agent pipeline naming at least 3 distinct Claude Code agents with explicit handoffs.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor facing a complex task that requires multiple Claude Code specializations in sequence, dispatch `claude -p --agent orchestrate --permission-mode plan` and ask for a decomposition naming at least 3 specialist agents (for example context, review, debug, ultra-think) and explicit handoffs between them. Verify the plan reads as a sequenced workflow rather than monolithic analysis. Return a verdict naming the agents in the planned order and confirming no file writes occur.
+
+Expected signals: Response names at least 3 distinct Claude Code agents. Sequences them in a clear order (Step 1, Step 2, Step 3 or equivalent). Describes handoff content between steps. No file mtimes change.
+
+#### Test Execution
+
+> **Feature File:** [CC-022](04--agent-routing/006-orchestrate-agent-multi-step.md)
+
+### CC-023 | Research agent deep investigation
+
+#### Description
+
+Verify `--agent research` produces a comparative analysis of at least 2 candidate approaches across at least 3 trade-off dimensions and surfaces an explicit recommendation with rationale.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor facing an architecture decision between two candidates, dispatch `claude -p --agent research` and ask for a comparative analysis across multiple trade-off dimensions. Verify the response surfaces explicit pros and cons per candidate and ends with a recommendation plus rationale. Return a verdict naming the candidates, dimensions, and recommendation.
+
+Expected signals: Response names both candidates explicitly. Compares them across at least 3 dimensions. Surfaces pros and cons per candidate. Ends with an explicit recommendation. Provides rationale tied to the evidence.
+
+#### Test Execution
+
+> **Feature File:** [CC-023](04--agent-routing/007-research-agent-investigation.md)
+
+### CC-024 | Speckit agent spec folder workflow
+
+#### Description
+
+Verify `--agent speckit` produces a spec-folder scaffolding plan that names the appropriate documentation level and lists the required canonical files for that level.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor preparing a spec folder for a small feature, dispatch `claude -p --agent speckit` and ask for a Level recommendation plus a file list. Verify the response names a documentation level (1, 2, or 3), lists the required canonical files for that level, and explains the level choice in one sentence. Return a verdict naming the level, the files, and the rationale.
+
+Expected signals: Response names a documentation level explicitly. Lists at least 4 canonical files (spec.md, plan.md, tasks.md, implementation-summary.md). Provides level rationale tied to LOC or risk. Surfaces the spec-folder path convention.
+
+#### Test Execution
+
+> **Feature File:** [CC-024](04--agent-routing/008-speckit-agent-spec-folder.md)
+
+### CC-025 | Write agent doc generation
+
+#### Description
+
+Verify `--agent write` writes a sk-doc template-driven README to a temp path with a TABLE OF CONTENTS and at least 3 emoji-prefixed H2 headers.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor wanting a template-driven README for a small skill, dispatch `claude -p --agent write` to generate `/tmp/cc-025-readme/README.md` for a fictional skill. Verify the file is written, contains a TABLE OF CONTENTS section, and has at least 3 emoji-prefixed H2 headers. Return a verdict naming the file path and the H2 emoji count.
+
+Expected signals: Dispatch exits 0. README file exists at the requested path. README contains a TABLE OF CONTENTS section. H2 headers include emojis (per sk-doc template enforcement).
+
+#### Test Execution
+
+> **Feature File:** [CC-025](04--agent-routing/009-write-agent-doc-generation.md)
 
 ---
 
@@ -546,7 +628,45 @@ Expected signals: Card lists all 5 CLEAR criteria explicitly. Framework selectio
 
 ---
 
-## 14. AUTOMATED TEST CROSS-REFERENCE
+## 14. COST AND BACKGROUND
+
+This category covers 2 scenario summaries while the linked feature files remain the canonical execution contract. The category exercises the cost-control surface (`--max-budget-usd`) and the background-execution pattern (`&` plus `</dev/null` redirect) that load-bearing cross-AI workloads rely on.
+
+### CC-026 | Max budget USD cap behavior
+
+#### Description
+
+Verify `--max-budget-usd 0.50` is accepted by the CLI, that the dispatch completes successfully for a small read-only prompt, and that the JSON output reports a `cost` value not exceeding the supplied budget.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor enforcing cost discipline on an unattended run, dispatch `claude -p --max-budget-usd 0.50 --output-format json --permission-mode plan` against a small file. Verify the dispatch exits 0, the JSON envelope contains a numeric cost field, and that cost is at or below 0.50. Return a verdict naming the cost value reported and confirming it is within the cap.
+
+Expected signals: Dispatch exits 0. JSON output is parseable via `jq`. JSON output contains a numeric `cost` (or `total_cost_usd`) field. Reported cost is at or below 0.50. Dispatched command line includes `--max-budget-usd 0.50`.
+
+#### Test Execution
+
+> **Feature File:** [CC-026](08--cost-and-background/001-max-budget-usd-cap.md)
+
+### CC-027 | Background execution
+
+#### Description
+
+Verify a backgrounded `claude -p` dispatch with `</dev/null` runs without blocking the parent shell, that `wait` collects exit 0, and that the captured stdout file contains the expected response.
+
+#### Scenario Contract
+
+Prompt summary: As an external-AI conductor running a parallel workload, dispatch `claude -p` in the background with stdout captured to a temp file and stdin redirected from `/dev/null` so the parent shell does not block. Run a small read-only analysis prompt. Verify `wait` returns exit 0, the temp file contains a non-empty response, and the parent shell remained responsive. Return a verdict naming the temp file, the wait exit code, and the first 80 characters of the captured response.
+
+Expected signals: `wait` returns exit 0. Captured stdout file is non-empty. Parent shell remained responsive. Dispatched command line includes `&` and `</dev/null`.
+
+#### Test Execution
+
+> **Feature File:** [CC-027](08--cost-and-background/002-background-execution.md)
+
+---
+
+## 15. AUTOMATED TEST CROSS-REFERENCE
 
 The cli-claude-code skill is a thin orchestration wrapper around the external Anthropic `claude` binary, so it does not ship its own automated test suite. Coverage is therefore manual-only by design. Adjacent cross-AI skills follow the same pattern:
 
@@ -561,7 +681,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 ---
 
-## 15. FEATURE FILE INDEX
+## 16. FEATURE FILE INDEX
 
 ### CLI INVOCATION
 
@@ -588,6 +708,11 @@ Validator support: the shared `validate_document.py` validates this root playboo
 - CC-012: [Debug agent fresh-perspective root cause](04--agent-routing/002-debug-agent-fresh-perspective-root-cause.md)
 - CC-013: [Review agent security audit](04--agent-routing/003-review-agent-security-audit.md)
 - CC-014: [Ultra-think multi-strategy planning](04--agent-routing/004-ultra-think-multi-strategy-planning.md)
+- CC-021: [Handover agent context transfer](04--agent-routing/005-handover-agent-context-transfer.md)
+- CC-022: [Orchestrate agent multi-step coordination](04--agent-routing/006-orchestrate-agent-multi-step.md)
+- CC-023: [Research agent deep investigation](04--agent-routing/007-research-agent-investigation.md)
+- CC-024: [Speckit agent spec folder workflow](04--agent-routing/008-speckit-agent-spec-folder.md)
+- CC-025: [Write agent doc generation](04--agent-routing/009-write-agent-doc-generation.md)
 
 ### SESSION CONTINUITY
 
@@ -603,3 +728,8 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 - CC-019: [Prompt template usage from assets](07--prompt-templates/001-prompt-template-usage-from-assets.md)
 - CC-020: [CLEAR quality card 5-check](07--prompt-templates/002-clear-quality-card-5-check.md)
+
+### COST AND BACKGROUND
+
+- CC-026: [Max budget USD cap behavior](08--cost-and-background/001-max-budget-usd-cap.md)
+- CC-027: [Background execution](08--cost-and-background/002-background-execution.md)
