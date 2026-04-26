@@ -59,7 +59,7 @@ If you want extra confidence the `@` resolution actually loaded the file (not ju
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (the actual file passed via `@` in this scenario) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra confidence the `@` resolution actually loaded the file (not ju
 
 - Group: Built-in Tools
 - Playbook ID: CG-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--built-in-tools/004-file-reference-syntax.md`

@@ -56,7 +56,7 @@ Search for V1 symbols across all files; check for conditional V1/V2 routing; ver
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/10-legacy-v1-pipeline-removal.md](../../feature_catalog/14--pipeline-architecture/10-legacy-v1-pipeline-removal.md)
 
 ---
@@ -65,5 +65,5 @@ Search for V1 symbols across all files; check for conditional V1/V2 routing; ver
 
 - Group: Pipeline Architecture
 - Playbook ID: 078
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/078-legacy-v1-pipeline-removal.md`

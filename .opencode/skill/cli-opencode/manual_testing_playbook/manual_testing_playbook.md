@@ -16,7 +16,7 @@ This document combines the full manual-validation contract for the `cli-opencode
 This playbook package adopts the Feature Catalog split-document pattern for the `cli-opencode` skill. The root document acts as the directory, review surface and orchestration guide, while per-feature execution detail lives in the numbered category folders at the playbook root.
 
 Canonical package artifacts:
-- `MANUAL_TESTING_PLAYBOOK.md`
+- `manual_testing_playbook.md`
 - `01--cli-invocation/`
 - `02--external-dispatch/`
 - `03--multi-provider/`
@@ -119,7 +119,7 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-g
 
 ### Inputs Required
 
-1. `MANUAL_TESTING_PLAYBOOK.md`
+1. `manual_testing_playbook.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence including command transcripts, JSON event streams and captured session ids
 4. Feature-to-scenario coverage map (every CO-NNN appears in section 17)

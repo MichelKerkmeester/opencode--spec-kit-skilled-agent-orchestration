@@ -59,7 +59,7 @@ After PASS, if Copilot reports any connected MCP servers, sanity-check by examin
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Unique Copilot Capabilities row "MCP Support" |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, if Copilot reports any connected MCP servers, sanity-check by examin
 
 - Group: Integration Patterns
 - Playbook ID: CP-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/002-mcp-support-discovery.md`

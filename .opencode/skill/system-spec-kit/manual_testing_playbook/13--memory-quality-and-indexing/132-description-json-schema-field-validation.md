@@ -58,7 +58,7 @@ Verify create.sh generates description.json → Check 9-field schema validation,
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
 
 ---
@@ -67,5 +67,5 @@ Verify create.sh generates description.json → Check 9-field schema validation,
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 132
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/132-description-json-schema-field-validation.md`

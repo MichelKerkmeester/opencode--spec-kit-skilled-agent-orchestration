@@ -60,7 +60,7 @@ If the response surfaces causes that match the "already tried" list, examine whe
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` | Debug agent details (section 4) |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ If the response surfaces causes that match the "already tried" list, examine whe
 
 - Group: Agent Routing
 - Playbook ID: CC-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/002-debug-agent-fresh-perspective-root-cause.md`

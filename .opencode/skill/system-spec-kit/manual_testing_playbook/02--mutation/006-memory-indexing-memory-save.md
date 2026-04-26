@@ -59,7 +59,7 @@ Validate file path/type, rendered anchor/frontmatter shape, and content quality
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/01-memory-indexing-memorysave.md](../../feature_catalog/02--mutation/01-memory-indexing-memorysave.md)
 
 ---
@@ -68,5 +68,5 @@ Validate file path/type, rendered anchor/frontmatter shape, and content quality
 
 - Group: Mutation
 - Playbook ID: EX-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/006-memory-indexing-memory-save.md`

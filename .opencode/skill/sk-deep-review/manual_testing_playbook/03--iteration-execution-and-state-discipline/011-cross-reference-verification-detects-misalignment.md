@@ -63,7 +63,7 @@ Check the review_mode_contract.yaml for the full cross-reference protocol defini
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -81,6 +81,6 @@ Check the review_mode_contract.yaml for the full cross-reference protocol defini
 
 - Group: ITERATION EXECUTION AND STATE DISCIPLINE
 - Playbook ID: DRV-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--iteration-execution-and-state-discipline/011-cross-reference-verification-detects-misalignment.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

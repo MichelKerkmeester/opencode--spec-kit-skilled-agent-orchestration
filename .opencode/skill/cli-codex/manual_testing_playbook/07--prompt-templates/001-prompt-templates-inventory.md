@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-021` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_templates.md` (§2 Code Generation - Single-File Application) | Source template |
 | `../../assets/prompt_quality_card.md` | Companion quality-card asset |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-021` and confirm the
 
 - Group: Prompt Templates
 - Playbook ID: CX-021
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/001-prompt-templates-inventory.md`

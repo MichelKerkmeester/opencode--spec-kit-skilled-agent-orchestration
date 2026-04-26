@@ -66,7 +66,7 @@ Privilege convergence.md §2.4 for the canonical guard definition and state_form
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -84,6 +84,6 @@ Privilege convergence.md §2.4 for the canonical guard definition and state_form
 
 - Group: CONVERGENCE AND RECOVERY
 - Playbook ID: DR-022
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/022-quality-guard-no-single-weak-source.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19.

@@ -59,7 +59,7 @@ Inspect stage-2 intent weighting logic; verify Math.max sync placement; check re
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect stage-2 intent weighting logic; verify Math.max sync placement; check re
 
 - Group: Scoring and Calibration
 - Playbook ID: 118
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/118-stage-2-score-field-synchronization-p0-8.md`

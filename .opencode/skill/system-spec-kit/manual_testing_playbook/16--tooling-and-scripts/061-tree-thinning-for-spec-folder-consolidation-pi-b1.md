@@ -55,7 +55,7 @@ Verify file size thresholds; inspect per-parent merge caps; check overflow promo
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md)
 
 ---
@@ -64,5 +64,5 @@ Verify file size thresholds; inspect per-parent merge caps; check overflow promo
 
 - Group: Tooling and Scripts
 - Playbook ID: 061
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/061-tree-thinning-for-spec-folder-consolidation-pi-b1.md`

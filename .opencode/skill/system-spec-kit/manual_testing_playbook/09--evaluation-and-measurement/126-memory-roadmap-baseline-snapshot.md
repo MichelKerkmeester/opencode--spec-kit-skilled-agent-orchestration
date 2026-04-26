@@ -54,7 +54,7 @@ Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; ins
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md](../../feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md)
 
 ---
@@ -63,6 +63,6 @@ Re-run `npm test -- --run tests/memory-state-baseline.vitest.ts -t persist`; ins
 
 - Group: Evaluation and Measurement
 - Playbook ID: 126
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md`
 - audited_post_018: true

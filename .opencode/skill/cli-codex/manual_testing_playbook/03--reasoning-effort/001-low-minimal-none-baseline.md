@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-009` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Reasoning Effort Levels) | Documents the six effort levels |
 | `../../references/cli_reference.md` (§5 Reasoning Effort Configuration) | Authoritative effort-level reference |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-009` and confirm the
 
 - Group: Reasoning Effort
 - Playbook ID: CX-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--reasoning-effort/001-low-minimal-none-baseline.md`

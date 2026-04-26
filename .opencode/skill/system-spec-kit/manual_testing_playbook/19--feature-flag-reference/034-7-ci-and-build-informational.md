@@ -54,7 +54,7 @@ Search CI scripts and runtime helpers
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/07-7-ci-and-build-informational.md](../../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md)
 
 ---
@@ -63,5 +63,5 @@ Search CI scripts and runtime helpers
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-034
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/034-7-ci-and-build-informational.md`

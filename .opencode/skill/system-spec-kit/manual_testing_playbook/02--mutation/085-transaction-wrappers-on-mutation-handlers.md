@@ -57,7 +57,7 @@ Inspect transaction wrapper implementation; verify rollback cleans up all partia
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/06-transaction-wrappers-on-mutation-handlers.md](../../feature_catalog/02--mutation/06-transaction-wrappers-on-mutation-handlers.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect transaction wrapper implementation; verify rollback cleans up all partia
 
 - Group: Mutation
 - Playbook ID: 085
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/085-transaction-wrappers-on-mutation-handlers.md`

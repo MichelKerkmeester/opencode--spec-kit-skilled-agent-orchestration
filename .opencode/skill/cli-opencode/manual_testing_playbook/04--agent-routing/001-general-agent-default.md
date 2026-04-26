@@ -60,7 +60,7 @@ For agent-frontmatter introspection, run `opencode debug agent general` separate
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 AGENT ROSTER + §4 routing matrix) | Documents the general agent role and default route |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For agent-frontmatter introspection, run `opencode debug agent general` separate
 
 - Group: Agent Routing
 - Playbook ID: CO-013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/001-general-agent-default.md`

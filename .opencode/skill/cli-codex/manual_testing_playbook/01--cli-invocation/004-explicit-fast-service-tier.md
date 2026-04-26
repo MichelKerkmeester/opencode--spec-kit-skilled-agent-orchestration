@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-004` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§4 ALWAYS rule 6) | Mandates explicit model + effort + service tier on every invocation |
 | `../../references/cli_reference.md` (§4 Command-Line Flags) | Documents the `-c` config-override mechanism |
 
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-004` and confirm the
 
 - Group: CLI Invocation
 - Playbook ID: CX-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/004-explicit-fast-service-tier.md`

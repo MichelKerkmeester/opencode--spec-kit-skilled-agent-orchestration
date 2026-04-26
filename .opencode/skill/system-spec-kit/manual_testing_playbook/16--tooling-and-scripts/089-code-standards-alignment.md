@@ -55,7 +55,7 @@ Inspect code standards definition; verify linter rules cover the standards; chec
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/05-code-standards-alignment.md](../../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md)
 
 ---
@@ -64,5 +64,5 @@ Inspect code standards definition; verify linter rules cover the standards; chec
 
 - Group: Tooling and Scripts
 - Playbook ID: 089
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/089-code-standards-alignment.md`

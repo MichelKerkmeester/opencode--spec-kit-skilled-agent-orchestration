@@ -65,7 +65,7 @@ Privilege the loop protocol Step 4a for the generation contract, the reducer scr
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -86,6 +86,6 @@ Privilege the loop protocol Step 4a for the generation contract, the reducer scr
 
 - Group: ITERATION EXECUTION AND STATE DISCIPLINE
 - Playbook ID: DR-024
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--iteration-execution-and-state-discipline/024-dashboard-generation-after-iteration.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-24.

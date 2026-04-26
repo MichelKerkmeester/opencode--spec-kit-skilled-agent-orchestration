@@ -60,7 +60,7 @@ If plan mode held, optionally verify that read-only tools still work by running 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Permission mode flags (section 5) |
 | `../../references/claude_tools.md` | Plan mode (section 2) |
 
@@ -77,5 +77,5 @@ If plan mode held, optionally verify that read-only tools still work by running 
 
 - Group: Permission Modes
 - Playbook ID: CC-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--permission-modes/001-plan-mode-read-only-enforcement.md`

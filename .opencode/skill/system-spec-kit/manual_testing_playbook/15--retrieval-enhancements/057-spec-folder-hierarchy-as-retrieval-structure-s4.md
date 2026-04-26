@@ -56,7 +56,7 @@ Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md)
 
 ---
@@ -65,5 +65,5 @@ Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-
 
 - Group: Retrieval Enhancements
 - Playbook ID: 057
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/057-spec-folder-hierarchy-as-retrieval-structure-s4.md`

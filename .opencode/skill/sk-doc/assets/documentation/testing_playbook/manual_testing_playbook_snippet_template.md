@@ -13,7 +13,7 @@ Per-feature scenario files for split manual testing playbooks. Use this template
 
 ## 1. OVERVIEW
 
-Each feature file is the canonical home for full scenario execution detail. The root `MANUAL_TESTING_PLAYBOOK.md` stays readable by summarizing the feature and linking here, while the feature file carries the realistic user-testing context, orchestration process, 9-column test row, structured source references, and concise metadata. The file shape should intentionally mirror the Feature Catalog snippet pattern so operators can move between the catalog and the playbook without relearning the document structure.
+Each feature file is the canonical home for full scenario execution detail. The root `manual_testing_playbook.md` stays readable by summarizing the feature and linking here, while the feature file carries the realistic user-testing context, orchestration process, 9-column test row, structured source references, and concise metadata. The file shape should intentionally mirror the Feature Catalog snippet pattern so operators can move between the catalog and the playbook without relearning the document structure.
 
 **Required uses**:
 - One file per feature ID
@@ -112,7 +112,7 @@ Use this subsection only when the feature needs a tightly scoped follow-up varia
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../feature_catalog/{CATALOG_PATH}` | Feature-catalog source describing the implementation contract |
 
 ### Implementation And Test Anchors
@@ -128,7 +128,7 @@ Use this subsection only when the feature needs a tightly scoped follow-up varia
 
 - Group: {CATEGORY_NAME}
 - Playbook ID: {FEATURE_ID}
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `{CATEGORY_DIR}/{NNN}-{feature-name}.md`
 ```
 

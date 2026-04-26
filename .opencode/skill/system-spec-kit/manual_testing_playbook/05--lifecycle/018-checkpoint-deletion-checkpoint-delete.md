@@ -55,7 +55,7 @@ Validate name, `confirmName`, and sandbox scope; retry
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/04-checkpoint-deletion-checkpointdelete.md](../../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md)
 
 ---
@@ -64,6 +64,6 @@ Validate name, `confirmName`, and sandbox scope; retry
 
 - Group: Lifecycle
 - Playbook ID: EX-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--lifecycle/018-checkpoint-deletion-checkpoint-delete.md`
 - audited_post_018: true

@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-019` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/codex_tools.md` (§2 Web Search) | Documents the --search capability |
 | `../../references/integration_patterns.md` (§7 Context Enrichment - Web Search) | Documents web-search usage patterns |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-019` and confirm the
 
 - Group: Integration Patterns
 - Playbook ID: CX-019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/002-web-search.md`

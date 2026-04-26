@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-018` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§2 Generate-Review-Fix Cycle) | Documents the canonical pattern |
 | `../../references/integration_patterns.md` (§3 JSON Output Processing) | Documents JSON-via-prompt convention |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-018` and confirm the
 
 - Group: Integration Patterns
 - Playbook ID: CX-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/001-generate-review-fix-cycle.md`

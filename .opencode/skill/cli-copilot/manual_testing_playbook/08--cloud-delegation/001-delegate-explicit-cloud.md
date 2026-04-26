@@ -59,7 +59,7 @@ After PASS, capture the cloud-delegation receipt or session ID (if present) for 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation row "Cloud Delegation: copilot -p \"/delegate ...\"" |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ After PASS, capture the cloud-delegation receipt or session ID (if present) for 
 
 - Group: Cloud Delegation
 - Playbook ID: CP-020
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--cloud-delegation/001-delegate-explicit-cloud.md`

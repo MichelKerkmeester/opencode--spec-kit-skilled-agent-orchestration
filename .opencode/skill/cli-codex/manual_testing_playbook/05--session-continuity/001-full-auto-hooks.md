@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-016` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/hook_contract.md` (§1 Activation, §2 Registration, §6 Spec Kit Memory Wiring) | Authoritative hook contract |
 | `../../references/cli_reference.md` (§4 Command-Line Flags - --full-auto) | Documents --full-auto |
 
@@ -78,5 +78,5 @@ Operators run the exact prompt and command sequence for `CX-016` and confirm the
 
 - Group: Session Continuity
 - Playbook ID: CX-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/001-full-auto-hooks.md`

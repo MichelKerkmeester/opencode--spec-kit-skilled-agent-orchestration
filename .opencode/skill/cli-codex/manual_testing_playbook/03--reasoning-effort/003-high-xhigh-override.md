@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-011` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Reasoning Effort Levels, §3 Selection Strategy) | Documents high/xhigh as upgrade tiers |
 | `../../references/cli_reference.md` (§5 Reasoning Effort Configuration) | Authoritative effort-level reference |
 | `../../references/integration_patterns.md` (§5 Model Selection Strategy) | Decision matrix for high/xhigh tasks |
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-011` and confirm the
 
 - Group: Reasoning Effort
 - Playbook ID: CX-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--reasoning-effort/003-high-xhigh-override.md`

@@ -57,7 +57,7 @@ Re-run the failing verification step in isolation and inspect the corresponding 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: *(Spec 007 verification suite — no dedicated catalog entry)*
 
 ---
@@ -66,5 +66,5 @@ Re-run the failing verification step in isolation and inspect the corresponding 
 
 - Group: Tooling and Scripts
 - Playbook ID: 108
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/108-spec-007-finalized-verification-command-suite-evidence.md`

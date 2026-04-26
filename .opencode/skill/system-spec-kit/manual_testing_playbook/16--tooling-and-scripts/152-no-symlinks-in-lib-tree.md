@@ -64,7 +64,7 @@ Identify symlink -> determine if intentional -> replace with canonical import pa
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/15-module-boundary-map.md](../../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
 - Policy: [ARCHITECTURE.md](../../ARCHITECTURE.md) -- "No Symlinks in lib/ Tree" subsection
 
@@ -74,5 +74,5 @@ Identify symlink -> determine if intentional -> replace with canonical import pa
 
 - Group: Tooling and Scripts
 - Playbook ID: 152
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md`

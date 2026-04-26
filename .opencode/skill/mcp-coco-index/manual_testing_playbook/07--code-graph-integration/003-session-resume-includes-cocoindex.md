@@ -34,7 +34,7 @@ This scenario validates that the integrated recovery flow exposes CocoIndex avai
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 
 
 ---
@@ -43,5 +43,5 @@ This scenario validates that the integrated recovery flow exposes CocoIndex avai
 
 - Group: Code Graph Integration
 - Playbook ID: INT-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--code-graph-integration/003-session-resume-includes-cocoindex.md`

@@ -47,7 +47,7 @@ symlink missing, target mismatch, or file set divergence; collect evidence and i
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 
 ---
@@ -56,5 +56,5 @@ symlink missing, target mismatch, or file set divergence; collect evidence and i
 
 - Group: Tooling and Scripts
 - Playbook ID: M-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/184-gemini-runtime-path-resolution.md`

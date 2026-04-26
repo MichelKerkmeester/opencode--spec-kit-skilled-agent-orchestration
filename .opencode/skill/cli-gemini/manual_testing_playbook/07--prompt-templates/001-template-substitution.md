@@ -59,7 +59,7 @@ If you want extra confidence, also confirm the dispatched prompt itself contains
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (`assets/prompt_templates.md` listed under §5 REFERENCES) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra confidence, also confirm the dispatched prompt itself contains
 
 - Group: Prompt Templates
 - Playbook ID: CG-017
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/001-template-substitution.md`

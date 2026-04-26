@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-017` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§11 Session Management) | Authoritative session-management reference |
 | `../../references/codex_tools.md` (§2 Session Management) | Documents resume/fork capabilities |
 | `../../references/integration_patterns.md` (§11 Session Continuity) | Multi-turn workflow patterns |
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-017` and confirm the
 
 - Group: Session Continuity
 - Playbook ID: CX-017
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/002-session-resume-fork.md`

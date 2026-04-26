@@ -58,7 +58,7 @@ Inspect `lib/eval/shadow-scoring.ts`; confirm the test sandbox DB path is isolat
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md](../../feature_catalog/21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `lib/eval/shadow-scoring.ts`; confirm the test sandbox DB path is isolat
 
 - Group: Implement and Remove Deprecated Features
 - Playbook ID: 230
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/230-shadow-scoring-retirement.md`

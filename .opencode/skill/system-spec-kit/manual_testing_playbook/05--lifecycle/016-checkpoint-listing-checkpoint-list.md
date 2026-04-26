@@ -53,7 +53,7 @@ Remove spec filter if empty
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/02-checkpoint-listing-checkpointlist.md](../../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md)
 
 ---
@@ -62,6 +62,6 @@ Remove spec filter if empty
 
 - Group: Lifecycle
 - Playbook ID: EX-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--lifecycle/016-checkpoint-listing-checkpoint-list.md`
 - audited_post_018: true

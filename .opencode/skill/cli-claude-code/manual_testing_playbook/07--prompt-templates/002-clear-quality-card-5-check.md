@@ -60,7 +60,7 @@ For end-to-end validation, draft an architecture analysis prompt, manually score
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_quality_card.md` | The quality card under inspection |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For end-to-end validation, draft an architecture analysis prompt, manually score
 
 - Group: Prompt Templates
 - Playbook ID: CC-020
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/002-clear-quality-card-5-check.md`

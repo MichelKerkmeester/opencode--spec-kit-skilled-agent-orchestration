@@ -545,7 +545,7 @@ Check resolveProjectPhase() in session-extractor.ts and projectPhase propagation
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md)
 - Source spec: [016-json-mode-hybrid-enrichment/spec.md](../../../../specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md)
 
@@ -555,5 +555,5 @@ Check resolveProjectPhase() in session-extractor.ts and projectPhase propagation
 
 - Group: Tooling and Scripts
 - Playbook ID: 153
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md`

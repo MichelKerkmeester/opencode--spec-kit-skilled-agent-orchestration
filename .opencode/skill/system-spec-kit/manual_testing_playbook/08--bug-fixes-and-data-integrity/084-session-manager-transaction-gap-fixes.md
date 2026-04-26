@@ -56,7 +56,7 @@ Inspect transaction isolation level; verify session limit enforcement logic; che
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md](../../feature_catalog/08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect transaction isolation level; verify session limit enforcement logic; che
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 084
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/084-session-manager-transaction-gap-fixes.md`

@@ -58,7 +58,7 @@ Inspect `layer-definitions.ts` completeness; verify `context-server.ts` dispatch
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md](../../feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `layer-definitions.ts` completeness; verify `context-server.ts` dispatch
 
 - Group: Pipeline Architecture
 - Playbook ID: 205
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/205-7-layer-tool-architecture-metadata.md`

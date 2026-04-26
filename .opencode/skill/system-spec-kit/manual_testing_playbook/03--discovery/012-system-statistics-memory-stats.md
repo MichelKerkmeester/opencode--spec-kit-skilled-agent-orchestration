@@ -57,7 +57,7 @@ Retry with default ranking on scoring error
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/02-system-statistics-memorystats.md](../../feature_catalog/03--discovery/02-system-statistics-memorystats.md)
 
 ---
@@ -66,7 +66,7 @@ Retry with default ranking on scoring error
 
 - Group: Discovery
 - Playbook ID: EX-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--discovery/012-system-statistics-memory-stats.md`
 - audited_post_018: true
 - phase_018_change: Mirror the root playbook's partial-bucket audit scenario for `memory_stats`.

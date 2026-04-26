@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-015` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 @ultra-think) | Documents the ultra-think profile contract |
 | `../../references/cli_reference.md` (§9 Configuration Files) | Profile config syntax |
 
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-015` and confirm the
 
 - Group: Agent Routing
 - Playbook ID: CX-015
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/004-ultra-think-profile.md`

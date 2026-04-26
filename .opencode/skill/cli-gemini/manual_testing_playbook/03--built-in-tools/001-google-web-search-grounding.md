@@ -59,7 +59,7 @@ If `.toolCalls` shows multiple `google_web_search` entries, that is fine, the mo
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (`google_web_search` listed as Unique Gemini Capability in §3) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If `.toolCalls` shows multiple `google_web_search` entries, that is fine, the mo
 
 - Group: Built-in Tools
 - Playbook ID: CG-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--built-in-tools/001-google-web-search-grounding.md`

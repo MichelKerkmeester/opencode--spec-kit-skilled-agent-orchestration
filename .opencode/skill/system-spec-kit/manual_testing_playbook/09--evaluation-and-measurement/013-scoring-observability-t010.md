@@ -55,7 +55,7 @@ Check sample rate configuration → Verify write error try/catch → Inspect obs
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/09-scoring-observability.md](../../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md)
 
 ---
@@ -64,6 +64,6 @@ Check sample rate configuration → Verify write error try/catch → Inspect obs
 
 - Group: Evaluation and Measurement
 - Playbook ID: 013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/013-scoring-observability-t010.md`
 - audited_post_018: true

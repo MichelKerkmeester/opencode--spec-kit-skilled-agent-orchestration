@@ -56,7 +56,7 @@ Review file implementation scope → Compare against catalog feature boundaries 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 
 ---
@@ -65,5 +65,5 @@ Review file implementation scope → Compare against catalog feature boundaries 
 
 - Group: Tooling and Scripts
 - Playbook ID: 137
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/137-multi-feature-annotation-coverage.md`

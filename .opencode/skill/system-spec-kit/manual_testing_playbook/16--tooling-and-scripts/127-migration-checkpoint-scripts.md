@@ -54,7 +54,7 @@ Re-run `npm test -- --run tests/migration-checkpoint-scripts.vitest.ts -t restor
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md)
 
 ---
@@ -63,5 +63,5 @@ Re-run `npm test -- --run tests/migration-checkpoint-scripts.vitest.ts -t restor
 
 - Group: Tooling and Scripts
 - Playbook ID: 127
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/127-migration-checkpoint-scripts.md`

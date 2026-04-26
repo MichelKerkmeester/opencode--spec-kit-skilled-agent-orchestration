@@ -125,7 +125,7 @@ If the retry still reports restore-in-progress, inspect the `restoreCheckpoint()
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/11-pipeline-and-mutation-hardening.md](../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md)
 
 ---
@@ -134,5 +134,5 @@ If the retry still reports restore-in-progress, inspect the `restoreCheckpoint()
 
 - Group: Pipeline Architecture
 - Playbook ID: 080
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/080-pipeline-and-mutation-hardening.md`

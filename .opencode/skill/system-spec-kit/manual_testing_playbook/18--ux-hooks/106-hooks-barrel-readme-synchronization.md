@@ -55,7 +55,7 @@ Inspect hooks/index.ts exports and hooks/README.md for missing entries
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/12-hooks-readme-and-export-alignment.md](../../feature_catalog/18--ux-hooks/12-hooks-readme-and-export-alignment.md)
 
 ---
@@ -64,6 +64,6 @@ Inspect hooks/index.ts exports and hooks/README.md for missing entries
 
 - Group: UX Hooks
 - Playbook ID: 106
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/106-hooks-barrel-readme-synchronization.md`
 - audited_post_018: true

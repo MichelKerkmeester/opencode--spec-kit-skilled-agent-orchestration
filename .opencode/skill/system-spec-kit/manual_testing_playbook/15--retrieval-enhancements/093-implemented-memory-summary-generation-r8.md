@@ -56,7 +56,7 @@ Verify summary generation triggers on save; check summary persistence field in s
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/05-memory-summary-search-channel.md](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
 
 ---
@@ -65,5 +65,5 @@ Verify summary generation triggers on save; check summary persistence field in s
 
 - Group: Retrieval Enhancements
 - Playbook ID: 093
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/093-implemented-memory-summary-generation-r8.md`

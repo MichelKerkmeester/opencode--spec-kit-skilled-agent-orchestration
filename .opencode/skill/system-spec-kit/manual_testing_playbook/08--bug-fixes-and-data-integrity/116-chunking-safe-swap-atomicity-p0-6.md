@@ -59,7 +59,7 @@ Inspect chunking orchestrator finalize transaction; verify `parent_id` unlink ha
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect chunking orchestrator finalize transaction; verify `parent_id` unlink ha
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 116
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/116-chunking-safe-swap-atomicity-p0-6.md`

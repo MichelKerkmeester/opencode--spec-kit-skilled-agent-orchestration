@@ -56,7 +56,7 @@ Check hybrid detection logic → Verify stage-2 guard condition → Inspect inte
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md)
 
 ---
@@ -65,5 +65,5 @@ Check hybrid detection logic → Verify stage-2 guard condition → Inspect inte
 
 - Group: Scoring and Calibration
 - Playbook ID: 029
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/029-double-intent-weighting-investigation-g2.md`

@@ -56,7 +56,7 @@ If a symbol is missing, inspect the corresponding implementation file listed in 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
 - Source files: `mcp_server/lib/scoring/composite-scoring.ts`, `mcp_server/lib/scoring/interference-scoring.ts`, `mcp_server/lib/search/hybrid-search.ts`, `mcp_server/lib/search/intent-classifier.ts`, `mcp_server/lib/search/pipeline/types.ts`, `mcp_server/lib/search/pipeline/stage2-fusion.ts`, `shared/algorithms/adaptive-fusion.ts`, `shared/algorithms/rrf-fusion.ts`
 - Regression tests: `mcp_server/tests/composite-scoring.vitest.ts`, `mcp_server/tests/score-normalization.vitest.ts`, `mcp_server/tests/hybrid-search.vitest.ts`, `mcp_server/tests/unit-rrf-fusion.vitest.ts`, `mcp_server/tests/adaptive-fusion.vitest.ts`, `mcp_server/tests/score-resolution-consistency.vitest.ts`, `mcp_server/tests/interference.vitest.ts`, `mcp_server/tests/intent-weighting.vitest.ts`
@@ -67,5 +67,5 @@ If a symbol is missing, inspect the corresponding implementation file listed in 
 
 - Group: Scoring and Calibration
 - Playbook ID: 079
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/079-scoring-and-fusion-corrections.md`

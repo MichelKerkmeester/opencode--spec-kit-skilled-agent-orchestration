@@ -55,7 +55,7 @@ Check corpus generation script → Verify intent taxonomy completeness → Inspe
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md)
 
 ---
@@ -64,6 +64,6 @@ Check corpus generation script → Verify intent taxonomy completeness → Inspe
 
 - Group: Evaluation and Measurement
 - Playbook ID: 010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/010-synthetic-ground-truth-corpus-g-new-1-g-new-3-phase-a.md`
 - audited_post_018: true

@@ -59,7 +59,7 @@ Inspect `lib/search/hybrid-search.ts` and `INSTALL_GUIDE.md`; confirm the checke
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md](../../feature_catalog/21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect `lib/search/hybrid-search.ts` and `INSTALL_GUIDE.md`; confirm the checke
 
 - Group: Implement and Remove Deprecated Features
 - Playbook ID: 232
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/232-adaptive-fusion-flag-drift.md`

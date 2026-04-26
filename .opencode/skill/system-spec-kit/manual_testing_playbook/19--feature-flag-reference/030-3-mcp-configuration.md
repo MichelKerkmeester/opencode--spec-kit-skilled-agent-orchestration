@@ -54,7 +54,7 @@ Verify in config files directly
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/03-3-mcp-configuration.md](../../feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md)
 
 ---
@@ -63,5 +63,5 @@ Verify in config files directly
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-030
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/030-3-mcp-configuration.md`

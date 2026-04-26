@@ -59,7 +59,7 @@ After PASS, run a quick semantic spot-check: `python3 -c "import sys; sys.path.i
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, Model Selection table in §3 includes `gpt-5.3-codex` |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, run a quick semantic spot-check: `python3 -c "import sys; sys.path.i
 
 - Group: Multi-Model
 - Playbook ID: CP-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--multi-model/002-gpt-codex-code-generation.md`

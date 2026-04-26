@@ -61,7 +61,7 @@ If you want belt-and-braces, run `find /tmp/cg-008-sandbox -type f` and confirm 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary (destructive scenario isolation rule) |
+| `manual_testing_playbook.md` | Root directory page and scenario summary (destructive scenario isolation rule) |
 | `../../SKILL.md` | cli-gemini skill surface (`save_memory` listed as Unique Gemini Capability in §3) |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ If you want belt-and-braces, run `find /tmp/cg-008-sandbox -type f` and confirm 
 
 - Group: Built-in Tools
 - Playbook ID: CG-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--built-in-tools/003-save-memory-persistence.md`

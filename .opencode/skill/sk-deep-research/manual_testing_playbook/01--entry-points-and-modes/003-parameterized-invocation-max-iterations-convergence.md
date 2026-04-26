@@ -63,7 +63,7 @@ Compare both YAML files, not just one, and verify the config schema still names 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -81,6 +81,6 @@ Compare both YAML files, not just one, and verify the config schema still names 
 
 - Group: ENTRY POINTS AND MODES
 - Playbook ID: DR-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--entry-points-and-modes/003-parameterized-invocation-max-iterations-convergence.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19.

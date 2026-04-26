@@ -56,7 +56,7 @@ Re-run `npm test -- --run tests/memory-lineage-state.vitest.ts -t asOf`; inspect
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md](../../feature_catalog/14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md)
 
 ---
@@ -65,5 +65,5 @@ Re-run `npm test -- --run tests/memory-lineage-state.vitest.ts -t asOf`; inspect
 
 - Group: Pipeline Architecture
 - Playbook ID: 129
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/129-lineage-state-active-projection-and-asof-resolution.md`

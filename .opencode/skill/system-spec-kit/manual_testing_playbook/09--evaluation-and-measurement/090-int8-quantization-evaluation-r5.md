@@ -55,7 +55,7 @@ Review original no-go rationale; gather updated benchmark data; compare quality 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/16-int8-quantization-evaluation.md](../../feature_catalog/09--evaluation-and-measurement/16-int8-quantization-evaluation.md)
 
 ---
@@ -64,6 +64,6 @@ Review original no-go rationale; gather updated benchmark data; compare quality 
 
 - Group: Evaluation and Measurement
 - Playbook ID: 090
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/090-int8-quantization-evaluation-r5.md`
 - audited_post_018: true

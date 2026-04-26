@@ -55,7 +55,7 @@ Retry with valid memoryId/queryId
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/05-validation-feedback-memoryvalidate.md](../../feature_catalog/02--mutation/05-validation-feedback-memoryvalidate.md)
 
 ---
@@ -64,5 +64,5 @@ Retry with valid memoryId/queryId
 
 - Group: Mutation
 - Playbook ID: EX-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/010-validation-feedback-memory-validate.md`

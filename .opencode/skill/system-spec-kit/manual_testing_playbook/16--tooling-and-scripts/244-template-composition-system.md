@@ -56,7 +56,7 @@ Inspect `scripts/templates/compose.sh`, required addendum file checks, and gener
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/30-template-composition-system.md](../../feature_catalog/16--tooling-and-scripts/30-template-composition-system.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `scripts/templates/compose.sh`, required addendum file checks, and gener
 
 - Group: Tooling and Scripts
 - Playbook ID: 244
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/244-template-composition-system.md`

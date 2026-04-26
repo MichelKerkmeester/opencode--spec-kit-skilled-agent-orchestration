@@ -64,7 +64,7 @@ Privilege the loop protocol synthesis rules for the canonical consolidation cont
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -82,6 +82,6 @@ Privilege the loop protocol synthesis rules for the canonical consolidation cont
 
 - Group: SYNTHESIS SAVE AND GUARDRAILS
 - Playbook ID: DR-026
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--synthesis-save-and-guardrails/026-ruled-out-directions-in-synthesis.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-24.

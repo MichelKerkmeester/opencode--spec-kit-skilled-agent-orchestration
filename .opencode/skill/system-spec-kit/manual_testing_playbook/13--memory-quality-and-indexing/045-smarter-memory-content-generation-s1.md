@@ -57,7 +57,7 @@ Verify content generation template → Check structure preservation rules → In
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/07-smarter-memory-content-generation.md](../../feature_catalog/13--memory-quality-and-indexing/07-smarter-memory-content-generation.md)
 
 ---
@@ -66,5 +66,5 @@ Verify content generation template → Check structure preservation rules → In
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 045
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/045-smarter-memory-content-generation-s1.md`

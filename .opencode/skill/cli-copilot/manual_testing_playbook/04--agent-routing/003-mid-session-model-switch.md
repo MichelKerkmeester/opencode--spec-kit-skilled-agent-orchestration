@@ -60,7 +60,7 @@ After PASS, look for stylistic differences between the two responses (Opus typic
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, Model Selection table in §3 includes both Opus and Sonnet |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ After PASS, look for stylistic differences between the two responses (Opus typic
 
 - Group: Agent Routing
 - Playbook ID: CP-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/003-mid-session-model-switch.md`

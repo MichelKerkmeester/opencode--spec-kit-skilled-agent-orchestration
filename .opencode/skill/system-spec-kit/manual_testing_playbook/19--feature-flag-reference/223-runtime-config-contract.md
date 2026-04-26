@@ -57,7 +57,7 @@ Inspect `scripts/core/config.ts` merge and validation flow, confirm the test run
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/09-runtime-config-contract.md](../../feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `scripts/core/config.ts` merge and validation flow, confirm the test run
 
 - Group: Feature Flag Reference
 - Playbook ID: 223
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/223-runtime-config-contract.md`

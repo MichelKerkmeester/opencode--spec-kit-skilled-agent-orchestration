@@ -56,7 +56,7 @@ Verify shared normalization function is used by both paths; check unicode handli
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/13-entity-normalization-consolidation.md](../../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md)
 
 ---
@@ -65,5 +65,5 @@ Verify shared normalization function is used by both paths; check unicode handli
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 069
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/069-entity-normalization-consolidation.md`

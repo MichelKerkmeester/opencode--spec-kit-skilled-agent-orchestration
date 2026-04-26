@@ -54,7 +54,7 @@ Run index_scan(force) if FTS mismatch
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/03-health-diagnostics-memoryhealth.md](../../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md)
 
 ---
@@ -63,6 +63,6 @@ Run index_scan(force) if FTS mismatch
 
 - Group: Discovery
 - Playbook ID: EX-013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--discovery/013-health-diagnostics-memory-health.md`
 - audited_post_018: true

@@ -59,7 +59,7 @@ After PASS, run a quick negative test: `python3 -c "from calc import add; print(
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation row "Task Execution: @Task" |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, run a quick negative test: `python3 -c "from calc import add; print(
 
 - Group: Agent Routing
 - Playbook ID: CP-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/002-task-agent-sandboxed-implementation.md`

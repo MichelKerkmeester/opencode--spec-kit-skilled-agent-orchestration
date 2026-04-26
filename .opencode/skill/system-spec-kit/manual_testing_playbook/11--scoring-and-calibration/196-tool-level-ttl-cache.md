@@ -58,7 +58,7 @@ Verify TTL config and max-entry settings -> Confirm identical tool/input payload
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md)
 
 ---
@@ -67,5 +67,5 @@ Verify TTL config and max-entry settings -> Confirm identical tool/input payload
 
 - Group: Scoring and Calibration
 - Playbook ID: 196
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/196-tool-level-ttl-cache.md`

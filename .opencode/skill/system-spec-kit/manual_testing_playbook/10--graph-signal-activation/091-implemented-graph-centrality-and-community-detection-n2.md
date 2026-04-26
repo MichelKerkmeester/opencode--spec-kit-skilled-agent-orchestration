@@ -56,7 +56,7 @@ Verify N2 migration completed; check feature flag state; inspect graph scoring p
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/07-community-detection.md](../../feature_catalog/10--graph-signal-activation/07-community-detection.md)
 
 ---
@@ -65,5 +65,5 @@ Verify N2 migration completed; check feature flag state; inspect graph scoring p
 
 - Group: Graph Signal Activation
 - Playbook ID: 091
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/091-implemented-graph-centrality-and-community-detection-n2.md`

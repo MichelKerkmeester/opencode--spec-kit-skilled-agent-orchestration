@@ -59,7 +59,7 @@ For multi-turn depth, add a third turn with another `-c` and a question that dep
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `-c`/`--continue` flag row + §4 sessions/share/ports paragraph) | Continue flag documentation |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For multi-turn depth, add a third turn with another `-c` and a question that dep
 
 - Group: Session Continuity
 - Playbook ID: CO-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/001-continue-last-session.md`

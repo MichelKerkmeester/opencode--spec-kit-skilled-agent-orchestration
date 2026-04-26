@@ -55,7 +55,7 @@ Cross-check shared config loader and vector-index store override path
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/04-4-memory-and-storage.md](../../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md)
 
 ---
@@ -64,5 +64,5 @@ Cross-check shared config loader and vector-index store override path
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-031
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/031-4-memory-and-storage.md`

@@ -55,7 +55,7 @@ Verify logger gate configuration → Check handler registration → Inspect iner
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md)
 
 ---
@@ -64,6 +64,6 @@ Verify logger gate configuration → Check handler registration → Inspect iner
 
 - Group: Evaluation and Measurement
 - Playbook ID: 012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/012-agent-consumption-instrumentation-g-new-2.md`
 - audited_post_018: true

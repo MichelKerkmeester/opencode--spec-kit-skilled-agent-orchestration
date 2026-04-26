@@ -59,7 +59,7 @@ Verify isQuerySurrogatesEnabled() → Check extractAliases() for parenthetical p
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/09-index-time-query-surrogates.md](../../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/query-surrogates.ts`
@@ -70,5 +70,5 @@ Verify isQuerySurrogatesEnabled() → Check extractAliases() for parenthetical p
 
 - Group: Query Intelligence
 - Playbook ID: 163
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `12--query-intelligence/163-query-surrogates-speckit-query-surrogates.md`

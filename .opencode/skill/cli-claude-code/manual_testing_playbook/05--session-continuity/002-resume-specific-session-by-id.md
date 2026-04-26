@@ -61,7 +61,7 @@ If the JSON envelope shape changes between Claude Code versions, the `session_id
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Session management flags (section 5) and section 10 (session management) |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ If the JSON envelope shape changes between Claude Code versions, the `session_id
 
 - Group: Session Continuity
 - Playbook ID: CC-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/002-resume-specific-session-by-id.md`

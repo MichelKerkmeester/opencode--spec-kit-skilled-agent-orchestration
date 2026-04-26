@@ -57,7 +57,7 @@ Inspect `mcp_server/lib/ops/file-watcher.ts` debounce scheduling, unlink handlin
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md](../../feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `mcp_server/lib/ops/file-watcher.ts` debounce scheduling, unlink handlin
 
 - Group: Tooling and Scripts
 - Playbook ID: 207
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/207-watcher-delete-rename-cleanup.md`

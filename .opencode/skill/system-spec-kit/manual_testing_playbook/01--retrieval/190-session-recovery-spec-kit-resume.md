@@ -61,7 +61,7 @@ Verify `/spec_kit:resume` command routing against `.opencode/command/spec_kit/re
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/11-session-recovery-spec-kit-resume.md](../../feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md)
 
 ---
@@ -70,5 +70,5 @@ Verify `/spec_kit:resume` command routing against `.opencode/command/spec_kit/re
 
 - Group: Retrieval
 - Playbook ID: 190
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/190-session-recovery-spec-kit-resume.md`

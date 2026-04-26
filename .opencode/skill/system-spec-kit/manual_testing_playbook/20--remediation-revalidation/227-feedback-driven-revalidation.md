@@ -58,7 +58,7 @@ Inspect `mcp_server/handlers/checkpoints.ts`, `mcp_server/lib/scoring/confidence
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [20--remediation-revalidation/03-feedback-driven-revalidation.md](../../feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `mcp_server/handlers/checkpoints.ts`, `mcp_server/lib/scoring/confidence
 
 - Group: Remediation and Revalidation
 - Playbook ID: 227
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `20--remediation-revalidation/227-feedback-driven-revalidation.md`

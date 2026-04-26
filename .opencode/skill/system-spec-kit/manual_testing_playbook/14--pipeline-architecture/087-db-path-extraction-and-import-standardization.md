@@ -56,7 +56,7 @@ Verify shared resolver module is imported by all consumers; check env var preced
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md)
 
 ---
@@ -65,5 +65,5 @@ Verify shared resolver module is imported by all consumers; check env var preced
 
 - Group: Pipeline Architecture
 - Playbook ID: 087
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/087-db-path-extraction-and-import-standardization.md`

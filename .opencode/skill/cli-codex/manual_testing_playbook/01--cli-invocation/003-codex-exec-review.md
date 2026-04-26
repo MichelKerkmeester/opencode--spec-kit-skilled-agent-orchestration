@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-003` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 Profile & Review Flags) | Documents the `exec review` subcommand and supported flags |
 | `../../references/codex_tools.md` (§2 /review Command) | Documents diff-aware review semantics |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-003` and confirm the
 
 - Group: CLI Invocation
 - Playbook ID: CX-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/003-codex-exec-review.md`

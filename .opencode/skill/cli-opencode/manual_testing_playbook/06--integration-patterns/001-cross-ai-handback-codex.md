@@ -62,7 +62,7 @@ For Memory Epilogue validation, append the Template 13 Memory Epilogue from `ass
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§4 USE CASE 3: CROSS-AI ORCHESTRATION HANDBACK + §5 SMART-ROUTER DECISION TREE) | Use case 3 contract and routing logic |
 
 ### Implementation And Test Anchors
@@ -78,5 +78,5 @@ For Memory Epilogue validation, append the Template 13 Memory Epilogue from `ass
 
 - Group: Integration Patterns
 - Playbook ID: CO-021
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/001-cross-ai-handback-codex.md`

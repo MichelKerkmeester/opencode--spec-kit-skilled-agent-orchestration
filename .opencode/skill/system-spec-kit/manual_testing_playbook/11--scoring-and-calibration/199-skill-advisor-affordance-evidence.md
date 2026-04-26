@@ -80,7 +80,7 @@ Captured command output for steps 1–3, `rg` output for steps 4–5, the counte
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../feature_catalog/11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md` | Feature-catalog source describing the implementation contract |
 
 ### Implementation And Test Anchors
@@ -98,7 +98,7 @@ Captured command output for steps 1–3, `rg` output for steps 4–5, the counte
 
 - Group: Scoring and calibration
 - Playbook ID: 199
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md`
 - Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/004-skill-advisor-affordance-evidence` (baseline) + `026/010/007-review-remediation` T-D (denylist broadened R-007-9, conflicts_with reject R-007-8) + T-F (debug counters R-007-P2-9)
 - Coverage extension: 010/011-manual-testing-playbook-coverage-and-run (Block B added)

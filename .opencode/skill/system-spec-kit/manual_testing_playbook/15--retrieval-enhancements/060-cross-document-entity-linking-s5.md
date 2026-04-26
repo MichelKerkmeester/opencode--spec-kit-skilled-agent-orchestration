@@ -56,7 +56,7 @@ Verify shared entities exist across documents; check density guard thresholds; i
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/06-cross-document-entity-linking.md](../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md)
 
 ---
@@ -65,5 +65,5 @@ Verify shared entities exist across documents; check density guard thresholds; i
 
 - Group: Retrieval Enhancements
 - Playbook ID: 060
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/060-cross-document-entity-linking-s5.md`

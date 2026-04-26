@@ -56,7 +56,7 @@ Inspect `scripts/spec-folder/folder-detector.ts`, `alignment-validator.ts`, `dir
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/28-spec-folder-detection-and-description.md](../../feature_catalog/16--tooling-and-scripts/28-spec-folder-detection-and-description.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `scripts/spec-folder/folder-detector.ts`, `alignment-validator.ts`, `dir
 
 - Group: Tooling and Scripts
 - Playbook ID: 242
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/242-spec-folder-detection-and-description.md`

@@ -62,7 +62,7 @@ Verify create.sh generates description.json → Check stale detection mtime comp
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
 
 ---
@@ -71,5 +71,5 @@ Verify create.sh generates description.json → Check stale detection mtime comp
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 042
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/042-spec-folder-description-discovery-pi-b3.md`

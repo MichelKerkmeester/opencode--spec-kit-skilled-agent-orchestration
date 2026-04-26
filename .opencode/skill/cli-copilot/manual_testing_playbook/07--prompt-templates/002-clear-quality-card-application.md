@@ -59,7 +59,7 @@ After PASS, run a second iteration with a different flag request and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §2 Smart Routing ALWAYS-loads `prompt_quality_card.md` |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, run a second iteration with a different flag request and confirm the
 
 - Group: Prompt Templates
 - Playbook ID: CP-019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/002-clear-quality-card-application.md`

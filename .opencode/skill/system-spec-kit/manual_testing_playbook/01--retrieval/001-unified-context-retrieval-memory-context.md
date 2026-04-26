@@ -57,7 +57,7 @@ Check specFolder/intent mismatch, retry with explicit intent
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 
 ---
@@ -66,5 +66,5 @@ Check specFolder/intent mismatch, retry with explicit intent
 
 - Group: Retrieval
 - Playbook ID: EX-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/001-unified-context-retrieval-memory-context.md`

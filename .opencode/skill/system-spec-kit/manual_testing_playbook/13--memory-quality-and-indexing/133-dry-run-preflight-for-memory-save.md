@@ -60,7 +60,7 @@ Inspect `handlers/memory-save.ts` dryRun and insufficiency branches, `shared/par
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
 
 ---
@@ -69,5 +69,5 @@ Inspect `handlers/memory-save.ts` dryRun and insufficiency branches, `shared/par
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 133
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md`

@@ -118,7 +118,7 @@ Create manual testing playbooks with deterministic scenarios, structured evidenc
 - Standardizing test evidence and verdict criteria
 - Setting up multi-agent test execution planning
 
-**Canonical Package**: Root `MANUAL_TESTING_PLAYBOOK.md` plus numbered category folders with one per-feature file per feature ID.
+**Canonical Package**: Root `manual_testing_playbook.md` plus numbered category folders with one per-feature file per feature ID.
 
 **See**:
 - [manual_testing_playbook_creation.md](./references/specific/manual_testing_playbook_creation.md)
@@ -609,7 +609,7 @@ Use the feature-catalog reference when the task is to inventory current behavior
 5. **ALWAYS include a Feature Catalog Cross-Reference Index** at the end
 6. **ALWAYS mark destructive scenarios** in preconditions and the integrated root review section
 7. **ALWAYS create one per-feature file per feature** under numbered category directories at the playbook root
-8. **ALWAYS treat the root playbook plus per-feature files as the canonical package**, with root summaries in `MANUAL_TESTING_PLAYBOOK.md` and full execution detail in the per-feature files
+8. **ALWAYS treat the root playbook plus per-feature files as the canonical package**, with root summaries in `manual_testing_playbook.md` and full execution detail in the per-feature files
 
 #### ❌ NEVER
 
@@ -754,7 +754,7 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 - ✅ Commands tested and working
 
 **Playbook Creation Complete**:
-- ✅ Root `MANUAL_TESTING_PLAYBOOK.md` exists and owns review/orchestration guidance
+- ✅ Root `manual_testing_playbook.md` exists and owns review/orchestration guidance
 - ✅ Numbered category directories exist at the playbook root
 - ✅ All scenario tables use 9-column format
 - ✅ Every Feature ID is unique across the playbook

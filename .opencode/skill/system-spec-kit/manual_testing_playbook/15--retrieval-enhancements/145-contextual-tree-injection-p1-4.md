@@ -58,7 +58,7 @@ Inspect `lib/search/hybrid-search.ts` `injectContextualTree`, `lib/search/search
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/09-contextual-tree-injection.md](../../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `lib/search/hybrid-search.ts` `injectContextualTree`, `lib/search/search
 
 - Group: Retrieval Enhancements
 - Playbook ID: 145
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md`

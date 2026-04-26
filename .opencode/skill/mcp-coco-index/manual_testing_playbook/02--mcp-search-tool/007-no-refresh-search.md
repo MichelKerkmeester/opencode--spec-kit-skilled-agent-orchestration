@@ -35,7 +35,7 @@ Operators run the exact prompt and command sequence for `MCP-007` and confirm th
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 
 
 ---
@@ -44,5 +44,5 @@ Operators run the exact prompt and command sequence for `MCP-007` and confirm th
 
 - Group: MCP Search Tool
 - Playbook ID: MCP-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mcp-search-tool/007-no-refresh-search.md`

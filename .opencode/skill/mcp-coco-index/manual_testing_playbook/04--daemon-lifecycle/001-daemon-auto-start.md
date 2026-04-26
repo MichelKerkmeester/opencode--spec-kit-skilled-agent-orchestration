@@ -44,7 +44,7 @@ Operators run the exact prompt and command sequence for `DMN-001` and confirm th
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 
 
 ---
@@ -53,5 +53,5 @@ Operators run the exact prompt and command sequence for `DMN-001` and confirm th
 
 - Group: Daemon Lifecycle
 - Playbook ID: DMN-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--daemon-lifecycle/001-daemon-auto-start.md`

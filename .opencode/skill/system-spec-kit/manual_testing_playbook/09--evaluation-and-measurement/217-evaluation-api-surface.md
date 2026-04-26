@@ -56,7 +56,7 @@ Check for missing re-exports in `mcp_server/api/eval.ts` -> verify the internal 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/15-evaluation-api-surface.md](../../feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md)
 
 ---
@@ -65,6 +65,6 @@ Check for missing re-exports in `mcp_server/api/eval.ts` -> verify the internal 
 
 - Group: Evaluation and Measurement
 - Playbook ID: 217
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/217-evaluation-api-surface.md`
 - audited_post_018: true

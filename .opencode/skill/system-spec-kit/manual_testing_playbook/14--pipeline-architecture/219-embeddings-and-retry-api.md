@@ -58,7 +58,7 @@ Check `mcp_server/api/providers.ts` for missing or renamed re-exports -> inspect
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/23-embeddings-and-retry-api.md](../../feature_catalog/14--pipeline-architecture/23-embeddings-and-retry-api.md)
 
 ---
@@ -67,5 +67,5 @@ Check `mcp_server/api/providers.ts` for missing or renamed re-exports -> inspect
 
 - Group: Pipeline Architecture
 - Playbook ID: 219
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/219-embeddings-and-retry-api.md`

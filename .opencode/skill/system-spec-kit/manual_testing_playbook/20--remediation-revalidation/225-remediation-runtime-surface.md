@@ -59,7 +59,7 @@ Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflig
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [20--remediation-revalidation/01-category-stub.md](../../feature_catalog/20--remediation-revalidation/01-category-stub.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflig
 
 - Group: Remediation and Revalidation
 - Playbook ID: 225
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `20--remediation-revalidation/225-remediation-runtime-surface.md`

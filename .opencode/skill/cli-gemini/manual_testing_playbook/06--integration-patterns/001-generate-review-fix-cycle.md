@@ -61,7 +61,7 @@ If you want extra signal, run `python3 -c 'import importlib.util, sys; spec=impo
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary (sandbox isolation rule) |
+| `manual_testing_playbook.md` | Root directory page and scenario summary (sandbox isolation rule) |
 | `../../SKILL.md` | cli-gemini skill surface (generation patterns in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ If you want extra signal, run `python3 -c 'import importlib.util, sys; spec=impo
 
 - Group: Integration Patterns
 - Playbook ID: CG-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/001-generate-review-fix-cycle.md`

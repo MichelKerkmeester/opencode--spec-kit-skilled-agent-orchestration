@@ -67,7 +67,7 @@ For per-port isolation, dispatch a second parallel detached session on a differe
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§3 USE CASE 2: IN-OPENCODE PARALLEL DETACHED SESSION) | Use case 2 contract |
 
 ### Implementation And Test Anchors
@@ -84,5 +84,5 @@ For per-port isolation, dispatch a second parallel detached session on a differe
 
 - Group: Parallel Detached
 - Playbook ID: CO-026
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--parallel-detached/001-parallel-detached-session.md`

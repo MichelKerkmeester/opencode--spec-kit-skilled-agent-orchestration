@@ -61,7 +61,7 @@ Run individual steps in isolation to identify failing step; verify script permis
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 
 ---
@@ -70,5 +70,5 @@ Run individual steps in isolation to identify failing step; verify script permis
 
 - Group: Tooling and Scripts
 - Playbook ID: PHASE-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/005-phase-command-workflow.md`

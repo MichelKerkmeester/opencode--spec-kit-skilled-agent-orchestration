@@ -61,7 +61,7 @@ For a more comprehensive cycle, add a third dispatch that compares the two revie
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` | Generate-Review-Fix Cycle pattern (section 2) |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ For a more comprehensive cycle, add a third dispatch that compares the two revie
 
 - Group: Integration Patterns
 - Playbook ID: CC-017
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/001-generate-review-fix-cycle.md`

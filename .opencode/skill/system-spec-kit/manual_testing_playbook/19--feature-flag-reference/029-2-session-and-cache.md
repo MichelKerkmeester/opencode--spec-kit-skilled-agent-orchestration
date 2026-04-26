@@ -54,7 +54,7 @@ Expand query terms
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/02-2-session-and-cache.md](../../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md)
 
 ---
@@ -63,5 +63,5 @@ Expand query terms
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-029
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/029-2-session-and-cache.md`

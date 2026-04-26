@@ -59,7 +59,7 @@ If you want extra signal, also confirm `.stats.toolCallCount` is at least 2. `co
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (`codebase_investigator` listed as Unique Gemini Capability in §3) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra signal, also confirm `.stats.toolCallCount` is at least 2. `co
 
 - Group: Built-in Tools
 - Playbook ID: CG-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--built-in-tools/002-codebase-investigator.md`

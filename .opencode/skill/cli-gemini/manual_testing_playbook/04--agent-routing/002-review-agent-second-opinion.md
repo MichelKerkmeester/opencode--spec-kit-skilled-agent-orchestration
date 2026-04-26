@@ -59,7 +59,7 @@ If you want extra confidence, re-run with `-o json` and confirm `.toolCalls` lis
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (agent routing table in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra confidence, re-run with `-o json` and confirm `.toolCalls` lis
 
 - Group: Agent Routing
 - Playbook ID: CG-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/002-review-agent-second-opinion.md`

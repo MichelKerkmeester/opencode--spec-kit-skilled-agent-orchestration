@@ -55,7 +55,7 @@ Inspect `hooks/response-hints.ts`, `context-server.ts`, and token-estimation hel
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/11-final-token-metadata-recomputation.md](../../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md)
 
 ---
@@ -64,7 +64,7 @@ Inspect `hooks/response-hints.ts`, `context-server.ts`, and token-estimation hel
 
 - Group: UX Hooks
 - Playbook ID: 215
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/215-final-token-metadata-recomputation.md`
 - audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/11-final-token-metadata-recomputation.md`

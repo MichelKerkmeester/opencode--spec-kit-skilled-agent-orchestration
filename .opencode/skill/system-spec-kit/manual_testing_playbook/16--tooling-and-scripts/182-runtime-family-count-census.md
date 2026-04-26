@@ -47,7 +47,7 @@ any family missing files or has extras; collect counts and identify discrepancy.
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 
 ---
@@ -56,5 +56,5 @@ any family missing files or has extras; collect counts and identify discrepancy.
 
 - Group: Tooling and Scripts
 - Playbook ID: M-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/182-runtime-family-count-census.md`

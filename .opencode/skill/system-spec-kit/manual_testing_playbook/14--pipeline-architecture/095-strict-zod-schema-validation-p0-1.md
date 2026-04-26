@@ -57,7 +57,7 @@ Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/13-strict-zod-schema-validation.md](../../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `tool-schemas.ts` for `.strict()` vs `.passthrough()` branching
 
 - Group: Pipeline Architecture
 - Playbook ID: 095
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/095-strict-zod-schema-validation-p0-1.md`

@@ -56,7 +56,7 @@ Verify auto-surface hook registration → Check compaction trigger logic → Ins
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md](../../feature_catalog/15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md)
 
 ---
@@ -65,5 +65,5 @@ Verify auto-surface hook registration → Check compaction trigger logic → Ins
 
 - Group: Retrieval Enhancements
 - Playbook ID: 055
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/055-dual-scope-memory-auto-surface-tm-05.md`

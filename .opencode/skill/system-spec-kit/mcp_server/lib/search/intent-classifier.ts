@@ -192,6 +192,21 @@ const INTENT_NEGATIVE_PATTERNS: Partial<Record<IntentType, RegExp[]>> = {
 
 /** P3-12: Minimum confidence threshold below which "general" style fallback is used */
 const MIN_CONFIDENCE_THRESHOLD = 0.08;
+/**
+ * REQ-001 / REQ-016 (Cluster 2): Centroid-only confidence floor. When the
+ * classifier has ZERO keyword and ZERO regex-pattern evidence, the only signal
+ * left is a hashed bag-of-words centroid match — which spuriously fires for
+ * tokenizer collisions. The canonical command spec at
+ * `.opencode/command/memory/search.md` §4A mandates that confidence below 0.30
+ * falls back to `understand`. This floor enforces that mandate without breaking
+ * the longstanding single-keyword detection corpus.
+ *
+ * Reproduction: `classifyIntent("Semantic Search")` previously returned
+ * `fix_bug` at confidence 0.098 because the centroid hashing produced a
+ * spurious overlap with the `fix_bug` centroid even though "semantic" and
+ * "search" appear in NO keyword table.
+ */
+const CENTROID_ONLY_CONFIDENCE_THRESHOLD = 0.30;
 const MAX_RANKED_INTENTS = 3;
 
 const INTENT_WEIGHT_ADJUSTMENTS: Record<IntentType, IntentWeights> = {
@@ -423,6 +438,18 @@ function classifyIntent(query: string): IntentResult {
   };
 
   const allKeywords: string[] = [];
+  // REQ-001 (Cluster 2): Track per-intent keyword + pattern evidence so the
+  // centroid-only confidence floor can fire on queries that scored ONLY via
+  // hashed bag-of-words centroid match (e.g. "Semantic Search" → fix_bug 0.098).
+  const intentEvidence: Record<IntentType, { keywords: number; patterns: number }> = {
+    add_feature: { keywords: 0, patterns: 0 },
+    fix_bug: { keywords: 0, patterns: 0 },
+    refactor: { keywords: 0, patterns: 0 },
+    security_audit: { keywords: 0, patterns: 0 },
+    understand: { keywords: 0, patterns: 0 },
+    find_spec: { keywords: 0, patterns: 0 },
+    find_decision: { keywords: 0, patterns: 0 },
+  };
 
   for (const intent of Object.values(INTENT_TYPES)) {
     const { score: keywordScore, matches } = calculateKeywordScore(query, intent);
@@ -443,6 +470,8 @@ function classifyIntent(query: string): IntentResult {
     }
 
     scores[intent] = combined;
+    intentEvidence[intent].keywords = matches.length;
+    intentEvidence[intent].patterns = patternScore > 0 ? 1 : 0;
     allKeywords.push(...matches);
   }
 
@@ -467,6 +496,29 @@ function classifyIntent(query: string): IntentResult {
   // P3-12: If top score is below minimum confidence, return "understand" with low confidence
   // This prevents weak single-keyword matches from dominating classification.
   if (topScore < MIN_CONFIDENCE_THRESHOLD) {
+    return {
+      intent: 'understand',
+      confidence: topScore,
+      scores,
+      keywords: [...new Set(allKeywords)],
+      rankedIntents,
+    };
+  }
+
+  // REQ-001 / REQ-016 (Cluster 2): Centroid-only fallback gate.
+  // If the winning intent has NO keyword match AND NO regex pattern hit, the
+  // only signal is a hashed bag-of-words centroid coincidence. The canonical
+  // command spec mandates that confidence below 0.30 falls back to `understand`
+  // — apply the spec floor exactly when keyword + pattern evidence is empty.
+  // Existing single-keyword behaviour is preserved because the gate is skipped
+  // whenever any keyword or pattern fired for the winning intent.
+  const topEvidence = intentEvidence[topIntent];
+  if (
+    topIntent !== 'understand' &&
+    topEvidence.keywords === 0 &&
+    topEvidence.patterns === 0 &&
+    topScore < CENTROID_ONLY_CONFIDENCE_THRESHOLD
+  ) {
     return {
       intent: 'understand',
       confidence: topScore,

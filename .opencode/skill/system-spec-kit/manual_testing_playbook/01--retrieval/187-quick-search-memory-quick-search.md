@@ -58,7 +58,7 @@ Verify `memory_quick_search` tool is listed in search.md allowed-tools → Check
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md)
 - Command file: [.opencode/command/memory/search.md](../../../../command/memory/search.md)
 
@@ -68,5 +68,5 @@ Verify `memory_quick_search` tool is listed in search.md allowed-tools → Check
 
 - Group: Retrieval
 - Playbook ID: 187
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/187-quick-search-memory-quick-search.md`

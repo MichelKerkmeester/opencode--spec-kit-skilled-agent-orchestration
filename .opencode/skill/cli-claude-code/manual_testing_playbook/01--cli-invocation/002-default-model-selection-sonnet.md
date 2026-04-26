@@ -59,7 +59,7 @@ If costs differ by more than an order of magnitude, capture a third run with `--
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Models table (section 6) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If costs differ by more than an order of magnitude, capture a third run with `--
 
 - Group: CLI Invocation
 - Playbook ID: CC-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/002-default-model-selection-sonnet.md`

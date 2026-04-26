@@ -57,7 +57,7 @@ Inspect `references/validation/template_compliance_contract.md`, `.codex/agents/
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `references/validation/template_compliance_contract.md`, `.codex/agents/
 
 - Group: Tooling and Scripts
 - Playbook ID: 208
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/208-template-compliance-contract-enforcement.md`

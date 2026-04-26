@@ -74,7 +74,7 @@ Privilege `findings-registry.json` as the reducer-owned source of truth. If the 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
 
@@ -89,6 +89,6 @@ Privilege `findings-registry.json` as the reducer-owned source of truth. If the 
 
 - Group: CONVERGENCE AND RECOVERY
 - Playbook ID: DR-032
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/032-blocked-stop-reducer-surfacing.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-04-11.

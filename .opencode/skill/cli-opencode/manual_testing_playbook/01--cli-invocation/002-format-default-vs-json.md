@@ -60,7 +60,7 @@ For format stability, run a third dispatch with the same prompt and confirm the 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§7 Output Format and Event Stream) | JSON event schema and line-delimited contract |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For format stability, run a third dispatch with the same prompt and confirm the 
 
 - Group: CLI Invocation
 - Playbook ID: CO-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/002-format-default-vs-json.md`

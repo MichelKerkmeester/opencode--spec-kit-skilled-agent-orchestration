@@ -59,7 +59,7 @@ Verify isSaveQualityGateExceptionsEnabled() â†’ Confirm flag is not forced off â
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/validation/save-quality-gate.ts`
@@ -70,5 +70,5 @@ Verify isSaveQualityGateExceptionsEnabled() â†’ Confirm flag is not forced off â
 
 - Group: Memory quality and indexing
 - Playbook ID: 178
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/178-save-quality-gate-exceptions-speckit-save-quality-gate-exceptions.md`

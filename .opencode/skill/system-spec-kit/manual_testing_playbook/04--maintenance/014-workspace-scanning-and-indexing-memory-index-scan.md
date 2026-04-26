@@ -174,7 +174,7 @@ Inspect `completeIndexScanLease()` in `core/db-state.ts` and the post-response c
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md)
 
 ---
@@ -183,7 +183,7 @@ Inspect `completeIndexScanLease()` in `core/db-state.ts` and the post-response c
 
 - Group: Maintenance
 - Playbook ID: EX-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--maintenance/014-workspace-scanning-and-indexing-memory-index-scan.md`
 - audited_post_018: true
 - phase_018_change: post-018 audit verified against `mcp_server/handlers/memory-index.ts`, `mcp_server/handlers/memory-index-discovery.ts`, and `mcp_server/tests/db-state.vitest.ts`

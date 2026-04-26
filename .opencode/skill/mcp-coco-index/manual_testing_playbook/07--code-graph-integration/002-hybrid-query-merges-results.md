@@ -32,7 +32,7 @@ This scenario validates that queries classified as `hybrid` by the query-intent 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 
 
 ---
@@ -41,5 +41,5 @@ This scenario validates that queries classified as `hybrid` by the query-intent 
 
 - Group: Code Graph Integration
 - Playbook ID: INT-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--code-graph-integration/002-hybrid-query-merges-results.md`

@@ -56,7 +56,7 @@ Retry with allowPartialUpdate if embedding fails
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/02-memory-metadata-update-memoryupdate.md](../../feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md)
 
 ---
@@ -65,5 +65,5 @@ Retry with allowPartialUpdate if embedding fails
 
 - Group: Mutation
 - Playbook ID: EX-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/007-memory-metadata-update-memory-update.md`

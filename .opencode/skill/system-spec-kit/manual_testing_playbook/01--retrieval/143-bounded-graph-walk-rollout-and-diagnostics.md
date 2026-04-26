@@ -58,7 +58,7 @@ Inspect `mcp_server/formatters/search-results.ts`, `mcp_server/lib/search/hybrid
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `mcp_server/formatters/search-results.ts`, `mcp_server/lib/search/hybrid
 
 - Group: Retrieval
 - Playbook ID: 143
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/143-bounded-graph-walk-rollout-and-diagnostics.md`

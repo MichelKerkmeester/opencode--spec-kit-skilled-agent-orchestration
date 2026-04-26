@@ -59,7 +59,7 @@ Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLoca
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md)
 
 ---
@@ -68,5 +68,5 @@ Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLoca
 
 - Group: Scoring and Calibration
 - Playbook ID: 098
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md`

@@ -56,7 +56,7 @@ Verify quality check criteria → Check max retry configuration → Inspect reje
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md](../../feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md)
 
 ---
@@ -65,5 +65,5 @@ Verify quality check criteria → Check max retry configuration → Inspect reje
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 039
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/039-verify-fix-verify-memory-quality-loop-pi-a5.md`

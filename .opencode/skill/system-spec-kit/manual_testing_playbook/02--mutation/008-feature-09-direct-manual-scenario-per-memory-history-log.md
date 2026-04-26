@@ -45,7 +45,7 @@ verify sandbox file path and spec scope -> rerun with `force:true` -> inspect me
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/10-per-record-history-log.md](../../feature_catalog/02--mutation/10-per-record-history-log.md)
 
 ---
@@ -54,5 +54,5 @@ verify sandbox file path and spec scope -> rerun with `force:true` -> inspect me
 
 - Group: Mutation
 - Playbook ID: M-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/008-feature-09-direct-manual-scenario-per-record-history-log.md`

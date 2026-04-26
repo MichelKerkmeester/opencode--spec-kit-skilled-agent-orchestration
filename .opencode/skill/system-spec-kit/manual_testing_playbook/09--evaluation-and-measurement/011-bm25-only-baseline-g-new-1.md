@@ -56,7 +56,7 @@ Verify all non-BM25 channels are disabled, confirm BM25 path activation, check B
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/07-bm25-only-baseline.md](../../feature_catalog/09--evaluation-and-measurement/07-bm25-only-baseline.md)
 
 ---
@@ -65,7 +65,7 @@ Verify all non-BM25 channels are disabled, confirm BM25 path activation, check B
 
 - Group: Evaluation and Measurement
 - Playbook ID: 011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/011-bm25-only-baseline-g-new-1.md`
 - audited_post_018: true
 - phase_018_change: aligned the scenario wording with the live BM25/FTS5-only runner and default-enabled BM25 path

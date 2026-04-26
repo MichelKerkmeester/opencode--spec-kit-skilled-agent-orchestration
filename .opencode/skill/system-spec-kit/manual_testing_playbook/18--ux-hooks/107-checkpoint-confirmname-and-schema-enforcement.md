@@ -56,7 +56,7 @@ Inspect checkpoint handler, schemas, tool typing alignment, and context-server s
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/03-checkpoint-delete-confirmname-safety.md](../../feature_catalog/18--ux-hooks/03-checkpoint-delete-confirmname-safety.md)
 
 ---
@@ -65,6 +65,6 @@ Inspect checkpoint handler, schemas, tool typing alignment, and context-server s
 
 - Group: UX Hooks
 - Playbook ID: 107
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/107-checkpoint-confirmname-and-schema-enforcement.md`
 - audited_post_018: true

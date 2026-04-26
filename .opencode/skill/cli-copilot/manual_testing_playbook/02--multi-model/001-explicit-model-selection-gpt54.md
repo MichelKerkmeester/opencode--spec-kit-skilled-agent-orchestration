@@ -59,7 +59,7 @@ After PASS, repeat the supported call once with `--model gpt-5.4` again (differe
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, Model Selection table in §3 (5 recommended models) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, repeat the supported call once with `--model gpt-5.4` again (differe
 
 - Group: Multi-Model
 - Playbook ID: CP-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--multi-model/001-explicit-model-selection-gpt54.md`

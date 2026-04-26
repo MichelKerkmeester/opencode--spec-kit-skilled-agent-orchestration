@@ -59,7 +59,7 @@ Inspect `collectRawCandidates()` stop-after-fusion behavior, `checkDegradation()
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/08-quality-aware-3-tier-search-fallback.md](../../feature_catalog/01--retrieval/08-quality-aware-3-tier-search-fallback.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect `collectRawCandidates()` stop-after-fusion behavior, `checkDegradation()
 
 - Group: Retrieval
 - Playbook ID: 109
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/109-quality-aware-3-tier-search-fallback.md`

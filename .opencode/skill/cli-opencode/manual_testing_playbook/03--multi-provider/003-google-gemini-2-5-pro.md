@@ -59,7 +59,7 @@ For long-context validation, swap the small attachment for a large multi-paragra
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§5 MODEL SELECTION, Google row) | Google model id and variant range |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For long-context validation, swap the small attachment for a large multi-paragra
 
 - Group: Multi-Provider
 - Playbook ID: CO-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--multi-provider/003-google-gemini-2-5-pro.md`

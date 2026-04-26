@@ -58,7 +58,7 @@ Inspect the governed save validation path, scope-filtering logic, and `governanc
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect the governed save validation path, scope-filtering logic, and `governanc
 
 - Group: Governance
 - Playbook ID: 122
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `17--governance/122-governed-ingest-and-scope-isolation-phase-5.md`

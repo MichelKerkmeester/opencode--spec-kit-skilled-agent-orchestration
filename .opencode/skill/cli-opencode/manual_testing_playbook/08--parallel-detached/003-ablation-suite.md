@@ -65,7 +65,7 @@ For per-session state isolation, list `~/.opencode/state/<SID_HIGH>/` and `~/.op
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_templates.md` (TEMPLATE 7: ABLATION SUITE) | Canonical ablation suite pattern |
 
 ### Implementation And Test Anchors
@@ -82,5 +82,5 @@ For per-session state isolation, list `~/.opencode/state/<SID_HIGH>/` and `~/.op
 
 - Group: Parallel Detached
 - Playbook ID: CO-028
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--parallel-detached/003-ablation-suite.md`

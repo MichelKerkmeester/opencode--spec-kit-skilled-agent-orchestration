@@ -63,7 +63,7 @@ Use the detailed state-format reconstruction algorithm as primary truth and trea
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -81,6 +81,6 @@ Use the detailed state-format reconstruction algorithm as primary truth and trea
 
 - Group: PAUSE, RESUME, AND FAULT TOLERANCE
 - Playbook ID: DR-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--pause-resume-and-fault-tolerance/018-jsonl-reconstruction-from-iteration-files.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19.

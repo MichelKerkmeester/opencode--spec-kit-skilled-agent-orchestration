@@ -61,7 +61,7 @@ Check memory epilogue in prompt template → Verify generate-context.js JSON mod
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md](../../feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md)
 
 ---
@@ -70,5 +70,5 @@ Check memory epilogue in prompt template → Verify generate-context.js JSON mod
 
 - Group: Memory Quality and Indexing
 - Playbook ID: M-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md`

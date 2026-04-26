@@ -59,7 +59,7 @@ Verify embedding_status column exists in schema; check BM25/FTS5 index includes 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md)
 
 ---
@@ -68,5 +68,5 @@ Verify embedding_status column exists in schema; check BM25/FTS5 index includes 
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 111
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/111-deferred-lexical-only-indexing.md`

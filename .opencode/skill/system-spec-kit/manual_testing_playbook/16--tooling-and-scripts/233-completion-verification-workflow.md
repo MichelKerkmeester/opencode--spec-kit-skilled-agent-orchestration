@@ -59,7 +59,7 @@ Inspect `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`, espe
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/19-completion-verification-workflow.md](../../feature_catalog/16--tooling-and-scripts/19-completion-verification-workflow.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`, espe
 
 - Group: Tooling and Scripts
 - Playbook ID: 233
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/233-completion-verification-workflow.md`

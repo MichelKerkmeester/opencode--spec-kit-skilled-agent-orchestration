@@ -59,7 +59,7 @@ Inspect `lib/scoring/composite-scoring.ts`, `lib/search/graph-flags.ts`, and `li
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md](../../feature_catalog/21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect `lib/scoring/composite-scoring.ts`, `lib/search/graph-flags.ts`, and `li
 
 - Group: Implement and Remove Deprecated Features
 - Playbook ID: 231
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/231-inert-scoring-flags.md`

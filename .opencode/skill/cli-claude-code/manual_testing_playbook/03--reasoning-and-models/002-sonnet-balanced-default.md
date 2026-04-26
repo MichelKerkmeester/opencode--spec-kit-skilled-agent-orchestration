@@ -59,7 +59,7 @@ If the chosen target file is too small or trivially clean to produce findings, s
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Models table and selection guide (section 6) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If the chosen target file is too small or trivially clean to produce findings, s
 
 - Group: Reasoning And Models
 - Playbook ID: CC-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--reasoning-and-models/002-sonnet-balanced-default.md`

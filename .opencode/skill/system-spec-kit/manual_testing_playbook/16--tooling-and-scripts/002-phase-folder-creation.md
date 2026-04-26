@@ -58,7 +58,7 @@ Check create.sh supports --phase flag; verify --phase-names parsing; inspect tem
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 
 ---
@@ -67,5 +67,5 @@ Check create.sh supports --phase flag; verify --phase-names parsing; inspect tem
 
 - Group: Tooling and Scripts
 - Playbook ID: PHASE-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/002-phase-folder-creation.md`

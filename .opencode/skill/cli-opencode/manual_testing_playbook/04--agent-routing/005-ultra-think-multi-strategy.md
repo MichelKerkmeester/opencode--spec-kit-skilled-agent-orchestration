@@ -61,7 +61,7 @@ For rubric depth, ask the agent to produce a 5x5 markdown table with strategies 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 ultra-think property table + §7 LEAF constraints) | Ultra-think planning-only contract |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ For rubric depth, ask the agent to produce a 5x5 markdown table with strategies 
 
 - Group: Agent Routing
 - Playbook ID: CO-017
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/005-ultra-think-multi-strategy.md`

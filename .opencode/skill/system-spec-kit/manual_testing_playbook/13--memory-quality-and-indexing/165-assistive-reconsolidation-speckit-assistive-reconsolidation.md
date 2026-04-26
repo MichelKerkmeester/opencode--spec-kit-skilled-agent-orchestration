@@ -93,7 +93,7 @@ Verify predecessor snapshot comparison (`content_hash`, `updated_at`) → Check 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/handlers/save/reconsolidation-bridge.ts`
@@ -104,5 +104,5 @@ Verify predecessor snapshot comparison (`content_hash`, `updated_at`) → Check 
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 165
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/165-assistive-reconsolidation-speckit-assistive-reconsolidation.md`

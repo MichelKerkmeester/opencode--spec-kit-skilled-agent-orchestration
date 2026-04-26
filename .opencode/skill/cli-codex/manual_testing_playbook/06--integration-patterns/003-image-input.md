@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-020` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/codex_tools.md` (§2 Image Input) | Documents --image / -i capability |
 | `../../assets/prompt_templates.md` (§2 Design-to-Code) | Documents the design-to-code prompt template |
 
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-020` and confirm the
 
 - Group: Integration Patterns
 - Playbook ID: CX-020
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/003-image-input.md`

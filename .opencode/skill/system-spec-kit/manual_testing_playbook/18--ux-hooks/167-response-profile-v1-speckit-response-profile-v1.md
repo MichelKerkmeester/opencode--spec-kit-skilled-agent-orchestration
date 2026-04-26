@@ -58,7 +58,7 @@ Verify SPECKIT_RESPONSE_PROFILE_V1 env → Inspect profile-formatters.ts profile
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/15-mode-aware-response-profiles.md](../../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md)
 - Feature flag reference: [19--feature-flag-reference/028-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/response/profile-formatters.ts`
@@ -69,7 +69,7 @@ Verify SPECKIT_RESPONSE_PROFILE_V1 env → Inspect profile-formatters.ts profile
 
 - Group: UX Hooks
 - Playbook ID: 167
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/167-response-profile-v1-speckit-response-profile-v1.md`
 - phase_018_change: memory_context now auto-routes inferred profiles when no explicit profile is supplied
 - audited_post_018: true

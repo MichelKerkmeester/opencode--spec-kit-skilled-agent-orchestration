@@ -55,7 +55,7 @@ Verify eval dataset exists → Check ablation channel-off logic → Inspect snap
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md](../../feature_catalog/09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md)
 
 ---
@@ -64,6 +64,6 @@ Verify eval dataset exists → Check ablation channel-off logic → Inspect snap
 
 - Group: Evaluation and Measurement
 - Playbook ID: 014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/014-full-reporting-and-ablation-study-framework-r13-s3.md`
 - audited_post_018: true

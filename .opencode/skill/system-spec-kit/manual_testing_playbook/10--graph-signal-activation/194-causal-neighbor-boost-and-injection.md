@@ -57,7 +57,7 @@ Verify seed selection cap and top-result sampling → Inspect relation-type mult
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md)
 
 ---
@@ -66,5 +66,5 @@ Verify seed selection cap and top-result sampling → Inspect relation-type mult
 
 - Group: Graph Signal Activation
 - Playbook ID: 194
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/194-causal-neighbor-boost-and-injection.md`

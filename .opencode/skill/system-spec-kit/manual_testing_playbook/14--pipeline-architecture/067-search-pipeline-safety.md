@@ -56,7 +56,7 @@ Inspect error handling in pipeline stages; verify filter boundary conditions; ch
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/07-search-pipeline-safety.md](../../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect error handling in pipeline stages; verify filter boundary conditions; ch
 
 - Group: Pipeline Architecture
 - Playbook ID: 067
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/067-search-pipeline-safety.md`

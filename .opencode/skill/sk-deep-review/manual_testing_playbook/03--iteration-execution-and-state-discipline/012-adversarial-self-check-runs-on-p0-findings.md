@@ -63,7 +63,7 @@ If the agent definition lacks explicit Hunter/Skeptic/Referee roles, check wheth
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -82,6 +82,6 @@ If the agent definition lacks explicit Hunter/Skeptic/Referee roles, check wheth
 
 - Group: ITERATION EXECUTION AND STATE DISCIPLINE
 - Playbook ID: DRV-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--iteration-execution-and-state-discipline/012-adversarial-self-check-runs-on-p0-findings.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

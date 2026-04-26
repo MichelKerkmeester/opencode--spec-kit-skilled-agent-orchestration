@@ -56,7 +56,7 @@ Check consolidation trigger mechanism; inspect individual sub-process logs; veri
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/04-lightweight-consolidation.md](../../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md)
 
 ---
@@ -65,5 +65,5 @@ Check consolidation trigger mechanism; inspect individual sub-process logs; veri
 
 - Group: Retrieval Enhancements
 - Playbook ID: 058
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/058-lightweight-consolidation-n3-lite.md`

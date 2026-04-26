@@ -58,7 +58,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/01-memory-indexing-memorysave.md](../../feature_catalog/02--mutation/01-memory-indexing-memorysave.md)
 
 ---
@@ -67,5 +67,5 @@ This scenario remains prose-first because it carries compound operator logic, su
 
 - Group: Memory Quality and Indexing
 - Playbook ID: M-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/003-context-save-index-update.md`

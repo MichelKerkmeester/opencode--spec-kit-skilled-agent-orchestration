@@ -60,7 +60,7 @@ Optionally verify that the global CLAUDE.md and project AGENTS.md echo the same 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | NEVER rule 1 forbidding bypassPermissions without approval |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ Optionally verify that the global CLAUDE.md and project AGENTS.md echo the same 
 
 - Group: Permission Modes
 - Playbook ID: CC-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--permission-modes/003-bypass-permissions-guard-rail-sandboxed.md`

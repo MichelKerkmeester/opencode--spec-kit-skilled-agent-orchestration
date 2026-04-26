@@ -58,7 +58,7 @@ Verify repeated retrievals hit the same target spec-doc record -> Inspect accumu
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/16-access-driven-popularity-scoring.md](../../feature_catalog/11--scoring-and-calibration/16-access-driven-popularity-scoring.md)
 
 ---
@@ -67,5 +67,5 @@ Verify repeated retrievals hit the same target spec-doc record -> Inspect accumu
 
 - Group: Scoring and Calibration
 - Playbook ID: 197
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/197-access-driven-popularity-scoring.md`

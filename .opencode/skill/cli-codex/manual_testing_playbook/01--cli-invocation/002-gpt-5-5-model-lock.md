@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-002` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Default Invocation, §3 Model Selection) | Documents the model pin and selection strategy |
 | `../../references/cli_reference.md` (§5 Model Selection) | Authoritative model reference |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-002` and confirm the
 
 - Group: CLI Invocation
 - Playbook ID: CX-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/002-gpt-5-5-model-lock.md`

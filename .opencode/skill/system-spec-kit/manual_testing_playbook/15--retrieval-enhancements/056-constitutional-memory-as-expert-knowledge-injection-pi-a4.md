@@ -56,7 +56,7 @@ Verify constitutional/ directory contains valid directives; check tier classific
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md)
 
 ---
@@ -65,5 +65,5 @@ Verify constitutional/ directory contains valid directives; check tier classific
 
 - Group: Retrieval Enhancements
 - Playbook ID: 056
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/056-constitutional-memory-as-expert-knowledge-injection-pi-a4.md`

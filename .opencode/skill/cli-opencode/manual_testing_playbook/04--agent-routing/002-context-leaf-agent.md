@@ -60,7 +60,7 @@ For LEAF constraint depth-test, embed a phrase in the prompt that would normally
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§7 LEAF-AGENT CONSTRAINTS) | Documents the LEAF read-only contract |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For LEAF constraint depth-test, embed a phrase in the prompt that would normally
 
 - Group: Agent Routing
 - Playbook ID: CO-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/002-context-leaf-agent.md`

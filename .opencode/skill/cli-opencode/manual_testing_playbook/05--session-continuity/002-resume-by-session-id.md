@@ -59,7 +59,7 @@ For multi-session management, capture two distinct session ids from two parallel
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `-s`/`--session` flag row) | Session id flag documentation |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For multi-session management, capture two distinct session ids from two parallel
 
 - Group: Session Continuity
 - Playbook ID: CO-019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/002-resume-by-session-id.md`

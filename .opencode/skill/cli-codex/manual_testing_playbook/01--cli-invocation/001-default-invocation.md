@@ -60,7 +60,7 @@ Operators run the exact prompt and command sequence for `CX-001` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Default Invocation) | Documents the canonical default `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"` |
 | `../../references/cli_reference.md` (§4 Command-Line Flags, §5 Model Selection) | Authoritative flag and model reference |
 
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-001` and confirm the
 
 - Group: CLI Invocation
 - Playbook ID: CX-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/001-default-invocation.md`

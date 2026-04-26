@@ -56,7 +56,7 @@ Verify signal vocabulary dictionary → Check category detection regex/rules →
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md](../../feature_catalog/13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md)
 
 ---
@@ -65,5 +65,5 @@ Verify signal vocabulary dictionary → Check category detection regex/rules →
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 040
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/040-signal-vocabulary-expansion-tm-08.md`

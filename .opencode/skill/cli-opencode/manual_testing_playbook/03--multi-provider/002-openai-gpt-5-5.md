@@ -59,7 +59,7 @@ For variant verification, repeat the test with `--variant xhigh` (the OpenAI top
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§5 MODEL SELECTION + variant table for OpenAI) | OpenAI model and variant documentation |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For variant verification, repeat the test with `--variant xhigh` (the OpenAI top
 
 - Group: Multi-Provider
 - Playbook ID: CO-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--multi-provider/002-openai-gpt-5-5.md`

@@ -60,7 +60,7 @@ For complete pipeline integration validation, pipe the schema-validated output i
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Structured Output (section 9) |
 | `../../references/claude_tools.md` | Structured Output (--json-schema) section |
 
@@ -77,5 +77,5 @@ For complete pipeline integration validation, pipe the schema-validated output i
 
 - Group: Integration Patterns
 - Playbook ID: CC-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/002-structured-output-with-json-schema.md`

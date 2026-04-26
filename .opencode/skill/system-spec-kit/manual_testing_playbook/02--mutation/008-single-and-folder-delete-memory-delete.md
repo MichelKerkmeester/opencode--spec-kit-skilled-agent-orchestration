@@ -57,7 +57,7 @@ Restore `pre-ex008-delete`; verify sandbox folder
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/03-single-and-folder-delete-memorydelete.md](../../feature_catalog/02--mutation/03-single-and-folder-delete-memorydelete.md)
 
 ---
@@ -66,5 +66,5 @@ Restore `pre-ex008-delete`; verify sandbox folder
 
 - Group: Mutation
 - Playbook ID: EX-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/008-single-and-folder-delete-memory-delete.md`

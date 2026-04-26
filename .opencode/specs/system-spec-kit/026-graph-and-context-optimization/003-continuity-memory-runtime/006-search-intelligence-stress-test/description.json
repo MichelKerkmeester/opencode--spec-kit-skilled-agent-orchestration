@@ -1,0 +1,40 @@
+{
+  "title": "Search Intelligence Stress-Test Playbook",
+  "trigger_phrases": [
+    "006-search-intelligence-stress-test",
+    "search intelligence playbook",
+    "memory search cross-AI test",
+    "cli-codex cli-copilot cli-opencode stress test",
+    "search query intelligence rubric",
+    "external vs MCP search comparison",
+    "9 scenario test corpus",
+    "5 dimension scoring rubric"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test",
+  "description": "Reproducible cross-AI stress-test playbook for system-spec-kit Search/Query/Intelligence features. Dispatches 9 scenarios (3 features × 3 prompt types) through cli-codex, cli-copilot, and cli-opencode and scores outcomes against a 5-dimension rubric. The asymmetry between cli-opencode (full Spec Kit Memory MCP) and external CLIs is the test's primary signal. Two sub-phases: 001 designs the corpus + rubric + dispatch matrix; 002 executes and synthesizes findings.",
+  "keywords": [
+    "feature",
+    "specification",
+    "search",
+    "query",
+    "intelligence",
+    "stress-test",
+    "playbook",
+    "cross-AI",
+    "cli-codex",
+    "cli-copilot",
+    "cli-opencode",
+    "rubric",
+    "scoring"
+  ],
+  "lastUpdated": "2026-04-26T14:50:00Z",
+  "specId": "006",
+  "folderSlug": "search-intelligence-stress-test",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

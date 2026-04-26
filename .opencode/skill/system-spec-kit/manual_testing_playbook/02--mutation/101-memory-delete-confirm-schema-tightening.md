@@ -57,7 +57,7 @@ Inspect `tool-schemas.ts` memory_delete union schema
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: *(memory_delete confirm schema — covered by `02--mutation/03`)*
 
 ---
@@ -66,5 +66,5 @@ Inspect `tool-schemas.ts` memory_delete union schema
 
 - Group: Mutation
 - Playbook ID: 101
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/101-memory-delete-confirm-schema-tightening.md`

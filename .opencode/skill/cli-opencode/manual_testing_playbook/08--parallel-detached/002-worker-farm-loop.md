@@ -67,7 +67,7 @@ For the documented failure mode demonstration, optionally repeat the loop WITHOU
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§6 SILENT STDIN CONSUMPTION) | The documented `</dev/null` fix |
 
 ### Implementation And Test Anchors
@@ -83,5 +83,5 @@ For the documented failure mode demonstration, optionally repeat the loop WITHOU
 
 - Group: Parallel Detached
 - Playbook ID: CO-027
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--parallel-detached/002-worker-farm-loop.md`

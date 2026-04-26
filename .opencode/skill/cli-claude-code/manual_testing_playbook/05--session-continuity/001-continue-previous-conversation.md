@@ -60,7 +60,7 @@ For a stronger continuity test, dispatch turn 2 with a question that explicitly 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Session management flags (section 5) and section 10 (session management) |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For a stronger continuity test, dispatch turn 2 with a question that explicitly 
 
 - Group: Session Continuity
 - Playbook ID: CC-015
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/001-continue-previous-conversation.md`

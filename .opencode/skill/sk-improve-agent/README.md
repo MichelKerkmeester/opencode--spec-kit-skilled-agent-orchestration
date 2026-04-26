@@ -241,7 +241,7 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- 02--integration-scanning/     Surface discovery, runtime mirrors, dispatch
 |   `-- 03--scoring-system/           5-dim rubric, dynamic profiling, plateau detection
 `-- manual_testing_playbook/
-    |-- MANUAL_TESTING_PLAYBOOK.md     Test matrix root (21 scenarios)
+    |-- manual_testing_playbook.md     Test matrix root (21 scenarios)
     |-- 01--integration-scanner/       Scanner test scenarios
     |-- 02--profile-generator/         Profile generator tests
     |-- 03--5d-scorer/                 5-dimension scoring tests
@@ -406,4 +406,4 @@ Each dimension score (0-100) is multiplied by its weight, then summed: `structur
 
 ### Testing
 
-- [MANUAL_TESTING_PLAYBOOK.md](./manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md) — 21-scenario validation matrix
+- [manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) — 21-scenario validation matrix

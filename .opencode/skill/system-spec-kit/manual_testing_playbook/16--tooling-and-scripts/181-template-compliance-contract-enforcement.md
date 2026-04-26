@@ -55,7 +55,7 @@ Inspect template definitions in `templates/`; verify distributed-governance spec
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/](../../feature_catalog/16--tooling-and-scripts/)
 
 ---
@@ -64,5 +64,5 @@ Inspect template definitions in `templates/`; verify distributed-governance spec
 
 - Group: Tooling and Scripts
 - Playbook ID: 181
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/181-template-compliance-contract-enforcement.md`

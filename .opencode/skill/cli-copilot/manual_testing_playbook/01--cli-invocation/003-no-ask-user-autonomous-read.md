@@ -59,7 +59,7 @@ After PASS, re-run with a deliberately ambiguous prompt (e.g. "tell me about it"
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, `--no-ask-user` documented in §3 Core Invocation Pattern table |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, re-run with a deliberately ambiguous prompt (e.g. "tell me about it"
 
 - Group: CLI Invocation
 - Playbook ID: CP-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/003-no-ask-user-autonomous-read.md`

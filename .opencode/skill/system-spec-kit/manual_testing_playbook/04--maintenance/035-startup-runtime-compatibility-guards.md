@@ -54,7 +54,7 @@ Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatc
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [04--maintenance/02-startup-runtime-compatibility-guards.md](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md)
 
 ---
@@ -63,7 +63,7 @@ Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatc
 
 - Group: Maintenance
 - Playbook ID: EX-035
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--maintenance/035-startup-runtime-compatibility-guards.md`
 - audited_post_018: true
 - phase_018_change: post-018 audit verified against `mcp_server/startup-checks.ts`, `mcp_server/context-server.ts`, and `mcp_server/tests/startup-checks.vitest.ts`

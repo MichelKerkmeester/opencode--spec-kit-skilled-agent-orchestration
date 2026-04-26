@@ -57,7 +57,7 @@ Reconcile documentation drift if implementation exists; update the feature catal
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/07-ast-level-section-retrieval-tool.md](../../feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md)
 
 ---
@@ -66,5 +66,5 @@ Reconcile documentation drift if implementation exists; update the feature catal
 
 - Group: Retrieval
 - Playbook ID: 188
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/188-ast-level-section-retrieval-tool.md`

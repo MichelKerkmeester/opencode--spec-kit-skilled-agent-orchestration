@@ -54,7 +54,7 @@ Inspect `scripts/extractors/file-extractor.ts`, `diagram-extractor.ts`, `session
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/27-session-extraction-and-enrichment.md](../../feature_catalog/16--tooling-and-scripts/27-session-extraction-and-enrichment.md)
 
 ---
@@ -63,5 +63,5 @@ Inspect `scripts/extractors/file-extractor.ts`, `diagram-extractor.ts`, `session
 
 - Group: Tooling and Scripts
 - Playbook ID: 241
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/241-session-extraction-and-enrichment.md`

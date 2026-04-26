@@ -56,7 +56,7 @@ Inspect `tests/memory-save-ux-regressions.vitest.ts` and handler save-path wirin
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md](../../feature_catalog/18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md)
 
 ---
@@ -65,6 +65,6 @@ Inspect `tests/memory-save-ux-regressions.vitest.ts` and handler save-path wirin
 
 - Group: UX Hooks
 - Playbook ID: 104
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/104-mutation-save-path-ux-parity-and-no-op-hardening.md`
 - audited_post_018: true

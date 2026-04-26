@@ -190,7 +190,7 @@ Feature Catalog and Manual Testing Playbook creation handle package-level docume
 | Artifact | Root Document | Per-Feature Files |
 | --- | --- | --- |
 | Feature Catalog | `FEATURE_CATALOG.md` | One file per catalog entry, numbered categories |
-| Testing Playbook | `MANUAL_TESTING_PLAYBOOK.md` | One file per Feature ID, numbered categories |
+| Testing Playbook | `manual_testing_playbook.md` | One file per Feature ID, numbered categories |
 
 <!-- /ANCHOR:features -->
 

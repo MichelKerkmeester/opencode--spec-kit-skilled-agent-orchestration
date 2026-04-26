@@ -56,7 +56,7 @@ Verify snapshot comparison window → Check cap configuration → Inspect delta 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/05-graph-momentum-scoring.md](../../feature_catalog/10--graph-signal-activation/05-graph-momentum-scoring.md)
 
 ---
@@ -65,5 +65,5 @@ Verify snapshot comparison window → Check cap configuration → Inspect delta 
 
 - Group: Graph Signal Activation
 - Playbook ID: 020
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/020-graph-momentum-scoring-n2a.md`

@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-010` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Default Invocation, §4 ALWAYS rule 7) | Documents `medium` as the default and mandates explicit effort |
 | `../../references/cli_reference.md` (§5 Reasoning Effort Configuration) | Authoritative effort-level reference |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-010` and confirm the
 
 - Group: Reasoning Effort
 - Playbook ID: CX-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--reasoning-effort/002-medium-skill-default.md`

@@ -56,7 +56,7 @@ Check audit table schema → Verify trigger/hook on edge mutation → Inspect ro
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/04-weight-history-audit-tracking.md](../../feature_catalog/10--graph-signal-activation/04-weight-history-audit-tracking.md)
 
 ---
@@ -65,5 +65,5 @@ Check audit table schema → Verify trigger/hook on edge mutation → Inspect ro
 
 - Group: Graph Signal Activation
 - Playbook ID: 019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/019-weight-history-audit-tracking.md`

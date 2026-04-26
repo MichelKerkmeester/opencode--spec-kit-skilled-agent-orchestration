@@ -59,7 +59,7 @@ For full cross-repo plugin verification, dispatch with `--dir` pointing at a rea
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/opencode_tools.md` (§6 CROSS-REPO DISPATCH VIA --dir) | Documents the cross-repo capability |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For full cross-repo plugin verification, dispatch with `--dir` pointing at a rea
 
 - Group: Cross-Repo and Cross-Server
 - Playbook ID: CO-029
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--cross-repo-cross-server/001-cross-repo-dispatch.md`

@@ -59,7 +59,7 @@ For variant comparison, repeat the test with `--variant minimal` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§5 MODEL SELECTION) | Provider/model id table and variant flag mapping |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For variant comparison, repeat the test with `--variant minimal` and confirm the
 
 - Group: Multi-Provider
 - Playbook ID: CO-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--multi-provider/001-opencode-go-default-deepseek.md`

@@ -59,7 +59,7 @@ If you want extra signal, also confirm `jq -e '.stats.toolCallCount' /tmp/cg-015
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (output flag table in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra signal, also confirm `jq -e '.stats.toolCallCount' /tmp/cg-015
 
 - Group: Integration Patterns
 - Playbook ID: CG-015
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/002-json-output-processing-pipeline.md`

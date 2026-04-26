@@ -63,7 +63,7 @@ Start with the README examples, confirm the Markdown command maps `:auto` to the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -81,6 +81,6 @@ Start with the README examples, confirm the Markdown command maps `:auto` to the
 
 - Group: ENTRY POINTS AND MODES
 - Playbook ID: DRV-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--entry-points-and-modes/001-auto-mode-deep-review-kickoff.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

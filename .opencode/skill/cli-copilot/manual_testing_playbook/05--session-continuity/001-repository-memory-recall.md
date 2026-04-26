@@ -59,7 +59,7 @@ After PASS, additionally verify the recall call accurately quotes the **full** m
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Unique Copilot Capabilities row "Repo Memory" |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, additionally verify the recall call accurately quotes the **full** m
 
 - Group: Session Continuity
 - Playbook ID: CP-013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/001-repository-memory-recall.md`

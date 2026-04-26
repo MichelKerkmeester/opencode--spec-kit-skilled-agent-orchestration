@@ -56,7 +56,7 @@ Inspect `scripts/evals/map-ground-truth-ids.ts`, `scripts/evals/run-ablation.ts`
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/21-eval-runner-cli.md](../../feature_catalog/16--tooling-and-scripts/21-eval-runner-cli.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `scripts/evals/map-ground-truth-ids.ts`, `scripts/evals/run-ablation.ts`
 
 - Group: Tooling and Scripts
 - Playbook ID: 235
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/235-eval-runner-cli.md`

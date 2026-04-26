@@ -58,7 +58,7 @@ Inspect `memory-save.ts` ordering and retry path; verify pending-path generation
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/18-atomic-write-then-index-api.md](../../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `memory-save.ts` ordering and retry path; verify pending-path generation
 
 - Group: Pipeline Architecture
 - Playbook ID: 203
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/203-atomic-write-then-index-api.md`

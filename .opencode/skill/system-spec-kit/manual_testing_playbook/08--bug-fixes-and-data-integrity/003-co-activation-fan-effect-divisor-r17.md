@@ -56,7 +56,7 @@ Check fan-effect divisor formula → Verify degree count accuracy → Inspect co
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md](../../feature_catalog/08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md)
 
 ---
@@ -65,5 +65,5 @@ Check fan-effect divisor formula → Verify degree count accuracy → Inspect co
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/003-co-activation-fan-effect-divisor-r17.md`

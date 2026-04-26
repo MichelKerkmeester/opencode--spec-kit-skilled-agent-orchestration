@@ -54,7 +54,7 @@ Check feature flag governance section
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/06-6-debug-and-telemetry.md](../../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md)
 
 ---
@@ -63,5 +63,5 @@ Check feature flag governance section
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-033
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/033-6-debug-and-telemetry.md`

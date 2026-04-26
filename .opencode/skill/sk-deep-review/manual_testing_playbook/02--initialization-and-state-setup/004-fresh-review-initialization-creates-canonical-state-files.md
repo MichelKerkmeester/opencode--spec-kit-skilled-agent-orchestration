@@ -63,7 +63,7 @@ Check both YAML variants, verify the JSONL init step writes a config record, con
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -82,6 +82,6 @@ Check both YAML variants, verify the JSONL init step writes a config record, con
 
 - Group: INITIALIZATION AND STATE SETUP
 - Playbook ID: DRV-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--initialization-and-state-setup/004-fresh-review-initialization-creates-canonical-state-files.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

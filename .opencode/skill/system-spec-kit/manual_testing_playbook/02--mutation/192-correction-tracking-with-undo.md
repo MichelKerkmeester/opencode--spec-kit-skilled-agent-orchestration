@@ -60,7 +60,7 @@ Confirm `SPECKIT_RELATIONS` is enabled; verify the correction row captured the e
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/09-correction-tracking-with-undo.md](../../feature_catalog/02--mutation/09-correction-tracking-with-undo.md)
 
 ---
@@ -69,5 +69,5 @@ Confirm `SPECKIT_RELATIONS` is enabled; verify the correction row captured the e
 
 - Group: Mutation
 - Playbook ID: 192
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/192-correction-tracking-with-undo.md`

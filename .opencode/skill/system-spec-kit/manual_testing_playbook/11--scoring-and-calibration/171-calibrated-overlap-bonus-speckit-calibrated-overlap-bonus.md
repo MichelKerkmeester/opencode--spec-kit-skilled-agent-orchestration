@@ -58,7 +58,7 @@ Verify isCalibratedOverlapBonusEnabled() → Confirm flag is not forced off → 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `shared/algorithms/rrf-fusion.ts`
@@ -69,5 +69,5 @@ Verify isCalibratedOverlapBonusEnabled() → Confirm flag is not forced off → 
 
 - Group: Scoring and calibration
 - Playbook ID: 171
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/171-calibrated-overlap-bonus-speckit-calibrated-overlap-bonus.md`

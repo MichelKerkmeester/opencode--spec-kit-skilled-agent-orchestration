@@ -254,6 +254,76 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
 <!-- /ANCHOR:rollback -->
 
 ---
+<!-- ANCHOR:ai-protocol -->
+## 8. AI EXECUTION PROTOCOL
+
+This section defines the four operator-facing AI execution components required for Level 3 packets: Pre-Task Checklist, Execution Rules, Status Reporting Format, and Blocked Task Protocol. The protocol applies to every `@write` dispatch in Phase 2 (Wave 1 and Wave 2) and to every validation pass in Phase 3.
+
+### 8.1 Pre-Task Checklist
+
+Before each `@write` dispatch (T010, T011, T012, T030, T031), the orchestrating agent MUST confirm:
+
+- [ ] Spec folder `048-cli-testing-playbooks/` is the active spec context (Gate 3 answered)
+- [ ] Target CLI skill folder exists at `.opencode/skill/<cli>/`
+- [ ] Target CLI skill has no pre-existing `manual_testing_playbook/` (verified by `ls`)
+- [ ] Frozen taxonomy from `decision-record.md` ADR-001/ADR-002/ADR-003 is loaded into the dispatch brief
+- [ ] Templates at `.opencode/skill/sk-doc/assets/documentation/testing_playbook/` are unchanged from session start (checksum)
+- [ ] `@write` agent confirmed available (no nested-dispatch attempt)
+
+Before each Phase 3 validation invocation (T015–T020, T035–T040, T050–T055), the orchestrating agent MUST confirm:
+
+- [ ] All target playbooks for the wave have been written (file count matches plan)
+- [ ] Validator scripts (`validate_document.py`, spec-folder `validate.sh`) are reachable
+- [ ] No mid-wave dispatches are still in flight (parallel writes settled)
+
+### 8.2 Execution Rules
+
+The TASK-SEQ + TASK-SCOPE rules below govern every Phase 2 / Phase 3 task in this packet:
+
+| Rule ID | Rule | Applies to |
+|---------|------|------------|
+| TASK-SEQ-01 | Phase 1 (Setup) MUST complete before any Phase 2 dispatch | T001–T007 |
+| TASK-SEQ-02 | Wave 1 validation (T015–T020) MUST complete before Wave 2 dispatch | T010–T020 → T030–T031 |
+| TASK-SEQ-03 | All Phase 2 outputs MUST exist before Phase 3 close-out (T050–T055) | Phase 2 → Phase 3 |
+| TASK-SCOPE-01 | `@write` dispatches MUST stay within `.opencode/skill/<cli>/manual_testing_playbook/` | T010, T011, T012, T030, T031 |
+| TASK-SCOPE-02 | No CLI skill SKILL.md / references / assets may be modified | All Phase 2 tasks |
+| TASK-SCOPE-03 | Spec folder writes (this packet) MUST stay inside `048-cli-testing-playbooks/` | All tasks |
+| TASK-SCOPE-04 | Validator failures trigger fix-and-revalidate within the wave; do NOT advance to next phase | T015, T035, T051 |
+| TASK-PARALLEL-01 | Wave 1 tasks T010–T012 may run in parallel; Wave 2 tasks T030–T031 may run in parallel | Wave dispatches |
+| TASK-PARALLEL-02 | Validation tasks within a single wave (T015–T018 / T035–T038) may interleave | Wave validation |
+
+### 8.3 Status Reporting Format
+
+Every dispatched task MUST return a single-line status report in this format, appended to `implementation-summary.md` under the Phase ledger:
+
+```
+[<TASK-ID>] <STATUS> | <CLI or scope> | files=<N> | validator=<exit-code> | duration=<wall-clock> | notes=<short>
+```
+
+Where `STATUS` is one of: `DONE`, `PARTIAL`, `BLOCKED`, `FAILED`. Example:
+
+```
+[T010] DONE | cli-gemini | files=18 | validator=0 | duration=24m | notes=18 per-feature files, all 4 validators pass
+[T015] DONE | wave-1 | files=3 | validator=0 | duration=5m | notes=cli-gemini cli-claude-code cli-codex root playbooks pass
+[T030] PARTIAL | cli-copilot | files=21 | validator=1 | duration=31m | notes=2 per-feature files missing failure-triage column
+```
+
+Aggregate status MUST be summarised in `implementation-summary.md` after each wave; final summary lands in §Wave Reports.
+
+### 8.4 Blocked Task Protocol
+
+When a task cannot proceed, the BLOCKED Task Protocol applies:
+
+1. **Mark BLOCKED**: Set task status `[B]` in `tasks.md` with a one-line reason on the same line.
+2. **Capture evidence**: Write the failing command, error, or missing dependency into `implementation-summary.md` under §Blockers.
+3. **Halt wave**: Do NOT dispatch downstream Phase 2 / Phase 3 work that depends on the BLOCKED item.
+4. **Escalate**: Surface the blocker to the spec owner via the next status report; include proposed unblock options (A/B/C).
+5. **Resume**: Once unblocked, mark the task `[ ]` again, log the resolution in `decision-record.md` if architectural, and re-dispatch.
+
+Recovery flow: a BLOCKED Phase 2 dispatch (e.g. `@write` unavailable) falls back to hand-craft to the same template contract — see §6 Dependencies "Impact if Blocked" column for per-dependency recovery.
+<!-- /ANCHOR:ai-protocol -->
+
+---
 
 ## L2: PHASE DEPENDENCIES
 

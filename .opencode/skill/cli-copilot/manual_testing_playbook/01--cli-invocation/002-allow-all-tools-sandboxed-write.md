@@ -59,7 +59,7 @@ After PASS, run `cat /tmp/cp-002-sandbox/hello-copilot.md | wc -c` and confirm t
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, `--allow-all-tools` documented in §3 Core Invocation Pattern |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, run `cat /tmp/cp-002-sandbox/hello-copilot.md | wc -c` and confirm t
 
 - Group: CLI Invocation
 - Playbook ID: CP-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/002-allow-all-tools-sandboxed-write.md`

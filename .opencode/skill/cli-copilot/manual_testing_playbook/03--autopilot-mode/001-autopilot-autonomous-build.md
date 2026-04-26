@@ -59,7 +59,7 @@ After PASS, inspect the Autopilot transcript for any sequencing oddities (e.g. s
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation row "Autonomous Build" uses `--allow-all-tools` |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, inspect the Autopilot transcript for any sequencing oddities (e.g. s
 
 - Group: Autopilot Mode
 - Playbook ID: CP-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--autopilot-mode/001-autopilot-autonomous-build.md`

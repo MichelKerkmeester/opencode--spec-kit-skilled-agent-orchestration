@@ -61,7 +61,7 @@ Operators run the exact prompt and command sequence for `CX-007` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary. Root §5 marks this scenario destructive |
+| `manual_testing_playbook.md` | Root directory page and scenario summary. Root §5 marks this scenario destructive |
 | `../../SKILL.md` (§4 NEVER rule 1, §4 ESCALATE rule 4) | Forbids danger-full-access without user approval |
 | `../../references/cli_reference.md` (§10 Sandbox Modes) | Documents danger-full-access semantics |
 | `../../references/integration_patterns.md` (§12 Anti-Pattern 2) | Documents the danger-full-access + never-approval anti-pattern |
@@ -79,5 +79,5 @@ Operators run the exact prompt and command sequence for `CX-007` and confirm the
 
 - Group: Sandbox Modes
 - Playbook ID: CX-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--sandbox-modes/003-danger-full-access-sandbox.md`

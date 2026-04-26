@@ -78,7 +78,7 @@ Stored response payloads from steps 3, 5, 9, 10, 13; the diff texts from steps 2
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/04-detect-changes-preflight.md](../../feature_catalog/03--discovery/04-detect-changes-preflight.md)
 
 ---
@@ -87,7 +87,7 @@ Stored response payloads from steps 3, 5, 9, 10, 13; the diff texts from steps 2
 
 - Group: Discovery
 - Playbook ID: EX-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--discovery/014-detect-changes-preflight.md`
 - Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes` (P1 stale/fresh) + `026/010/007-review-remediation` T-D (R-007-3 path traversal + R-007-4 multi-file boundary)
 - Research basis: pt-02 §11 Packet 1, §12 RISK-03; 010/007/T-D R-007-3 + R-007-4

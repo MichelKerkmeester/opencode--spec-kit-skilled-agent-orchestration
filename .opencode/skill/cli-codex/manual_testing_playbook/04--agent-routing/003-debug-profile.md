@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-014` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 @debug) | Documents the debug profile contract |
 | `../../references/cli_reference.md` (§9 Configuration Files) | Profile config syntax |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-014` and confirm the
 
 - Group: Agent Routing
 - Playbook ID: CX-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/003-debug-profile.md`

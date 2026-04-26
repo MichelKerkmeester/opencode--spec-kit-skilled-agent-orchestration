@@ -55,7 +55,7 @@ Inspect run-ID generation logic; verify upsert idempotency; check boundary guard
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md)
 
 ---
@@ -64,6 +64,6 @@ Inspect run-ID generation logic; verify upsert idempotency; check boundary guard
 
 - Group: Evaluation and Measurement
 - Playbook ID: 082
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/082-evaluation-and-housekeeping-fixes.md`
 - audited_post_018: true

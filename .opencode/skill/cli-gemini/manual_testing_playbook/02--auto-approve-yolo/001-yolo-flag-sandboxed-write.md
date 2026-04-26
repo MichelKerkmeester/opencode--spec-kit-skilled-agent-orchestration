@@ -61,7 +61,7 @@ If you want belt-and-braces, also assert that `find /tmp/cg-004-sandbox -type f 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary (destructive scenario isolation rule) |
+| `manual_testing_playbook.md` | Root directory page and scenario summary (destructive scenario isolation rule) |
 | `../../SKILL.md` | cli-gemini skill surface (NEVER rule on `--yolo` in §4 RULES) |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ If you want belt-and-braces, also assert that `find /tmp/cg-004-sandbox -type f 
 
 - Group: Auto-Approve / YOLO
 - Playbook ID: CG-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--auto-approve-yolo/001-yolo-flag-sandboxed-write.md`

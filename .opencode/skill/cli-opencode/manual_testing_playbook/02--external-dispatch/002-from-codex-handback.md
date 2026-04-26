@@ -62,7 +62,7 @@ For routing verification, repeat the test with a prompt that intentionally names
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§2 USE CASE 1 + §5 SMART-ROUTER DECISION TREE) | Use case 1 contract and routing logic |
 
 ### Implementation And Test Anchors
@@ -78,5 +78,5 @@ For routing verification, repeat the test with a prompt that intentionally names
 
 - Group: External Dispatch
 - Playbook ID: CO-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--external-dispatch/002-from-codex-handback.md`

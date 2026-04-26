@@ -57,7 +57,7 @@ After PASS, additionally compare the *content* of both responses: the xhigh resp
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Reasoning Effort table and per-model defaults. Documents that no CLI flag exists |
 
 ### Implementation And Test Anchors
@@ -73,5 +73,5 @@ After PASS, additionally compare the *content* of both responses: the xhigh resp
 
 - Group: Multi-Model
 - Playbook ID: CP-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--multi-model/004-reasoning-effort-config-tuning.md`

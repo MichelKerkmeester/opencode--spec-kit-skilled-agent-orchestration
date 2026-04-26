@@ -57,7 +57,7 @@ Verify similarity threshold, retrievable-row predicates, and penalty formula in 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/03-interference-scoring.md](../../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md)
 
 ---
@@ -66,5 +66,5 @@ Verify similarity threshold, retrievable-row predicates, and penalty formula in 
 
 - Group: Scoring and Calibration
 - Playbook ID: 025
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/025-interference-scoring-tm-01.md`

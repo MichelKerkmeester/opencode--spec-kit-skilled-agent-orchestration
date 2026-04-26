@@ -53,7 +53,7 @@ Inspect hook exports and fixture payloads if assertion fails
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/05-dedicated-ux-hook-modules.md](../../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md)
 
 ---
@@ -62,6 +62,6 @@ Inspect hook exports and fixture payloads if assertion fails
 
 - Group: UX Hooks
 - Playbook ID: 103
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/103-ux-hook-module-coverage-mutation-feedback-response-hints.md`
 - audited_post_018: true

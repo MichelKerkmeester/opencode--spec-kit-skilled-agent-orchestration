@@ -57,7 +57,7 @@ Inspect `scripts/spec/recommend-level.sh`, `scripts/tests/test-upgrade-level.sh`
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/23-spec-lifecycle-automation.md](../../feature_catalog/16--tooling-and-scripts/23-spec-lifecycle-automation.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `scripts/spec/recommend-level.sh`, `scripts/tests/test-upgrade-level.sh`
 
 - Group: Tooling and Scripts
 - Playbook ID: 237
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/237-spec-lifecycle-automation.md`

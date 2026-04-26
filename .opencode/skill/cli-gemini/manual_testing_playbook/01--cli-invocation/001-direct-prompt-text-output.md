@@ -59,7 +59,7 @@ If Step 2 succeeds but stdout looks suspiciously short, re-run with `-d` (debug)
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (baseline invocation pattern in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If Step 2 succeeds but stdout looks suspiciously short, re-run with `-d` (debug)
 
 - Group: CLI Invocation
 - Playbook ID: CG-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/001-direct-prompt-text-output.md`

@@ -59,7 +59,7 @@ For `@debug` coverage: `references/agent_delegation.md` §3 routes `@debug` thro
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (agent routing table in §3 HOW IT WORKS, including the Task-tool note for @debug) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For `@debug` coverage: `references/agent_delegation.md` §3 routes `@debug` thro
 
 - Group: Agent Routing
 - Playbook ID: CG-013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/004-write-and-ultra-think-roster-coverage.md`

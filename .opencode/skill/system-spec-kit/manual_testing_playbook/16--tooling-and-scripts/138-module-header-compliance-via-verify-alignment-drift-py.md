@@ -56,7 +56,7 @@ Check for new .ts files without MODULE: header → Add 3-line header block → R
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 
 ---
@@ -65,5 +65,5 @@ Check for new .ts files without MODULE: header → Add 3-line header block → R
 
 - Group: Tooling and Scripts
 - Playbook ID: 138
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/138-module-header-compliance-via-verify-alignment-drift-py.md`

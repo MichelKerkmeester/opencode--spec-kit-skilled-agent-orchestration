@@ -59,7 +59,7 @@ After PASS, run the orchestrator-side functional verification: `python3 -c "impo
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation supports per-call model switching |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, run the orchestrator-side functional verification: `python3 -c "impo
 
 - Group: Integration Patterns
 - Playbook ID: CP-015
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/001-cross-ai-generate-review-fix.md`

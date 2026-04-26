@@ -59,7 +59,7 @@ Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitializat
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/17-cross-process-db-hot-rebinding.md](../../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md)
 
 ---
@@ -68,5 +68,5 @@ Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitializat
 
 - Group: Pipeline Architecture
 - Playbook ID: 112
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/112-cross-process-db-hot-rebinding.md`

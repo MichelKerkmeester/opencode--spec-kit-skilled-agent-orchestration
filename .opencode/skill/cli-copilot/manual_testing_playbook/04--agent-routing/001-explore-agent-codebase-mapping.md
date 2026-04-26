@@ -59,7 +59,7 @@ After PASS, sanity-check that Copilot's per-file purposes actually match the doc
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation row "Codebase Exploration: @Explore" |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, sanity-check that Copilot's per-file purposes actually match the doc
 
 - Group: Agent Routing
 - Playbook ID: CP-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/001-explore-agent-codebase-mapping.md`

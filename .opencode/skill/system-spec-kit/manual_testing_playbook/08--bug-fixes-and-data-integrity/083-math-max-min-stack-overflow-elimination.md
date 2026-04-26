@@ -56,7 +56,7 @@ Verify all Math.max/min spread calls have been replaced; check array size at all
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md)
 
 ---
@@ -65,5 +65,5 @@ Verify all Math.max/min spread calls have been replaced; check array size at all
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 083
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/083-math-max-min-stack-overflow-elimination.md`

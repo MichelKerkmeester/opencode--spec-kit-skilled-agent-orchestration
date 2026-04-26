@@ -14,7 +14,7 @@ This document combines the full manual-validation contract for the `cli-copilot`
 This playbook package adopts the Feature Catalog split-document pattern for the `cli-copilot` skill. The root document acts as the directory, review surface and orchestration guide, while per-feature execution detail lives in the numbered category folders at the playbook root.
 
 Canonical package artifacts:
-- `MANUAL_TESTING_PLAYBOOK.md`
+- `manual_testing_playbook.md`
 - `01--cli-invocation/`
 - `02--multi-model/`
 - `03--autopilot-mode/`
@@ -114,7 +114,7 @@ Coverage note (2026-04-26): the playbook covers cli-copilot's documented behavio
 
 ### Inputs Required
 
-1. `MANUAL_TESTING_PLAYBOOK.md`
+1. `manual_testing_playbook.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence (command transcripts, captured `/tmp/cp-NNN*` artifacts, concurrency-cap probe outputs)
 4. Feature-to-scenario coverage map (the §16 FEATURE FILE INDEX)

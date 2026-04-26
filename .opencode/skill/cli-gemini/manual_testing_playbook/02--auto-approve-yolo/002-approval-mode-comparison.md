@@ -59,7 +59,7 @@ If you want a third data point, repeat with `--approval-mode always` and a fresh
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (approval-mode references in §3 HOW IT WORKS and §4 RULES) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want a third data point, repeat with `--approval-mode always` and a fresh
 
 - Group: Auto-Approve / YOLO
 - Playbook ID: CG-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--auto-approve-yolo/002-approval-mode-comparison.md`

@@ -60,7 +60,7 @@ For operators in environments with a running remote OpenCode server, optionally 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/opencode_tools.md` (§6 CROSS-REPO DISPATCH, extended cross-server note) | Cross-server documentation |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For operators in environments with a running remote OpenCode server, optionally 
 
 - Group: Cross-Repo and Cross-Server
 - Playbook ID: CO-030
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--cross-repo-cross-server/002-attach-remote-server.md`

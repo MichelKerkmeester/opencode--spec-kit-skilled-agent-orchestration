@@ -59,7 +59,7 @@ After PASS, repeat with an even more ambiguous prompt (e.g. "tell me about the f
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, `--no-ask-user` documented in §3 Core Invocation Pattern |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, repeat with an even more ambiguous prompt (e.g. "tell me about the f
 
 - Group: Autopilot Mode
 - Playbook ID: CP-009
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--autopilot-mode/002-no-ask-user-autonomy-contract.md`

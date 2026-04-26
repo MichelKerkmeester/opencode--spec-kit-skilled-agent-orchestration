@@ -59,7 +59,7 @@ If the structural keyword count is low but the response is otherwise good, the p
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` | Context agent details (section 4) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If the structural keyword count is low but the response is otherwise good, the p
 
 - Group: Agent Routing
 - Playbook ID: CC-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/001-context-agent-codebase-exploration.md`

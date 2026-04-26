@@ -56,7 +56,7 @@ Re-check the dead-code audit list against the codebase; inspect string-based ref
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/04-dead-code-removal.md](../../feature_catalog/16--tooling-and-scripts/04-dead-code-removal.md)
 
 ---
@@ -65,5 +65,5 @@ Re-check the dead-code audit list against the codebase; inspect string-based ref
 
 - Group: Tooling and Scripts
 - Playbook ID: 070
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/070-dead-code-removal.md`

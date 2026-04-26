@@ -61,7 +61,7 @@ Inspect similarity threshold constants; verify contradiction detection logic; ch
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/08-prediction-error-save-arbitration.md](../../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md)
 
 ---
@@ -70,5 +70,5 @@ Inspect similarity threshold constants; verify contradiction detection logic; ch
 
 - Group: Mutation
 - Playbook ID: 110
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--mutation/110-prediction-error-save-arbitration.md`

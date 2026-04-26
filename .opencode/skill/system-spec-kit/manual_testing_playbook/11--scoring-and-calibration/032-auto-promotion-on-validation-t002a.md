@@ -56,7 +56,7 @@ Verify promotion threshold configuration → Check throttle window duration → 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md)
 
 ---
@@ -65,5 +65,5 @@ Verify promotion threshold configuration → Check throttle window duration → 
 
 - Group: Scoring and Calibration
 - Playbook ID: 032
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/032-auto-promotion-on-validation-t002a.md`

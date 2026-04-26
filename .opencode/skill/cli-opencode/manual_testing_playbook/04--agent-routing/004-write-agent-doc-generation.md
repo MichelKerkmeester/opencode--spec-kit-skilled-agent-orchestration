@@ -60,7 +60,7 @@ For full sk-doc validation, run `python3 .opencode/skill/sk-doc/scripts/validate
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 write agent property table + §4 routing matrix) | Write agent documentation |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For full sk-doc validation, run `python3 .opencode/skill/sk-doc/scripts/validate
 
 - Group: Agent Routing
 - Playbook ID: CO-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/004-write-agent-doc-generation.md`

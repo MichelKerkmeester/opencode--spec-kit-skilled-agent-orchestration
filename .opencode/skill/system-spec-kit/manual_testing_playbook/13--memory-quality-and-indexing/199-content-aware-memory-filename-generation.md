@@ -58,7 +58,7 @@ Inspect `preferredMemoryTask` selection in workflow orchestration; verify sessio
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `preferredMemoryTask` selection in workflow orchestration; verify sessio
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 199
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/199-content-aware-memory-filename-generation.md`

@@ -60,7 +60,7 @@ For template coverage, repeat with TEMPLATE 11 (Doc generation via @WRITE) popul
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_templates.md` (TEMPLATE 5: CODE REVIEW) | The template being applied |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For template coverage, repeat with TEMPLATE 11 (Doc generation via @WRITE) popul
 
 - Group: Prompt Templates
 - Playbook ID: CO-025
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/003-template-applied-to-real-dispatch.md`

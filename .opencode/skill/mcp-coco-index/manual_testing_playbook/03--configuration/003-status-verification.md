@@ -43,7 +43,7 @@ Operators run the exact prompt and command sequence for `CFG-003` and confirm th
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 
 
 ---
@@ -52,5 +52,5 @@ Operators run the exact prompt and command sequence for `CFG-003` and confirm th
 
 - Group: Configuration
 - Playbook ID: CFG-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--configuration/003-status-verification.md`

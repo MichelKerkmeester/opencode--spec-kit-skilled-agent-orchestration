@@ -58,7 +58,7 @@ Inspect `context-server.ts`, `lib/providers/embeddings.ts`, and `../shared/embed
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md](../../feature_catalog/21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `context-server.ts`, `lib/providers/embeddings.ts`, and `../shared/embed
 
 - Group: Implement and Remove Deprecated Features
 - Playbook ID: 229
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/229-lazy-loading-migration.md`

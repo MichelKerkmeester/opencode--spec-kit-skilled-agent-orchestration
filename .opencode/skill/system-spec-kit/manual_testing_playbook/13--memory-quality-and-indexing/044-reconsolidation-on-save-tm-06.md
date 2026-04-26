@@ -124,7 +124,7 @@ Verify BM25 error path after commit → Check `setBm25RepairNeededFlag()` execut
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/06-reconsolidation-on-save.md](../../feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md)
 
 ---
@@ -133,5 +133,5 @@ Verify BM25 error path after commit → Check `setBm25RepairNeededFlag()` execut
 
 - Group: Memory Quality and Indexing
 - Playbook ID: 044
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/044-reconsolidation-on-save-tm-06.md`

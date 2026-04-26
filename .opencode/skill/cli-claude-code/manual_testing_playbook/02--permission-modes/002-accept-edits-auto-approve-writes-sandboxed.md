@@ -60,7 +60,7 @@ After the test, restore the scratch file to its original defective state via the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Permission mode flags (section 5) |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ After the test, restore the scratch file to its original defective state via the
 
 - Group: Permission Modes
 - Playbook ID: CC-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--permission-modes/002-accept-edits-auto-approve-writes-sandboxed.md`

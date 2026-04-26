@@ -58,7 +58,7 @@ Verify parent folder contains child folders matching `[0-9][0-9][0-9]-*/` patter
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 
 ---
@@ -67,5 +67,5 @@ Verify parent folder contains child folders matching `[0-9][0-9][0-9]-*/` patter
 
 - Group: Tooling and Scripts
 - Playbook ID: PHASE-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/003-recursive-phase-validation.md`

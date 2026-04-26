@@ -58,7 +58,7 @@ Validate IDs and relation type -> normalize path references before indexing -> i
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/01-causal-edge-creation-memorycausallink.md](../../feature_catalog/06--analysis/01-causal-edge-creation-memorycausallink.md)
 
 ---
@@ -67,5 +67,5 @@ Validate IDs and relation type -> normalize path references before indexing -> i
 
 - Group: Analysis
 - Playbook ID: EX-019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--analysis/019-causal-edge-creation-memory-causal-link.md`

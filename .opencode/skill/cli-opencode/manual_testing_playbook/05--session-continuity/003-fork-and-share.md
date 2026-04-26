@@ -60,7 +60,7 @@ For state-directory verification, list `~/.opencode/state/<SID1>/` and `~/.openc
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `--fork` + `--share` rows + §8 STATE LOCATION AND SHARE URLS) | Fork and share URL contract documentation |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For state-directory verification, list `~/.opencode/state/<SID1>/` and `~/.openc
 
 - Group: Session Continuity
 - Playbook ID: CO-020
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `05--session-continuity/003-fork-and-share.md`

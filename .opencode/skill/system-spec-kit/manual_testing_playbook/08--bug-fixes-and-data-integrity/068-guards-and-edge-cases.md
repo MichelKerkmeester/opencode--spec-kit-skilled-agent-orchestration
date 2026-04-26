@@ -56,7 +56,7 @@ Identify specific edge cases from Sprint 8 changelog; verify guard condition log
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md](../../feature_catalog/08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md)
 
 ---
@@ -65,5 +65,5 @@ Identify specific edge cases from Sprint 8 changelog; verify guard condition log
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 068
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/068-guards-and-edge-cases.md`

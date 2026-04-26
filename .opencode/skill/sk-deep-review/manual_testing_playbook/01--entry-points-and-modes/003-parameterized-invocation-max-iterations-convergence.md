@@ -63,7 +63,7 @@ Cross-reference the quick reference parameter table with the YAML `step_create_c
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -82,6 +82,6 @@ Cross-reference the quick reference parameter table with the YAML `step_create_c
 
 - Group: ENTRY POINTS AND MODES
 - Playbook ID: DRV-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--entry-points-and-modes/003-parameterized-invocation-max-iterations-convergence.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

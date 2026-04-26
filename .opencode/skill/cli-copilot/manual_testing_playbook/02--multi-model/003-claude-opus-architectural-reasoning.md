@@ -59,7 +59,7 @@ After PASS, look for whether Copilot framed its recommendation against the speci
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, Model Selection table in §3 includes `claude-opus-4.7` |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ After PASS, look for whether Copilot framed its recommendation against the speci
 
 - Group: Multi-Model
 - Playbook ID: CP-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--multi-model/003-claude-opus-architectural-reasoning.md`

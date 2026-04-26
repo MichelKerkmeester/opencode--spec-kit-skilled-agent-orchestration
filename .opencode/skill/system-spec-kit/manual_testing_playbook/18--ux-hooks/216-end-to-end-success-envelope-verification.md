@@ -56,7 +56,7 @@ Inspect `context-server.ts`, `hooks/index.ts`, and `hooks/response-hints.ts` if 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md)
 
 ---
@@ -65,7 +65,7 @@ Inspect `context-server.ts`, `hooks/index.ts`, and `hooks/response-hints.ts` if 
 
 - Group: UX Hooks
 - Playbook ID: 216
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/216-end-to-end-success-envelope-verification.md`
 - audited_post_018: true
 - Feature catalog back-ref: `18--ux-hooks/13-end-to-end-success-envelope-verification.md`

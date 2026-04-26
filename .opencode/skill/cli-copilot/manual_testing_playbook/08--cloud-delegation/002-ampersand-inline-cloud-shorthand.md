@@ -59,7 +59,7 @@ After PASS, compare the response duration against CP-020's duration. The two sho
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-copilot skill surface, §3 Copilot CLI Agent Delegation row "Cloud Delegation" includes `&prompt` shorthand |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ After PASS, compare the response duration against CP-020's duration. The two sho
 
 - Group: Cloud Delegation
 - Playbook ID: CP-021
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--cloud-delegation/002-ampersand-inline-cloud-shorthand.md`

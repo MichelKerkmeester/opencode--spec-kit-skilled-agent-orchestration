@@ -337,7 +337,7 @@ python scripts/package_skill.py skill-path        # Package skill
 ### Playbook Layout
 | File | Content |
 |------|---------|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory playbook, integrated review/orchestration guidance, summary blocks, and cross-references |
+| `manual_testing_playbook.md` | Root directory playbook, integrated review/orchestration guidance, summary blocks, and cross-references |
 | `NN--category-name/*.md` | Required per-feature scenario files referenced from the root playbook |
 
 ### Quick Steps

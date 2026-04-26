@@ -59,7 +59,7 @@ If you want a stricter parallelism check, capture single-call elapsed time once 
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (background-execution example in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want a stricter parallelism check, capture single-call elapsed time once 
 
 - Group: Integration Patterns
 - Playbook ID: CG-016
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/003-background-execution-parallel.md`

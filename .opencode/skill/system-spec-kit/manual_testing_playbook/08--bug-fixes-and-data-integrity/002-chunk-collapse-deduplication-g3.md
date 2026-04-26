@@ -56,7 +56,7 @@ Check chunk parentId linkage → Verify dedup runs after collapse stage → Insp
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md)
 
 ---
@@ -65,5 +65,5 @@ Check chunk parentId linkage → Verify dedup runs after collapse stage → Insp
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/002-chunk-collapse-deduplication-g3.md`

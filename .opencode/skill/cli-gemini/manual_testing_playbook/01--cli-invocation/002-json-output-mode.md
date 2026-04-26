@@ -59,7 +59,7 @@ If `.toolCalls` is present, spot-check that each entry has `name` and `args` fie
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (output flag table in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If `.toolCalls` is present, spot-check that each entry has `name` and `args` fie
 
 - Group: CLI Invocation
 - Playbook ID: CG-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/002-json-output-mode.md`

@@ -60,7 +60,7 @@ For end-to-end continuity validation, after extracting the JSON payload, save it
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_templates.md` (TEMPLATE 13: Memory Epilogue) | Canonical Memory Epilogue body |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For end-to-end continuity validation, after extracting the JSON payload, save it
 
 - Group: Integration Patterns
 - Playbook ID: CO-022
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--integration-patterns/002-memory-epilogue-handback.md`

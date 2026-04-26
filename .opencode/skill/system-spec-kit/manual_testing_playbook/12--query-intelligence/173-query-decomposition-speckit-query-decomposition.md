@@ -58,7 +58,7 @@ Verify isQueryDecompositionEnabled() → Confirm flag is not forced off → Chec
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/10-query-decomposition.md](../../feature_catalog/12--query-intelligence/10-query-decomposition.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 - Source file: `mcp_server/lib/search/query-decomposer.ts`
@@ -69,5 +69,5 @@ Verify isQueryDecompositionEnabled() → Confirm flag is not forced off → Chec
 
 - Group: Query Intelligence
 - Playbook ID: 173
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `12--query-intelligence/173-query-decomposition-speckit-query-decomposition.md`

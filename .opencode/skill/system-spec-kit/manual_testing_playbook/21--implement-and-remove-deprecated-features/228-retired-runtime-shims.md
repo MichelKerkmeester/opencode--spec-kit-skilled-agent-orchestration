@@ -58,7 +58,7 @@ Inspect `shared/embeddings.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/01-category-stub.md](../../feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `shared/embeddings.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/
 
 - Group: Implement and Remove Deprecated Features
 - Playbook ID: 228
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/228-retired-runtime-shims.md`

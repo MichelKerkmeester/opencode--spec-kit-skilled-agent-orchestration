@@ -59,7 +59,7 @@ For multi-file attachments, repeat the test passing `-f /tmp/co-004-a.ts -f /tmp
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `-f`/`--file` row in flag table) | Documents the file attachment contract |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For multi-file attachments, repeat the test passing `-f /tmp/co-004-a.ts -f /tmp
 
 - Group: CLI Invocation
 - Playbook ID: CO-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/004-file-attachment-via-f-flag.md`

@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-023` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/codex_tools.md` (§2 /review Command) | Authoritative /review documentation |
 | `../../references/cli_reference.md` (§7 Interactive Commands) | Documents TUI slash commands |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-023` and confirm the
 
 - Group: Built-in Tools
 - Playbook ID: CX-023
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--built-in-tools/001-review-tui-command.md`

@@ -57,7 +57,7 @@ Inspect `scripts/evals/map-ground-truth-ids.ts`, `run-ablation.ts`, `run-bm25-ba
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md](../../feature_catalog/16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `scripts/evals/map-ground-truth-ids.ts`, `run-ablation.ts`, `run-bm25-ba
 
 - Group: Tooling and Scripts
 - Playbook ID: 245
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/245-evaluation-benchmark-and-import-policy-tooling.md`

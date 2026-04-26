@@ -48,7 +48,7 @@ verify `memory_context` resume mode routes correctly; broaden anchors on fallbac
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 
 ---
@@ -57,5 +57,5 @@ verify `memory_context` resume mode routes correctly; broaden anchors on fallbac
 
 - Group: Retrieval
 - Playbook ID: M-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/001-context-recovery-and-continuation.md`

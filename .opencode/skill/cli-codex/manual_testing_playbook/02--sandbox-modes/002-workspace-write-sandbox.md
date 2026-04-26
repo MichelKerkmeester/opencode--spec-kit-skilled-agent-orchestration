@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-006` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§4 ALWAYS rule 3) | Mandates `--sandbox workspace-write` for generation/modification |
 | `../../references/cli_reference.md` (§10 Sandbox Modes) | Documents workspace-write semantics |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-006` and confirm the
 
 - Group: Sandbox Modes
 - Playbook ID: CX-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--sandbox-modes/002-workspace-write-sandbox.md`

@@ -54,7 +54,7 @@ Verify taskId matches preflight
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/06-post-task-learning-measurement-taskpostflight.md](../../feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md)
 
 ---
@@ -63,5 +63,5 @@ Verify taskId matches preflight
 
 - Group: Analysis
 - Playbook ID: EX-024
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--analysis/024-post-task-learning-measurement-task-postflight.md`

@@ -55,7 +55,7 @@ Check eval DB path configuration → Verify schema migration ran → Inspect tab
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md)
 
 ---
@@ -64,6 +64,6 @@ Check eval DB path configuration → Verify schema migration ran → Inspect tab
 
 - Group: Evaluation and Measurement
 - Playbook ID: 005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--evaluation-and-measurement/005-evaluation-database-and-schema-r13-s1.md`
 - audited_post_018: true

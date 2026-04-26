@@ -59,7 +59,7 @@ If `.stats.toolCallCount` is suspiciously low (e.g. 0 or 1), the agent likely an
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (agent routing table in §3 HOW IT WORKS) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If `.stats.toolCallCount` is suspiciously low (e.g. 0 or 1), the agent likely an
 
 - Group: Agent Routing
 - Playbook ID: CG-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/003-deep-research-agent-grounding.md`

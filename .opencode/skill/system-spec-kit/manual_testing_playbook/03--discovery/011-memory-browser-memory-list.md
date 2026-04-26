@@ -53,7 +53,7 @@ Reduce filters; verify specFolder path
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/01-memory-browser-memorylist.md](../../feature_catalog/03--discovery/01-memory-browser-memorylist.md)
 
 ---
@@ -62,6 +62,6 @@ Reduce filters; verify specFolder path
 
 - Group: Discovery
 - Playbook ID: EX-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--discovery/011-memory-browser-memory-list.md`
 - audited_post_018: true

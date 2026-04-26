@@ -63,7 +63,7 @@ Check the YAML step_scope_discovery resolve block for each target type (spec-fol
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-review`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -81,6 +81,6 @@ Check the YAML step_scope_discovery resolve block for each target type (spec-fol
 
 - Group: INITIALIZATION AND STATE SETUP
 - Playbook ID: DRV-007
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--initialization-and-state-setup/007-scope-discovery-and-dimension-ordering.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

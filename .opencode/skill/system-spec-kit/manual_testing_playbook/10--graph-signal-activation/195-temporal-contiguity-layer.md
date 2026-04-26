@@ -60,7 +60,7 @@ Verify clamped-window configuration and default 3600-second behavior -> inspect 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/11-temporal-contiguity-layer.md](../../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md)
 
 ---
@@ -69,5 +69,5 @@ Verify clamped-window configuration and default 3600-second behavior -> inspect 
 
 - Group: Graph Signal Activation
 - Playbook ID: 195
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `10--graph-signal-activation/195-temporal-contiguity-layer.md`

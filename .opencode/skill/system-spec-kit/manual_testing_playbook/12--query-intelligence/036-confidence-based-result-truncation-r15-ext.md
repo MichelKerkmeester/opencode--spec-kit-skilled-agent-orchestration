@@ -56,7 +56,7 @@ Verify cliff detection algorithm → Check min-result guarantee → Inspect conf
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/04-confidence-based-result-truncation.md](../../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md)
 
 ---
@@ -65,5 +65,5 @@ Verify cliff detection algorithm → Check min-result guarantee → Inspect conf
 
 - Group: Query Intelligence
 - Playbook ID: 036
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `12--query-intelligence/036-confidence-based-result-truncation-r15-ext.md`

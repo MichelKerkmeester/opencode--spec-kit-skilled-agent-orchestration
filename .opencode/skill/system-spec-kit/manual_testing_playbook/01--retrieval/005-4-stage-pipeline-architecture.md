@@ -54,7 +54,7 @@ Inspect stage metadata and flags
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/05-4-stage-pipeline-architecture.md](../../feature_catalog/01--retrieval/05-4-stage-pipeline-architecture.md)
 
 ---
@@ -63,5 +63,5 @@ Inspect stage metadata and flags
 
 - Group: Retrieval
 - Playbook ID: EX-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/005-4-stage-pipeline-architecture.md`

@@ -59,7 +59,7 @@ For comparison with the `--effort high` baseline (CC-008), note that `--agent ul
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` | Ultra-think agent details (section 4) and routing decision guide (section 5) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For comparison with the `--effort high` baseline (CC-008), note that `--agent ul
 
 - Group: Agent Routing
 - Playbook ID: CC-014
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/004-ultra-think-multi-strategy-planning.md`

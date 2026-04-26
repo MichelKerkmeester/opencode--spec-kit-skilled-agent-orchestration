@@ -55,7 +55,7 @@ Validate ground-truth mapping against the active parent-memory DB; inspect missi
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [07--evaluation/01-ablation-studies-evalrunablation.md](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md)
 
 ---
@@ -64,7 +64,7 @@ Validate ground-truth mapping against the active parent-memory DB; inspect missi
 
 - Group: Evaluation
 - Playbook ID: EX-026
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--evaluation/026-ablation-studies-eval-run-ablation.md`
 - audited_post_018: true
 - phase_018_change: post-018 audit verified against `mcp_server/handlers/eval-reporting.ts`, `mcp_server/lib/eval/ablation-framework.ts`, `mcp_server/lib/eval/k-value-analysis.ts`, `mcp_server/tests/ablation-framework.vitest.ts`, and `mcp_server/tests/handler-eval-reporting.vitest.ts`

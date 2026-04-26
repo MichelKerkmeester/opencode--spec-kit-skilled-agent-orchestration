@@ -57,7 +57,7 @@ Inspect `lib/ops/file-watcher.ts` for `seedHash`, `scheduleReindex`, and ENOENT 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `lib/ops/file-watcher.ts` for `seedHash`, `scheduleReindex`, and ENOENT 
 
 - Group: Tooling and Scripts
 - Playbook ID: 099
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/099-real-time-filesystem-watching-p1-7.md`

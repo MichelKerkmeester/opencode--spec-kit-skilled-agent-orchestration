@@ -59,7 +59,7 @@ If you want extra confidence the card actually drove the choice (rather than the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` | cli-gemini skill surface (`assets/prompt_quality_card.md` listed as ALWAYS-loaded in §2 SMART ROUTING) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ If you want extra confidence the card actually drove the choice (rather than the
 
 - Group: Prompt Templates
 - Playbook ID: CG-018
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/002-clear-quality-card-application.md`

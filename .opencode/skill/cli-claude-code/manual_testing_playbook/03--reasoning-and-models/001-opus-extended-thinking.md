@@ -59,7 +59,7 @@ If both Opus and Sonnet runs succeed but the cost difference is less than 5x, do
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Models table (section 6) and effort levels (section 5) |
 | `../../references/claude_tools.md` | Extended Thinking section |
 
@@ -76,5 +76,5 @@ If both Opus and Sonnet runs succeed but the cost difference is less than 5x, do
 
 - Group: Reasoning And Models
 - Playbook ID: CC-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--reasoning-and-models/001-opus-extended-thinking.md`

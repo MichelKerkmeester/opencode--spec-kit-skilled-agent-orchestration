@@ -59,7 +59,7 @@ For cross-repo verification, repeat the test with `--dir <other-repo-root>` (any
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `--dir` row in flag table) | Documents the working directory contract |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For cross-repo verification, repeat the test with `--dir <other-repo-root>` (any
 
 - Group: CLI Invocation
 - Playbook ID: CO-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/003-dir-flag-working-directory.md`

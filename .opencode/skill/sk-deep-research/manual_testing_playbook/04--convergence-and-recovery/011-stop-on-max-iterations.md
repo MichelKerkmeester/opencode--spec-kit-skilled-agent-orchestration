@@ -63,7 +63,7 @@ Resolve any ambiguity by privileging the convergence pseudocode and YAML algorit
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -83,6 +83,6 @@ Resolve any ambiguity by privileging the convergence pseudocode and YAML algorit
 
 - Group: CONVERGENCE AND RECOVERY
 - Playbook ID: DR-011
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/011-stop-on-max-iterations.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19.

@@ -59,7 +59,7 @@ Verify check-phase-links.sh exists and has execute permission; check spec.md con
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 
 ---
@@ -68,5 +68,5 @@ Verify check-phase-links.sh exists and has execute permission; check spec.md con
 
 - Group: Tooling and Scripts
 - Playbook ID: PHASE-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/004-phase-link-validation.md`

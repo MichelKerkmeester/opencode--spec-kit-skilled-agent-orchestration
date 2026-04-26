@@ -58,7 +58,7 @@ Inspect executeAtomicSave error handling for rename failures; verify pending fil
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/21-atomic-pending-file-recovery.md](../../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect executeAtomicSave error handling for rename failures; verify pending fil
 
 - Group: Pipeline Architecture
 - Playbook ID: 115
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--pipeline-architecture/115-transaction-atomicity-on-rename-failure-p0-5.md`

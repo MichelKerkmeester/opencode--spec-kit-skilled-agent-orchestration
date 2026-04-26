@@ -360,6 +360,32 @@ STATUS=OK  RESULTS=0  TRIGGERED=<n>  CONSTITUTIONAL=<n>
 - Drop the score column (trigger matches are categorical, not scored)
 - After the formatted output, the assistant MAY ask one clarifying follow-up question if the query was ambiguous (≤2 lines), but the canonical block above must come first.
 
+##### Forbidden Phrase Enforcement (REQ-003 / Cluster 3)
+
+The following phrases MUST NOT appear anywhere in any `/memory:search` rendering — empty-result fallback, full-result render, or analysis subcommand output. This list is authoritative; treat any occurrence as a P0 contract violation.
+
+| Forbidden Phrase | Required Replacement |
+|------------------|---------------------|
+| `Auto-triggered memories` | `Trigger-matched spec-doc records` |
+| `Auto-triggered memory` | `Trigger-matched spec-doc record` |
+| `Triggered memories` | `Trigger-matched spec-doc records` |
+| `Triggered memory` | `Trigger-matched spec-doc record` |
+| `Memories` (as a section header on its own) | `Spec-doc records` |
+| `Memory` (as a result-class label) | `Spec-doc record` |
+| `Constitutional memories` | `Constitutional rules` |
+| `Constitutional memory` | `Constitutional rule` |
+| `auto-triggered` (any case) | `trigger-matched` |
+
+Pre-render gate (assistant MUST run before emitting the response block):
+1. Build the candidate output text.
+2. Case-insensitively scan for every forbidden phrase above.
+3. On any match: rewrite using the replacement column. Do not emit the original.
+4. After rewrite, verify the candidate is greppable-clean for the forbidden list.
+
+Verification (regression-safe):
+- `grep -Eci 'auto-triggered|triggered memories|triggered memory|constitutional memor(y|ies)'` against the rendered block MUST return `0`.
+- The rendered block uses only `Trigger-matched spec-doc records`, `Constitutional rules`, and `Spec-doc record(s)` for these concepts.
+
 ### Token Budget Enforcement
 
 **memory_context L1 Budget:** ~2000 tokens total (mode-managed)

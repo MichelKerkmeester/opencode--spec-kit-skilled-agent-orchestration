@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-022` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_quality_card.md` (§2 Framework Selection, §3 Task to Framework Map, §4 CLEAR 5-Check, §5 Escalation) | Authoritative quality card |
 | `../../SKILL.md` (§4 ALWAYS rule 10) | Mandates loading the quality card |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-022` and confirm the
 
 - Group: Prompt Templates
 - Playbook ID: CX-022
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/002-clear-scoring-quality-card.md`

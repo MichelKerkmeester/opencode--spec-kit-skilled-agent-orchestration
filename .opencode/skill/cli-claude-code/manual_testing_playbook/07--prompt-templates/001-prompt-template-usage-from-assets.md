@@ -60,7 +60,7 @@ To validate template breadth, pick a second template from a different category (
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../assets/prompt_templates.md` | Templates inventory (section 3 contains the Security Review template) |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ To validate template breadth, pick a second template from a different category (
 
 - Group: Prompt Templates
 - Playbook ID: CC-019
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--prompt-templates/001-prompt-template-usage-from-assets.md`

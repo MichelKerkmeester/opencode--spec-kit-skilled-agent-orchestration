@@ -55,7 +55,7 @@ Lower minState; disable cache and retry
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
 
 ---
@@ -64,5 +64,5 @@ Lower minState; disable cache and retry
 
 - Group: Retrieval
 - Playbook ID: EX-002
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/002-semantic-and-lexical-search-memory-search.md`

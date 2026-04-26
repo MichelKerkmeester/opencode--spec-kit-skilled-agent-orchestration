@@ -62,7 +62,7 @@ For multi-MCP validation, repeat the test with a prompt that asks the session to
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§2 USE CASE 1: EXTERNAL RUNTIME TO OPENCODE) | The canonical use case 1 contract |
 
 ### Implementation And Test Anchors
@@ -78,5 +78,5 @@ For multi-MCP validation, repeat the test with a prompt that asks the session to
 
 - Group: External Dispatch
 - Playbook ID: CO-006
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--external-dispatch/001-from-claude-code.md`

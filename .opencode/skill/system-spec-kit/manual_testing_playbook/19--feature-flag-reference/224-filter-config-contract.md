@@ -57,7 +57,7 @@ Inspect `scripts/lib/content-filter.ts` loader and merge logic, verify the fixtu
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/10-filter-config-contract.md](../../feature_catalog/19--feature-flag-reference/10-filter-config-contract.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `scripts/lib/content-filter.ts` loader and merge logic, verify the fixtu
 
 - Group: Feature Flag Reference
 - Playbook ID: 224
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/224-filter-config-contract.md`

@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-008` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../SKILL.md` (§3 Default Invocation, §4 ALWAYS rule 3) | Documents `--full-auto` as the unattended default |
 | `../../references/cli_reference.md` (§4 Approval Mode Values) | Documents the three `--ask-for-approval` values |
 
@@ -76,5 +76,5 @@ Operators run the exact prompt and command sequence for `CX-008` and confirm the
 
 - Group: Sandbox Modes
 - Playbook ID: CX-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--sandbox-modes/004-approval-policies.md`

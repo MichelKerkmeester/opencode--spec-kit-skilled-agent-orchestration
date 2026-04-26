@@ -56,7 +56,7 @@ Verify folder scoring algorithm → Check pre-ranking stage insertion point → 
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/05-folder-level-relevance-scoring.md](../../feature_catalog/11--scoring-and-calibration/05-folder-level-relevance-scoring.md)
 
 ---
@@ -65,5 +65,5 @@ Verify folder scoring algorithm → Check pre-ranking stage insertion point → 
 
 - Group: Scoring and Calibration
 - Playbook ID: 027
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/027-folder-level-relevance-scoring-pi-a1.md`

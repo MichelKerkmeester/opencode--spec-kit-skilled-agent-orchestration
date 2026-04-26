@@ -57,7 +57,7 @@ Inspect `hybrid-search.ts` candidate routing and trace fields if graph or degree
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/04-hybrid-search-pipeline.md](../../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md)
 
 ---
@@ -66,5 +66,5 @@ Inspect `hybrid-search.ts` candidate routing and trace fields if graph or degree
 
 - Group: Retrieval
 - Playbook ID: EX-004
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/004-hybrid-search-pipeline.md`

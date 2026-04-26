@@ -30,7 +30,7 @@ Canonical layout:
 
 ```text
 manual_testing_playbook/
-├── MANUAL_TESTING_PLAYBOOK.md          # Root directory page, review rules, and orchestration guidance
+├── manual_testing_playbook.md          # Root directory page, review rules, and orchestration guidance
 ├── 01--category-name/                  # Required per-feature files for category 1
 │   ├── 001-feature-name.md
 │   └── 002-feature-name.md
@@ -134,7 +134,7 @@ Copy-paste header:
 
 ## 5. ROOT PLAYBOOK SCAFFOLD
 
-Copy this scaffold to create `{SKILL_PATH}/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md`:
+Copy this scaffold to create `{SKILL_PATH}/manual_testing_playbook/manual_testing_playbook.md`:
 
 ```markdown
 ---
@@ -151,7 +151,7 @@ This document combines the full manual-validation contract for the `{SKILL_SLUG}
 This playbook package adopts the Feature Catalog split-document pattern for the `{SKILL_SLUG}` skill. The root document acts as the directory, review surface, and orchestration guide, while per-feature execution detail lives in the numbered category folders at the playbook root.
 
 Canonical package artifacts:
-- `MANUAL_TESTING_PLAYBOOK.md`
+- `manual_testing_playbook.md`
 - `{CAT1_DIR}/`
 - `{CAT2_DIR}/`
 
@@ -229,7 +229,7 @@ Coverage note ({PLAYBOOK_DATE}): {COVERAGE_NOTE}.
 
 ### Inputs Required
 
-1. `MANUAL_TESTING_PLAYBOOK.md`
+1. `manual_testing_playbook.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence
 4. Feature-to-scenario coverage map
@@ -424,7 +424,7 @@ Use this subsection only when the feature needs a tightly scoped follow-up varia
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../feature_catalog/{CATALOG_PATH}` | Feature-catalog source describing the implementation contract |
 
 ### Implementation And Test Anchors
@@ -440,7 +440,7 @@ Use this subsection only when the feature needs a tightly scoped follow-up varia
 
 - Group: {CATEGORY_NAME}
 - Playbook ID: {FEATURE_ID}
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `{CATEGORY_DIR}/{NNN}-{feature-name}.md`
 ```
 

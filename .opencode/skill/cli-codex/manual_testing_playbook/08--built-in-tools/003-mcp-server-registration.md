@@ -59,7 +59,7 @@ Operators run the exact prompt and command sequence for `CX-025` and confirm the
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/codex_tools.md` (§2 MCP Server Integration) | Documents codex mcp surface |
 | `../../references/cli_reference.md` (§12 Subcommands) | Documents codex mcp subcommand |
 
@@ -77,5 +77,5 @@ Operators run the exact prompt and command sequence for `CX-025` and confirm the
 
 - Group: Built-in Tools
 - Playbook ID: CX-025
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--built-in-tools/003-mcp-server-registration.md`

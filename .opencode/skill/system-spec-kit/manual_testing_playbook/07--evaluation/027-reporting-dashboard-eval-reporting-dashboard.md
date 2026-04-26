@@ -53,7 +53,7 @@ Retry with `format:"json"` or `format:"text"`; inspect `handlers/eval-reporting.
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md)
 
 ---
@@ -62,7 +62,7 @@ Retry with `format:"json"` or `format:"text"`; inspect `handlers/eval-reporting.
 
 - Group: Evaluation
 - Playbook ID: EX-027
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `07--evaluation/027-reporting-dashboard-eval-reporting-dashboard.md`
 - audited_post_018: true
 - phase_018_change: post-018 audit verified against `mcp_server/handlers/eval-reporting.ts`, `mcp_server/lib/eval/reporting-dashboard.ts`, `mcp_server/tests/reporting-dashboard.vitest.ts`, and `mcp_server/tests/handler-eval-reporting.vitest.ts`

@@ -62,7 +62,7 @@ Verify argument routing logic in Section 4 of search.md → Check intent detecti
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 - Command file: [.opencode/command/memory/search.md](../../../../command/memory/search.md)
 
@@ -72,5 +72,5 @@ Verify argument routing logic in Section 4 of search.md → Check intent detecti
 
 - Group: Retrieval
 - Playbook ID: 185
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--retrieval/185-memory-search-command-routing.md`

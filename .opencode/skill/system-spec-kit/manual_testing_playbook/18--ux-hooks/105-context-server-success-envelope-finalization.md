@@ -56,7 +56,7 @@ Inspect `context-server.ts` success-path assembly and expected envelope fields
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/08-context-server-success-hint-append.md](../../feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md)
 
 ---
@@ -65,6 +65,6 @@ Inspect `context-server.ts` success-path assembly and expected envelope fields
 
 - Group: UX Hooks
 - Playbook ID: 105
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `18--ux-hooks/105-context-server-success-envelope-finalization.md`
 - audited_post_018: true

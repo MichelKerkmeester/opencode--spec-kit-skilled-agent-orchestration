@@ -461,6 +461,23 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
     };
   }
 
+  // REQ-002 (Cluster 1) Sanity guard: when reported usage is far below budget but
+  // we somehow entered enforcement (e.g. estimator ran twice on already-truncated
+  // payload, or budget was passed in as a tiny number), short-circuit and return
+  // the unmodified result. This prevents the historical regression where a
+  // 71-token payload against a 3000-token budget was nuked to count:0,results:[].
+  if (budgetTokens > 0 && actualTokens / budgetTokens < 0.50) {
+    return {
+      result,
+      enforcement: {
+        budgetTokens,
+        actualTokens,
+        enforced: false,
+        truncated: false,
+      }
+    };
+  }
+
   // Over budget — attempt to truncate embedded results
   // Strategy results contain an embedded MCPResponse with content[0].text as JSON
   // That JSON has a .data.results array we can truncate
@@ -472,13 +489,66 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   const fallbackToStructuredBudget = (
     baseResult: ContextResult,
     parseFailedInnerText?: string,
+    preservedResults?: Array<Record<string, unknown>>,
   ): ContextResult => {
     const fallbackResult = { ...baseResult } as ContextResult;
     const fallbackContent = Array.isArray((fallbackResult as Record<string, unknown>).content)
       ? ((fallbackResult as Record<string, unknown>).content as Array<Record<string, unknown>>)
       : [];
     const contentClone = fallbackContent.map((entry) => ({ ...entry }));
-    const candidateInnerStates: Array<Record<string, unknown>> = [
+
+    // REQ-002 (Cluster 1): When structural truncation already produced a non-empty
+    // result set, preserve it rather than silently dropping to count:0,results:[].
+    // The previous behaviour caused the wrapper to report `returnedResultCount > 0`
+    // in metadata while shipping an empty payload to the caller.
+    const preservedSafe: Array<Record<string, unknown>> = Array.isArray(preservedResults)
+      ? preservedResults
+      : [];
+
+    const buildPreservedCandidates = (): Array<Record<string, unknown>> => {
+      if (preservedSafe.length === 0) {
+        return [];
+      }
+      const minimalResults = preservedSafe.map((r) => ({
+        id: r.id,
+        title: r.title,
+        similarity: r.similarity,
+        specFolder: r.specFolder,
+        confidence: r.confidence,
+        importanceTier: r.importanceTier,
+        isConstitutional: r.isConstitutional,
+        metadataOnly: true,
+      }));
+      return [
+        {
+          summary: 'Context truncated to fit token budget',
+          data: {
+            count: preservedSafe.length,
+            results: preservedSafe,
+          },
+          meta: {
+            tool: 'memory_search',
+            truncated: true,
+            preserved: true,
+          },
+        },
+        {
+          summary: 'Context truncated to fit token budget',
+          data: {
+            count: minimalResults.length,
+            results: minimalResults,
+          },
+          meta: {
+            tool: 'memory_search',
+            truncated: true,
+            preserved: true,
+            metadataOnly: true,
+          },
+        },
+      ];
+    };
+
+    const emptyCandidates: Array<Record<string, unknown>> = [
       {
         summary: 'Context truncated to fit token budget',
         data: {
@@ -509,8 +579,13 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
       },
     ];
 
+    const candidateInnerStates: Array<Record<string, unknown>> = [
+      ...buildPreservedCandidates(),
+      ...emptyCandidates,
+    ];
+
     if (parseFailedInnerText) {
-      const meta = candidateInnerStates[0].meta as Record<string, unknown>;
+      const meta = (emptyCandidates[0].meta as Record<string, unknown>);
       meta.parseFailedPreview = parseFailedInnerText.slice(0, 120);
     }
 
@@ -613,6 +688,9 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   // Try to find and truncate the inner results array
   const contentArr = (truncatedResult as Record<string, unknown>).content as Array<{ type: string; text: string }> | undefined;
   let parseFailedInnerText: string | undefined;
+  // REQ-002 (Cluster 1): Track survivors so the fallback path can preserve them
+  // instead of zero-filling.
+  let preservedAfterStructural: Array<Record<string, unknown>> = [];
   if (contentArr && Array.isArray(contentArr) && contentArr.length > 0 && contentArr[0]?.text) {
     try {
       const innerEnvelope = JSON.parse(contentArr[0].text);
@@ -672,6 +750,10 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
         innerEnvelope.data.count = currentResults.length;
         returnedResultCount = currentResults.length;
 
+        // REQ-002 (Cluster 1): Snapshot survivors before any further compaction
+        // so the fallback path can preserve them instead of zero-filling.
+        preservedAfterStructural = currentResults.slice();
+
         // Re-serialize
         contentArr[0] = { type: 'text', text: JSON.stringify(innerEnvelope) };
         (truncatedResult as Record<string, unknown>).content = contentArr;
@@ -717,12 +799,30 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
 
   // Fallback when parsing fails or a structured response still exceeds budget.
   // Always emit valid nested JSON rather than raw character slices.
+  // REQ-002 (Cluster 1): Hand the fallback the survivors from structural
+  // truncation so it can keep them instead of silently zero-filling.
   const fallbackResult = fallbackToStructuredBudget(
     parseFailed ? result : truncatedResult,
     parseFailedInnerText,
+    preservedAfterStructural,
   );
 
   const fallbackTokens = estimateTokens(JSON.stringify(fallbackResult));
+
+  // Re-extract the actual returned count from the fallback envelope so the
+  // metadata never advertises survivors that the payload no longer contains.
+  let fallbackReturnedCount = returnedResultCount;
+  try {
+    const fallbackContent = (fallbackResult as Record<string, unknown>).content as Array<{ text?: string }> | undefined;
+    if (fallbackContent && fallbackContent[0]?.text) {
+      const parsedFallback = JSON.parse(fallbackContent[0].text) as { data?: { results?: unknown[] } };
+      if (Array.isArray(parsedFallback?.data?.results)) {
+        fallbackReturnedCount = parsedFallback.data!.results!.length;
+      }
+    }
+  } catch {
+    // keep the prior returnedResultCount on parse failure
+  }
 
   return {
     result: fallbackResult,
@@ -732,7 +832,7 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
       enforced: true,
       truncated: true,
       originalResultCount,
-      returnedResultCount,
+      returnedResultCount: fallbackReturnedCount,
     }
   };
 }
@@ -1170,10 +1270,18 @@ function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unkn
     sessionLifecycle,
     tokenBudget: effectiveBudget,
     tokenBudgetEnforcement: enforcement,
+    // REQ-004 (Cluster 2): `meta.intent` is the AUTHORITATIVE intent for output
+    // rendering, anchor selection, mode routing, and weight adjustment. The
+    // separate `data.queryIntentRouting` field (added by Phase 020) describes
+    // backend channel selection only (structural / hybrid / semantic) and MUST
+    // NOT be conflated with this intent. The classification kind is annotated
+    // explicitly here to remove ambiguity for downstream consumers.
     intent: detectedIntent ? {
       type: detectedIntent,
       confidence: intentConfidence,
       source,
+      classificationKind: 'task-intent',
+      authoritativeFor: ['rendering', 'anchors', 'mode-routing', 'weights'],
     } : null,
     folderDiscovery: discoveredFolder ? {
       discovered: true,
@@ -1568,7 +1676,14 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     responseData.graphContext = graphContextResult;
   }
   if (queryIntentMetadata) {
-    responseData.queryIntentRouting = queryIntentMetadata;
+    // REQ-004 (Cluster 2): Annotate explicitly so callers do not confuse this
+    // backend-channel selector with the authoritative `meta.intent` task intent.
+    responseData.queryIntentRouting = {
+      ...queryIntentMetadata,
+      classificationKind: 'backend-routing',
+      authoritativeFor: ['channel-selection'],
+      seeAlso: 'meta.intent (task-intent classification, authoritative for rendering)',
+    };
   }
   const structuralRoutingNudge = buildStructuralRoutingNudge(
     normalizedInput,

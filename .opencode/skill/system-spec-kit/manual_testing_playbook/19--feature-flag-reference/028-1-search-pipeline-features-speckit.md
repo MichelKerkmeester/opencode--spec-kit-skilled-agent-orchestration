@@ -55,7 +55,7 @@ Validate against code/config docs; remove any manual-test wording that still tre
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 
 ---
@@ -64,5 +64,5 @@ Validate against code/config docs; remove any manual-test wording that still tre
 
 - Group: Feature Flag Reference
 - Playbook ID: EX-028
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/028-1-search-pipeline-features-speckit.md`

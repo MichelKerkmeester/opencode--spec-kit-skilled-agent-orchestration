@@ -59,7 +59,7 @@ For full-spectrum validation, run all five variant levels (minimal, low, medium,
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§5 MODEL SELECTION + variant table) | Documents the variant range per provider |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For full-spectrum validation, run all five variant levels (minimal, low, medium,
 
 - Group: Multi-Provider
 - Playbook ID: CO-012
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--multi-provider/004-variant-levels-comparison.md`

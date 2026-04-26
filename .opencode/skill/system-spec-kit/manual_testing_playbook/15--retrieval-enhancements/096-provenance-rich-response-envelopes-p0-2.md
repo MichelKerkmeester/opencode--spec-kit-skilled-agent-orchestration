@@ -58,7 +58,7 @@ Check `handlers/memory-search.ts` for includeTrace and env branching
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md)
 
 ---
@@ -67,5 +67,5 @@ Check `handlers/memory-search.ts` for includeTrace and env branching
 
 - Group: Retrieval Enhancements
 - Playbook ID: 096
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `15--retrieval-enhancements/096-provenance-rich-response-envelopes-p0-2.md`

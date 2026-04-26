@@ -60,7 +60,7 @@ For verbose log inspection, run `head -5 /tmp/co-005-debug.err` to confirm the l
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` (§4 `--pure`, `--print-logs`, `--log-level` rows) | Diagnostic flag documentation |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For verbose log inspection, run `head -5 /tmp/co-005-debug.err` to confirm the l
 
 - Group: CLI Invocation
 - Playbook ID: CO-005
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/005-pure-and-print-logs.md`

@@ -101,7 +101,7 @@ JSON payloads from steps 2, 3, 4, 6, 7, 9, 10, 12, 13, (14 if reproduced), and 1
 
 | File | Role |
 |------|------|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../feature_catalog/06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md` | Feature-catalog source describing the implementation contract |
 
 ### Implementation And Test Anchors
@@ -120,7 +120,7 @@ JSON payloads from steps 2, 3, 4, 6, 7, 9, 10, 12, 13, (14 if reproduced), and 1
 
 - Group: Analysis
 - Playbook ID: EX-026
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md`
 - Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/003-code-graph-edge-explanation-and-impact-uplift` (baseline) + `026/010/007-review-remediation` T-D (R-007-P2-3) + T-F (R-007-P2-4/5/6)
 - Coverage extension: 010/011-manual-testing-playbook-coverage-and-run (Blocks B + C + D + E added)

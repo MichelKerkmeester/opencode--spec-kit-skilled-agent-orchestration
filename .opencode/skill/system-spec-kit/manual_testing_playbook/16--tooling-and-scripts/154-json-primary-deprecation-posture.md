@@ -63,7 +63,7 @@ Check generate-context.ts argument parsing, loader routing, and structured-input
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md)
 - Source spec: [017-json-primary-deprecation/spec.md](../../../../specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md)
 
@@ -73,7 +73,7 @@ Check generate-context.ts argument parsing, loader routing, and structured-input
 
 - Group: Tooling and Scripts
 - Playbook ID: 154
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/154-json-primary-deprecation-posture.md`
 - phase_018_change: direct positional JSON file input remains supported; scenario now validates JSON-first preference without claiming removal
 - audited_post_018: true

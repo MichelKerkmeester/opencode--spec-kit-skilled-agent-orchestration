@@ -58,7 +58,7 @@ Inspect `mcp_server/handlers/memory-crud-health.ts`, `mcp_server/lib/parsing/tri
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [20--remediation-revalidation/02-memory-health-auto-repair.md](../../feature_catalog/20--remediation-revalidation/02-memory-health-auto-repair.md)
 
 ---
@@ -67,5 +67,5 @@ Inspect `mcp_server/handlers/memory-crud-health.ts`, `mcp_server/lib/parsing/tri
 
 - Group: Remediation and Revalidation
 - Playbook ID: 226
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `20--remediation-revalidation/226-memory-health-auto-repair.md`

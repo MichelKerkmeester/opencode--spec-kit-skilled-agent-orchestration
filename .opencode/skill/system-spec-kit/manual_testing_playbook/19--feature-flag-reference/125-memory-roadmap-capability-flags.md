@@ -84,7 +84,7 @@ Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the list
 
 | File | Role |
 |---|---|
-| [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md) | Root directory page and scenario summary |
+| [manual_testing_playbook.md](../manual_testing_playbook.md) | Root directory page and scenario summary |
 | [19--feature-flag-reference/11-memory-roadmap-capability-flags.md](../../feature_catalog/19--feature-flag-reference/11-memory-roadmap-capability-flags.md) | Feature-catalog source describing the roadmap-flag contract |
 
 ### Implementation And Test Anchors
@@ -100,5 +100,5 @@ Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the list
 
 - Group: Feature Flag Reference
 - Playbook ID: 125
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `19--feature-flag-reference/125-memory-roadmap-capability-flags.md`

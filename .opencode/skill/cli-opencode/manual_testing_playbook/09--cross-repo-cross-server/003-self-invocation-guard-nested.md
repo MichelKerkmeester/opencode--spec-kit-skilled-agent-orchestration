@@ -60,7 +60,7 @@ For documentation completeness, also confirm `opencode_tools.md` §6 (cross-repo
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§5 SMART-ROUTER DECISION TREE + REFUSAL MESSAGE) | Refusal message and remediation options |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ For documentation completeness, also confirm `opencode_tools.md` §6 (cross-repo
 
 - Group: Cross-Repo and Cross-Server
 - Playbook ID: CO-031
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `09--cross-repo-cross-server/003-self-invocation-guard-nested.md`

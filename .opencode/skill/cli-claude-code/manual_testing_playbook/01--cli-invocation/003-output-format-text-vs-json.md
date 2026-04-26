@@ -59,7 +59,7 @@ Save the captured `session_id` to `/tmp/cc-003-session-id` for CC-016 (resume by
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | Output format flags (section 5) and structured output (section 9) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ Save the captured `session_id` to `/tmp/cc-003-session-id` for CC-016 (resume by
 
 - Group: CLI Invocation
 - Playbook ID: CC-003
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/003-output-format-text-vs-json.md`

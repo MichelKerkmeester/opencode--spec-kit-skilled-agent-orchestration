@@ -59,7 +59,7 @@ For pipeline integration, follow up with CC-018 (structured output with json-sch
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` | Review agent details (section 4) |
 
 ### Implementation And Test Anchors
@@ -75,5 +75,5 @@ For pipeline integration, follow up with CC-018 (structured output with json-sch
 
 - Group: Agent Routing
 - Playbook ID: CC-013
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/003-review-agent-security-audit.md`

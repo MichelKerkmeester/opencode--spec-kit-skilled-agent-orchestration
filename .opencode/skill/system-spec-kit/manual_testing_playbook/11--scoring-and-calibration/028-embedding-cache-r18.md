@@ -56,7 +56,7 @@ Verify cache key computation (content+model) → Check cache storage backend →
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/06-embedding-cache.md](../../feature_catalog/11--scoring-and-calibration/06-embedding-cache.md)
 
 ---
@@ -65,5 +65,5 @@ Verify cache key computation (content+model) → Check cache storage backend →
 
 - Group: Scoring and Calibration
 - Playbook ID: 028
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `11--scoring-and-calibration/028-embedding-cache-r18.md`

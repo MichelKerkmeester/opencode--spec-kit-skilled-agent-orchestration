@@ -61,7 +61,7 @@ For multi-file review depth, repeat the test attaching a second clean TS file vi
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/agent_delegation.md` (§3 review agent property table + §4 routing matrix) | Review agent documentation and read-only constraint |
 
 ### Implementation And Test Anchors
@@ -77,5 +77,5 @@ For multi-file review depth, repeat the test attaching a second clean TS file vi
 
 - Group: Agent Routing
 - Playbook ID: CO-015
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--agent-routing/003-review-agent-security-audit.md`

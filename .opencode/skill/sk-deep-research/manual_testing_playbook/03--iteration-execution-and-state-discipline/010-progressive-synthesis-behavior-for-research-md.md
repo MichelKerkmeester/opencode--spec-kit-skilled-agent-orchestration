@@ -63,7 +63,7 @@ Use the runtime agent’s Step 7 and the README configuration table to resolve t
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page, integrated review protocol, and scenario summary |
+| `manual_testing_playbook.md` | Root directory page, integrated review protocol, and scenario summary |
 | `feature_catalog/` | No dedicated feature catalog exists yet for `sk-deep-research`; use the live docs below as the implementation contract |
 
 ### IMPLEMENTATION AND RUNTIME ANCHORS
@@ -83,6 +83,6 @@ Use the runtime agent’s Step 7 and the README configuration table to resolve t
 
 - Group: ITERATION EXECUTION AND STATE DISCIPLINE
 - Playbook ID: DR-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `03--iteration-execution-and-state-discipline/010-progressive-synthesis-behavior-for-research-md.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-research/` as of 2026-03-19.

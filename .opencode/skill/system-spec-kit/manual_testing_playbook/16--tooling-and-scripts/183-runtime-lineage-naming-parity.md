@@ -47,7 +47,7 @@ any mismatch or `research/research.md` hit; collect diff output and identify div
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 
 ---
@@ -56,5 +56,5 @@ any mismatch or `research/research.md` hit; collect diff output and identify div
 
 - Group: Tooling and Scripts
 - Playbook ID: M-010
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/183-runtime-lineage-naming-parity.md`

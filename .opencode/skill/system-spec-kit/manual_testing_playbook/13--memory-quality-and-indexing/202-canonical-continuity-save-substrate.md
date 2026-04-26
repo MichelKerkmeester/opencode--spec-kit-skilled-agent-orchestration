@@ -60,7 +60,7 @@ Inspect `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md](../../feature_catalog/13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md)
 - Source files: `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor-merge-operation.ts`, `mcp_server/handlers/save/atomic-index-memory.ts`, `mcp_server/lib/continuity/thin-continuity-record.ts`, `mcp_server/lib/resume/resume-ladder.ts`, `mcp_server/lib/graph/graph-metadata-parser.ts`
 
@@ -68,5 +68,5 @@ Inspect `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor
 
 - Group: Memory quality and indexing
 - Playbook ID: 202
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md`

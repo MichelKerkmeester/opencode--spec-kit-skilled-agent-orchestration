@@ -56,7 +56,7 @@ Check sanitizeErrorField regex patterns; verify sanitizeDetails recursion depth;
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/07-error-response-credential-sanitization.md](../../feature_catalog/08--bug-fixes-and-data-integrity/07-error-response-credential-sanitization.md)
 
 ---
@@ -65,5 +65,5 @@ Check sanitizeErrorField regex patterns; verify sanitizeDetails recursion depth;
 
 - Group: Bug Fixes and Data Integrity
 - Playbook ID: 118
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `08--bug-fixes-and-data-integrity/118-error-response-credential-sanitization.md`

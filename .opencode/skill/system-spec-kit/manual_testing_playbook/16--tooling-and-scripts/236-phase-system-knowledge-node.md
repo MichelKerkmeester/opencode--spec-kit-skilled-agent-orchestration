@@ -56,7 +56,7 @@ Inspect `nodes/phase-system.md`, `scripts/tests/test-phase-system.sh`, `scripts/
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/22-phase-system-knowledge-node.md](../../feature_catalog/16--tooling-and-scripts/22-phase-system-knowledge-node.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `nodes/phase-system.md`, `scripts/tests/test-phase-system.sh`, `scripts/
 
 - Group: Tooling and Scripts
 - Playbook ID: 236
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/236-phase-system-knowledge-node.md`

@@ -54,7 +54,7 @@ Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t c
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/10-schema-compatibility-validation.md](../../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md)
 
 ---
@@ -63,5 +63,5 @@ Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t c
 
 - Group: Tooling and Scripts
 - Playbook ID: 128
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/128-schema-compatibility-validation.md`

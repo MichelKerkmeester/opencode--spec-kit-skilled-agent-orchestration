@@ -56,7 +56,7 @@ Inspect `scripts/kpi/quality-kpi.sh`, markdown traversal logic, and trigger-phra
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/33-memory-quality-kpi-reporting.md](../../feature_catalog/16--tooling-and-scripts/33-memory-quality-kpi-reporting.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `scripts/kpi/quality-kpi.sh`, markdown traversal logic, and trigger-phra
 
 - Group: Tooling and Scripts
 - Playbook ID: 247
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/247-memory-quality-kpi-reporting.md`

@@ -60,7 +60,7 @@ If the base scenario passes, optionally re-run with `--verbose` to confirm the v
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/cli_reference.md` | CLI flag reference (sections 4-5: core invocation, flags) |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ If the base scenario passes, optionally re-run with `--verbose` to confirm the v
 
 - Group: CLI Invocation
 - Playbook ID: CC-001
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `01--cli-invocation/001-base-non-interactive-invocation.md`

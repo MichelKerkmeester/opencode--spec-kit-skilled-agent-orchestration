@@ -56,7 +56,7 @@ Inspect `scripts/setup/check-prerequisites.sh`, `check-native-modules.sh`, `rebu
 
 ## 4. REFERENCES
 
-- Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md](../../feature_catalog/16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md)
 
 ---
@@ -65,5 +65,5 @@ Inspect `scripts/setup/check-prerequisites.sh`, `check-native-modules.sh`, `rebu
 
 - Group: Tooling and Scripts
 - Playbook ID: 243
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/243-setup-native-module-health-and-mcp-installation.md`

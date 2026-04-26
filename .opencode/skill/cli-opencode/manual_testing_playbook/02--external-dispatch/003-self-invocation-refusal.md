@@ -60,7 +60,7 @@ For layer 2 (process ancestry) and layer 3 (state lock-file) testing, document t
 
 | File | Role |
 |---|---|
-| `MANUAL_TESTING_PLAYBOOK.md` | Root directory page and scenario summary |
+| `manual_testing_playbook.md` | Root directory page and scenario summary |
 | `../../references/integration_patterns.md` (§5 SMART-ROUTER DECISION TREE + REFUSAL MESSAGE) | Documents the layered detection and exact refusal text |
 
 ### Implementation And Test Anchors
@@ -76,5 +76,5 @@ For layer 2 (process ancestry) and layer 3 (state lock-file) testing, document t
 
 - Group: External Dispatch
 - Playbook ID: CO-008
-- Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
+- Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `02--external-dispatch/003-self-invocation-refusal.md`
