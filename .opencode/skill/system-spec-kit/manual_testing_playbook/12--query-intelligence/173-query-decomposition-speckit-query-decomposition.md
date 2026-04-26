@@ -12,7 +12,7 @@ This scenario validates query decomposition (SPECKIT_QUERY_DECOMPOSITION) for `1
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `173` and confirm the expected signals without contradicting evidence.
 

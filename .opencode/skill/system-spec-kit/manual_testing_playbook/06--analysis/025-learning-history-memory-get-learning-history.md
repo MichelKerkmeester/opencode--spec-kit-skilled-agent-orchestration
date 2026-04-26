@@ -12,7 +12,7 @@ This scenario validates Learning history (memory_get_learning_history) for `EX-0
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-025` and confirm the expected signals without contradicting evidence.
 

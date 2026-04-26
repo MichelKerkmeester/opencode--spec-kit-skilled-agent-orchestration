@@ -19,7 +19,7 @@ Plan mode is the safety mechanism behind every read-only delegation in this skil
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-005` and confirm the expected signals without contradictory evidence.
 

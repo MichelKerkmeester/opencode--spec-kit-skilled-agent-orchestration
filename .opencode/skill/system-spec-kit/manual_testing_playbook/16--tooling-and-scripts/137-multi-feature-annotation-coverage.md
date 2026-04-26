@@ -11,7 +11,7 @@ This scenario validates Multi-feature annotation coverage for `137`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `137` and confirm the expected signals without contradicting evidence.
 

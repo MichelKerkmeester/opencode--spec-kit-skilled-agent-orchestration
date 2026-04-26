@@ -19,7 +19,7 @@ This scenario validates the `codebase_investigator` built-in tool for `CG-007`. 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-007` and confirm the expected signals without contradictory evidence.
 

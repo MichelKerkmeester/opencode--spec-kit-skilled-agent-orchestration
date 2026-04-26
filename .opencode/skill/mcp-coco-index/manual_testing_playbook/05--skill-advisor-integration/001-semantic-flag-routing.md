@@ -12,7 +12,7 @@ This scenario validates Semantic flag routing for `ADV-001`. It focuses on Verif
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `ADV-001` and confirm the expected signals without contradictory evidence.
 

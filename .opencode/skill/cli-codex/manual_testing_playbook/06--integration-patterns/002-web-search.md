@@ -19,7 +19,7 @@ This scenario validates web search via `--search` for `CX-019`. It focuses on co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-019` and confirm the expected signals without contradictory evidence.
 

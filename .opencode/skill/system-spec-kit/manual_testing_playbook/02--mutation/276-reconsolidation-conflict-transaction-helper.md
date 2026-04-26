@@ -11,7 +11,7 @@ This scenario validates the shared reconsolidation conflict transaction helper f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify reconsolidation conflict handling reuses one shared atomic transaction helper across both conflict modes
 - Prompt: `As a mutation validation operator, validate Reconsolidation conflict transaction helper against executeConflict(). Verify both conflict branches route through the shared transaction helper, stale-predecessor guards still apply, and failures roll back without leaving partial conflict writes behind. Return a concise pass/fail verdict with the main reason and cited evidence.`

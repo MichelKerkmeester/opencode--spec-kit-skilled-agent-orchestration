@@ -19,7 +19,7 @@ UUCP shadowing is the most common install bug for `mcp-clickup` on macOS/Linux. 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-002` and confirm the expected signals without contradictory evidence.
 

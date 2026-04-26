@@ -12,7 +12,7 @@ This scenario validates Deferred lexical-only indexing for `111`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `111` and confirm the expected signals without contradicting evidence.
 

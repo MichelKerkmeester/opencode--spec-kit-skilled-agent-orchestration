@@ -11,76 +11,68 @@
   },
   "derived": {
     "trigger_phrases": [
-      "spec doc continuity rename",
-      "memory terminology rename",
-      "memory naming audit",
-      "claude memory tool clash",
-      "spec-kit vocabulary cleanup",
-      "rename memory mcp",
-      "rename _memory.continuity",
-      "release cleanup terminology"
+      "memory phrasing audit",
+      "load recent memories rephrase",
+      "memory documentation cleanup",
+      "behavioral language pass",
+      "spec doc phrasing",
+      "tool description phrasing",
+      "runtime output specificity"
     ],
     "key_topics": [
-      "spec",
-      "doc",
-      "continuity",
-      "rename",
       "memory",
-      "terminology",
-      "naming",
+      "phrasing",
       "audit",
-      "claude",
-      "tool",
-      "clash",
-      "spec-kit"
+      "load",
+      "recent",
+      "memories",
+      "rephrase",
+      "documentation",
+      "cleanup",
+      "behavioral",
+      "language",
+      "pass"
     ],
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
-      ".opencode/skill/system-spec-kit/README.md",
-      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
-      "lib/search/vector-index-schema.ts",
-      "research/002-memory-terminology-pt-01/research.md",
+      "constitutional/README.md",
+      "mcp_server/tool-schemas.ts",
+      "mcp_server/README.md",
+      "feature_catalog/feature_catalog.md",
+      "manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+      "mcp_server/handlers/memory-context.ts",
       "spec.md"
     ],
     "entities": [
       {
-        "name": "SKILL.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "ARCHITECTURE.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
-        "source": "derived"
-      },
-      {
         "name": "README.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/README.md",
+        "path": "constitutional/README.md",
         "source": "derived"
       },
       {
-        "name": "INSTALL_GUIDE.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
-        "source": "derived"
-      },
-      {
-        "name": "ENV_REFERENCE.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-schema.ts",
+        "name": "tool-schemas.ts",
         "kind": "code",
-        "path": "lib/search/vector-index-schema.ts",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": "feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "MANUAL_TESTING_PLAYBOOK.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-context.ts",
         "source": "derived"
       },
       {
@@ -96,40 +88,40 @@
         "source": "derived"
       },
       {
-        "name": "Doc Continuity Terminology Rename",
+        "name": "Behavioral Phrasing Audit",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Claude Memory",
+        "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Anthropic Claude Memory",
+        "name": "Problem Statement User",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Key Decisions",
+        "name": "Purpose Replace",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Critical Dependencies",
+        "name": "In Scope Three",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "The system-spec-kit uses \"memory\" as a catch-all label for six distinct subsystems (SQLite + embeddings index, canonical spec-doc markdown, generated metadata files, session resume surfaces, hybrid retrieval pipeline, constitutional rules), creating onboarding friction, ~270+ inconsistent references across the codebase, and a future naming clash with Anthropic's Claude Memory tool. This spec scopes a deep-research-driven rename across the public API surface (slash commands, MCP tools, SQL tables, doc strings, frontmatter keys) without changing behavior.",
+    "causal_summary": "User-facing prose across READMEs, skill docs, MCP tool descriptions, and runtime output strings overuses the abstract noun \"memory / memories\" where a concrete behavioral noun would be clearer. Concrete examples that already ship today:",
     "created_at": "2026-04-26T09:17:15.687Z",
-    "last_save_at": "2026-04-26T09:17:15.687Z",
-    "save_lineage": "graph_only",
+    "last_save_at": "2026-04-26T13:18:21.789Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md"

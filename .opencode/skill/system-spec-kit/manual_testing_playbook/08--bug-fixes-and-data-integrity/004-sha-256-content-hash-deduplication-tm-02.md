@@ -12,7 +12,7 @@ This scenario validates SHA-256 content-hash deduplication (TM-02) for `004`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `004` and confirm the expected signals without contradicting evidence.
 

@@ -11,7 +11,7 @@ This scenario validates Path traversal validation (P0-4) for `114`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `114` and confirm the expected signals without contradicting evidence.
 

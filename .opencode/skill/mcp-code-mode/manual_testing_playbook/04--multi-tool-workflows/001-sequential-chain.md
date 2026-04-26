@@ -19,7 +19,7 @@ Sequential chains are the basic primitive for any non-trivial workflow (e.g., "l
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-011` and confirm the expected signals without contradictory evidence.
 

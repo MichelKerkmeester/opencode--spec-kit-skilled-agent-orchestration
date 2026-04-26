@@ -21,7 +21,7 @@ A real user does not ask for raw environment-variable proofs. They ask the orche
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `125` and confirm the expected signals without contradicting evidence.
 

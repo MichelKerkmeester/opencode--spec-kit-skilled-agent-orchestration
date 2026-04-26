@@ -19,7 +19,7 @@ This scenario validates the inline `&prompt` cloud-delegation shorthand for `CP-
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-021` and confirm the expected signals without contradictory evidence.
 

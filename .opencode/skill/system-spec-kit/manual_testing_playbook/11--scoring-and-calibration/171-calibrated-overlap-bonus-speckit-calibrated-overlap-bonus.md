@@ -12,7 +12,7 @@ This scenario validates calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BON
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `171` and confirm the expected signals without contradicting evidence.
 

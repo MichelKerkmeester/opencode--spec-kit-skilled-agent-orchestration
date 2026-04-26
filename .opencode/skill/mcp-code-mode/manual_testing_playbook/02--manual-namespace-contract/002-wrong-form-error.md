@@ -19,7 +19,7 @@ This is the negative test for the namespace contract. Operators routinely make t
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-006` and confirm the expected signals without contradictory evidence.
 

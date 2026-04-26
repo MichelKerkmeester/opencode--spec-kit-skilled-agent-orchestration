@@ -19,7 +19,7 @@ Operators frequently disable a server temporarily (e.g., when its API is down, w
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-022` and confirm the expected signals without contradictory evidence.
 

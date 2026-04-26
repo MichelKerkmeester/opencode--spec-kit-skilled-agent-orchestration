@@ -11,7 +11,7 @@ This scenario validates `code_graph_query` relationship + blast_radius end-to-en
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-026` and confirm the expected signals without contradicting evidence.
 

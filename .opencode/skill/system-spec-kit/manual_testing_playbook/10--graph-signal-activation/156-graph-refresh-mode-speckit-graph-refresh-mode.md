@@ -12,7 +12,7 @@ This scenario validates graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE) for `156
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `156` and confirm the expected signals without contradicting evidence.
 

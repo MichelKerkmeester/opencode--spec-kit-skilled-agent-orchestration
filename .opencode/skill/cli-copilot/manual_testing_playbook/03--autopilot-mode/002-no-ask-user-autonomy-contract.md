@@ -19,7 +19,7 @@ CP-003 already covers the basic "read-only completes silently" path. CP-009 spec
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-009` and confirm the expected signals without contradictory evidence.
 

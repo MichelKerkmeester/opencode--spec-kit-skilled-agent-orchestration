@@ -19,7 +19,7 @@ This is the second-most-common config-related failure (after the manual-namespac
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-026` and confirm the expected signals without contradictory evidence.
 

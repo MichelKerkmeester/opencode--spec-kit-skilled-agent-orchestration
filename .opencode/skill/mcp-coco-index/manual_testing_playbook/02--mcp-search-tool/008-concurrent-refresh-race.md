@@ -19,7 +19,7 @@ If the documented race silently degrades to wrong-result behavior (e.g., one que
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `MCP-008` and confirm the expected signals without contradictory evidence.
 

@@ -13,7 +13,7 @@ This scenario validates Cross-runtime fallback.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report wrapper-backed hook wiring from `.claude/settings.local.json` while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
 - **Prerequisites**:

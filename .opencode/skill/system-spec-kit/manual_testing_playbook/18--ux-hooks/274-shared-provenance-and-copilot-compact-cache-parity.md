@@ -11,7 +11,7 @@ This scenario validates the Phase 017 cross-runtime hook parity work for `274`. 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify the shared provenance wrapper is the live helper surface and Copilot now matches Claude and Gemini on compact-cache behavior. Packet 013 additionally requires the shared compact startup payload to transport through all four runtimes — Claude, Gemini, Copilot, and **Codex** — so the parity assertion is 4-runtime, not 3-runtime.
 - Prompt: `As a UX-hook validation operator, validate Shared provenance and Copilot compact-cache parity against hooks/shared-provenance.ts and hooks/copilot/compact-cache.ts. Verify Claude and Gemini re-export the shared provenance helpers, Copilot writes a cached provenance-wrapped payload, session-prime consumes the cached trustState, the cached output matches the documented provenance format, and the compact startup shared-payload carried in graphQualitySummary / sharedPayloadTransport is identical across Claude/Gemini/Copilot/Codex startup hooks. Return a concise pass/fail verdict with the main reason and cited evidence.`

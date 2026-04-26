@@ -12,7 +12,7 @@ This scenario validates the deferred AST-level section retrieval tool entry for 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators review the exact feature entry and nearby retrieval references for `188` and confirm the deferred status without contradicting evidence.
 

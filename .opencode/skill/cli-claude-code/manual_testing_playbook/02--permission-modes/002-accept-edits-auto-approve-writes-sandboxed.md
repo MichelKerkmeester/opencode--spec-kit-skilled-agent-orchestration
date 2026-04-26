@@ -19,7 +19,7 @@ This scenario validates AcceptEdits mode auto-approve writes for `CC-006`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-006` and confirm the expected signals without contradictory evidence.
 

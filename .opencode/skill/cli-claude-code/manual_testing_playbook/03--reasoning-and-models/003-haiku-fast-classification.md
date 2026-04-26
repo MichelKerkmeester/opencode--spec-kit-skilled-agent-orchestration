@@ -19,7 +19,7 @@ Haiku is the model of choice for batch classification, formatting and simple que
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-010` and confirm the expected signals without contradictory evidence.
 

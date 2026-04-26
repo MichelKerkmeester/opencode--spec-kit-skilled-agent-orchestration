@@ -13,7 +13,7 @@ This scenario validates Lazy-loading migration and warmup compatibility for `229
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `229` and confirm the expected signals without contradicting evidence.
 

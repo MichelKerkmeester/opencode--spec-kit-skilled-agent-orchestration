@@ -19,7 +19,7 @@ This is the second major naming pitfall after the missing-prefix mistake (CM-006
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-007` and confirm the expected signals without contradictory evidence.
 

@@ -308,7 +308,7 @@ The generated playbook must match the current shipped `sk-doc` contract:
 - Per-feature structure:
   - frontmatter
   - `## 1. OVERVIEW`
-  - `## 2. CURRENT REALITY`
+  - `## 2. SCENARIO CONTRACT`
   - `## 3. TEST EXECUTION`
   - `## 4. SOURCE FILES` or `## 4. REFERENCES`
   - `## 5. SOURCE METADATA`

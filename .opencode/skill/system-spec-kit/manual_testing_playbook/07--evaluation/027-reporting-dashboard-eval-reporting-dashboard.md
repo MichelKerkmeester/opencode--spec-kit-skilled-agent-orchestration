@@ -11,7 +11,7 @@ This scenario validates Reporting dashboard (eval_reporting_dashboard) for `EX-0
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-027` and confirm the expected signals without contradicting evidence.
 

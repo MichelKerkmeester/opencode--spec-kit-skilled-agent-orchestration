@@ -11,7 +11,7 @@ This scenario validates `detect_changes` end-to-end. Covers (1) the P1 safety in
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-014` and confirm the expected signals without contradicting evidence.
 

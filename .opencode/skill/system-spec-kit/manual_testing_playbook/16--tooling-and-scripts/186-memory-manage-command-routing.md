@@ -11,7 +11,7 @@ This scenario validates /memory:manage command routing for `186`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `186` and confirm the expected signals without contradicting evidence.
 

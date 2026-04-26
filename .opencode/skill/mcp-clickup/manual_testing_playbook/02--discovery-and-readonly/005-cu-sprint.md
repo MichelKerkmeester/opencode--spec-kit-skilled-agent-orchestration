@@ -19,7 +19,7 @@ Sprint-driven teams use `cu sprint` to scope the daily standup view. The scenari
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-009` and confirm the expected signals without contradictory evidence.
 

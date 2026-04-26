@@ -12,7 +12,7 @@ This scenario validates credential sanitization in MCP tool error responses. It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `118` and confirm the expected signals without contradicting evidence.
 

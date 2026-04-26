@@ -19,7 +19,7 @@ cli-copilot ships a curated set of prompt templates in `assets/prompt_templates.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-018` and confirm the expected signals without contradictory evidence.
 

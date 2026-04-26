@@ -11,7 +11,7 @@ This scenario validates Health diagnostics (memory_health) for `EX-013`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-013` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates query surrogates (SPECKIT_QUERY_SURROGATES) for `163`. I
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `163` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Chunking safe swap atomicity (P0-6) for `116`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `116` and confirm the expected signals without contradicting evidence.
 

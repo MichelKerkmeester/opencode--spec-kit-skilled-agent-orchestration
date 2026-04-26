@@ -12,7 +12,7 @@ This scenario validates Path filter for `MCP-004`. It focuses on Verify `paths` 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `MCP-004` and confirm the expected signals without contradictory evidence.
 

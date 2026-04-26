@@ -12,7 +12,7 @@ This scenario validates Pre-flight token budget validation (PI-A3) for `041`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `041` and confirm the expected signals without contradicting evidence.
 

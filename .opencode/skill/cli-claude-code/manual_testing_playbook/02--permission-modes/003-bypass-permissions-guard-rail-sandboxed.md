@@ -19,7 +19,7 @@ This scenario validates BypassPermissions guard rail for `CC-007`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-007` and confirm the expected signals without contradictory evidence.
 

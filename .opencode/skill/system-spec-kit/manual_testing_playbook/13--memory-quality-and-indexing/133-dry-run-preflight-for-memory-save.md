@@ -12,7 +12,7 @@ This scenario validates Dry-run preflight for memory_save for `133`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `133` and confirm the expected signals without contradicting evidence.
 

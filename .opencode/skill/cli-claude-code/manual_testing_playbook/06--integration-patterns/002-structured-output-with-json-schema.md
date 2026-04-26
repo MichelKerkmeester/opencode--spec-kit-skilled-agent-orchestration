@@ -19,7 +19,7 @@ This scenario validates Structured output with json-schema for `CC-018`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-018` and confirm the expected signals without contradictory evidence.
 

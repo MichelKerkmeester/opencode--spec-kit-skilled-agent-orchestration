@@ -19,7 +19,7 @@ Autopilot is one of the four cli-copilot unique capabilities documented in `refe
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-008` and confirm the expected signals without contradictory evidence.
 

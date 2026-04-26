@@ -12,7 +12,7 @@ This scenario validates 6. Debug and Telemetry for `EX-033`. It focuses on Obser
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-033` and confirm the expected signals without contradicting evidence.
 

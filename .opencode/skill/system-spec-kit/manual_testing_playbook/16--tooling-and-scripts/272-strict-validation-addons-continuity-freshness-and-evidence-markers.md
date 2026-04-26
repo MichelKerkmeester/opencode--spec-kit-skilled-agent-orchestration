@@ -11,7 +11,7 @@ This scenario validates the Phase 017 strict-validation add-ons for `272`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify `validate.sh --strict` now runs continuity-freshness, evidence-marker lint, and the normalizer lint guardrail, while the audit script remains the repair sweep
 - Prompt: `As a tooling validation operator, validate Strict validation add-ons: continuity freshness and evidence markers against validate.sh --strict. Verify stale _memory.continuity timestamps surface through the continuity-freshness script, malformed evidence markers fail through the strict lint wrapper, duplicate normalizeScope helpers fail through the normalizer lint rule, and the standalone audit script remains available for repair sweeps. Return a concise pass/fail verdict with the main reason and cited evidence.`

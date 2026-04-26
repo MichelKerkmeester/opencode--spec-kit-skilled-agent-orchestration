@@ -12,7 +12,7 @@ This scenario validates 5. Embedding and API for `EX-032`. It focuses on Provide
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-032` and confirm the expected signals without contradicting evidence.
 

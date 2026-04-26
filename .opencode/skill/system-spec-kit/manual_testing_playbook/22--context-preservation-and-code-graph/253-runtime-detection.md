@@ -12,7 +12,7 @@ This scenario validates Runtime detection.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that `detectRuntime()` correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct `hookPolicy` to each. Also verify the helper functions `areHooksAvailable()` and `getRecoveryApproach()` return correct values per runtime, with Copilot interpreted as file-based hook transport through custom instructions.
 - **Prerequisites**:

@@ -12,7 +12,7 @@ This scenario validates Index reset **(DESTRUCTIVE)** for `CCC-005`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CCC-005` and confirm the expected signals without contradictory evidence.
 

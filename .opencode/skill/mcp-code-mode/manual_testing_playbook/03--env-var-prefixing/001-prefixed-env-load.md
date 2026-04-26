@@ -19,7 +19,7 @@ If env vars don't load with the right prefix, every external MCP server is effec
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-008` and confirm the expected signals without contradictory evidence.
 

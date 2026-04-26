@@ -19,7 +19,7 @@ Every other scenario in this playbook builds on this baseline. If the base `-p` 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-001` and confirm the expected signals without contradictory evidence.
 

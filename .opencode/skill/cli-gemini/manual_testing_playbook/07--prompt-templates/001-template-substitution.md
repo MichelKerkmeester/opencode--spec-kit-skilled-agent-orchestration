@@ -19,7 +19,7 @@ The prompt-templates asset is one of two ALWAYS-loaded resources in the cli-gemi
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-017` and confirm the expected signals without contradictory evidence.
 

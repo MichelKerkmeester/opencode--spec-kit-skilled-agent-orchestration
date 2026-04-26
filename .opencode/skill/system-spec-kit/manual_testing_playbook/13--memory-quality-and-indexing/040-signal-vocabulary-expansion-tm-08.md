@@ -12,7 +12,7 @@ This scenario validates Signal vocabulary expansion (TM-08) for `040`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `040` and confirm the expected signals without contradicting evidence.
 

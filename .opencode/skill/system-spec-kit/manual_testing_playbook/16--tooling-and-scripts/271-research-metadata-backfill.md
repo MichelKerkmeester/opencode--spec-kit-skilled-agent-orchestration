@@ -11,7 +11,7 @@ This scenario validates the research metadata backfill script for `271`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify the research backfill script creates missing `description.json` and `graph-metadata.json` files while leaving complete iteration folders untouched
 - Prompt: `As a tooling validation operator, validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts. Verify missing metadata files are created under research iteration folders, complete folders are not rewritten, and canonical save follow-up coverage for research trees is restored. Return a concise pass/fail verdict with the main reason and cited evidence.`

@@ -13,7 +13,7 @@ This scenario validates SessionStart priming (compact).
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the SessionStart hook, when triggered with `source=compact`, reads the cached PreCompact payload from hook state, injects it to stdout with "Recovered Context (Post-Compaction)" and "Recovery Instructions" sections, includes the last spec folder if known, clears the `pendingCompactPrime` from state after injection, points recovery back to `/spec_kit:resume` when the cache is missing, and stays within the 4000-token budget (COMPACTION_TOKEN_BUDGET).
 - **Prerequisites**:

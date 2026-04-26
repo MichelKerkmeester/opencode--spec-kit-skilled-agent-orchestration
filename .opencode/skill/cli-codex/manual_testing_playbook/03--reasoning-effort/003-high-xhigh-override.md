@@ -19,7 +19,7 @@ SKILL.md §3 + `integration_patterns.md` §5 explicitly recommend `high` / `xhig
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-011` and confirm the expected signals without contradictory evidence.
 

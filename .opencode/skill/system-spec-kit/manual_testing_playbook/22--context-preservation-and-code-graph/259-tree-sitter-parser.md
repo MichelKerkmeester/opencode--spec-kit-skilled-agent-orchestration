@@ -12,7 +12,7 @@ This scenario validates Tree-Sitter WASM parser.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the tree-sitter WASM parser (`tree-sitter-parser.ts`) correctly parses TypeScript files and extracts function declarations, class definitions, method definitions, interfaces, type aliases, imports, and exports as RawCapture arrays. The parser must lazily initialize WASM grammars, cache them per language, produce results compatible with capturesToNodes() and extractEdges() from structural-indexer.ts, and generate correct content hashes for incremental re-indexing.
 - **Prerequisites**:

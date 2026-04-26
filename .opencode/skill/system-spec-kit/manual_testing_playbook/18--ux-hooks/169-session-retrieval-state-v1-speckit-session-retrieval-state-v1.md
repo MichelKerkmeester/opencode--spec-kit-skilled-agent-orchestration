@@ -11,7 +11,7 @@ This scenario validates session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_ST
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `169` and confirm the expected signals without contradicting evidence.
 

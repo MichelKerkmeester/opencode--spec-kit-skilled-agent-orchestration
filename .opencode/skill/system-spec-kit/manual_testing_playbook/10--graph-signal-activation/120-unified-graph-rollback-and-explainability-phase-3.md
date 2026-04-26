@@ -12,7 +12,7 @@ This scenario validates Unified graph rollback and explainability (Phase 3) for 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `120` and confirm the expected signals without contradicting evidence.
 

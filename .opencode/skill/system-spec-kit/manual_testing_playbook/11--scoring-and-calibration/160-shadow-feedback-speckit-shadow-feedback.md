@@ -12,7 +12,7 @@ This scenario validates shadow feedback (SPECKIT_SHADOW_FEEDBACK) for `160`. It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `160` and confirm the expected signals without contradicting evidence.
 

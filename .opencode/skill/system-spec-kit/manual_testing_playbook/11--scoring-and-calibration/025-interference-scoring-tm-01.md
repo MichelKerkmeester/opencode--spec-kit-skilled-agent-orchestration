@@ -12,7 +12,7 @@ This scenario validates Interference scoring (TM-01) for `025`. It focuses on Co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `025` and confirm the expected signals without contradicting evidence.
 

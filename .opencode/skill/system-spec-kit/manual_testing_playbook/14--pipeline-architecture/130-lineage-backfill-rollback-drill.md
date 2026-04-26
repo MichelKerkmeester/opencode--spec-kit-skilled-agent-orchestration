@@ -12,7 +12,7 @@ This scenario validates Lineage backfill rollback drill for `130`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `130` and confirm the expected signals without contradicting evidence.
 

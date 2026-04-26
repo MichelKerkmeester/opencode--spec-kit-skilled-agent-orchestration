@@ -19,7 +19,7 @@ Operators encounter expired or rotated tokens regularly. The CLI must surface a 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-024` and confirm the expected signals without contradictory evidence.
 

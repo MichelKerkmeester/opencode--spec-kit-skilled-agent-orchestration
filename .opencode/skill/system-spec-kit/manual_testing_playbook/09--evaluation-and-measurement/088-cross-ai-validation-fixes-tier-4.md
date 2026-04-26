@@ -11,7 +11,7 @@ This scenario validates Cross-AI validation fixes (Tier 4) for `088`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `088` and confirm the expected signals without contradicting evidence.
 

@@ -21,7 +21,7 @@ Leaked Chrome processes are silent: they don't crash anything, they just consume
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-022` and confirm the expected signals without contradictory evidence.
 

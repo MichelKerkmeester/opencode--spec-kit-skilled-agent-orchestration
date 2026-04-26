@@ -11,7 +11,7 @@ This scenario validates the end-to-end template compliance enforcement pipeline.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators create a Level 2 spec folder via the distributed-governance spec-authoring flow and verify that all generated documents comply with template contracts on first pass.
 

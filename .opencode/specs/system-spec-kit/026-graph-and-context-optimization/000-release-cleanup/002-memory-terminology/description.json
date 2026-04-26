@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "description": "Feature Specification: Memory→Behavioral Phrasing Audit",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "behavioral",
+    "phrasing",
+    "audit"
+  ],
+  "lastUpdated": "2026-04-26T13:18:21.789Z",
+  "specId": "002",
+  "folderSlug": "memory-terminology",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "26-04-26_14-18__pivoted-scope-from-full-code-command-memory.md"
+  ]
+}

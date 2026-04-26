@@ -12,7 +12,7 @@ This scenario validates scoring and fusion corrections for `079`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify that the implementing symbols are present in the expected source files, then rerun the targeted regression suite from the `@spec-kit/mcp-server` workspace.
 

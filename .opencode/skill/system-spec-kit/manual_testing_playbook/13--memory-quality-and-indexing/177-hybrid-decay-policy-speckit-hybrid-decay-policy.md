@@ -13,7 +13,7 @@ This scenario validates hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) for `1
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators confirm the hybrid-decay symbols are present in the implementing code, then rerun the targeted Vitest files that cover flag gating, no-decay classification, Infinity stability, and separation from TM-03.
 

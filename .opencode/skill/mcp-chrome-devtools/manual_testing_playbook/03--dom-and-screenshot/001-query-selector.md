@@ -19,7 +19,7 @@ DOM query is the most common bdg-CLI operation: scrape a heading, count buttons,
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-008` and confirm the expected signals without contradictory evidence.
 

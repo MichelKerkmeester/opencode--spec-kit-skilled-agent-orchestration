@@ -19,7 +19,7 @@ Background execution is the cli-gemini integration pattern that lets the calling
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-016` and confirm the expected signals without contradictory evidence.
 

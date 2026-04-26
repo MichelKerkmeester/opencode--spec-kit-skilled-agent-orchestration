@@ -12,7 +12,7 @@ This scenario validates 1. Search Pipeline Features (SPECKIT_*) for `EX-028`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-028` and confirm the expected signals without contradicting evidence.
 

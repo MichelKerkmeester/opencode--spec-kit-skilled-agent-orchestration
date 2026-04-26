@@ -13,7 +13,7 @@ This scenario validates Memory indexing (memory_save) for `EX-006`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-006` and confirm the expected signals without contradicting evidence. The scenario now expects the live canonical router to pick the right merge target, keep drop content out of packet docs, still produce searchable output for merged saves, and refresh packet metadata on every successful canonical save.
 

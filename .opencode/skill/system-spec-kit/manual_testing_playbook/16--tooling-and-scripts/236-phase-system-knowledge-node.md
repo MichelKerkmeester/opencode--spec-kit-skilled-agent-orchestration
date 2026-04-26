@@ -11,7 +11,7 @@ This scenario validates phase-system knowledge node for `236`. It focuses on con
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify that the phase-system reference is not just descriptive: the shipped tests, validation fixtures, and rule runner all reflect the documented parent-child phase topology and recursive validation workflow.
 

@@ -11,7 +11,7 @@ This scenario validates the post-insert retry budget for `268`. It focuses on pr
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify deferred enrichment retries stop after three `(memoryId, step, reason)` failures, emit structured `retry_attempt` telemetry at each decision point, and reset on success
 - Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise pass/fail verdict with the main reason and cited evidence.`

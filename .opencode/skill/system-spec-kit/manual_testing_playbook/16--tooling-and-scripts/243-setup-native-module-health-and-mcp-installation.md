@@ -11,7 +11,7 @@ This scenario validates setup, native module health, and MCP installation for `2
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify the setup surface from least to most invasive: prerequisite validation, native-module probing, ABI marker recording, and the bundled installer flow that builds the workspace and updates MCP configuration.
 

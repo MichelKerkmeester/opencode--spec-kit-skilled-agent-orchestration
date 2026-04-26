@@ -19,7 +19,7 @@ This is the negative test that proves the prefixing rule is enforced. Without th
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-009` and confirm the expected signals without contradictory evidence.
 

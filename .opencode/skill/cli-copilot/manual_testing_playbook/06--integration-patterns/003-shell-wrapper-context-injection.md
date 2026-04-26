@@ -19,7 +19,7 @@ Per SKILL.md §3 Spec Kit Context Parity, Copilot CLI does not receive Spec Kit'
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-017` and confirm the expected signals without contradictory evidence.
 

@@ -11,7 +11,7 @@ This scenario validates the Phase 017 maintainability extracts for `270`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify the shared `assertNever()` helper, `runEnrichmentStep()`, `executeAtomicReconsolidationTxn()`, and `advisoryPreset` rename are wired as the live pipeline contracts
 - Prompt: `As a pipeline validation operator, validate Phase 017 maintainability extracts against the documented helper surfaces. Verify assertNever() handles the documented union exhaustiveness cases, runEnrichmentStep() still preserves lane-specific failure mapping, reconsolidation conflict handling routes through one shared transaction helper, and memory-context now reports advisoryPreset instead of readiness in the structural nudge metadata. Return a concise pass/fail verdict with the main reason and cited evidence.`

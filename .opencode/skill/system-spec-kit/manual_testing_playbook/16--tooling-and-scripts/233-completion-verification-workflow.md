@@ -11,7 +11,7 @@ This scenario validates completion verification workflow for `233`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the completion gate against compliant, lightweight, and intentionally degraded fixtures and confirm the workflow returns the expected advisory, pass, and blocking states.
 

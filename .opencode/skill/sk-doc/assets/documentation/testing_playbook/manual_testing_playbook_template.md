@@ -100,7 +100,7 @@ manual_testing_playbook/{CATEGORY_DIR}/{NNN}-{feature-name}.md
 
 Per-feature file shape:
 1. `## 1. OVERVIEW`
-2. `## 2. CURRENT REALITY`
+2. `## 2. SCENARIO CONTRACT`
 3. `## 3. TEST EXECUTION`
 4. `## 4. SOURCE FILES`
 5. `## 5. SOURCE METADATA`
@@ -307,10 +307,10 @@ This section records wave planning and capacity guidance for the manual testing 
 #### Description
 Verify {OBJECTIVE}.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a {ROLE}, {ACTION} against {TARGET}. Verify {EXPECTED_OUTCOME}. Return {OUTPUT_FORMAT}.`
 
-{CURRENT_REALITY_SUMMARY}
+{SCENARIO_CONTRACT_SUMMARY}
 
 Desired user-visible outcome: {DESIRED_USER_OUTCOME}
 
@@ -327,10 +327,10 @@ Desired user-visible outcome: {DESIRED_USER_OUTCOME}
 #### Description
 Verify {OBJECTIVE_2}.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a {ROLE_2}, {ACTION_2} against {TARGET_2}. Verify {EXPECTED_OUTCOME_2}. Return {OUTPUT_FORMAT_2}.`
 
-{CURRENT_REALITY_SUMMARY_2}
+{SCENARIO_CONTRACT_SUMMARY_2}
 
 Desired user-visible outcome: {DESIRED_USER_OUTCOME_2}
 
@@ -384,7 +384,7 @@ This scenario validates {FEATURE_NAME} for `{FEATURE_ID}`. It focuses on {OBJECT
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `{FEATURE_ID}` and confirm the expected signals without contradictory evidence.
 
@@ -501,7 +501,7 @@ Structure:
 - [ ] Every per-feature file includes frontmatter with `title` and `description`
 
 Content:
-- [ ] Every root summary block has Description, Current Reality, and Test Execution
+- [ ] Every root summary block has Description, Scenario Contract, and Test Execution
 - [ ] All per-feature scenario tables use the 9-column format
 - [ ] Every Feature ID is unique across the playbook
 - [ ] Every per-feature file has an Exact Prompt

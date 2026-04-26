@@ -11,7 +11,7 @@ This scenario validates that the query-intent classifier in Spec Kit Memory corr
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify that semantic queries (containing keywords like "find examples", "how to", "similar to", "explain") are classified as semantic and do not trigger structural graph augmentation in `memory_context`.
 - Prompt: `As a manual-testing orchestrator, send a semantic query like "find examples of error handling patterns in this codebase" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as 'semantic', routedBackend is semantic when present, no graphContext block in the response, no structural graph data injected into primary results. Return a concise user-facing pass/fail verdict with the main reason.`

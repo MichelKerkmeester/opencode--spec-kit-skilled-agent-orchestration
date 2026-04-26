@@ -12,7 +12,7 @@ This scenario validates Co-activation fan-effect divisor (R17) for `003`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `003` and confirm the expected signals without contradicting evidence.
 

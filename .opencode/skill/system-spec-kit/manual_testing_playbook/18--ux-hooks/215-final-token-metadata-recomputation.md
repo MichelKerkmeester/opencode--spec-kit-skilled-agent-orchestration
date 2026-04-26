@@ -11,7 +11,7 @@ This scenario validates Final token metadata recomputation for `215`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `215` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates 4-stage pipeline refactor (R6) for `049`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `049` and confirm the expected signals without contradicting evidence.
 

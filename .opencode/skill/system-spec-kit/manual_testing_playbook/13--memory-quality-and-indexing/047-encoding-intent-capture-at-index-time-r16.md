@@ -12,7 +12,7 @@ This scenario validates Encoding-intent capture at index time (R16) for `047`. I
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `047` and confirm the expected signals without contradicting evidence.
 

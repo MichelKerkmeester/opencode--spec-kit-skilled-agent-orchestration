@@ -12,7 +12,7 @@ This scenario validates Tier-2 fallback channel forcing for `077`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `077` and confirm the expected signals without contradicting evidence.
 

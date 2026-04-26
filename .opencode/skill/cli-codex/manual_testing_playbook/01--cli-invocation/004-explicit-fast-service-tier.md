@@ -19,7 +19,7 @@ The user's auto-memory feedback explicitly says: "always pass `-c service_tier="
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-004` and confirm the expected signals without contradictory evidence.
 

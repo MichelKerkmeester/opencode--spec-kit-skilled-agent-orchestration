@@ -19,7 +19,7 @@ Bulk operations are the primary reason operators reach for the MCP path over the
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-017` and confirm the expected signals without contradictory evidence.
 

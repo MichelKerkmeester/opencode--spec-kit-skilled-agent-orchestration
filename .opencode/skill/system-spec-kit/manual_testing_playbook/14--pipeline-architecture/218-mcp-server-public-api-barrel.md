@@ -12,7 +12,7 @@ This scenario validates MCP Server Public API Barrel for `218`. It focuses on ve
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `218` and confirm the expected signals without contradicting evidence.
 

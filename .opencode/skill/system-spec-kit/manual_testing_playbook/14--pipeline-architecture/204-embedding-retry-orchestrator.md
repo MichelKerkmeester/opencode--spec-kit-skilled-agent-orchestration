@@ -12,7 +12,7 @@ This scenario validates Embedding retry orchestrator for `204`. It focuses on ve
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `204` and confirm the expected signals without contradicting evidence.
 

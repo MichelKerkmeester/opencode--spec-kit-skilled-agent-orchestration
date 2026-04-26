@@ -12,7 +12,7 @@ This scenario validates Session health tool (session_health).
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that session_health correctly computes session status based on time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). Response must include structured details (sessionAgeMs, lastToolCallAgoMs, graphFreshness, specFolder, primingStatus), a QualityScore with 4 factors (recency, recovery, graphFreshness, continuity), and actionable hints.
 - **Prerequisites**:

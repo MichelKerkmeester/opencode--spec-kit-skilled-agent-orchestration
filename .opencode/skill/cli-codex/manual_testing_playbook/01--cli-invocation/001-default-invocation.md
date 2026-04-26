@@ -19,7 +19,7 @@ The default invocation is the single most important contract in this skill. SKIL
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-001` and confirm the expected signals without contradictory evidence.
 

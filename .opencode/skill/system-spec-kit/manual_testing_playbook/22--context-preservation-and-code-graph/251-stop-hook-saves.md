@@ -12,7 +12,7 @@ This scenario validates Stop hook token tracking.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the Stop hook (async, fires on session end) parses the Claude Code transcript JSONL for token usage data (`input_tokens`, `output_tokens`, `cache_creation_input_tokens`, `cache_read_input_tokens`), calculates USD cost estimates per model (Opus: $15/$75 per 1M, Sonnet: $3/$15 per 1M, Haiku: $0.25/$1.25 per 1M), stores metrics in hook state, supports incremental parsing via byte offset, auto-detects spec folder from transcript paths, and triggers auto-save when completion tokens exceed 1000.
 - **Prerequisites**:

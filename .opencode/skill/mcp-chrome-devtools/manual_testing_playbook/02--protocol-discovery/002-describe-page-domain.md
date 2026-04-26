@@ -19,7 +19,7 @@ The `--describe` surface is how operators discover the exact method names and pa
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-006` and confirm the expected signals without contradictory evidence.
 

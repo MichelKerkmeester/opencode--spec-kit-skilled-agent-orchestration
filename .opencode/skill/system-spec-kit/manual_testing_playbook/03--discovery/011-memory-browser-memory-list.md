@@ -11,7 +11,7 @@ This scenario validates Memory browser (memory_list) for `EX-011`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-011` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Session-manager transaction gap fixes for `084`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `084` and confirm the expected signals without contradicting evidence.
 

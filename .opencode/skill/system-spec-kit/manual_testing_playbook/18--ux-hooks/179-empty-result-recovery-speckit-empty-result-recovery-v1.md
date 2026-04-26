@@ -11,7 +11,7 @@ This scenario validates empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1)
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `179` and confirm the expected signals without contradicting evidence.
 

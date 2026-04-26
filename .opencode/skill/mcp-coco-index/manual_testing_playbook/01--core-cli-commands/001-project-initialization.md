@@ -12,7 +12,7 @@ This scenario validates Project initialization for `CCC-001`. It focuses on Veri
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CCC-001` and confirm the expected signals without contradictory evidence.
 

@@ -11,7 +11,7 @@ This scenario validates Async ingestion job lifecycle (P0-3) for `097`. It focus
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `097` and confirm the expected signals without contradicting evidence.
 

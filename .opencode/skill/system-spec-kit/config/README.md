@@ -49,7 +49,7 @@ This directory contains the JSON configuration files that control how the Spec K
 1. **Legacy Settings** - Basic limits for previews and message windows
 2. **Semantic Search** - Voyage-4 embeddings, similarity thresholds (min: 50, max: 10 results)
 3. **Memory Index** - SQLite database path, auto-rebuild, verification
-4. **Trigger Surfacing** - Auto-surface relevant memories (min similarity: 70, max: 3 results)
+4. **Trigger Surfacing** - Auto-surface relevant spec-doc records (min similarity: 70, max: 3 results)
 5. **Memory Decay** - Time-based relevance decay (90-day scale, 0.3 weight, ~62 day half-life)
 6. **Importance Tiers** - Six-tier system (constitutional to deprecated) with search boosts and expiration
 7. **Hybrid Search** - RRF fusion of FTS + vector results (k=60)

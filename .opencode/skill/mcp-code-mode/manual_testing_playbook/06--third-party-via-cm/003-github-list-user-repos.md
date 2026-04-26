@@ -19,7 +19,7 @@ GitHub is one of the most-used external MCPs. If repo listing fails, every downs
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-019` and confirm the expected signals without contradictory evidence.
 

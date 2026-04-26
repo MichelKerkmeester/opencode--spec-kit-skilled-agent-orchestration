@@ -12,7 +12,7 @@ This scenario validates Constitutional memory as expert knowledge injection (PI-
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `056` and confirm the expected signals without contradicting evidence.
 

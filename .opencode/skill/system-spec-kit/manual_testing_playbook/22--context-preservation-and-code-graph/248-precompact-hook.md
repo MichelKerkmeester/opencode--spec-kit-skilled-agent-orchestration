@@ -12,7 +12,7 @@ This scenario validates PreCompact hook context caching.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the PreCompact hook reads the transcript tail, extracts file paths and topics, builds a compact context payload via the 3-source merge pipeline, truncates to the 4000-token budget, and caches the result in hook state at `${tmpdir}/speckit-claude-hooks/<project-hash>/<session-id>.json`. Stdout must NOT be written (caching only).
 - **Prerequisites**:

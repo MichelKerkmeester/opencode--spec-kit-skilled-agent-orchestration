@@ -19,7 +19,7 @@ Operator scripts often pipe `bdg status` to `jq` to make decisions (e.g., "if st
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-003` and confirm the expected signals without contradictory evidence.
 

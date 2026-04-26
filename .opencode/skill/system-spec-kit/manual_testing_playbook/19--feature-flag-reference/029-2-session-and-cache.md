@@ -12,7 +12,7 @@ This scenario validates 2. Session and Cache for `EX-029`. It focuses on Session
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-029` and confirm the expected signals without contradicting evidence.
 

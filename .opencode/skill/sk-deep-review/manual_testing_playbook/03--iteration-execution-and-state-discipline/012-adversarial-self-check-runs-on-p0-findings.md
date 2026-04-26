@@ -19,7 +19,7 @@ P0 findings block convergence and trigger FAIL verdicts. A false-positive P0 was
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators should run this as a real orchestrator-led check rather than a synthetic command-matrix exercise. The scenario is only complete when the operator can explain the behavior back to a user in plain language.
 

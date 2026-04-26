@@ -12,7 +12,7 @@ This scenario validates Semantic and lexical search (memory_search) for `EX-002`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-002` and confirm the expected signals without contradicting evidence.
 

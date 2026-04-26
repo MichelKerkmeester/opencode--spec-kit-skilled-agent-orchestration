@@ -19,7 +19,7 @@ Every CLI mutation scenario in Wave 3 needs a `<listId>` argument. This scenario
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-006` and confirm the expected signals without contradictory evidence.
 

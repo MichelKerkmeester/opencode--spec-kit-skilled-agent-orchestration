@@ -12,7 +12,7 @@ This scenario validates Reconsolidation-on-save (TM-06) for `044`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `044` and confirm the expected signals without contradicting evidence.
 

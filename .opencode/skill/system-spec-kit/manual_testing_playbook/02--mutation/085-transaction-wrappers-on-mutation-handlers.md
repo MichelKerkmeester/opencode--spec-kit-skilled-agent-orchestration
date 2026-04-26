@@ -13,7 +13,7 @@ This scenario validates Transaction wrappers on mutation handlers for `085`. It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `085` and confirm the expected signals without contradicting evidence.
 

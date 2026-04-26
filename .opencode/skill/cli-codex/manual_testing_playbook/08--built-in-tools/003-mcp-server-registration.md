@@ -19,7 +19,7 @@ This scenario validates `codex mcp` server registration for `CX-025`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-025` and confirm the expected signals without contradictory evidence.
 

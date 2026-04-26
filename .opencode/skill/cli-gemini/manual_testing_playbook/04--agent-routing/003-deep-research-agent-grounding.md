@@ -19,7 +19,7 @@ This scenario validates the `@deep-research` agent routing for `CG-012`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-012` and confirm the expected signals without contradictory evidence.
 

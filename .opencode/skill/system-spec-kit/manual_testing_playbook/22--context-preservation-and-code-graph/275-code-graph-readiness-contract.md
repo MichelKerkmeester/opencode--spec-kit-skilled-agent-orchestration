@@ -11,7 +11,7 @@ This scenario validates the shared code-graph readiness contract for `275`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify the code-graph handlers now emit `canonicalReadiness`, `trustState`, and `lastPersistedAt` through the shared readiness contract
 - Prompt: `As a context-and-code-graph validation operator, validate Code-graph readiness contract against the shared readiness helpers. Verify query, scan, status, context, ccc-status, ccc-reindex, and ccc-feedback all emit readiness fields through one shared contract; trustState values stay inside the canonical SharedPayloadTrustState vocabulary; and the CCC trio uses the documented readiness_not_applicable stub behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`

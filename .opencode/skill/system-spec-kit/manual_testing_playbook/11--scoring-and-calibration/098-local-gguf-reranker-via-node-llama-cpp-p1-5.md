@@ -12,7 +12,7 @@ This scenario validates Local GGUF reranker via node-llama-cpp (P1-5) for `098`.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `098` and confirm the expected signals without contradicting evidence.
 

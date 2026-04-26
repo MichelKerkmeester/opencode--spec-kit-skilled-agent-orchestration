@@ -13,7 +13,7 @@ This scenario validates SessionStart priming (startup).
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs the current startup contract: a `Session Context` startup surface, `Recovery Tools`, `Structural Context`, and `Startup Payload Contract` sections when the startup brief is available; Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`); CocoIndex Code availability status; Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`); graph-quality context sourced from `graphQualitySummary`; and resume instructions that point to `/spec_kit:resume` and the packet continuity chain. Output must stay within `SESSION_PRIME_TOKEN_BUDGET` (2000 tokens).
 - **Prerequisites**:

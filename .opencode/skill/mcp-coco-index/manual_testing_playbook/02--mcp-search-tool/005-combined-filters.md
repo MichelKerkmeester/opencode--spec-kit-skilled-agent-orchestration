@@ -8,7 +8,7 @@ description: "This scenario validates Combined filters for `MCP-005`. It focuses
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
+- [2. SCENARIO CONTRACT](#2--scenario-contract)
 - [3. TEST EXECUTION](#3--test-execution)
 - [4. REFERENCES](#4--references)
 - [5. SOURCE METADATA](#5--source-metadata)
@@ -20,7 +20,7 @@ This scenario validates Combined filters for `MCP-005`. It focuses on Verify `la
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `MCP-005` and confirm the expected signals without contradictory evidence.
 

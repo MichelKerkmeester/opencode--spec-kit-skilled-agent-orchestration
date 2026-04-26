@@ -21,7 +21,7 @@ The cli-gemini SKILL.md lists `--yolo` as a clear danger flag (`NEVER use --yolo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-004` and confirm the expected signals without contradictory evidence.
 

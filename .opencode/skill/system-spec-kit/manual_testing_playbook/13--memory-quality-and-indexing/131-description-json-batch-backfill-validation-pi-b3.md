@@ -12,7 +12,7 @@ This scenario validates Description.json batch backfill validation (PI-B3) for `
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `131` and confirm the expected signals without contradicting evidence.
 

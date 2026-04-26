@@ -378,7 +378,7 @@ Before any search runs, the system figures out what kind of help you need -- lik
 
 #### Memory Lifecycle
 
-Not all memories are equally useful forever. The system uses FSRS (Free Spaced Repetition Scheduler) to track freshness -- a decay model validated on 100M+ Anki flashcard users.
+Not all spec-doc records are equally useful forever. The system uses FSRS (Free Spaced Repetition Scheduler) to track freshness -- a decay model validated on 100M+ Anki flashcard users.
 
 | Tier               | Description                       | Decay Behavior                           |
 | ------------------ | --------------------------------- | ---------------------------------------- |

@@ -11,7 +11,7 @@ This scenario validates Schema and type contract synchronization for `211`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `211` and confirm the expected signals without contradicting evidence.
 

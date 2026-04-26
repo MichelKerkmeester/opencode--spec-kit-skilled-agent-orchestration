@@ -11,7 +11,7 @@ This scenario validates that queries classified as `hybrid` by the query-intent 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify that hybrid queries (mixing structural keywords like "function", "calls" with semantic keywords like "explain", "examples") are classified as hybrid and append `graphContext` metadata to the normal `memory_context` response.
 - Prompt: `As a manual-testing orchestrator, send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as hybrid, response contains queryIntentRouting, graphContext appears when graph seeds resolve, and the normal semantic response body remains present. Return a concise user-facing pass/fail verdict with the main reason.`

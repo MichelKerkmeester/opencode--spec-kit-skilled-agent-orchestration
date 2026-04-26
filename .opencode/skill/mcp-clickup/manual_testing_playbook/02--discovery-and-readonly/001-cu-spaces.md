@@ -19,7 +19,7 @@ This scenario validates `cu spaces` for `CU-005`. It focuses on the workspace-di
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-005` and confirm the expected signals without contradictory evidence.
 

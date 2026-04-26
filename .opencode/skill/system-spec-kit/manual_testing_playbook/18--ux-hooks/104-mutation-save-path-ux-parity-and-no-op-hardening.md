@@ -11,7 +11,7 @@ This scenario validates Mutation save-path UX parity and no-op hardening for `10
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `104` and confirm the expected signals without contradicting evidence.
 

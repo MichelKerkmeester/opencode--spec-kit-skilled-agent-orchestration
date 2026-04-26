@@ -12,7 +12,7 @@ This scenario validates memory_delete confirm schema tightening for `101`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `101` and confirm the expected signals without contradicting evidence.
 

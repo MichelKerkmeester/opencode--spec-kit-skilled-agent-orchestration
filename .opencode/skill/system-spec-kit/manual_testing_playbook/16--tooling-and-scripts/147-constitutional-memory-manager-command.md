@@ -11,7 +11,7 @@ This scenario validates Constitutional memory manager command for `147`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `147` and confirm the expected signals without contradicting evidence.
 

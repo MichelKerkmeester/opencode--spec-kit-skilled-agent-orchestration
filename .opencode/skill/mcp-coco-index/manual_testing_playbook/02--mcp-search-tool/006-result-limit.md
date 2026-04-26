@@ -12,7 +12,7 @@ This scenario validates Result limit for `MCP-006`. It focuses on Verify `limit`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `MCP-006` and confirm the expected signals without contradictory evidence.
 

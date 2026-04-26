@@ -12,7 +12,7 @@ This scenario validates graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PRO
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `158` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates MCP auto-priming.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the memory-surface hook delivers a PrimePackage on the first MCP tool call of a session. The package must contain constitutional memories, code graph status snapshot, and any triggered memories from the current prompt. Subsequent tool calls must NOT re-deliver the prime package (one-shot behavior). The priming status must be reflected in session_health as 'primed' after the first call.
 - **Prerequisites**:

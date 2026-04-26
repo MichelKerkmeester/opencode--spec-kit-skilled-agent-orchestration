@@ -13,7 +13,7 @@ This scenario validates bounded graph diagnostics for `143`. It focuses on confi
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `143` and confirm the expected signals without contradicting evidence.
 

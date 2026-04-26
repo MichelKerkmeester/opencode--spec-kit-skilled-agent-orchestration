@@ -8,7 +8,7 @@ description: "This scenario validates the check-source-dist-alignment.ts script 
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
+- [2. SCENARIO CONTRACT](#2--scenario-contract)
 - [3. TEST EXECUTION](#3--test-execution)
 - [4. REFERENCES](#4--references)
 - [5. SOURCE METADATA](#5--source-metadata)
@@ -19,7 +19,7 @@ This scenario validates the check-source-dist-alignment.ts script for `150`. It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the alignment script and confirm zero violations. The script scans all `.js` files under `dist/lib/`, maps each to its expected `.ts` source, and reports orphans.
 

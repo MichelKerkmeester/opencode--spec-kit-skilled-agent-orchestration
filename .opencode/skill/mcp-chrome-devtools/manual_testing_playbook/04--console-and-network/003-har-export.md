@@ -19,7 +19,7 @@ HAR is the standard interchange format for network diagnostics: any tool that im
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-013` and confirm the expected signals without contradictory evidence.
 

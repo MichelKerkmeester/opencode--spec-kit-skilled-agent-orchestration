@@ -11,7 +11,7 @@ This scenario validates ops self-healing runbooks for `234`. It focuses on confi
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators exercise the shell runbook surface end to end and confirm the dispatcher exposes the documented failure classes, returns ownership metadata, and emits deterministic recovery or escalation payloads.
 

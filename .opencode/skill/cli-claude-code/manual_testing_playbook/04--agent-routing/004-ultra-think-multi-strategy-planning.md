@@ -19,7 +19,7 @@ The `ultra-think` agent is the cli-claude-code skill's heaviest planner - it pai
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-014` and confirm the expected signals without contradictory evidence.
 

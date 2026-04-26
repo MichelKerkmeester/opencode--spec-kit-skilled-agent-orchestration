@@ -12,7 +12,7 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
 

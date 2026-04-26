@@ -19,7 +19,7 @@ Console capture is the primary debugging surface for browser-side JavaScript: er
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-011` and confirm the expected signals without contradictory evidence.
 

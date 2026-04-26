@@ -11,7 +11,7 @@ This scenario validates Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `010` and confirm the expected signals without contradicting evidence.
 

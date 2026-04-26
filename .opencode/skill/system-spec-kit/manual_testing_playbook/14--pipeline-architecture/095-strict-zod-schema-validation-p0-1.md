@@ -12,7 +12,7 @@ This scenario validates Strict Zod schema validation (P0-1) for `095`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `095` and confirm the expected signals without contradicting evidence.
 

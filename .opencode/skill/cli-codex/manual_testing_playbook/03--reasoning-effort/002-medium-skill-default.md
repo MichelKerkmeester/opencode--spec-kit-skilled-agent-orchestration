@@ -19,7 +19,7 @@ SKILL.md §4 ALWAYS rule 7 mandates that the model + effort + service tier be pa
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-010` and confirm the expected signals without contradictory evidence.
 

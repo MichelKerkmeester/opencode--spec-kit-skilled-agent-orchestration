@@ -11,7 +11,7 @@ This scenario validates Tree thinning for spec folder consolidation (PI-B1) for 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `061` and confirm the expected signals without contradicting evidence.
 

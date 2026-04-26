@@ -11,7 +11,7 @@ This scenario validates BM25/FTS5-only baseline (G-NEW-1) for `011`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `011` and confirm the expected signals without contradicting evidence.
 

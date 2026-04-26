@@ -12,7 +12,7 @@ This scenario validates Pre-storage quality gate (TM-04) for `043`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `043` and confirm the expected signals without contradicting evidence.
 

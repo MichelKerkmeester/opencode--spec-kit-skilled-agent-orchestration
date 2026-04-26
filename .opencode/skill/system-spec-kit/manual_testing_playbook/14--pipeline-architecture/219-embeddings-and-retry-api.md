@@ -12,7 +12,7 @@ This scenario validates Embeddings and Retry API for `219`. It focuses on verify
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `219` and confirm the expected signals without contradicting evidence.
 

@@ -11,7 +11,7 @@ This scenario validates template composition system for `244`. It focuses on con
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators exercise the template composer in its three main modes and confirm it can detect drift, preview changes, recompose a targeted level, and then verify the outputs again.
 

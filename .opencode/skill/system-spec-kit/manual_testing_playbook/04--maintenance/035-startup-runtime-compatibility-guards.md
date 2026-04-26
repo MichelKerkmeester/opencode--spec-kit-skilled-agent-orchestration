@@ -11,7 +11,7 @@ This scenario validates Startup runtime compatibility guards for `EX-035`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-035` and confirm the expected signals without contradicting evidence.
 

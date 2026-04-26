@@ -11,7 +11,7 @@ This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `1
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `167` and confirm the expected signals without contradicting evidence.
 

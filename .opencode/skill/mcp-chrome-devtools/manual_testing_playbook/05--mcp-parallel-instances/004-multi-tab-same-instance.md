@@ -19,7 +19,7 @@ This scenario validates `new_page` for `BDG-017`. It focuses on confirming an op
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-017` and confirm the expected signals without contradictory evidence.
 

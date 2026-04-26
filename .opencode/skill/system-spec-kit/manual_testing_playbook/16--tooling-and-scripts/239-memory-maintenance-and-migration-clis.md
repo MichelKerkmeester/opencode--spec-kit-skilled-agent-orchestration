@@ -11,7 +11,7 @@ This scenario validates memory maintenance and migration CLIs for `239`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify the maintenance surface through dry-run migrations, targeted regression scripts, and a simple ranking input so the command cluster can be exercised without destructive corpus changes.
 

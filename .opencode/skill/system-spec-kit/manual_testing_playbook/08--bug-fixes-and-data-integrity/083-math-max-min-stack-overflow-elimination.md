@@ -12,7 +12,7 @@ This scenario validates Math.max/min stack overflow elimination for `083`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `083` and confirm the expected signals without contradicting evidence.
 

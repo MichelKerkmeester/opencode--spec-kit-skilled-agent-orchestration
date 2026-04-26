@@ -11,7 +11,7 @@ This scenario validates Phase folder creation for `PHASE-002`. It focuses on Run
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `PHASE-002` and confirm the expected signals without contradicting evidence.
 

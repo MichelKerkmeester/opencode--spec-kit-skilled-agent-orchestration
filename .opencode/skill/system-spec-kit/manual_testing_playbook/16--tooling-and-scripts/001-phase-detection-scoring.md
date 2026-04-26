@@ -11,7 +11,7 @@ This scenario validates Phase detection scoring for `PHASE-001`. It focuses on R
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `PHASE-001` and confirm the expected signals without contradicting evidence.
 

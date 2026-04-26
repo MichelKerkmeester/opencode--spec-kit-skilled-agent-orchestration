@@ -12,7 +12,7 @@ This scenario validates Causal chain tracing (memory_drift_why) for `EX-022`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-022` and confirm the expected signals without contradicting evidence.
 

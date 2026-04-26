@@ -12,7 +12,7 @@ This scenario validates Correction tracking with undo for `192`. It focuses on C
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `192` and confirm the expected signals without contradicting evidence.
 

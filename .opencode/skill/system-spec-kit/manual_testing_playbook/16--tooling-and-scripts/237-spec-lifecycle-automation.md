@@ -11,7 +11,7 @@ This scenario validates spec lifecycle automation for `237`. It focuses on confi
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify that the lifecycle surface behaves like a coordinated toolkit: recommendation and archival CLIs expose the documented contract, upgrade tests pass, and completeness plus completion status can be read directly from a known-good fixture.
 

@@ -19,7 +19,7 @@ cli-copilot exposes 5 recommended models across 3 providers per SKILL.md §3 Mod
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-004` and confirm the expected signals without contradictory evidence.
 

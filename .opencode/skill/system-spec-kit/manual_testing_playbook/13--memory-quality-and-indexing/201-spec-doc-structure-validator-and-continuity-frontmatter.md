@@ -10,7 +10,7 @@ audited_post_018: true
 
 This scenario validates the phase 018 spec-doc structure validator for `201`. It focuses on the five fail-closed rules and the thin `_memory.continuity` block.
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the validator against a real spec doc and confirm the phase-018 rule surface rejects malformed continuity/frontmatter state before the doc can be accepted.
 

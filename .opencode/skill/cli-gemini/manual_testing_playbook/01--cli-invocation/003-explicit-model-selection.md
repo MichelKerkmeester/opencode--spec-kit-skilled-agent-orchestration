@@ -19,7 +19,7 @@ The cli-gemini SKILL.md and `cli_reference.md` both pin `gemini-3.1-pro-preview`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-003` and confirm the expected signals without contradictory evidence.
 

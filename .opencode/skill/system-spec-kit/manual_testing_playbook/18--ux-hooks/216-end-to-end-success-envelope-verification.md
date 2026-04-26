@@ -11,7 +11,7 @@ This scenario validates End-to-end success-envelope verification for `216`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `216` and confirm the expected signals without contradicting evidence.
 

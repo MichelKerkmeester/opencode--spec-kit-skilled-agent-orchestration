@@ -11,7 +11,7 @@ This scenario validates the canonical scope normalizer and duplicate-helper lint
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify all target callers use `normalizeScopeValue()` and strict validation rejects new duplicate local helpers
 - Prompt: `As a data-integrity validation operator, validate Scope normalizer canonicalization and lint against normalizeScopeValue(). Verify the documented callers all import the canonical helper, string and null semantics still match the parity matrix, and validate.sh --strict rejects a synthetic duplicate normalizeScope helper outside scope-governance.ts. Return a concise pass/fail verdict with the main reason and cited evidence.`

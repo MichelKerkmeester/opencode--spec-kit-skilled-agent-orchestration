@@ -19,7 +19,7 @@ This scenario validates `cu tasks` for `CU-007`. It focuses on the operator's "w
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-007` and confirm the expected signals without contradictory evidence.
 

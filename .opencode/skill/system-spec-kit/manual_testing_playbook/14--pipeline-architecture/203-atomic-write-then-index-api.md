@@ -12,7 +12,7 @@ This scenario validates Atomic write-then-index API for `203`. It focuses on ver
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `203` and confirm the expected signals without contradicting evidence.
 

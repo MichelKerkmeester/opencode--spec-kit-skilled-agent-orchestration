@@ -12,7 +12,7 @@ This scenario validates No results graceful handling for `ERR-001`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `ERR-001` and confirm the expected signals without contradictory evidence.
 

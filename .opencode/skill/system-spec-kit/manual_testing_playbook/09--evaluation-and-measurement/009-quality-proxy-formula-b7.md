@@ -11,7 +11,7 @@ This scenario validates Quality proxy formula (B7) for `009`. It focuses on Conf
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `009` and confirm the expected signals without contradicting evidence.
 

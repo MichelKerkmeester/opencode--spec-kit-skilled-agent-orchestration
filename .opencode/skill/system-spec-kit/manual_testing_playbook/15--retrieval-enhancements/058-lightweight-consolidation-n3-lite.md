@@ -12,7 +12,7 @@ This scenario validates Lightweight consolidation (N3-lite) for `058`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `058` and confirm the expected signals without contradicting evidence.
 

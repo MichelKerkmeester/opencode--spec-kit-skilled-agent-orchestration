@@ -19,7 +19,7 @@ This is the bdg playbook's smoke test. If bdg isn't installed, every other bdg-C
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-001` and confirm the expected signals without contradictory evidence.
 

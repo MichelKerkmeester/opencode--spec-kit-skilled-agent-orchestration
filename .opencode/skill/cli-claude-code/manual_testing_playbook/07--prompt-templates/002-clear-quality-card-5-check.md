@@ -19,7 +19,7 @@ ALWAYS rule 10 in SKILL.md mandates loading `assets/prompt_quality_card.md` befo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-020` and confirm the expected signals without contradictory evidence.
 

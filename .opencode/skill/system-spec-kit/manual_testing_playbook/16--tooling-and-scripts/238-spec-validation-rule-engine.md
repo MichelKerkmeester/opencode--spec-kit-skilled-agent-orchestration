@@ -11,7 +11,7 @@ This scenario validates spec validation rule engine for `238`. It focuses on con
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the validation orchestrator against compliant, warning-bearing, and phased fixtures and confirm the engine exposes stable human and JSON results without collapsing the severity model. Phase 017 extends the scenario so strict validation must also surface continuity freshness, malformed evidence markers, and duplicate scope-normalizer helpers.
 

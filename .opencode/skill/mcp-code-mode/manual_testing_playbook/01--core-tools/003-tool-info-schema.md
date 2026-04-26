@@ -19,7 +19,7 @@ Without `tool_info`, operators have to guess at tool parameter names and require
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-003` and confirm the expected signals without contradictory evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Memory summary search channel (R8) for `059`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `059` and confirm the expected signals without contradicting evidence.
 

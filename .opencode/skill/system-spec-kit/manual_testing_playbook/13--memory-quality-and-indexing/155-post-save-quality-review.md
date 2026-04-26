@@ -12,7 +12,7 @@ This scenario validates the POST-SAVE QUALITY REVIEW hook that fires after a JSO
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators invoke `generate-context.js --json` with controlled payloads and inspect the POST-SAVE QUALITY REVIEW block in stdout as well as the rendered frontmatter of the produced memory file.
 

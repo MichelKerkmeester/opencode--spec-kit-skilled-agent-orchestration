@@ -12,7 +12,7 @@ This scenario validates BM25 trigger phrase re-index gate for `086`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `086` and confirm the expected signals without contradicting evidence.
 

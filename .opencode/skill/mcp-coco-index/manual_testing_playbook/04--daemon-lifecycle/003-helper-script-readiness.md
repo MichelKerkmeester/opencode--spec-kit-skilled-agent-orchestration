@@ -19,7 +19,7 @@ This scenario validates the two operator-facing helper scripts shipped with the 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `DMN-003` and confirm the expected signals without contradictory evidence.
 

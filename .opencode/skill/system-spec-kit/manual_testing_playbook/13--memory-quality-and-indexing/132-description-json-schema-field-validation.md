@@ -12,7 +12,7 @@ This scenario validates description.json schema field validation for `132`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `132` and confirm the expected signals without contradicting evidence.
 

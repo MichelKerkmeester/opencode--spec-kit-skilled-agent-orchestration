@@ -12,7 +12,7 @@ This scenario validates Stage-2 score field synchronization (P0-8) for `118`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `118` and confirm the expected signals without contradicting evidence.
 

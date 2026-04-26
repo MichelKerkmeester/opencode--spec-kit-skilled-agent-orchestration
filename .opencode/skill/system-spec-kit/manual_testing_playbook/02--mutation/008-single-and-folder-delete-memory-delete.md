@@ -13,7 +13,7 @@ This scenario validates Single and folder delete (memory_delete) for `EX-008`. I
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-008` and confirm the expected signals without contradicting evidence.
 

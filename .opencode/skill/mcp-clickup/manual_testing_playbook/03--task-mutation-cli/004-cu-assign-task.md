@@ -19,7 +19,7 @@ This scenario validates `cu assign <id> --to me` for `CU-014`. It focuses on the
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-014` and confirm the expected signals without contradictory evidence.
 

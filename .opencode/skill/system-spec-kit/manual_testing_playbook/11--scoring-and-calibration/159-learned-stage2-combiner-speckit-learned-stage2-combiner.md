@@ -12,7 +12,7 @@ This scenario validates learned Stage 2 combiner (SPECKIT_LEARNED_STAGE2_COMBINE
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `159` and confirm the expected signals without contradicting evidence.
 

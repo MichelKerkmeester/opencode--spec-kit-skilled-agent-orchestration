@@ -12,7 +12,7 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, binds explicit `args.sessionId` to the transport caller context by default, and merges everything into a single `SessionResumeResult`. Failures must degrade into hints and status fields instead of crashing the tool, except for strict auth mismatches which should reject cleanly. The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
 - **Prerequisites**:

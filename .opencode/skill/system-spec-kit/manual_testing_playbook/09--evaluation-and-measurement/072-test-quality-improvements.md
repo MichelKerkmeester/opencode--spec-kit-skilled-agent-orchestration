@@ -11,7 +11,7 @@ This scenario validates Test quality improvements for `072`. It focuses on Confi
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `072` and confirm the expected signals without contradicting evidence.
 

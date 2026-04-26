@@ -19,7 +19,7 @@ ClickUp Documents are a separate surface from tasks (think wiki / runbook conten
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-020` and confirm the expected signals without contradictory evidence.
 

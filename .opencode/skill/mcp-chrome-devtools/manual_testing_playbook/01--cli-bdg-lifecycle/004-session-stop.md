@@ -19,7 +19,7 @@ Without proper cleanup, repeated bdg sessions leak browser processes that consum
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-004` and confirm the expected signals without contradictory evidence.
 

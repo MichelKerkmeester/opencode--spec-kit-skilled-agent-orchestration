@@ -8,7 +8,7 @@ description: "This scenario validates MODULE_MAP.md content accuracy by spot-che
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
+- [2. SCENARIO CONTRACT](#2--scenario-contract)
 - [3. TEST EXECUTION](#3--test-execution)
 - [4. REFERENCES](#4--references)
 - [5. SOURCE METADATA](#5--source-metadata)
@@ -19,7 +19,7 @@ This scenario validates MODULE_MAP.md content accuracy for `151`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators spot-check 5 representative modules from MODULE_MAP.md and verify their entries are accurate against the live codebase.
 

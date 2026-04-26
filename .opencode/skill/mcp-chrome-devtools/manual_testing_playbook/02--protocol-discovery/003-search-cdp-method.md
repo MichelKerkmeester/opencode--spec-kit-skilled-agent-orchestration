@@ -19,7 +19,7 @@ Search closes the loop on protocol discovery: operators rarely know the exact `<
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-007` and confirm the expected signals without contradictory evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Performance improvements for `071`. It focuses on confir
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `071` and confirm the expected signals without contradicting evidence.
 

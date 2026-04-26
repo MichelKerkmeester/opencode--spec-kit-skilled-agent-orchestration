@@ -11,7 +11,7 @@ This scenario validates evaluation, benchmark, and import-policy tooling for `24
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators validate the evaluation surface through the main runners, the ground-truth provenance helper, and the dedicated policy tests that guard architecture boundaries and prohibited imports.
 

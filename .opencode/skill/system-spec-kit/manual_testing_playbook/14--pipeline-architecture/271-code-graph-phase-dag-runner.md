@@ -11,7 +11,7 @@ This scenario validates the Code Graph phase-DAG runner for `271`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify the phase-DAG runner rejects duplicate names / missing deps / cycles, hides undeclared upstream outputs from each phase body, and that `indexFiles()` produces the same `IndexFilesResult` shape it did before the wrap
 - Prompt: `As a pipeline validation operator, validate the Code Graph phase-DAG runner against the documented contract. Verify duplicate-name, missing-dependency, and cycle inputs each raise PhaseRunnerError with the offending phase named; confirm a phase body with no declared inputs cannot read another phase's output; and confirm a code_graph_scan against a known fixture produces the same filesScanned/filesIndexed/totalNodes counts as the pre-wrap baseline. Return a concise pass/fail verdict with the main reason and cited evidence.`

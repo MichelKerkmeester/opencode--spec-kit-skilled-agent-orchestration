@@ -19,7 +19,7 @@ The `@` syntax is the primary way the calling AI hands targeted file context to 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-009` and confirm the expected signals without contradictory evidence.
 

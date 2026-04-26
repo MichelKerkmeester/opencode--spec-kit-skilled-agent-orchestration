@@ -12,7 +12,7 @@ This scenario validates Cross-process DB hot rebinding for `112`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `112` and confirm the expected signals without contradicting evidence.
 

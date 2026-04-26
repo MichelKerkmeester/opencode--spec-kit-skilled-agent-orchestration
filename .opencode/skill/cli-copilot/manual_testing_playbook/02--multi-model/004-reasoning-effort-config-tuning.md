@@ -19,7 +19,7 @@ Per SKILL.md §3 Reasoning Effort, GPT-5.x models support 4 reasoning levels (lo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-007` and confirm the expected signals without contradictory evidence.
 

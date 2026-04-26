@@ -12,7 +12,7 @@ This scenario validates Scoring and ranking corrections for `066`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `066` and confirm the expected signals without contradicting evidence.
 

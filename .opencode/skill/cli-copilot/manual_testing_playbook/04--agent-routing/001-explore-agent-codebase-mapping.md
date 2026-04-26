@@ -19,7 +19,7 @@ This scenario validates the `@Explore` built-in agent for `CP-010`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-010` and confirm the expected signals without contradictory evidence.
 

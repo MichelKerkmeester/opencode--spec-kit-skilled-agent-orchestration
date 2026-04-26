@@ -345,7 +345,7 @@ python scripts/package_skill.py skill-path        # Package skill
 2. **Create directory** → `{SKILL_PATH}/manual_testing_playbook/`
 3. **Copy scaffolds** → Fill the main playbook and per-feature file scaffolds from the template
 4. **Create per-feature files** → Use the snippet template for one file per feature ID in numbered root-level category folders
-5. **Fill root summaries** → Add Description, Current Reality, and Test Execution blocks per feature
+5. **Fill root summaries** → Add Description, Scenario Contract and Test Execution blocks per feature
 6. **Build cross-reference** → Feature Catalog Index with per-feature file links at end of main playbook
 7. **Plan waves** → Add integrated orchestration guidance and group non-destructive vs destructive scenarios
 8. **Validate** → Run playbook checklist (template Section 10)

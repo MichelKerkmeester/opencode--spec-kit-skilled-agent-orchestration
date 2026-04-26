@@ -19,7 +19,7 @@ CP-012 covers the per-call model switch within an agent-routing context (Opus fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-014` and confirm the expected signals without contradictory evidence.
 

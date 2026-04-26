@@ -12,7 +12,7 @@ This scenario validates Edge density measurement for `018`. It focuses on Confir
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `018` and confirm the expected signals without contradicting evidence.
 

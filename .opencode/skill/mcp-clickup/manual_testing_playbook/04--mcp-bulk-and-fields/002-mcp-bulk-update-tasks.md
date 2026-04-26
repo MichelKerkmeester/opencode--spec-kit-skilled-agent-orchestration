@@ -19,7 +19,7 @@ Bulk update completes the bulk-write story alongside CU-017. Operators frequentl
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-018` and confirm the expected signals without contradictory evidence.
 

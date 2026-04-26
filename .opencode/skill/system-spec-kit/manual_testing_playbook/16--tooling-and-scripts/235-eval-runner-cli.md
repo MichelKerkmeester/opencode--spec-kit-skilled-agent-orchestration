@@ -11,7 +11,7 @@ This scenario validates eval runner CLI for `235`. It focuses on confirming flag
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify that the ablation CLI refuses to run without explicit enablement, accepts supported channel lists, warns on invalid channels, writes the final JSON artifact after a successful run against the production evaluation surface, and is paired with the read-only ground-truth mapping preview before trusting cross-run comparisons.
 

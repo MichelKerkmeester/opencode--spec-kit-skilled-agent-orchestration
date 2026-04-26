@@ -12,7 +12,7 @@ This scenario validates Query expansion (R12) for `038`. It focuses on Confirm p
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `038` and confirm the expected signals without contradicting evidence.
 

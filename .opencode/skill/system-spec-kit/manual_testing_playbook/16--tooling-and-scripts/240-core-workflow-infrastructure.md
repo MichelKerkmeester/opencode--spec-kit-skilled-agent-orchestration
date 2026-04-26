@@ -11,7 +11,7 @@ This scenario validates core workflow infrastructure for `240`. It focuses on co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators validate the internal workflow layer through the regression suites that cover weighting, post-save review, quality scoring, and end-to-end workflow behavior, rather than trying to probe those modules one at a time through ad hoc shell calls.
 

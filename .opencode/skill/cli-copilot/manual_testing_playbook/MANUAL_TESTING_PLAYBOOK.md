@@ -210,7 +210,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Confirm `copilot -p "[prompt]" 2>&1` returns a non-empty plain-text response in a single non-interactive invocation without entering the interactive TUI.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator delegating from Claude Code, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository. Verify a single-shot `-p` prompt returns a readable response without opening the TUI and without leaving the calling shell blocked on input. Return a concise pass/fail verdict with the main reason and the first ~10 lines of Copilot's response.
 
@@ -227,7 +227,7 @@ Desired user-visible outcome: a short paragraph (1-3 sentences) summarising cli-
 
 Confirm `--allow-all-tools` auto-approves a sandboxed file-write tool call without prompting and without touching project files.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator with explicit sandbox approval, invoke Copilot CLI with --allow-all-tools against the cli-copilot skill in this repository. Verify the auto-approve flag lets Copilot perform a documented file-write tool call inside the sandbox directory /tmp/cp-002-sandbox/ without prompting the operator. Constrain all writes to the provided sandbox directory. Return a concise pass/fail verdict with the main reason and the resulting file path.
 
@@ -244,7 +244,7 @@ Desired user-visible outcome: PASS verdict reporting the absolute sandbox path a
 
 Confirm `--no-ask-user` lets a read-only prompt complete without operator interaction or project mutation.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator running unattended, invoke Copilot CLI with --no-ask-user against the cli-copilot skill in this repository for a strictly read-only prompt. Verify the call exits 0, returns a non-empty answer and never blocks stdin asking a clarifying question. Return a concise pass/fail verdict with the main reason and the parsed answer.
 
@@ -267,7 +267,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 
 Confirm `--model gpt-5.4` succeeds for a frontier-reasoning prompt and an unsupported model name fails fast with a non-zero exit.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator preparing reproducible scripts, invoke Copilot CLI with the GPT-5.4 model pinned explicitly against the cli-copilot skill in this repository. Verify the supported model accepts the prompt and an unsupported model name is rejected with a clear non-zero exit. Return a concise pass/fail verdict with the main reason plus the parsed answer from the supported run.
 
@@ -284,7 +284,7 @@ Desired user-visible outcome: PASS verdict with the supported-model answer + a o
 
 Confirm `--model gpt-5.3-codex` returns a syntactically valid code snippet for a code-generation prompt.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator routing code generation to the codex-tuned model, invoke Copilot CLI with --model gpt-5.3-codex against the cli-copilot skill in this repository. Verify the model returns a syntactically valid Python function for the requested signature without side effects on the project tree. Return a concise pass/fail verdict with the main reason and the function signature line.
 
@@ -301,7 +301,7 @@ Desired user-visible outcome: PASS verdict + the parsed function signature + a o
 
 Confirm `--model claude-opus-4.6` returns a multi-option architectural comparison for a reasoning-heavy prompt.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator routing deep architectural reasoning to Claude Opus, invoke Copilot CLI with --model claude-opus-4.6 against the cli-copilot skill in this repository. Verify the model returns a structured comparison naming at least two distinct architectural approaches with trade-offs. Return a concise pass/fail verdict with the main reason and the names of the compared approaches.
 
@@ -318,7 +318,7 @@ Desired user-visible outcome: PASS verdict + a 2-3 line summary listing the comp
 
 Confirm setting `"reasoning_effort": "xhigh"` in `~/.copilot/config.json` (sandboxed `HOME`) is read by `copilot -p --model gpt-5.4` and a paired call with `"low"` produces a faster but shorter response, all without touching the operator's real config file.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator tuning GPT-5.x reasoning depth for the same prompt, invoke Copilot CLI twice against the cli-copilot skill in this repository with HOME pointed at a disposable sandbox directory. First call: write `"reasoning_effort": "xhigh"` to the sandbox `~/.copilot/config.json` and dispatch a complex reasoning prompt. Second call: rewrite the same field to `"low"` and re-dispatch the same prompt. Verify the xhigh response is meaningfully longer or more detailed than the low response, both calls exit 0 and the operator's real `~/.copilot/config.json` is unchanged. Return a concise pass/fail verdict with the main reason and the response-length comparison (xhigh chars vs low chars).
 
@@ -341,7 +341,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 
 Confirm `--allow-all-tools` plus `--no-ask-user` lets Autopilot complete a multi-step sandboxed build (create file, modify file, verify with bash) without operator intervention.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator running Autopilot for autonomous multi-step execution, invoke Copilot CLI with --allow-all-tools --no-ask-user against the cli-copilot skill in this repository, scoped to /tmp/cp-008-sandbox/. Ask Copilot to (1) create a small Python module greet.py with a greet(name) function, (2) add a docstring documenting the function, (3) verify by running `python3 -c "from greet import greet; print(greet('Copilot'))"` from inside the sandbox. Verify all three steps execute without operator approval prompts and the final python invocation prints the expected greeting. Constrain all writes to the sandbox directory. Return a concise pass/fail verdict with the main reason and the verification output.
 
@@ -358,7 +358,7 @@ Desired user-visible outcome: PASS verdict + the verification stdout line + a on
 
 Confirm `--no-ask-user` honours its autonomy contract for a read-only prompt, Copilot returns a clear "I cannot do that without write access" or proceeds with read-only analysis instead of blocking on operator input.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator probing the autonomy contract, invoke Copilot CLI with --no-ask-user (without --allow-all-tools) against the cli-copilot skill in this repository for a prompt that asks for read-only analysis of references/cli_reference.md. Verify the call completes without operator interaction, returns a non-empty analysis and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and a one-line note about whether Copilot honoured the read-only autonomy contract or escalated.
 
@@ -381,7 +381,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Confirm `As @Explore: ...` produces a read-only architectural summary naming real local files without mutating the working tree.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator using Copilot agent routing, dispatch the @Explore agent against the cli-copilot skill in this repository to produce a structured map of the references/ folder. Verify the answer names at least three real reference files with a one-line purpose for each, and that the working tree is unchanged after the call. Return a concise pass/fail verdict with the main reason and the names of the files Copilot cited.
 
@@ -398,7 +398,7 @@ Desired user-visible outcome: PASS verdict + a 3-5 line summary listing the cite
 
 Confirm `As @Task: ...` with `--allow-all-tools` implements a small documented function in the sandbox directory without touching the project tree.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator delegating implementation work, dispatch the @Task agent against the cli-copilot skill in this repository to implement a small documented function in /tmp/cp-011-sandbox/calc.py. Verify the resulting file exists, contains the requested function with a docstring and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and the function signature line.
 
@@ -415,7 +415,7 @@ Desired user-visible outcome: PASS verdict + the function signature + the verifi
 
 Confirm two sequential `copilot -p` calls in the same operator session can target different models via `--model` and each model returns answers consistent with its strengths (Opus for deep reasoning, Sonnet for fast review).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator switching models per task within one operator session, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository: first --model claude-opus-4.6 for a deep architectural question, then --model claude-sonnet-4.6 for a quick code-style review of a tiny snippet. Verify both calls exit 0, both return non-empty answers consistent with the requested model strength and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and a one-line summary per model call.
 
@@ -438,7 +438,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 
 Confirm Copilot's repository memory persists a documented convention across two `-p` invocations in a sandboxed `HOME` and a follow-up call recalls it without touching the operator's real memory.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator running an isolated repo-memory persistence test, invoke Copilot CLI against the cli-copilot skill in this repository with HOME pointed at a disposable sandbox directory. First call: ask Copilot to remember the project convention 'cli-copilot test marker is CP-013-MARKER for spec 048 wave 2'. Second call (in the same sandbox HOME): ask Copilot to recall any project conventions it knows about and report whether the marker is present. Verify the sandbox `~/.copilot/` directory contains memory artifacts after call 1 and call 2 surfaces the marker. Return a concise pass/fail verdict with the main reason and the recalled marker text.
 
@@ -455,7 +455,7 @@ Desired user-visible outcome: PASS verdict reporting the marker was both written
 
 Confirm the documented selected-model surface (interactive `/model` selection writes back to `~/.copilot/config.json`) persists across two non-interactive `-p` invocations in a sandboxed `HOME`, sequential `--model claude-opus-4.6` then `--model gpt-5.3-codex` calls each report the requested model in their output, demonstrating the selection is honoured per-invocation.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator validating mid-session model-switch persistence, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository with HOME pointed at a disposable sandbox directory. First call: --model claude-opus-4.6 with a prompt asking which model is responding. Second call: --model gpt-5.3-codex with the same prompt. Verify each response identifies the correct model (Anthropic Claude Opus 4.6 for the first, OpenAI GPT-5.3-Codex for the second) and the sandbox `~/.copilot/config.json` reflects the most recent model after each call (when written). Return a concise pass/fail verdict with the main reason and a one-line model-identification summary per call.
 
@@ -478,7 +478,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Confirm two sequential Copilot calls (generate then fix, with an orchestrator-injected review note) produce two distinct sandbox artifacts and the fix addresses the review feedback. Mirrors the documented integration pattern in `references/integration_patterns.md` §2.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator running the generate-review-fix pattern documented in cli-copilot integration_patterns.md §2, dispatch two sequential Copilot calls against the cli-copilot skill in this repository, both scoped to /tmp/cp-015-sandbox/. First call: --model gpt-5.3-codex to generate a small Python module avg_list.py that averages a list of integers. Second call: --model claude-opus-4.6 with the orchestrator-supplied review note 'add explicit handling for empty list (return 0.0 instead of dividing by zero)' to ask Copilot to update the same file. Verify the second-pass file differs from the first-pass file and contains explicit empty-list handling. Return a concise pass/fail verdict with the main reason, the diff line count and a snippet of the empty-list handling.
 
@@ -495,7 +495,7 @@ Desired user-visible outcome: PASS verdict + the diff line count + a 2-3 line sn
 
 Confirm Copilot CLI surfaces its MCP support, either by listing connected MCP servers in response to a documented prompt or by acknowledging MCP capability per `references/copilot_tools.md` §2.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator probing Copilot's MCP integration surface, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository and ask which MCP servers (if any) are currently connected and what categories of MCP capability the CLI supports per its documented feature surface. Verify the answer either (a) lists currently connected MCP servers or (b) acknowledges MCP support and explains how to connect a server, citing the documented capability from copilot_tools.md §2. Return a concise pass/fail verdict with the main reason and a one-line summary of the MCP-related content.
 
@@ -512,7 +512,7 @@ Desired user-visible outcome: PASS verdict + a one-line summary of MCP servers l
 
 Confirm the `cpx()` shell wrapper from `assets/shell_wrapper.md` prepends a managed `SPEC-KIT-COPILOT-CONTEXT` block to a `copilot -p` call when `SPECKIT_COPILOT_INSTRUCTIONS_PATH` points at a sandboxed instructions file, without touching the operator's real `~/.copilot/copilot-instructions.md`.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator validating same-invocation context injection per assets/shell_wrapper.md, source the documented cpx() function, point SPECKIT_COPILOT_INSTRUCTIONS_PATH at /tmp/cp-017-sandbox/copilot-instructions.md containing a documented SPEC-KIT-COPILOT-CONTEXT:BEGIN/END managed block with a unique marker 'CP-017-WRAPPER-MARKER' and dispatch a copilot -p prompt that asks Copilot to repeat any unique markers it sees in its custom instructions. Verify the wrapper prepends the marker into the prompt body, Copilot's answer surfaces the marker and the operator's real ~/.copilot/copilot-instructions.md is unchanged. Return a concise pass/fail verdict with the main reason and the recalled marker text.
 
@@ -535,7 +535,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 
 Confirm the Security Audit template from `assets/prompt_templates.md` §3 substitutes cleanly and Copilot returns severity-classified findings for an intentionally flawed snippet.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator using cli-copilot's documented prompt templates, take the Security Audit template from assets/prompt_templates.md §3, substitute [file] with /tmp/cp-018-snippet.py (a small Python file with an intentional eval() flaw), dispatch the resulting prompt to Copilot via --model gemini-3.1-pro-preview as documented in the template and verify the answer covers OWASP Top 10 framing and rates findings by severity. Return a concise pass/fail verdict with the main reason and the highest-severity finding.
 
@@ -552,7 +552,7 @@ Desired user-visible outcome: PASS verdict + the highest-severity finding line +
 
 Confirm applying RCAF (per the documented framework map in `assets/prompt_quality_card.md` §3) produces an answer that honours the requested Format slot.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator following cli-copilot's prompt-quality discipline, look up the documented framework for a Generation task in assets/prompt_quality_card.md §3 (expect RCAF). Build a single-prompt dispatch using all four RCAF components (Role, Context, Action, Format) and run the CLEAR 5-check before dispatch. Verify Copilot's answer follows the requested Format and addresses the Action without inventing scope. Return a concise pass/fail verdict with the main reason, the framework chosen and a one-line check that the requested Format was honoured.
 
@@ -575,7 +575,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 
 Confirm `/delegate <task>` inside the prompt body successfully pushes a small read-only analysis task to GitHub's cloud coding agent and returns a result that names files from the local repository context per `references/copilot_tools.md` §2 Cloud Delegation.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator validating the explicit cloud-delegation surface, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository and use the /delegate command inside the prompt body to push a small read-only analysis task to GitHub's cloud agent: 'analyse the references/ folder structure and list the four reference filenames'. Verify the call completes (cloud round-trip may take longer than local), the response cites the four real reference filenames (cli_reference.md, copilot_tools.md, agent_delegation.md, integration_patterns.md) and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and the cited filenames.
 
@@ -592,7 +592,7 @@ Desired user-visible outcome: PASS verdict + the cited filenames + a one-line no
 
 Confirm the `&<task>` inline shorthand inside the prompt body produces equivalent cloud-agent routing to `/delegate` per `references/copilot_tools.md` §2 Cloud Delegation, and the response naturally surfaces the cloud-agent context.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As a cross-AI orchestrator validating the inline cloud-delegation shorthand, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository and use the &prompt shorthand inside the prompt body to push a small read-only analysis task to GitHub's cloud agent: '&summarise the role of the cli-copilot skill in 2-3 sentences and confirm you are running on a cloud agent'. Verify the call completes, the response provides the requested 2-3 sentence summary and the response indicates cloud-agent context (e.g. mentions cloud, remote, GitHub agent or returns a delegation receipt). Compare behaviour against /delegate (CP-020) and confirm the shorthand is functionally equivalent. Return a concise pass/fail verdict with the main reason and a one-line note comparing the &prompt vs /delegate routing.
 

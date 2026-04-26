@@ -10,7 +10,7 @@ audited_post_018: true
 
 This scenario validates canonical continuity save substrate for `202`. It focuses on 8-category routing, anchor merge, atomic save promotion, and the thin `_memory.continuity` block.
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators drive a canonical save through the phase-018 writer substrate and confirm the routed content lands in the correct spec-doc anchor with a compact continuity block. The same run should also refresh `graph-metadata.json` with checklist-aware lowercase status, sanitized `key_files`, deduplicated entities, and no more than 12 derived trigger phrases. Phase 017 extends the scenario to prove that metadata refresh happens on every successful canonical save and that continuity freshness stays aligned with the packet metadata write. This scenario now covers the live 8-category router, the always-active Tier 3 classifier path, delivery-versus-progress cues, and the hard-drop versus soft-handover boundary.
 

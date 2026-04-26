@@ -13,7 +13,7 @@ This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `178` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates CocoIndex bridge.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the CocoIndex bridge correctly routes between semantic and structural queries. The seed resolver (`seed-resolver.ts`) normalizes CocoIndex file:line results to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor). `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop graph neighbors), outline (file symbol listing), and impact (reverse callers). The post-013 contract must also surface an explicit blocked-read payload when readiness requires a suppressed full scan and structured `metadata.partialOutput` details when deadline or budget pressure omits work.
 - **Schema contract examples**:

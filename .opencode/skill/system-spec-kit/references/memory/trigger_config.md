@@ -12,7 +12,7 @@ Complete configuration guide for memory trigger phrases and the fast trigger mat
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-**Core Principle:** Trigger detection must be fast (<50ms) and reliable, using optimized phrase matching to surface relevant memories without impacting conversation flow.
+**Core Principle:** Trigger detection must be fast (<50ms) and reliable, using optimized phrase matching to surface relevant spec-doc records without impacting conversation flow.
 
 The memory workflow supports manual activation mechanisms:
 1. **Command Trigger** - `/memory:save` command for explicit saves

@@ -19,7 +19,7 @@ The cli-claude-code skill ships a curated template library to keep cross-AI orch
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-019` and confirm the expected signals without contradictory evidence.
 

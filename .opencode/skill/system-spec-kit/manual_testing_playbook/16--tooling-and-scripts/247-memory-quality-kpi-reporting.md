@@ -11,7 +11,7 @@ This scenario validates memory quality KPI reporting for `247`. It focuses on co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify that the KPI reporter can scan the full active specs tree or one scoped spec path, always prints structured JSON to stdout, and emits the compact operator summary to stderr without converting defect findings into hard failures.
 

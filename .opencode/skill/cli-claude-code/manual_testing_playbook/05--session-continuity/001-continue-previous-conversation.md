@@ -19,7 +19,7 @@ This scenario validates Continue previous conversation for `CC-015`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-015` and confirm the expected signals without contradictory evidence.
 

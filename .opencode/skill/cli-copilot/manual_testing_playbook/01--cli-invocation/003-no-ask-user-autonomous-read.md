@@ -19,7 +19,7 @@ This scenario validates the `--no-ask-user` autonomy flag for `CP-003`. It focus
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-003` and confirm the expected signals without contradictory evidence.
 

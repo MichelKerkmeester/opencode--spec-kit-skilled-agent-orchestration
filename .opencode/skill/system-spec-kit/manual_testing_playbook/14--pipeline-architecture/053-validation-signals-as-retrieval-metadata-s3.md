@@ -12,7 +12,7 @@ This scenario validates Validation signals as retrieval metadata (S3) for `053`.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `053` and confirm the expected signals without contradicting evidence.
 

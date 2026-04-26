@@ -21,7 +21,7 @@ cli-gemini documents `save_memory` as one of three Gemini-only capabilities. Ope
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-008` and confirm the expected signals without contradictory evidence.
 

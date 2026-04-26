@@ -19,7 +19,7 @@ CDP discovery is the foundation for every advanced bdg workflow that calls a raw
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-005` and confirm the expected signals without contradictory evidence.
 

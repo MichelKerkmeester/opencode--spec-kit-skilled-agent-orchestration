@@ -12,7 +12,7 @@ This scenario validates RRF K-value sensitivity analysis (FUT-5) for `030`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `030` and confirm the expected signals without contradicting evidence.
 

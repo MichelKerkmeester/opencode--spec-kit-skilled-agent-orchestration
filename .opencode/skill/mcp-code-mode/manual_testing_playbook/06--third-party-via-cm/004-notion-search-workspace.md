@@ -19,7 +19,7 @@ Notion is a primary knowledge-base / docs target for AI workflows. If search fai
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-020` and confirm the expected signals without contradictory evidence.
 

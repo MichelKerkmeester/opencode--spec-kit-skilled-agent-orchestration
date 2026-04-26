@@ -12,7 +12,7 @@ This scenario validates typed traversal (SPECKIT_TYPED_TRAVERSAL) for `175`. It 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `175` and confirm the expected signals without contradicting evidence.
 

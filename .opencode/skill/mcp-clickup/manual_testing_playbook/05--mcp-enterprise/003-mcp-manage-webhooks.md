@@ -19,7 +19,7 @@ Webhooks let ClickUp push task / comment events to external systems. The MCP pat
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-022` and confirm the expected signals without contradictory evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Backend storage adapter abstraction for `202`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `202` and confirm the expected signals without contradicting evidence.
 

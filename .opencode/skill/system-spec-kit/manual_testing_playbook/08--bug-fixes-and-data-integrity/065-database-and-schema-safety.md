@@ -12,7 +12,7 @@ This scenario validates Database and schema safety for `065`. It focuses on Conf
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `065` and confirm the expected signals without contradicting evidence.
 

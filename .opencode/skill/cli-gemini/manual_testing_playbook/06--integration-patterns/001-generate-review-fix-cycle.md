@@ -21,7 +21,7 @@ The generate-review-fix cycle is the canonical cross-AI orchestration pattern in
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-014` and confirm the expected signals without contradictory evidence.
 

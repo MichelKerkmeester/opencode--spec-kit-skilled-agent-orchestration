@@ -12,7 +12,7 @@ This scenario validates node-llama-cpp optionalDependencies for `102`. It focuse
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `102` and confirm the expected signals without contradicting evidence.
 

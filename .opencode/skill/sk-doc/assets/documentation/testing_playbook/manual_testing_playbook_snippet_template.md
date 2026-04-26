@@ -58,7 +58,7 @@ This scenario validates {FEATURE_NAME} for `{FEATURE_ID}`. It focuses on {OBJECT
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `{FEATURE_ID}` and confirm the expected signals without contradictory evidence.
 

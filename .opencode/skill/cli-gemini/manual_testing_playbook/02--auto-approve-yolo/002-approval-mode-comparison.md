@@ -19,7 +19,7 @@ The cli-gemini orchestrator picks between approval modes per task, `unless-allow
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-005` and confirm the expected signals without contradictory evidence.
 

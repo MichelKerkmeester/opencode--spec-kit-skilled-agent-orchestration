@@ -19,7 +19,7 @@ This scenario validates `call_tool_chain` execution for `CM-004`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-004` and confirm the expected signals without contradictory evidence.
 

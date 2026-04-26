@@ -19,7 +19,7 @@ This scenario validates `--full-auto` plus native Codex hook integration for `CX
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-016` and confirm the expected signals without contradictory evidence.
 

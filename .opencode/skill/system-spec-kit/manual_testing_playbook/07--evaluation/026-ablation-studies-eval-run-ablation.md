@@ -11,7 +11,7 @@ This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-026` and confirm the expected signals without contradicting evidence.
 

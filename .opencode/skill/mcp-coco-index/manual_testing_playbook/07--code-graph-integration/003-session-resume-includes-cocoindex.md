@@ -11,7 +11,7 @@ This scenario validates that the integrated recovery flow exposes CocoIndex avai
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify that `session_bootstrap` exposes CocoIndex status through `resume.cocoIndex`, that `session_resume` still exposes the direct `cocoIndex` field, and that both surfaces degrade gracefully when the CocoIndex binary is unavailable. `available` reflects whether the `ccc` binary exists at the expected install path, not whether the daemon is currently running. The `binaryPath` must point to the expected `ccc` binary location.
 - Prompt: `As a manual-testing orchestrator, call session_bootstrap and session_resume, then examine the CocoIndex status fields against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify session_bootstrap.resume.cocoIndex.available and session_resume.cocoIndex.available match binary presence on disk; both binaryPath values are non-empty strings; session_bootstrap includes structuralContext; both calls complete without error regardless of binary availability. Return a concise user-facing pass/fail verdict with the main reason.`

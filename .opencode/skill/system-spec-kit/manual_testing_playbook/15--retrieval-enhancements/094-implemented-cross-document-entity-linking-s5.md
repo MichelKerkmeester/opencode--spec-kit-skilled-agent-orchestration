@@ -12,7 +12,7 @@ This scenario validates Implemented: cross-document entity linking (S5) for `094
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `094` and confirm the expected signals without contradicting evidence.
 

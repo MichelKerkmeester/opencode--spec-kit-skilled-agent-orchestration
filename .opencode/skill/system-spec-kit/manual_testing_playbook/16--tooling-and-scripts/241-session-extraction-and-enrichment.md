@@ -11,7 +11,7 @@ This scenario validates session extraction and enrichment for `241`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators validate the extractor-layer contract through the loader smoke test plus the targeted enrichment suites that cover file shaping, phase classification, and description-quality upgrades.
 

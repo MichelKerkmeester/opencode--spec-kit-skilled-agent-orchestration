@@ -19,7 +19,7 @@ Cross-instance isolation is the core security and correctness contract for paral
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-018` and confirm the expected signals without contradictory evidence.
 

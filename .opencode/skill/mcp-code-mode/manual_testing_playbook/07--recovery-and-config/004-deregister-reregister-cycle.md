@@ -21,7 +21,7 @@ Some workflows benefit from temporarily removing a manual (e.g., switching token
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-024` and confirm the expected signals without contradictory evidence.
 

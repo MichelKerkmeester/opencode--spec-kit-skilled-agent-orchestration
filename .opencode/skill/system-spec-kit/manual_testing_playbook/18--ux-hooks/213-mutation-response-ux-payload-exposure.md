@@ -11,7 +11,7 @@ This scenario validates Mutation response UX payload exposure for `213`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `213` and confirm the expected signals without contradicting evidence.
 

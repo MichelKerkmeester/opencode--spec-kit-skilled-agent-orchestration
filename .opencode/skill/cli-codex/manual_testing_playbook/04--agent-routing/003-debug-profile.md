@@ -19,7 +19,7 @@ This scenario validates the `codex exec -p debug` profile for `CX-014`. It focus
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-014` and confirm the expected signals without contradictory evidence.
 

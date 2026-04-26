@@ -107,7 +107,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify that autonomous mode is exposed consistently across the README, quick reference, command entrypoint, and auto YAML workflow.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the autonomous entrypoint for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:auto is documented consistently across the README, quick reference, command entrypoint, and autonomous YAML workflow. Return a concise user-facing pass/fail verdict with the expected artifact summary.
 
 Expected signals: The same autonomous command appears across sources, autonomous mode is approval-free, and the workflow points to config, JSONL, strategy, iteration files, and `research/research.md`.
@@ -120,7 +120,7 @@ Expected signals: The same autonomous command appears across sources, autonomous
 #### Description
 Verify that confirm mode adds approval checkpoints without changing the core loop phases or artifact contract.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the confirm-mode contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:confirm is documented as interactive, approval-gated, and still uses the same core loop and output artifacts as auto mode. Return a concise operator-facing verdict.
 
 Expected signals: Confirm mode is interactive, approval-gated, and still routes through initialization, loop, synthesis, and save rather than a separate workflow.
@@ -133,7 +133,7 @@ Expected signals: Confirm mode is interactive, approval-gated, and still routes 
 #### Description
 Verify that the command binds topic, spec folder, execution mode, max iterations, and convergence threshold before the YAML workflow starts.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the setup-binding contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the command entrypoint gathers required values before loading YAML and that the YAML preflight rejects missing bindings or invalid spec-folder scope. Return a concise pass/fail verdict.
 
 Expected signals: The command explicitly names topic, spec folder, execution mode, max iterations, and convergence threshold; YAML preflight verifies them before file writes.
@@ -153,7 +153,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify that a fresh session creates the canonical config, JSONL, and strategy files from the shipped assets.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the fresh-initialization contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization creates deep-research-config.json, deep-research-state.jsonl, and deep-research-strategy.md from the live templates. Return a concise user-facing pass/fail verdict.
 
 Expected signals: The scratch directory is created, config and strategy come from the shipped assets, and the JSONL begins with a config record.
@@ -166,7 +166,7 @@ Expected signals: The scratch directory is created, config and strategy come fro
 #### Description
 Verify that the workflow classifies an existing valid scratch state as resumable before writing new files.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the resume-classification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify config, JSONL, and strategy are inspected before new files are written and that a valid prior state skips re-initialization. Return a concise pass/fail verdict.
 
 Expected signals: A four-state classification model exists, resume skips init writes, and completed sessions route differently from active resumes.
@@ -179,7 +179,7 @@ Expected signals: A four-state classification model exists, resume skips init wr
 #### Description
 Verify that partial or contradictory scratch artifacts trigger a halt for repair instead of a guessed resume path.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the invalid-state halt contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify contradictory or partial deep-research artifacts stop the workflow for repair instead of guessing through initialization. Return a concise user-facing pass/fail verdict.
 
 Expected signals: Invalid-state is a named class, both YAML files halt with a repair message, and the docs do not promise silent guessing for contradictory state.
@@ -192,7 +192,7 @@ Expected signals: Invalid-state is a named class, both YAML files halt with a re
 #### Description
 Verify strategy.md contains Non-Goals and Stop Conditions sections after initialization.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the research charter validation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization Step 5a verifies the presence of "Non-Goals" and "Stop Conditions" sections in strategy.md, appends empty placeholders if missing, and presents the charter for user review in confirm mode. Return a concise operator-facing verdict.
 
 Expected signals: strategy.md has a "## 4. Non-Goals" section (may be empty but must exist); strategy.md has a "## 5. Stop Conditions" section (may be empty but must exist); if either section is missing, it is appended as an empty placeholder; in confirm mode, the charter (topic, key questions, non-goals, stop conditions) is presented for user review before proceeding.
@@ -212,7 +212,7 @@ This category covers 8 scenario summaries while the linked feature files remain 
 #### Description
 Verify that each dispatched iteration reads JSONL and strategy state before performing research actions.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-research agent both require reading JSONL and strategy state before any research actions. Return a concise operator verdict.
 
 Expected signals: Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads.
@@ -225,7 +225,7 @@ Expected signals: Loop step order begins with state reads, the quick reference c
 #### Description
 Verify that each completed iteration writes the detailed iteration file, appends JSONL, and enables reducer-owned packet synchronization.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the iteration write-back contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md, appends a JSONL iteration record, and triggers reducer-owned refresh of deep-research-strategy.md, findings-registry.json, and deep-research-dashboard.md. Return a concise operator-facing verdict.
 
 Expected signals: Iteration file creation, JSONL append, and reducer refresh are all mandatory parts of the loop, not optional side effects.
@@ -238,7 +238,7 @@ Expected signals: Iteration file creation, JSONL append, and reducer refresh are
 #### Description
 Verify that the loop honors the strategy file’s Next Focus and avoids approaches marked exhausted or blocked.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the strategy-discipline contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify iteration focus comes from Next Focus and that exhausted or blocked approaches are not retried. Return a concise user-facing verdict.
 
 Expected signals: Next Focus is read explicitly, exhausted approaches are treated as do-not-retry, and recovery mode consults deferred ideas instead of repeating blocked tactics.
@@ -251,7 +251,7 @@ Expected signals: Next Focus is read explicitly, exhausted approaches are treate
 #### Description
 Verify that `research/research.md` remains workflow-owned while progressive updates are allowed when `progressiveSynthesis` is enabled.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the progressive-synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/research.md is workflow-owned canonical output, that incremental updates are allowed when progressiveSynthesis is true, and that synthesis still finalizes the document. Return a concise verdict.
 
 Expected signals: The docs describe `research/research.md` as workflow-owned, `progressiveSynthesis` defaults to true, and the final synthesis phase still runs.
@@ -264,7 +264,7 @@ Expected signals: The docs describe `research/research.md` as workflow-owned, `p
 #### Description
 Verify dashboard.md is auto-generated after iteration evaluation with correct content.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the dashboard file is created at the correct path, contains the required sections (iteration table, question status, trend, dead ends, next focus, active risks), and is regenerated after each iteration. Return a concise operator-facing verdict.
 
 Expected signals: `research/deep-research-dashboard.md` exists after at least one iteration completes, contains an iteration table, question status with X/Y answered, trend with last 3 newInfoRatio values, dead ends consolidated from ruledOut data, next focus from strategy.md, and active risks.
@@ -277,7 +277,7 @@ Expected signals: `research/deep-research-dashboard.md` exists after at least on
 #### Description
 Verify every iteration JSONL record includes noveltyJustification alongside newInfoRatio.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the novelty justification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL iteration record schema requires both newInfoRatio and noveltyJustification, that the justification is a human-readable sentence, and that ALWAYS rule 11 and the agent Step 6 mandate their inclusion. Return a concise operator-facing verdict.
 
 Expected signals: JSONL iteration records contain both `newInfoRatio` (number, 0.0-1.0) and `noveltyJustification` (string, human-readable sentence); the justification field is listed as required in v1.1.0 agent instructions; ALWAYS rule 11 mandates both fields.
@@ -290,7 +290,7 @@ Expected signals: JSONL iteration records contain both `newInfoRatio` (number, 0
 #### Description
 Verify optional focusTrack labels appear in JSONL and dashboard iteration table.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the focusTrack label contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL state format defines focusTrack as an optional field on iteration records, and that the dashboard Progress table surfaces a Track column. Return a concise operator-facing verdict.
 
 Expected signals: JSONL iteration records with an optional focusTrack field, dashboard Progress table with a Track column.
@@ -303,7 +303,7 @@ Expected signals: JSONL iteration records with an optional focusTrack field, das
 #### Description
 verify that a running deep research iteration writes a `graphEvents` array that uses the shipped flat `type` schema (`question`, `finding`, `source`, `edge`) rather than the older nested `kind/nodeType` form.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the flat graphEvents contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph-aware research convergence expects graphEvents in iteration records, and that the shipped state-format contract plus active graph tests use flat event types such as question, finding, source, and edge rather than question_node/finding_node wrappers. Return a concise operator-facing verdict.
 
 Expected signals: `graphEvents` documented as iteration-record input for graph-aware convergence; the state-format example uses flat `type` values; active graph tests use `question`, `finding`, and `source` node types rather than `question_node` / `finding_node` wrappers.
@@ -323,7 +323,7 @@ This category covers 13 scenario summaries while the linked feature files remain
 #### Description
 Verify that max iterations is a hard stop checked before softer convergence signals.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the max-iterations stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the hard cap is checked before softer convergence logic and that the stop reason is surfaced as max_iterations_reached. Return a concise operator verdict.
 
 Expected signals: Max iterations is checked first, the stop reason is named explicitly, and the parameter is exposed consistently in the docs.
@@ -336,7 +336,7 @@ Expected signals: Max iterations is checked first, the stop reason is named expl
 #### Description
 Verify that the loop stops when the tracked key questions are fully answered.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the all-questions-answered stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop stops when the tracked key questions are answered and that this condition is checked before softer convergence logic. Return a concise verdict.
 
 Expected signals: Question completion is a named hard stop and is reflected in the convergence and usage docs.
@@ -349,7 +349,7 @@ Expected signals: Question completion is a named hard stop and is reflected in t
 #### Description
 Verify the three-signal weighted stop model and its graceful degradation rules.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the composite-convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the rolling average, MAD noise floor, and question-entropy signals, their weights, and the >0.60 weighted stop-score threshold. Return a concise operator-facing verdict.
 
 Expected signals: Three named signals, weights of 0.30/0.35/0.35, graceful degradation with fewer iterations, and a stop threshold above 0.60.
@@ -362,7 +362,7 @@ Expected signals: Three named signals, weights of 0.30/0.35/0.35, graceful degra
 #### Description
 Verify that stuck detection triggers a recovery path that widens focus before giving up.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the stuck-recovery contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify consecutive no-progress iterations trigger recovery, widen focus to a less-explored question, consult deferred ideas, and continue before final synthesis. Return a concise verdict.
 
 Expected signals: Stuck threshold is enforced, recovery resets the counter, the next focus widens scope, and the ideas backlog can be consulted during recovery.
@@ -375,7 +375,7 @@ Expected signals: Stuck threshold is enforced, recovery resets the counter, the 
 #### Description
 Verify that convergence STOP is blocked when an answered question cites <2 independent sources.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the source diversity quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question for >= 2 independent sources, and that a violation emits a guard_violation event and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
 
 Expected signals: guard_violation event logged with guard="source_diversity", STOP decision overridden to CONTINUE, violated question targeted in next iteration focus.
@@ -388,7 +388,7 @@ Expected signals: guard_violation event logged with guard="source_diversity", ST
 #### Description
 Verify that convergence STOP is blocked when answered questions don't map to original key questions.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the focus alignment quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard compares answered questions against the original key questions from initialization, and that a mismatch emits a guard_violation event with guard="focus_alignment" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
 
 Expected signals: guard_violation event logged with guard="focus_alignment", STOP decision overridden to CONTINUE, misaligned question flagged in violation detail.
@@ -401,7 +401,7 @@ Expected signals: guard_violation event logged with guard="focus_alignment", STO
 #### Description
 Verify that convergence STOP is blocked when an answered question relies solely on a tentative source.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the no-single-weak-source quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question backed by exactly one source for sourceStrength == "tentative", and that a violation emits a guard_violation event with guard="single_weak_source" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
 
 Expected signals: guard_violation event logged with guard="single_weak_source", STOP decision overridden to CONTINUE, violated question targeted for stronger sourcing in next iteration.
@@ -414,7 +414,7 @@ Expected signals: guard_violation event logged with guard="single_weak_source", 
 #### Description
 Verify the full override path: composite score >0.60 triggers STOP, quality guards check fires, guard fails, decision overridden to CONTINUE.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the convergence-guard override path for sk-deep-research. Trace the full sequence: composite convergence votes STOP (score >0.60), then checkQualityGuards runs, then a guard violation is detected, then the STOP is overridden to CONTINUE and the loop resumes against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify this flow exists in convergence.md Decision Priority step 4.5, the YAML algorithm, and loop_protocol.md Step 2c. Return a concise operator-facing PASS/FAIL verdict with the key evidence.
 
 Expected signals: convergence_check with decision STOP and score >0.60, followed by guard_violation event, followed by decision override to CONTINUE and loop resumption.
@@ -427,7 +427,7 @@ Expected signals: convergence_check with decision STOP and score >0.60, followed
 #### Description
 Verify that an iteration with status "insight" and low newInfoRatio does NOT increment stuck count.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the insight-status contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "insight" as a valid iteration status, that convergence.md documents how stuckCount is computed, and that insight iterations are excluded from stuck counting. Return a concise operator-facing verdict.
 
 Expected signals: Iteration with status="insight" and low newInfoRatio, stuck_count NOT incremented.
@@ -440,7 +440,7 @@ Expected signals: Iteration with status="insight" and low newInfoRatio, stuck_co
 #### Description
 Verify that "thought" iterations are handled correctly in convergence.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the thought-status convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify state_format.md defines "thought" as a valid iteration status marking analytical-only iterations, that convergence.md documents how thought iterations are excluded from stuck counting and the rolling average, and that SKILL.md lists it in the status taxonomy. Return a concise operator-facing verdict.
 
 Expected signals: Iteration with status="thought", convergence treats it appropriately (does not count as stuck, does not count toward rolling average).
@@ -453,7 +453,7 @@ Expected signals: Iteration with status="thought", convergence treats it appropr
 #### Description
 verify that when deep research convergence math votes STOP but `sourceDiversity` remains below the `0.4` guard threshold, STOP is blocked and blocked-stop evidence is recorded.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the graph stop-blocking guard contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify SOURCE_DIVERSITY_THRESHOLD = 0.4 blocks STOP when unmet, and that the research convergence reference records blocked-stop persistence with stopReason: "blockedStop" when legal-stop gates fail. Return a concise operator-facing verdict.
 
 Expected signals: `SOURCE_DIVERSITY_THRESHOLD = 0.4`; `evaluateGraphGates()` fails `sourceDiversity` when below threshold; research convergence docs map failed legal-stop gates to `stopReason: "blockedStop"` and `blocked_stop` persistence.
@@ -466,7 +466,7 @@ Expected signals: `SOURCE_DIVERSITY_THRESHOLD = 0.4`; `evaluateGraphGates()` fai
 #### Description
 verify that a research packet with at least one `blocked_stop` event surfaces that event into reducer-owned `blockedStopHistory`, the `BLOCKED STOPS` dashboard section, and the strategy `next-focus` anchor.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate blocked-stop reducer surfacing for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify running node .opencode/skill/sk-deep-research/scripts/reduce-state.cjs <spec-folder> on a research packet with at least one blocked_stop event populates blockedStopHistory, renders BLOCKED STOPS in the dashboard, and rewrites the strategy next-focus anchor with the recovery strategy. Return a concise operator-facing verdict.
 
 Expected signals: `blockedStopHistory` is non-empty; each entry exposes `run`, `blockedBy`, `gateResults`, `recoveryStrategy`, and `timestamp`; `BLOCKED STOPS` renders the same blocked-stop data; the strategy `next-focus` anchor includes the recovery hint from the latest blocked-stop event.
@@ -479,7 +479,7 @@ Expected signals: `blockedStopHistory` is non-empty; each entry exposes `run`, `
 #### Description
 verify that `graph_convergence` events become reducer-owned `graphConvergenceScore`, `graphDecision`, and `graphBlockers`, that the dashboard renders those graph signals, and that the live auto workflow invokes the graph tools before the inline 3-signal vote.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate graph-aware stop-gate integration for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify graph_convergence reducer output populates graphConvergenceScore, graphDecision, and graphBlockers, that the dashboard renders GRAPH CONVERGENCE, and that the research auto workflow calls deep_loop_graph_upsert plus deep_loop_graph_convergence before the inline 3-signal vote. Return a concise operator-facing verdict.
 
 Expected signals: `graphConvergenceScore`, `graphDecision`, and `graphBlockers` appear in the registry; `GRAPH CONVERGENCE` appears in the dashboard; YAML includes `deep_loop_graph_upsert` and `deep_loop_graph_convergence` before the inline 3-signal vote.
@@ -499,7 +499,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify that the pause sentinel halts the loop between iterations and logs a pause event.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the pause-sentinel contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/.deep-research-pause is checked between research iterations, {spec_folder}/review/.deep-research-pause is checked between review iterations, both emit a paused event, and both halt the loop without entering synthesis. Return a concise operator-facing verdict.
 
 Expected signals: The sentinel is checked before dispatch, a paused event is logged, and the loop halts rather than flowing into synthesis.
@@ -512,7 +512,7 @@ Expected signals: The sentinel is checked before dispatch, a paused event is log
 #### Description
 Verify that removing the pause sentinel lets the loop resume from read-state rather than re-initializing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the pause-resume contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify removing research/.deep-research-pause lets the research loop log a resumed event and continue from the read-state step, and removing {spec_folder}/review/.deep-research-pause lets the review loop do the same, instead of either mode starting from scratch. Return a concise verdict.
 
 Expected signals: The loop logs `resumed`, continues from state read, and does not recreate config/strategy files during a valid resume.
@@ -525,7 +525,7 @@ Expected signals: The loop logs `resumed`, continues from state read, and does n
 #### Description
 Verify that malformed JSONL lines are skipped and missing fields are defaulted instead of crashing the loop.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the JSONL fault-tolerance contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed lines are skipped, missing fields are defaulted, and a warning is emitted instead of crashing the loop. Return a concise operator-facing verdict.
 
 Expected signals: Per-line parse protection exists, defaults are specified, skipped-line warnings are documented, and convergence operates on valid entries only.
@@ -538,7 +538,7 @@ Expected signals: Per-line parse protection exists, defaults are specified, skip
 #### Description
 Verify that missing or unusable JSONL can be reconstructed from `iteration-NNN.md` files.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the state-reconstruction contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the workflow can scan iteration-NNN.md files, reconstruct JSONL iteration records, and log a state_reconstructed event. Return a concise operator-facing verdict.
 
 Expected signals: The reconstruction algorithm scans iteration files, extracts assessment data, writes reconstructed records, and logs a `state_reconstructed` event.
@@ -558,7 +558,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 #### Description
 Verify final synthesis, supported memory save, LEAF-only agent behavior, and the boundary between live and reference-only features.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the finalization and guardrail contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify synthesis produces canonical research/research.md, memory save uses generate-context.js, the runtime agent remains LEAF-only, and reference-only features such as wave orchestration, checkpoint commits, :restart segments, and alternate CLI dispatch are documented as non-live behavior rather than executable guarantees. Return a concise operator verdict.
 
 Expected signals: Synthesis produces canonical `research/research.md`, memory save calls `generate-context.js`, the Codex runtime agent forbids nested delegation, and wave orchestration, checkpoint commits, segment transitions, and alternate CLI dispatch remain reference-only.
@@ -571,7 +571,7 @@ Expected signals: Synthesis produces canonical `research/research.md`, memory sa
 #### Description
 Verify that iteration ruledOut data is consolidated into "Eliminated Alternatives" in research/research.md.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate the ruled-out directions synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the synthesis phase consolidates ruledOut entries from JSONL records and ## Dead Ends sections from iteration files into a mandatory "Eliminated Alternatives" section in research/research.md. Verify that strategy.md also tracks ruled-out directions per iteration. Return a concise operator-facing verdict.
 
 Expected signals: research/research.md has a mandatory "Eliminated Alternatives" section formatted as a table (`| Approach | Reason Eliminated | Evidence | Iteration(s) |`); iteration files have `## Ruled Out` and `## Dead Ends` sections when negative knowledge is captured; strategy.md has a `## 10. Ruled Out Directions` section updated per iteration; ALWAYS rule 10 mandates documenting ruled-out directions.

@@ -11,7 +11,7 @@ This scenario validates Checkpoint deletion (checkpoint_delete) for `EX-018`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-018` and confirm the expected signals without contradicting evidence.
 

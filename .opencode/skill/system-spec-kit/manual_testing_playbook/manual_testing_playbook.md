@@ -373,7 +373,7 @@ Use the per-feature files for feature-specific:
 #### Description
 Intent-aware context pull.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Use memory_context in resume mode for: fix flaky index scan retry logic. Reuse a real sessionId with prompt-context history. Capture the evidence needed to prove Relevant bounded context returned; auto-resume systemPromptContext is injected before budget enforcement; final response stays within the advertised token budget. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Relevant bounded context returned; auto-resume context stays within budget
@@ -387,7 +387,7 @@ Relevant bounded context returned; auto-resume context stays within budget
 #### Description
 Hybrid precision check.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Search for checkpoint restore clearExisting transaction rollback. Capture the evidence needed to prove Relevant ranked results with hybrid signals. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Relevant ranked results with hybrid signals
@@ -405,7 +405,7 @@ Expired rows excluded from multi-concept search; constitutional injection respec
 #### Description
 Fast recall path.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run trigger matching for resume previous session blockers with cognitive=true and governed scope fields. Capture the evidence needed to prove In-scope trigger hits still return fast with cognitive enrichment, while mismatched tenant/user/agent rows are filtered out before results are returned. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Fast in-scope trigger hits + cognitive enrichment; out-of-scope matches filtered
@@ -419,7 +419,7 @@ Fast in-scope trigger hits + cognitive enrichment; out-of-scope matches filtered
 #### Description
 Confirm multi-channel fusion stays coherent when routing and fallback interact.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a retrieval validation operator, validate Hybrid search pipeline against memory_search({ query:"graph rollout trace check", limit:10, includeTrace:true, bypassCache:true }). Verify multi-channel fusion stays coherent when routing and fallback interact. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Non-empty result set with trace evidence of multi-channel contribution; aligned boosted scores across the exposed score aliases; `useGraph:false` suppresses both graph and degree contributions even during fallback; lexical fallback only uses still-allowed lexical channels
@@ -433,7 +433,7 @@ Non-empty result set with trace evidence of multi-channel contribution; aligned 
 #### Description
 Stage invariant verification.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Stage 1 and Stage 3 guardrail parity in the 4-stage pipeline. Capture the evidence needed to prove deep-mode reformulation and HyDE candidates pass the same scope, tier, contextType and qualityThreshold filters before merge; constitutional injection obeys shouldApplyScopeFiltering; chunk reassembly accepts both snake_case and camelCase chunk metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Deep-mode reformulation and HyDE candidates pass the same scope, tier, contextType and qualityThreshold filters before merge; constitutional injection obeys shouldApplyScopeFiltering; chunk reassembly accepts both snake_case and camelCase chunk metadata
@@ -447,7 +447,7 @@ Deep-mode reformulation and HyDE candidates pass the same scope, tier, contextTy
 #### Description
 8-category canonical continuity save routing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a mutation validation operator, validate Memory indexing (memory_save) against memory_save(filePath). Verify the 8-category content router chooses the correct target or safe refusal; spec-doc continuity updates when the route merges; searchable result appears for merged saves; and no template-contract or insufficiency rejection appears. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Correct route or safe refusal reported; spec-doc continuity updated for merged saves; searchable result appears; no template-contract or insufficiency rejection
@@ -461,7 +461,7 @@ Correct route or safe refusal reported; spec-doc continuity updated for merged s
 #### Description
 Metadata + re-embed update.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Update memory title and triggers. Capture the evidence needed to prove Updated metadata reflected in retrieval. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Updated metadata reflected in retrieval
@@ -479,7 +479,7 @@ Pending-until-written embedding status; no false-success state; post-update cach
 #### Description
 Atomic single delete.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Delete memory ID and verify removal. Capture the evidence needed to prove Deleted item absent from retrieval. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Deleted item absent from retrieval
@@ -493,7 +493,7 @@ Deleted item absent from retrieval
 #### Description
 Tier cleanup with safety.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Delete temporary tier in scoped folder. Capture the evidence needed to prove Deletion count + checkpoint created. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Scoped deletion count + checkpoint created
@@ -507,7 +507,7 @@ Scoped deletion count + checkpoint created
 #### Description
 Feedback learning loop.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Record positive validation with queryId. Capture the evidence needed to prove Confidence/promotion metadata updates. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Confidence/promotion metadata updates
@@ -521,7 +521,7 @@ Confidence/promotion metadata updates
 #### Description
 Folder inventory audit.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `List memories in target spec folder. Capture the evidence needed to prove Paginated list and totals. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Paginated list and totals
@@ -535,7 +535,7 @@ Paginated list and totals
 #### Description
 System baseline snapshot.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Return stats with composite ranking. Capture the evidence needed to prove Counts, tiers, folder ranking present. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Counts, tiers, folder ranking present
@@ -553,7 +553,7 @@ Partial bucket present and included in totals
 #### Description
 Index/FTS integrity check.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run full health and divergent_aliases. Capture the evidence needed to prove healthy/degraded status and diagnostics. Return a concise user-facing pass/fail verdict with the main reason.`
 
 healthy/degraded status and diagnostics
@@ -567,7 +567,7 @@ healthy/degraded status and diagnostics
 #### Description
 Incremental sync run.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run index scan for changed docs. Capture the evidence needed to prove Scan summary and updated index state, and that spec documents remain indexed in warn-only quality mode rather than being silently skipped. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Scan summary, updated index state, and spec-doc warn-only indexing behavior
@@ -581,7 +581,7 @@ Scan summary, updated index state, and spec-doc warn-only indexing behavior
 #### Description
 Pre-destructive backup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Create checkpoint pre-bulk-delete. Capture the evidence needed to prove New checkpoint listed. Return a concise user-facing pass/fail verdict with the main reason.`
 
 New checkpoint listed
@@ -595,7 +595,7 @@ New checkpoint listed
 #### Description
 Recovery asset discovery.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `List checkpoints newest first. Capture the evidence needed to prove Available restore points displayed. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Available restore points displayed
@@ -609,7 +609,7 @@ Available restore points displayed
 #### Description
 Rollback restore drill.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Restore checkpoint with merge mode. Capture the evidence needed to prove Restored data + healthy state. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Restored data + healthy state
@@ -623,7 +623,7 @@ Restored data + healthy state
 #### Description
 Old snapshot cleanup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Delete stale checkpoint by name. Capture the evidence needed to prove Removed checkpoint absent from list. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Removed checkpoint absent from list
@@ -637,7 +637,7 @@ Removed checkpoint absent from list
 #### Description
 Causal provenance linking.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Link source->target supports strength 0.8. Capture the evidence needed to prove Edge appears in chain trace. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Edge appears in chain trace
@@ -651,7 +651,7 @@ Edge appears in chain trace
 #### Description
 Graph coverage review.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Return causal stats and coverage. Capture the evidence needed to prove Coverage and edge metrics present. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Coverage and edge metrics present
@@ -665,7 +665,7 @@ Coverage and edge metrics present
 #### Description
 Edge correction.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Delete edge and re-trace. Capture the evidence needed to prove Removed edge absent in trace. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Removed edge absent in trace
@@ -679,7 +679,7 @@ Removed edge absent in trace
 #### Description
 Decision why-trace.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Trace both directions to depth 4. Capture the evidence needed to prove Chain includes expected relations. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Chain includes expected relations
@@ -693,7 +693,7 @@ Chain includes expected relations
 #### Description
 Pre-task baseline logging.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Create preflight for pipeline-v2-audit. Capture the evidence needed to prove Baseline record created. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Baseline record created
@@ -707,7 +707,7 @@ Baseline record created
 #### Description
 Learning closeout.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Complete postflight for pipeline-v2-audit. Capture the evidence needed to prove Delta/learning record saved. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Delta/learning record saved
@@ -721,7 +721,7 @@ Delta/learning record saved
 #### Description
 Trend review.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Show completed learning history after a fresh DB connection has been initialized, then attempt an invalid NaN score input through the learning handlers. Capture the evidence needed to prove Historical entries returned; schema initializes on the new DB instance; invalid NaN scores are rejected instead of being stored. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Historical entries returned; fresh DB init succeeds; NaN rejected
@@ -735,7 +735,7 @@ Historical entries returned; fresh DB init succeeds; NaN rejected
 #### Description
 Channel impact experiment.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run one full ablation plus one focused fts5 ablation. Capture the evidence needed to prove baseline recall, per-channel deltas, and focused fts5 verdict are reported, that the active eval DB matches the remapped ground-truth parent IDs, and that any run returning fewer than recallK candidates because of token-budget truncation is flagged as investigation-only rather than treated as a clean benchmark. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Baseline recall, per-channel deltas, focused fts5 verdict, and provenance/truncation status are all explicit
@@ -749,7 +749,7 @@ Baseline recall, per-channel deltas, focused fts5 verdict, and provenance/trunca
 #### Description
 Eval reporting pass.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Generate the latest dashboard report. Capture the evidence needed to prove Trend/channel/summary data present in supported runtime formats, the active eval DB remains selected, request limit trims sprint groups rather than raw runs, and chunk-backed eval rows roll up to parent memory IDs instead of transient chunk IDs. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; chunk-backed rows aggregate to parent memory IDs
@@ -763,7 +763,7 @@ Trend/channel/summary data present in supported runtime formats; active eval DB 
 #### Description
 Flag catalog verification with inert and retired surface cleanup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `List SPECKIT search-pipeline flags as active, inert compatibility shims, or retired. Capture the evidence needed to prove active flags stay separated from inert compatibility shims such as SPECKIT_RSF_FUSION and SPECKIT_SHADOW_SCORING, and that retired topics such as full-context ceiling eval, index refresh, context budget, PageRank, and entity scope are not presented as active manual-test scenarios. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Accurate active/inert/retired classification; retired topics absent from active manual-test guidance
@@ -777,7 +777,7 @@ Accurate active/inert/retired classification; retired topics absent from active 
 #### Description
 Session policy audit.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Retrieve dedup/cache policy settings. Capture the evidence needed to prove Session/cache controls found. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Session/cache controls found
@@ -791,7 +791,7 @@ Session/cache controls found
 #### Description
 MCP limits audit.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Find MCP validation settings defaults. Capture the evidence needed to prove MCP guardrails returned. Return a concise user-facing pass/fail verdict with the main reason.`
 
 MCP guardrails returned
@@ -805,7 +805,7 @@ MCP guardrails returned
 #### Description
 Storage precedence check.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Explain DB path precedence env vars. Capture the evidence needed to prove Precedence chain identified. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Precedence chain identified
@@ -819,7 +819,7 @@ Precedence chain identified
 #### Description
 Provider selection audit.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Retrieve embedding provider selection rules. Capture the evidence needed to prove Provider rules and key precedence shown. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Provider rules and key precedence shown
@@ -833,7 +833,7 @@ Provider rules and key precedence shown
 #### Description
 Observability toggle check.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `List telemetry/debug vars and separate opt-in flags from inert flags. Capture the evidence needed to prove Debug/telemetry controls identified. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Debug/telemetry controls identified
@@ -847,7 +847,7 @@ Debug/telemetry controls identified
 #### Description
 Branch metadata source audit.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Find branch env vars used in checkpoint metadata. Capture the evidence needed to prove Branch source vars surfaced. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Branch source vars surfaced
@@ -861,7 +861,7 @@ Branch source vars surfaced
 #### Description
 Startup diagnostics verification.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the dedicated startup guard validation suite. Capture the evidence needed to prove Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript
@@ -881,7 +881,7 @@ Note: 042, 119, 131, and 132 all map to the same catalog entry for spec folder d
 #### Description
 Confirm graph hits are non-zero when edges exist.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify Graph channel ID fix (G1) manually with causal-edge data. Capture the evidence needed to prove Graph channel returns >0 hits when causal edges exist. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Graph channel returns >0 hits when causal edges exist
@@ -895,7 +895,7 @@ Graph channel returns >0 hits when causal edges exist
 #### Description
 Confirm dedup in default mode.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate chunk collapse deduplication (G3) in default search mode. Capture the evidence needed to prove No duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise user-facing pass/fail verdict with the main reason.`
 
 No duplicate memory IDs in results; collapsed chunks yield unique parents only
@@ -909,7 +909,7 @@ No duplicate memory IDs in results; collapsed chunks yield unique parents only
 #### Description
 Confirm hub dampening.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify co-activation fan-effect divisor (R17). Capture the evidence needed to prove Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Hub node score dampened proportionally to fan-out degree; non-hub scores unaffected
@@ -923,7 +923,7 @@ Hub node score dampened proportionally to fan-out degree; non-hub scores unaffec
 #### Description
 Confirm identical re-save skips embedding.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Check SHA-256 dedup (TM-02) on re-save. Capture the evidence needed to prove Second save returns skip/no-op status; no new embedding row created; content hash matches. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Second save returns skip/no-op status; no new embedding row created; content hash matches
@@ -937,7 +937,7 @@ Second save returns skip/no-op status; no new embedding row created; content has
 #### Description
 Confirm eval data isolation.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify evaluation DB/schema writes. Capture the evidence needed to prove Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB
@@ -951,7 +951,7 @@ Eval tables created in separate DB/schema; retrieval events logged without affec
 #### Description
 Confirm metric battery outputs.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate core metric computation (R13-S1). Capture the evidence needed to prove Metric battery returns precision, recall, MRR, NDCG, and MAP values; contiguous top-K positions (1,2,3...) drive MRR/NDCG/MAP instead of sparse external ranks; all outputs stay within valid ranges. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Metric battery returns precision, recall, MRR, NDCG, and MAP values; contiguous top-K positions drive rank-based metrics; all outputs stay within valid ranges
@@ -965,7 +965,7 @@ Metric battery returns precision, recall, MRR, NDCG, and MAP values; contiguous 
 #### Description
 Confirm non-blocking logging failures.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Check observer effect mitigation (D4). Capture the evidence needed to prove Search returns normal results even when eval logging throws; no latency spike from logging failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Search returns normal results even when eval logging throws; no latency spike from logging failure
@@ -979,7 +979,7 @@ Search returns normal results even when eval logging throws; no latency spike fr
 #### Description
 Confirm proxy formula correctness.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Compute and verify quality proxy formula (B7). Capture the evidence needed to prove Computed proxy value matches manual formula calculation within tolerance; formula components are all present. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Computed proxy value matches manual formula calculation within tolerance; formula components are all present
@@ -993,7 +993,7 @@ Computed proxy value matches manual formula calculation within tolerance; formul
 #### Description
 Confirm corpus coverage and hard negatives.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Audit synthetic ground-truth corpus coverage. Capture the evidence needed to prove Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced
@@ -1007,7 +1007,7 @@ Corpus covers all intent categories; hard negatives present; non-trigger prompts
 #### Description
 Confirm baseline reproducibility.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run BM25-only baseline measurement. Capture the evidence needed to prove BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace. Return a concise user-facing pass/fail verdict with the main reason.`
 
 BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in trace
@@ -1021,7 +1021,7 @@ BM25-only run produces reproducible MRR@5; no non-BM25 channel contributions in 
 #### Description
 Confirm wiring with inert runtime.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate G-NEW-2 instrumentation behavior. Capture the evidence needed to prove Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors
@@ -1035,7 +1035,7 @@ Logger gate is closed (inert); telemetry handlers are wired but produce no outpu
 #### Description
 Confirm sample logging + fail-safe.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify scoring observability (T010). Capture the evidence needed to prove Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected
@@ -1049,7 +1049,7 @@ Sampled scoring rows appear in observability log; write error does not crash sea
 #### Description
 Confirm ablation+report workflow.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Execute manual ablation run (R13-S3). Capture the evidence needed to prove Ablation run produces per-channel delta snapshots; token_usage omits synthetic zero-only samples; dashboard renders with trend data in supported runtime output formats from the active eval DB; request limit behavior is verified at the sprint-group level. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Ablation run produces per-channel delta snapshots without synthetic zero-only token usage; dashboard renders with trend data from the active eval DB; sprint-group limit behavior is correct
@@ -1063,7 +1063,7 @@ Ablation run produces per-channel delta snapshots without synthetic zero-only to
 #### Description
 Confirm bounded typed-degree boost.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test typed-weighted degree channel (R4). Capture the evidence needed to prove Typed-degree boost bounded within configured cap; per-database degree-cache isolation prevents score reuse across different DB handles; explicit cache invalidation restores fresh values; fallback activates when edge types missing; varied types produce different scores. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Typed-degree boost bounded within configured cap; per-database cache isolation and explicit invalidation work; fallback activates when edge types missing; varied types produce different scores
@@ -1077,7 +1077,7 @@ Typed-degree boost bounded within configured cap; per-database cache isolation a
 #### Description
 Confirm multiplier impact.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Compare co-activation strength values for A7. Capture the evidence needed to prove Increased co-activation strength produces measurably higher contribution delta vs baseline. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Increased co-activation strength produces measurably higher contribution delta vs baseline
@@ -1091,7 +1091,7 @@ Increased co-activation strength produces measurably higher contribution delta v
 #### Description
 Confirm edges-per-node thresholding.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify edge density measurement and gate behavior. Capture the evidence needed to prove Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary
@@ -1105,7 +1105,7 @@ Edge density ratio computed correctly (edges/nodes); threshold gate activates/de
 #### Description
 Confirm edge change logging + rollback.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate weight history audit tracking. Capture the evidence needed to prove Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Audit rows logged for each edge strength mutation; rollback restores previous weights; audit history is append-only
@@ -1119,7 +1119,7 @@ Audit rows logged for each edge strength mutation; rollback restores previous we
 #### Description
 Confirm 7-day delta bonus.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify graph momentum scoring (N2a). Capture the evidence needed to prove 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced. Return a concise user-facing pass/fail verdict with the main reason.`
 
 7-day momentum delta bonus applied and capped; nodes with no history get zero bonus; cap enforced
@@ -1133,7 +1133,7 @@ Prompt: `Verify graph momentum scoring (N2a). Capture the evidence needed to pro
 #### Description
 Confirm normalized depth scoring.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test causal depth signal (N2b). Capture the evidence needed to prove Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer
@@ -1147,7 +1147,7 @@ Depth score normalized to [0,1]; deeper chains produce higher normalized values;
 #### Description
 Confirm community boost injection.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate community detection (N2c). Capture the evidence needed to prove Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum
@@ -1161,7 +1161,7 @@ Community detection assigns cluster IDs; co-member boost injected; boost capped 
 #### Description
 Confirm batch min-max behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify score normalization output ranges. Capture the evidence needed to prove Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled
@@ -1175,7 +1175,7 @@ Normalized scores in [0,1] range; min-max normalization correct; equal-score and
 #### Description
 Confirm novelty removed from hot path.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Confirm N4 novelty hot-path removal. Capture the evidence needed to prove Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Novelty boost contribution is zero in telemetry; code path shows novelty removed from hot scoring path
@@ -1189,7 +1189,7 @@ Novelty boost contribution is zero in telemetry; code path shows novelty removed
 #### Description
 Confirm cluster penalty.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate interference scoring (TM-01). Capture the evidence needed to prove Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected
@@ -1203,7 +1203,7 @@ Near-duplicate cluster receives penalty; penalty reduces effective score; non-du
 #### Description
 Confirm class+tier decay matrix.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify TM-03 classification-based decay. Capture the evidence needed to prove Decay multipliers differ by classification and tier; matrix values match documented configuration; validateHalfLifeConfig rejects halfLifeDays:0 with the "positive number or null" contract. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Decay multipliers differ by classification and tier; matrix values match documented configuration; zero half-life config is rejected with the positive-number-or-null error
@@ -1217,7 +1217,7 @@ Decay multipliers differ by classification and tier; matrix values match documen
 #### Description
 Confirm folder-first retrieval.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate folder-level relevance scoring (PI-A1). Capture the evidence needed to prove Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Folder pre-ranking scores computed; folder-level results appear before individual spec-doc results in ranking
@@ -1231,7 +1231,7 @@ Folder pre-ranking scores computed; folder-level results appear before individua
 #### Description
 Confirm cache hit/miss behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify embedding cache (R18). Capture the evidence needed to prove Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Cache hit returns instantly without embedding API call; cache miss triggers embedding; metadata timestamps updated on hit
@@ -1245,7 +1245,7 @@ Cache hit returns instantly without embedding API call; cache miss triggers embe
 #### Description
 Confirm no hybrid double-weight.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate G2 guard in active pipeline. Capture the evidence needed to prove Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally
@@ -1259,7 +1259,7 @@ Stage-2 intent weighting skipped for hybrid queries; no double-weight detected i
 #### Description
 Confirm K sensitivity measurements.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run RRF K sensitivity analysis. Capture the evidence needed to prove K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns. Return a concise user-facing pass/fail verdict with the main reason.`
 
 K-value grid produces per-K metric comparisons; optimal K identified with rationale; sensitivity curve shows diminishing returns
@@ -1273,7 +1273,7 @@ K-value grid produces per-K metric comparisons; optimal K identified with ration
 #### Description
 Confirm demotion floor+recovery.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify negative feedback confidence (A4). Capture the evidence needed to prove Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Negative feedback reduces confidence multiplier; floor enforced (never reaches 0); half-life recovery observed over time
@@ -1287,7 +1287,7 @@ Negative feedback reduces confidence multiplier; floor enforced (never reaches 0
 #### Description
 Confirm promotion thresholds/throttle.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate auto-promotion on validation (T002a). Capture the evidence needed to prove Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged
@@ -1301,7 +1301,7 @@ Positive validations promote tier at configured threshold; throttle prevents rap
 #### Description
 Confirm query-class routing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify query complexity router (R15). Capture the evidence needed to prove Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing
@@ -1315,7 +1315,7 @@ Simple queries route to fewer channels; complex queries activate all channels; d
 #### Description
 Retired from active manual testing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `N/A — active manual validation for RSF live ranking was removed from the playbook because production ranking stays on RRF and RSF is no longer a shipped runtime path.`
 
 This page is retained only as a retirement note and should not be treated as an active operator scenario
@@ -1329,7 +1329,7 @@ This page is retained only as a retirement note and should not be treated as an 
 #### Description
 Confirm top-k channel diversity rule.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate channel min-representation (R2). Capture the evidence needed to prove Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each channel represented in top-k results even when one channel dominates; quality floor prevents low-relevance injection
@@ -1343,7 +1343,7 @@ Each channel represented in top-k results even when one channel dominates; quali
 #### Description
 Confirm relevance-cliff cutoff.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify confidence-based truncation (R15-ext). Capture the evidence needed to prove Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace
@@ -1357,7 +1357,7 @@ Results truncated at confidence cliff; minimum result count guaranteed; cutoff t
 #### Description
 Confirm complexity-tier budgets.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify dynamic token budgets (FUT-7). Capture the evidence needed to prove Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Token budget scales with query complexity tier; simple queries get smaller budgets; disabled flag falls back to default budget
@@ -1371,7 +1371,7 @@ Token budget scales with query complexity tier; simple queries get smaller budge
 #### Description
 Confirm parallel expansion + dedup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate query expansion (R12). Capture the evidence needed to prove Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion
@@ -1385,7 +1385,7 @@ Complex queries produce expanded variants; expanded results deduplicated against
 #### Description
 Confirm retry then reject path.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify PI-A5 quality loop behavior. Capture the evidence needed to prove Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged
@@ -1399,7 +1399,7 @@ Low-quality memory triggers retry cycle; final reject after max retries; rejecti
 #### Description
 Confirm signal category detection.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate signal vocabulary expansion (TM-08). Capture the evidence needed to prove Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary
@@ -1413,7 +1413,7 @@ Signal categories (correction, preference, reinforcement) detected from prompt a
 #### Description
 Confirm save-time preflight warn/fail behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify pre-flight token budget validation (PI-A3). Capture the evidence needed to prove Token estimate is computed before embedding/database writes; near-limit input emits PF021 warning; over-limit input emits PF020 failure; behavior follows MCP_CHARS_PER_TOKEN, MCP_MAX_MEMORY_TOKENS, and MCP_TOKEN_WARNING_THRESHOLD. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Token estimate is computed before embedding/database writes; near-limit input emits `PF021` warning; over-limit input emits `PF020` failure; behavior follows `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD`
@@ -1427,7 +1427,7 @@ Token estimate is computed before embedding/database writes; near-limit input em
 #### Description
 Confirm per-folder + aggregated routing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate PI-B3 folder description discovery. Capture the evidence needed to prove description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place; missing description.json falls back cleanly without implicit backfill; out-of-base or prefix-bypass paths are rejected by realpath containment checks; YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases; memory_context uses folder routing; regeneration leaves valid JSON on disk with no leftover temp files. Return a concise user-facing pass/fail verdict with the main reason.`
 
 description.json exists after create.sh; stale detection triggers on spec.md edit; per-folder files preferred over spec.md fallback; mixed-mode aggregation works; invalid JSON or schema-invalid description.json files are ignored, spec.md fallback is used, and existing files are repaired in place; missing description.json falls back cleanly without implicit backfill; out-of-base or prefix-bypass paths are rejected by realpath containment checks; YAML frontmatter is stripped before description extraction, including CRLF-heavy frontmatter cases; memory_context uses folder routing; regeneration leaves valid JSON on disk with no leftover temp files
@@ -1441,7 +1441,7 @@ description.json exists after create.sh; stale detection triggers on spec.md edi
 #### Description
 Confirm 3-layer gate behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify pre-storage quality gate (TM-04). Capture the evidence needed to prove 3-layer gate: structural check, semantic check, duplication check; each layer can warn or reject; decision log captures all gate evaluations. Return a concise user-facing pass/fail verdict with the main reason.`
 
 3-layer gate: structural check, semantic check, duplication check; each layer can warn or reject; decision log captures all gate evaluations
@@ -1455,7 +1455,7 @@ Prompt: `Verify pre-storage quality gate (TM-04). Capture the evidence needed to
 #### Description
 Confirm merge/deprecate thresholds.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate reconsolidation-on-save (TM-06). Capture the evidence needed to prove Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output
@@ -1469,7 +1469,7 @@ Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 
 #### Description
 Confirm quality/structure output.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Assess smarter memory content generation (S1). Capture the evidence needed to prove Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; and inferMemoryTypesBatch keeps separate results for multiple pathless inputs instead of collapsing them onto one key. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results
@@ -1483,7 +1483,7 @@ Generated content retains structural elements (headings, lists, code blocks); ou
 #### Description
 Confirm anchor-priority thinning.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate anchor-aware chunk thinning (R7). Capture the evidence needed to prove Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order
@@ -1497,7 +1497,7 @@ Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor
 #### Description
 Confirm persisted intent labels.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify encoding-intent capture (R16). Capture the evidence needed to prove Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels
@@ -1511,7 +1511,7 @@ Intent labels (doc/code/structured) persisted in metadata; labels read-only afte
 #### Description
 Confirm entity pipeline persistence.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate auto entity extraction (R10). Capture the evidence needed to prove Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded
@@ -1525,7 +1525,7 @@ Entities extracted and persisted in entity tables; normalization applied (case, 
 #### Description
 Confirm stage flow and invariant.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Trace one query through all 4 stages. Capture the evidence needed to prove Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Query traverses all 4 stages in order; stage transitions visible in verbose metadata; stage-4 scores immutable after final stage
@@ -1539,7 +1539,7 @@ Query traverses all 4 stages in order; stage transitions visible in verbose meta
 #### Description
 Confirm MPAB formula.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify MPAB chunk aggregation (R1). Capture the evidence needed to prove MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise user-facing pass/fail verdict with the main reason.`
 
 MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value
@@ -1553,7 +1553,7 @@ MPAB aggregation formula produces correct parent score from child chunks; manual
 #### Description
 Confirm ordered reassembly.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate chunk ordering and metadata-alias preservation (B2). Capture the evidence needed to prove collapsed chunks reassemble in original document order; marker sequence preserved; both parent_id/chunk_index/chunk_label and parentId/chunkIndex/chunkLabel trigger the same collapse path; no reordering or silent passthrough artifacts remain. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Collapsed chunks reassemble in original document order; marker sequence preserved; snake_case and camelCase chunk metadata trigger the same collapse path; no reordering or silent passthrough artifacts remain
@@ -1567,7 +1567,7 @@ Collapsed chunks reassemble in original document order; marker sequence preserve
 #### Description
 Confirm anchor metadata enrichment.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify template anchor optimization (S2). Capture the evidence needed to prove Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no score mutation from anchor presence
@@ -1581,7 +1581,7 @@ Anchor metadata enriched in pipeline; anchor tags visible in query metadata; no 
 #### Description
 Confirm bounded multiplier.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate S3 retrieval metadata weighting. Capture the evidence needed to prove Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier
@@ -1595,7 +1595,7 @@ Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score 
 #### Description
 Confirm learned trigger safeguards.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify learned relevance feedback (R11). Capture the evidence needed to prove Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Learned triggers added from helpful validations; safeguards prevent trigger flooding; queryId required for trigger learning
@@ -1609,7 +1609,7 @@ Learned triggers added from helpful validations; safeguards prevent trigger floo
 #### Description
 Confirm auto-surface hooks.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate dual-scope auto-surface (TM-05). Capture the evidence needed to prove Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant spec-doc records; surfaced spec-doc records match current context
@@ -1623,7 +1623,7 @@ Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces
 #### Description
 Confirm directive enrichment.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify constitutional memory injection scope enforcement (PI-A4). Capture the evidence needed to prove directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated; injected constitutional rows obey shouldApplyScopeFiltering and do not leak across globally enforced scope boundaries. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated; injected constitutional rows obey shouldApplyScopeFiltering and stay inside enforced scope boundaries
@@ -1637,7 +1637,7 @@ Directive metadata appears in retrieval results; constitutional tier classificat
 #### Description
 Confirm hierarchy-aware retrieval.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate spec-folder hierarchy retrieval (S4). Capture the evidence needed to prove Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking
@@ -1651,7 +1651,7 @@ Self-folder results ranked highest; parent and sibling folders contribute scored
 #### Description
 Confirm maintenance cycle behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run lightweight consolidation cycle (N3-lite). Capture the evidence needed to prove Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
@@ -1665,7 +1665,7 @@ Consolidation cycle completes; contradiction detection, hebbian strengthening, a
 #### Description
 Confirm scale-gated summary channel.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify memory summary search channel (R8). Capture the evidence needed to prove Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
@@ -1679,7 +1679,7 @@ Summary channel activates only above corpus size threshold; channel contributes 
 #### Description
 Confirm guarded supports-edge linking.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate cross-document entity linking (S5). Capture the evidence needed to prove Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied
@@ -1693,7 +1693,7 @@ Supports-edges created between documents sharing entities; density guard prevent
 #### Description
 Confirm small-file merge thinning.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate tree thinning behavior (PI-B1). Capture the evidence needed to prove Files below the 150-token small-file threshold merge into consolidated output; no merged parent absorbs more than 3 children; overflow files are kept instead of over-merged; token count is reduced; large files are left untouched; merge preserves content integrity. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Files below the 150-token small-file threshold merge into consolidated output; no merged parent absorbs more than 3 children; overflow files are kept instead of over-merged; token count is reduced; large files are left untouched; merge preserves content integrity
@@ -1707,7 +1707,7 @@ Files below the 150-token small-file threshold merge into consolidated output; n
 #### Description
 Confirm level 1-4 behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run progressive validation (PI-B2). Capture the evidence needed to prove Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each validation level produces appropriate checks; level progression increases strictness; exit codes reflect severity; auto-fix diffs applied at permitted levels
@@ -1721,7 +1721,7 @@ Each validation level produces appropriate checks; level progression increases s
 #### Description
 Confirm governance policy conformance.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Audit feature flag governance conformance. Capture the evidence needed to prove All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found
@@ -1735,7 +1735,7 @@ All flags enumerated with age and review cadence; compliance gaps identified; no
 #### Description
 Confirm sunset dispositions for active, inert, and retired surfaces.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed to prove documented dispositions match code state; inert compatibility flags such as SPECKIT_RSF_FUSION and SPECKIT_SHADOW_SCORING stay no-op; retired topics such as full-context ceiling eval, index refresh, context budget, PageRank, and entity scope are not treated as live runtime checks. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Documented dispositions match code state; inert compatibility flags remain no-op; retired topics are not treated as live runtime checks
@@ -1749,7 +1749,7 @@ Documented dispositions match code state; inert compatibility flags remain no-op
 #### Description
 Confirm Sprint 8 DB safety bundle.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate database and schema safety bundle. Capture the evidence needed to prove Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Mutations complete atomically; no partial SQL corruption; schema constraints enforced; rollback on failure
@@ -1767,7 +1767,7 @@ Per-path DB isolation holds; close_db cleans up all handles; archived cache scop
 #### Description
 Confirm Sprint 8 scoring fixes.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate scoring and ranking corrections bundle. Capture the evidence needed to prove Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values; ablation token_usage metrics omit synthetic zero-only samples when token data is absent. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Score values fall within expected ranges; ranking order matches relevance; no score inversions or NaN values; ablation token_usage metrics omit synthetic zero-only samples
@@ -1781,7 +1781,7 @@ Score values fall within expected ranges; ranking order matches relevance; no sc
 #### Description
 Confirm Sprint 8 pipeline safety fixes.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate search pipeline safety bundle. Capture the evidence needed to prove Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Pipeline handles heavy queries without crash; filters apply correctly; tokenization produces valid tokens; no unguarded exceptions
@@ -1795,7 +1795,7 @@ Pipeline handles heavy queries without crash; filters apply correctly; tokenizat
 #### Description
 Confirm edge-case guard fixes.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate guards and edge-cases bundle. Capture the evidence needed to prove No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state. Return a concise user-facing pass/fail verdict with the main reason.`
 
 No double-counting in aggregation; fallback paths trigger correctly; guard conditions prevent invalid state
@@ -1813,7 +1813,7 @@ Expired rows excluded; result limits respected; invalid embeddings rejected clea
 #### Description
 Confirm shared normalization path.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate entity normalization consolidation. Capture the evidence needed to prove Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence
@@ -1827,7 +1827,7 @@ Extractor and linker produce identical normalized forms for same input; unicode 
 #### Description
 Confirm documented removals remain absent.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Audit dead code removal outcomes. Capture the evidence needed to prove removed hybrid-search branches stay absent; retired helpers (isShadowScoringEnabled/isRsfEnabled) are gone; dead module state and exports listed in the audit stay absent; representative flows execute without missing-reference errors. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Removed hybrid-search branches absent; retired helpers absent; dead module state and exports absent; representative flows execute without missing-reference errors
@@ -1841,7 +1841,7 @@ Removed hybrid-search branches absent; retired helpers absent; dead module state
 #### Description
 Confirm key perf remediations active.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify performance improvements (Sprint 8). Capture the evidence needed to prove Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Optimized code paths are active (not bypassed); heavy queries complete within acceptable time; no performance regressions
@@ -1855,7 +1855,7 @@ Optimized code paths are active (not bypassed); heavy queries complete within ac
 #### Description
 Confirm test quality remediations.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Audit test quality improvements. Capture the evidence needed to prove Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained
@@ -1869,7 +1869,7 @@ Tests use proper teardown; assertions are specific (not generic truthy checks); 
 #### Description
 Confirm restart persistence.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify quality gate timer persistence. Capture the evidence needed to prove Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart
@@ -1883,7 +1883,7 @@ Activation timestamp survives service restart; quality gate respects persisted t
 #### Description
 Confirm fallback order correctness.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Stage 3 effectiveScore fallback chain. Capture the evidence needed to prove Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score
@@ -1897,7 +1897,7 @@ Fallback chain follows defined priority order; missing score fields trigger next
 #### Description
 Confirm mixed-format ID dedup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify canonical ID dedup hardening. Capture the evidence needed to prove Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity
@@ -1911,7 +1911,7 @@ Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; d
 #### Description
 Confirm the archived activation-timestamp persistence record remains source-accurate.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify the archived activation-timestamp persistence record. Capture the evidence needed to prove the historical save-quality-gate path persisted its timer across restart, that the archived record clearly marks the behavior as retired, and that no live phase-018 flow depends on this timer path. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Activation window timestamp persists across restart; warn-only mode respects persisted window; no timestamp reset on service restart
@@ -1925,7 +1925,7 @@ Activation window timestamp persists across restart; warn-only mode respects per
 #### Description
 Confirm force-all-channels in tier-2.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate tier-2 fallback channel forcing. Capture the evidence needed to prove Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Tier-2 fallback activates all search channels; channel options show forceAllChannels=true; results include contributions from all channels
@@ -1939,7 +1939,7 @@ Tier-2 fallback activates all search channels; channel options show forceAllChan
 #### Description
 Confirm V2-only runtime.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify legacy V1 removal. Capture the evidence needed to prove V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain. Return a concise user-facing pass/fail verdict with the main reason.`
 
 V1 pipeline symbols absent from codebase; all queries route through V2 pipeline; no V1 fallback paths remain
@@ -1953,7 +1953,7 @@ V1 pipeline symbols absent from codebase; all queries route through V2 pipeline;
 #### Description
 Confirm phase-017 correction bundle.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate phase-017 scoring and fusion corrections. Capture the evidence needed to prove Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Scoring math produces correct values; normalization stays within bounds; fusion formula applies corrected weights
@@ -1967,7 +1967,7 @@ Scoring math produces correct values; normalization stays within bounds; fusion 
 #### Description
 Confirm mutation hardening bundle.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate pipeline and mutation hardening follow-up coverage. Capture the evidence needed to prove CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; deep-mode reformulation and HyDE candidates re-enter scope/context/quality filtering before merge; constitutional injection obeys global scope enforcement; chunk reassembly accepts camelCase metadata aliases. Return a concise user-facing pass/fail verdict with the main reason.`
 
 CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; deep-mode reformulation and HyDE candidates re-enter scope/context/quality filtering before merge; constitutional injection obeys global scope enforcement; chunk reassembly accepts camelCase metadata aliases
@@ -1981,7 +1981,7 @@ CRUD mutations are atomic (all-or-nothing); error handling cleans up partial sta
 #### Description
 Confirm graph/cognitive fix bundle.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate graph and cognitive memory fixes. Capture the evidence needed to prove Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned
@@ -1995,7 +1995,7 @@ Self-loops prevented; depth clamps enforced; cache invalidation triggers on muta
 #### Description
 Confirm eval/housekeeping reliability.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate evaluation and housekeeping fixes. Capture the evidence needed to prove Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly
@@ -2009,7 +2009,7 @@ Run-IDs are unique across restarts; upserts are idempotent; boundary guards prev
 #### Description
 Confirm large-array safety.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Math.max/min stack overflow elimination. Capture the evidence needed to prove Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path
@@ -2023,7 +2023,7 @@ Large arrays (10k+ elements) processed without RangeError; numeric outputs match
 #### Description
 Confirm transactional limit enforcement.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate session-manager transaction gap fixes. Capture the evidence needed to prove Concurrent writes are serialized via transactions; session limits enforced; no data corruption from concurrent access. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Concurrent writes are serialized via transactions; session limits enforced; no data corruption from concurrent access
@@ -2037,7 +2037,7 @@ Concurrent writes are serialized via transactions; session limits enforced; no d
 #### Description
 Confirm atomic wrapper behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate mutation transaction wrappers. Capture the evidence needed to prove Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Mid-step fault triggers automatic rollback; DB state remains consistent after rollback; no partial writes persist
@@ -2051,7 +2051,7 @@ Mid-step fault triggers automatic rollback; DB state remains consistent after ro
 #### Description
 Confirm trigger edit causes re-index.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate BM25 trigger phrase re-index gate. Capture the evidence needed to prove Trigger phrase edit triggers BM25 re-index; new trigger is searchable after re-index; old trigger phrase still works if not removed. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Trigger phrase edit triggers BM25 re-index; new trigger is searchable after re-index; old trigger phrase still works if not removed
@@ -2065,7 +2065,7 @@ Trigger phrase edit triggers BM25 re-index; new trigger is searchable after re-i
 #### Description
 Confirm shared DB path resolution.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate DB_PATH extraction/import standardization. Capture the evidence needed to prove All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge
@@ -2079,7 +2079,7 @@ All scripts/tools resolve to the same DB path for identical env vars; precedence
 #### Description
 Confirm tier-4 fix pack behavior.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Phase 018 Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality
@@ -2093,7 +2093,7 @@ Each tier-4 fix location shows corrected behavior; representative flows produce 
 #### Description
 Confirm standards conformance.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate code standards alignment outcomes. Capture the evidence needed to prove Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found
@@ -2107,7 +2107,7 @@ Affected files follow naming conventions; comments are meaningful (not boilerpla
 #### Description
 Confirm no-go decision remains valid.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Re-evaluate INT8 quantization decision criteria. Capture the evidence needed to prove Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Quality degradation metrics exceed acceptable threshold; no-go criteria still met; decision rationale documented with current data
@@ -2121,7 +2121,7 @@ Quality degradation metrics exceed acceptable threshold; no-go criteria still me
 #### Description
 Confirm deferred->implemented status.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify N2 implemented and active. Capture the evidence needed to prove N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise user-facing pass/fail verdict with the main reason.`
 
 N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores
@@ -2135,7 +2135,7 @@ N2 tables exist with data; feature flags show active status; graph queries inclu
 #### Description
 Confirm deferred->implemented status.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify R10 implemented and active. Capture the evidence needed to prove Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied
@@ -2149,7 +2149,7 @@ Entities automatically extracted on save; entity outputs contain expected entity
 #### Description
 Confirm deferred->implemented status.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify R8 implemented and gated. Capture the evidence needed to prove Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
@@ -2163,7 +2163,7 @@ Summary generated for long memories; summary persisted in DB; scale gate prevent
 #### Description
 Confirm deferred->implemented status.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify S5 implemented and guarded. Capture the evidence needed to prove Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Entity linker creates supports-edges between related documents; density guards cap edge creation; edge types are correctly classified
@@ -2177,7 +2177,7 @@ Entity linker creates supports-edges between related documents; density guards c
 #### Description
 Confirm schema enforcement rejects hallucinated params.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate SPECKIT_STRICT_SCHEMAS enforcement. Capture the evidence needed to prove Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Zod strict error returned for unknown params in strict mode; extra params pass through in permissive mode; validation occurs per-tool in handler layer
@@ -2191,7 +2191,7 @@ Zod strict error returned for unknown params in strict mode; extra params pass t
 #### Description
 Confirm includeTrace opt-in exposes scores/source/trace.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate SPECKIT_RESPONSE_TRACE includeTrace behavior. Capture the evidence needed to prove Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields
@@ -2205,7 +2205,7 @@ Trace objects (scores, source, trace) present when includeTrace=true or env over
 #### Description
 Confirm job state machine and crash recovery.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate memory_ingest_start/status/cancel lifecycle. Capture the evidence needed to prove Job state transitions through queued→parsing→embedding→indexing→complete in order; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Job state transitions through queued→parsing→embedding→indexing→complete in order; cancel sets state to cancelled; job IDs match nanoid format; incomplete jobs re-enqueue after restart
@@ -2219,7 +2219,7 @@ Job state transitions through queued→parsing→embedding→indexing→complete
 #### Description
 Confirm reranker gating and graceful fallback.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate RERANKER_LOCAL strict check and reranker status telemetry. Capture the evidence needed to prove Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty is compatibility-only and does not change scores; scoring runs sequentially in logs. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty is compatibility-only; scoring runs sequentially in logs
@@ -2233,7 +2233,7 @@ Reranker not activated for truthy-but-not-'true' values; silent fallback when mo
 #### Description
 Confirm file watcher debounce, hash seeding, and ENOENT grace.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate SPECKIT_FILE_WATCHER behavior. Capture the evidence needed to prove File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash. Return a concise user-facing pass/fail verdict with the main reason.`
 
 File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash
@@ -2247,7 +2247,7 @@ File add seeds hash cache; modifications trigger reindex after 2s debounce; iden
 #### Description
 Confirm graceful shutdown completes async cleanup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate server shutdown deadline behavior. Capture the evidence needed to prove File watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline. Return a concise user-facing pass/fail verdict with the main reason.`
 
 File watcher closes; local reranker disposes; vector index closes; shutdown completes within 5s; force exit fires if cleanup exceeds deadline
@@ -2261,7 +2261,7 @@ File watcher closes; local reranker disposes; vector index closes; shutdown comp
 #### Description
 Confirm confirm field accepts only literal true.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate memory_delete confirm:z.literal(true) enforcement. Capture the evidence needed to prove confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise user-facing pass/fail verdict with the main reason.`
 
 confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path
@@ -2275,7 +2275,7 @@ confirm:true accepted; confirm:false rejected with Zod literal error; bulk delet
 #### Description
 Confirm install succeeds without native build tools.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate node-llama-cpp as optionalDependency. Capture the evidence needed to prove node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise user-facing pass/fail verdict with the main reason.`
 
 node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent
@@ -2289,7 +2289,7 @@ node-llama-cpp listed in optionalDependencies (not dependencies); npm install co
 #### Description
 Confirm new hook modules return the finalized metadata and hint shape.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate 103 hook module behavior for mutation feedback and response hints. Capture the evidence needed to prove Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Test output shows suite pass, including latency/cache-clear booleans and finalized hint payload assertions
@@ -2303,7 +2303,7 @@ Test output shows suite pass, including latency/cache-clear booleans and finaliz
 #### Description
 Confirm duplicate-save no-op behavior and atomic-save parity/hints.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run save-path UX scenarios and verify duplicate-save no-op behavior plus atomic-save parity. Capture the evidence needed to prove Suite passes and assertions show no false postMutationHooks on no-op saves, cache-left-unchanged messaging, and parity between standard and atomic save responses. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Suite passes and assertions show no false `postMutationHooks` on no-op saves, cache-left-unchanged messaging, and parity between standard and atomic save responses
@@ -2317,7 +2317,7 @@ Suite passes and assertions show no false `postMutationHooks` on no-op saves, ca
 #### Description
 Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate the finalized context-server success-envelope path, including token metadata recomputation. Capture the evidence needed to prove Context-server suite passes with end-to-end assertions for appended hints, preserved autoSurfacedContext, and finalized token metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata
@@ -2331,7 +2331,7 @@ Context-server suite passes with end-to-end assertions for appended hints, prese
 #### Description
 Confirm hooks index exports and docs cover the finalized modules and contract fields.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate hook barrel and README coverage for the finalized UX-hook surface. Capture the evidence needed to prove Both barrel and README reference mutation-feedback, response-hints, MutationHookResult, and postMutationHooks. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Expected signals: Both barrel (`hooks/index.ts`) and README (`hooks/README.md`) reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`
@@ -2346,7 +2346,7 @@ Pass/fail: PASS if both files reference the new modules and contract fields
 #### Description
 Confirm delete safety is required across handler and validation layers.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate checkpoint delete confirmName enforcement across handler and schema layers. Capture the evidence needed to prove Validation and handler suites pass with missing-confirmName rejection plus successful delete confirmation reporting. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Validation and handler suites pass with missing-`confirmName` rejection plus successful delete confirmation reporting
@@ -2360,7 +2360,7 @@ Validation and handler suites pass with missing-`confirmName` rejection plus suc
 #### Description
 Confirm the recorded verification set matches the current Spec 007 evidence.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the finalized Spec 007 verification command suite and record evidence. Capture the evidence needed to prove npx tsc -b. Return a concise user-facing pass/fail verdict with the main reason.`
 
 `npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 510 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed
@@ -2374,7 +2374,7 @@ Prompt: `Run the finalized Spec 007 verification command suite and record eviden
 #### Description
 Confirm 3-tier degradation chain triggers correctly.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate SPECKIT_SEARCH_FALLBACK tiered degradation. Capture the evidence needed to prove Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSimilarity=0.1; Tier 3 SQL fallback fires when Tier 2 also fails; _degradation property reflects active tier; SPECKIT_SEARCH_FALLBACK=false disables tiered degradation. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSimilarity=0.1; Tier 3 SQL fallback fires when Tier 2 also fails; _degradation property reflects active tier; SPECKIT_SEARCH_FALLBACK=false disables tiered degradation
@@ -2388,7 +2388,7 @@ Tier 1 low-quality results trigger Tier 2; Tier 2 forces all channels with minSi
 #### Description
 Confirm 5-action PE decision engine during save.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate prediction-error save arbitration actions across two sessions. Capture the evidence needed to prove Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration; sessionId filtering prevents one session from triggering duplicate/update/supersede decisions against another. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each similarity band triggers the correct action; memory_conflicts rows are recorded; force:true bypasses arbitration; cross-session PE bleed is blocked
@@ -2402,7 +2402,7 @@ Each similarity band triggers the correct action; memory_conflicts rows are reco
 #### Description
 Confirm embedding-failure fallback and BM25 searchability.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate deferred lexical-only indexing fallback. Capture the evidence needed to prove Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Record saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the record; reindex transitions status to 'success'; vector search works after reindex
@@ -2416,7 +2416,7 @@ Record saved with embedding_status='pending' on embedding failure; BM25/FTS5 lex
 #### Description
 Confirm marker-file triggers DB reinitialization.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate cross-process DB hot rebinding via marker file. Capture the evidence needed to prove Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind
@@ -2430,7 +2430,7 @@ Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats r
 #### Description
 Confirm 4 CLI commands execute correctly.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate standalone admin CLI commands. Capture the evidence needed to prove stats shows tier distribution and schema version; dry-run shows plan without executing deletions; reindex completes with summary; schema-downgrade without --confirm shows safety prompt; destructive bulk-delete attempts a pre-delete checkpoint and warns rather than aborting if checkpoint persistence fails. Return a concise user-facing pass/fail verdict with the main reason.`
 
 stats shows tier distribution and schema version; dry-run shows plan without executing deletions; reindex completes with summary; schema-downgrade without `--confirm` shows safety prompt; destructive bulk-delete attempts a pre-delete checkpoint and warns rather than aborting if checkpoint persistence fails
@@ -2444,7 +2444,7 @@ stats shows tier distribution and schema version; dry-run shows plan without exe
 #### Description
 Verify memory_ingest_start rejects paths outside allowed base directories and paths containing traversal segments.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `"Ingest a file using a path with ../ segments and verify rejection". Capture the evidence needed to prove Traversal paths (../) rejected with E_VALIDATION error; absolute paths outside allowed base rejected; valid paths within allowed directories accepted and job created. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Traversal paths (../) rejected with E_VALIDATION error; absolute paths outside allowed base rejected; valid paths within allowed directories accepted and job created
@@ -2458,7 +2458,7 @@ Traversal paths (../) rejected with E_VALIDATION error; absolute paths outside a
 #### Description
 Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `"Simulate rename failure after DB commit and verify pending file survives". Capture the evidence needed to prove Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file
@@ -2472,7 +2472,7 @@ Rename failure returns {success:false, dbCommitted:true}; pending file preserved
 #### Description
 Verify re-chunking indexes new chunks before deleting old ones, and old chunks survive if new indexing fails.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `"Re-chunk a parent memory and verify old children survive indexing failure". Capture the evidence needed to prove New chunks indexed in staged state before old deletion; old chunks deleted only after successful new indexing; embedding failure preserves old children; handler returns error status on failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 New chunks indexed in staged state before old deletion; old chunks deleted only after successful new indexing; embedding failure preserves old children; handler returns error status on failure
@@ -2486,7 +2486,7 @@ New chunks indexed in staged state before old deletion; old chunks deleted only 
 #### Description
 Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `"Create sessions with known timestamps and verify cleanup deletes only expired ones". Capture the evidence needed to prove Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats
@@ -2500,7 +2500,7 @@ Expired session (45min old) deleted; active session (5min old) preserved; cleanu
 #### Description
 Verify intentAdjustedScore reflects all downstream signal modifications after non-hybrid intent weighting.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run a non-hybrid search with intent weighting and verify score fields stay synchronized. Capture the evidence needed to prove intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value. Return a concise user-facing pass/fail verdict with the main reason.`
 
 intentAdjustedScore set at Step 4 in trace; downstream signals modify score field; final intentAdjustedScore >= score (Math.max sync); resolveEffectiveScore returns synchronized value
@@ -2514,7 +2514,7 @@ intentAdjustedScore set at Step 4 in trace; downstream signals modify score fiel
 #### Description
 Confirm collision resolution.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a memory-quality validation operator, confirm collision resolution for ensureUniqueMemoryFilename. Verify duplicate saves reserve distinct filenames across the -1 and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Second save produces filename with `-1` suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) | 0` coercion; and `memoryNameHistory` is updated.
@@ -2528,7 +2528,7 @@ Second save produces filename with `-1` suffix; both files exist with distinct n
 #### Description
 Confirm graph kill switch removes graph-side effects while traces still explain enabled runs.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Phase 3 graph rollback and explainability. Capture the evidence needed to prove When enabled, trace includes graph contribution summary and repeated identical inputs return identical order; when disabled, graph-side effects are absent and baseline ordering remains deterministic. Return a concise user-facing pass/fail verdict with the main reason.`
 
 When enabled, trace includes graph contribution summary and repeated identical inputs return identical order; when disabled, graph-side effects are absent and baseline ordering remains deterministic
@@ -2542,7 +2542,7 @@ When enabled, trace includes graph contribution summary and repeated identical i
 #### Description
 Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Phase 4 adaptive shadow proposal flow. Capture the evidence needed to prove Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output
@@ -2556,7 +2556,7 @@ Adaptive proposal is present in shadow mode, proposal deltas are bounded, produc
 #### Description
 Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Phase 5 governed ingest and retrieval isolation. Capture the evidence needed to prove governed saves require provenance metadata; ephemeral retention without deleteAfter is rejected; matching scope can read the row; mismatched user/agent or tenant is filtered out; governance_audit rows are recorded; and a simulated governance post-step failure does not leave behind a row with missing governance fields. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Governed save requires provenance; ephemeral save requires deleteAfter; scope mismatches are filtered; governance audit recorded; no orphaned ungoverned row remains after failure
@@ -2570,7 +2570,7 @@ Governed save requires provenance; ephemeral save requires deleteAfter; scope mi
 #### Description
 Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping adaptive ranking default-off until explicitly enabled.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"scope-governance" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false and reports capabilities.adaptiveRanking:false again. Return a concise user-facing pass/fail verdict with the main reason.`
 
 First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms explicit canonical opt-out by returning `capabilities.adaptiveRanking:false` again
@@ -2586,7 +2586,7 @@ Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled
 #### Description
 Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and restoration of the prior eval DB handle after a forced initEvalDb failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and prior eval DB handle restoration after forced init failure
@@ -2600,7 +2600,7 @@ Targeted suite passes; transcript shows persisted snapshot rows, missing-context
 #### Description
 Verify raw SQLite migration checkpoint create/restore helpers produce sidecar metadata and safe restore backups.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the migration checkpoint script verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows checkpoint sidecar creation, restore success, and pre-restore backup coverage. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows checkpoint sidecar creation, restore success, and pre-restore backup coverage
@@ -2614,7 +2614,7 @@ Targeted suite passes; transcript shows checkpoint sidecar creation, restore suc
 #### Description
 Verify backward-compatibility validation flags required schema gaps without throwing on partial databases.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the schema compatibility validation suite. Capture the evidence needed to prove Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage
@@ -2628,7 +2628,7 @@ Targeted suite passes; transcript shows missing-table reporting and minimal-comp
 #### Description
 Verify append-first lineage projection and deterministic `asOf` resolution.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the lineage state verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows active projection selection, deterministic asOf resolution, malformed-chain detection, and predecessor timestamp comparisons succeeding for non-ISO or timezone variants because validation uses parsed epoch values instead of raw strings. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows active projection selection, deterministic `asOf` resolution, malformed-chain detection, and timestamp-order coverage for non-ISO or timezone variants
@@ -2642,7 +2642,7 @@ Targeted suite passes; transcript shows active projection selection, determinist
 #### Description
 Verify dry-run planning, idempotent backfill, and checkpoint-backed rollback for Phase 2 lineage rollout.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the lineage backfill + rollback verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows dry-run plan counts, successful backfill application, idempotent rerun, and checkpoint restore rollback
@@ -2656,7 +2656,7 @@ Targeted suite passes; transcript shows dry-run plan counts, successful backfill
 #### Description
 Confirm batch-generated folder descriptions exist and conform to schema.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate PI-B3 batch backfill results. Capture the evidence needed to prove Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback
@@ -2670,7 +2670,7 @@ Description.json coverage stays in parity with the current active spec inventory
 #### Description
 Confirm per-folder description metadata matches schema contract.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate description.json required fields and types. Capture the evidence needed to prove description.json generated on folder creation with all 9 required fields; field types match contract with strings for specId, folderSlug, specFolder, description, and lastUpdated, arrays of strings for parentChain, memoryNameHistory, and keywords, and number for memorySequence; memorySequence and memoryNameHistory update on save; corrupted fields repaired on regeneration. Return a concise user-facing pass/fail verdict with the main reason.`
 
 description.json generated on folder creation with all 9 required fields; field types match contract with strings for `specId`, `folderSlug`, `specFolder`, `description`, and `lastUpdated`, arrays of strings for `parentChain`, `memoryNameHistory`, and `keywords`, and number for `memorySequence`; `memorySequence` and `memoryNameHistory` update on save; corrupted fields repaired on regeneration
@@ -2684,7 +2684,7 @@ description.json generated on folder creation with all 9 required fields; field 
 #### Description
 Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate memory_save dryRun preview behavior, including insufficiency detection. Capture the evidence needed to prove Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
@@ -2698,7 +2698,7 @@ Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memor
 #### Description
 Verify startup recovery scans allowed roots and preserves stale pending files for manual review.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate startup pending-file recovery behavior across committed and stale files. Capture the evidence needed to prove Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Committed pending file recovers to original path; stale pending file remains with explicit stale classification; startup scan covers configured/allowed roots without scanning unrelated workspace trees
@@ -2712,7 +2712,7 @@ Committed pending file recovers to original path; stale pending file remains wit
 #### Description
 Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate feature catalog grep traceability. Capture the evidence needed to prove Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist
@@ -2726,7 +2726,7 @@ Each feature grep returns at least 2 hits spanning handlers and lib layers; all 
 #### Description
 Verify all annotation names cross-reference against catalog H3 headings with 0 invalid.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate all Feature catalog annotation names against catalog. Capture the evidence needed to prove sort -u 2) Extract all H3 headings from feature_catalog/feature_catalog.md: grep "^### " feature_catalog.md 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches. Return a concise user-facing pass/fail verdict with the main reason.`
 
 sort -u` 2) Extract all H3 headings from `feature_catalog/feature_catalog.md`: `grep "^### " feature_catalog.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches
@@ -2740,7 +2740,7 @@ sort -u` 2) Extract all H3 headings from `feature_catalog/feature_catalog.md`: `
 #### Description
 Verify known multi-feature files have annotation count >= 2.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate multi-feature files carry all applicable annotations. Capture the evidence needed to prove All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate
@@ -2754,7 +2754,7 @@ All known multi-feature files carry >= 2 annotations; annotations are semantical
 #### Description
 Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate MODULE: header compliance across all non-test .ts files. Capture the evidence needed to prove verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings. Return a concise user-facing pass/fail verdict with the main reason.`
 
 verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
@@ -2768,7 +2768,7 @@ verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
 #### Description
 Canonical coverage sourced from M-007 session-capturing closure verification.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness.
@@ -2786,7 +2786,7 @@ Current claim boundary:
 #### Description
 Verify `memory_context` emits trace-only session transitions with no non-trace leakage.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate Markovian session transition tracing for memory_context. Capture the evidence needed to prove Trace-enabled responses include spec-shaped sessionTransition; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled
@@ -2800,7 +2800,7 @@ Trace-enabled responses include spec-shaped `sessionTransition`; non-trace respo
 #### Description
 Verify `SPECKIT_GRAPH_WALK_ROLLOUT` changes diagnostics and bounded bonus behavior without destabilizing ordering.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate bounded graph-walk rollout states and trace diagnostics. Capture the evidence needed to prove Rollout states switch cleanly between trace_only, bounded_runtime, and off; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; off disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`; trace diagnostics expose raw/normalized metrics; bounded runtime never exceeds the Stage 2 cap; `off` disables only the graph-walk bonus ladder, not the broader graph-signal feature flag; repeated identical runs preserve deterministic ordering
@@ -2814,7 +2814,7 @@ Rollout states switch cleanly between `trace_only`, `bounded_runtime`, and `off`
 #### Description
 Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate ingest forecast contract and early-progress caveats. Capture the evidence needed to prove Status payloads always include a forecast object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive
@@ -2828,7 +2828,7 @@ Status payloads always include a `forecast` object; sparse progress yields null 
 #### Description
 Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate contextual tree injection header format and flag toggle. Capture the evidence needed to prove Enabled: results with spec-folder paths have [parent > child — description] headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Enabled: results with spec-folder paths have `[parent > child — description]` headers prepended, truncated at 100 chars; Disabled: no headers injected, content unchanged
@@ -2842,7 +2842,7 @@ Enabled: results with spec-folder paths have `[parent > child — description]` 
 #### Description
 Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate dynamic server instructions at MCP initialization. Capture the evidence needed to prove Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions
@@ -2856,7 +2856,7 @@ Startup instructions include memory system overview with counts and channels; st
 #### Description
 Verify `/memory:learn` flows and active docs all reflect the constitutional-only workflow.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate /memory:learn constitutional manager flow and documentation consistency. Capture the evidence needed to prove Constitutional memory manager. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Constitutional memory manager
@@ -2870,7 +2870,7 @@ Constitutional memory manager
 #### Description
 Confirm malformed rendered memories fail before write/index and valid rendered output remains validator-clean.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate the rendered-memory template contract for memory_save and generate-context. Capture the evidence needed to prove Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean
@@ -2884,7 +2884,7 @@ Dry-run surfaces template-contract violations; non-dry-run rejects malformed fil
 #### Description
 Validate the check-source-dist-alignment.ts script detects no orphaned dist files. Verify every dist/lib/*.js maps to a source .ts file.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the source-dist alignment check and confirm no orphaned dist files exist. Capture the summary output as evidence. Return a concise pass/fail verdict.`
 
 0 violations, all dist files aligned, exit code 0
@@ -2898,7 +2898,7 @@ Prompt: `Run the source-dist alignment check and confirm no orphaned dist files 
 #### Description
 Validate MODULE_MAP.md content accuracy by spot-checking module entries against actual code structure. Verify listed files exist and consumers are correct.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate MODULE_MAP.md accuracy by spot-checking 5 modules (config, cognitive, search, storage, scoring). For each: verify listed key files exist, verify primary consumers are accurate via grep. Return a pass/fail verdict per module.`
 
 All 5 sampled modules have accurate file lists and consumer mappings
@@ -2912,7 +2912,7 @@ All 5 sampled modules have accurate file lists and consumer mappings
 #### Description
 Validate the no-symlinks policy by confirming zero symlinks exist under mcp_server/lib/. Enforces the ARCHITECTURE.md "No Symlinks in lib/ Tree" policy.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Check for symlinks in the lib/ tree. Run find mcp_server/lib -type l and confirm zero results. Return a pass/fail verdict.`
 
 Zero symlinks found
@@ -2926,7 +2926,7 @@ Zero symlinks found
 #### Description
 Verify the structured JSON summary contract for `generate-context.js`, including `toolCalls`/`exchanges` fields, file-backed JSON authority, and Wave 2 hardening.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Save a memory using generate-context.js --json with a payload containing toolCalls, exchanges, and snake_case fields. Verify the rendered output preserves all structured fields, decision confidence, and explicit counts. Return a concise user-facing pass/fail verdict.`
 
 Structured fields preserved in rendered output, counts match explicit input, file-backed JSON stays on the structured path
@@ -2940,7 +2940,7 @@ Structured fields preserved in rendered output, counts match explicit input, fil
 #### Description
 Verify the JSON-only save contract: `--json` succeeds, direct positional rejects.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the two generate-context.js save paths: (1) --json with valid structured payload should succeed, (2) direct positional without --json/--stdin should reject with migration guidance. Return a pass/fail verdict for each path.`
 
 Path 1 exits 0, Path 2 exits non-zero with guidance text
@@ -2954,7 +2954,7 @@ Path 1 exits 0, Path 2 exits non-zero with guidance text
 #### Description
 Confirm the POST-SAVE QUALITY REVIEW hook fires after JSON mode saves, surfaces field-propagation failures with severity-graded instructions, and guides AI remediation.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run generate-context.js --json with varied payloads to exercise the post-save quality review hook. For each scenario confirm whether the review reports PASSED, SKIPPED, or specific issues at the correct severity. Return a pass/fail verdict for each scenario.`
 
 REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable
@@ -2968,7 +2968,7 @@ REVIEW block present in stdout; issue count and severity match the scenario; fix
 #### Description
 Verify dirty-node tracking fires in write_local mode when saving a memory with entity edges.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_GRAPH_REFRESH_MODE=write_local. Save a memory with entity edges, then verify dirty-node tracking and local recompute execute. Capture the evidence needed to prove markDirty() populates the dirty-node set and recomputeLocal() runs for small components. Return a concise user-facing pass/fail verdict with the main reason.`
 
 markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute
@@ -2982,7 +2982,7 @@ markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and
 #### Description
 Verify backfill hook registration and scheduling for high-value documents when the flag is enabled.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_LLM_GRAPH_BACKFILL=true. Register a backfill callback via registerLlmBackfillFn(), save a high-quality memory (qualityScore >= 0.7), and verify the LLM backfill is scheduled. Capture the evidence needed to prove onIndex() returns llmBackfillScheduled=true for high-value docs and false for low-value docs. Return a concise user-facing pass/fail verdict with the main reason.`
 
 onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold; backfill callback is invoked via setImmediate; low-value docs (qualityScore < 0.7) do not trigger backfill
@@ -2996,7 +2996,7 @@ onIndex() returns llmBackfillScheduled=true when qualityScore >= threshold; back
 #### Description
 Verify graph weight cap enforcement at 0.05 and community score capping at 0.03 when graph calibration profile is enabled.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Run a search with graph signals active and verify graph weight contribution is capped at 0.05 (GRAPH_WEIGHT_CAP) and community scoring boost is capped at 0.03 (COMMUNITY_SCORE_CAP). Capture the evidence needed to prove applyCalibrationProfile() enforces caps and shouldActivateLouvain() respects density/size thresholds. Return a concise user-facing pass/fail verdict with the main reason.`
 
 applyGraphWeightCap() clamps values to [0, 0.05]; applyCommunityScoring() caps boost at 0.03; shouldActivateLouvain() returns activate=false when density or size below thresholds; calibrateGraphWeight() enforces N2a/N2b caps
@@ -3010,7 +3010,7 @@ applyGraphWeightCap() clamps values to [0, 0.05]; applyCommunityScoring() caps b
 #### Description
 Verify shadow scoring produces learned vs manual comparison output without affecting live ranking.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_LEARNED_STAGE2_COMBINER=true. Train a model with sample data, run shadowScore() with the learned model and a manual score, and verify the ShadowResult contains learnedScore, manualScore, and delta. Capture the evidence needed to prove the learned combiner produces scores in [0,1] without affecting live ranking. Return a concise user-facing pass/fail verdict with the main reason.`
 
 shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore matching input, and delta = |learned - manual|; trainRegularizedLinearRanker() produces valid weights; predict() clamps output to [0,1]; flag OFF returns null (no overhead)
@@ -3024,7 +3024,7 @@ shadowScore() returns ShadowResult with learnedScore in [0,1], manualScore match
 #### Description
 Verify shadow scoring log entries are created and holdout evaluation runs without mutating live rankings.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_SHADOW_FEEDBACK=true. Run a shadow evaluation with holdout queries, then verify shadow_scoring_log entries are created with per-result rank deltas. Capture the evidence needed to prove logRankDelta() writes rows, compareRanks() produces Kendall tau and NDCG delta, and evaluatePromotionGate() returns a recommendation. Return a concise user-facing pass/fail verdict with the main reason.`
 
 shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_rank, delta, direction; compareRanks() produces RankComparisonResult with kendallTau and ndcgDelta; evaluatePromotionGate() returns ready/wait/rollback; no live ranking columns mutated
@@ -3038,7 +3038,7 @@ shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_ra
 #### Description
 Verify reformulation pipeline runs in deep mode with corpus-grounded seeds, producing a step-back abstract and variants.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run a deep-mode search and verify the graduated reformulation pipeline produces a step-back abstract and corpus-grounded variants. Capture the evidence needed to prove cheapSeedRetrieve() returns FTS5/BM25 seeds, the LLM generates an abstract + variants (max 2), the shared LLM cache is populated, and reformulated hits pass through scope, contextType and qualityThreshold filtering before merge. Return a concise user-facing pass/fail verdict with the main reason.`
 
 cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; reformulated hits respect scope, contextType and qualityThreshold before merge; pipeline is no-op when mode != deep
@@ -3052,7 +3052,7 @@ cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult 
 #### Description
 Verify HyDE pseudo-document generation for low-confidence deep queries with default-active behavior and optional shadow mode.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_HYDE=true with deep mode. Run a search that produces low-confidence baseline results and verify a HyDE pseudo-document is generated with its embedding. Capture the evidence needed to prove generateHyDE() returns a pseudoDocument and embedding, lowConfidence() scans the full baseline set rather than trusting baseline[0], the shared LLM cache is populated, and HyDE hits pass through scope, contextType and qualityThreshold filtering before merge. Then set SPECKIT_HYDE_ACTIVE=false and verify shadow-only logging without merge. Return a concise user-facing pass/fail verdict with the main reason.`
 
 HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence detection uses the max score across the full baseline set; LLM cache shared with reformulation; HyDE hits respect scope, contextType and qualityThreshold before merge; setting `SPECKIT_HYDE_ACTIVE=false` switches to shadow-only logging without merge
@@ -3066,7 +3066,7 @@ HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low
 #### Description
 Verify surrogate metadata generated at index time and matched at query time with boost scores.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_QUERY_SURROGATES=true. Save a memory with rich content, then verify surrogates (aliases, headings, summary, surrogate questions) are generated at index time. Run a search using alias/question terms and verify surrogate matching produces boost scores. Capture the evidence needed to prove SurrogateMetadata is populated and SurrogateMatchResult returns matching scores. Return a concise user-facing pass/fail verdict with the main reason.`
 
 SurrogateMetadata contains aliases (from parenthetical abbreviations), headings, summary (max 200 chars), and surrogateQuestions (2-5 entries); query-time matching produces SurrogateMatchResult with score in [0,1] and matchedSurrogates list; no LLM calls on the default path
@@ -3080,7 +3080,7 @@ SurrogateMetadata contains aliases (from parenthetical abbreviations), headings,
 #### Description
 Verify batch learning aggregation with min-support and boost-cap guards across multiple sessions.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_BATCH_LEARNED_FEEDBACK=true. Populate feedback events across multiple sessions, run batch learning, and verify aggregated signals respect MIN_SUPPORT_SESSIONS (3) and MAX_BOOST_DELTA (0.10). Capture the evidence needed to prove AggregatedSignal contains session counts, confidence-weighted scores, and capped boost values, and that batch_learning_log entries are recorded. Return a concise user-facing pass/fail verdict with the main reason.`
 
 AggregatedSignal with sessionCount >= MIN_SUPPORT_SESSIONS (3) for promoted signals; weightedScore computed using CONFIDENCE_WEIGHTS (strong=1.0, medium=0.5, weak=0.1); computedBoost capped at MAX_BOOST_DELTA (0.10); batch_learning_log rows recorded; shadow-only (no live ranking mutation)
@@ -3094,7 +3094,7 @@ AggregatedSignal with sessionCount >= MIN_SUPPORT_SESSIONS (3) for promoted sign
 #### Description
 Verify near-duplicate auto-merge and borderline recommendation behavior with correct similarity tier classification.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Save two near-duplicate memories (similarity >= 0.96) and verify auto-merge triggers. Then save a borderline pair (0.88 <= similarity < 0.96) and verify a recommendation is logged with supersede/complement classification. Capture the evidence needed to prove classifyAssistiveSimilarity() returns the correct tier and no destructive action occurs for review-tier pairs. Return a concise user-facing pass/fail verdict with the main reason.`
 
 similarity >= 0.96 returns 'auto_merge'; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action
@@ -3108,7 +3108,7 @@ similarity >= 0.96 returns 'auto_merge'; 0.88 <= similarity < 0.96 returns 'revi
 #### Description
 Verify two-tier explainability attachment to search results with slim tier (summary + topSignals) and debug tier (channelContribution).
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_RESULT_EXPLAIN_V1=true. Run a search and verify each result contains a why.summary (natural-language explanation) and topSignals array (scoring signal labels). Then test with debug enabled to verify channelContribution map is included. Capture the evidence needed to prove the slim tier (summary + topSignals) always present when flag ON, and debug tier (channelContribution) only when debug.enabled=true. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each result has why.summary string (non-empty); why.topSignals array with SignalLabel entries (e.g., 'semantic_match', 'graph_boosted', 'anchor:decisions'); channelContribution with vector/fts/graph numbers only in debug mode; no why field when flag OFF
@@ -3122,7 +3122,7 @@ Each result has why.summary string (non-empty); why.topSignals array with Signal
 #### Description
 Verify mode-aware response shape routing for quick, research, and resume profiles with token savings calculation.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test SPECKIT_RESPONSE_PROFILE_V1=true with profile=quick. Run a search and verify the response contains only topResult, oneLineWhy, omittedCount, and tokenReduction (with savingsPercent). Then test profile=research for results + evidenceDigest + followUps, and profile=resume for state + nextSteps + blockers. Capture the evidence needed to prove each profile produces its expected shape and token savings are calculated. Return a concise user-facing pass/fail verdict with the main reason.`
 
 quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and tokenReduction.savingsPercent; research profile returns results[], evidenceDigest, followUps[]; resume profile returns state, nextSteps[], blockers[]; original full response when flag OFF or profile omitted
@@ -3136,7 +3136,7 @@ quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and
 #### Description
 Verify additive disclosure payload and cursor pagination in response while preserving full results.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run a search returning > 5 results and verify the response preserves full data.results while adding data.progressiveDisclosure with summaryLayer (count + digest), snippet previews (max 100 chars with detailAvailable flags), and a continuation cursor. Then use memory_search({ cursor }) to retrieve the next page and verify remaining results are returned. Capture the evidence needed to prove the additive disclosure contract. Return a concise user-facing pass/fail verdict with the main reason.`
 
 data.results remains present; data.progressiveDisclosure.summaryLayer with count and digest; data.progressiveDisclosure.results as Snippet[] with snippet (max 100 chars), detailAvailable, resultId; continuation cursor with remainingCount; cursor expiry at DEFAULT_CURSOR_TTL_MS (5 min); page size DEFAULT_PAGE_SIZE (5)
@@ -3150,7 +3150,7 @@ data.results remains present; data.progressiveDisclosure.summaryLayer with count
 #### Description
 Verify additive session-state metadata and goal refinement are emitted on session-aware searches.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run a search within a session, note the returned session metadata, then run a second search in the same session and verify data.sessionState and data.goalRefinement remain present while previously-seen results can be deprioritized by the session-state path. Capture the evidence needed to prove the session state tracks seenResultIds, preferredAnchors, activeGoal, and goalRefinement metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
 data.sessionState includes activeGoal, seenResultIds, openQuestions, preferredAnchors; data.goalRefinement includes activeGoal and applied status; follow-up search in same session can deprioritize seen results (score * 0.3 fallback path); session expires after SESSION_TTL_MS (30 min); LRU eviction at MAX_SESSIONS (100)
@@ -3164,7 +3164,7 @@ data.sessionState includes activeGoal, seenResultIds, openQuestions, preferredAn
 #### Description
 Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion with correct beta=0.15 scaling and 0.06 cap.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_CALIBRATED_OVERLAP_BONUS behavior. Run a multi-channel search that produces overlapping results across vector, BM25, and graph channels. Verify the calibrated bonus uses beta=0.15 scaling and caps at 0.06, replacing the flat 0.10 convergence bonus. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; flat CONVERGENCE_BONUS=0.10 not applied when flag ON
@@ -3178,7 +3178,7 @@ Calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized
 #### Description
 Verify per-intent K optimization selects best K from sweep grid {10,20,40,60,80,100,120} using NDCG@10.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_RRF_K_EXPERIMENTAL behavior. Run a per-intent K sweep and verify the system evaluates candidate K values {10,20,40,60,80,100,120} using NDCG@10 and MRR@5, selecting the best K per intent. Confirm fallback to K=40 when the flag is OFF. Return a concise user-facing pass/fail verdict with the main reason.`
 
 perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; falls back to DEFAULT_K=40 when OFF
@@ -3192,7 +3192,7 @@ perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; arg
 #### Description
 Verify bounded facet detection decomposes multi-faceted queries into max 3 sub-queries using rule-based heuristics in deep mode.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_QUERY_DECOMPOSITION behavior in deep mode. Run a search with a multi-faceted query containing coordinating conjunctions. Verify the query is split into focused sub-queries (max 3), each retrieving independently. Confirm decomposition is deep-mode only, rule-based with no LLM, and gracefully falls back on error. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Conjunction splitting on "and"/"or"/"also"/"plus"/"as well as"/"along with"; multiple wh-question word detection; MAX_FACETS=3 cap enforced; no LLM calls; deep-mode only activation; graceful fallback returns original query on error
@@ -3206,7 +3206,7 @@ Conjunction splitting on "and"/"or"/"also"/"plus"/"as well as"/"along with"; mul
 #### Description
 Verify query-time alias matching activates graph channel for matched concepts via noun phrase extraction.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_GRAPH_CONCEPT_ROUTING behavior. Run a search with a natural language query that references a known concept indirectly. Verify noun phrase extraction identifies concept references, alias table matching returns canonical concept names, and the graph channel is activated for matched concepts. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Noun phrases extracted from query; concept alias table matched in SQLite; canonical concept names returned; graph channel activated in stage1-candidate-gen for matched concepts; isGraphConceptRoutingEnabled() returns true by default
@@ -3220,7 +3220,7 @@ Noun phrases extracted from query; concept alias table matched in SQLite; canoni
 #### Description
 Verify sparse-first policy constrains to 1-hop in sparse graphs and intent-aware edge traversal applies correct scoring formula.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_TYPED_TRAVERSAL behavior. Verify that sparse graphs (density < 0.5) constrain traversal to 1-hop typed expansion and that intent-aware edge traversal maps query intents to edge-type priority orderings. Confirm the scoring formula score = seedScore * edgePrior * hopDecay * freshness is applied. Return a concise user-facing pass/fail verdict with the main reason.`
 
 SPARSE_DENSITY_THRESHOLD=0.5 gates sparse-first policy; SPARSE_MAX_HOPS=1 constrains traversal in sparse graphs; INTENT_EDGE_PRIORITY maps intents to edge-type orderings; scoring formula = seedScore * edgePrior * hopDecay * freshness; edge prior tiers: first=1.0, second=0.75, remaining=0.5
@@ -3234,7 +3234,7 @@ SPARSE_DENSITY_THRESHOLD=0.5 gates sparse-first policy; SPARSE_MAX_HOPS=1 constr
 #### Description
 Verify shadow-only implicit feedback event ledger records 5 event types with correct confidence tiers.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_IMPLICIT_FEEDBACK_LOG behavior. Run a search, cite a result, reformulate the query, and verify the feedback ledger records events for all 5 types: search_shown, result_cited, query_reformulated, same_topic_requery, follow_on_tool_use. Confirm confidence tiers (strong/medium/weak) are correctly assigned and events are shadow-only. Return a concise user-facing pass/fail verdict with the main reason.`
 
 5 event types recorded; confidence tiers: strong (result_cited, follow_on_tool_use), medium (query_reformulated), weak (search_shown, same_topic_requery); shadow-only (no ranking influence)
@@ -3248,7 +3248,7 @@ Prompt: `Test the default-on SPECKIT_IMPLICIT_FEEDBACK_LOG behavior. Run a searc
 #### Description
 Verify type-aware no-decay FSRS policy assigns Infinity stability to decision/constitutional/critical types while standard FSRS decay applies to others.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_HYBRID_DECAY_POLICY behavior. Verify that memories with context_type decision, constitutional, or critical receive Infinity stability (no decay), while all other context types follow the standard FSRS v4 schedule. Confirm this is separate from TM-03 and that disabling the flag restores uniform FSRS decay for all types. Return a concise user-facing pass/fail verdict with the main reason.`
 
 classifyHybridDecay() maps decision/constitutional/critical to no_decay class; applyHybridDecayPolicy() returns Infinity stability for no_decay types; standard FSRS v4 power-law decay for all other types; separate from TM-03
@@ -3262,7 +3262,7 @@ classifyHybridDecay() maps decision/constitutional/critical to no_decay class; a
 #### Description
 Verify short-critical quality gate exception allows decision documents with >=2 structural signals to bypass the 50-char minimum content length check.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS behavior. Save a short decision document (< 50 characters) with at least 2 structural signals. Verify the document bypasses the MIN_CONTENT_LENGTH=50 check via the short-critical exception path. Confirm the exception requires context_type=decision and >= 2 structural signals. Return a concise user-facing pass/fail verdict with the main reason.`
 
 context_type=decision required; SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 threshold; bypasses MIN_CONTENT_LENGTH=50 in Layer 1; non-decision types still rejected
@@ -3276,7 +3276,7 @@ context_type=decision required; SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 threshol
 #### Description
 Verify structured recovery payloads for empty/weak search results across all 3 statuses: no_results, low_confidence, partial.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_EMPTY_RESULT_RECOVERY_V1 behavior. Trigger all 3 recovery statuses: no_results, low_confidence (below 0.4), and partial (fewer than 3 results). Verify each status includes root cause reasons, suggested actions, and alternative queries. Return a concise user-facing pass/fail verdict with the main reason.`
 
 3 statuses: no_results, low_confidence, partial; root cause reasons: spec_filter_too_narrow, low_signal_query, knowledge_gap; suggested actions: retry_broader, switch_mode, save_memory, ask_user; DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4; PARTIAL_RESULT_MIN=3
@@ -3290,7 +3290,7 @@ Prompt: `Test the default-on SPECKIT_EMPTY_RESULT_RECOVERY_V1 behavior. Trigger 
 #### Description
 Verify per-result calibrated confidence scoring with 4-factor weighting: margin (0.35), channel agreement (0.30), reranker (0.20), anchor density (0.15).
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search and verify each result receives a calibrated confidence score computed from 4 weighted factors: margin (0.35), channel agreement (0.30), reranker support (0.20), and anchor density (0.15). Confirm results are labeled high/medium/low based on thresholds (HIGH >= 0.7, LOW < 0.4). Return a concise user-facing pass/fail verdict with the main reason.`
 
 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers reported per result; heuristic only (no LLM)
@@ -3304,7 +3304,7 @@ Prompt: `Test the default-on SPECKIT_RESULT_CONFIDENCE_V1 behavior. Run a search
 #### Description
 Verify the 3-layer template compliance system prevents non-compliant spec documents from being created.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Create a Level 2 spec folder for a test feature. Use the template compliance contract to ensure correct headers and anchors. Then run validate.sh --strict and report exit code and any violations. Capture the evidence needed to prove all 5 Level 2 files pass validate.sh --strict with exit code 0 and require no post-hoc fixes. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All 5 Level 2 files pass `validate.sh --strict` with exit code 0 and require no post-hoc fixes
@@ -3320,7 +3320,7 @@ All 5 Level 2 files pass `validate.sh --strict` with exit code 0 and require no 
 #### Description
 Verify deferred enrichment retries stop after the documented three-attempt budget and reset after a successful completion.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise user-facing pass/fail verdict with the main reason.`
 
 First three retries allowed; fourth skipped; successful completion clears the budget
@@ -3334,7 +3334,7 @@ First three retries allowed; fourth skipped; successful completion clears the bu
 #### Description
 Verify the canonical scope normalizer is the live helper and strict validation rejects new duplicate local helpers.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a data-integrity validation operator, validate Scope normalizer canonicalization and lint against normalizeScopeValue(). Verify the documented callers all import the canonical helper, string and null semantics still match the parity matrix, and validate.sh --strict rejects a synthetic duplicate normalizeScope helper outside scope-governance.ts. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Canonical imports visible at the documented call sites; parity matrix still passes; synthetic duplicate helper fails the lint rule
@@ -3348,7 +3348,7 @@ Canonical imports visible at the documented call sites; parity matrix still pass
 #### Description
 Verify the shared helper extracts replaced the old inline variants without changing the live pipeline contracts.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a pipeline validation operator, validate Phase 017 maintainability extracts against the documented helper surfaces. Verify assertNever() handles the documented union exhaustiveness cases, runEnrichmentStep() still preserves lane-specific failure mapping, reconsolidation conflict handling routes through one shared transaction helper, and memory-context now reports advisoryPreset instead of readiness in the structural nudge metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Helper-based code paths are active; tests for the extracted helpers pass; routing metadata uses advisoryPreset
@@ -3362,7 +3362,7 @@ Helper-based code paths are active; tests for the extracted helpers pass; routin
 #### Description
 Verify missing research iteration metadata is created without rewriting already-complete folders.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a tooling validation operator, validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts. Verify missing metadata files are created under research iteration folders, complete folders are not rewritten, and canonical save follow-up coverage for research trees is restored. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Missing metadata files created; complete folders unchanged; output identifies only the folders that needed repair
@@ -3376,7 +3376,7 @@ Missing metadata files created; complete folders unchanged; output identifies on
 #### Description
 Verify strict validation now enforces continuity freshness, malformed evidence markers, and duplicate-normalizer rejection.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a tooling validation operator, validate the strict-validation add-ons against validate.sh --strict. Verify stale _memory.continuity timestamps surface through continuity-freshness, malformed evidence markers fail through the strict lint wrapper, duplicate normalizeScope helpers fail through the normalizer lint rule, and the standalone audit script remains available for repair sweeps. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Strict validation surfaces the continuity, evidence-marker, and duplicate-normalizer failures; the audit script reports marker issues for repair use
@@ -3390,7 +3390,7 @@ Strict validation surfaces the continuity, evidence-marker, and duplicate-normal
 #### Description
 Verify strict session-resume caller binding plus the NFKC and zero-width sanitization guardrails.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a governance validation operator, validate strict session-resume caller binding and Unicode sanitization. Verify session_resume rejects mismatched args.sessionId values in strict mode, permissive mode logs and continues for canary rollout, gate-3 normalizePrompt() applies NFKC plus zero-width stripping, and sanitizeRecoveredPayload() applies the same normalization to recovered payloads. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Strict mismatch rejected; permissive mismatch allowed with warning; Unicode confusables normalized in both sanitizers
@@ -3404,7 +3404,7 @@ Strict mismatch rejected; permissive mismatch allowed with warning; Unicode conf
 #### Description
 Verify Copilot now follows the same shared provenance and compact-cache contract as Claude and Gemini.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a UX-hook validation operator, validate shared provenance and Copilot compact-cache parity. Verify Claude and Gemini re-export the shared provenance helpers, Copilot writes a cached provenance-wrapped payload, session-prime consumes the cached trustState, and the cached output matches the documented provenance format. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Shared helper imports visible; Copilot compact-cache emits cached provenance-wrapped output; session-prime consumes the cached trustState
@@ -3418,7 +3418,7 @@ Shared helper imports visible; Copilot compact-cache emits cached provenance-wra
 #### Description
 Verify the code-graph sibling handlers emit one shared readiness vocabulary.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a context-and-code-graph validation operator, validate the shared code-graph readiness contract. Verify query, scan, status, context, ccc-status, ccc-reindex, and ccc-feedback all emit readiness fields through one shared contract; trustState values stay inside the canonical SharedPayloadTrustState vocabulary; and the CCC trio uses the documented readiness_not_applicable stub behavior. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior
@@ -3432,7 +3432,7 @@ Shared readiness fields present across the sibling handlers; trustState values a
 #### Description
 Verify both reconsolidation conflict branches still share one atomic transaction envelope.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a mutation validation operator, validate shared reconsolidation conflict transactions against executeConflict(). Verify both conflict branches route through the shared transaction helper, stale-predecessor guards still apply, and failures roll back without leaving partial conflict writes behind. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Both conflict branches reuse one atomic transaction envelope and preserve rollback behavior on failure
@@ -3450,7 +3450,7 @@ Both conflict branches reuse one atomic transaction envelope and preserve rollba
 #### Description
 Run `recommend-level.sh --recommend-phases --json` on a high-complexity spec and verify scoring output.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Verify phase detection scoring produces valid 4-dimension output for a complex spec folder. Capture the evidence needed to prove JSON output contains recommended_phases (boolean), phase_score (number), suggested_phase_count (number), and 4 dimension scores (LOC Factor 35%, File Count 20%, Risk Factors 25%, Complexity 20%); simple specs score low. Return a concise user-facing pass/fail verdict with the main reason.`
 
 JSON output contains `recommended_phases` (boolean), `phase_score` (number), `suggested_phase_count` (number), and 4 dimension scores: LOC Factor (35%), File Count (20%), Risk Factors (25%), Complexity (20%); simple specs score low
@@ -3463,7 +3463,7 @@ JSON output contains `recommended_phases` (boolean), `phase_score` (number), `su
 #### Description
 Run `create.sh "Test" --phase --level 3 --phases 3` and verify parent+children structure.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Create a phase-decomposed spec folder and verify parent and child structure. Capture the evidence needed to prove Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders
@@ -3476,7 +3476,7 @@ Parent folder with Phase Documentation Map in spec.md; 3 child folders with corr
 #### Description
 Run `validate.sh --recursive` on a phase parent folder and verify per-phase results.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run recursive validation on a phase parent and verify aggregated per-phase results. Capture the evidence needed to prove Per-phase pass/fail in output; JSON phases array; combined exit code reflects worst child; error propagation works. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects worst child; error propagation works
@@ -3489,7 +3489,7 @@ Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects 
 #### Description
 Run `check-phase-links.sh` on a phase folder and verify 4 link checks at warn severity.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Validate phase link integrity across parent and child folders. Capture the evidence needed to prove 4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity. Return a concise user-facing pass/fail verdict with the main reason.`
 
 4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity
@@ -3502,7 +3502,7 @@ Prompt: `Validate phase link integrity across parent and child folders. Capture 
 #### Description
 Execute `/spec_kit:plan :with-phases` command in auto mode and verify phase decomposition pre-workflow.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Run the spec_kit:plan :with-phases command end-to-end and verify phase decomposition pre-workflow steps complete. Capture the evidence needed to prove All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths. Return a concise user-facing pass/fail verdict with the main reason.`
 
 All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths
@@ -3555,7 +3555,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
 #### Description
 Canonical resume workflow through `/spec_kit:resume` and the packet recovery ladder.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a retrieval validation operator, validate Context Recovery and Continuation against /spec_kit:resume specs/<target-spec>. Verify resume-ready state summary and next steps via /spec_kit:resume and the canonical packet ladder. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: Resume-ready state summary and next steps via `/spec_kit:resume` and the canonical packet ladder.
@@ -3568,7 +3568,7 @@ Expected signals: Resume-ready state summary and next steps via `/spec_kit:resum
 #### Description
 Precise fact-level retrieval through targeted anchored lookup.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a retrieval validation operator, validate Targeted Memory Lookup against memory_search({query:"<decision rationale>", specFolder:"specs/<target-spec>", anchors:["decision-record","rationale"]}). Verify precise fact-level retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: precise fact-level retrieval.
@@ -3581,7 +3581,7 @@ Expected signals: precise fact-level retrieval.
 #### Description
 Context save plus immediate index visibility.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `Save fresh context for the target spec folder, run an index scan immediately after the save, and verify the saved artifacts are discoverable in retrieval results. Capture the save and index evidence, and return a concise user-facing pass/fail verdict with the main reason.`
 
 Expected signals: saved context artifacts are discoverable.
@@ -3595,7 +3595,7 @@ Expected signals: saved context artifacts are discoverable.
 #### Description
 Severity-ranked findings and deterministic verdict handoff.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a tooling validation operator, validate Main-Agent Review and Verdict Handoff against @review. Verify severity-ranked findings and final verdict. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: severity-ranked findings and final verdict.
@@ -3608,7 +3608,7 @@ Expected signals: severity-ranked findings and final verdict.
 #### Description
 Outsourced agent output round-trips into searchable saved context.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a memory-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: Agent output contains structured memory section; saved context is discoverable via search.
@@ -3621,7 +3621,7 @@ Expected signals: Agent output contains structured memory section; saved context
 #### Description
 Continuity-ladder precedence and alignment guardrails for captured-session saves.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
@@ -3634,7 +3634,7 @@ Expected signals: the save resolves through `handover.md` first, then `_memory.c
 #### Description
 Session-capturing hardening, structured-input authority, and save-quality closure.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a tooling validation operator, validate Session Capturing Pipeline Quality against grep -n 'crypto.randomBytes' .opencode/skill/system-spec-kit/scripts/extractors/session-extractor.ts. Verify part I hardening remains active.; Native fallback ordering behaves deterministically across all five configured capture backends.; Direct-mode caller preference can reorder the first attempt without changing JSON authority or the rest of the fallback chain. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Minimum scenario family now required for M-007:
@@ -3655,7 +3655,7 @@ Proof rule:
 #### Description
 Repeated save/update activity remains visible through direct operator runs.
 
-#### Current Reality
+#### Scenario Contract
 Prompt: `As a mutation validation operator, validate Feature 09 Direct Manual Scenario (Per-memory History Log) against memory_save({ filePath:"<sandbox-spec-doc>", force:true }). Verify repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage.

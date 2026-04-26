@@ -1,0 +1,27 @@
+{
+  "topic": "Review: spec 048 CLI Testing Playbooks (work delivered this session)",
+  "mode": "review",
+  "sessionId": "2026-04-26T13:30:20.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "reviewTarget": ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks",
+  "reviewTargetType": "spec-folder",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "resource_map_present": false,
+  "severityThreshold": "P2",
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks",
+  "executor": {
+    "kind": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high"
+  },
+  "createdAt": "2026-04-26T13:30:20.000Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "iterationCapMode": "hard"
+}

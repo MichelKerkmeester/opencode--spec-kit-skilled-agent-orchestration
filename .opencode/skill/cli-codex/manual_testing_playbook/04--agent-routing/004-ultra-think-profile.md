@@ -19,7 +19,7 @@ This scenario validates the `codex exec -p ultra-think` profile for `CX-015`. It
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-015` and confirm the expected signals without contradictory evidence.
 

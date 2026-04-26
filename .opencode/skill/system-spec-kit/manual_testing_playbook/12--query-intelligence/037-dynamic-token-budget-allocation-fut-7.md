@@ -12,7 +12,7 @@ This scenario validates Dynamic token budget allocation (FUT-7) for `037`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `037` and confirm the expected signals without contradicting evidence.
 

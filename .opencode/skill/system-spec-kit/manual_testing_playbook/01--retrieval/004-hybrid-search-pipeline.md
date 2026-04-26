@@ -12,7 +12,7 @@ This scenario validates Hybrid search pipeline for `EX-004`. It focuses on chann
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-004` and confirm the expected signals without contradicting evidence.
 

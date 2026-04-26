@@ -19,7 +19,7 @@ This scenario validates the `prompt_templates.md` inventory for `CX-021`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-021` and confirm the expected signals without contradictory evidence.
 

@@ -11,7 +11,7 @@ This scenario validates Feature catalog annotation name validity for `136`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `136` and confirm the expected signals without contradicting evidence.
 

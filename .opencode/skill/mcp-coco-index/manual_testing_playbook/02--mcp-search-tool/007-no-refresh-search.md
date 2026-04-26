@@ -12,7 +12,7 @@ This scenario validates No-refresh search for `MCP-007`. It focuses on Verify `r
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `MCP-007` and confirm the expected signals without contradictory evidence.
 

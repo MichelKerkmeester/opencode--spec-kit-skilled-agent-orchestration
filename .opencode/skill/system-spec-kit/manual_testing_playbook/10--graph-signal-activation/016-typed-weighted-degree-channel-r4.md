@@ -12,7 +12,7 @@ This scenario validates Typed-weighted degree channel (R4) for `016`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `016` and confirm the expected signals without contradicting evidence.
 

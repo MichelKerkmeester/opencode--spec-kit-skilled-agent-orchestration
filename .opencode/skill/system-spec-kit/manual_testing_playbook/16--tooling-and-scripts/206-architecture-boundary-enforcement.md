@@ -11,7 +11,7 @@ This scenario validates architecture boundary enforcement for `206`. It focuses 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the architecture boundary checks and confirm both boundary rules fail on seeded violations while clean controls pass without false positives.
 

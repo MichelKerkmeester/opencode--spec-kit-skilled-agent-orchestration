@@ -12,7 +12,7 @@ This scenario validates Graph momentum scoring (N2a) for `020`. It focuses on Co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `020` and confirm the expected signals without contradicting evidence.
 

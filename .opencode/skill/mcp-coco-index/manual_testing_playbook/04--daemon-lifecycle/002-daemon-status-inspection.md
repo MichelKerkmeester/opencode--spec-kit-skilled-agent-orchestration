@@ -12,7 +12,7 @@ This scenario validates Daemon status inspection for `DMN-002`. It focuses on Ve
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `DMN-002` and confirm the expected signals without contradictory evidence.
 

@@ -119,7 +119,7 @@ Each per-feature file is the canonical scenario contract for one feature ID.
 
 Required structure:
 1. `## 1. OVERVIEW`
-2. `## 2. CURRENT REALITY`
+2. `## 2. SCENARIO CONTRACT`
 3. `## 3. TEST EXECUTION`
 4. `## 4. REFERENCES` or `## 4. SOURCE FILES`
 5. `## 5. SOURCE METADATA`
@@ -155,7 +155,7 @@ Use memory_context in auto mode for the flaky index scan retry issue, capture th
 ```
 
 **Prompt sync rule**:
-- the structured prompt field in `CURRENT REALITY`
+- the structured prompt field in `SCENARIO CONTRACT`
 - the `Exact Prompt` column in the execution table
 - and any root summary prompt text
 
@@ -217,7 +217,7 @@ That limitation must be documented honestly in both the reference and the genera
 |---|---|---|
 | Keeping separate canonical `review_protocol.md` or `subagent_utilization_ledger.md` files | Splits package truth across sidecar docs | Fold shared review/orchestration rules into the root playbook |
 | Using a `snippets/` subtree | No longer matches the current package contract | Put per-feature files in numbered root-level category folders |
-| Unsynced prompt fields | Operators do not know which prompt is canonical | Update `CURRENT REALITY`, table prompt, and root summary together |
+| Unsynced prompt fields | Operators do not know which prompt is canonical | Update `SCENARIO CONTRACT`, table prompt and root summary together |
 | Broken feature-catalog links | Scenario traceability is lost | Link each scenario to its catalog entry or clearly document the exception |
 | Bare command paraphrase prompts | Fails realistic orchestrator-led testing | Rewrite prompts around user intent, evidence, and verdict |
 | Overloading root summaries with full execution detail | Root doc becomes noisy and hard to review | Keep full execution truth in the per-feature file |

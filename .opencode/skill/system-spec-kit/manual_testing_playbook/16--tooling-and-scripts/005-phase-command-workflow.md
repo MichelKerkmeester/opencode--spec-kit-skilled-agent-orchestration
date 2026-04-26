@@ -11,7 +11,7 @@ This scenario validates Phase command workflow for `PHASE-005`. It focuses on Ex
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `PHASE-005` and confirm the expected signals without contradicting evidence.
 

@@ -12,7 +12,7 @@ This scenario validates Quality gate timer persistence for `073`. It focuses on 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `073` and confirm the expected signals without contradicting evidence.
 

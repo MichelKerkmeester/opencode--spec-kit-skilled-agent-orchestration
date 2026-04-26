@@ -19,7 +19,7 @@ While `--continue` always picks the most recent session, `--resume SESSION_ID` i
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-016` and confirm the expected signals without contradictory evidence.
 

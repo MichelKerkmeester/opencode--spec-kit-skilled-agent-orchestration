@@ -11,7 +11,7 @@ This scenario validates UX hook module coverage (`mutation-feedback`, `response-
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `103` and confirm the expected signals without contradicting evidence.
 

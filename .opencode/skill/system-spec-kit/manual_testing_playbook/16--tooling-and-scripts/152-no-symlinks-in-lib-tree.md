@@ -8,7 +8,7 @@ description: "This scenario validates the no-symlinks policy by confirming zero 
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
+- [2. SCENARIO CONTRACT](#2--scenario-contract)
 - [3. TEST EXECUTION](#3--test-execution)
 - [4. REFERENCES](#4--references)
 - [5. SOURCE METADATA](#5--source-metadata)
@@ -19,7 +19,7 @@ This scenario validates the no-symlinks-in-lib policy for `152`. It focuses on c
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run a symlink scan and confirm the lib/ tree contains no symlinks. The policy was established in Phase 15 after discovering that `lib/cache/cognitive -> ../cognitive` caused invisible path aliasing that broke dead-code analysis and import tooling.
 

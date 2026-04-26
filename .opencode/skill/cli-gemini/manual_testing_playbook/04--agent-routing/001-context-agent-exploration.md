@@ -19,7 +19,7 @@ This scenario validates the `@context` agent routing for `CG-010`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-010` and confirm the expected signals without contradictory evidence.
 

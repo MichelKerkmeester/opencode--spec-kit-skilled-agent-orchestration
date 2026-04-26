@@ -12,7 +12,7 @@ This scenario validates memory causal trust display for `203`. It focuses on add
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators validate the display layer, not storage. The scenario confirms `memory_search` results surface `trustBadges` derived from existing causal-edge metadata, and that response profiles preserve the same per-result badge payload instead of dropping it during shaping.
 

@@ -12,7 +12,7 @@ This scenario validates Auto entity extraction (R10) for `048`. It focuses on Co
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `048` and confirm the expected signals without contradicting evidence.
 

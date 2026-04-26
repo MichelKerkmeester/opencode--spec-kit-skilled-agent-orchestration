@@ -12,7 +12,7 @@ This scenario validates tool routing enforcement.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the tool routing enforcement layer (Phase 025) correctly injects routing rules at all 3 MCP enforcement points (server instructions, session priming, response hints) and that runtime instruction files plus the canonical resume/bootstrap surfaces propagate the same routing directives. This ensures AI assistants across all CLIs use CocoIndex for semantic searches and Code Graph for structural queries instead of defaulting to Grep.
 - **Prerequisites**:

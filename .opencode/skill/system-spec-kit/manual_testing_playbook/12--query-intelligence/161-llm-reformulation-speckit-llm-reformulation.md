@@ -12,7 +12,7 @@ This scenario validates LLM reformulation (SPECKIT_LLM_REFORMULATION) for `161`.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `161` and confirm the expected signals without contradicting evidence.
 

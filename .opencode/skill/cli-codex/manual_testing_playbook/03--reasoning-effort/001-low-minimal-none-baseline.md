@@ -19,7 +19,7 @@ This scenario validates the low-end reasoning levels for `CX-009`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-009` and confirm the expected signals without contradictory evidence.
 

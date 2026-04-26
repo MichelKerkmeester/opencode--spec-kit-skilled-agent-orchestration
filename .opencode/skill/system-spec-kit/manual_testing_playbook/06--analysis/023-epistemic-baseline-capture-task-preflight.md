@@ -12,7 +12,7 @@ This scenario validates Epistemic baseline capture (task_preflight) for `EX-023`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-023` and confirm the expected signals without contradicting evidence.
 

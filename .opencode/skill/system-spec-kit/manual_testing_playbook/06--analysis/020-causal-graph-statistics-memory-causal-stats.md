@@ -12,7 +12,7 @@ This scenario validates Causal graph statistics (memory_causal_stats) for `EX-02
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-020` and confirm the expected signals without contradicting evidence.
 

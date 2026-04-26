@@ -11,7 +11,7 @@ This scenario validates Template Compliance Contract Enforcement for `208`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators verify the shared contract reference and embedded spec-authoring runtime contracts are in sync, then run strict validation against compliant and non-compliant fixtures to confirm structural violations and content-minimum guardrails are caught with actionable output.
 

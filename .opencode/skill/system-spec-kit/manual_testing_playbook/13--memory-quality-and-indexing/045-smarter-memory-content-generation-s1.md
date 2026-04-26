@@ -12,7 +12,7 @@ This scenario validates Smarter memory content generation (S1) for `045`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `045` and confirm the expected signals without contradicting evidence.
 

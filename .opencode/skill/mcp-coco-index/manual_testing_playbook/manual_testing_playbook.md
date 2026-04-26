@@ -114,7 +114,7 @@ This category covers 5 scenario summaries while the linked feature files remain 
 #### Description
 Verify `ccc init` creates project config; second call reports already initialized; `--force` re-creates.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, initialize a new CocoIndex Code project in the current directory against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: output contains "Initialized" or creates .cocoindex_code/; Step 3: file exists; Step 4: output contains "already" or exits without error; Step 5: succeeds without error; Step 6: file exists. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: output contains "Initialized" or creates `.cocoindex_code/`; Step 3: file exists; Step 4: output contains "already" or exits without error; Step 5: succeeds without error; Step 6: file exists
@@ -127,7 +127,7 @@ Expected signals: Step 2: output contains "Initialized" or creates `.cocoindex_c
 #### Description
 Verify `ccc index` reports file count and chunk count.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, build the full semantic index for this project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output contains numeric file and chunk counts (for example "Files:" and "Chunks:" or similar metric lines). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Output contains numeric file and chunk counts (for example `Files:` and `Chunks:` or similar metric lines)
@@ -140,7 +140,7 @@ Expected signals: Output contains numeric file and chunk counts (for example `Fi
 #### Description
 Verify incremental indexing picks up new content and drops deleted content.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, create a temp file, reindex, search for it, delete it, reindex again against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 3: search returns at least 1 result referencing ccc_test_incremental.py; Step 6: search returns 0 results for that file. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 3: search returns at least 1 result referencing `ccc_test_incremental.py`; Step 6: search returns 0 results for that file
@@ -153,7 +153,7 @@ Expected signals: Step 3: search returns at least 1 result referencing `ccc_test
 #### Description
 Verify `--lang` (repeatable) and `--limit` filters work.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search for "function" filtered to Python and TypeScript with limit 3 against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: returns results; Step 2: all file extensions are .py, .ts, or .tsx; Step 3: result count <= 3. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: returns results; Step 2: all file extensions are `.py`, `.ts`, or `.tsx`; Step 3: result count <= 3
@@ -166,7 +166,7 @@ Expected signals: Step 1: returns results; Step 2: all file extensions are `.py`
 #### Description
 Verify `ccc reset --all` clears index; status shows empty; rebuild succeeds.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, reset the CocoIndex Code index completely and rebuild against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step 4: rebuilds with non-zero counts; Step 5: shows non-zero file and chunk counts. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: exits without error; Step 2: shows zero files or "not initialized"; Step 4: rebuilds with non-zero counts; Step 5: shows non-zero file and chunk counts
@@ -186,7 +186,7 @@ This category covers 7 scenario summaries while the linked feature files remain 
 #### Description
 Verify MCP search returns results with file paths, scores, and line ranges.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Results array with at least 1 entry; each entry contains `file` (string), `score` (float 0.0-1.0), `lines` (start/end), `snippet` (string), `language` (string)
@@ -199,7 +199,7 @@ Expected signals: Results array with at least 1 entry; each entry contains `file
 #### Description
 Verify `languages` parameter restricts results to a single language.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CocoIndex for "function" filtered to Python only against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify All result file paths end in .py; no .ts, .js, .go, etc. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: All result file paths end in `.py`; no `.ts`, `.js`, `.go`, etc.
@@ -212,7 +212,7 @@ Expected signals: All result file paths end in `.py`; no `.ts`, `.js`, `.go`, et
 #### Description
 Verify `languages` parameter accepts multiple languages.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Results contain mix of `.py` and `.js` files; no other extensions
@@ -225,7 +225,7 @@ Expected signals: Results contain mix of `.py` and `.js` files; no other extensi
 #### Description
 Verify `paths` parameter restricts results to a specific directory.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CocoIndex for "skill" only under .opencode/skill/ against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify All result paths begin with .opencode/skill/; no results from other directories. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: All result paths begin with `.opencode/skill/`; no results from other directories
@@ -238,7 +238,7 @@ Expected signals: All result paths begin with `.opencode/skill/`; no results fro
 #### Description
 Verify `languages`, `paths`, and `limit` work together.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CocoIndex for "config" in Python under .opencode/ with 2 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Result count <= 2; all files are .py; all paths start with .opencode/. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Result count <= 2; all files are `.py`; all paths start with `.opencode/`
@@ -251,7 +251,7 @@ Expected signals: Result count <= 2; all files are `.py`; all paths start with `
 #### Description
 Verify `limit` controls output count.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, compare CocoIndex search with 1 result vs 10 results against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: exactly 1 result; Step 4: result count between 1 and 10 (inclusive); Step 4 count >= Step 2 count
@@ -264,7 +264,7 @@ Expected signals: Step 2: exactly 1 result; Step 4: result count between 1 and 1
 #### Description
 Verify `refresh_index: false` skips reindexing and still returns results.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CocoIndex for "test" without triggering a reindex against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array is non-empty; response time is noticeably faster than a refreshing search (no index wait notice). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Results array is non-empty; response time is noticeably faster than a refreshing search (no index wait notice)
@@ -277,7 +277,7 @@ Expected signals: Results array is non-empty; response time is noticeably faster
 #### Description
 Verify two concurrent `refresh_index=true` calls either both succeed or surface the documented `ComponentContext` race; confirm `refresh_index=false` fallback works.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, fire two MCP CocoIndex searches concurrently with refresh_index=true against the current CocoIndex daemon in this repository. Verify either both responses are valid result arrays OR at least one response surfaces a ComponentContext error string (acceptable failure mode per SKILL.md §4). Confirm that switching the second call to refresh_index=false eliminates the error. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Both calls return JSON; at most one contains `ComponentContext`; the `refresh_index=false` follow-up returns a non-empty result array
@@ -297,7 +297,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify global settings contain the documented default embedding model.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, check the CocoIndex Code global settings for the embedding model against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Settings file exists; embedding.model matches a documented model such as the default local sentence-transformers/all-MiniLM-L6-v2 or a LiteLLM model like voyage/voyage-code-3. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Settings file exists; `embedding.model` matches a documented model such as `sentence-transformers/all-MiniLM-L6-v2` or `voyage/voyage-code-3`
@@ -310,7 +310,7 @@ Expected signals: Settings file exists; `embedding.model` matches a documented m
 #### Description
 Verify project settings contain language extension patterns.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.)
@@ -323,7 +323,7 @@ Expected signals: `include_patterns` field present; contains patterns covering m
 #### Description
 Verify `ccc status` shows indexed file count and chunk count.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, check the CocoIndex Code status for this initialized project against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Output shows numeric file count > 0 and numeric chunk count > 0. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Output shows numeric file count > 0 and numeric chunk count > 0
@@ -336,7 +336,7 @@ Expected signals: Output shows numeric file count > 0 and numeric chunk count > 
 #### Description
 Verify `COCOINDEX_CODE_ROOT_PATH` overrides marker-directory discovery in the documented 4-priority root resolution chain.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path, then invoke ccc status from a subdirectory containing project markers (.git, package.json, etc.) and confirm the reported root matches the env var, not the subdirectory. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: `ccc status` invoked from the subdirectory with the env var set reports the same file/chunk counts as `ccc status` invoked at the env-var-pinned root; `ccc search --limit 1` returns a path under the env-var-pinned root
@@ -356,7 +356,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 #### Description
 Verify daemon starts automatically when a CLI command is issued after it has been stopped.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, stop the daemon, then search -- against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify auto-start against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: daemon stops or reports already stopped; Step 3: search returns at least 1 result; Step 5: daemon reports running. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: daemon stops or reports already stopped; Step 3: search returns at least 1 result; Step 5: daemon reports running
@@ -369,7 +369,7 @@ Expected signals: Step 1: daemon stops or reports already stopped; Step 3: searc
 #### Description
 Verify `ccc daemon status` shows version and uptime; PID and socket files exist.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, check daemon status and against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify runtime files against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Step 1: output includes version or uptime information; Step 2: both daemon.pid and daemon.sock files exist. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: output includes version or uptime information; Step 2: both `daemon.pid` and `daemon.sock` files exist
@@ -382,7 +382,7 @@ Expected signals: Step 1: output includes version or uptime information; Step 2:
 #### Description
 Verify `doctor.sh --strict --require-config` and `ensure_ready.sh --strict --require-config` enforce the SKILL.md §4 ALWAYS rule #7 readiness contract on positive and negative paths.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify both scripts exit 0 with healthy JSON; rerun ensure_ready.sh and confirm idempotency; then run both scripts from a temp directory with no .cocoindex_code/ to confirm --require-config makes them exit non-zero with an explicit reason. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: doctor exit=0 with valid JSON; ensure_ready exit=0 first call AND idempotent on second call; both scripts exit non-zero with explicit reason when run from a directory without `.cocoindex_code/` and `--require-config` is set
@@ -402,7 +402,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 #### Description
 Verify `--semantic` triggers CocoIndex search and `!semantic(...)` appears in reason field when skill references found.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, test skill advisor with semantic search for a deployment query against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify JSON output is valid; at least one recommendation entry contains !semantic( in its reason field; CocoIndex search was invoked (visible in processing or reason text). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: JSON output is valid; at least one recommendation entry contains `!semantic(` in its `reason` field; CocoIndex search was invoked (visible in processing or reason text)
@@ -415,7 +415,7 @@ Expected signals: JSON output is valid; at least one recommendation entry contai
 #### Description
 Verify `--semantic-hits` with JSON array boosts confidence for the referenced skill.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify sk-git appears in the semantic-hits run, its confidence is higher than in the baseline run, and the boosted reason references semantic input. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted `reason` references semantic input
@@ -435,7 +435,7 @@ This category covers 1 scenario summaries while the linked feature files remain 
 #### Description
 Verify search returns empty results gracefully for a nonsense query (no crash, no error).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace
@@ -455,7 +455,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify that semantic queries (containing keywords like "find examples", "how to", "similar to", "explain") are classified as semantic and do not trigger structural graph augmentation in `memory_context`.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, send a semantic query like "find examples of error handling patterns in this codebase" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as 'semantic', routedBackend is semantic when present, no graphContext block in the response, no structural graph data injected into primary results. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Intent classified as 'semantic', routedBackend is `semantic` when present, no `graphContext` block in the response, no structural graph data injected into primary results
@@ -468,7 +468,7 @@ Expected signals: Intent classified as 'semantic', routedBackend is `semantic` w
 #### Description
 Verify that hybrid queries (mixing structural keywords like "function", "calls" with semantic keywords like "explain", "examples") are classified as hybrid and append `graphContext` metadata to the normal `memory_context` response.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, send a hybrid query like "find all validation functions and explain their error handling approach" to memory_context against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Intent classified as hybrid, response contains queryIntentRouting, graphContext appears when graph seeds resolve, and the normal semantic response body remains present. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Intent classified as `hybrid`, response contains `queryIntentRouting`, `graphContext` appears when graph seeds resolve, and the normal semantic response body remains present
@@ -481,7 +481,7 @@ Expected signals: Intent classified as `hybrid`, response contains `queryIntentR
 #### Description
 Verify that `session_bootstrap` exposes CocoIndex status through `resume.cocoIndex`, that `session_resume` still exposes the direct `cocoIndex` field, and that both surfaces degrade gracefully when the CocoIndex binary is unavailable. `available` reflects whether the `ccc` binary exists at the expected install path, not whether the daemon is currently running. The `binaryPath` must point to the expected `ccc` binary location.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, call session_bootstrap and session_resume, then examine the CocoIndex status fields against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify session_bootstrap.resume.cocoIndex.available and session_resume.cocoIndex.available match binary presence on disk; both binaryPath values are non-empty strings; session_bootstrap includes structuralContext; both calls complete without error regardless of binary availability. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: `session_bootstrap.resume.cocoIndex.available` and `session_resume.cocoIndex.available` match binary presence on disk; both `binaryPath` values are non-empty strings; `session_bootstrap` includes `structuralContext`; both calls complete without error regardless of binary availability

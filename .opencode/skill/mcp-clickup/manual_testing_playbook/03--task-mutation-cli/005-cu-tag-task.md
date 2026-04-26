@@ -19,7 +19,7 @@ Operators expect tag operations to compose: adding `bug,frontend` should leave a
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-015` and confirm the expected signals without contradictory evidence.
 

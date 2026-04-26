@@ -119,7 +119,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify `list_tools()` returns the full set of registered external MCP tools with `manual.manual_tool` namespace.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, enumerate all available external MCP tools through Code Mode against the current Code Mode and `.utcp_config.json` registry. Verify the returned list is non-empty and every entry follows the `manual.manual_tool` naming pattern. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `list_tools()` returns an array of strings; Step 2: every entry contains a `.` separator; Step 3: at least one entry per configured manual in `.utcp_config.json`.
@@ -132,7 +132,7 @@ Expected signals: Step 1: `list_tools()` returns an array of strings; Step 2: ev
 #### Description
 Verify `search_tools({task_description: ...})` returns tools relevant to the described task with non-empty result limited by `limit`.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search for tools that handle "task management" through Code Mode against the registered ClickUp manual. Verify the search returns ClickUp-related tool names within the `limit` cap. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `search_tools` returns array; Step 2: at least one entry contains `clickup`; Step 3: array length <= specified `limit`.
@@ -145,7 +145,7 @@ Expected signals: Step 1: `search_tools` returns array; Step 2: at least one ent
 #### Description
 Verify `tool_info({tool_name: "clickup.clickup_create_task"})` returns parameter schema, description, and required fields.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, fetch the parameter schema for `clickup.clickup_create_task` through Code Mode against the live ClickUp MCP server. Verify the response includes parameter names, types, and required-field flags. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response is a non-empty object; Step 2: response contains `parameters` or equivalent schema field; Step 3: at least one required field listed.
@@ -158,7 +158,7 @@ Expected signals: Step 1: response is a non-empty object; Step 2: response conta
 #### Description
 Verify `call_tool_chain({code: ...})` executes a TypeScript snippet that invokes external tools and returns the result.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run a TypeScript snippet that calls `list_tools()` then returns the count of registered tools through Code Mode against the configured `.utcp_config.json`. Verify the snippet executes without compile errors and returns a numeric tool count. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `call_tool_chain` returns a value; Step 2: returned value is a number; Step 3: number > 0.
@@ -177,7 +177,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify calling a tool with the correct `manual.manual_tool` form (e.g., `clickup.clickup_get_teams`) returns the expected result.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, call the ClickUp `get_teams` tool using the canonical `clickup.clickup_get_teams({})` form through Code Mode against the live ClickUp MCP server. Verify the call succeeds and returns workspace team data. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: tool call returns without error; Step 2: response contains team objects with `id` and `name` fields; Step 3: at least one team present.
@@ -190,7 +190,7 @@ Expected signals: Step 1: tool call returns without error; Step 2: response cont
 #### Description
 Verify calling without the manual prefix (e.g., `clickup.get_teams` instead of `clickup.clickup_get_teams`) returns a deterministic "tool not found" error.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, call ClickUp `get_teams` using the wrong form `clickup.get_teams` through Code Mode against the live registry. Verify the call returns a "tool not found" error containing the wrong name. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: tool call throws or returns an error; Step 2: error message contains "tool" and "not found" or similar; Step 3: error references the wrong-form name.
@@ -203,7 +203,7 @@ Expected signals: Step 1: tool call throws or returns an error; Step 2: error me
 #### Description
 Verify `list_tools()` returns tools in `a.b.c` format (e.g., `clickup.clickup.create_task`) but calling syntax uses underscore form (`clickup.clickup_create_task`).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, enumerate ClickUp tools then translate one entry from list-form to call-form and verify the call works through Code Mode against the live registry. Verify the dot-to-underscore translation is required. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: at least one `list_tools` entry contains 2+ dots; Step 2: dot-form direct call fails with "tool not found"; Step 3: underscore-form call succeeds.
@@ -222,7 +222,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify a `.env` entry like `clickup_CLICKUP_API_KEY=pk_xxx` is visible to the wrapped ClickUp MCP server.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, set `clickup_CLICKUP_API_KEY` in `.env`, restart Code Mode, and call a ClickUp tool that requires auth against the live ClickUp API. Verify the auth succeeds. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: ClickUp auth call returns 200/OK or workspace data; Step 3: no "missing API key" error.
@@ -235,7 +235,7 @@ Expected signals: Step 2: ClickUp auth call returns 200/OK or workspace data; St
 #### Description
 Verify an unprefixed `CLICKUP_API_KEY` (without `clickup_` prefix) is NOT visible to the wrapped server.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, set only `CLICKUP_API_KEY` (no prefix) in `.env`, restart Code Mode, and call a ClickUp tool against the live ClickUp API. Verify the auth fails with a missing-credential error. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: ClickUp tool returns auth error; Step 3: error message references missing/invalid API key.
@@ -248,7 +248,7 @@ Expected signals: Step 2: ClickUp tool returns auth error; Step 3: error message
 #### Description
 Verify `python3 .opencode/skill/mcp-code-mode/scripts/validate_config.py .utcp_config.json --check-env .env` lists missing required env vars.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run the validation script with a `.env` missing one required prefixed key against the current `.utcp_config.json`. Verify the script exits non-zero and names the missing key. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: script exits with non-zero status; Step 2: stderr/stdout contains the missing prefixed key name; Step 3: removing the missing-key scenario and re-running gives exit 0.
@@ -267,7 +267,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify `call_tool_chain` can run two tools sequentially with the second consuming the first's output.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, call `clickup_get_teams` then use the first team's id to call `clickup_get_spaces({team_id})` in a single `call_tool_chain` execution. Verify both calls succeed and the second returns spaces for the first team. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns object with both call results; Step 2: spaces array references the first team id.
@@ -280,7 +280,7 @@ Expected signals: Step 1: chain returns object with both call results; Step 2: s
 #### Description
 Verify `Promise.all([toolA(), toolB(), toolC()])` inside `call_tool_chain` executes the three calls in parallel and returns all three results.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run three independent read-only ClickUp calls (`get_teams`, `get_workspace_views`, `get_user`) via `Promise.all` in a single `call_tool_chain` execution. Verify all three return successfully. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns an array of length 3; Step 2: each entry is a non-error response; Step 3: total wall time < sum of individual times (parallel evidence).
@@ -293,7 +293,7 @@ Expected signals: Step 1: chain returns an array of length 3; Step 2: each entry
 #### Description
 Verify wrapping a failing call in try/catch lets the chain continue and return both the error and a fallback result.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run a chain where the first call deliberately fails (invalid id) and the second is a fallback `get_user`, with try/catch around the first. Verify the chain returns both the caught error and the fallback success. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns object with `error` and `fallback` keys; Step 2: error is structured (not a runtime exception that aborts the chain).
@@ -312,7 +312,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify `clickup.clickup_create_task` followed by `clickup.clickup_get_task` returns the created task in a single `call_tool_chain` execution.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, create a throwaway test task in a designated test list, then read it back, then delete it through Code Mode against the live ClickUp API. Verify the round-trip values match (name, list_id) and cleanup succeeds. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: create returns task with `id`; Step 2: get returns task with same `id` and matching `name`; Step 3: delete returns success.
@@ -325,7 +325,7 @@ Expected signals: Step 1: create returns task with `id`; Step 2: get returns tas
 #### Description
 Verify `chrome_devtools_1.chrome_devtools_1_navigate_page` followed by `chrome_devtools_1.chrome_devtools_1_take_screenshot` returns a base64-encoded image.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, navigate Chrome to https://example.com then take a screenshot through Code Mode against the chrome_devtools_1 MCP instance. Verify navigation succeeds and screenshot returns image bytes. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: navigate returns success; Step 2: screenshot returns base64 string of length > 1000; Step 3: decoded bytes start with PNG magic header `89 50 4E 47`.
@@ -338,7 +338,7 @@ Expected signals: Step 1: navigate returns success; Step 2: screenshot returns b
 #### Description
 Verify a single `call_tool_chain` execution can capture a Chrome screenshot and then create a ClickUp task referencing the screenshot URL.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, navigate Chrome to a target URL, capture a screenshot, then create a ClickUp task in the test list whose description includes a reference to the screenshot through Code Mode against the live ClickUp + Chrome MCP servers. Verify the chain executes both tools and the task contains the screenshot reference. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns object with both `screenshot_id` and `task_id`; Step 2: created task description contains the screenshot reference; Step 3: cleanup deletes both.
@@ -357,7 +357,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify `figma.figma_get_file({file_key})` returns file metadata (name, lastModified, document tree).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, fetch metadata for a public Figma file through Code Mode against the configured Figma MCP server. Verify the response contains `name`, `lastModified`, and a `document` tree. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response is an object; Step 2: response has `name` (string) and `lastModified` (ISO date); Step 3: response has `document` with at least one child.
@@ -370,7 +370,7 @@ Expected signals: Step 1: response is an object; Step 2: response has `name` (st
 #### Description
 Verify `webflow.webflow_list_sites()` returns the operator's Webflow sites.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, list all Webflow sites visible to the configured token through Code Mode against the live Webflow API. Verify the response is a non-empty array (or explicit empty if account has no sites). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response is an array; Step 2: each entry has `id` and `displayName` or equivalent; Step 3: array length >= 0 (empty is valid for fresh accounts).
@@ -383,7 +383,7 @@ Expected signals: Step 1: response is an array; Step 2: each entry has `id` and 
 #### Description
 Verify `github.github_list_user_repos()` returns the authenticated user's repos.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, list repos owned by the authenticated GitHub user through Code Mode against the live GitHub API. Verify the response is a non-empty array of repo objects. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response is an array; Step 2: each entry has `name`, `owner.login`, and `private` fields; Step 3: array length > 0 for accounts with at least one repo.
@@ -396,7 +396,7 @@ Expected signals: Step 1: response is an array; Step 2: each entry has `name`, `
 #### Description
 Verify `notion.notion_search({query: ""})` returns workspace pages and databases.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search the Notion workspace for any page through Code Mode against the configured Notion MCP server. Verify the response is a list of objects with `object` and `id` fields. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response has `results` array; Step 2: each result has `object` (page/database) and `id`; Step 3: array length >= 0.
@@ -415,7 +415,7 @@ This category covers 6 scenario summaries while the linked feature files remain 
 #### Description
 Verify Code Mode reports a deterministic config-validation error when `.utcp_config.json` has malformed JSON. Restore original after.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, back up `.utcp_config.json`, corrupt it (delete a closing brace), restart Code Mode, observe the error, then restore through Code Mode against the corrupted then-restored config. Verify the error names the config file and the JSON parse failure. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: Code Mode startup fails with JSON parse error referencing `.utcp_config.json`; Step 4: after restore, `list_tools()` succeeds again.
@@ -428,7 +428,7 @@ Expected signals: Step 2: Code Mode startup fails with JSON parse error referenc
 #### Description
 Verify setting `"disabled": true` for a manual in `.utcp_config.json` removes its tools from `list_tools()` output.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, set `disabled: true` for the GitHub manual, restart Code Mode, list tools, then revert through Code Mode against the modified-then-restored config. Verify GitHub tools are absent during the disabled run and present after revert. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: `list_tools()` returns no entries beginning with `github.`; Step 4: after revert, GitHub tools reappear.
@@ -441,7 +441,7 @@ Expected signals: Step 2: `list_tools()` returns no entries beginning with `gith
 #### Description
 Verify `call_tool_chain({code, timeout: 5000})` aborts a chain that exceeds 5000ms with a timeout error.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run a deliberately slow chain (sleep 7 seconds) with `timeout: 5000` through Code Mode against the local Code Mode runtime. Verify the chain returns a timeout error in approximately 5 seconds. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: response includes timeout/abort error; Step 2: wall-clock time approximately 5 seconds (within ±1s).
@@ -454,7 +454,7 @@ Expected signals: Step 1: response includes timeout/abort error; Step 2: wall-cl
 #### Description
 Verify `deregister_manual({name})` removes a manual from runtime, and `register_manual({...})` restores it.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, deregister the GitHub manual, list tools (verify absent), then re-register it from the saved `.utcp_config.json` entry through Code Mode against the live runtime. Verify the manual is absent during the deregister window and present after re-register. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: deregister returns success; Step 2: `list_tools()` shows no `github.` entries; Step 3: re-register returns success; Step 4: GitHub tools reappear.
@@ -467,7 +467,7 @@ Expected signals: Step 1: deregister returns success; Step 2: `list_tools()` sho
 #### Description
 Verify a chain that creates a ClickUp task then fails on a follow-up call leaves the task created (no automatic rollback) — and the operator can manually delete using the returned id.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, run a chain that creates a ClickUp task then deliberately fails on the next call, then verify the task exists, then delete it through Code Mode against the live ClickUp API. Verify the create succeeded, the follow-up failed, and manual cleanup works. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns object with `created_task_id` and `error`; Step 2: `clickup_get_task({id})` returns the task; Step 3: `clickup_delete_task({id})` succeeds.
@@ -480,7 +480,7 @@ Expected signals: Step 1: chain returns object with `created_task_id` and `error
 #### Description
 Verify calling a tool whose manual is not in `.utcp_config.json` returns a "manual not found" error referencing the missing manual name.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, call `nonexistent.nonexistent_anything()` through Code Mode against the current registry. Verify the error names the missing manual. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: call returns error; Step 2: error message contains "manual" or "not found" or "registry"; Step 3: error references `nonexistent`.

@@ -12,7 +12,7 @@ This scenario validates Channel min-representation (R2) for `035`. It focuses on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `035` and confirm the expected signals without contradicting evidence.
 

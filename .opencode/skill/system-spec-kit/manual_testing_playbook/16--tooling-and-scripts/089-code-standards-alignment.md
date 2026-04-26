@@ -11,7 +11,7 @@ This scenario validates Code standards alignment for `089`. It focuses on Confir
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `089` and confirm the expected signals without contradicting evidence.
 

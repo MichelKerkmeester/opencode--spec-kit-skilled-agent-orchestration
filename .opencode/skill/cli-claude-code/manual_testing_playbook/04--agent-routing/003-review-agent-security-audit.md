@@ -19,7 +19,7 @@ The `review` agent is the canonical second-opinion auditor for cross-AI delegati
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-013` and confirm the expected signals without contradictory evidence.
 

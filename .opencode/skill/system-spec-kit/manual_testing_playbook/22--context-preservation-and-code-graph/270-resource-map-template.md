@@ -12,7 +12,7 @@ This scenario validates the resource-map template rollout.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that `templates/resource-map.md` exists on disk, that every intended discovery surface references it, and that the spec-document classifier recognizes `resource-map.md` as a canonical packet document.
 - **Prerequisites**:

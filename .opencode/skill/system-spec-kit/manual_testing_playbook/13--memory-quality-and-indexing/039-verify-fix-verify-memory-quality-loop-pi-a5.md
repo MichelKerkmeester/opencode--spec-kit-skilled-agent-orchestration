@@ -12,7 +12,7 @@ This scenario validates Verify-fix-verify memory quality loop (PI-A5) for `039`.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `039` and confirm the expected signals without contradicting evidence.
 

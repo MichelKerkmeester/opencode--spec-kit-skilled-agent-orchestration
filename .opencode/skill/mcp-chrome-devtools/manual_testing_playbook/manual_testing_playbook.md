@@ -115,7 +115,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify `bdg` is installed and `bdg --version` returns a non-empty version string.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, confirm bdg is installed and reports its version through the bdg CLI against the local install. Verify command -v bdg returns a path and bdg --version returns a non-empty string. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `command -v bdg` returns a non-empty path; Step 2: `bdg --version 2>&1` returns a version string (semver-like).
@@ -128,7 +128,7 @@ Expected signals: Step 1: `command -v bdg` returns a non-empty path; Step 2: `bd
 #### Description
 Verify `bdg <url>` starts a CDP session against the given URL.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, start a bdg session against https://example.com through the bdg CLI against a real Chrome/Chromium browser. Verify session reports active state. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg https://example.com` exits 0; Step 2: `bdg status` reports active session.
@@ -141,7 +141,7 @@ Expected signals: Step 1: `bdg https://example.com` exits 0; Step 2: `bdg status
 #### Description
 Verify `bdg status` returns valid JSON with expected fields (`state`, `url`).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, query bdg session status as JSON through the bdg CLI against an active session. Verify output is valid JSON with state and url fields. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg status 2>&1 | jq '.'` succeeds; Step 2: parsed object contains `state` and `url` fields.
@@ -154,7 +154,7 @@ Expected signals: Step 1: `bdg status 2>&1 | jq '.'` succeeds; Step 2: parsed ob
 #### Description
 Verify `bdg stop` cleanly terminates an active session.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, stop the active bdg session through the bdg CLI against an active session. Verify subsequent bdg status reports no active session. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg stop` exits 0; Step 2: `bdg status` shows no active session; Step 3: no leaked Chrome processes (`pgrep -fl chrome` returns empty or only unrelated processes).
@@ -173,7 +173,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify `bdg cdp --list` returns a non-empty list of CDP domains (Page, Network, Runtime, etc.).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, enumerate available Chrome DevTools Protocol domains through the bdg CLI against the live CDP catalog. Verify output contains common domains like Page, Network, Runtime. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg cdp --list` returns non-empty output; Step 2: output contains `Page`, `Network`, `Runtime`.
@@ -186,7 +186,7 @@ Expected signals: Step 1: `bdg cdp --list` returns non-empty output; Step 2: out
 #### Description
 Verify `bdg cdp --describe Page` returns method signatures for Page domain.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, describe the Page CDP domain through the bdg CLI against the live CDP catalog. Verify output lists at least navigate and reload methods. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg cdp --describe Page` returns non-empty output; Step 2: output mentions `navigate` and `reload` (or similar core methods).
@@ -199,7 +199,7 @@ Expected signals: Step 1: `bdg cdp --describe Page` returns non-empty output; St
 #### Description
 Verify `bdg cdp --search screenshot` returns Page.captureScreenshot or equivalent.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, search CDP methods for screenshot through the bdg CLI against the live CDP catalog. Verify output mentions Page.captureScreenshot. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg cdp --search screenshot` returns matches; Step 2: output mentions `captureScreenshot` (likely under `Page`).
@@ -218,7 +218,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify `bdg dom query "h1"` returns matching elements with text content.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, query the page for h1 elements through the bdg CLI against an active session on https://example.com. Verify output contains the h1 text. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg dom query "h1"` returns non-empty output; Step 2: output contains "Example Domain" (the h1 text on example.com).
@@ -231,7 +231,7 @@ Expected signals: Step 1: `bdg dom query "h1"` returns non-empty output; Step 2:
 #### Description
 Verify `bdg dom eval "document.title"` returns the page title.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, evaluate JavaScript on the active page through the bdg CLI against an active session on https://example.com. Verify the returned title matches Example Domain. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg dom eval "document.title"` returns a string; Step 2: string contains "Example".
@@ -244,7 +244,7 @@ Expected signals: Step 1: `bdg dom eval "document.title"` returns a string; Step
 #### Description
 Verify `bdg dom screenshot /tmp/bdg-test.png` writes a valid PNG file.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, capture a screenshot of the active page through the bdg CLI against an active session on https://example.com. Verify the file is created and starts with PNG magic bytes. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg dom screenshot /tmp/bdg-test.png` exits 0; Step 2: file `/tmp/bdg-test.png` exists; Step 3: `xxd /tmp/bdg-test.png | head -1` shows PNG magic `89 50 4e 47`.
@@ -263,7 +263,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 #### Description
 Verify `bdg console --list` returns console messages from the active page.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, retrieve console messages from the active page through the bdg CLI against an active session that has logged some console output. Verify output is JSON with messages array. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg dom eval "console.log('BDG-011 test')"` exits 0; Step 2: `bdg console --list 2>&1 | jq '.'` includes a message containing `BDG-011 test`.
@@ -276,7 +276,7 @@ Expected signals: Step 1: `bdg dom eval "console.log('BDG-011 test')"` exits 0; 
 #### Description
 Verify `bdg network getCookies` returns cookie array from the active page.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, retrieve cookies from the active page through the bdg CLI against an active session. Verify output is JSON array (may be empty for example.com). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg network getCookies 2>&1 | jq '.'` succeeds; Step 2: result is an array (length >= 0; empty is valid for example.com).
@@ -289,7 +289,7 @@ Expected signals: Step 1: `bdg network getCookies 2>&1 | jq '.'` succeeds; Step 
 #### Description
 Verify `bdg network har /tmp/bdg.har` writes a valid HAR file.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, export the page network activity as HAR through the bdg CLI against an active session. Verify the file is created and is valid HAR JSON. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg network har /tmp/bdg.har` exits 0; Step 2: file `/tmp/bdg.har` exists; Step 3: `cat /tmp/bdg.har | jq '.log.version'` returns a version string.
@@ -308,7 +308,7 @@ This category covers 5 scenario summaries while the linked feature files remain 
 #### Description
 Verify `chrome_devtools_1.chrome_devtools_1_navigate_page({url})` succeeds via Code Mode.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com through Code Mode against the configured chrome_devtools_1 MCP server. Verify the call succeeds and screenshot returns valid bytes. Cross-reference: this scenario depends on CM-005 (correct manual.tool form) and CM-015 (Chrome navigate + screenshot). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: navigate call succeeds; Step 2: subsequent screenshot returns base64 of length > 1000.
@@ -321,7 +321,7 @@ Expected signals: Step 1: navigate call succeeds; Step 2: subsequent screenshot 
 #### Description
 Verify `chrome_devtools_1` and `chrome_devtools_2` can run navigate + screenshot simultaneously via `Promise.all`.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com and chrome_devtools_2 to https://example.org in parallel via Promise.all through Code Mode against both MCP instances. Verify both return successfully and total wall time < 2x single-instance time. Cross-reference: depends on CM-012 (Promise.all parallel). Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: chain returns array of length 2; Step 2: both screenshots are valid PNG; Step 3: parallel timing visible (< 2x sequential).
@@ -334,7 +334,7 @@ Expected signals: Step 1: chain returns array of length 2; Step 2: both screensh
 #### Description
 Verify `close_page` and `select_page` work for managing multiple pages in a single instance.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, open 2 pages in chrome_devtools_1, close the first, and confirm the second is still accessible through Code Mode against the chrome_devtools_1 MCP instance. Verify select_page can switch back to the surviving page. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: 2 pages opened; Step 2: close_page returns success for first; Step 3: select_page returns success for second; Step 4: subsequent take_screenshot returns valid bytes for the second page.
@@ -347,7 +347,7 @@ Expected signals: Step 1: 2 pages opened; Step 2: close_page returns success for
 #### Description
 Verify `new_page` opens additional pages within `chrome_devtools_1` (multi-tab in single instance).
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, open a new page in chrome_devtools_1 (additional to the initial page) through Code Mode against the chrome_devtools_1 MCP instance. Verify both pages are accessible via select_page. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: new_page returns success with new page id; Step 2: list_pages or equivalent shows >= 2 pages; Step 3: select_page works for both.
@@ -360,7 +360,7 @@ Expected signals: Step 1: new_page returns success with new page id; Step 2: lis
 #### Description
 Verify `chrome_devtools_1` and `chrome_devtools_2` have isolated cookie / storage state.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, set a cookie in chrome_devtools_1 then check it does NOT appear in chrome_devtools_2 through Code Mode against both MCP instances. Verify cookie isolation. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: cookie set in instance 1 succeeds; Step 2: getCookies on instance 1 returns the cookie; Step 3: getCookies on instance 2 returns empty (or doesn't include the cookie).
@@ -379,7 +379,7 @@ This category covers 4 scenario summaries while the linked feature files remain 
 #### Description
 Verify `bdg <url>` reports a clear error when no Chrome / Chromium / Edge is installed.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, simulate a missing-browser scenario by setting CHROME_PATH to a non-existent binary and starting bdg through the bdg CLI against the missing-browser path. Verify the error names the missing binary. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `CHROME_PATH=/nonexistent/chrome bdg https://example.com 2>&1` exits non-zero; Step 2: stderr names the missing binary or "browser not found".
@@ -392,7 +392,7 @@ Expected signals: Step 1: `CHROME_PATH=/nonexistent/chrome bdg https://example.c
 #### Description
 Verify `bdg <bad-url>` reports a clear error.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, attempt to start bdg with an invalid URL (e.g., not-a-url) through the bdg CLI against an installed Chrome. Verify the error names the URL parse failure. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: `bdg not-a-url 2>&1` exits non-zero; Step 2: stderr indicates URL parse / invalid input.
@@ -405,7 +405,7 @@ Expected signals: Step 1: `bdg not-a-url 2>&1` exits non-zero; Step 2: stderr in
 #### Description
 Verify recovery from a dead session: kill the browser process, attempt a CDP command, observe failure, restart with new session.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, deliberately kill the active Chrome process, attempt a bdg dom screenshot, then restart with a new session through the bdg CLI against an active-then-killed-then-restarted session. Verify the kill produces a clear error and restart recovers. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 2: post-kill `bdg dom screenshot /tmp/x.png 2>&1` exits non-zero with session-error message; Step 4: new `bdg https://example.com` succeeds; Step 5: subsequent screenshot succeeds.
@@ -418,7 +418,7 @@ Expected signals: Step 2: post-kill `bdg dom screenshot /tmp/x.png 2>&1` exits n
 #### Description
 Verify that omitting `bdg stop` after a session leaks a Chrome process; calling `bdg stop` cleans it up.
 
-#### Current Reality
+#### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, start a session, omit bdg stop, count Chrome processes, then run bdg stop and recount through the bdg CLI against an active session. Verify process count decreases after bdg stop. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Step 1: pre-session Chrome count baseline; Step 2: post-session Chrome count > baseline; Step 4: post-stop count <= baseline.

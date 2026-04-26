@@ -12,7 +12,7 @@ This scenario validates MPAB chunk-to-memory aggregation (R1) for `050`. It focu
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `050` and confirm the expected signals without contradicting evidence.
 

@@ -19,7 +19,7 @@ The cli-claude-code skill defaults to Sonnet for general-purpose tasks. ALWAYS r
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-002` and confirm the expected signals without contradictory evidence.
 

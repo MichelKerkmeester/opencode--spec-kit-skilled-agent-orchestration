@@ -12,7 +12,7 @@ This scenario validates RRF K experimental tuning (SPECKIT_RRF_K_EXPERIMENTAL) f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `172` and confirm the expected signals without contradicting evidence.
 

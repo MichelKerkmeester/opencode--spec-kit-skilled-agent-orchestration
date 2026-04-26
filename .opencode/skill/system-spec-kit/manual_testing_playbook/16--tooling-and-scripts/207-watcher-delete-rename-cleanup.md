@@ -11,7 +11,7 @@ This scenario validates watcher delete/rename cleanup for `207`. It focuses on c
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the watcher runtime coverage and confirm deleted files are purged from the index, renames clean up old paths and create fresh entries, and debounce handling prevents stale rename bursts from leaving orphaned results.
 

@@ -12,7 +12,7 @@ This scenario validates 4. Memory and Storage for `EX-031`. It focuses on Storag
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-031` and confirm the expected signals without contradicting evidence.
 

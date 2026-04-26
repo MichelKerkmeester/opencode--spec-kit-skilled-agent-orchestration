@@ -12,7 +12,7 @@ This scenario validates Transaction atomicity on rename failure (P0-5) for `115`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `115` and confirm the expected signals without contradicting evidence.
 

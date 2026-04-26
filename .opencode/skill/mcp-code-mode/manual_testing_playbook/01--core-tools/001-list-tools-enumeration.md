@@ -19,7 +19,7 @@ This scenario validates `list_tools()` enumeration for `CM-001`. It focuses on c
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-001` and confirm the expected signals without contradictory evidence.
 

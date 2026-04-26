@@ -12,7 +12,7 @@ This scenario validates SQLite datetime session cleanup (P0-7) for `117`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `117` and confirm the expected signals without contradicting evidence.
 

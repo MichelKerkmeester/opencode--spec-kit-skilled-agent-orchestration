@@ -12,7 +12,7 @@ This scenario validates Adaptive shadow proposal and rollback (Phase 4) for `121
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `121` and confirm the expected signals without contradicting evidence.
 

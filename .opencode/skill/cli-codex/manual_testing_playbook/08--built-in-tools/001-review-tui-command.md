@@ -19,7 +19,7 @@ This scenario validates the `/review` interactive TUI command for `CX-023`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-023` and confirm the expected signals without contradictory evidence.
 

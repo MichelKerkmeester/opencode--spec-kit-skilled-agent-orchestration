@@ -12,7 +12,7 @@ This scenario validates Code graph auto-trigger (ensureCodeGraphReady).
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify that the live auto-trigger contract covers both the helper decision surface and the caller-visible blocked read path. `ensureCodeGraphReady()` must still distinguish fresh/stale/empty graphs and choose `none`, `selective_reindex`, or `full_scan` appropriately, while `code_graph_query` and `code_graph_context` must return an explicit `status: "blocked"` contract when readiness requires a full scan that read paths will not run inline.
 - **Prerequisites**:

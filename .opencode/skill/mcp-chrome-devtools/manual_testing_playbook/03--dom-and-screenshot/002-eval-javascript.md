@@ -19,7 +19,7 @@ This scenario validates JavaScript evaluation in the active page for `BDG-009`. 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `BDG-009` and confirm the expected signals without contradictory evidence.
 

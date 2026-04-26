@@ -19,7 +19,7 @@ SKILL.md §3 and `references/cli_reference.md` §5 both lock the skill to a sing
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-002` and confirm the expected signals without contradictory evidence.
 

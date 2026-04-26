@@ -12,7 +12,7 @@ This scenario validates Negative feedback confidence signal (A4) for `031`. It f
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `031` and confirm the expected signals without contradicting evidence.
 

@@ -19,7 +19,7 @@ The generate-review-fix cycle is described in `references/integration_patterns.m
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CC-017` and confirm the expected signals without contradictory evidence.
 

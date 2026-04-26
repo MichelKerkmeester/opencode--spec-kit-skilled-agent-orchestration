@@ -10,10 +10,12 @@
     "four",
     "skills"
   ],
-  "lastUpdated": "2026-04-26T09:17:06.288Z",
+  "lastUpdated": "2026-04-26T13:17:08.809Z",
   "specId": "049",
   "folderSlug": "mcp-testing-playbooks",
   "parentChain": [],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "26-04-26_14-17__spec-049-complete-authored-3-new-mcp-testing.md"
+  ]
 }

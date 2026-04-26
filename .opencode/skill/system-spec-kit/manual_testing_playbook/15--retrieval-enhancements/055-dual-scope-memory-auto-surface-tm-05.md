@@ -12,7 +12,7 @@ This scenario validates Dual-scope memory auto-surface (TM-05) for `055`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `055` and confirm the expected signals without contradicting evidence.
 

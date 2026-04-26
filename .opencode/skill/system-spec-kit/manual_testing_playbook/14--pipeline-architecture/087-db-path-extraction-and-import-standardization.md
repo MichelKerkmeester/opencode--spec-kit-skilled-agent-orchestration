@@ -12,7 +12,7 @@ This scenario validates DB_PATH extraction and import standardization for `087`.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `087` and confirm the expected signals without contradicting evidence.
 

@@ -11,7 +11,7 @@ This scenario validates Recursive phase validation for `PHASE-003`. It focuses o
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `PHASE-003` and confirm the expected signals without contradicting evidence.
 

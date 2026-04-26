@@ -19,7 +19,7 @@ Read-only is the safety baseline for analysis, review and exploration tasks (SKI
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-005` and confirm the expected signals without contradictory evidence.
 

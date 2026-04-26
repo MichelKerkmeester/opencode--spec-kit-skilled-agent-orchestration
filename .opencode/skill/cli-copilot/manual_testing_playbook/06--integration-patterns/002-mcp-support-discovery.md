@@ -19,7 +19,7 @@ MCP support is one of the documented unique capabilities in `references/copilot_
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CP-016` and confirm the expected signals without contradictory evidence.
 

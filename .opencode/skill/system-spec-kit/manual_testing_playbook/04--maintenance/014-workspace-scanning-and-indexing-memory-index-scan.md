@@ -11,7 +11,7 @@ This scenario validates Workspace scanning and indexing (memory_index_scan) for 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-014` and confirm the expected signals without contradicting evidence.
 

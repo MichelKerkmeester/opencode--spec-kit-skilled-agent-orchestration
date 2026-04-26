@@ -11,7 +11,7 @@ This scenario validates the Phase 017 governance hardening for `273`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - Objective: Verify `session_resume` rejects mismatched caller/session IDs by default, permissive mode logs and continues, and the Unicode sanitizers normalize the documented confusable inputs
 - Prompt: `As a governance validation operator, validate Session-resume caller binding and Unicode sanitization against caller-context plus the shared sanitizers. Verify session_resume rejects mismatched args.sessionId values in strict mode, permissive mode logs and continues for canary rollout, gate-3 normalizePrompt() applies NFKC plus zero-width stripping, and sanitizeRecoveredPayload() applies the same normalization to recovered payloads. Return a concise pass/fail verdict with the main reason and cited evidence.`

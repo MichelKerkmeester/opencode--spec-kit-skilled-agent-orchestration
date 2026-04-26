@@ -12,7 +12,7 @@ This scenario validates Folder-level relevance scoring (PI-A1) for `027`. It foc
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `027` and confirm the expected signals without contradicting evidence.
 

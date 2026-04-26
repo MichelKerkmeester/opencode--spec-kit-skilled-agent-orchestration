@@ -8,16 +8,17 @@
     "testing",
     "playbooks"
   ],
-  "lastUpdated": "2026-04-26T09:43:35.558Z",
+  "lastUpdated": "2026-04-26T13:15:57.502Z",
   "specId": "048",
   "folderSlug": "cli-testing-playbooks",
   "parentChain": [
     "skilled-agent-orchestration"
   ],
-  "memorySequence": 3,
+  "memorySequence": 4,
   "memoryNameHistory": [
     "26-04-26_09-19__initialized-level-3-spec-for-cli-testing.md",
     "26-04-26_10-20__complete-5-cli-manual-testing-playbooks-built-and.md",
-    "26-04-26_10-43__final-5-cli-playbooks-built-hvr-aligned-with-sk.md"
+    "26-04-26_10-43__final-5-cli-playbooks-built-hvr-aligned-with-sk.md",
+    "26-04-26_14-15__final-rename-5-cli-playbooks-shipped-sk-doc.md"
   ]
 }

@@ -19,7 +19,7 @@ This scenario validates `--search` in non-interactive `codex exec` mode for `CX-
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CX-024` and confirm the expected signals without contradictory evidence.
 

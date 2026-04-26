@@ -19,7 +19,7 @@ Operators need a scannable citation ledger after a long research loop. If the wo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators should run this as a real orchestrator-led check rather than a synthetic prose review. The scenario is only complete when the operator can explain both the default emission path and the opt-out behavior back to a user in plain language.
 

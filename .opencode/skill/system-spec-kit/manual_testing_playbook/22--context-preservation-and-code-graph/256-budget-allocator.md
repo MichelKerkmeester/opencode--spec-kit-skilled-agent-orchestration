@@ -12,7 +12,7 @@ This scenario validates Budget allocator.
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 - **Objective**: Verify the token budget allocator distributes the 4000-token compaction budget across 4 context sources using floor allocations (constitutional: 700, codeGraph: 1200, cocoIndex: 900, triggered: 400, overflow pool: 800) plus overflow redistribution. Empty sources release their floor to the overflow pool. Overflow is redistributed by priority order: constitutional > codeGraph > cocoIndex > triggered. Total cap is enforced with deterministic trim in reverse priority order.
 - **Prerequisites**:

@@ -12,7 +12,7 @@ This scenario validates graph concept routing (SPECKIT_GRAPH_CONCEPT_ROUTING) fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `174` and confirm the expected signals without contradicting evidence.
 

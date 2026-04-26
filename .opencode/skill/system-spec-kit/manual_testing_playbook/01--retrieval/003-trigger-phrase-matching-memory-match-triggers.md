@@ -12,7 +12,7 @@ This scenario validates Trigger phrase matching (memory_match_triggers) for `EX-
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-003` and confirm the expected signals without contradicting evidence.
 

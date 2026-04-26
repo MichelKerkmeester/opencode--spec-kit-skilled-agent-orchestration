@@ -19,7 +19,7 @@ Figma is a primary integration target for design-to-task / design-to-code workfl
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CM-017` and confirm the expected signals without contradictory evidence.
 

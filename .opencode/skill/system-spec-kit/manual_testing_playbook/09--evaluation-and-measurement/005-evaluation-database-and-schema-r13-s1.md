@@ -11,7 +11,7 @@ This scenario validates Evaluation database and schema (R13-S1) for `005`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `005` and confirm the expected signals without contradicting evidence.
 

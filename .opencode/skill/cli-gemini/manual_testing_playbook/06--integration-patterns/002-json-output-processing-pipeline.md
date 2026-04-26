@@ -19,7 +19,7 @@ Several cli-gemini integration patterns (validation pipelines, background-task a
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CG-015` and confirm the expected signals without contradictory evidence.
 

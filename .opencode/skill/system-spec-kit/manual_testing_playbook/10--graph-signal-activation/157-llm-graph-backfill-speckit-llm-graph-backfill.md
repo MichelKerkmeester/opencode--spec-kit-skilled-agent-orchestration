@@ -12,7 +12,7 @@ This scenario validates LLM graph backfill (SPECKIT_LLM_GRAPH_BACKFILL) for `157
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `157` and confirm the expected signals without contradicting evidence.
 

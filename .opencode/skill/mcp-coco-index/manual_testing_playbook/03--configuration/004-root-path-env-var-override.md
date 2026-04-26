@@ -19,7 +19,7 @@ Operators running `ccc` from monorepo subtrees, worktrees, or CI runners rely on
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CFG-004` and confirm the expected signals without contradictory evidence.
 

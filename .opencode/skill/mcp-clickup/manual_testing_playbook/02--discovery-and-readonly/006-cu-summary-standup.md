@@ -19,7 +19,7 @@ This scenario validates `cu summary` for `CU-010`. It focuses on the CLI-only st
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-010` and confirm the expected signals without contradictory evidence.
 

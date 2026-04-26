@@ -19,7 +19,7 @@ This scenario validates the `cu delete <id> --confirm` guard for `CU-026`. It fo
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-026` and confirm the expected signals without contradictory evidence.
 

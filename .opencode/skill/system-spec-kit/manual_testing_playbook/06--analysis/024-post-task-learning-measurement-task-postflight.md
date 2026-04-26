@@ -12,7 +12,7 @@ This scenario validates Post-task learning measurement (task_postflight) for `EX
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-024` and confirm the expected signals without contradicting evidence.
 

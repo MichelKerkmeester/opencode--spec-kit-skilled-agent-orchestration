@@ -19,7 +19,7 @@ Long-running workflows (e.g., bulk migrations, time-tracking sync) routinely bru
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CU-025` and confirm the expected signals without contradictory evidence.
 

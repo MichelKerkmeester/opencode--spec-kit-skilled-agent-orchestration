@@ -11,7 +11,7 @@ This scenario validates spec-folder detection and description metadata for `242`
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators validate the folder-selection and metadata surface through the functional detector tests, alignment tests, subfolder resolution coverage, and one explicit description-generation refresh against a live spec path.
 

@@ -11,7 +11,7 @@ This scenario validates Advisory ingest lifecycle forecast for `144`. It focuses
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `144` and confirm the expected signals without contradicting evidence.
 

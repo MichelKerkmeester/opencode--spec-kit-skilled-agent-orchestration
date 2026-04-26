@@ -12,7 +12,7 @@ This scenario validates 3. MCP Configuration for `EX-030`. It focuses on MCP lim
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `EX-030` and confirm the expected signals without contradicting evidence.
 
