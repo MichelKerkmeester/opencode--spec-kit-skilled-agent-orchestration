@@ -42,7 +42,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 |--------|-------|
 | **Language/Stack** | Bash (dispatch scripts), Markdown (spec/scoring), JSON (meta + findings) |
 | **Framework** | system-spec-kit testing-playbook pattern (per `create:testing-playbook` command) |
-| **Storage** | Filesystem under `runs/<scenario>/<cli>-<n>/`; aggregate `findings.md` |
+| **Storage** | Filesystem under runs subfolders; aggregate findings markdown |
 | **Testing** | The packet IS the test — scoring rubric verifies outputs |
 | **CLIs Under Test** | cli-codex, cli-copilot, cli-opencode |
 
@@ -119,7 +119,7 @@ A two-sub-phase architecture: 001 designs the playbook (scenarios, rubric, dispa
 ### Critical Constraints
 
 - cli-copilot concurrency: hard cap 3 (per repo Phase 018 convention)
-- cli-codex: must pass `-c service_tier="fast"` per memory `feedback_codex_cli_fast_mode.md`
+- cli-codex: must pass `-c service_tier="fast"` per memory feedback_codex_cli_fast_mode memory entry
 - cli-opencode: pin `--dir <repo-root>` and `--format json` per skill default
 <!-- /ANCHOR:architecture -->
 
@@ -178,6 +178,6 @@ A two-sub-phase architecture: 001 designs the playbook (scenarios, rubric, dispa
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Findings reveal scenario corpus is malformed (e.g., expected outcomes wrong) OR dispatch matrix has fatal error.
-- **Procedure**: Revise 001-scenario-design/spec.md with corrections, increment corpus version (v1.0.0 → v1.0.1), re-run affected cells in 002. Prior runs stay in `runs/` as historical record.
+- **Procedure**: Revise 001-scenario-design/spec.md with corrections, increment corpus version (v1.0.0 → v1.0.1), re-run affected cells in 002. Prior runs stay in runs subfolder as historical record.
 - **Documentation-only packets are non-destructive**: this root packet has no runtime side-effects until 002 dispatches actually execute.
 <!-- /ANCHOR:rollback -->

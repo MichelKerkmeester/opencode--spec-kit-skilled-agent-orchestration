@@ -16,8 +16,8 @@ _memory:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test"
     last_updated_at: "2026-04-26T14:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Created root packet for search-intelligence stress-test playbook with two sub-phases (design + execution)"
-    next_safe_action: "Author 001-scenario-design sub-phase"
+    recent_action: "Created root packet"
+    next_safe_action: "Author 001"
     blockers: []
     key_files:
       - "spec.md"
@@ -50,9 +50,20 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 | **Created** | 2026-04-26 |
 | **Branch** | `main` |
 | **Parent Spec** | ../spec.md |
-| **Sibling Phases** | `005-memory-search-runtime-bugs` (findings packet for related defects) |
-| **Sub-Phases** | `001-scenario-design`, `002-scenario-execution` |
+| **Sibling Phases** | 005-memory-search-runtime-bugs (findings packet for related defects) |
+| **Sub-Phases** | 001-scenario-design, 002-scenario-execution |
 <!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+| Phase | Folder | Status | Description |
+|-------|--------|--------|-------------|
+| 1 | 001-scenario-design/ | Design Complete | 9-scenario corpus + 5-dim rubric + dispatch matrix + scripts |
+| 2 | 002-scenario-execution/ | Scaffold Complete; Execution Deferred | Run harness + scoring workflow + findings aggregation contract |
+<!-- /ANCHOR:phase-map -->
 
 ---
 
@@ -118,8 +129,8 @@ Build a playbook that dispatches a fixed prompt corpus (9 scenarios × 3 prompt 
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-005 | Per-run output schema | Each run produces `runs/<scenario_id>/<cli>-<run_n>/` containing `prompt.md`, `output.txt`, `meta.json` (latency_ms, tokens_in, tokens_out, model, exit_code, started_at), `score.md` (rubric with evidence) |
-| REQ-006 | Aggregate findings format | `findings.md` with: per-scenario CLI comparison table, top 3 wins per CLI, top 3 failures per CLI, cross-cutting recommendations |
+| REQ-005 | Per-run output schema | Each run produces runs subfolders containing prompt markdown, `output.txt`, `meta.json` (latency_ms, tokens_in, tokens_out, model, exit_code, started_at), score markdown (rubric with evidence) |
+| REQ-006 | Aggregate findings format | findings markdown with: per-scenario CLI comparison table, top 3 wins per CLI, top 3 failures per CLI, cross-cutting recommendations |
 | REQ-007 | Reproducibility | Dispatch scripts capture the exact CLI invocation (model, effort, flags, dir) so a third party can re-run any cell |
 | REQ-008 | Ablation cell for cli-opencode | At least one ablation cell runs cli-opencode WITHOUT spec-kit MCP tools to isolate "model quality" from "MCP advantage" |
 
@@ -138,7 +149,7 @@ Build a playbook that dispatches a fixed prompt corpus (9 scenarios × 3 prompt 
 
 **Given** the playbook is invoked, **when** sub-phase 001 closes, **then** every REQ-001..004 artifact is present and validates strict.
 
-**Given** sub-phase 002 runs, **when** all 27 base cells complete (9 scenarios × 3 CLIs), **then** 27 `runs/.../score.md` files exist + 1 `findings.md` aggregate.
+**Given** sub-phase 002 runs, **when** all 27 base cells complete (9 scenarios × 3 CLIs), **then** 27 run score markdown files exist + 1 findings markdown aggregate.
 
 **Given** a third-party developer wants to re-run scenario S2 against cli-codex, **when** they read 002/runs/S2/cli-codex-1/meta.json, **then** they have the exact invocation to reproduce.
 

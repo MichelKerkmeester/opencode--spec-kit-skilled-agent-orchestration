@@ -136,7 +136,7 @@ Ship the design artifacts (scenarios, rubric, matrix, scripts) that sub-phase 00
 - **Prompt**: `Find the spec for the /memory:save planner-first contract.`
 - **Expected outcome**: Hits packet `system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite` within top 3 results
 - **Target tools**: `memory_search`, `memory_match_triggers` (trigger phrase "planner-first" should hit)
-- **Success indicators**: Returns the canonical spec folder path; cites `004-memory-save-rewrite/spec.md`
+- **Success indicators**: Returns the canonical spec folder path; cites 004-memory-save-rewrite spec
 - **Cross-ref**: None
 
 ### Search × Vague → S2
@@ -244,7 +244,7 @@ Free-text observation: surprising wins, unexpected failures, regressions, novel 
 |-------|-------|
 | Model | `gpt-5.5` |
 | Reasoning effort | `medium` |
-| Service tier | `fast` (REQUIRED per memory `feedback_codex_cli_fast_mode.md`) |
+| Service tier | `fast` (REQUIRED per memory feedback_codex_cli_fast_mode memory entry) |
 | Sandbox | `read-only` for Search/Query/Intelligence (no writes needed) |
 | Approval policy | `never` |
 
@@ -344,7 +344,7 @@ For S1, S2, S3 also dispatch with `--agent context` (read-only retrieval focus, 
 
 | Dimension | Score | Evidence |
 |-----------|-------|----------|
-| Correctness | 2 | Output cited `004-memory-save-rewrite/spec.md`; matches expected |
+| Correctness | 2 | Output cited 004-memory-save-rewrite spec; matches expected |
 | Tool Selection | 1 | Used grep instead of memory_search (no MCP available) |
 | Latency | 2 | 8.2s |
 | Token Efficiency | 2 | 2050 total |
@@ -370,7 +370,7 @@ For S1, S2, S3 also dispatch with `--agent context` (read-only retrieval focus, 
 
 **Given** the corpus is locked at v1.0.0, **when** an operator opens 001/spec.md, **then** they have a complete dispatch playbook needing zero additional design decisions.
 
-**Given** sub-phase 002 runs, **when** every cell in the matrix executes, **then** there is a 1:1 mapping from this corpus to `runs/.../score.md` files.
+**Given** sub-phase 002 runs, **when** every cell in the matrix executes, **then** there is a 1:1 mapping from this corpus to run score markdown files.
 
 ---
 

@@ -1,0 +1,39 @@
+{
+  "title": "Scenario Design Sub-Phase",
+  "trigger_phrases": [
+    "001-scenario-design",
+    "scenario corpus design",
+    "9 scenario test corpus",
+    "search query intelligence rubric",
+    "cli dispatch matrix",
+    "5 dimension scoring rubric",
+    "playbook scenarios",
+    "stress test corpus v1"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design",
+  "description": "Sub-phase 001 of the Search Intelligence Stress-Test Playbook. Ships the design fixture: 9 scenarios (3 features × 3 prompt types), 5-dim scoring rubric (correctness, tool selection, latency, token efficiency, hallucination), per-CLI dispatch matrix (cli-codex, cli-copilot, cli-opencode), output schema, and scoring methodology. Five scenarios cross-reference known defects from sibling packet 005-memory-search-runtime-bugs.",
+  "keywords": [
+    "feature",
+    "specification",
+    "scenario",
+    "corpus",
+    "rubric",
+    "dispatch-matrix",
+    "search",
+    "query",
+    "intelligence",
+    "playbook",
+    "v1.0.0"
+  ],
+  "lastUpdated": "2026-04-26T14:55:00Z",
+  "specId": "001",
+  "folderSlug": "scenario-design",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime",
+    "006-search-intelligence-stress-test"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

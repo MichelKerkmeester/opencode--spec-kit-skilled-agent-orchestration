@@ -115,6 +115,14 @@ def detect_document_type(file_path: str, content: str, rules: Dict[str, Any]) ->
     """Detect document type from file path or content."""
     path_lower = str(file_path).lower()
 
+    # Per-feature playbook files: under manual_testing_playbook/NN--category/NNN-feature.md
+    # The root playbook file itself stays as the standard playbook type via its path.
+    if '/manual_testing_playbook/' in path_lower or '\\manual_testing_playbook\\' in path_lower:
+        stem = Path(path_lower).stem
+        parent = Path(path_lower).parent.name
+        # Per-feature files: parent dir matches NN--category-name pattern
+        if re.match(r'^\d{2}--', parent):
+            return 'playbook_feature'
     if '/command/' in path_lower or '\\command\\' in path_lower or '/commands/' in path_lower or '\\commands\\' in path_lower:
         return 'command'
     if '/install_guides/' in path_lower or '\\install_guides\\' in path_lower:

@@ -254,7 +254,7 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
 <!-- /ANCHOR:rollback -->
 
 ---
-<!-- ANCHOR:ai-protocol -->
+
 ## 8. AI EXECUTION PROTOCOL
 
 This section defines the four operator-facing AI execution components required for Level 3 packets: Pre-Task Checklist, Execution Rules, Status Reporting Format, and Blocked Task Protocol. The protocol applies to every `@write` dispatch in Phase 2 (Wave 1 and Wave 2) and to every validation pass in Phase 3.
@@ -321,7 +321,6 @@ When a task cannot proceed, the BLOCKED Task Protocol applies:
 5. **Resume**: Once unblocked, mark the task `[ ]` again, log the resolution in `decision-record.md` if architectural, and re-dispatch.
 
 Recovery flow: a BLOCKED Phase 2 dispatch (e.g. `@write` unavailable) falls back to hand-craft to the same template contract — see §6 Dependencies "Impact if Blocked" column for per-dependency recovery.
-<!-- /ANCHOR:ai-protocol -->
 
 ---
 

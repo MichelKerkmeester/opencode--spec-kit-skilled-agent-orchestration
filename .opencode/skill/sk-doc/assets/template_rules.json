@@ -4,9 +4,21 @@
   "documentTypes": {
     "readme": {
       "description": "README.md files for projects, components, and features",
-      "requiredSections": ["overview"],
-      "recommendedSections": ["quick_start", "troubleshooting", "related"],
-      "optionalSections": ["structure", "features", "configuration", "usage_examples", "faq"],
+      "requiredSections": [
+        "overview"
+      ],
+      "recommendedSections": [
+        "quick_start",
+        "troubleshooting",
+        "related"
+      ],
+      "optionalSections": [
+        "structure",
+        "features",
+        "configuration",
+        "usage_examples",
+        "faq"
+      ],
       "sectionEmojis": {
         "overview": "\ud83d\udcd6",
         "quick_start": "\ud83d\ude80",
@@ -49,9 +61,20 @@
     },
     "skill": {
       "description": "SKILL.md files for OpenCode skills",
-      "requiredSections": ["when_to_use", "smart_routing", "how_it_works", "rules"],
-      "recommendedSections": ["success_criteria", "integration_points", "related_resources"],
-      "optionalSections": ["external_resources"],
+      "requiredSections": [
+        "when_to_use",
+        "smart_routing",
+        "how_it_works",
+        "rules"
+      ],
+      "recommendedSections": [
+        "success_criteria",
+        "integration_points",
+        "related_resources"
+      ],
+      "optionalSections": [
+        "external_resources"
+      ],
       "sectionEmojis": {
         "when_to_use": "\ud83c\udfaf",
         "smart_routing": "\ud83e\udded",
@@ -85,9 +108,24 @@
     },
     "command": {
       "description": "Command files in .opencode/command/ folders",
-      "requiredSections": ["purpose", "instructions"],
-      "recommendedSections": ["contract", "examples", "notes"],
-      "optionalSections": ["workflow", "reference", "related_commands", "tool_signatures", "routing", "docs", "input"],
+      "requiredSections": [
+        "purpose",
+        "instructions"
+      ],
+      "recommendedSections": [
+        "contract",
+        "examples",
+        "notes"
+      ],
+      "optionalSections": [
+        "workflow",
+        "reference",
+        "related_commands",
+        "tool_signatures",
+        "routing",
+        "docs",
+        "input"
+      ],
       "sectionEmojis": {
         "purpose": "\ud83c\udfaf",
         "contract": "\ud83d\udcdd",
@@ -148,16 +186,41 @@
       "h2EmojiRequired": false,
       "frontmatterRequired": true,
       "frontmatterFields": {
-        "required": ["description"],
-        "recommended": ["argument-hint", "allowed-tools"],
-        "optional": ["name", "model", "version", "disable-model-invocation"]
+        "required": [
+          "description"
+        ],
+        "recommended": [
+          "argument-hint",
+          "allowed-tools"
+        ],
+        "optional": [
+          "name",
+          "model",
+          "version",
+          "disable-model-invocation"
+        ]
       }
     },
     "install_guide": {
       "description": "Installation guide files for MCP servers, plugins, and tools",
-      "requiredSections": ["overview", "prerequisites", "installation", "verification"],
-      "recommendedSections": ["configuration", "troubleshooting", "related_resources"],
-      "optionalSections": ["quick_start", "upgrade", "uninstallation", "advanced_configuration", "faq"],
+      "requiredSections": [
+        "overview",
+        "prerequisites",
+        "installation",
+        "verification"
+      ],
+      "recommendedSections": [
+        "configuration",
+        "troubleshooting",
+        "related_resources"
+      ],
+      "optionalSections": [
+        "quick_start",
+        "upgrade",
+        "uninstallation",
+        "advanced_configuration",
+        "faq"
+      ],
       "sectionEmojis": {
         "overview": "\ud83d\udcd6",
         "quick_start": "\ud83d\ude80",
@@ -188,9 +251,20 @@
     },
     "reference": {
       "description": "Reference files in skill references/ folders",
-      "requiredSections": ["overview"],
-      "recommendedSections": ["related_resources"],
-      "optionalSections": ["usage", "examples", "troubleshooting", "decision_logic", "workflows", "patterns"],
+      "requiredSections": [
+        "overview"
+      ],
+      "recommendedSections": [
+        "related_resources"
+      ],
+      "optionalSections": [
+        "usage",
+        "examples",
+        "troubleshooting",
+        "decision_logic",
+        "workflows",
+        "patterns"
+      ],
       "sectionEmojis": {
         "overview": "\ud83d\udcd6",
         "usage": "\ud83d\udca1",
@@ -228,9 +302,20 @@
     },
     "asset": {
       "description": "Asset files in skill assets/ folders",
-      "requiredSections": ["overview"],
-      "recommendedSections": ["related_resources"],
-      "optionalSections": ["templates", "examples", "guidelines", "patterns", "configuration", "checklist"],
+      "requiredSections": [
+        "overview"
+      ],
+      "recommendedSections": [
+        "related_resources"
+      ],
+      "optionalSections": [
+        "templates",
+        "examples",
+        "guidelines",
+        "patterns",
+        "configuration",
+        "checklist"
+      ],
       "sectionEmojis": {
         "overview": "\ud83d\udcd6",
         "related_resources": "\ud83d\udd17",
@@ -279,9 +364,19 @@
     },
     "playbook": {
       "description": "Manual testing playbook files for skill validation, including a root directory page and required per-feature snippet tree",
-      "requiredSections": ["overview", "global_preconditions", "global_evidence_requirements", "deterministic_command_notation"],
-      "recommendedSections": ["automated_test_cross_reference", "feature_catalog_cross_reference"],
-      "optionalSections": ["coverage_notes"],
+      "requiredSections": [
+        "overview",
+        "global_preconditions",
+        "global_evidence_requirements",
+        "deterministic_command_notation"
+      ],
+      "recommendedSections": [
+        "automated_test_cross_reference",
+        "feature_catalog_cross_reference"
+      ],
+      "optionalSections": [
+        "coverage_notes"
+      ],
       "sectionEmojis": {
         "overview": "\ud83d\udcd6",
         "global_preconditions": "\ud83d\udccb",
@@ -318,9 +413,28 @@
     },
     "agent": {
       "description": "Agent definition files in .opencode/agent/",
-      "requiredSections": ["core_workflow", "capability_scan", "output_verification", "anti_patterns", "related_resources"],
-      "recommendedSections": ["model_preference", "rules", "output_format", "summary"],
-      "optionalSections": ["routing", "context_handoff", "escalation_protocol", "agent_capability_map", "task_decomposition", "parallel_vs_sequential", "failure_handling"],
+      "requiredSections": [
+        "core_workflow",
+        "capability_scan",
+        "output_verification",
+        "anti_patterns",
+        "related_resources"
+      ],
+      "recommendedSections": [
+        "model_preference",
+        "rules",
+        "output_format",
+        "summary"
+      ],
+      "optionalSections": [
+        "routing",
+        "context_handoff",
+        "escalation_protocol",
+        "agent_capability_map",
+        "task_decomposition",
+        "parallel_vs_sequential",
+        "failure_handling"
+      ],
       "sectionEmojis": {
         "model_preference": "\ud83e\udd16",
         "core_workflow": "\ud83d\udd04",
@@ -373,9 +487,32 @@
       "h2EmojiRequired": false,
       "frontmatterRequired": true,
       "frontmatterFields": {
-        "required": ["name", "description", "mode", "temperature", "permission"],
+        "required": [
+          "name",
+          "description",
+          "mode",
+          "temperature",
+          "permission"
+        ],
         "optional": []
       }
+    },
+    "playbook_feature": {
+      "tocRequired": false,
+      "tocUppercaseRequired": false,
+      "h2EmojiRequired": false,
+      "h2UppercaseRequired": true,
+      "requiredSections": [
+        "overview",
+        "scenario_contract",
+        "test_execution",
+        "source_metadata"
+      ],
+      "sectionAliases": {
+        "references": "source_files",
+        "source_files": "source_files"
+      },
+      "description": "Per-feature playbook scenario file under manual_testing_playbook/NN--category/"
     }
   },
   "validationRules": {

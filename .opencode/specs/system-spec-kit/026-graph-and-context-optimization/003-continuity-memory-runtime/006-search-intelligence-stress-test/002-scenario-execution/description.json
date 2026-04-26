@@ -1,0 +1,37 @@
+{
+  "title": "Scenario Execution Sub-Phase",
+  "trigger_phrases": [
+    "002-scenario-execution",
+    "stress test execution",
+    "playbook run harness",
+    "findings synthesis",
+    "cross-AI scoring",
+    "execution scaffold",
+    "manual scoring workflow"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/002-scenario-execution",
+  "description": "Sub-phase 002 of the Search Intelligence Stress-Test Playbook. Execution scaffold consuming 001's dispatch matrix: pre-flight contract, dispatch loop architecture, per-run output capture schema, manual scoring workflow, and findings aggregation format. Actual runs deferred to a dedicated execution session. 27 base cells (9 scenarios × 3 CLIs) plus ≥3 ablation cells (cli-opencode --agent context).",
+  "keywords": [
+    "feature",
+    "specification",
+    "execution",
+    "scaffold",
+    "dispatch",
+    "scoring",
+    "findings",
+    "synthesis",
+    "cross-AI",
+    "playbook"
+  ],
+  "lastUpdated": "2026-04-26T15:00:00Z",
+  "specId": "002",
+  "folderSlug": "scenario-execution",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime",
+    "006-search-intelligence-stress-test"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
