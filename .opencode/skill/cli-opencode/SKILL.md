@@ -1,6 +1,6 @@
 ---
 name: cli-opencode
-description: "OpenCode CLI orchestrator for external AI runtimes and detached sessions to invoke opencode run with full plugin, skill, and MCP runtime context."
+description: "OpenCode CLI orchestrator covering three use cases: external AI runtimes dispatching opencode run, in-OpenCode parallel detached sessions for ablation and worker farms, and cross-AI orchestration handback with full plugin, skill, and MCP runtime context."
 allowed-tools: [Bash, Read, Glob, Grep]
 version: 1.0.0
 ---

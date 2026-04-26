@@ -19,7 +19,7 @@ Templates are numbered for cross-reference from `references/integration_patterns
 <!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:template-1 -->
-## 2. Template 1 — External Runtime to OpenCode (Use Case 1)
+## 2. TEMPLATE 1 — EXTERNAL RUNTIME TO OPENCODE (USE CASE 1)
 
 **Framework:** RCAF
 **Calling runtime:** Claude Code, Codex, Copilot, Gemini, raw shell
@@ -71,7 +71,7 @@ opencode run \
 <!-- /ANCHOR:template-1 -->
 
 <!-- ANCHOR:template-2 -->
-## 3. Template 2 — In-OpenCode Parallel Detached Session (Use Case 2)
+## 3. TEMPLATE 2 — IN-OPENCODE PARALLEL DETACHED SESSION (USE CASE 2)
 
 **Framework:** CIDI
 **Calling runtime:** OpenCode itself (TUI / web / serve / acp)
@@ -111,7 +111,7 @@ opencode run \
 <!-- /ANCHOR:template-2 -->
 
 <!-- ANCHOR:template-3 -->
-## 4. Template 3 — Cross-AI Orchestration Handback (Use Case 3)
+## 4. TEMPLATE 3 — CROSS-AI ORCHESTRATION HANDBACK (USE CASE 3)
 
 **Framework:** RCAF + TIDD-EC
 **Calling runtime:** Codex, Copilot, Gemini
@@ -154,7 +154,7 @@ opencode run \
 <!-- /ANCHOR:template-3 -->
 
 <!-- ANCHOR:template-4 -->
-## 5. Template 4 — Specialized Agent Dispatch
+## 5. TEMPLATE 4 — SPECIALIZED AGENT DISPATCH
 
 **Framework:** RCAF
 **Use case:** Any (1, 2, or 3)
@@ -176,7 +176,7 @@ Common slugs: `general`, `context`, `orchestrate`, `write`, `review`, `debug`, `
 <!-- /ANCHOR:template-4 -->
 
 <!-- ANCHOR:template-5 -->
-## 6. Template 5 — Code Review
+## 6. TEMPLATE 5 — CODE REVIEW
 
 **Framework:** TIDD-EC
 **Agent:** `review`
@@ -218,7 +218,7 @@ opencode run \
 <!-- /ANCHOR:template-5 -->
 
 <!-- ANCHOR:template-6 -->
-## 7. Template 6 — Iterative Deep Research
+## 7. TEMPLATE 6 — ITERATIVE DEEP RESEARCH
 
 **Framework:** CRISPE
 **Agent:** `deep-research`
@@ -252,7 +252,7 @@ opencode run \
 <!-- /ANCHOR:template-6 -->
 
 <!-- ANCHOR:template-7 -->
-## 8. Template 7 — Ablation Suite
+## 8. TEMPLATE 7 — ABLATION SUITE
 
 **Framework:** CIDI
 **Agent:** `general` or `orchestrate`
@@ -290,7 +290,7 @@ opencode run \
 <!-- /ANCHOR:template-7 -->
 
 <!-- ANCHOR:template-8 -->
-## 9. Template 8 — Worker Farm Dispatch
+## 9. TEMPLATE 8 — WORKER FARM DISPATCH
 
 **Framework:** CIDI
 **Agent:** `general`
@@ -329,7 +329,7 @@ wait
 <!-- /ANCHOR:template-8 -->
 
 <!-- ANCHOR:template-9 -->
-## 10. Template 9 — Spec Kit Memory Search via OpenCode
+## 10. TEMPLATE 9 — SPEC KIT MEMORY SEARCH VIA OPENCODE
 
 **Framework:** RCAF
 **Agent:** `general`
@@ -361,7 +361,7 @@ opencode run \
 <!-- /ANCHOR:template-9 -->
 
 <!-- ANCHOR:template-10 -->
-## 11. Template 10 — Multi-Strategy Planning via @ultra-think
+## 11. TEMPLATE 10 — MULTI-STRATEGY PLANNING VIA @ULTRA-THINK
 
 **Framework:** CRAFT
 **Agent:** `ultra-think`
@@ -390,7 +390,7 @@ opencode run \
 <!-- /ANCHOR:template-10 -->
 
 <!-- ANCHOR:template-11 -->
-## 12. Template 11 — Doc Generation via @write
+## 12. TEMPLATE 11 — DOC GENERATION VIA @WRITE
 
 **Framework:** RCAF
 **Agent:** `write`
@@ -417,7 +417,7 @@ opencode run \
 <!-- /ANCHOR:template-11 -->
 
 <!-- ANCHOR:template-12 -->
-## 13. Template 12 — Self-Invocation Refusal Surface
+## 13. TEMPLATE 12 — SELF-INVOCATION REFUSAL SURFACE
 
 **Use case:** Refusal path
 
@@ -445,7 +445,7 @@ This template is NOT an `opencode run` invocation — it is the user-facing mess
 <!-- /ANCHOR:template-12 -->
 
 <!-- ANCHOR:template-13 -->
-## 14. Template 13 — Memory Epilogue (Reusable Tail)
+## 14. TEMPLATE 13 — MEMORY EPILOGUE (REUSABLE TAIL)
 
 Append this block to any prompt that produces evidence the calling AI wants to save through Spec Kit Memory.
 

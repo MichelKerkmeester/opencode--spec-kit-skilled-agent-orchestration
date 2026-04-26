@@ -3,7 +3,7 @@ title: Prompt Quality Card
 description: Fast-path framework selection and CLEAR checks for OpenCode CLI prompt construction.
 ---
 
-<!-- sync: cli-opencode-v1 -->
+<!-- sync: 9d3a5fd2 -->
 
 # Prompt Quality Card
 

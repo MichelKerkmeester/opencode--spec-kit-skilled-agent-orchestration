@@ -32,7 +32,7 @@ Provide a single-source reference for the OpenCode CLI surface — every subcomm
 
 | Source | URL |
 |--------|-----|
-| **Binary** | `/Users/michelkerkmeester/.superset/bin/opencode` |
+| **Binary** | `$(command -v opencode)` (typically `~/.superset/bin/opencode` or another local bin path) |
 | **Repository** | https://github.com/sst/opencode |
 | **Version baseline** | v1.3.17 (pinned in this reference) |
 | **Runtime** | Node.js 18+ for the npm install path; standalone binary on macOS |
