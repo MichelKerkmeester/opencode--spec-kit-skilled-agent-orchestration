@@ -1,0 +1,13 @@
+{
+  "scenario_id": "I3",
+  "cli": "cli-copilot",
+  "run_n": 1,
+  "model": "gpt-5.4",
+  "effort": "high",
+  "started_at": "2026-04-26T18:45:33Z",
+  "completed_at": "2026-04-26T18:47:28Z",
+  "latency_ms": 115039,
+  "tokens_in_estimate": 13,
+  "tokens_out_estimate": 1563,
+  "exit_code": 0
+}

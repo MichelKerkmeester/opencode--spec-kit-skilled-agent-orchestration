@@ -1,0 +1,154 @@
+● skill(system-spec-kit)
+
+I’m checking the command surface first so I can run the right preflight rather than guessing between retrieval and epistemic-baseline flows.
+
+● Read quick_reference.md
+  │ .claude/skills/system-spec-kit/references/workflows/quick_reference.md
+  └ L1:220 (220 lines read)
+
+● Search (grep)
+  │ "memory:search.*preflight|preflight.*memory:search|task_preflight|epistemic
+  │ baseline|/memory:search" in *.{md,ts,js,py,json,jsonc} (.opencode, .claude)
+  └ 7 lines found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Run /memory:search preflight specs/026/00…
+  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":...
+
+I found the generic memory command docs, but not the exact `preflight` syntax yet. I’m narrowing it to the spec packet and task ID so I can run the matching memory tool directly.
+
+● Search (glob)
+  │ "**/026-*/*003-*/*005-*" in .opencode/specs
+  └ No matches found
+
+● Search (grep)
+  │ "preflight" in *.md (.opencode/command,
+  │ .claude/skills/system-spec-kit/references,
+  │ .claude/skills/system-spec-kit/feature_catalog)
+  └ 6 lines found
+
+● Search (grep)
+  │ "T101" in **/{tasks.md,plan.md,spec.md,implementation-summary.md,checklist.m
+  │ d,decision-record.md,research.md} (.opencode/specs)
+  └ 7 lines found
+
+● Read search.md
+  │ .opencode/command/memory/search.md
+  └ L1:220 (220 lines read)
+
+● Search (grep)
+  │ "T101" in 026-*/**/{tasks.md,plan.md,spec.md,implementation-summary.md,check
+  │ list.md,decision-record.md,research.md} (.opencode/specs/system-spec-kit)
+  └ No matches found
+
+● Search (glob)
+  │ "026-*/*/*" in .opencode/specs/system-spec-kit
+  └ No matches found
+
+I have the command contract now: `preflight <specFolder> <taskId>` maps to `task_preflight()`. The remaining step is resolving your shorthand `specs/026/003/005` to the actual packet path in this repo so I attach the baseline to the right spec folder.
+
+● Search (glob)
+  │ "**/003-*" in
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization
+  └ 2 files found
+
+● Search (glob)
+  │ "**/026-*" in .opencode/specs/system-spec-kit
+  └ No matches found
+
+● Search (glob)
+  │ "**/005-*" in
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization
+  └ 2 files found
+
+● Search (grep)
+  │ "^#|^##|T101" in **/tasks.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization)
+  └ 7 lines found
+
+● Search (grep)
+  │ "T101" in **/tasks.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization)
+  └ 10 lines found
+
+● Read tasks.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/tasks.md
+  └ L1:220 (111 lines read)
+
+● Search (glob)
+  │ "**/tasks.md" in
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization
+  └ 67 files found
+
+● Search (grep)
+  │ "Preflight|task_preflight|knowledgeScore|uncertaintyScore|contextScore" in
+  │ *.md (.opencode/command/memory/search.md,
+  │ .claude/skills/system-spec-kit/references/memory,
+  │ .claude/skills/system-spec-kit/feature_catalog/06--analysis)
+  └ 23 lines found
+
+● Read tasks.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/tasks.md
+  └ L1:180 (167 lines read)
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/spec.md
+  └ L1:220 (220 lines read)
+
+● Read search.md
+  │ .opencode/command/memory/search.md
+  └ L460:540 (81 lines read)
+
+● Read epistemic_vectors.md
+  │ .claude/skills/system-spec-kit/references/memory/epistemic_vectors.md
+  └ L360:460 (69 lines read)
+
+● Read 05-epistemic-baseline-capture-taskpreflight.md
+  │ .claude/skills/system-spec-kit/feature_catalog/06--analysis/05-epistemic-bas
+  │ eline-capture-taskpreflight.md
+  └ L1:180 (62 lines read)
+
+I’ve resolved `specs/026/003/005` to the real packet: `specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs`. I’m sanity-checking the live T101 target before recording the baseline so the gaps reflect the current code, not just the packet notes.
+
+● Search (grep)
+  │ "enforceTokenBudget|fallbackToStructuredBudget" in **/memory-context.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 5 lines found
+
+● Read memory-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
+  └ L430:560 (131 lines read)
+
+● Read plan.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/plan.md
+  └ L1:220 (167 lines read)
+
+I’ve got enough context to score the baseline. I’m checking whether this packet already has a completed learning cycle for `T101`; if not, I’ll record the preflight directly.
+
+● memory_get_learning_history (MCP: spec_kit_memory) · specFolder: "specs/system-spec-kit/026-graph…
+  └ {"summary":"Learning history: 0 preflight records","data":{"specFolder":...
+
+● task_preflight (MCP: spec_kit_memory) · specFolder: "specs/system-spec-kit/026-graph-and-context-…
+  └ {"summary":"Preflight baseline captured for T101","data":{"success":true...
+
+**Done:** `/memory:search preflight` is recorded for `specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs` task `T101`.
+
+| Field | Value |
+| --- | --- |
+| Knowledge | 88/100 |
+| Uncertainty | 18/100 |
+| Context | 83/100 |
+| Session | `458c080c-df6b-445c-b179-0dfab6e1118d` |
+
+**Knowledge gaps**
+1. Confirm which `handleMemoryContext` request path consumes the `enforceTokenBudget` enforcement payload for follow-on remediation work.
+2. Confirm whether preserved-result fallback only activates on parse-failure/exhaustion paths or also affects normal structural truncation.
+
+Use `task_postflight` with `T101` and the same session ID when that task is complete.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 53s)
+Tokens    ↑ 938.6k • ↓ 6.1k • 861.1k (cached) • 3.3k (reasoning)

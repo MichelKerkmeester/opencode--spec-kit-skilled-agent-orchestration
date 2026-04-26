@@ -1,0 +1,116 @@
+● Search (grep)
+  │ "\bmemory_context\s*\(" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 29 lines found
+
+I found a lot of docs/messages mentioning the tool name; I’m narrowing it to actual code paths that invoke the `memory_context` handler rather than strings.
+
+● Read context-tools.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts
+  └ L1:260 (19 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L760:860 (101 lines read)
+
+● Search (grep)
+  │ "handleMemoryContext|memoryContextHandler|dispatchMemoryContext|route.*memor
+  │ y_context|toolName\s*[:=]\s*['\"]memory_context['\"]|name\s*[:=]\s*['\"]memo
+  │ ry_context['\"]" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "handleMemoryContext\s*\(" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 60 lines found
+
+● Search (grep)
+  │ "handleTool\s*\(\s*['\"]memory_context['\"]|dispatch[A-Za-z0-9_]*\(.*['\"]me
+  │ mory_context['\"]|callTool\(.*['\"]memory_context['\"]|memory_context['\"]\s
+  │ *," in **/*.{ts,js,mjs,cjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 38 lines found
+
+● Search (grep)
+  │ "name:\s*'memory_context'|name\s*===\s*'memory_context'|case\s+'memory_conte
+  │ xt'" in **/*.{ts,js,mjs,cjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 9 lines found
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L900:1065 (166 lines read)
+
+● Search (grep)
+  │ "contextTools\.handleTool|handleTool\(name,.*args|simulateCallToolHandler\(|
+  │ callToolHandler\(|register.*CallTool|setRequestHandler\(|CallToolRequestSche
+  │ ma" in **/*.{ts,js,mjs,cjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 17 lines found
+
+I’ve confirmed there’s only one production dispatcher that directly routes into the `memory_context` handler; the rest of the concrete callers are test helpers/tests that invoke it directly or through the call-tool path.
+
+● Read memory-context.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/memory-context.vitest.ts
+  └ L60:95 (36 lines read)
+
+● Search (grep)
+  │ "function\s+simulateCallToolHandler|const\s+simulateCallToolHandler|function
+  │ \s+callMemoryContext|const\s+callMemoryContext|function\s+invokeMemoryContex
+  │ t|const\s+invokeMemoryContext|return
+  │ handleMemoryContext\(|handleTool\(|callToolHandler\(" in **/*.vitest.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server/tests)
+  └ 21 lines found
+
+● Read context-server.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts
+  └ L1170:1690 (502 lines read)
+
+● Read handler-memory-context.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-context.vite
+  │ st.ts
+  └ L130:220 (91 lines read)
+
+● Read graph-first-routing-nudge.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.v
+  │ itest.ts
+  └ L135:215 (81 lines read)
+
+● Read memory-context.resume-gate-d.vitest.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tests/memory-context.resume-gate-
+  │ d.vitest.ts
+  └ L130:215 (86 lines read)
+
+● Search (grep)
+  │ "import\s*\{[^}]*handleMemoryContext[^}]*\}\s*from|import\s*\*\s*as\s*handle
+  │ r\s*from\s*['\"].*memory-context" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 5 lines found
+
+● Read index.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/index.ts
+  └ L1:220 (111 lines read)
+
+● Search (grep)
+  │ "export\s+async\s+function\s+dispatchTool|const\s+dispatchTool\s*=|function\
+  │ s+dispatchTool" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 1 line found
+
+`memory_context` is implemented by `handleMemoryContext()`. I found **one direct production caller**, plus the normal dispatch path that reaches it; the other concrete callers are test helpers/tests.
+
+| Caller | Kind | Reference | Note |
+|---|---|---|---|
+| `handleTool(name, args)` | direct production caller | `tools/context-tools.ts:14-17` | `case 'memory_context'` directly returns `handleMemoryContext(...)`. |
+| `dispatchTool(name, args)` | indirect production dispatcher | `tools/index.ts:98-107` | Routes `memory_context` to `contextTools.handleTool(...)`. |
+| `server.setRequestHandler(CallToolRequestSchema, async ...)` | indirect production entrypoint | `context-server.ts:920-1014` | MCP call-tool handler that invokes `dispatchTool(name, args)`. |
+| `invokeMemoryContext(args)` | direct test helper | `tests/memory-context.vitest.ts:81-83` | Thin wrapper around `handleMemoryContext(...)`. |
+| `simulateCallToolHandler(name, args)` | test helper via tool-dispatch path | `tests/context-server.vitest.ts:1587-1614` | Called with `'memory_context'` in resume-mode coverage. |
+| `simulateCallToolHandler(name, args)` | test helper via tool-dispatch path | `tests/context-server.vitest.ts:1643-1668` | Called with `'memory_context'` in non-resume coverage. |
+| `it('adds the structural routing nudge ...', async () => { ... })` | direct test callback | `tests/graph-first-routing-nudge.vitest.ts:145-146` | Imports `handleMemoryContext` and calls it directly. |
+| `it('falls back to _memory.continuity when handover is absent', async () => { ... })` | direct test callback | `tests/memory-context.resume-gate-d.vitest.ts:159-176` | Direct `handleMemoryContext(...)` resume-path test. |
+
+If you want strictly **non-test callers only**, the answer is effectively just the first three rows, with only `tools/context-tools.ts:14-17` being the **direct** call site.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 30s)
+Tokens    ↑ 442.6k • ↓ 5.0k • 415.6k (cached) • 2.8k (reasoning)

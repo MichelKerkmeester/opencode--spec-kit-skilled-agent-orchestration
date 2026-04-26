@@ -29,7 +29,7 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 - **Full plugin / skill / MCP runtime** (use case 1) — calling AI is Claude Code / Codex / Copilot / Gemini / raw shell AND the task needs the project's full Spec Kit Memory database, CocoIndex semantic index, structural code graph, or every plugin/skill/MCP tool in a one-shot dispatch. Includes `@deep-research` / `@deep-review` agent loops with externalized state under `.opencode/specs/`.
 - **Parallel detached session** (use case 2) — operator already inside OpenCode (TUI / web / serve / acp) AND wants a SEPARATE session with its own session id and state directory for ablation, worker farm, or parallel research. Prompt explicitly mentions "parallel detached", "ablation suite", "worker farm", "parallel research", "spawn detached", or "share URL".
 - **Cross-AI orchestration handback** (use case 3) — calling AI is non-Anthropic (Codex / Copilot / Gemini), task targets a project-specific subsystem (spec-kit, memory, code-graph, advisor), and the non-Anthropic CLI cannot load the project's plugin/skill/MCP runtime on its own and needs OpenCode as a bridge.
-- **Agent dispatch** — task matches a specialized OpenCode agent (`general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `ultra-think`, `improve-agent`).
+- **Agent dispatch** — task matches a specialized OpenCode agent. Primary agents (directly invokable via `--agent`): `general`, `plan` (built-in), `orchestrate`, `ultra-think`. Subagents dispatched via the orchestrate primary: `context`, `review`, `write`, `debug`, `deep-research`, `deep-review`, `improve-agent`, `improve-prompt`.
 - **Cross-repo dispatch** — session in repo A dispatches into repo B's plugin/skill/MCP runtime via `--dir <path>` or remote OpenCode server via `--attach <url>`.
 
 ### When NOT to Use
@@ -196,7 +196,7 @@ opencode run \
 |-----------|------------|
 | (nothing specified) | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use anthropic claude sonnet 4-7" | `--model anthropic/claude-sonnet-4-7 --agent general --variant high --format json` |
-| "Use the deep-research agent" | `--model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json` |
+| "Use the deep-research subagent loop" | `--model opencode-go/deepseek-v4-pro --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
 | "Use openai gpt-5.5 high" | `--model openai/gpt-5.5 --agent general --variant high --format json` |
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
 
@@ -240,20 +240,33 @@ opencode run "prompt" --model opencode-go/deepseek-v4-pro --agent general --vari
 
 ### OpenCode Agent Delegation
 
-The calling AI is the conductor; OpenCode agents under `.opencode/agent/<slug>.md` pin the model, tool permissions, and system prompt.
+The calling AI is the conductor. OpenCode distinguishes **primary agents** (directly invokable via `--agent <slug>`) from **subagents** (dispatched as Task-tool subagents from a primary).
 
-| Task type | Agent | Invocation pattern |
-|-----------|-------|---------------------|
-| Default / unspecified | `general` | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
-| Codebase exploration | `context` | `opencode run --agent context --variant high --format json --dir /repo "Map src/"` |
-| Code review | `review` | `opencode run --agent review --variant high --format json --dir /repo "Review @src/auth.ts for security"` |
-| Multi-strategy planning | `ultra-think` | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan auth redesign"` |
-| Iterative deep research | `deep-research` | `opencode run --agent deep-research --variant high --format json --dir /repo "Iter 3 of packet 047"` |
-| Iterative code review | `deep-review` | `opencode run --agent deep-review --variant high --format json --dir /repo "Iter 5 review of packet 047"` |
-| Documentation | `write` | `opencode run --agent write --variant high --format json --dir /repo "Generate README"` |
-| Multi-agent coordination | `orchestrate` | `opencode run --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests"` |
+#### Primary agents — directly invokable via `--agent`
 
-See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster.
+| Task type | Agent | Source | Invocation pattern |
+|-----------|-------|--------|---------------------|
+| Default / unspecified | `general` | OpenCode built-in | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
+| Step-by-step planning | `plan` | OpenCode built-in | `opencode run --agent plan --variant high --format json --dir /repo "Plan auth redesign"` |
+| Multi-agent coordination | `orchestrate` | `.opencode/agent/orchestrate.md` (mode=primary) | `opencode run --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests via subagents"` |
+| Multi-strategy planning | `ultra-think` | `.opencode/agent/ultra-think.md` (mode=all) | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan auth redesign"` |
+
+#### Subagents — dispatched as Task subagents from a primary
+
+These live at `.opencode/agent/<slug>.md` with `mode: subagent` and are NOT directly invokable via `opencode run --agent`. They are dispatched from a primary agent (e.g., `orchestrate`) using the Task tool. To exercise their behavior via opencode CLI, route through `--agent orchestrate` and let it dispatch the relevant subagent.
+
+| Task type | Subagent | Routed-via primary |
+|-----------|----------|---------------------|
+| Codebase exploration | `context` | `--agent orchestrate "Use the context subagent to map src/"` |
+| Code review | `review` | `--agent orchestrate "Use the review subagent on @src/auth.ts"` |
+| Documentation | `write` | `--agent orchestrate "Use the write subagent to generate README"` |
+| Fresh-perspective debugging | `debug` | `--agent orchestrate "Hand off via the debug subagent"` |
+| Iterative deep research | `deep-research` | `--agent orchestrate "Dispatch the deep-research subagent loop"` |
+| Iterative code review | `deep-review` | `--agent orchestrate "Dispatch the deep-review subagent loop"` |
+| Agent self-improvement | `improve-agent` | `--agent orchestrate "Use the improve-agent subagent"` |
+| Prompt engineering | `improve-prompt` | `--agent orchestrate "Use the improve-prompt subagent"` |
+
+See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster and dispatch patterns.
 
 ### Unique OpenCode Capabilities
 

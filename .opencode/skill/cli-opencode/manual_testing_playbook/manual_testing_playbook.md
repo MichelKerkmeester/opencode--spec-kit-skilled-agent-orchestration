@@ -412,7 +412,7 @@ Expected signals: Both exit 0. Max-variant byte count >= 2x minimal-variant byte
 
 ## 10. AGENT ROUTING (`CO-013..CO-017`, `CO-032..CO-034`)
 
-This category covers 8 scenario summaries while the linked feature files remain the canonical execution contract. cli-opencode supports 9 documented agents (general, context, orchestrate, write, review, debug, deep-research, deep-review, ultra-think). This category exercises the five most-used agents (CO-013..CO-017) plus the three deferred agents (CO-032 deep-research, CO-033 deep-review, CO-034 orchestrate) that close the spec 048 surface gap.
+This category covers 8 scenario summaries while the linked feature files remain the canonical execution contract. cli-opencode distinguishes 4 primary agents (directly invokable via --agent: general + plan as OpenCode built-ins; orchestrate + ultra-think as repo-defined primaries) from N subagents (context, review, write, debug, deep-research, deep-review, improve-agent, improve-prompt) which dispatch as Task subagents from a primary. CO-013..CO-017 + CO-032..CO-034 exercise both surfaces — direct primary invocation and primary-dispatches-subagent routing.
 
 ### CO-013 | General agent default route
 

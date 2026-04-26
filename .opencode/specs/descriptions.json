@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated": "2026-04-26T14:32:08.097Z",
+  "generated": "2026-04-26T18:48:38.149Z",
   "folders": [
     {
       "specFolder": "00--ai-systems/001-global-shared",
@@ -415,7 +415,7 @@
         "table",
         "content"
       ],
-      "lastUpdated": "2026-04-26T14:32:08.097Z"
+      "lastUpdated": "2026-04-26T18:48:38.149Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/004-table-of-content/001-toc-scrollspy",
@@ -616,7 +616,7 @@
         "dropdown",
         "fix"
       ],
-      "lastUpdated": "2026-04-26T14:32:08.097Z"
+      "lastUpdated": "2026-04-26T18:48:38.149Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/019-form-attribute-audit",
@@ -666,7 +666,7 @@
         "anobel",
         "com"
       ],
-      "lastUpdated": "2026-04-26T14:32:08.097Z"
+      "lastUpdated": "2026-04-26T18:48:38.149Z"
     },
     {
       "specFolder": "00--anobel.com/z_archive/023-performance-review",
@@ -1328,7 +1328,7 @@
         "folder",
         "convention"
       ],
-      "lastUpdated": "2026-04-26T14:32:08.097Z"
+      "lastUpdated": "2026-04-26T18:48:38.149Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/043-cli-skill-improved-prompting",
@@ -1404,7 +1404,7 @@
         "testing",
         "playbooks"
       ],
-      "lastUpdated": "2026-04-26T14:26:15.028Z"
+      "lastUpdated": "2026-04-26T15:55:38.369Z"
     },
     {
       "specFolder": "skilled-agent-orchestration/049-mcp-testing-playbooks",
@@ -4263,6 +4263,57 @@
         "default"
       ],
       "lastUpdated": "2026-04-26T07:03:47.483Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
+      "description": "Feature Specification: /memory:search Runtime Bugs and Refinements",
+      "keywords": [
+        "feature",
+        "specification",
+        "memory",
+        "search",
+        "runtime",
+        "bugs",
+        "refinements"
+      ],
+      "lastUpdated": "2026-04-26T18:11:53.896Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test",
+      "description": "Feature Specification: Search Intelligence Stress-Test Playbook",
+      "keywords": [
+        "feature",
+        "specification",
+        "search",
+        "intelligence",
+        "stress-test",
+        "playbook"
+      ],
+      "lastUpdated": "2026-04-26T18:11:53.902Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design",
+      "description": "Feature Specification: Scenario Design Sub-Phase",
+      "keywords": [
+        "feature",
+        "specification",
+        "scenario",
+        "design",
+        "sub-phase"
+      ],
+      "lastUpdated": "2026-04-26T18:11:53.906Z"
+    },
+    {
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/002-scenario-execution",
+      "description": "Feature Specification: Scenario Execution Sub-Phase",
+      "keywords": [
+        "feature",
+        "specification",
+        "scenario",
+        "execution",
+        "sub-phase"
+      ],
+      "lastUpdated": "2026-04-26T18:11:53.911Z"
     },
     {
       "specFolder": "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening",

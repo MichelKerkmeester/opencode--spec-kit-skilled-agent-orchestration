@@ -1,0 +1,116 @@
+● Search (glob)
+  │ "**/*memory*"
+  └ 10 files found
+
+● Search (grep)
+  │ "\bmemory\b" in *.{md,ts,js,py,json}
+  └ 19 files found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Find stuff about memory.", limit: 5
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":...
+
+● search (MCP: cocoindex_code) · memory system, memory search, save memory, resume context · query:…
+  └ {"success":true,"results":[{"file_path":".agents/specs/02--system-spec-k...
+
+● memory_quick_search (MCP: spec_kit_memory) · memory · query: "memory", limit: 10
+  └ Output too large to read at once (27.3 KB). Saved to: /var/folders/3c/zf...
+
+I found the repo’s memory surfaces; now I’m pulling the most relevant docs and implementation entry points so I can point you to the useful ones instead of a noisy grep dump.
+
+● Read 1777227090195-copilot-tool-output-20emgk.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/1777227090195-copilot-tool-
+  │ output-20emgk.txt
+  └ L1:120 (120 lines read)
+
+● Read copilot-tool-output-1777227088852-8a1gvm.txt
+  │ /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/copilot-tool-output-1777227
+  │ 088852-8a1gvm.txt
+  └ L1:160 (160 lines read)
+
+● Read 11-session-recovery-spec-kit-resume.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-rec
+  │ overy-spec-kit-resume.md
+  └ L1:120 (85 lines read)
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md
+  └ L1:180 (180 lines read)
+
+● Search (grep)
+  │ "memory_(search|context|save|list|quick_search|match_triggers|health|stats|i
+  │ ndex_scan|validate)" in *.{ts,md,py,json} (.opencode/skill/system-spec-kit)
+  └ 7 lines found
+
+I’ve narrowed it to the actual memory system, not just every file that says “memory”. One more pass for the core docs and entry points, then I’ll hand you the clean map.
+
+● Read 01-unified-context-retrieval-memorycontext.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/01-unified-con
+  │ text-retrieval-memorycontext.md
+  └ L1:120 (78 lines read)
+
+● Read 02-semantic-and-lexical-search-memorysearch.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/02-semantic-an
+  │ d-lexical-search-memorysearch.md
+  └ L1:120 (78 lines read)
+
+● Read 03-trigger-phrase-matching-memorymatchtriggers.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/03-trigger-phr
+  │ ase-matching-memorymatchtriggers.md
+  └ L1:120 (72 lines read)
+
+● Read 01-memory-indexing-memorysave.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/02--mutation/01-memory-index
+  │ ing-memorysave.md
+  └ L1:120 (103 lines read)
+
+● Read memory_system.md
+  │ .opencode/skill/system-spec-kit/references/memory/memory_system.md
+  └ L1:140 (140 lines read)
+
+● Read memory-tools.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts
+  └ L1:220 (109 lines read)
+
+● memory_context (MCP: spec_kit_memory) · input: "spec kit memory tools, docs, and implementation e…
+  └ {"summary":"Context retrieved via focused mode (focused strategy) [trunc...
+
+● memory_quick_search (MCP: spec_kit_memory) · spec kit memory mcp tools docs · query: "spec kit me…
+  └ {"summary":"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathe...
+
+**Main memory system found:** this repo’s real memory stack is **Spec Kit Memory** under `.opencode/skill/system-spec-kit/`.
+
+- **Top-level docs**
+  - `.opencode/skill/system-spec-kit/mcp_server/README.md` — main overview of the MCP memory server, search pipeline, commands, and architecture.
+  - `.opencode/skill/system-spec-kit/references/memory/memory_system.md` — compact reference for memory behavior, tiers, tools, storage, and recovery.
+  - `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md` — resume/recovery path: `handover.md -> _memory.continuity -> spec docs`.
+
+- **Core memory tool docs**
+  - `.../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md`
+  - `.../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md`
+  - `.../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md`
+  - `.../feature_catalog/02--mutation/01-memory-indexing-memorysave.md`
+
+- **Implementation entry points**
+  - `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts` — dispatches the core memory tools.
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`
+
+- **Tests**
+  - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search.vitest.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-triggers.vitest.ts`
+  - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts`
+  - plus many `memory-*.vitest.ts` files in the same `tests/` folder
+
+- **Related spec/history material**
+  - `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/016-rewrite-memory-mcp-readme/`
+  - `.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/`
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/`
+
+If you just want the fastest starting point, read **`mcp_server/README.md`** first, then **`references/memory/memory_system.md`**, then the four feature-catalog docs above.
+
+
+Changes   +0 -0
+Requests  1 Premium (57s)
+Tokens    ↑ 290.0k • ↓ 3.0k • 256.4k (cached) • 1.2k (reasoning)

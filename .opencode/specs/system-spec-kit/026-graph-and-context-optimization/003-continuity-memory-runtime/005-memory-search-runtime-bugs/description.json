@@ -14,7 +14,7 @@
     "quality gap fallback missing"
   ],
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
-  "description": "Findings spec cataloging 17 defects across the /memory:search runtime: intent classifier mis-routing, memory_context truncation wrapper dropping results to zero, output vocabulary violations, causal-stats inconsistencies, ephemeral-session dedup defeat, folder-discovery misfires, lopsided graph growth, and missing quality-gap fallback. Includes live MCP probe evidence and 7 root-cause clusters for remediation.",
+  "description": "Feature Specification: /memory:search Runtime Bugs and Refinements",
   "keywords": [
     "feature",
     "specification",
@@ -22,14 +22,9 @@
     "search",
     "runtime",
     "bugs",
-    "intent",
-    "classifier",
-    "truncation",
-    "causal-stats",
-    "vocabulary",
-    "rendering"
+    "refinements"
   ],
-  "lastUpdated": "2026-04-26T14:33:00Z",
+  "lastUpdated": "2026-04-26T18:11:53.896Z",
   "specId": "005",
   "folderSlug": "memory-search-runtime-bugs",
   "parentChain": [

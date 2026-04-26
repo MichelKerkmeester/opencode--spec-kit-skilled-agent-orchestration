@@ -186,6 +186,41 @@ Capture the bug catalog with reproducible runtime evidence so a subsequent remed
 - Why does `health: "healthy"` co-exist with `meetsTarget: false`? Either definition is wrong, or "healthy" measures something else (orphaned edges = 0?).
 - Is the supersedes-only edge growth driven by an autonomous backfill job? If so, where does it live, and how can other relation types participate?
 
+### POST-REMEDIATION VERIFICATION (captured 2026-04-26 18:49)
+
+Live MCP probes after the parallel remediation agent reported Cluster 1-3 P0 fixes landed. Verdict: **fixes NOT live in the running runtime.** Source patches may have been authored but `dist/` rebuild and/or MCP daemon restart was missed.
+
+Probe A — Cluster 2 (intent classifier, REQ-001/004) regression:
+```
+memory_context({input:"Semantic Search", mode:"deep"})
+→ meta.intent.type        = "fix_bug"     ← expected "understand" per fix
+  meta.intent.confidence  = 0.0980        ← below 0.30 threshold; fallback should fire
+  data.queryIntentRouting = "semantic" 0.8 ← dual-classifier dissonance still live
+```
+
+Probe B — Cluster 1 (truncation wrapper, REQ-002) regression:
+```
+memory_context({input:"Semantic Search"})
+→ meta.tokenBudgetEnforcement = {budgetTokens:3500, actualTokens:65,
+   enforced:true, truncated:true, originalResultCount:5, returnedResultCount:3}
+  data.content[0].text = '{"summary":"Context truncated to fit token budget","data":{"count":0,"results":[]}, ...}'
+```
+65 / 3500 = 1.9% utilization; same dump-to-empty bug as original Probe 2.
+
+Probe C — direct memory_search bypasses the broken wrapper and works correctly:
+```
+memory_search({query:"CocoIndex semantic vector search hybrid retrieval"})
+→ intent: "understand" (confidence 1.0)  ✓
+  results[0]: #962 skilled-agent-orchestration/022-mcp-coco-integration (sim 79.76%)  ✓
+  triggered: 022-hybrid-rag-fusion, 023-hybrid-rag-fusion-refinement  ✓
+```
+
+### NEW DEFECT CANDIDATES (surfaced via cocoindex_code probes 2026-04-26 18:49)
+
+REQ-018 (P1): cocoindex_code returns mirrored-folder duplicates. Searching "semantic search vector embedding implementation" returned the SAME research-06 markdown chunk (lines 279-303) ten times, each from a different mirror (`.gemini/specs/`, `.agents/specs/`, `.claude/specs/`, `.codex/specs/`, `specs/`, `.opencode/specs/`). All scored identical 0.6811. Effective unique-result rate: 10%. Need cross-mirror dedup at the indexing or query layer.
+
+REQ-019 (P1): cocoindex_code ranks markdown research above source code on technical queries. For "code graph traversal callers query", the top 9 results were duplicates of iteration-040 markdown (research notes with SQL examples); the actual implementation `mcp_server/handlers/code-graph/query.ts` ranked #10 at score 0.6648. For "semantic search vector embedding implementation" the actual cocoindex/vector-indexing source did not surface at all — only research markdown. Likely cause: keyword density in markdown narrative outweighs sparse symbols in source code under current ranking.
+
 ### Reproduction Evidence (captured 2026-04-26)
 
 These probes are stored under §7 to keep the canonical Level 1 template structure intact while preserving the regression-detection anchor.

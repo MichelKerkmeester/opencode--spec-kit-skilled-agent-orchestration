@@ -1,0 +1,1590 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dcb00-fdb0-7491-bc4d-dacb5292a968
+--------
+user
+What functions in the system-spec-kit mcp_server call memory_context? List 3-10 callers with file:line references.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+I’ll answer this from the actual tree, since `memory_context` is an exact symbol search. I’m checking the MCP server area and will cite concrete `file:line` callers.
+exec
+/bin/zsh -lc "rg -n \"memory_context\\s*\\(\" .opencode/skill/system-spec-kit/mcp_server" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:818:        snap.sessionQuality === 'critical' ? 'call memory_context(resume)' : 'ready';
+.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:624:`memory_context()` is the primary entry point for context loading. It detects task intent and routes to the optimal retrieval strategy automatically.
+.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:721:- `ContextEnvelope`: Wraps all `memory_context()` responses with metadata (mode used, memories returned, intent detected)
+.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:784:1. AI calls `memory_context({ input: "add user profiles", mode: "auto" })`
+.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:4:// Dispatch for L1 Orchestration tool: memory_context (T303).
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:460:    recommendedCalls.push('memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })');
+.opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:224:  //   recovery (0.20)      — A memory_context({ mode: "resume" }) call is the most
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:95:        content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:101:    content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:62:      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:73:      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:85:      content: 'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:103:      content: 'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:248:        '- `memory_context({ input, mode })` — unified context retrieval',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:306:      content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:311:      content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:66:      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:77:      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:89:      content: 'Context was compressed, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:106:      content: 'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:188:        '- `memory_context({ input, mode })` - unified context retrieval',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:239:      content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:245:    content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/compact-inject.ts:85:    'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts:35:const STARTUP_FALLBACK = 'Startup context unavailable. Call `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` if more context is needed.';
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:126:      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:136:      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:147:      'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:164:    'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:430:      "expectedResultDescription": "Should surface both memory_context (L1 unified entry) and memory_search (L2 core) tool schemas and any documentation comparing their use cases.",
+.opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts:129:      return ['[session] Context quality is CRITICAL. Consider running `memory_context({ mode: "resume" })` or `session_health` to diagnose.'];
+.opencode/skill/system-spec-kit/mcp_server/tests/session-bootstrap-gate-d.vitest.ts:89:    expect(messagingSurface).not.toContain('memory_context({ input: "resume previous work"');
+.opencode/skill/system-spec-kit/mcp_server/tests/dual-scope-hooks.vitest.ts:127:  it('returns null for memory_context (prevents recursive surfacing)', async () => {
+
+codex
+The direct search mostly found guidance strings, not TypeScript call sites. I’m narrowing this to actual callable functions and the tool registration path so the list doesn’t confuse “mentions” with “callers.”
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+     1	// ───────────────────────────────────────────────────────────────
+     2	// MODULE: Context Tools
+     3	// ───────────────────────────────────────────────────────────────
+     4	// Dispatch for L1 Orchestration tool: memory_context (T303).
+     5	import { handleMemoryContext } from '../handlers/index.js';
+     6	import { validateToolArgs } from '../schemas/tool-input-schemas.js';
+     7	import { parseArgs } from './types.js';
+     8	import type { MCPResponse, ContextArgs } from './types.js';
+     9	
+    10	/** Tool names handled by this module */
+    11	export const TOOL_NAMES = new Set(['memory_context']);
+    12	
+    13	/** Dispatch a tool call. Returns null if tool name not handled. */
+    14	export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+    15	  switch (name) {
+    16	    case 'memory_context': return handleMemoryContext(parseArgs<ContextArgs>(validateToolArgs('memory_context', args)));
+    17	    default: return null;
+    18	  }
+    19	}
+
+exec
+/bin/zsh -lc "rg -n \"memory_context|handleMemoryContext|context.*tool|register.*context|name: ['\\\"]memory_context\" .opencode/skill/system-spec-kit/mcp_server --glob '"'!**/INSTALL_GUIDE.md'"' --glob '"'!**/tests/**'"'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:407:        console.error(`[context-server] afterTool callback failed for '${tool}' (${callId}): ${message}`);
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:801:    'Key tools: memory_context, memory_search, memory_save, memory_index_scan, memory_stats.',
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:818:        snap.sessionQuality === 'critical' ? 'call memory_context(resume)' : 'ready';
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:893:    console.error(`[context-server] Cleared ${invalidatedEntries} tool-cache entries after DB reinitialization`);
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:943:    if (name === 'memory_context' && args.mode === 'resume') {
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:973:      name === 'memory_context' && args.mode === 'resume';
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:1028:    if (name !== 'memory_search' && name !== 'memory_context' && name !== 'memory_quick_search' && name !== 'session_health') {
+.opencode/skill/system-spec-kit/mcp_server/context-server.ts:1041:    if ((name === 'memory_search' || name === 'memory_context') && result && !result.isError && result.content?.[0]?.text) {
+.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:236:| `SPECKIT_PRESSURE_POLICY` | `true` | boolean | Token-pressure policy for memory_context responses. Graduated ON. | `lib/search/search-flags.ts` |
+.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:237:| `SPECKIT_AUTO_RESUME` | `true` | boolean | Automatic session resume context injection for memory_context. Graduated ON. | `lib/search/search-flags.ts` |
+.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:586:  memory_context: memoryContextSchema as unknown as ToolInputSchema,
+.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:646:  memory_context: ['input', 'mode', 'intent', 'specFolder', 'tenantId', 'userId', 'agentId', 'limit', 'sessionId', 'enableDedup', 'includeContent', 'includeTrace', 'tokenUsage', 'anchors', 'profile'],
+.opencode/skill/system-spec-kit/mcp_server/schemas/README.md:63:**Consumers** -- The schemas are imported directly by tool modules (`memory-tools.ts`, `checkpoint-tools.ts`, `causal-tools.ts`, `lifecycle-tools.ts`, `context-tools.ts`, `types.ts`) and re-exported through the parent-level `tool-schemas.ts` barrel.
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts:224:          hint: 'Omit session_id to start a new server-generated session, or reuse the effectiveSessionId returned by memory_context.',
+.opencode/skill/system-spec-kit/mcp_server/README.md:9:  - "memory_context"
+.opencode/skill/system-spec-kit/mcp_server/README.md:96:| `/memory:save` | Update packet continuity, refresh packet metadata on every invocation, and emit supporting generated context artifacts | 4 tools |
+.opencode/skill/system-spec-kit/mcp_server/README.md:218:  "tool": "memory_context",
+.opencode/skill/system-spec-kit/mcp_server/README.md:566:**Query routing:** Structural queries (callers, imports, dependencies) go to `code_graph_query`. Semantic and concept queries go to CocoIndex (`mcp__cocoindex_code__search`). Session and memory queries go to `memory_context`.
+.opencode/skill/system-spec-kit/mcp_server/README.md:612:**Start here for most tasks**: `memory_context` (L1) automatically figures out what you need. Use the lower-level tools when you want precise control.
+.opencode/skill/system-spec-kit/mcp_server/README.md:618:##### `memory_context`
+.opencode/skill/system-spec-kit/mcp_server/README.md:641:  "tool": "memory_context",
+.opencode/skill/system-spec-kit/mcp_server/README.md:666:Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state. In packet workflows, `/spec_kit:resume` sits above this tool as the operator-facing recovery surface.
+.opencode/skill/system-spec-kit/mcp_server/README.md:1075:Get LLM-oriented compact graph neighborhoods. Accepts CocoIndex search results as seeds for structural expansion. Modes: `neighborhood` (1-hop calls plus imports), `outline` (file symbols), `impact` (reverse callers). Successful responses return `status: "ok"` plus readiness/trust metadata, resolved anchors, graph context, and `data.metadata.partialOutput` so callers can see whether deadline or token-budget pressure produced partial output. When the read path determines the graph needs a full scan, the tool returns an explicit `status: "blocked"` payload with `data.blocked`, `graphAnswersOmitted`, `requiredAction: "code_graph_scan"`, and the same readiness/trust metadata instead of partial graph answers.
+.opencode/skill/system-spec-kit/mcp_server/README.md:1255:| `context-server.ts` | Starts the MCP listener, performs runtime bootstrap, and registers the live tool registry. |
+.opencode/skill/system-spec-kit/mcp_server/README.md:1352:  "tool": "memory_context",
+.opencode/skill/system-spec-kit/mcp_server/README.md:1526:| Find a past decision | `memory_context` | Set `intent: "find_decision"` |
+.opencode/skill/system-spec-kit/mcp_server/README.md:1544:**What you see**: Irrelevant or low-scoring results from `memory_search` or `memory_context`.
+.opencode/skill/system-spec-kit/mcp_server/README.md:1698:Start with `memory_context` for all retrieval tasks. It handles intent detection and routing automatically. Use `memory_search` when you want explicit control over channels. Use `memory_match_triggers` when processing a raw prompt at the start of each turn. Use L4-L7 tools only for mutation, analysis or maintenance.
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:86:  'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:460:    recommendedCalls.push('memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })');
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:508:  const contextHint = extractContextHint(toolArgs);
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:609:  const contextHint = extractContextHint(toolArgs);
+.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:616:  return autoSurfaceMemories(contextHint, TOOL_DISPATCH_TOKEN_BUDGET, 'tool-dispatch');
+.opencode/skill/system-spec-kit/mcp_server/hooks/README.md:104:- `MEMORY_AWARE_TOOLS` currently includes `memory_context`, `memory_search`, `memory_match_triggers`, `memory_list`, `memory_save`, and `memory_index_scan`.
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts:35:const STARTUP_FALLBACK = 'Startup context unavailable. Call `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` if more context is needed.';
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:95:        content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:101:    content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:108:    content: 'Session cleared. Spec Kit Memory is active. Use `memory_context` or `memory_match_triggers` to load relevant context.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:126:      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:136:      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:147:      'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:164:    'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/lib/session/context-metrics.ts:224:  //   recovery (0.20)      — A memory_context({ mode: "resume" }) call is the most
+.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:47:  name: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:49:  inputSchema: { type: 'object', additionalProperties: false, properties: { input: { type: 'string', minLength: 1, description: 'The query, prompt, or context description (required)' }, mode: { type: 'string', enum: ['auto', 'quick', 'deep', 'focused', 'resume'], default: 'auto', description: 'Context retrieval mode: auto (detect intent), quick (fast triggers), deep (comprehensive search), focused (intent-optimized), resume (session recovery)' }, intent: { type: 'string', enum: ['add_feature', 'fix_bug', 'refactor', 'security_audit', 'understand', 'find_spec', 'find_decision'], description: 'Explicit task intent. If not provided and mode=auto, intent is auto-detected from input.' }, specFolder: { type: 'string', description: 'Limit context to specific spec folder' }, tenantId: { type: 'string', description: 'Tenant boundary for governed retrieval when memory_context routes to memory_search.' }, userId: { type: 'string', description: 'User boundary for governed retrieval when memory_context routes to memory_search.' }, agentId: { type: 'string', description: 'Agent boundary for governed retrieval when memory_context routes to memory_search.' }, limit: { type: 'number', minimum: 1, maximum: 100, description: 'Maximum results (mode-specific defaults apply)' }, sessionId: { type: 'string', description: 'Optional server-issued session identifier for working-memory continuity. When provided, it must match an existing server-managed session or the call is rejected. Omit it to let the server generate a new session for this request.' }, enableDedup: { type: 'boolean', default: true, description: 'Enable session deduplication' }, includeContent: { type: 'boolean', default: false, description: 'Include full file content in results' }, includeTrace: { type: 'boolean', default: false, description: 'Include provenance-rich trace data (scores, source, trace) in results when underlying memory_search is called' }, tokenUsage: { type: 'number', minimum: 0.0, maximum: 1.0, description: "Optional caller token usage ratio (0.0-1.0)" }, anchors: { type: 'array', items: { type: 'string' }, description: 'Filter content to specific anchors (e.g., ["state", "next-steps"] for resume mode)' }, profile: { type: 'string', enum: ['quick', 'research', 'resume', 'debug'], description: 'Optional response profile formatter. Returns a reduced or mode-aware response shape when profile formatting is enabled.' } }, required: ['input'] },
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:62:      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:73:      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:85:      content: 'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:103:      content: 'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:248:        '- `memory_context({ input, mode })` — unified context retrieval',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:306:      content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:311:      content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:323:      content: 'Session cleared. Spec Kit Memory is active. Use `memory_context` or `memory_match_triggers` to load relevant context.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:66:      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:77:      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:89:      content: 'Context was compressed, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:106:      content: 'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:188:        '- `memory_context({ input, mode })` - unified context retrieval',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:239:      content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:245:    content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:253:    content: 'Session cleared. Spec Kit Memory is active. Use `memory_context` or `memory_match_triggers` to load relevant context.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/compact-inject.ts:85:    'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/README.md:54:Hooks are transport reliability, not separate business logic. They call the same retrieval primitives (`memory_match_triggers`, `memory_context`) that other runtimes call explicitly.
+.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:4:// Dispatch for L1 Orchestration tool: memory_context (T303).
+.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:5:import { handleMemoryContext } from '../handlers/index.js';
+.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:11:export const TOOL_NAMES = new Set(['memory_context']);
+.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:16:    case 'memory_context': return handleMemoryContext(parseArgs<ContextArgs>(validateToolArgs('memory_context', args)));
+.opencode/skill/system-spec-kit/mcp_server/lib/response/profile-formatters.ts:230:    followUps.push(`Use memory_context with specFolder "${uniqueFolders[0]}" for full context`);
+.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:5:import * as contextTools from './context-tools.js';
+.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:107:/** Handle code_graph_context tool call */
+.opencode/skill/system-spec-kit/mcp_server/tools/README.md:28:- `context-tools.ts` - dispatch for `memory_context`.
+.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts:50:    tools: ['memory_context', 'session_resume', 'session_bootstrap']
+.opencode/skill/system-spec-kit/mcp_server/lib/extraction/extraction-adapter.ts:42:    toolPattern: /^(read|memory_context|memory_search|memory_list)$/i,
+.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:310:export const handleMemoryContext = lazyFunction(getMemoryContextModule, 'handleMemoryContext');
+.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:311:export const handle_memory_context = lazyFunction(getMemoryContextModule, 'handle_memory_context');
+.opencode/skill/system-spec-kit/mcp_server/lib/architecture/README.md:171:| `context-server.ts` | Uses layer definitions for tool organization |
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:62:// Feature catalog: Unified context retrieval (memory_context)
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:995:    tool: 'memory_context_resume',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1300:/** Handle memory_context tool — L1 orchestration layer that routes to optimal retrieval strategy.
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1304:async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1314:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1339:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1453:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1472:  const layerInfo: LayerInfo | null = layerDefs.getLayerInfo('memory_context');
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1539:  // Phase C: Intent-to-profile auto-routing for memory_context.
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1596:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1614:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1699:    tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1811:      tool: 'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1812:      error: 'memory_context failed due to an internal error',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1827:  handleMemoryContext,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1834:const handle_memory_context = handleMemoryContext;
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1837:  handle_memory_context,
+.opencode/skill/system-spec-kit/mcp_server/code_graph/README.md:35:This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter or the shipped regex fallback, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs the `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context` MCP tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
+.opencode/skill/system-spec-kit/mcp_server/lib/cache/tool-cache.ts:314:    'memory_context',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-health.ts:184:    hints.push('No tool calls in >60 min. Consider calling `memory_context` to refresh session state.');
+.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/query-intent-classifier.ts:8:// Phase 020: Integrated into memory_context handler for query-intent
+.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/diff-parser.ts:226:        // context lines as a single ` ` but some tools emit a
+.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts:5:// Provides the code_graph_context MCP tool implementation.
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:30:      "expectedResultDescription": "Should surface memories about adaptive-fusion.ts (7 intent profiles), intent-classifier.ts, and memory_context intent routing. Cross-document because the behavior spans multiple modules.",
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:85:      "query": "memory_context returns wrong results when token pressure is high",
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:251:      "notes": "From T007b Pattern 3: feature description passed to memory_context before implementation."
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:425:      "query": "what is the difference between memory_context and memory_search for context retrieval",
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:430:      "expectedResultDescription": "Should surface both memory_context (L1 unified entry) and memory_search (L2 core) tool schemas and any documentation comparing their use cases.",
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:640:      "expectedResultDescription": "Should surface the generate-context.js script documentation and CLAUDE.md Memory Save Rule about using the script instead of the Write tool.",
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/data/ground-truth.json:725:      "query": "when should I use memory_search versus memory_context",
+.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts:55:  memory_context: ERROR_CODES.SEARCH_FAILED,
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:59: * Token-pressure policy for memory_context.
+.opencode/skill/system-spec-kit/mcp_server/lib/search/search-flags.ts:67: * Automatic session resume context injection for memory_context.
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:48:  liveBaselineResolution: 'code_graph_query' | 'memory_context' | 'memory_context_then_grep';
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:143:    return 'memory_context_then_grep';
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:146:  return 'memory_context';
+.opencode/skill/system-spec-kit/mcp_server/lib/eval/warm-start-variant-runner.ts:162:    if (resolution === 'memory_context_then_grep') {
+.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage1-candidate-gen.ts:1051:  // Including it here caused all candidates to be filtered out when memory_context
+.opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment.ts:129:      return ['[session] Context quality is CRITICAL. Consider running `memory_context({ mode: "resume" })` or `session_health` to diagnose.'];
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/tools/index.ts | sed -n '1,220p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+     1	// ───────────────────────────────────────────────────────────────
+     2	// MODULE: Index
+     3	// ───────────────────────────────────────────────────────────────
+     4	// Re-exports all tool dispatch modules for context-server (T303).
+     5	import * as contextTools from './context-tools.js';
+     6	import * as memoryTools from './memory-tools.js';
+     7	import * as causalTools from './causal-tools.js';
+     8	import * as checkpointTools from './checkpoint-tools.js';
+     9	import * as lifecycleTools from './lifecycle-tools.js';
+    10	import * as codeGraphTools from '../code_graph/tools/index.js';
+    11	import * as skillGraphTools from './skill-graph-tools.js';
+    12	import { validateToolArgs } from '../schemas/tool-input-schemas.js';
+    13	import {
+    14	  handleAdvisorRecommend,
+    15	  handleAdvisorStatus,
+    16	  handleAdvisorValidate,
+    17	} from '../skill_advisor/handlers/index.js';
+    18	import { handleCoverageGraphConvergence } from '../handlers/coverage-graph/convergence.js';
+    19	import { handleCoverageGraphQuery } from '../handlers/coverage-graph/query.js';
+    20	import { handleCoverageGraphStatus } from '../handlers/coverage-graph/status.js';
+    21	import { handleCoverageGraphUpsert } from '../handlers/coverage-graph/upsert.js';
+    22	import { parseArgs, type MCPResponse } from './types.js';
+    23	
+    24	function toMCP(result: { content: Array<{ type: string; text: string }> }): MCPResponse {
+    25	  return {
+    26	    content: result.content.map((entry) => ({ type: 'text' as const, text: entry.text })),
+    27	  };
+    28	}
+    29	
+    30	export const coverageGraphTools = {
+    31	  TOOL_NAMES: new Set([
+    32	    'deep_loop_graph_upsert',
+    33	    'deep_loop_graph_query',
+    34	    'deep_loop_graph_status',
+    35	    'deep_loop_graph_convergence',
+    36	  ]),
+    37	  async handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+    38	    switch (name) {
+    39	      case 'deep_loop_graph_upsert':
+    40	        return toMCP(await handleCoverageGraphUpsert(parseArgs<Parameters<typeof handleCoverageGraphUpsert>[0]>(args)));
+    41	      case 'deep_loop_graph_query':
+    42	        return toMCP(await handleCoverageGraphQuery(parseArgs<Parameters<typeof handleCoverageGraphQuery>[0]>(args)));
+    43	      case 'deep_loop_graph_status':
+    44	        return toMCP(await handleCoverageGraphStatus(parseArgs<Parameters<typeof handleCoverageGraphStatus>[0]>(args)));
+    45	      case 'deep_loop_graph_convergence':
+    46	        return toMCP(await handleCoverageGraphConvergence(parseArgs<Parameters<typeof handleCoverageGraphConvergence>[0]>(args)));
+    47	      default:
+    48	        return null;
+    49	    }
+    50	  },
+    51	};
+    52	
+    53	export const advisorTools = {
+    54	  TOOL_NAMES: new Set([
+    55	    'advisor_recommend',
+    56	    'advisor_status',
+    57	    'advisor_validate',
+    58	  ]),
+    59	  async handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+    60	    switch (name) {
+    61	      case 'advisor_recommend':
+    62	        return toMCP(await handleAdvisorRecommend(parseArgs<Parameters<typeof handleAdvisorRecommend>[0]>(args)));
+    63	      case 'advisor_status':
+    64	        return toMCP(await handleAdvisorStatus(parseArgs<Parameters<typeof handleAdvisorStatus>[0]>(args)));
+    65	      case 'advisor_validate':
+    66	        return toMCP(await handleAdvisorValidate(parseArgs<Parameters<typeof handleAdvisorValidate>[0]>(args)));
+    67	      default:
+    68	        return null;
+    69	    }
+    70	  },
+    71	};
+    72	
+    73	const SCHEMA_VALIDATED_TOOL_NAMES = new Set<string>([
+    74	  ...codeGraphTools.TOOL_NAMES,
+    75	  ...skillGraphTools.TOOL_NAMES,
+    76	  ...advisorTools.TOOL_NAMES,
+    77	  ...coverageGraphTools.TOOL_NAMES,
+    78	]);
+    79	
+    80	export { contextTools, memoryTools, causalTools, checkpointTools, lifecycleTools, codeGraphTools, skillGraphTools };
+    81	
+    82	export type { MCPResponse } from './types.js';
+    83	
+    84	/** All tool dispatch modules in priority order */
+    85	export const ALL_DISPATCHERS = [
+    86	  contextTools,
+    87	  memoryTools,
+    88	  causalTools,
+    89	  checkpointTools,
+    90	  lifecycleTools,
+    91	  codeGraphTools,
+    92	  skillGraphTools,
+    93	  advisorTools,
+    94	  coverageGraphTools,
+    95	] as const;
+    96	
+    97	/** Dispatch a tool call to the appropriate module. Returns null if unrecognized. */
+    98	export async function dispatchTool(
+    99	  name: string,
+   100	  args: Record<string, unknown>,
+   101	): Promise<import('./types.js').MCPResponse | null> {
+   102	  for (const dispatcher of ALL_DISPATCHERS) {
+   103	    if (dispatcher.TOOL_NAMES.has(name)) {
+   104	      const validatedArgs = SCHEMA_VALIDATED_TOOL_NAMES.has(name)
+   105	        ? validateToolArgs(name, args)
+   106	        : args;
+   107	      return dispatcher.handleTool(name, validatedArgs);
+   108	    }
+   109	  }
+   110	  return null;
+   111	}
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/context-server.ts | sed -n '900,1080p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   900	
+   901	const server = new Server(
+   902	  { name: 'context-server', version: '1.7.2' },
+   903	  { capabilities: { tools: {} } }
+   904	);
+   905	const serverWithInstructions = server as unknown as { setInstructions?: (instructions: string) => void };
+   906	
+   907	/* ───────────────────────────────────────────────────────────────
+   908	   4. TOOL DEFINITIONS (T303: from tool-schemas.ts)
+   909	──────────────────────────────────────────────────────────────── */
+   910	
+   911	server.setRequestHandler(ListToolsRequestSchema, async () => ({
+   912	  tools: TOOL_DEFINITIONS
+   913	}));
+   914	
+   915	/* ───────────────────────────────────────────────────────────────
+   916	   5. TOOL DISPATCH (T303: routed through tools/*.ts)
+   917	──────────────────────────────────────────────────────────────── */
+   918	
+   919	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+   920	server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown): Promise<any> => {
+   921	  const requestParams = request.params as { name: string; arguments?: Record<string, unknown> };
+   922	  const { name } = requestParams;
+   923	  const args: Record<string, unknown> = requestParams.arguments ?? {};
+   924	  const callId = resolveToolCallId(request as { id?: unknown });
+   925	  const sessionTrackingId = resolveSessionTrackingId(args, _extra);
+   926	  const callerContext = buildCallerContext(_extra);
+   927	  if (sessionTrackingId) lastKnownSessionId = sessionTrackingId;
+   928	
+   929	  try {
+   930	    // SEC-003: Validate input lengths before processing (CWE-400 mitigation)
+   931	    validateInputLengths(args);
+   932	    // T304: Zod validation is applied per-tool inside each dispatch module
+   933	    // (tools/*.ts) to avoid double-validation overhead at the server layer.
+   934	
+   935	    // T018: Track last tool call timestamp for all tools except session_health.
+   936	    if (name !== 'session_health') {
+   937	      recordToolCall(sessionTrackingId);
+   938	
+   939	      // Phase 023: Record metric event for context quality tracking
+   940	      recordMetricEvent({ kind: 'tool_call', toolName: name });
+   941	    }
+   942	    // Classify specific tool calls for finer-grained metrics
+   943	    if (name === 'memory_context' && args.mode === 'resume') {
+   944	      recordMetricEvent({ kind: 'memory_recovery' });
+   945	    }
+   946	    if (name.startsWith('code_graph_')) {
+   947	      recordMetricEvent({ kind: 'code_graph_query' });
+   948	    }
+   949	    if (typeof args.specFolder === 'string' && args.specFolder) {
+   950	      recordMetricEvent({ kind: 'spec_folder_change', specFolder: args.specFolder as string });
+   951	    }
+   952	
+   953	    const dbReinitialized = await checkDatabaseUpdated();
+   954	    if (dbReinitialized) {
+   955	      await invalidateReinitializedDbCaches();
+   956	    }
+   957	
+   958	    let sessionPrimeContext: AutoSurfaceResult | null = null;
+   959	    try {
+   960	      sessionPrimeContext = await primeSessionIfNeeded(
+   961	        name,
+   962	        args,
+   963	        sessionTrackingId,
+   964	      );
+   965	    } catch (primeErr: unknown) {
+   966	      const msg = primeErr instanceof Error ? primeErr.message : String(primeErr);
+   967	      console.error(`[context-server] Session priming failed (non-fatal): ${msg}`);
+   968	    }
+   969	
+   970	    // SK-004/TM-05: Auto-surface memories before dispatch (after validation)
+   971	    let autoSurfacedContext: AutoSurfaceResult | null = null;
+   972	    const isCompactionLifecycleCall =
+   973	      name === 'memory_context' && args.mode === 'resume';
+   974	
+   975	    const autoSurfaceStart = Date.now();
+   976	    if (MEMORY_AWARE_TOOLS.has(name)) {
+   977	      const contextHint: string | null = extractContextHint(args);
+   978	      if (contextHint) {
+   979	        try {
+   980	          if (isCompactionLifecycleCall) {
+   981	            autoSurfacedContext = await autoSurfaceAtCompaction(contextHint);
+   982	          } else {
+   983	            autoSurfacedContext = await autoSurfaceMemories(contextHint);
+   984	          }
+   985	        } catch (surfaceErr: unknown) {
+   986	          const msg = surfaceErr instanceof Error ? surfaceErr.message : String(surfaceErr);
+   987	          console.error(`[context-server] Auto-surface failed (non-fatal): ${msg}`);
+   988	        }
+   989	      }
+   990	    } else {
+   991	      try {
+   992	        autoSurfacedContext = await autoSurfaceAtToolDispatch(name, args);
+   993	      } catch (surfaceErr: unknown) {
+   994	        const msg = surfaceErr instanceof Error ? surfaceErr.message : String(surfaceErr);
+   995	        console.error(`[context-server] Tool-dispatch auto-surface failed (non-fatal): ${msg}`);
+   996	      }
+   997	    }
+   998	    const autoSurfaceLatencyMs = Date.now() - autoSurfaceStart;
+   999	    if (autoSurfaceLatencyMs > 250) {
+  1000	      console.warn(`[context-server] Auto-surface precheck exceeded p95 target: ${autoSurfaceLatencyMs}ms`);
+  1001	    }
+  1002	
+  1003	    // Ensure database is initialized (safe no-op if already done)
+  1004	    // P1-11 FIX: Module-level guard avoids redundant calls on every tool invocation
+  1005	    if (!dbInitialized) {
+  1006	      vectorIndex.initializeDb();
+  1007	      dbInitialized = true;
+  1008	    }
+  1009	
+  1010	    // T303: Dispatch to tool modules
+  1011	    const result = await runWithCallerContext(
+  1012	      callerContext,
+  1013	      async () => dispatchTool(name, args),
+  1014	    ) as ToolCallResponse | null;
+  1015	    if (!result) {
+  1016	      throw new Error(`Unknown tool: ${name}`);
+  1017	    }
+  1018	
+  1019	    let dispatchGraphContext: DispatchGraphContextMeta | null = null;
+  1020	    if (!result.isError) {
+  1021	      dispatchGraphContext = await resolveDispatchGraphContext(name, args);
+  1022	    }
+  1023	
+  1024	    runAfterToolCallbacks(name, callId, structuredClone(result));
+  1025	
+  1026	    // REQ-014: Log follow_on_tool_use when a non-search tool is called after a recent search
+  1027	    // Shadow-only: no ranking side effects. Fail-safe, never throws.
+  1028	    if (name !== 'memory_search' && name !== 'memory_context' && name !== 'memory_quick_search' && name !== 'session_health') {
+  1029	      try {
+  1030	        const { logFollowOnToolUse } = await import('./lib/feedback/query-flow-tracker.js');
+  1031	        const { requireDb } = await import('./utils/index.js');
+  1032	        const db = (() => { try { return requireDb(); } catch { return null; } })();
+  1033	        const followOnSessionId = sessionTrackingId ?? lastKnownSessionId;
+  1034	        if (db && followOnSessionId) {
+  1035	          logFollowOnToolUse(db, followOnSessionId);
+  1036	        }
+  1037	      } catch { /* follow_on_tool_use logging must never break dispatch */ }
+  1038	    }
+  1039	
+  1040	    // Phase 024: Code-search redirect hint for memory tools
+  1041	    if ((name === 'memory_search' || name === 'memory_context') && result && !result.isError && result.content?.[0]?.text) {
+  1042	      const queryStr = typeof args.query === 'string' ? args.query : typeof args.input === 'string' ? args.input : '';
+  1043	      const codeSearchPattern = /\b(find code|implementation of|function that|where is|how does .+ work|class that|method for)\b/i;
+  1044	      if (queryStr && codeSearchPattern.test(queryStr)) {
+  1045	        try {
+  1046	          const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+  1047	          if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+  1048	            const existingHints = Array.isArray(envelope.hints) ? envelope.hints as string[] : [];
+  1049	            existingHints.push('Tip: For code search queries, consider using mcp__cocoindex_code__search for semantic code search or code_graph_query for structural lookups.');
+  1050	            envelope.hints = existingHints;
+  1051	            result.content[0].text = JSON.stringify(envelope, null, 2);
+  1052	          }
+  1053	        } catch {
+  1054	          // Response is not JSON envelope — skip hint injection
+  1055	        }
+  1056	      }
+  1057	
+  1058	      if (queryStr) {
+  1059	        try {
+  1060	          const envelope = JSON.parse(result.content[0].text) as Record<string, unknown>;
+  1061	          if (envelope && typeof envelope === 'object' && !Array.isArray(envelope)) {
+  1062	            const meta = typeof envelope.meta === 'object' && envelope.meta !== null && !Array.isArray(envelope.meta)
+  1063	              ? envelope.meta as Record<string, unknown>
+  1064	              : {};
+  1065	            const snapshot = getSessionSnapshot();
+  1066	            const nudge = meta.structuralRoutingNudge
+  1067	              ? null
+  1068	              : maybeStructuralNudge(queryStr, {
+  1069	                graphReady: snapshot.graphFreshness === 'fresh',
+  1070	                activationScaffoldReady: snapshot.primed,
+  1071	                surface: 'response-hints',
+  1072	              });
+  1073	            if (nudge) {
+  1074	              injectStructuralRoutingNudge(envelope, nudge);
+  1075	              result.content[0].text = JSON.stringify(envelope, null, 2);
+  1076	            }
+  1077	          }
+  1078	        } catch {
+  1079	          // Response is not JSON envelope — skip structural nudge injection
+  1080	        }
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/handlers/index.ts | sed -n '280,325p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   280	export const handle_checkpoint_list = lazyFunction(getCheckpointsModule, 'handle_checkpoint_list');
+   281	export const handle_checkpoint_restore = lazyFunction(getCheckpointsModule, 'handle_checkpoint_restore');
+   282	export const handle_checkpoint_delete = lazyFunction(getCheckpointsModule, 'handle_checkpoint_delete');
+   283	export const handle_memory_validate = lazyFunction(getCheckpointsModule, 'handle_memory_validate');
+   284	
+   285	// Session learning handlers
+   286	export const handleTaskPreflight = lazyFunction(getSessionLearningModule, 'handleTaskPreflight');
+   287	export const handleTaskPostflight = lazyFunction(getSessionLearningModule, 'handleTaskPostflight');
+   288	export const handleGetLearningHistory = lazyFunction(getSessionLearningModule, 'handleGetLearningHistory');
+   289	export const handle_task_preflight = lazyFunction(getSessionLearningModule, 'handle_task_preflight');
+   290	export const handle_task_postflight = lazyFunction(getSessionLearningModule, 'handle_task_postflight');
+   291	export const handle_get_learning_history = lazyFunction(getSessionLearningModule, 'handle_get_learning_history');
+   292	
+   293	// Eval reporting handlers
+   294	export const handleEvalRunAblation = lazyFunction(getEvalReportingModule, 'handleEvalRunAblation');
+   295	export const handleEvalReportingDashboard = lazyFunction(getEvalReportingModule, 'handleEvalReportingDashboard');
+   296	export const handle_eval_run_ablation = lazyFunction(getEvalReportingModule, 'handle_eval_run_ablation');
+   297	export const handle_eval_reporting_dashboard = lazyFunction(getEvalReportingModule, 'handle_eval_reporting_dashboard');
+   298	
+   299	// Causal graph handlers
+   300	export const handleMemoryDriftWhy = lazyFunction(getCausalGraphModule, 'handleMemoryDriftWhy');
+   301	export const handleMemoryCausalLink = lazyFunction(getCausalGraphModule, 'handleMemoryCausalLink');
+   302	export const handleMemoryCausalStats = lazyFunction(getCausalGraphModule, 'handleMemoryCausalStats');
+   303	export const handleMemoryCausalUnlink = lazyFunction(getCausalGraphModule, 'handleMemoryCausalUnlink');
+   304	export const handle_memory_drift_why = lazyFunction(getCausalGraphModule, 'handle_memory_drift_why');
+   305	export const handle_memory_causal_link = lazyFunction(getCausalGraphModule, 'handle_memory_causal_link');
+   306	export const handle_memory_causal_stats = lazyFunction(getCausalGraphModule, 'handle_memory_causal_stats');
+   307	export const handle_memory_causal_unlink = lazyFunction(getCausalGraphModule, 'handle_memory_causal_unlink');
+   308	
+   309	// Memory context handler
+   310	export const handleMemoryContext = lazyFunction(getMemoryContextModule, 'handleMemoryContext');
+   311	export const handle_memory_context = lazyFunction(getMemoryContextModule, 'handle_memory_context');
+   312	
+   313	// Session health handler
+   314	export const handleSessionHealth = lazyFunction(getSessionHealthModule, 'handleSessionHealth');
+   315	
+   316	// Session resume handler
+   317	export const handleSessionResume = lazyFunction(getSessionResumeModule, 'handleSessionResume');
+   318	
+   319	// Session bootstrap handler
+   320	export const handleSessionBootstrap = lazyFunction(getSessionBootstrapModule, 'handleSessionBootstrap');
+   321	
+   322	// Sub-module references
+   323	export const memorySave = lazyModule(getMemorySaveModule);
+   324	export const memoryIndex = lazyModule(getMemoryIndexModule);
+   325	export const memoryBulkDelete = lazyModule(getMemoryBulkDeleteModule);
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts | sed -n '1290,1840p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+  1290	    } : null,
+  1291	    structuralRoutingNudge,
+  1292	    ...telemetryMeta,
+  1293	  };
+  1294	}
+  1295	
+  1296	/* ───────────────────────────────────────────────────────────────
+  1297	   7. MAIN HANDLER
+  1298	──────────────────────────────────────────────────────────────── */
+  1299	
+  1300	/** Handle memory_context tool — L1 orchestration layer that routes to optimal retrieval strategy.
+  1301	 * @param args - Context retrieval arguments (intent, mode, specFolder, anchors, etc.)
+  1302	 * @returns MCP response with context-aware memory results
+  1303	 */
+  1304	async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
+  1305	  const _contextStartTime = Date.now();
+  1306	  const requestId = randomUUID();
+  1307	
+  1308	  try {
+  1309	  try {
+  1310	    await checkDatabaseUpdated();
+  1311	  } catch (error: unknown) {
+  1312	    const message = error instanceof Error ? error.message : String(error);
+  1313	    return createMCPErrorResponse({
+  1314	      tool: 'memory_context',
+  1315	      error: `Database state check failed: ${message}`,
+  1316	      code: 'E_INTERNAL',
+  1317	      details: { requestId, layer: 'L1:Orchestration' },
+  1318	      recovery: {
+  1319	        hint: 'The memory database may be unavailable. Retry or check database connectivity.',
+  1320	      },
+  1321	    });
+  1322	  }
+  1323	
+  1324	  const {
+  1325	    input,
+  1326	    mode: requested_mode = 'auto',
+  1327	    intent: explicit_intent,
+  1328	    specFolder: spec_folder,
+  1329	    limit,
+  1330	    enableDedup: enableDedup = true,
+  1331	    includeContent: include_content = false,
+  1332	    tokenUsage,
+  1333	    anchors
+  1334	  } = args;
+  1335	
+  1336	  // Validate input
+  1337	  if (!input || typeof input !== 'string' || input.trim().length === 0) {
+  1338	    return createMCPErrorResponse({
+  1339	      tool: 'memory_context',
+  1340	      error: 'Input is required and must be a non-empty string',
+  1341	      code: 'E_VALIDATION',
+  1342	      details: { requestId, layer: 'L1:Orchestration' },
+  1343	      recovery: {
+  1344	        hint: 'Provide a query, prompt, or context description'
+  1345	      }
+  1346	    });
+  1347	  }
+  1348	
+  1349	  const normalizedInput = input.trim();
+  1350	
+  1351	  // ── Phase 020: Query-Intent Routing ──────────────────────────
+  1352	  // Classify query intent and optionally augment response with code
+  1353	  // graph context for structural/hybrid queries. Entire block is
+  1354	  // wrapped in try/catch — any failure silently falls through to
+  1355	  // existing semantic logic.
+  1356	  let queryIntentMetadata: {
+  1357	    queryIntent: string;
+  1358	    routedBackend: string;
+  1359	    confidence: number;
+  1360	    matchedKeywords?: string[];
+  1361	  } | null = null;
+  1362	  let graphContextResult: Record<string, unknown> | null = null;
+  1363	
+  1364	  if (requested_mode !== 'resume') {
+  1365	    try {
+  1366	      const classification = classifyQueryIntent(normalizedInput);
+  1367	      queryIntentMetadata = {
+  1368	        queryIntent: classification.intent,
+  1369	        routedBackend: classification.intent === 'structural' && classification.confidence > 0.65
+  1370	          ? 'structural'
+  1371	          : classification.intent === 'hybrid'
+  1372	            ? 'hybrid'
+  1373	            : 'semantic',
+  1374	        confidence: classification.confidence,
+  1375	        matchedKeywords: classification.matchedKeywords,
+  1376	      };
+  1377	
+  1378	      // F050: Extract a symbol-like token from the query instead of passing
+  1379	      // raw prose to buildContext({ subject }). resolveSubjectToRef() matches
+  1380	      // against code_nodes.name / fq_name, so prose never resolves.
+  1381	      // Heuristic: pick the first token that looks like a code identifier
+  1382	      // (contains uppercase, underscore, or dot — e.g. "buildContext", "fq_name",
+  1383	      // "code-graph-db.ts"). Falls back to first matched keyword, then normalizedInput.
+  1384	      const codeIdentifierPattern = /[A-Z_.]|^[a-z]+[A-Z]/;
+  1385	      const inputTokens = normalizedInput.split(/\s+/).filter(t => t.length >= 2);
+  1386	      const extractedSubject =
+  1387	        inputTokens.find(t => codeIdentifierPattern.test(t)) ??
+  1388	        (classification.matchedKeywords?.[0]) ??
+  1389	        normalizedInput;
+  1390	
+  1391	      if (classification.intent === 'structural' && classification.confidence > 0.65) {
+  1392	        try {
+  1393	          const cgResult = buildContext({ input: normalizedInput, subject: extractedSubject });
+  1394	          if (cgResult.metadata.totalNodes > 0) {
+  1395	            graphContextResult = {
+  1396	              graphContext: cgResult.graphContext,
+  1397	              textBrief: cgResult.textBrief,
+  1398	              combinedSummary: cgResult.combinedSummary,
+  1399	              nextActions: cgResult.nextActions,
+  1400	              metadata: cgResult.metadata,
+  1401	            };
+  1402	          }
+  1403	        } catch {
+  1404	          // Code graph unavailable — fall through to semantic
+  1405	        }
+  1406	      } else if (classification.intent === 'hybrid') {
+  1407	        try {
+  1408	          const cgResult = buildContext({ input: normalizedInput, subject: extractedSubject });
+  1409	          if (cgResult.metadata.totalNodes > 0) {
+  1410	            graphContextResult = {
+  1411	              graphContext: cgResult.graphContext,
+  1412	              textBrief: cgResult.textBrief,
+  1413	              combinedSummary: cgResult.combinedSummary,
+  1414	              nextActions: cgResult.nextActions,
+  1415	              metadata: cgResult.metadata,
+  1416	            };
+  1417	          }
+  1418	        } catch {
+  1419	          // Code graph unavailable — hybrid degrades to semantic-only
+  1420	        }
+  1421	      }
+  1422	      // 'semantic' or low-confidence: no graph context, fall through
+  1423	    } catch {
+  1424	      // Classification failed — fall through to existing logic entirely
+  1425	    }
+  1426	  }
+  1427	
+  1428	  // Eval logger — capture context query at entry (fail-safe)
+  1429	  let _evalQueryId = 0;
+  1430	  let _evalRunId = 0;
+  1431	  try {
+  1432	    const evalEntry = logSearchQuery({
+  1433	      query: normalizedInput,
+  1434	      intent: explicit_intent ?? null,
+  1435	      specFolder: spec_folder ?? null,
+  1436	    });
+  1437	    _evalQueryId = evalEntry.queryId;
+  1438	    _evalRunId = evalEntry.evalRunId;
+  1439	  } catch {
+  1440	    // Intentional no-op — error deliberately discarded
+  1441	  }
+  1442	
+  1443	  const {
+  1444	    requestedSessionId,
+  1445	    effectiveSessionId,
+  1446	    resumed: resumedSession,
+  1447	    priorMode: previousState,
+  1448	    counter: eventCounterStart,
+  1449	    error: sessionScopeError,
+  1450	  } = resolveSessionLifecycle(args, null);
+  1451	  if (sessionScopeError) {
+  1452	    return createMCPErrorResponse({
+  1453	      tool: 'memory_context',
+  1454	      error: sessionScopeError,
+  1455	      code: 'E_SESSION_SCOPE',
+  1456	      details: { requestId, layer: 'L1:Orchestration', requestedSessionId: args.sessionId ?? null },
+  1457	      recovery: {
+  1458	        hint: 'Retry without sessionId to let the server mint a trusted session, then reuse the returned effectiveSessionId.',
+  1459	      },
+  1460	    });
+  1461	  }
+  1462	  const sessionLifecycle: SessionLifecycleMetadata = {
+  1463	    sessionScope: requestedSessionId ? 'caller' : 'ephemeral',
+  1464	    requestedSessionId,
+  1465	    effectiveSessionId,
+  1466	    resumed: resumedSession,
+  1467	    eventCounterStart,
+  1468	    resumedContextCount: 0,
+  1469	  };
+  1470	
+  1471	  // Get layer info for response metadata
+  1472	  const layerInfo: LayerInfo | null = layerDefs.getLayerInfo('memory_context');
+  1473	  const tokenBudget = layerInfo?.tokenBudget ?? 2000;
+  1474	
+  1475	  const runtimeContextStats: RuntimeContextStats = {
+  1476	    tokenBudget,
+  1477	  };
+  1478	  try {
+  1479	    runtimeContextStats.tokenCount = estimateTokens(normalizedInput);
+  1480	  } catch {
+  1481	    runtimeContextStats.tokenCount = undefined;
+  1482	  }
+  1483	
+  1484	  // Resolve token pressure (caller -> estimator -> unavailable)
+  1485	  const pressurePolicyEnabled = isPressurePolicyEnabled(effectiveSessionId);
+  1486	  const autoResumeEnabled = isAutoResumeEnabled(effectiveSessionId);
+  1487	
+  1488	  const pressurePolicy = pressurePolicyEnabled
+  1489	    ? getPressureLevel(tokenUsage, runtimeContextStats)
+  1490	    : {
+  1491	        level: 'none' as const,
+  1492	        ratio: null,
+  1493	        source: 'unavailable' as const,
+  1494	        warning: null,
+  1495	      };
+  1496	  if (pressurePolicy.warning) {
+  1497	    console.warn(pressurePolicy.warning);
+  1498	  }
+  1499	
+  1500	  // Build options object for strategy executors
+  1501	  const options: ContextOptions = {
+  1502	    specFolder: spec_folder,
+  1503	    tenantId: args.tenantId,
+  1504	    userId: args.userId,
+  1505	    agentId: args.agentId,
+  1506	    limit,
+  1507	    sessionId: effectiveSessionId,
+  1508	    enableDedup: enableDedup,
+  1509	    includeContent: include_content,
+  1510	    includeTrace: (args as unknown as Record<string, unknown>).includeTrace === true, // CHK-040
+  1511	    anchors,
+  1512	    profile: args.profile,
+  1513	  };
+  1514	
+  1515	  const {
+  1516	    effectiveMode,
+  1517	    pressureOverrideApplied,
+  1518	    pressureOverrideTargetMode,
+  1519	    pressureWarning,
+  1520	    intentClassification,
+  1521	  } = resolveEffectiveMode(
+  1522	    { ...args, input: normalizedInput },
+  1523	    {
+  1524	      requestedSessionId,
+  1525	      effectiveSessionId,
+  1526	      resumed: resumedSession,
+  1527	      priorMode: previousState,
+  1528	      counter: eventCounterStart,
+  1529	    },
+  1530	    pressurePolicy,
+  1531	  );
+  1532	  const {
+  1533	    detectedIntent,
+  1534	    intentConfidence,
+  1535	    resumeHeuristicApplied,
+  1536	    source: intentSource,
+  1537	  } = intentClassification;
+  1538	
+  1539	  // Phase C: Intent-to-profile auto-routing for memory_context.
+  1540	  // Explicit caller `profile` always takes precedence; auto-detect fills in when absent.
+  1541	  // Skip for 'quick' mode: quick routes through handleMemoryMatchTriggers which does not
+  1542	  // support profile formatting — setting a profile there would be a no-op.
+  1543	  if (!options.profile && detectedIntent && effectiveMode !== 'quick' && isIntentAutoProfileEnabled()) {
+  1544	    try {
+  1545	      const autoProfile = intentClassifier.getProfileForIntent(
+  1546	        detectedIntent as import('../lib/search/intent-classifier.js').IntentType
+  1547	      );
+  1548	      if (autoProfile) {
+  1549	        options.profile = autoProfile;
+  1550	        console.error(`[memory-context] Intent-to-profile auto-routing: '${detectedIntent}' → profile '${autoProfile}'`);
+  1551	      }
+  1552	    } catch (_autoProfileErr: unknown) {
+  1553	      // Auto-profile is best-effort — never breaks context retrieval
+  1554	    }
+  1555	  }
+  1556	
+  1557	  const sessionTransition = buildSessionTransitionTrace({
+  1558	    previousState,
+  1559	    resumedSession,
+  1560	    effectiveMode,
+  1561	    requestedMode: requested_mode,
+  1562	    detectedIntent: detectedIntent ?? null,
+  1563	    pressureOverrideApplied,
+  1564	    queryHeuristicApplied: resumeHeuristicApplied,
+  1565	  });
+  1566	  options.sessionTransition = options.includeTrace === true ? sessionTransition : undefined;
+  1567	
+  1568	  const discoveredFolder = maybeDiscoverSpecFolder(options, { ...args, input: normalizedInput });
+  1569	  // FIX P0: Folder discovery sets options.folderBoost for scoring only.
+  1570	  // Do NOT propagate as options.specFolder — that becomes an exact-match filter
+  1571	  // in vector-index-queries.ts (m.spec_folder = ?) which silently drops all
+  1572	  // results when the discovered path has no indexed memories.
+  1573	  const sessionStateResult = sessionManager.saveSessionState(effectiveSessionId, {
+  1574	    specFolder: options.specFolder ?? discoveredFolder ?? spec_folder,
+  1575	    tenantId: args.tenantId,
+  1576	    userId: args.userId,
+  1577	    agentId: args.agentId,
+  1578	    currentTask: normalizedInput.slice(0, 500),
+  1579	  });
+  1580	  if (!sessionStateResult.success) {
+  1581	    console.warn(
+  1582	      `[memory-context] Failed to persist session identity for ${effectiveSessionId}: ${sessionStateResult.error ?? 'unknown error'}`,
+  1583	    );
+  1584	  }
+  1585	
+  1586	  let result: ContextResult;
+  1587	  try {
+  1588	    result = await executeStrategy(effectiveMode, options, {
+  1589	      ...args,
+  1590	      input: normalizedInput,
+  1591	      intent: detectedIntent,
+  1592	    });
+  1593	  } catch (error: unknown) {
+  1594	    console.error(`[memory-context] Strategy execution failed [requestId=${requestId}]:`, toErrorMessage(error));
+  1595	    return createMCPErrorResponse({
+  1596	      tool: 'memory_context',
+  1597	      error: toErrorMessage(error),
+  1598	      code: 'E_STRATEGY',
+  1599	      details: {
+  1600	        requestId,
+  1601	        layer: 'L1:Orchestration',
+  1602	        mode: effectiveMode,
+  1603	        alternativeLayers: layerDefs.getRecommendedLayers('search')
+  1604	      },
+  1605	      recovery: {
+  1606	        hint: 'Try a different mode or check your input'
+  1607	      }
+  1608	    });
+  1609	  }
+  1610	
+  1611	  const strategyError = extractStrategyError(result);
+  1612	  if (strategyError) {
+  1613	    return createMCPErrorResponse({
+  1614	      tool: 'memory_context',
+  1615	      error: strategyError.error,
+  1616	      code: strategyError.code,
+  1617	      details: {
+  1618	        requestId,
+  1619	        layer: 'L1:Orchestration',
+  1620	        mode: effectiveMode,
+  1621	        upstream: strategyError.details,
+  1622	      },
+  1623	      recovery: {
+  1624	        hint: strategyError.hints[0] ?? 'Try a different mode or check your input',
+  1625	        actions: strategyError.hints.slice(1),
+  1626	        severity: strategyError.severity ?? 'error',
+  1627	      },
+  1628	    });
+  1629	  }
+  1630	
+  1631	  // FIX RC1-A (superseded by P0 fix): Folder discovery no longer promotes to
+  1632	  // options.specFolder, so the recovery retry is no longer needed. The folder
+  1633	  // boost still applies via options.folderBoost for scoring prioritization.
+  1634	
+  1635	  try {
+  1636	    workingMemory.setSessionInferredMode(effectiveSessionId, effectiveMode);
+  1637	  } catch (error: unknown) {
+  1638	    void error;
+  1639	    // Best-effort session state write — do not fail the handler
+  1640	  }
+  1641	
+  1642	  // T205: Determine effective token budget from mode or layer definitions
+  1643	  const modeTokenBudget = CONTEXT_MODES[effectiveMode]?.tokenBudget;
+  1644	  const effectiveBudget = modeTokenBudget || tokenBudget;
+  1645	
+  1646	  // M1 FIX: Inject auto-resume context BEFORE budget enforcement
+  1647	  // so the final response respects the advertised token budget.
+  1648	  const tracedResult0: ContextResult = effectiveMode === 'quick' && options.includeTrace === true
+  1649	    ? attachSessionTransitionTrace(
+  1650	      result as ContextResult & { content?: Array<{ text?: string; type?: string }> },
+  1651	      sessionTransition,
+  1652	    ) as ContextResult
+  1653	    : result;
+  1654	
+  1655	  if (autoResumeEnabled && effectiveMode === 'resume' && resumedSession) {
+  1656	    const resumeContextItems = workingMemory.getSessionPromptContext(effectiveSessionId, workingMemory.DECAY_FLOOR, 5);
+  1657	    if (resumeContextItems.length > 0) {
+  1658	      sessionLifecycle.resumedContextCount = resumeContextItems.length;
+  1659	      (tracedResult0 as Record<string, unknown>).systemPromptContext = resumeContextItems.map((item) => ({
+  1660	        memoryId: item.memoryId,
+  1661	        title: item.title,
+  1662	        filePath: item.filePath,
+  1663	        attentionScore: item.attentionScore,
+  1664	      }));
+  1665	      (tracedResult0 as Record<string, unknown>).systemPromptContextInjected = true;
+  1666	    }
+  1667	  }
+  1668	
+  1669	  // T205: Enforce token budget AFTER all context injection
+  1670	  const { result: budgetedResult, enforcement } = enforceTokenBudget(tracedResult0, effectiveBudget);
+  1671	  const tracedResult = budgetedResult;
+  1672	
+  1673	  // Phase 020: Attach graph context and query-intent routing metadata
+  1674	  const responseData: ContextResult & Record<string, unknown> = { ...tracedResult };
+  1675	  if (graphContextResult) {
+  1676	    responseData.graphContext = graphContextResult;
+  1677	  }
+  1678	  if (queryIntentMetadata) {
+  1679	    // REQ-004 (Cluster 2): Annotate explicitly so callers do not confuse this
+  1680	    // backend-channel selector with the authoritative `meta.intent` task intent.
+  1681	    responseData.queryIntentRouting = {
+  1682	      ...queryIntentMetadata,
+  1683	      classificationKind: 'backend-routing',
+  1684	      authoritativeFor: ['channel-selection'],
+  1685	      seeAlso: 'meta.intent (task-intent classification, authoritative for rendering)',
+  1686	    };
+  1687	  }
+  1688	  const structuralRoutingNudge = buildStructuralRoutingNudge(
+  1689	    normalizedInput,
+  1690	    queryIntentMetadata,
+  1691	    graphContextResult,
+  1692	  );
+  1693	  if (structuralRoutingNudge) {
+  1694	    responseData.structuralRoutingNudge = structuralRoutingNudge;
+  1695	  }
+  1696	
+  1697	  // Build response with layer metadata
+  1698	  const _contextResponse = createMCPResponse({
+  1699	    tool: 'memory_context',
+  1700	    summary: enforcement.truncated
+  1701	      ? `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy) [truncated${enforcement.originalResultCount !== undefined ? `: ${enforcement.originalResultCount} → ${enforcement.returnedResultCount} results` : ''} to fit ${effectiveBudget} token budget]`
+  1702	      : `Context retrieved via ${effectiveMode} mode (${tracedResult.strategy} strategy)`,
+  1703	    data: responseData,
+  1704	    hints: [
+  1705	      `Mode: ${CONTEXT_MODES[effectiveMode].description}`,
+  1706	      `For more granular control, use L2 tools: memory_search, memory_match_triggers`,
+  1707	      `Token budget: ${effectiveBudget} (${effectiveMode} mode)`,
+  1708	      ...(structuralRoutingNudge ? [structuralRoutingNudge.message] : []),
+  1709	      ...(pressureWarning ? [pressureWarning] : [])
+  1710	    ],
+  1711	    extraMeta: buildResponseMeta({
+  1712	      effectiveMode,
+  1713	      requestedMode: requested_mode,
+  1714	      tracedResult,
+  1715	      pressurePolicy,
+  1716	      pressureOverrideApplied,
+  1717	      pressureOverrideTargetMode,
+  1718	      pressureWarning,
+  1719	      sessionLifecycle,
+  1720	      effectiveBudget,
+  1721	      enforcement,
+  1722	      intentClassification: {
+  1723	        detectedIntent,
+  1724	        intentConfidence,
+  1725	        resumeHeuristicApplied,
+  1726	        source: intentSource,
+  1727	      },
+  1728	      discoveredFolder,
+  1729	      includeTrace: options.includeTrace === true,
+  1730	      sessionTransition,
+  1731	      structuralRoutingNudge,
+  1732	    })
+  1733	  });
+  1734	
+  1735	  // Consumption instrumentation — log context event (fail-safe, never throws)
+  1736	  try {
+  1737	    const db = vectorIndex.getDb();
+  1738	    if (db) {
+  1739	      initConsumptionLog(db);
+  1740	      let resultIds: number[] = [];
+  1741	      let resultCount = 0;
+  1742	      try {
+  1743	        if (_contextResponse?.content?.[0]?.text) {
+  1744	          const innerResults = extractResultRowsFromContextResponse(_contextResponse.content[0].text);
+  1745	          resultIds = innerResults.map(r => r.id as number).filter(id => typeof id === 'number');
+  1746	          resultCount = innerResults.length;
+  1747	        }
+  1748	      } catch {
+  1749	        // Intentional no-op — error deliberately discarded
+  1750	      }
+  1751	      logConsumptionEvent(db, {
+  1752	        event_type: 'context',
+  1753	        query_text: normalizedInput,
+  1754	        intent: detectedIntent ?? null,
+  1755	        mode: effectiveMode,
+  1756	        result_count: resultCount,
+  1757	        result_ids: resultIds,
+  1758	        session_id: effectiveSessionId,
+  1759	        latency_ms: Date.now() - _contextStartTime,
+  1760	        spec_folder_filter: spec_folder ?? null,
+  1761	      });
+  1762	    }
+  1763	  } catch {
+  1764	    // Intentional no-op — error deliberately discarded
+  1765	  }
+  1766	
+  1767	  // Eval logger — capture final context results at exit (fail-safe)
+  1768	  try {
+  1769	    if (_evalRunId && _evalQueryId) {
+  1770	      let finalMemoryIds: number[] = [];
+  1771	      let finalScores: number[] = [];
+  1772	      try {
+  1773	        if (_contextResponse?.content?.[0]?.text) {
+  1774	          const innerResults = extractResultRowsFromContextResponse(_contextResponse.content[0].text);
+  1775	          finalMemoryIds = innerResults.map(r => (r.id ?? r.memoryId) as number).filter(id => typeof id === 'number');
+  1776	          finalScores = innerResults.map(r => (r.score ?? r.similarity ?? 0) as number);
+  1777	        }
+  1778	      } catch {
+  1779	        // Intentional no-op — error deliberately discarded
+  1780	      }
+  1781	      logFinalResult({
+  1782	        evalRunId: _evalRunId,
+  1783	        queryId: _evalQueryId,
+  1784	        resultMemoryIds: finalMemoryIds,
+  1785	        scores: finalScores,
+  1786	        fusionMethod: effectiveMode,
+  1787	        latencyMs: Date.now() - _contextStartTime,
+  1788	      });
+  1789	
+  1790	      const strategy = typeof budgetedResult?.strategy === 'string' && budgetedResult.strategy.length > 0
+  1791	        ? budgetedResult.strategy
+  1792	        : effectiveMode;
+  1793	      logChannelResult({
+  1794	        evalRunId: _evalRunId,
+  1795	        queryId: _evalQueryId,
+  1796	        channel: `context_${strategy}`,
+  1797	        resultMemoryIds: finalMemoryIds,
+  1798	        scores: finalScores,
+  1799	        hitCount: finalMemoryIds.length,
+  1800	        latencyMs: Date.now() - _contextStartTime,
+  1801	      });
+  1802	    }
+  1803	  } catch {
+  1804	    // Intentional no-op — error deliberately discarded
+  1805	  }
+  1806	
+  1807	  return _contextResponse;
+  1808	  } catch (error: unknown) {
+  1809	    console.error(`[memory-context] Unexpected failure [requestId=${requestId}]:`, error);
+  1810	    return createMCPErrorResponse({
+  1811	      tool: 'memory_context',
+  1812	      error: 'memory_context failed due to an internal error',
+  1813	      code: 'E_INTERNAL',
+  1814	      details: { requestId, layer: 'L1:Orchestration' },
+  1815	      recovery: {
+  1816	        hint: 'Retry the request. If the problem persists, inspect stderr logs for the full error details.',
+  1817	      },
+  1818	    });
+  1819	  }
+  1820	}
+  1821	
+  1822	/* ───────────────────────────────────────────────────────────────
+  1823	   7. EXPORTS
+  1824	──────────────────────────────────────────────────────────────── */
+  1825	
+  1826	export {
+  1827	  handleMemoryContext,
+  1828	  CONTEXT_MODES,
+  1829	  INTENT_TO_MODE,
+  1830	  enforceTokenBudget,
+  1831	};
+  1832	
+  1833	// Backward-compatible aliases (snake_case)
+  1834	const handle_memory_context = handleMemoryContext;
+  1835	
+  1836	export {
+  1837	  handle_memory_context,
+  1838	};
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts | sed -n '430,475p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   430	  for (const f of taskFields) {
+   431	    if (typeof toolArgs[f] === 'string' && (toolArgs[f] as string).length >= 3) {
+   432	      currentTask = (toolArgs[f] as string).slice(0, 200);
+   433	      break;
+   434	    }
+   435	  }
+   436	
+   437	  // Code graph freshness
+   438	  let codeGraphStatus: PrimePackage['codeGraphStatus'] = 'empty';
+   439	  if (graphSnapshot.status === 'ok' && graphSnapshot.data) {
+   440	    const lastScan = graphSnapshot.data.lastScanAt;
+   441	    const totalFiles = graphSnapshot.data.totalFiles ?? 0;
+   442	    if (totalFiles === 0) {
+   443	      codeGraphStatus = 'empty';
+   444	    } else if (!lastScan || (Date.now() - new Date(lastScan).getTime() > 24 * 60 * 60 * 1000)) {
+   445	      codeGraphStatus = 'stale';
+   446	    } else {
+   447	      codeGraphStatus = 'fresh';
+   448	    }
+   449	  }
+   450	
+   451	  // F046: CocoIndex availability via shared helper (no process.cwd())
+   452	  const cocoIndexAvailable = isCocoIndexAvailable();
+   453	
+   454	  // Build recommended calls based on state
+   455	  const recommendedCalls: string[] = [];
+   456	  if (codeGraphStatus === 'stale' || codeGraphStatus === 'empty') {
+   457	    recommendedCalls.push('code_graph_scan');
+   458	  }
+   459	  if (!specFolder) {
+   460	    recommendedCalls.push('memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })');
+   461	  }
+   462	  if (cocoIndexAvailable && recommendedCalls.length === 0) {
+   463	    recommendedCalls.push('memory_match_triggers({ prompt: "<your task>" })');
+   464	  }
+   465	
+   466	  const toolRoutingRules: string[] = [];
+   467	  if (cocoIndexAvailable) {
+   468	    toolRoutingRules.push('semantic/concept queries → mcp__cocoindex_code__search');
+   469	  }
+   470	  if (codeGraphStatus !== 'empty') {
+   471	    toolRoutingRules.push('structural queries (callers, deps) → code_graph_query');
+   472	  }
+   473	  toolRoutingRules.push('exact text/regex → Grep');
+   474	
+   475	  // Phase 027: Structural bootstrap contract for auto-prime surface
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts | sed -n '70,115p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+    70	    return null;
+    71	  }
+    72	  if (typeof input.session_id === 'string' && input.session_id.trim().length > 0) {
+    73	    return input.session_id.trim();
+    74	  }
+    75	  if (typeof input.sessionId === 'string' && input.sessionId.trim().length > 0) {
+    76	    return input.sessionId.trim();
+    77	  }
+    78	  return null;
+    79	}
+    80	
+    81	function sourceFor(input: CodexSessionStartInput | null): CodexSessionStartSource {
+    82	  if (input?.source === 'resume' || input?.source === 'clear') {
+    83	    return input.source;
+    84	  }
+    85	  return 'startup';
+    86	}
+    87	
+    88	function defaultResumeSections(sessionId: string | null): OutputSection[] {
+    89	  if (sessionId) {
+    90	    const stateResult = loadState(sessionId);
+    91	    const state = stateResult.ok ? stateResult.state : null;
+    92	    if (state?.lastSpecFolder) {
+    93	      return [{
+    94	        title: 'Session Continuity',
+    95	        content: `Last active spec folder: ${state.lastSpecFolder}\nCall \`memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })\` for full context.`,
+    96	      }];
+    97	    }
+    98	  }
+    99	  return [{
+   100	    title: 'Session Resume',
+   101	    content: 'Call `memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })` to restore session state.',
+   102	  }];
+   103	}
+   104	
+   105	function defaultClearSections(): OutputSection[] {
+   106	  return [{
+   107	    title: 'Fresh Context',
+   108	    content: 'Session cleared. Spec Kit Memory is active. Use `memory_context` or `memory_match_triggers` to load relevant context.',
+   109	  }];
+   110	}
+   111	
+   112	function adjustedBudgetFor(input: CodexSessionStartInput | null): number {
+   113	  return calculatePressureAdjustedBudget(
+   114	    input?.context_window_tokens,
+   115	    input?.context_window_max,
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts | sed -n '45,110p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+    45	try {
+    46	  const mod = await import('../../code_graph/lib/startup-brief.js');
+    47	  buildStartupBrief = mod.buildStartupBrief;
+    48	} catch (err: unknown) {
+    49	  startupBriefImportError = err instanceof Error ? err.message : String(err);
+    50	  // Startup brief module not available — keep static startup output
+    51	}
+    52	
+    53	/** Handle source=compact: inject cached PreCompact payload (from 3-source merger) */
+    54	function handleCompact(sessionId: string): OutputSection[] {
+    55	  const stateResult = loadState(sessionId);
+    56	  const state = stateResult.ok ? stateResult.state : null;
+    57	  const pendingCompactPrime = readCompactPrime(sessionId);
+    58	  if (!pendingCompactPrime) {
+    59	    hookLog('warn', 'session-prime', `No cached compact payload for session ${sessionId}`);
+    60	    return [{
+    61	      title: 'Context Recovery',
+    62	      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    63	    }];
+    64	  }
+    65	
+    66	  const { payload, cachedAt } = pendingCompactPrime;
+    67	  const cachedAtMs = new Date(cachedAt).getTime();
+    68	  const cacheAgeMs = Date.now() - cachedAtMs;
+    69	  if (Number.isNaN(cachedAtMs) || cacheAgeMs >= CACHE_TTL_MS) {
+    70	    hookLog('warn', 'session-prime', `Rejecting stale compact cache for session ${sessionId} (cached at ${cachedAt})`);
+    71	    return [{
+    72	      title: 'Context Recovery',
+    73	      content: 'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    74	    }];
+    75	  }
+    76	  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+    77	  if (!semanticValidation.ok) {
+    78	    hookLog('warn', 'session-prime', `Rejecting compact cache for session ${sessionId}: ${semanticValidation.reason}`);
+    79	    clearCompactPrime(sessionId, {
+    80	      cachedAt: pendingCompactPrime.cachedAt,
+    81	      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    82	    });
+    83	    return [{
+    84	      title: 'Context Recovery',
+    85	      content: 'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    86	    }];
+    87	  }
+    88	
+    89	  const sanitizedPayload = sanitizeRecoveredPayload(payload);
+    90	  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+    91	    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    92	    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    93	    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    94	    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+    95	    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
+    96	  });
+    97	  hookLog('info', 'session-prime', `Injecting cached compact brief (${sanitizedPayload.length} chars after sanitization, cached at ${cachedAt})`);
+    98	
+    99	  const sections: OutputSection[] = [
+   100	    { title: 'Recovered Context (Post-Compaction)', content: wrappedPayload },
+   101	    {
+   102	      title: 'Recovery Instructions',
+   103	      content: 'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+   104	    },
+   105	  ];
+   106	
+   107	  // Add last spec folder if known
+   108	  if (state?.lastSpecFolder) {
+   109	    sections.push({
+   110	      title: 'Active Spec Folder',
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts | sed -n '50,112p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+    50	try {
+    51	  const mod = await import('../../code_graph/lib/startup-brief.js');
+    52	  buildStartupBrief = mod.buildStartupBrief;
+    53	} catch {
+    54	  // Startup brief module not available — keep static startup output
+    55	}
+    56	
+    57	/** Handle source=compact (post-compress): inject cached PreCompress payload */
+    58	export function handleCompact(sessionId: string): OutputSection[] {
+    59	  const stateResult = loadState(sessionId);
+    60	  const state = stateResult.ok ? stateResult.state : null;
+    61	  const pendingCompactPrime = readCompactPrime(sessionId);
+    62	  if (!pendingCompactPrime) {
+    63	    hookLog('warn', 'gemini:session-prime', `No cached compact payload for session ${sessionId}`);
+    64	    return [{
+    65	      title: 'Context Recovery',
+    66	      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    67	    }];
+    68	  }
+    69	
+    70	  const { payload, cachedAt } = pendingCompactPrime;
+    71	  const cachedAtMs = new Date(cachedAt).getTime();
+    72	  const cacheAgeMs = Date.now() - cachedAtMs;
+    73	  if (Number.isNaN(cachedAtMs) || cacheAgeMs >= CACHE_TTL_MS) {
+    74	    hookLog('warn', 'gemini:session-prime', `Rejecting stale compact cache (cached at ${cachedAt})`);
+    75	    return [{
+    76	      title: 'Context Recovery',
+    77	      content: 'Context was compressed. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    78	    }];
+    79	  }
+    80	  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+    81	  if (!semanticValidation.ok) {
+    82	    hookLog('warn', 'gemini:session-prime', `Rejecting compact cache: ${semanticValidation.reason}`);
+    83	    clearCompactPrime(sessionId, {
+    84	      cachedAt: pendingCompactPrime.cachedAt,
+    85	      opaqueId: pendingCompactPrime.opaqueId ?? null,
+    86	    });
+    87	    return [{
+    88	      title: 'Context Recovery',
+    89	      content: 'Context was compressed, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+    90	    }];
+    91	  }
+    92	
+    93	  hookLog('info', 'gemini:session-prime', `Injecting cached compact brief (${payload.length} chars, cached at ${cachedAt})`);
+    94	
+    95	  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+    96	    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+    97	    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+    98	    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+    99	    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+   100	    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
+   101	  });
+   102	  const sections: OutputSection[] = [
+   103	    { title: 'Recovered Context (Post-Compression)', content: wrappedPayload },
+   104	    {
+   105	      title: 'Recovery Instructions',
+   106	      content: 'Context was compressed and auto-recovered. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+   107	    },
+   108	  ];
+   109	
+   110	  if (state?.lastSpecFolder) {
+   111	    sections.push({
+   112	      title: 'Active Spec Folder',
+
+exec
+/bin/zsh -lc 'rg -n "function .*prime|export function|async function" .opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts | head -n 40' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+173:async function getConstitutionalMemories(): Promise<ConstitutionalMemory[]> {
+365:async function autoSurfaceMemories(
+489:async function primeSessionIfNeeded(
+594:async function autoSurfaceAtToolDispatch(
+640:async function autoSurfaceAtCompaction(
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts | sed -n '350,470p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   350	): triggerMatcher.TriggerMatch[] {
+   351	  if (attentionIds.size === 0 || triggered.length === 0) return triggered;
+   352	
+   353	  // Score each result: base = matchedPhrases.length + (importanceWeight * 0.1)
+   354	  // Apply 1.3x multiplier when memory is in working memory set.
+   355	  return [...triggered]
+   356	    .sort((a, b) => {
+   357	      const scoreA = (a.matchedPhrases.length + a.importanceWeight * 0.1) *
+   358	        (attentionIds.has(a.memoryId) ? ATTENTION_BOOST_FACTOR : 1.0);
+   359	      const scoreB = (b.matchedPhrases.length + b.importanceWeight * 0.1) *
+   360	        (attentionIds.has(b.memoryId) ? ATTENTION_BOOST_FACTOR : 1.0);
+   361	      return scoreB - scoreA;
+   362	    });
+   363	}
+   364	
+   365	async function autoSurfaceMemories(
+   366	  contextHint: string,
+   367	  tokenBudget: number = TOOL_DISPATCH_TOKEN_BUDGET,
+   368	  hookName: 'tool-dispatch' | 'compaction' | 'memory-aware' = 'memory-aware'
+   369	): Promise<AutoSurfaceResult | null> {
+   370	  const startTime = Date.now();
+   371	
+   372	  try {
+   373	    // Get constitutional memories (always surface)
+   374	    const constitutional = await getConstitutionalMemories();
+   375	
+   376	    // Get triggered memories via fast phrase matching
+   377	    let triggered = triggerMatcher.matchTriggerPhrases(contextHint, 5);
+   378	
+   379	    // Phase C: Attention-enriched boost — re-rank triggered results that
+   380	    // also appear in the working memory active set.
+   381	    try {
+   382	      const attentionIds = getAttentionWeightedMemoryIds(5);
+   383	      if (attentionIds.size > 0 && triggered.length > 0) {
+   384	        triggered = applyAttentionBoost(triggered, attentionIds);
+   385	      }
+   386	    } catch (_boostErr: unknown) {
+   387	      // Graceful degradation — attention boost is optional
+   388	    }
+   389	
+   390	    const latencyMs = Date.now() - startTime;
+   391	
+   392	    // Only return if we have something to surface
+   393	    if (constitutional.length === 0 && triggered.length === 0) {
+   394	      return null;
+   395	    }
+   396	
+   397	    // PI-A4: Enrich constitutional memories with retrieval_directive metadata.
+   398	    // Pure content transformation — scoring is unchanged.
+   399	    const enrichedConstitutional = enrichWithRetrievalDirectives(constitutional);
+   400	
+   401	    return enforceAutoSurfaceTokenBudget({
+   402	      constitutional: enrichedConstitutional,
+   403	      triggered: triggered.map((t: triggerMatcher.TriggerMatch) => ({
+   404	        memory_id: t.memoryId,
+   405	        spec_folder: t.specFolder,
+   406	        title: t.title ?? 'Untitled',
+   407	        matched_phrases: t.matchedPhrases,
+   408	      })),
+   409	      surfaced_at: new Date().toISOString(),
+   410	      latencyMs: latencyMs,
+   411	    }, tokenBudget, hookName);
+   412	  } catch (err: unknown) {
+   413	    const message = err instanceof Error ? err.message : String(err);
+   414	    console.warn('[SK-004] Auto-surface failed:', message);
+   415	    return null;
+   416	  }
+   417	}
+   418	
+   419	/** T018: Build structured Prime Package for non-hook CLI auto-priming */
+   420	function buildPrimePackage(
+   421	  toolArgs: Record<string, unknown>,
+   422	  graphSnapshot: NonNullable<AutoSurfaceResult['codeGraphStatus']>,
+   423	): PrimePackage {
+   424	  // Derive specFolder from tool args if provided
+   425	  const specFolder = typeof toolArgs.specFolder === 'string' ? toolArgs.specFolder : null;
+   426	
+   427	  // Derive currentTask from input/query/prompt fields
+   428	  const taskFields = ['input', 'query', 'prompt'] as const;
+   429	  let currentTask: string | null = null;
+   430	  for (const f of taskFields) {
+   431	    if (typeof toolArgs[f] === 'string' && (toolArgs[f] as string).length >= 3) {
+   432	      currentTask = (toolArgs[f] as string).slice(0, 200);
+   433	      break;
+   434	    }
+   435	  }
+   436	
+   437	  // Code graph freshness
+   438	  let codeGraphStatus: PrimePackage['codeGraphStatus'] = 'empty';
+   439	  if (graphSnapshot.status === 'ok' && graphSnapshot.data) {
+   440	    const lastScan = graphSnapshot.data.lastScanAt;
+   441	    const totalFiles = graphSnapshot.data.totalFiles ?? 0;
+   442	    if (totalFiles === 0) {
+   443	      codeGraphStatus = 'empty';
+   444	    } else if (!lastScan || (Date.now() - new Date(lastScan).getTime() > 24 * 60 * 60 * 1000)) {
+   445	      codeGraphStatus = 'stale';
+   446	    } else {
+   447	      codeGraphStatus = 'fresh';
+   448	    }
+   449	  }
+   450	
+   451	  // F046: CocoIndex availability via shared helper (no process.cwd())
+   452	  const cocoIndexAvailable = isCocoIndexAvailable();
+   453	
+   454	  // Build recommended calls based on state
+   455	  const recommendedCalls: string[] = [];
+   456	  if (codeGraphStatus === 'stale' || codeGraphStatus === 'empty') {
+   457	    recommendedCalls.push('code_graph_scan');
+   458	  }
+   459	  if (!specFolder) {
+   460	    recommendedCalls.push('memory_context({ input: "resume previous work", mode: "resume", profile: "resume" })');
+   461	  }
+   462	  if (cocoIndexAvailable && recommendedCalls.length === 0) {
+   463	    recommendedCalls.push('memory_match_triggers({ prompt: "<your task>" })');
+   464	  }
+   465	
+   466	  const toolRoutingRules: string[] = [];
+   467	  if (cocoIndexAvailable) {
+   468	    toolRoutingRules.push('semantic/concept queries → mcp__cocoindex_code__search');
+   469	  }
+   470	  if (codeGraphStatus !== 'empty') {
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts | sed -n '115,170p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+exec
+/bin/zsh -lc 'rg -n "function .*Sections|export function|async function|function handleCompact" .opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   115	    opaqueId: pendingCompactPrime.opaqueId ?? null,
+   116	  };
+   117	}
+   118	
+   119	export function handleCompact(sessionId: string): string {
+   120	  const stateResult = loadState(sessionId);
+   121	  const state = stateResult.ok ? stateResult.state : null;
+   122	  const pendingCompactPrime = readCompactPrime(sessionId);
+   123	  if (!pendingCompactPrime) {
+   124	    return [
+   125	      'Context Recovery',
+   126	      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+   127	    ].join('\n\n');
+   128	  }
+   129	
+   130	  const { payload, cachedAt } = pendingCompactPrime;
+   131	  const cachedAtMs = new Date(cachedAt).getTime();
+   132	  const cacheAgeMs = Date.now() - cachedAtMs;
+   133	  if (Number.isNaN(cachedAtMs) || cacheAgeMs >= CACHE_TTL_MS) {
+   134	    return [
+   135	      'Context Recovery',
+   136	      'Context was compacted. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+   137	    ].join('\n\n');
+   138	  }
+   139	  const semanticValidation = validatePendingCompactPrimeSemantics(pendingCompactPrime);
+   140	  if (!semanticValidation.ok) {
+   141	    clearCompactPrime(sessionId, {
+   142	      cachedAt: pendingCompactPrime.cachedAt,
+   143	      opaqueId: pendingCompactPrime.opaqueId ?? null,
+   144	    });
+   145	    return [
+   146	      'Context Recovery',
+   147	      'Context was compacted, but the cached compact brief was quarantined by semantic validation. Call `memory_context({ mode: "resume", profile: "resume" })` to recover session state.',
+   148	    ].join('\n\n');
+   149	  }
+   150	
+   151	  const wrappedPayload = wrapRecoveredCompactPayload(payload, cachedAt, {
+   152	    producer: pendingCompactPrime.payloadContract?.provenance.producer,
+   153	    trustState: pendingCompactPrime.payloadContract?.provenance.trustState,
+   154	    sourceSurface: pendingCompactPrime.payloadContract?.provenance.sourceSurface,
+   155	    sanitizerVersion: pendingCompactPrime.payloadContract?.provenance.sanitizerVersion,
+   156	    runtimeFingerprint: pendingCompactPrime.payloadContract?.provenance.runtimeFingerprint,
+   157	  });
+   158	
+   159	  const sections = [
+   160	    'Recovered Context (Post-Compression)',
+   161	    wrappedPayload,
+   162	    '',
+   163	    'Recovery Instructions',
+   164	    'Context was compacted and auto-recovered from the cached compact brief. For full session state, call `memory_context({ mode: "resume", profile: "resume" })`.',
+   165	  ];
+   166	  if (state?.lastSpecFolder) {
+   167	    sections.push('', 'Active Spec Folder', `Last active: ${state.lastSpecFolder}`);
+   168	  }
+   169	  return sections.join('\n');
+   170	}
+
+ succeeded in 0ms:
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:50:async function parseCopilotStdin(): Promise<CopilotHookInput | null> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:119:export function handleCompact(sessionId: string): string {
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:209:async function refreshStartupInstructions(startupSurface: string): Promise<void> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:217:async function main(): Promise<void> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:54:function handleCompact(sessionId: string): OutputSection[] {
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:190:export function handleStartup(
+.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:341:async function main(): Promise<void> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:58:export function handleCompact(sessionId: string): OutputSection[] {
+.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:257:async function main(): Promise<void> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:88:function defaultResumeSections(sessionId: string | null): OutputSection[] {
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:105:function defaultClearSections(): OutputSection[] {
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:141:export function parseCodexSessionStartInput(raw: string): CodexSessionStartInput | null {
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:145:export async function handleCodexSessionStart(
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:183:async function readStdin(): Promise<string> {
+.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:199:async function main(): Promise<void> {
+
+codex
+No TypeScript function directly calls a `memory_context(...)` function. It is an MCP tool name routed by string, then handled by `handleMemoryContext`.
+
+Relevant callers / emitters:
+
+1. [context-tools.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:14) `handleTool` dispatches `memory_context` to `handleMemoryContext(...)`.
+2. [tools/index.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:98) `dispatchTool` routes tool names to dispatcher modules.
+3. [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:920) anonymous `CallToolRequestSchema` handler receives MCP calls and invokes `dispatchTool(...)`.
+4. [memory-context.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1304) `handleMemoryContext` is the actual `memory_context` handler.
+5. [memory-surface.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:420) `buildPrimePackage` emits a recommended `memory_context({ ... })` call.
+6. [session-start.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:88) `defaultResumeSections` emits Codex resume instructions using `memory_context`.
+7. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:54) `handleCompact` emits Claude compaction recovery instructions using `memory_context`.
+8. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:58) `handleCompact` emits Gemini compression recovery instructions using `memory_context`.
+9. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:119) `handleCompact` emits Copilot compaction recovery instructions using `memory_context`.
+hook: Stop
+hook: Stop Completed
+2026-04-26T18:16:30.721263Z ERROR codex_core::session: failed to record rollout items: thread 019dcb00-fdb0-7491-bc4d-dacb5292a968 not found
+tokens used
+63,472
+No TypeScript function directly calls a `memory_context(...)` function. It is an MCP tool name routed by string, then handled by `handleMemoryContext`.
+
+Relevant callers / emitters:
+
+1. [context-tools.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:14) `handleTool` dispatches `memory_context` to `handleMemoryContext(...)`.
+2. [tools/index.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:98) `dispatchTool` routes tool names to dispatcher modules.
+3. [context-server.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/context-server.ts:920) anonymous `CallToolRequestSchema` handler receives MCP calls and invokes `dispatchTool(...)`.
+4. [memory-context.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1304) `handleMemoryContext` is the actual `memory_context` handler.
+5. [memory-surface.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts:420) `buildPrimePackage` emits a recommended `memory_context({ ... })` call.
+6. [session-start.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts:88) `defaultResumeSections` emits Codex resume instructions using `memory_context`.
+7. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts:54) `handleCompact` emits Claude compaction recovery instructions using `memory_context`.
+8. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts:58) `handleCompact` emits Gemini compression recovery instructions using `memory_context`.
+9. [session-prime.ts](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts:119) `handleCompact` emits Copilot compaction recovery instructions using `memory_context`.

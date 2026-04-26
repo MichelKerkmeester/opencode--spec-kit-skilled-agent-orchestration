@@ -1,0 +1,58 @@
+● skill(system-spec-kit)
+
+I’m tracing the canonical spec references for the `/memory:save` planner-first contract, then I’ll pull the exact folder path from the matching spec docs.
+
+● Search (glob)
+  │ "**/spec.md" in .opencode/specs
+  └ 8 files found
+
+● Search (grep)
+  │ "planner-first|/memory:save" in *.{md,json} (.opencode/specs,
+  │ .claude/skills/system-spec-kit)
+  └ 5 lines found
+
+I found the planner-mode terminology in the runtime docs; now I’m narrowing it to the originating spec packet under `.opencode/specs`.
+
+● Search (grep)
+  │ "H-56-1|planner-first|plan-only|SAVE_PLANNER_MODE" in *.md
+  │ (.claude/skills/system-spec-kit)
+  └ 6 lines found
+
+● Search (grep)
+  │ "planner-first|planner first|plan-only|SAVE_PLANNER_MODE|planner
+  │ mode|/memory:save" in *.md (.opencode/specs)
+  └ 7 lines found
+
+● Search (grep)
+  │ "aaf0f49a8|88063287b|SPECKIT_SAVE_PLANNER_MODE" in *.md (.opencode/specs)
+  └ 46 lines found
+
+● Search (grep)
+  │ "H-56-1|Phase 017|planner-first flows|planner-first|plan-only" in *.md
+  │ (.opencode/specs)
+  └ 6 lines found
+
+I found the packet that explicitly states the contract. I’m opening the canonical `spec.md` to quote the exact evidence cleanly.
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/spec.md
+  └ L1:120 (120 lines read)
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/spec.md
+  └ L490:510 (21 lines read)
+
+**Spec folder:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite`
+
+**Canonical spec citation:** `spec.md` in that folder. It explicitly states `/memory:save` is planner-first by default in the executive summary, and includes anchors `ANCHOR:problem` and `ANCHOR:scope`.
+
+> `spec.md`: “`/memory:save` is planner-first by default: the handler computes the same route and legality data as before but stops short of mutation and returns structured planner output instead.”
+
+
+
+
+Changes   +0 -0
+Requests  1 Premium (51s)
+Tokens    ↑ 376.9k • ↓ 2.4k • 283.3k (cached) • 1.4k (reasoning)

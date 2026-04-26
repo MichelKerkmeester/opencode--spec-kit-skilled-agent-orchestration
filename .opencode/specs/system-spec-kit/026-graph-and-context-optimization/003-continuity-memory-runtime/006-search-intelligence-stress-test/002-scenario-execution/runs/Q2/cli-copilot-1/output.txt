@@ -1,0 +1,232 @@
+● Read AGENTS.md
+  └ 1 line read
+
+● Search (glob)
+  │ "**/*search*"
+  └ 9 files found
+
+● search (MCP: cocoindex_code) · search system routing memory_search advisor code graph CocoIndex ·…
+  └ {"success":true,"results":[{"file_path":".gemini/specs/02--system-spec-k...
+
+● memory_quick_search (MCP: spec_kit_memory) · search system · query: "search system", limit: 8
+  └ {"summary":"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathe...
+
+I found the main search surfaces; now I’m narrowing to the canonical code and spec files so the summary points to the real routing logic, not just mentions.
+
+● Search (grep)
+  │ "registerTool\(|server\.tool\(|memory_search|memory_context|code_graph_query
+  │ " in *.{ts,js} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 8 lines found
+
+● Search (grep)
+  │ "Query routing|memory_context|memory_search|code_graph_query|cocoindex_code_
+  │ _search" in *.{md,ts,js,json} (.opencode/skill/system-spec-kit)
+  └ 8 lines found
+
+● Search (grep)
+  │ "search routing|routing.*search|search-and-routing-tuning|query
+  │ routing|budget allocator|hybrid search" in *.{md,json} (.opencode/specs)
+  └ 6 lines found
+
+● Search (grep)
+  │ "preferredTool:|'memory_context'|'memory_search'|'code_graph_query'|cocoinde
+  │ x" (.opencode/skill/system-spec-kit/mcp_server/context-server.ts)
+  └ 10 lines found
+
+● Search (grep)
+  │ "query routing|Budget allocator
+  │ floors|memory_context|memory_search|code_graph_query"
+  │ (.opencode/skill/system-spec-kit/mcp_server/README.md)
+  └ 23 lines found
+
+● Search (glob)
+  │ "**/001-search-and-routing-tuning/**" in .opencode/specs/system-spec-kit/026
+  │ -graph-and-context-optimization/008-skill-advisor
+  └ 7 files found
+
+● Search (grep)
+  │ "search routing|routing|hybrid search|query
+  │ routing|memory_search|memory_context" in *.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skil
+  │ l-advisor/001-search-and-routing-tuning)
+  └ 6 lines found
+
+I’ve got the routing map; next I’m pulling a few exact code/spec snippets so the summary can point to the canonical files and what each piece owns.
+
+● Read implementation-summary.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill
+  │ -advisor/001-search-and-routing-tuning/implementation-summary.md
+  └ L1:220 (220 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L820:880 (61 lines read)
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md
+  └ L560:575 (15 lines read)
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md
+  └ L612:706 (95 lines read)
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill
+  │ -advisor/001-search-and-routing-tuning/spec.md
+  └ L1:160 (133 lines read)
+
+● Search (grep)
+  │ "createContentRouter|Tier 3|handover_state|delivery|drop behavior|resume
+  │ ladder" in *.ts (.opencode/skill/system-spec-kit/mcp_server/lib)
+  └ 31 lines found
+
+● Search (grep)
+  │ "function handleMemorySearch|export async function handleMemorySearch|const
+  │ handleMemorySearch|handleMemorySearch\(" in *.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 48 lines found
+
+● Search (grep)
+  │ "MIN_RESULTS_FOR_RERANK|continuity|adaptive fusion|getRerankerStatus|length
+  │ penalty" in *.ts (.opencode/skill/system-spec-kit/mcp_server/lib)
+  └ 7 lines found
+
+✗ Read adaptive-fusion.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/adaptive-fusion.ts
+  └ Path does not exist
+
+✗ Read stage3-rerank.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/stage3-rerank.ts
+  └ Path does not exist
+
+● Read memory-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts
+  └ L613:760 (147 lines read)
+
+● Read memory-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
+  └ L900:970 (71 lines read)
+
+● Read content-router.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts
+  └ L1273:1302 (30 lines read)
+
+● Search (glob)
+  │ "**/adaptive-fusion.ts" in .opencode/skill/system-spec-kit/mcp_server
+  └ No matches found
+
+● Search (glob)
+  │ "**/stage3-rerank.ts" in .opencode/skill/system-spec-kit/mcp_server
+  └ 1 file found
+
+● Search (glob)
+  │ "**/cross-encoder.ts" in .opencode/skill/system-spec-kit/mcp_server
+  └ 1 file found
+
+● Search (glob)
+  │ "**/content-router.ts" in .opencode/skill/system-spec-kit/mcp_server
+  └ 1 file found
+
+● Search (glob)
+  │ "**/*adaptive*fusion*.ts" in .opencode/skill/system-spec-kit/mcp_server
+  └ 1 file found
+
+● Search (grep)
+  │ "continuity.*0\.52|semantic 0\.52|adaptive fusion|weight
+  │ profile|MIN_RESULTS_FOR_RERANK" in *.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/search)
+  └ 4 lines found
+
+● Read cross-encoder.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts
+  └ L1:120 (120 lines read)
+
+● Read stage3-rerank.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank
+  │ .ts
+  └ L1:120 (120 lines read)
+
+● Read stage3-rerank.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank
+  │ .ts
+  └ L300:340 (40 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L80:150 (71 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L560:660 (101 lines read)
+
+● Search (grep)
+  │ "continuity profile|resume ladder|bypasses `handleMemorySearch`|canonical
+  │ file ladder"
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skil
+  │ l-advisor/001-search-and-routing-tuning/implementation-summary.md)
+  └ 4 lines found
+
+● Search (grep)
+  │ "continuity|adaptive fusion|weight profile|semantic: 0\.52|graph:
+  │ 0\.23|keyword: 0\.18|recency: 0\.07"
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts)
+  └ 1 line found
+
+● Search (grep)
+  │ "memory_context.*Start here|memory_search.*The main search
+  │ tool|code_graph_query.*When readiness"
+  │ (.opencode/skill/system-spec-kit/mcp_server/README.md)
+  └ No matches found
+
+● Search (grep)
+  │ "0\.52|0\.18|0\.07|0\.23|continuity" in *.{ts,json}
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/search)
+  └ 8 lines found
+
+● Search (grep)
+  │ "adaptiveFusionIntent|continuity" in *.ts
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 6 lines found
+
+● Read stage2-fusion.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion
+  │ .ts
+  └ L1:220 (220 lines read)
+
+● Read search-utils.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts
+  └ L1:120 (120 lines read)
+
+● Read intent-classifier.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/intent-classifier.ts
+  └ L680:725 (46 lines read)
+
+The search system is centered in `.opencode/skill/system-spec-kit/mcp_server/` and is split pretty cleanly: **`memory_context` orchestrates**, **`memory_search` retrieves**, **`code_graph_query` handles structural lookups**, and **CocoIndex handles semantic code search**.
+
+- **Routing map**
+  - `.opencode/skill/system-spec-kit/mcp_server/README.md:566` — canonical routing summary: structural → `code_graph_query`, semantic/concept → `mcp__cocoindex_code__search`, session/memory → `memory_context`
+  - `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:843` — startup/tool-routing brief emits the same decision tree dynamically
+- **Main retrieval path**
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:922` — `memory_context` deep/focused modes delegate into `handleMemorySearch(...)`
+  - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:613` — `memory_search` is the main entrypoint; supports `query`, `concepts`, or continuation `cursor`, plus rerank/session-dedup/trace controls
+- **Search pipeline internals**
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts:17` — Stage 2 is the single scoring hub: session boost, recency, causal/graph signals, intent weights, artifact routing, feedback
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:49` — reranking only kicks in at **4+ results**
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:62` — length penalty is effectively neutralized now (`shortPenalty`/`longPenalty` both `1.0`)
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-utils.ts:69` and `.../intent-classifier.ts:693` — continuity/resume-style queries get their own fusion intent / MMR behavior
+- **Related routing/classification**
+  - `.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1278` — Tier 3 router prompt defines the 8 save-path categories and the 3-level resume ladder; adjacent to search because it governs continuity/recovery content routing
+- **Best spec packet to read**
+  - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/implementation-summary.md:37` — best high-level shipped summary
+  - Key shipped changes there:
+    1. **search-fusion tuning** — rerank minimum raised to 4, continuity profile work, cache telemetry
+    2. **content-routing accuracy** — better delivery vs handover classification, Tier 3 routing wired in
+    3. **graph-metadata validation** — cleaner metadata feeding retrieval quality
+  - `.opencode/specs/.../implementation-summary.md:65` — important design note: **`/spec_kit:resume` bypasses `handleMemorySearch()`** and instead uses the canonical file ladder (`handover.md -> _memory.continuity -> spec docs`)
+
+If you want the shortest mental model: **start with `memory_context`, drop to `memory_search` when you want explicit retrieval control, use `code_graph_query` for callers/imports/deps, and use CocoIndex for “find code that does X.”**
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 51s)
+Tokens    ↑ 824.7k • ↓ 5.6k • 786.6k (cached) • 1.7k (reasoning)

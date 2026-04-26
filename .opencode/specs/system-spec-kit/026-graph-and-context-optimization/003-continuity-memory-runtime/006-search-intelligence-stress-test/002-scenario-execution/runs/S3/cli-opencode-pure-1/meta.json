@@ -1,0 +1,17 @@
+{
+  "scenario_id": "S3",
+  "cli": "cli-opencode-pure",
+  "run_n": 1,
+  "model": "opencode-go/deepseek-v4-pro",
+  "agent": "general",
+  "variant": "high",
+  "format": "json",
+  "ablation_mode": "pure",
+  "pure_flag": "--pure",
+  "started_at": "2026-04-26T18:49:49Z",
+  "completed_at": "2026-04-26T18:51:06Z",
+  "latency_ms": 77027,
+  "tokens_in_estimate": 30,
+  "tokens_out_estimate": 22117,
+  "exit_code": 0
+}

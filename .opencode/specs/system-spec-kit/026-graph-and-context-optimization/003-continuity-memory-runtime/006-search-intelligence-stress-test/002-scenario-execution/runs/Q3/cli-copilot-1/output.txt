@@ -1,0 +1,146 @@
+● Search (grep)
+  │ "token budget|Token
+  │ Budget|budgetTokens|maxTokens|tokenBudget|truncate|truncat|token
+  │ limit|budget" in **/*.{ts,js,cjs,mjs,json}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Find all token-budget enforcement code pa…
+  └ {"summary":"No matching trigger phrases found","data":{"count":0,"result...
+
+I found multiple budget-related hits; now I’m narrowing them to the actual enforcement and truncation logic instead of every docstring or comment mention.
+
+● Search (grep)
+  │ "Token Budget" in **/*.{ts,js,cjs,mjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "truncat|truncate|truncated|budgetTokens|max_output_tokens|maxTokens" in
+  │ **/*.{ts,js,cjs,mjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "within.*budget|budget.*enfor|enforce.*budget|approx.*tokens|token.*count|sl
+  │ ice.*tokens|clip.*tokens" in **/*.{ts,js,cjs,mjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 78 lines found
+
+● Read memory-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
+  └ L1638:1680 (43 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L1088:1175 (88 lines read)
+
+● Read memory-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
+  └ L430:735 (306 lines read)
+
+● Read shared.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts
+  └ L80:120 (41 lines read)
+
+● Read compact-merger.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/compact-merger.ts
+  └ L1:160 (160 lines read)
+
+● Read code-graph-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context
+  │ .ts
+  └ L520:585 (66 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L2280:2455 (175 lines read)
+
+The main budget logic is concentrated in a few places. I’m pulling the rest of the truncation helpers so I can separate real enforcement from budget calculation or validation-only checks.
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L2452:2518 (67 lines read)
+
+● Read code-graph-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context
+  │ .ts
+  └ L583:625 (12 lines read)
+
+● Read preflight.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts
+  └ L632:670 (39 lines read)
+
+● Read quality-loop.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts
+  └ L210:255 (46 lines read)
+
+● Read memory-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts
+  └ L729:835 (107 lines read)
+
+● Search (grep)
+  │ "truncateToTokenBudget\(|truncateToTokens\(|truncateToBudget\(|enforceTokenB
+  │ udget\(|formatTextBrief\(|scoreTokenBudget\(|within_budget" in
+  │ **/*.{ts,js,cjs,mjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 69 lines found
+
+I have the main enforcement helpers. I’m grabbing the concrete call sites now so I can distinguish shared helpers from the entry points that actually invoke them.
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1668:1688 (21 lines read)
+
+● Read code-graph-context.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context
+  │ .ts
+  └ L168:184 (17 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts
+  └ L384:395 (12 lines read)
+
+● Read compact-inject.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/claude/compact-inject.ts
+  └ L390:428 (39 lines read)
+
+● Read session-start.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts
+  └ L154:166 (13 lines read)
+
+● Read compact-cache.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/compact-cache.ts
+  └ L224:234 (11 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts
+  └ L301:312 (12 lines read)
+
+● Read compact-inject.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/compact-inject.ts
+  └ L86:96 (11 lines read)
+
+● Read compact-cache.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/compact-cache.ts
+  └ L136:146 (11 lines read)
+
+**Actual token-budget enforcement/truncation paths under `mcp_server/`** are:
+
+| Path | Enforcement entry point | What it truncates |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:447` | `enforceTokenBudget()` | Serializes the `ContextResult`, truncates oversized `data.results`, compacts long fields, and falls back to a smaller structured payload. Invoked at `:1670`. |
+| `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:1115` | inline envelope enforcement | Applies per-tool budget from `getTokenBudget(name)`, then trims `data.results` from the end until the envelope fits (`:1146-1167`). |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts:2398` | `truncateToBudget()` | Greedy highest-score-first result truncation for hybrid search results; used at `:1678`. |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/compact-merger.ts:58` | `truncateToTokens()` | Per-section compact-brief truncation during merged context assembly; used at `:159`. |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts:534` | `formatTextBrief()` | Stops rendering lower-priority sections and hard-slices the final brief if over budget; used at `:177`. |
+| `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/shared.ts:96` | `truncateToTokenBudget()` | Shared hook-output truncation helper used by: `hooks/claude/session-prime.ts:391`, `hooks/claude/compact-inject.ts:396,425`, `hooks/codex/session-start.ts:160`, `hooks/copilot/compact-cache.ts:230`, `hooks/gemini/session-prime.ts:307`, `hooks/gemini/compact-inject.ts:92`, `hooks/gemini/compact-cache.ts:142`. |
+
+**Function responsible for truncation behavior:** `enforceTokenBudget()` in `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:447`.
+
+**Budget-related but not truncation/enforcement**:
+- `.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:647` only flags `within_budget = false`.
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/quality-loop.ts:235` only scores budget violations.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 28s)
+Tokens    ↑ 386.6k • ↓ 5.5k • 361.0k (cached) • 2.9k (reasoning)
