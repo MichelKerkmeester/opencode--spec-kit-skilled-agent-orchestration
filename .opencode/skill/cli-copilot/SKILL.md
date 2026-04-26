@@ -26,43 +26,19 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 
 ### Activation Triggers
 
-**Collaborative Planning** - Use when:
-- Complex features require a dedicated planning phase before implementation
-- Architecture mapping needs "Explore" agent codebase analysis
-- Multi-step workflows benefit from Copilot's "Plan" mode logic
-- Cross-file dependency mapping is required for a large refactor
-
-**Cloud Delegation** - Use when:
-- Tasks benefit from GitHub's cloud-hosted coding agents (`/delegate` or `&prompt`)
-- Offloading heavy compute or complex reasoning to the cloud is preferred
-- Remote repository context is needed beyond the local workspace
-- Scaling execution beyond local machine resources
-
-**Versatile Generation** - Use when:
-- Code generation benefits from specific models (GPT-5.3-Codex, Claude 4.6, Gemini 3 Pro)
-- Rapid prototyping is needed using "Autopilot" for autonomous execution
-- Boilerplate or unit test generation needs to match repo-specific conventions
-- Multi-language support is required across a diverse stack
-
-**Code Review** - Use when:
-- GitHub-native perspective is needed for PR readiness
-- Cross-AI validation to catch blind spots using different underlying models
-- Security audits benefit from Copilot's specific training data
-- Quality gate verification before pushing to a remote
-
-**Agent-Delegated Tasks** - Use when:
-- Task matches specialized "Explore" or "Task" agents
-- Custom agent profiles (Markdown-based) are available for the project
-- Session continuity is required with persistent repo memory
-- MCP servers are used for extended tool capabilities
+- **Collaborative Planning** — complex features needing a dedicated planning phase, "Explore" agent codebase analysis, or cross-file dependency mapping for large refactors.
+- **Cloud Delegation** — tasks benefiting from GitHub's cloud-hosted coding agents (`/delegate`, `&prompt`), heavy compute offload, or scaling beyond local resources.
+- **Versatile Generation** — model-targeted generation (GPT-5.3-Codex, Claude 4.6, Gemini 3 Pro), Autopilot prototyping, or repo-aware boilerplate.
+- **Code Review** — GitHub-native PR readiness, cross-AI validation against different models, security audits, or pre-push quality gates.
+- **Agent-Delegated Tasks** — Explore/Task agent matches, custom Markdown agent profiles, persistent repo memory, or MCP server integration.
 
 ### When NOT to Use
 
 - **You ARE Copilot already.** If your runtime is Copilot (detection signal: `$COPILOT_SESSION_ID` or any `GH_COPILOT_*` env var set, `copilot` in process ancestry, or `~/.copilot/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation.
-- Simple, quick tasks where local execution is faster
-- When GitHub authentication is unavailable or expired
-- Real-time web search (use Gemini CLI or specialized search tools instead)
-- Tasks where precise diff-based surgical editing is the only requirement
+- Simple, quick tasks where local execution is faster.
+- GitHub authentication unavailable or expired.
+- Real-time web search (use Gemini CLI or specialized search tools instead).
+- Tasks where precise diff-based surgical editing is the only requirement.
 
 ---
 
@@ -85,18 +61,13 @@ command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 ```python
 def detect_self_invocation():
     """Returns a non-None signal when the orchestrator is already running inside Copilot."""
-    # Detection signals — trip on ANY positive
-    # Layer 1: env var lookup — Copilot sets COPILOT_SESSION_ID and GH_COPILOT_* vars on session start.
-    # Exact env name to be confirmed by the implementer at runtime; the layered process-ancestry
-    # and state-file probes catch the case regardless.
+    # Layer 1: env var lookup — Copilot sets COPILOT_SESSION_ID and GH_COPILOT_* vars
     for key in os.environ:
         if key == 'COPILOT_SESSION_ID' or key.startswith('GH_COPILOT_'):
             return ('env', key)
     # Layer 2: process ancestry — copilot in parent tree
     try:
-        ancestry = subprocess.check_output(
-            ['ps', '-o', 'command=', '-p', str(os.getppid())]
-        ).decode()
+        ancestry = subprocess.check_output(['ps', '-o', 'command=', '-p', str(os.getppid())]).decode()
         if '/copilot' in ancestry or 'copilot ' in ancestry:
             return ('ancestry', 'copilot')
     except subprocess.SubprocessError:
@@ -116,31 +87,6 @@ if detect_self_invocation():
     )
 ```
 
-### Phase Detection
-
-```text
-TASK CONTEXT
-    |
-    +- STEP 0: Verify copilot binary installed
-    +- STEP 1: Score intents (top-2 when ambiguity is small)
-    +- Phase 1: Construct prompt with model selection and --allow-all-tools
-    +- Phase 2: Execute via Bash tool (non-interactive -p flag)
-    +- Phase 3: Validate and integrate output
-```
-
-### Resource Domains
-
-The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_SIGNALS`.
-
-```text
-references/cli_reference.md          — CLI flags, commands, models, auth, config
-references/integration_patterns.md   — Cross-AI orchestration patterns
-references/copilot_tools.md           — Unique capabilities (Autopilot, Cloud, Models)
-references/agent_delegation.md       — Explore/Task agent routing and invocation
-assets/prompt_templates.md           — Copy-paste ready templates
-assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-check, escalation triggers
-```
-
 ### Resource Loading Levels
 
 | Level       | When to Load            | Resources                      |
@@ -149,15 +95,11 @@ assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-ch
 | CONDITIONAL | If intent signals match | Intent-mapped reference docs   |
 | ON_DEMAND   | Only on explicit request| Extended templates and patterns |
 
-### Smart Router Pseudocode
+### Smart Router
+
+Provider-specific dictionaries (used by the shared helper functions in [`system-spec-kit/references/cli/shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md)):
 
 ```python
-from pathlib import Path
-
-SKILL_ROOT = Path(__file__).resolve().parent
-RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
-DEFAULT_RESOURCE = "references/cli_reference.md"
-
 INTENT_SIGNALS = {
     "PLANNING":          {"weight": 4, "keywords": ["plan", "architecture", "explore", "dependency", "structure", "roadmap"]},
     "CLOUD_DELEGATE":    {"weight": 4, "keywords": ["delegate", "cloud", "remote", "offload", "github agent", "&prompt"]},
@@ -179,7 +121,7 @@ RESOURCE_MAP = {
 }
 
 LOADING_LEVELS = {
-    "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
+    "ALWAYS": ["references/cli_reference.md", "assets/prompt_quality_card.md"],
     "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "github agent", "cloud delegation", "copilot prompt", "autopilot", "explore agent"],
     "ON_DEMAND": ["references/copilot_tools.md", "assets/prompt_templates.md"],
 }
@@ -190,91 +132,18 @@ UNKNOWN_FALLBACK_CHECKLIST = [
     "Is autonomous execution with --allow-all-tools needed?",
     "Would repo-memory-aware generation or review help?",
 ]
-
-def _task_text(task) -> str:
-    return " ".join([
-        str(getattr(task, "text", "")),
-        str(getattr(task, "query", "")),
-        " ".join(getattr(task, "keywords", []) or []),
-    ]).lower()
-
-def _guard_in_skill(relative_path: str) -> str:
-    resolved = (SKILL_ROOT / relative_path).resolve()
-    resolved.relative_to(SKILL_ROOT)
-    if resolved.suffix.lower() != ".md":
-        raise ValueError(f"Only markdown resources are routable: {relative_path}")
-    return resolved.relative_to(SKILL_ROOT).as_posix()
-
-def discover_markdown_resources() -> set[str]:
-    docs = []
-    for base in RESOURCE_BASES:
-        if base.exists():
-            docs.extend(p for p in base.rglob("*.md") if p.is_file())
-    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
-
-def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
-    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
-    if not ranked or ranked[0][1] <= 0:
-        return ["UNKNOWN"]
-    selected = [ranked[0][0]]
-    if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
-        selected.append(ranked[1][0])
-    return selected[:max_intents]
-
-def score_intents(task) -> dict[str, float]:
-    text = _task_text(task)
-    scores = {intent: 0.0 for intent in INTENT_SIGNALS}
-    for intent, cfg in INTENT_SIGNALS.items():
-        for keyword in cfg["keywords"]:
-            if keyword in text:
-                scores[intent] += cfg["weight"]
-    return scores
-
-def route_copilot_resources(task):
-    inventory = discover_markdown_resources()
-    scores = score_intents(task)
-    intents = select_intents(scores, ambiguity_delta=1.0)
-    loaded = []
-    seen = set()
-
-    def load_if_available(relative_path: str) -> None:
-        guarded = _guard_in_skill(relative_path)
-        if guarded in inventory and guarded not in seen:
-            load(guarded)
-            loaded.append(guarded)
-            seen.add(guarded)
-
-    # 1. ALWAYS load baseline + fast-path prompt-quality asset
-    for relative_path in LOADING_LEVELS["ALWAYS"]:
-        load_if_available(relative_path)
-
-    # 2. UNKNOWN FALLBACK: no keywords matched at all
-    if max(scores.values()) == 0:
-        return {
-            "intents": ["UNKNOWN"],
-            "load_level": "UNKNOWN_FALLBACK",
-            "needs_disambiguation": True,
-            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
-            "resources": loaded,
-        }
-
-    # 3. CONDITIONAL: intent-mapped resources
-    for intent in intents:
-        for relative_path in RESOURCE_MAP.get(intent, []):
-            load_if_available(relative_path)
-
-    # 4. ON_DEMAND: explicit keyword triggers
-    text = _task_text(task)
-    if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
-        for relative_path in LOADING_LEVELS["ON_DEMAND"]:
-            load_if_available(relative_path)
-
-    # 5. Safety net
-    if not loaded:
-        load_if_available(DEFAULT_RESOURCE)
-
-    return {"intents": intents, "intent_scores": scores, "resources": loaded}
 ```
+
+**Call sequence** (using shared helpers from `shared_smart_router.md`):
+
+1. `discover_markdown_resources()` — enumerate available `.md` files under `references/` and `assets/`
+2. `score_intents(task)` — keyword-weight match against `INTENT_SIGNALS`
+3. `select_intents(scores, ambiguity_delta=1.0)` — top-1 or top-2 if scores within delta
+4. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then UNKNOWN-fallback if max score == 0
+5. CONDITIONAL-load `RESOURCE_MAP[intent]` for each selected intent
+6. ON_DEMAND-load if any `ON_DEMAND_KEYWORDS` match the task text
+
+The `route_copilot_resources(task)` function body lives in [`shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md) — substitute `<PROVIDER>` = `copilot`.
 
 ---
 
@@ -284,17 +153,13 @@ def route_copilot_resources(task):
 
 ### Prerequisites
 
-Copilot CLI must be installed and authenticated:
-
 ```bash
 # Verify installation
 command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 
-# Authentication - OAuth flow
+# Authentication — OAuth flow OR non-interactive PAT
 copilot login
-
-# Authentication - Non-interactive (CI/CD or automation)
-export GH_TOKEN=your-github-pat
+export GH_TOKEN=your-github-pat   # for CI/CD or automation
 ```
 
 ### Core Invocation Pattern
@@ -319,14 +184,7 @@ copilot -p "prompt" --allow-all-tools 2>&1
 
 Copilot CLI does **not** receive Spec Kit's startup context or advisor brief through hook stdout. GitHub's hook contract currently ignores `sessionStart` output and ignores `userPromptSubmitted` output for prompt modification, so the Claude-style `additionalContext` path is unavailable.
 
-Spec Kit uses the supported file-based workaround instead:
-
-- The repository `userPromptSubmitted` hook refreshes a managed block in `$HOME/.copilot/copilot-instructions.md` with the latest startup context and advisor brief.
-- Human Copilot instructions are preserved outside the `SPEC-KIT-COPILOT-CONTEXT` markers.
-- Copilot reads the refreshed custom instructions on the next submitted prompt in the current or a future session.
-- For scripted `copilot -p` calls that need same-invocation context, use [assets/shell_wrapper.md](./assets/shell_wrapper.md).
-
-This means Copilot parity is file-based and next-prompt fresh, not true in-turn prompt injection. Use `--no-custom-instructions` only when intentionally bypassing this context surface.
+Spec Kit uses the supported file-based workaround: the repository `userPromptSubmitted` hook refreshes a managed block in `$HOME/.copilot/copilot-instructions.md` with the latest startup context and advisor brief. Human Copilot instructions are preserved outside the `SPEC-KIT-COPILOT-CONTEXT` markers. Copilot reads the refreshed custom instructions on the next submitted prompt. For scripted `copilot -p` calls that need same-invocation context, use [assets/shell_wrapper.md](./assets/shell_wrapper.md). Use `--no-custom-instructions` only when intentionally bypassing this context surface.
 
 ### Model Selection
 
@@ -341,8 +199,6 @@ Copilot CLI supports 5 recommended models across 3 providers:
 | **Gemini 3.1 Pro Preview** | `gemini-3.1-pro-preview` | Google |
 
 ### Reasoning Effort (GPT-5.x models)
-
-GPT-5.x models support reasoning effort levels that control depth vs speed:
 
 | Level | Config Value | Description |
 |-------|-------------|-------------|
@@ -363,20 +219,8 @@ GPT-5.x models support reasoning effort levels that control depth vs speed:
 | Claude models | low, medium, high | high |
 | Gemini models | low, medium, high | medium |
 
-**Setting reasoning effort:**
+**Setting reasoning effort**: there is no `--reasoning-effort` flag. Edit `~/.copilot/config.json` (`"reasoning_effort": "xhigh"`) for persistent config, or use interactive `/model` flow which writes back to that same file. For scripted `-p` usage, the config file is the only non-interactive mechanism.
 
-1. **Config file** (persistent, applies to all `-p` calls):
-   ```bash
-   # Set xhigh reasoning for all subsequent GPT-5.x calls
-   # Edit ~/.copilot/config.json and add:
-   #   "reasoning_effort": "xhigh"
-   ```
-
-2. **Interactive mode** (persists to config): Select via `/model` → choose GPT-5.x → select effort level. The selection is saved to `~/.copilot/config.json` automatically.
-
-3. **No CLI flag**: There is no `--reasoning-effort` flag. For scripted `-p` usage, `~/.copilot/config.json` is the only non-interactive mechanism; the interactive `/model` flow just writes back to that same config file.
-
-**Non-interactive invocation with xhigh reasoning:**
 ```bash
 # Step 1: Set reasoning effort in config (one-time)
 python3 -c "
@@ -391,11 +235,9 @@ with open(cfg_path, 'w') as f: json.dump(cfg, f, indent=2)
 copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-**How it works internally:** Copilot reads `reasoning_effort` from `~/.copilot/config.json`, validates it against the model's supported levels, and passes it as `reasoning_effort` in the OpenAI API request body. If the config value is invalid or unsupported for the selected model, the model's default level is used.
+Internally, Copilot reads `reasoning_effort` from `~/.copilot/config.json`, validates it against the model's supported levels, and passes it as `reasoning_effort` in the OpenAI API request body. Invalid values fall back to the model's default.
 
 ### Copilot CLI Agent Delegation
-
-The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 
 | Task Type | Agent | Invocation Pattern |
 |-----------|-------|-------------------|
@@ -422,68 +264,39 @@ The calling AI acts as the **conductor** that delegates tasks to Copilot CLI.
 
 ### ALWAYS
 
-1. **ALWAYS verify the `copilot` binary is installed** before invocation.
-2. **ALWAYS use the `-p` flag** for non-interactive execution from the calling AI.
-3. **ALWAYS include `--allow-all-tools`** when the task requires autonomous execution (Autopilot).
-4. **ALWAYS capture stderr** (`2>&1`) to ensure errors are surfaced to the conductor.
-5. **ALWAYS specify the model** if the task benefits from a specific provider's strength (e.g., Opus for reasoning).
-6. **ALWAYS validate output** against the local filesystem to ensure consistency.
-
-7. **ALWAYS pass the spec folder to the delegated agent** in the prompt.
-   - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
-   - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
-   - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
-   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
-
-8. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt.**
-   - Apply the CLEAR 5-question check from the card.
-   - Tag the selected framework in the Bash invocation comment.
-   - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
-   - Use the returned `ENHANCED_PROMPT` as the final Copilot prompt.
+1. Verify the `copilot` binary is installed before invocation.
+2. Use the `-p` flag for non-interactive execution; include `--allow-all-tools` when autonomy is required.
+3. Capture stderr (`2>&1`) so errors surface to the conductor.
+4. Specify `--model` when the task benefits from a specific provider's strength.
+5. Validate output against the local filesystem before integrating.
+6. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 interactively.
+7. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
 
 ### CONCURRENCY LIMIT
 
-**Copilot CLI itself tolerates up to 5 concurrent `copilot` processes, but this repo's Phase 018 convention caps routine automation at 3 parallel calls.** Before launching a new `copilot -p` call, check `pgrep -f "copilot" | wc -l`. Treat 5 as the hard ceiling, and keep normal batches at 2-3 unless an explicit override says otherwise. This preserves the upstream limit while matching the repo-safe default used in packet workflows.
+Copilot CLI tolerates up to 5 concurrent `copilot` processes; the repo's Phase 018 convention caps routine automation at 3 parallel calls. Check `pgrep -f "copilot" | wc -l` before launching. Treat 5 as the hard ceiling.
 
 ### NEVER
 
-1. **NEVER use interactive mode** (omit `-p`) as it will hang the conductor's shell.
-2. **NEVER expose `GH_TOKEN`** in logs or printed output.
-3. **NEVER assume Autopilot is perfect**; always verify the structural integrity of generated code.
-4. **NEVER ignore repository memory**; check for existing conventions before overriding.
-5. **NEVER run more than 5 concurrent copilot processes** — system memory exhaustion risk.
-6. **NEVER invoke this skill from within Copilot CLI itself**
-   - If you ARE Copilot CLI, you already have native access to all capabilities — do not self-delegate via CLI
-   - Self-invocation creates a circular, wasteful loop; use your native tools directly instead
+1. Use interactive mode (omit `-p`) — it hangs the conductor's shell.
+2. Expose `GH_TOKEN`, sensitive prompts, or credentials in logs/output, or hammer the API with rapid sequential calls. Trust Autopilot output blindly — always verify generated code's structural integrity.
+3. Ignore repository memory — check existing conventions before overriding.
+4. Run more than 5 concurrent copilot processes (memory exhaustion risk).
 
 ### ESCALATE IF
 
-1. **ESCALATE IF `copilot login` is required** (authentication failure).
-2. **ESCALATE IF a model conflict occurs** (requested model not available in current plan).
-3. **ESCALATE IF Autopilot hits a safety block** or tool execution failure that it cannot resolve.
-4. **ESCALATE IF cloud delegation times out** or returns a service error.
+1. `copilot login` is required (auth failure), a model conflict occurs (model not in current plan), Autopilot hits a safety block, or cloud delegation times out.
 
 ### Memory Handback Protocol
 
-When the calling AI needs to preserve session context from a Copilot CLI delegation:
+When the calling AI needs to preserve session context from a Copilot CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js --stdin` → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
 
-1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §12) to the delegated prompt
-2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
-3. **Parse to structured JSON**: Build a payload anchored on the current structured contract: `specFolder`, `user_prompts`, `observations`, and `recent_context`, with optional `toolCalls`, `exchanges`, `preflight`, and `postflight` when you have them. Convenience fields such as `sessionSummary`, `filesModified`, `keyDecisions`, `triggerPhrases`, and `nextSteps` are still accepted and normalized, and documented snake_case keys such as `session_summary`, `files_modified`, `trigger_phrases`, `recent_context`, and `next_steps` also work.
-4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before sending the JSON payload to the save script
-5. **Choose a structured-input mode**: Prefer `--stdin` when you already have the JSON in memory, use `--json` for a compact inline payload, or write a temp JSON file for larger handbacks
-6. **Invoke generate-context.js**: `printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]`
-7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+Copilot-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §12.
 
-**Missing delimiter handling**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the structured JSON payload from the agent output and saves it through the same structured-input flow. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
-
-**Target precedence**: When both the payload and the CLI specify a spec folder, the explicit CLI target wins. Use the CLI argument whenever the calling AI already knows the correct destination.
-
-**Structured-input failures**: If an explicit temp file cannot be loaded, `generate-context.js` stops with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Surface the error and fix the file path or payload before retrying.
-
-**Save gates**: Valid JSON can still be rejected after normalization. Thin payloads fail with `INSUFFICIENT_CONTEXT_ABORT`, and cross-spec payloads fail with `CONTAMINATION_GATE_ABORT`.
-
-**Minimum payload guidance**: Include a specific summary, at least one meaningful `recent_context` entry, at least one useful observation, and rich `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, `_provenance`, and `toolCalls` when known so the saved memory carries durable evidence instead of bare filenames.
+Example invocation:
+```bash
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+```
 
 ---
 
@@ -499,6 +312,14 @@ When the calling AI needs to preserve session context from a Copilot CLI delegat
 
 ### Templates and Assets
 - [prompt_templates.md](./assets/prompt_templates.md) - Optimized prompts for planning, delegation, and generation.
+
+### Shared (cli-* family)
+- [shared_smart_router.md](../system-spec-kit/references/cli/shared_smart_router.md) - Helper-function bodies for the smart router.
+- [memory_handback.md](../system-spec-kit/references/cli/memory_handback.md) - Canonical 7-step Memory Handback procedure.
+
+### External
+- [GitHub Copilot CLI Documentation](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-cli)
+- [GitHub Models Directory](https://github.com/marketplace/models)
 
 ---
 
@@ -527,9 +348,7 @@ When the calling AI needs to preserve session context from a Copilot CLI delegat
 ### Framework Integration
 This skill follows the [AGENTS.md](../../../AGENTS.md) orchestration protocol.
 
-### Tool Usage
-- **Bash**: Core tool for executing `copilot -p` commands.
-- **Read/Glob/Grep**: Used for validating Copilot's output and auditing changes.
+**Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output.
 
 ### Related Skills
 - **cli-claude-code**: Delegate to Claude Code for surgical diff-based edits.
@@ -542,15 +361,7 @@ This skill follows the [AGENTS.md](../../../AGENTS.md) orchestration protocol.
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
-### Reference Files
-- `references/cli_reference.md`
-- `references/agent_delegation.md`
-- `references/copilot_tools.md`
-- `references/integration_patterns.md`
-
-### External
-- [GitHub Copilot CLI Documentation](https://docs.github.com/en/copilot/using-github-copilot/using-github-copilot-cli)
-- [GitHub Models Directory](https://github.com/marketplace/models)
+See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
 
 ---
 

@@ -26,35 +26,20 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 
 ### Activation Triggers
 
-**Full plugin / skill / MCP runtime** — Use when:
-- The calling AI is Claude Code / Codex / Copilot / Gemini / raw shell AND the task needs the project's full Spec Kit Memory database, CocoIndex semantic index, or structural code graph
-- A one-shot dispatch must load every plugin, skill, and MCP tool the project configures
-- A `@deep-research` or `@deep-review` agent loop needs externalized state under the project's `.opencode/specs/` tree
-
-**Parallel detached session** — Use when:
-- The operator is already inside OpenCode (TUI / web / serve / acp) AND wants a SEPARATE session with its own session id and state directory for ablation, worker farm, or parallel research
-- The prompt explicitly mentions "parallel detached", "ablation suite", "worker farm", "parallel research", "spawn detached", or "share URL"
-
-**Cross-AI orchestration handback** — Use when:
-- The calling AI is a non-Anthropic CLI (Codex / Copilot / Gemini) AND the task targets a project-specific subsystem (spec-kit, memory, code-graph, advisor)
-- The non-Anthropic CLI cannot load the project's plugin / skill / MCP runtime on its own and needs OpenCode as a bridge
-
-**Agent dispatch** — Use when:
-- The task matches a specialized OpenCode agent (`general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `ultra-think`, `improve-agent`)
-- The dispatched session benefits from the agent's pinned model, tool permissions, and system prompt
-
-**Cross-repo dispatch** — Use when:
-- A session in repo A needs to dispatch into repo B's plugin / skill / MCP runtime via `--dir <path>`
-- A remote OpenCode server's path needs to be targeted via `--attach <url>` plus `--dir`
+- **Full plugin / skill / MCP runtime** (use case 1) — calling AI is Claude Code / Codex / Copilot / Gemini / raw shell AND the task needs the project's full Spec Kit Memory database, CocoIndex semantic index, structural code graph, or every plugin/skill/MCP tool in a one-shot dispatch. Includes `@deep-research` / `@deep-review` agent loops with externalized state under `.opencode/specs/`.
+- **Parallel detached session** (use case 2) — operator already inside OpenCode (TUI / web / serve / acp) AND wants a SEPARATE session with its own session id and state directory for ablation, worker farm, or parallel research. Prompt explicitly mentions "parallel detached", "ablation suite", "worker farm", "parallel research", "spawn detached", or "share URL".
+- **Cross-AI orchestration handback** (use case 3) — calling AI is non-Anthropic (Codex / Copilot / Gemini), task targets a project-specific subsystem (spec-kit, memory, code-graph, advisor), and the non-Anthropic CLI cannot load the project's plugin/skill/MCP runtime on its own and needs OpenCode as a bridge.
+- **Agent dispatch** — task matches a specialized OpenCode agent (`general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `ultra-think`, `improve-agent`).
+- **Cross-repo dispatch** — session in repo A dispatches into repo B's plugin/skill/MCP runtime via `--dir <path>` or remote OpenCode server via `--attach <url>`.
 
 ### When NOT to Use
 
 - **You ARE OpenCode already.** If your runtime is OpenCode (detection signal: `$OPENCODE_CONFIG_DIR` or any `OPENCODE_*` env var set, `opencode` in process ancestry, or `~/.opencode/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation. The single legitimate exception is an explicit "parallel detached" request that intentionally spawns a SEPARATE session id and state directory (use case 2); without that qualifier, the smart router refuses per ADR-001.
-- Simple, quick tasks where `opencode run` overhead is not worth it
-- Tasks that only need a raw model dispatch — use a sibling cli-* skill (cli-claude-code, cli-codex, cli-copilot, cli-gemini)
-- Tasks that require interactive TUI or web UI (use `opencode` directly instead of `opencode run`)
-- Context already loaded and understood by the calling AI
-- Tasks where the OpenCode binary is not installed at the expected path
+- Simple, quick tasks where `opencode run` overhead is not worth it.
+- Tasks that only need a raw model dispatch — use a sibling cli-* skill.
+- Tasks requiring interactive TUI or web UI (use `opencode` directly instead of `opencode run`).
+- Context already loaded and understood by the calling AI.
+- Tasks where the OpenCode binary is not installed at the expected path.
 
 ---
 
@@ -82,16 +67,13 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "ERROR:
 ```python
 def detect_self_invocation():
     """Returns a non-None signal when the orchestrator is already running inside OpenCode."""
-    # Detection signals — trip on ANY positive
-    # Layer 1: env var lookup — OpenCode sets OPENCODE_CONFIG_DIR and other OPENCODE_* vars on session start
+    # Layer 1: env var lookup — OpenCode sets OPENCODE_CONFIG_DIR and OPENCODE_* vars
     for key in os.environ:
         if key == 'OPENCODE_CONFIG_DIR' or key.startswith('OPENCODE_'):
             return ('env', key)
     # Layer 2: process ancestry — opencode in parent tree
     try:
-        ancestry = subprocess.check_output(
-            ['ps', '-o', 'command=', '-p', str(os.getppid())]
-        ).decode()
+        ancestry = subprocess.check_output(['ps', '-o', 'command=', '-p', str(os.getppid())]).decode()
         if '/opencode' in ancestry or 'opencode ' in ancestry:
             return ('ancestry', 'opencode')
     except subprocess.SubprocessError:
@@ -115,32 +97,6 @@ if detect_self_invocation():
         )
 ```
 
-### Phase Detection
-
-```text
-TASK CONTEXT
-    |
-    +- STEP 0: Verify opencode CLI installed + check self-invocation guard
-    +- STEP 1: Score intents (top-2 when ambiguity is small)
-    +- STEP 2: Map intents to one of the 3 documented use cases
-    +- Phase 1: Construct prompt with model + agent + variant + format + dir
-    +- Phase 2: Execute via Bash tool (with </dev/null in background loops)
-    +- Phase 3: Parse JSON event stream, extract MEMORY_HANDBACK, integrate
-```
-
-### Resource Domains
-
-The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_SIGNALS`.
-
-```text
-references/cli_reference.md          — CLI subcommands, flags, models, version drift
-references/integration_patterns.md   — 3 use cases + decision tree + self-invocation guard
-references/opencode_tools.md         — Unique value props vs sibling cli-* skills
-references/agent_delegation.md       — Agent routing matrix and patterns
-assets/prompt_templates.md           — Copy-paste templates per use case
-assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-check
-```
-
 ### Resource Loading Levels
 
 | Level       | When to Load            | Resources                      |
@@ -149,15 +105,11 @@ assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-ch
 | CONDITIONAL | If intent signals match | Intent-mapped reference docs   |
 | ON_DEMAND   | Only on explicit request| Extended templates and patterns |
 
-### Smart Router Pseudocode
+### Smart Router
+
+Provider-specific dictionaries (used by the shared helper functions in [`system-spec-kit/references/cli/shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md)):
 
 ```python
-from pathlib import Path
-
-SKILL_ROOT = Path(__file__).resolve().parent
-RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
-DEFAULT_RESOURCE = "references/cli_reference.md"
-
 INTENT_SIGNALS = {
     "EXTERNAL_DISPATCH":  {"weight": 4, "keywords": ["delegate to opencode", "opencode run", "from claude code", "from codex", "from gemini", "from copilot", "external runtime", "full plugin runtime"]},
     "PARALLEL_DETACHED":  {"weight": 4, "keywords": ["parallel detached", "ablation suite", "worker farm", "parallel research", "spawn detached", "share url", "share-url", "detached session"]},
@@ -179,7 +131,7 @@ RESOURCE_MAP = {
 }
 
 LOADING_LEVELS = {
-    "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
+    "ALWAYS": ["references/cli_reference.md", "assets/prompt_quality_card.md"],
     "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "opencode agent", "opencode prompt", "share url", "ablation", "worker farm", "self-invocation", "memory handback"],
     "ON_DEMAND": ["references/opencode_tools.md", "assets/prompt_templates.md"],
 }
@@ -190,91 +142,18 @@ UNKNOWN_FALLBACK_CHECKLIST = [
     "Is a parallel detached session what they want?",
     "Is a non-Anthropic CLI handing back to OpenCode for a spec-kit workflow?",
 ]
-
-def _task_text(task) -> str:
-    return " ".join([
-        str(getattr(task, "text", "")),
-        str(getattr(task, "query", "")),
-        " ".join(getattr(task, "keywords", []) or []),
-    ]).lower()
-
-def _guard_in_skill(relative_path: str) -> str:
-    resolved = (SKILL_ROOT / relative_path).resolve()
-    resolved.relative_to(SKILL_ROOT)
-    if resolved.suffix.lower() != ".md":
-        raise ValueError(f"Only markdown resources are routable: {relative_path}")
-    return resolved.relative_to(SKILL_ROOT).as_posix()
-
-def discover_markdown_resources() -> set[str]:
-    docs = []
-    for base in RESOURCE_BASES:
-        if base.exists():
-            docs.extend(p for p in base.rglob("*.md") if p.is_file())
-    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
-
-def score_intents(task) -> dict[str, float]:
-    text = _task_text(task)
-    scores = {intent: 0.0 for intent in INTENT_SIGNALS}
-    for intent, cfg in INTENT_SIGNALS.items():
-        for keyword in cfg["keywords"]:
-            if keyword in text:
-                scores[intent] += cfg["weight"]
-    return scores
-
-def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
-    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
-    if not ranked or ranked[0][1] <= 0:
-        return ["UNKNOWN"]
-    selected = [ranked[0][0]]
-    if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
-        selected.append(ranked[1][0])
-    return selected[:max_intents]
-
-def route_opencode_resources(task):
-    inventory = discover_markdown_resources()
-    scores = score_intents(task)
-    intents = select_intents(scores, ambiguity_delta=1.0)
-    loaded = []
-    seen = set()
-
-    def load_if_available(relative_path: str) -> None:
-        guarded = _guard_in_skill(relative_path)
-        if guarded in inventory and guarded not in seen:
-            load(guarded)
-            loaded.append(guarded)
-            seen.add(guarded)
-
-    # 1. ALWAYS load baseline + fast-path prompt-quality asset
-    for relative_path in LOADING_LEVELS["ALWAYS"]:
-        load_if_available(relative_path)
-
-    # 2. UNKNOWN FALLBACK: no keywords matched at all
-    if max(scores.values()) == 0:
-        return {
-            "intents": ["UNKNOWN"],
-            "load_level": "UNKNOWN_FALLBACK",
-            "needs_disambiguation": True,
-            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
-            "resources": loaded,
-        }
-
-    # 3. CONDITIONAL: intent-mapped resources
-    for intent in intents:
-        for relative_path in RESOURCE_MAP.get(intent, []):
-            load_if_available(relative_path)
-
-    # 4. ON_DEMAND: explicit keyword triggers
-    text = _task_text(task)
-    if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
-        for relative_path in LOADING_LEVELS["ON_DEMAND"]:
-            load_if_available(relative_path)
-
-    # 5. Safety net
-    if not loaded:
-        load_if_available(DEFAULT_RESOURCE)
-
-    return {"intents": intents, "intent_scores": scores, "resources": loaded}
 ```
+
+**Call sequence** (using shared helpers from `shared_smart_router.md`):
+
+1. `discover_markdown_resources()` — enumerate available `.md` files under `references/` and `assets/`
+2. `score_intents(task)` — keyword-weight match against `INTENT_SIGNALS`
+3. `select_intents(scores, ambiguity_delta=1.0)` — top-1 or top-2 if scores within delta
+4. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then UNKNOWN-fallback if max score == 0
+5. CONDITIONAL-load `RESOURCE_MAP[intent]` for each selected intent
+6. ON_DEMAND-load if any `ON_DEMAND_KEYWORDS` match the task text
+
+The `route_opencode_resources(task)` function body lives in [`shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md) — substitute `<PROVIDER>` = `opencode`.
 
 ---
 
@@ -284,26 +163,22 @@ def route_opencode_resources(task):
 
 ### Prerequisites
 
-OpenCode CLI must be installed and a provider must be authenticated:
-
 ```bash
 # Verify installation (cli-opencode v1.0.0 is pinned to opencode v1.3.17)
 opencode --version | grep -q '^1\.' || echo "Not installed or version drift. See references/cli_reference.md §9."
 
-# SELF-INVOCATION GUARD
+# Self-invocation guard
 env | grep -q '^OPENCODE_' && echo "ERROR: Already inside OpenCode session"
 
-# Authentication — providers are configured via opencode providers (alias auth)
+# Authentication — providers configured via opencode providers (alias auth)
 opencode providers
 ```
 
-**Authentication options**: `opencode auth login <provider>` for OAuth flows, or per-provider API key env vars (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`) that the provider plugins read at session start.
+**Authentication options**: `opencode auth login <provider>` for OAuth, or per-provider API key env vars (e.g. `ANTHROPIC_API_KEY`, `OPENAI_API_KEY`) read by provider plugins at session start.
 
 ### Default Invocation (Skill Default)
 
-**Default model + variant + agent + format + dir**: `anthropic/claude-opus-4-7` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`.
-
-When the caller does not specify a model, agent, or variant, dispatch with these defaults. The repo root pin (`/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public`) avoids CWD ambiguity.
+**Default model + variant + agent + format + dir**: `anthropic/claude-opus-4-7` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity.
 
 ```bash
 opencode run \
@@ -315,7 +190,7 @@ opencode run \
   "<prompt>"
 ```
 
-**User override**: The caller MAY override the default by stating the model, agent, or variant. Honor explicit user phrasing verbatim.
+**User override** (honor explicit user phrasing verbatim):
 
 | User says | Resolve to |
 |-----------|------------|
@@ -326,8 +201,6 @@ opencode run \
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
 
 ### Core Invocation Pattern
-
-All non-interactive OpenCode CLI calls use the `run` subcommand:
 
 ```bash
 opencode run "prompt" --model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir /repo 2>&1
@@ -363,13 +236,11 @@ opencode run "prompt" --model anthropic/claude-opus-4-7 --agent general --varian
 | OpenAI | `openai/gpt-5.5` | `minimal`, `low`, `medium`, `high`, `xhigh` | Codex-style code generation |
 | Google | `google/gemini-2.5-pro` | `minimal`, `low`, `medium`, `high` | Web research, long context |
 
-`opencode models <provider>` enumerates available models. The skill defaults to `anthropic/claude-opus-4-7 --variant high` for cross-AI dispatches because the typical task benefits from elevated reasoning.
+`opencode models <provider>` enumerates available models. The skill defaults to `anthropic/claude-opus-4-7 --variant high` because the typical task benefits from elevated reasoning.
 
 ### OpenCode Agent Delegation
 
-The calling AI acts as the **conductor** that delegates tasks to OpenCode CLI. OpenCode has specialized agents under `.opencode/agent/<slug>.md` that pin the model, tool permissions, and system prompt.
-
-**Agent routing table**:
+The calling AI is the conductor; OpenCode agents under `.opencode/agent/<slug>.md` pin the model, tool permissions, and system prompt.
 
 | Task type | Agent | Invocation pattern |
 |-----------|-------|---------------------|
@@ -382,13 +253,9 @@ The calling AI acts as the **conductor** that delegates tasks to OpenCode CLI. O
 | Documentation | `write` | `opencode run --agent write --variant high --format json --dir /repo "Generate README"` |
 | Multi-agent coordination | `orchestrate` | `opencode run --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests"` |
 
-**Orchestration principle**: The calling AI decides WHAT to delegate. The OpenCode agent's frontmatter shapes HOW the dispatched session processes it. The calling AI always validates and integrates the output.
-
-See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster and invocation patterns.
+See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster.
 
 ### Unique OpenCode Capabilities
-
-These capabilities are exclusive to `opencode run` or provide a meaningfully different workflow than the four sibling cli-* skills:
 
 | Capability | Purpose | Invocation |
 |------------|---------|------------|
@@ -457,120 +324,43 @@ opencode run \
 
 ### ALWAYS
 
-**ALWAYS do these without asking:**
-
-1. **ALWAYS verify OpenCode CLI is installed** before first invocation
-   - Run `command -v opencode` and handle missing installation gracefully
-   - Confirm version baseline against v1.3.17 — drift handled per `references/cli_reference.md` §9
-
-2. **ALWAYS run the self-invocation guard** before dispatch (ADR-001)
-   - Layer 1: env var lookup for any `OPENCODE_*` variable
-   - Layer 2: process ancestry probe for `opencode` parent
-   - Layer 3: `~/.opencode/state/<id>/lock` file probe
-   - Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords
-
-3. **ALWAYS pin the model + agent + variant + format + dir** explicitly
-   - Default: `--model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir <repo-root>`
-   - Honor user overrides verbatim (e.g. "use anthropic sonnet" -> `anthropic/claude-sonnet-4-7`)
-
-4. **ALWAYS pass `--format json`** unless the calling AI explicitly wants formatted output
-   - JSON event stream is what external runtimes parse incrementally
-
-5. **ALWAYS append `</dev/null`** when backgrounding `opencode run` in a `while read` loop
-   - Without it the backgrounded process consumes the loop's stdin and silently exits early
-   - See `references/integration_patterns.md` §6
-
-6. **ALWAYS pass the spec folder to the dispatched session** in the prompt
-   - If the calling AI has an active spec folder (from Gate 3), include `Spec folder: <path> (pre-approved, skip Gate 3)` in the prompt
-   - If the calling AI does NOT have a spec folder, ask the user BEFORE delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode
-
-7. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt**
-   - Apply the CLEAR 5-question check from the card
-   - Tag the selected framework in the Bash invocation comment
-   - If complexity is `>= 7/10` or compliance / security signals appear, dispatch `@improve-prompt` via the Task tool first
-   - Use the returned `ENHANCED_PROMPT` as the final OpenCode prompt
-
-8. **ALWAYS validate dispatched session output** before applying to the project
-   - Parse JSON events incrementally — surface tool calls, partial messages, the final summary
-   - Run syntax checks if code was generated
-   - Cross-reference against the project's standards (sk-code-review, sk-code-opencode)
-
-9. **ALWAYS capture stderr** with `2>&1` to catch tool errors and warnings
-
-10. **ALWAYS classify the use case** before dispatching
-    - Use case 1: external runtime to OpenCode
-    - Use case 2: in-OpenCode parallel detached session
-    - Use case 3: cross-AI handback for spec-kit-specific workflows
-    - The smart router refuses dispatches that do not map to one of the three cases
+1. Verify OpenCode CLI is installed before first invocation; confirm version baseline against v1.3.17 (drift handling per `references/cli_reference.md` §9).
+2. **Run the self-invocation guard before dispatch** (ADR-001): Layer 1 env-var lookup for any `OPENCODE_*`, Layer 2 process-ancestry probe for `opencode` parent, Layer 3 `~/.opencode/state/<id>/lock` probe. Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords.
+3. Pin model + agent + variant + format + dir explicitly. Default: `--model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim.
+4. Pass `--format json` unless the calling AI explicitly wants formatted output — JSON event stream is what external runtimes parse incrementally.
+5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
+6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.
+7. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool first.
+8. Validate dispatched session output: parse JSON events incrementally (tool calls, partial messages, final summary), run syntax checks if code generated, cross-reference against project standards (sk-code-review, sk-code-opencode).
+9. Capture stderr (`2>&1`) to catch tool errors and warnings.
+10. Classify the use case (1 / 2 / 3) before dispatching — the smart router refuses dispatches that do not map to one of the three.
 
 ### NEVER
 
-**NEVER do these:**
-
-1. **NEVER invoke this skill from within OpenCode itself for a self-dispatch**
-   - If you ARE OpenCode AND the prompt requests "delegate this exact prompt to OpenCode", REFUSE with the documented error message
-   - Use a sibling cli-* skill OR a fresh shell session OR add explicit parallel-session keywords
-
-2. **NEVER pass `--share` without operator confirmation** (CHK-033)
-   - The share URL exposes session contents — opt-in only
-
-3. **NEVER trust dispatched session output blindly** for security-sensitive code
-   - Always review for XSS, injection, hardcoded secrets, eval() calls
-
-4. **NEVER send sensitive data** (API keys, passwords, credentials) in prompts
-   - The dispatched session transmits prompts to the configured provider's API
-
-5. **NEVER use `--pure` outside of plugin debugging**
-   - Disabling plugins removes the entire point of the cli-opencode dispatch (full plugin / skill / MCP runtime)
-
-6. **NEVER hammer the API** with rapid sequential calls
-   - Respect provider rate limits; use background dispatch with `</dev/null` for batch work
-
-7. **NEVER nest `opencode run` inside a dispatched session's tool calls**
-   - Use OpenCode's native Task tool for sub-agent dispatch, not nested CLI invocations
+1. Invoke this skill from within OpenCode itself for a self-dispatch — refuse with the documented error message; use a sibling cli-* / fresh shell / parallel-session keywords.
+2. Pass `--share` without operator confirmation (CHK-033) — share URL exposes session contents.
+3. Trust dispatched session output blindly for security-sensitive code, send sensitive data (API keys, passwords, credentials) in prompts, or hammer the API with rapid sequential calls.
+4. Use `--pure` outside of plugin debugging (disabling plugins removes the entire point of cli-opencode dispatch).
+5. Nest `opencode run` inside a dispatched session's tool calls — use OpenCode's native Task tool for sub-agent dispatch.
 
 ### ESCALATE IF
 
-**Ask user when:**
-
-1. **ESCALATE IF OpenCode CLI is not installed** and user has not acknowledged
-   - Provide installation command: `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install | bash`
-
-2. **ESCALATE IF the operator wants to publish a `--share` URL**
-   - The URL exposes session contents — get explicit operator confirmation per CHK-033
-
-3. **ESCALATE IF the binary version differs from the v1.3.17 baseline**
-   - Run `opencode --version` and `opencode run --help` to inspect drift
-   - Surface drift in the calling AI's response and either fall back or require operator approval
-
-4. **ESCALATE IF the smart router cannot map the prompt to one of the three use cases**
-   - Surface the disambiguation checklist from the UNKNOWN_FALLBACK lane
-
-5. **ESCALATE IF the self-invocation guard trips AND the prompt is ambiguous**
-   - Surface the refusal message with the three remediation options (sibling cli-* / fresh shell / parallel-session keywords)
+1. OpenCode CLI is not installed and user has not acknowledged (provide `brew install opencode` or `curl -fsSL https://opencode.ai/install | bash`).
+2. Operator wants to publish a `--share` URL — get explicit confirmation per CHK-033.
+3. Binary version differs from the v1.3.17 baseline — run `opencode --version` and `opencode run --help`; surface drift and fall back or require approval.
+4. Smart router cannot map the prompt to one of the three use cases — surface the disambiguation checklist from UNKNOWN_FALLBACK.
+5. Self-invocation guard trips AND the prompt is ambiguous — surface the refusal with three remediation options (sibling cli-* / fresh shell / parallel-session keywords).
 
 ### Memory Handback Protocol
 
-When the calling AI needs to preserve session context from an OpenCode CLI delegation:
+When the calling AI needs to preserve session context from an OpenCode CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
 
-1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §14) to the delegated prompt
-2. **Extract section**: After receiving the dispatched output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
-3. **Convert to structured JSON**: Build the JSON-primary payload that `generate-context.js` documents. Use `specFolder`, `user_prompts`, `observations`, and `recent_context` as the canonical field names. Add `FILES`, `sessionSummary`, `keyDecisions`, `nextSteps`, `triggerPhrases`, `toolCalls`, `exchanges`, `preflight`, and `postflight` when the dispatched run produced that evidence.
-4. **Redact and scrub**: Remove secrets, tokens, credentials before writing the JSON file
-5. **Choose a structured-input mode**: Save the scrubbed payload to `/tmp/save-context-data-<session-id>.json`, pipe it with `--stdin`, or pass it inline with `--json`
-6. **Invoke generate-context.js**: Use one of:
-   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]`
-   - `printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]`
-   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "$JSON_PAYLOAD" [spec-folder]`
-7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+OpenCode-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §14.
 
-**Delimiter missing**: If output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the structured JSON payload. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, remaining entries persist as `Follow-up: ...`.
-
-**Structured JSON only**: Direct spec-folder-only invocation is no longer supported. Always call `generate-context.js` with `--stdin`, `--json`, or a JSON temp file.
-
-**Compatibility aliases**: The normalizer accepts documented camelCase / snake_case pairs (`sessionSummary` / `session_summary`, `nextSteps` / `next_steps`, `userPrompts` / `user_prompts`, `recentContext` / `recent_context`). Prefer the canonical field names in new payloads.
-
-**Minimum payload guidance**: Include a specific `sessionSummary`, at least one meaningful `recent_context` entry, and rich `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
+Example invocation:
+```bash
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+```
 
 ---
 
@@ -590,11 +380,20 @@ When the calling AI needs to preserve session context from an OpenCode CLI deleg
 - [prompt_templates.md](./assets/prompt_templates.md) - 13 numbered copy-paste templates per use case + agent + handback
 - [prompt_quality_card.md](./assets/prompt_quality_card.md) - Framework selection, CLEAR 5-check, escalation triggers
 
+### Shared (cli-* family)
+- [shared_smart_router.md](../system-spec-kit/references/cli/shared_smart_router.md) - Helper-function bodies for the smart router.
+- [memory_handback.md](../system-spec-kit/references/cli/memory_handback.md) - Canonical 7-step Memory Handback procedure.
+
+### External
+- [OpenCode GitHub](https://github.com/sst/opencode) - Official repository
+- [OpenCode Install](https://opencode.ai/install) - Standalone installer entry point
+- [OpenCode Documentation](https://opencode.ai/docs) - Official docs
+
 ### Reference Loading Notes
 
-- Load only references needed for current intent
-- Keep Smart Routing (Section 2) as the single routing authority
-- `cli_reference.md` and `prompt_quality_card.md` are ALWAYS loaded as baseline
+- Load only references needed for current intent.
+- Smart Routing (Section 2) is the single routing authority.
+- `cli_reference.md` and `prompt_quality_card.md` are ALWAYS loaded as baseline.
 
 ---
 
@@ -604,22 +403,21 @@ When the calling AI needs to preserve session context from an OpenCode CLI deleg
 
 ### Task Completion
 
-- OpenCode CLI invoked with the correct subcommand, flags, model, agent, variant, format, and dir
-- Self-invocation guard checked before dispatch — refused when appropriate
-- Use case (1 / 2 / 3) classified explicitly before invocation
-- JSON event stream captured, parsed incrementally, validated, integrated
-- No security vulnerabilities introduced from generated code
-- `--share` URLs opt-in with operator confirmation per CHK-033
-- Background dispatches in `while read` loops include `</dev/null` redirect
-- Memory Handback extracted and saved through `generate-context.js` when applicable
+- OpenCode CLI invoked with the correct subcommand, flags, model, agent, variant, format, and dir.
+- Self-invocation guard checked before dispatch — refused when appropriate.
+- Use case (1 / 2 / 3) classified explicitly before invocation.
+- JSON event stream captured, parsed incrementally, validated, integrated.
+- No security vulnerabilities introduced from generated code.
+- `--share` URLs opt-in with operator confirmation per CHK-033.
+- Background dispatches in `while read` loops include `</dev/null` redirect.
+- Memory Handback extracted and saved through `generate-context.js` when applicable.
 
 ### Skill Quality
 
-- SKILL.md within the ~450-650 LOC sibling band
-- All 8 sections present with proper anchor comments
-- Smart routing covers all intent signals with UNKNOWN_FALLBACK
-- Reference files provide deep-dive content without duplication
-- Self-invocation guard pseudocode reproduced in Section 2 mirrors ADR-001
+- All 8 sections present with proper anchor comments.
+- Smart routing covers all intent signals with UNKNOWN_FALLBACK.
+- Reference files provide deep-dive content without duplication.
+- Self-invocation guard pseudocode reproduced in Section 2 mirrors ADR-001.
 
 ---
 
@@ -637,14 +435,7 @@ Key integrations:
 - **Memory**: Context preserved via Spec Kit Memory MCP (`generate-context.js`)
 - **Validation**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh` for spec-folder workflows
 
-### Tool Usage
-
-| Tool | Purpose |
-|------|---------|
-| **Bash** | Execute `opencode run` commands |
-| **Read** | Examine event-stream output files and dispatched session artifacts |
-| **Glob** | Find generated files |
-| **Grep** | Search within generated output and `~/.opencode/state/` for session lock probes |
+**Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output and probe `~/.opencode/state/` for session locks.
 
 ### Related Skills
 
@@ -661,44 +452,13 @@ Key integrations:
 | **sk-deep-review** | LEAF agent dispatched as `--agent deep-review` for parallel review iterations |
 | **mcp-code-mode** | Code Mode tools available inside the dispatched session via the project's MCP wiring |
 
-### External Tools
-
-**OpenCode CLI** (required):
-- Installation: `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install | bash`
-- Authentication: per-provider via `opencode auth login <provider>` or env vars (`ANTHROPIC_API_KEY`, etc.)
-- Purpose: Core execution engine for all delegated tasks
-- Fallback: Skill informs user of installation steps if missing
-
 ---
 
 <!-- /ANCHOR:integration-points -->
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
-### Reference Files
-- [cli_reference.md](./references/cli_reference.md) - Full subcommand and flag reference
-- [integration_patterns.md](./references/integration_patterns.md) - Three use cases, decision tree, self-invocation
-- [opencode_tools.md](./references/opencode_tools.md) - Unique capabilities and comparison vs siblings
-- [agent_delegation.md](./references/agent_delegation.md) - Agent roster, routing matrix, leaf constraints
-
-### Templates
-- [prompt_templates.md](./assets/prompt_templates.md) - 13 templates: 3 use cases + agents + handback
-- [prompt_quality_card.md](./assets/prompt_quality_card.md) - CLEAR check and framework selection
-
-### Related Skills
-- `cli-claude-code` - Anthropic Claude Code CLI for raw model dispatch
-- `cli-codex` - OpenAI Codex CLI for code generation and sandboxed execution
-- `cli-copilot` - GitHub Copilot CLI for cloud-agent-style dispatches
-- `cli-gemini` - Google Gemini CLI for Google Search grounding
-- `system-spec-kit` - Spec folder workflow + Spec Kit Memory (cross-AI handback target)
-- `sk-doc` - Documentation generation that the @write agent dispatches into
-- `sk-deep-research` - Iterative research loop (dispatched via `--agent deep-research`)
-- `sk-deep-review` - Iterative review loop (dispatched via `--agent deep-review`)
-
-### External
-- [OpenCode GitHub](https://github.com/sst/opencode) - Official repository
-- [OpenCode Install](https://opencode.ai/install) - Standalone installer entry point
-- [OpenCode Documentation](https://opencode.ai/docs) - Official docs
+See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
 
 ---
 

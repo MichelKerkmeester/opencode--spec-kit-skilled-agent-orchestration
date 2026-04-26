@@ -26,49 +26,21 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 
 ### Activation Triggers
 
-**Deep Reasoning** - Use when:
-- Complex architectural decisions need extended thinking with chain-of-thought
-- Trade-off analysis requires weighing multiple dimensions simultaneously
-- Algorithm design needs step-by-step logical reasoning
-- Root cause analysis of subtle bugs that resist surface-level debugging
-
-**Code Editing** - Use when:
-- Surgical, diff-based edits needed across specific files
-- Precise refactoring that must preserve existing patterns
-- Multi-file coordinated changes with dependency awareness
-- Code modifications requiring deep codebase context
-
-**Structured Output** - Use when:
-- JSON schema-validated output is required (`--json-schema`)
-- Analysis results need machine-readable format for downstream processing
-- Data extraction needs guaranteed structure
-- Pipeline integration requires predictable output format
-
-**Code Review** - Use when:
-- Security audit needs a second AI perspective
-- Architecture review benefits from Claude's extended thinking
-- Cross-AI validation to catch blind spots from the calling AI
-- Quality gate verification before merge
-
-**Agent-Delegated Tasks** - Use when:
-- Task matches a specialized Claude Code agent's expertise (`.claude/agents/*.md`)
-- Read-only exploration needed via `--permission-mode plan`
-- Multi-strategy planning via `@ultra-think` agent
-- Session continuity needed (`--continue`, `--resume`)
-
-**Background Processing** - Use when:
-- Offloading long-running analysis while the calling AI continues other work
-- Parallel code generation or documentation tasks
-- Batch processing multiple files with `--max-budget-usd` cost control
+- **Deep Reasoning** — extended-thinking architectural decisions, multi-dimensional trade-off analysis, step-by-step algorithm design, root-cause analysis of subtle bugs.
+- **Code Editing** — surgical diff-based edits, pattern-preserving refactors, multi-file coordinated changes, deep-context modifications.
+- **Structured Output** — `--json-schema`-validated output, machine-readable analysis, guaranteed-structure data extraction, pipeline integration.
+- **Code Review** — second-AI security audits, extended-thinking architecture review, cross-AI validation, pre-merge quality gates.
+- **Agent-Delegated Tasks** — specialized `.claude/agents/*.md` matches, `--permission-mode plan` read-only exploration, `@ultra-think` planning, session continuity (`--continue`, `--resume`).
+- **Background Processing** — long-running offloaded analysis, parallel generation/docs, batch processing with `--max-budget-usd` cost control.
 
 ### When NOT to Use
 
 - **You ARE Claude Code already.** If your runtime is Claude Code (detection signal: `$CLAUDECODE` env var set, `claude` in process ancestry, or `~/.claude/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation.
-- Simple, quick tasks where CLI overhead is not worth it
-- Tasks requiring interactive terminal UI (use `claude` directly instead)
-- Context already loaded and understood by the calling AI
-- Tasks where Claude Code CLI is not installed
-- Real-time web search (Claude Code has no `--search` flag — use Gemini or Codex)
+- Simple, quick tasks where CLI overhead is not worth it.
+- Tasks requiring interactive terminal UI (use `claude` directly instead).
+- Context already loaded and understood by the calling AI.
+- Tasks where Claude Code CLI is not installed.
+- Real-time web search (Claude Code has no `--search` flag — use Gemini or Codex).
 
 ---
 
@@ -91,15 +63,12 @@ command -v claude || echo "Not installed. Run: npm install -g @anthropic-ai/clau
 ```python
 def detect_self_invocation():
     """Returns a non-None signal when the orchestrator is already running inside Claude Code."""
-    # Detection signals — trip on ANY positive
     # Layer 1: env var lookup — Claude Code sets CLAUDECODE on session start
     if os.environ.get('CLAUDECODE'):
         return ('env', 'CLAUDECODE')
     # Layer 2: process ancestry — claude in parent tree
     try:
-        ancestry = subprocess.check_output(
-            ['ps', '-o', 'command=', '-p', str(os.getppid())]
-        ).decode()
+        ancestry = subprocess.check_output(['ps', '-o', 'command=', '-p', str(os.getppid())]).decode()
         if '/claude' in ancestry or 'claude ' in ancestry:
             return ('ancestry', 'claude')
     except subprocess.SubprocessError:
@@ -119,31 +88,6 @@ if detect_self_invocation():
     )
 ```
 
-### Phase Detection
-
-```text
-TASK CONTEXT
-    |
-    +- STEP 0: Verify Claude Code CLI installed + not nested
-    +- STEP 1: Score intents (top-2 when ambiguity is small)
-    +- Phase 1: Construct prompt with model selection and output format
-    +- Phase 2: Execute via Bash tool
-    +- Phase 3: Validate and integrate output
-```
-
-### Resource Domains
-
-The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `INTENT_SIGNALS`.
-
-```text
-references/cli_reference.md          — CLI flags, commands, models, auth, config
-references/integration_patterns.md   — Cross-AI orchestration patterns (reversed)
-references/claude_tools.md           — Unique capabilities and comparison table
-references/agent_delegation.md       — Claude Code agent routing and invocation
-assets/prompt_templates.md           — Copy-paste ready templates
-assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-check, escalation triggers
-```
-
 ### Resource Loading Levels
 
 | Level       | When to Load            | Resources                      |
@@ -152,15 +96,11 @@ assets/prompt_quality_card.md        — Framework-per-task selector, CLEAR 5-ch
 | CONDITIONAL | If intent signals match | Intent-mapped reference docs   |
 | ON_DEMAND   | Only on explicit request| Extended templates and patterns |
 
-### Smart Router Pseudocode
+### Smart Router
+
+Provider-specific dictionaries (used by the shared helper functions in [`system-spec-kit/references/cli/shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md)):
 
 ```python
-from pathlib import Path
-
-SKILL_ROOT = Path(__file__).resolve().parent
-RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
-DEFAULT_RESOURCE = "references/cli_reference.md"
-
 INTENT_SIGNALS = {
     "DEEP_REASONING":    {"weight": 4, "keywords": ["reason", "think", "analyze", "trade-off", "architecture", "extended thinking", "chain-of-thought"]},
     "CODE_EDITING":      {"weight": 4, "keywords": ["edit", "refactor", "modify", "fix", "change code", "surgical edit", "diff-based"]},
@@ -182,7 +122,7 @@ RESOURCE_MAP = {
 }
 
 LOADING_LEVELS = {
-    "ALWAYS": [DEFAULT_RESOURCE, "assets/prompt_quality_card.md"],
+    "ALWAYS": ["references/cli_reference.md", "assets/prompt_quality_card.md"],
     "ON_DEMAND_KEYWORDS": ["full reference", "all templates", "deep dive", "complete guide", "extended thinking", "json schema", "claude agent", "claude prompt", "diff-based edit"],
     "ON_DEMAND": ["references/claude_tools.md", "assets/prompt_templates.md"],
 }
@@ -193,91 +133,18 @@ UNKNOWN_FALLBACK_CHECKLIST = [
     "Is structured JSON output needed (--json-schema)?",
     "Would surgical code editing or agent delegation help?",
 ]
-
-def _task_text(task) -> str:
-    return " ".join([
-        str(getattr(task, "text", "")),
-        str(getattr(task, "query", "")),
-        " ".join(getattr(task, "keywords", []) or []),
-    ]).lower()
-
-def _guard_in_skill(relative_path: str) -> str:
-    resolved = (SKILL_ROOT / relative_path).resolve()
-    resolved.relative_to(SKILL_ROOT)
-    if resolved.suffix.lower() != ".md":
-        raise ValueError(f"Only markdown resources are routable: {relative_path}")
-    return resolved.relative_to(SKILL_ROOT).as_posix()
-
-def discover_markdown_resources() -> set[str]:
-    docs = []
-    for base in RESOURCE_BASES:
-        if base.exists():
-            docs.extend(p for p in base.rglob("*.md") if p.is_file())
-    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
-
-def score_intents(task) -> dict[str, float]:
-    text = _task_text(task)
-    scores = {intent: 0.0 for intent in INTENT_SIGNALS}
-    for intent, cfg in INTENT_SIGNALS.items():
-        for keyword in cfg["keywords"]:
-            if keyword in text:
-                scores[intent] += cfg["weight"]
-    return scores
-
-def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
-    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
-    if not ranked or ranked[0][1] <= 0:
-        return ["UNKNOWN"]
-    selected = [ranked[0][0]]
-    if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
-        selected.append(ranked[1][0])
-    return selected[:max_intents]
-
-def route_claude_code_resources(task):
-    inventory = discover_markdown_resources()
-    scores = score_intents(task)
-    intents = select_intents(scores, ambiguity_delta=1.0)
-    loaded = []
-    seen = set()
-
-    def load_if_available(relative_path: str) -> None:
-        guarded = _guard_in_skill(relative_path)
-        if guarded in inventory and guarded not in seen:
-            load(guarded)
-            loaded.append(guarded)
-            seen.add(guarded)
-
-    # 1. ALWAYS load baseline + fast-path prompt-quality asset
-    for relative_path in LOADING_LEVELS["ALWAYS"]:
-        load_if_available(relative_path)
-
-    # 2. UNKNOWN FALLBACK: no keywords matched at all
-    if max(scores.values()) == 0:
-        return {
-            "intents": ["UNKNOWN"],
-            "load_level": "UNKNOWN_FALLBACK",
-            "needs_disambiguation": True,
-            "disambiguation_checklist": UNKNOWN_FALLBACK_CHECKLIST,
-            "resources": loaded,
-        }
-
-    # 3. CONDITIONAL: intent-mapped resources
-    for intent in intents:
-        for relative_path in RESOURCE_MAP.get(intent, []):
-            load_if_available(relative_path)
-
-    # 4. ON_DEMAND: explicit keyword triggers
-    text = _task_text(task)
-    if any(keyword in text for keyword in LOADING_LEVELS["ON_DEMAND_KEYWORDS"]):
-        for relative_path in LOADING_LEVELS["ON_DEMAND"]:
-            load_if_available(relative_path)
-
-    # 5. Safety net
-    if not loaded:
-        load_if_available(DEFAULT_RESOURCE)
-
-    return {"intents": intents, "intent_scores": scores, "resources": loaded}
 ```
+
+**Call sequence** (using shared helpers from `shared_smart_router.md`):
+
+1. `discover_markdown_resources()` — enumerate available `.md` files under `references/` and `assets/`
+2. `score_intents(task)` — keyword-weight match against `INTENT_SIGNALS`
+3. `select_intents(scores, ambiguity_delta=1.0)` — top-1 or top-2 if scores within delta
+4. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then UNKNOWN-fallback if max score == 0
+5. CONDITIONAL-load `RESOURCE_MAP[intent]` for each selected intent
+6. ON_DEMAND-load if any `ON_DEMAND_KEYWORDS` match the task text
+
+The `route_claude_code_resources(task)` function body lives in [`shared_smart_router.md`](../system-spec-kit/references/cli/shared_smart_router.md) — substitute `<PROVIDER>` = `claude_code`.
 
 ---
 
@@ -287,23 +154,19 @@ def route_claude_code_resources(task):
 
 ### Prerequisites
 
-Claude Code CLI must be installed and authenticated:
-
 ```bash
 # Verify installation
 command -v claude || echo "Not installed. Run: npm install -g @anthropic-ai/claude-code"
 
-# SELF-INVOCATION GUARD: Cannot run Claude Code inside Claude Code
+# Self-invocation guard
 [ -n "$CLAUDECODE" ] && echo "ERROR: Already inside a Claude Code session — do not self-invoke"
 
-# Authentication — API key
+# Authentication — API key OR setup-token (CI/CD)
 export ANTHROPIC_API_KEY=your-key-here
-
-# Authentication — token setup for CI/CD
 claude setup-token
 ```
 
-**Authentication options**: `ANTHROPIC_API_KEY` environment variable (direct API access), or OAuth via `claude auth login` (interactive browser flow), or `claude setup-token` (non-interactive CI/CD).
+**Authentication options**: `ANTHROPIC_API_KEY` env var (direct API), `claude auth login` (interactive OAuth), or `claude setup-token` (non-interactive CI/CD).
 
 ### Core Invocation Pattern
 
@@ -336,16 +199,11 @@ claude -p "prompt" --output-format text 2>&1
 | **Sonnet** | `claude-sonnet-4-6` | Balanced performance/cost — default for most tasks |
 | **Haiku** | `claude-haiku-4-5-20251001` | Fast, lightweight tasks (classification, formatting, simple queries) |
 
-**Selection guidance:**
-- Default to **Sonnet** unless the task specifically needs deep reasoning (Opus) or is trivially simple (Haiku)
-- Use `--effort high` with Opus for maximum reasoning depth
-- Use Haiku for batch operations where speed matters more than depth
+**Selection guidance**: Default to Sonnet unless the task specifically needs deep reasoning (Opus + `--effort high`) or is trivially simple (Haiku for batch ops where speed > depth).
 
 ### Claude Code Agent Delegation
 
-The calling AI acts as the **conductor** that delegates tasks to Claude Code CLI. Claude Code has specialized agents defined in `.claude/agents/*.md` that provide domain expertise.
-
-**Agent Routing Table:**
+The calling AI is the conductor; Claude Code agents in `.claude/agents/*.md` shape HOW Claude Code processes the task.
 
 | Task Type | Agent | Invocation Pattern |
 |-----------|-------|-------------------|
@@ -359,13 +217,9 @@ The calling AI acts as the **conductor** that delegates tasks to Claude Code CLI
 | Multi-strategy planning | `ultra-think` | `claude -p "Plan the authentication redesign" --agent ultra-think --permission-mode plan --output-format text 2>&1` |
 | Documentation generation | `write` | `claude -p "Generate README for this project" --agent write --output-format text 2>&1` |
 
-**Orchestration principle**: The calling AI decides WHAT to delegate. Claude Code's agent configuration shapes HOW it processes the task. The calling AI always validates and integrates the output.
-
-See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster and invocation patterns.
+See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster.
 
 ### Unique Claude Code Capabilities
-
-These capabilities are exclusive to Claude Code CLI or provide meaningfully different workflows:
 
 | Capability | Purpose | Invocation |
 |------------|---------|------------|
@@ -384,7 +238,7 @@ These capabilities are exclusive to Claude Code CLI or provide meaningfully diff
 
 ```bash
 # Deep reasoning with extended thinking (Opus)
-claude -p "Analyze the trade-offs between microservices and monolith for this project. Consider scalability, team size, deployment complexity." \
+claude -p "Analyze the trade-offs between microservices and monolith for this project." \
   --model claude-opus-4-6 --effort high --output-format text 2>&1
 
 # Code review (read-only — safe exploration)
@@ -393,12 +247,8 @@ claude -p "Review @src/auth.ts for security vulnerabilities" \
 
 # Structured JSON output with schema validation
 claude -p "Analyze src/utils.ts and return function signatures" \
-  --json-schema '{"type":"object","properties":{"functions":{"type":"array","items":{"type":"object","properties":{"name":{"type":"string"},"params":{"type":"string"},"returnType":{"type":"string"}}}}}}' \
+  --json-schema '{"type":"object","properties":{"functions":{"type":"array"}}}' \
   --output-format json 2>&1
-
-# Fast classification with Haiku
-claude -p "Classify this error as: syntax, runtime, logic, or configuration: [error]" \
-  --model claude-haiku-4-5-20251001 --output-format text 2>&1
 
 # Agent-delegated architecture analysis
 claude -p "Map the dependency graph for src/" \
@@ -432,111 +282,39 @@ claude -p "Now refactor the auth module based on the review" --continue --output
 
 ### ALWAYS
 
-**ALWAYS do these without asking:**
-
-1. **ALWAYS verify Claude Code CLI is installed** before first invocation
-   - Run `command -v claude` and handle missing installation gracefully
-
-2. **ALWAYS check for nesting** before invocation
-   - Check `$CLAUDECODE` env var — Claude Code cannot run inside itself
-
-3. **ALWAYS use `--permission-mode plan`** for review and analysis tasks
-   - Review, audit, architecture analysis, and exploration should never write files
-
-4. **ALWAYS use `--output-format text`** unless JSON output is specifically needed
-   - Text output is simpler to parse and integrate into calling AI workflows
-
-5. **ALWAYS validate Claude Code output** before applying to the project
-   - Check for correctness, completeness, and alignment with requirements
-   - Run syntax checks if code was generated
-
-6. **ALWAYS capture stderr** with `2>&1` to catch error messages and warnings
-
-7. **ALWAYS specify the model** explicitly with `--model`
-   - Default to `claude-sonnet-4-6` unless task requires opus (deep reasoning) or haiku (fast/cheap)
-
-8. **ALWAYS route to the appropriate agent** when the task matches an agent specialization
-   - Use `--agent <name>` flag; see agent routing table in Section 3
-
-9. **ALWAYS pass the spec folder to the delegated agent** in the prompt
-   - If the calling AI has an active spec folder (from Gate 3), include it in the prompt: `Spec folder: <path> (pre-approved, skip Gate 3)`
-   - If the calling AI does NOT have a spec folder, it MUST ask the user for one BEFORE delegating — the delegated agent cannot answer Gate 3 interactively
-   - This prevents the delegated agent from halting at the Gate 3 spec folder question in non-interactive mode
-   - Example prompt suffix: `\n\nSpec folder: .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/022-spec-doc-indexing-bypass/ (pre-approved, skip Gate 3)`
-
-10. **ALWAYS load `assets/prompt_quality_card.md` before building any dispatch prompt**
-   - Apply the CLEAR 5-question check from the card
-   - Tag the selected framework in the Bash invocation comment
-   - If complexity is `>= 7/10` or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline
-   - Use the returned `ENHANCED_PROMPT` as the final Claude Code prompt
+1. Verify Claude Code CLI is installed before first invocation (`command -v claude`); check `$CLAUDECODE` for nesting.
+2. Use `--permission-mode plan` for review/analysis/exploration (no file writes); `--output-format text` unless JSON is specifically needed.
+3. Validate output before applying — correctness, completeness, alignment, syntax checks if code generated.
+4. Capture stderr (`2>&1`) to catch errors and warnings.
+5. Specify `--model` explicitly: default `claude-sonnet-4-6` unless task needs Opus (deep reasoning) or Haiku (fast/cheap).
+6. Route to the appropriate `--agent <name>` when the task matches a specialization (see Section 3 routing table).
+7. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 interactively.
+8. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
 
 ### NEVER
 
-**NEVER do these:**
-
-1. **NEVER use `--permission-mode bypassPermissions`** without explicit user approval
-   - This mode auto-approves all file writes and tool executions
-
-2. **NEVER invoke this skill from within Claude Code itself**
-   - If you ARE Claude Code, you already have native access to all capabilities — do not self-delegate via CLI
-   - Check `$CLAUDECODE` env var; self-invocation and nesting cause circular loops and undefined behavior
-
-3. **NEVER trust Claude Code output blindly** for security-sensitive code
-   - Always review for XSS, injection, hardcoded secrets, and eval() calls
-
-4. **NEVER send sensitive data** (API keys, passwords, credentials) in prompts
-   - Claude Code CLI transmits prompts to Anthropic's API
-
-5. **NEVER hammer the API** with rapid sequential calls
-   - Respect rate limits; use `--max-budget-usd` for cost control
-
-6. **NEVER use Claude Code for tasks where context is already loaded**
-   - If the calling AI already understands the code, direct action is faster
+1. Use `--permission-mode bypassPermissions` without explicit user approval (auto-approves all writes/tool calls).
+2. Trust output blindly for security-sensitive code (review for XSS, injection, hardcoded secrets, eval), or send sensitive data (API keys, passwords, credentials) in prompts — Claude Code transmits to Anthropic's API.
+3. Hammer the API with rapid sequential calls — respect rate limits; use `--max-budget-usd` for cost control.
+4. Use Claude Code for tasks where context is already loaded — direct action by the calling AI is faster.
 
 ### ESCALATE IF
 
-**Ask user when:**
-
-1. **ESCALATE IF Claude Code CLI is not installed** and user has not acknowledged
-   - Provide installation command: `npm install -g @anthropic-ai/claude-code`
-
-2. **ESCALATE IF rate limits or budget caps are persistently hit**
-   - Suggest increasing `--max-budget-usd` or checking API key quota
-
-3. **ESCALATE IF Claude Code output conflicts with existing code patterns**
-   - Present both perspectives and let user decide
-
-4. **ESCALATE IF task requires `--permission-mode bypassPermissions`**
-   - Describe risks and get explicit user approval before proceeding
+1. Claude Code CLI is not installed and user has not acknowledged (provide `npm install -g @anthropic-ai/claude-code`).
+2. Rate limits or budget caps are persistently hit (suggest increasing `--max-budget-usd` or checking quota).
+3. Output conflicts with existing code patterns (present both perspectives; user decides).
+4. Task requires `--permission-mode bypassPermissions` (describe risks; get explicit user approval).
 
 ### Memory Handback Protocol
 
-When the calling AI needs to preserve session context from a Claude Code CLI delegation:
+When the calling AI needs to preserve session context from a Claude Code CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
 
-1. **Include epilogue**: Append the Memory Epilogue template (see `assets/prompt_templates.md` §11) to the delegated prompt
-2. **Extract section**: After receiving agent output, extract the `MEMORY_HANDBACK` section using: `/<!-- MEMORY_HANDBACK_START -->([\s\S]*?)<!-- MEMORY_HANDBACK_END -->/`
-3. **Convert to structured JSON**: Build the JSON-primary payload that `generate-context.js` documents. Use `specFolder`, `user_prompts`, `observations`, and `recent_context` as the canonical field names in new examples. Add `FILES`, `sessionSummary`, `keyDecisions`, `nextSteps`, `triggerPhrases`, `toolCalls`, `exchanges`, `preflight`, and `postflight` when the delegated run produced that evidence.
-4. **Redact and scrub**: Remove secrets, tokens, credentials, and any unnecessary sensitive values before writing the JSON file
-5. **Choose a structured-input mode**: Save the scrubbed payload to `/tmp/save-context-data-<session-id>.json`, pipe it with `--stdin`, or pass it inline with `--json`
-6. **Invoke generate-context.js**: Use one of:
-   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]`
-   - `printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]`
-   - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json "$JSON_PAYLOAD" [spec-folder]`
-7. **Index**: Run `memory_index_scan({ specFolder })` for immediate MCP visibility
+Claude-Code-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §11.
 
-**Delimiter missing**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the structured JSON payload and saves it through the same JSON-primary path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
-
-**Structured JSON only**: Direct spec-folder-only invocation is no longer supported. Always call `generate-context.js` with `--stdin`, `--json`, or a JSON temp file.
-
-**Explicit target precedence**: If you pass `[spec-folder]` on the CLI, that explicit target wins over any `specFolder` value inside the payload.
-
-**Explicit JSON mode failures**: If the explicit data file cannot be loaded, `generate-context.js` fails with `EXPLICIT_DATA_FILE_LOAD_FAILED: ...`. Do not fall back to OpenCode capture in that case; surface the error and stop.
-
-**Post-010 save gates**: Valid JSON can still be rejected after normalization. File-backed handbacks skip the stateless alignment and `QUALITY_GATE_ABORT` checks, but they still fail with `INSUFFICIENT_CONTEXT_ABORT` when the payload is too thin and with `CONTAMINATION_GATE_ABORT` when it includes content from another spec.
-
-**Compatibility aliases**: The normalizer still accepts documented camelCase and snake_case pairs such as `sessionSummary` / `session_summary`, `nextSteps` / `next_steps`, `userPrompts` / `user_prompts`, and `recentContext` / `recent_context`. Prefer the canonical field names shown above in new handback payloads.
-
-**Minimum payload guidance**: Include a specific `sessionSummary`, at least one meaningful `recent_context` entry or equivalent observation, and rich `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known so the saved memory carries durable evidence instead of bare filenames.
+Example invocation:
+```bash
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+```
 
 ---
 
@@ -555,11 +333,20 @@ When the calling AI needs to preserve session context from a Claude Code CLI del
 
 - [prompt_templates.md](./assets/prompt_templates.md) - Copy-paste ready prompt templates for common tasks
 
+### Shared (cli-* family)
+- [shared_smart_router.md](../system-spec-kit/references/cli/shared_smart_router.md) - Helper-function bodies for the smart router.
+- [memory_handback.md](../system-spec-kit/references/cli/memory_handback.md) - Canonical 7-step Memory Handback procedure.
+
+### External
+- [Claude Code GitHub](https://github.com/anthropics/claude-code) - Official repository
+- [Anthropic Console](https://console.anthropic.com/settings/keys) - API key management
+- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code) - Official docs
+
 ### Reference Loading Notes
 
-- Load only references needed for current intent
-- Keep Smart Routing (Section 2) as the single routing authority
-- `cli_reference.md` is ALWAYS loaded as baseline
+- Load only references needed for current intent.
+- Smart Routing (Section 2) is the single routing authority.
+- `cli_reference.md` is ALWAYS loaded as baseline.
 
 ---
 
@@ -569,19 +356,18 @@ When the calling AI needs to preserve session context from a Claude Code CLI del
 
 ### Task Completion
 
-- Claude Code CLI invoked with correct flags, model, and permission mode
-- Output captured, validated, and integrated appropriately
-- No security vulnerabilities introduced from generated code
-- Rate limits and budget caps handled gracefully
-- Appropriate agent routed for specialized tasks
-- Permission mode matched to task type (plan for review, default for generation)
+- Claude Code CLI invoked with correct flags, model, and permission mode.
+- Output captured, validated, and integrated appropriately.
+- No security vulnerabilities introduced from generated code.
+- Rate limits and budget caps handled gracefully.
+- Appropriate agent routed for specialized tasks.
+- Permission mode matched to task type (plan for review, default for generation).
 
 ### Skill Quality
 
-- SKILL.md under 5000 words with progressive disclosure
-- All 8 sections present with proper anchor comments
-- Smart routing covers all intent signals with UNKNOWN_FALLBACK
-- Reference files provide deep-dive content without duplication
+- All 8 sections present with proper anchor comments.
+- Smart routing covers all intent signals with UNKNOWN_FALLBACK.
+- Reference files provide deep-dive content without duplication.
 
 ---
 
@@ -598,14 +384,7 @@ Key integrations:
 - **Tool Routing**: Per AGENTS.md Section 6 decision tree
 - **Memory**: Context preserved via Spec Kit Memory MCP
 
-### Tool Usage
-
-| Tool | Purpose |
-|------|---------|
-| **Bash** | Execute `claude -p` commands |
-| **Read** | Examine Claude Code output files |
-| **Glob** | Find generated files |
-| **Grep** | Search within generated output |
+**Tool roles**: Bash dispatches the CLI; Read/Glob/Grep validate output.
 
 ### Related Skills
 
@@ -617,40 +396,13 @@ Key integrations:
 | **sk-code-full-stack** | Delegate architecture analysis or test generation to Claude Code |
 | **mcp-code-mode** | Claude Code CLI is independent; does not require Code Mode |
 
-### External Tools
-
-**Claude Code CLI** (required):
-- Installation: `npm install -g @anthropic-ai/claude-code`
-- Authentication: `ANTHROPIC_API_KEY` env var or `claude auth login` (OAuth)
-- Purpose: Core execution engine for all delegated tasks
-- Fallback: Skill informs user of installation steps if missing
-
 ---
 
 <!-- /ANCHOR:integration-points -->
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
-### Reference Files
-- [cli_reference.md](./references/cli_reference.md) - CLI flags, commands, models, authentication, and configuration
-- [integration_patterns.md](./references/integration_patterns.md) - Cross-AI orchestration patterns (reversed)
-- [claude_tools.md](./references/claude_tools.md) - Unique capabilities and 3-way comparison
-- [agent_delegation.md](./references/agent_delegation.md) - Agent routing and invocation
-
-### Templates
-- [prompt_templates.md](./assets/prompt_templates.md) - Copy-paste ready prompt templates
-
-### Related Skills
-- `cli-gemini` - Google Gemini CLI for Google Search grounding and cross-AI validation
-- `cli-codex` - OpenAI Codex CLI for sandbox execution and cross-AI validation
-- `sk-doc` - Documentation generation that Claude Code can supplement
-- `sk-code-web` - Web development where Claude Code provides second opinions
-- `sk-code-full-stack` - Full-stack tasks with Claude Code architecture analysis
-
-### External
-- [Claude Code GitHub](https://github.com/anthropics/claude-code) - Official repository
-- [Anthropic Console](https://console.anthropic.com/settings/keys) - API key management
-- [Claude Code Documentation](https://docs.anthropic.com/en/docs/claude-code) - Official docs
+See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
 
 ---
 
