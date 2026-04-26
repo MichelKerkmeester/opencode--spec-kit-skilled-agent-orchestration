@@ -343,12 +343,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
-  const verificationGate = state.action === 'selective_reindex'
-    ? getVerificationGate(graphDb.getLastGoldVerification())
-    : undefined;
-  const lastSelfHealAt = state.action === 'selective_reindex'
-    ? new Date().toISOString()
-    : undefined;
+  const verificationGate = getVerificationGate(graphDb.getLastGoldVerification());
 
   if (state.action === 'none') {
     return cacheReadyResult(cacheKey, {
@@ -356,6 +351,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       action: 'none',
       inlineIndexPerformed: false,
       reason: appendCleanupReason(state.reason, removedDeletedCount),
+      verificationGate,
     });
   }
 
@@ -369,7 +365,6 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       selfHealAttempted: true,
       selfHealResult: 'skipped',
       verificationGate,
-      lastSelfHealAt,
     });
   }
 
@@ -379,6 +374,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       action: state.action,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline full scan skipped for read path`, removedDeletedCount),
+      verificationGate,
     });
   }
 
@@ -398,11 +394,13 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
         reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
+        verificationGate,
       });
     }
 
     // selective_reindex: only re-parse stale files
     if (state.action === 'selective_reindex' && state.staleFiles.length > 0) {
+      const lastSelfHealAt = new Date().toISOString();
       const config = getDefaultConfig(rootDir);
       await indexWithTimeout(config, AUTO_INDEX_TIMEOUT_MS, { specificFiles: state.staleFiles });
 
@@ -434,12 +432,12 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       files: state.staleFiles,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason} (auto-index failed: ${msg})`, removedDeletedCount),
+      verificationGate,
       ...(state.action === 'selective_reindex'
         ? {
             selfHealAttempted: true,
             selfHealResult: 'failed' as const,
-            verificationGate,
-            lastSelfHealAt,
+            lastSelfHealAt: new Date().toISOString(),
           }
         : {}),
     });
@@ -450,6 +448,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
     action: 'none',
     inlineIndexPerformed: false,
     reason: appendCleanupReason(state.reason, removedDeletedCount),
+    verificationGate,
   });
 }
 

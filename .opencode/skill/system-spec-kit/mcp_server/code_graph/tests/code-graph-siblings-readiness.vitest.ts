@@ -327,4 +327,36 @@ describe('code-graph sibling readiness emission', () => {
       nowSpy.mockRestore();
     }
   });
+
+  it('preserves signed share_drift in status responses while still flagging by absolute drift', async () => {
+    mocks.getCodeGraphMetadata.mockReturnValue(JSON.stringify({
+      CALLS: 0.75,
+      IMPORTS: 0.25,
+    }));
+    mocks.getStats.mockReturnValue(createStats({
+      totalEdges: 4,
+      edgesByType: {
+        CALLS: 1,
+        IMPORTS: 3,
+      },
+    }));
+
+    const result = await handleCodeGraphStatus();
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.edgeDriftSummary.share_drift.CALLS).toBeCloseTo(-0.5);
+    expect(parsed.data.edgeDriftSummary.share_drift.IMPORTS).toBeCloseTo(0.5);
+    expect(parsed.data.edgeDriftSummary.flagged).toBe(true);
+  });
+
+  it('surfaces edge drift as unavailable when the persisted baseline metadata is malformed', async () => {
+    mocks.getCodeGraphMetadata.mockReturnValue('{malformed');
+
+    const result = await handleCodeGraphStatus();
+    const parsed = JSON.parse(result.content[0].text);
+
+    expect(parsed.status).toBe('ok');
+    expect(parsed.data.edgeDriftSummary).toBeNull();
+  });
 });

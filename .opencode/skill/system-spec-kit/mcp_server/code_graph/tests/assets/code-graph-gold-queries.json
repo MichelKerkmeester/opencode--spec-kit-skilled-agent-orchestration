@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "pass_policy": {
+    "overall_pass_rate": 1,
+    "edge_focus_pass_rate": 1
+  },
+  "queries": [
+    {
+      "id": "verify-fixture-1",
+      "category": "mcp-tool",
+      "query": "Find handleVerify",
+      "source_file": "src/verify.ts",
+      "expected_top_K_symbols": ["handleVerify"]
+    }
+  ]
+}

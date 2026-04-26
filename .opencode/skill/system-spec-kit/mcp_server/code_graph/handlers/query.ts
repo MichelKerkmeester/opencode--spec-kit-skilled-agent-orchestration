@@ -16,6 +16,10 @@ import {
   buildQueryTrustMetadata,
   buildReadinessBlock,
 } from '../lib/readiness-contract.js';
+import type {
+  OutlineQueryNode,
+  RelationshipQueryEdge,
+} from '../lib/query-result-adapter.js';
 // R-007-P2-6: emit a stable failure-counter metric so operators can
 // distinguish DB / compute failures from legitimately empty blast radii.
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../../skill_advisor/lib/metrics.js';
@@ -668,11 +672,7 @@ function edgeMetadataOutput(edge: OutboundEdgeEntry['edge'] | InboundEdgeEntry['
    (source side); (2) whether to surface the start line.
 ─────────────────────────────────────────────────────────────── */
 
-interface RelationshipMappedEdge {
-  source?: string;
-  target?: string;
-  file?: string;
-  line?: number;
+type RelationshipMappedEdge = RelationshipQueryEdge & {
   confidence: number;
   numericConfidence: number;
   detectorProvenance: string | null;
@@ -680,7 +680,7 @@ interface RelationshipMappedEdge {
   reason: string | null;
   step: string | null;
   edgeEvidenceClass: EdgeEvidenceClass;
-}
+};
 
 function mapOutboundRelationshipEdge(
   entry: OutboundEdgeEntry,
@@ -1110,6 +1110,14 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
 
     const nodes = graphDb.queryOutline(resolvedSubject);
     const limited = nodes.slice(0, limit);
+    const outlineNodes: OutlineQueryNode[] = limited.map(n => ({
+      name: n.name,
+      kind: n.kind,
+      fqName: n.fqName,
+      line: n.startLine,
+      signature: n.signature,
+      symbolId: n.symbolId,
+    }));
     return {
       content: [{
         type: 'text',
@@ -1118,15 +1126,8 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
           data: buildGraphQueryPayload({
             operation: 'outline',
             filePath: resolvedSubject,
-            nodeCount: limited.length,
-            nodes: limited.map(n => ({
-              name: n.name,
-              kind: n.kind,
-              fqName: n.fqName,
-              line: n.startLine,
-              signature: n.signature,
-              symbolId: n.symbolId,
-            })),
+            nodeCount: outlineNodes.length,
+            nodes: outlineNodes,
           }, readiness, 'code_graph_query outline payload'),
         }, null, 2),
       }],

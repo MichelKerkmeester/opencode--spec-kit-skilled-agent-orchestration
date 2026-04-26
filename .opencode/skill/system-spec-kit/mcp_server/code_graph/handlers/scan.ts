@@ -140,6 +140,10 @@ function cleanupMissingTrackedFiles(filePaths: string[]): void {
   }
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
 function summarizeEdgeDistribution(results: Array<{ edges: CodeEdge[] }>) {
   const edgeCounts = buildEdgeDistribution();
 
@@ -150,6 +154,25 @@ function summarizeEdgeDistribution(results: Array<{ edges: CodeEdge[] }>) {
   }
 
   return computeEdgeShare(edgeCounts);
+}
+
+function hasUsablePersistedEdgeDistributionBaseline(): boolean {
+  const rawBaseline = graphDb.getCodeGraphMetadata('edge_distribution_baseline');
+  if (!rawBaseline) {
+    return false;
+  }
+
+  try {
+    const parsedBaseline = JSON.parse(rawBaseline) as unknown;
+    if (!isRecord(parsedBaseline)) {
+      return false;
+    }
+
+    buildEdgeDistribution(parsedBaseline);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /** Handle code_graph_scan tool call */
@@ -278,7 +301,7 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     graphDb.clearLastGraphEdgeEnrichmentSummary();
   }
 
-  const hasPersistedBaseline = graphDb.getCodeGraphMetadata('edge_distribution_baseline') !== null;
+  const hasPersistedBaseline = hasUsablePersistedEdgeDistributionBaseline();
   if (
     !effectiveIncremental
     && errors.length === 0

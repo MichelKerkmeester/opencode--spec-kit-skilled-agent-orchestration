@@ -5,6 +5,10 @@
 
 import { readFileSync } from 'node:fs';
 import { createLogger } from '../../lib/utils/logger.js';
+import {
+  parseOutlineQueryResult,
+  type CodeGraphQueryResponse,
+} from './query-result-adapter.js';
 
 const logger = createLogger('GoldQueryVerifier');
 
@@ -36,6 +40,10 @@ export interface GoldBattery {
 export interface ProbeResult {
   queryId: string;
   category: string;
+  query: string;
+  sourceFile: string;
+  sourceLine?: number;
+  expectedTopK: string[];
   probe: {
     operation: string;
     subject: string;
@@ -66,17 +74,6 @@ interface OutlineProbe {
   operation: 'outline';
   subject: string;
   limit: number;
-}
-
-interface QuerySymbolNode {
-  name?: string;
-  fqName?: string;
-}
-
-interface ParsedOutlinePayload {
-  status: 'ok' | 'blocked' | 'error';
-  nodes: QuerySymbolNode[];
-  reason?: string;
 }
 
 interface BatteryExecutionOptions {
@@ -224,75 +221,11 @@ function parseQuery(record: unknown, index: number): GoldQuery {
 }
 
 function normalizeSymbol(value: string): string {
-  return value.trim().toLowerCase();
+  return value.trim();
 }
 
 function asNonEmptyString(value: unknown): string | undefined {
   return typeof value === 'string' && value.trim().length > 0 ? value : undefined;
-}
-
-function parseOutlinePayload(response: unknown): ParsedOutlinePayload {
-  if (!isRecord(response)) {
-    throw new Error('Query response must be an object');
-  }
-
-  const content = response.content;
-  if (!Array.isArray(content) || content.length === 0) {
-    throw new Error('Query response must include non-empty content');
-  }
-
-  const textContent = content.find((item) => isRecord(item) && item.type === 'text' && typeof item.text === 'string');
-  if (!isRecord(textContent) || typeof textContent.text !== 'string') {
-    throw new Error('Query response must include text content');
-  }
-
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(textContent.text) as unknown;
-  } catch (error) {
-    throw new Error(
-      `Failed to parse query payload JSON: ${error instanceof Error ? error.message : String(error)}`,
-    );
-  }
-
-  if (!isRecord(parsed)) {
-    throw new Error('Query payload must be a JSON object');
-  }
-
-  const status = parsed.status;
-  if (status === 'blocked' || status === 'error') {
-    return {
-      status,
-      nodes: [],
-      reason: asNonEmptyString(parsed.error) ?? asNonEmptyString(parsed.reason) ?? `Query returned status "${status}"`,
-    };
-  }
-
-  if (status !== 'ok') {
-    throw new Error(`Unsupported query status: ${typeof status === 'string' ? status : String(status)}`);
-  }
-
-  const rawData = parsed.data;
-  if (!isRecord(rawData)) {
-    throw new Error('Query payload with status "ok" must include object data');
-  }
-
-  const rawNodes = rawData.nodes;
-  if (!Array.isArray(rawNodes)) {
-    throw new Error('Query payload data must include array nodes');
-  }
-
-  const nodes = rawNodes
-    .filter(isRecord)
-    .map(node => ({
-      ...(asNonEmptyString(node.name) ? { name: asNonEmptyString(node.name) } : {}),
-      ...(asNonEmptyString(node.fqName) ? { fqName: asNonEmptyString(node.fqName) } : {}),
-    }));
-
-  return {
-    status: 'ok',
-    nodes,
-  };
 }
 
 function buildProbeResult(
@@ -307,6 +240,10 @@ function buildProbeResult(
   const baseResult: ProbeResult = {
     queryId: goldQuery.id,
     category: goldQuery.category,
+    query: goldQuery.query,
+    sourceFile: goldQuery.source_file,
+    ...(goldQuery.source_line !== undefined ? { sourceLine: goldQuery.source_line } : {}),
+    expectedTopK: [...goldQuery.expected_top_K_symbols],
     probe,
     matchedSymbols,
     missingSymbols,
@@ -327,7 +264,7 @@ function buildProbeResult(
 
 export async function executeBattery(
   battery: GoldBattery,
-  query: (args: any) => Promise<any>,
+  query: (args: OutlineProbe) => Promise<CodeGraphQueryResponse>,
   opts?: BatteryExecutionOptions,
 ): Promise<VerifyResult> {
   const failFast = opts?.failFast ?? false;
@@ -358,7 +295,7 @@ export async function executeBattery(
 
     try {
       const rawResponse = await query(probe);
-      const parsed = parseOutlinePayload(rawResponse);
+      const parsed = parseOutlineQueryResult(rawResponse);
 
       if (parsed.status !== 'ok') {
         const status = parsed.status;
@@ -375,7 +312,7 @@ export async function executeBattery(
       }
 
       const discoveredSymbols = new Set<string>();
-      for (const node of parsed.nodes) {
+      for (const node of parsed.data.nodes) {
         if (node.name) {
           discoveredSymbols.add(normalizeSymbol(node.name));
         }

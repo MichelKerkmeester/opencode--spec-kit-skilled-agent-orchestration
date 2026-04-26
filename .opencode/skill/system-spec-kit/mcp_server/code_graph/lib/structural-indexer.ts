@@ -6,7 +6,7 @@
 // - Regex fallback (SPECKIT_PARSER=regex): lightweight, no WASM deps
 // Extracts symbols and relationships from JS/TS/Python/Shell.
 
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, realpathSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
 import { dirname, extname, join, relative, resolve } from 'node:path';
 import type {
@@ -170,6 +170,10 @@ function getParseResultCaptures(result: ParseResult): RawCapture[] | undefined {
   return parseResultCaptures.get(result);
 }
 
+export function getRememberedParseResultCaptures(result: ParseResult): RawCapture[] {
+  return getParseResultCaptures(result) ?? [];
+}
+
 function findBraceBlockEndLine(lines: string[], startIndex: number): number {
   const startLine = lines[startIndex];
   const firstBraceIndex = startLine.indexOf('{');
@@ -312,6 +316,54 @@ function consumeDecorators(pendingDecorators: string[]): string[] | undefined {
   const names = [...new Set(pendingDecorators)];
   pendingDecorators.length = 0;
   return names;
+}
+
+function parseImportCaptureNames(
+  clause: string,
+  statementImportKind: RawCapture['importKind'],
+): Array<{ name: string; importKind: RawCapture['importKind'] }> {
+  const captures: Array<{ name: string; importKind: RawCapture['importKind'] }> = [];
+  const defaultAndRemainderMatch = clause.match(/^(\w+)\s*,\s*(.+)$/);
+  let remainder = clause.trim();
+
+  if (defaultAndRemainderMatch) {
+    captures.push({ name: defaultAndRemainderMatch[1], importKind: statementImportKind });
+    remainder = defaultAndRemainderMatch[2].trim();
+  }
+
+  const namespaceMatch = remainder.match(/^\*\s+as\s+(\w+)$/);
+  if (namespaceMatch) {
+    captures.push({ name: namespaceMatch[1], importKind: statementImportKind });
+    return captures;
+  }
+
+  const namedImportsMatch = remainder.match(/^\{([^}]*)\}$/);
+  if (namedImportsMatch) {
+    for (const rawSpecifier of namedImportsMatch[1].split(',')) {
+      const trimmedSpecifier = rawSpecifier.trim();
+      if (!trimmedSpecifier) {
+        continue;
+      }
+
+      const importKind: RawCapture['importKind'] = statementImportKind === 'type'
+        || /^type\b/.test(trimmedSpecifier)
+        ? 'type'
+        : 'value';
+      const normalizedSpecifier = trimmedSpecifier.replace(/^type\s+/, '');
+      const importedName = normalizedSpecifier.split(/\s+as\s+/)[0]?.trim();
+      if (importedName) {
+        captures.push({ name: importedName, importKind });
+      }
+    }
+    return captures;
+  }
+
+  const defaultImportMatch = remainder.match(/^(\w+)$/);
+  if (defaultImportMatch) {
+    captures.push({ name: defaultImportMatch[1], importKind: statementImportKind });
+  }
+
+  return captures;
 }
 
 function countBraces(line: string): number {
@@ -529,28 +581,41 @@ function parseJsTs(content: string): RawCapture[] {
 
     // Imports
     const importMatch = braceDepth === 0
-      ? line.match(/import\s+(?:\{([^}]+)\}|(\w+))\s+from\s+['"](.+?)['"]/)
+      ? line.match(/^import\s+(type\s+)?(.+?)\s+from\s+['"](.+?)['"]/)
       : null;
     if (importMatch) {
-      const names = importMatch[1]
-        ? importMatch[1].split(',').map(s => s.trim().split(/\s+as\s+/)[0].trim())
-        : [importMatch[2]];
+      const statementImportKind: RawCapture['importKind'] = importMatch[1] ? 'type' : 'value';
+      const names = parseImportCaptureNames(importMatch[2], statementImportKind);
       const moduleSpecifier = importMatch[3];
-      for (const name of names) {
-        if (name) {
+      for (const entry of names) {
+        if (entry.name) {
           captures.push({
-            name, kind: 'import', startLine: lineNum,
+            name: entry.name, kind: 'import', startLine: lineNum,
             endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
             endColumn: line.length,
             moduleSpecifier,
+            importKind: entry.importKind,
           });
         }
       }
     }
 
     // Exports
-    const exportMatch = braceDepth === 0 ? line.match(/export\s+\{([^}]+)\}/) : null;
+    const exportStarMatch = braceDepth === 0 ? line.match(/^export\s+\*\s+from\s+['"](.+?)['"]/) : null;
+    if (exportStarMatch) {
+      captures.push({
+        name: '*', kind: 'export', startLine: lineNum,
+        endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
+        endColumn: line.length,
+        moduleSpecifier: exportStarMatch[1],
+        exportKind: 'star',
+      });
+    }
+
+    const exportMatch = braceDepth === 0 ? line.match(/^export\s+\{([^}]+)\}(?:\s+from\s+['"](.+?)['"])?/) : null;
     if (exportMatch) {
+      const moduleSpecifier = exportMatch[2];
+      const exportKind: RawCapture['exportKind'] = moduleSpecifier ? 'named' : 'declaration';
       const names = exportMatch[1].split(',').map(s => s.trim().split(/\s+as\s+/)[0].trim());
       for (const name of names) {
         if (name) {
@@ -558,6 +623,8 @@ function parseJsTs(content: string): RawCapture[] {
             name, kind: 'export', startLine: lineNum,
             endLine: findBraceBlockEndLine(lines, i), startColumn: 0,
             endColumn: line.length,
+            ...(moduleSpecifier ? { moduleSpecifier } : {}),
+            exportKind,
           });
         }
       }
@@ -1340,7 +1407,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
         try {
           const stat = statSync(fullPath);
           if (stat.size <= maxSize) {
-            results.push(fullPath);
+            results.push(resolveCanonicalPath(fullPath));
           } else {
             console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${fullPath}`);
           }
@@ -1455,23 +1522,62 @@ function stripJsonComments(text: string): string {
   return result.replace(/,\s*([}\]])/g, '$1');
 }
 
-function parseTsconfigFile(tsconfigPath: string): TsconfigShape {
-  const rawText = readFileSync(tsconfigPath, 'utf-8');
+function normalizeFilesystemPath(filePath: string): string {
+  return filePath.replace(/\\/g, '/');
+}
+
+function isWithinWorkspaceRoot(canonicalWorkspaceRoot: string, canonicalCandidatePath: string): boolean {
+  const workspacePrefix = canonicalWorkspaceRoot.endsWith('/')
+    ? canonicalWorkspaceRoot
+    : `${canonicalWorkspaceRoot}/`;
+  return canonicalCandidatePath === canonicalWorkspaceRoot
+    || canonicalCandidatePath.startsWith(workspacePrefix);
+}
+
+function resolveCanonicalCandidateWithinRoot(
+  candidatePath: string,
+  canonicalWorkspaceRoot: string,
+): string | undefined {
+  try {
+    const canonicalCandidatePath = normalizeFilesystemPath(realpathSync(candidatePath));
+    return isWithinWorkspaceRoot(canonicalWorkspaceRoot, canonicalCandidatePath)
+      ? canonicalCandidatePath
+      : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function parseTsconfigFile(tsconfigPath: string, canonicalWorkspaceRoot: string): TsconfigShape {
+  const canonicalTsconfigPath = resolveCanonicalCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
+  if (!canonicalTsconfigPath) {
+    throw new Error(`tsconfig path resolved outside workspace root: ${tsconfigPath}`);
+  }
+
+  const rawText = readFileSync(canonicalTsconfigPath, 'utf-8');
   return JSON.parse(stripJsonComments(rawText)) as TsconfigShape;
 }
 
-function resolveTsconfigExtendsPath(tsconfigPath: string, extendsValue: string): string {
+function resolveTsconfigExtendsPath(
+  tsconfigPath: string,
+  extendsValue: string,
+  canonicalWorkspaceRoot: string,
+): string | undefined {
+  let resolvedExtendsPath: string;
   if (extendsValue.startsWith('.') || extendsValue.startsWith('/')) {
     const normalized = extendsValue.endsWith('.json') ? extendsValue : `${extendsValue}.json`;
-    return resolve(dirname(tsconfigPath), normalized);
+    resolvedExtendsPath = resolve(dirname(tsconfigPath), normalized);
+    return resolveCanonicalCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot);
   }
 
   try {
-    return require.resolve(extendsValue, { paths: [dirname(tsconfigPath)] });
+    resolvedExtendsPath = require.resolve(extendsValue, { paths: [dirname(tsconfigPath)] });
   } catch {
     const normalized = extendsValue.endsWith('.json') ? extendsValue : `${extendsValue}.json`;
-    return require.resolve(normalized, { paths: [dirname(tsconfigPath)] });
+    resolvedExtendsPath = require.resolve(normalized, { paths: [dirname(tsconfigPath)] });
   }
+
+  return resolveCanonicalCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot);
 }
 
 function normalizePathAliases(
@@ -1499,17 +1605,42 @@ function normalizePathAliases(
 
 function loadTsconfigSettings(
   tsconfigPath: string,
+  canonicalWorkspaceRoot: string,
   depth = 0,
+  visited = new Set<string>(),
 ): { tsconfigPath: string; baseUrl: string; pathAliases: PathAlias[] } {
-  const parsed = parseTsconfigFile(tsconfigPath);
-  const inherited = depth === 0 && typeof parsed.extends === 'string' && parsed.extends.trim().length > 0
-    ? loadTsconfigSettings(resolveTsconfigExtendsPath(tsconfigPath, parsed.extends.trim()), depth + 1)
+  const canonicalTsconfigPath = resolveCanonicalCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
+  if (!canonicalTsconfigPath) {
+    throw new Error(`tsconfig path resolved outside workspace root: ${tsconfigPath}`);
+  }
+
+  const parsed = parseTsconfigFile(canonicalTsconfigPath, canonicalWorkspaceRoot);
+  visited.add(canonicalTsconfigPath);
+
+  const inherited = typeof parsed.extends === 'string' && parsed.extends.trim().length > 0 && depth < 16
+    ? (
+      // If an extends target escapes the workspace root, stop walking and keep
+      // the local parse instead of crashing resolver setup.
+        (() => {
+          const extendedPath = resolveTsconfigExtendsPath(
+            canonicalTsconfigPath,
+            parsed.extends.trim(),
+            canonicalWorkspaceRoot,
+          );
+          if (!extendedPath || visited.has(extendedPath)) {
+            return null;
+          }
+          return extendedPath
+            ? loadTsconfigSettings(extendedPath, canonicalWorkspaceRoot, depth + 1, visited)
+            : null;
+        })()
+      )
     : null;
   const compilerOptions = parsed.compilerOptions ?? {};
   const localBaseUrl = typeof compilerOptions.baseUrl === 'string'
-    ? resolve(dirname(tsconfigPath), compilerOptions.baseUrl)
+    ? resolve(dirname(canonicalTsconfigPath), compilerOptions.baseUrl)
     : undefined;
-  const aliasBaseDir = localBaseUrl ?? dirname(tsconfigPath);
+  const aliasBaseDir = localBaseUrl ?? dirname(canonicalTsconfigPath);
   const mergedAliases = new Map<string, PathAlias>();
 
   for (const alias of inherited?.pathAliases ?? []) {
@@ -1522,8 +1653,8 @@ function loadTsconfigSettings(
   }
 
   return {
-    tsconfigPath,
-    baseUrl: localBaseUrl ?? inherited?.baseUrl ?? dirname(tsconfigPath),
+    tsconfigPath: canonicalTsconfigPath,
+    baseUrl: localBaseUrl ?? inherited?.baseUrl ?? dirname(canonicalTsconfigPath),
     pathAliases: [...mergedAliases.values()],
   };
 }
@@ -1547,12 +1678,17 @@ function buildModuleResolutionCandidates(basePath: string): string[] {
   return [...candidates];
 }
 
-function resolveModuleFile(basePath: string): string | undefined {
+function resolveModuleFile(basePath: string, canonicalWorkspaceRoot: string): string | undefined {
   for (const candidate of buildModuleResolutionCandidates(basePath)) {
+    const canonicalCandidate = resolveCanonicalCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
+    if (!canonicalCandidate) {
+      continue;
+    }
+
     try {
-      const stats = statSync(candidate);
+      const stats = statSync(canonicalCandidate);
       if (stats.isFile()) {
-        return resolveCanonicalPath(candidate);
+        return canonicalCandidate;
       }
     } catch {
       continue;
@@ -1561,8 +1697,13 @@ function resolveModuleFile(basePath: string): string | undefined {
   return undefined;
 }
 
-function createModuleResolver(baseUrl: string, pathAliases: PathAlias[]): ModuleResolver {
+function createModuleResolver(
+  baseUrl: string,
+  pathAliases: PathAlias[],
+  workspaceRoot = baseUrl,
+): ModuleResolver {
   const normalizedBaseUrl = resolve(baseUrl);
+  const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(workspaceRoot));
   const normalizedAliases = pathAliases.map((alias) => ({
     ...alias,
     targets: alias.targets.map((target) => resolve(normalizedBaseUrl, target)),
@@ -1571,7 +1712,7 @@ function createModuleResolver(baseUrl: string, pathAliases: PathAlias[]): Module
   return {
     resolve(fromFile: string, specifier: string): string | undefined {
       if (specifier.startsWith('.') || specifier.startsWith('/')) {
-        return resolveModuleFile(resolve(dirname(fromFile), specifier));
+        return resolveModuleFile(resolve(dirname(fromFile), specifier), canonicalWorkspaceRoot);
       }
 
       for (const alias of normalizedAliases) {
@@ -1586,7 +1727,7 @@ function createModuleResolver(baseUrl: string, pathAliases: PathAlias[]): Module
           const candidate = alias.suffixWildcard
             ? target.replace(/\*$/, aliasRemainder)
             : target;
-          const resolvedTarget = resolveModuleFile(candidate);
+          const resolvedTarget = resolveModuleFile(candidate, canonicalWorkspaceRoot);
           if (resolvedTarget) {
             return resolvedTarget;
           }
@@ -1598,57 +1739,81 @@ function createModuleResolver(baseUrl: string, pathAliases: PathAlias[]): Module
   };
 }
 
+function getResolvedImportEdgeWeight(
+  importKind: RawCapture['importKind'] | undefined,
+  importWeight: number,
+): number {
+  if (importKind === 'type') {
+    return Math.min(importWeight, 0.5);
+  }
+
+  return importWeight;
+}
+
 function findNearestTsconfig(rootDir: string): string | undefined {
-  let currentDir = resolve(rootDir);
+  const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(rootDir));
+  let currentDir = canonicalWorkspaceRoot;
 
   while (true) {
     const candidate = resolve(currentDir, 'tsconfig.json');
-    try {
-      const stats = statSync(candidate);
-      if (stats.isFile()) {
-        return candidate;
+    const canonicalCandidate = resolveCanonicalCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
+    if (canonicalCandidate) {
+      try {
+        const stats = statSync(canonicalCandidate);
+        if (stats.isFile()) {
+          return canonicalCandidate;
+        }
+      } catch {
+        // Keep walking upward.
       }
-    } catch {
-      // Keep walking upward.
     }
 
     const parentDir = dirname(currentDir);
-    if (parentDir === currentDir) {
+    if (parentDir === currentDir || !isWithinWorkspaceRoot(canonicalWorkspaceRoot, parentDir)) {
       return undefined;
     }
     currentDir = parentDir;
   }
 }
 
-function loadTsconfigResolverFromPath(tsconfigPath: string): ModuleResolver {
-  const { baseUrl, pathAliases } = loadTsconfigSettings(tsconfigPath);
-  return createModuleResolver(baseUrl, pathAliases);
+function loadTsconfigResolverFromPath(tsconfigPath: string, workspaceRoot = dirname(tsconfigPath)): ModuleResolver {
+  const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(workspaceRoot));
+  const { baseUrl, pathAliases } = loadTsconfigSettings(tsconfigPath, canonicalWorkspaceRoot);
+  return createModuleResolver(baseUrl, pathAliases, canonicalWorkspaceRoot);
 }
 
 export function loadTsconfigResolver(rootDir: string): ModuleResolver {
   try {
     const tsconfigPath = findNearestTsconfig(rootDir);
     if (!tsconfigPath) {
-      return createModuleResolver(rootDir, []);
+      return createModuleResolver(rootDir, [], rootDir);
     }
-    return loadTsconfigResolverFromPath(tsconfigPath);
+    return loadTsconfigResolverFromPath(tsconfigPath, rootDir);
   } catch (error: unknown) {
     console.warn(
       `[structural-indexer] Failed to load tsconfig resolver from ${rootDir}: ${error instanceof Error ? error.message : String(error)}`,
     );
-    return createModuleResolver(rootDir, []);
+    return createModuleResolver(rootDir, [], rootDir);
   }
 }
 
 function getConfiguredModuleResolver(config: IndexerConfig): ModuleResolver {
   if (config.tsconfigPath && !config.baseUrl && !config.pathAliases) {
-    return loadTsconfigResolverFromPath(resolve(config.rootDir, config.tsconfigPath));
+    try {
+      return loadTsconfigResolverFromPath(resolve(config.rootDir, config.tsconfigPath), config.rootDir);
+    } catch (error: unknown) {
+      console.warn(
+        `[structural-indexer] Failed to load configured tsconfig resolver from ${config.rootDir}: ${error instanceof Error ? error.message : String(error)}`,
+      );
+      return createModuleResolver(config.rootDir, [], config.rootDir);
+    }
   }
 
   if (config.baseUrl || config.pathAliases) {
     return createModuleResolver(
       config.baseUrl ? resolve(config.rootDir, config.baseUrl) : config.rootDir,
       config.pathAliases ?? [],
+      config.rootDir,
     );
   }
 
@@ -1798,9 +1963,13 @@ export function finalizeIndexResults(
         sourceId,
         targetId: targetNode.symbolId,
         edgeType: 'IMPORTS',
-        weight: resolvedWeights.IMPORTS,
+        weight: getResolvedImportEdgeWeight(capture.importKind, resolvedWeights.IMPORTS),
         metadata: {
-          ...buildEdgeMetadata(resolvedWeights.IMPORTS, result.detectorProvenance, 'EXTRACTED'),
+          ...buildEdgeMetadata(
+            getResolvedImportEdgeWeight(capture.importKind, resolvedWeights.IMPORTS),
+            result.detectorProvenance,
+            'EXTRACTED',
+          ),
           moduleSpecifier: capture.moduleSpecifier,
           ...(capture.importKind ? { importKind: capture.importKind } : {}),
           resolvedFilePath: resolvedTargetFile,

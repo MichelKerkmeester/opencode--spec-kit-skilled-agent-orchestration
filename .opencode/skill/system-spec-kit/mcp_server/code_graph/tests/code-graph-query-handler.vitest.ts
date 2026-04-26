@@ -3,6 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import {
+  parseOutlineQueryResult,
+  parseRelationshipQueryResult,
+} from '../lib/query-result-adapter.js';
 
 const mocks = vi.hoisted(() => ({
   getDb: vi.fn(),
@@ -699,20 +703,59 @@ describe('code-graph-query handler', () => {
       subject: 'src/verify.ts',
       limit: 10,
     });
-    const parsed = JSON.parse(result.content[0].text);
+    const parsed = parseOutlineQueryResult(result);
 
     expect(parsed.status).toBe('ok');
-    expect(parsed.data.filePath).toBe('src/verify.ts');
-    expect(parsed.data.nodes).toEqual([
+    if (parsed.status === 'ok') {
+      expect(parsed.data.filePath).toBe('src/verify.ts');
+      expect(parsed.data.nodes).toEqual([
+        {
+          name: 'handleVerify',
+          kind: 'function',
+          fqName: 'verify.handleVerify',
+          line: 14,
+          signature: 'export function handleVerify()',
+          symbolId: 'verify::handleVerify',
+        },
+      ]);
+    }
+  });
+
+  it('keeps relationship payloads parseable for the shared query adapter', async () => {
+    mocks.queryEdgesFrom.mockReturnValue([
       {
-        name: 'handleVerify',
-        kind: 'function',
-        fqName: 'verify.handleVerify',
-        line: 14,
-        signature: 'export function handleVerify()',
-        symbolId: 'verify::handleVerify',
+        edge: {
+          targetId: 'symbol-2',
+          edgeType: 'CALLS',
+          metadata: {
+            confidence: 0.9,
+            detectorProvenance: 'structured',
+            evidenceClass: 'EXTRACTED',
+          },
+        },
+        targetNode: { fqName: 'DirectTarget', filePath: 'src/direct.ts', startLine: 12 },
       },
     ]);
+
+    const result = await handleCodeGraphQuery({
+      operation: 'calls_from',
+      subject: 'SomeSymbol',
+    });
+    const parsed = parseRelationshipQueryResult(result);
+
+    expect(parsed.status).toBe('ok');
+    if (parsed.status === 'ok') {
+      expect(parsed.data.operation).toBe('calls_from');
+      expect(parsed.data.edges).toEqual([
+        expect.objectContaining({
+          target: 'DirectTarget',
+          file: 'src/direct.ts',
+          line: 12,
+          numericConfidence: 0.9,
+          edgeEvidenceClass: 'direct_call',
+        }),
+      ]);
+    }
   });
 
   it('excludes dangling edges and reports corruption warnings instead of returning raw symbol IDs', async () => {

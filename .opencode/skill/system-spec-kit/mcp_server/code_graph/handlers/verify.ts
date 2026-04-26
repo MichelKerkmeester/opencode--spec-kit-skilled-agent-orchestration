@@ -4,7 +4,8 @@
 // MCP tool handler for code_graph_verify — executes the persisted
 // gold-query battery against the current code graph.
 
-import { resolve } from 'node:path';
+import { realpathSync } from 'node:fs';
+import { isAbsolute, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 import { setLastGoldVerification } from '../lib/code-graph-db.js';
@@ -37,6 +38,7 @@ const DEFAULT_GOLD_BATTERY_PATH = fileURLToPath(new URL(
   '../../../../../specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json',
   import.meta.url,
 ));
+const GOLD_BATTERY_FILENAME = 'code-graph-gold-queries.json';
 
 function buildResponse(payload: object): { content: Array<{ type: 'text'; text: string }> } {
   return {
@@ -66,13 +68,84 @@ function applyCategoryFilter(
   };
 }
 
+function assertWorkspaceContainment(canonicalWorkspace: string, candidatePath: string, label: string): void {
+  const workspacePrefix = canonicalWorkspace.endsWith(sep) ? canonicalWorkspace : `${canonicalWorkspace}${sep}`;
+  if (candidatePath !== canonicalWorkspace && !candidatePath.startsWith(workspacePrefix)) {
+    throw new Error(`${label} must stay within the workspace root: ${canonicalWorkspace}`);
+  }
+}
+
+function isAllowlistedBatteryPath(canonicalWorkspace: string, canonicalBatteryPath: string): boolean {
+  const allowlistedBases = [
+    resolve(canonicalWorkspace, '.opencode/specs'),
+    resolve(canonicalWorkspace, '.opencode/skill/system-spec-kit/mcp_server'),
+  ];
+
+  return allowlistedBases.some((basePath) => {
+    const candidateRelative = relative(basePath, canonicalBatteryPath);
+    if (
+      candidateRelative.length === 0
+      || candidateRelative.startsWith('..')
+      || isAbsolute(candidateRelative)
+    ) {
+      return false;
+    }
+
+    const segments = candidateRelative.split(sep);
+    const assetDir = segments[segments.length - 2];
+    const fileName = segments[segments.length - 1];
+    return segments.length >= 2
+      && assetDir === 'assets'
+      && fileName === GOLD_BATTERY_FILENAME;
+  });
+}
+
+function resolveVerifyPaths(args: VerifyArgs): {
+  canonicalRootDir: string;
+  canonicalBatteryPath: string;
+} {
+  const workspaceRoot = resolve(process.cwd());
+  const resolvedRootDir = resolve(args.rootDir ?? process.cwd());
+  const resolvedBatteryPath = resolve(args.batteryPath ?? DEFAULT_GOLD_BATTERY_PATH);
+
+  let canonicalWorkspace: string;
+  let canonicalRootDir: string;
+  let canonicalBatteryPath: string;
+
+  try {
+    canonicalWorkspace = realpathSync(workspaceRoot);
+    canonicalRootDir = realpathSync(resolvedRootDir);
+  } catch {
+    throw new Error(`rootDir path is invalid or contains a broken symlink: ${resolvedRootDir}`);
+  }
+
+  assertWorkspaceContainment(canonicalWorkspace, canonicalRootDir, 'rootDir');
+
+  try {
+    canonicalBatteryPath = realpathSync(resolvedBatteryPath);
+  } catch {
+    throw new Error(`batteryPath is invalid or contains a broken symlink: ${resolvedBatteryPath}`);
+  }
+
+  if (!isAllowlistedBatteryPath(canonicalWorkspace, canonicalBatteryPath)) {
+    throw new Error(
+      `batteryPath must stay within approved code-graph asset roots under: ${canonicalWorkspace}`,
+    );
+  }
+
+  return {
+    canonicalRootDir,
+    canonicalBatteryPath,
+  };
+}
+
 export async function handleCodeGraphVerify(
   args: VerifyArgs,
 ): Promise<{ content: { type: 'text'; text: string }[] }> {
-  const rootDir = resolve(args.rootDir ?? process.cwd());
-
   try {
-    const readyState = await ensureCodeGraphReady(rootDir, {
+    const { canonicalRootDir, canonicalBatteryPath } = resolveVerifyPaths(args);
+
+    const readyState = await ensureCodeGraphReady(canonicalRootDir, {
       allowInlineIndex: args.allowInlineIndex ?? false,
       allowInlineFullScan: false,
     });
@@ -85,14 +158,13 @@ export async function handleCodeGraphVerify(
       });
     }
 
-    const batteryPath = resolve(args.batteryPath ?? DEFAULT_GOLD_BATTERY_PATH);
-    const battery = applyCategoryFilter(loadGoldBattery(batteryPath), args.category);
+    const battery = applyCategoryFilter(loadGoldBattery(canonicalBatteryPath), args.category);
     const result = {
       ...(await executeBattery(battery, handleCodeGraphQuery, {
         failFast: args.failFast,
         includeDetails: args.includeDetails,
       })),
-      batteryPath,
+      batteryPath: canonicalBatteryPath,
     };
 
     if (args.persistBaseline === true) {

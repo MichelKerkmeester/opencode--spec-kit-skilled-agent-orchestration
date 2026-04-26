@@ -110,6 +110,33 @@ describe('detect_changes handler — P1 safety invariant', () => {
     );
   });
 
+  it('returns status="blocked" on stale readiness even when action is "none"', async () => {
+    mocks.ensureCodeGraphReady.mockResolvedValue({
+      freshness: 'stale',
+      action: 'none',
+      inlineIndexPerformed: false,
+      reason: 'tracked files have newer mtime than indexed_at',
+    });
+
+    const result = await handleDetectChanges({
+      diff: 'diff --git a/x.ts b/x.ts\n--- a/x.ts\n+++ b/x.ts\n@@ -1,1 +1,1 @@\n-old\n+new\n',
+      rootDir: workspaceRoot,
+    });
+
+    const parsed = JSON.parse(result.content[0].text);
+    expect(parsed.status).toBe('blocked');
+    expect(parsed.status).not.toBe('ok');
+    expect(parsed.affectedSymbols).toEqual([]);
+    expect(parsed.readiness.freshness).toBe('stale');
+    expect(parsed.readiness.verificationGate).toBeUndefined();
+    expect(parsed.blockedReason).toMatch(/stale/);
+    expect(mocks.queryOutline).not.toHaveBeenCalled();
+    expect(mocks.ensureCodeGraphReady).toHaveBeenCalledWith(
+      workspaceRoot,
+      { allowInlineIndex: false, allowInlineFullScan: false },
+    );
+  });
+
   it('returns status="blocked" on empty graph (NEVER empty affectedSymbols)', async () => {
     mocks.ensureCodeGraphReady.mockResolvedValue({
       freshness: 'empty',

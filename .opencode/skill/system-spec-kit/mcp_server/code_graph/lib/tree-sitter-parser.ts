@@ -365,9 +365,9 @@ function emitImportCaptures(
   const startLine = node.startPosition.row + 1;
   const endLine = node.endPosition.row + 1;
   const moduleSpecifier = extractModuleSpecifier(node);
-  const importKind: RawCapture['importKind'] = /^\s*import\s+type\b/.test(sig) ? 'type' : 'value';
+  const statementImportKind: RawCapture['importKind'] = /^\s*import\s+type\b/.test(sig) ? 'type' : 'value';
 
-  function pushImport(name: string): void {
+  function pushImport(name: string, importKind: RawCapture['importKind'] = statementImportKind): void {
     captures.push({
       name,
       kind: 'import',
@@ -389,7 +389,11 @@ function emitImportCaptures(
           for (const spec of inner.namedChildren) {
             if (spec.type === 'import_specifier') {
               const n = spec.childForFieldName('name') ?? spec.childForFieldName('local');
-              if (n) { pushImport(n.text); emitted = true; }
+              const specifierImportKind: RawCapture['importKind'] = statementImportKind === 'type'
+                || /^\s*type\b/.test(spec.text)
+                ? 'type'
+                : 'value';
+              if (n) { pushImport(n.text, specifierImportKind); emitted = true; }
             }
           }
         } else if (inner.type === 'namespace_import') {
@@ -404,7 +408,11 @@ function emitImportCaptures(
     // Python: import_specifier at top level of import_from_statement
     if (child.type === 'import_specifier') {
       const n = child.childForFieldName('name') ?? child.childForFieldName('local');
-      if (n) { pushImport(n.text); emitted = true; }
+      const specifierImportKind: RawCapture['importKind'] = statementImportKind === 'type'
+        || /^\s*type\b/.test(child.text)
+        ? 'type'
+        : 'value';
+      if (n) { pushImport(n.text, specifierImportKind); emitted = true; }
     }
   }
 

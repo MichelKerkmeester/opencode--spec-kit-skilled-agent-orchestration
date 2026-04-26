@@ -95,7 +95,7 @@ The 007 resilience-research packet identified five concrete backend resilience g
 - **REQ-002 (Hash production):** Scan handler passes `currentContentHash` to `isFileStale` when calling post-parse stale guard, reusing the hash already in `ParseResult`.
 - **REQ-003 (Resolver capture):** Tree-sitter parser records `moduleSpecifier`, `importKind` ('value' | 'type'), and `exportKind` ('named' | 'star' | 'declaration') on import/export captures.
 - **REQ-004 (Path alias resolution):** Indexer reads `tsconfig.json` once per scan, resolves `baseUrl` + `paths` aliases, and emits cross-file edges to resolved targets.
-- **REQ-005 (Type-only edge class):** Type-only imports produce a `TYPE_ONLY` edge class (or a flag on existing edges) at weight 0.5.
+- **REQ-005 (Type-only import metadata):** Type-only imports stay on the existing `IMPORTS` edge type, but the emitted edge metadata must include `importKind:"type"` and the effective edge weight must be reduced to `<= 0.5`.
 - **REQ-006 (Re-export chain):** `export * from './foo'` is captured + tracked; outline queries can chase to the original symbol.
 - **REQ-007 (Edge-weight overrides):** `IndexerConfig.edgeWeights?: Partial<Record<EdgeType, number>>` overrides hard-coded weights at scan time.
 - **REQ-008 (Drift detection):** `edge-drift.ts` computes edge share, PSI, JSD between current scan and stored baseline. Status surfaces drift summary.
@@ -128,7 +128,7 @@ The 007 resilience-research packet identified five concrete backend resilience g
 
 **Given** a file contains `import type { Foo } from './bar'`,
 **When** the indexer parses the file,
-**Then** the captured edge has `importKind:"type"` and resolves to a TYPE-class edge with weight ≤ 0.5 (or a `TYPE_ONLY` flag).
+**Then** the captured edge remains an `IMPORTS` edge whose metadata includes `importKind:"type"` and whose effective weight is `<= 0.5`.
 
 ### Scenario 4: `code_graph_verify` blocks on stale graph
 

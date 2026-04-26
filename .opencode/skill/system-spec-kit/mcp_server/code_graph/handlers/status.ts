@@ -44,27 +44,37 @@ function getPersistedEdgeDistributionBaseline(): EdgeDistribution | null {
   }
 
   try {
-    return buildEdgeDistribution(JSON.parse(rawBaseline) as Record<string, number>);
+    const parsedBaseline = JSON.parse(rawBaseline) as unknown;
+    if (!isRecord(parsedBaseline)) {
+      return null;
+    }
+
+    return buildEdgeDistribution(parsedBaseline);
   } catch {
     return null;
   }
 }
 
-function buildEdgeDriftSummary(edgesByType: Record<string, number>): EdgeDriftSummary {
+function buildEdgeDriftSummary(edgesByType: Record<string, number>): EdgeDriftSummary | null {
+  const baselineShare = getPersistedEdgeDistributionBaseline();
+  if (!baselineShare) {
+    return null;
+  }
+
   const currentShare = computeEdgeShare(buildEdgeDistribution(edgesByType));
-  const baselineShare = getPersistedEdgeDistributionBaseline() ?? currentShare;
   const shareDrift = Object.fromEntries(
     Object.keys(currentShare).map((edgeType) => [
       edgeType,
-      Math.abs(
-        currentShare[edgeType as keyof typeof currentShare]
-        - baselineShare[edgeType as keyof typeof baselineShare],
-      ),
+      currentShare[edgeType as keyof typeof currentShare]
+      - baselineShare[edgeType as keyof typeof baselineShare],
     ]),
   ) as Record<string, number>;
   const psi = computePSI(currentShare, baselineShare);
   const jsd = computeJSD(currentShare, baselineShare);
-  const maxShareDrift = Object.values(shareDrift).reduce((max, value) => Math.max(max, value), 0);
+  const maxShareDrift = Object.values(shareDrift).reduce(
+    (max, value) => Math.max(max, Math.abs(value)),
+    0,
+  );
 
   return {
     share_drift: shareDrift,

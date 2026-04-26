@@ -12,7 +12,10 @@ const mocks = vi.hoisted(() => ({
   executeBatteryMock: vi.fn(),
   loadGoldBatteryMock: vi.fn(),
   getCodeGraphMetadataMock: vi.fn(),
+  getGraphFreshnessMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
+  getLastGoldVerificationMock: vi.fn(),
+  persistIndexedFileResultMock: vi.fn(),
   setCodeGraphMetadataMock: vi.fn(),
   setLastDetectorProvenanceMock: vi.fn(),
   setLastDetectorProvenanceSummaryMock: vi.fn(),
@@ -54,9 +57,15 @@ vi.mock('../lib/gold-query-verifier.js', () => ({
   loadGoldBattery: mocks.loadGoldBatteryMock,
 }));
 
+vi.mock('../lib/ensure-ready.js', () => ({
+  getGraphFreshness: mocks.getGraphFreshnessMock,
+  persistIndexedFileResult: mocks.persistIndexedFileResultMock,
+}));
+
 vi.mock('../lib/code-graph-db.js', () => ({
   getLastGitHead: mocks.getLastGitHeadMock,
   getCodeGraphMetadata: mocks.getCodeGraphMetadataMock,
+  getLastGoldVerification: mocks.getLastGoldVerificationMock,
   setCodeGraphMetadata: mocks.setCodeGraphMetadataMock,
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastDetectorProvenanceSummary: mocks.setLastDetectorProvenanceSummaryMock,
@@ -74,6 +83,7 @@ vi.mock('../lib/code-graph-db.js', () => ({
 }));
 
 import { handleCodeGraphScan } from '../handlers/scan.js';
+import { handleCodeGraphStatus } from '../handlers/status.js';
 
 describe('handleCodeGraphScan', () => {
   beforeEach(() => {
@@ -107,11 +117,36 @@ describe('handleCodeGraphScan', () => {
       queries: [],
     });
     mocks.getCodeGraphMetadataMock.mockReturnValue(null);
+    mocks.getGraphFreshnessMock.mockReturnValue('fresh');
     mocks.getLastGitHeadMock.mockReturnValue('old-head');
+    mocks.getLastGoldVerificationMock.mockReturnValue(null);
     mocks.isFileStaleMock.mockReturnValue(false);
     mocks.existsSyncMock.mockReturnValue(true);
     mocks.realpathSyncMock.mockImplementation((path: string) => path);
     mocks.upsertFileMock.mockReturnValue(1);
+    mocks.persistIndexedFileResultMock.mockImplementation((result) => {
+      const fileId = mocks.upsertFileMock(
+        result.filePath,
+        result.language,
+        result.contentHash,
+        result.nodes.length,
+        result.edges.length,
+        result.parseHealth,
+        result.parseDurationMs,
+        { fileMtimeMs: 0 },
+      );
+      mocks.replaceNodesMock(fileId, result.nodes);
+      mocks.replaceEdgesMock(result.nodes.map((node: { symbolId: string }) => node.symbolId), result.edges);
+      mocks.upsertFileMock(
+        result.filePath,
+        result.language,
+        result.contentHash,
+        result.nodes.length,
+        result.edges.length,
+        result.parseHealth,
+        result.parseDurationMs,
+      );
+    });
     mocks.getTrackedFilesMock.mockReturnValue(['/workspace/removed.ts']);
     mocks.getStatsMock.mockReturnValue({
       lastScanTimestamp: '2026-04-17T00:00:00.000Z',
@@ -239,6 +274,120 @@ describe('handleCodeGraphScan', () => {
     expect(mocks.setLastGoldVerificationMock).not.toHaveBeenCalled();
   });
 
+  it('reseeds the edge distribution baseline on a full scan when the persisted baseline metadata is malformed', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.getCodeGraphMetadataMock.mockReturnValue('{malformed');
+    mocks.indexFilesMock.mockResolvedValue(withPreParseSkippedCount([{
+      filePath: '/workspace/current.ts',
+      language: 'typescript',
+      contentHash: 'hash-1',
+      nodes: [{ symbolId: 'current::symbol' }],
+      edges: [{
+        sourceId: 'current::symbol',
+        targetId: 'dep::symbol',
+        edgeType: 'CALLS',
+        weight: 1,
+        metadata: {},
+      }],
+      detectorProvenance: 'structured',
+      parseHealth: 'clean',
+      parseDurationMs: 10,
+      parseErrors: [],
+    }]));
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+    });
+
+    expect(mocks.setCodeGraphMetadataMock).toHaveBeenCalledWith(
+      'edge_distribution_baseline',
+      expect.any(String),
+    );
+
+    const persistedBaseline = mocks.setCodeGraphMetadataMock.mock.calls.find(
+      ([key]) => key === 'edge_distribution_baseline',
+    )?.[1];
+    expect(JSON.parse(persistedBaseline)).toMatchObject({
+      CALLS: 1,
+    });
+  });
+
+  it('persists a full-scan edge baseline and surfaces the next drift summary in status', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.indexFilesMock.mockResolvedValue(withPreParseSkippedCount([{
+      filePath: '/workspace/current.ts',
+      language: 'typescript',
+      contentHash: 'hash-1',
+      nodes: [{ symbolId: 'current::symbol' }],
+      edges: [{
+        sourceId: 'current::symbol',
+        targetId: 'dep::symbol',
+        edgeType: 'CALLS',
+        weight: 1,
+        metadata: {},
+      }],
+      detectorProvenance: 'structured',
+      parseHealth: 'clean',
+      parseDurationMs: 10,
+      parseErrors: [],
+    }]));
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+    });
+
+    const persistedBaseline = mocks.setCodeGraphMetadataMock.mock.calls.find(
+      ([key]) => key === 'edge_distribution_baseline',
+    )?.[1];
+    expect(persistedBaseline).toBeDefined();
+
+    mocks.getCodeGraphMetadataMock.mockImplementation((key: string) => (
+      key === 'edge_distribution_baseline' ? persistedBaseline : null
+    ));
+    mocks.getStatsMock.mockReturnValue({
+      totalFiles: 1,
+      totalNodes: 1,
+      totalEdges: 2,
+      nodesByKind: { function: 1 },
+      edgesByType: { CALLS: 1, IMPORTS: 1 },
+      parseHealthSummary: { clean: 1 },
+      lastScanTimestamp: '2026-04-17T00:00:00.000Z',
+      lastGitHead: 'same-head',
+      dbFileSize: 1024,
+      schemaVersion: 1,
+      graphQualitySummary: {
+        detectorProvenanceSummary: null,
+        graphEdgeEnrichmentSummary: null,
+      },
+    });
+
+    const response = await handleCodeGraphStatus();
+    const payload = JSON.parse(response.content[0].text) as {
+      status: string;
+      data: {
+        edgeDriftSummary: {
+          share_drift: Record<string, number>;
+          psi: number;
+          jsd: number;
+          flagged: boolean;
+        };
+      };
+    };
+
+    expect(payload.status).toBe('ok');
+    expect(payload.data.edgeDriftSummary).toMatchObject({
+      flagged: true,
+    });
+    expect(payload.data.edgeDriftSummary.share_drift.CALLS).toBeCloseTo(-0.5);
+    expect(payload.data.edgeDriftSummary.share_drift.IMPORTS).toBeCloseTo(0.5);
+    expect(payload.data.edgeDriftSummary.psi).toBeGreaterThan(0);
+    expect(payload.data.edgeDriftSummary.jsd).toBeGreaterThan(0);
+  });
+
   it('clears the persisted edge-enrichment summary when a later scan reports no summary', async () => {
     mocks.execSyncMock.mockReturnValue('same-head\n');
     mocks.getLastGitHeadMock.mockReturnValue('same-head');
@@ -327,6 +476,21 @@ describe('handleCodeGraphScan', () => {
     expect(mocks.isFileStaleMock).not.toHaveBeenCalled();
     expect(mocks.setLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
     expect(mocks.clearLastGraphEdgeEnrichmentSummaryMock).not.toHaveBeenCalled();
+  });
+
+  it('passes the parser content hash into stale checks during incremental scans', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+    mocks.isFileStaleMock.mockReturnValue(true);
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: true,
+    });
+
+    expect(mocks.isFileStaleMock).toHaveBeenCalledWith('/workspace/current.ts', {
+      currentContentHash: 'hash-1',
+    });
   });
 
   it('removes deleted tracked files during incremental scans', async () => {
