@@ -1,0 +1,72 @@
+{
+  "iteration": 12,
+  "research_questions_answered": ["Q15A", "Q15B", "Q15C", "Q15D"],
+  "focus": "verification harness + implementation roadmap synthesis",
+  "verdict": "CONVERGED",
+  "findings": [
+    {
+      "id": "F-Q15A-001",
+      "class": "harness location",
+      "summary": "The gold battery should be implemented as a reusable verifier library plus a new code_graph_verify MCP tool, not embedded directly in scan.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:19-29",
+        ".opencode/skill/system-spec-kit/mcp_server/tools/index.ts:84-110",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:915-920"
+      ]
+    },
+    {
+      "id": "F-Q15B-001",
+      "class": "execution shape",
+      "summary": "The current gold JSON is semantic while code_graph_query is structural, so the verifier needs a v1 adapter from source_file:line to outline probes and a v2 executable probe schema later.",
+      "evidence": [
+        "assets/code-graph-gold-queries.json:1-235",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:570-588",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1097-1133"
+      ]
+    },
+    {
+      "id": "F-Q15C-001",
+      "class": "self-heal and detect_changes wiring",
+      "summary": "Verification should run after allowed scan/self-heal paths and be surfaced in status; detect_changes must keep its non-mutating block behavior.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:290-367",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:40-62"
+      ]
+    },
+    {
+      "id": "F-Q15D-001",
+      "class": "implementation order",
+      "summary": "Land verifier plumbing first, then scan/status integration, hash-aware staleness, resolver upgrades, drift persistence, self-heal observability, and tests.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-425",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:857-920",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:895-1071",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:302-367"
+      ]
+    }
+  ],
+  "implementation_roadmap_task_count": 15,
+  "outputs": [
+    "research/iterations/iteration-012.md",
+    "research/deltas/iteration-012.json",
+    "research/research.md",
+    "decision-record.md",
+    "research/deep-research-state.jsonl"
+  ],
+  "constraints_observed": {
+    "assets_modified": false,
+    "research_md_append_only": true,
+    "decision_record_append_only": true
+  },
+  "convergence_signals": {
+    "final_iteration": true,
+    "implementation_ready": true,
+    "remaining_work_packet": "008-code-graph-backend-resilience",
+    "evidence_gap": "research/iterations/iteration-008.md through iteration-011.md were absent; prompts and earlier grounded findings were used instead"
+  },
+  "status": "complete",
+  "newFindingsRatio": 0.12,
+  "newInfoRatio": 0.12,
+  "timestamp": "2026-04-25T21:41:39+02:00"
+}

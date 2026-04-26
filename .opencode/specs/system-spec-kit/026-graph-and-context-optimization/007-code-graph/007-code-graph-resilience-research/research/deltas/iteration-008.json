@@ -1,0 +1,53 @@
+{
+  "iteration": 8,
+  "focus": "content-hash predicate integration",
+  "research_questions_answered": ["Q11A", "Q11B", "Q11C", "Q11D", "Q11E"],
+  "findings": [
+    {
+      "id": "F-CH-001",
+      "class": "current stale predicate",
+      "summary": "The live DB stale predicate and batch helper are mtime-only; there is no inspected getStaleFiles export, and ensureFreshFiles is the current batch stale-check surface.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-388",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:390-424"
+      ]
+    },
+    {
+      "id": "F-CH-002",
+      "class": "hash production path",
+      "summary": "File content hashes are already generated from source content using truncated SHA-256, carried on ParseResult.contentHash, and persisted through upsertFile.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:60-70",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:90-93",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:227-248",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:289-321"
+      ]
+    },
+    {
+      "id": "F-CH-003",
+      "class": "predicate design",
+      "summary": "The minimal safe predicate is mtime-first lazy hashing: mtime drift stays a cheap stale exit, equal mtime triggers live read+hash comparison, and missing content_hash marks the row stale for scan backfill.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:117-123",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:380-388",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1453-1465"
+      ]
+    },
+    {
+      "id": "F-CH-004",
+      "class": "patch surface",
+      "summary": "Patch surface should be limited to the DB stale helpers, scan post-parse guard reuse of ParseResult.contentHash, and targeted DB/readiness/scan tests.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:208-217",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/crash-recovery.vitest.ts:905-940",
+        ".opencode/skill/system-spec-kit/mcp_server/tests/ensure-ready.vitest.ts:163-199",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts:154-217"
+      ]
+    }
+  ],
+  "newFindingsCount": 4,
+  "newFindingsRatio": 0.62,
+  "newInfoRatio": 0.62,
+  "status": "insight",
+  "timestamp": "2026-04-25T19:44:24Z"
+}

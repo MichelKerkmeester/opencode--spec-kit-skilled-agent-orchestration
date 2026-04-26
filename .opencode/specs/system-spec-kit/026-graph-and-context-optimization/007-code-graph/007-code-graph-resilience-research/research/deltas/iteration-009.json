@@ -1,0 +1,56 @@
+{
+  "iteration": 9,
+  "focus": "resolver upgrade patch design",
+  "research_questions_answered": ["Q12A", "Q12B", "Q12C", "Q12D"],
+  "findings": [
+    {
+      "id": "F-RU-001",
+      "class": "path alias resolver gap",
+      "summary": "The current scanner does not read tsconfig paths or preserve import module specifiers, so @spec-kit/shared/* imports cannot be resolved to files.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/tsconfig.json:12-15",
+        ".opencode/skill/system-spec-kit/mcp_server/context-server.ts:70-74",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:73-80",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:340-397"
+      ]
+    },
+    {
+      "id": "F-RU-002",
+      "class": "type-only import edge design",
+      "summary": "Type-only imports need parser tagging plus a new TYPE_ONLY edge class weighted like TYPE_OF but kept separate from runtime IMPORTS.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:12-16",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:483-488",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:485-502",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1048-1069"
+      ]
+    },
+    {
+      "id": "F-RU-003",
+      "class": "barrel chain resolution",
+      "summary": "Star and named re-exports need source-module capture and a bounded re-export chain resolver that maps barrel imports back to original symbols.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/tree-sitter-parser.ts:399-465",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:504-517",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/index.ts:4-15",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/index.ts:4-11"
+      ]
+    },
+    {
+      "id": "F-RU-004",
+      "class": "quantitative impact",
+      "summary": "Real grep counts show 1777 static relative imports overall; among requested fixes, type-only imports lead with 442, followed by path aliases at 129 and star re-exports at 14.",
+      "evidence": [
+        "rg count: static_relative_imports=1777",
+        "rg count: type_only_imports=442",
+        "rg count: path_alias_imports=129",
+        "rg count: re_export_star=14"
+      ]
+    }
+  ],
+  "newFindingsCount": 4,
+  "newFindingsRatio": 0.58,
+  "newInfoRatio": 0.58,
+  "status": "insight",
+  "timestamp": "2026-04-25T19:51:04Z"
+}

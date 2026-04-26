@@ -58,7 +58,7 @@ Prompt-time advisor hooks fire on each user prompt, call the native advisor, and
 | Copilot | `copilot/user-prompt-submit.ts` | SDK `onUserPromptSubmitted` or wrapper hook config |
 | Codex | `codex/user-prompt-submit.ts` | `~/.codex/hooks.json` (`UserPromptSubmit`) with `[features].codex_hooks = true`; prompt-wrapper fallback available |
 
-OpenCode delivers the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs`, which imports the stable native compat entrypoint. The default prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty).
+OpenCode delivers the advisor via `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs`, which imports the stable native compat entrypoint. The default prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty).
 
 Packet 014 unified the threshold/render contract across OpenCode and Codex: both now use the shared `renderAdvisorBrief(...)` path and the shared builder/timeout/threshold contract. Diagnostics for all runtime hook surfaces persist to bounded JSONL sinks under the temp metrics root so `advisor_validate` analysis can read them back across processes.
 

@@ -1,0 +1,63 @@
+{
+  "iteration": 10,
+  "focus": "edge-weight tuning + drift detection",
+  "research_questions_answered": ["Q13A", "Q13B", "Q13C", "Q13D", "Q13E"],
+  "findings": [
+    {
+      "id": "F-Q13A-001",
+      "class": "config schema",
+      "summary": "IndexerConfig currently covers only rootDir, globs, max file size, and languages; scan args override includeGlobs by replacement and excludeGlobs by append, while auto-index paths use defaults.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:73-80",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:112-120",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:170-186",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:333-356"
+      ]
+    },
+    {
+      "id": "F-Q13B-001",
+      "class": "hard-coded edge weights",
+      "summary": "All ten current edge classes are produced from inline literals in extractEdges() or finalizeIndexResults(), with metadata.confidence passed the same literal value.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:895-1071",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1357-1375",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:86-105"
+      ]
+    },
+    {
+      "id": "F-Q13C-001",
+      "class": "baseline persistence",
+      "summary": "code_graph_metadata is the minimal persistence surface for an edge distribution baseline and latest drift report because it already stores typed JSON metadata through wrappers.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:99-103",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:190-269",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:671-716"
+      ]
+    },
+    {
+      "id": "F-Q13D-001",
+      "class": "drift runtime",
+      "summary": "PSI and JSD can be implemented in TypeScript without external dependencies over the low-cardinality EdgeType union using smoothed share distributions.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:12-16",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:693-695"
+      ]
+    },
+    {
+      "id": "F-Q13E-001",
+      "class": "drift surfacing",
+      "summary": "The v1 drift report should be persisted during scan and surfaced by code_graph_status under graphQualitySummary; a new MCP tool is only needed later for manual baseline management.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:230-262",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:40-62",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:19-29",
+        ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:554-647"
+      ]
+    }
+  ],
+  "newFindingsCount": 5,
+  "newFindingsRatio": 0.42,
+  "newInfoRatio": 0.42,
+  "status": "insight",
+  "timestamp": "2026-04-25T19:55:05Z"
+}

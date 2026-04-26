@@ -34,7 +34,7 @@ const DEFAULT_MAX_BRIEF_CHARS = 2 * 1024;
 const DEFAULT_MAX_CACHE_ENTRIES = 1000;
 const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
 const LEGACY_DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
-const BRIDGE_PATH = fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs', import.meta.url));
+const BRIDGE_PATH = fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs', import.meta.url));
 const ADVISOR_SOURCE_PATHS = [
   BRIDGE_PATH,
   fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js', import.meta.url)),

@@ -130,7 +130,7 @@ module.exports = { functionName, CONSTANT };
 module.exports = functionName;
 ```
 
-**Exception**: Files in `.opencode/plugins/` and `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/` MUST use ESM (`export default`) — see `quality_standards.md` §10 OpenCode Plugin Exemption Tier.
+**Exception**: Files in `.opencode/plugins/` and `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` MUST use ESM (`export default`) — see `quality_standards.md` §10 OpenCode Plugin Exemption Tier.
 
 **Wrong** (for Node.js in this codebase):
 ```javascript

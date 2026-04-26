@@ -10,7 +10,7 @@ import { describe, expect, it } from 'vitest';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const repoRoot = resolve(here, '..', '..', '..', '..', '..', '..', '..');
-const bridgePath = resolve(repoRoot, '.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs');
+const bridgePath = resolve(repoRoot, '.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs');
 
 function runBridge(payload: Record<string, unknown>, env: NodeJS.ProcessEnv = {}) {
   return spawnSync('node', [bridgePath], {

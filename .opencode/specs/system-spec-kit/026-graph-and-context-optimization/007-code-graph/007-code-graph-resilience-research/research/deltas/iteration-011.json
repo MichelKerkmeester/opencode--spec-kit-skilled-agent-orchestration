@@ -1,0 +1,76 @@
+{
+  "iteration": 11,
+  "focus": "self-healing implementation strategy",
+  "research_questions_answered": ["Q14A", "Q14B", "Q14C", "Q14D", "Q14E"],
+  "findings": [
+    {
+      "id": "F-Q14A-001",
+      "class": "readiness branch structure",
+      "summary": "ensureCodeGraphReady() delegates stale-action classification to detectState(), then handles none, selective_reindex skip, full_scan skip, full auto scan, and selective auto reindex in that order.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:102-187",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:302-330",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:333-367"
+      ]
+    },
+    {
+      "id": "F-Q14B-001",
+      "class": "inline mutation gates",
+      "summary": "allowInlineIndex blocks selective repair, allowInlineFullScan blocks full scan, query/context opt into selective-only repair, and detect_changes opts out of both and blocks on non-fresh readiness.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:290-293",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:314-330",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1040-1045",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:116-122",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264"
+      ]
+    },
+    {
+      "id": "F-Q14C-001",
+      "class": "timeout semantics",
+      "summary": "The 10-second auto-index timeout is implemented as Promise.race() with an AbortController-triggered rejection; the signal is not passed to indexFiles(), so it bounds the await but may not cancel underlying indexing work.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:47-49",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:189-224"
+      ]
+    },
+    {
+      "id": "F-Q14D-001",
+      "class": "self-heal gates",
+      "summary": "Auto partial re-scan should require bounded selective_reindex, caller mutation permission, no Git HEAD drift, passing latest gold verification, and acceptable edge-drift state before indexWithTimeout() runs.",
+      "evidence": [
+        "research/iterations/iteration-007.md:21-29",
+        "assets/staleness-model.md:9-27",
+        "assets/code-graph-gold-queries.json:5-8",
+        "research/iterations/iteration-006.md:31-58",
+        "decision-record.md:108-124"
+      ]
+    },
+    {
+      "id": "F-Q14E-001",
+      "class": "observability",
+      "summary": "Readiness currently logs only auto-index failure and status already exposes readiness plus graphQualitySummary; self-heal should add ReadyResult fields, metadata-backed lastSelfHealAt/lastSelfHeal, and status fields rather than a separate telemetry system.",
+      "evidence": [
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:30-36",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:369-378",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:190-204",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:271-279",
+        ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:40-62"
+      ]
+    }
+  ],
+  "patch_points": [
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:30-36",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:189-224",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:302-330",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:352-378",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:190-279",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:40-62",
+    ".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:245-264"
+  ],
+  "newFindingsCount": 5,
+  "newFindingsRatio": 0.36,
+  "newInfoRatio": 0.36,
+  "status": "insight",
+  "timestamp": "2026-04-25T20:00:27Z"
+}

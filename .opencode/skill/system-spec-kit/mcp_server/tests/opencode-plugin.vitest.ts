@@ -111,7 +111,7 @@ describe('Spec Kit compact code graph plugin', () => {
   it('parses the real minimal bridge stdout without a mocked transport payload', async () => {
     const { spawnSync } = await vi.importActual<typeof import('node:child_process')>('node:child_process');
     const workspaceRoot = path.resolve(process.cwd(), '../../../..');
-    const bridgePath = path.join(workspaceRoot, '.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-compact-code-graph-bridge.mjs');
+    const bridgePath = path.join(workspaceRoot, '.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-compact-code-graph-bridge.mjs');
 
     const result = spawnSync(process.execPath, [bridgePath, '--minimal'], {
       cwd: workspaceRoot,

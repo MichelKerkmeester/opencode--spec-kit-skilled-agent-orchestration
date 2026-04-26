@@ -59,7 +59,7 @@ Native tool baseline:
 | Gemini CLI | `mcp_server/hooks/gemini/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt`, `userPrompt`, or `request.prompt`. |
 | Codex CLI | `mcp_server/hooks/codex/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Stdin JSON is canonical and wins over argv JSON. |
 | Codex fallback | `mcp_server/hooks/codex/prompt-wrapper.ts` | `promptWrapper` and `wrappedPrompt` | Runs only when Codex hook policy reports hooks unavailable. |
-| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs` | plugin `additionalContext` | Bridge imports native `compat/index.js`, applies the same effective threshold on native and fallback paths, then falls back to the Python-backed brief path only when native is unavailable. |
+| OpenCode | `.opencode/plugins/spec-kit-skill-advisor.js` + `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs` | plugin `additionalContext` | Bridge imports native `compat/index.js`, applies the same effective threshold on native and fallback paths, then falls back to the Python-backed brief path only when native is unavailable. |
 
 Build all runtime adapters:
 
@@ -136,7 +136,7 @@ printf '%s' '{"prompt":"update documentation with DQI checks","cwd":"'"$PWD"'"}'
 
 ```bash
 printf '%s' '{"prompt":"save this conversation context to memory","workspaceRoot":"'"$PWD"'","runtime":"opencode","maxTokens":80,"thresholdConfidence":0.8}' | \
-  node .opencode/skill/system-spec-kit/mcp_server/plugin-bridges/spec-kit-skill-advisor-bridge.mjs
+  node .opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs
 ```
 
 Expected: `status: "ok"` with `metadata.route: "native"` when native is available, `metadata.workspaceRoot` matching the supplied repo root, and `metadata.effectiveThresholds` showing the active confidence/uncertainty pair.
