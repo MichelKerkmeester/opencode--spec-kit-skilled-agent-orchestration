@@ -1,0 +1,12 @@
+{
+  "iteration": 4,
+  "dimension": "correctness",
+  "focus": "Edge-weight config + drift detection math",
+  "findings_count": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 0
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}

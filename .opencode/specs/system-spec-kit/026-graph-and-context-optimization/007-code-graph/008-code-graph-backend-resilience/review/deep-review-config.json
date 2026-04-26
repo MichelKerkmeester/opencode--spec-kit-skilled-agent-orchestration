@@ -1,0 +1,25 @@
+{
+  "review_target": "008-code-graph-backend-resilience",
+  "review_target_type": "spec-folder",
+  "review_dimensions": ["correctness", "security", "traceability", "maintainability"],
+  "spec_folder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience",
+  "max_iterations": 10,
+  "convergence_threshold": 0.10,
+  "stuck_threshold": 3,
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.4",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "timeoutSeconds": 900
+  },
+  "concurrency_strategy": "sequential_iterations_within_packet",
+  "created_at": "2026-04-26T00:00:00Z",
+  "outputs_required": [
+    "review/review-report.md",
+    "review/resource-map.md",
+    "review/iterations/iteration-{001..010}.md",
+    "review/deltas/iteration-{001..010}.json",
+    "review/deep-review-state.jsonl"
+  ]
+}

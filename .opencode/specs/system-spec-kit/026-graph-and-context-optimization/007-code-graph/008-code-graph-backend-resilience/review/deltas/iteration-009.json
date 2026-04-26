@@ -1,0 +1,12 @@
+{
+  "iteration": 9,
+  "dimension": "maintainability",
+  "focus": "Naming, abstractions, dead code, and backwards-compat",
+  "findings_count": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 1
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}

@@ -1,0 +1,12 @@
+{
+  "iteration": 7,
+  "dimension": "security",
+  "focus": "Sandbox + path traversal + network",
+  "findings_count": {
+    "P0": 0,
+    "P1": 3,
+    "P2": 0
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}

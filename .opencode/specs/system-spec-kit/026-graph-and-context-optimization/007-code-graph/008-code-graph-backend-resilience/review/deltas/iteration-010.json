@@ -1,0 +1,11 @@
+{
+  "iteration": 10,
+  "dimension": "synthesis",
+  "verdict": "FAIL",
+  "total_findings": {
+    "P0": 5,
+    "P1": 12,
+    "P2": 7
+  },
+  "status": "complete"
+}

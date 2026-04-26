@@ -1,0 +1,12 @@
+{
+  "iteration": 5,
+  "dimension": "correctness",
+  "focus": "Verifier library + handler + MCP wiring",
+  "findings_count": {
+    "P0": 0,
+    "P1": 2,
+    "P2": 1
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}

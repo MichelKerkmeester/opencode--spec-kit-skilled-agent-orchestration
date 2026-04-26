@@ -1,0 +1,12 @@
+{
+  "iteration": 6,
+  "dimension": "correctness",
+  "focus": "T13 self-heal observability + detect_changes hard block",
+  "findings_count": {
+    "P0": 0,
+    "P1": 1,
+    "P2": 1
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}

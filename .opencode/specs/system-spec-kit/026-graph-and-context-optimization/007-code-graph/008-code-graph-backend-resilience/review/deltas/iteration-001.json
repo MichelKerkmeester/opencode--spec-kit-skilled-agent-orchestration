@@ -1,0 +1,12 @@
+{
+  "iteration": 1,
+  "dimension": "correctness",
+  "focus": "Hash predicate logic",
+  "findings_count": {
+    "P0": 0,
+    "P1": 0,
+    "P2": 1
+  },
+  "newFindingsRatio": 1.0,
+  "status": "insight"
+}
