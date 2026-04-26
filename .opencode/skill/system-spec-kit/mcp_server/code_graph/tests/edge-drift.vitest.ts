@@ -1,16 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  EDGE_DRIFT_JSD_THRESHOLD,
+  EDGE_DRIFT_PSI_THRESHOLD,
+  EDGE_DRIFT_SHARE_THRESHOLD,
   buildEdgeDistribution,
   computeEdgeShare,
   computeJSD,
   computePSI,
   type EdgeDistribution,
 } from '../lib/edge-drift.js';
-
-const EDGE_DRIFT_PSI_THRESHOLD = 0.25;
-const EDGE_DRIFT_JSD_THRESHOLD = 0.10;
-const EDGE_DRIFT_SHARE_THRESHOLD = 0.05;
 
 function isFlagged(currentShare: EdgeDistribution, baselineShare: EdgeDistribution): boolean {
   const shareDrift = (Object.keys(currentShare) as Array<keyof EdgeDistribution>).map((edgeType) => (

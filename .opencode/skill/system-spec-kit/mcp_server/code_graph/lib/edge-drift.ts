@@ -1,8 +1,22 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Edge Distribution Drift
+// ───────────────────────────────────────────────────────────────
+// Builds edge-type distributions and computes divergence metrics
+// (PSI, JSD, share drift) used by the status handler and tests.
+
 import type { EdgeType } from './indexer-types.js';
 import { DEFAULT_EDGE_WEIGHTS } from './indexer-types.js';
 
 const EDGE_TYPES = Object.keys(DEFAULT_EDGE_WEIGHTS) as EdgeType[];
 const DIVERGENCE_EPSILON = 1e-12;
+
+/**
+ * Drift thresholds shared across the status handler and tests.
+ * Single source of truth so production and test cutoffs cannot diverge.
+ */
+export const EDGE_DRIFT_PSI_THRESHOLD = 0.25;
+export const EDGE_DRIFT_JSD_THRESHOLD = 0.10;
+export const EDGE_DRIFT_SHARE_THRESHOLD = 0.05;
 
 export type EdgeDistribution = Record<EdgeType, number>;
 

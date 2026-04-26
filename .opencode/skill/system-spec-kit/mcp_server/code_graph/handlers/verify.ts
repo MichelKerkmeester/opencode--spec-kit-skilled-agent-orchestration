@@ -6,16 +6,17 @@
 
 import { realpathSync } from 'node:fs';
 import { isAbsolute, relative, resolve, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
 
 import { setLastGoldVerification } from '../lib/code-graph-db.js';
 import {
+  DEFAULT_GOLD_BATTERY_PATH,
   executeBattery,
   loadGoldBattery,
   type GoldBattery,
 } from '../lib/gold-query-verifier.js';
 import { ensureCodeGraphReady } from '../lib/ensure-ready.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
+import { canonicalizeWorkspacePaths, isWithinWorkspace } from '../lib/utils/workspace-path.js';
 import { handleCodeGraphQuery } from './query.js';
 
 export type VerifyCategory =
@@ -34,10 +35,6 @@ export interface VerifyArgs {
   allowInlineIndex?: boolean;
 }
 
-const DEFAULT_GOLD_BATTERY_PATH = fileURLToPath(new URL(
-  '../../../../../specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json',
-  import.meta.url,
-));
 const GOLD_BATTERY_FILENAME = 'code-graph-gold-queries.json';
 
 function buildResponse(payload: object): { content: Array<{ type: 'text'; text: string }> } {
@@ -68,13 +65,6 @@ function applyCategoryFilter(
   };
 }
 
-function assertWorkspaceContainment(canonicalWorkspace: string, candidatePath: string, label: string): void {
-  const workspacePrefix = canonicalWorkspace.endsWith(sep) ? canonicalWorkspace : `${canonicalWorkspace}${sep}`;
-  if (candidatePath !== canonicalWorkspace && !candidatePath.startsWith(workspacePrefix)) {
-    throw new Error(`${label} must stay within the workspace root: ${canonicalWorkspace}`);
-  }
-}
-
 function isAllowlistedBatteryPath(canonicalWorkspace: string, canonicalBatteryPath: string): boolean {
   const allowlistedBases = [
     resolve(canonicalWorkspace, '.opencode/specs'),
@@ -100,40 +90,49 @@ function isAllowlistedBatteryPath(canonicalWorkspace: string, canonicalBatteryPa
   });
 }
 
-function resolveVerifyPaths(args: VerifyArgs): {
-  canonicalRootDir: string;
-  canonicalBatteryPath: string;
-} {
-  const workspaceRoot = resolve(process.cwd());
+type ResolveVerifyPathsResult =
+  | { readonly ok: true; readonly canonicalRootDir: string; readonly canonicalBatteryPath: string }
+  | { readonly ok: false; readonly error: string };
+
+function resolveVerifyPaths(args: VerifyArgs): ResolveVerifyPathsResult {
   const resolvedRootDir = resolve(args.rootDir ?? process.cwd());
   const resolvedBatteryPath = resolve(args.batteryPath ?? DEFAULT_GOLD_BATTERY_PATH);
 
-  let canonicalWorkspace: string;
-  let canonicalRootDir: string;
-  let canonicalBatteryPath: string;
+  const canonical = canonicalizeWorkspacePaths(resolvedRootDir);
+  if (!canonical) {
+    return {
+      ok: false,
+      error: `rootDir path is invalid or contains a broken symlink: ${resolvedRootDir}`,
+    };
+  }
+  const { canonicalWorkspace, canonicalRootDir } = canonical;
 
-  try {
-    canonicalWorkspace = realpathSync(workspaceRoot);
-    canonicalRootDir = realpathSync(resolvedRootDir);
-  } catch {
-    throw new Error(`rootDir path is invalid or contains a broken symlink: ${resolvedRootDir}`);
+  if (!isWithinWorkspace(canonicalWorkspace, canonicalRootDir)) {
+    return {
+      ok: false,
+      error: `rootDir must stay within the workspace root: ${canonicalWorkspace}`,
+    };
   }
 
-  assertWorkspaceContainment(canonicalWorkspace, canonicalRootDir, 'rootDir');
-
+  let canonicalBatteryPath: string;
   try {
     canonicalBatteryPath = realpathSync(resolvedBatteryPath);
   } catch {
-    throw new Error(`batteryPath is invalid or contains a broken symlink: ${resolvedBatteryPath}`);
+    return {
+      ok: false,
+      error: `batteryPath is invalid or contains a broken symlink: ${resolvedBatteryPath}`,
+    };
   }
 
   if (!isAllowlistedBatteryPath(canonicalWorkspace, canonicalBatteryPath)) {
-    throw new Error(
-      `batteryPath must stay within approved code-graph asset roots under: ${canonicalWorkspace}`,
-    );
+    return {
+      ok: false,
+      error: `batteryPath must stay within approved code-graph asset roots under: ${canonicalWorkspace}`,
+    };
   }
 
   return {
+    ok: true,
     canonicalRootDir,
     canonicalBatteryPath,
   };
@@ -142,9 +141,16 @@ function resolveVerifyPaths(args: VerifyArgs): {
 export async function handleCodeGraphVerify(
   args: VerifyArgs,
 ): Promise<{ content: { type: 'text'; text: string }[] }> {
-  try {
-    const { canonicalRootDir, canonicalBatteryPath } = resolveVerifyPaths(args);
+  const paths = resolveVerifyPaths(args);
+  if (!paths.ok) {
+    return buildResponse({
+      status: 'error',
+      error: `code_graph_verify failed: ${paths.error}`,
+    });
+  }
+  const { canonicalRootDir, canonicalBatteryPath } = paths;
 
+  try {
     const readyState = await ensureCodeGraphReady(canonicalRootDir, {
       allowInlineIndex: args.allowInlineIndex ?? false,
       allowInlineFullScan: false,

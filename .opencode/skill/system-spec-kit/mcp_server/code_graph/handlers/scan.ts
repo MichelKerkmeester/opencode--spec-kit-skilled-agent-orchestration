@@ -4,20 +4,22 @@
 // MCP tool handler for code_graph_scan — indexes workspace files.
 
 import { execSync } from 'node:child_process';
-import { existsSync, realpathSync } from 'node:fs';
-import { resolve, sep } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 import { buildEdgeDistribution, computeEdgeShare } from '../lib/edge-drift.js';
 import { getDefaultConfig, type DetectorProvenance, type CodeEdge } from '../lib/indexer-types.js';
 import { indexFiles } from '../lib/structural-indexer.js';
 import * as graphDb from '../lib/code-graph-db.js';
 import { persistIndexedFileResult } from '../lib/ensure-ready.js';
 import {
+  DEFAULT_GOLD_BATTERY_PATH,
   executeBattery,
   loadGoldBattery,
   type VerifyResult,
 } from '../lib/gold-query-verifier.js';
+import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
+import { canonicalizeWorkspacePaths, isWithinWorkspace } from '../lib/utils/workspace-path.js';
 import { handleCodeGraphQuery } from './query.js';
 
 export interface ScanArgs {
@@ -46,11 +48,6 @@ export interface ScanResult {
   graphEdgeEnrichmentSummary?: graphDb.GraphEdgeEnrichmentSummary | null;
   verification?: VerifyResult;
 }
-
-const DEFAULT_GOLD_BATTERY_PATH = fileURLToPath(new URL(
-  '../../../../../specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json',
-  import.meta.url,
-));
 
 function summarizeDetectorProvenance(
   results: Array<{ detectorProvenance?: DetectorProvenance }>,
@@ -140,10 +137,6 @@ function cleanupMissingTrackedFiles(filePaths: string[]): void {
   }
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
-
 function summarizeEdgeDistribution(results: Array<{ edges: CodeEdge[] }>) {
   const edgeCounts = buildEdgeDistribution();
 
@@ -180,18 +173,13 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
   const startTime = Date.now();
   const rootDir = args.rootDir ?? process.cwd();
   const incremental = args.incremental !== false;
-  const workspaceRoot = resolve(process.cwd());
   const resolvedRootDir = resolve(rootDir);
 
   // SECURITY: Canonicalize paths via realpathSync() to prevent symlink bypass.
   // A symlink inside the workspace pointing outside it would pass a lexical
   // startsWith() check on the resolved (but not canonicalized) path.
-  let canonicalWorkspace: string;
-  let canonicalRootDir: string;
-  try {
-    canonicalWorkspace = realpathSync(workspaceRoot);
-    canonicalRootDir = realpathSync(resolvedRootDir);
-  } catch {
+  const canonical = canonicalizeWorkspacePaths(resolvedRootDir);
+  if (!canonical) {
     // Broken symlink or non-existent path — reject immediately
     return {
       content: [{
@@ -203,10 +191,9 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
       }],
     };
   }
+  const { canonicalWorkspace, canonicalRootDir } = canonical;
 
-  const workspacePrefix = canonicalWorkspace.endsWith(sep) ? canonicalWorkspace : `${canonicalWorkspace}${sep}`;
-
-  if (canonicalRootDir !== canonicalWorkspace && !canonicalRootDir.startsWith(workspacePrefix)) {
+  if (!isWithinWorkspace(canonicalWorkspace, canonicalRootDir)) {
     return {
       content: [{
         type: 'text',

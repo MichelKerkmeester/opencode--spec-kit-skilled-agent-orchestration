@@ -5,6 +5,9 @@
 
 import * as graphDb from '../lib/code-graph-db.js';
 import {
+  EDGE_DRIFT_JSD_THRESHOLD,
+  EDGE_DRIFT_PSI_THRESHOLD,
+  EDGE_DRIFT_SHARE_THRESHOLD,
   buildEdgeDistribution,
   computeEdgeShare,
   computeJSD,
@@ -12,6 +15,7 @@ import {
   type EdgeDistribution,
 } from '../lib/edge-drift.js';
 import { getGraphFreshness } from '../lib/ensure-ready.js';
+import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
 type GoldVerificationTrust = 'live' | 'stale' | 'absent';
@@ -29,13 +33,6 @@ interface EdgeDriftSummary {
 }
 
 const GOLD_VERIFICATION_MAX_AGE_MS = 24 * 60 * 60 * 1000;
-const EDGE_DRIFT_PSI_THRESHOLD = 0.25;
-const EDGE_DRIFT_JSD_THRESHOLD = 0.10;
-const EDGE_DRIFT_SHARE_THRESHOLD = 0.05;
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 function getPersistedEdgeDistributionBaseline(): EdgeDistribution | null {
   const rawBaseline = graphDb.getCodeGraphMetadata('edge_distribution_baseline');

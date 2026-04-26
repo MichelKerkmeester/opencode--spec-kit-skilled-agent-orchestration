@@ -54,7 +54,14 @@ export interface ParsedQuerySuccess<TData extends Record<string, unknown>> {
 export type ParsedOutlineQueryResult = ParsedQuerySuccess<OutlineQueryData> | ParsedQueryFailure;
 export type ParsedRelationshipQueryResult = ParsedQuerySuccess<RelationshipQueryData> | ParsedQueryFailure;
 
-function isRecord(value: unknown): value is Record<string, unknown> {
+/**
+ * Shared plain-object type guard used across handlers, lib modules, and tests.
+ * Lives here because this module is already the canonical "shared adapter"
+ * for code-graph query result parsing. Re-imported by `gold-query-verifier.ts`,
+ * `handlers/scan.ts`, `handlers/status.ts`, and `lib/ensure-ready.ts` instead
+ * of being redeclared in each.
+ */
+export function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
@@ -129,13 +136,20 @@ function parseOutlineNode(value: unknown): OutlineQueryNode {
     return {};
   }
 
+  const name = asOptionalString(value.name);
+  const kind = asOptionalString(value.kind);
+  const fqName = asOptionalString(value.fqName);
+  const line = asOptionalNumber(value.line);
+  const signature = asOptionalString(value.signature);
+  const symbolId = asOptionalString(value.symbolId);
+
   return {
-    ...(asOptionalString(value.name) ? { name: asOptionalString(value.name) } : {}),
-    ...(asOptionalString(value.kind) ? { kind: asOptionalString(value.kind) } : {}),
-    ...(asOptionalString(value.fqName) ? { fqName: asOptionalString(value.fqName) } : {}),
-    ...(asOptionalNumber(value.line) !== undefined ? { line: asOptionalNumber(value.line) } : {}),
-    ...(asOptionalString(value.signature) ? { signature: asOptionalString(value.signature) } : {}),
-    ...(asOptionalString(value.symbolId) ? { symbolId: asOptionalString(value.symbolId) } : {}),
+    ...(name ? { name } : {}),
+    ...(kind ? { kind } : {}),
+    ...(fqName ? { fqName } : {}),
+    ...(line !== undefined ? { line } : {}),
+    ...(signature ? { signature } : {}),
+    ...(symbolId ? { symbolId } : {}),
   };
 }
 
@@ -144,30 +158,30 @@ function parseRelationshipEdge(value: unknown): RelationshipQueryEdge {
     return {};
   }
 
+  const source = asOptionalString(value.source);
+  const target = asOptionalString(value.target);
+  const file = asOptionalString(value.file);
+  const line = asOptionalNumber(value.line);
+  const confidence = asOptionalNumber(value.confidence);
+  const numericConfidence = asOptionalNumber(value.numericConfidence);
+  const detectorProvenance = asOptionalNullableString(value.detectorProvenance);
+  const evidenceClass = asOptionalNullableString(value.evidenceClass);
+  const reason = asOptionalNullableString(value.reason);
+  const step = asOptionalNullableString(value.step);
+  const edgeEvidenceClass = asOptionalString(value.edgeEvidenceClass);
+
   return {
-    ...(asOptionalString(value.source) ? { source: asOptionalString(value.source) } : {}),
-    ...(asOptionalString(value.target) ? { target: asOptionalString(value.target) } : {}),
-    ...(asOptionalString(value.file) ? { file: asOptionalString(value.file) } : {}),
-    ...(asOptionalNumber(value.line) !== undefined ? { line: asOptionalNumber(value.line) } : {}),
-    ...(asOptionalNumber(value.confidence) !== undefined ? { confidence: asOptionalNumber(value.confidence) } : {}),
-    ...(asOptionalNumber(value.numericConfidence) !== undefined
-      ? { numericConfidence: asOptionalNumber(value.numericConfidence) }
-      : {}),
-    ...(asOptionalNullableString(value.detectorProvenance) !== undefined
-      ? { detectorProvenance: asOptionalNullableString(value.detectorProvenance) }
-      : {}),
-    ...(asOptionalNullableString(value.evidenceClass) !== undefined
-      ? { evidenceClass: asOptionalNullableString(value.evidenceClass) }
-      : {}),
-    ...(asOptionalNullableString(value.reason) !== undefined
-      ? { reason: asOptionalNullableString(value.reason) }
-      : {}),
-    ...(asOptionalNullableString(value.step) !== undefined
-      ? { step: asOptionalNullableString(value.step) }
-      : {}),
-    ...(asOptionalString(value.edgeEvidenceClass)
-      ? { edgeEvidenceClass: asOptionalString(value.edgeEvidenceClass) }
-      : {}),
+    ...(source ? { source } : {}),
+    ...(target ? { target } : {}),
+    ...(file ? { file } : {}),
+    ...(line !== undefined ? { line } : {}),
+    ...(confidence !== undefined ? { confidence } : {}),
+    ...(numericConfidence !== undefined ? { numericConfidence } : {}),
+    ...(detectorProvenance !== undefined ? { detectorProvenance } : {}),
+    ...(evidenceClass !== undefined ? { evidenceClass } : {}),
+    ...(reason !== undefined ? { reason } : {}),
+    ...(step !== undefined ? { step } : {}),
+    ...(edgeEvidenceClass ? { edgeEvidenceClass } : {}),
   };
 }
 

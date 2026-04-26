@@ -59,6 +59,20 @@ const SUPPORTED_RELATIONSHIP_OPERATIONS = [
 ] as const;
 const SUPPORTED_RELATIONSHIP_OPERATION_SET = new Set<string>(SUPPORTED_RELATIONSHIP_OPERATIONS);
 
+/**
+ * Regex used to decide whether a free-form `subject` argument looks like a
+ * file path (so we should resolve it through `graphDb.resolveSubjectFilePath`)
+ * versus a symbol name.
+ *
+ * Intentionally broader than `detectLanguage` in `lib/indexer-types.ts`: this
+ * pattern recognises non-source assets the indexer does not parse but that
+ * users still pass as subjects (e.g. `README.md`, `package.json`). Keep both
+ * lists in sync at the language-coverage level only — extension drift between
+ * the two lists is expected and documented here.
+ */
+const FILE_PATH_EXTENSION_PATTERN = /\.(?:[cm]?[jt]sx?|py|bash|zsh|sh|json|md)$/i;
+const FILE_PATH_SEPARATOR_PATTERN = /[\\/]/;
+
 function isSupportedEdgeType(edgeType: string): edgeType is EdgeType {
   return SUPPORTED_EDGE_TYPE_SET.has(edgeType);
 }
@@ -1143,8 +1157,8 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     const minConfidence = clampNumericConfidence(args.minConfidence ?? 0);
 
     for (const candidate of rawSubjects) {
-      const candidateLooksLikeFilePath = /[\\/]/.test(candidate)
-        || /\.(?:[cm]?[jt]sx?|py|bash|zsh|sh|json|md)$/i.test(candidate);
+      const candidateLooksLikeFilePath = FILE_PATH_SEPARATOR_PATTERN.test(candidate)
+        || FILE_PATH_EXTENSION_PATTERN.test(candidate);
       let resolvedPathCandidate: string | null = null;
       if (candidateLooksLikeFilePath) {
         const resolvedFileCandidate = graphDb.resolveSubjectFilePath(candidate);

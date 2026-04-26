@@ -12,11 +12,11 @@
 //   which is the rollback trigger documented in pt-02.
 
 import { resolve, sep, isAbsolute, normalize } from 'node:path';
-import { realpathSync } from 'node:fs';
 import { ensureCodeGraphReady, type ReadyResult } from '../lib/ensure-ready.js';
 import * as graphDb from '../lib/code-graph-db.js';
 import { parseUnifiedDiff, rangesOverlap, type DiffFile } from '../lib/diff-parser.js';
 import { buildReadinessBlock, type CodeGraphReadinessBlock } from '../lib/readiness-contract.js';
+import { canonicalizeWorkspacePaths, isWithinWorkspace } from '../lib/utils/workspace-path.js';
 
 export interface DetectChangesArgs {
   /** Unified-diff text (e.g. `git diff` output). */
@@ -214,12 +214,8 @@ export async function handleDetectChanges(args: DetectChangesArgs): Promise<MCPR
 
   // SECURITY (parity with handlers/scan.ts): canonicalize via realpathSync
   // so a symlink inside the workspace can't escape the workspace root.
-  let canonicalRootDir: string;
-  let canonicalWorkspace: string;
-  try {
-    canonicalRootDir = realpathSync(resolve(rootDir));
-    canonicalWorkspace = realpathSync(resolve(process.cwd()));
-  } catch {
+  const canonical = canonicalizeWorkspacePaths(rootDir);
+  if (!canonical) {
     // Compute a placeholder readiness so the contract shape stays
     // consistent even on input failure.
     const readiness = buildReadinessBlock({
@@ -230,9 +226,9 @@ export async function handleDetectChanges(args: DetectChangesArgs): Promise<MCPR
     });
     return errorResponse(`rootDir invalid or contains a broken symlink: ${rootDir}`, readiness);
   }
+  const { canonicalWorkspace, canonicalRootDir } = canonical;
 
-  const workspacePrefix = canonicalWorkspace.endsWith(sep) ? canonicalWorkspace : `${canonicalWorkspace}${sep}`;
-  if (canonicalRootDir !== canonicalWorkspace && !canonicalRootDir.startsWith(workspacePrefix)) {
+  if (!isWithinWorkspace(canonicalWorkspace, canonicalRootDir)) {
     const readiness = buildReadinessBlock({
       freshness: 'error',
       action: 'none',

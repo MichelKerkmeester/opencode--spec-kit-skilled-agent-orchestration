@@ -12,6 +12,7 @@ import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
 import type { IndexerConfig, ParseResult } from './indexer-types.js';
+import { isRecord } from './query-result-adapter.js';
 import * as graphDb from './code-graph-db.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -101,10 +102,6 @@ function appendCleanupReason(reason: string, removedDeletedCount: number): strin
   }
 
   return `${reason}; removed ${removedDeletedCount} deleted tracked file(s)`;
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function getVerificationGate(

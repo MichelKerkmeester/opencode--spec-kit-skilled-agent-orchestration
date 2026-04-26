@@ -4,13 +4,26 @@
 // Loads and validates the code-graph gold query battery.
 
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { createLogger } from '../../lib/utils/logger.js';
 import {
+  isRecord,
   parseOutlineQueryResult,
   type CodeGraphQueryResponse,
 } from './query-result-adapter.js';
 
 const logger = createLogger('GoldQueryVerifier');
+
+/**
+ * Canonical on-disk path to the v1 gold battery shipped under the 007 research
+ * assets folder. Re-exported so handlers do not redeclare the relative path.
+ *
+ * REQ-014: keep in sync if the asset moves under the 007 research packet.
+ */
+export const DEFAULT_GOLD_BATTERY_PATH = fileURLToPath(new URL(
+  '../../../../../specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json',
+  import.meta.url,
+));
 
 interface GoldQueryProbe {
   operation: string;
@@ -86,10 +99,6 @@ const EDGE_FOCUS_CATEGORIES = new Set([
   'exported-type',
   'regression-detection',
 ]);
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 function getRequiredString(
   record: Record<string, unknown>,
@@ -222,10 +231,6 @@ function parseQuery(record: unknown, index: number): GoldQuery {
 
 function normalizeSymbol(value: string): string {
   return value.trim();
-}
-
-function asNonEmptyString(value: unknown): string | undefined {
-  return typeof value === 'string' && value.trim().length > 0 ? value : undefined;
 }
 
 function buildProbeResult(

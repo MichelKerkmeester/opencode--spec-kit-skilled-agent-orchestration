@@ -55,6 +55,7 @@ vi.mock('../lib/structural-indexer.js', () => ({
 vi.mock('../lib/gold-query-verifier.js', () => ({
   executeBattery: mocks.executeBatteryMock,
   loadGoldBattery: mocks.loadGoldBatteryMock,
+  DEFAULT_GOLD_BATTERY_PATH: '/mock/code-graph-gold-queries.json',
 }));
 
 vi.mock('../lib/ensure-ready.js', () => ({
