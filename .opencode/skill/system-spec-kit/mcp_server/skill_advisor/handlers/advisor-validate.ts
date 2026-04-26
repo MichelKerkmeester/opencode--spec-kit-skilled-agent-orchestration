@@ -11,6 +11,7 @@ import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { runPromotionLatencyBench } from '../bench/latency-bench.js';
 import { createFixtureProjection } from '../lib/scorer/projection.js';
 import type { SkillProjection } from '../lib/scorer/types.js';
+import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 import {
   DEFAULT_ADVISOR_CONFIDENCE_THRESHOLD,
   DEFAULT_ADVISOR_UNCERTAINTY_THRESHOLD,
@@ -102,12 +103,14 @@ function summarizeScopedOutcomeTotals(
 }
 
 function findWorkspaceRoot(start = dirname(fileURLToPath(import.meta.url))): string {
-  let current = start;
-  for (let index = 0; index < 14; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
-    current = resolve(current, '..');
-  }
-  return process.cwd();
+  // SKILL.md is the marker file in this caller because the cwd-based default
+  // sentinel ('.opencode/skill') would also match sibling workspaces when the
+  // validator is invoked from a sub-directory. The shared helper's fallback
+  // is `resolve(start)`; this caller's contract has historically used
+  // `process.cwd()` instead, so we re-check existence on the result.
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  const candidate = findAdvisorWorkspaceRoot(start, { maxDepth: 14, sentinel });
+  return existsSync(resolve(candidate, sentinel)) ? candidate : process.cwd();
 }
 
 function loadCorpus(workspaceRoot: string): CorpusRow[] {

@@ -7,6 +7,8 @@ import { basename, dirname, extname, join, relative, resolve } from 'node:path';
 import { applyAntiStuffing } from './anti-stuffing.js';
 import { computeProvenanceFingerprint, fileDependency, workspaceRelativeFilePath, type ProvenanceBuckets } from './provenance.js';
 import { sanitizeDerivedArray } from './sanitizer.js';
+import { readJsonObject } from '../utils/json-guard.js';
+import { parseSkillFrontmatter } from '../utils/skill-markdown.js';
 import type { DerivedSourceCategory } from './trust-lanes.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -71,32 +73,11 @@ function emptyBuckets(): Record<DerivedSourceCategory, string[]> {
 }
 
 function readJson(filePath: string): Record<string, unknown> {
-  if (!existsSync(filePath)) return {};
-  const parsed: unknown = JSON.parse(readFileSync(filePath, 'utf8'));
-  return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed as Record<string, unknown> : {};
+  return readJsonObject(filePath) ?? {};
 }
 
 function splitSkillMarkdown(raw: string): { frontmatter: Record<string, string>; body: string; keywords: string[] } {
-  const frontmatter: Record<string, string> = {};
-  let body = raw;
-  if (raw.startsWith('---\n')) {
-    const end = raw.indexOf('\n---', 4);
-    if (end > 4) {
-      const frontmatterRaw = raw.slice(4, end);
-      body = raw.slice(end + 4);
-      for (const line of frontmatterRaw.split(/\r?\n/)) {
-        const match = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
-        if (match) {
-          frontmatter[match[1]] = match[2].replace(/^["']|["']$/g, '').trim();
-        }
-      }
-    }
-  }
-  const keywordMatch = /<!--\s*Keywords:\s*([\s\S]*?)-->/i.exec(raw);
-  const keywords = keywordMatch
-    ? keywordMatch[1].split(',').map((entry) => entry.trim()).filter(Boolean)
-    : [];
-  return { frontmatter, body, keywords };
+  return parseSkillFrontmatter(raw);
 }
 
 function markdownHeadings(markdown: string): string[] {

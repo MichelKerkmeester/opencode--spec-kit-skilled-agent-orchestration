@@ -2,7 +2,6 @@
 // MODULE: advisor_recommend Handler
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { advisorPromptCache } from '../lib/prompt-cache.js';
@@ -11,6 +10,7 @@ import {
 } from '../lib/skill-advisor-brief.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { sanitizeSkillLabel } from '../lib/render.js';
+import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 import {
   AdvisorRecommendInputSchema,
   AdvisorRecommendOutputSchema,
@@ -26,14 +26,7 @@ type PublicRecommendationStatus = NonNullable<AdvisorRecommendOutput['recommenda
 type PublicThresholds = AdvisorRecommendOutput['effectiveThresholds'];
 
 function findWorkspaceRoot(start = process.cwd()): string {
-  let current = resolve(start);
-  for (let index = 0; index < 12; index += 1) {
-    if (existsSync(`${current}/.opencode/skill`)) return current;
-    const parent = resolve(current, '..');
-    if (parent === current) break;
-    current = parent;
-  }
-  return resolve(start);
+  return findAdvisorWorkspaceRoot(start, { maxDepth: 12 });
 }
 
 function cacheSourceSignature(status: AdvisorStatus): string {

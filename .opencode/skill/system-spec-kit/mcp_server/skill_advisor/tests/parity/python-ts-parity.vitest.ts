@@ -2,7 +2,7 @@
 // MODULE: Python TS Parity Tests
 // ───────────────────────────────────────────────────────────────
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -10,6 +10,7 @@ import { spawnSync } from 'node:child_process';
 import { describe, expect, it } from 'vitest';
 import { runLaneAblation } from '../../lib/scorer/ablation.js';
 import { scoreAdvisorPrompt } from '../../lib/scorer/fusion.js';
+import { findAdvisorWorkspaceRoot } from '../../lib/utils/workspace-root.js';
 
 interface CorpusRow {
   readonly id: string;
@@ -23,17 +24,13 @@ interface PythonRow {
 }
 
 function findWorkspaceRoot(): string {
-  let current = dirname(fileURLToPath(import.meta.url));
-  for (let index = 0; index < 12; index += 1) {
-    try {
-      const marker = resolve(current, '.opencode', 'skill');
-      readFileSync(resolve(marker, 'system-spec-kit', 'SKILL.md'), 'utf8');
-      return current;
-    } catch {
-      current = resolve(current, '..');
-    }
+  const start = dirname(fileURLToPath(import.meta.url));
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  const candidate = findAdvisorWorkspaceRoot(start, { maxDepth: 12, sentinel });
+  if (!existsSync(resolve(candidate, sentinel))) {
+    throw new Error('Unable to locate workspace root.');
   }
-  throw new Error('Unable to locate workspace root.');
+  return candidate;
 }
 
 const WORKSPACE_ROOT = findWorkspaceRoot();

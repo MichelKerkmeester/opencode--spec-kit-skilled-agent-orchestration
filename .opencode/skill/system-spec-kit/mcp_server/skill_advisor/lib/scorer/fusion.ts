@@ -17,6 +17,7 @@ import { scoreGraphCausalLane } from './lanes/graph-causal.js';
 import { scoreLexicalLane } from './lanes/lexical.js';
 import { scoreSemanticShadowLane } from './lanes/semantic-shadow.js';
 import { loadAdvisorProjection } from './projection.js';
+import { SCORING_CALIBRATION } from './scoring-constants.js';
 import { isReadOnlyExplainer, matchesPhraseBoundary } from './text.js';
 import {
   DEFAULT_SCORER_WEIGHTS,
@@ -105,35 +106,48 @@ function confidenceFor(args: {
   derivedDominant: boolean;
   skillId: string;
 }): number {
-  if (args.readOnlyExplainer && args.skillId === 'skill-advisor') return 0.25;
-  const base = 0.52 + Math.min(1, args.liveNormalized * 1.25) * 0.43;
-  if (args.readOnlyExplainer && !args.readOnlyRouteAllowed) return 0.25;
+  const C = SCORING_CALIBRATION.confidence;
+  if (args.readOnlyExplainer && args.skillId === 'skill-advisor') return C.readOnlyExplainerFloor;
+  const base = C.baseConstant
+    + Math.min(1, args.liveNormalized * C.liveNormalizedRampGain) * C.liveNormalizedRampCoefficient;
+  if (args.readOnlyExplainer && !args.readOnlyRouteAllowed) return C.readOnlyExplainerFloor;
   if (args.readOnlyRouteAllowed) {
-    return Number(Math.max(base, 0.82).toFixed(4));
+    return Number(Math.max(base, C.readOnlyRouteAllowedFloor).toFixed(4));
   }
-  if (args.derivedDominant && args.directScore < 0.2) return 0.72;
-  if (args.hasDeepResearchCycleIntent && args.skillId === 'sk-deep-research' && args.liveNormalized >= 0.12) return 0.84;
-  if (args.hasTaskIntent && (args.directScore >= 0.18 || args.liveNormalized >= 0.2)) {
-    return Number(Math.max(base, 0.82).toFixed(4));
+  if (args.derivedDominant && args.directScore < C.derivedDominantDirectScoreCeiling) {
+    return C.derivedDominantConfidence;
   }
-  if (args.directScore >= 0.65) return Number(Math.max(base, 0.82).toFixed(4));
-  const directBonus = args.directScore >= 0.85 ? 0.04 : 0;
-  return Number(Math.max(0, Math.min(0.95, base + directBonus)).toFixed(4));
+  if (args.hasDeepResearchCycleIntent
+    && args.skillId === 'sk-deep-research'
+    && args.liveNormalized >= C.deepResearchCycleLiveNormalizedFloor) {
+    return C.deepResearchCycleSkillConfidence;
+  }
+  if (args.hasTaskIntent
+    && (args.directScore >= C.taskIntentDirectScoreFloor
+      || args.liveNormalized >= C.taskIntentLiveNormalizedFloor)) {
+    return Number(Math.max(base, C.taskIntentFloor).toFixed(4));
+  }
+  if (args.directScore >= C.directScoreLiftThreshold) {
+    return Number(Math.max(base, C.directScoreFloor).toFixed(4));
+  }
+  const directBonus = args.directScore >= C.directScoreBonusThreshold ? C.directScoreBonus : 0;
+  return Number(Math.max(0, Math.min(C.hardCeiling, base + directBonus)).toFixed(4));
 }
 
 function uncertaintyFor(contributions: readonly LaneContribution[], confidence: number, ambiguousPressure: number): number {
+  const U = SCORING_CALIBRATION.uncertainty;
   const evidenceCount = contributions.reduce((total, contribution) => total + contribution.evidence.length, 0);
   const direct = contributions
     .filter((contribution) => contribution.lane === 'explicit_author' || contribution.lane === 'lexical')
     .reduce((max, contribution) => Math.max(max, contribution.rawScore), 0);
-  let uncertainty = 0.42;
-  if (evidenceCount >= 5) uncertainty = 0.18;
-  else if (evidenceCount >= 3) uncertainty = 0.22;
-  else if (evidenceCount >= 1) uncertainty = 0.30;
-  if (direct >= 0.75) uncertainty -= 0.06;
-  if (confidence < 0.8) uncertainty += 0.08;
+  let uncertainty = U.noEvidenceDefault;
+  if (evidenceCount >= U.highEvidenceCount) uncertainty = U.lowFloor;
+  else if (evidenceCount >= U.mediumEvidenceCount) uncertainty = U.mediumFloor;
+  else if (evidenceCount >= U.someEvidenceCount) uncertainty = U.elevatedFloor;
+  if (direct >= U.directEvidenceDiscountThreshold) uncertainty -= U.directEvidenceDiscount;
+  if (confidence < U.lowConfidencePenaltyThreshold) uncertainty += U.lowConfidencePenalty;
   uncertainty += ambiguousPressure;
-  return Number(Math.max(0.08, Math.min(0.95, uncertainty)).toFixed(2));
+  return Number(Math.max(U.hardFloor, Math.min(U.hardCeiling, uncertainty)).toFixed(2));
 }
 
 function buildLaneScores(
@@ -200,36 +214,37 @@ function readOnlyRouteAllowed(promptLower: string, skillId: string): boolean {
 }
 
 function primaryIntentBonus(promptLower: string, recommendation: AdvisorScoredRecommendation): number {
+  const R = SCORING_CALIBRATION.routing;
   if (/\bsemantic (code )?search\b/.test(promptLower)) {
     const activeDeepResearch = /\/spec_kit:deep-research|\b(resume|continue|run|launch|start|iteration|convergence)\b.*\bdeep[- ]research\b/.test(promptLower);
-    if (recommendation.skill === 'mcp-coco-index') return 0.5;
-    if (!activeDeepResearch && recommendation.skill === 'sk-deep-research') return -0.2;
+    if (recommendation.skill === 'mcp-coco-index') return R.semanticSearchCocoIndexBonus;
+    if (!activeDeepResearch && recommendation.skill === 'sk-deep-research') return R.semanticSearchDeepResearchPenalty;
   }
   if (/\bdeep[- ]review\b/.test(promptLower)) {
-    if (recommendation.skill === 'sk-deep-review') return 0.35;
-    if (recommendation.skill === 'sk-code-review') return -0.25;
+    if (recommendation.skill === 'sk-deep-review') return R.deepReviewSkDeepReviewBonus;
+    if (recommendation.skill === 'sk-code-review') return R.deepReviewSkCodeReviewPenalty;
   }
   if (/\bdeep[- ]research\b/.test(promptLower)) {
-    if (recommendation.skill === 'sk-deep-research') return 0.35;
-    if (recommendation.skill === 'system-spec-kit' || recommendation.skill === 'sk-code-review') return -0.18;
+    if (recommendation.skill === 'sk-deep-research') return R.deepResearchSkDeepResearchBonus;
+    if (recommendation.skill === 'system-spec-kit' || recommendation.skill === 'sk-code-review') return R.deepResearchOtherSkillsPenalty;
   }
   if (DEEP_RESEARCH_CYCLE.test(promptLower)) {
-    if (recommendation.skill === 'sk-deep-research') return 0.45;
-    if (recommendation.skill === 'system-spec-kit' || recommendation.skill === 'sk-code-review' || recommendation.skill === 'sk-code-opencode') return -0.18;
+    if (recommendation.skill === 'sk-deep-research') return R.deepResearchCycleSkDeepResearchBonus;
+    if (recommendation.skill === 'system-spec-kit' || recommendation.skill === 'sk-code-review' || recommendation.skill === 'sk-code-opencode') return R.deepResearchCycleOtherSkillsPenalty;
   }
   if (/\b(compare|audit|review)\b/.test(promptLower) && /\b(classifier|vocabulary|prose|implementation|agents\.md|drift|mismatch)\b/.test(promptLower)) {
-    if (recommendation.skill === 'sk-code-review') return 0.35;
-    if (recommendation.skill === 'sk-code-opencode') return -0.18;
+    if (recommendation.skill === 'sk-code-review') return R.compareAuditCodeReviewBonus;
+    if (recommendation.skill === 'sk-code-opencode') return R.compareAuditCodeOpenCodePenalty;
   }
   if (/\b(corpus ids?|first-100 predictions|continuation prompts|routing study config|confusion matrix|source-mix note|prompt template|packet-local)\b/.test(promptLower)) {
-    if (recommendation.skill === 'system-spec-kit') return 0.35;
-    if (recommendation.skill === 'sk-improve-prompt' || recommendation.skill === 'mcp-chrome-devtools' || recommendation.skill === 'sk-doc') return -0.16;
+    if (recommendation.skill === 'system-spec-kit') return R.corpusStudySpecKitBonus;
+    if (recommendation.skill === 'sk-improve-prompt' || recommendation.skill === 'mcp-chrome-devtools' || recommendation.skill === 'sk-doc') return R.corpusStudyOtherSkillsPenalty;
   }
-  if (promptLower.includes('/spec_kit:deep-research') && recommendation.skill === 'sk-deep-research') return 0.45;
-  if (promptLower.includes('/spec_kit:deep-review') && recommendation.skill === 'sk-deep-review') return 0.45;
+  if (promptLower.includes('/spec_kit:deep-research') && recommendation.skill === 'sk-deep-research') return R.slashCommandDeepResearchBonus;
+  if (promptLower.includes('/spec_kit:deep-review') && recommendation.skill === 'sk-deep-review') return R.slashCommandDeepReviewBonus;
   if (/\bphase folder\b/.test(promptLower)) {
-    if (recommendation.skill === 'system-spec-kit') return 0.35;
-    if (recommendation.skill === 'sk-deep-research') return -0.25;
+    if (recommendation.skill === 'system-spec-kit') return R.phaseFolderSpecKitBonus;
+    if (recommendation.skill === 'sk-deep-research') return R.phaseFolderDeepResearchPenalty;
   }
   return 0;
 }

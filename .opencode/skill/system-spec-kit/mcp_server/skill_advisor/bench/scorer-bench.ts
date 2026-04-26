@@ -10,6 +10,7 @@ import { dirname } from 'node:path';
 
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { loadAdvisorProjection } from '../lib/scorer/projection.js';
+import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 
 const CACHE_HIT_P95_GATE_MS = 50;
 const UNCACHED_P95_GATE_MS = 60;
@@ -21,12 +22,12 @@ function percentile(values: readonly number[], pct: number): number {
 }
 
 function workspaceRoot(): string {
-  let current = dirname(fileURLToPath(import.meta.url));
-  for (let index = 0; index < 12; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
-    current = resolve(current, '..');
-  }
-  return resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..');
+  const start = dirname(fileURLToPath(import.meta.url));
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  const candidate = findAdvisorWorkspaceRoot(start, { maxDepth: 12, sentinel });
+  return existsSync(resolve(candidate, sentinel))
+    ? candidate
+    : resolve(start, '..', '..', '..');
 }
 
 function runSeries(count: number, fn: () => void): number[] {

@@ -5,6 +5,7 @@
 import Database from 'better-sqlite3';
 import { existsSync, renameSync, rmSync } from 'node:fs';
 import { dirname, join } from 'node:path';
+import { errorMessage } from '../utils/error-format.js';
 import type { SkillGraphTrustState } from './trust-state.js';
 
 export interface RebuildFromSourceOptions<TSummary = unknown> {
@@ -24,8 +25,7 @@ export interface RebuildFromSourceResult<TSummary = unknown> {
 }
 
 function isCorruptionError(error: unknown): boolean {
-  const message = error instanceof Error ? error.message : String(error);
-  return /database disk image is malformed|file is not a database|SQLITE_CORRUPT|SQLITE_NOTADB|malformed/i.test(message);
+  return /database disk image is malformed|file is not a database|SQLITE_CORRUPT|SQLITE_NOTADB|malformed/i.test(errorMessage(error));
 }
 
 export function checkSqliteIntegrity(dbPath: string): { ok: true } | { ok: false; reason: string } {
@@ -46,7 +46,7 @@ export function checkSqliteIntegrity(dbPath: string): { ok: true } | { ok: false
     if (isCorruptionError(error)) {
       return {
         ok: false,
-        reason: error instanceof Error ? error.message : String(error),
+        reason: errorMessage(error),
       };
     }
     throw error;

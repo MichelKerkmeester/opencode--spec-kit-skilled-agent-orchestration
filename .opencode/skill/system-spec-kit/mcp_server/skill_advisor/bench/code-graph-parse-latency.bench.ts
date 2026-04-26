@@ -12,17 +12,18 @@ import { fileURLToPath } from 'node:url';
 
 import { parseFile } from '../../code_graph/lib/structural-indexer.js';
 import { speckitMetrics } from '../lib/metrics.js';
+import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 import type { SupportedLanguage } from '../../code_graph/lib/indexer-types.js';
 
 const SAMPLE_COUNT = 20;
 
 function workspaceRoot(): string {
-  let current = dirname(fileURLToPath(import.meta.url));
-  for (let index = 0; index < 12; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
-    current = resolve(current, '..');
-  }
-  return resolve(dirname(fileURLToPath(import.meta.url)), '..', '..', '..', '..', '..', '..');
+  const start = dirname(fileURLToPath(import.meta.url));
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  const candidate = findAdvisorWorkspaceRoot(start, { maxDepth: 12, sentinel });
+  return existsSync(resolve(candidate, sentinel))
+    ? candidate
+    : resolve(start, '..', '..', '..', '..', '..', '..');
 }
 
 interface Fixture { readonly language: SupportedLanguage; readonly path: string; }

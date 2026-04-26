@@ -2,9 +2,9 @@
 // MODULE: Advisor Recommend Tests
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+
+import { findAdvisorWorkspaceRoot } from '../../lib/utils/workspace-root.js';
 
 const { mockScoreAdvisorPrompt, mockReadAdvisorStatus } = vi.hoisted(() => ({
   mockScoreAdvisorPrompt: vi.fn(),
@@ -90,14 +90,7 @@ function parseResponse(response: Awaited<ReturnType<typeof handleAdvisorRecommen
 }
 
 function expectedWorkspaceRoot(start = process.cwd()): string {
-  let current = resolve(start);
-  for (let index = 0; index < 12; index += 1) {
-    if (existsSync(`${current}/.opencode/skill`)) return current;
-    const parent = resolve(current, '..');
-    if (parent === current) break;
-    current = parent;
-  }
-  return resolve(start);
+  return findAdvisorWorkspaceRoot(start, { maxDepth: 12 });
 }
 
 afterEach(() => {

@@ -13,6 +13,7 @@ import { describe, expect, it } from 'vitest';
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../lib/metrics.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { loadAdvisorProjection } from '../lib/scorer/projection.js';
+import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 
 process.env.SPECKIT_METRICS_ENABLED = 'true';
 
@@ -72,12 +73,13 @@ const BUCKET_COUNT = 10;
 const BENCH_TIMEOUT_MS = process.env.CI ? 300_000 : 180_000;
 
 function workspaceRoot(): string {
-  let current = dirname(fileURLToPath(import.meta.url));
-  for (let index = 0; index < 12; index += 1) {
-    if (existsSync(resolve(current, '.opencode', 'skill', 'system-spec-kit', 'SKILL.md'))) return current;
-    current = resolve(current, '..');
+  const start = dirname(fileURLToPath(import.meta.url));
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  const candidate = findAdvisorWorkspaceRoot(start, { maxDepth: 12, sentinel });
+  if (!existsSync(resolve(candidate, sentinel))) {
+    throw new Error('Unable to locate workspace root.');
   }
-  throw new Error('Unable to locate workspace root.');
+  return candidate;
 }
 
 function roundMetric(value: number): number {

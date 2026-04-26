@@ -11,6 +11,8 @@ import { indexSkillMetadata } from '../../../lib/skill-graph/skill-graph-db.js';
 import { workspaceRelativeFilePath } from '../derived/provenance.js';
 import { computeAdvisorSourceSignature } from '../freshness.js';
 import { publishSkillGraphGeneration } from '../freshness/generation.js';
+import { errorMessage } from '../utils/error-format.js';
+import { findAdvisorWorkspaceRoot } from '../utils/workspace-root.js';
 
 export interface WatchTarget {
   readonly path: string;
@@ -94,12 +96,15 @@ function sleep(ms: number): Promise<void> {
 }
 
 function defaultSkillsRoot(workspaceRoot: string): string {
-  return join(resolve(workspaceRoot), '.opencode', 'skill');
+  // Centralized canonicalize step; the relative `.opencode/skill` suffix is
+  // unique to this caller. See `lib/utils/workspace-root.ts` for the shared
+  // walk-up helper used by handlers/bench/test code.
+  return join(findAdvisorWorkspaceRoot(workspaceRoot, { maxDepth: 0 }), '.opencode', 'skill');
 }
 
 function isSqliteBusyError(error: unknown): boolean {
   const code = (error as { code?: unknown })?.code;
-  const message = error instanceof Error ? error.message : String(error);
+  const message = errorMessage(error);
   return code === 'SQLITE_BUSY' || /SQLITE_BUSY/i.test(message);
 }
 
@@ -435,8 +440,7 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
         if (code === 'ENOENT') {
           continue;
         }
-        const message = error instanceof Error ? error.message : String(error);
-        diagnostics.push(`REINDEX_FAILED:${request.skillSlug}:${message}`);
+        diagnostics.push(`REINDEX_FAILED:${request.skillSlug}:${errorMessage(error)}`);
       }
     }
   }
@@ -451,7 +455,7 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
     if (typeof targetPath === 'string') enqueue(targetPath);
   });
   watcher.on('error', (error: unknown) => {
-    diagnostics.push(`WATCHER_ERROR:${error instanceof Error ? error.message : String(error)}`);
+    diagnostics.push(`WATCHER_ERROR:${errorMessage(error)}`);
   });
 
   return {

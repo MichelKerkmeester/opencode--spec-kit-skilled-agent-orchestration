@@ -8,6 +8,8 @@ import { dirname, join, resolve } from 'node:path';
 import Database from 'better-sqlite3';
 
 import { lifecycleStatusForPath } from '../lifecycle/archive-handling.js';
+import { parseJsonObject, parseJsonStringArray, readJsonObject } from '../utils/json-guard.js';
+import { parseSkillFrontmatter } from '../utils/skill-markdown.js';
 import type { AdvisorProjection, SkillEdgeProjection, SkillLifecycleStatus, SkillProjection } from './types.js';
 import { phraseVariants, unique } from './text.js';
 
@@ -71,25 +73,11 @@ const COMMAND_BRIDGES: readonly SkillProjection[] = [
 ];
 
 function jsonArray(value: string | null | undefined): string[] {
-  if (!value) return [];
-  try {
-    const parsed: unknown = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed.filter((entry): entry is string => typeof entry === 'string') : [];
-  } catch {
-    return [];
-  }
+  return value ? parseJsonStringArray(value) : [];
 }
 
 function jsonObject(value: string | null | undefined): Record<string, unknown> {
-  if (!value) return {};
-  try {
-    const parsed: unknown = JSON.parse(value);
-    return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)
-      ? parsed as Record<string, unknown>
-      : {};
-  } catch {
-    return {};
-  }
+  return value ? parseJsonObject(value) ?? {} : {};
 }
 
 function stringArray(value: unknown): string[] {
@@ -103,30 +91,14 @@ function boundedDemotion(value: unknown): number | undefined {
 }
 
 function readJson(filePath: string): Record<string, unknown> {
-  if (!existsSync(filePath)) return {};
-  const parsed: unknown = JSON.parse(readFileSync(filePath, 'utf8'));
-  return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed as Record<string, unknown> : {};
+  return readJsonObject(filePath) ?? {};
 }
 
 function parseSkillMarkdown(skillMdPath: string, fallbackId: string): SkillMarkdownMetadata {
   if (!existsSync(skillMdPath)) {
     return { name: fallbackId, description: '', keywords: [] };
   }
-  const raw = readFileSync(skillMdPath, 'utf8');
-  const frontmatter: Record<string, string> = {};
-  if (raw.startsWith('---\n')) {
-    const end = raw.indexOf('\n---', 4);
-    if (end > 0) {
-      for (const line of raw.slice(4, end).split(/\r?\n/)) {
-        const match = /^([A-Za-z0-9_-]+):\s*(.*)$/.exec(line);
-        if (match) frontmatter[match[1]] = match[2].replace(/^["']|["']$/g, '').trim();
-      }
-    }
-  }
-  const keywordMatch = /<!--\s*Keywords:\s*([\s\S]*?)-->/i.exec(raw);
-  const keywords = keywordMatch
-    ? keywordMatch[1].split(',').map((item) => item.trim()).filter(Boolean)
-    : [];
+  const { frontmatter, keywords } = parseSkillFrontmatter(readFileSync(skillMdPath, 'utf8'));
   return {
     name: frontmatter.name || fallbackId,
     description: frontmatter.description || '',

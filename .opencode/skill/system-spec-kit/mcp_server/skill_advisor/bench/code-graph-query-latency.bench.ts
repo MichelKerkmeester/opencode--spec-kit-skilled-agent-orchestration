@@ -19,6 +19,7 @@ import { buildContext, type QueryMode } from '../../code_graph/lib/code-graph-co
 import * as graphDb from '../../code_graph/lib/code-graph-db.js';
 import type { CodeEdge, CodeNode } from '../../code_graph/lib/indexer-types.js';
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../lib/metrics.js';
+import { errorMessage } from '../lib/utils/error-format.js';
 
 type ModeLabel = 'outline' | 'blast_radius' | 'relationship';
 interface BaselineFile {
@@ -117,8 +118,8 @@ function readBaseline(path: string): BaselineFile {
   let parsed: unknown;
   try {
     parsed = JSON.parse(readFileSync(path, 'utf-8')) as unknown;
-  } catch (error) {
-    throw new BenchInvariantError(`Baseline file malformed at ${path}: ${error instanceof Error ? error.message : String(error)}`);
+  } catch (error: unknown) {
+    throw new BenchInvariantError(`Baseline file malformed at ${path}: ${errorMessage(error)}`);
   }
   const candidate = parsed as Partial<BaselineFile> | null;
   const tolerance = candidate?.tolerance;
@@ -194,11 +195,11 @@ export function runQueryLatencyBench(): QueryLatencyBenchReport {
       if (d.p99_pct > baseline.tolerance.p99_pct) passed = false;
     }
     return { skipped: false, corpusSha, metrics, deltas, passed };
-  } catch (err) {
+  } catch (err: unknown) {
     if (err instanceof BenchInvariantError) {
       throw err;
     }
-    return skip(err instanceof Error ? err.message : String(err));
+    return skip(errorMessage(err));
   } finally {
     try { graphDb.closeDb(); } catch { /* best-effort */ }
     try { rmSync(tmpRoot, { recursive: true, force: true }); } catch { /* best-effort */ }

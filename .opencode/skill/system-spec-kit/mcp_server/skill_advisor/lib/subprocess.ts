@@ -7,6 +7,8 @@ import { existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { performance } from 'node:perf_hooks';
 
+import { isRecord } from './utils/json-guard.js';
+
 import type { ChildProcess } from 'node:child_process';
 import type { AdvisorThresholds } from './prompt-cache.js';
 
@@ -94,10 +96,6 @@ function sanitizeStderr(stderr: string): string | null {
     return null;
   }
   return compact.slice(0, 240);
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
 }
 
 function parseRecommendations(stdout: string): AdvisorRecommendation[] {

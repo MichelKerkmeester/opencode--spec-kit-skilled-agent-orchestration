@@ -2,6 +2,7 @@
 // MODULE: Advisor Adapter Output Normalizer
 // ───────────────────────────────────────────────────────────────
 
+import { isRecord } from './utils/json-guard.js';
 import type { AdvisorRuntime } from './skill-advisor-brief.js';
 
 // ───────────────────────────────────────────────────────────────
@@ -27,10 +28,6 @@ export interface NormalizedAdvisorRuntimeOutput {
 // ───────────────────────────────────────────────────────────────
 // 2. HELPERS
 // ───────────────────────────────────────────────────────────────
-
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null && !Array.isArray(value);
-}
 
 function normalizeText(value: unknown): string | null {
   if (typeof value !== 'string') {
