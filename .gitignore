@@ -40,6 +40,7 @@ dist/
 .opencode/skill/system-spec-kit/mcp_server/database/*.sqlite-wal
 .opencode/skill/system-spec-kit/mcp_server/database/*.sqlite.bak*
 .opencode/skill/system-spec-kit/mcp_server/database/.db-updated
+.opencode/skill/system-spec-kit/mcp_server/*.sqlite*
 .opencode/skill/.advisor-state/
 .opencode/skill/.smart-router-telemetry/
 
