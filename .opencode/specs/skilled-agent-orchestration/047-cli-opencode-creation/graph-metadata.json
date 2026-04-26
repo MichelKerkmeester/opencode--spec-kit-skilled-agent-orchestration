@@ -1,0 +1,88 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/047-cli-opencode-creation",
+  "spec_folder": "skilled-agent-orchestration/047-cli-opencode-creation",
+  "parent_id": "skilled-agent-orchestration",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/046-cli-codex-tone-of-voice"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli-opencode skill creation",
+      "047-cli-opencode-creation",
+      "opencode cli orchestrator skill",
+      "opencode run cli skill",
+      "create cli-opencode",
+      "cli opencode skill",
+      "fifth cli sibling"
+    ],
+    "key_topics": [
+      "cli-opencode",
+      "skill-creation",
+      "opencode-cli",
+      "skill-advisor",
+      "sibling-edges",
+      "self-invocation-guard",
+      "changelog-bucket",
+      "readme-updates"
+    ],
+    "importance_tier": "important",
+    "status": "draft",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Level 3 spec packet to add a fifth cli-* sibling skill (cli-opencode) that lets external AI assistants invoke the OpenCode CLI binary. Three streams: skill folder creation, advisor + sibling-graph integration, changelog + READMEs. Five ADRs cover the architectural choices including the self-invocation guard signal and the noisy-token TOKEN_BOOSTS weight.",
+    "created_at": "2026-04-26T05:00:00Z",
+    "last_save_at": "2026-04-26T05:00:00Z",
+    "save_lineage": "initial",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ]
+  }
+}
