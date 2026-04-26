@@ -11,12 +11,23 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/048-cli-testing-playbooks"
-    last_updated_at: "2026-04-26T08:25:00Z"
+    last_updated_at: "2026-04-26T16:00:00Z"
     last_updated_by: "claude-opus-4.7"
-    recent_action: "Closed out spec 048: 5 playbooks built and validated, 115 per-feature files total"
-    next_safe_action: "Cut a changelog entry; queue 049-mcp-testing-playbooks using same pattern"
-    blockers: []
+    recent_action: "5-iteration deep review (cli-copilot/gpt-5.5/high) returned FAIL verdict; 14 P0 + 15 P1 + 2 P2 findings recorded in review/review-report.md"
+    next_safe_action: "Plan remediation against review/review-report.md P0 punch list; re-run deep-review after fixes"
+    blockers:
+      - "P0: 51 broken 9-col scenario rows (unescaped pipes) across cli-claude-code/codex/copilot/gemini playbooks"
+      - "P0: cli-opencode --share scenarios (CO-026/027/028) run on operator project tree without sandboxing"
+      - "P0: SC-004 strict spec validation still exits failed"
+      - "P0: HVR residual classification claim is false (29 non-protected body-text hits)"
+      - "P0: section-rename count claimed 504 but actual is 592"
+      - "P0: CO-006 prompt mismatch + CX-004 broken source anchor"
+      - "P0: root H2-count invariant mismatch (spec asks 10, delivered 14-17)"
+      - "P1: 2 create-testing-playbook YAMLs still reference CURRENT REALITY (missed source-of-truth in rename)"
     key_files:
+      - ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/review/review-report.md"
+      - ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/review/iterations/iteration-001.md"
+      - ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/review/iterations/iteration-005.md"
       - ".opencode/skill/cli-claude-code/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
       - ".opencode/skill/cli-codex/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
       - ".opencode/skill/cli-copilot/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md"
@@ -25,13 +36,16 @@ _memory:
       - ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/decision-record.md"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000048"
-      session_id: "048-impl-summary-final"
+      session_id: "048-deep-review-fail"
       parent_session_id: null
-    completion_pct: 100
-    open_questions: []
+    completion_pct: 70
+    open_questions:
+      - "Restructure roots to satisfy 10-section invariant, OR amend invariant to allow category expansion?"
+      - "Promote SC-004 strict-validation to a soft target with documented waiver, OR fix the underlying anchor + template-source issues?"
     answered_questions:
-      - "Final per-CLI counts settled within target ranges (top of band on every CLI)"
-      - "Cross-CLI category invariants 01/06/07 confirmed across all 5 playbooks"
+      - "Per-CLI counts: 20+25+21+18+31=115 per-feature files (confirmed)"
+      - "Cross-CLI category positions 01/06/07: confirmed identical (semantic content drift recorded as P1)"
+      - "Section rename: 592 files carry SCENARIO CONTRACT (not 504 as previously claimed)"
 ---
 
 # Implementation Summary: CLI Testing Playbooks
@@ -127,6 +141,10 @@ Total wall-clock from spec scaffolding to HVR-clean playbooks: roughly 3 hours. 
 | Wave 1 + Wave 2 split (3+2) | Keeps `@write` dispatches stable; lets cli-opencode (largest) get isolated attention in Wave 2. |
 
 ---
+
+## Deep-Review Verdict (2026-04-26)
+
+A 5-iteration deep review (executor: cli-copilot/gpt-5.5/high) was run against this packet. **Verdict: FAIL** with 14 P0 + 15 P1 + 2 P2 findings. See `review/review-report.md` for the full prioritized punch list. The Verification table below records what passed at the time of writing; many of those rows are now contradicted or refined by the review report. Treat the review report as the canonical state of the deliverable until remediation lands.
 
 ## Verification
 

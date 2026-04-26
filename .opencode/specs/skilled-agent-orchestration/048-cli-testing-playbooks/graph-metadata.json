@@ -54,13 +54,13 @@
       ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/implementation-summary.md",
       ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/description.json",
       ".opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/graph-metadata.json",
+      "review/review-report.md",
       "implementation-summary.md",
       ".opencode/skill/sk-doc/scripts/validate_document.py",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md",
-      ".opencode/command/create/testing-playbook.md"
+      "decision-record.md"
     ],
     "entities": [
       {
@@ -118,15 +118,15 @@
         "source": "derived"
       },
       {
-        "name": "validate_document.py",
-        "kind": "file",
-        "path": ".opencode/skill/sk-doc/scripts/validate_document.py",
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/review-report.md",
         "source": "derived"
       },
       {
-        "name": "testing-playbook.md",
-        "kind": "doc",
-        "path": ".opencode/command/create/testing-playbook.md",
+        "name": "validate_document.py",
+        "kind": "file",
+        "path": ".opencode/skill/sk-doc/scripts/validate_document.py",
         "source": "derived"
       },
       {
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Five CLI orchestrator skills ship without operator-facing manual testing playbooks while sibling skills (`system-spec-kit`, `mcp-coco-index`) have full packages. This spec creates one `manual_testing_playbook/` per CLI skill — all five conforming to the shipped `sk-doc` contract (root + per-feature scaffold, 9-column scenario tables, integrated review/orchestration guidance) and dispatched through the canonical `/create:testing-playbook` command via the `@write` agent.",
     "created_at": "2026-04-26T08:19:52.465Z",
-    "last_save_at": "2026-04-26T13:15:57.502Z",
+    "last_save_at": "2026-04-26T13:58:52.188Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
