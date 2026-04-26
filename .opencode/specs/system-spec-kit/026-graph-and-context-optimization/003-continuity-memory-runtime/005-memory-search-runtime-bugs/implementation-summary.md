@@ -54,6 +54,39 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 
 A findings-only spec packet documenting 17 defects in the `/memory:search` command runtime, observed during a live conversation and confirmed via direct MCP probes. Defects are organized into 4 P0 (correctness), 7 P1 (degraded signal), and 6 P2 (refinement) requirements (REQ-001 through REQ-017). The plan groups them into 7 root-cause clusters; tasks decompose each cluster into work units for a follow-up remediation packet.
 
+### Cluster 1-3 Remediation (landed in this packet on 2026-04-26)
+
+The findings packet was extended in-place to land the three P0 cluster fixes:
+
+- **Cluster 1 — Truncation Wrapper (REQ-002)**:
+  - Added a sanity-guard early return in `enforceTokenBudget()` so when `actualTokens / budgetTokens < 0.50` the result is returned unmodified, matching the spec acceptance criterion.
+  - Threaded a `preservedAfterStructural` snapshot through the structural truncation loop so when the second-pass `compactStructuredResult` cannot reach budget, the `fallbackToStructuredBudget()` candidate-state ladder now starts with a "preserve survivors" envelope (full + metadata-only) before falling through to the legacy zero-fill envelopes. Returned-count metadata is re-derived from the actual emitted payload to eliminate the historical mismatch where `returnedResultCount=2` shipped alongside `count:0,results:[]`.
+  - File: `mcp_server/handlers/memory-context.ts` (`enforceTokenBudget` and helpers, plus the call-site at the very end of the function).
+
+- **Cluster 2 — Intent Classifier Drift (REQ-001 / REQ-004 / REQ-016)**:
+  - Added a centroid-only confidence floor (0.30, per spec §4A "Default fallback") that fires only when the winning intent has zero keyword + zero regex-pattern evidence. Existing single-keyword classification stays at the legacy 0.08 floor, so the 80%-accuracy regression suite (T037 / T060 / C138) keeps passing while the "Semantic Search" → fix_bug bug is eliminated.
+  - Annotated dual-classifier output: `meta.intent` is now explicitly `classificationKind: "task-intent"` and authoritative for rendering / anchors / mode-routing; `data.queryIntentRouting` is `classificationKind: "backend-routing"` and authoritative only for channel selection. A `seeAlso` cross-pointer breaks the symmetry the original probe flagged.
+  - Files: `mcp_server/lib/search/intent-classifier.ts` and `mcp_server/handlers/memory-context.ts`.
+
+- **Cluster 3 — Output Rendering Vocabulary (REQ-003)**:
+  - Added a "Forbidden Phrase Enforcement" subsection to the canonical command spec at `.opencode/command/memory/search.md` §4A Step 4b. The subsection is a literal substitution table covering "Auto-triggered memories", "Triggered memories", "Constitutional memories", and the standalone "Memories" header; spells out a mandatory pre-render gate the assistant runs before emitting; and provides a regression-safe `grep -Eci` verification command.
+  - Source-side runtime is rendered by the assistant, so the only correct repair surface was the spec — server-side renderer was rejected to keep the change surgical.
+
+### Verification
+
+- All targeted vitest suites green: token-budget-enforcement, memory-context, handler-causal-graph, intent-classifier, intent-routing, gate-d-regression-intent-routing (200 passing tests).
+- Inline runtime probes via `node` against the freshly-built `dist/`:
+  - `classifyIntent("Semantic Search")` → `understand` (was `fix_bug` at 0.098)
+  - `classifyIntent("Find stuff related to semantic search")` → `understand` (REQ-016 stability)
+  - `classifyIntent("fix the login bug")` → `fix_bug` (single-keyword regression-safe)
+  - `enforceTokenBudget` under-budget → `truncated:false`, full results preserved
+  - `enforceTokenBudget` true over-budget → `returnedResultCount` matches `data.results.length`
+- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh ... --strict` → PASSED (0 errors, 0 warnings).
+
+### Out of Scope This Packet
+
+Clusters 4-7 (P1 / P2) remain deferred per the original plan. Boundary respected: did not refactor surrounding code beyond the bug surface; did not modify the empty-arguments interactive prompt structure; did not touch the canonical command spec for anything except the Cluster 3 forbidden-phrase enforcement section.
+
 ### Headline Defects
 
 - **Truncation drops results to zero at 2% budget usage** — `memory_context({input:"Semantic Search"})` reports `actualTokens:71 / budgetTokens:3000`, yet `data.content` returns `count:0,results:[]` with `truncated:true`.
