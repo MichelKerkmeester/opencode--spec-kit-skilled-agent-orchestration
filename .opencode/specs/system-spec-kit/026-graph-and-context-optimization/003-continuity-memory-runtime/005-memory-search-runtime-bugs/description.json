@@ -1,0 +1,42 @@
+{
+  "title": "/memory:search Runtime Bugs and Refinements",
+  "trigger_phrases": [
+    "005-memory-search-runtime-bugs",
+    "memory search runtime bugs",
+    "memory_context truncation drops results",
+    "intent classifier dual-source dissonance",
+    "auto-triggered vocabulary violation",
+    "causal-stats relation omission",
+    "ephemeral session dedup",
+    "folder-discovery misfire",
+    "context quality degraded false hint",
+    "lopsided causal edge growth",
+    "quality gap fallback missing"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
+  "description": "Findings spec cataloging 17 defects across the /memory:search runtime: intent classifier mis-routing, memory_context truncation wrapper dropping results to zero, output vocabulary violations, causal-stats inconsistencies, ephemeral-session dedup defeat, folder-discovery misfires, lopsided graph growth, and missing quality-gap fallback. Includes live MCP probe evidence and 7 root-cause clusters for remediation.",
+  "keywords": [
+    "feature",
+    "specification",
+    "memory",
+    "search",
+    "runtime",
+    "bugs",
+    "intent",
+    "classifier",
+    "truncation",
+    "causal-stats",
+    "vocabulary",
+    "rendering"
+  ],
+  "lastUpdated": "2026-04-26T14:33:00Z",
+  "specId": "005",
+  "folderSlug": "memory-search-runtime-bugs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

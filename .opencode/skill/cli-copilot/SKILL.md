@@ -219,7 +219,7 @@ Copilot CLI supports 5 recommended models across 3 providers:
 | Claude models | low, medium, high | high |
 | Gemini models | low, medium, high | medium |
 
-**Setting reasoning effort**: there is no `--reasoning-effort` flag. Edit `~/.copilot/config.json` (`"reasoning_effort": "xhigh"`) for persistent config, or use interactive `/model` flow which writes back to that same file. For scripted `-p` usage, the config file is the only non-interactive mechanism.
+**Setting reasoning effort**: copilot 1.0.36+ exposes `--effort` / `--reasoning-effort` as a CLI flag (preferred for scripted `-p` usage). For persistent default, edit `~/.copilot/config.json` (`"reasoning_effort": "xhigh"`) — also writable via the interactive `/model` flow. CLI flag takes precedence over config file when both are present.
 
 ```bash
 # Step 1: Set reasoning effort in config (one-time)

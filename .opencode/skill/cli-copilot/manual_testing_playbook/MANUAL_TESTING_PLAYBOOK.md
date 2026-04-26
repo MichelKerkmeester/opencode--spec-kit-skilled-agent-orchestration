@@ -53,7 +53,7 @@ The cli-copilot playbook fills all eight category positions because Copilot CLI 
 
 This playbook provides 21 deterministic scenarios across 8 categories validating the `cli-copilot` skill surface. Each feature keeps its stable `CP-NNN` ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-26): the playbook covers cli-copilot's documented behaviour at SKILL.md v1.3.4.0. It includes non-interactive `-p` invocation, `--allow-all-tools` autonomy, `--no-ask-user` autonomous mode, the five recommended models (`gpt-5.4`, `gpt-5.3-codex`, `claude-opus-4.6`, `claude-sonnet-4.6`, `gemini-3.1-pro-preview`), GPT-5.x reasoning-effort tuning via `~/.copilot/config.json`, Autopilot autonomous execution, the `@Explore` and `@Task` built-in agents (with documented `@copilot` cloud routing), repository memory persistence, mid-session model switching, three integration patterns (cross-AI generate-review-fix, MCP support, shell-wrapper same-invocation context injection), the two ALWAYS-loaded prompt assets (`prompt_quality_card.md` and `cli_reference.md`) and both cloud-delegation surfaces (`/delegate` command and `&prompt` shorthand).
+Coverage note (2026-04-26): the playbook covers cli-copilot's documented behaviour at SKILL.md v1.3.4.0. It includes non-interactive `-p` invocation, `--allow-all-tools` autonomy, `--no-ask-user` autonomous mode, the five recommended models (`gpt-5.4`, `gpt-5.3-codex`, `claude-opus-4.7`, `claude-sonnet-4.6`, `gemini-3.1-pro-preview`), GPT-5.x reasoning-effort tuning via `~/.copilot/config.json`, Autopilot autonomous execution, the `@Explore` and `@Task` built-in agents (with documented `@copilot` cloud routing), repository memory persistence, mid-session model switching, three integration patterns (cross-AI generate-review-fix, MCP support, shell-wrapper same-invocation context injection), the two ALWAYS-loaded prompt assets (`prompt_quality_card.md` and `cli_reference.md`) and both cloud-delegation surfaces (`/delegate` command and `&prompt` shorthand).
 
 ### Realistic Test Model
 
@@ -259,7 +259,7 @@ Desired user-visible outcome: PASS verdict + a one-line note that the autonomous
 
 ## 8. MULTI-MODEL
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans 3 of the 5 recommended models with explicit selection (`gpt-5.4`, `gpt-5.3-codex`, `claude-opus-4.6`) plus the GPT-5.x reasoning-effort tuning surface. `claude-sonnet-4.6` and `gemini-3.1-pro-preview` are exercised indirectly through cross-AI integration patterns in §12 and the multi-model decision matrix in `references/integration_patterns.md` §5.
+This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans 3 of the 5 recommended models with explicit selection (`gpt-5.4`, `gpt-5.3-codex`, `claude-opus-4.7`) plus the GPT-5.x reasoning-effort tuning surface. `claude-sonnet-4.6` and `gemini-3.1-pro-preview` are exercised indirectly through cross-AI integration patterns in §12 and the multi-model decision matrix in `references/integration_patterns.md` §5.
 
 ### CP-004 | Explicit model selection (GPT-5.4)
 
@@ -299,11 +299,11 @@ Desired user-visible outcome: PASS verdict + the parsed function signature + a o
 
 #### Description
 
-Confirm `--model claude-opus-4.6` returns a multi-option architectural comparison for a reasoning-heavy prompt.
+Confirm `--model claude-opus-4.7` returns a multi-option architectural comparison for a reasoning-heavy prompt.
 
 #### Scenario Contract
 
-Prompt summary: As a cross-AI orchestrator routing deep architectural reasoning to Claude Opus, invoke Copilot CLI with --model claude-opus-4.6 against the cli-copilot skill in this repository. Verify the model returns a structured comparison naming at least two distinct architectural approaches with trade-offs. Return a concise pass/fail verdict with the main reason and the names of the compared approaches.
+Prompt summary: As a cross-AI orchestrator routing deep architectural reasoning to Claude Opus, invoke Copilot CLI with --model claude-opus-4.7 against the cli-copilot skill in this repository. Verify the model returns a structured comparison naming at least two distinct architectural approaches with trade-offs. Return a concise pass/fail verdict with the main reason and the names of the compared approaches.
 
 Expected signals: `EXIT=0`. Response names at least 2 distinct architectural approaches. Each named approach has at least one trade-off bullet. Tripwire diff is empty.
 
@@ -417,7 +417,7 @@ Confirm two sequential `copilot -p` calls in the same operator session can targe
 
 #### Scenario Contract
 
-Prompt summary: As a cross-AI orchestrator switching models per task within one operator session, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository: first --model claude-opus-4.6 for a deep architectural question, then --model claude-sonnet-4.6 for a quick code-style review of a tiny snippet. Verify both calls exit 0, both return non-empty answers consistent with the requested model strength and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and a one-line summary per model call.
+Prompt summary: As a cross-AI orchestrator switching models per task within one operator session, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository: first --model claude-opus-4.7 for a deep architectural question, then --model claude-sonnet-4.6 for a quick code-style review of a tiny snippet. Verify both calls exit 0, both return non-empty answers consistent with the requested model strength and the working tree is unchanged. Return a concise pass/fail verdict with the main reason and a one-line summary per model call.
 
 Expected signals: both calls exit 0. Opus response covers >= 2 architectural trade-offs. Sonnet response returns >= 1 specific style finding within ~5 seconds. Tripwire diff is empty.
 
@@ -453,11 +453,11 @@ Desired user-visible outcome: PASS verdict reporting the marker was both written
 
 #### Description
 
-Confirm the documented selected-model surface (interactive `/model` selection writes back to `~/.copilot/config.json`) persists across two non-interactive `-p` invocations in a sandboxed `HOME`, sequential `--model claude-opus-4.6` then `--model gpt-5.3-codex` calls each report the requested model in their output, demonstrating the selection is honoured per-invocation.
+Confirm the documented selected-model surface (interactive `/model` selection writes back to `~/.copilot/config.json`) persists across two non-interactive `-p` invocations in a sandboxed `HOME`, sequential `--model claude-opus-4.7` then `--model gpt-5.3-codex` calls each report the requested model in their output, demonstrating the selection is honoured per-invocation.
 
 #### Scenario Contract
 
-Prompt summary: As a cross-AI orchestrator validating mid-session model-switch persistence, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository with HOME pointed at a disposable sandbox directory. First call: --model claude-opus-4.6 with a prompt asking which model is responding. Second call: --model gpt-5.3-codex with the same prompt. Verify each response identifies the correct model (Anthropic Claude Opus 4.6 for the first, OpenAI GPT-5.3-Codex for the second) and the sandbox `~/.copilot/config.json` reflects the most recent model after each call (when written). Return a concise pass/fail verdict with the main reason and a one-line model-identification summary per call.
+Prompt summary: As a cross-AI orchestrator validating mid-session model-switch persistence, invoke Copilot CLI twice in sequence against the cli-copilot skill in this repository with HOME pointed at a disposable sandbox directory. First call: --model claude-opus-4.7 with a prompt asking which model is responding. Second call: --model gpt-5.3-codex with the same prompt. Verify each response identifies the correct model (Anthropic Claude Opus 4.6 for the first, OpenAI GPT-5.3-Codex for the second) and the sandbox `~/.copilot/config.json` reflects the most recent model after each call (when written). Return a concise pass/fail verdict with the main reason and a one-line model-identification summary per call.
 
 Expected signals: both calls exit 0. First response identifies Claude/Anthropic model family. Second response identifies GPT/OpenAI model family. Tripwire diff against operator's real `~/.copilot/` is empty.
 
@@ -480,7 +480,7 @@ Confirm two sequential Copilot calls (generate then fix, with an orchestrator-in
 
 #### Scenario Contract
 
-Prompt summary: As a cross-AI orchestrator running the generate-review-fix pattern documented in cli-copilot integration_patterns.md §2, dispatch two sequential Copilot calls against the cli-copilot skill in this repository, both scoped to /tmp/cp-015-sandbox/. First call: --model gpt-5.3-codex to generate a small Python module avg_list.py that averages a list of integers. Second call: --model claude-opus-4.6 with the orchestrator-supplied review note 'add explicit handling for empty list (return 0.0 instead of dividing by zero)' to ask Copilot to update the same file. Verify the second-pass file differs from the first-pass file and contains explicit empty-list handling. Return a concise pass/fail verdict with the main reason, the diff line count and a snippet of the empty-list handling.
+Prompt summary: As a cross-AI orchestrator running the generate-review-fix pattern documented in cli-copilot integration_patterns.md §2, dispatch two sequential Copilot calls against the cli-copilot skill in this repository, both scoped to /tmp/cp-015-sandbox/. First call: --model gpt-5.3-codex to generate a small Python module avg_list.py that averages a list of integers. Second call: --model claude-opus-4.7 with the orchestrator-supplied review note 'add explicit handling for empty list (return 0.0 instead of dividing by zero)' to ask Copilot to update the same file. Verify the second-pass file differs from the first-pass file and contains explicit empty-list handling. Return a concise pass/fail verdict with the main reason, the diff line count and a snippet of the empty-list handling.
 
 Expected signals: both calls exit 0. V1 and v2 sandbox artifacts both exist. `diff v1 v2` produces non-empty output. V2 contains an explicit empty-list check (e.g. `if not lst:` or `len(lst) == 0`). Tripwire diff against project tree is empty.
 

@@ -1,0 +1,31 @@
+● memory_search (MCP: spec_kit_memory) · project conventions test markers CP-013 repository memory …
+  └ {"summary":"Found 5 memories","data":{"searchType":"hybrid","count":5,"c...
+
+**Stored repository-memory items:**
+
+- `cli-copilot test marker for spec 048 wave 2 is CP-013-MARKER.`
+- `Canonical spec docs under .opencode/specs must start with YAML frontmatter at line 1; leading comments before --- are not recognized by the validator.`
+- `graph-metadata.json uses top-level spec_folder, parent_id, and children_ids, while status is stored under derived.status.`
+- `description.json is generated with specFolder, description, keywords, lastUpdated, specId, folderSlug, parentChain, memorySequence, and memoryNameHistory fields.`
+- `reduce-state.cjs resolves nested child spec reviews to root review/{phaseSlug}-pt-{NN}, not the child packet's local review/`
+- `System-spec-kit task docs use canonical T### IDs; routed task_update extraction only recognizes T### and CHK-###.`
+- `Nested child-phase review/research packets resolve to the parent spec root as {phaseSlug}-pt-{NN} subfolders via resolveArtifactRoot.`
+- `sk-deep-review reducer resolves nested child-phase targets to root review/<phaseSlug>-pt-XX/, not the child spec's local review/ folder.`
+- `description.json parentChain must mirror the current spec path segments excluding the packet folder itself.`
+- `Repo root sets workspaces=false; run system-spec-kit npm commands from .opencode/skill/system-spec-kit or its subpackages, not via repo-root --workspace flags.`
+- `Validate markdown docs with python3 .opencode/skill/sk-doc/scripts/validate_document.py <path>.`
+- `Validate mcp_server hook changes with ./node_modules/.bin/vitest run tests/hook-*.vitest.ts tests/hooks-*.vitest.ts tests/copilot-*.vitest.ts and node ../../system-spec-kit/node_modules/typescript/bin/tsc --noEmit.`
+- `Validate generate-context path/CLI changes from scripts with npm run typecheck and vitest on generate-context-cli-authority plus save-context-paths.`
+- `Validate skill-advisor changes with tests/test_skill_advisor.py, skill_advisor_regression.py --dataset fixtures, and verify_alignment_drift on .opencode/skill/skill-advisor.`
+- `Validate manual-playbook-runner changes with npm run typecheck in scripts and vitest run scripts/tests/manual-playbook-runner.vitest.ts from system-spec-kit root.`
+- `Validate skill-advisor changes with tests/test_skill_advisor.py and scripts/skill_advisor_regression.py using the fixtures dataset.`
+- `Validate system-spec-kit scripts changes with npm run typecheck from scripts/ and vitest using ../mcp_server/vitest.config.ts with --root .`
+- `Validate code-graph query handler changes from mcp_server with npm run typecheck and ./node_modules/.bin/vitest run tests/code-graph-query-handler.vitest.ts --config vitest.config.ts.`
+- `For system-spec-kit mcp_server transport changes, run npm run typecheck and vitest run tests/opencode-transport.vitest.ts --config vitest.config.ts.`
+
+**Exact CP-013 marker:** `CP-013-MARKER`
+
+
+Changes   +0 -0
+Requests  1 Premium (38s)
+Tokens    ↑ 84.3k • ↓ 1.5k • 77.4k (cached) • 736 (reasoning)

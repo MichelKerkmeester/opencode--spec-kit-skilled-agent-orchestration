@@ -1,1 +1,0 @@
-92:    if not has_parallel_session_keywords(prompt):

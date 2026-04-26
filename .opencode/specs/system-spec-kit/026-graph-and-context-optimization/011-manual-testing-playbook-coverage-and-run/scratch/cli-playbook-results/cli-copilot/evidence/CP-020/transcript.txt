@@ -1,0 +1,43 @@
+● Read AGENTS.md
+  └ 1 line read
+
+● List directory .opencode/skill/cli-copilot/references/
+  └ 4 files found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "/delegate Analyse the directory .opencode…
+  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":...
+
+I’ve got the four files; I’m reading their contents now so I can summarize each one accurately.
+
+● Read AGENTS.md
+  └ L1:220 (220 lines read)
+
+● Read agent_delegation.md
+  │ .opencode/skill/cli-copilot/references/agent_delegation.md
+  └ L1:220 (219 lines read)
+
+● Read cli_reference.md
+  │ .opencode/skill/cli-copilot/references/cli_reference.md
+  └ L1:220 (219 lines read)
+
+● Read copilot_tools.md
+  │ .opencode/skill/cli-copilot/references/copilot_tools.md
+  └ L1:220 (190 lines read)
+
+● Read integration_patterns.md
+  │ .opencode/skill/cli-copilot/references/integration_patterns.md
+  └ L1:220 (220 lines read)
+
+The directory contains **four reference files**:
+
+| Filename | Purpose |
+| --- | --- |
+| `agent_delegation.md` | Explains how external AIs should delegate work to Copilot CLI agents using the conductor/executor model, including when to use `@Explore`, `@Task`, cloud delegation, and custom agents. |
+| `cli_reference.md` | Serves as the main command reference for Copilot CLI, covering invocation, flags, models, authentication, configuration, and interactive commands. |
+| `copilot_tools.md` | Summarizes Copilot CLI’s built-in capabilities—such as Cloud Delegation, Plan Mode, Autopilot, multi-provider model support, repository memory, and GitHub-native integration—and compares them to other coding CLIs. |
+| `integration_patterns.md` | Documents practical cross-AI orchestration patterns for using Copilot CLI from other AI systems, including review loops, plan-then-execute flows, cloud delegation, structured output, and background execution. |
+
+
+Changes   +0 -0
+Requests  1 Premium (31s)
+Tokens    ↑ 141.9k • ↓ 1.4k • 125.7k (cached) • 743 (reasoning)

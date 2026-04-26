@@ -1,1 +1,0 @@
-doc=1 sub=1 help=1 activation=2

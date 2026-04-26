@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-memory-quality-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
+      "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-memory-search-runtime-bugs",
+      "memory search runtime bugs",
+      "memory_context truncation",
+      "intent classifier dissonance",
+      "auto-triggered vocabulary",
+      "causal-stats relation omission",
+      "ephemeral session dedup",
+      "folder-discovery misfire",
+      "lopsided causal edge growth",
+      "quality gap fallback",
+      "memory:search command",
+      "026-graph-and-context-optimization",
+      "003-continuity-memory-runtime"
+    ],
+    "key_topics": [
+      "005-memory-search-runtime-bugs",
+      "memory",
+      "search",
+      "runtime",
+      "bugs",
+      "intent",
+      "classifier",
+      "truncation",
+      "causal-stats",
+      "vocabulary",
+      "rendering",
+      "session-dedup",
+      "folder-discovery"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "memory_context",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/",
+        "source": "derived"
+      },
+      {
+        "name": "memory_causal_stats",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/",
+        "source": "derived"
+      },
+      {
+        "name": "/memory:search",
+        "kind": "command",
+        "path": ".opencode/command/memory/search.md",
+        "source": "derived"
+      },
+      {
+        "name": "Findings Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Root-Cause Clusters",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Live /memory:search invocation against the indexed-continuity runtime exposed 17 defects across the retrieval, output rendering, and causal-graph subcommands. P0 issues: intent classifier returns fix_bug at confidence 0.098 for 'Semantic Search' instead of the documented understand fallback; memory_context wrapper reports truncated=true with returnedResultCount>0 yet emits count:0,results:[] in the payload while consuming only 2% of token budget; output rendering uses 'Auto-triggered memories' — explicitly forbidden by spec §4A Step 4b; dual classifiers (meta.intent vs data.queryIntentRouting) emit different intents with no resolution policy. P1 issues: causal-stats returns 3 of 6 documented relation types, labels itself healthy while meetsTarget=false, exhibits lopsided supersedes-only edge growth (+344 in 15 min, caused/supports unchanged); ephemeral session defaults defeat enableDedup; 'Context quality is degraded' hint emitted unconditionally; folder-discovery binds on weak signal. P2 issues: CocoIndex daemon failure silent; QUALITY=gap flag does not trigger documented 3-tier FTS fallback; AskUserQuestion custom-answer routing undefined; 'code graph' vs 'causal graph' naming collision. Findings clustered into 7 root-cause buckets in plan.md for staged remediation by a follow-up packet.",
+    "created_at": "2026-04-26T14:33:00Z",
+    "last_save_at": "2026-04-26T14:33:00Z",
+    "save_lineage": "manual",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -1,0 +1,36 @@
+ M .opencode/skill/cli-codex/manual_testing_playbook/01--cli-invocation/004-explicit-fast-service-tier.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/02--sandbox-modes/004-approval-policies.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/04--agent-routing/003-debug-profile.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/05--session-continuity/001-full-auto-hooks.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/05--session-continuity/002-session-resume-fork.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/06--integration-patterns/001-generate-review-fix-cycle.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/07--prompt-templates/001-prompt-templates-inventory.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/07--prompt-templates/002-clear-scoring-quality-card.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/01--cli-invocation/002-allow-all-tools-sandboxed-write.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/02--multi-model/001-explicit-model-selection-gpt54.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/03--autopilot-mode/001-autopilot-autonomous-build.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/002-task-agent-sandboxed-implementation.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/003-mid-session-model-switch.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/05--session-continuity/001-repository-memory-recall.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/05--session-continuity/002-mid-session-model-switch-persistence.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/06--integration-patterns/003-shell-wrapper-context-injection.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/07--prompt-templates/001-template-substitution.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/08--cloud-delegation/001-delegate-explicit-cloud.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
+ M .opencode/skill/cli-gemini/manual_testing_playbook/01--cli-invocation/001-direct-prompt-text-output.md
+ M .opencode/skill/cli-opencode/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
+ M .opencode/specs/descriptions.json
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/decision-record.md
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/description.json
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/implementation-summary.md
+ D specs/descriptions.json
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/summary.md
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-007/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-008/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-009/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-010/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-011/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-012/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-013/
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-014/

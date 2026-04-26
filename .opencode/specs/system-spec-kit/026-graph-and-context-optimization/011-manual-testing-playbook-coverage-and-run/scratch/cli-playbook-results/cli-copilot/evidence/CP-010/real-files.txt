@@ -1,0 +1,4 @@
+agent_delegation.md
+cli_reference.md
+copilot_tools.md
+integration_patterns.md

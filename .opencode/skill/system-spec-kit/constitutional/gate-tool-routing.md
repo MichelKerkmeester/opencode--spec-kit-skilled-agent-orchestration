@@ -30,6 +30,10 @@ triggerPhrases:
 
 # Tool Routing Decision Tree
 
+> Lean constitutional rule. Always-surface guidance for picking the right retrieval tool by query shape.
+
+<!-- ANCHOR:code-search-tree -->
+
 ## Code Search Decision Tree (MANDATORY)
 
 Route code search queries using this priority order:
@@ -40,12 +44,20 @@ Route code search queries using this priority order:
 | **Structural** (callers, imports, deps) | `code_graph_query` (Code Graph) | `Grep` / `Glob` |
 | **Exact text/regex** (string literal) | `Grep` | `Glob` |
 
+<!-- /ANCHOR:code-search-tree -->
+
+<!-- ANCHOR:context-search -->
+
 ## Memory & Context Search
 
 | Query Type | Primary Tool | Fallback |
 |-----------|-------------|----------|
-| **Memory/context** (prior work, decisions) | `memory_search` / `memory_context` | `memory_match_triggers` |
+| **Spec-doc continuity** (prior work, decisions) | `memory_search` / `memory_context` | `memory_match_triggers` |
 | **Broad topic** (thematic overview) | `memory_search` with `retrievalLevel: "global"` | community search fallback |
+
+<!-- /ANCHOR:context-search -->
+
+<!-- ANCHOR:fts-fallback -->
 
 ## FTS 3-Tier Fallback Chain
 
@@ -57,11 +69,19 @@ When both graph and semantic search miss or return weak results, apply the 3-tie
 
 This ensures no query goes unanswered even when embeddings or the graph index are unavailable.
 
+<!-- /ANCHOR:fts-fallback -->
+
+<!-- ANCHOR:retrieval-levels -->
+
 ## Memory Search Retrieval Levels
 
-- **`local`** (default): Entity-level matching against individual memories
-- **`global`**: Community-level matching against topic clusters  
+- **`local`** (default): Entity-level matching against individual spec-doc records
+- **`global`**: Community-level matching against topic clusters
 - **`auto`**: Local first; if weak results (<3), falls back to community search
+
+<!-- /ANCHOR:retrieval-levels -->
+
+<!-- ANCHOR:graph-features -->
 
 ## Graph Retrieval Features
 
@@ -70,3 +90,28 @@ This ensures no query goes unanswered even when embeddings or the graph index ar
 - **Query concept expansion**: Expands query with alias terms (SPECKIT_QUERY_CONCEPT_EXPANSION)
 - **Graph-expanded fallback**: Walks causal edges for expanded terms (SPECKIT_GRAPH_FALLBACK)
 - **Result provenance**: graphEvidence field shows contributing edges and communities (SPECKIT_RESULT_PROVENANCE)
+
+<!-- /ANCHOR:graph-features -->
+
+<!-- ANCHOR:code-references -->
+
+## Code References
+
+Implementation surfaces backing this routing contract:
+
+| Tool | Source File | Role |
+|------|-------------|------|
+| `mcp__cocoindex_code__search` | `.opencode/skill/mcp-coco-index/SKILL.md` | Semantic code search via vector embeddings |
+| `code_graph_query` | `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph.ts` | Structural query handler (callers/imports/deps) |
+| `code_graph_context` | `.opencode/skill/system-spec-kit/mcp_server/handlers/code-graph.ts` | Bounded code-graph context retrieval |
+| `memory_search` | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | 3-channel hybrid search with RRF fusion |
+| `memory_context` | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts` | Intent-routed context retrieval (L1 entry point) |
+| `memory_match_triggers` | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-match-triggers.ts` | Trigger-phrase matcher (constitutional + tier-aware) |
+| FTS5 fallback | `.opencode/skill/system-spec-kit/mcp_server/lib/search/fts5-search.ts` | Full-text exact-keyword channel |
+| BM25 reranker | `.opencode/skill/system-spec-kit/mcp_server/lib/search/bm25.ts` | Relevance-ranked keyword channel |
+
+Decision tables in this file are derived from these handlers. When a handler signature or routing contract changes, update both the handler docstrings and this rule together.
+
+<!-- /ANCHOR:code-references -->
+
+*Constitutional rule — always surfaces at top of search results*

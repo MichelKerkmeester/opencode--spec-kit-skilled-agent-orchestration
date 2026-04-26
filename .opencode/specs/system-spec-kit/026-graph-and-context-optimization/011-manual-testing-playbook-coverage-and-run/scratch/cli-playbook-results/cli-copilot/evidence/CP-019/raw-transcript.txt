@@ -1,0 +1,6 @@
+{"name":"--model","purpose":"Specifies the AI model to use for the session.","flag":"--model"}
+
+
+Changes   +0 -0
+Requests  1 Premium (9s)
+Tokens    ↑ 70.9k • ↓ 129 • 35.4k (cached)

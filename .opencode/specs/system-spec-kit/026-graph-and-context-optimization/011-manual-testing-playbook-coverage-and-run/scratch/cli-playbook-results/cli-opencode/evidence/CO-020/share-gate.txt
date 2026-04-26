@@ -1,8 +1,0 @@
-201:| "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
-219:| `--share` | Publish a shareable session URL — opt-in per CHK-033 |
-263:| Parallel detached sessions | Spawn separate session id + state directory + optional share URL | `opencode run --share --port <N>` |
-281:opencode run --share --port 4096 \
-315:| `--share` URL leaks secrets | Operator MUST confirm before passing `--share` (CHK-033) |
-341:2. Pass `--share` without operator confirmation (CHK-033) — share URL exposes session contents.
-349:2. Operator wants to publish a `--share` URL — get explicit confirmation per CHK-033.
-411:- `--share` URLs opt-in with operator confirmation per CHK-033.

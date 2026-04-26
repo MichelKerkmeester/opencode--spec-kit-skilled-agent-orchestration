@@ -1,21 +1,3 @@
-[93m[1m! [0m agent "general" is a subagent, not a primary agent. Falling back to default agent
-ProviderModelNotFoundError: ProviderModelNotFoundError
- data: {
-  providerID: "anthropic",
-  modelID: "claude-opus-4-7",
-  suggestions: [],
-},
-
-      at <anonymous> (/$bunfs/root/src/index.js:297001:17)
-      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23382:32)
-      at runLoop (/$bunfs/root/src/index.js:23208:109)
-      at evaluate (/$bunfs/root/src/index.js:23178:32)
-      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
-      at doneUnsafe (/$bunfs/root/src/index.js:24512:24)
-      at <anonymous> (/$bunfs/root/src/index.js:63246:17)
-      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23757:33)
-      at runLoop (/$bunfs/root/src/index.js:23208:109)
-      at evaluate (/$bunfs/root/src/index.js:23178:32)
-      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
-
-{"type":"error","timestamp":1777199552332,"sessionID":"ses_236a6eaabffe8MkN9qEYWI3eZK","error":{"name":"UnknownError","data":{"message":"Model not found: anthropic/claude-opus-4-7."}}}
+{"type":"step_start","timestamp":1777215389012,"sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","part":{"id":"prt_dca4abd510012O59kqrVCF518q","messageID":"msg_dca4a9dd3001iyhD3266sX8Fha","sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","snapshot":"858e553ad8e1550c6ce260e12ce6d236328fe20f","type":"step-start"}}
+{"type":"text","timestamp":1777215390552,"sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","part":{"id":"prt_dca4ac2a2001FAILM185s5tITC","messageID":"msg_dca4a9dd3001iyhD3266sX8Fha","sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","type":"text","text":"Got it.","time":{"start":1777215390548,"end":1777215390548}}}
+{"type":"step_finish","timestamp":1777215390774,"sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","part":{"id":"prt_dca4ac35a001UBOuyQ2zDJxVw6","reason":"stop","snapshot":"78b026cd0db44479303f4db2c548c05c5f27b8f0","messageID":"msg_dca4a9dd3001iyhD3266sX8Fha","sessionID":"ses_235b56410ffeW6l1X3ZR4KDmzo","type":"step-finish","tokens":{"total":39529,"input":36925,"output":4,"reasoning":40,"cache":{"write":0,"read":2560}},"cost":0.06477382}}

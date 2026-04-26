@@ -1,0 +1,15 @@
+ M .opencode/skill/cli-codex/manual_testing_playbook/02--sandbox-modes/004-approval-policies.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/04--agent-routing/003-debug-profile.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/05--session-continuity/001-full-auto-hooks.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/05--session-continuity/002-session-resume-fork.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/06--integration-patterns/001-generate-review-fix-cycle.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/07--prompt-templates/001-prompt-templates-inventory.md
+ M .opencode/skill/cli-codex/manual_testing_playbook/07--prompt-templates/002-clear-scoring-quality-card.md
+ M .opencode/skill/cli-copilot/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
+ M .opencode/skill/cli-opencode/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/decision-record.md
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/description.json
+ M .opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/implementation-summary.md
+ D specs/descriptions.json
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/summary.md
+?? .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-copilot/evidence/CP-007/

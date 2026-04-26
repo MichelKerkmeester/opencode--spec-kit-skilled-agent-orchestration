@@ -88,14 +88,14 @@ Framework: TIDD-EC
 
 ```bash
 copilot -p "Security review of @./[file]. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
- --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+ --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 **Example:**
 
 ```bash
 copilot -p "Security review of @./src/api/auth.ts. Scan for: OWASP Top 10, hardcoded secrets, and insecure dependencies. Rate findings by severity." \
- --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+ --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 ### Performance Review
@@ -210,7 +210,7 @@ Framework: RCAF
 
 ```bash
 copilot -p "Update documentation in @./docs to match code changes in @./src. Ensure all examples are functional." \
-  --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+  --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 <!-- /ANCHOR:documentation -->
@@ -254,7 +254,7 @@ Framework: CRAFT
 
 ```bash
 copilot -p "Map all internal dependencies for @./[dir]. Output as a JSON object showing import relationships." \
-  --output-format json --model gemini-3.1-pro-preview --allow-all-tools 2>&1
+  --output-format json --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
 ### API Surface Analysis

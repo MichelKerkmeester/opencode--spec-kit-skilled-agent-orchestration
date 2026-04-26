@@ -1,2 +1,0 @@
-      --share       share the session                                                      [boolean]
-      --port        port for the local server (defaults to random port if no value provided)[number]

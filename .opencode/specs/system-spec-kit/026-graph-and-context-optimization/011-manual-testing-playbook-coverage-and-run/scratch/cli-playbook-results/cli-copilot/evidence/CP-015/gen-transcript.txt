@@ -1,0 +1,22 @@
+● Create sandbox directory (shell)
+  │ mkdir -p /tmp/cp-015-sandbox
+  └ 1 line...
+
+● Edit
+  └ Create /tmp/cp-015-sandbox/avg_list.py
+
+● Read avg_list.py
+  │ /tmp/cp-015-sandbox/avg_list.py
+  └ 2 lines read
+
+Created `/tmp/cp-015-sandbox/avg_list.py` with the requested module:
+
+```python
+def avg(lst: list[int]) -> float:
+    return sum(lst) / len(lst)
+```
+
+
+Changes   +3 -0
+Requests  1 Premium (39s)
+Tokens    ↑ 169.3k • ↓ 1.5k • 127.5k (cached) • 1.3k (reasoning)

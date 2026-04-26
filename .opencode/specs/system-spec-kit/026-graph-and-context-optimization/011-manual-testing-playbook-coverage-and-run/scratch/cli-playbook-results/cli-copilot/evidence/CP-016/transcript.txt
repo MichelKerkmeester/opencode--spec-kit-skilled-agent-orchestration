@@ -1,0 +1,45 @@
+● Checking my documentation
+  └ # GitHub Copilot CLI Documentation
+
+● List All Registered UTCP Tools (MCP: code_mode)
+  └ {"tools":["github.github.create_or_update_file","github.github.search_re...
+
+● Read opencode.json
+  └ 61 lines read
+
+I’ve got the built-in docs; I’m pulling the MCP-specific docs once more so I can cite the exact connection mechanism instead of paraphrasing it.
+
+● Fetching web content https://docs.github.com/api/article/body?pathname=/en/copilot/how-tos/use-co…
+  └ Content type text/markdown; charset=utf-8 cannot be simplified to markdo...
+
+● Web Search (MCP: github-mcp-server) · GitHub Copilot CLI MCP server configuration documentation /…
+  └ {"type":"output_text","text":{"value":"To configure custom MCP (Model Co...
+
+**Yes — MCP is supported natively.** The Copilot CLI docs say it has **“MCP-powered extensibility”**, that it **“ships with GitHub’s MCP server by default and supports custom MCP servers,”** and that you manage them with **`/mcp`**. The official “Using GitHub Copilot CLI” doc is more specific: **“Copilot CLI comes with the GitHub MCP server already configured”** and you can add another one with **`/mcp add`**; server definitions are stored in **`~/.copilot/mcp-config.json`** by default, or under a different base dir if you set **`COPILOT_HOME`**. The help text also documents **`/env`** for showing loaded environment details, including **MCP servers**.
+
+**Currently exposed in this session**
+1. **GitHub MCP server** — available via the `github-mcp-server-*` tool surface.
+2. **`sequential_thinking`**
+3. **`spec_kit_memory`**
+4. **`cocoindex_code`**
+5. **`code_mode`**
+
+**Also registered behind `code_mode` right now**
+1. **GitHub**
+2. **Figma**
+3. **ClickUp**
+4. **Chrome DevTools** (`chrome_devtools_1`)
+5. **Chrome DevTools** (`chrome_devtools_2`)
+
+**Documented connection mechanism**
+1. Start Copilot CLI and run **`/mcp add`**.
+2. Fill in the server details and save.
+3. Copilot CLI stores that config in **`~/.copilot/mcp-config.json`** by default.
+4. Use **`/env`** to inspect what MCP servers are loaded.
+
+**Sources:** Copilot CLI README/help from `fetch_copilot_cli_documentation` (`MCP-powered extensibility`, `/mcp`, `/env`), official GitHub Docs page **“Using GitHub Copilot CLI”** section **“Add an MCP server”**, and the active session tool surface plus this workspace’s `opencode.json` MCP declarations.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 17s)
+Tokens    ↑ 142.0k • ↓ 4.0k • 127.1k (cached) • 3.3k (reasoning)

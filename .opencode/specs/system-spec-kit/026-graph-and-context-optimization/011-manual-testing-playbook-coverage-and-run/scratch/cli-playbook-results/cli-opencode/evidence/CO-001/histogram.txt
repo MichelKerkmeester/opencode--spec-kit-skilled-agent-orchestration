@@ -1,0 +1,4 @@
+   2 step_finish
+   2 step_start
+   1 text
+   1 tool_use
