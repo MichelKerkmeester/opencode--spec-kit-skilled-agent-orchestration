@@ -39,7 +39,7 @@
       "orchestrator"
     ],
     "importance_tier": "high",
-    "status": "in-progress",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/cli-gemini/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
       ".opencode/skill/cli-claude-code/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Five CLI orchestrator skills ship without operator-facing manual testing playbooks while sibling skills (`system-spec-kit`, `mcp-coco-index`) have full packages. This spec creates one `manual_testing_playbook/` per CLI skill — all five conforming to the shipped `sk-doc` contract (root + per-feature scaffold, 9-column scenario tables, integrated review/orchestration guidance) and dispatched through the canonical `/create:testing-playbook` command via the `@write` agent.",
     "created_at": "2026-04-26T08:19:52.465Z",
-    "last_save_at": "2026-04-26T13:58:52.188Z",
+    "last_save_at": "2026-04-26T15:55:38.369Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
