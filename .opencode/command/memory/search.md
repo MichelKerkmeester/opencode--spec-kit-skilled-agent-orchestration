@@ -331,6 +331,35 @@ STATUS=OK RESULTS=<count>
 - Each result shows only: score, ID, title
 - No other metadata (no type, bars, previews, weights, or token budget)
 
+#### Step 4b: Empty-Results Fallback (RESULTS=0 with TRIGGERED>0 or CONSTITUTIONAL>0)
+
+When semantic + lexical search return zero direct matches but the trigger-phrase matcher OR constitutional-rule surfacer returned spec-doc records, render them under explicit canonical labels — never invent ad-hoc wording like "Auto-triggered memories":
+
+```text
+MEMORY:SEARCH  "<query>"  <detected-intent>  0 found
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+No spec-doc records matched this query via semantic or lexical search.
+
+Trigger-matched spec-doc records (matched on phrase "<keyword>"):
+  <leaf-folder>/
+    #<id>  <title>
+  <leaf-folder>/
+    #<id>  <title>
+
+Constitutional rules (always-surface tier):
+  #<id>  <title>
+
+STATUS=OK  RESULTS=0  TRIGGERED=<n>  CONSTITUTIONAL=<n>
+```
+
+**Vocabulary rules for this fallback:**
+- Use `Trigger-matched spec-doc records` — NOT `Auto-triggered memories`, `Triggered memories`, or `Memories`
+- Use `Constitutional rules` — NOT `Constitutional memories`
+- The phrase that triggered the match is shown in quotes in the section heading
+- Drop the score column (trigger matches are categorical, not scored)
+- After the formatted output, the assistant MAY ask one clarifying follow-up question if the query was ambiguous (≤2 lines), but the canonical block above must come first.
+
 ### Token Budget Enforcement
 
 **memory_context L1 Budget:** ~2000 tokens total (mode-managed)
