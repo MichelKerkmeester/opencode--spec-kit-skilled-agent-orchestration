@@ -16,7 +16,7 @@
     "conflicts_with": [],
     "prerequisite_for": [
       {
-        "target": "skill-advisor",
+        "target": "skill_advisor",
         "weight": 0.7,
         "context": "semantic search boosts advisor discovery routing"
       }

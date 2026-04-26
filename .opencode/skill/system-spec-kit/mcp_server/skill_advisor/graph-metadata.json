@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "skill_id": "skill-advisor",
+  "skill_id": "skill_advisor",
   "family": "system",
   "category": "system",
   "edges": {
