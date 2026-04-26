@@ -59,6 +59,11 @@ interface TsconfigShape {
   compilerOptions?: TsconfigCompilerOptions;
 }
 
+interface WorkspaceCandidate {
+  originalPath: string;
+  canonicalPath: string;
+}
+
 export interface IndexFilesOptions {
   skipFreshFiles?: boolean;
   specificFiles?: string[];
@@ -1407,7 +1412,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
         try {
           const stat = statSync(fullPath);
           if (stat.size <= maxSize) {
-            results.push(resolveCanonicalPath(fullPath));
+            results.push(normalizeFilesystemPath(fullPath));
           } else {
             console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${fullPath}`);
           }
@@ -1423,36 +1428,38 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
 function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize: number): string[] {
   const dedupedFiles: string[] = [];
   const seenFiles = new Set<string>();
+  const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(rootDir));
 
   for (const filePath of specificFiles) {
-    const absolutePath = resolveCanonicalPath(resolve(filePath));
-    if (seenFiles.has(absolutePath)) {
+    const absolutePath = normalizeFilesystemPath(resolve(filePath));
+    const workspaceCandidate = resolveWorkspaceCandidateWithinRoot(absolutePath, canonicalWorkspaceRoot);
+    if (!workspaceCandidate || seenFiles.has(workspaceCandidate.canonicalPath)) {
       continue;
     }
 
-    const relativePath = normalizeGlobPath(relative(rootDir, absolutePath));
+    const relativePath = normalizeGlobPath(relative(rootDir, workspaceCandidate.originalPath));
     if (relativePath === '..' || relativePath.startsWith('../')) {
       continue;
     }
-    if (!shouldIndexForCodeGraph(absolutePath)) {
+    if (!shouldIndexForCodeGraph(workspaceCandidate.canonicalPath)) {
       continue;
     }
 
     try {
-      const stat = statSync(absolutePath);
+      const stat = statSync(workspaceCandidate.originalPath);
       if (!stat.isFile()) {
         continue;
       }
       if (stat.size > maxSize) {
-        console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${absolutePath}`);
+        console.warn(`[structural-indexer] Skipping large file (${(stat.size / 1024).toFixed(1)}KB > ${(maxSize / 1024).toFixed(1)}KB): ${workspaceCandidate.originalPath}`);
         continue;
       }
     } catch {
       continue;
     }
 
-    seenFiles.add(absolutePath);
-    dedupedFiles.push(absolutePath);
+    seenFiles.add(workspaceCandidate.canonicalPath);
+    dedupedFiles.push(workspaceCandidate.originalPath);
   }
 
   return dedupedFiles;
@@ -1534,14 +1541,15 @@ function isWithinWorkspaceRoot(canonicalWorkspaceRoot: string, canonicalCandidat
     || canonicalCandidatePath.startsWith(workspacePrefix);
 }
 
-function resolveCanonicalCandidateWithinRoot(
+function resolveWorkspaceCandidateWithinRoot(
   candidatePath: string,
   canonicalWorkspaceRoot: string,
-): string | undefined {
+): WorkspaceCandidate | undefined {
   try {
-    const canonicalCandidatePath = normalizeFilesystemPath(realpathSync(candidatePath));
-    return isWithinWorkspaceRoot(canonicalWorkspaceRoot, canonicalCandidatePath)
-      ? canonicalCandidatePath
+    const originalPath = normalizeFilesystemPath(resolve(candidatePath));
+    const canonicalPath = normalizeFilesystemPath(realpathSync(candidatePath));
+    return isWithinWorkspaceRoot(canonicalWorkspaceRoot, canonicalPath)
+      ? { originalPath, canonicalPath }
       : undefined;
   } catch {
     return undefined;
@@ -1549,12 +1557,12 @@ function resolveCanonicalCandidateWithinRoot(
 }
 
 function parseTsconfigFile(tsconfigPath: string, canonicalWorkspaceRoot: string): TsconfigShape {
-  const canonicalTsconfigPath = resolveCanonicalCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
-  if (!canonicalTsconfigPath) {
+  const workspaceTsconfigPath = resolveWorkspaceCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
+  if (!workspaceTsconfigPath) {
     throw new Error(`tsconfig path resolved outside workspace root: ${tsconfigPath}`);
   }
 
-  const rawText = readFileSync(canonicalTsconfigPath, 'utf-8');
+  const rawText = readFileSync(workspaceTsconfigPath.originalPath, 'utf-8');
   return JSON.parse(stripJsonComments(rawText)) as TsconfigShape;
 }
 
@@ -1567,7 +1575,7 @@ function resolveTsconfigExtendsPath(
   if (extendsValue.startsWith('.') || extendsValue.startsWith('/')) {
     const normalized = extendsValue.endsWith('.json') ? extendsValue : `${extendsValue}.json`;
     resolvedExtendsPath = resolve(dirname(tsconfigPath), normalized);
-    return resolveCanonicalCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot);
+    return resolveWorkspaceCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot)?.originalPath;
   }
 
   try {
@@ -1577,7 +1585,7 @@ function resolveTsconfigExtendsPath(
     resolvedExtendsPath = require.resolve(normalized, { paths: [dirname(tsconfigPath)] });
   }
 
-  return resolveCanonicalCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot);
+  return resolveWorkspaceCandidateWithinRoot(resolvedExtendsPath, canonicalWorkspaceRoot)?.originalPath;
 }
 
 function normalizePathAliases(
@@ -1609,13 +1617,13 @@ function loadTsconfigSettings(
   depth = 0,
   visited = new Set<string>(),
 ): { tsconfigPath: string; baseUrl: string; pathAliases: PathAlias[] } {
-  const canonicalTsconfigPath = resolveCanonicalCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
-  if (!canonicalTsconfigPath) {
+  const workspaceTsconfigPath = resolveWorkspaceCandidateWithinRoot(tsconfigPath, canonicalWorkspaceRoot);
+  if (!workspaceTsconfigPath) {
     throw new Error(`tsconfig path resolved outside workspace root: ${tsconfigPath}`);
   }
 
-  const parsed = parseTsconfigFile(canonicalTsconfigPath, canonicalWorkspaceRoot);
-  visited.add(canonicalTsconfigPath);
+  const parsed = parseTsconfigFile(workspaceTsconfigPath.originalPath, canonicalWorkspaceRoot);
+  visited.add(workspaceTsconfigPath.canonicalPath);
 
   const inherited = typeof parsed.extends === 'string' && parsed.extends.trim().length > 0 && depth < 16
     ? (
@@ -1623,7 +1631,7 @@ function loadTsconfigSettings(
       // the local parse instead of crashing resolver setup.
         (() => {
           const extendedPath = resolveTsconfigExtendsPath(
-            canonicalTsconfigPath,
+            workspaceTsconfigPath.originalPath,
             parsed.extends.trim(),
             canonicalWorkspaceRoot,
           );
@@ -1638,9 +1646,9 @@ function loadTsconfigSettings(
     : null;
   const compilerOptions = parsed.compilerOptions ?? {};
   const localBaseUrl = typeof compilerOptions.baseUrl === 'string'
-    ? resolve(dirname(canonicalTsconfigPath), compilerOptions.baseUrl)
+    ? resolve(dirname(workspaceTsconfigPath.originalPath), compilerOptions.baseUrl)
     : undefined;
-  const aliasBaseDir = localBaseUrl ?? dirname(canonicalTsconfigPath);
+  const aliasBaseDir = localBaseUrl ?? dirname(workspaceTsconfigPath.originalPath);
   const mergedAliases = new Map<string, PathAlias>();
 
   for (const alias of inherited?.pathAliases ?? []) {
@@ -1653,8 +1661,8 @@ function loadTsconfigSettings(
   }
 
   return {
-    tsconfigPath: canonicalTsconfigPath,
-    baseUrl: localBaseUrl ?? inherited?.baseUrl ?? dirname(canonicalTsconfigPath),
+    tsconfigPath: workspaceTsconfigPath.originalPath,
+    baseUrl: localBaseUrl ?? inherited?.baseUrl ?? dirname(workspaceTsconfigPath.originalPath),
     pathAliases: [...mergedAliases.values()],
   };
 }
@@ -1680,15 +1688,15 @@ function buildModuleResolutionCandidates(basePath: string): string[] {
 
 function resolveModuleFile(basePath: string, canonicalWorkspaceRoot: string): string | undefined {
   for (const candidate of buildModuleResolutionCandidates(basePath)) {
-    const canonicalCandidate = resolveCanonicalCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
-    if (!canonicalCandidate) {
+    const workspaceCandidate = resolveWorkspaceCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
+    if (!workspaceCandidate) {
       continue;
     }
 
     try {
-      const stats = statSync(canonicalCandidate);
+      const stats = statSync(workspaceCandidate.originalPath);
       if (stats.isFile()) {
-        return canonicalCandidate;
+        return workspaceCandidate.originalPath;
       }
     } catch {
       continue;
@@ -1752,16 +1760,16 @@ function getResolvedImportEdgeWeight(
 
 function findNearestTsconfig(rootDir: string): string | undefined {
   const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(rootDir));
-  let currentDir = canonicalWorkspaceRoot;
+  let currentDir = normalizeFilesystemPath(resolve(rootDir));
 
   while (true) {
     const candidate = resolve(currentDir, 'tsconfig.json');
-    const canonicalCandidate = resolveCanonicalCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
-    if (canonicalCandidate) {
+    const workspaceCandidate = resolveWorkspaceCandidateWithinRoot(candidate, canonicalWorkspaceRoot);
+    if (workspaceCandidate) {
       try {
-        const stats = statSync(canonicalCandidate);
+        const stats = statSync(workspaceCandidate.originalPath);
         if (stats.isFile()) {
-          return canonicalCandidate;
+          return workspaceCandidate.originalPath;
         }
       } catch {
         // Keep walking upward.
@@ -1769,7 +1777,8 @@ function findNearestTsconfig(rootDir: string): string | undefined {
     }
 
     const parentDir = dirname(currentDir);
-    if (parentDir === currentDir || !isWithinWorkspaceRoot(canonicalWorkspaceRoot, parentDir)) {
+    const canonicalParentDir = normalizeFilesystemPath(resolveCanonicalPath(parentDir));
+    if (parentDir === currentDir || !isWithinWorkspaceRoot(canonicalWorkspaceRoot, canonicalParentDir)) {
       return undefined;
     }
     currentDir = parentDir;
@@ -1779,7 +1788,7 @@ function findNearestTsconfig(rootDir: string): string | undefined {
 function loadTsconfigResolverFromPath(tsconfigPath: string, workspaceRoot = dirname(tsconfigPath)): ModuleResolver {
   const canonicalWorkspaceRoot = resolveCanonicalPath(resolve(workspaceRoot));
   const { baseUrl, pathAliases } = loadTsconfigSettings(tsconfigPath, canonicalWorkspaceRoot);
-  return createModuleResolver(baseUrl, pathAliases, canonicalWorkspaceRoot);
+  return createModuleResolver(baseUrl, pathAliases, workspaceRoot);
 }
 
 export function loadTsconfigResolver(rootDir: string): ModuleResolver {
