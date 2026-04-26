@@ -9,6 +9,12 @@ version: 1.0.0
 
 # OpenCode CLI Orchestrator - Full-Runtime Cross-AI Dispatch
 
+> **CRITICAL — SELF-INVOCATION PROHIBITED**
+>
+> This skill dispatches to the OpenCode CLI binary (`opencode`). If the agent currently reading this skill is itself running inside OpenCode (TUI / acp / serve / run modes — detection signals listed in §2), the skill MUST refuse to load and return the documented error message instead of generating any `opencode` invocation. The only exception is an explicit "parallel detached" request that intentionally spawns a SEPARATE session with its own session id and state directory.
+>
+> Just as a Claude Code agent never calls cli-claude-code, an OpenCode agent never calls cli-opencode, a Codex agent never calls cli-codex, a Copilot agent never calls cli-copilot, and a Gemini agent never calls cli-gemini. The cli-X skills are for **cross-AI delegation only** — never self-invocation.
+
 Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, Codex, Copilot, Gemini, raw shell) AND from inside an existing OpenCode session for parallel detached workers. Three documented use cases keep the cycle risk explicit while giving every dispatch path a copy-paste invocation shape.
 
 **Core Principle**: The calling AI stays the conductor. Delegate to OpenCode for what it does best — full plugin, skill, MCP, and Spec Kit Memory runtime in a one-shot dispatch. Validate and integrate the output.
@@ -43,7 +49,7 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 
 ### When NOT to Use
 
-- **Self-invocation guard**: If you are already running inside OpenCode AND the prompt requests "delegate this exact prompt to OpenCode" (no "parallel detached" qualifier), do NOT use this skill. The smart router REFUSES self-invocation per ADR-001 to prevent circular dispatch. Detection: any `OPENCODE_*` env var present, opencode in process ancestry, OR a live `~/.opencode/state/<id>/lock` file.
+- **You ARE OpenCode already.** If your runtime is OpenCode (detection signal: `$OPENCODE_CONFIG_DIR` or any `OPENCODE_*` env var set, `opencode` in process ancestry, or `~/.opencode/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation. The single legitimate exception is an explicit "parallel detached" request that intentionally spawns a SEPARATE session id and state directory (use case 2); without that qualifier, the smart router refuses per ADR-001.
 - Simple, quick tasks where `opencode run` overhead is not worth it
 - Tasks that only need a raw model dispatch — use a sibling cli-* skill (cli-claude-code, cli-codex, cli-copilot, cli-gemini)
 - Tasks that require interactive TUI or web UI (use `opencode` directly instead of `opencode run`)
@@ -75,12 +81,13 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "ERROR:
 
 ```python
 def detect_self_invocation():
-    """Three-layer detection. Trip on ANY positive."""
-    # Layer 1: env var lookup
+    """Returns a non-None signal when the orchestrator is already running inside OpenCode."""
+    # Detection signals — trip on ANY positive
+    # Layer 1: env var lookup — OpenCode sets OPENCODE_CONFIG_DIR and other OPENCODE_* vars on session start
     for key in os.environ:
-        if key.startswith('OPENCODE_'):
+        if key == 'OPENCODE_CONFIG_DIR' or key.startswith('OPENCODE_'):
             return ('env', key)
-    # Layer 2: process ancestry
+    # Layer 2: process ancestry — opencode in parent tree
     try:
         ancestry = subprocess.check_output(
             ['ps', '-o', 'command=', '-p', str(os.getppid())]
@@ -89,7 +96,7 @@ def detect_self_invocation():
             return ('ancestry', 'opencode')
     except subprocess.SubprocessError:
         pass
-    # Layer 3: lock file
+    # Layer 3: state lock-file probe
     state_dir = os.path.expanduser('~/.opencode/state')
     if os.path.isdir(state_dir):
         for entry in os.listdir(state_dir):
@@ -98,12 +105,14 @@ def detect_self_invocation():
     return None
 
 if detect_self_invocation():
+    # Single legitimate exception: explicit "parallel detached" keywords (use case 2)
+    # spawn a SEPARATE session id and state directory, not a self-dispatch.
     if not has_parallel_session_keywords(prompt):
-        refuse('You are already inside OpenCode; '
-               'use a sibling cli-* skill or a fresh shell session '
-               'to dispatch a different model. '
-               'For a parallel detached session, restate with explicit '
-               'parallel-session keywords.')
+        refuse(
+            "Self-invocation refused: this agent is already running inside OpenCode. "
+            "Use a sibling cli-* skill or a fresh shell session in a different runtime to dispatch a different model. "
+            "For a parallel detached session, restate with explicit parallel-session keywords."
+        )
 ```
 
 ### Phase Detection

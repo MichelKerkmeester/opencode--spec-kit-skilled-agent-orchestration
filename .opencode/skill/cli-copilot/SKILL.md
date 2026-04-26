@@ -9,6 +9,12 @@ version: 1.3.4.0
 
 # GitHub Copilot CLI Orchestrator - Cross-AI Task Delegation
 
+> **CRITICAL — SELF-INVOCATION PROHIBITED**
+>
+> This skill dispatches to the GitHub CLI binary (`copilot`). If the agent currently reading this skill is itself running inside Copilot (detection signals listed in §2), the skill MUST refuse to load and return the documented error message instead of generating any `copilot` invocation.
+>
+> Just as a Claude Code agent never calls cli-claude-code, an OpenCode agent never calls cli-opencode, a Codex agent never calls cli-codex, a Copilot agent never calls cli-copilot, and a Gemini agent never calls cli-gemini. The cli-X skills are for **cross-AI delegation only** — never self-invocation.
+
 Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Codex CLI, Claude Code, etc.) for tasks that benefit from its deep GitHub ecosystem integration, multi-model flexibility, autonomous autopilot mode, and cloud-delegated coding agents.
 
 **Core Principle**: The calling AI stays the conductor. Delegate to Copilot CLI for what it does best — collaborative planning, ecosystem-aware generation, and cloud-powered agent execution. Validate and integrate the output.
@@ -52,7 +58,7 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 
 ### When NOT to Use
 
-- **Self-invocation guard**: If you ARE Copilot CLI (running natively inside a Copilot CLI session), do NOT use this skill. You already have direct access to all capabilities described here — Autopilot, Explore/Task agents, cloud delegation, repo memory, and multi-model selection. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Claude Code, Gemini, Codex) to delegate TO Copilot CLI.
+- **You ARE Copilot already.** If your runtime is Copilot (detection signal: `$COPILOT_SESSION_ID` or any `GH_COPILOT_*` env var set, `copilot` in process ancestry, or `~/.copilot/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation.
 - Simple, quick tasks where local execution is faster
 - When GitHub authentication is unavailable or expired
 - Real-time web search (use Gemini CLI or specialized search tools instead)
@@ -71,7 +77,43 @@ Orchestrate the GitHub Copilot CLI from external AI assistants (Gemini CLI, Code
 command -v copilot || echo "Not installed. Run: npm install -g @github/copilot"
 
 # SELF-INVOCATION GUARD: If you are Copilot CLI, do not use this skill
-# [ -n "$COPILOT_SESSION" ] && echo "ERROR: Already inside Copilot session. Do not self-invoke."
+[ -n "$COPILOT_SESSION_ID" ] && echo "ERROR: Already inside Copilot session. Do not self-invoke."
+```
+
+### Self-Invocation Guard
+
+```python
+def detect_self_invocation():
+    """Returns a non-None signal when the orchestrator is already running inside Copilot."""
+    # Detection signals — trip on ANY positive
+    # Layer 1: env var lookup — Copilot sets COPILOT_SESSION_ID and GH_COPILOT_* vars on session start.
+    # Exact env name to be confirmed by the implementer at runtime; the layered process-ancestry
+    # and state-file probes catch the case regardless.
+    for key in os.environ:
+        if key == 'COPILOT_SESSION_ID' or key.startswith('GH_COPILOT_'):
+            return ('env', key)
+    # Layer 2: process ancestry — copilot in parent tree
+    try:
+        ancestry = subprocess.check_output(
+            ['ps', '-o', 'command=', '-p', str(os.getppid())]
+        ).decode()
+        if '/copilot' in ancestry or 'copilot ' in ancestry:
+            return ('ancestry', 'copilot')
+    except subprocess.SubprocessError:
+        pass
+    # Layer 3: state lock-file probe
+    state_dir = os.path.expanduser('~/.copilot/state')
+    if os.path.isdir(state_dir):
+        for entry in os.listdir(state_dir):
+            if os.path.exists(os.path.join(state_dir, entry, 'lock')):
+                return ('lockfile', entry)
+    return None
+
+if detect_self_invocation():
+    refuse(
+        "Self-invocation refused: this agent is already running inside Copilot. "
+        "Use a sibling cli-* skill or a fresh shell session in a different runtime to dispatch a different model."
+    )
 ```
 
 ### Phase Detection

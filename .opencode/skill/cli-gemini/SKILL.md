@@ -9,6 +9,12 @@ version: 1.2.3
 
 # Gemini CLI Orchestrator - Cross-AI Task Delegation
 
+> **CRITICAL — SELF-INVOCATION PROHIBITED**
+>
+> This skill dispatches to the Google CLI binary (`gemini`). If the agent currently reading this skill is itself running inside Gemini (detection signals listed in §2), the skill MUST refuse to load and return the documented error message instead of generating any `gemini` invocation.
+>
+> Just as a Claude Code agent never calls cli-claude-code, an OpenCode agent never calls cli-opencode, a Codex agent never calls cli-codex, a Copilot agent never calls cli-copilot, and a Gemini agent never calls cli-gemini. The cli-X skills are for **cross-AI delegation only** — never self-invocation.
+
 Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspective, real-time web search via Google Search grounding, deep codebase architecture analysis, or parallel code generation.
 
 **Core Principle**: Use Gemini for what it does best. Delegate, validate, integrate. The calling AI stays the conductor.
@@ -53,7 +59,7 @@ Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspect
 
 ### When NOT to Use
 
-- **Self-invocation guard**: If you ARE Gemini CLI (running natively inside a Gemini CLI session), do NOT use this skill. You already have direct access to all capabilities described here — google_web_search, codebase_investigator, save_memory, and your agent system. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Claude Code, Codex, Copilot) to delegate TO Gemini CLI.
+- **You ARE Gemini already.** If your runtime is Gemini (detection signal: `$GEMINI_SESSION_ID` or any `GEMINI_*` env var set, `gemini` in process ancestry, or `~/.gemini/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation.
 - Simple, quick tasks where CLI overhead is not worth it
 - Tasks requiring immediate response (rate limits may cause delays)
 - Context already loaded and understood by the current agent
@@ -71,6 +77,42 @@ Orchestrate Google's Gemini CLI for tasks that benefit from a second AI perspect
 ```bash
 # Verify Gemini CLI is available before routing
 command -v gemini || echo "Not installed. Run: npm install -g @google/gemini-cli"
+```
+
+### Self-Invocation Guard
+
+```python
+def detect_self_invocation():
+    """Returns a non-None signal when the orchestrator is already running inside Gemini."""
+    # Detection signals — trip on ANY positive
+    # Layer 1: env var lookup — Gemini sets GEMINI_SESSION_ID and other GEMINI_* vars on session start.
+    # Exact env name to be confirmed by the implementer at runtime; the layered process-ancestry
+    # and state-file probes catch the case regardless.
+    for key in os.environ:
+        if key == 'GEMINI_SESSION_ID' or key.startswith('GEMINI_'):
+            return ('env', key)
+    # Layer 2: process ancestry — gemini in parent tree
+    try:
+        ancestry = subprocess.check_output(
+            ['ps', '-o', 'command=', '-p', str(os.getppid())]
+        ).decode()
+        if '/gemini' in ancestry or 'gemini ' in ancestry:
+            return ('ancestry', 'gemini')
+    except subprocess.SubprocessError:
+        pass
+    # Layer 3: state lock-file probe
+    state_dir = os.path.expanduser('~/.gemini/state')
+    if os.path.isdir(state_dir):
+        for entry in os.listdir(state_dir):
+            if os.path.exists(os.path.join(state_dir, entry, 'lock')):
+                return ('lockfile', entry)
+    return None
+
+if detect_self_invocation():
+    refuse(
+        "Self-invocation refused: this agent is already running inside Gemini. "
+        "Use a sibling cli-* skill or a fresh shell session in a different runtime to dispatch a different model."
+    )
 ```
 
 ### Phase Detection

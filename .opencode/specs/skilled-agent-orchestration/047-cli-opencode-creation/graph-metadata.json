@@ -2,14 +2,14 @@
   "schema_version": 1,
   "packet_id": "skilled-agent-orchestration/047-cli-opencode-creation",
   "spec_folder": "skilled-agent-orchestration/047-cli-opencode-creation",
-  "parent_id": "skilled-agent-orchestration",
+  "parent_id": null,
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "skilled-agent-orchestration/046-cli-codex-tone-of-voice"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -17,34 +17,94 @@
       "047-cli-opencode-creation",
       "opencode cli orchestrator skill",
       "opencode run cli skill",
-      "create cli-opencode",
-      "cli opencode skill",
-      "fifth cli sibling"
+      "cli-opencode skill plan",
+      "047-cli-opencode-creation plan",
+      "cli-opencode skill tasks",
+      "047-cli-opencode-creation tasks",
+      "cli-opencode skill checklist",
+      "047-cli-opencode-creation checklist",
+      "cli-opencode decision record",
+      "047-cli-opencode-creation decisions"
     ],
     "key_topics": [
       "cli-opencode",
-      "skill-creation",
-      "opencode-cli",
-      "skill-advisor",
-      "sibling-edges",
-      "self-invocation-guard",
-      "changelog-bucket",
-      "readme-updates"
+      "skill",
+      "creation",
+      "047-cli-opencode-creation",
+      "opencode",
+      "cli",
+      "orchestrator",
+      "run",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision"
     ],
     "importance_tier": "important",
-    "status": "draft",
+    "status": "complete",
     "key_files": [
-      "spec.md",
+      ".opencode/skill/cli-claude-code/graph-metadata.json",
+      ".opencode/skill/cli-codex/graph-metadata.json",
+      ".opencode/skill/cli-copilot/graph-metadata.json",
+      ".opencode/skill/cli-gemini/graph-metadata.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill-graph.json",
+      ".opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite",
+      ".opencode/changelog/cli-opencode/v1.0.0.0.md",
+      ".opencode/skill/README.md",
+      ".opencode/README.md",
+      ".opencode/skill/cli-opencode/SKILL.md",
+      "decision-record.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      ".opencode/skill/cli-claude-code/SKILL.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/init-skill-graph.sh",
+      ".opencode/command/create/changelog.md",
+      ".opencode/skill/sk-doc/assets/documentation/changelog_template.md",
+      ".opencode/skill/cli-opencode/references/cli_reference.md",
+      ".opencode/skill/cli-opencode/references/opencode_tools.md"
     ],
     "entities": [
       {
-        "name": "spec.md",
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/skill/cli-claude-code/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill-graph.json",
+        "source": "derived"
+      },
+      {
+        "name": "skill-graph.sqlite",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite",
+        "source": "derived"
+      },
+      {
+        "name": "v1.0.0.0.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/changelog/cli-opencode/v1.0.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
         "source": "derived"
       },
       {
@@ -66,23 +126,102 @@
         "source": "derived"
       },
       {
-        "name": "decision-record.md",
+        "name": "init-skill-graph.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/init-skill-graph.sh",
+        "source": "derived"
+      },
+      {
+        "name": "changelog.md",
         "kind": "doc",
-        "path": "decision-record.md",
+        "path": ".opencode/command/create/changelog.md",
+        "source": "derived"
+      },
+      {
+        "name": "changelog_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/changelog_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "opencode_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/opencode_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Creation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Drafted Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Land",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Closeout Mark",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Level 3 spec packet to add a fifth cli-* sibling skill (cli-opencode) that lets external AI assistants invoke the OpenCode CLI binary. Three streams: skill folder creation, advisor + sibling-graph integration, changelog + READMEs. Five ADRs cover the architectural choices including the self-invocation guard signal and the noisy-token TOKEN_BOOSTS weight.",
+    "causal_summary": "Add `cli-opencode` as a fifth sibling under `.opencode/skill/cli-*/` so external AI assistants (and detached OpenCode sessions) can invoke the OpenCode CLI the same way they already invoke Claude Code, Codex, Copilot, and Gemini. The skill ships nine files matching the canonical cli-* blueprint (3 root + 2 assets + 4 references), gets registered with the skill advisor through filesystem walking + sibling-edge updates + an optional TOKEN_BOOSTS entry, opens a new flat changelog bucket via `/create:changelog`, and touches eight specific lines in `.opencode/skill/README.md` plus two specific lines in `.opencode/README.md`. The hardest decisions land in the decision-record: the self-invocation guard signal (avoiding cycles when the orchestrator already IS opencode), the token-boost weight for the noisy \"opencode\" token (the framework name appears throughout the repo), and the three valid use cases that justify the skill's existence in a repo where opencode IS the host runtime.",
     "created_at": "2026-04-26T05:00:00Z",
-    "last_save_at": "2026-04-26T05:00:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T07:45:24.789Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   }
 }

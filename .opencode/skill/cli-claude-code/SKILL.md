@@ -9,6 +9,12 @@ version: 1.1.3
 
 # Claude Code CLI Orchestrator - Cross-AI Task Delegation
 
+> **CRITICAL — SELF-INVOCATION PROHIBITED**
+>
+> This skill dispatches to the Anthropic CLI binary (`claude`). If the agent currently reading this skill is itself running inside Claude Code (detection signals listed in §2), the skill MUST refuse to load and return the documented error message instead of generating any `claude` invocation.
+>
+> Just as a Claude Code agent never calls cli-claude-code, an OpenCode agent never calls cli-opencode, a Codex agent never calls cli-codex, a Copilot agent never calls cli-copilot, and a Gemini agent never calls cli-gemini. The cli-X skills are for **cross-AI delegation only** — never self-invocation.
+
 Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI, Codex CLI, Copilot, etc.) for tasks that benefit from deep extended thinking, surgical code editing, structured output with JSON schema validation, agent delegation, or persistent memory context.
 
 **Core Principle**: The calling AI stays the conductor. Delegate to Claude Code for what it does best — deep reasoning, precise code editing, and structured analysis. Validate and integrate the output.
@@ -57,7 +63,7 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 
 ### When NOT to Use
 
-- **Self-invocation guard**: If you ARE Claude Code (running natively inside a Claude Code session), do NOT use this skill. You already have direct access to all capabilities described here — Edit tool, Agent tool, extended thinking, structured output, skills system, and Spec Kit Memory. Delegating to yourself via CLI is circular and wasteful. This skill is for EXTERNAL AIs (Gemini, Codex, Copilot) to delegate TO Claude Code. Detection: `$CLAUDECODE` env var is set when inside a Claude Code session.
+- **You ARE Claude Code already.** If your runtime is Claude Code (detection signal: `$CLAUDECODE` env var set, `claude` in process ancestry, or `~/.claude/state/<id>/lock` present), this skill refuses to load. Self-invocation creates a circular dispatch loop and burns tokens for no value. The cli-X family is exclusively for cross-AI delegation.
 - Simple, quick tasks where CLI overhead is not worth it
 - Tasks requiring interactive terminal UI (use `claude` directly instead)
 - Context already loaded and understood by the calling AI
@@ -78,6 +84,39 @@ command -v claude || echo "Not installed. Run: npm install -g @anthropic-ai/clau
 
 # SELF-INVOCATION GUARD: If you ARE Claude Code, do not use this skill — use native capabilities
 [ -n "$CLAUDECODE" ] && echo "ERROR: Already inside Claude Code session. Do not self-invoke."
+```
+
+### Self-Invocation Guard
+
+```python
+def detect_self_invocation():
+    """Returns a non-None signal when the orchestrator is already running inside Claude Code."""
+    # Detection signals — trip on ANY positive
+    # Layer 1: env var lookup — Claude Code sets CLAUDECODE on session start
+    if os.environ.get('CLAUDECODE'):
+        return ('env', 'CLAUDECODE')
+    # Layer 2: process ancestry — claude in parent tree
+    try:
+        ancestry = subprocess.check_output(
+            ['ps', '-o', 'command=', '-p', str(os.getppid())]
+        ).decode()
+        if '/claude' in ancestry or 'claude ' in ancestry:
+            return ('ancestry', 'claude')
+    except subprocess.SubprocessError:
+        pass
+    # Layer 3: state lock-file probe
+    state_dir = os.path.expanduser('~/.claude/state')
+    if os.path.isdir(state_dir):
+        for entry in os.listdir(state_dir):
+            if os.path.exists(os.path.join(state_dir, entry, 'lock')):
+                return ('lockfile', entry)
+    return None
+
+if detect_self_invocation():
+    refuse(
+        "Self-invocation refused: this agent is already running inside Claude Code. "
+        "Use a sibling cli-* skill or a fresh shell session in a different runtime to dispatch a different model."
+    )
 ```
 
 ### Phase Detection
