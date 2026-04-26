@@ -66,7 +66,7 @@ If you want extra confidence, also confirm the dispatched prompt itself contains
 
 | File | Role |
 |---|---|
-| `../../assets/prompt_templates.md` | §3 CODE REVIEW → Comprehensive Review template — the exact template substituted by this scenario |
+| `../../assets/prompt_templates.md` | §3 CODE REVIEW → Comprehensive Review template, the exact template substituted by this scenario |
 | `../../assets/prompt_quality_card.md` | §3 Task to Framework Map confirms TIDD-EC framework choice for review tasks |
 
 ---

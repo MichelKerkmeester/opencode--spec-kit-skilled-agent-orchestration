@@ -15,7 +15,7 @@ This scenario validates the `@Task` built-in agent for `CP-011`. It focuses on c
 
 ### Why This Matters
 
-`@Task` is the documented read-write agent in `references/agent_delegation.md` §3, it is the default route for "IMPLEMENT/FIX" tasks per the routing decision guide. CP-010 covers the read-only side (`@Explore`). CP-011 covers the read-write side under strict sandbox isolation. If `@Task` ignores the sandbox scope (writing outside the requested directory, or producing unverifiable output), every implementation-focused delegation pattern inherits the same defect.
+`@Task` is the documented read-write agent in `references/agent_delegation.md` §3, it is the default route for "IMPLEMENT/FIX" tasks per the routing decision guide. CP-010 covers the read-only side (`@Explore`). CP-011 covers the read-write side under strict sandbox isolation. If `@Task` ignores the sandbox scope (writing outside the requested directory or producing unverifiable output), every implementation-focused delegation pattern inherits the same defect.
 
 ---
 

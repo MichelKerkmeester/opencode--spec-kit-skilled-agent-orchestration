@@ -15,7 +15,7 @@ This scenario validates the documented `cpx()` shell wrapper for `CP-017`. It fo
 
 ### Why This Matters
 
-Per SKILL.md §3 Spec Kit Context Parity, Copilot CLI does not receive Spec Kit's startup context through hook stdout the way Claude Code does, the documented workaround is the file-based custom-instructions path plus the `cpx()` wrapper from `assets/shell_wrapper.md` for same-invocation context. If the wrapper silently fails (does not prepend the managed block, or worse, writes to the operator's real instructions file), every scripted Copilot dispatch loses its Spec Kit context surface. The `SPECKIT_COPILOT_INSTRUCTIONS_PATH` env override exists precisely so this scenario can be tested without mutating operator state.
+Per SKILL.md §3 Spec Kit Context Parity, Copilot CLI does not receive Spec Kit's startup context through hook stdout the way Claude Code does, the documented workaround is the file-based custom-instructions path plus the `cpx()` wrapper from `assets/shell_wrapper.md` for same-invocation context. If the wrapper silently fails (does not prepend the managed block or worse, writes to the operator's real instructions file), every scripted Copilot dispatch loses its Spec Kit context surface. The `SPECKIT_COPILOT_INSTRUCTIONS_PATH` env override exists precisely so this scenario can be tested without mutating operator state.
 
 ---
 

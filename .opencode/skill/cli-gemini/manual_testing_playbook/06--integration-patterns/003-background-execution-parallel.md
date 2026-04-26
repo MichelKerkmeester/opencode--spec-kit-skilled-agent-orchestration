@@ -66,7 +66,7 @@ If you want a stricter parallelism check, capture single-call elapsed time once 
 
 | File | Role |
 |---|---|
-| `../../references/integration_patterns.md` | §4 BACKGROUND EXECUTION — canonical pattern this scenario validates; §12 ANTI-PATTERNS rule 6 documents the file-write race-condition concern |
+| `../../references/integration_patterns.md` | §4 BACKGROUND EXECUTION, canonical pattern this scenario validates. §12 ANTI-PATTERNS rule 6 documents the file-write race-condition concern |
 | `../../references/cli_reference.md` | §10 RATE LIMITS documents the parallel-dispatch quota considerations |
 
 ---

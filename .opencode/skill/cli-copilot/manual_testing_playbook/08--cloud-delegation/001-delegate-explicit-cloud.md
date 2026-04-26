@@ -15,7 +15,7 @@ This scenario validates the documented `/delegate` cloud-delegation surface for 
 
 ### Why This Matters
 
-Cloud Delegation is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it is the difference between Copilot and pure-local CLIs. The `/delegate` syntax is the documented explicit form (vs. the `&prompt` shorthand exercised in CP-021). If the cloud-delegation handshake silently fails (the call returns local-only output without ever reaching the cloud agent, or the cloud agent times out without a clear error), every cloud-offload scenario inherits the same defect. Marking this DESTRUCTIVE because cloud delegation may write logs and invocation receipts to GitHub-side state.
+Cloud Delegation is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it is the difference between Copilot and pure-local CLIs. The `/delegate` syntax is the documented explicit form (vs. the `&prompt` shorthand exercised in CP-021). If the cloud-delegation handshake silently fails (the call returns local-only output without ever reaching the cloud agent or the cloud agent times out without a clear error), every cloud-offload scenario inherits the same defect. Marking this DESTRUCTIVE because cloud delegation may write logs and invocation receipts to GitHub-side state.
 
 ---
 

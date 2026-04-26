@@ -15,7 +15,7 @@ This scenario validates Autopilot multi-step autonomous execution for `CP-008`. 
 
 ### Why This Matters
 
-Autopilot is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it underwrites all autonomous orchestration including SKILL.md §3 Copilot CLI Agent Delegation row "Autonomous Build". If Autopilot silently breaks the autonomy contract (pausing mid-step for operator approval, or only executing the first step), every downstream multi-step delegation pattern inherits the same defect. Verifying a 3-step chain (create -> modify -> verify) that culminates in a real bash invocation is the cheapest end-to-end check.
+Autopilot is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it underwrites all autonomous orchestration including SKILL.md §3 Copilot CLI Agent Delegation row "Autonomous Build". If Autopilot silently breaks the autonomy contract (pausing mid-step for operator approval or only executing the first step), every downstream multi-step delegation pattern inherits the same defect. Verifying a 3-step chain (create -> modify -> verify) that culminates in a real bash invocation is the cheapest end-to-end check.
 
 ---
 
@@ -49,7 +49,7 @@ Operators run the exact prompt and command sequence for `CP-008` and confirm the
 
 ### Optional Supplemental Checks
 
-After PASS, inspect the Autopilot transcript for any sequencing oddities (e.g. step 2 happening before step 1, or the verification python being run before the file exists). Out-of-order execution is technically PASS if the final state is correct, but suggests the model is not strictly ordering tool calls, flag for follow-up review.
+After PASS, inspect the Autopilot transcript for any sequencing oddities (e.g. step 2 happening before step 1 or the verification python being run before the file exists). Out-of-order execution is technically PASS if the final state is correct, but suggests the model is not strictly ordering tool calls, flag for follow-up review.
 
 ---
 

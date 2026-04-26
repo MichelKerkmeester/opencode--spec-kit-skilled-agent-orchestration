@@ -66,7 +66,7 @@ If Step 2 succeeds but stdout looks suspiciously short, re-run with `-d` (debug)
 
 | File | Role |
 |---|---|
-| `../../references/cli_reference.md` | Documents `--output text` flag, non-interactive mode, and exit-code expectations |
+| `../../references/cli_reference.md` | Documents `--output text` flag, non-interactive mode and exit-code expectations |
 | `../../assets/prompt_quality_card.md` | CLEAR check applied to the dispatched prompt |
 
 ---

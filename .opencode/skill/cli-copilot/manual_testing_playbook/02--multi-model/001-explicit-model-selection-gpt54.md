@@ -29,7 +29,7 @@ Operators run the exact prompt and command sequence for `CP-004` and confirm the
 - Expected execution process: orchestrator dispatches the supported `--model gpt-5.4` call, captures the answer, then dispatches the bogus `--model gpt-bogus-99` call and verifies the non-zero exit and model-related error message
 - Expected signals: supported call exits 0 with a multi-sentence answer. Unsupported call exits non-zero with a model-related error in stdout/stderr (e.g. `unknown model`, `unsupported`, `not available`)
 - Desired user-visible outcome: PASS verdict with the supported-model answer + a one-line note that the bogus-model call was correctly rejected
-- Pass/fail: PASS if supported call exits 0 with non-empty answer AND bogus call exits non-zero with a model-related error. FAIL if either condition is missed (supported call errors, or bogus call exits 0 / silently falls back)
+- Pass/fail: PASS if supported call exits 0 with non-empty answer AND bogus call exits non-zero with a model-related error. FAIL if either condition is missed (supported call errors or bogus call exits 0 / silently falls back)
 
 ---
 

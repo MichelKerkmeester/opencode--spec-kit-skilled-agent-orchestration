@@ -66,7 +66,7 @@ If you want extra signal, also confirm `jq -e '.stats.toolCallCount' /tmp/cg-015
 
 | File | Role |
 |---|---|
-| `../../references/integration_patterns.md` | §3 JSON OUTPUT PROCESSING — canonical pattern this scenario validates |
+| `../../references/integration_patterns.md` | §3 JSON OUTPUT PROCESSING, canonical pattern this scenario validates |
 | `../../references/cli_reference.md` | §6 OUTPUT FORMATS documents the JSON envelope schema |
 
 ---

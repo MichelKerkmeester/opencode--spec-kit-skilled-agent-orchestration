@@ -47,7 +47,7 @@ Operators run the exact prompt and command sequence for `CO-027` and confirm the
 4. Wait for all backgrounded workers.
 5. Validate all 3 output files exist with content.
 6. Validate 3 distinct session_ids.
-7. Confirm operator explicit consent before any URL publication; no share URLs MAY be published from the operator project tree.
+7. Confirm operator explicit consent before any URL publication. No share URLs MAY be published from the operator project tree.
 8. After the run (pass or fail) revoke each URL via `opencode session revoke ${SID}` for every captured worker SID, then remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-027/`.
 9. Return a verdict naming all 3 session ids and sandbox teardown confirmation.
 

@@ -68,7 +68,7 @@ If you want extra signal, run `python3 -c 'import importlib.util, sys; spec=impo
 
 | File | Role |
 |---|---|
-| `../../references/integration_patterns.md` | §2 GENERATE-REVIEW-FIX CYCLE — canonical pattern this scenario validates |
+| `../../references/integration_patterns.md` | §2 GENERATE-REVIEW-FIX CYCLE, canonical pattern this scenario validates |
 | `../../assets/prompt_templates.md` | §2 CODE GENERATION + §4 BUG FIXING templates referenced by both calls |
 
 ---

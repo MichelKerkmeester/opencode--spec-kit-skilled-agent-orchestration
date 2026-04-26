@@ -45,9 +45,9 @@ Operators run the exact prompt and command sequence for `CO-028` and confirm the
 4. Wait for both.
 5. Compute byte counts and ratio.
 6. Validate distinct session ids.
-7. Confirm operator explicit consent before any URL publication; no share URLs MAY be published from the operator project tree.
+7. Confirm operator explicit consent before any URL publication. No share URLs MAY be published from the operator project tree.
 8. After the run (pass or fail) revoke each URL via `opencode session revoke ${SID_HIGH}` and `opencode session revoke ${SID_MIN}`, then remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-028/`.
-9. Return a verdict naming ratio, ids, and sandbox teardown confirmation.
+9. Return a verdict naming ratio, ids and sandbox teardown confirmation.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|

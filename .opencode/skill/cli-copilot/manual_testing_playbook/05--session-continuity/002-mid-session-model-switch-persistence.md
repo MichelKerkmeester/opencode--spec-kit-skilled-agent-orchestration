@@ -29,7 +29,7 @@ Operators run the exact prompt and command sequence for `CP-014` and confirm the
 - Expected execution process: orchestrator captures a SHA256 of the operator's real `~/.copilot/`, creates a sandbox `HOME`, dispatches the Opus call, captures the sandbox config state, dispatches the Codex call, captures the second sandbox config state, then re-checks the operator's real state
 - Expected signals: both calls exit 0. First response identifies Claude/Anthropic model family (e.g. "Claude", "Anthropic", "Opus"). Second response identifies GPT/OpenAI/Codex model family (e.g. "GPT", "OpenAI", "Codex"). Tripwire SHA against operator's real `~/.copilot/` state is unchanged
 - Desired user-visible outcome: PASS verdict + a one-line per-call model identification (e.g. "Call 1: Anthropic Claude Opus 4.6 confirmed. Call 2: OpenAI GPT-5.3-Codex confirmed")
-- Pass/fail: PASS if both calls exit 0 AND each response correctly identifies its requested model family AND operator's real `~/.copilot/` SHA unchanged. FAIL if either call errors, model-identification mismatch (e.g. second response still claims Claude), or real-state SHA changes
+- Pass/fail: PASS if both calls exit 0 AND each response correctly identifies its requested model family AND operator's real `~/.copilot/` SHA unchanged. FAIL if either call errors, model-identification mismatch (e.g. second response still claims Claude) or real-state SHA changes
 
 ---
 

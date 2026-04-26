@@ -15,7 +15,7 @@ This scenario validates Copilot's documented repository-memory persistence for `
 
 ### Why This Matters
 
-"Repository Memory" is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it is the difference between Copilot and stateless CLIs (Gemini, Codex, Claude Code). If memory persistence silently fails (the second call cannot recall what the first call wrote, or memory writes go to the wrong path), every cross-session orchestration loses its continuity story. Sandboxing `HOME` is mandatory: writing the operator's real `~/.copilot/` would mutate persistent operator state across other tools.
+"Repository Memory" is one of the four cli-copilot unique capabilities documented in `references/copilot_tools.md` §2, it is the difference between Copilot and stateless CLIs (Gemini, Codex, Claude Code). If memory persistence silently fails (the second call cannot recall what the first call wrote or memory writes go to the wrong path), every cross-session orchestration loses its continuity story. Sandboxing `HOME` is mandatory: writing the operator's real `~/.copilot/` would mutate persistent operator state across other tools.
 
 ---
 

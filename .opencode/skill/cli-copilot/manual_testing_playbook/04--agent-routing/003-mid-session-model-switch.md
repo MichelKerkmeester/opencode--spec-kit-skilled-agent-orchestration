@@ -15,7 +15,7 @@ This scenario validates the documented mid-session model-switching pattern for `
 
 ### Why This Matters
 
-cli-copilot's documented multi-model strategy in `references/integration_patterns.md` §5 explicitly assigns different tasks to different models, and `references/copilot_tools.md` §2 documents "Multi-Provider Models" as a unique capability. The orchestrator-grade pattern is "pick the right model per call, mid-session", not "stick to one model for the whole session". If `--model` does not actually switch between calls (e.g. session state pins the first model and ignores subsequent flags), the entire multi-model orchestration story breaks. Verifying both models respond and respond differently in style/depth is the cheapest objective check.
+cli-copilot's documented multi-model strategy in `references/integration_patterns.md` §5 explicitly assigns different tasks to different models. `references/copilot_tools.md` §2 documents "Multi-Provider Models" as a unique capability. The orchestrator-grade pattern is "pick the right model per call, mid-session", not "stick to one model for the whole session". If `--model` does not actually switch between calls (e.g. session state pins the first model and ignores subsequent flags), the entire multi-model orchestration story breaks. Verifying both models respond and respond differently in style/depth is the cheapest objective check.
 
 ---
 

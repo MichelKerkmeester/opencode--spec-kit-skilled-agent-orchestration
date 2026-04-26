@@ -15,7 +15,7 @@ This scenario validates the `--allow-all-tools` autonomy flag for `CP-002`. It f
 
 ### Why This Matters
 
-`--allow-all-tools` is the documented autonomy contract for cross-AI delegation per SKILL.md §3, every Autopilot, Cloud Delegation and `@Task` scenario depends on it. If this flag silently fails (still prompts the operator, or executes write tools outside the requested scope), every higher-level scenario inherits the same defect. Verifying it under a strict sandbox plus tripwire diff is the cheapest way to catch the regression.
+`--allow-all-tools` is the documented autonomy contract for cross-AI delegation per SKILL.md §3, every Autopilot, Cloud Delegation and `@Task` scenario depends on it. If this flag silently fails (still prompts the operator or executes write tools outside the requested scope), every higher-level scenario inherits the same defect. Verifying it under a strict sandbox plus tripwire diff is the cheapest way to catch the regression.
 
 ---
 

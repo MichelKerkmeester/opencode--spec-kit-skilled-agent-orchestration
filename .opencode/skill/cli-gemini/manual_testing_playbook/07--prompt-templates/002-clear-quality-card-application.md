@@ -66,7 +66,7 @@ If you want extra confidence the card actually drove the choice (rather than the
 
 | File | Role |
 |---|---|
-| `../../assets/prompt_quality_card.md` | §2 Framework Selection Table, §3 Task to Framework Map, §4 CLEAR 5-Check — the exact card applied by this scenario |
+| `../../assets/prompt_quality_card.md` | §2 Framework Selection Table, §3 Task to Framework Map, §4 CLEAR 5-Check. The exact card applied by this scenario |
 | `../../assets/prompt_templates.md` | §11 TEMPLATE VARIABLES documents placeholder conventions referenced during prompt construction |
 
 ---

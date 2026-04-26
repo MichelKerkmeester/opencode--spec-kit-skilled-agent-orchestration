@@ -34,7 +34,7 @@ _memory:
 <!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
 
 ---
-
+<!-- ANCHOR:adr-001 -->
 ## ADR-001: Shared Category Taxonomy Across All 5 CLI Playbooks
 
 ### Metadata
@@ -123,6 +123,7 @@ Five CLI orchestrator skills will each ship their own `manual_testing_playbook/`
 - @write dispatch briefs include the per-CLI category list verbatim
 
 **How to roll back**: Remove invariant constraints from checklist.md and update plan.md to allow free-form taxonomy per CLI; existing playbooks need not change.
+<!-- /ANCHOR:adr-001 -->
 
 ---
 

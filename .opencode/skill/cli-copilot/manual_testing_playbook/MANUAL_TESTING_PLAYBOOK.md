@@ -383,7 +383,7 @@ Confirm `As @Explore: ...` produces a read-only architectural summary naming rea
 
 #### Scenario Contract
 
-Prompt summary: As a cross-AI orchestrator using Copilot agent routing, dispatch the @Explore agent against the cli-copilot skill in this repository to produce a structured map of the references/ folder. Verify the answer names at least three real reference files with a one-line purpose for each, and that the working tree is unchanged after the call. Return a concise pass/fail verdict with the main reason and the names of the files Copilot cited.
+Prompt summary: As a cross-AI orchestrator using Copilot agent routing, dispatch the @Explore agent against the cli-copilot skill in this repository to produce a structured map of the references/ folder. Verify the answer names at least three real reference files with a one-line purpose for each. Verify the working tree is unchanged after the call. Return a concise pass/fail verdict with the main reason and the names of the files Copilot cited.
 
 Expected signals: `EXIT=0`. Response names at least 3 of (`cli_reference.md`, `copilot_tools.md`, `agent_delegation.md`, `integration_patterns.md`). `git status --porcelain` diff is empty.
 
@@ -590,7 +590,7 @@ Desired user-visible outcome: PASS verdict + the cited filenames + a one-line no
 
 #### Description
 
-Confirm the `&<task>` inline shorthand inside the prompt body produces equivalent cloud-agent routing to `/delegate` per `references/copilot_tools.md` §2 Cloud Delegation, and the response naturally surfaces the cloud-agent context.
+Confirm the `&<task>` inline shorthand inside the prompt body produces equivalent cloud-agent routing to `/delegate` per `references/copilot_tools.md` §2 Cloud Delegation. Confirm the response naturally surfaces the cloud-agent context.
 
 #### Scenario Contract
 
@@ -617,8 +617,8 @@ cli-copilot ships no in-repo automated test suite for the Copilot CLI binary its
 | `references/integration_patterns.md` (cross-AI patterns) | Generate-review-fix, Multi-Model Strategy, Cloud Delegation, Plan-Then-Execute | CP-012, CP-014, CP-015 |
 | `assets/prompt_templates.md` + `assets/prompt_quality_card.md` | Template substitution, framework selection, CLEAR 5-check | CP-018, CP-019 |
 | `assets/shell_wrapper.md` (programmatic context wrapper) | `cpx()` wrapper, `SPECKIT_COPILOT_INSTRUCTIONS_PATH` override, managed `SPEC-KIT-COPILOT-CONTEXT` block | CP-017 |
-| `SKILL.md` §1-§2 (self-invocation guard) | `$COPILOT_SESSION_ID`, `GH_COPILOT_*`, process ancestry, `~/.copilot/state/<id>/lock` detection | Implicit precondition for ALL scenarios (Global Preconditions §2 item 5); no dedicated scenario because triggering the guard requires running this playbook from inside Copilot CLI itself, which is forbidden |
-| SKILL.md §4 CONCURRENCY LIMIT | Hard cap at 5 parallel `copilot` processes; repo-safe default at 3 | Wave plans in §6 enforce 3-process cap; verified via `pgrep -f "copilot" | wc -l` in every parallel wave |
+| `SKILL.md` §1-§2 (self-invocation guard) | `$COPILOT_SESSION_ID`, `GH_COPILOT_*`, process ancestry, `~/.copilot/state/<id>/lock` detection | Implicit precondition for ALL scenarios (Global Preconditions §2 item 5). No dedicated scenario because triggering the guard requires running this playbook from inside Copilot CLI itself, which is forbidden |
+| SKILL.md §4 CONCURRENCY LIMIT | Hard cap at 5 parallel `copilot` processes (repo-safe default at 3) | Wave plans in §6 enforce a 3-process cap. Verified via `pgrep -f "copilot" | wc -l` in every parallel wave |
 
 If automated tests for cli-copilot's smart-router pseudocode or self-invocation guard are added in a future spec, append the test module path here and map overlap to specific `CP-NNN` IDs.
 

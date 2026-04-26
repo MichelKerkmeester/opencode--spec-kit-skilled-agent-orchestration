@@ -68,7 +68,7 @@ Operators run the exact prompt and command sequence for `CX-004` and confirm the
 | File | Role |
 |---|---|
 | `../../SKILL.md` | §3 Default Invocation block + §4 ALWAYS rule 6 |
-| `../../SKILL.md` (line 205, `-c service_tier="fast"` flag table; line 218 Fast-mode REQUIRED note; §4 rule 6 line 317) | Documents the always-explicit fast-tier contract enforced by this scenario |
+| `../../SKILL.md` (line 205 `-c service_tier="fast"` flag table, line 218 Fast-mode REQUIRED note, §4 rule 6 line 317) | Documents the always-explicit fast-tier contract enforced by this scenario |
 | `../../references/cli_reference.md` (§4 Command-Line Flags, §5 Model Selection) | CLI flag and config-override reference for `-c service_tier` |
 
 ---

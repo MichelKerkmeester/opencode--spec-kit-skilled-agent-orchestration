@@ -67,7 +67,7 @@ If you want a third data point, repeat with `--approval-mode always` and a fresh
 | File | Role |
 |---|---|
 | `../../references/cli_reference.md` | §4 COMMAND-LINE FLAGS documents `--approval-mode` values |
-| `../../references/gemini_tools.md` | §5 TOOL INVOCATION → approval modes table; §7 TOOL RESTRICTIONS for `--allowed-tools` |
+| `../../references/gemini_tools.md` | §5 TOOL INVOCATION → approval modes table, §7 TOOL RESTRICTIONS for `--allowed-tools` |
 
 ---
 

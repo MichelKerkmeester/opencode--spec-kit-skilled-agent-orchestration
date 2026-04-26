@@ -47,9 +47,9 @@ Operators run the exact prompt and command sequence for `CO-026` and confirm the
 4. Capture the new session_id from session.started.
 5. Validate `~/.opencode/state/<id>/` exists.
 6. Confirm no refusal message in stderr.
-7. Confirm operator explicit consent before any URL publication; share URL MUST NOT be published from the operator project tree.
+7. Confirm operator explicit consent before any URL publication. Share URL MUST NOT be published from the operator project tree.
 8. After the run (pass or fail) revoke the URL via `opencode session revoke ${SID}` and remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-026/`.
-9. Return a verdict naming the session id, state path, and sandbox teardown confirmation.
+9. Return a verdict naming the session id, state path and sandbox teardown confirmation.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|

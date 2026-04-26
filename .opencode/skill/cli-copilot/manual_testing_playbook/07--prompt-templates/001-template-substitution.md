@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates the documented Security Audit prompt template for `CP-018`. It focuses on confirming the template from `assets/prompt_templates.md` §3 substitutes cleanly with `[file]` replaced by a real sandbox file, and Copilot returns severity-classified findings that identify the intentional `eval()` flaw.
+This scenario validates the documented Security Audit prompt template for `CP-018`. It focuses on confirming the template from `assets/prompt_templates.md` §3 substitutes cleanly with `[file]` replaced by a real sandbox file. Copilot must return severity-classified findings that identify the intentional `eval()` flaw.
 
 ### Why This Matters
 
-cli-copilot ships a curated set of prompt templates in `assets/prompt_templates.md` covering 9+ task categories. If template substitution silently fails (placeholders remain unreplaced, or Copilot ignores the structured template framing), every documented prompt-template recipe loses its reliability. Verifying severity classification against an intentionally flawed snippet is the cheapest objective check that the template is being honoured end-to-end.
+cli-copilot ships a curated set of prompt templates in `assets/prompt_templates.md` covering 9+ task categories. If template substitution silently fails (placeholders remain unreplaced or Copilot ignores the structured template framing), every documented prompt-template recipe loses its reliability. Verifying severity classification against an intentionally flawed snippet is the cheapest objective check that the template is being honoured end-to-end.
 
 ---
 

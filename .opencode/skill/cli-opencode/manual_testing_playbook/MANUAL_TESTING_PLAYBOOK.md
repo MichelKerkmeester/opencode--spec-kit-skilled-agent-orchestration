@@ -79,12 +79,12 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-g
 1. Working directory is project root and contains `.git/`.
 2. OpenCode CLI is installed and on PATH: `command -v opencode` returns a non-empty path. If absent, install via `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install | bash`.
 3. OpenCode CLI version is at or near the v1.3.17 baseline pinned in `references/cli_reference.md`. Drift handled per `references/cli_reference.md` §9.
-4. The opencode-go subscription is active and registered in `opencode auth list` (the canonical default `opencode-go/deepseek-v4-pro` resolves through it). Multi-provider override scenarios (CO-010, CO-011) additionally require OpenAI and Google authentication respectively. The Anthropic provider is optional — only required if a scenario explicitly overrides to `anthropic/...`.
+4. The opencode-go subscription is active and registered in `opencode auth list` (the canonical default `opencode-go/deepseek-v4-pro` resolves through it). Multi-provider override scenarios (CO-010, CO-011) additionally require OpenAI and Google authentication respectively. The Anthropic provider is optional. It is only required if a scenario explicitly overrides to `anthropic/...`.
 5. The active runtime for use case 1 and 3 scenarios is NOT OpenCode itself. Confirm by checking no `OPENCODE_*` env vars are set: `env | grep -q '^OPENCODE_' && echo IN-OPENCODE || echo OK`. Use case 2 scenarios (CO-026, CO-027, CO-028) explicitly include the parallel-session keywords required to permit the dispatch from inside OpenCode.
 6. The skill's reference and asset files exist at `.opencode/skill/cli-opencode/{references,assets}/` so prompt-quality, template and routing scenarios resolve.
 7. The project's MCP servers (Spec Kit Memory, CocoIndex Code) are registered in `opencode.json` so use case 1 (CO-006) and use case 3 (CO-021, CO-022) scenarios can call `memory_health`, CocoIndex search and `memory_search`.
-8. The operator's repo root resolves via `REPO_ROOT="$(pwd)"` (run from the project root). Most scenarios pass `--dir "$(pwd)"` directly so they portably target whichever repo the operator runs them in; `<repo-root>` placeholders in prose refer to the same value. Adapt to a different absolute path only if a scenario explicitly requires a non-default repo (e.g., CO-029 cross-repo dispatch derives a sibling path via `dirname "$(pwd)"`).
-9. Destructive scenarios involving `--share` (CO-026, CO-027, CO-028) MUST follow strict sandboxing and recovery rules. Each MUST run with `--dir /tmp/co-share-sandbox-NNN/` (where NNN is the scenario ID), MUST NOT run with `--dir` pointing at the operator project tree, and MUST NOT actually publish the share URL to anyone without explicit operator confirmation per CHK-033. Recovery is mandatory after every run (pass or fail): (a) revoke every captured share URL via `opencode session revoke ${SESSION_ID}`; (b) remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-NNN/`. The test only validates the session-creation path; no real URL publication occurs.
+8. The operator's repo root resolves via `REPO_ROOT="$(pwd)"` (run from the project root). Most scenarios pass `--dir "$(pwd)"` directly so they portably target whichever repo the operator runs them in. The `<repo-root>` placeholders in prose refer to the same value. Adapt to a different absolute path only if a scenario explicitly requires a non-default repo (e.g., CO-029 cross-repo dispatch derives a sibling path via `dirname "$(pwd)"`).
+9. Destructive scenarios involving `--share` (CO-026, CO-027, CO-028) MUST follow strict sandboxing and recovery rules. Each MUST run with `--dir /tmp/co-share-sandbox-NNN/` (where NNN is the scenario ID). Each MUST NOT run with `--dir` pointing at the operator project tree. Each MUST NOT publish the share URL to anyone without explicit operator confirmation per CHK-033. Recovery is mandatory after every run (pass or fail). Step (a) revoke every captured share URL via `opencode session revoke ${SESSION_ID}`. Step (b) remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-NNN/`. The test only validates the session-creation path. No real URL publication occurs.
 
 ---
 
@@ -298,7 +298,7 @@ Verify a Claude Code-led dispatch via cli-opencode reaches a fresh OpenCode sess
 
 #### Scenario Contract
 
-Prompt summary: You are Claude Code dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode call the memory_health MCP tool and return the database status. Context: spec folder `<repo-root>/.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/` (pre-approved, skip Gate 3); plugin runtime required (Spec Kit Memory MCP). Constraints: must load system-spec-kit skill; must call memory_health and return its result. Success criteria: dispatched session emits a tool.call event for memory_health, returns the database status, and the session.completed event includes the status summary. Memory Epilogue is NOT required for this test.
+Prompt summary: You are Claude Code dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode call the memory_health MCP tool and return the database status. Context: spec folder `<repo-root>/.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/` (pre-approved, skip Gate 3). Plugin runtime required (Spec Kit Memory MCP). Constraints: must load system-spec-kit skill. Must call memory_health and return its result. Success criteria: dispatched session emits a tool.call event for memory_health, returns the database status. The session.completed event includes the status summary. Memory Epilogue is NOT required for this test.
 
 Expected signals: Dispatch exits 0. Tool.call event for memory_health appears. Session.completed references the database status.
 
@@ -720,7 +720,7 @@ Expected signals: Exit 0. Cross-repo path referenced in tool.result. Zero refere
 
 #### Description
 
-Verify the documented `--attach <url>` flag combined with `--dir <remote-path>` is part of the cli-opencode skill surface (live remote server execution is out of scope, and the test validates documentation and CLI surface contract).
+Verify the documented `--attach <url>` flag combined with `--dir <remote-path>` is part of the cli-opencode skill surface. Live remote server execution is out of scope. The test validates documentation and CLI surface contract.
 
 #### Scenario Contract
 
