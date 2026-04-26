@@ -16,7 +16,15 @@
       "028",
       "code-graph self-contained",
       "code-graph package migration",
-      "mcp_server/code-graph/"
+      "mcp_server/code-graph/",
+      "plan",
+      "002",
+      "code",
+      "ystem",
+      "spec",
+      "kit",
+      "026",
+      "graph"
     ],
     "key_topics": [
       "028",
@@ -24,19 +32,17 @@
       "self-contained",
       "package",
       "migration",
+      "plan",
+      "002",
       "code",
-      "currently",
-      "fragmented",
-      "across",
-      "four",
-      "top-level",
-      "folders"
+      "ystem",
+      "spec",
+      "kit",
+      "026"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "mcp_server/code-graph/tools/code-graph-tools.ts",
-      "mcp_server/code-graph/tools/index.ts",
       "mcp_server/tools/index.ts",
       "mcp_server/vitest.config.ts",
       "mcp_server/schemas/tool-input-schemas.ts",
@@ -44,8 +50,6 @@
       "scripts/graph/backfill-graph-metadata.ts",
       "schemas/tool-input-schemas.ts",
       "tools/index.ts",
-      "mcp_server/code-graph/lib/README.md",
-      "mcp_server/code-graph/handlers/README.md",
       "spec.md",
       "tasks.md",
       "checklist.md",
@@ -54,15 +58,9 @@
     ],
     "entities": [
       {
-        "name": "code-graph-tools.ts",
-        "kind": "code",
-        "path": "mcp_server/code-graph/tools/code-graph-tools.ts",
-        "source": "derived"
-      },
-      {
         "name": "index.ts",
         "kind": "code",
-        "path": "mcp_server/code-graph/tools/index.ts",
+        "path": "mcp_server/tools/index.ts",
         "source": "derived"
       },
       {
@@ -87,12 +85,6 @@
         "name": "backfill-graph-metadata.ts",
         "kind": "code",
         "path": "scripts/graph/backfill-graph-metadata.ts",
-        "source": "derived"
-      },
-      {
-        "name": "README.md",
-        "kind": "doc",
-        "path": "mcp_server/code-graph/lib/README.md",
         "source": "derived"
       },
       {
@@ -126,6 +118,12 @@
         "source": "derived"
       },
       {
+        "name": "Scaffolded Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -144,19 +142,13 @@
         "source": "derived"
       },
       {
-        "name": "Scaffolded Phase",
+        "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
         "name": "Problem Code",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Purpose Migrate",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -180,7 +172,7 @@
         "source": "derived"
       },
       {
-        "name": "Phase 1 \u2014 Baseline capture (5 min)",
+        "name": "Phase 1 — Baseline capture (5 min)",
         "kind": "heading",
         "path": "plan.md",
         "source": "derived"
@@ -196,11 +188,23 @@
         "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "evidence",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Dispatch prompt for cli-codex",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Code-graph code is currently fragmented across four top-level `mcp_server/` folders:",
     "created_at": "2026-04-21T08:25:24.317Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.753Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -210,25 +214,5 @@
       "checklist.md",
       "implementation-summary.md"
     ]
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
-    "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/028-code-graph-self-contained-package",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/028-code-graph-self-contained-package",
-    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package",
-    "local_phase_slug": "002-code-graph-self-contained-package",
-    "original_phase_slug": "028-code-graph-self-contained-package",
-    "renumbered_at": "2026-04-21T14:00:00Z"
   }
 }

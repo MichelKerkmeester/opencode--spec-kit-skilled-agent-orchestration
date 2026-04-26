@@ -41,7 +41,7 @@
       "tasks",
       "verification"
     ],
-    "importance_tier": "high",
+    "importance_tier": "important",
     "status": "complete",
     "key_files": [
       "tasks.md",
@@ -127,6 +127,12 @@
         "source": "derived"
       },
       {
+        "name": "Auto Deep",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
         "name": "Auto Deep Research",
         "kind": "proper_noun",
         "path": "research/research.md",
@@ -151,12 +157,6 @@
         "source": "derived"
       },
       {
-        "name": "In Scope",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
@@ -170,12 +170,6 @@
       },
       {
         "name": "Spec Kit",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Overview Two",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -203,11 +197,18 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Make both skills operate under explicit, testable packet contracts — canonical naming, lifecycle branches, reducer semantics, release-readiness states, and runtime parity — all backed by executable Vitest guards.",
     "created_at": "2026-04-12T09:02:50.183Z",
-    "last_save_at": "2026-04-18T14:39:00.328Z",
+    "last_save_at": "2026-04-26T09:17:15.199Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

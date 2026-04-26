@@ -9,23 +9,8 @@
     "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates",
     "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
   ],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-memory-quality-remediation",
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates",
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
-  ],
-  "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "active_phase": "002-continuity-memory-runtime",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-memory-quality-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/003-continuity-refactor-gates",
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
-    ],
-    "layout": "phase-root-children"
-  },
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [
@@ -66,66 +51,183 @@
       "004-memory-save-rewrite"
     ],
     "key_topics": [
+      "002-continuity-memory-runtime",
       "cache",
       "hooks",
       "memory",
       "quality",
       "continuity",
       "refactor",
-      "and",
-      "save",
+      "memory-save",
       "rewrite",
-      "002",
-      "runtime"
+      "001-cache-warning-hooks",
+      "002-memory-quality-remediation",
+      "003-continuity-refactor-gates"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md",
-      "context-index.md"
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "001-cache-warning-hooks",
-        "kind": "spec_phase",
-        "path": "001-cache-warning-hooks",
-        "source": "migration"
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
       },
       {
-        "name": "002-memory-quality-remediation",
-        "kind": "spec_phase",
-        "path": "002-memory-quality-remediation",
-        "source": "migration"
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       },
       {
-        "name": "003-continuity-refactor-gates",
-        "kind": "spec_phase",
-        "path": "003-continuity-refactor-gates",
-        "source": "migration"
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
       },
       {
-        "name": "004-memory-save-rewrite",
-        "kind": "spec_phase",
-        "path": "004-memory-save-rewrite",
-        "source": "migration"
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Continuity Memory Runtime",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Keep",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Active",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Continuity Memory",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Context Index",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "What Was Built This",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Direct Children",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Cache hooks, memory quality, continuity refactor, and memory-save rewrite. Direct child parent for 001-cache-warning-hooks, 002-memory-quality-remediation, 003-continuity-refactor-gates, 004-memory-save-rewrite.",
+    "causal_summary": "The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.722Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md",
-      "context-index.md"
+      "implementation-summary.md"
     ]
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+  }
 }

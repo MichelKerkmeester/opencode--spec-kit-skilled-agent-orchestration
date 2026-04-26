@@ -132,7 +132,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
   if (affectedCount === 0) {
     return createMCPSuccessResponse({
       tool: 'memory_bulk_delete',
-      summary: `No memories found with tier="${tier}"${specFolder ? ` in folder "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`,
+      summary: `No spec-doc records found with tier="${tier}"${specFolder ? ` in folder "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`,
       data: { deleted: 0, tier, specFolder: specFolder || null },
       hints: ['Use memory_list() to browse existing memories'],
     });
@@ -149,7 +149,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
         name: proposedCheckpointName,
         specFolder,
         metadata: {
-          reason: `auto-checkpoint before bulk delete of ${affectedCount} "${tier}" memories`,
+          reason: `auto-checkpoint before bulk delete of ${affectedCount} "${tier}" spec-doc records`,
           tier,
           affectedCount,
           olderThanDays: olderThanDays || null,
@@ -274,7 +274,7 @@ async function handleMemoryBulkDelete(args: BulkDeleteArgs): Promise<MCPResponse
     postMutationFeedback = buildMutationHookFeedback('bulk-delete', postMutationHooks);
   }
 
-  const summary = `Deleted ${deletedCount} "${tier}" memory(s)${specFolder ? ` from "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`;
+  const summary = `Deleted ${deletedCount} "${tier}" spec-doc record(s)${specFolder ? ` from "${specFolder}"` : ''}${olderThanDays ? ` older than ${olderThanDays} days` : ''}`;
 
   const hints: string[] = [];
   if (checkpointName) {

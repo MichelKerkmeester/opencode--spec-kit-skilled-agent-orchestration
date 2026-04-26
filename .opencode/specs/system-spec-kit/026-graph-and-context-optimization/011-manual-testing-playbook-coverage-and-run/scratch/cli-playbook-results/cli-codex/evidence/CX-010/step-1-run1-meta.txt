@@ -1,0 +1,5 @@
+EXIT=0
+DUR_MS=19643
+LABEL=step-1-run1
+CMD_FILE=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/evidence/CX-010/step-1-run1-cmd.txt
+OUT_FILE=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/evidence/CX-010/step-1-run1-stdout.txt

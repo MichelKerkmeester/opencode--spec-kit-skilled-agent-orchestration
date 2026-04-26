@@ -197,7 +197,8 @@
     ],
     "causal_summary": "Complete research specification for analyzing our semantic memory system and comparing with roampal-core for improvement opportunities.",
     "created_at": "2026-04-12T09:02:53.518Z",
-    "last_save_at": "2026-04-13T16:22:53.492Z",
+    "last_save_at": "2026-04-26T09:17:15.882Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

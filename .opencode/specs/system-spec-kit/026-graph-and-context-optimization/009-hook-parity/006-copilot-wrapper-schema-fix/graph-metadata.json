@@ -13,31 +13,65 @@
     "trigger_phrases": [
       "copilot wrapper schema fix",
       "copilot claude settings collision",
-      "026/009/010"
+      "026/009/010",
+      "implemen",
+      "plan",
+      "010",
+      "copilot",
+      "task",
+      "tasks",
+      "kit",
+      "026",
+      "graph"
     ],
     "key_topics": [
       "copilot",
       "wrapper",
       "schema",
+      "fix",
       "claude",
       "settings",
-      "hook",
-      "matcher"
+      "collision",
+      "026",
+      "009",
+      "010",
+      "implemen",
+      "plan"
     ],
     "importance_tier": "important",
-    "status": "reverted-needs-reapply",
+    "status": "implemented",
     "key_files": [
       ".claude/settings.local.json",
+      ".github/hooks/superset-notify.json",
+      "implementation-summary.md",
+      "dist/hooks/claude/user-prompt-submit.js",
       "spec.md",
       "plan.md",
-      "tasks.md",
-      "implementation-summary.md"
+      "tasks.md"
     ],
     "entities": [
       {
         "name": "settings.local.json",
         "kind": "config",
         "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "superset-notify.json",
+        "kind": "config",
+        "path": ".github/hooks/superset-notify.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.js",
+        "kind": "code",
+        "path": "dist/hooks/claude/user-prompt-submit.js",
         "source": "derived"
       },
       {
@@ -59,15 +93,111 @@
         "source": "derived"
       },
       {
-        "name": "implementation-summary.md",
-        "kind": "doc",
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Copilot Wrapper Schema Fix",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Needs Reapply",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Approach Single",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "post-reapply",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Breakdown",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "description: 'title:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "' trigger_phrases:   -",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "-",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "importance_tier:",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "The Copilot",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
         "path": "implementation-summary.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Copilot ingests Claude matcher wrappers from .claude/settings.local.json and requires top-level bash or powershell fields.",
+    "causal_summary": "Copilot CLI 1.0.34 logs this error on every user prompt:",
     "created_at": "2026-04-22T15:15:00Z",
-    "last_save_at": "2026-04-23T14:47:43.368Z",
+    "last_save_at": "2026-04-26T09:17:15.817Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

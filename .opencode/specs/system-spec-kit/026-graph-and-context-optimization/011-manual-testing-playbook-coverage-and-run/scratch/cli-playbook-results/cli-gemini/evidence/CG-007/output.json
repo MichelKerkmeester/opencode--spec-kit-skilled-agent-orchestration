@@ -1,0 +1,96 @@
+{
+  "session_id": "0fedb797-55b5-4ef5-ab0f-817d748270a5",
+  "response": "Based on the investigation of the `cli-gemini` skill structure at `.opencode/skill/cli-gemini/`, here are the key components and the actual files they contain:\n\n*   **Entry-Point Markdown File**\n    *   `SKILL.md` (Serves as the main entry point governing rules, routing, and catalog links)\n\n*   **References Catalog** (`.opencode/skill/cli-gemini/references/`)\n    *   `agent_delegation.md`\n    *   `cli_reference.md`\n    *   `gemini_tools.md`\n    *   `integration_patterns.md`\n\n*   **Assets Catalog** (`.opencode/skill/cli-gemini/assets/`)\n    *   `prompt_quality_card.md`\n    *   `prompt_templates.md`",
+  "stats": {
+    "models": {
+      "gemini-3.1-pro-preview": {
+        "api": {
+          "totalRequests": 4,
+          "totalErrors": 0,
+          "totalLatencyMs": 45693
+        },
+        "tokens": {
+          "input": 53062,
+          "prompt": 91538,
+          "candidates": 847,
+          "total": 94269,
+          "cached": 38476,
+          "thoughts": 1884,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 2,
+            "totalErrors": 0,
+            "totalLatencyMs": 18070,
+            "tokens": {
+              "input": 28323,
+              "prompt": 52134,
+              "candidates": 264,
+              "total": 53012,
+              "cached": 23811,
+              "thoughts": 614,
+              "tool": 0
+            }
+          },
+          "subagent": {
+            "totalRequests": 2,
+            "totalErrors": 0,
+            "totalLatencyMs": 27623,
+            "tokens": {
+              "input": 24739,
+              "prompt": 39404,
+              "candidates": 583,
+              "total": 41257,
+              "cached": 14665,
+              "thoughts": 1270,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 2,
+      "totalSuccess": 2,
+      "totalFail": 0,
+      "totalDurationMs": 27819,
+      "totalDecisions": {
+        "accept": 2,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "read_file": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 22,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        },
+        "codebase_investigator": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 27797,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}

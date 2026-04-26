@@ -51,15 +51,15 @@
       "tools/lifecycle-tools.ts",
       "lib/architecture/layer-definitions.ts",
       "hooks/memory-surface.ts",
+      ".opencode/agent/context.md",
+      ".claude/agents/context.md",
       ".opencode/agent/orchestrate.md",
       "tests/context-server.vitest.ts",
       "tests/review-fixes.vitest.ts",
       "tests/session-resume.vitest.ts",
       "tests/cross-runtime-fallback.vitest.ts",
       "tests/fixtures/runtime-fixtures.ts",
-      "tests/modularization.vitest.ts",
-      "spec.md",
-      "plan.md"
+      "tests/modularization.vitest.ts"
     ],
     "entities": [
       {
@@ -129,6 +129,12 @@
         "source": "derived"
       },
       {
+        "name": "context.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context.md",
+        "source": "derived"
+      },
+      {
         "name": "orchestrate.md",
         "kind": "doc",
         "path": ".opencode/agent/orchestrate.md",
@@ -171,18 +177,6 @@
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
         "name": "Hookless Priming Optimization",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -205,11 +199,17 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Requirements Traceability",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Template compliance shim section. Legacy phase content continues below.",
     "created_at": "2026-04-13T04:55:10.700Z",
-    "last_save_at": "2026-04-24T15:34:55.432Z",
+    "last_save_at": "2026-04-26T09:17:15.648Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [

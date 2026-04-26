@@ -206,7 +206,7 @@
     ],
     "causal_summary": "Phase 004 maintenance scenarios must be executed from scratch. All prior results are invalidated. The seven maintenance scenarios (EX-014, EX-035, EX-041, EX-042, EX-043, EX-044, EX-045) require fresh manual execution to verify that memory_index_scan, startup runtime compatibility guards, memory_update, memory_delete, bulk delete, health check diagnostics, and index scan and repair behave as specified by the canonical playbook. The five new scenarios (EX-041 through EX-045) expand coverage to state-mutating maintenance operations and diagnostic repair workflows.",
     "created_at": "2026-04-12T09:02:50.291Z",
-    "last_save_at": "2026-04-24T15:43:18.734Z",
+    "last_save_at": "2026-04-26T09:17:15.513Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [

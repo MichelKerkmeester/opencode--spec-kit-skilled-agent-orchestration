@@ -211,7 +211,7 @@
     ],
     "causal_summary": "Packet `019-system-hardening` is the research-first umbrella for the post-026-consolidation hardening train. The 2026-04-18 consolidation that collapsed the former 015-020 range into four thematic packets (015, 016, 017, 018) left six high-leverage investigation items unaddressed: three 026 close-out candidates (`DR-1` 015 delta-review, `RR-1` Q4 NFKC robustness, `RR-2` description.json regen strategy) and three system-spec-kit-wide candidates (`SSK-RR-1` Gate 3 + skill-advisor routing accuracy, `SSK-DR-1` template v2.2 + validator joint audit, `SSK-RR-2` canonical-save pipeline invariants). This packet coordinates them as one research wave plus follow-on implementation children.",
     "created_at": "2026-04-18T16:46:13.781Z",
-    "last_save_at": "2026-04-25T10:34:53.192Z",
+    "last_save_at": "2026-04-26T09:17:15.743Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

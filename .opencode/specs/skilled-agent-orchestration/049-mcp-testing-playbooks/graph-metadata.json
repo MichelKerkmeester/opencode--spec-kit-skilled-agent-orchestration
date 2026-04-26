@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/049-mcp-testing-playbooks",
+  "spec_folder": "skilled-agent-orchestration/049-mcp-testing-playbooks",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "mcp testing playbook",
+      "mcp playbook",
+      "playbook for mcp",
+      "manual_testing_playbook mcp",
+      "049 mcp",
+      "049 plan",
+      "mcp playbook plan",
+      "playbook implementation plan",
+      "049 tasks",
+      "mcp playbook tasks",
+      "049 checklist",
+      "mcp playbook checklist"
+    ],
+    "key_topics": [
+      "mcp",
+      "testing",
+      "playbook",
+      "049",
+      "plan",
+      "implementation",
+      "tasks",
+      "checklist",
+      "three",
+      "four",
+      "skills",
+      "mcp-chrome-devtools"
+    ],
+    "importance_tier": "normal",
+    "status": "planned",
+    "key_files": [
+      ".opencode/command/create/testing-playbook.md",
+      ".opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md",
+      "research.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "manual_testing_playbook/manual_testing_playbook.md",
+      "spec.md",
+      ".opencode/skill/mcp-coco-index/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/sk-deep-research/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/sk-deep-review/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/mcp-chrome-devtools/SKILL.md",
+      ".opencode/skill/mcp-clickup/SKILL.md",
+      ".opencode/skill/mcp-coco-index/SKILL.md",
+      ".opencode/skill/mcp-code-mode/SKILL.md"
+    ],
+    "entities": [
+      {
+        "name": "testing-playbook.md",
+        "kind": "doc",
+        "path": ".opencode/command/create/testing-playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_creation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/specific/manual_testing_playbook_creation.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/mcp-chrome-devtools/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Testing Playbooks",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Four Skills",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Initialized Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Authored Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Author",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Three of the four MCP skills (`mcp-chrome-devtools`, `mcp-clickup`, `mcp-code-mode`) currently ship without any deterministic operator-facing test surface — operators have no shared way to verify install health or to confirm a regression. This spec authors three new manual testing playbooks (BDG ~22 scenarios, CU ~25 scenarios, CM ~26 scenarios) plus a coverage audit of the existing `mcp-coco-index` playbook. All playbooks follow the canonical sk-doc playbook contract: per-skill `manual_testing_playbook/` folder containing a root `manual_testing_playbook.md` plus numbered category folders with one per-feature file per scenario.",
+    "created_at": "2026-04-26T09:17:15.287Z",
+    "last_save_at": "2026-04-26T09:17:15.287Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "research.md"
+    ]
+  }
+}

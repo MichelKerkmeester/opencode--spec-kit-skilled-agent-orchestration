@@ -45,7 +45,6 @@
       "tests/test-coverage-matrix.md",
       "tests/test-implementation-guide.md",
       "tests/existing-tests-audit.md",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       "shared/embeddings.js",
       ".opencode/command/memory/save.md",
       "tests/README.md",
@@ -81,12 +80,6 @@
         "name": "existing-tests-audit.md",
         "kind": "doc",
         "path": "tests/existing-tests-audit.md",
-        "source": "derived"
-      },
-      {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
         "source": "derived"
       },
       {
@@ -202,11 +195,18 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Vector Store",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "SpecKit Reimagined synthesizes findings from 25 parallel agent analyses of 8 pre-analysis documents examining dotmd, seu-claude, drift, and system-speckit architectures. This specification defines 15 P0 blockers (10 original + 5 embedding resilience), 18 P1 requirements, and establishes a unified 6-7 week implementation roadmap to transform SpecKit into a best-in-class memory system with hybrid search, causal graphs, embedding resilience, and self-improvement capabilities.",
     "created_at": "2026-04-12T09:02:53.552Z",
-    "last_save_at": "2026-04-13T16:22:53.615Z",
+    "last_save_at": "2026-04-26T09:17:15.978Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

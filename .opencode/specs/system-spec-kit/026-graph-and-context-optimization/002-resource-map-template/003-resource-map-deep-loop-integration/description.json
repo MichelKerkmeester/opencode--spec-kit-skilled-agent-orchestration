@@ -37,13 +37,13 @@
     "sk-deep-review",
     "sk-deep-research"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.850Z",
+  "lastUpdated": "2026-04-26T07:03:47.460Z",
   "specId": "003",
   "folderSlug": "resource-map-deep-loop-integration",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "011-resource-map-template"
+    "002-resource-map-template"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

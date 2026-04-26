@@ -902,7 +902,7 @@ See [`06--analysis/01-causal-edge-creation-memorycausallink.md`](06--analysis/01
 
 #### Description
 
-This gives you a health report on the web of connections between your memories. It tells you how many connections exist, how strong they are and whether enough memories are linked together. If too many memories are isolated with no connections, the system warns you because it means the relationship network is too thin to be useful for tracing decisions.
+This gives you a health report on the web of connections between your spec-doc records. It tells you how many connections exist, how strong they are and whether enough spec-doc records are linked together. If too many records are isolated with no edges, the system warns you because it means the decision-lineage network is too thin to be useful for tracing decisions.
 
 #### Current Reality
 
@@ -1174,7 +1174,7 @@ Six guard/edge-case issues were fixed:
 
 **E1: Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
-**E2: Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed. The function returns `null` on resolution failure.
+**E2: Wrong-record fallback:** `extraction-adapter.ts` fell back to resolving the most-recent spec-doc record ID on entity resolution failure, silently linking to the wrong record. The fallback was removed. The function returns `null` on resolution failure.
 
 **E3: Expired multi-concept results:** `multi_concept_search()` now applies `AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))`, bringing the AND-match path back in line with single-query retrieval and preventing expired memories from leaking into result sets.
 
@@ -2660,7 +2660,7 @@ See [`13--memory-quality-and-indexing/05-pre-storage-quality-gate.md`](13--memor
 
 #### Description
 
-When you save a new memory that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger memory. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your memory collection clean and up to date instead of cluttered with redundant notes.
+When you save a new spec-doc record that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger record. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your indexed continuity clean and up to date instead of cluttered with redundant entries.
 
 #### Current Reality
 
@@ -3359,7 +3359,7 @@ See [`14--pipeline-architecture/18-atomic-write-then-index-api.md`](14--pipeline
 
 #### Description
 
-Creating a numerical fingerprint for each memory requires calling an external service that can sometimes be unavailable. When that service fails, the memory is saved without a fingerprint and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your memories from being fully searchable.
+Creating a numerical fingerprint (embedding) for each spec-doc record requires calling an external service that can sometimes be unavailable. When that service fails, the record is saved without an embedding and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your indexed continuity from being fully searchable.
 
 #### Current Reality
 
@@ -4205,7 +4205,7 @@ See [`18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`](18--ux-hooks/
 
 #### Description
 
-The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
+The system has two ways to save a spec-doc record: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
 
 #### Current Reality
 

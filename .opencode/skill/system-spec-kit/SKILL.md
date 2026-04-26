@@ -607,8 +607,8 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 **memory_save() - Save-Time Processing:**
 - Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
-- An exception path allows short decision-type memories to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
-- Similar existing memories are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing memory instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
+- An exception path allows short decision-type records to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
+- Similar existing spec-doc records are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing record instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
 - A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
 - Preflight parses are revalidated inside the write lock when file contents change, and duplicate short-circuits verify stored content before trusting a stale hash hit.
 - Delete and replacement paths now treat vector cleanup and projection replacement as integrity-critical instead of best-effort, so stale vector/projection rows do not silently survive successful writes.
@@ -620,7 +620,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 **Key Concepts:**
 - **Constitutional tier** - 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
 - **Document-type scoring** - 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
-- **Decay scoring** - FSRS v4 power-law model; recent memories rank higher
+- **Decay scoring** - FSRS v4 power-law model; recent spec-doc records rank higher than older ones
 - **Import-path hardening** - MCP import paths are validated for memory runtime modules (context server and attention decay wiring)
 - **Metadata preservation** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level` with synchronized vector-index metadata
 - **Descriptive memory titles** - `MEMORY_TITLE` is derived from the content slug via `generateContentSlug()` and `slugToTitle()`, producing unique and deterministic H1 headings. The parser falls back to feature/overview content when the top heading is generic
@@ -630,16 +630,16 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **Indexing persistence** - After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
 - **Artifact routing** - 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
 - **Adaptive fusion** - Intent-aware weighted RRF with the 7 public task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision) plus the internal continuity profile used for resume-oriented retrieval, along with corrected channel fallback and normalization behavior in the live hybrid pipeline
-- **Adaptive ranking** - Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per memory. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
+- **Adaptive ranking** - Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per spec-doc record. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
 - **Causal graph diagnostics** - `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
 - **Eval guardrails** - Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
 - **Runtime-resolved flags** - Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
 - **Retrieval trace** - Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
-- **Mutation ledger** - Append-only audit trail for all memory mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
+- **Mutation ledger** - Append-only audit trail for all spec-doc-record mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** - 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
 - **Feature catalog** - 291 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** - Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
-- **Validation scoring** - `wasUseful=false` applies a demotion penalty to memory scores; 5+ positive validations may promote a memory's importance tier
+- **Validation scoring** - `wasUseful=false` applies a demotion penalty to spec-doc-record scores; 5+ positive validations may promote a record's importance tier
 - **Tree-thinning threshold** - 150 tokens with merge group cap of 3 for improved file visibility in memory context
 - **JSON-mode conversation synthesis** - When conversation prompts are sparse (e.g., JSON-mode captures with minimal exchange data), conversation content is synthesized from `sessionSummary` field
 - **Decision deduplication** - String-form decisions produce deduplicated CONTEXT/RATIONALE/CHOSEN values in memory output

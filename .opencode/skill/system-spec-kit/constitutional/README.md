@@ -39,17 +39,17 @@ The constitutional tier is the highest importance level in the Spec Kit Memory s
 
 ### What is the constitutional/ Directory?
 
-The `constitutional/` directory contains constitutional memory docs that are **always surfaced** at the top of every `memory_search()` result. These are operational rules, safety constraints and critical context that AI agents must always have access to, regardless of what they're searching for.
+The `constitutional/` directory contains constitutional rules that are **always surfaced** at the top of every `memory_search()` result. These are operational rules, safety constraints and critical context that AI agents must always have access to, regardless of what they're searching for.
 
-Think of constitutional memories as the "system prompt" for your memory system: rules that apply globally and should never be forgotten.
+Think of constitutional rules as the "system prompt" for your indexed continuity: rules that apply globally and should never be forgotten.
 
-For spec-folder continuity, constitutional memories are supporting guidance, not the primary recovery source. Canonical packet recovery still follows `handover.md`, then `_memory.continuity`, then the packet's spec docs via `/spec_kit:resume`.
+For spec-folder continuity, constitutional rules are supporting guidance, not the primary recovery source. Canonical packet recovery still follows `handover.md`, then `_memory.continuity`, then the packet's spec docs via `/spec_kit:resume`.
 
 ### Key Statistics
 
 | Metric | Value | Description |
 |--------|-------|-------------|
-| Token Budget | ~2000 | Maximum tokens for constitutional memories per search |
+| Token Budget | ~2000 | Maximum tokens for constitutional rules per search |
 | Search Boost | 3.0x | Multiplier applied to constitutional results |
 | Decay | Never | Constitutional memories don't decay over time |
 | Auto-Expire | Never | Constitutional memories are permanent |
@@ -76,7 +76,7 @@ For spec-folder continuity, constitutional memories are supporting guidance, not
 | temporary | 0.5x | Yes (short-lived) | Short-lived | No |
 | deprecated | 0.0x | N/A | Manual | No |
 
-**Key Difference**: Only constitutional memories appear in EVERY search result. Other tiers only appear when relevant to the query.
+**Key Difference**: Only constitutional rules appear in EVERY search result. Other tiers only appear when relevant to the query.
 
 ---
 
@@ -91,7 +91,7 @@ For spec-folder continuity, constitutional memories are supporting guidance, not
 # 1. Navigate to constitutional directory
 cd .opencode/skill/system-spec-kit/constitutional/
 
-# 2. Create a new constitutional memory doc
+# 2. Create a new constitutional rule
 touch my-rule.md
 
 # 3. Add required frontmatter and content (see template below)
@@ -128,10 +128,10 @@ ls .opencode/skill/system-spec-kit/constitutional/
 
 ### First Use
 
-After creating a constitutional memory:
+After creating a constitutional rule:
 
 1. **Restart the MCP server** (or run `memory_index_scan`)
-2. **Run any search**: your constitutional memory will appear at the top
+2. **Run any search**: your constitutional rule will appear at the top
 3. **Verify** with `memory_search({ query: "anything" })`. Check for `isConstitutional: true`
 
 ---
@@ -148,7 +148,7 @@ constitutional/
 ├── README.md              # This documentation file
 ├── gate-enforcement.md    # Edge cases (compaction, continuation) + gate cross-reference
 ├── gate-tool-routing.md   # Search and retrieval routing rules for memory, graph, and CocoIndex
-└── [your-rules].md        # Custom constitutional memories
+└── [your-rules].md        # Custom constitutional rules
 ```
 
 ### File Naming Conventions
@@ -186,7 +186,7 @@ Constitutional memories are **automatically included** at the top of every `memo
 memory_search({ query: "authentication flow" })
 
 // The system:
-// 1. Fetches ALL constitutional memories first
+// 1. Fetches ALL constitutional rules first
 // 2. Adds them to the top of results with similarity: 100
 // 3. Then adds query-relevant results below
 ```
@@ -253,11 +253,11 @@ Constitutional memories are limited to **~2000 tokens total** per search to prev
 
 **How it works:**
 
-1. System calculates token count for each constitutional memory
+1. System calculates token count for each constitutional rule
 2. Memories are added in order until budget is reached
 3. Remaining memories are truncated or excluded
 
-**Best Practice:** Keep individual constitutional memories concise. Split large rule sets into multiple focused files.
+**Best Practice:** Keep individual constitutional rules concise. Split large rule sets into multiple focused files.
 
 ---
 
@@ -268,7 +268,7 @@ Constitutional memories are limited to **~2000 tokens total** per search to prev
 
 ### 5.1 YAML Frontmatter Requirements
 
-Every constitutional memory doc MUST have this frontmatter:
+Every constitutional rule doc MUST have this frontmatter:
 
 ```yaml
 ---
@@ -555,7 +555,7 @@ triggerPhrases:
 
 ### 7.4 Disabling Constitutional Surfacing
 
-For specific searches where you don't want constitutional memories:
+For specific searches where you don't want constitutional rules:
 
 ```typescript
 memory_search({ 
@@ -658,7 +658,7 @@ triggerPhrases:
 
 #### Constitutional Memory Not Surfacing
 
-**Symptom:** Your constitutional memory doesn't appear in search results
+**Symptom:** Your constitutional rule doesn't appear in search results
 
 **Causes and Solutions:**
 
@@ -671,7 +671,7 @@ triggerPhrases:
 
 #### Trigger Phrases Not Matching
 
-**Symptom:** `memory_match_triggers()` doesn't return your memory
+**Symptom:** `memory_match_triggers()` doesn't return your constitutional rule
 
 **Causes and Solutions:**
 
@@ -683,7 +683,7 @@ triggerPhrases:
 
 #### Token Budget Exceeded
 
-**Symptom:** Some constitutional memories are truncated
+**Symptom:** Some constitutional rules are truncated
 
 **Solution:**
 1. Split large files into smaller, focused files
@@ -699,7 +699,7 @@ ls -la .opencode/skill/system-spec-kit/constitutional/
 # Verify file has correct frontmatter
 head -20 .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md
 
-# Check database for constitutional memories
+# Check database for constitutional rules
 sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
   "SELECT id, title, importance_tier FROM memory_index WHERE importance_tier = 'constitutional';"
 
@@ -736,7 +736,7 @@ memory_match_triggers({ prompt: "fix the bug" })
 
 | Document | Location | Purpose |
 |----------|----------|---------|
-| Gate Enforcement | `./gate-enforcement.md` | Default constitutional memory |
+| Gate Enforcement | `./gate-enforcement.md` | Default constitutional rule |
 | Save Workflow | `../references/memory/save_workflow.md` | Memory save workflows |
 | Trigger Config | `../references/memory/trigger_config.md` | Trigger phrase configuration |
 

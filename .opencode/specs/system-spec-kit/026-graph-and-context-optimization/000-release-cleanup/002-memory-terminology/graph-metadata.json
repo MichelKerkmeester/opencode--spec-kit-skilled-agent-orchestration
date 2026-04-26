@@ -1,0 +1,138 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "spec doc continuity rename",
+      "memory terminology rename",
+      "memory naming audit",
+      "claude memory tool clash",
+      "spec-kit vocabulary cleanup",
+      "rename memory mcp",
+      "rename _memory.continuity",
+      "release cleanup terminology"
+    ],
+    "key_topics": [
+      "spec",
+      "doc",
+      "continuity",
+      "rename",
+      "memory",
+      "terminology",
+      "naming",
+      "audit",
+      "claude",
+      "tool",
+      "clash",
+      "spec-kit"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+      "lib/search/vector-index-schema.ts",
+      "research/002-memory-terminology-pt-01/research.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "ENV_REFERENCE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+        "source": "derived"
+      },
+      {
+        "name": "vector-index-schema.ts",
+        "kind": "code",
+        "path": "lib/search/vector-index-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Doc Continuity Terminology Rename",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Anthropic Claude Memory",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The system-spec-kit uses \"memory\" as a catch-all label for six distinct subsystems (SQLite + embeddings index, canonical spec-doc markdown, generated metadata files, session resume surfaces, hybrid retrieval pipeline, constitutional rules), creating onboarding friction, ~270+ inconsistent references across the codebase, and a future naming clash with Anthropic's Claude Memory tool. This spec scopes a deep-research-driven rename across the public API surface (slash commands, MCP tools, SQL tables, doc strings, frontmatter keys) without changing behavior.",
+    "created_at": "2026-04-26T09:17:15.687Z",
+    "last_save_at": "2026-04-26T09:17:15.687Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md"
+    ]
+  }
+}

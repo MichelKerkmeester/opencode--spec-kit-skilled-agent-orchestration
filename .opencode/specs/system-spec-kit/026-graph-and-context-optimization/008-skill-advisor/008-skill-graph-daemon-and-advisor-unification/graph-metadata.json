@@ -200,7 +200,7 @@
     ],
     "causal_summary": "Phase 027 unified the skill-advisor subsystem around a live skill graph, derived metadata, native TypeScript scoring, MCP tools, compatibility shims, and promotion gates. The completed implementation preserves legacy advisor entrypoints while routing the durable implementation through the system-spec-kit MCP server.",
     "created_at": "2026-04-21T08:25:00.990Z",
-    "last_save_at": "2026-04-25T10:34:51.132Z",
+    "last_save_at": "2026-04-26T09:17:15.791Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

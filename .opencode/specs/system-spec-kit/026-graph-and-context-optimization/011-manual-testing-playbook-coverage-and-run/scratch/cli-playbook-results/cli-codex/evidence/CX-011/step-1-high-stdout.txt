@@ -1,0 +1,212 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: high
+reasoning summaries: none
+session id: 019dc955-cc50-7622-9329-ca0493beb944
+--------
+user
+@./.opencode/skill/cli-codex/SKILL.md Audit the §4 Rules section. For each ALWAYS, NEVER, and ESCALATE rule, identify the specific risk it mitigates and any edge cases where the rule alone is insufficient. Cite each rule by its number.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+I’ll treat this as a read-only audit of the named `cli-codex` skill. I’m going straight to §4 and nearby context so the findings stay tied to the actual rule text.
+exec
+/bin/zsh -lc 'rg -n "''^## 4|''^## |ALWAYS|NEVER|ESCALATE" ./.opencode/skill/cli-codex/SKILL.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+25:## 1. WHEN TO USE
+49:## 2. SMART ROUTING
+93:| ALWAYS      | Every skill invocation  | `references/cli_reference.md`, `assets/prompt_quality_card.md` |
+125:    "ALWAYS": ["references/cli_reference.md", "assets/prompt_quality_card.md"],
+143:4. ALWAYS-load `LOADING_LEVELS["ALWAYS"]`, then UNKNOWN-fallback if max score == 0
+153:## 3. HOW IT WORKS
+308:## 4. RULES
+310:### ALWAYS
+323:### NEVER
+330:### ESCALATE IF
+352:## 5. REFERENCES
+379:- `cli_reference.md` is ALWAYS loaded as baseline.
+385:## 6. SUCCESS CRITERIA
+406:## 7. INTEGRATION POINTS
+432:## 8. RELATED RESOURCES
+
+exec
+/bin/zsh -lc "sed -n '/"'^## 4/,/''^## 5/p'"' ./.opencode/skill/cli-codex/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+## 4. RULES
+
+### ALWAYS
+
+1. Verify Codex CLI is installed before first invocation (`command -v codex`).
+2. Use `--sandbox read-only` for review/analysis/research; `--sandbox workspace-write` (or `--full-auto`) for code generation/file modification — `codex exec` defaults to `read-only`, so omitting causes silent no-op on edit tasks.
+3. Validate Codex-generated code (XSS, injection, eval, syntax checks via `node --check`, `tsc --noEmit`, etc.) before applying.
+4. Capture stderr (`2>&1`) so rate-limit messages and errors surface.
+5. **Redirect codex stdin from `/dev/null`** when dispatching in a `while read` loop. Pattern: `codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &`. Without `</dev/null`, the backgrounded codex process inherits the loop's stdin (the file after `done < input.jsonl`) and silently consumes the remaining lines — the loop exits after 3-6 iterations with no error. See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption".
+6. **Specify model + effort + service tier explicitly** — never rely on caller environment. Default: `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`. Honor user overrides verbatim. Use `high`/`xhigh` for reasoning-heavy tasks (architecture, security, deep planning).
+7. Route to the appropriate `-p <profile>` when the task matches a specialization (see Section 3 routing table); use `codex exec review` (built-in subcommand) for git diff reviews.
+8. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 in `--full-auto` or non-interactive mode.
+9. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
+10. **Never inject user-level voice/personalization content into AI-orchestrated Codex delegations.** Codex CLI reads user-level voice from `~/.codex/AGENTS.md` (the human's global settings, loaded automatically). When an AI delegates via `codex exec`, the calling AI's own voice rules govern the response — do NOT read `~/.codex/AGENTS.md` and paste into delegation prompts. Keep delegations focused on task/model/sandbox/effort/(spec-folder pre-approval). If the user asks how to make Codex sound more like Claude in *their own* sessions, point to `~/.codex/AGENTS.md` — not any repo asset.
+
+### NEVER
+
+1. Use `--sandbox danger-full-access` without explicit user approval (full shell beyond workspace = damage risk). `--full-auto` (workspace-write + on-request approval) does not require pre-approval.
+2. Trust Codex output blindly for security-sensitive code, send sensitive data (API keys, passwords, credentials) in prompts, or hammer the API with rapid sequential calls.
+3. Use Codex for tasks where context is already loaded — direct action by the calling AI is faster.
+4. Assume Codex output is correct without verification — cross-reference codebase and project standards.
+
+### ESCALATE IF
+
+1. Codex CLI is not installed and user has not acknowledged (provide `npm i -g @openai/codex`).
+2. Rate limits are persistently exceeded (suggest checking API key quota or OAuth account limits).
+3. Codex output conflicts with existing code patterns (present both perspectives; user decides).
+4. Task requires `--sandbox danger-full-access` (describe risks; get explicit user approval). `--full-auto` does not require escalation.
+
+### Memory Handback Protocol
+
+When the calling AI needs to preserve session context from a Codex CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
+
+Codex-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §13.
+
+Example invocation:
+```bash
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+```
+
+---
+
+<!-- /ANCHOR:rules -->
+<!-- ANCHOR:references -->
+## 5. REFERENCES
+
+codex
+Found the §4 rules cleanly. I’m grabbing line numbers now so the audit can cite exact locations as well as rule numbers.
+exec
+/bin/zsh -lc "nl -ba ./.opencode/skill/cli-codex/SKILL.md | sed -n '308,349p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   308	## 4. RULES
+   309	
+   310	### ALWAYS
+   311	
+   312	1. Verify Codex CLI is installed before first invocation (`command -v codex`).
+   313	2. Use `--sandbox read-only` for review/analysis/research; `--sandbox workspace-write` (or `--full-auto`) for code generation/file modification — `codex exec` defaults to `read-only`, so omitting causes silent no-op on edit tasks.
+   314	3. Validate Codex-generated code (XSS, injection, eval, syntax checks via `node --check`, `tsc --noEmit`, etc.) before applying.
+   315	4. Capture stderr (`2>&1`) so rate-limit messages and errors surface.
+   316	5. **Redirect codex stdin from `/dev/null`** when dispatching in a `while read` loop. Pattern: `codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &`. Without `</dev/null`, the backgrounded codex process inherits the loop's stdin (the file after `done < input.jsonl`) and silently consumes the remaining lines — the loop exits after 3-6 iterations with no error. See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption".
+   317	6. **Specify model + effort + service tier explicitly** — never rely on caller environment. Default: `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`. Honor user overrides verbatim. Use `high`/`xhigh` for reasoning-heavy tasks (architecture, security, deep planning).
+   318	7. Route to the appropriate `-p <profile>` when the task matches a specialization (see Section 3 routing table); use `codex exec review` (built-in subcommand) for git diff reviews.
+   319	8. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 in `--full-auto` or non-interactive mode.
+   320	9. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
+   321	10. **Never inject user-level voice/personalization content into AI-orchestrated Codex delegations.** Codex CLI reads user-level voice from `~/.codex/AGENTS.md` (the human's global settings, loaded automatically). When an AI delegates via `codex exec`, the calling AI's own voice rules govern the response — do NOT read `~/.codex/AGENTS.md` and paste into delegation prompts. Keep delegations focused on task/model/sandbox/effort/(spec-folder pre-approval). If the user asks how to make Codex sound more like Claude in *their own* sessions, point to `~/.codex/AGENTS.md` — not any repo asset.
+   322	
+   323	### NEVER
+   324	
+   325	1. Use `--sandbox danger-full-access` without explicit user approval (full shell beyond workspace = damage risk). `--full-auto` (workspace-write + on-request approval) does not require pre-approval.
+   326	2. Trust Codex output blindly for security-sensitive code, send sensitive data (API keys, passwords, credentials) in prompts, or hammer the API with rapid sequential calls.
+   327	3. Use Codex for tasks where context is already loaded — direct action by the calling AI is faster.
+   328	4. Assume Codex output is correct without verification — cross-reference codebase and project standards.
+   329	
+   330	### ESCALATE IF
+   331	
+   332	1. Codex CLI is not installed and user has not acknowledged (provide `npm i -g @openai/codex`).
+   333	2. Rate limits are persistently exceeded (suggest checking API key quota or OAuth account limits).
+   334	3. Codex output conflicts with existing code patterns (present both perspectives; user decides).
+   335	4. Task requires `--sandbox danger-full-access` (describe risks; get explicit user approval). `--full-auto` does not require escalation.
+   336	
+   337	### Memory Handback Protocol
+   338	
+   339	When the calling AI needs to preserve session context from a Codex CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
+   340	
+   341	Codex-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §13.
+   342	
+   343	Example invocation:
+   344	```bash
+   345	printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+   346	```
+   347	
+   348	---
+   349	
+
+codex
+Audited §4 of [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-codex/SKILL.md:308). No edits made.
+
+**ALWAYS**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ALWAYS 1 | Missing binary causing failed or partial delegation. | `command -v codex` only proves something named `codex` exists; it does not verify version, auth, PATH shadowing, or usable account state. |
+| ALWAYS 2 | Wrong sandbox causing either silent failed edits or excessive permissions. | Does not cover network restrictions, approval policy, repo-specific write boundaries, or whether `--full-auto` is appropriate under current user/developer constraints. |
+| ALWAYS 3 | Unsafe or broken generated code entering the codebase. | Listed checks are examples, not complete coverage. Security-sensitive changes may also need dependency review, threat modeling, tests, browser QA, or manual review. |
+| ALWAYS 4 | Hidden stderr masking rate limits, auth failures, or runtime errors. | Capturing stderr is not enough unless callers inspect it, preserve logs, and distinguish warnings from fatal failures. |
+| ALWAYS 5 | Background `codex` consuming loop stdin and silently truncating batch dispatches. | Specific to `while read` patterns. Other parallel runners can still fail via shared output paths, job limits, signal handling, or unbounded concurrency. |
+| ALWAYS 6 | Environment drift causing wrong model, effort, or service tier. | Explicit defaults can still become stale as models/tiers change. “Honor user overrides verbatim” may conflict with safety, budget, or capability constraints. |
+| ALWAYS 7 | Poor routing to generic profiles when specialized behavior exists. | Depends on Section 3 staying accurate. Built-in `codex exec review` may not satisfy custom review standards, spec-folder gates, or non-git review inputs. |
+| ALWAYS 8 | Delegated agent blocked by Gate 3 in non-interactive mode. | Passing “pre-approved” assumes the caller’s Gate 3 state is valid and task-scoped. It does not prevent delegated agents from writing outside the spec scope. |
+| ALWAYS 9 | Low-quality dispatch prompts, weak task framing, or missed compliance/security escalation. | CLEAR checks improve prompts but do not guarantee correctness. Complexity scoring is subjective, and `@improve-prompt` availability may vary by runtime. |
+| ALWAYS 10 | Leaking or duplicating user-level personalization into delegated prompts, causing voice contamination or privacy exposure. | The boundary between “task instruction” and “voice/personalization” can be fuzzy. Repo-level AGENTS instructions may still need to be passed or discovered separately. |
+
+**NEVER**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| NEVER 1 | Unapproved full-system shell access and destructive side effects. | Explicit approval is necessary but not enough; dangerous operations still need scoped commands, backups, dry runs where possible, and clear rollback thinking. |
+| NEVER 2 | Security regressions, secret leakage, and API abuse. | Bundles three risks into one rule. Each needs separate controls: secret scanning/scrubbing, rate limiting/backoff, and deeper review for security-sensitive output. |
+| NEVER 3 | Wasteful delegation when local context already makes direct action faster. | “Context already loaded” is subjective. A fresh Codex pass may still be useful for independent review, adversarial checking, or large parallel tasks. |
+| NEVER 4 | Incorrect generated output being accepted as truth. | Overlaps ALWAYS 3. Cross-referencing standards helps, but behavior still needs execution-based validation where possible. |
+
+**ESCALATE IF**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ESCALATE 1 | Blocking missing dependency and unclear install responsibility. | Install command may be wrong for the user’s environment, package manager, permissions, or desired version pinning. Auth may still fail after install. |
+| ESCALATE 2 | Repeated failed calls, wasted quota, and noisy automation loops. | “Persistently” is undefined. The rule should ideally specify retry count, backoff, and when to stop dispatching. |
+| ESCALATE 3 | Codex output fighting established project conventions. | User decision may not be enough if project instructions or safety gates are authoritative. Some conflicts need maintainers, tests, or spec updates, not preference. |
+| ESCALATE 4 | High-risk full-access sandbox use. | Mirrors NEVER 1. Approval does not make full access safe; the delegated command still needs least-privilege design and explicit command boundaries. |
+
+Main weakness: the rules are directionally solid, but several rely on human interpretation: “persistently,” “appropriate profile,” “security-sensitive,” “context already loaded,” and “user overrides verbatim.” Those are the spots most likely to drift in real use.
+hook: Stop
+hook: Stop Completed
+2026-04-26T10:29:38.117530Z ERROR codex_core::session: failed to record rollout items: thread 019dc955-cc50-7622-9329-ca0493beb944 not found
+tokens used
+36,964
+Audited §4 of [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-codex/SKILL.md:308). No edits made.
+
+**ALWAYS**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ALWAYS 1 | Missing binary causing failed or partial delegation. | `command -v codex` only proves something named `codex` exists; it does not verify version, auth, PATH shadowing, or usable account state. |
+| ALWAYS 2 | Wrong sandbox causing either silent failed edits or excessive permissions. | Does not cover network restrictions, approval policy, repo-specific write boundaries, or whether `--full-auto` is appropriate under current user/developer constraints. |
+| ALWAYS 3 | Unsafe or broken generated code entering the codebase. | Listed checks are examples, not complete coverage. Security-sensitive changes may also need dependency review, threat modeling, tests, browser QA, or manual review. |
+| ALWAYS 4 | Hidden stderr masking rate limits, auth failures, or runtime errors. | Capturing stderr is not enough unless callers inspect it, preserve logs, and distinguish warnings from fatal failures. |
+| ALWAYS 5 | Background `codex` consuming loop stdin and silently truncating batch dispatches. | Specific to `while read` patterns. Other parallel runners can still fail via shared output paths, job limits, signal handling, or unbounded concurrency. |
+| ALWAYS 6 | Environment drift causing wrong model, effort, or service tier. | Explicit defaults can still become stale as models/tiers change. “Honor user overrides verbatim” may conflict with safety, budget, or capability constraints. |
+| ALWAYS 7 | Poor routing to generic profiles when specialized behavior exists. | Depends on Section 3 staying accurate. Built-in `codex exec review` may not satisfy custom review standards, spec-folder gates, or non-git review inputs. |
+| ALWAYS 8 | Delegated agent blocked by Gate 3 in non-interactive mode. | Passing “pre-approved” assumes the caller’s Gate 3 state is valid and task-scoped. It does not prevent delegated agents from writing outside the spec scope. |
+| ALWAYS 9 | Low-quality dispatch prompts, weak task framing, or missed compliance/security escalation. | CLEAR checks improve prompts but do not guarantee correctness. Complexity scoring is subjective, and `@improve-prompt` availability may vary by runtime. |
+| ALWAYS 10 | Leaking or duplicating user-level personalization into delegated prompts, causing voice contamination or privacy exposure. | The boundary between “task instruction” and “voice/personalization” can be fuzzy. Repo-level AGENTS instructions may still need to be passed or discovered separately. |
+
+**NEVER**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| NEVER 1 | Unapproved full-system shell access and destructive side effects. | Explicit approval is necessary but not enough; dangerous operations still need scoped commands, backups, dry runs where possible, and clear rollback thinking. |
+| NEVER 2 | Security regressions, secret leakage, and API abuse. | Bundles three risks into one rule. Each needs separate controls: secret scanning/scrubbing, rate limiting/backoff, and deeper review for security-sensitive output. |
+| NEVER 3 | Wasteful delegation when local context already makes direct action faster. | “Context already loaded” is subjective. A fresh Codex pass may still be useful for independent review, adversarial checking, or large parallel tasks. |
+| NEVER 4 | Incorrect generated output being accepted as truth. | Overlaps ALWAYS 3. Cross-referencing standards helps, but behavior still needs execution-based validation where possible. |
+
+**ESCALATE IF**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ESCALATE 1 | Blocking missing dependency and unclear install responsibility. | Install command may be wrong for the user’s environment, package manager, permissions, or desired version pinning. Auth may still fail after install. |
+| ESCALATE 2 | Repeated failed calls, wasted quota, and noisy automation loops. | “Persistently” is undefined. The rule should ideally specify retry count, backoff, and when to stop dispatching. |
+| ESCALATE 3 | Codex output fighting established project conventions. | User decision may not be enough if project instructions or safety gates are authoritative. Some conflicts need maintainers, tests, or spec updates, not preference. |
+| ESCALATE 4 | High-risk full-access sandbox use. | Mirrors NEVER 1. Approval does not make full access safe; the delegated command still needs least-privilege design and explicit command boundaries. |
+
+Main weakness: the rules are directionally solid, but several rely on human interpretation: “persistently,” “appropriate profile,” “security-sensitive,” “context already loaded,” and “user overrides verbatim.” Those are the spots most likely to drift in real use.

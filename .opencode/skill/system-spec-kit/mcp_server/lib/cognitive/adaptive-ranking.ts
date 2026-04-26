@@ -12,7 +12,7 @@ import type Database from 'better-sqlite3';
 export type AdaptiveSignalType = 'access' | 'outcome' | 'correction';
 
 /**
- * Stored adaptive feedback event for a single memory.
+ * Stored adaptive feedback event for a single spec-doc record.
  */
 export interface AdaptiveSignalEvent {
   memoryId: number;
@@ -24,7 +24,7 @@ export interface AdaptiveSignalEvent {
 }
 
 /**
- * Ranking deltas for one memory under production and shadow scoring.
+ * Ranking deltas for one spec-doc record under production and shadow scoring.
  */
 export interface AdaptiveShadowProposalRow {
   memoryId: number;

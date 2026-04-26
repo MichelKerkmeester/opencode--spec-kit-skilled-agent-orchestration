@@ -4,12 +4,10 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run"
-    ],
+    "depends_on": [],
     "supersedes": [],
     "related_to": []
   },
@@ -19,56 +17,201 @@
       "010 deep-research review",
       "010/007 closure verification",
       "010 review research",
-      "010 closure integrity"
+      "010 closure integrity",
+      "26 010 review research"
     ],
     "key_topics": [
-      "010",
+      "008",
       "deep-research",
       "review",
-      "closure-integrity",
-      "P1",
-      "path-bypass",
-      "33-closures",
-      "RQ1-RQ5",
-      "adopt-adapt-reject-defer"
+      "010",
+      "007",
+      "closure",
+      "verification",
+      "research",
+      "integrity",
+      "independent",
+      "review-angle",
+      "audit"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "planned",
     "key_files": [
-      "spec.md",
       "research/research.md",
       "research/resource-map.md",
-      "research/008-deep-research-review-pt-01/strategy.md",
-      "research/008-deep-research-review-pt-01/deep-research-state.jsonl",
-      "research/008-deep-research-review-pt-01/iterations/iteration-001.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-002.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-003.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-004.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-005.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-006.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-007.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-008.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-009.md",
-      "research/008-deep-research-review-pt-01/iterations/iteration-010.md"
+      "tests/memory/trust-badges.test.ts",
+      "mcp_server/INSTALL_GUIDE.md",
+      "mcp_server/README.md",
+      "mcp_server/code_graph/handlers/detect-changes.ts",
+      "mcp_server/code_graph/handlers/query.ts",
+      "mcp_server/code_graph/lib/diff-parser.ts",
+      "mcp_server/code_graph/lib/phase-runner.ts",
+      "mcp_server/code_graph/lib/structural-indexer.ts",
+      "mcp_server/code_graph/lib/code-graph-db.ts",
+      "mcp_server/code_graph/lib/code-graph-context.ts",
+      "mcp_server/skill_advisor/lib/affordance-normalizer.ts",
+      "mcp_server/skill_advisor/scripts/skill_graph_compiler.py",
+      "mcp_server/formatters/search-results.ts",
+      "mcp_server/lib/storage/causal-edges.ts",
+      "mcp_server/lib/search/search-utils.ts",
+      "mcp_server/handlers/memory-search.ts",
+      "mcp_server/code_graph/tests/detect-changes.test.ts",
+      "mcp_server/code_graph/tests/phase-runner.test.ts"
     ],
     "entities": [
-      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
-      { "name": "research.md", "kind": "doc", "path": "research/research.md", "source": "derived" },
-      { "name": "resource-map.md", "kind": "doc", "path": "research/resource-map.md", "source": "derived" },
-      { "name": "strategy.md", "kind": "doc", "path": "research/008-deep-research-review-pt-01/strategy.md", "source": "derived" },
-      { "name": "deep-research-config.json", "kind": "config", "path": "research/008-deep-research-review-pt-01/deep-research-config.json", "source": "derived" },
-      { "name": "iteration-001.md", "kind": "doc", "path": "research/008-deep-research-review-pt-01/iterations/iteration-001.md", "source": "derived" },
-      { "name": "iteration-010.md", "kind": "doc", "path": "research/008-deep-research-review-pt-01/iterations/iteration-010.md", "source": "derived" }
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "trust-badges.test.ts",
+        "kind": "test",
+        "path": "tests/memory/trust-badges.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": "mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "detect-changes.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/detect-changes.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "diff-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/diff-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "phase-runner.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/phase-runner.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-indexer.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/structural-indexer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-context.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/code-graph-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "affordance-normalizer.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/affordance-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": "mcp_server/skill_advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-utils.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/search-utils.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "detect-changes.test.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/detect-changes.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "phase-runner.test.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/phase-runner.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Deep Research Review",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Independent Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "1. METADATA",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "2. PURPOSE",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "3. SCOPE",
+        "kind": "heading",
+        "path": "spec.md",
+        "source": "derived"
+      }
     ],
-    "causal_summary": "Independent 10-iteration deep-research review of Phase 010 (sub-phases 001-006), 010/007 remediation (claimed 33 closures), and 011 playbook coverage. Executor: cli-codex gpt-5.5 high fast, fresh-context per iteration. Verdict: 0 P0, 1 P1 (detect_changes mixed-header path-containment bypass at handlers/detect-changes.ts:141-156), 17 distinct P2. Iter 8 systematic 33-closure audit: 20 closed-in-code, 8 intended-doc-only, 5 contradicted (D1/D8/D12/D15/D16). Final convergence 0.93. Recommended follow-up: 010/008-closure-integrity-and-pathfix-remediation (must-do, P1 + 8 P2) and 010/009-test-rig-adversarial-coverage (recommended, 4 P2). 4 findings deferred, 1 adapt-with-scope.",
+    "causal_summary": "Independent review-angle audit of every system shipped under Phase 010, the 010/007 remediation (claimed 33 closures), and the 011 playbook coverage follow-up. Read-only; produces a finding inventory + Adopt/Adapt/Reject/Defer matrix mapped to recommended follow-up sub-phases.",
     "created_at": "2026-04-25T23:20:00.000Z",
-    "last_save_at": "2026-04-25T23:20:00.000Z",
-    "save_lineage": "same_pass",
+    "last_save_at": "2026-04-26T09:17:15.841Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
-      "research/research.md",
-      "research/resource-map.md"
+      "research/research.md"
     ]
   }
 }

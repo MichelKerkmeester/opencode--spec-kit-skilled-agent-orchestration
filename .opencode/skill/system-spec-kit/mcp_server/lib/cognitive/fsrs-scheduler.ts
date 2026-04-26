@@ -183,7 +183,7 @@ function getNextReviewDate(stability: number, desiredRetention: number = 0.9): s
 }
 
 /**
- * Create initial FSRS parameters for a new memory.
+ * Create initial FSRS parameters for a new spec-doc record.
  */
 function createInitialParams(): FsrsParams {
   return {
@@ -315,8 +315,8 @@ const IMPORTANCE_TIER_STABILITY_MULTIPLIER: Record<string, number> = {
  * When the result is Infinity, callers should treat stability as Infinity,
  * which makes R(t) = (1 + factor * t / Infinity)^decay = 1.0 for all t.
  *
- * @param contextType    Memory context_type field (e.g. "decision", "research")
- * @param importanceTier Memory importance_tier field (e.g. "constitutional", "normal")
+ * @param contextType    Continuity-row context_type field (e.g. "decision", "research")
+ * @param importanceTier Continuity-row importance_tier field (e.g. "constitutional", "normal")
  * @returns Combined stability multiplier (may be Infinity)
  */
 function getClassificationDecayMultiplier(contextType: string, importanceTier: string): number {
@@ -339,8 +339,8 @@ function getClassificationDecayMultiplier(contextType: string, importanceTier: s
  * Returns Infinity when the combined multiplier is Infinity (no-decay).
  *
  * @param stability      Base FSRS stability value
- * @param contextType    Memory context_type field
- * @param importanceTier Memory importance_tier field
+ * @param contextType    Continuity-row context_type field
+ * @param importanceTier Continuity-row importance_tier field
  * @returns Adjusted stability value
  */
 function applyClassificationDecay(
@@ -445,7 +445,7 @@ function getHybridDecayMultiplier(contextType: string, _importanceTier?: string)
  *   - all others → returns stability unchanged (normal FSRS schedule)
  *
  * @param stability    Base FSRS stability value
- * @param contextType  Memory context_type field (classified at save time)
+ * @param contextType  Continuity-row context_type field (classified at save time)
  * @returns Adjusted stability: Infinity for no-decay types, original otherwise
  */
 function applyHybridDecayPolicy(stability: number, contextType: string, importanceTier?: string): number {

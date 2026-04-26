@@ -4,15 +4,12 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -20,52 +17,203 @@
       "phase 011 manual testing",
       "playbook scorecard",
       "manual testing playbook coverage",
-      "playbook revalidation 010"
+      "playbook revalidation 010",
+      "011 plan",
+      "011 implementation plan",
+      "phase 011 playbook coverage plan",
+      "011 tasks",
+      "phase 011 task list",
+      "playbook coverage tasks",
+      "011 checklist"
     ],
     "key_topics": [
       "011",
       "playbook",
       "coverage",
-      "scorecard",
+      "run",
+      "phase",
       "manual",
       "testing",
+      "scorecard",
+      "revalidation",
       "010",
-      "remediation",
-      "scenario",
-      "runner",
-      "surrogate",
-      "010/007"
+      "plan",
+      "implementation"
     ],
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
+      "code_graph/tests/detect-changes.test.ts",
+      "code_graph/tests/edge-metadata-sanitize.test.ts",
+      "tests/causal-edges-unit.vitest.ts",
+      "manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
+      "manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md",
+      "code_graph/tests/code-graph-query-handler.vitest.ts",
+      "code_graph/tests/code-graph-indexer.vitest.ts",
+      "manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
+      "tests/memory/trust-badges.test.ts",
+      "lib/storage/causal-edges.ts",
+      "lib/search/search-utils.ts",
+      "handlers/memory-search.ts",
+      "manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
+      "skill_advisor/tests/affordance-normalizer.test.ts",
+      "skill_advisor/tests/python/test_skill_advisor.py",
+      "scripts/tests/fixtures/manual-playbook-fixture.ts",
+      "tests/response-profile-formatters.vitest.ts",
+      "scratch/manual-playbook-results/runner-blocker-trace.md",
       "implementation-summary.md",
-      "../../../../skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
-      "../../../../skill/system-spec-kit/manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md",
-      "../../../../skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
-      "../../../../skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
-      "../../../../skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts"
+      "mcp_server/dist/handlers/index.js"
     ],
     "entities": [
-      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
-      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
-      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
-      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
-      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" },
-      { "name": "014-detect-changes-preflight.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md", "source": "derived" },
-      { "name": "026-code-graph-edge-explanation-blast-radius-uplift.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md", "source": "derived" },
-      { "name": "199-skill-advisor-affordance-evidence.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md", "source": "derived" },
-      { "name": "203-memory-causal-trust-display.md", "kind": "doc", "path": "../../../../skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md", "source": "derived" },
-      { "name": "manual-playbook-runner.ts", "kind": "code", "path": "../../../../skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts", "source": "derived" }
+      {
+        "name": "detect-changes.test.ts",
+        "kind": "test",
+        "path": "code_graph/tests/detect-changes.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "edge-metadata-sanitize.test.ts",
+        "kind": "test",
+        "path": "code_graph/tests/edge-metadata-sanitize.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges-unit.vitest.ts",
+        "kind": "test",
+        "path": "tests/causal-edges-unit.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "014-detect-changes-preflight.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
+        "source": "derived"
+      },
+      {
+        "name": "026-code-graph-edge-explanation-blast-radius-uplift.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-query-handler.vitest.ts",
+        "kind": "test",
+        "path": "code_graph/tests/code-graph-query-handler.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-indexer.vitest.ts",
+        "kind": "test",
+        "path": "code_graph/tests/code-graph-indexer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "203-memory-causal-trust-display.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
+        "source": "derived"
+      },
+      {
+        "name": "trust-badges.test.ts",
+        "kind": "test",
+        "path": "tests/memory/trust-badges.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "lib/storage/causal-edges.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-utils.ts",
+        "kind": "code",
+        "path": "lib/search/search-utils.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-search.ts",
+        "kind": "code",
+        "path": "handlers/memory-search.ts",
+        "source": "derived"
+      },
+      {
+        "name": "199-skill-advisor-affordance-evidence.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
+        "source": "derived"
+      },
+      {
+        "name": "affordance-normalizer.test.ts",
+        "kind": "test",
+        "path": "skill_advisor/tests/affordance-normalizer.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "test_skill_advisor.py",
+        "kind": "file",
+        "path": "skill_advisor/tests/python/test_skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "manual-playbook-fixture.ts",
+        "kind": "code",
+        "path": "scripts/tests/fixtures/manual-playbook-fixture.ts",
+        "source": "derived"
+      },
+      {
+        "name": "response-profile-formatters.vitest.ts",
+        "kind": "test",
+        "path": "tests/response-profile-formatters.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "runner-blocker-trace.md",
+        "kind": "doc",
+        "path": "scratch/manual-playbook-results/runner-blocker-trace.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "index.js",
+        "kind": "code",
+        "path": "mcp_server/dist/handlers/index.js",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Manual Testing Playbook Coverage",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
     ],
-    "causal_summary": "Phase 010 (graph impact + affordance uplift) and 010/007 (review remediation) shipped 33 closed findings across 5 systems. 010/006 wrote 5 baseline manual-testing-playbook scenarios; two (014, 026) became stale relative to 010/007 hardening, and one new scenario (203 cache invalidation) was missing. Phase 011 syncs the four affected scenarios with 11 new step-blocks total, and produces a scorecard derived from automated-test surrogate coverage (175 vitest + 57 pytest passing). Runner pass blocked on pre-existing fixture-seeding bug — recorded as P2 follow-up.",
+    "causal_summary": "Phase 010 and the 010/007 remediation pass shipped 33 closed findings spanning new operator-facing surfaces (detect_changes MCP tool, blast_radius enrichment, edge reason/step, affordance evidence, trust badges, memory_search causal cache invalidation). The baseline manual-testing-playbook scenarios written by 010/006 were authored before 010/007 hardened those surfaces. Two scenarios (014 detect_changes, 026 blast_radius) are now stale on adversarial paths and on the 010/007-added behaviour (path canonicalization, multi-file diff boundary, minConfidence, overflow detection, multi-subject seed preservation, failureFallback.code, edge reason/step sanitization, cache invalidation). One new scenario (memory_search cache invalidation on causal-edge mutation) is missing. Without this sync, the playbook is reassuring but not actually probing the surfaces operators rely on.",
     "created_at": "2026-04-25T19:55:00.000Z",
-    "last_save_at": "2026-04-25T19:55:00.000Z",
-    "save_lineage": "same_pass",
+    "last_save_at": "2026-04-26T09:17:15.844Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

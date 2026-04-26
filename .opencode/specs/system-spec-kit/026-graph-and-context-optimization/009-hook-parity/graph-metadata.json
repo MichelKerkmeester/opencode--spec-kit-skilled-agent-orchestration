@@ -23,31 +23,31 @@
   "derived": {
     "trigger_phrases": [
       "009-hook-parity",
-      "hook-package",
-      "hook daemon parity",
-      "skill graph daemon, hook parity, plugin/runtime parity, and parity remediation",
-      "001-skill-advisor-hook-surface",
-      "002-skill-graph-daemon-and-advisor-unification",
-      "003-hook-parity-remediation",
-      "004-copilot-hook-parity-remediation",
-      "005-codex-hook-parity-remediation",
-      "006-claude-hook-findings-remediation",
-      "007-opencode-plugin-loader-remediation",
-      "008-skill-advisor-plugin-hardening"
+      "hook parity",
+      "runtime hook parity",
+      "claude codex copilot opencode hook parity",
+      "001-hook-parity-remediation",
+      "002-copilot-hook-parity-remediation",
+      "003-codex-hook-parity-remediation",
+      "004-claude-hook-findings-remediation",
+      "005-opencode-plugin-loader-remediation",
+      "006-copilot-wrapper-schema-fix",
+      "007-copilot-writer-wiring",
+      "008-docs-impact-remediation"
     ],
     "key_topics": [
       "009-hook-parity",
-      "hook-package",
       "hook",
-      "daemon",
       "parity",
-      "skill",
-      "graph",
-      "plugin",
       "runtime",
-      "remediation",
-      "001-skill-advisor-hook-surface",
-      "002-skill-graph-daemon-and-advisor-unification"
+      "claude",
+      "codex",
+      "copilot",
+      "opencode",
+      "001-hook-parity-remediation",
+      "002-copilot-hook-parity-remediation",
+      "003-codex-hook-parity-remediation",
+      "004-claude-hook-findings-remediation"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -153,13 +153,7 @@
         "source": "derived"
       },
       {
-        "name": "Hook Package",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Hook Daemon Parity",
+        "name": "Hook Parity",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -177,7 +171,13 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement The",
+        "name": "Problem Statement Runtime",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Keep",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -207,21 +207,21 @@
         "source": "derived"
       },
       {
-        "name": "Task Notation",
+        "name": "Pattern Active",
         "kind": "proper_noun",
-        "path": "tasks.md",
+        "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Task Format",
+        "name": "Task Notation",
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse.",
+    "causal_summary": "Runtime hook coverage drifted across Claude, Codex, Copilot, and the OpenCode plugin loader. Each runtime had its own schema, wrapper wiring, and remediation backlog, and those fixes were scattered across packets that also bundled unrelated advisor and code-graph work.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-25T10:34:49.732Z",
+    "last_save_at": "2026-04-26T09:17:15.802Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

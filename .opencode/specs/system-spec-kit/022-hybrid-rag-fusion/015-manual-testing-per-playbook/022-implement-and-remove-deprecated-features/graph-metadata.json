@@ -195,7 +195,7 @@
     ],
     "causal_summary": "The implement-and-remove-deprecated-features phase (catalog phase 022) targets 6 features: 3 deprecated modules to wire into production (graph calibration, temporal contiguity, consumption logger) and 3 dead modules to remove entirely (channel attribution, fusion shadow V2, full-context ceiling eval). Manual testing scenarios are needed to verify that deprecated features are correctly identified, the safe removal process leaves no orphaned references, and post-removal the codebase is clean.",
     "created_at": "2026-04-12T09:02:50.307Z",
-    "last_save_at": "2026-04-24T15:43:18.774Z",
+    "last_save_at": "2026-04-26T09:17:15.546Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [

@@ -1,0 +1,34 @@
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/context.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/debug.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-research.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-agent.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-prompt.md: Invalid agent definition: Missing mandatory YAML frontmatter. Agent Markdown files MUST start with YAML frontmatter enclosed in triple-dashes "---" (e.g., ---
+name: my-agent
+---).Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/orchestrate.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/ultra-think.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/write.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'MCP issues detected. Run /mcp list for status.Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session f263d840-9e47-43da-b105-fadde584e376 (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 0 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (0 chars) for session f263d840-9e47-43da-b105-fadde584e376
+Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session f263d840-9e47-43da-b105-fadde584e376 (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 50 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (469 chars) for session f263d840-9e47-43da-b105-fadde584e376
+Here is the mapping of the `.opencode/skill/cli-gemini/references/` folder based on the title and overview of each markdown file:
+
+*   **`agent_delegation.md`**
+    *   **Purpose:** Documents the active Gemini agents (acting as executors) and how they are orchestrated by a calling AI (acting as conductor) to delegate supplementary tasks, debugging, and web research.
+*   **`cli_reference.md`**
+    *   **Purpose:** Provides a comprehensive, single-source reference for all Gemini CLI commands, flags, models, configuration options, and troubleshooting guidance.
+*   **`gemini_tools.md`**
+    *   **Purpose:** Details all built-in tools available in Gemini CLI (like `google_web_search` and `codebase_investigator`), highlights unique capabilities compared to Claude Code, and provides task routing guidance.
+*   **`integration_patterns.md`**
+    *   **Purpose:** Documents proven patterns, implementation templates, and practical considerations for effectively orchestrating Gemini CLI from any other AI assistant session to leverage combined model perspectives.
+Created execution plan for SessionEnd: 1 hook(s) to execute in parallel
+Expanding hook command: bash -c 'cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-stop.js' (cwd: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public)
+Hook system message: INFO [speckit-hook:gemini:session-stop] SessionEnd hook fired for session f263d840-9e47-43da-b105-fadde584e376 (reason: exit)
+INFO [speckit-hook:gemini:session-stop] Session f263d840-9e47-43da-b105-fadde584e376 stop processing complete
+Hook execution for SessionEnd: 1 hooks executed successfully, total duration: 92ms

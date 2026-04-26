@@ -19,7 +19,10 @@
       "004-get-it-right-main tasks",
       "get it right phase 3 tasks",
       "004-get-it-right-main implementation summary",
-      "get it right phase 3 closeout"
+      "get it right phase 3 closeout",
+      "deep",
+      "resea",
+      "research"
     ],
     "key_topics": [
       "004-get-it-right-main",
@@ -118,6 +121,18 @@
         "source": "derived"
       },
       {
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Get It Right",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -130,12 +145,6 @@
         "source": "derived"
       },
       {
-        "name": "Get It Right",
-        "kind": "proper_noun",
-        "path": "research/research.md",
-        "source": "derived"
-      },
-      {
         "name": "Phase Folder",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -143,12 +152,6 @@
       },
       {
         "name": "Problem Statement Phase",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Purpose Continue",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -198,7 +201,8 @@
     ],
     "causal_summary": "Phase 1 and Phase 2 already established how Get It Right's retry controller works and which retry-loop mechanics are portable. What remained unclear was whether `system-spec-kit`'s operator-facing surface around commands, templates, agents, skills, gates, and hooks is now too fragmented compared with the external repo's much smaller public workflow.",
     "created_at": "2026-04-12T09:02:53.486Z",
-    "last_save_at": "2026-04-13T16:22:53.695Z",
+    "last_save_at": "2026-04-26T09:17:16.049Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

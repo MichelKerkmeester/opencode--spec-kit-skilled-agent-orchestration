@@ -198,7 +198,7 @@
     ],
     "causal_summary": "Merged packet covering the CLI executor arc: 001-executor-feature (ex-018, native + cli-codex) plus 002-runtime-matrix (ex-019, cli-copilot + cli-gemini + cli-claude-code). Shared executor-config.ts, dispatch YAML branching, per-kind flag validation.",
     "created_at": "2026-04-18T14:39:22.815Z",
-    "last_save_at": "2026-04-25T10:34:51.837Z",
+    "last_save_at": "2026-04-26T09:17:15.742Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

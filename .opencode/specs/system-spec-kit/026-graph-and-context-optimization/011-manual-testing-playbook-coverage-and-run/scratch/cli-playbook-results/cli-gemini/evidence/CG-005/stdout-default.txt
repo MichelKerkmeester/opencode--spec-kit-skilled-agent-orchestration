@@ -1,0 +1,23 @@
+Warning: --allowed-tools cli argument and tools.allowed in settings.json are deprecated and will be removed in 1.0: Migrate to Policy Engine: https://geminicli.com/docs/core/policy-engine/Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/context.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/debug.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-research.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-agent.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-prompt.md: Invalid agent definition: Missing mandatory YAML frontmatter. Agent Markdown files MUST start with YAML frontmatter enclosed in triple-dashes "---" (e.g., ---
+name: my-agent
+---).Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/orchestrate.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/ultra-think.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/write.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'MCP issues detected. Run /mcp list for status.Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 315bb879-5de2-4fdc-a2ee-471ccb6c274e (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 0 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (0 chars) for session 315bb879-5de2-4fdc-a2ee-471ccb6c274e
+Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 315bb879-5de2-4fdc-a2ee-471ccb6c274e (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 50 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (759 chars) for session 315bb879-5de2-4fdc-a2ee-471ccb6c274e
+The only supported model name according to the documentation is `gemini-3.1-pro-preview`.
+Created execution plan for SessionEnd: 1 hook(s) to execute in parallel
+Expanding hook command: bash -c 'cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-stop.js' (cwd: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public)
+Hook system message: INFO [speckit-hook:gemini:session-stop] SessionEnd hook fired for session 315bb879-5de2-4fdc-a2ee-471ccb6c274e (reason: exit)
+INFO [speckit-hook:gemini:session-stop] Session 315bb879-5de2-4fdc-a2ee-471ccb6c274e stop processing complete
+Hook execution for SessionEnd: 1 hooks executed successfully, total duration: 86ms

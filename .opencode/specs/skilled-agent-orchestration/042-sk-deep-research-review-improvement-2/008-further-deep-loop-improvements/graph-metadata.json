@@ -21,7 +21,7 @@
       "graph wiring plan",
       "phase 8 tasks",
       "phase 8 checklist",
-      "phase 8 ADR",
+      "phase 8 adr",
       "phase 8 implementation summary"
     ],
     "key_topics": [
@@ -178,6 +178,12 @@
         "source": "derived"
       },
       {
+        "name": "Completed Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -196,12 +202,6 @@
         "source": "derived"
       },
       {
-        "name": "Completed Level",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -210,7 +210,8 @@
     ],
     "causal_summary": "Phase 008 completed the runtime-truth closeout for the 042 bundle. It landed the visible contract fixes that the deep-research audit had called out: blocked-stop emission, graph-aware stop gating, reducer-owned graph and blocked-stop surfacing, fail-closed review handling, improve-agent journal wiring, sample-size enforcement, replay consumers, durable fixtures, and release packaging across all three skills.",
     "created_at": "2026-04-12T09:02:50.197Z",
-    "last_save_at": "2026-04-18T14:39:00.366Z",
+    "last_save_at": "2026-04-26T09:17:15.264Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

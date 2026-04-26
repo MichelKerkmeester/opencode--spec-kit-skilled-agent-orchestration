@@ -1,0 +1,21 @@
+[93m[1m! [0m agent "write" is a subagent, not a primary agent. Falling back to default agent
+ProviderModelNotFoundError: ProviderModelNotFoundError
+ data: {
+  providerID: "anthropic",
+  modelID: "claude-opus-4-7",
+  suggestions: [],
+},
+
+      at <anonymous> (/$bunfs/root/src/index.js:297001:17)
+      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23382:32)
+      at runLoop (/$bunfs/root/src/index.js:23208:109)
+      at evaluate (/$bunfs/root/src/index.js:23178:32)
+      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
+      at doneUnsafe (/$bunfs/root/src/index.js:24512:24)
+      at <anonymous> (/$bunfs/root/src/index.js:63246:17)
+      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23757:33)
+      at runLoop (/$bunfs/root/src/index.js:23208:109)
+      at evaluate (/$bunfs/root/src/index.js:23178:32)
+      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
+
+{"type":"error","timestamp":1777199575983,"sessionID":"ses_236a68e3cffexlipaIiQOGi27L","error":{"name":"UnknownError","data":{"message":"Model not found: anthropic/claude-opus-4-7."}}}

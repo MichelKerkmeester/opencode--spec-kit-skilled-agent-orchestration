@@ -1,0 +1,1 @@
+[91m[1mError: [0mFile not found: Audit /tmp/co-015-target.ts against OWASP top issues: XSS, SQL injection, auth bypass, hardcoded secrets. Surface severity-tagged findings with file:line citations.

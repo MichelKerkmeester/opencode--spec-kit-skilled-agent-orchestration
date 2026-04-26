@@ -10,7 +10,7 @@ audited_post_018: true
 
 Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds.
 
-When you save a new memory that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger memory. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your memory collection clean and up to date instead of cluttered with redundant notes.
+When you save a new spec-doc record that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger record. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your indexed continuity clean and up to date instead of cluttered with redundant entries.
 
 ---
 

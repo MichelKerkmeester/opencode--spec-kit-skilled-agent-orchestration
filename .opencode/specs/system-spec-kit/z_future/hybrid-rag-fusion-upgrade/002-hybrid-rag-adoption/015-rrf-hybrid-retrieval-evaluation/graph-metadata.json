@@ -10,20 +10,31 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [
-      "sub-phase",
-      "investigates",
-      "whether",
-      "mnemosyne",
-      "documented",
-      "bm25",
-      "vector",
+    "trigger_phrases": [
+      "spec",
+      "015",
       "rrf",
-      "pattern",
-      "exposes",
-      "retrieval",
-      "operability"
+      "plan",
+      "tasks",
+      "kit",
+      "future",
+      "hybrid",
+      "rag",
+      "checklist"
+    ],
+    "key_topics": [
+      "spec",
+      "015",
+      "rrf",
+      "plan",
+      "tasks",
+      "kit",
+      "future",
+      "hybrid",
+      "rag",
+      "checklist",
+      "sub-phase",
+      "investigates"
     ],
     "importance_tier": "important",
     "status": "planned",
@@ -108,13 +119,13 @@
         "source": "derived"
       },
       {
-        "name": "Hybrid Retrieval",
+        "name": "Benchmarks Mnemosyne",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Benchmarks Mnemosyne",
+        "name": "Hybrid Retrieval",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -180,15 +191,16 @@
         "source": "derived"
       },
       {
-        "name": "a",
-        "kind": "key_phrase",
-        "path": "checklist.md",
+        "name": "description:",
+        "kind": "quoted",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates whether Mnemosyne's documented BM25/vector/RRF pattern exposes any retrieval or operability gap that Public has not already closed. It is a measurement packet, not a plugin or wrapper proposal: the core question is whether current Public hybrid retrieval already covers the value, and what benchmark lanes are required to prove that. It does not ship a Mnemosyne-style facade.",
     "created_at": "2026-04-13T04:56:07.093Z",
-    "last_save_at": "2026-04-13T16:22:53.784Z",
+    "last_save_at": "2026-04-26T09:17:16.103Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

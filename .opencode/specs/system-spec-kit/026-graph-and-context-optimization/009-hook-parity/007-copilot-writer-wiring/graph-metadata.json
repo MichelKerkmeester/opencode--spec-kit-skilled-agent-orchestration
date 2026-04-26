@@ -13,7 +13,16 @@
     "trigger_phrases": [
       "copilot writer wiring",
       "copilot refreshed timestamp",
-      "026/009/011"
+      "026/009/011",
+      "implementatio",
+      "plan",
+      "011",
+      "copilot",
+      "tasks",
+      "copil",
+      "spec",
+      "kit",
+      "026"
     ],
     "key_topics": [
       "copilot",
@@ -22,21 +31,21 @@
       "refreshed",
       "timestamp",
       "026",
-      "007",
+      "009",
       "011",
-      "packet",
-      "010",
-      "fixed",
-      "schema"
+      "implementatio",
+      "plan",
+      "tasks",
+      "copil"
     ],
     "importance_tier": "important",
-    "status": "reverted-needs-reapply",
+    "status": "implemented",
     "key_files": [
-      ".github/hooks/superset-notify.json",
+      ".claude/settings.local.json",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts",
       ".opencode/skill/system-spec-kit/mcp_server/dist/hooks/copilot/user-prompt-submit.js",
+      ".github/hooks/superset-notify.json",
       "dist/hooks/copilot/user-prompt-submit.js",
-      ".claude/settings.local.json",
       "dist/hooks/copilot/session-prime.js",
       "implementation-summary.md",
       "spec.md",
@@ -45,9 +54,9 @@
     ],
     "entities": [
       {
-        "name": "superset-notify.json",
+        "name": "settings.local.json",
         "kind": "config",
-        "path": ".github/hooks/superset-notify.json",
+        "path": ".claude/settings.local.json",
         "source": "derived"
       },
       {
@@ -63,9 +72,9 @@
         "source": "derived"
       },
       {
-        "name": "settings.local.json",
+        "name": "superset-notify.json",
         "kind": "config",
-        "path": ".claude/settings.local.json",
+        "path": ".github/hooks/superset-notify.json",
         "source": "derived"
       },
       {
@@ -99,6 +108,12 @@
         "source": "derived"
       },
       {
+        "name": "Route Copilot",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -117,19 +132,13 @@
         "source": "derived"
       },
       {
-        "name": "Route Copilot",
+        "name": "Needs Reapply",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Known Limitations",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Claude Code",
+        "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -165,25 +174,25 @@
         "source": "derived"
       },
       {
-        "name": "Copilot",
-        "kind": "key_phrase",
+        "name": "description: 'title:",
+        "kind": "quoted",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "fresh",
-        "kind": "key_phrase",
+        "name": "' trigger_phrases:   -",
+        "kind": "quoted",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "diff",
-        "kind": "key_phrase",
+        "name": "-",
+        "kind": "quoted",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "Tasks: Copilot Writer Wiring",
+        "name": "importance_tier:",
         "kind": "quoted",
         "path": "tasks.md",
         "source": "derived"
@@ -191,7 +200,7 @@
     ],
     "causal_summary": "After packet 010 fixed the Copilot schema crash, the `userPromptSubmitted` hook still doesn't refresh the managed block in `$HOME/.copilot/copilot-instructions.md` because:",
     "created_at": "2026-04-22T16:05:25.902Z",
-    "last_save_at": "2026-04-22T16:05:25.902Z",
+    "last_save_at": "2026-04-26T09:17:15.818Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

@@ -212,7 +212,7 @@
     ],
     "causal_summary": "Add `cli-opencode` as a fifth sibling under `.opencode/skill/cli-*/` so external AI assistants (and detached OpenCode sessions) can invoke the OpenCode CLI the same way they already invoke Claude Code, Codex, Copilot, and Gemini. The skill ships nine files matching the canonical cli-* blueprint (3 root + 2 assets + 4 references), gets registered with the skill advisor through filesystem walking + sibling-edge updates + an optional TOKEN_BOOSTS entry, opens a new flat changelog bucket via `/create:changelog`, and touches eight specific lines in `.opencode/skill/README.md` plus two specific lines in `.opencode/README.md`. The hardest decisions land in the decision-record: the self-invocation guard signal (avoiding cycles when the orchestrator already IS opencode), the token-boost weight for the noisy \"opencode\" token (the framework name appears throughout the repo), and the three valid use cases that justify the skill's existence in a repo where opencode IS the host runtime.",
     "created_at": "2026-04-26T05:00:00Z",
-    "last_save_at": "2026-04-26T07:45:24.789Z",
+    "last_save_at": "2026-04-26T09:17:15.282Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

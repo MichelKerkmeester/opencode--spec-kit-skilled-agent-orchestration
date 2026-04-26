@@ -10,7 +10,8 @@
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/004-skill-advisor-affordance-evidence",
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display",
     "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/006-docs-and-catalogs-rollup",
-    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation",
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review"
   ],
   "manual": {
     "depends_on": [],
@@ -218,7 +219,7 @@
     ],
     "causal_summary": "Implement the converged pt-01 + pt-02 External Project research recommendations as a 6-sub-phase Level 3 implementation packet. pt-02 cross-checked pt-01 with an independent executor (cli-codex gpt-5.5 high fast) and reached the same core conclusions: External Project is **architectural evidence**, not a source transplant; Code Graph / Memory / Skill Advisor stay **separately owned**; route/tool/shape work is **deferred** until Public has the substrate.",
     "created_at": "2026-04-25T10:47:55.572Z",
-    "last_save_at": "2026-04-25T13:51:23.157Z",
+    "last_save_at": "2026-04-26T09:17:15.822Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

@@ -50,7 +50,6 @@
       "plan.md",
       "checklist.md",
       "decision-record.md",
-      ".superset/config.json",
       "spec.md",
       "tasks.md"
     ],
@@ -107,12 +106,6 @@
         "name": "decision-record.md",
         "kind": "doc",
         "path": "decision-record.md",
-        "source": "derived"
-      },
-      {
-        "name": "config.json",
-        "kind": "config",
-        "path": ".superset/config.json",
         "source": "derived"
       },
       {
@@ -198,11 +191,18 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Adapt the sk-git skill's worktree handling from Superset IDE's git worktree model. Superset treats each workspace as an isolated worktree with centralized storage, config-driven lifecycle hooks, and structured init/teardown flows. The current sk-git skill uses a simpler, manual-choice model that lacks these capabilities. This adaptation translates Superset's desktop-app patterns into CLI/AI-skill documentation.",
     "created_at": "2026-04-12T09:02:50.202Z",
-    "last_save_at": "2026-04-18T14:39:00.381Z",
+    "last_save_at": "2026-04-26T09:17:15.297Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -1,5 +1,5 @@
 ---
-description: Manage memory database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, and ingest operations
+description: Manage indexed-continuity database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, and ingest operations
 argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>]"
 allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel
 ---
@@ -32,11 +32,11 @@ IF required parameter missing:
 
 # Memory Management Command
 
-Unified management interface for the memory database: scan for new files, cleanup old memories, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, and run async ingest jobs.
+Unified management interface for the indexed-continuity database: scan for new files, cleanup old spec-doc records, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, and run async ingest jobs.
 
 ```yaml
 role: Memory Database Administrator
-purpose: Unified management interface for memory database maintenance, checkpoint operations, and async ingest management
+purpose: Unified management interface for indexed-continuity database maintenance, checkpoint operations, and async ingest management
 action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, or ingest based on arguments
 operating_mode:
   workflow: interactive_management
@@ -47,15 +47,15 @@ operating_mode:
 
 ## 0. INSTRUCTIONS
 
-Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `memory/*.md` surface is no longer accepted by the runtime.
+Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `spec-doc/*.md` surface is no longer accepted by the runtime.
 
 ---
 
 ## 1. PURPOSE
 
-Provide a unified interface for memory database **management** operations:
+Provide a unified interface for the indexed-continuity database **management** operations:
 - Indexing new files and scanning for updates
-- Cleanup of old or deprecated memories
+- Cleanup of old or deprecated spec-doc records
 - Tier management and trigger editing
 - Validation feedback and deletion
 - Health checks and diagnostics
@@ -126,7 +126,7 @@ Provide a unified interface for memory database **management** operations:
 | `/memory:manage validate 42 not`                       | Mark as not useful        |
 | `/memory:manage delete 42`                             | Delete memory             |
 | `/memory:manage health`                                | System health check       |
-| `/memory:manage checkpoint create "name"`              | Save memory state         |
+| `/memory:manage checkpoint create "name"`              | Save indexed-continuity state |
 | `/memory:manage checkpoint restore "name"`             | Restore to saved state    |
 | `/memory:manage checkpoint list`                       | Show all checkpoints      |
 | `/memory:manage checkpoint delete "name"`              | Remove checkpoint         |
@@ -327,7 +327,7 @@ STATUS=OK INDEXED=<N> SKIPPED=<N> UPDATED=<N>
 4. If candidates found: Display with options (below)
 5. **WAIT for user selection** before proceeding
 
-**HARD STOP:** DO NOT delete any memories until user explicitly chooses [a]ll or [y]es per item.
+**HARD STOP:** DO NOT delete any spec-doc records until user explicitly chooses [a]ll or [y]es per item.
 
 ### Workflow
 
@@ -426,7 +426,7 @@ MEMORY:BULK-DELETE
   Tier        <tier>
   Scope       <all | folder: <spec>>
   Age Filter  <all | older than <N> days>
-  Affected    <N> memories
+  Affected    <N> spec-doc records
 
 ─────────────────────────────────────────────────────
 [y] delete all    [n] cancel
@@ -472,16 +472,16 @@ STATUS=OK REMOVED=<N> TIER=<tier>
 
 Tier resolution for indexed content is deterministic:
 - Precedence: **metadata tier → inline marker tier → default tier**
-- Manual tier updates via this command update the stored tier for the target memory ID **subject to invariant guards**.
+- Manual tier updates via this command update the stored tier for the target spec-doc record ID **subject to invariant guards**.
 
-**Constitutional tier invariant (Packet 026/010/002):** promoting a non-constitutional memory to `importanceTier: constitutional` is **not allowed**. The save / update / post-insert / checkpoint-restore paths all enforce this: any non-constitutional-path memory attempting `constitutional` is normalized down to `important` before persistence, and the action is recorded in the governance audit log as `tier_downgrade_non_constitutional_path`. The `memory_update` call returns success with the normalized tier rather than rejecting the request. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md`) may carry the `constitutional` tier.
+**Constitutional tier invariant (Packet 026/010/002):** promoting a non-constitutional spec-doc record to `importanceTier: constitutional` is **not allowed**. The save / update / post-insert / checkpoint-restore paths all enforce this: any non-constitutional-path spec-doc record attempting `constitutional` is normalized down to `important` before persistence, and the action is recorded in the governance audit log as `tier_downgrade_non_constitutional_path`. The `memory_update` call returns success with the normalized tier rather than rejecting the request. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md`) may carry the `constitutional` tier.
 
 Excluded paths (`z_future/`, `/external/`) are rejected outright at save time and cannot be tier-promoted through this command.
 
 ### Workflow
 
 1. **Validate:** tier must be one of: constitutional, critical, important, normal, temporary, deprecated
-2. **Validate:** id must exist in memory database
+2. **Validate:** id must exist in indexed-continuity database
 3. **Execute:** `spec_kit_memory_memory_update({ id: <id>, importanceTier: "<tier>" })`
 4. **Inspect:** if the returned tier differs from the requested tier, the invariant guard fired — check the `governance_audit` log for a `tier_downgrade_non_constitutional_path` row tied to this memory id
 5. **Confirm:**
@@ -503,7 +503,7 @@ STATUS=OK ID=<id> TIER=<tier>
 
 **Trigger:** `/memory:manage triggers <id>`
 
-1. **Load:** `memory_list({ limit: 100, sortBy: "created_at" })` → find memory, extract `triggerPhrases`
+1. **Load:** `memory_list({ limit: 100, sortBy: "created_at" })` → find spec-doc record, extract `triggerPhrases`
 2. **Display:** Current triggers numbered, with `[a]dd | [r]emove # | [s]ave | [b]ack` actions
 3. **Edit:** `a`→prompt for new phrase, `r`→prompt for number to remove, `s`→save via `memory_update({ triggerPhrases: [...] })`, `b`→back (discard)
 4. **Confirm:**
@@ -557,13 +557,13 @@ STATUS=OK ID=<id> USEFUL=<true|false>
 
 **⚠️ Confirmation required before deletion.**
 
-1. Retrieve memory details via `memory_list`
+1. Retrieve spec-doc record details via `memory_list`
 2. If ID not found → `STATUS=FAIL ERROR="Memory #<id> not found"`
 3. If tier is `constitutional` or `critical`:
    - Show warning, require typing `DELETE <title>` to confirm
 4. If other tier: Ask `[y]es | [n]o`
 
-**HARD STOP:** DO NOT delete any memory until user explicitly confirms.
+**HARD STOP:** DO NOT delete any spec-doc record until user explicitly confirms.
 
 ### Step 1: Retrieve and Display
 
@@ -576,7 +576,7 @@ For protected tiers (constitutional, critical):
 MEMORY:DELETE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  WARN  Protected memory
+  WARN  Protected spec-doc record
   Memory      #<id> "<title>"
   Tier        <tier>
   Created     <date>
@@ -637,7 +637,7 @@ MEMORY:HEALTH
   PASS  causal_edges
   PASS  memory_corrections
 
-  Note: causal_edges stores explicit memory relationships for lineage tooling.
+  Note: causal_edges stores explicit spec-doc record relationships for lineage tooling.
 
 → Checks ───────────────────────────────────────────
   PASS  DB accessible
@@ -646,8 +646,8 @@ MEMORY:HEALTH
   PASS  No duplicate IDs
 
 → Warnings ─────────────────────────────────────────
-  WARN  <N> memories without trigger phrases
-  WARN  <N> memories older than 90 days
+  WARN  <N> spec-doc records without trigger phrases
+  WARN  <N> spec-doc records older than 90 days
 
 STATUS=OK HEALTH=<healthy|degraded|error> SCHEMA=v13
 ```
@@ -693,7 +693,7 @@ STATUS=OK CHECKPOINT=<name> ACTION=create
 
 1. Verify checkpoint exists via `checkpoint_list()`
 2. If not found → `STATUS=FAIL ERROR="Checkpoint '<name>' not found"`
-3. Show diff summary: memories added since checkpoint (will be removed)
+3. Show diff summary: spec-doc records added since checkpoint (will be removed)
 4. Ask: `[y]es | [n]o | [v]iew diff`
 
 **HARD STOP:** DO NOT restore checkpoint until user explicitly confirms.
@@ -750,8 +750,8 @@ STATUS=FAIL CHECKPOINT=<name> ACTION=restore ROLLBACK=failed
 ```
 
 **Caution:**
-- Default (`clearExisting=false`): Marks existing memories as `deprecated`
-- `clearExisting=true`: Deletes existing memories before restore
+- Default (`clearExisting=false`): Marks existing spec-doc records as `deprecated`
+- `clearExisting=true`: Deletes existing spec-doc records before restore
 - Always run `memory_index_scan` after restore to regenerate embeddings
 
 ---
@@ -891,7 +891,7 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
-- `/memory:learn`: Constitutional memories
+- `/memory:learn`: Constitutional rules
 - `/spec_kit:resume`: Session recovery and continuation
 
 ---
@@ -981,7 +981,7 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `includeChunks` | boolean | false | Include chunk child rows. Default false returns parent memories only for cleaner browsing |
+| `includeChunks` | boolean | false | Include chunk child rows. Default false returns parent spec-doc records only for cleaner browsing |
 
 ### memory_update: Additional Parameters
 
@@ -1004,13 +1004,13 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 | `sessionId` | string | No | Session identifier for selection telemetry |
 | `notes` | string | No | Free-form notes for this validation event |
 
-> Memories with high confidence and validation counts may be promoted to critical tier via learned feedback.
+> Spec-doc records with high confidence and validation counts may be promoted to critical tier via learned feedback.
 
 ### memory_bulk_delete: Additional Parameters
 
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
-| `skipCheckpoint` | boolean | false | Skip auto-checkpoint creation before delete. Rejected for constitutional/critical tiers. Speed optimization for non-critical tiers |
+| `skipCheckpoint` | boolean | false | Skip auto-checkpoint creation before delete. Rejected for constitutional/critical spec-doc records. Speed optimization for non-critical tiers |
 
 ### memory_delete: Dual-Mode Contract
 
@@ -1018,8 +1018,8 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 
 | Mode | Required Parameters | Description |
 |------|---------------------|-------------|
-| Single delete | `id` | Delete one memory by ID |
-| Bulk folder delete | `specFolder` + `confirm: true` | Delete all memories in a spec folder |
+| Single delete | `id` | Delete one spec-doc record by ID |
+| Bulk folder delete | `specFolder` + `confirm: true` | Delete all spec-doc records in a spec folder |
 
 The `confirm` parameter only accepts `true` (not `false`): it is a safety gate, not a toggle.
 
@@ -1027,13 +1027,13 @@ The `confirm` parameter only accepts `true` (not `false`): it is a safety gate, 
 
 ## APPENDIX C: CONSTITUTIONAL TIER HANDLING
 
-Constitutional tier memories receive special treatment across all operations:
+Constitutional-tier spec-doc records receive special treatment across all operations:
 
 - **Cleanup:** NEVER included in cleanup candidates, always protected regardless of age/access count
 - **Delete:** Requires typing `DELETE <title>` to confirm, with extra irreversibility warning
-- **Checkpoint Restore:** Constitutional memories added AFTER a checkpoint will be removed on restore
+- **Checkpoint Restore:** Constitutional rules added AFTER a checkpoint will be removed on restore
 
-**Best Practice:** Before restoring a checkpoint that predates constitutional memory additions:
-1. Review current constitutional memories
+**Best Practice:** Before restoring a checkpoint that predates constitutional rule additions:
+1. Review current constitutional rules
 2. Note any that should be preserved
 3. After restore, manually re-promote critical rules if needed

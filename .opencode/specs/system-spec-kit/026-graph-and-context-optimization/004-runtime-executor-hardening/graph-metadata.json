@@ -8,21 +8,8 @@
     "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
     "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening"
   ],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime",
-    "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
-    "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening"
-  ],
-  "migration": {
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "active_phase": "008-runtime-executor-hardening",
-    "child_phase_folders": [
-      "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/001-foundational-runtime",
-      "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/002-sk-deep-cli-runtime-execution",
-      "system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening"
-    ],
-    "layout": "phase-root-children"
-  },
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [
@@ -53,51 +40,202 @@
       "foundational runtime, cli executor matrix, and system hardening",
       "001-foundational-runtime",
       "002-sk-deep-cli-runtime-execution",
-      "003-system-hardening"
+      "003-system-hardening",
+      "graph",
+      "and",
+      "context",
+      "optimization",
+      "008",
+      "research",
+      "runtime"
     ],
     "key_topics": [
+      "008-runtime-executor-hardening",
       "foundational",
       "runtime",
       "cli",
       "executor",
       "matrix",
-      "and",
       "system",
       "hardening",
-      "008"
+      "001-foundational-runtime",
+      "002-sk-deep-cli-runtime-execution",
+      "003-system-hardening",
+      "graph"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/003-system-hardening/spec.md",
+      ".opencode/skill/sk-deep-research/SKILL.md",
+      ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl",
+      ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+      ".opencode/skill/sk-deep-research/references/convergence.md",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/command/spec_kit/deep-research.md",
+      ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-config.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/dispatch-failure.vitest.ts",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "research/research.md"
     ],
     "entities": [
       {
-        "name": "001-foundational-runtime",
-        "kind": "spec_phase",
-        "path": "001-foundational-runtime",
-        "source": "migration"
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening/spec.md",
+        "source": "derived"
       },
       {
-        "name": "002-sk-deep-cli-runtime-execution",
-        "kind": "spec_phase",
-        "path": "002-sk-deep-cli-runtime-execution",
-        "source": "migration"
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
       },
       {
-        "name": "003-system-hardening",
-        "kind": "spec_phase",
-        "path": "003-system-hardening",
-        "source": "migration"
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_pack_iteration.md.tmpl",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/assets/prompt_pack_iteration.md.tmpl",
+        "source": "derived"
+      },
+      {
+        "name": "loop_protocol.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/loop_protocol.md",
+        "source": "derived"
+      },
+      {
+        "name": "convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/references/convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-audit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "post-dispatch-validate.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "executor-config.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/executor-config.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "cli-matrix.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "dispatch-failure.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/dispatch-failure.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Runtime Executor Hardening",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Keep",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Foundational runtime, CLI executor matrix, and system hardening. Direct child parent for 001-foundational-runtime, 002-sk-deep-cli-runtime-execution, 003-system-hardening.",
+    "causal_summary": "The first consolidation preserved old packets behind an extra archive layer, which made the active phase surface harder to browse.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.734Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -105,9 +243,7 @@
       "plan.md",
       "tasks.md",
       "implementation-summary.md",
-      "context-index.md"
+      "research/research.md"
     ]
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+  }
 }

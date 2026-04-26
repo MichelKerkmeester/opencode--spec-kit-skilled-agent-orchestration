@@ -549,7 +549,7 @@ function getMemoryEntities(
 
     return entities;
   } catch (error: unknown) {
-    logger.warn('Failed to load memory entities', {
+    logger.warn('Failed to load spec-doc-record entities', {
       memoryId,
       error: error instanceof Error ? error.message : String(error),
     });

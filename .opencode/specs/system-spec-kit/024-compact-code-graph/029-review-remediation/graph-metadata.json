@@ -54,13 +54,13 @@
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/spec.md",
       ".opencode/specs/system-spec-kit/024-compact-code-graph/027-opencode-structural-priming/plan.md",
       ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts",
+      ".opencode/agent/context.md",
+      ".claude/agents/context.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "hooks/gemini/session-prime.ts",
-      "hooks/claude/session-stop.ts",
-      "tests/session-bootstrap.vitest.ts"
+      "hooks/gemini/session-prime.ts"
     ],
     "entities": [
       {
@@ -106,6 +106,12 @@
         "source": "derived"
       },
       {
+        "name": "context.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context.md",
+        "source": "derived"
+      },
+      {
         "name": "spec.md",
         "kind": "doc",
         "path": "spec.md",
@@ -127,12 +133,6 @@
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "session-bootstrap.vitest.ts",
-        "kind": "test",
-        "path": "tests/session-bootstrap.vitest.ts",
         "source": "derived"
       },
       {
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "The completed deep review for `024-compact-code-graph` found seven active issues that leave the packet internally inconsistent across runtime contracts, hook safety, evidence traceability, and cross-runtime guidance. The current tree still advertises behavior that either is not implemented, is documented inconsistently, or is proven with stale evidence. Until these findings are remediated or explicitly downgraded with truthful packet updates, the parent packet cannot be treated as release-ready.",
     "created_at": "2026-04-12T09:02:53.434Z",
-    "last_save_at": "2026-04-24T15:34:55.440Z",
+    "last_save_at": "2026-04-26T09:17:15.657Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [

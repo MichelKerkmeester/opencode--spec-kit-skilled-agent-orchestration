@@ -184,6 +184,12 @@
         "source": "derived"
       },
       {
+        "name": "Completed Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -200,17 +206,12 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Completed Level",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Phase 005 completed the runtime-truth alignment for the improve-agent skill family. The delivered work added an append-only audit journal, an improvement-scoped mutation coverage graph, dimension trade-off detection, candidate lineage tracking for optional parallel waves, and benchmark stability scoring so the improver loop could behave like the deeper research and review loops instead of remaining an isolated evaluator.",
     "created_at": "2026-04-12T09:02:50.195Z",
-    "last_save_at": "2026-04-18T14:39:00.361Z",
+    "last_save_at": "2026-04-26T09:17:15.256Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

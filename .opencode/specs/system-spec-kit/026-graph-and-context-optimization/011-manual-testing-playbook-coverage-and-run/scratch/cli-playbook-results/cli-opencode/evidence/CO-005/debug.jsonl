@@ -1,0 +1,154 @@
+INFO  2026-04-26T10:32:35 +326ms service=default version=1.3.17 args=["run","--model","anthropic/claude-opus-4-7","--agent","general","--variant","high","--format","json","--dir","/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public","--print-logs","--log-level","DEBUG","Reply OK."] opencode
+INFO  2026-04-26T10:32:35 +2ms service=default directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public creating instance
+INFO  2026-04-26T10:32:35 +2ms service=project directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public fromDirectory
+INFO  2026-04-26T10:32:35 +37ms service=db path=/Users/michelkerkmeester/.local/share/opencode/opencode.db opening database
+INFO  2026-04-26T10:32:35 +6ms service=db count=10 mode=bundled applying migrations
+INFO  2026-04-26T10:32:35 +3ms service=default directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public bootstrapping
+INFO  2026-04-26T10:32:35 +8ms service=config path=/Users/michelkerkmeester/.config/opencode/config.json loading
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/.config/opencode/opencode.json loading
+INFO  2026-04-26T10:32:35 +3ms service=config path=/Users/michelkerkmeester/.config/opencode/opencode.jsonc loading
+INFO  2026-04-26T10:32:35 +2ms service=config path=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/opencode.json loading
+DEBUG 2026-04-26T10:32:35 +1ms service=config path=/Users/michelkerkmeester/.superset/hooks/opencode loading config from OPENCODE_CONFIG_DIR
+DEBUG 2026-04-26T10:32:35 +4ms service=config loading config from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/opencode.json
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/opencode.json loading
+DEBUG 2026-04-26T10:32:35 +0ms service=config loading config from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/opencode.jsonc
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/opencode.jsonc loading
+INFO  2026-04-26T10:32:35 +0ms service=npm dir=/Users/michelkerkmeester/.config/opencode checking dependencies
+INFO  2026-04-26T10:32:35 +1ms service=npm dependencies in sync
+INFO  2026-04-26T10:32:35 +2ms service=npm dir=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode checking dependencies
+INFO  2026-04-26T10:32:35 +0ms service=npm dependencies in sync
+DEBUG 2026-04-26T10:32:35 +8ms service=config loading config from /Users/michelkerkmeester/.opencode/opencode.json
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/.opencode/opencode.json loading
+DEBUG 2026-04-26T10:32:35 +1ms service=config loading config from /Users/michelkerkmeester/.opencode/opencode.jsonc
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/.opencode/opencode.jsonc loading
+DEBUG 2026-04-26T10:32:35 +1ms service=config loading config from /Users/michelkerkmeester/.superset/hooks/opencode/opencode.json
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/.superset/hooks/opencode/opencode.json loading
+DEBUG 2026-04-26T10:32:35 +0ms service=config loading config from /Users/michelkerkmeester/.superset/hooks/opencode/opencode.jsonc
+INFO  2026-04-26T10:32:35 +0ms service=config path=/Users/michelkerkmeester/.superset/hooks/opencode/opencode.jsonc loading
+INFO  2026-04-26T10:32:35 +0ms service=npm dir=/Users/michelkerkmeester/.opencode checking dependencies
+INFO  2026-04-26T10:32:35 +0ms service=npm dependencies in sync
+INFO  2026-04-26T10:32:35 +2ms service=plugin name=CodexAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin name=CopilotAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin name=gitlabAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin name=PoeAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +1ms service=plugin name=CloudflareWorkersAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin name=CloudflareAIGatewayAuthPlugin loading internal plugin
+INFO  2026-04-26T10:32:35 +0ms service=npm dir=/Users/michelkerkmeester/.superset/hooks/opencode checking dependencies
+INFO  2026-04-26T10:32:35 +0ms service=npm dependencies in sync
+INFO  2026-04-26T10:32:35 +1ms service=plugin path=opencode-skills loading plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin path=file:///Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/plugins/spec-kit-skill-advisor.js loading plugin
+INFO  2026-04-26T10:32:35 +0ms service=plugin path=file:///Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/plugins/spec-kit-compact-code-graph.js loading plugin
+INFO  2026-04-26T10:32:35 +1ms service=plugin path=file:///Users/michelkerkmeester/.superset/hooks/opencode/plugin/superset-notify.js loading plugin
+INFO  2026-04-26T10:32:35 +0ms service=npm pkg=opencode-skills@latest installing package
+ERROR 2026-04-26T10:32:35 +64ms service=plugin path=opencode-skills target=file:///Users/michelkerkmeester/.cache/opencode/packages/opencode-skills@latest/node_modules/opencode-skills/dist/index.js error=Missing 'default' export in module '/Users/michelkerkmeester/.cache/opencode/packages/opencode-skills@latest/node_modules/gray-matter/index.js'. failed to load plugin
+INFO  2026-04-26T10:32:35 +1ms service=bus type=session.error publishing
+INFO  2026-04-26T10:32:35 +1ms service=bus type=* subscribing
+INFO  2026-04-26T10:32:35 +2ms service=bus type=session.updated subscribing
+INFO  2026-04-26T10:32:35 +0ms service=bus type=message.updated subscribing
+INFO  2026-04-26T10:32:35 +0ms service=bus type=message.part.updated subscribing
+INFO  2026-04-26T10:32:35 +0ms service=bus type=session.diff subscribing
+INFO  2026-04-26T10:32:35 +1ms service=format init
+INFO  2026-04-26T10:32:35 +0ms service=lsp serverIds=deno, typescript, vue, eslint, oxlint, biome, gopls, ruby-lsp, pyright, elixir-ls, zls, csharp, fsharp, sourcekit-lsp, rust, clangd, svelte, astro, jdtls, kotlin-ls, yaml-ls, lua-ls, php intelephense, prisma, dart, ocaml-lsp, bash, terraform, texlab, dockerfile, gleam, clojure-lsp, nixd, tinymist, haskell-language-server, julials enabled LSP servers
+INFO  2026-04-26T10:32:35 +1ms service=file init
+INFO  2026-04-26T10:32:35 +2ms service=file.watcher directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public init
+INFO  2026-04-26T10:32:35 +116ms service=file.watcher directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public platform=darwin backend=fs-events watcher backend
+INFO  2026-04-26T10:32:35 +3ms service=bus type=command.executed subscribing
+WARN  2026-04-26T10:32:35 +246ms service=skill name=customize-cloud-agent existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/system-spec-kit/mcp_server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/system-spec-kit/node_modules/@spec-kit/mcp-server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate skill name
+INFO  2026-04-26T10:32:35 +2ms service=vcs branch=main default_branch=main initialized
+INFO  2026-04-26T10:32:35 +0ms service=bus type=file.watcher.updated subscribing
+WARN  2026-04-26T10:32:35 +77ms service=skill name=mcp-figma existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/mcp-figma/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/mcp-figma/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=cli-gemini existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/cli-gemini/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-gemini/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-code-opencode existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-code-opencode/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-code-opencode/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=mcp-clickup existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/mcp-clickup/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/mcp-clickup/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +7ms service=skill name=system-spec-kit existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/system-spec-kit/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=cli-codex existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/cli-codex/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-codex/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-git existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-git/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-git/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-deep-review existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-deep-review/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-deep-review/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=customize-cloud-agent existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/system-spec-kit/node_modules/@spec-kit/mcp-server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/node_modules/@spec-kit/mcp-server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +1ms service=skill name=mcp-code-mode existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/mcp-code-mode/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/mcp-code-mode/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-code-web existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-code-web/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-code-web/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=cli-copilot existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/cli-copilot/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-copilot/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-improve-prompt existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-improve-prompt/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-prompt/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-deep-research existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-deep-research/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-deep-research/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-doc existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-doc/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-doc/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=cli-claude-code existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/cli-claude-code/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-claude-code/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-code-full-stack existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-code-full-stack/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-code-full-stack/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=customize-cloud-agent existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/node_modules/@spec-kit/mcp-server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/node_modules/@github/copilot-sdk/node_modules/@github/copilot/builtin-skills/customize-cloud-agent/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +3ms service=skill name=sk-code-review existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-code-review/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-code-review/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +1ms service=skill name=mcp-chrome-devtools existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/mcp-chrome-devtools/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/mcp-chrome-devtools/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=mcp-coco-index existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/mcp-coco-index/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/mcp-coco-index/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=sk-improve-agent existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/sk-improve-agent/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/SKILL.md duplicate skill name
+WARN  2026-04-26T10:32:35 +0ms service=skill name=cli-opencode existing=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.claude/skills/cli-opencode/SKILL.md duplicate=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-opencode/SKILL.md duplicate skill name
+INFO  2026-04-26T10:32:35 +0ms service=skill count=22 init
+[93m[1m! [0m agent "general" is a subagent, not a primary agent. Falling back to default agent
+INFO  2026-04-26T10:32:35 +6ms service=server method=POST path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=POST path=/session request
+INFO  2026-04-26T10:32:35 +9ms service=session id=ses_236a6dbd0ffe5529aMB0OpQBGQ slug=quick-meadow version=1.3.17 projectID=62d4d9b5614526dfda8fd992666751f5df69e742 directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public title=New session - 2026-04-26T10:32:35.631Z permission=[{"permission":"question","pattern":"*","action":"deny"},{"permission":"plan_enter","pattern":"*","action":"deny"},{"permission":"plan_exit","pattern":"*","action":"deny"}] time={"created":1777199555631,"updated":1777199555631} created
+INFO  2026-04-26T10:32:35 +1ms service=bus type=session.created publishing
+INFO  2026-04-26T10:32:35 +1ms service=bus type=session.updated publishing
+INFO  2026-04-26T10:32:35 +1ms service=server method=GET path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=GET path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server method=GET path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=GET path=/session request
+INFO  2026-04-26T10:32:35 +5ms service=server status=completed duration=17 method=POST path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server method=GET path=/config request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=GET path=/config request
+INFO  2026-04-26T10:32:35 +2ms service=server status=completed duration=2 method=GET path=/config request
+INFO  2026-04-26T10:32:35 +2ms service=server method=GET path=/event request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=GET path=/event request
+INFO  2026-04-26T10:32:35 +0ms service=server method=POST path=/session/ses_236a6dbd0ffe5529aMB0OpQBGQ/message request
+INFO  2026-04-26T10:32:35 +0ms service=server status=started method=POST path=/session/ses_236a6dbd0ffe5529aMB0OpQBGQ/message request
+INFO  2026-04-26T10:32:35 +0ms service=server event connected
+INFO  2026-04-26T10:32:35 +1ms service=bus type=* subscribing
+INFO  2026-04-26T10:32:35 +4ms service=server status=completed duration=5 method=GET path=/event request
+INFO  2026-04-26T10:32:35 +1ms service=server status=completed duration=6 method=POST path=/session/ses_236a6dbd0ffe5529aMB0OpQBGQ/message request
+INFO  2026-04-26T10:32:35 +0ms service=server status=completed duration=15 method=GET path=/session request
+INFO  2026-04-26T10:32:35 +0ms service=server status=completed duration=15 method=GET path=/session request
+INFO  2026-04-26T10:32:35 +18ms service=bus type=message.updated publishing
+INFO  2026-04-26T10:32:35 +2ms service=provider status=started state
+INFO  2026-04-26T10:32:35 +6ms service=bus type=message.part.updated publishing
+INFO  2026-04-26T10:32:35 +2ms service=bus type=session.updated publishing
+INFO  2026-04-26T10:32:35 +19ms service=provider init
+INFO  2026-04-26T10:32:35 +2ms service=bus type=session.status publishing
+INFO  2026-04-26T10:32:35 +0ms service=session.prompt step=0 sessionID=ses_236a6dbd0ffe5529aMB0OpQBGQ loop
+INFO  2026-04-26T10:32:36 +430ms service=provider providerID=deepseek found
+INFO  2026-04-26T10:32:36 +1ms service=provider providerID=opencode-go found
+INFO  2026-04-26T10:32:36 +0ms service=provider providerID=openai found
+INFO  2026-04-26T10:32:36 +0ms service=provider providerID=github-copilot found
+INFO  2026-04-26T10:32:36 +0ms service=provider providerID=opencode found
+INFO  2026-04-26T10:32:36 +0ms service=provider status=completed duration=460 state
+INFO  2026-04-26T10:32:36 +1ms service=bus type=session.error publishing
+INFO  2026-04-26T10:32:36 +1ms service=bus type=session.status publishing
+INFO  2026-04-26T10:32:36 +0ms service=bus type=session.idle publishing
+ERROR 2026-04-26T10:32:36 +1ms service=share-next type=message.updated cause={"_id":"Cause","failures":[{"_tag":"Die","defect":{"data":{"providerID":"anthropic","modelID":"claude-opus-4-7","suggestions":[]},"name":"ProviderModelNotFoundError"}}]} share subscriber failed
+ProviderModelNotFoundError: ProviderModelNotFoundError
+ data: {
+  providerID: "anthropic",
+  modelID: "claude-opus-4-7",
+  suggestions: [],
+},
+
+      at <anonymous> (/$bunfs/root/src/index.js:297001:17)
+      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23382:32)
+      at runLoop (/$bunfs/root/src/index.js:23208:109)
+      at evaluate (/$bunfs/root/src/index.js:23178:32)
+      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
+      at doneUnsafe (/$bunfs/root/src/index.js:24512:24)
+      at <anonymous> (/$bunfs/root/src/index.js:63246:17)
+      at ~effect/Effect/successCont (/$bunfs/root/src/index.js:23757:33)
+      at runLoop (/$bunfs/root/src/index.js:23208:109)
+      at evaluate (/$bunfs/root/src/index.js:23178:32)
+      at <anonymous> (/$bunfs/root/src/index.js:23340:26)
+
+{"type":"error","timestamp":1777199556134,"sessionID":"ses_236a6dbd0ffe5529aMB0OpQBGQ","error":{"name":"UnknownError","data":{"message":"Model not found: anthropic/claude-opus-4-7."}}}
+INFO  2026-04-26T10:32:36 +2ms service=default directory=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public disposing instance
+INFO  2026-04-26T10:32:36 +0ms service=state key=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public waiting for state disposal to complete
+INFO  2026-04-26T10:32:36 +2ms service=bus type=* unsubscribing
+INFO  2026-04-26T10:32:36 +0ms service=bus type=session.updated unsubscribing
+INFO  2026-04-26T10:32:36 +0ms service=bus type=message.updated unsubscribing
+INFO  2026-04-26T10:32:36 +1ms service=bus type=message.part.updated unsubscribing
+INFO  2026-04-26T10:32:36 +0ms service=bus type=session.diff unsubscribing
+INFO  2026-04-26T10:32:36 +0ms service=bus type=file.watcher.updated unsubscribing
+INFO  2026-04-26T10:32:36 +1ms service=state key=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public state disposal completed
+INFO  2026-04-26T10:32:36 +0ms service=bus type=* unsubscribing
+INFO  2026-04-26T10:32:36 +1ms service=server event disconnected

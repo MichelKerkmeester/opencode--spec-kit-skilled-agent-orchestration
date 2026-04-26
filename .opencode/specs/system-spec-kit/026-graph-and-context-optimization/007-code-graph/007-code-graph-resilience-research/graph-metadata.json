@@ -4,13 +4,12 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
-      "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -18,38 +17,118 @@
       "code graph staleness research",
       "code graph error resilience",
       "007-code-graph-resilience-research",
-      "verification battery code graph",
-      "exclude-rule confidence model"
+      "code graph resilience research plan",
+      "007-code-graph-resilience-research plan",
+      "code graph resilience research tasks",
+      "007-code-graph-resilience-research tasks",
+      "code graph resilience research checklist",
+      "007-code-graph-resilience-research checklist",
+      "code graph resilience decision record",
+      "code graph staleness thresholds"
     ],
     "key_topics": [
-      "research",
-      "code-graph",
+      "code",
+      "graph",
       "resilience",
+      "research",
       "staleness",
-      "verification-battery",
-      "recovery-playbook",
-      "exclude-rules",
-      "self-healing"
+      "error",
+      "007-code-graph-resilience-research",
+      "plan",
+      "tasks",
+      "checklist",
+      "decision",
+      "record"
     ],
     "importance_tier": "important",
-    "status": "research-queued",
+    "status": "complete",
     "key_files": [
-      "spec.md",
-      "plan.md",
+      "assets/code-graph-gold-queries.json",
+      "assets/staleness-model.md",
+      "assets/recovery-playbook.md",
+      "assets/exclude-rule-confidence.json",
+      "research/research.md",
+      "decision-record.md",
+      "research/iterations/iteration-001.md",
+      "research/iterations/iteration-007.md",
+      "research/deltas/iteration-001.json",
+      "research/deltas/iteration-007.json",
+      "research/deep-research-state.jsonl",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/spec.md",
+      "research/deep-research-config.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/spec.md"
     ],
     "entities": [
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
+        "name": "code-graph-gold-queries.json",
+        "kind": "config",
+        "path": "assets/code-graph-gold-queries.json",
         "source": "derived"
       },
       {
-        "name": "plan.md",
+        "name": "staleness-model.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": "assets/staleness-model.md",
+        "source": "derived"
+      },
+      {
+        "name": "recovery-playbook.md",
+        "kind": "doc",
+        "path": "assets/recovery-playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "exclude-rule-confidence.json",
+        "kind": "config",
+        "path": "assets/exclude-rule-confidence.json",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-007.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-007.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.json",
+        "kind": "config",
+        "path": "research/deltas/iteration-001.json",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-007.json",
+        "kind": "config",
+        "path": "research/deltas/iteration-007.json",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
         "source": "derived"
       },
       {
@@ -63,18 +142,87 @@
         "kind": "doc",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-config.json",
+        "kind": "config",
+        "path": "research/deep-research-config.json",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph Resilience Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Queued",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Run",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Deep-research packet investigating code-graph staleness, error resilience, recovery playbooks, and exclude-rule confidence tiers. Outputs (verification battery JSON, staleness model, recovery playbook, confidence tiers) gate Phase B of the 006 sibling /doctor:code-graph command.",
+    "causal_summary": "The code graph index has three observable failure modes today:",
     "created_at": "2026-04-25T20:30:00Z",
-    "last_save_at": "2026-04-25T20:30:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T09:17:15.769Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "research/research.md"
     ]
   }
 }

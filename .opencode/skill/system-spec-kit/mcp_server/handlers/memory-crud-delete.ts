@@ -258,7 +258,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
 
   const summary = deletedCount > 0
     ? `Deleted ${deletedCount} memory(s)`
-    : 'No memories found to delete';
+    : 'No spec-doc records found to delete';
 
   const hints: string[] = [];
   if (checkpointName) {

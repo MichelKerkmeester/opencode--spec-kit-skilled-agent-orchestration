@@ -44,7 +44,6 @@
       ".opencode/command/spec_kit/deep-review.md",
       ".opencode/changelog/13--sk-deep-review/v1.0.0.0.md",
       ".opencode/specs/skilled-agent-orchestration/030-sk-deep-research-review-mode/handover.md",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "spec.md",
       "plan.md",
       "checklist.md",
@@ -62,12 +61,6 @@
         "name": "v1.0.0.0.md",
         "kind": "doc",
         "path": ".opencode/changelog/13--sk-deep-review/v1.0.0.0.md",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -195,11 +188,18 @@
         "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "That coupling also made it harder to route users correctly. Review requests and research requests shared one command family even though the workflows, artifacts, and success criteria were different.",
     "created_at": "2026-04-12T09:02:50.180Z",
-    "last_save_at": "2026-04-18T14:39:00.321Z",
+    "last_save_at": "2026-04-26T09:17:15.190Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

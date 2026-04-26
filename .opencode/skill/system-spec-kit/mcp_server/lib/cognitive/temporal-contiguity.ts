@@ -110,8 +110,8 @@ export function vectorSearchWithContiguity(
 ----------------------------------------------------------------*/
 
 /**
- * Find memories whose `created_at` falls within `windowSeconds` of the
- * given memory. Results are ordered by `time_delta_seconds ASC`.
+ * Find spec-doc records whose `created_at` falls within `windowSeconds` of the
+ * given spec-doc record. Results are ordered by `time_delta_seconds ASC`.
  */
 export function getTemporalNeighbors(
   memoryId: number,
@@ -133,7 +133,7 @@ export function getTemporalNeighbors(
     if (!anchor) return [];
     const anchorTimestampMs = Date.parse(anchor.created_at);
     if (!Number.isFinite(anchorTimestampMs)) {
-      console.warn(`[temporal-contiguity] Invalid anchor timestamp for memory ${memoryId}: ${anchor.created_at}`);
+      console.warn(`[temporal-contiguity] Invalid anchor timestamp for spec-doc record ${memoryId}: ${anchor.created_at}`);
       return [];
     }
 

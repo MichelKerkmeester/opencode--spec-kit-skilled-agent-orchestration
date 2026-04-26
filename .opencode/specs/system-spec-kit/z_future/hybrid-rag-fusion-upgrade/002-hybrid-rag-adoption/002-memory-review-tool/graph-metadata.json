@@ -10,20 +10,30 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "002",
+      "memory",
+      "revi",
+      "spec",
+      "plan",
+      "memor",
+      "tasks",
+      "mem",
+      "checklist"
+    ],
     "key_topics": [
+      "002",
+      "memory",
+      "revi",
+      "spec",
+      "plan",
+      "memor",
+      "tasks",
+      "mem",
+      "checklist",
       "sub-phase",
       "designs",
-      "scopes",
-      "first",
-      "new",
-      "helper",
-      "tool",
-      "adoption",
-      "track",
-      "covers",
-      "graded",
-      "review"
+      "scopes"
     ],
     "importance_tier": "important",
     "status": "planned",
@@ -154,27 +164,40 @@
         "source": "derived"
       },
       {
+        "name": "description:",
+        "kind": "quoted",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
         "name": "the Modus",
         "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "P0",
-        "kind": "heading",
-        "path": "checklist.md",
+        "name": "trigger_phrases:   -",
+        "kind": "quoted",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "P1",
-        "kind": "heading",
-        "path": "checklist.md",
+        "name": "-",
+        "kind": "quoted",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "importance_tier:",
+        "kind": "quoted",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase designs and scopes `memory_review` as the first new helper tool in the adoption track. It covers graded review semantics, integration with the existing FSRS scheduler, and its relationship to current validation and confidence flows. It does not ship `memory_due` or default write-on-read reinforcement.",
     "created_at": "2026-04-13T04:56:07.087Z",
-    "last_save_at": "2026-04-13T16:22:53.761Z",
+    "last_save_at": "2026-04-26T09:17:16.089Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

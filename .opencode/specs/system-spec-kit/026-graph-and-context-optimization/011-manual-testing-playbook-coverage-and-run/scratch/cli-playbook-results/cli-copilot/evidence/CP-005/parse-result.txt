@@ -1,0 +1,3 @@
+EXTRACTED: 'def reverse_words(s: str) -> str:\n    """Return the input string with its words in reverse order."""\n    return " ".join(reversed(s.split()))\n'
+FUNCS: ['reverse_words']
+AST_OK=1

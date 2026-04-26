@@ -10,7 +10,7 @@ audited_post_018: true
 
 The embedding retry orchestrator runs background batch retries for memories with failed embedding generation, using cache dedup and progressive backoff.
 
-Creating a numerical fingerprint for each memory requires calling an external service that can sometimes be unavailable. When that service fails, the memory is saved without a fingerprint and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your memories from being fully searchable.
+Creating a numerical fingerprint (embedding) for each spec-doc record requires calling an external service that can sometimes be unavailable. When that service fails, the record is saved without an embedding and queued for a retry. A background worker periodically picks up these queued items and tries again. This way, a temporary service outage does not permanently prevent your indexed continuity from being fully searchable.
 
 ---
 

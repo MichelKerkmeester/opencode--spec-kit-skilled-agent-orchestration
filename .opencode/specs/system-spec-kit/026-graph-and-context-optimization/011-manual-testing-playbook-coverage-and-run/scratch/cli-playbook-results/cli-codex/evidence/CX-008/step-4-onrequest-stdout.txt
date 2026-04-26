@@ -1,0 +1,8 @@
+error: unexpected argument '--ask-for-approval' found
+
+  tip: to pass '--ask-for-approval' as a value, use '-- --ask-for-approval'
+
+Usage: codex exec [OPTIONS] [PROMPT]
+       codex exec [OPTIONS] <COMMAND> [ARGS]
+
+For more information, try '--help'.

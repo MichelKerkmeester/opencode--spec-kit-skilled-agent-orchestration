@@ -1,0 +1,125 @@
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/context.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/debug.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-research.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-agent.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-prompt.md: Invalid agent definition: Missing mandatory YAML frontmatter. Agent Markdown files MUST start with YAML frontmatter enclosed in triple-dashes "---" (e.g., ---
+name: my-agent
+---).Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/orchestrate.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/ultra-think.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/write.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'MCP issues detected. Run /mcp list for status.Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 9b31f1ea-a85f-4cb9-900a-a231d11bd777 (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 0 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (0 chars) for session 9b31f1ea-a85f-4cb9-900a-a231d11bd777
+Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 9b31f1ea-a85f-4cb9-900a-a231d11bd777 (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 50 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (320 chars) for session 9b31f1ea-a85f-4cb9-900a-a231d11bd777
+{
+  "session_id": "9b31f1ea-a85f-4cb9-900a-a231d11bd777",
+  "response": "The current official Node.js Active LTS major version is Node.js 24, as supported until April 2028 (source: https://eosl.date).",
+  "stats": {
+    "models": {
+      "gemini-3.1-pro-preview": {
+        "api": {
+          "totalRequests": 2,
+          "totalErrors": 0,
+          "totalLatencyMs": 9468
+        },
+        "tokens": {
+          "input": 26879,
+          "prompt": 50629,
+          "candidates": 55,
+          "total": 51141,
+          "cached": 23750,
+          "thoughts": 457,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 2,
+            "totalErrors": 0,
+            "totalLatencyMs": 9468,
+            "tokens": {
+              "input": 26879,
+              "prompt": 50629,
+              "candidates": 55,
+              "total": 51141,
+              "cached": 23750,
+              "thoughts": 457,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3-flash-preview": {
+        "api": {
+          "totalRequests": 1,
+          "totalErrors": 0,
+          "totalLatencyMs": 9104
+        },
+        "tokens": {
+          "input": 20084,
+          "prompt": 20084,
+          "candidates": 153,
+          "total": 21744,
+          "cached": 0,
+          "thoughts": 1507,
+          "tool": 0
+        },
+        "roles": {
+          "utility_tool": {
+            "totalRequests": 1,
+            "totalErrors": 0,
+            "totalLatencyMs": 9104,
+            "tokens": {
+              "input": 20084,
+              "prompt": 20084,
+              "candidates": 153,
+              "total": 21744,
+              "cached": 0,
+              "thoughts": 1507,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 1,
+      "totalSuccess": 1,
+      "totalFail": 0,
+      "totalDurationMs": 9134,
+      "totalDecisions": {
+        "accept": 1,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "google_web_search": {
+          "count": 1,
+          "success": 1,
+          "fail": 0,
+          "durationMs": 9134,
+          "decisions": {
+            "accept": 1,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}Created execution plan for SessionEnd: 1 hook(s) to execute in parallel
+Expanding hook command: bash -c 'cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-stop.js' (cwd: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public)
+Hook system message: INFO [speckit-hook:gemini:session-stop] SessionEnd hook fired for session 9b31f1ea-a85f-4cb9-900a-a231d11bd777 (reason: exit)
+INFO [speckit-hook:gemini:session-stop] Session 9b31f1ea-a85f-4cb9-900a-a231d11bd777 stop processing complete
+Hook execution for SessionEnd: 1 hooks executed successfully, total duration: 165ms

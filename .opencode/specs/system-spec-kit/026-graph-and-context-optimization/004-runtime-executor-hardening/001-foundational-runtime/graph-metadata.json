@@ -212,7 +212,7 @@
     ],
     "causal_summary": "Phase 017 (27 `fix(016)` commits landing P0-A/B/C/D, S1-S7 structural refactors, M3-M13 medium refactors, 21 quick wins, 34 test migrations) completed the remediation scoped from the 50-iteration Phase 016 research. A 7-iteration deep-review then meta-audited Phase 017 and produced verdict **CONDITIONAL** with 10 P1 + 18 P2 findings across 3 clusters (A scope-normalization, B canonical-save-surface, C ASCII-only sanitization) + 4 standalone P1s. A subsequent 7-iteration deep-research segment (iters 51-57) extended that inventory by 14 new findings (9 P1, 5 P2), confirmed 3 compound-hypothesis attack chains, refuted all 5 P2→P1 upgrade candidates, and ruled out P0 escalation under expanded threat models.",
     "created_at": "2026-04-18T14:40:19.024Z",
-    "last_save_at": "2026-04-25T10:34:52.514Z",
+    "last_save_at": "2026-04-26T09:17:15.737Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

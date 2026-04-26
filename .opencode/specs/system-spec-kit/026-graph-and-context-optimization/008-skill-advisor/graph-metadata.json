@@ -184,8 +184,8 @@
         "source": "derived"
       },
       {
-        "name": "Phase 1: Setup",
-        "kind": "heading",
+        "name": "auto",
+        "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
       },
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Skill advisor work was scattered across two phase wrappers (`008-skill-advisor/` for search/routing/graph/smart-router, and parts of `009-hook-parity/` for hook surface, daemon unification, plugin hardening, standards alignment, and hook improvements). The split made it hard to see the advisor system as one coherent surface and forced cross-wrapper navigation when reasoning about advisor changes.",
     "created_at": "2026-04-21T13:00:00Z",
-    "last_save_at": "2026-04-25T11:59:33.781Z",
+    "last_save_at": "2026-04-26T09:17:15.775Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

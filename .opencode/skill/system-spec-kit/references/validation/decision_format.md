@@ -278,7 +278,7 @@ For Level 3+ spec folders, maintain a decision log table in decision-record.md:
 |-----------|------|----------|------------|-------------|------------------|
 | 2024-01-15 10:30 | SPEC FOLDER | PASS | HIGH | 0.20 | User selected A: specs/077 |
 | 2024-01-15 10:31 | SKILL ROUTING | PASS | HIGH | 0.15 | system-spec-kit (0.85) |
-| 2024-01-15 10:32 | MEMORY CONTEXT | PASS | HIGH | 0.25 | Loaded 3 memories |
+| 2024-01-15 10:32 | MEMORY CONTEXT | PASS | HIGH | 0.25 | Loaded 3 spec-doc records (e.g., spec.md from packet 026-…, decision-record.md from packet 023-…) |
 | 2024-01-15 14:45 | COMPLETION | BLOCK | MEDIUM | 0.40 | P0-3 not verified |
 | 2024-01-15 14:50 | COMPLETION | PASS | HIGH | 0.15 | All P0 items [x] |
 ```

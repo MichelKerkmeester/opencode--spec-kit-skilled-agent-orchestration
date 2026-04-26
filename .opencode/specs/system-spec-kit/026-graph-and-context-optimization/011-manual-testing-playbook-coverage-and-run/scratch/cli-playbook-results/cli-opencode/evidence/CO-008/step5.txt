@@ -1,0 +1,2 @@
+ls: /tmp/co-008-fake: No such file or directory
+no actual opencode run was attempted

@@ -1,0 +1,1460 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import { createManualPlaybookFixture } from './fixtures/manual-playbook-fixture.js';
+import { isMainModule } from '../lib/esm-entry.js';
+const cwd = process.cwd();
+const SKILL_ROOT = cwd.endsWith(path.join('.opencode', 'skill', 'system-spec-kit'))
+    ? cwd
+    : path.resolve(cwd, '.opencode/skill/system-spec-kit');
+const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..');
+const PLAYBOOK_ROOT = path.join(SKILL_ROOT, 'manual_testing_playbook');
+const DEFAULT_REPORT_ROOT = path.resolve(REPO_ROOT, '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor/015-full-playbook-execution/scratch/manual-playbook-results');
+const SPEC_REPORT_ROOT = process.env.MANUAL_PLAYBOOK_REPORT_ROOT
+    ? path.resolve(process.env.MANUAL_PLAYBOOK_REPORT_ROOT)
+    : DEFAULT_REPORT_ROOT;
+const RESULTS_JSON = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.json');
+const RESULTS_JSONL = path.join(SPEC_REPORT_ROOT, 'manual-playbook-results.jsonl');
+function logProgress(message) {
+    process.stdout.write(`${message}\n`);
+}
+function safeJson(value) {
+    try {
+        return JSON.stringify(value);
+    }
+    catch (error) {
+        return `[unserializable:${error instanceof Error ? error.message : String(error)}]`;
+    }
+}
+function normalizeText(value) {
+    return value
+        .toLowerCase()
+        .replace(/[`*_()[\]{}:"',.]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+}
+function splitExpectedSignals(value) {
+    return value
+        .split(/[;]+/)
+        .map((entry) => entry.trim())
+        .filter(Boolean);
+}
+function splitArgumentSegments(source) {
+    const segments = [];
+    let current = '';
+    let quote = null;
+    let depth = 0;
+    for (let index = 0; index < source.length; index += 1) {
+        const char = source[index];
+        const prev = index > 0 ? source[index - 1] : '';
+        if ((char === '"' || char === "'") && prev !== '\\') {
+            if (quote === char) {
+                quote = null;
+            }
+            else if (quote === null) {
+                quote = char;
+            }
+            current += char;
+            continue;
+        }
+        if (quote === null) {
+            if (char === '(' || char === '[' || char === '{') {
+                depth += 1;
+            }
+            else if (char === ')' || char === ']' || char === '}') {
+                depth = Math.max(0, depth - 1);
+            }
+            else if (char === ',' && depth === 0) {
+                const trimmed = current.trim();
+                if (trimmed.length > 0) {
+                    segments.push(trimmed);
+                }
+                current = '';
+                continue;
+            }
+        }
+        current += char;
+    }
+    const trimmed = current.trim();
+    if (trimmed.length > 0) {
+        segments.push(trimmed);
+    }
+    return segments;
+}
+function coerceScalarValue(rawValue, fixture, runtimeState) {
+    const substituted = substitutePlaceholders(rawValue.trim(), fixture, runtimeState);
+    if (/^".*"$/.test(substituted) || /^'.*'$/.test(substituted)) {
+        return substituted.slice(1, -1);
+    }
+    if (/^-?\d+$/.test(substituted)) {
+        return Number.parseInt(substituted, 10);
+    }
+    if (/^-?\d+\.\d+$/.test(substituted)) {
+        return Number.parseFloat(substituted);
+    }
+    if (substituted === 'true')
+        return true;
+    if (substituted === 'false')
+        return false;
+    if (substituted === 'null')
+        return null;
+    return substituted;
+}
+function queryFromPrompt(prompt) {
+    const sentence = prompt
+        .replace(/^Search\s+/i, '')
+        .replace(/^Delete\s+/i, '')
+        .split(/[.]/)[0]
+        .trim();
+    return sentence.length > 0 ? sentence : prompt.trim();
+}
+function parsedStepArgs(step, definition, fixture, runtimeState) {
+    if (!step.argSource || step.argSource.trim().length === 0) {
+        return {};
+    }
+    const trimmed = step.argSource.trim();
+    if (trimmed.startsWith('{')) {
+        return parseObjectLiteralArgs(trimmed, fixture, runtimeState);
+    }
+    const parsed = {};
+    for (const segment of splitArgumentSegments(trimmed)) {
+        const colonIndex = segment.indexOf(':');
+        if (colonIndex > 0) {
+            const key = segment.slice(0, colonIndex).trim();
+            const rawValue = segment.slice(colonIndex + 1).trim();
+            parsed[key] = coerceScalarValue(rawValue, fixture, runtimeState);
+            continue;
+        }
+        const normalized = normalizeText(segment);
+        if (normalized === 'query') {
+            parsed.query = queryFromPrompt(definition.exactPrompt);
+            continue;
+        }
+        if (normalized === 'id') {
+            parsed.id = fixture.primaryMemoryId ?? fixture.secondaryMemoryId ?? fixture.tertiaryMemoryId ?? 1;
+            continue;
+        }
+        if (normalized === 'old title') {
+            parsed.query = runtimeState.lastDeletedTitle ?? 'deleted memory title';
+            continue;
+        }
+    }
+    return parsed;
+}
+function readScenarioFiles() {
+    const files = [];
+    const stack = [PLAYBOOK_ROOT];
+    while (stack.length > 0) {
+        const current = stack.pop();
+        if (!current)
+            continue;
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const full = path.join(current, entry.name);
+            if (entry.isDirectory()) {
+                if (entry.name === '_deprecated')
+                    continue;
+                stack.push(full);
+                continue;
+            }
+            if (entry.isFile() && entry.name.endsWith('.md') && entry.name !== 'manual_testing_playbook.md') {
+                files.push(full);
+            }
+        }
+    }
+    return files.sort();
+}
+function matchesScenarioFilter(filterPattern, scenario) {
+    return scenario.scenarioId.includes(filterPattern)
+        || scenario.filePath.includes(filterPattern)
+        || scenario.category.includes(filterPattern);
+}
+function parsedScenario(definition) {
+    return {
+        kind: 'parsed',
+        definition,
+    };
+}
+function failedScenario(failure) {
+    return {
+        kind: 'failed',
+        failure,
+    };
+}
+function isParsedScenario(result) {
+    return result.kind === 'parsed';
+}
+function createParseFailureReason(text, missingParts) {
+    const scope = /## 3\. TEST EXECUTION/.test(text)
+        ? 'TEST EXECUTION section'
+        : 'scenario file';
+    return `Missing ${missingParts.join(' and ')} in ${scope}.`;
+}
+// T-MPR-RUN-02 / R42-003: Extract explicit `automatable: true|false` metadata from
+// scenario frontmatter or SOURCE METADATA section. Returns:
+//   - { automatable: true|false, reason?: string } when the field is present
+//   - { automatable: null } when absent (callers fall back to legacy inference)
+//
+// Matches both frontmatter (`automatable: false` between --- fences) and the
+// `- automatable: false` bullet convention used under `## 5. SOURCE METADATA`.
+// When present, `automatable_reason` (or `- automatable_reason: ...`) supplies
+// the human-readable explanation.
+export function parseAutomatableMetadata(text) {
+    const frontmatterMatch = text.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
+    const frontmatter = frontmatterMatch?.[1] ?? '';
+    const sourceMetadataMatch = text.match(/## 5\. SOURCE METADATA\s*([\s\S]*?)(?:\n## |\n---\s*\n|$)/);
+    const sourceMetadata = sourceMetadataMatch?.[1] ?? '';
+    const searchSpaces = [frontmatter, sourceMetadata];
+    let automatable = null;
+    let reason = null;
+    for (const scope of searchSpaces) {
+        if (!scope)
+            continue;
+        // Accept both `automatable: false` and `- automatable: false` conventions.
+        const valueMatch = scope.match(/^\s*-?\s*automatable\s*:\s*(true|false)\s*$/im);
+        if (valueMatch && automatable === null) {
+            automatable = valueMatch[1].toLowerCase() === 'true';
+        }
+        const reasonMatch = scope.match(/^\s*-?\s*automatable[_-]reason\s*:\s*["']?(.+?)["']?\s*$/im);
+        if (reasonMatch && reason === null) {
+            reason = reasonMatch[1].trim();
+        }
+    }
+    return { automatable, reason };
+}
+export function parseScenarioDefinition(filePath) {
+    const text = fs.readFileSync(filePath, 'utf8');
+    const match = text.match(/## 3\. TEST EXECUTION[\s\S]*?\n\|[^\n]+\n\|[-| :]+\n(\|.+\|)\n/);
+    const relative = path.relative(PLAYBOOK_ROOT, filePath);
+    const category = relative.split(path.sep)[0] ?? 'unknown';
+    const scenarioIdMatch = text.match(/- Playbook ID:\s*([A-Z]+-\d+[A-Za-z0-9-]*|\d+[A-Za-z0-9-]*)/);
+    const titleMatch = text.match(/^#\s+(.+)$/m);
+    const scenarioId = scenarioIdMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
+    const featureName = titleMatch?.[1]?.trim() ?? path.basename(filePath, '.md');
+    // T-MPR-RUN-02 / R42-003: read explicit automatable metadata once; propagated into
+    // every ScenarioDefinition regardless of which fallback branch produces it.
+    const { automatable, reason: automatableReason } = parseAutomatableMetadata(text);
+    const parseProseDefinition = () => {
+        const executionMatch = text.match(/## 3\. TEST EXECUTION\s*([\s\S]*?)(?:\n---\s*\n|\n## 4\.)/);
+        const executionBlock = executionMatch?.[1] ?? text;
+        const promptMatches = [
+            ...executionBlock.matchAll(/### Prompt\s*```[\r\n]+([\s\S]*?)```/g),
+            ...executionBlock.matchAll(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:)/g),
+            ...text.matchAll(/- Prompt:\s*`?([\s\S]*?)`?(?:\n- Commands:|\n- Expected(?: signals)?:|\n\n---)/g),
+        ];
+        const commandsMatches = [
+            ...executionBlock.matchAll(/### Commands\s*([\s\S]*?)(?=\n### Expected|\n### Evidence|\n### Pass \/ Fail|\n### Failure Triage|\n---\s*\n|\n## 4\.)/g),
+            ...executionBlock.matchAll(/- Commands:\s*([\s\S]*?)(?:\n- Expected(?: signals)?:|\n####\s+)/g),
+        ];
+        const expectedMatches = [
+            ...executionBlock.matchAll(/### Expected\s*([\s\S]*?)(?=\n### Evidence|\n### Pass \/ Fail|\n### Failure Triage|\n---\s*\n|\n## 4\.)/g),
+            ...executionBlock.matchAll(/- Expected(?: signals)?:\s*([\s\S]*?)\n- (?:Evidence|Pass\/fail):/g),
+        ];
+        if (promptMatches.length === 0 || expectedMatches.length === 0) {
+            const missingParts = [];
+            if (promptMatches.length === 0) {
+                missingParts.push('Prompt block');
+            }
+            if (expectedMatches.length === 0) {
+                missingParts.push('Expected block');
+            }
+            return failedScenario({
+                filePath: relative,
+                category,
+                scenarioId,
+                reason: createParseFailureReason(text, missingParts),
+            });
+        }
+        const prompt = promptMatches
+            .map((matchItem) => matchItem[1].trim().replace(/^`|`$/g, ''))
+            .filter(Boolean)
+            .join('\n\n');
+        const commands = commandsMatches
+            .map((matchItem) => matchItem[1].trim())
+            .filter(Boolean)
+            .join('\n');
+        const expected = expectedMatches
+            .map((matchItem) => matchItem[1].trim())
+            .filter(Boolean)
+            .join('; ');
+        return parsedScenario({
+            filePath: relative,
+            category,
+            scenarioId,
+            featureName,
+            exactPrompt: prompt,
+            commandSequence: commands,
+            expectedSignals: expected,
+            automatable,
+            automatableReason,
+        });
+    };
+    if (!match) {
+        return parseProseDefinition();
+    }
+    const row = match[1];
+    const columns = row.split('|').slice(1, -1).map((value) => value.trim());
+    if (columns.length < 9) {
+        return parseProseDefinition();
+    }
+    return parsedScenario({
+        filePath: relative,
+        category,
+        scenarioId: columns[0],
+        featureName: columns[1],
+        exactPrompt: columns[3].replace(/^`|`$/g, ''),
+        commandSequence: columns[4],
+        expectedSignals: columns[5],
+        automatable,
+        automatableReason,
+    });
+}
+export function discoverScenarioDefinitions(filePaths, filterPattern) {
+    const parseResults = filePaths.map(parseScenarioDefinition);
+    const scopedResults = filterPattern
+        ? parseResults.filter((result) => matchesScenarioFilter(filterPattern, isParsedScenario(result) ? result.definition : result.failure))
+        : parseResults;
+    const definitions = scopedResults
+        .filter(isParsedScenario)
+        .map((result) => result.definition);
+    const parseFailures = scopedResults
+        .filter((result) => result.kind === 'failed')
+        .map((result) => result.failure);
+    return {
+        activeScenarioCount: scopedResults.length,
+        parsedScenarioCount: definitions.length,
+        definitions,
+        parseFailures,
+    };
+}
+export function formatScenarioParseWarning(parseFailures) {
+    if (parseFailures.length === 0) {
+        return [];
+    }
+    return [
+        `Gate I runner WARNING [R45-004]: ${parseFailures.length} active scenario file(s) failed to parse and will count as FAIL for coverage.`,
+        ...parseFailures.map((failure) => ` - ${failure.filePath}: ${failure.reason}`),
+    ];
+}
+function scenarioResultFromParseFailure(failure) {
+    return {
+        scenarioId: failure.scenarioId,
+        category: failure.category,
+        status: 'FAIL',
+        filePath: failure.filePath,
+        prompt: '',
+        expectedSignals: [],
+        matchedSignals: [],
+        unmatchedSignals: [],
+        handlerCalls: [],
+        evidence: [failure.reason],
+        steps: [],
+        reason: `Scenario definition parse failed: ${failure.reason}`,
+    };
+}
+function preclassifiedUnautomatableReason(definition) {
+    // T-MPR-RUN-02 / R42-003: explicit scenario metadata wins over filename-substring
+    // inference. When `automatable: false` is declared, honor it (with its reason when
+    // supplied). When `automatable: true` is declared, shortcut past the legacy
+    // filename fallbacks below.
+    if (definition.automatable === false) {
+        return definition.automatableReason
+            ?? 'Scenario metadata declares automatable: false; runner honors explicit opt-out.';
+    }
+    if (definition.automatable === true) {
+        return null;
+    }
+    if (definition.scenarioId.startsWith('M-')) {
+        return 'Prose-first operator workflow requires manual/source cross-checks beyond direct handler output.';
+    }
+    if (definition.category === '19--feature-flag-reference') {
+        return 'Flag-reference scenarios require catalog/manual-guidance cross-checks beyond direct handler responses.';
+    }
+    if (definition.filePath.includes('05--lifecycle/017-')
+        || definition.filePath.includes('05--lifecycle/097-')
+        || definition.filePath.includes('05--lifecycle/114-')
+        || definition.filePath.includes('05--lifecycle/144-')) {
+        return 'Lifecycle scenario requires checkpoint/async-worker barrier orchestration or restart semantics beyond this direct-handler runner.';
+    }
+    if (definition.filePath.includes('07--evaluation/026-')
+        || definition.filePath.includes('07--evaluation/027-')) {
+        return 'Evaluation scenario depends on production-like eval DB provenance or dashboard ordering checks outside the ephemeral fixture contract.';
+    }
+    if (definition.filePath.includes('08--bug-fixes-and-data-integrity/002-')) {
+        return 'Chunk-collapse validation requires multi-chunk seeding and collapse-stage inspection beyond the direct handler contract.';
+    }
+    if (definition.filePath.includes('12--query-intelligence/161-')) {
+        return 'LLM reformulation validation requires external LLM/cache inspection beyond this direct-handler runner.';
+    }
+    if (definition.filePath.includes('02--mutation/191-')) {
+        return 'Shared-memory admin lifecycle scenario uses actor-hint narrative flows that need manual scope verification beyond direct handler output.';
+    }
+    if (definition.filePath.includes('17--governance/123-')) {
+        return 'Governance rollout scenario requires actor-scoped state transitions and race checks beyond direct handler automation.';
+    }
+    if (definition.filePath.includes('02--mutation/192-')) {
+        return 'Scenario explicitly requires direct library invocation rather than MCP handler dispatch.';
+    }
+    if (definition.filePath.includes('02--mutation/101-')) {
+        return 'Scenario validates MCP schema enforcement, which raw handler calls do not exercise.';
+    }
+    if (definition.filePath.includes('22--context-preservation-and-code-graph/261-')
+        || definition.filePath.includes('22--context-preservation-and-code-graph/264-')) {
+        return 'Scenario depends on MCP transport hooks, session priming envelopes, or populated code-graph routing beyond raw handler calls.';
+    }
+    return null;
+}
+function parseSteps(commandSequence) {
+    const classifyStep = (rawStep) => {
+        const raw = rawStep.trim();
+        if (raw.startsWith('/')) {
+            return { raw, kind: 'slash' };
+        }
+        if (/^(cd|bash|npx|node|rg|sed|tail|find)\b/.test(raw)) {
+            return { raw, kind: 'shell' };
+        }
+        const normalized = raw
+            .replace(/^Call\s+/i, '')
+            .replace(/\s+via MCP\b.*$/i, '')
+            .replace(/\s+again\b.*$/i, '')
+            .trim();
+        const toolMatch = normalized.match(/^([a-z_]+)\(([\s\S]*)\)$/);
+        if (toolMatch) {
+            return {
+                raw: normalized,
+                kind: 'tool',
+                toolName: toolMatch[1],
+                argSource: toolMatch[2].trim(),
+            };
+        }
+        return { raw, kind: 'narrative' };
+    };
+    const fromBackticks = [...commandSequence.matchAll(/`([^`]+)`/g)].map((match) => match[1].trim());
+    if (fromBackticks.length > 0) {
+        return fromBackticks.map(classifyStep);
+    }
+    const lineSteps = commandSequence
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+        .flatMap((line) => line.split(/\s*;\s*(?:then\s+)?/i))
+        .map((line) => line.replace(/^\d+\.\s*/, '').replace(/^-\s*/, '').trim())
+        .filter(Boolean);
+    if (lineSteps.length === 0) {
+        return [{
+                raw: commandSequence.trim(),
+                kind: commandSequence.trim().length > 0 ? 'narrative' : 'shell',
+            }];
+    }
+    return lineSteps.map(classifyStep);
+}
+// T-MPR-RUN-04 / R46-003: `lastJobId` originates from prior handler payloads and is
+// interpolated into tokenized object-literal source before parsing. Even though the
+// typed parser rejects quoted-string breakouts (see parseObjectLiteralArgs test
+// coverage), we sanitize at the substitution boundary as defense in depth: only a
+// nanoid-shaped `job_<12 alphanumerics>` (and safe extensions) is accepted. Anything
+// else is dropped so a malicious payload cannot reach the tokenizer at all.
+const JOB_ID_ALLOWLIST = /^[A-Za-z0-9_-]{1,64}$/;
+export function sanitizeJobIdForSubstitution(rawJobId) {
+    if (typeof rawJobId !== 'string')
+        return null;
+    if (rawJobId.length === 0)
+        return null;
+    return JOB_ID_ALLOWLIST.test(rawJobId) ? rawJobId : null;
+}
+function substitutePlaceholders(value, fixture, runtimeState) {
+    let next = value;
+    for (const [needle, replacement] of Object.entries(fixture.placeholders)) {
+        next = next.split(needle).join(replacement);
+    }
+    if (runtimeState.lastJobId && next.includes('<job-id>')) {
+        const sanitized = sanitizeJobIdForSubstitution(runtimeState.lastJobId);
+        if (sanitized === null) {
+            // T-MPR-RUN-04 / R46-003: adversarial lastJobId must never reach the
+            // tokenizer. Throw a structured error so the scenario fails visibly
+            // instead of silently swallowing a dangerous payload.
+            throw new Error('Playbook injection defense: runtimeState.lastJobId contains characters '
+                + 'outside the nanoid allowlist ([A-Za-z0-9_-]{1,64}). Refusing to '
+                + 'substitute potentially adversarial payload into playbook source.');
+        }
+        next = next.split('<job-id>').join(sanitized);
+    }
+    return next;
+}
+function readEscapedCharacter(source, indexRef) {
+    if (indexRef.value >= source.length) {
+        throw new Error('Unterminated escape sequence in playbook object literal');
+    }
+    const char = source[indexRef.value];
+    indexRef.value += 1;
+    switch (char) {
+        case '"':
+        case "'":
+        case '\\':
+        case '/':
+            return char;
+        case 'b':
+            return '\b';
+        case 'f':
+            return '\f';
+        case 'n':
+            return '\n';
+        case 'r':
+            return '\r';
+        case 't':
+            return '\t';
+        case 'u': {
+            const hex = source.slice(indexRef.value, indexRef.value + 4);
+            if (!/^[0-9a-fA-F]{4}$/.test(hex)) {
+                throw new Error(`Invalid unicode escape "\\u${hex}" in playbook object literal`);
+            }
+            indexRef.value += 4;
+            return String.fromCharCode(Number.parseInt(hex, 16));
+        }
+        default:
+            return char;
+    }
+}
+function parseStringLiteral(source, indexRef) {
+    const quote = source[indexRef.value];
+    indexRef.value += 1;
+    let parsed = '';
+    while (indexRef.value < source.length) {
+        const char = source[indexRef.value];
+        indexRef.value += 1;
+        if (char === quote) {
+            return parsed;
+        }
+        if (char === '\\') {
+            parsed += readEscapedCharacter(source, indexRef);
+            continue;
+        }
+        parsed += char;
+    }
+    throw new Error('Unterminated string in playbook object literal');
+}
+function skipObjectWhitespace(source, indexRef) {
+    while (indexRef.value < source.length && /\s/.test(source[indexRef.value])) {
+        indexRef.value += 1;
+    }
+}
+function parseIdentifierToken(source, indexRef) {
+    const start = indexRef.value;
+    while (indexRef.value < source.length && /[A-Za-z0-9_$-]/.test(source[indexRef.value])) {
+        indexRef.value += 1;
+    }
+    if (indexRef.value === start) {
+        const nextChar = source[indexRef.value] ?? 'EOF';
+        throw new Error(`Unexpected token "${nextChar}" in playbook object literal`);
+    }
+    return source.slice(start, indexRef.value);
+}
+function parseNumberLiteral(source, indexRef) {
+    const start = indexRef.value;
+    while (indexRef.value < source.length && /[-+0-9.eE]/.test(source[indexRef.value])) {
+        indexRef.value += 1;
+    }
+    const raw = source.slice(start, indexRef.value);
+    const parsed = Number(raw);
+    if (!Number.isFinite(parsed)) {
+        throw new Error(`Invalid numeric literal "${raw}" in playbook object literal`);
+    }
+    return parsed;
+}
+function parseObjectValue(source, indexRef) {
+    skipObjectWhitespace(source, indexRef);
+    const nextChar = source[indexRef.value];
+    if (!nextChar) {
+        throw new Error('Unexpected end of playbook object literal');
+    }
+    if (nextChar === '{') {
+        return parseObjectEntries(source, indexRef);
+    }
+    if (nextChar === '[') {
+        indexRef.value += 1;
+        const items = [];
+        skipObjectWhitespace(source, indexRef);
+        if (source[indexRef.value] === ']') {
+            indexRef.value += 1;
+            return items;
+        }
+        while (indexRef.value < source.length) {
+            items.push(parseObjectValue(source, indexRef));
+            skipObjectWhitespace(source, indexRef);
+            const delimiter = source[indexRef.value];
+            if (delimiter === ',') {
+                indexRef.value += 1;
+                skipObjectWhitespace(source, indexRef);
+                if (source[indexRef.value] === ']') {
+                    indexRef.value += 1;
+                    return items;
+                }
+                continue;
+            }
+            if (delimiter === ']') {
+                indexRef.value += 1;
+                return items;
+            }
+            throw new Error(`Expected "," or "]" in playbook array literal, received "${delimiter ?? 'EOF'}"`);
+        }
+        throw new Error('Unterminated array in playbook object literal');
+    }
+    if (nextChar === '"' || nextChar === "'") {
+        return parseStringLiteral(source, indexRef);
+    }
+    if (/[0-9-]/.test(nextChar)) {
+        return parseNumberLiteral(source, indexRef);
+    }
+    const identifier = parseIdentifierToken(source, indexRef);
+    if (identifier === 'true')
+        return true;
+    if (identifier === 'false')
+        return false;
+    if (identifier === 'null')
+        return null;
+    return identifier;
+}
+function parseObjectEntries(source, indexRef) {
+    if (source[indexRef.value] !== '{') {
+        throw new Error('Object-literal parsing must begin with "{"');
+    }
+    indexRef.value += 1;
+    const parsed = {};
+    skipObjectWhitespace(source, indexRef);
+    if (source[indexRef.value] === '}') {
+        indexRef.value += 1;
+        return parsed;
+    }
+    while (indexRef.value < source.length) {
+        skipObjectWhitespace(source, indexRef);
+        const key = source[indexRef.value] === '"' || source[indexRef.value] === "'"
+            ? parseStringLiteral(source, indexRef)
+            : parseIdentifierToken(source, indexRef);
+        skipObjectWhitespace(source, indexRef);
+        if (source[indexRef.value] !== ':') {
+            throw new Error(`Shorthand object properties are not supported in playbook args: "${key}"`);
+        }
+        indexRef.value += 1;
+        parsed[key] = parseObjectValue(source, indexRef);
+        skipObjectWhitespace(source, indexRef);
+        const delimiter = source[indexRef.value];
+        if (delimiter === ',') {
+            indexRef.value += 1;
+            skipObjectWhitespace(source, indexRef);
+            if (source[indexRef.value] === '}') {
+                indexRef.value += 1;
+                return parsed;
+            }
+            continue;
+        }
+        if (delimiter === '}') {
+            indexRef.value += 1;
+            return parsed;
+        }
+        throw new Error(`Expected "," or "}" in playbook object literal, received "${delimiter ?? 'EOF'}"`);
+    }
+    throw new Error('Unterminated object in playbook literal');
+}
+export function parseObjectLiteralArgs(source, fixture, runtimeState) {
+    const replaced = substitutePlaceholders(source, fixture, runtimeState);
+    const indexRef = { value: 0 };
+    const parsed = parseObjectEntries(replaced, indexRef);
+    skipObjectWhitespace(replaced, indexRef);
+    if (indexRef.value !== replaced.length) {
+        throw new Error(`Unexpected trailing content in playbook object literal: ${replaced.slice(indexRef.value)}`);
+    }
+    return parsed;
+}
+function defaultArgsForTool(toolName, fixture, runtimeState, definition) {
+    const taskIdMatch = definition.exactPrompt.match(/(?:preflight|postflight) for ([a-z0-9-]+)/i);
+    const inferredTaskId = taskIdMatch?.[1] ?? 'T1';
+    switch (toolName) {
+        case 'memory_context':
+            return {
+                input: queryFromPrompt(definition.exactPrompt),
+                mode: 'focused',
+                specFolder: fixture.targetSpecFolder,
+                includeContent: true,
+            };
+        case 'memory_search':
+            return {
+                query: queryFromPrompt(definition.exactPrompt),
+                limit: 10,
+                specFolder: fixture.targetSpecFolder,
+            };
+        case 'memory_match_triggers':
+            return {
+                prompt: queryFromPrompt(definition.exactPrompt),
+                specFolder: fixture.targetSpecFolder,
+            };
+        case 'memory_quick_search':
+            return {
+                query: queryFromPrompt(definition.exactPrompt),
+                specFolder: fixture.targetSpecFolder,
+            };
+        case 'memory_save':
+            return {
+                filePath: fixture.routedSaveFile,
+                asyncEmbedding: true,
+                skipPreflight: true,
+            };
+        case 'memory_update':
+            return {
+                id: fixture.primaryMemoryId,
+                title: 'Checkpoint Rollback Runbook Updated',
+                triggerPhrases: ['checkpoint rollback', 'clearExisting transaction rollback'],
+                allowPartialUpdate: true,
+            };
+        case 'memory_delete':
+            return {
+                id: fixture.tertiaryMemoryId ?? fixture.primaryMemoryId,
+                confirm: true,
+            };
+        case 'memory_bulk_delete':
+            return {
+                tier: 'temporary',
+                specFolder: fixture.sandboxSpecFolder,
+                confirm: true,
+            };
+        case 'memory_validate':
+            return {
+                id: fixture.primaryMemoryId,
+                wasUseful: true,
+                resultRank: 1,
+                totalResultsShown: 5,
+            };
+        case 'memory_list':
+            return {
+                specFolder: fixture.targetSpecFolder,
+                limit: 10,
+            };
+        case 'memory_stats':
+            return { limit: 10 };
+        case 'memory_health':
+            return { reportMode: 'full' };
+        case 'memory_index_scan':
+            return {
+                specFolder: fixture.targetSpecFolder,
+                includeSpecDocs: true,
+                force: false,
+            };
+        case 'checkpoint_create':
+            runtimeState.lastCheckpointName = fixture.defaultCheckpointName;
+            return {
+                name: fixture.defaultCheckpointName,
+                specFolder: fixture.sandboxSpecFolder,
+            };
+        case 'checkpoint_list':
+            return { specFolder: fixture.sandboxSpecFolder };
+        case 'checkpoint_restore':
+            return {
+                name: runtimeState.lastCheckpointName ?? fixture.defaultCheckpointName,
+                clearExisting: false,
+            };
+        case 'checkpoint_delete':
+            return {
+                name: runtimeState.lastCheckpointName ?? fixture.defaultCheckpointName,
+                confirmName: runtimeState.lastCheckpointName ?? fixture.defaultCheckpointName,
+            };
+        case 'memory_ingest_start':
+            return { paths: fixture.ingestFiles };
+        case 'memory_ingest_status':
+        case 'memory_ingest_cancel':
+            return { jobId: runtimeState.lastJobId ?? 'job_missing' };
+        case 'task_preflight':
+            return {
+                specFolder: fixture.targetSpecFolder,
+                taskId: inferredTaskId,
+                knowledgeScore: 70,
+                contextScore: 72,
+                uncertaintyScore: 28,
+            };
+        case 'task_postflight':
+            return {
+                specFolder: fixture.targetSpecFolder,
+                taskId: inferredTaskId,
+                knowledgeScore: 85,
+                contextScore: 84,
+                uncertaintyScore: 18,
+            };
+        case 'memory_get_learning_history':
+            return { specFolder: fixture.targetSpecFolder, includeSummary: true };
+        case 'memory_drift_why':
+            return {
+                memoryId: String(fixture.secondaryMemoryId ?? fixture.primaryMemoryId),
+                direction: 'both',
+                maxDepth: 4,
+            };
+        case 'memory_causal_link':
+            return {
+                sourceId: String(fixture.primaryMemoryId),
+                targetId: String(fixture.secondaryMemoryId),
+                relation: 'supports',
+                strength: 0.8,
+            };
+        case 'memory_causal_stats':
+            return {};
+        case 'memory_causal_unlink':
+            return { edgeId: fixture.edgeId ?? 1 };
+        case 'eval_run_ablation':
+            return {
+                mode: 'ablation',
+                includeFormattedReport: true,
+                storeResults: false,
+            };
+        case 'eval_reporting_dashboard':
+            return { format: 'json', limit: 2 };
+        case 'session_health':
+            return {};
+        case 'session_resume':
+        case 'session_bootstrap':
+            return { specFolder: fixture.targetSpecFolder };
+        default:
+            return {};
+    }
+}
+const TOOL_ARG_SCHEMAS = {
+    memory_ingest_start: { required: ['paths'], optional: ['specFolder'] },
+    memory_ingest_status: { required: ['jobId'], optional: [] },
+    memory_ingest_cancel: { required: ['jobId'], optional: [] },
+    memory_delete: { required: ['id'], optional: ['confirm'] },
+    memory_bulk_delete: { required: ['confirm'], optional: ['tier', 'specFolder', 'scope'] },
+    memory_update: {
+        required: ['id'],
+        optional: [
+            'title', 'content', 'triggerPhrases', 'tags', 'tier', 'importance',
+            'allowPartialUpdate', 'notes', 'description',
+        ],
+    },
+    memory_validate: {
+        required: ['id'],
+        optional: ['wasUseful', 'resultRank', 'totalResultsShown', 'queryUsed'],
+    },
+    memory_causal_link: {
+        required: ['sourceId', 'targetId', 'relation'],
+        optional: ['strength', 'evidence', 'notes'],
+    },
+    memory_causal_unlink: { required: ['edgeId'], optional: [] },
+    memory_drift_why: { required: ['memoryId'], optional: ['direction', 'maxDepth'] },
+};
+export function validateToolArgsSchema(toolName, args) {
+    const schema = TOOL_ARG_SCHEMAS[toolName];
+    if (!schema)
+        return;
+    for (const key of schema.required) {
+        if (!(key in args) || args[key] === undefined || args[key] === null) {
+            throw new Error(`Playbook schema violation for ${toolName}: required argument "${key}" is missing. `
+                + 'Shorthand or untyped placeholders must be rewritten as explicit `key: value` form.');
+        }
+    }
+    const allowedKeys = new Set([...schema.required, ...schema.optional]);
+    for (const key of Object.keys(args)) {
+        if (!allowedKeys.has(key)) {
+            throw new Error(`Playbook schema violation for ${toolName}: unknown argument "${key}". `
+                + 'Add it to TOOL_ARG_SCHEMAS or remove it from the scenario command.');
+        }
+    }
+}
+function coerceToolArgs(step, definition, fixture, runtimeState) {
+    if (step.kind !== 'tool' || !step.toolName) {
+        return {};
+    }
+    let args;
+    if (!step.argSource || step.argSource.trim().length === 0) {
+        args = defaultArgsForTool(step.toolName, fixture, runtimeState, definition);
+    }
+    else if (step.argSource.trim().startsWith('{')) {
+        args = parsedStepArgs(step, definition, fixture, runtimeState);
+    }
+    else {
+        args = {
+            ...defaultArgsForTool(step.toolName, fixture, runtimeState, definition),
+            ...parsedStepArgs(step, definition, fixture, runtimeState),
+        };
+    }
+    // T-MPR-RUN-05 / R50-002: validate against known-tool schema so shorthand drift
+    // (`{jobId}` vs `{ jobId:"..." }`) cannot silently pass through with partial args.
+    validateToolArgsSchema(step.toolName, args);
+    if ((step.toolName === 'memory_context' || step.toolName === 'memory_search') && typeof args.sessionId === 'string') {
+        const candidate = args.sessionId.trim();
+        const isUuidLike = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(candidate);
+        if (!isUuidLike || /^(?:ex\d+|gate-i-[\w-]+|session-id)$/i.test(candidate)) {
+            if (runtimeState.lastSessionId) {
+                args.sessionId = runtimeState.lastSessionId;
+            }
+            else {
+                delete args.sessionId;
+            }
+        }
+    }
+    return args;
+}
+function handlerNameForTool(toolName) {
+    const passthrough = {
+        session_resume: 'handleSessionResume',
+        session_bootstrap: 'handleSessionBootstrap',
+        session_health: 'handleSessionHealth',
+        memory_context: 'handleMemoryContext',
+        memory_search: 'handleMemorySearch',
+        memory_match_triggers: 'handleMemoryMatchTriggers',
+        memory_save: 'handleMemorySave',
+        memory_update: 'handleMemoryUpdate',
+        memory_delete: 'handleMemoryDelete',
+        memory_bulk_delete: 'handleMemoryBulkDelete',
+        memory_validate: 'handleMemoryValidate',
+        memory_list: 'handleMemoryList',
+        memory_stats: 'handleMemoryStats',
+        memory_health: 'handleMemoryHealth',
+        memory_index_scan: 'handleMemoryIndexScan',
+        checkpoint_create: 'handleCheckpointCreate',
+        checkpoint_list: 'handleCheckpointList',
+        checkpoint_restore: 'handleCheckpointRestore',
+        checkpoint_delete: 'handleCheckpointDelete',
+        memory_ingest_start: 'handleMemoryIngestStart',
+        memory_ingest_status: 'handleMemoryIngestStatus',
+        memory_ingest_cancel: 'handleMemoryIngestCancel',
+        task_preflight: 'handleTaskPreflight',
+        task_postflight: 'handleTaskPostflight',
+        memory_get_learning_history: 'handleGetLearningHistory',
+        memory_drift_why: 'handleMemoryDriftWhy',
+        memory_causal_link: 'handleMemoryCausalLink',
+        memory_causal_stats: 'handleMemoryCausalStats',
+        memory_causal_unlink: 'handleMemoryCausalUnlink',
+        eval_run_ablation: 'handleEvalRunAblation',
+        eval_reporting_dashboard: 'handleEvalReportingDashboard',
+    };
+    return passthrough[toolName] ?? null;
+}
+async function invokeTool(toolName, args, handlersModule) {
+    if (toolName === 'memory_quick_search') {
+        const quickSearch = handlersModule.handleMemorySearch;
+        if (typeof quickSearch !== 'function') {
+            return {
+                success: false,
+                payload: null,
+                evidence: [],
+                facts: [],
+                error: 'No direct handler export for tool "memory_quick_search"',
+            };
+        }
+        const payload = await quickSearch({
+            query: typeof args.query === 'string' ? args.query : 'authentication',
+            limit: typeof args.limit === 'number' ? args.limit : 10,
+            specFolder: typeof args.specFolder === 'string' ? args.specFolder : undefined,
+        });
+        const summary = summarizeResponse(toolName, payload);
+        return {
+            success: true,
+            payload,
+            evidence: summary.evidence,
+            facts: [...summary.facts, 'quick search fast path'],
+        };
+    }
+    const handlerName = handlerNameForTool(toolName);
+    if (!handlerName || typeof handlersModule[handlerName] !== 'function') {
+        return {
+            success: false,
+            payload: null,
+            evidence: [],
+            facts: [],
+            error: `No direct handler export for tool "${toolName}"`,
+        };
+    }
+    const fn = handlersModule[handlerName];
+    const payload = await fn(args);
+    const summary = summarizeResponse(toolName, payload);
+    return {
+        success: summary.success,
+        payload,
+        evidence: summary.evidence,
+        facts: summary.facts,
+        error: summary.success ? undefined : summary.error,
+    };
+}
+function extractEnvelope(payload) {
+    if (!payload || typeof payload !== 'object') {
+        return null;
+    }
+    const maybeResponse = payload;
+    const text = maybeResponse.content?.[0]?.text;
+    if (typeof text !== 'string') {
+        return null;
+    }
+    try {
+        return JSON.parse(text);
+    }
+    catch {
+        return { summary: text };
+    }
+}
+function summarizeResponse(toolName, payload) {
+    const envelope = extractEnvelope(payload);
+    const evidence = [safeJson(envelope ?? payload).slice(0, 2000)];
+    const facts = [];
+    let success = true;
+    let error;
+    const record = envelope ?? {};
+    const data = typeof record.data === 'object' && record.data !== null ? record.data : record;
+    const contentText = typeof record.summary === 'string' ? record.summary : '';
+    const isError = Boolean(payload?.isError || record.error || data.error);
+    if (isError) {
+        success = false;
+        error = String(record.error ?? data.error ?? 'unknown error');
+    }
+    const results = Array.isArray(data.results) ? data.results : [];
+    const hints = Array.isArray(data.hints) ? data.hints : [];
+    const count = typeof data.count === 'number' ? data.count : null;
+    const summaryText = typeof record.summary === 'string' ? record.summary : '';
+    if (!success) {
+        facts.push(`error: ${error ?? 'unknown error'}`);
+    }
+    else {
+        switch (toolName) {
+            case 'memory_context':
+                if (results.length > 0 || contentText.length > 0) {
+                    facts.push('relevant bounded context returned', 'no empty response', 'context results returned');
+                }
+                break;
+            case 'memory_search':
+            case 'memory_quick_search': {
+                if (results.length > 0 || count !== null) {
+                    facts.push('searchable result appears', 'results returned', 'relevant context returned');
+                }
+                if (count === 0 || /no matching memories found/i.test(summaryText)) {
+                    facts.push('no matching memories found', 'absent from retrieval', 'deleted item absent from retrieval');
+                }
+                const pipelineMetadata = typeof data.pipelineMetadata === 'object' && data.pipelineMetadata !== null
+                    ? data.pipelineMetadata
+                    : null;
+                if (pipelineMetadata?.stage1 && pipelineMetadata?.stage2 && pipelineMetadata?.stage3 && pipelineMetadata?.stage4) {
+                    facts.push('stable final scoring', 'no invariant errors', 'stage metadata present');
+                }
+                if (typeof data.lexicalPath === 'string') {
+                    facts.push('lexical path reported');
+                }
+                break;
+            }
+            case 'memory_match_triggers':
+                facts.push('trigger phrases evaluated');
+                if (results.length > 0 || Array.isArray(data.matches)) {
+                    facts.push('trigger match returned');
+                }
+                break;
+            case 'memory_save':
+                facts.push('save action reported');
+                if (typeof data.id === 'number' || typeof data.message === 'string') {
+                    facts.push('indexed successfully');
+                }
+                break;
+            case 'memory_update':
+                facts.push('metadata updated');
+                break;
+            case 'memory_delete':
+                facts.push('delete completed');
+                break;
+            case 'memory_bulk_delete':
+                facts.push('delete completed', 'scoped deletion count');
+                break;
+            case 'memory_validate':
+                facts.push('validation feedback recorded', 'confidence promotion metadata updates');
+                if (typeof data.confidence === 'number') {
+                    facts.push('confidence updated');
+                }
+                if (typeof data.promotionEligible === 'boolean' || typeof data.autoPromotion === 'object') {
+                    facts.push('promotion metadata updated');
+                }
+                break;
+            case 'memory_list':
+                facts.push('paginated list and totals');
+                break;
+            case 'memory_stats':
+                facts.push('counts present', 'totals displayed');
+                break;
+            case 'memory_health':
+                facts.push('health diagnostics returned');
+                break;
+            case 'memory_index_scan':
+                facts.push('workspace indexing completed');
+                break;
+            case 'checkpoint_create':
+                facts.push('checkpoint created');
+                break;
+            case 'checkpoint_list':
+                facts.push('available restore points displayed', 'checkpoint present');
+                break;
+            case 'checkpoint_restore':
+                facts.push('checkpoint restored');
+                break;
+            case 'checkpoint_delete':
+                facts.push('checkpoint deleted');
+                break;
+            case 'memory_ingest_start':
+                facts.push('ingest job created');
+                break;
+            case 'memory_ingest_status':
+                facts.push('ingest status returned');
+                break;
+            case 'memory_ingest_cancel':
+                facts.push('ingest job cancelled');
+                break;
+            case 'task_preflight':
+                facts.push('baseline record created');
+                break;
+            case 'task_postflight':
+                facts.push('delta learning record saved');
+                break;
+            case 'memory_get_learning_history':
+                facts.push('historical entries returned');
+                break;
+            case 'memory_drift_why':
+                facts.push('chain includes expected relations');
+                break;
+            case 'memory_causal_link':
+                facts.push('causal edge created');
+                break;
+            case 'memory_causal_stats':
+                facts.push('coverage and edge metrics present');
+                break;
+            case 'memory_causal_unlink':
+                facts.push('causal edge removed');
+                break;
+            case 'eval_run_ablation':
+                facts.push('ablation report returned');
+                break;
+            case 'eval_reporting_dashboard':
+                facts.push('dashboard report returned');
+                break;
+            case 'session_resume':
+                facts.push('resume payload returned', 'session recovered');
+                break;
+            case 'session_bootstrap':
+                facts.push('bootstrap payload returned');
+                break;
+            case 'session_health':
+                facts.push('session health returned');
+                break;
+            default:
+                break;
+        }
+    }
+    if (hints.length > 0) {
+        facts.push('hints present');
+    }
+    return { success, error, evidence, facts };
+}
+function captureRuntimeStateFromPayload(payload, runtimeState) {
+    const envelope = extractEnvelope(payload);
+    const data = typeof envelope?.data === 'object' && envelope?.data !== null ? envelope.data : envelope;
+    if (!data) {
+        return;
+    }
+    const sessionCandidate = typeof data.effectiveSessionId === 'string'
+        ? data.effectiveSessionId
+        : typeof data.sessionId === 'string'
+            ? data.sessionId
+            : null;
+    if (sessionCandidate) {
+        runtimeState.lastSessionId = sessionCandidate;
+    }
+    if (typeof data.cursor === 'string') {
+        runtimeState.lastCursor = data.cursor;
+    }
+}
+function captureRuntimeStateFromStep(toolName, args, fixture, runtimeState) {
+    if (toolName === 'checkpoint_create' && typeof args.name === 'string') {
+        runtimeState.lastCheckpointName = args.name;
+    }
+    if (toolName === 'memory_delete' && typeof args.id === 'number') {
+        runtimeState.lastDeletedId = args.id;
+        runtimeState.lastDeletedTitle = fixture.seededMemories.find((row) => row.id === args.id)?.title ?? null;
+    }
+}
+function expectedSignalMatches(signal, factCorpus) {
+    const normalizedSignal = normalizeText(signal);
+    if (!normalizedSignal) {
+        return true;
+    }
+    if (factCorpus.includes(normalizedSignal)) {
+        return true;
+    }
+    const tokens = normalizedSignal
+        .split(' ')
+        .filter((token) => token.length > 3 && !['with', 'from', 'that', 'then', 'when', 'only'].includes(token));
+    if (tokens.length === 0) {
+        return true;
+    }
+    const matched = tokens.filter((token) => factCorpus.includes(token));
+    return matched.length >= Math.ceil(tokens.length / 2);
+}
+async function executeScenario(definition, fixture, handlers) {
+    const runtimeState = {
+        lastJobId: null,
+        lastCursor: null,
+        lastCheckpointName: fixture.defaultCheckpointName,
+        lastSessionId: null,
+        lastDeletedId: null,
+        lastDeletedTitle: null,
+    };
+    const expectedSignals = splitExpectedSignals(definition.expectedSignals);
+    const handlerCalls = [];
+    const evidence = [];
+    const steps = [];
+    try {
+        const preclassifiedReason = preclassifiedUnautomatableReason(definition);
+        if (preclassifiedReason) {
+            return {
+                scenarioId: definition.scenarioId,
+                category: definition.category,
+                status: 'UNAUTOMATABLE',
+                filePath: definition.filePath,
+                prompt: definition.exactPrompt,
+                expectedSignals,
+                matchedSignals: [],
+                unmatchedSignals: expectedSignals,
+                handlerCalls,
+                evidence: [preclassifiedReason],
+                steps,
+                reason: preclassifiedReason,
+            };
+        }
+        const parsedSteps = parseSteps(definition.commandSequence);
+        if (parsedSteps.every((step) => step.kind === 'shell' || step.kind === 'narrative')) {
+            return {
+                scenarioId: definition.scenarioId,
+                category: definition.category,
+                status: 'UNAUTOMATABLE',
+                filePath: definition.filePath,
+                prompt: definition.exactPrompt,
+                expectedSignals,
+                matchedSignals: [],
+                unmatchedSignals: expectedSignals,
+                handlerCalls,
+                evidence: [`Command sequence is not expressible as direct handler calls: ${definition.commandSequence}`],
+                steps,
+                reason: 'Scenario depends on shell commands, source inspection, or narrative-only validation.',
+            };
+        }
+        for (const step of parsedSteps) {
+            if (step.kind === 'shell' || step.kind === 'narrative') {
+                steps.push({
+                    step: step.raw,
+                    kind: step.kind,
+                    success: false,
+                    facts: [],
+                    evidence: [],
+                    error: 'Not a direct handler call',
+                });
+                return {
+                    scenarioId: definition.scenarioId,
+                    category: definition.category,
+                    status: 'UNAUTOMATABLE',
+                    filePath: definition.filePath,
+                    prompt: definition.exactPrompt,
+                    expectedSignals,
+                    matchedSignals: [],
+                    unmatchedSignals: expectedSignals,
+                    handlerCalls,
+                    evidence: [`Stopped at non-handler step: ${step.raw}`],
+                    steps,
+                    reason: 'Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only.',
+                };
+            }
+            if (step.kind === 'slash') {
+                if (step.raw.startsWith('/spec_kit:resume')) {
+                    const args = { specFolder: fixture.targetSpecFolder };
+                    handlerCalls.push({ name: 'session_resume', args });
+                    const outcome = await invokeTool('session_resume', args, handlers);
+                    steps.push({
+                        step: step.raw,
+                        kind: step.kind,
+                        handler: { name: 'session_resume', args },
+                        success: outcome.success,
+                        facts: outcome.facts,
+                        evidence: outcome.evidence,
+                        error: outcome.error,
+                    });
+                    evidence.push(...outcome.evidence);
+                    captureRuntimeStateFromPayload(outcome.payload, runtimeState);
+                    if (!outcome.success) {
+                        return {
+                            scenarioId: definition.scenarioId,
+                            category: definition.category,
+                            status: 'FAIL',
+                            filePath: definition.filePath,
+                            prompt: definition.exactPrompt,
+                            expectedSignals,
+                            matchedSignals: [],
+                            unmatchedSignals: expectedSignals,
+                            handlerCalls,
+                            evidence,
+                            steps,
+                            reason: outcome.error,
+                        };
+                    }
+                    continue;
+                }
+                return {
+                    scenarioId: definition.scenarioId,
+                    category: definition.category,
+                    status: 'UNAUTOMATABLE',
+                    filePath: definition.filePath,
+                    prompt: definition.exactPrompt,
+                    expectedSignals,
+                    matchedSignals: [],
+                    unmatchedSignals: expectedSignals,
+                    handlerCalls,
+                    evidence: [`Slash-command routing requires command-layer orchestration: ${step.raw}`],
+                    steps,
+                    reason: 'Slash command does not have a direct handler-equivalent contract in this runner.',
+                };
+            }
+            const toolName = step.toolName;
+            const args = coerceToolArgs(step, definition, fixture, runtimeState);
+            handlerCalls.push({ name: toolName, args });
+            const outcome = await invokeTool(toolName, args, handlers);
+            steps.push({
+                step: step.raw,
+                kind: step.kind,
+                handler: { name: toolName, args },
+                success: outcome.success,
+                facts: outcome.facts,
+                evidence: outcome.evidence,
+                error: outcome.error,
+            });
+            evidence.push(...outcome.evidence);
+            captureRuntimeStateFromPayload(outcome.payload, runtimeState);
+            captureRuntimeStateFromStep(toolName, args, fixture, runtimeState);
+            if (toolName === 'memory_ingest_start' && outcome.success) {
+                const envelope = extractEnvelope(outcome.payload);
+                const data = typeof envelope?.data === 'object' && envelope?.data !== null ? envelope.data : {};
+                if (typeof data.jobId === 'string') {
+                    runtimeState.lastJobId = data.jobId;
+                }
+            }
+            if (!outcome.success) {
+                return {
+                    scenarioId: definition.scenarioId,
+                    category: definition.category,
+                    status: toolName === 'eval_run_ablation' ? 'UNAUTOMATABLE' : 'FAIL',
+                    filePath: definition.filePath,
+                    prompt: definition.exactPrompt,
+                    expectedSignals,
+                    matchedSignals: [],
+                    unmatchedSignals: expectedSignals,
+                    handlerCalls,
+                    evidence,
+                    steps,
+                    reason: outcome.error ?? `Tool ${toolName} failed`,
+                };
+            }
+        }
+        const factCorpus = normalizeText(steps.flatMap((step) => step.facts).concat(evidence).join(' '));
+        const matchedSignals = expectedSignals.filter((signal) => expectedSignalMatches(signal, factCorpus));
+        const unmatchedSignals = expectedSignals.filter((signal) => !expectedSignalMatches(signal, factCorpus));
+        const minimumMatches = expectedSignals.length === 0 ? 0 : Math.max(1, Math.ceil(expectedSignals.length / 2));
+        const status = matchedSignals.length >= minimumMatches ? 'PASS' : 'FAIL';
+        return {
+            scenarioId: definition.scenarioId,
+            category: definition.category,
+            status,
+            filePath: definition.filePath,
+            prompt: definition.exactPrompt,
+            expectedSignals,
+            matchedSignals,
+            unmatchedSignals,
+            handlerCalls,
+            evidence,
+            steps,
+            reason: status === 'FAIL'
+                ? `Matched ${matchedSignals.length}/${expectedSignals.length} expected signals`
+                : undefined,
+        };
+    }
+    catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        return {
+            scenarioId: definition.scenarioId,
+            category: definition.category,
+            status: 'FAIL',
+            filePath: definition.filePath,
+            prompt: definition.exactPrompt,
+            expectedSignals,
+            matchedSignals: [],
+            unmatchedSignals: expectedSignals,
+            handlerCalls,
+            evidence: [...evidence, `Unhandled scenario exception: ${message}`],
+            steps,
+            reason: message,
+        };
+    }
+    finally {
+        // Shared fixture cleanup is handled once at the end of the run.
+    }
+}
+function writeResults(results) {
+    fs.mkdirSync(SPEC_REPORT_ROOT, { recursive: true });
+    fs.writeFileSync(RESULTS_JSON, JSON.stringify(results, null, 2));
+    fs.writeFileSync(RESULTS_JSONL, results.map((result) => JSON.stringify(result)).join('\n'));
+    const byCategory = new Map();
+    for (const result of results) {
+        const rows = byCategory.get(result.category) ?? [];
+        rows.push(result);
+        byCategory.set(result.category, rows);
+    }
+    for (const [category, rows] of byCategory) {
+        fs.writeFileSync(path.join(SPEC_REPORT_ROOT, `${category}.json`), JSON.stringify(rows, null, 2));
+    }
+}
+async function main() {
+    const scenarioFiles = readScenarioFiles();
+    const filterPattern = process.env.MANUAL_PLAYBOOK_FILTER;
+    const discovery = discoverScenarioDefinitions(scenarioFiles, filterPattern);
+    const definitions = discovery.definitions;
+    logProgress(`Gate I runner: discovered ${discovery.activeScenarioCount} active scenario files; parsed ${discovery.parsedScenarioCount}.`
+        + (filterPattern ? ` Filter=${filterPattern}` : ''));
+    if (discovery.activeScenarioCount !== discovery.parsedScenarioCount) {
+        for (const warningLine of formatScenarioParseWarning(discovery.parseFailures)) {
+            logProgress(warningLine);
+        }
+    }
+    const fixture = await createManualPlaybookFixture('gate-i-manual-playbook');
+    const handlers = await import('../../mcp_server/dist/handlers/index.js');
+    const results = discovery.parseFailures.map(scenarioResultFromParseFailure);
+    try {
+        for (const definition of definitions) {
+            await fixture.reset();
+            if (definition.commandSequence.includes('task_postflight')
+                && typeof handlers.handleTaskPreflight === 'function') {
+                await handlers.handleTaskPreflight(defaultArgsForTool('task_preflight', fixture, {
+                    lastJobId: null,
+                    lastCursor: null,
+                    lastCheckpointName: fixture.defaultCheckpointName,
+                    lastSessionId: null,
+                    lastDeletedId: null,
+                    lastDeletedTitle: null,
+                }, definition));
+            }
+            logProgress(`Running ${definition.scenarioId} (${definition.category})`);
+            const result = await executeScenario(definition, fixture, handlers);
+            results.push(result);
+            writeResults(results);
+            logProgress(` -> ${result.status}${result.reason ? `: ${result.reason}` : ''}`);
+        }
+    }
+    finally {
+        fixture.cleanup();
+    }
+    writeResults(results);
+    const totals = results.reduce((acc, result) => {
+        acc.total += 1;
+        acc[result.status] += 1;
+        return acc;
+    }, { total: 0, PASS: 0, FAIL: 0, SKIP: 0, UNAUTOMATABLE: 0 });
+    logProgress(`Gate I runner complete: total=${totals.total} pass=${totals.PASS} fail=${totals.FAIL} skip=${totals.SKIP} unautomatable=${totals.UNAUTOMATABLE}`);
+    logProgress(`Results written to ${RESULTS_JSON}`);
+}
+if (isMainModule(import.meta.url)) {
+    main().catch((error) => {
+        const message = error instanceof Error ? `${error.message}\n${error.stack ?? ''}` : String(error);
+        process.stderr.write(`${message}\n`);
+        process.exitCode = 1;
+    });
+}

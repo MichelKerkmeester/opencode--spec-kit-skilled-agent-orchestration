@@ -195,7 +195,7 @@ function detectContradiction(
 }
 
 /**
- * Evaluate whether a new memory should create, update, or supersede existing.
+ * Evaluate whether a new spec-doc record should create, update, or supersede an existing record.
  */
 function evaluateMemory(
   newContentHash: string,
@@ -280,7 +280,7 @@ function evaluateMemory(
     }
   } else if (similarity >= THRESHOLD.MEDIUM_MATCH) {
     action = ACTION.CREATE_LINKED;
-    reason = `Medium match, creating linked memory (similarity: ${(similarity * 100).toFixed(1)}%)`;
+    reason = `Medium match, creating linked spec-doc record (similarity: ${(similarity * 100).toFixed(1)}%)`;
   } else {
     action = ACTION.CREATE;
     reason = `Low/no match (similarity: ${(similarity * 100).toFixed(1)}%)`;

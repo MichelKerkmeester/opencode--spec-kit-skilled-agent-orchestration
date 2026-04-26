@@ -26,13 +26,13 @@
     "hook",
     "system"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.027Z",
+  "lastUpdated": "2026-04-26T07:03:47.468Z",
   "specId": "001",
   "folderSlug": "cache-warning-hooks",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime"
+    "003-continuity-memory-runtime"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

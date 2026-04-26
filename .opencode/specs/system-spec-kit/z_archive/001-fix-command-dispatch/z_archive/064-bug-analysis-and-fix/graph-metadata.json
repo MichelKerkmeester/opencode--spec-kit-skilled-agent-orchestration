@@ -60,7 +60,7 @@
       ".opencode/command/spec_kit/implement.md",
       ".opencode/command/spec_kit/complete.md",
       ".opencode/command/spec_kit/resume.md",
-      ".opencode/command/spec_kit/handover.md"
+      ".opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json"
     ],
     "entities": [
       {
@@ -210,7 +210,8 @@
     ],
     "causal_summary": "Complete feature specification for addressing ~231 identified issues across the system-spec-kit skill and spec_kit commands.",
     "created_at": "2026-04-12T09:02:53.537Z",
-    "last_save_at": "2026-04-13T16:22:53.560Z",
+    "last_save_at": "2026-04-26T09:17:15.939Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

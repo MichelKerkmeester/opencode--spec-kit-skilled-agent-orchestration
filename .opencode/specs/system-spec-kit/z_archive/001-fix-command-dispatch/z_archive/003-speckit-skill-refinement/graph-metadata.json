@@ -173,7 +173,8 @@
     ],
     "causal_summary": "Comprehensively improve the `workflows-spec-kit` skill by reducing redundancy, improving structure, updating accuracy, enhancing clarity, and simplifying content while maintaining completeness.",
     "created_at": "2026-04-12T09:02:53.507Z",
-    "last_save_at": "2026-04-13T16:22:53.450Z",
+    "last_save_at": "2026-04-26T09:17:15.850Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

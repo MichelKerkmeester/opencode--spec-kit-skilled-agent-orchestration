@@ -1,0 +1,1 @@
+codex exec --search --model gpt-5.5 --sandbox read-only -c model_reasoning_effort=high -c service_tier=fast Search\ the\ web\ for\ the\ latest\ stable\ Express.js\ minor\ release\ as\ of\ April\ 2026\ and\ cite\ at\ least\ one\ official\ source\ URL.\ Return\ a\ one-paragraph\ summary\ plus\ the\ cited\ URL\(s\)\ at\ the\ bottom\ of\ the\ response. 

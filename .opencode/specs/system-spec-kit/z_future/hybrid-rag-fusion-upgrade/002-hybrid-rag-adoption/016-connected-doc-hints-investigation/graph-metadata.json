@@ -10,20 +10,33 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "ystem",
+      "spec",
+      "kit",
+      "future",
+      "hybrid",
+      "016",
+      "connected",
+      "plan",
+      "stem",
+      "tasks",
+      "rag",
+      "checklist"
+    ],
     "key_topics": [
-      "sub-phase",
-      "investigates",
-      "whether",
-      "modus-style",
-      "connected-doc",
-      "hints",
-      "exist",
-      "public",
-      "only",
-      "low-authority",
-      "appendix",
-      "search"
+      "ystem",
+      "spec",
+      "kit",
+      "future",
+      "hybrid",
+      "016",
+      "connected",
+      "plan",
+      "stem",
+      "tasks",
+      "rag",
+      "checklist"
     ],
     "importance_tier": "important",
     "status": "planned",
@@ -173,21 +186,22 @@
         "source": "derived"
       },
       {
-        "name": "a",
-        "kind": "key_phrase",
-        "path": "checklist.md",
+        "name": "description:",
+        "kind": "quoted",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "P0",
-        "kind": "heading",
-        "path": "checklist.md",
+        "name": "trigger_phrases:   -",
+        "kind": "quoted",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
     "causal_summary": "This sub-phase investigates whether Modus-style connected-doc hints should exist in Public only as a low-authority appendix to search results. It focuses on hint labeling, trigger thresholds, merge rules, and benchmark design so that any future hint layer stays subordinate to current graph and causal authorities. It does not ship a new result channel.",
     "created_at": "2026-04-13T04:56:07.093Z",
-    "last_save_at": "2026-04-13T16:22:53.786Z",
+    "last_save_at": "2026-04-26T09:17:16.104Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

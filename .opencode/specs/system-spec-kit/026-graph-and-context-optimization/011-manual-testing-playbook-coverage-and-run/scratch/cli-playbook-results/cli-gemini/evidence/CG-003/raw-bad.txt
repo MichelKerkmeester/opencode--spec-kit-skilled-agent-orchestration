@@ -1,0 +1,35 @@
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/context.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/debug.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-research.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-agent.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-prompt.md: Invalid agent definition: Missing mandatory YAML frontmatter. Agent Markdown files MUST start with YAML frontmatter enclosed in triple-dashes "---" (e.g., ---
+name: my-agent
+---).Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/orchestrate.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/ultra-think.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/write.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'MCP issues detected. Run /mcp list for status.Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 54cfd63e-c1a1-4cd1-a422-ff6071db758e (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 0 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (0 chars) for session 54cfd63e-c1a1-4cd1-a422-ff6071db758e
+Error when talking to Gemini API Full report available at: /var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/gemini-client-error-Turn.run-sendMessageStream-2026-04-26T10-30-24-689Z.json ModelNotFoundError: Requested entity was not found.
+    at classifyGoogleError (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:273908:12)
+    at retryWithBackoff (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:274577:31)
+    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)
+    at async GeminiChat.makeApiCallAndProcessStream (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:309884:28)
+    at async GeminiChat.streamWithRetries (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:309727:29)
+    at async Turn.run (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:310214:24)
+    at async GeminiClient.processTurn (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:314287:22)
+    at async GeminiClient.sendMessageStream (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/chunk-2P3YD5SP.js:314400:14)
+    at async file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/gemini.js:9701:26
+    at async main (file:///opt/homebrew/lib/node_modules/@google/gemini-cli/bundle/gemini.js:14721:5) {
+  code: 404
+}
+Created execution plan for SessionEnd: 1 hook(s) to execute in parallel
+Expanding hook command: bash -c 'cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-stop.js' (cwd: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public)
+Hook system message: INFO [speckit-hook:gemini:session-stop] SessionEnd hook fired for session 54cfd63e-c1a1-4cd1-a422-ff6071db758e (reason: exit)
+INFO [speckit-hook:gemini:session-stop] Session 54cfd63e-c1a1-4cd1-a422-ff6071db758e stop processing complete
+Hook execution for SessionEnd: 1 hooks executed successfully, total duration: 100ms
+An unexpected critical error occurred:[object Object]

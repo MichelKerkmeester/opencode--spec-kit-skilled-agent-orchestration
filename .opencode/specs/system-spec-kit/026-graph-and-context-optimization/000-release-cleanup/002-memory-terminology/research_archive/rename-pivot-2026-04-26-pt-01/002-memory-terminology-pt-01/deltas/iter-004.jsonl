@@ -1,0 +1,19 @@
+{"type":"iteration","run":4,"status":"complete","focus":"Q6 Anthropic positioning + Q7 FSRS loanwords","findingsCount":9,"newInfoRatio":0.65,"keyQuestions":["Q6","Q7"],"answeredQuestions":["Q6","Q7"],"focusTrack":"operator-facing-disambiguation-and-cognitive-vocabulary-carve-out","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T07:48:00.000Z"}
+{"type":"node","kind":"FINDING","id":"f-004-1","name":"Zero existing Anthropic / Claude Memory mentions across 8 operator-facing surfaces - greenfield disambiguation","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-2","name":"Top skill README and mcp_server README §1 OVERVIEW tone-anchored for one-line disambiguation insert","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-3","name":"Anthropic callout placement matrix - 3 surfaces (top skill README + mcp_server README + glossary preamble)","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-4","name":"Three callout-text candidates (brief / balanced / defensive) sized to placement audience","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-5","name":"mcp_server/lib/cognitive/ structurally bounded - 11 files self-identifying as cognitive-science layer","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-6","name":"working-memory.ts per-identifier carve-out: Miller's Law / FSRS literature loanwords keep, ~2 conditional on L1 verdict","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-7","name":"fsrs-scheduler.ts per-identifier carve-out: algorithmic constants keep, JSDoc spec-kit-row references rename","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-8","name":"Rest-of-cognitive (8 files) per-file rollup - spreading activation / temporal contiguity / prediction-error keep; ~10 doc-line edits","iteration":4}
+{"type":"node","kind":"FINDING","id":"f-004-9","name":"Net carve-out summary: ~12 KEEP + ~5 CONDITIONAL on L1 + ~10 doc-line clarifications + 2 files no action","iteration":4}
+{"type":"edge","relation":"ANSWERS","sourceId":"f-004-3","targetId":"Q6","id":"e-004-1"}
+{"type":"edge","relation":"ANSWERS","sourceId":"f-004-4","targetId":"Q6","id":"e-004-2"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-1","targetId":"Q6","id":"e-004-3"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-2","targetId":"Q6","id":"e-004-4"}
+{"type":"edge","relation":"ANSWERS","sourceId":"f-004-9","targetId":"Q7","id":"e-004-5"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-5","targetId":"Q7","id":"e-004-6"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-6","targetId":"Q7","id":"e-004-7"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-7","targetId":"Q7","id":"e-004-8"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-004-8","targetId":"Q7","id":"e-004-9"}

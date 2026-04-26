@@ -1,0 +1,9 @@
+total 120
+drwxr-xr-x   8 michelkerkmeester  staff    256 Apr 26 11:20 .
+drwxr-xr-x@ 27 michelkerkmeester  staff    864 Apr 26 09:06 ..
+-rw-r--r--   1 michelkerkmeester  staff  21419 Apr 26 09:01 README.md
+-rw-r--r--   1 michelkerkmeester  staff  28625 Apr 26 11:20 SKILL.md
+drwxr-xr-x   4 michelkerkmeester  staff    128 Apr 26 09:32 assets
+-rw-r--r--   1 michelkerkmeester  staff   4599 Apr 26 09:02 graph-metadata.json
+drwxr-xr-x  12 michelkerkmeester  staff    384 Apr 26 11:36 manual_testing_playbook
+drwxr-xr-x   6 michelkerkmeester  staff    192 Apr 26 09:34 references

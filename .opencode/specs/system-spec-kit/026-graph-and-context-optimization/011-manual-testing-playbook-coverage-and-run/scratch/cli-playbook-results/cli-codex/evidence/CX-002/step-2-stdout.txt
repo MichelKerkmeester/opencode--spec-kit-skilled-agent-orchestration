@@ -1,0 +1,30 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dc954-9d7e-75a2-9299-c536d113a213
+--------
+user
+Explain in two sentences what 'idempotent' means in a REST API context.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+In a REST API, an operation is idempotent if making the same request once or many times leaves the server in the same final state. For example, `PUT /users/123` with the same body should have the same effect repeated, while `POST /orders` usually creates a new order each time and is not idempotent.
+hook: Stop
+hook: Stop Completed
+2026-04-26T10:27:53.314709Z ERROR codex_core::session: failed to record rollout items: thread 019dc954-9d7e-75a2-9299-c536d113a213 not found
+tokens used
+31,027
+In a REST API, an operation is idempotent if making the same request once or many times leaves the server in the same final state. For example, `PUT /users/123` with the same body should have the same effect repeated, while `POST /orders` usually creates a new order each time and is not idempotent.

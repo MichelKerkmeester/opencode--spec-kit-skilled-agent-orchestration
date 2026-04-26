@@ -201,7 +201,8 @@
     ],
     "causal_summary": "Enterprise-scale refinement of the SpecKit template optimization (Spec 073), conducted through multi-agent orchestration with 20+ Opus 4.5 agents executing parallel research, implementation, and verification workstreams. The work delivered comprehensive analysis documents, implemented 5 priority recommendations, and updated 25+ files across the entire skill system, resulting in version bump to v1.9.0.",
     "created_at": "2026-04-12T09:02:53.545Z",
-    "last_save_at": "2026-04-13T16:22:53.594Z",
+    "last_save_at": "2026-04-26T09:17:15.960Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -19,7 +19,10 @@
       "005 intellegix tasks",
       "intellegix research tasks",
       "005 intellegix implementation summary",
-      "intellegix research closeout"
+      "intellegix research closeout",
+      "kit",
+      "future",
+      "agentic"
     ],
     "key_topics": [
       "005",
@@ -175,6 +178,12 @@
         "source": "derived"
       },
       {
+        "name": "Intellegix Code Agent Toolkit",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -184,12 +193,6 @@
         "name": "Research Phase",
         "kind": "proper_noun",
         "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Intellegix Code Agent Toolkit",
-        "kind": "proper_noun",
-        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -207,7 +210,8 @@
     ],
     "causal_summary": "Produce a complete 30-iteration research packet that:",
     "created_at": "2026-04-12T09:02:53.487Z",
-    "last_save_at": "2026-04-13T16:22:53.697Z",
+    "last_save_at": "2026-04-26T09:17:16.051Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

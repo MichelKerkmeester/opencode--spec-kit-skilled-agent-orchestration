@@ -1,0 +1,17 @@
+{"type":"iteration","run":3,"status":"complete","focus":"Q4 parser-fallback + Q5 glossary precedent","findingsCount":8,"newInfoRatio":0.65,"keyQuestions":["Q4","Q5"],"answeredQuestions":["Q4","Q5"],"ruledOut":["Hard-rename _memory.continuity in-frontmatter as primary migration path","Adopting an existing glossary or terminology doc as the rename vocabulary contract","Building a TypeScript AST-aware vocabulary linter as the first enforcement mechanism"],"focusTrack":"migration-and-governance","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T07:36:00.000Z"}
+{"type":"node","kind":"FINDING","id":"f-003-1","name":"5 duplicated CONTINUITY_ANCHOR_ID constants + 1 regex extractor site","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-2","name":"Parser uses js-yaml + plain JS property access; fallback is 6-line change","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-3","name":"resume-ladder.js uses regex-based YAML extractor; highest-cost rename site","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-4","name":"Migration corpus is 1916 files (5.7x spec.md §3 estimate of 501)","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-5","name":"VERDICT parser-fallback dominant; 2-3hr mechanical work + 1hr telemetry","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-6","name":"Zero glossary/terminology/vocabulary docs exist in references/","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-7","name":"validate.sh runs structural validators only; zero terminology enforcement","iteration":3}
+{"type":"node","kind":"FINDING","id":"f-003-8","name":"Glossary scaffolding plan: top-level references/glossary.md + 6-section layer mapping + glossary-drift-lint.ts + DR cross-linking","iteration":3}
+{"type":"edge","relation":"ANSWERS","sourceId":"f-003-5","targetId":"Q4","id":"e-003-1"}
+{"type":"edge","relation":"ANSWERS","sourceId":"f-003-8","targetId":"Q5","id":"e-003-2"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-1","targetId":"Q4","id":"e-003-3"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-2","targetId":"Q4","id":"e-003-4"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-3","targetId":"Q4","id":"e-003-5"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-4","targetId":"Q4","id":"e-003-6"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-6","targetId":"Q5","id":"e-003-7"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-003-7","targetId":"Q5","id":"e-003-8"}

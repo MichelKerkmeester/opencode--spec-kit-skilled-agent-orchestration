@@ -48,7 +48,6 @@
       ".opencode/skill/system-spec-kit/templates/level_3/spec.md",
       ".opencode/specs/system-spec-kit/z_archive/011-upgrade-auto-populate/spec.md",
       "research/research.md",
-      ".opencode/agent/speckit.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
@@ -83,12 +82,6 @@
         "name": "research.md",
         "kind": "doc",
         "path": "research/research.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
@@ -198,11 +191,18 @@
         "kind": "key_phrase",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "correct",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This archived system-spec-kit archive folder captures work related to Anchor Enforcement Automation. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
     "created_at": "2026-04-12T09:02:53.567Z",
-    "last_save_at": "2026-04-13T16:22:53.666Z",
+    "last_save_at": "2026-04-26T09:17:16.024Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

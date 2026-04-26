@@ -15,8 +15,8 @@
       "codex cli hooks",
       "codex startup context",
       "codex advisor brief",
-      "codex UserPromptSubmit",
-      "codex SessionStart",
+      "codex userpromptsubmit",
+      "codex sessionstart",
       "026/009/005",
       "026/009/005 plan",
       "codex hook parity plan",
@@ -49,18 +49,17 @@
       ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts",
       ".opencode/skill/system-spec-kit/mcp_server/tests/codex-user-prompt-submit-hook.vitest.ts",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/implementation-summary.md",
       "decision-record.md",
       "hooks/codex/user-prompt-submit.ts",
       "hooks/codex/session-start.ts",
       "tests/codex-user-prompt-submit-hook.vitest.ts",
       ".opencode/skill/cli-codex/references/hook_contract.md",
-      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/003-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "research/research.md"
     ],
     "entities": [
       {
@@ -136,6 +135,18 @@
         "source": "derived"
       },
       {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -148,15 +159,9 @@
         "source": "derived"
       },
       {
-        "name": "Spec Kit Memory",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Claude Code",
         "kind": "proper_noun",
-        "path": "spec.md",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
@@ -166,7 +171,7 @@
         "source": "derived"
       },
       {
-        "name": "Problem Statement Codex",
+        "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -200,17 +205,11 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "Task Breakdown",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "User-verified on 2026-04-22 that Codex CLI sessions return \"no startup context observed\" and \"no advisor brief observed\" — identical user-visible symptoms to the Copilot CLI gap (sibling phase 004). Root cause is different: **Codex natively supports the hook transport**. The file `~/.codex/hooks.json` already registers `SessionStart`, `UserPromptSubmit`, and `Stop` hooks — but only wires Superset's `notify.sh` (notification script), not Spec Kit Memory's advisor/context emitter.",
     "created_at": "2026-04-22T06:39:13.790Z",
-    "last_save_at": "2026-04-23T13:55:57.301Z",
+    "last_save_at": "2026-04-26T09:17:15.809Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -219,7 +218,8 @@
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "research/research.md"
     ]
   }
 }

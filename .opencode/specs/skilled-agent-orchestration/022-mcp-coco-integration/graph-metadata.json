@@ -47,7 +47,6 @@
       ".opencode/skill/mcp-coco-index/scripts/common.sh",
       ".opencode/skill/mcp-coco-index/scripts/doctor.sh",
       ".opencode/skill/mcp-coco-index/scripts/ensure_ready.sh",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       ".opencode/skill/mcp-coco-index/references/cross_cli_playbook.md",
       ".opencode/skill/mcp-coco-index/references/downstream_adoption_checklist.md",
       "research/research.md",
@@ -60,7 +59,8 @@
       "tasks.md",
       "checklist.md",
       "scratch/cross-cli-auto-usage-test-results.md",
-      ".cocoindex_code/target_sqlite.db"
+      ".cocoindex_code/target_sqlite.db",
+      "implementation-summary.md"
     ],
     "entities": [
       {
@@ -97,12 +97,6 @@
         "name": "ensure_ready.sh",
         "kind": "script",
         "path": ".opencode/skill/mcp-coco-index/scripts/ensure_ready.sh",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -184,6 +178,12 @@
         "source": "derived"
       },
       {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -210,7 +210,8 @@
     ],
     "causal_summary": "OpenCode had no semantic code search capability. All code exploration relied on Grep (exact/regex text patterns), Glob (file path patterns), and Read (full file retrieval). The @context agent had to re-discover code structure every session with no persistent index and no way to query code by intent or concept. Searching for \"find authentication middleware\" with Grep required knowing the exact identifiers; with no semantic layer, fuzzy or conceptual queries returned zero results.",
     "created_at": "2026-04-12T09:02:50.170Z",
-    "last_save_at": "2026-04-18T14:39:00.289Z",
+    "last_save_at": "2026-04-26T09:17:15.149Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

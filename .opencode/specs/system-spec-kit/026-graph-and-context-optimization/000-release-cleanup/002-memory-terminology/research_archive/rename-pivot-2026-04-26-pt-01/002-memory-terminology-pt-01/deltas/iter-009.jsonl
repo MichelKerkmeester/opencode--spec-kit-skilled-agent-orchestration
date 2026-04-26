@@ -1,0 +1,11 @@
+{"type":"iteration","run":9,"status":"insight","focus":"Edge case content drafts","findingsCount":5,"newInfoRatio":0.15,"keyQuestions":[],"answeredQuestions":[],"focusTrack":"edge-case-content-prep","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T08:48:00.000Z"}
+{"type":"node","kind":"FINDING","id":"f-009-1","name":"LegacyMemoryNameTelemetry payload schema with 7 required + 3 optional fields and per-tier severity","iteration":9}
+{"type":"node","kind":"FINDING","id":"f-009-2","name":"PR1 dual-fixture parser test content with 3 vitest assertions including legacy/new equivalence","iteration":9}
+{"type":"node","kind":"FINDING","id":"f-009-3","name":"glossary-drift-lint.ts 4 typed regex rules (TOOL_NAME_DRIFT / MEMORY_ID_CANARY / FRONTMATTER_KEY_DRIFT / SLASH_COMMAND_DRIFT) with per-rule allowlists","iteration":9}
+{"type":"node","kind":"FINDING","id":"f-009-4","name":"Mixed-mode warning CLI output with 4 sub-modes (warn/info/error/skip) referencing glossary §3","iteration":9}
+{"type":"node","kind":"FINDING","id":"f-009-5","name":"triad-parity-check.sh 4 failure modes including --no-verify audit-log warn-posture","iteration":9}
+{"type":"edge","relation":"INFORMS","sourceId":"f-009-1","targetId":"R2","id":"e-009-1"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-009-2","targetId":"R1","id":"e-009-2"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-009-3","targetId":"R5","id":"e-009-3"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-009-4","targetId":"R3","id":"e-009-4"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-009-5","targetId":"R4","id":"e-009-5"}

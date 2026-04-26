@@ -15,7 +15,14 @@
       "review research folder convention",
       "review at spec root",
       "no nested review folders",
-      "consolidate review folders"
+      "consolidate review folders",
+      "plan",
+      "010",
+      "root",
+      "killed",
+      "agent",
+      "orchestration",
+      "042"
     ],
     "key_topics": [
       "root",
@@ -28,8 +35,8 @@
       "nested",
       "folders",
       "consolidate",
-      "running",
-      "deep-review"
+      "plan",
+      "010"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -195,15 +202,16 @@
         "source": "derived"
       },
       {
-        "name": "Shared Path Resolver",
+        "name": "State Packet Location",
         "kind": "proper_noun",
-        "path": "tasks.md",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
     "causal_summary": "When running `/spec_kit:deep-review` or `/spec_kit:deep-research` on a child phase inside a parent spec tree, both skills create their output folders (`review/`, `research/`) **inside the child phase folder**. In a spec tree with many nested phases (like `026-graph-and-context-optimization` with 14 phases, some 3-4 levels deep), this scatters review and research artifacts across dozens of nested directories. Finding a specific review requires knowing the exact nesting path. Manual consolidation after the fact (as we did for 026 -- moving 42 review + 18 research folders) is tedious and error-prone.",
     "created_at": "2026-04-18T07:39:57.335Z",
-    "last_save_at": "2026-04-18T14:39:00.369Z",
+    "last_save_at": "2026-04-26T09:17:15.269Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

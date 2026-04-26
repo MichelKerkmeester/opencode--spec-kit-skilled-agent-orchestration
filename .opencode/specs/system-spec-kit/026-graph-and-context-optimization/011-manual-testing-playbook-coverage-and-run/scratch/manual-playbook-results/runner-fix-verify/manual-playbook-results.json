@@ -1,0 +1,31 @@
+[
+  {
+    "scenarioId": "EX-014",
+    "category": "03--discovery",
+    "status": "UNAUTOMATABLE",
+    "filePath": "03--discovery/014-detect-changes-preflight.md",
+    "prompt": "As a discovery validation operator, validate detect_changes preflight against the documented validation surface. Run it once when the graph is intentionally stale, once after a fresh code_graph_scan with a single-file diff, once with an adversarial path-traversal diff, and once with a 3-file diff. Verify status='blocked' on stale (NEVER 'ok' with empty affectedSymbols), status='ok' with the expected affected symbols on fresh single-file, status='parse_error' on path traversal, and status='ok' with all three files attributed on multi-file. Return a concise pass/fail verdict with the main reason and cited evidence.\n\nAs a discovery validation operator, validate detect_changes against (1) a stale graph, (2) a fresh graph with a single-file diff, (3) a fresh graph with an adversarial path-traversal diff, and (4) a fresh graph with a 3-file diff. Verify the stale run returns status='blocked' (never 'ok' with empty affectedSymbols), the fresh run returns status='ok' with affectedSymbols, the path-traversal run returns status='parse_error' with blockedReason naming the offending path, and the 3-file run attributes symbols to all three files without dropping any. Return a concise pass/fail verdict with the main reason and cited evidence.",
+    "expectedSignals": [
+      "- Block A: Stale graph → `{ status: 'blocked', affectedSymbols: [], blockedReason: 'graph readiness is \"stale\" ...', readiness.freshness: 'stale' }`. Fresh graph → `{ status: 'ok', affectedSymbols: [...], affectedFiles: [...], readiness.freshness: 'fresh' }`.\n- Block B: Adversarial path → `{ status: 'parse_error', affectedSymbols: [], blockedReason: '... <offending-path> ... outside canonical root ...' }`. Legitimate relative path → unchanged (still `'ok'`).\n- Block C: 3-file diff → `{ status: 'ok', affectedFiles: [...3 paths], affectedSymbols: <union of per-file outputs> }`."
+    ],
+    "matchedSignals": [],
+    "unmatchedSignals": [
+      "- Block A: Stale graph → `{ status: 'blocked', affectedSymbols: [], blockedReason: 'graph readiness is \"stale\" ...', readiness.freshness: 'stale' }`. Fresh graph → `{ status: 'ok', affectedSymbols: [...], affectedFiles: [...], readiness.freshness: 'fresh' }`.\n- Block B: Adversarial path → `{ status: 'parse_error', affectedSymbols: [], blockedReason: '... <offending-path> ... outside canonical root ...' }`. Legitimate relative path → unchanged (still `'ok'`).\n- Block C: 3-file diff → `{ status: 'ok', affectedFiles: [...3 paths], affectedSymbols: <union of per-file outputs> }`."
+    ],
+    "handlerCalls": [],
+    "evidence": [
+      "Stopped at non-handler step: code_graph_scan"
+    ],
+    "steps": [
+      {
+        "step": "code_graph_scan",
+        "kind": "narrative",
+        "success": false,
+        "facts": [],
+        "evidence": [],
+        "error": "Not a direct handler call"
+      }
+    ],
+    "reason": "Scenario includes shell/source-inspection work that cannot be truthfully executed through direct handlers only."
+  }
+]

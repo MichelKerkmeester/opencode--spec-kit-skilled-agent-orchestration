@@ -1,0 +1,102 @@
+{
+  "session_id": "5e1abc0b-bd65-455d-b201-b887bef1efda",
+  "response": "As of today, the current major version of Bun is v1, while Deno is currently on major version v2. Both are modern JavaScript runtimes that feature native TypeScript execution, though Deno was the first to pioneer and ship a TypeScript-by-default architecture years before Bun's release. You can read more about their recent major updates in the official release notes at https://bun.sh/blog/bun-v1.3 and https://deno.com/blog/v2.0.",
+  "stats": {
+    "models": {
+      "gemini-3.1-pro-preview": {
+        "api": {
+          "totalRequests": 4,
+          "totalErrors": 1,
+          "totalLatencyMs": 20115
+        },
+        "tokens": {
+          "input": 57968,
+          "prompt": 85619,
+          "candidates": 175,
+          "total": 86797,
+          "cached": 27651,
+          "thoughts": 1003,
+          "tool": 0
+        },
+        "roles": {
+          "main": {
+            "totalRequests": 4,
+            "totalErrors": 1,
+            "totalLatencyMs": 20115,
+            "tokens": {
+              "input": 57968,
+              "prompt": 85619,
+              "candidates": 175,
+              "total": 86797,
+              "cached": 27651,
+              "thoughts": 1003,
+              "tool": 0
+            }
+          }
+        }
+      },
+      "gemini-3-flash-preview": {
+        "api": {
+          "totalRequests": 4,
+          "totalErrors": 0,
+          "totalLatencyMs": 22837
+        },
+        "tokens": {
+          "input": 80334,
+          "prompt": 80334,
+          "candidates": 1057,
+          "total": 82187,
+          "cached": 0,
+          "thoughts": 796,
+          "tool": 0
+        },
+        "roles": {
+          "utility_tool": {
+            "totalRequests": 4,
+            "totalErrors": 0,
+            "totalLatencyMs": 22837,
+            "tokens": {
+              "input": 80334,
+              "prompt": 80334,
+              "candidates": 1057,
+              "total": 82187,
+              "cached": 0,
+              "thoughts": 796,
+              "tool": 0
+            }
+          }
+        }
+      }
+    },
+    "tools": {
+      "totalCalls": 4,
+      "totalSuccess": 4,
+      "totalFail": 0,
+      "totalDurationMs": 23134,
+      "totalDecisions": {
+        "accept": 4,
+        "reject": 0,
+        "modify": 0,
+        "auto_accept": 0
+      },
+      "byName": {
+        "google_web_search": {
+          "count": 4,
+          "success": 4,
+          "fail": 0,
+          "durationMs": 23134,
+          "decisions": {
+            "accept": 4,
+            "reject": 0,
+            "modify": 0,
+            "auto_accept": 0
+          }
+        }
+      }
+    },
+    "files": {
+      "totalLinesAdded": 0,
+      "totalLinesRemoved": 0
+    }
+  }
+}

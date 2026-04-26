@@ -4,6 +4,8 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -13,8 +15,8 @@
     "trigger_phrases": [
       "005-claudest research spec",
       "005-claudest phase spec",
-      "Claudest claude-memory research",
-      "FTS5 BM25 cascade research",
+      "claudest claude-memory research",
+      "fts5 bm25 cascade research",
       "005-claudest research plan",
       "005-claudest execution plan",
       "deep-research loop claudest",
@@ -190,12 +192,6 @@
         "source": "derived"
       },
       {
-        "name": "Research Phase",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Claude Code",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -206,11 +202,18 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Code Graph",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "Phase 5 of `001-research-graph-context-systems` is a read-only audit of the Claudest external Claude Code plugin marketplace (`external/.claude-plugin/marketplace.json`) and its flagship `claude-memory` plugin to translate concrete patterns into actionable improvements for `Code_Environment/Public`. The plugin is studied at function level: the v3 SQLite schema with branch-aware BM25/FTS5 recall, the Stop/SessionStart hook chain that pre-computes branch summaries and injects them into the next session via `hookSpecificOutput.additionalContext`, the `extract-learnings` consolidation pipeline split between `memory-auditor` and `signal-discoverer`, and the `get-token-insights` skill that ingests Claude JSONL session logs into a relational analytics model with embedded HTML dashboard. The deliverable is an evidence-grounded `adopt now` / `prototype later` / `reject` matrix grounded in `external/plugins/...` file:line citations across 20 deep-research iterations, plus packet-ready briefs and an execution-ready follow-on packet roadmap for Public's FTS, analytics, SessionStart, and consolidation seams.",
     "created_at": "2026-04-12T09:02:53.450Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.703Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -219,22 +222,6 @@
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md"
-    ],
-    "save_lineage": "same_pass"
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
-    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/005-claudest",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-children"
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+    ]
+  }
 }

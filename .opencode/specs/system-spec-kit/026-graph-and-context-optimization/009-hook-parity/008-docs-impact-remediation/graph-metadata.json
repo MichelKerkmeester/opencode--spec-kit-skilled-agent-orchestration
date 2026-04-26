@@ -4,20 +4,10 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/008-docs-impact-remediation",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface",
-      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/001-hook-parity-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/003-codex-hook-parity-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/004-claude-hook-findings-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/009-skill-advisor-plugin-hardening",
-      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/010-skill-advisor-standards-alignment",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/006-copilot-wrapper-schema-fix",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/007-copilot-writer-wiring"
-    ],
+    "depends_on": [],
     "supersedes": [],
     "related_to": []
   },
@@ -25,38 +15,65 @@
     "trigger_phrases": [
       "docs impact remediation",
       "hook daemon docs alignment",
-      "026/009/012"
+      "026/009/012",
+      "docs impact remediation plan",
+      "026/009/012 plan",
+      "docs impact remediation tasks",
+      "026/009/012 tasks",
+      "docs impact remediation checklist",
+      "026/009/012 checklist",
+      "docs impact remediation summary",
+      "026/009/012 summary"
     ],
     "key_topics": [
-      "documentation",
+      "docs",
       "impact",
       "remediation",
       "hook",
-      "advisor",
-      "copilot",
-      "codex",
-      "claude",
-      "opencode",
-      "plugin"
+      "daemon",
+      "alignment",
+      "026",
+      "009",
+      "012",
+      "plan",
+      "tasks",
+      "checklist"
     ],
     "importance_tier": "important",
-    "status": "planning",
+    "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      "references/config/hook_system.md",
+      ".claude/settings.local.json",
       ".opencode/skill/system-spec-kit/SKILL.md",
       ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
-      "AGENTS.md",
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "implementation-summary.md"
+      ".opencode/README.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      "mcp_server/hooks/copilot/README.md",
+      "mcp_server/INSTALL_GUIDE.md",
+      "feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md",
+      "manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md",
+      "mcp_server/ENV_REFERENCE.md",
+      "mcp_server/README.md",
+      ".opencode/install_guides/SET-UP - AGENTS.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md",
+      "implementation-summary.md",
+      "spec.md"
     ],
     "entities": [
       {
         "name": "hook_system.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "path": "references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
         "source": "derived"
       },
       {
@@ -72,15 +89,45 @@
         "source": "derived"
       },
       {
-        "name": "AGENTS.md",
+        "name": "README.md",
         "kind": "doc",
-        "path": "AGENTS.md",
+        "path": ".opencode/README.md",
         "source": "derived"
       },
       {
-        "name": "merged-impact-report.md",
+        "name": "INSTALL_GUIDE.md",
         "kind": "doc",
-        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/impact-analysis/merged-impact-report.md",
+        "path": "mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "05-cross-runtime-fallback.md",
+        "kind": "doc",
+        "path": "feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md",
+        "source": "derived"
+      },
+      {
+        "name": "252-cross-runtime-fallback.md",
+        "kind": "doc",
+        "path": "manual_testing_playbook/22--context-preservation-and-code-graph/252-cross-runtime-fallback.md",
+        "source": "derived"
+      },
+      {
+        "name": "ENV_REFERENCE.md",
+        "kind": "doc",
+        "path": "mcp_server/ENV_REFERENCE.md",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP - AGENTS.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/SET-UP - AGENTS.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -90,34 +137,82 @@
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Documentation Impact Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Daemon Parity",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Source Analysis",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Underlying Reports",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "tasks.md",
-        "kind": "doc",
+        "name": "Guiding Principles",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reconcile Codex",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Canonical Runtime Contracts",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Skill Advisor",
+        "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "checklist.md",
-        "kind": "doc",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "implementation-summary.md",
-        "kind": "doc",
-        "path": "implementation-summary.md",
+        "name": "Supporting Docs",
+        "kind": "proper_noun",
+        "path": "tasks.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Sub-packets 001-011 of 009-hook-parity changed hook, advisor, plugin-loader, renderer, and Copilot wrapper contracts that 13 downstream documentation files describe incorrectly; merged impact analysis drives targeted updates.",
+    "causal_summary": "Sub-packets 001-011 of `009-hook-parity` changed runtime hook contracts, advisor delivery, plugin-loader semantics, Copilot wrapper schema, Codex startup parity, and Claude prompt-time hook registration. The shipped behavior diverges from what the checked-in documentation still describes.",
     "created_at": "2026-04-23T19:40:00Z",
-    "last_save_at": "2026-04-23T19:40:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T09:17:15.820Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

@@ -35,44 +35,28 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "tasks.md",
-      "code_graph/tools/code-graph-tools.ts",
-      "schemas/tool-input-schemas.ts",
-      "code_graph/handlers/index.ts",
       "formatters/search-results.ts",
-      "tests/memory/trust-badges.test.ts",
+      "mcp_server/code_graph/handlers/detect-changes.ts",
+      "code_graph/tests/detect-changes.test.ts",
+      "mcp_server/code_graph/tools/code-graph-tools.ts",
+      "mcp_server/tool-schemas.ts",
+      "mcp_server/schemas/tool-input-schemas.ts",
+      "mcp_server/code_graph/handlers/index.ts",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
       "implementation-summary.md",
       "checklist.md",
-      "handlers/index.ts",
-      "skill_advisor/tests/python/test_skill_advisor.py",
-      "spec.md",
-      "plan.md"
+      "mcp_server/tests/tool-input-schema.vitest.ts",
+      "mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+      "mcp_server/skill_advisor/handlers/advisor-recommend.ts",
+      "mcp_server/skill_advisor/lib/scorer/types.ts",
+      "mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures.json"
     ],
     "entities": [
-      {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "code-graph-tools.ts",
-        "kind": "code",
-        "path": "code_graph/tools/code-graph-tools.ts",
-        "source": "derived"
-      },
-      {
-        "name": "tool-input-schemas.ts",
-        "kind": "code",
-        "path": "schemas/tool-input-schemas.ts",
-        "source": "derived"
-      },
-      {
-        "name": "index.ts",
-        "kind": "code",
-        "path": "code_graph/handlers/index.ts",
-        "source": "derived"
-      },
       {
         "name": "search-results.ts",
         "kind": "code",
@@ -80,9 +64,69 @@
         "source": "derived"
       },
       {
-        "name": "trust-badges.test.ts",
+        "name": "detect-changes.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/detect-changes.ts",
+        "source": "derived"
+      },
+      {
+        "name": "detect-changes.test.ts",
         "kind": "test",
-        "path": "tests/memory/trust-badges.test.ts",
+        "path": "code_graph/tests/detect-changes.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-tools.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/tools/code-graph-tools.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "INSTALL_GUIDE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md",
+        "source": "derived"
+      },
+      {
+        "name": "04-detect-changes-preflight.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md",
+        "source": "derived"
+      },
+      {
+        "name": "014-detect-changes-preflight.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md",
         "source": "derived"
       },
       {
@@ -98,21 +142,33 @@
         "source": "derived"
       },
       {
-        "name": "test_skill_advisor.py",
-        "kind": "file",
-        "path": "skill_advisor/tests/python/test_skill_advisor.py",
+        "name": "tool-input-schema.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/tool-input-schema.vitest.ts",
         "source": "derived"
       },
       {
-        "name": "spec.md",
-        "kind": "doc",
-        "path": "spec.md",
+        "name": "advisor-tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
         "source": "derived"
       },
       {
-        "name": "plan.md",
-        "kind": "doc",
-        "path": "plan.md",
+        "name": "advisor-recommend.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/handlers/advisor-recommend.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "affordance-injection-fixtures.json",
+        "kind": "config",
+        "path": "mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures.json",
         "source": "derived"
       },
       {
@@ -144,59 +200,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "In Scope",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Verification Evidence",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "explicit",
-        "kind": "key_phrase",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "real",
-        "kind": "key_phrase",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "OPERATOR-PENDING",
-        "kind": "key_phrase",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "T-D",
-        "kind": "key_phrase",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Wiring Decision",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Verification Evidence Sync",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Phase 010 sub-phases 001-006 shipped under sandbox-blocked verification. A 7-iteration deep-review pass (6 cli-codex agents in parallel) surfaced 1 P0 + 21 P1 + 22 P2 findings. The P0 (LICENSE quote) was resolved by scrubbing the External Project name from the codebase (removing the need to quote any external license at all). The remaining 43 findings cluster into 6 themed task groups that need a focused remediation pass.",
     "created_at": "2026-04-25T13:51:18.730Z",
-    "last_save_at": "2026-04-25T13:51:18.730Z",
+    "last_save_at": "2026-04-26T09:17:15.838Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

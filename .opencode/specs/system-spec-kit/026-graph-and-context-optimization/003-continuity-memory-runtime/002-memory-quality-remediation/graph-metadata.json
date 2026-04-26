@@ -212,7 +212,7 @@
     ],
     "causal_summary": "The original research packet identified eight distinct JSON-mode memory defects across content shaping, metadata consistency, lineage capture, git provenance, and template structure. Shipping only the research would have left the save pipeline unrepaired, and shipping only the narrow code fixes would have left the packet without phase-level proof, operational tail decisions, or a durable closeout surface.",
     "created_at": "2026-04-12T09:02:53.454Z",
-    "last_save_at": "2026-04-25T10:34:53.949Z",
+    "last_save_at": "2026-04-26T09:17:15.725Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

@@ -4,6 +4,8 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -46,14 +48,12 @@
       ".claude/settings.local.json",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/hook-state.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
       "spec.md",
       "plan.md",
       "tasks.md",
       "research.md",
       "checklist.md",
-      "mcp_server/test/hooks/replay-harness.ts",
       "tests/fixtures/hooks/session-stop-replay.jsonl",
       "tests/hook-session-stop-replay.vitest.ts",
       "tests/sqlite-fts.vitest.ts"
@@ -87,12 +87,6 @@
         "name": "session-stop.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-stop.ts",
-        "source": "derived"
-      },
-      {
-        "name": "replay-harness.ts",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/test/hooks/replay-harness.ts",
         "source": "derived"
       },
       {
@@ -202,11 +196,18 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Overview This",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This packet no longer treats the earlier six-phase warning-hook prototype as the active plan. The canonical 2026-04-08 research narrowed the safe early continuity lane to two things: truthful predecessor ordering and a bounded producer-side metadata patch inside `session-stop.ts` and `hook-state.ts` after the FTS helper and forced-degrade tests exist [SOURCE: research.md §1; §2].",
     "created_at": "2026-04-12T09:02:53.453Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.723Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -216,29 +217,6 @@
       "decision-record.md",
       "implementation-summary.md",
       "research.md"
-    ],
-    "save_lineage": "same_pass"
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-cache-warning-hooks",
-    "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/002-cache-warning-hooks",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-cache-warning-hooks",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-cache-warning-hooks",
-    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
-    "local_phase_slug": "001-cache-warning-hooks",
-    "original_phase_slug": "002-cache-warning-hooks",
-    "renumbered_at": "2026-04-21T14:00:00Z"
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+    ]
+  }
 }

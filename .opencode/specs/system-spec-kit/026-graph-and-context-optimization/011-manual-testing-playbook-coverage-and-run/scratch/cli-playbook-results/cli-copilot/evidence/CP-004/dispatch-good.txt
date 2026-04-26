@@ -1,0 +1,6 @@
+The core trade-off is **standardization vs. model-specific leverage**: a strong common contract for prompts, context, and results makes delegation reliable and composable, but too much abstraction hides each AI system’s unique strengths and weakens output quality. The best orchestrators keep a strict transport/state layer while allowing per-model adapters at the execution edge. PASS
+
+
+Changes   +0 -0
+Requests  1 Premium (7s)
+Tokens    ↑ 29.2k • ↓ 182 • 28.2k (cached) • 105 (reasoning)

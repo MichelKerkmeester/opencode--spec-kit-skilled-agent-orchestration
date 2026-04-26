@@ -1220,7 +1220,7 @@ Confirm folder-first retrieval.
 #### Current Reality
 Prompt: `Validate folder-level relevance scoring (PI-A1). Capture the evidence needed to prove Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Folder pre-ranking scores computed; folder-level results appear before individual memory results in ranking
+Folder pre-ranking scores computed; folder-level results appear before individual spec-doc results in ranking
 
 #### Test Execution
 > **Feature File:** [027](11--scoring-and-calibration/027-folder-level-relevance-scoring-pi-a1.md)
@@ -1612,7 +1612,7 @@ Confirm auto-surface hooks.
 #### Current Reality
 Prompt: `Validate dual-scope auto-surface (TM-05). Capture the evidence needed to prove Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant memories; surfaced memories match current context
+Non-memory-aware tool path triggers auto-surface hook; compaction event surfaces relevant spec-doc records; surfaced spec-doc records match current context
 
 #### Test Execution
 > **Feature File:** [055](15--retrieval-enhancements/055-dual-scope-memory-auto-surface-tm-05.md)
@@ -2405,7 +2405,7 @@ Confirm embedding-failure fallback and BM25 searchability.
 #### Current Reality
 Prompt: `Validate deferred lexical-only indexing fallback. Capture the evidence needed to prove Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex
+Record saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the record; reindex transitions status to 'success'; vector search works after reindex
 
 #### Test Execution
 > **Feature File:** [111](13--memory-quality-and-indexing/111-deferred-lexical-only-indexing.md)

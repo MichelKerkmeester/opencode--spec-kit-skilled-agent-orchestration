@@ -1,0 +1,72 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dc958-1d8d-7a30-8b82-a9178f4f507d
+--------
+user
+List the MCP tools currently available to you. Return a markdown table with columns: tool name | one-line description. If no MCP tools are available, return the literal string 'NO MCP TOOLS AVAILABLE'.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+| tool name | one-line description |
+|---|---|
+| `mcp__spec_kit_memory__session_resume` | Resume session context with memory, code graph, CocoIndex status, and structural hints. |
+| `mcp__spec_kit_memory__memory_context` | Retrieve intent-aware memory/context for research, debugging, resume, or implementation work. |
+| `mcp__spec_kit_memory__memory_search` | Search conversation/spec memories semantically with optional filters and full content. |
+| `mcp__spec_kit_memory__ccc_status` | Check CocoIndex availability and index status. |
+| `mcp__spec_kit_memory__code_graph_scan` | Build or refresh the structural code graph index for the workspace. |
+| `mcp__spec_kit_memory__code_graph_status` | Report code graph health, freshness, readiness, and parse statistics. |
+| `mcp__spec_kit_memory__code_graph_context` | Retrieve compact structural graph context around files, symbols, or search seeds. |
+| `mcp__spec_kit_memory__code_graph_verify` | Run the code graph verification battery against the current index. |
+| `mcp__spec_kit_memory__session_health` | Check session readiness and context freshness. |
+| `mcp__spec_kit_memory__checkpoint_list` | List available spec/memory checkpoints. |
+| `mcp__cocoindex_code__search` | Search the codebase semantically by concept, intent, or code snippet. |
+| `mcp__code_mode__call_tool_chain` | Execute TypeScript orchestration code with access to registered MCP tools. |
+| `mcp__codex_apps__github___get_pr_info` | Fetch GitHub pull request metadata. |
+| `mcp__codex_apps__figma___get_design_context` | Get Figma node design context, screenshot, assets, and reference code. |
+| `mcp__codex_apps__figma___use_figma` | Run JavaScript against a Figma file through the Plugin API. |
+| `mcp__codex_apps__figma___list_code_components` | List Storybook/code components available for a Figma file. |
+| `mcp__codex_apps__figma___add_code_connect_map` | Map a Figma node to a source code component via Code Connect. |
+| `mcp__codex_apps__figma___get_code_connect_suggestions` | Get suggested Figma-to-code component mappings. |
+| `mcp__codex_apps__figma___get_libraries` | List Figma libraries associated with a file. |
+| `mcp__codex_apps__figma___get_figjam` | Generate UI code/context from a FigJam node. |
+hook: Stop
+hook: Stop Completed
+2026-04-26T10:31:54.121177Z ERROR codex_core::session: failed to record rollout items: thread 019dc958-1d8d-7a30-8b82-a9178f4f507d not found
+tokens used
+36,271
+| tool name | one-line description |
+|---|---|
+| `mcp__spec_kit_memory__session_resume` | Resume session context with memory, code graph, CocoIndex status, and structural hints. |
+| `mcp__spec_kit_memory__memory_context` | Retrieve intent-aware memory/context for research, debugging, resume, or implementation work. |
+| `mcp__spec_kit_memory__memory_search` | Search conversation/spec memories semantically with optional filters and full content. |
+| `mcp__spec_kit_memory__ccc_status` | Check CocoIndex availability and index status. |
+| `mcp__spec_kit_memory__code_graph_scan` | Build or refresh the structural code graph index for the workspace. |
+| `mcp__spec_kit_memory__code_graph_status` | Report code graph health, freshness, readiness, and parse statistics. |
+| `mcp__spec_kit_memory__code_graph_context` | Retrieve compact structural graph context around files, symbols, or search seeds. |
+| `mcp__spec_kit_memory__code_graph_verify` | Run the code graph verification battery against the current index. |
+| `mcp__spec_kit_memory__session_health` | Check session readiness and context freshness. |
+| `mcp__spec_kit_memory__checkpoint_list` | List available spec/memory checkpoints. |
+| `mcp__cocoindex_code__search` | Search the codebase semantically by concept, intent, or code snippet. |
+| `mcp__code_mode__call_tool_chain` | Execute TypeScript orchestration code with access to registered MCP tools. |
+| `mcp__codex_apps__github___get_pr_info` | Fetch GitHub pull request metadata. |
+| `mcp__codex_apps__figma___get_design_context` | Get Figma node design context, screenshot, assets, and reference code. |
+| `mcp__codex_apps__figma___use_figma` | Run JavaScript against a Figma file through the Plugin API. |
+| `mcp__codex_apps__figma___list_code_components` | List Storybook/code components available for a Figma file. |
+| `mcp__codex_apps__figma___add_code_connect_map` | Map a Figma node to a source code component via Code Connect. |
+| `mcp__codex_apps__figma___get_code_connect_suggestions` | Get suggested Figma-to-code component mappings. |
+| `mcp__codex_apps__figma___get_libraries` | List Figma libraries associated with a file. |
+| `mcp__codex_apps__figma___get_figjam` | Generate UI code/context from a FigJam node. |

@@ -119,12 +119,6 @@
         "source": "derived"
       },
       {
-        "name": "Voice Personalization",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Claude Opus",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -132,6 +126,12 @@
       },
       {
         "name": "Reasoning Visibility",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Voice Personalization",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -199,7 +199,7 @@
     ],
     "causal_summary": "Codex-family models (GPT-5.4, GPT-5.3-codex) and the Codex APP product default to a response style that differs from Claude Opus in observable, friction-producing ways: (1) opens with pleasantries (\"Certainly!\", \"Absolutely!\", \"Great question!\"); (2) declares conclusions without showing reasoning or trade-offs; (3) agrees with faulty user premises for conversational flow; (4) silently over-engineers and gold-plates beyond the stated scope; (5) reports partial work as a \"good stopping point\"; (6) hedges less when uncertain; (7) rarely surfaces assumptions explicitly. AGENTS.md enforces behavior at the framework level (gates, scope, memory), but not at the **conversational style** level — and Codex APP has no AGENTS.md injection path at all.",
     "created_at": "2026-04-19T11:24:29.406Z",
-    "last_save_at": "2026-04-19T13:30:40.388Z",
+    "last_save_at": "2026-04-26T09:17:15.279Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

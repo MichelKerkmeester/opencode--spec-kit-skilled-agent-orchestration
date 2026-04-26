@@ -197,7 +197,8 @@
     ],
     "causal_summary": "Following comprehensive analysis of spec folders 052-codebase-fixes and 053-script-analysis-testing, along with a deep bug hunt of the Spec Kit Memory system, **13 bugs** were identified that require remediation:",
     "created_at": "2026-04-12T09:02:53.534Z",
-    "last_save_at": "2026-04-13T16:22:53.548Z",
+    "last_save_at": "2026-04-26T09:17:15.929Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

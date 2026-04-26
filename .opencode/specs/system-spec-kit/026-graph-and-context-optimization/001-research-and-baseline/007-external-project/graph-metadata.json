@@ -157,7 +157,19 @@
         "source": "derived"
       },
       {
+        "name": "External Project Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Context Optimization",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "External Project",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -175,25 +187,13 @@
         "source": "derived"
       },
       {
-        "name": "Skill Graph",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Key Decisions",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Deep Research Closeout",
+        "name": "External Project Deep Research Closeout",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -207,7 +207,7 @@
     ],
     "causal_summary": "This packet seeds a future deep-research flow over the downloaded External Project project in this `external/` folder. The research should determine whether External Project patterns can be adopted, adapted, or rejected for three Public systems: the Code Graph package, Spec Kit Memory's causal graph, and the emerging Skill Graph surface.",
     "created_at": "2026-04-25T06:35:02.794Z",
-    "last_save_at": "2026-04-25T06:39:18.527Z",
+    "last_save_at": "2026-04-26T09:17:15.708Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

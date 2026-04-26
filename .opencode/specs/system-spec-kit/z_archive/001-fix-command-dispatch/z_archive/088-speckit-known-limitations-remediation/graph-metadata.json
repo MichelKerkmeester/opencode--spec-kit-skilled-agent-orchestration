@@ -46,7 +46,6 @@
       ".opencode/skill/system-spec-kit/scripts/README.md",
       ".opencode/skill/system-spec-kit/scripts/spec/check-completion.sh",
       ".opencode/install_guides/SET-UP - AGENTS.md",
-      ".opencode/agent/speckit.md",
       ".opencode/skill/system-spec-kit/SKILL.md",
       "scripts/README.md",
       "scripts/spec/check-completion.sh",
@@ -85,12 +84,6 @@
         "name": "SET-UP - AGENTS.md",
         "kind": "doc",
         "path": ".opencode/install_guides/SET-UP - AGENTS.md",
-        "source": "derived"
-      },
-      {
-        "name": "speckit.md",
-        "kind": "doc",
-        "path": ".opencode/agent/speckit.md",
         "source": "derived"
       },
       {
@@ -200,11 +193,18 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The 087-speckit-deep-analysis remediation identified and fixed 3 critical bugs and 15+ moderate misalignments, but deferred 4 known limitations that require separate implementation work: (1) existing SQLite databases have a drifted schema with three conflicting DDL definitions causing silent INSERT failures, (2) stale Gate 4/6 references remain in 7 active files plus the legacy install guide, (3) three spec management scripts are undocumented in capability tables, and (4) minor signal handler gaps exist in the MCP server.",
     "created_at": "2026-04-12T09:02:53.559Z",
-    "last_save_at": "2026-04-13T16:22:53.638Z",
+    "last_save_at": "2026-04-26T09:17:15.999Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

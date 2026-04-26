@@ -10,27 +10,37 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
+    "trigger_phrases": [
+      "spec",
+      "agent",
+      "improver",
+      "009",
+      "plan",
+      "tasks",
+      "phase",
+      "checklist",
+      "impleme",
+      "implementation summary"
+    ],
     "key_topics": [
-      "sk-improve-agent",
-      "skill",
-      "validated",
-      "against",
-      "handover",
-      "debug",
-      "orchestrate",
-      "review",
-      "agents",
-      "phases",
-      "001-008",
-      "never"
+      "spec",
+      "agent",
+      "improver",
+      "009",
+      "plan",
+      "tasks",
+      "phase",
+      "checklist",
+      "impleme",
+      "implementation",
+      "summary",
+      "sk-improve-agent"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
       ".opencode/command/improve/agent.md",
       ".opencode/skill/sk-improve-agent/SKILL.md",
-      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
       "implementation-summary.md",
       "spec.md",
       "plan.md",
@@ -48,12 +58,6 @@
         "name": "SKILL.md",
         "kind": "doc",
         "path": ".opencode/skill/sk-improve-agent/SKILL.md",
-        "source": "derived"
-      },
-      {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
         "source": "derived"
       },
       {
@@ -181,11 +185,18 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
+      },
+      {
+        "name": "Hard Blockers",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The sk-improve-agent skill has been validated against handover, debug, orchestrate, and review agents (Phases 001-008), but never against itself. The agent-improver's own agent definition (`.opencode/agent/agent-improver.md`) has never been a target. This is the only agent in the system that describes the improvement workflow itself, creating a unique self-referential case where the integration scanner discovers its own surfaces, the profile generator extracts its own rules, and the scorer evaluates its own quality.",
     "created_at": "2026-04-13T04:55:07.905Z",
-    "last_save_at": "2026-04-18T14:39:00.347Z",
+    "last_save_at": "2026-04-26T09:17:15.233Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

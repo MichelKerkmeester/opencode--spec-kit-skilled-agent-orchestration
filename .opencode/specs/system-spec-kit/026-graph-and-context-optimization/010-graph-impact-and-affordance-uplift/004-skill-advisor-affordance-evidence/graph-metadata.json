@@ -15,7 +15,14 @@
       "skill advisor affordance",
       "tool resource routing evidence",
       "affordance normalizer",
-      "012/004 implementation summary"
+      "012/004 plan",
+      "affordance evidence plan",
+      "skill advisor affordance plan",
+      "012/004 tasks",
+      "affordance evidence tasks",
+      "skill advisor affordance tasks",
+      "012/004 checklist",
+      "affordance evidence checklist"
     ],
     "key_topics": [
       "012",
@@ -28,23 +35,108 @@
       "routing",
       "normalizer",
       "004",
-      "implementation",
-      "summary"
+      "plan",
+      "tasks"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
-      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/affordance-normalizer.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/types.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/derived.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_graph_compiler.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/affordance-normalizer.test.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/lane-attribution.test.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/routing-fixtures.affordance.test.ts",
+      ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
+      ".claude/settings.local.json",
+      "mcp_server/package.json",
       "spec.md",
       "plan.md",
-      "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md",
+      "tasks.md"
     ],
     "entities": [
       {
-        "name": "implementation-summary.md",
+        "name": "affordance-normalizer.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/affordance-normalizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fusion.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "derived.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/derived.ts",
+        "source": "derived"
+      },
+      {
+        "name": "graph-causal.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_graph_compiler.py",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_graph_compiler.py",
+        "source": "derived"
+      },
+      {
+        "name": "affordance-normalizer.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/affordance-normalizer.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "lane-attribution.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/lane-attribution.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "routing-fixtures.affordance.test.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/routing-fixtures.affordance.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "24-skill-advisor-affordance-evidence.md",
         "kind": "doc",
-        "path": "implementation-summary.md",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md",
+        "source": "derived"
+      },
+      {
+        "name": "199-skill-advisor-affordance-evidence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
         "source": "derived"
       },
       {
@@ -60,15 +152,21 @@
         "source": "derived"
       },
       {
-        "name": "tasks.md",
-        "kind": "doc",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
         "source": "derived"
       },
       {
@@ -84,7 +182,13 @@
         "source": "derived"
       },
       {
-        "name": "Skill Advisor",
+        "name": "Problem Statement Skill Advisor",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Add",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -100,95 +204,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Change Type",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Steps",
-        "kind": "heading",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "A. Affordance-normalizer",
-        "kind": "heading",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "B. Compiler integration",
-        "kind": "heading",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "C. Scorer integration",
-        "kind": "heading",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "D. Per-packet docs",
-        "kind": "heading",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "existing",
-        "kind": "key_phrase",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "affordance",
-        "kind": "key_phrase",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Dependencies",
-        "kind": "heading",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "References",
-        "kind": "heading",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Tasks: 012/004",
-        "kind": "quoted",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Affordance evidence wiring.",
-        "kind": "quoted",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Hard Rules",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "Phase Hand",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
       }
     ],
-    "causal_summary": "Wire tool/resource/MCP-resource affordances into existing derived + graph-causal lanes via affordance-normalizer (allowlist sanitizer + privacy preservation). No new scoring lane; no new entity_kinds.",
+    "causal_summary": "Skill Advisor's compiler whitelist is intentionally limited to `skill`, `agent`, `script`, `config`, and `reference`. Tool and resource affordances can improve routing recall, but free-form descriptions could introduce prompt-stuffing input or leak private matched phrases if passed directly into scoring.",
     "created_at": "2026-04-25T10:48:08.547Z",
-    "last_save_at": "2026-04-25T10:48:08.547Z",
+    "last_save_at": "2026-04-26T09:17:15.831Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

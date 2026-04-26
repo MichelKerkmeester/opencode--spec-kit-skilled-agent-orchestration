@@ -4,6 +4,8 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -13,8 +15,8 @@
     "trigger_phrases": [
       "002-codesight research spec",
       "002-codesight phase spec",
-      "codesight Adopt Adapt Reject",
-      "codesight AST detector research",
+      "codesight adopt adapt reject",
+      "codesight ast detector research",
       "002-codesight research plan",
       "002-codesight execution plan",
       "deep-research loop codesight",
@@ -196,13 +198,13 @@
         "source": "derived"
       },
       {
-        "name": "Adopt Adapt Reject",
+        "name": "Code Graph",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Code Graph",
+        "name": "Spec Kit Memory",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -210,7 +212,8 @@
     ],
     "causal_summary": "Phase 2 of `001-research-graph-context-systems` is a read-only audit of the codesight external Node.js/TypeScript skill (zero-runtime-dependency CLI that scans a project root and generates AI-assistant context artifacts) to translate its detector architecture, MCP tool design, profile generation, scanner heuristics, and blast-radius analysis into concrete improvements for `Code_Environment/Public`'s existing structural retrieval stack (Code Graph MCP, CocoIndex, Spec Kit Memory). The deliverable is an evidence-backed Adopt/Adapt/Reject table plus late-session adoption synthesis grounded in specific `external/src/` file:line citations across 20 deep-research iterations, not a generic feature inventory. No source files outside this spec folder are modified during the research phase.",
     "created_at": "2026-04-12T09:02:53.446Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.695Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
@@ -219,22 +222,6 @@
       "checklist.md",
       "decision-record.md",
       "implementation-summary.md"
-    ],
-    "save_lineage": "same_pass"
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
-    "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/001-research-graph-context-systems/002-codesight",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/002-codesight",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-children"
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+    ]
+  }
 }

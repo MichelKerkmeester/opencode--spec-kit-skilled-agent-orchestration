@@ -1,0 +1,5 @@
+3:description: "The three documented use cases for cli-opencode (external runtime to OpenCode, in-OpenCode parallel detached session, cross-AI orchestration handback) with copy-paste prompt templates, smart-router signals, and the self-invocation guard decision tree."
+8:How cli-opencode positions itself relative to the four sibling cli-* skills, the three documented use cases (per ADR-002), the smart-router decision tree that picks between them, and the self-invocation guard that protects against circular dispatch (per ADR-001).
+15:The four sibling cli-* skills exist because their target binaries are external runtimes — Claude Code, Codex, Copilot, Gemini do not own this repo. OpenCode owns this repo. A naive "delegate to opencode" skill makes no sense for an in-OpenCode operator (it would create a circular dispatch).
+22:| 2. In-OpenCode parallel detached session | OpenCode itself (TUI / web / serve / acp) | New OpenCode session via `--share --port N` | No (different session id) |
+95:- "parallel detached session"

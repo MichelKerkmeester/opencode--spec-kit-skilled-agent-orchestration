@@ -42,7 +42,6 @@
     "status": "in_progress",
     "key_files": [
       ".opencode/command/spec_kit/resume.md",
-      ".opencode/skill/system-spec-kit/templates/context_template.md",
       ".opencode/skill/system-spec-kit/templates/level_3/decision-record.md",
       ".opencode/skill/system-spec-kit/templates/level_3+/decision-record.md",
       "spec.md",
@@ -67,12 +66,6 @@
         "name": "resume.md",
         "kind": "doc",
         "path": ".opencode/command/spec_kit/resume.md",
-        "source": "derived"
-      },
-      {
-        "name": "context_template.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/templates/context_template.md",
         "source": "derived"
       },
       {
@@ -206,11 +199,18 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "System Upgrade",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "This specification consolidates findings from four prior research specs (060-063) into a single implementation plan for upgrading the system-spec-kit skill. The research analyzed Smart-Ralph (state management, recovery), Empirica (epistemic vectors, uncertainty tracking), OpenCode Hooks (design patterns), and Superego (evaluation frameworks, decision journaling) to identify transferable patterns that would enhance context preservation, decision quality, and workflow reliability.",
     "created_at": "2026-04-12T09:02:53.548Z",
-    "last_save_at": "2026-04-13T16:22:53.602Z",
+    "last_save_at": "2026-04-26T09:17:15.967Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

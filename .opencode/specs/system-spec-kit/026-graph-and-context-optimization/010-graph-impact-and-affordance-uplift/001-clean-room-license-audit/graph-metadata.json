@@ -14,8 +14,12 @@
       "012 license audit",
       "clean room license",
       "external-project license",
+      "012/001 decision record",
+      "clean-room license adr",
+      "polyform noncommercial audit",
       "012/001 implementation summary",
-      "license audit summary"
+      "license audit summary",
+      "clean-room approved"
     ],
     "key_topics": [
       "012",
@@ -25,26 +29,34 @@
       "room",
       "external-project",
       "001",
-      "implementation",
-      "summary",
-      "produce",
-      "single",
-      "adr"
+      "decision",
+      "record",
+      "clean-room",
+      "adr",
+      "polyform"
     ],
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
-      "implementation-summary.md",
+      "decision-record.md",
+      ".claude/settings.local.json",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md"
     ],
     "entities": [
       {
-        "name": "implementation-summary.md",
+        "name": "decision-record.md",
         "kind": "doc",
-        "path": "implementation-summary.md",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
         "source": "derived"
       },
       {
@@ -72,6 +84,12 @@
         "source": "derived"
       },
       {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -90,6 +108,12 @@
         "source": "derived"
       },
       {
+        "name": "External Project",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Purpose Produce",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -97,12 +121,6 @@
       },
       {
         "name": "In Scope",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "File Path",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -138,26 +156,32 @@
         "source": "derived"
       },
       {
-        "name": "Halt Criteria",
+        "name": "Record Path Correction",
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "References",
-        "kind": "heading",
+        "name": "Worktree Constraint",
+        "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "Tasks: Clean-Room License Audit (012/001)",
-        "kind": "quoted",
+        "name": "Material Clause Analysis",
+        "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       },
       {
-        "name": "Task list for the P0 license-audit gate.",
-        "kind": "quoted",
+        "name": "List Classification",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Halt Criteria",
+        "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
       },
@@ -166,29 +190,11 @@
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
-      },
-      {
-        "name": "Phase Hand",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "P0 — License Posture",
-        "kind": "heading",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "Phase Hand-off",
-        "kind": "heading",
-        "path": "checklist.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Produce a single ADR in this sub-phase's `decision-record.md` (or surfaced into 012 phase-root `decision-record.md` ADR-012-001) confirming the license posture and explicit allow-list of pattern-only adaptations.",
     "created_at": "2026-04-25T10:48:06.447Z",
-    "last_save_at": "2026-04-25T10:48:06.447Z",
+    "last_save_at": "2026-04-26T09:17:15.825Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -196,6 +202,7 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
+      "decision-record.md",
       "implementation-summary.md"
     ]
   }

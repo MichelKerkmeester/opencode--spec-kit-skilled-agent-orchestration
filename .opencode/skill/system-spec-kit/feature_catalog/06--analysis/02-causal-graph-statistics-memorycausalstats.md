@@ -10,7 +10,7 @@ audited_post_018: true
 
 Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage.
 
-This gives you a health report on the web of connections between your memories. It tells you how many connections exist, how strong they are and whether enough memories are linked together. If too many memories are isolated with no connections, the system warns you because it means the relationship network is too thin to be useful for tracing decisions.
+This gives you a health report on the web of connections between your spec-doc records. It tells you how many connections exist, how strong they are and whether enough spec-doc records are linked together. If too many records are isolated with no edges, the system warns you because it means the decision-lineage network is too thin to be useful for tracing decisions.
 
 ---
 

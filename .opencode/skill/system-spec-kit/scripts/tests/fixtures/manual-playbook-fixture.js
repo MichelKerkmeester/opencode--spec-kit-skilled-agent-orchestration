@@ -1,0 +1,606 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+const FIXTURE_PREFIX = 'gate-i-manual-playbook-';
+const TARGET_SPEC_SLUG = '001-manual-fixture-auth-resume';
+const SANDBOX_SPEC_SLUG = '002-test-sandbox';
+const ADMIN_USER_ID = 'gate-i-admin-user';
+const SCRIPT_DIR = path.dirname(fileURLToPath(import.meta.url));
+const SKILL_ROOT = path.resolve(SCRIPT_DIR, '..', '..');
+const REPO_ROOT = path.resolve(SKILL_ROOT, '..', '..', '..', '..');
+const DEFAULT_REPORT_DIR = path.join(REPO_ROOT, '.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-release-cleanup-playbooks/003-playbook-and-remediation/002-full-playbook-execution/scratch/manual-playbook-results');
+function writeFile(filePath, content) {
+    fs.mkdirSync(path.dirname(filePath), { recursive: true });
+    fs.writeFileSync(filePath, content, 'utf8');
+}
+function makeFrontmatter(title, description, contextType = 'implementation') {
+    return [
+        '---',
+        `title: "${title}"`,
+        `description: "${description}"`,
+        'trigger_phrases:',
+        `  - "${title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}"`,
+        'importance_tier: "normal"',
+        `contextType: "${contextType}"`,
+        '---',
+        '',
+    ];
+}
+function buildSpecDoc(title, description, bodySections, continuity, upsertThinContinuityInMarkdown) {
+    const base = [
+        ...makeFrontmatter(title, description, 'implementation'),
+        `# ${title}`,
+        '',
+        ...bodySections.flatMap((section) => {
+            const lines = [];
+            if (section.anchorId) {
+                lines.push(`<!-- ANCHOR:${section.anchorId} -->`);
+            }
+            lines.push(section.heading, '', section.body);
+            if (section.anchorId) {
+                lines.push(`<!-- /ANCHOR:${section.anchorId} -->`);
+            }
+            lines.push('');
+            return lines;
+        }),
+    ].join('\n');
+    if (!continuity) {
+        return base;
+    }
+    if (!upsertThinContinuityInMarkdown) {
+        throw new Error(`Missing continuity helper for "${title}"`);
+    }
+    const updated = upsertThinContinuityInMarkdown(base, {
+        packet_pointer: continuity.packetPointer,
+        last_updated_at: '2026-04-12T08:00:00Z',
+        last_updated_by: 'gate-i-runner',
+        recent_action: continuity.recentAction,
+        next_safe_action: continuity.nextSafeAction,
+        blockers: ['none'],
+        key_files: continuity.keyFiles,
+        completion_pct: continuity.completionPct,
+        open_questions: ['Q1'],
+        answered_questions: ['Q2'],
+    });
+    if (!updated.ok || !updated.markdown) {
+        throw new Error(`Failed to build continuity fixture for "${title}"`);
+    }
+    return updated.markdown;
+}
+function buildMemoryDoc(title, description, lines) {
+    return [
+        ...makeFrontmatter(title, description, 'implementation'),
+        `# ${title}`,
+        '',
+        '## SESSION SUMMARY',
+        '',
+        '| **Meta Data** | **Value** |',
+        '|:--------------|:----------|',
+        '| Scenario | Gate I manual playbook fixture |',
+        '',
+        '<!-- ANCHOR:continue-session -->',
+        '',
+        '## CONTINUE SESSION',
+        '',
+        'Continue from the last stable checkpoint while validating retrieval, save, checkpoint, and governance workflows.',
+        '',
+        '<!-- /ANCHOR:continue-session -->',
+        '',
+        '<!-- ANCHOR:overview -->',
+        '',
+        '## OVERVIEW',
+        '',
+        ...lines,
+        '',
+        '<!-- /ANCHOR:overview -->',
+        '',
+        '<!-- ANCHOR:recovery-hints -->',
+        '',
+        '## RECOVERY HINTS',
+        '',
+        '- Re-run the runner with a fresh disposable DB.',
+        '- Confirm the seeded spec doc and continuity anchors still exist.',
+        '',
+        '<!-- /ANCHOR:recovery-hints -->',
+        '',
+        '<!-- ANCHOR:metadata -->',
+        '',
+        '## MEMORY METADATA',
+        '',
+        '```yaml',
+        'session_id: "gate-i-fixture"',
+        'fixture: true',
+        '```',
+        '',
+        '<!-- /ANCHOR:metadata -->',
+        '',
+    ].join('\n');
+}
+async function indexSeed(filePath, title, specFolder, indexMemoryFile) {
+    const result = await indexMemoryFile(filePath, {
+        force: true,
+        asyncEmbedding: false,
+        qualityGateMode: 'warn-only',
+    });
+    if (!result || typeof result.id !== 'number' || result.id <= 0) {
+        // qualityGateMode='warn-only' should not block, but PE-gate supersede or
+        // near-duplicate quality-gate flagging may still leave us without a usable
+        // id. Don't abort the entire fixture — return a placeholder with id=0 so
+        // downstream `.find()?.id ?? null` truthy-checks (e.g. the causal-link
+        // setup at line ~698) skip cleanly. Scenarios that need this specific
+        // memory will surface UNAUTOMATABLE rather than blocking the whole run.
+        process.stderr.write(`[fixture] indexSeed warn: ${title} (${filePath}) returned no usable id; continuing with placeholder id=0\n`);
+        return { id: 0, title, filePath, specFolder };
+    }
+    return {
+        id: result.id,
+        title,
+        filePath,
+        specFolder,
+    };
+}
+function applyFixtureEnv(rootDir, dbDir, dbPath) {
+    const rootRealDir = fs.realpathSync.native(rootDir);
+    const tempRealDir = fs.realpathSync.native(os.tmpdir());
+    const allowedRoots = new Set([
+        rootDir,
+        rootRealDir,
+        tempRealDir,
+        path.join(rootDir, '.opencode'),
+        path.join(rootRealDir, '.opencode'),
+        path.join(rootDir, 'specs'),
+        path.join(rootRealDir, 'specs'),
+    ]);
+    const allowed = Array.from(allowedRoots).join(path.delimiter);
+    process.env.MEMORY_ALLOWED_PATHS = allowed;
+    process.env.MEMORY_BASE_PATH = tempRealDir;
+    process.env.SPEC_KIT_DB_DIR = dbDir;
+    process.env.SPECKIT_DB_DIR = dbDir;
+    process.env.MEMORY_DB_PATH = dbPath;
+    process.env.SPECKIT_ABLATION = 'true';
+    process.env.EMBEDDINGS_PROVIDER = 'hf-local';
+    delete process.env.VOYAGE_API_KEY;
+    delete process.env.OPENAI_API_KEY;
+}
+function initializeHandlerRuntime(database, vectorIndex, initDbState, checkpoints, accessTracker, hybridSearch, sessionBoost, causalBoost, workingMemory, attentionDecay, coActivation, sessionManager) {
+    checkpoints.init(database);
+    accessTracker.init(database);
+    hybridSearch.init(database, vectorIndex.vectorSearch, null);
+    initDbState({
+        graphSearchFn: null,
+        vectorIndex,
+        checkpoints,
+        accessTracker,
+        hybridSearch,
+        sessionManager,
+        dbConsumers: [sessionBoost, causalBoost, workingMemory, attentionDecay, coActivation],
+    });
+    sessionBoost.init(database);
+    causalBoost.init(database);
+    workingMemory.init(database);
+    attentionDecay.init(database);
+    coActivation.init(database);
+    const sessionInit = sessionManager.init(database);
+    if (!sessionInit.success) {
+        throw new Error(sessionInit.error ?? 'Failed to initialize session manager for manual playbook fixture');
+    }
+}
+export async function createManualPlaybookFixture(specFolder) {
+    const tempBaseDir = path.join(SKILL_ROOT, '.tmp');
+    fs.mkdirSync(tempBaseDir, { recursive: true });
+    const rootDir = fs.mkdtempSync(path.join(tempBaseDir, FIXTURE_PREFIX));
+    const dbDir = path.join(rootDir, 'db');
+    const dbPath = path.join(dbDir, 'context-index.sqlite');
+    const baselineDbPath = path.join(dbDir, 'context-index.baseline.sqlite');
+    const reportDir = process.env.MANUAL_PLAYBOOK_REPORT_ROOT
+        ? path.resolve(process.env.MANUAL_PLAYBOOK_REPORT_ROOT)
+        : DEFAULT_REPORT_DIR;
+    const targetSpecFolder = `specs/${TARGET_SPEC_SLUG}`;
+    const sandboxSpecFolder = `specs/${SANDBOX_SPEC_SLUG}`;
+    const targetSpecAbsolute = path.join(rootDir, targetSpecFolder);
+    const sandboxSpecAbsolute = path.join(rootDir, sandboxSpecFolder);
+    const continuityFile = path.join(targetSpecAbsolute, 'implementation-summary.md');
+    const routedSaveFile = path.join(targetSpecAbsolute, 'decision-record.md');
+    const sandboxSpecDoc = path.join(sandboxSpecAbsolute, 'spec.md');
+    const sandboxFile = path.join(sandboxSpecAbsolute, 'memory', 'sandbox-extra.md');
+    const thinSandboxFile = path.join(sandboxSpecAbsolute, 'memory', 'thin-sandbox.md');
+    const richSandboxFile = path.join(sandboxSpecAbsolute, 'memory', 'rich-sandbox.md');
+    const ingestFiles = [
+        path.join(sandboxSpecAbsolute, 'memory', 'ingest-alpha.md'),
+        path.join(sandboxSpecAbsolute, 'memory', 'ingest-beta.md'),
+    ];
+    fs.mkdirSync(dbDir, { recursive: true });
+    applyFixtureEnv(rootDir, dbDir, dbPath);
+    const { indexMemoryFile } = await import('../../../mcp_server/dist/handlers/memory-save.js');
+    const { handleCheckpointCreate, handleMemoryCausalLink, setEmbeddingModelReady, } = await import('../../../mcp_server/dist/handlers/index.js');
+    const vectorIndex = await import('../../../mcp_server/dist/lib/search/vector-index.js');
+    const { init: initDbState } = await import('../../../mcp_server/dist/core/index.js');
+    const checkpoints = await import('../../../mcp_server/dist/lib/storage/checkpoints.js');
+    const accessTracker = await import('../../../mcp_server/dist/lib/storage/access-tracker.js');
+    const hybridSearch = await import('../../../mcp_server/dist/lib/search/hybrid-search.js');
+    const sessionBoost = await import('../../../mcp_server/dist/lib/search/session-boost.js');
+    const causalBoost = await import('../../../mcp_server/dist/lib/search/causal-boost.js');
+    const workingMemory = await import('../../../mcp_server/dist/lib/cognitive/working-memory.js');
+    const attentionDecay = await import('../../../mcp_server/dist/lib/cognitive/attention-decay.js');
+    const coActivation = await import('../../../mcp_server/dist/lib/cognitive/co-activation.js');
+    const sessionManager = await import('../../../mcp_server/dist/lib/session/session-manager.js');
+    const { upsertThinContinuityInMarkdown } = await import('../../../mcp_server/dist/lib/continuity/thin-continuity-record.js');
+    vectorIndex.closeDb();
+    vectorIndex.initializeDb(dbPath);
+    const database = vectorIndex.getDb();
+    if (!database) {
+        throw new Error('Fixture database did not initialize');
+    }
+    initializeHandlerRuntime(database, vectorIndex, initDbState, checkpoints, accessTracker, hybridSearch, sessionBoost, causalBoost, workingMemory, attentionDecay, coActivation, sessionManager);
+    await setEmbeddingModelReady(true);
+    const packetPointer = 'system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor';
+    writeFile(path.join(targetSpecAbsolute, 'handover.md'), buildSpecDoc('Gate I Fixture Handover', 'Fixture handover for canonical resume tests.', [
+        {
+            heading: '## STATE',
+            body: 'Resume from the handover first. The index scan retry fix lives in the auth resume packet.',
+        },
+        {
+            heading: '## NEXT STEPS',
+            body: 'Run session resume, then inspect checkpoint rollback and graph diagnostics.',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Prepared resume handover',
+        nextSafeAction: 'Run /spec_kit:resume for the target spec',
+        completionPct: 72,
+        keyFiles: ['handover.md', 'implementation-summary.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(path.join(targetSpecAbsolute, 'spec.md'), buildSpecDoc('Auth Resume Spec', 'Target spec for Gate I retrieval and save scenarios.', [
+        {
+            anchorId: 'state',
+            heading: '## STATE',
+            body: 'The auth resume packet tracks flaky index scan retry logic, checkpoint rollback semantics, and focused recovery guidance.',
+        },
+        {
+            anchorId: 'next-steps',
+            heading: '## NEXT STEPS',
+            body: 'Verify memory_context resume mode, then confirm memory_search and checkpoint flows remain stable.',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Documented auth resume plan',
+        nextSafeAction: 'Verify memory_context and memory_search',
+        completionPct: 58,
+        keyFiles: ['spec.md', 'tasks.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(path.join(targetSpecAbsolute, 'plan.md'), buildSpecDoc('Auth Resume Plan', 'Execution plan for auth resume fixture.', [
+        {
+            heading: '## PLAN',
+            body: '1. Recover context. 2. Run checkpoint rollback validation. 3. Verify graph diagnostics and feature-flag explanations.',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Planned auth resume verification',
+        nextSafeAction: 'Run checkpoint create and restore',
+        completionPct: 61,
+        keyFiles: ['plan.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(path.join(targetSpecAbsolute, 'tasks.md'), buildSpecDoc('Auth Resume Tasks', 'Task tracker for the Gate I fixture packet.', [
+        {
+            heading: '## TASKS',
+            body: '- [ ] Fix flaky index scan retry logic\n- [ ] Verify checkpoint restore clearExisting rollback\n- [ ] Explain graph rollout diagnostics',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Queued checkpoint tasks',
+        nextSafeAction: 'Run focused memory_context after resume',
+        completionPct: 49,
+        keyFiles: ['tasks.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(continuityFile, buildSpecDoc('Auth Resume Implementation Summary', 'Implementation summary with canonical continuity block.', [
+        {
+            anchorId: '_memory.continuity',
+            heading: '## _MEMORY.CONTINUITY',
+            body: 'Thin continuity record preserved for canonical resume readback.',
+        },
+        {
+            heading: '## SUMMARY',
+            body: 'Checkpoint restore uses transaction rollback guarantees. Graph rollout diagnostics remain stable. Governance relies on tenant and actor identity.',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Saved continuity state',
+        nextSafeAction: 'Verify resume ladder reads handover then continuity',
+        completionPct: 76,
+        keyFiles: ['implementation-summary.md', 'decision-record.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(routedSaveFile, buildSpecDoc('Auth Resume Decision Record', 'Decision record used as a routed save target.', [
+        {
+            anchorId: 'decisions',
+            heading: '## DECISIONS',
+            body: 'Save routed content into the decision record when the session chunk contains durable architectural choices about checkpoint rollback or graph rollout diagnostics.',
+        },
+    ], {
+        packetPointer,
+        recentAction: 'Prepared routed save anchor',
+        nextSafeAction: 'Run routed continuity save through memory_save',
+        completionPct: 64,
+        keyFiles: ['decision-record.md'],
+    }, upsertThinContinuityInMarkdown));
+    writeFile(sandboxSpecDoc, buildSpecDoc('Sandbox Spec', 'Disposable sandbox spec for destructive scenarios.', [
+        {
+            heading: '## OVERVIEW',
+            body: 'This disposable sandbox is safe for delete, bulk-delete, checkpoint, and ingest scenarios.',
+        },
+    ]));
+    writeFile(path.join(sandboxSpecAbsolute, 'plan.md'), buildSpecDoc('Sandbox Plan', 'Disposable sandbox plan.', [
+        {
+            heading: '## PLAN',
+            body: 'Create checkpoints first, then run destructive scenarios, then inspect rollback health.',
+        },
+    ]));
+    writeFile(path.join(sandboxSpecAbsolute, 'tasks.md'), buildSpecDoc('Sandbox Tasks', 'Disposable sandbox tasks.', [
+        {
+            heading: '## TASKS',
+            body: '- [ ] Create checkpoint\n- [ ] Delete a seeded memory\n- [ ] Restore if needed',
+        },
+    ]));
+    const memoryDocs = [
+        {
+            title: 'Checkpoint Rollback Runbook',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'checkpoint-rollback.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Checkpoint Rollback Runbook', 'Checkpoint restore and rollback guidance.', [
+                'Checkpoint restore uses clearExisting transaction rollback semantics.',
+                'When rollback fails, inspect checkpoint list and memory health diagnostics.',
+            ]),
+        },
+        {
+            title: 'Graph Rollout Diagnostics',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'graph-rollout-diagnostics.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Graph Rollout Diagnostics', 'Graph rollout trace and diagnostics.', [
+                'Bounded graph walk contributions surface in stable result ordering when the rollout flag is active.',
+                'Result explainability includes graphContribution fields under the trace=true condition for staged rollouts.',
+                'Operators audit rollout via graph_status responses and per-handler latency histograms tagged with rollout cohort.',
+                'No connection to checkpoint or rollback semantics; this is a separate diagnostic surface from memory-health monitoring.',
+            ]),
+        },
+        {
+            title: 'Governed Memory Notes',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'governed-memory-notes.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Governed Memory Notes', 'Governed memory behavior.', [
+                'Actor identity and tenant scoping are required for governed memory operations.',
+                'Resume and save flows stay inside the caller-provided tenant and actor scope.',
+            ]),
+        },
+        {
+            title: 'Feature Flag DB Path Precedence',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'feature-flag-db-path.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Feature Flag DB Path Precedence', 'Database path precedence notes.', [
+                'SPEC_KIT_DB_DIR and SPECKIT_DB_DIR override default database discovery.',
+                'MEMORY_DB_PATH points directly to context-index.sqlite for disposable fixtures.',
+            ]),
+        },
+        {
+            title: 'Index Scan Retry Stability',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'index-scan-retry.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Index Scan Retry Stability', 'Index scan retry stability notes.', [
+                'Fix flaky index scan retry logic by checking resume context before broad search.',
+                'memory_context focused mode should fill only the missing gaps.',
+            ]),
+        },
+        {
+            title: 'Sandbox Temporary Memory A',
+            filePath: path.join(sandboxSpecAbsolute, 'memory', 'temporary-a.md'),
+            specFolder: sandboxSpecFolder,
+            // 008/D18: differentiated from Memory B to drop similarity below 92% threshold.
+            content: buildMemoryDoc('Sandbox Temporary Memory A', 'Sandbox checkpoint coverage fixture.', [
+                'Single-record checkpoint fixture exercising the create→list→restore→delete path.',
+                'Useful for verifying checkpoint metadata round-trip and per-record audit hooks.',
+                'Relies on the checkpoints SQLite store and does not interact with bulk deletion paths.',
+            ]),
+        },
+        {
+            title: 'Sandbox Temporary Memory B',
+            filePath: path.join(sandboxSpecAbsolute, 'memory', 'temporary-b.md'),
+            specFolder: sandboxSpecFolder,
+            // 008/D18: differentiated from Memory A to drop similarity below 92% threshold.
+            content: buildMemoryDoc('Sandbox Temporary Memory B', 'Sandbox bulk-deletion fixture.', [
+                'Multi-record bulk-deletion fixture that drives memory_bulk_delete with predicate filters.',
+                'Validates spec-folder scoped predicates plus orphan-row cleanup downstream of the bulk delete.',
+                'Distinct from Memory A which exclusively exercises single-checkpoint flows.',
+            ]),
+        },
+        {
+            title: 'Anchored Retrieval Reference',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'anchored-retrieval.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Anchored Retrieval Reference', 'Anchored retrieval reference memory.', [
+                'Anchored retrieval should preserve state and next-steps sections.',
+                'This memory intentionally includes auth and checkpoint phrases for fuzzy retrieval.',
+            ]),
+        },
+        {
+            title: 'Anchored Decision Trail',
+            filePath: path.join(targetSpecAbsolute, 'memory', 'anchored-decision-trail.md'),
+            specFolder: targetSpecFolder,
+            content: buildMemoryDoc('Anchored Decision Trail', 'Anchored decision trail memory.', [
+                'Decision trail references checkpoint rollback and graph diagnostics together.',
+                'Used as the causal-link source in fixture setup.',
+            ]),
+        },
+        {
+            title: 'Ingest Alpha',
+            filePath: ingestFiles[0],
+            specFolder: sandboxSpecFolder,
+            // 008/D18: differentiated from Beta with corpus-distinct vocabulary.
+            content: buildMemoryDoc('Ingest Alpha', 'Async ingest start fixture.', [
+                'First-stage ingest record covering memory_ingest_start handler validation.',
+                'Targets the queueing and dedup-by-content-hash branch of the ingest lifecycle.',
+                'Distinct corpus from Ingest Beta which covers cancellation and resume.',
+            ]),
+        },
+        {
+            title: 'Ingest Beta',
+            filePath: ingestFiles[1],
+            specFolder: sandboxSpecFolder,
+            // 008/D18: differentiated from Alpha with corpus-distinct vocabulary.
+            content: buildMemoryDoc('Ingest Beta', 'Ingest cancel + resume fixture.', [
+                'Cancellation-stage ingest record exercising memory_ingest_cancel and the resume path.',
+                'Confirms partial-progress checkpoint emission survives an explicit cancel.',
+                'Distinct corpus from Ingest Alpha which covers the start path only.',
+            ]),
+        },
+        {
+            title: 'Sandbox Extra',
+            filePath: sandboxFile,
+            specFolder: sandboxSpecFolder,
+            content: buildMemoryDoc('Sandbox Extra', 'Additional sandbox file for manual playbook placeholders.', [
+                'Unique sandbox phrase for retrieval checks and force-save coverage.',
+            ]),
+        },
+        {
+            title: 'Thin Sandbox Memory',
+            filePath: thinSandboxFile,
+            specFolder: sandboxSpecFolder,
+            content: buildMemoryDoc('Thin Sandbox Memory', 'Minimal sandbox memory file.', [
+                'Thin sandbox content for dry-run and preflight checks.',
+            ]),
+        },
+        {
+            title: 'Rich Sandbox Memory',
+            filePath: richSandboxFile,
+            specFolder: sandboxSpecFolder,
+            content: buildMemoryDoc('Rich Sandbox Memory', 'Rich sandbox memory file.', [
+                'Rich sandbox content includes continuity, evidence, and retrieval vocabulary.',
+            ]),
+        },
+    ];
+    const seededMemories = [];
+    for (const doc of memoryDocs) {
+        writeFile(doc.filePath, doc.content);
+        seededMemories.push(await indexSeed(doc.filePath, doc.title, doc.specFolder, indexMemoryFile));
+    }
+    const primaryMemoryId = seededMemories.find((row) => row.title === 'Checkpoint Rollback Runbook')?.id ?? null;
+    const secondaryMemoryId = seededMemories.find((row) => row.title === 'Graph Rollout Diagnostics')?.id ?? null;
+    const tertiaryMemoryId = seededMemories.find((row) => row.title === 'Shared Memory Governance Notes')?.id ?? null;
+    let edgeId = null;
+    if (primaryMemoryId && secondaryMemoryId) {
+        const linkResponse = await handleMemoryCausalLink({
+            sourceId: String(primaryMemoryId),
+            targetId: String(secondaryMemoryId),
+            relation: 'supports',
+            strength: 0.8,
+        });
+        try {
+            const parsed = JSON.parse(linkResponse.content[0]?.text ?? '{}');
+            if (typeof parsed.data?.edgeId === 'number') {
+                edgeId = parsed.data.edgeId;
+            }
+        }
+        catch {
+            edgeId = null;
+        }
+    }
+    const placeholders = {
+        '<target-spec>': TARGET_SPEC_SLUG,
+        '<sandbox-spec>': SANDBOX_SPEC_SLUG,
+        '<spec-folder>': targetSpecFolder,
+        '<target-spec-folder>': targetSpecFolder,
+        '<known-spec>': targetSpecFolder,
+        '<checkpoint-name>': 'gate-i-checkpoint',
+        '<memory-id>': String(primaryMemoryId ?? 1),
+        '<memory-id-a>': String(primaryMemoryId ?? 1),
+        '<memory-id-b>': String(secondaryMemoryId ?? 2),
+        '<edge-id>': String(edgeId ?? 1),
+        '<job-id>': 'job_pending',
+        '<target-spec-path>': targetSpecFolder,
+        '<sandbox-spec-doc>': sandboxSpecDoc,
+        '<sandbox-file>': sandboxFile,
+        '<thin-sandbox-file>': thinSandboxFile,
+        '<rich-sandbox-file>': richSandboxFile,
+        '<thin title>': 'Thin Sandbox Memory',
+        '<unique phrase from sandbox spec doc>': 'Disposable sandbox is safe for delete, bulk-delete, checkpoint, and ingest scenarios.',
+        '<decision rationale>': 'checkpoint restore clearExisting rollback',
+        '<specific decision>': 'checkpoint restore rollback',
+        '<key term from agent session>': 'checkpoint rollback',
+        '<semantic query>': 'checkpoint rollback stability',
+        '<title of saved memory>': 'Checkpoint Rollback Runbook',
+        '<feature>': 'checkpoint rollback',
+        '<phase-parent>': targetSpecFolder,
+        '<project-hash>': 'gate-i-project-hash',
+        '<session-id>': 'gate-i-session-id',
+        '<payload>': '{"specFolder":"specs/001-manual-fixture-auth-resume","sessionSummary":"Gate I fixture payload"}',
+        '<json-data-file>': path.join(rootDir, 'payload.json'),
+    };
+    writeFile(placeholders['<json-data-file>'], placeholders['<payload>']);
+    const baselineCheckpointName = 'gate-i-fixture-baseline';
+    const defaultCheckpointResult = await handleCheckpointCreate({ name: 'gate-i-checkpoint' });
+    const defaultCheckpointSummary = typeof defaultCheckpointResult?.content?.[0]?.text === 'string'
+        ? defaultCheckpointResult.content[0].text
+        : '';
+    if (!/"success"\s*:\s*true/.test(defaultCheckpointSummary)) {
+        throw new Error(`Failed to create default checkpoint: ${defaultCheckpointSummary || 'no response body'}`);
+    }
+    const baselineCheckpoint = await handleCheckpointCreate({ name: baselineCheckpointName });
+    const baselineSummary = typeof baselineCheckpoint?.content?.[0]?.text === 'string'
+        ? baselineCheckpoint.content[0].text
+        : '';
+    if (!/"success"\s*:\s*true/.test(baselineSummary)) {
+        throw new Error(`Failed to create baseline checkpoint: ${baselineSummary || 'no response body'}`);
+    }
+    fs.copyFileSync(dbPath, baselineDbPath);
+    const reset = async () => {
+        sessionManager.shutdown?.();
+        vectorIndex.closeDb();
+        fs.copyFileSync(baselineDbPath, dbPath);
+        vectorIndex.initializeDb(dbPath);
+        const databaseAfterReset = vectorIndex.getDb();
+        if (!databaseAfterReset) {
+            throw new Error('Fixture database did not reinitialize during reset');
+        }
+        initializeHandlerRuntime(databaseAfterReset, vectorIndex, initDbState, checkpoints, accessTracker, hybridSearch, sessionBoost, causalBoost, workingMemory, attentionDecay, coActivation, sessionManager);
+        await setEmbeddingModelReady(true);
+    };
+    const cleanup = () => {
+        try {
+            sessionManager.shutdown?.();
+        }
+        catch {
+            // Ignore cleanup errors for disposable fixtures.
+        }
+        try {
+            vectorIndex.closeDb();
+        }
+        catch {
+            // Ignore cleanup errors for disposable fixtures.
+        }
+        fs.rmSync(rootDir, { recursive: true, force: true });
+    };
+    return {
+        rootDir,
+        dbDir,
+        dbPath,
+        reportDir,
+        targetSpecSlug: TARGET_SPEC_SLUG,
+        sandboxSpecSlug: SANDBOX_SPEC_SLUG,
+        targetSpecFolder,
+        sandboxSpecFolder,
+        targetSpecAbsolute,
+        sandboxSpecAbsolute,
+        defaultCheckpointName: 'gate-i-checkpoint',
+        baselineCheckpointName,
+        adminUserId: ADMIN_USER_ID,
+        seededMemories,
+        primaryMemoryId,
+        secondaryMemoryId,
+        tertiaryMemoryId,
+        edgeId,
+        continuityFile,
+        routedSaveFile,
+        ingestFiles,
+        placeholders,
+        reset,
+        cleanup,
+    };
+}

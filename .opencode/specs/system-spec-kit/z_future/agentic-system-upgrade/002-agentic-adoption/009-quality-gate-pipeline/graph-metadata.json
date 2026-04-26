@@ -97,6 +97,12 @@
         "source": "derived"
       },
       {
+        "name": "Feature Specificat",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -122,12 +128,6 @@
       },
       {
         "name": "Successor Phase",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Problem Statement Public",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -195,7 +195,8 @@
     ],
     "causal_summary": "Public already has the core authority needed for 009 quality gate pipeline, but the change still needs one implementation-ready contract. This child phase narrows the converged research into a current-authority-safe design.",
     "created_at": "2026-04-12T09:02:53.495Z",
-    "last_save_at": "2026-04-13T16:22:53.732Z",
+    "last_save_at": "2026-04-26T09:17:16.074Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

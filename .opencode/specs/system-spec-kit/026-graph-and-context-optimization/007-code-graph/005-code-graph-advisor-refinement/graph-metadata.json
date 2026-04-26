@@ -59,10 +59,10 @@
       "checklist.md",
       "decision-record.md",
       "research/015-code-graph-advisor-refinement-pt-01/resource-map.md",
-      ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md",
-      ".opencode/skill/system-spec-kit/mcp_server/skill-advisor/README.md",
       "implementation-summary.md",
-      "mcp_server/skill-advisor/lib/metrics.ts"
+      "dist/hooks/claude/user-prompt-submit.js",
+      "mcp_server/package.json",
+      "handlers/index.ts"
     ],
     "entities": [
       {
@@ -150,21 +150,27 @@
         "source": "derived"
       },
       {
-        "name": "README.md",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/code-graph/README.md",
-        "source": "derived"
-      },
-      {
         "name": "implementation-summary.md",
         "kind": "doc",
         "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "metrics.ts",
+        "name": "user-prompt-submit.js",
         "kind": "code",
-        "path": "mcp_server/skill-advisor/lib/metrics.ts",
+        "path": "dist/hooks/claude/user-prompt-submit.js",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": "handlers/index.ts",
         "source": "derived"
       },
       {
@@ -202,17 +208,11 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Implementation Plan",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Both the Code Graph subsystem and the Skill Advisor system have matured independently, but no systematic investigation has been conducted into their combined correctness, performance boundaries, and UX consistency. This research phase uses 20 deep-research iterations to produce actionable, evidence-based recommendations across both systems so that a follow-up implementation phase can make targeted improvements with confidence rather than guesswork.",
     "created_at": "2026-04-24T00:00:00Z",
-    "last_save_at": "2026-04-25T09:15:45.850Z",
+    "last_save_at": "2026-04-26T09:17:15.762Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

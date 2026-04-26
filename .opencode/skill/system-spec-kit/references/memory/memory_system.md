@@ -29,10 +29,10 @@ When a save mutates indexed state, the runtime also updates the `DB_UPDATED_FILE
 
 ### Core Capabilities
 
-- **Semantic search** - Find memories by meaning, not just keywords
+- **Semantic search** - Find indexed spec-doc records by meaning, not just keywords
 - **Importance tiers** - Six-level system for prioritizing context
-- **Decay scoring** - Recent memories rank higher than old ones
-- **Checkpoints** - Save/restore memory state snapshots
+- **Decay scoring** - Recent indexed spec-doc records rank higher than older ones
+- **Checkpoints** - Save/restore indexed-continuity state snapshots
 - **Constitutional tier** - Critical rules that always surface
 
 ### Indexable Content Sources

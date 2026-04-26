@@ -194,7 +194,8 @@
     ],
     "causal_summary": "The Memory Skill, Memory Server, SpecKit Skill, and Commands need comprehensive UX analysis for public repo readiness. A dev team cloning this repo should have a seamless first-time experience.",
     "created_at": "2026-04-12T09:02:53.523Z",
-    "last_save_at": "2026-04-13T16:22:53.505Z",
+    "last_save_at": "2026-04-26T09:17:15.895Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

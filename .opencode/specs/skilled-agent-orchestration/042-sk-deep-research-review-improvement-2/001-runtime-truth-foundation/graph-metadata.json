@@ -22,7 +22,7 @@
       "042.001",
       "tasks",
       "legal stop",
-      "continuedFromRun"
+      "continuedfromrun"
     ],
     "key_topics": [
       "042",
@@ -154,6 +154,12 @@
         "source": "derived"
       },
       {
+        "name": "Feature Specif",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -184,12 +190,6 @@
         "source": "derived"
       },
       {
-        "name": "Parent Spec",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
@@ -210,7 +210,8 @@
     ],
     "causal_summary": "This packet converts the consolidated agentic-systems research into one implementation plan for the two autonomous deep-loop products: `sk-deep-research` and `sk-deep-review`. The work is centered on runtime truth, not feature sprawl: real stop reasons, legal completion gates, resume-from-run semantics, auditability, claim verification, behavior-first tests, and richer dashboards that make loop state easier to trust and resume.",
     "created_at": "2026-04-12T09:02:50.192Z",
-    "last_save_at": "2026-04-18T14:39:00.353Z",
+    "last_save_at": "2026-04-26T09:17:15.241Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

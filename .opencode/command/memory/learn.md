@@ -1,5 +1,5 @@
 ---
-description: Create and manage constitutional memories — always-surface rules that appear at the top of every search result.
+description: Create and manage constitutional rules — always-surface entries that appear at the top of every search result.
 argument-hint: "[rule-description] | list | edit <filename> | remove <filename> | budget"
 allowed-tools: Read, Write, Edit, Glob, Bash, spec_kit_memory_memory_save, spec_kit_memory_memory_search, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_delete, spec_kit_memory_memory_index_scan
 ---
@@ -36,19 +36,19 @@ IF $ARGUMENTS contains recognized input:
 - **DO NOT** assume what the user wants based on screenshots or open files
 - When no arguments: show the dashboard, do NOT ask a question
 
-> SECURITY: Constitutional memories are high-impact global rules. In multi-agent or shared environments, create/edit/remove operations should verify actor identity and require owner or admin role before proceeding.
+> SECURITY: Constitutional rules are high-impact global rules. In multi-agent or shared environments, create/edit/remove operations should verify actor identity and require owner or admin role before proceeding.
 
 ---
 
-# /memory:learn — Constitutional Memory Manager
+# /memory:learn — Constitutional Rule Manager
 
-Create, list, edit, and remove **constitutional memories**, the highest-tier rules that surface at the top of every search result, never decay, and carry a 3.0x search boost.
+Create, list, edit, and remove **constitutional rules**, the highest-tier entries that surface at the top of every search result, never decay, and carry a 3.0x search boost.
 
 ---
 
 ## 1. PURPOSE
 
-Provide a dedicated command for managing constitutional memories, the most powerful tier in the Spec Kit Memory system. Constitutional memories always appear at the top of every `memory_search()` result and never decay. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
+Provide a dedicated command for managing constitutional rules, the most powerful tier in the Spec Kit Memory system. Constitutional rules always appear at the top of every `memory_search()` result and never decay. This command handles the full lifecycle: creation with proper frontmatter and ANCHOR format, budget validation, editing, and removal.
 
 **Key difference from `/memory:save`:**
 - `/memory:save` = Session context routed into canonical packet continuity surfaces
@@ -74,8 +74,8 @@ Provide a dedicated command for managing constitutional memories, the most power
 ## 2. CONTRACT
 
 ```yaml
-role: Constitutional Memory Manager
-purpose: Create and manage always-surface rules in the constitutional tier
+role: Constitutional Rule Manager
+purpose: Create and manage always-surface constitutional rules in the constitutional tier
 destination: .opencode/skill/system-spec-kit/constitutional/
 ```
 
@@ -88,10 +88,10 @@ destination: .opencode/skill/system-spec-kit/constitutional/
 
 | Command | Result |
 |---------|--------|
-| `/memory:learn Never commit API keys` | Create constitutional memory |
-| `/memory:learn list` | Show all constitutional memories + budget |
-| `/memory:learn edit never-commit-secrets.md` | Edit existing memory |
-| `/memory:learn remove never-commit-secrets.md` | Remove memory (destructive) |
+| `/memory:learn Never commit API keys` | Create constitutional rule |
+| `/memory:learn list` | Show all constitutional rules + budget |
+| `/memory:learn edit never-commit-secrets.md` | Edit existing constitutional rule |
+| `/memory:learn remove never-commit-secrets.md` | Remove constitutional rule (destructive) |
 | `/memory:learn budget` | Token budget status (~2000 max) |
 
 ---
@@ -139,7 +139,7 @@ MEMORY:LEARN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   ⚠ This rule may not need constitutional tier.
-  Constitutional memories appear in EVERY search
+  Constitutional rules appear in EVERY search
   and consume shared budget (~2000 tokens).
 
 ─────────────────────────────────────────────────────
@@ -148,7 +148,7 @@ MEMORY:LEARN
 
 ### Step 3: Structure the Memory
 
-Generate a properly formatted constitutional memory document:
+Generate a properly formatted constitutional rule document:
 
 ```markdown
 ---
@@ -214,7 +214,7 @@ triggerPhrases:
 1. WRITE file:
    Write(".opencode/skill/system-spec-kit/constitutional/<filename>.md")
 
-2. INDEX in memory database:
+2. INDEX in indexed-continuity database:
    memory_save({
      filePath: ".opencode/skill/system-spec-kit/constitutional/<filename>.md",
      force: true
@@ -268,7 +268,7 @@ Glob(".opencode/skill/system-spec-kit/constitutional/*.md")
 MEMORY:LEARN
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-→ Constitutional Memories ───────────── <N> files
+→ Constitutional Rules ───────────── <N> files
 
   <filename1>.md    "<title1>"    ~<N> tokens
   <filename2>.md    "<title2>"    ~<N> tokens
@@ -306,7 +306,7 @@ Extract from frontmatter: title, triggerPhrases. Estimate token count per file.
 MEMORY:LEARN LIST
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-→ Constitutional Memories ───────────── <N> files
+→ Constitutional Rules ───────────── <N> files
 
   1  <filename1>.md
      "<title1>"
@@ -403,7 +403,7 @@ Read the file and display. Then:
 MEMORY:LEARN REMOVE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  ⚠ DESTRUCTIVE — This removes a constitutional memory.
+  ⚠ DESTRUCTIVE — This removes a constitutional rule.
   File: <filename>.md
   Title: "<title>"
 
@@ -417,7 +417,7 @@ MEMORY:LEARN REMOVE
 
 ### Step 3: Delete + Re-index
 
-SECURITY: Validate filename is basename-only (no /, .., or absolute paths). Reject if validation fails. Only delete files from the constitutional memory directory.
+SECURITY: Validate filename is basename-only (no /, .., or absolute paths). Reject if validation fails. Only delete files from the constitutional rule directory.
 
 ```text
 1. Delete file via Bash: rm "<path>"
@@ -487,7 +487,7 @@ STATUS=OK ACTION=budget
 | Condition | Action |
 |-----------|--------|
 | No rule description | Shows overview dashboard with action hints |
-| Rule doesn't qualify as constitutional | Suggest `/memory:save` for spec-folder context |
+| Rule doesn't qualify as constitutional rule | Suggest `/memory:save` for spec-folder context |
 | Token budget exceeded | Warn with dashboard, offer trim/shorten/cancel |
 | File already exists with same name | ASK: overwrite or rename |
 | File not found (edit/remove) | Show list dashboard, ask user to select |
@@ -514,8 +514,8 @@ STATUS=OK ACTION=budget
 | Step | Tool | Purpose |
 |------|------|---------|
 | Discover files | `Glob(".opencode/skill/system-spec-kit/constitutional/*.md")` | Find constitutional files |
-| Write new file | `Write("<path>")` | Create constitutional memory |
-| Edit existing | `Edit("<path>")` | Modify constitutional memory |
+| Write new file | `Write("<path>")` | Create constitutional rule |
+| Edit existing | `Edit("<path>")` | Modify constitutional rule |
 | Index new file | `memory_save({ filePath, force: true })` | Add to search index |
 | Verify surfaces | `memory_search({ query })` | Confirm isConstitutional: true |
 | Remove from index | `memory_index_scan({ force: true })` | Rebuild index after deletion |

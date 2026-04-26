@@ -121,18 +121,18 @@ memory_search({ query: "test" })
 | Issue | Symptom | Solution |
 |-------|---------|----------|
 | **Anchor not found** | `Anchor not found: X` | Use `memory_search()` to find available anchors |
-| **Memory folder empty** | `No previous sessions found` | Save context first via skill workflow |
-| **Wrong memory loaded** | Context from different session | Check `specFolder` parameter matches intent |
+| **Indexed-continuity store empty** | `No previous sessions found` | Save context first via skill workflow |
+| **Wrong spec-doc record loaded** | Context from different session | Check `specFolder` parameter matches intent |
 | **Legacy file detected** | `Legacy format detected` | Re-save to generate current anchors |
 | **Token budget exceeded** | `Token budget exceeded: N tokens` | Use `limit` parameter or filter by tier |
-| **No results from search** | `No memories found matching: query` | Broaden query; check `memory_list()` for content |
+| **No results from search** | `No spec-doc records found matching: query` | Broaden query; check `memory_list()` for content |
 
 ### Decay Calculation Issues
 
 | Issue | Root Cause | Resolution |
 |-------|------------|------------|
-| Old memories ranked too high | Decay not enabled | Set `useDecay: true` in search params |
-| Recent memories not prioritized | Decay rate too high | Check tier-specific rates (normal=0.80, temporary=0.60) |
+| Old spec-doc records ranked too high | Decay not enabled | Set `useDecay: true` in search params |
+| Recent spec-doc records not prioritized | Decay rate too high | Check tier-specific rates (normal=0.80, temporary=0.60) |
 | Score calculations seem wrong | Missing FSRS fields | Verify `stability` and `last_review` fields populated |
 | Decay too aggressive | Low decay rate | Adjust tier or use protected tier (constitutional/critical/important) |
 
@@ -234,7 +234,7 @@ echo "Current: $current_count | Legacy: $((total_count - current_count))"
 // Check system health
 memory_stats()
 
-// List recent memories
+// List recent indexed spec-doc records
 memory_list({ limit: 10, sortBy: "created_at" })
 
 // Test basic search
@@ -380,11 +380,11 @@ If vector index is corrupted or empty:
 1. **Backup current state**: `memory_stats()` output
 2. **Restart MCP server**: Triggers re-initialization
 3. **Verify recovery**: `memory_stats()` should show counts
-4. **Re-index if needed**: Save new memory to trigger indexing
+4. **Re-index if needed**: Save new spec-doc record to trigger indexing
 
 ### Data Recovery
 
-If memories are missing:
+If spec-doc records are missing:
 
 1. Check file system: `find specs -path "*/memory/*.md"`
 2. Check database directly if accessible

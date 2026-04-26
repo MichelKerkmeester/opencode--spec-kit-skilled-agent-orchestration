@@ -20,7 +20,7 @@ Six guard/edge-case issues were fixed:
 
 **E1: Temporal contiguity double-counting:** `temporal-contiguity.ts` had an O(N^2) nested loop that processed both (A,B) and (B,A) pairs, double-counting boosts. Fixed inner loop to `j = i + 1`.
 
-**E2: Wrong-memory fallback:** `extraction-adapter.ts` fell back to resolving the most-recent memory ID on entity resolution failure, silently linking to the wrong memory. The fallback was removed. The function returns `null` on resolution failure.
+**E2: Wrong-record fallback:** `extraction-adapter.ts` fell back to resolving the most-recent spec-doc record ID on entity resolution failure, silently linking to the wrong record. The fallback was removed. The function returns `null` on resolution failure.
 
 **E3: Expired multi-concept results:** `multi_concept_search()` now applies `AND (m.expires_at IS NULL OR m.expires_at > datetime('now'))`, bringing the AND-match path back in line with single-query retrieval and preventing expired memories from leaking into result sets.
 

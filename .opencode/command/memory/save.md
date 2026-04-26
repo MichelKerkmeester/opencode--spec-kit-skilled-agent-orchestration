@@ -77,7 +77,7 @@ Save the current conversation context, including session summary, key decisions,
 - `generate-context.js` remains the primary save mechanism when the workflow also needs DB indexing, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, or anchor-managed compatibility output.
 - Canonical save requests now default to **planner-first** behavior: return the routed target, proposed edit summary, blockers, advisories, and follow-up actions before any mutation-first apply path is requested.
 - Explicit fallback remains available with `plannerMode: "full-auto"` or CLI `--full-auto` when an operator wants the legacy atomic writer behavior.
-- Standalone memory markdown is not the primary operator-facing destination for this command.
+- Standalone spec-doc markdown is not the primary operator-facing destination for this command.
 
 ### Handover Document Maintenance
 
@@ -107,7 +107,7 @@ Routing tiers:
 Boundary rules:
 
 - Delivery cues are now stronger when the chunk mentions sequencing, gating, rollout, or verification.
-- Handover keeps state-first stop/resume notes even if they mention soft operational commands like `git diff`, `list memories`, or `force re-index`.
+- Handover keeps state-first stop/resume notes even if they mention soft operational commands like `git diff`, `list spec-doc records`, or `force re-index`.
 - Hard transcript, telemetry, and wrapper scaffolding still route to `drop`.
 
 Override and context rules:
@@ -475,7 +475,7 @@ STATUS=OK TARGETS=<count> ANCHORS=<count>
 
 | Input | Action                                            |
 | ----- | ------------------------------------------------- |
-| t     | Edit trigger phrases for this memory (add/remove) |
+| t     | Edit trigger phrases for this spec-doc record (add/remove) |
 | d     | Done, exit save workflow                          |
 
 ### Trigger Edit (if selected)
@@ -484,7 +484,7 @@ STATUS=OK TARGETS=<count> ANCHORS=<count>
 MEMORY:TRIGGERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<memory_title>"
+  Record      #<id> "<spec_doc_title>"
 
 → Current Triggers ─────────────────────────────────
   1) <phrase1>
@@ -520,7 +520,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 | ---------------------------- | ------------------------------------------ | ----------------------------- |
 | Context saved, continue work | Return to previous task                    | Memory preserved, continue    |
 | Ending session               | `/memory:save [spec-folder-path]`           | Update `handover.md` through `handover_state` routing |
-| Search saved memories        | `/memory:search [query]`                | Find related context          |
+| Search indexed continuity    | `/memory:search [query]`                | Find related context          |
 | Start new work               | `/spec_kit:complete [feature-description]` | Begin new feature             |
 
 **ALWAYS** end with: "Context saved. What would you like to do next?"
@@ -531,7 +531,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:manage`: Database management, checkpoints, ingest
-- `/memory:learn`: Constitutional memories
+- `/memory:learn`: Constitutional rules
 - `/spec_kit:resume`: Session recovery and continuation
 
 ---
@@ -541,7 +541,7 @@ STATUS=OK ID=<id> TRIGGERS=<count>
 
 > **Tool Restriction (Memory Save Rule - HARD BLOCK):** `Write` remains intentionally excluded. `Edit` is allowed only for direct `_memory.continuity` frontmatter updates inside `implementation-summary.md`. Use `generate-context.js` for indexed saves, embedding generation, `description.json` refresh, `graph-metadata.json` refresh, and anchor-managed canonical spec-doc routing. Standalone `memory/*.md` files are retired and the runtime rejects them. See AGENTS.md Memory Save Rule.
 
-> **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved memory may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
+> **Mutation Ledger & Artifact Routing:** Every save operation is now recorded in the mutation ledger, an append-only audit trail that captures the file path, spec folder, timestamp, and indexing outcome. Artifact metadata associated with the saved spec-doc record may also be classified via artifact-class routing before indexing, ensuring consistent type tagging across the database.
 
 ### Enforcement Matrix
 
@@ -565,7 +565,7 @@ spec_kit_memory_memory_index_scan({
 })
 ```
 
-`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing indexed canonical spec document. Used by the `[t]` edit triggers action in the post-save review.
+`memory_update({ id, triggerPhrases })`: Update trigger phrases on an existing indexed spec-doc record. Used by the `[t]` edit triggers action in the post-save review.
 
 ---
 
@@ -655,7 +655,7 @@ Main Agent (reads command):
 When phases pass, dispatch via Task tool:
 
 - **subagent_type:** `general`
-- **description:** "Save memory context"
+- **description:** "Save continuity context"
 - **prompt:** Include:
   1. `target_folder` and `alignment_validated` from phases
   2. Instructions for Steps 2-5 (context analysis → anchor generation → JSON construction → script execution)
@@ -699,7 +699,7 @@ The `memory_save` tool schema advertises advanced governance parameters for mult
 | Parameter | Type | Description |
 |-----------|------|-------------|
 | `retentionPolicy` | string | Retention class: `keep` (permanent), `ephemeral` (short-lived), `shared` (reserved compatibility value) |
-| `deleteAfter` | string | Optional ISO timestamp after which retention sweep may delete the memory |
+| `deleteAfter` | string | Optional ISO timestamp after which retention sweep may delete the spec-doc record |
 
 > **Note:** Governance parameters (tenantId, userId, agentId, sessionId) are validated by the memorySaveSchema when provided. All governance fields must pass schema validation.
 

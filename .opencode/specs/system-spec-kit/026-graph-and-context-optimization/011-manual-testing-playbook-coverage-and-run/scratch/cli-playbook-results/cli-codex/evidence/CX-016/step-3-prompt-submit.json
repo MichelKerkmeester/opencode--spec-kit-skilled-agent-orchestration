@@ -1,0 +1,2 @@
+{"timestamp":"2026-04-26T10:31:34.464Z","runtime":"codex","status":"ok","freshness":"stale","durationMs":1346,"cacheHit":false,"errorDetails":"SOURCE_NEWER_THAN_SKILL_GRAPH","skillLabel":"sk-code-opencode"}
+{"hookSpecificOutput":{"hookEventName":"UserPromptSubmit","additionalContext":"Advisor: stale; use sk-code-opencode 0.91/0.12 pass."}}

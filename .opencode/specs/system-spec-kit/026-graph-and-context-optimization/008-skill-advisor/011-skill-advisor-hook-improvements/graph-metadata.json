@@ -4,30 +4,65 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/011-skill-advisor-hook-improvements",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/006-integrity-parity-closure",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/008-docs-impact-remediation"
-    ],
+    "depends_on": [],
     "supersedes": [],
     "related_to": []
   },
   "derived": {
     "trigger_phrases": [
-      "skill-advisor-hook-improvements",
+      "skill-advisor hook improvements",
+      "skill-advisor system research",
       "026/009/014",
-      "research investigation"
+      "014 skill-advisor",
+      "014-f-001",
+      "014-f-007",
+      "sa-t1",
+      "tasks",
+      "bucket b",
+      "014 skill-advisor checklist",
+      "026/009/014 verification",
+      "014 skill-advisor hook improvements complete"
     ],
     "key_topics": [
-      "research",
-      "investigation",
+      "skill-advisor",
       "hook",
-      "improvement"
+      "improvements",
+      "system",
+      "research",
+      "026",
+      "009",
+      "014",
+      "014-f-001",
+      "014-f-007",
+      "sa-t1",
+      "tasks"
     ],
     "importance_tier": "important",
-    "status": "research-queued",
+    "status": "tasks_ready",
     "key_files": [
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      ".opencode/plugins/spec-kit-skill-advisor.js",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+      "tests/codex-user-prompt-submit-hook.vitest.ts",
+      "tests/codex-prompt-wrapper.vitest.ts",
+      "hooks/claude/hook-state.ts",
+      "lib/context/shared-payload.ts",
+      "checklist.md",
+      ".claude/settings.local.json",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      "implementation-summary.md",
+      "hooks/codex/user-prompt-submit.ts",
+      "hooks/codex/prompt-wrapper.ts"
     ],
     "entities": [
       {
@@ -35,15 +70,158 @@
         "kind": "doc",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-skill-advisor.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-skill-advisor.js",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "prompt-wrapper.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/prompt-wrapper.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor-hook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+        "source": "derived"
+      },
+      {
+        "name": "codex-user-prompt-submit-hook.vitest.ts",
+        "kind": "test",
+        "path": "tests/codex-user-prompt-submit-hook.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "codex-prompt-wrapper.vitest.ts",
+        "kind": "test",
+        "path": "tests/codex-prompt-wrapper.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-state.ts",
+        "kind": "code",
+        "path": "hooks/claude/hook-state.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "settings.local.json",
+        "kind": "config",
+        "path": ".claude/settings.local.json",
+        "source": "derived"
+      },
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Advisor Hook Improvements",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Implement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Normalizing Codex",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Execute Phase",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Research packet scoping an investigation follow-up to the 026/009 hook-package work.",
+    "causal_summary": "The skill-advisor system has already passed through sibling sub-phases `001`, `008`, and `009`, plus targeted parity closure in `007/006-integrity-parity-closure/`. That earlier work established the end-to-end hook surfaces, but packet-02 research still identified a bounded implementation set across OpenCode threshold parity, shared brief rendering, MCP surface symmetry, validator threshold semantics, and durable prompt-safe telemetry.",
     "created_at": "2026-04-24T01:10:00Z",
-    "last_save_at": "2026-04-24T01:10:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T09:17:15.797Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "resource-map.md"
     ]
   }
 }

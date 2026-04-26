@@ -198,7 +198,8 @@
     ],
     "causal_summary": "A comprehensive audit of the SpecKit and Memory systems identified **16 verified bugs**, **10 alignment issues**, and **9 improvement opportunities** (35 total tasks). While the systems are fundamentally well-designed, several high-severity bugs require immediate attention to prevent crashes and data loss.",
     "created_at": "2026-04-12T09:02:53.531Z",
-    "last_save_at": "2026-04-13T16:22:53.536Z",
+    "last_save_at": "2026-04-26T09:17:15.919Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

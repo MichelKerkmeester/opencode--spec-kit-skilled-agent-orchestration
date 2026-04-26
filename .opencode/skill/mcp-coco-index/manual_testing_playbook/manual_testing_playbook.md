@@ -272,6 +272,19 @@ Expected signals: Results array is non-empty; response time is noticeably faster
 #### Test Execution
 > **Feature File:** [MCP-007](02--mcp-search-tool/007-no-refresh-search.md)
 
+### MCP-008 | Concurrent refresh_index race
+
+#### Description
+Verify two concurrent `refresh_index=true` calls either both succeed or surface the documented `ComponentContext` race; confirm `refresh_index=false` fallback works.
+
+#### Current Reality
+Prompt summary: As a manual-testing orchestrator, fire two MCP CocoIndex searches concurrently with refresh_index=true against the current CocoIndex daemon in this repository. Verify either both responses are valid result arrays OR at least one response surfaces a ComponentContext error string (acceptable failure mode per SKILL.md §4). Confirm that switching the second call to refresh_index=false eliminates the error. Return a concise user-facing pass/fail verdict with the main reason.
+
+Expected signals: Both calls return JSON; at most one contains `ComponentContext`; the `refresh_index=false` follow-up returns a non-empty result array
+
+#### Test Execution
+> **Feature File:** [MCP-008](02--mcp-search-tool/008-concurrent-refresh-race.md)
+
 
 ---
 
@@ -318,6 +331,19 @@ Expected signals: Output shows numeric file count > 0 and numeric chunk count > 
 #### Test Execution
 > **Feature File:** [CFG-003](03--configuration/003-status-verification.md)
 
+### CFG-004 | Root-path env-var override
+
+#### Description
+Verify `COCOINDEX_CODE_ROOT_PATH` overrides marker-directory discovery in the documented 4-priority root resolution chain.
+
+#### Current Reality
+Prompt summary: As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path, then invoke ccc status from a subdirectory containing project markers (.git, package.json, etc.) and confirm the reported root matches the env var, not the subdirectory. Return a concise user-facing pass/fail verdict with the main reason.
+
+Expected signals: `ccc status` invoked from the subdirectory with the env var set reports the same file/chunk counts as `ccc status` invoked at the env-var-pinned root; `ccc search --limit 1` returns a path under the env-var-pinned root
+
+#### Test Execution
+> **Feature File:** [CFG-004](03--configuration/004-root-path-env-var-override.md)
+
 
 ---
 
@@ -350,6 +376,19 @@ Expected signals: Step 1: output includes version or uptime information; Step 2:
 
 #### Test Execution
 > **Feature File:** [DMN-002](04--daemon-lifecycle/002-daemon-status-inspection.md)
+
+### DMN-003 | Helper-script readiness (doctor.sh + ensure_ready.sh)
+
+#### Description
+Verify `doctor.sh --strict --require-config` and `ensure_ready.sh --strict --require-config` enforce the SKILL.md §4 ALWAYS rule #7 readiness contract on positive and negative paths.
+
+#### Current Reality
+Prompt summary: As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify both scripts exit 0 with healthy JSON; rerun ensure_ready.sh and confirm idempotency; then run both scripts from a temp directory with no .cocoindex_code/ to confirm --require-config makes them exit non-zero with an explicit reason. Return a concise user-facing pass/fail verdict with the main reason.
+
+Expected signals: doctor exit=0 with valid JSON; ensure_ready exit=0 first call AND idempotent on second call; both scripts exit non-zero with explicit reason when run from a directory without `.cocoindex_code/` and `--require-config` is set
+
+#### Test Execution
+> **Feature File:** [DMN-003](04--daemon-lifecycle/003-helper-script-readiness.md)
 
 
 ---
@@ -482,17 +521,20 @@ Expected signals: `session_bootstrap.resume.cocoIndex.available` and `session_re
 - MCP-005: [Combined filters](02--mcp-search-tool/005-combined-filters.md)
 - MCP-006: [Result limit](02--mcp-search-tool/006-result-limit.md)
 - MCP-007: [No-refresh search](02--mcp-search-tool/007-no-refresh-search.md)
+- MCP-008: [Concurrent refresh_index race](02--mcp-search-tool/008-concurrent-refresh-race.md)
 
 ### CONFIGURATION
 
 - CFG-001: [Default model verification](03--configuration/001-default-model-verification.md)
 - CFG-002: [Project settings inspection](03--configuration/002-project-settings-inspection.md)
 - CFG-003: [Status verification](03--configuration/003-status-verification.md)
+- CFG-004: [Root-path env-var override](03--configuration/004-root-path-env-var-override.md)
 
 ### DAEMON LIFECYCLE
 
 - DMN-001: [Daemon auto-start](04--daemon-lifecycle/001-daemon-auto-start.md)
 - DMN-002: [Daemon status inspection](04--daemon-lifecycle/002-daemon-status-inspection.md)
+- DMN-003: [Helper-script readiness (doctor.sh + ensure_ready.sh)](04--daemon-lifecycle/003-helper-script-readiness.md)
 
 ### SKILL ADVISOR INTEGRATION
 

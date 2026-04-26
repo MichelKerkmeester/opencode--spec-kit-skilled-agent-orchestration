@@ -20,7 +20,7 @@ The co-activation boost multiplier jumped from 0.1x to 0.25x. At 0.1x, the graph
 
 The new multiplier targets 15% or higher contribution, which is enough to matter without overwhelming the vector and lexical channels. You can tune the exact value through the `SPECKIT_COACTIVATION_STRENGTH` environment variable.
 
-The stronger multiplier now runs on a cheaper retrieval path. Similarity-neighbor hydration batches memory detail fetches with a single `WHERE id IN (...)` query, `getCausalNeighbors()` uses one SQL statement with a CTE and `JOIN memory_index`, and Stage 2 fusion precomputes related-neighbor counts once per boosted batch before applying the fan-effect divisor. That eliminates the old N+1 lookup pattern, so raising co-activation strength no longer multiplies per-row database chatter.
+The stronger multiplier now runs on a cheaper retrieval path. Similarity-neighbor hydration batches spec-doc-record detail fetches with a single `WHERE id IN (...)` query, `getCausalNeighbors()` uses one SQL statement with a CTE and `JOIN memory_index`, and Stage 2 fusion precomputes related-neighbor counts once per boosted batch before applying the fan-effect divisor. That eliminates the old N+1 lookup pattern, so raising co-activation strength no longer multiplies per-row database chatter.
 
 ---
 

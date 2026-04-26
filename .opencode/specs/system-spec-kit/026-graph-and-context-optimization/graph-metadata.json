@@ -4,7 +4,7 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization",
   "parent_id": null,
   "children_ids": [
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
     "system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
     "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template",
     "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
@@ -13,7 +13,8 @@
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
-    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift"
+    "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift",
+    "system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -42,19 +43,28 @@
       "root",
       "packet",
       "026-graph-and-context-optimization",
-      "now"
+      "presents"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
+      "scratch/reorg-2026-04-25/mapping.json",
+      "009-hook-parity/spec.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "decision-record.md",
       "implementation-summary.md",
-      "checklist.md"
+      "checklist.md",
+      "008-skill-advisor/spec.md"
     ],
     "entities": [
+      {
+        "name": "mapping.json",
+        "kind": "config",
+        "path": "scratch/reorg-2026-04-25/mapping.json",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -192,17 +202,11 @@
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
-      },
-      {
-        "name": "Completion Impact",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
       }
     ],
-    "causal_summary": "Packet `026-graph-and-context-optimization` underwent a second topical consolidation pass on 2026-04-25, re-grouping advisor and code-graph children under topical wrappers (007-code-graph, 008-skill-advisor) and renaming the residual hook-parity work to 009-hook-parity. The previously-staged 009-memory-causal-graph post-hoc documentation packet was removed by the user. The active top-level surface is now 10 packets.",
+    "causal_summary": "Packet `026-graph-and-context-optimization` presents a 10-wrapper active navigation surface after two topical consolidation passes plus a post-push topology adjustment. The first pass (2026-04-21) collapsed 29 chronological phase folders into nine thematic wrappers with originals preserved as child packets. The second pass (2026-04-25 12:10) merged the former `006-search-routing-advisor/` into `008-skill-advisor/`, redistributed children of the former `009-hook-package/` across `007-code-graph/`, `008-skill-advisor/`, and the renamed `010-hook-parity/`. A subsequent post-push adjustment (2026-04-25 14:45) renamed `010-hook-parity/` to `009-hook-parity/` and removed the post-hoc `009-memory-causal-graph/` documentation packet (causal-graph infrastructure remains in production code; documentation lives in `010-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/` from a display-layer perspective).",
     "created_at": "2026-04-12T09:02:53.443Z",
-    "last_save_at": "2026-04-25T14:45:00.000Z",
+    "last_save_at": "2026-04-26T09:17:15.681Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

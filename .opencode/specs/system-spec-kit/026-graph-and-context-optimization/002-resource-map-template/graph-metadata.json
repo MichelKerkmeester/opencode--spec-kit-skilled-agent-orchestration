@@ -8,20 +8,12 @@
     "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/002-resource-map-template-creation",
     "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/003-resource-map-deep-loop-integration"
   ],
-  "aliases": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/004-cross-runtime-fallback",
-        "reason": "sibling packet in 026 track"
-      },
-      {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup-playbooks",
-        "reason": "sibling packet in 026 track"
-      }
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -29,46 +21,211 @@
       "resource map template packet",
       "resource map template and deep loop integration",
       "reverse parent folders resource map",
-      "resource-map.md template",
-      "local owner deep loop artifact placement",
-      "convergence time resource map emission",
-      "extract from evidence extractor",
-      "review-research-paths rollback"
+      "011-resource-map-template plan",
+      "resource map template implementation plan",
+      "011-resource-map-template tasks",
+      "resource map template task list",
+      "011-resource-map-template checklist",
+      "resource map template verification checklist",
+      "011-resource-map-template decision record",
+      "resource map template ADR"
     ],
     "key_topics": [
-      "resource map",
+      "011-resource-map-template",
+      "resource",
+      "map",
       "template",
-      "deep loop",
-      "local owner",
-      "convergence emission",
-      "path ledger",
-      "artifact placement",
-      "extract-from-evidence",
-      "review-research-paths"
+      "packet",
+      "deep",
+      "loop",
+      "integration",
+      "reverse",
+      "parent",
+      "folders",
+      "plan"
     ],
-    "importance_tier": "important",
-    "status": "in-progress",
+    "importance_tier": "normal",
+    "status": "in_progress",
     "key_files": [
-      "spec.md",
+      "references/templates/level_specifications.md",
+      "scripts/resource-map/extract-from-evidence.cjs",
+      "mcp_server/vitest.config.ts",
+      "implementation-summary.md",
+      ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
+      ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
+      ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+      ".opencode/skill/system-spec-kit/scripts/resource-map/extract-from-evidence.cjs",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "decision-record.md"
+      "decision-record.md",
+      "001-reverse-parent-research-review-folders/spec.md",
+      "002-resource-map-template-creation/spec.md",
+      "003-resource-map-deep-loop-integration/spec.md",
+      "scripts/migrate-deep-loop-local-owner.cjs",
+      "scripts/migrate-deep-loop-legacy-owner-map.cjs",
+      "templates/README.md"
     ],
-    "entities": [],
-    "causal_summary": "Three-sub-phase packet: Phase 001 (complete) restored local-owner deep-loop artifact placement by rolling back review-research-paths.cjs and running repo-wide migration. Phase 002 (in-progress, 85%) created the resource-map.md template and wired it into all discovery surfaces. Phase 003 (complete) built the shared extract-from-evidence.cjs extractor and integrated convergence-time emission into both sk-deep-review and sk-deep-research. F001-F004 findings from 7-iteration deep-review closed.",
+    "entities": [
+      {
+        "name": "level_specifications.md",
+        "kind": "doc",
+        "path": "references/templates/level_specifications.md",
+        "source": "derived"
+      },
+      {
+        "name": "extract-from-evidence.cjs",
+        "kind": "file",
+        "path": "scripts/resource-map/extract-from-evidence.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "vitest.config.ts",
+        "kind": "code",
+        "path": "mcp_server/vitest.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-research-paths.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "reduce-state.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "spec-doc-paths.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/config/spec-doc-paths.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "migrate-deep-loop-local-owner.cjs",
+        "kind": "file",
+        "path": "scripts/migrate-deep-loop-local-owner.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "migrate-deep-loop-legacy-owner-map.cjs",
+        "kind": "file",
+        "path": "scripts/migrate-deep-loop-legacy-owner-map.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "templates/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Map Template",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Reviewers",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Three",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Local",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The 011-resource-map-template packet introduces a lean, level-agnostic `resource-map.md` template that catalogs every file path a spec folder touches, restores the local-owner deep-loop artifact contract broken by an earlier centralized placement policy, and wires automatic resource-map emission into both `sk-deep-research` and `sk-deep-review` at convergence.",
     "created_at": "2026-04-24T00:00:00Z",
-    "last_save_at": "2026-04-24T00:00:00Z",
-    "save_lineage": "root-docs-scaffold",
+    "last_save_at": "2026-04-26T09:17:15.711Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "decision-record.md"
+      "decision-record.md",
+      "implementation-summary.md"
     ]
   }
 }

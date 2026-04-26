@@ -200,7 +200,8 @@
     ],
     "causal_summary": "Systematically address all bugs, misalignments, and technical debt identified during the comprehensive 20-agent deep dive analysis of the OpenCode infrastructure. This includes fixes for the Memory MCP Server, Spec-Kit scripts, Skills system, Commands, and cross-system integration issues.",
     "created_at": "2026-04-12T09:02:53.529Z",
-    "last_save_at": "2026-04-13T16:22:53.531Z",
+    "last_save_at": "2026-04-26T09:17:15.915Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

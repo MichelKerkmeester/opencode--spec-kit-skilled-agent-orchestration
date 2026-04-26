@@ -44,6 +44,7 @@
       "resource-map.md",
       ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs",
       ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs",
+      ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-legacy-owner-map.cjs",
       ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
       ".opencode/skill/sk-deep-review/scripts/reduce-state.cjs",
       ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
@@ -59,8 +60,7 @@
       ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
       ".opencode/agent/deep-research.md",
       ".claude/agents/deep-research.md",
-      ".gemini/agents/deep-research.md",
-      ".codex/agents/deep-research.toml"
+      ".gemini/agents/deep-research.md"
     ],
     "entities": [
       {
@@ -79,6 +79,12 @@
         "name": "migrate-deep-loop-local-owner.cjs",
         "kind": "file",
         "path": ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "migrate-deep-loop-legacy-owner-map.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-legacy-owner-map.cjs",
         "source": "derived"
       },
       {
@@ -154,12 +160,6 @@
         "source": "derived"
       },
       {
-        "name": "deep-research.toml",
-        "kind": "file",
-        "path": ".codex/agents/deep-research.toml",
-        "source": "derived"
-      },
-      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -208,9 +208,9 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "This packet reverses the parent-root artifact placement policy introduced during the `007-deep-review-remediation/006-integrity-parity-closure` follow-up work and reinforced by later canonical-placement commits. It restores the earlier ownership model: root specs keep root-local `research/` and `review/`, while child phases and sub-phases keep packet folders inside their own local `research/` and `review/` directories. It also owns the repo-wide migration of child packets that were already centralized under ancestor roots.",
+    "causal_summary": "This packet reverses the parent-root artifact placement policy introduced during the `007-deep-review-remediation/006-integrity-parity-closure` follow-up work and reinforced by later canonical-placement commits. It restores the earlier ownership model: root specs keep root-local `research/` and `review/`, while child phases and sub-phases keep packet folders inside their own local `research/` and `review/` directories. It also owns the repo-wide migration of child packets that were already centralized under ancestor roots, including the later manual owner-map cleanup that emptied the remaining root `research/` and `review/` packet directories under `026-graph-and-context-optimization`.",
     "created_at": "2026-04-24T12:32:52.475Z",
-    "last_save_at": "2026-04-24T12:32:52.475Z",
+    "last_save_at": "2026-04-26T09:17:15.714Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

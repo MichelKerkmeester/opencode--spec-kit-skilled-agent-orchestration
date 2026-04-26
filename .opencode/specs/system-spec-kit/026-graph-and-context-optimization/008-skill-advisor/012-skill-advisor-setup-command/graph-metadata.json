@@ -31,14 +31,14 @@
       "advisor",
       "setup",
       "command",
+      "doctor",
       "skill-advisor",
       "set-up",
       "012-skill-advisor-setup-command",
       "plan",
       "tasks",
       "checklist",
-      "implementation",
-      "scoring"
+      "implementation"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -212,7 +212,7 @@
     ],
     "causal_summary": "The skill advisor scoring system (explicit lane TOKEN_BOOSTS, PHRASE_BOOSTS, lexical CATEGORY_HINTS, graph-metadata.json derived triggers/keywords) is manually maintained with no guided setup workflow. Users have no command to analyze their repo's skills, detect coverage gaps, and apply optimized keywords, weights, and triggers. The existing plan for a \"SET-UP - Skill Advisor.md\" install guide exists only as a reference path but has no command backing it.",
     "created_at": "2026-04-25T14:30:00Z",
-    "last_save_at": "2026-04-25T17:57:05.184Z",
+    "last_save_at": "2026-04-26T09:17:15.800Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

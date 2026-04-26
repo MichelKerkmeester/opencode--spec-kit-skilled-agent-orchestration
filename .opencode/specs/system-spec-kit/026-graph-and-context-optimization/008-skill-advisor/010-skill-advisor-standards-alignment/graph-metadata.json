@@ -102,6 +102,12 @@
         "source": "derived"
       },
       {
+        "name": "Plugin Exemption Tier",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -114,7 +120,7 @@
         "source": "derived"
       },
       {
-        "name": "Plugin Exemption Tier",
+        "name": "Parent Spec",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -127,12 +133,6 @@
       },
       {
         "name": "Test File Exemption Tier",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Purpose Reconcile",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -180,13 +180,13 @@
         "source": "derived"
       },
       {
-        "name": "Implementation Summary",
+        "name": "Completed Level",
         "kind": "proper_noun",
         "path": "implementation-summary.md",
         "source": "derived"
       },
       {
-        "name": "Completed Level",
+        "name": "Implementation Summary",
         "kind": "proper_noun",
         "path": "implementation-summary.md",
         "source": "derived"
@@ -200,7 +200,7 @@
     ],
     "causal_summary": "Packet 008 audit surfaced one standards gap and three plugin alignment items. This packet addresses both in one focused pass. No behavior change; documentation + code-cosmetic only.",
     "created_at": "2026-04-23T10:30:00.000Z",
-    "last_save_at": "2026-04-23T08:53:10.924Z",
+    "last_save_at": "2026-04-26T09:17:15.795Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

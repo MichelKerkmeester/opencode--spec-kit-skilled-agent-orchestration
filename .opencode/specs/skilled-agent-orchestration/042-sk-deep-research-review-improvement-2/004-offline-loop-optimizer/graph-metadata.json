@@ -178,6 +178,12 @@
         "source": "derived"
       },
       {
+        "name": "Feature Specific",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -200,17 +206,12 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
-      },
-      {
-        "name": "Handoff Criteria",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Phase 004 is now explicitly split into two sub-phases. Phase 4a is the realistic near-term deliverable: build an offline compile/evaluate loop that replays real packet traces, tunes deterministic numeric config thresholds, and emits advisory patch recommendations with a full audit trail. Phase 4b is deferred future work for prompt-pack and meta-optimization once replay fixtures, behavioral suites, and multi-family corpus coverage actually exist.",
     "created_at": "2026-04-12T09:02:50.194Z",
-    "last_save_at": "2026-04-18T14:39:00.359Z",
+    "last_save_at": "2026-04-26T09:17:15.253Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

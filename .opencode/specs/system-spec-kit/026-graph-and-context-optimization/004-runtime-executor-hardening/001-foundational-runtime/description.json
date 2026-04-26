@@ -25,13 +25,13 @@
     "runtime",
     "merged"
   ],
-  "lastUpdated": "2026-04-25T10:34:52.514Z",
+  "lastUpdated": "2026-04-26T07:03:47.493Z",
   "specId": "001",
   "folderSlug": "foundational-runtime",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "008-runtime-executor-hardening"
+    "004-runtime-executor-hardening"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

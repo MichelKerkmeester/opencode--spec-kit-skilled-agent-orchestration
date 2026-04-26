@@ -1,0 +1,3 @@
+ M .opencode/command/memory/learn.md
+ M .opencode/command/memory/manage.md
+ M .opencode/command/memory/save.md

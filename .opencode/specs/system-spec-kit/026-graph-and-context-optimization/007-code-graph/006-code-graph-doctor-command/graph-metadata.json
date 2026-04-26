@@ -4,14 +4,12 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/012-skill-advisor-setup-command"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -19,60 +17,210 @@
       "/doctor:code-graph",
       "code graph doctor setup",
       "006-code-graph-doctor-command",
-      "code graph diagnostic"
+      "code graph doctor command plan",
+      "006-code-graph-doctor-command plan",
+      "code graph doctor command tasks",
+      "006-code-graph-doctor-command tasks",
+      "code graph doctor command checklist",
+      "006-code-graph-doctor-command checklist",
+      "code graph doctor command implementation",
+      "/doctor:code-graph implementation"
     ],
     "key_topics": [
+      "code",
+      "graph",
       "doctor",
+      "command",
       "code-graph",
-      "diagnostic",
-      "staleness",
-      "exclude-rules",
-      "scan-health"
+      "setup",
+      "006-code-graph-doctor-command",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "operations"
     ],
     "importance_tier": "important",
-    "status": "draft",
+    "status": "complete",
     "key_files": [
-      "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md"
+      ".opencode/command/doctor/code-graph.md",
+      ".opencode/install_guides/SET-UP - Code Graph.md",
+      ".opencode/README.md",
+      ".opencode/command/doctor/assets/doctor_code-graph_auto.yaml",
+      ".opencode/command/doctor/assets/doctor_code-graph_confirm.yaml",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/exclude-rule-confidence.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/staleness-model.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/spec.md",
+      ".opencode/command/doctor/mcp_install.md",
+      ".opencode/command/doctor/skill-advisor.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/spec.md",
+      "spec.md"
     ],
     "entities": [
       {
+        "name": "code-graph.md",
+        "kind": "doc",
+        "path": ".opencode/command/doctor/code-graph.md",
+        "source": "derived"
+      },
+      {
+        "name": "SET-UP - Code Graph.md",
+        "kind": "doc",
+        "path": ".opencode/install_guides/SET-UP - Code Graph.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "doctor_code-graph_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/doctor/assets/doctor_code-graph_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "doctor_code-graph_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/doctor/assets/doctor_code-graph_confirm.yaml",
+        "source": "derived"
+      },
+      {
         "name": "spec.md",
         "kind": "doc",
-        "path": "spec.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/spec.md",
         "source": "derived"
       },
       {
         "name": "plan.md",
         "kind": "doc",
-        "path": "plan.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/plan.md",
         "source": "derived"
       },
       {
         "name": "tasks.md",
         "kind": "doc",
-        "path": "tasks.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/tasks.md",
         "source": "derived"
       },
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "exclude-rule-confidence.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/exclude-rule-confidence.json",
+        "source": "derived"
+      },
+      {
+        "name": "staleness-model.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/staleness-model.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-gold-queries.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/code-graph-gold-queries.json",
+        "source": "derived"
+      },
+      {
+        "name": "mcp_install.md",
+        "kind": "doc",
+        "path": ".opencode/command/doctor/mcp_install.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor.md",
+        "kind": "doc",
+        "path": ".opencode/command/doctor/skill-advisor.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/context-index.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Code Graph Doctor Command",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Deliver",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Phase A diagnostic-only /doctor:code-graph command. Phase B (apply mode) is gated on the resilience-research sibling packet 007 producing the verification battery, staleness model, recovery playbook, and exclude-rule confidence tiers.",
+    "causal_summary": "Code graph operations have no doctor surface. When the index goes stale or bloats with `node_modules/`, `dist/`, generated artifacts, etc., users have to manually inspect `code_graph_status`, edit scanner config blind, run `code_graph_scan`, and spot-check queries. There is no command that walks them through diagnosis-first remediation with the same safety guarantees `/doctor:skill-advisor` provides (canonical-path validator, per-run rollback, dry-run preview, build-status branching).",
     "created_at": "2026-04-25T20:30:00Z",
-    "last_save_at": "2026-04-25T20:30:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T09:17:15.766Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "implementation-summary.md"
     ]
   }
 }

@@ -18,8 +18,8 @@
     "memory",
     "runtime"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.022Z",
-  "specId": "002",
+  "lastUpdated": "2026-04-26T07:03:47.464Z",
+  "specId": "003",
   "folderSlug": "continuity-memory-runtime",
   "parentChain": [
     "system-spec-kit",

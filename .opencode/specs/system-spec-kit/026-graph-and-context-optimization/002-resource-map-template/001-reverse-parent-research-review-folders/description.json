@@ -11,13 +11,13 @@
     "folder",
     "placement"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.840Z",
+  "lastUpdated": "2026-04-26T07:03:47.452Z",
   "specId": "001",
   "folderSlug": "reverse-parent-research-review-folders",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "011-resource-map-template"
+    "002-resource-map-template"
   ],
   "memorySequence": 1,
   "memoryNameHistory": [

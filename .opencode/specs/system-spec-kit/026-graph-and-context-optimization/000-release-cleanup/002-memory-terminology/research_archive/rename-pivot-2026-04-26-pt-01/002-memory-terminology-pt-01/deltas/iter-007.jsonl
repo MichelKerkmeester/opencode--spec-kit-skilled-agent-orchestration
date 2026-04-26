@@ -1,0 +1,14 @@
+{"type":"iteration","run":7,"status":"insight","focus":"Implementation PR sequencing plan","findingsCount":8,"newInfoRatio":0.20,"keyQuestions":[],"answeredQuestions":[],"focusTrack":"implementation-sequencing","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T08:24:00.000Z"}
+{"type":"node","kind":"FINDING","id":"f-007-1","name":"PR1: Parser-fallback + telemetry foundation - 5 const sites + 1 regex + 1 yaml + 2 new files + 1 test fixture","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-2","name":"PR2: New tool/command names + handler renames + scripts/dist rename + tier-stratified alias activation","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-3","name":"PR3: 9 templates + greenfield references/glossary.md + glossary-drift-lint.ts + 3-surface Anthropic callouts + 5-file ladder rewrite","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-4","name":"PR4: Synced top-doc triad coordinated edit + cross-repo pre-commit hook + ~10 cognitive JSDoc edits","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-5","name":"Dependency graph: linear PR1→PR2→PR3→PR4; no parallelism opportunities","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-6","name":"Rollback matrix: 7 scenarios; PR4→PR3→PR2→PR1 reverse order; never revert PR1 alone","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-7","name":"R1 atomicity bound to PR1; R2 telemetry sequencing bound to PR2; R4 cross-repo symlink bound to PR4","iteration":7}
+{"type":"node","kind":"FINDING","id":"f-007-8","name":"Each PR has scope verb (READ/ACTIVATE/LOCK-IN/UPDATE-RULES) producing clean boundaries","iteration":7}
+{"type":"edge","relation":"ADDRESSES","sourceId":"f-007-1","targetId":"R1","id":"e-007-1"}
+{"type":"edge","relation":"ADDRESSES","sourceId":"f-007-2","targetId":"R2","id":"e-007-2"}
+{"type":"edge","relation":"ADDRESSES","sourceId":"f-007-3","targetId":"R3","id":"e-007-3"}
+{"type":"edge","relation":"ADDRESSES","sourceId":"f-007-4","targetId":"R4","id":"e-007-4"}
+{"type":"edge","relation":"INFORMS","sourceId":"f-007-3","targetId":"R5","id":"e-007-5"}

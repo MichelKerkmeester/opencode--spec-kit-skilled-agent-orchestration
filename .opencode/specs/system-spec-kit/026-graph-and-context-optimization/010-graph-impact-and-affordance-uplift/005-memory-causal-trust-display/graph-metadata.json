@@ -33,18 +33,30 @@
     "importance_tier": "important",
     "status": "in_progress",
     "key_files": [
+      "tests/response-profile-formatters.vitest.ts",
       "mcp_server/formatters/search-results.ts",
       "mcp_server/lib/response/profile-formatters.ts",
-      "lib/storage/causal-edges.ts",
-      "formatters/search-results.ts",
-      "lib/response/profile-formatters.ts",
+      "mcp_server/tests/memory/trust-badges.test.ts",
+      "mcp_server/tests/response-profile-formatters.vitest.ts",
+      ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/28-memory-causal-trust-display.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
       "implementation-summary.md",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
+      "checklist.md",
+      "tests/memory/trust-badges.test.ts",
+      "lib/storage/causal-edges.ts",
+      "formatters/search-results.ts",
+      "lib/response/profile-formatters.ts"
     ],
     "entities": [
+      {
+        "name": "response-profile-formatters.vitest.ts",
+        "kind": "test",
+        "path": "tests/response-profile-formatters.vitest.ts",
+        "source": "derived"
+      },
       {
         "name": "search-results.ts",
         "kind": "code",
@@ -58,9 +70,21 @@
         "source": "derived"
       },
       {
-        "name": "causal-edges.ts",
-        "kind": "code",
-        "path": "lib/storage/causal-edges.ts",
+        "name": "trust-badges.test.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory/trust-badges.test.ts",
+        "source": "derived"
+      },
+      {
+        "name": "28-memory-causal-trust-display.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/28-memory-causal-trust-display.md",
+        "source": "derived"
+      },
+      {
+        "name": "203-memory-causal-trust-display.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/203-memory-causal-trust-display.md",
         "source": "derived"
       },
       {
@@ -91,6 +115,12 @@
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "causal-edges.ts",
+        "kind": "code",
+        "path": "lib/storage/causal-edges.ts",
         "source": "derived"
       },
       {
@@ -164,35 +194,11 @@
         "kind": "heading",
         "path": "tasks.md",
         "source": "derived"
-      },
-      {
-        "name": "References",
-        "kind": "heading",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Tasks: 012/005",
-        "kind": "quoted",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Memory trust display.",
-        "kind": "quoted",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "important",
-        "kind": "quoted",
-        "path": "tasks.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Display-only trust badges (confidence, extraction_age, last_access_age, orphan, weight_history) on MemoryResultEnvelope. NO schema change. NO new relations. NO storage of code/process/tool facts.",
     "created_at": "2026-04-25T10:48:09.300Z",
-    "last_save_at": "2026-04-25T10:48:09.300Z",
+    "last_save_at": "2026-04-26T09:17:15.833Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

@@ -1,0 +1,19 @@
+{
+  "specFolder": "049-mcp-testing-playbooks",
+  "description": "Feature Specification: MCP Testing Playbooks for Four Skills",
+  "keywords": [
+    "feature",
+    "specification",
+    "mcp",
+    "testing",
+    "playbooks",
+    "four",
+    "skills"
+  ],
+  "lastUpdated": "2026-04-26T09:17:06.288Z",
+  "specId": "049",
+  "folderSlug": "mcp-testing-playbooks",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

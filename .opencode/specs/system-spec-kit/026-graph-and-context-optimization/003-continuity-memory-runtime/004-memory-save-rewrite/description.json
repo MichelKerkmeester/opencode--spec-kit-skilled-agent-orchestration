@@ -39,13 +39,13 @@
     "planner-first",
     "default"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.122Z",
+  "lastUpdated": "2026-04-26T07:03:47.483Z",
   "specId": "004",
   "folderSlug": "memory-save-rewrite",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
-    "002-continuity-memory-runtime"
+    "003-continuity-memory-runtime"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

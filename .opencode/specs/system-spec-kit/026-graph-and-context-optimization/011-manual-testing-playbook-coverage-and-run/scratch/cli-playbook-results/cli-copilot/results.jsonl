@@ -1,0 +1,7 @@
+{"scenario_id": "CP-001", "verdict": "PASS", "exit_codes": [0], "duration_ms": 17644, "evidence_dir": "evidence/CP-001", "pass_fail_reason": "copilot exited 0 with non-empty multi-sentence answer mentioning Copilot CLI; no TUI block"}
+{"scenario_id": "CP-002", "verdict": "FAIL", "exit_codes": [124], "duration_ms": 90336, "evidence_dir": "evidence/CP-002", "pass_fail_reason": "exit=124 sandbox_file_exists=0"}
+{"scenario_id": "CP-003", "verdict": "PASS", "exit_codes": [0], "duration_ms": 28440, "evidence_dir": "evidence/CP-003", "pass_fail_reason": "exit 0; non-empty answer naming >=2 documented flags; no operator prompt"}
+{"scenario_id": "CP-002", "verdict": "PASS", "exit_codes": [0], "duration_ms": 32696, "evidence_dir": "evidence/CP-002", "pass_fail_reason": "exit 0; /tmp/cp-002-sandbox/hello-copilot.md exists; project tripwire stable"}
+{"scenario_id": "CP-004", "verdict": "PASS", "exit_codes": [0, 1], "duration_ms": 10690, "evidence_dir": "evidence/CP-004", "pass_fail_reason": "supported gpt-5.4 exit 0 with answer; bogus model exit=1 (rejected)"}
+{"scenario_id": "CP-005", "verdict": "PASS", "exit_codes": [0], "duration_ms": 9168, "evidence_dir": "evidence/CP-005", "pass_fail_reason": "exit 0; reverse_words function parsed via ast"}
+{"scenario_id": "CP-006", "verdict": "FAIL", "exit_codes": [1], "duration_ms": 2377, "evidence_dir": "evidence/CP-006", "pass_fail_reason": "exit=1 approach_hits=0\n0 tradeoff_hits=0\n0"}

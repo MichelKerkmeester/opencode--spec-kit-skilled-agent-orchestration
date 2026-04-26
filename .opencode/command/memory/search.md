@@ -78,7 +78,7 @@ operating_mode:
 
 ## 1. PURPOSE
 
-> **L1 Orchestration + L6 Analysis**: This command operates at both the L1 retrieval layer (orchestrating lower-level memory operations) and the L6 analysis layer (epistemic baselines, causal graph, evaluation). It provides a single entry point for all knowledge-related memory operations.
+> **L1 Orchestration + L6 Analysis**: This command operates at both the L1 retrieval layer (orchestrating lower-level context-retrieval operations) and the L6 analysis layer (epistemic baselines, causal graph, evaluation). It provides a single entry point for all knowledge-related context-retrieval operations.
 
 Provide a unified entry point that:
 
@@ -103,7 +103,7 @@ The unified context tool runs a hybrid retrieval pipeline with **graph-first rou
 
 - **Graph channel has priority** in the fusion strategy: structural queries (callers, imports, dependencies) are routed to `code_graph_query` first, before semantic or lexical channels
 - Tri-channel retrieval (graph + vector/semantic + FTS5/BM25) with graph results given precedence in the fusion merge
-- CocoIndex semantic search (`mcp__cocoindex_code__search`) integrates as the vector/semantic channel, providing natural-language code discovery alongside memory vector search
+- CocoIndex semantic search (`mcp__cocoindex_code__search`) integrates as the vector/semantic channel, providing natural-language code discovery alongside indexed-continuity vector search
 - When graph and semantic channels miss or return weak results, a 3-tier FTS fallback activates: FTS5 full-text → BM25 keyword scoring → Grep/Glob filesystem search. Post-026 FTS5 remediation improved BM25 tokenization and ranking accuracy
 - Intent-adaptive fusion and reranking (weights adapt when `SPECKIT_ADAPTIVE_FUSION` is enabled, including the internal continuity profile: semantic `0.52`, keyword `0.18`, recency `0.07`, graph `0.23`)
 - MMR diversity pruning to reduce redundant chunks, with continuity-oriented Stage 3 passes using a dedicated lambda of `0.65`
@@ -550,7 +550,7 @@ STATUS=OK ACTION=history
 
 **Trigger:** `/memory:search causal <memoryId>`
 
-Traces the causal chain for a memory to answer "why was this decision made?" Traverses causal edges up to `maxDepth` hops.
+Traces the causal chain for a spec-doc record to answer "why was this decision made?" Traverses causal edges up to `maxDepth` hops.
 
 ##### Parameters
 
@@ -560,7 +560,7 @@ Traces the causal chain for a memory to answer "why was this decision made?" Tra
 | `maxDepth` | number | No | Max traversal depth (default: 3, max: 10) |
 | `direction` | string | No | `outgoing`, `incoming`, or `both` (default: `both`) |
 | `relations` | string[] | No | Filter by: `caused`, `enabled`, `supersedes`, `contradicts`, `derived_from`, `supports` |
-| `includeMemoryDetails` | boolean | No | Include full memory details (default: true) |
+| `includeMemoryDetails` | boolean | No | Include full spec-doc record details (default: true) |
 
 ##### Output
 
@@ -585,7 +585,7 @@ STATUS=OK ACTION=causal EDGES=<count>
 
 **Trigger:** `/memory:search link <sourceId> <targetId> <relation>`
 
-Creates a causal relationship between two memories.
+Creates a causal relationship between two spec-doc records.
 
 ##### Parameters
 
@@ -638,9 +638,9 @@ STATUS=OK ACTION=unlink
 
 **Trigger:** `/memory:search causal-stats`
 
-Shows statistics about the causal memory graph. No parameters required.
+Shows statistics about the causal spec-doc graph. No parameters required.
 
-Target: 60% of memories linked (CHK-065).
+Target: 60% of spec-doc records linked (CHK-065).
 
 ##### Output
 
@@ -649,7 +649,7 @@ MEMORY:SEARCH CAUSAL-STATS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   Total Edges     <N>
-  Coverage        <pct>% (<linked>/<total> memories)
+  Coverage        <pct>% (<linked>/<total> spec-doc records)
 
 → By Relation ────────────────────────────────────
   caused          ██████░░░░  <N>
@@ -767,7 +767,7 @@ STATUS=OK ACTION=dashboard
 
 - `/memory:save`: Save conversation context
 - `/memory:manage`: Database management, checkpoints, ingest
-- `/memory:learn`: Constitutional memories
+- `/memory:learn`: Constitutional rules
 - `/spec_kit:resume`: Session recovery and continuation
 
 ---
@@ -909,8 +909,8 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `tier` | string | - | Filter by importance tier |
 | `contextType` | string | - | Filter by context type |
 | `useDecay` | boolean | true | Apply temporal decay scoring |
-| `includeContiguity` | boolean | false | Include adjacent/contiguous memories |
-| `includeConstitutional` | boolean | true | Include constitutional tier memories at top |
+| `includeContiguity` | boolean | false | Include adjacent/contiguous spec-doc records |
+| `includeConstitutional` | boolean | true | Include constitutional-tier spec-doc records at top |
 | `enableSessionBoost` | boolean | env flag | Enable session-based score boost from working_memory attention signals |
 | `enableCausalBoost` | boolean | env flag | Enable causal-neighbor boost (2-hop traversal on causal_edges) |
 | `min_quality_score` | number | - | Minimum quality score threshold (0.0-1.0) |
@@ -919,7 +919,7 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | `rerank` | boolean | true | Enable cross-encoder reranking |
 | `applyLengthPenalty` | boolean | true | Compatibility-only reranker option. Current runtime keeps it on the surface, but the length multiplier is always `1.0` so no documents are penalized for size |
 | `applyStateLimits` | boolean | false | Enforce per-tier quantity limits for result diversity |
-| `minState` | string | `WARM` | Minimum active memory state: `HOT`, `WARM`, `COLD`, `DORMANT` |
+| `minState` | string | `WARM` | Minimum active spec-doc state: `HOT`, `WARM`, `COLD`, `DORMANT` |
 | `autoDetectIntent` | boolean | true | Auto-detect intent from query if not explicitly set |
 | `trackAccess` | boolean | false | Write FSRS strengthening updates on read (off by default to avoid write-on-read) |
 | `mode` | string | `auto` | `auto` (standard) or `deep` (multi-query expansion). Note: deep mode does not guarantee expansion for simple queries |
@@ -932,12 +932,12 @@ The full `memory_search` parameter surface is available when using Option 3 (man
 | Parameter | Type | Default | Description |
 |-----------|------|---------|-------------|
 | `prompt` | string | *required* | User prompt or text to match against trigger phrases |
-| `limit` | number | 3 | Maximum matching memories to return |
+| `limit` | number | 3 | Maximum matching spec-doc records to return |
 | `session_id` | string | - | Session identifier for cognitive features. Enables attention decay and tiered content injection |
 | `turnNumber` | number | - | Current conversation turn number. Used with `session_id` for decay calculations |
 | `include_cognitive` | boolean | true | Enable cognitive features (decay, tiers, co-activation). Requires `session_id` |
 
-When cognitive features are enabled (`session_id` + `include_cognitive`), trigger matching uses attention-based decay and tiered content injection: HOT memories return full content, WARM memories return summaries, with co-activation of related memories.
+When cognitive features are enabled (`session_id` + `include_cognitive`), trigger matching uses attention-based decay and tiered content injection: HOT spec-doc records return full content, WARM spec-doc records return summaries, with co-activation of related spec-doc records.
 
 ---
 
@@ -957,7 +957,7 @@ MEMORY:SEARCH - ANALYSIS TOOLS
   [history]     View learning history for a spec folder
 
   Causal Graph
-  [causal]        Trace decision lineage for a memory
+  [causal]        Trace decision lineage for a spec-doc record
   [link]          Create causal relationship
   [unlink]        Remove causal relationship
   [causal-stats]  View graph coverage statistics

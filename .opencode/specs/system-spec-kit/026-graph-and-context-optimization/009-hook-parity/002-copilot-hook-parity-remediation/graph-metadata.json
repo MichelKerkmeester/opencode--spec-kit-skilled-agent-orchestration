@@ -39,17 +39,15 @@
       "004"
     ],
     "importance_tier": "important",
-    "status": "complete",
+    "status": "in_progress",
     "key_files": [
       "hooks/copilot/custom-instructions.ts",
       "hooks/copilot/user-prompt-submit.ts",
       "hooks/copilot/session-prime.ts",
-      ".github/hooks/scripts/user-prompt-submitted.sh",
       "hooks/copilot/README.md",
       ".github/hooks/superset-notify.json",
       "tests/copilot-user-prompt-submit-hook.vitest.ts",
       "tests/copilot-hook-wiring.vitest.ts",
-      "skill-advisor/tests/legacy/advisor-runtime-parity.vitest.ts",
       "tests/claude-user-prompt-submit-hook.vitest.ts",
       ".claude/settings.local.json",
       "dist/hooks/copilot/user-prompt-submit.js",
@@ -60,7 +58,9 @@
       "decision-record.md",
       ".opencode/skill/system-spec-kit/mcp_server/tests/copilot-user-prompt-submit-hook.vitest.ts",
       "checklist.md",
-      "spec.md"
+      "spec.md",
+      "tasks.md",
+      "plan.md"
     ],
     "entities": [
       {
@@ -79,12 +79,6 @@
         "name": "session-prime.ts",
         "kind": "code",
         "path": "hooks/copilot/session-prime.ts",
-        "source": "derived"
-      },
-      {
-        "name": "user-prompt-submitted.sh",
-        "kind": "script",
-        "path": ".github/hooks/scripts/user-prompt-submitted.sh",
         "source": "derived"
       },
       {
@@ -109,12 +103,6 @@
         "name": "copilot-hook-wiring.vitest.ts",
         "kind": "test",
         "path": "tests/copilot-hook-wiring.vitest.ts",
-        "source": "derived"
-      },
-      {
-        "name": "advisor-runtime-parity.vitest.ts",
-        "kind": "test",
-        "path": "skill-advisor/tests/legacy/advisor-runtime-parity.vitest.ts",
         "source": "derived"
       },
       {
@@ -166,6 +154,36 @@
         "source": "derived"
       },
       {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implemented Copilot",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Monitor Copilot",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -178,31 +196,13 @@
         "source": "derived"
       },
       {
-        "name": "Claude Code",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Monitor Copilot",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
         "name": "Spec Kit Memory",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Under Copilot",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Implementation Plan",
+        "name": "Begin Phase",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Spec 020 (`skill-advisor-hook-surface`) wired the Spec Kit Memory MCP to inject two payloads via Claude Code's native hook system: `SessionStart:startup` delivers code-graph freshness and structural highlights, and `UserPromptSubmit` delivers the skill-advisor brief (format: `Advisor: <skill> <conf>/<uncert> <status>`). Both hooks work correctly in Claude Code.",
     "created_at": "2026-04-22T06:13:42.052Z",
-    "last_save_at": "2026-04-23T13:55:57.299Z",
+    "last_save_at": "2026-04-26T09:17:15.807Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

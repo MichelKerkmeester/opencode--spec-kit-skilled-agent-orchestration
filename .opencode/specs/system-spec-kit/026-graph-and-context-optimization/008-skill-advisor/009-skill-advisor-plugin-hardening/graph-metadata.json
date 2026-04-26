@@ -17,7 +17,7 @@
       "skill advisor per-instance state",
       "skill advisor in-flight dedup",
       "skill advisor size caps",
-      "skill advisor LRU",
+      "skill advisor lru",
       "026/009/008",
       "026/009/008 plan",
       "skill advisor hardening plan",
@@ -115,6 +115,12 @@
         "source": "derived"
       },
       {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
         "name": "Problem Statement Three",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -128,12 +134,6 @@
       },
       {
         "name": "In Scope",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Files Expected",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -201,7 +201,7 @@
     ],
     "causal_summary": "Packet 007 Phase 5 fixed the immediate operator-visible bugs in `.opencode/plugins/spec-kit-skill-advisor.js` (runtime_ready flag, cache metric accounting, defensive output guard, sessionID normalization) and explicitly deferred three architectural P2 items per ADR-005:",
     "created_at": "2026-04-23T08:35:00.000Z",
-    "last_save_at": "2026-04-23T08:15:26.567Z",
+    "last_save_at": "2026-04-26T09:17:15.794Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

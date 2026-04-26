@@ -11,34 +11,31 @@
   },
   "derived": {
     "trigger_phrases": [
-      "043",
       "cli skill improved prompting",
-      "mirror cards",
-      "improve-prompt",
-      "prompt quality card",
-      "043 plan",
-      "prompt quality integration",
-      "mirror card plan",
-      "043 tasks",
-      "mirror card tasks",
-      "043 checklist",
-      "prompt quality verification"
+      "skilled agent orchestration",
+      "cli skill prompt quality integration via",
+      "cli skill improved prompting spec",
+      "cli skill improved prompting plan",
+      "cli skill improved prompting tasks",
+      "cli skill improved prompting checklist",
+      "cli skill improved prompting decision record",
+      "cli skill improved prompting implementation summary"
     ],
     "key_topics": [
-      "043",
       "cli",
       "skill",
       "improved",
       "prompting",
-      "mirror",
-      "cards",
-      "improve-prompt",
+      "skilled",
+      "agent",
+      "orchestration",
       "prompt",
       "quality",
-      "card",
-      "plan"
+      "integration",
+      "via",
+      "spec"
     ],
-    "importance_tier": "important",
+    "importance_tier": "normal",
     "status": "complete",
     "key_files": [
       ".opencode/skill/sk-improve-prompt/assets/cli_prompt_quality_card.md",
@@ -48,7 +45,6 @@
       ".opencode/skill/cli-gemini/assets/prompt_quality_card.md",
       ".opencode/skill/sk-improve-prompt/SKILL.md",
       ".opencode/command/improve/prompt.md",
-      ".opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh",
       "plan.md",
       "tasks.md",
       "checklist.md",
@@ -83,12 +79,6 @@
         "name": "prompt.md",
         "kind": "doc",
         "path": ".opencode/command/improve/prompt.md",
-        "source": "derived"
-      },
-      {
-        "name": "check-prompt-quality-card-sync.sh",
-        "kind": "script",
-        "path": ".opencode/skill/skill-advisor/scripts/check-prompt-quality-card-sync.sh",
         "source": "derived"
       },
       {
@@ -204,11 +194,18 @@
         "kind": "proper_noun",
         "path": "checklist.md",
         "source": "derived"
+      },
+      {
+        "name": "Verification Date",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "The four CLI orchestration skills currently build dispatch prompts ad hoc from their local prompt-template assets. That keeps dispatches lightweight, but it leaves framework choice, prompt-quality checks, and escalation behavior implicit. This packet adds a two-tier prompt-quality layer: a tiny guard-safe mirror card that every CLI skill can load by default, and a fresh-context `@improve-prompt` agent that handles only the hard cases.",
     "created_at": "2026-04-12T09:02:50.198Z",
-    "last_save_at": "2026-04-18T14:39:00.371Z",
+    "last_save_at": "2026-04-26T09:17:15.272Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

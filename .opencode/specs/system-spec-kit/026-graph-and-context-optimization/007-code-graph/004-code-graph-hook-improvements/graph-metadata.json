@@ -4,46 +4,224 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/006-integrity-parity-closure",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/008-docs-impact-remediation"
-    ],
+    "depends_on": [],
     "supersedes": [],
     "related_to": []
   },
   "derived": {
     "trigger_phrases": [
-      "code-graph-hook-improvements",
+      "code-graph hook improvements",
+      "code-graph system research",
       "026/009/013",
-      "research investigation"
+      "implementation plan",
+      "013",
+      "hook daemon parity",
+      "tasks",
+      "013 checklist",
+      "code-graph hook improvements verification",
+      "013 implementation summary",
+      "code-graph hook improvements closeout",
+      "013 resource map"
     ],
     "key_topics": [
-      "research",
-      "investigation",
+      "code-graph",
       "hook",
-      "improvement"
+      "improvements",
+      "system",
+      "research",
+      "026",
+      "009",
+      "013",
+      "implementation",
+      "plan",
+      "daemon",
+      "parity"
     ],
     "importance_tier": "important",
-    "status": "research-queued",
+    "status": "complete",
     "key_files": [
-      "spec.md"
+      "plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+      "tasks.md",
+      "checklist.md",
+      "resource-map.md",
+      "implementation-summary.md",
+      "review/review-report.md",
+      "review/deep-review-findings-registry.json",
+      "spec.md",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/tasks.md"
     ],
     "entities": [
       {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "session-prime.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts",
+        "source": "derived"
+      },
+      {
+        "name": "session-start.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hook-session-start.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "codex-session-start-hook.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tests/codex-session-start-hook.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ENV_REFERENCE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "review-report.md",
+        "kind": "doc",
+        "path": "review/review-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review-findings-registry.json",
+        "kind": "config",
+        "path": "review/deep-review-findings-registry.json",
+        "source": "derived"
+      },
+      {
         "name": "spec.md",
         "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
         "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph System",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Hooks Improvement Investigation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Produce",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Created Level",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph Hook Improvements",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Research packet scoping an investigation follow-up to the 026/009 hook-package work.",
+    "causal_summary": "The code-graph system has been delivered and partially remediated across 026 phases 003 (code-graph-package) and 009 (hook-package). Recent cross-phase synthesis (`026/research/cross-phase-synthesis.md`) flagged code-graph and runtime-hook concerns among its top P0 items (CF-002, CF-009, CF-010, CF-014). Those specific findings are now closed in `007/006-integrity-parity-closure/`. The open question: **beyond those findings, where else can the code-graph system and its hook wiring improve?**",
     "created_at": "2026-04-24T01:10:00Z",
-    "last_save_at": "2026-04-24T01:10:00Z",
-    "save_lineage": "initial",
+    "last_save_at": "2026-04-26T09:17:15.758Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md"
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "resource-map.md"
     ]
   }
 }

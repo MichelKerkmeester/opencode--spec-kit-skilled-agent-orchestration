@@ -1,0 +1,41 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: minimal
+reasoning summaries: none
+session id: 019dc955-4978-7d43-94c8-68df491865e7
+--------
+user
+Return ONLY raw JSON (no code fences, no explanation): a JSON array of the three primary colors as lowercase strings.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+ERROR: {
+  "type": "error",
+  "error": {
+    "type": "invalid_request_error",
+    "message": "The following tools cannot be used with reasoning.effort 'minimal': image_gen, web_search.",
+    "param": "tools"
+  },
+  "status": 400
+}
+ERROR: {
+  "type": "error",
+  "error": {
+    "type": "invalid_request_error",
+    "message": "The following tools cannot be used with reasoning.effort 'minimal': image_gen, web_search.",
+    "param": "tools"
+  },
+  "status": 400
+}
+2026-04-26T10:28:37.225698Z ERROR codex_core::session: failed to record rollout items: thread 019dc955-4978-7d43-94c8-68df491865e7 not found

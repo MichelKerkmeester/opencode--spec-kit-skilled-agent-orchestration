@@ -1,0 +1,1 @@
+Error: Model "gpt-bogus-99" from --model flag is not available.

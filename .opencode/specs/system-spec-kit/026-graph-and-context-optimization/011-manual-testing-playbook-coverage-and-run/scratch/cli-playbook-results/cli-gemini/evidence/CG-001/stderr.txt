@@ -1,0 +1,21 @@
+YOLO mode is enabled. All tool calls will be automatically approved.
+YOLO mode is enabled. All tool calls will be automatically approved.
+Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/context.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/debug.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-research.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/deep-review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-agent.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/improve-prompt.md: Invalid agent definition: Missing mandatory YAML frontmatter. Agent Markdown files MUST start with YAML frontmatter enclosed in triple-dashes "---" (e.g., ---
+name: my-agent
+---).Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/orchestrate.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/review.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/ultra-think.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission', 'mcpServers'Agent loading error: Failed to load agent from /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.gemini/agents/write.md: Validation failed: Agent Definition:
+Unrecognized key(s) in object: 'mode', 'permission'Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 4a8011ef-cfba-48a8-8726-162078b7b93e (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 0 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (0 chars) for session 4a8011ef-cfba-48a8-8726-162078b7b93e
+Hook system message: INFO [speckit-hook:gemini:compact-cache] PreCompress triggered for session 4a8011ef-cfba-48a8-8726-162078b7b93e (trigger: auto)
+INFO [speckit-hook:gemini:compact-cache] Read 50 transcript lines
+INFO [speckit-hook:gemini:compact-cache] Cached compact context (759 chars) for session 4a8011ef-cfba-48a8-8726-162078b7b93e
+Hook system message: INFO [speckit-hook:gemini:session-stop] SessionEnd hook fired for session 4a8011ef-cfba-48a8-8726-162078b7b93e (reason: exit)
+INFO [speckit-hook:gemini:session-stop] Session 4a8011ef-cfba-48a8-8726-162078b7b93e stop processing complete

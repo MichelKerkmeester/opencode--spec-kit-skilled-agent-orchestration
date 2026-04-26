@@ -197,7 +197,8 @@
     ],
     "causal_summary": "Add automatic keyword detection for handover.md and debug-delegation.md templates to the SpecKit skill, enabling AI agents to recognize session transfer, work continuation, and debug delegation intent.",
     "created_at": "2026-04-12T09:02:53.511Z",
-    "last_save_at": "2026-04-13T16:22:53.467Z",
+    "last_save_at": "2026-04-26T09:17:15.861Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

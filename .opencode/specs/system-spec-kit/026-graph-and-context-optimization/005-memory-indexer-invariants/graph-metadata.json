@@ -4,14 +4,8 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants",
-    "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants",
-    "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/001-memory-indexer-lineage-and-concurrency-fix",
-    "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/002-index-scope-and-constitutional-tier-invariants"
-  ],
   "migrated": true,
-  "migration_source": "phase-merge",
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -30,14 +24,7 @@
       "z_future indexing exclusion",
       "constitutional path gate",
       "026/010 plan",
-      "memory indexer invariants plan",
-      "026/010 tasks",
-      "memory indexer invariants tasks",
-      "026/010 checklist",
-      "memory indexer invariants verification",
-      "026/010 implementation summary",
-      "026/010 decisions",
-      "memory indexer invariants adr"
+      "memory indexer invariants plan"
     ],
     "key_topics": [
       "026",
@@ -46,64 +33,80 @@
       "indexer",
       "invariants",
       "lineage",
-      "concurrency",
-      "fromScan",
+      "fix",
       "constitutional",
       "tier",
       "pollution",
       "index",
-      "scope",
-      "z_future",
-      "external",
-      "cleanup",
-      "governance",
-      "audit",
-      "realpath",
-      "checkpoint",
-      "SSOT"
+      "scope"
     ],
     "importance_tier": "important",
-    "status": "code-complete-pending-track-a-live-rescan",
+    "status": "code_complete_pending_track_a_live_rescan",
     "key_files": [
-      "mcp_server/handlers/save/pe-orchestration.ts",
-      "mcp_server/handlers/pe-gating.ts",
-      "mcp_server/handlers/save/types.ts",
-      "mcp_server/handlers/memory-index.ts",
-      "mcp_server/handlers/memory-save.ts",
-      "mcp_server/handlers/memory-index-discovery.ts",
-      "mcp_server/handlers/memory-crud-update.ts",
+      "handlers/save/pe-orchestration.ts",
+      "handlers/pe-gating.ts",
+      "handlers/save/types.ts",
+      "handlers/memory-index.ts",
+      "handlers/memory-save.ts",
+      "tests/pe-orchestration.vitest.ts",
+      "tests/handler-memory-index.vitest.ts",
       "mcp_server/lib/utils/index-scope.ts",
-      "mcp_server/lib/utils/canonical-path.ts",
-      "mcp_server/lib/config/spec-doc-paths.ts",
-      "mcp_server/lib/parsing/memory-parser.ts",
-      "mcp_server/lib/search/vector-index-mutations.ts",
-      "mcp_server/lib/storage/post-insert-metadata.ts",
-      "mcp_server/lib/storage/checkpoints.ts",
-      "mcp_server/lib/governance/scope-governance.ts",
-      "mcp_server/code-graph/lib/indexer-types.ts",
-      "mcp_server/code-graph/lib/structural-indexer.ts",
-      "mcp_server/api/index.ts",
+      "lib/governance/scope-governance.ts",
       "scripts/memory/cleanup-index-scope-violations.ts",
-      "mcp_server/tests/pe-orchestration.vitest.ts",
-      "mcp_server/tests/handler-memory-index.vitest.ts",
-      "mcp_server/tests/index-scope.vitest.ts",
-      "mcp_server/tests/memory-save-index-scope.vitest.ts",
-      "mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts",
-      "mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts",
-      "mcp_server/tests/cleanup-script-audit-emission.vitest.ts",
-      "mcp_server/tests/exclusion-ssot-unification.vitest.ts",
-      "mcp_server/tests/symlink-realpath-hardening.vitest.ts",
-      "mcp_server/tests/walker-dos-caps.vitest.ts",
-      "mcp_server/tests/memory-governance.vitest.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/README.md",
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "decision-record.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "tests/copilot-hook-wiring.vitest.ts",
+      "tests/memory-governance.vitest.ts",
+      "tests/stage3-rerank-regression.vitest.ts",
+      "mcp_server/handlers/memory-save.ts"
     ],
     "entities": [
+      {
+        "name": "pe-orchestration.ts",
+        "kind": "code",
+        "path": "handlers/save/pe-orchestration.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pe-gating.ts",
+        "kind": "code",
+        "path": "handlers/pe-gating.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "handlers/save/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-index.ts",
+        "kind": "code",
+        "path": "handlers/memory-index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save.ts",
+        "kind": "code",
+        "path": "handlers/memory-save.ts",
+        "source": "derived"
+      },
+      {
+        "name": "pe-orchestration.vitest.ts",
+        "kind": "test",
+        "path": "tests/pe-orchestration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "handler-memory-index.vitest.ts",
+        "kind": "test",
+        "path": "tests/handler-memory-index.vitest.ts",
+        "source": "derived"
+      },
       {
         "name": "index-scope.ts",
         "kind": "code",
@@ -111,57 +114,9 @@
         "source": "derived"
       },
       {
-        "name": "canonical-path.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/utils/canonical-path.ts",
-        "source": "derived"
-      },
-      {
         "name": "scope-governance.ts",
         "kind": "code",
-        "path": "mcp_server/lib/governance/scope-governance.ts",
-        "source": "derived"
-      },
-      {
-        "name": "pe-orchestration.ts",
-        "kind": "code",
-        "path": "mcp_server/handlers/save/pe-orchestration.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-save.ts",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-save.ts",
-        "source": "derived"
-      },
-      {
-        "name": "memory-index.ts",
-        "kind": "code",
-        "path": "mcp_server/handlers/memory-index.ts",
-        "source": "derived"
-      },
-      {
-        "name": "vector-index-mutations.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/search/vector-index-mutations.ts",
-        "source": "derived"
-      },
-      {
-        "name": "post-insert-metadata.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/storage/post-insert-metadata.ts",
-        "source": "derived"
-      },
-      {
-        "name": "checkpoints.ts",
-        "kind": "code",
-        "path": "mcp_server/lib/storage/checkpoints.ts",
-        "source": "derived"
-      },
-      {
-        "name": "structural-indexer.ts",
-        "kind": "code",
-        "path": "mcp_server/code-graph/lib/structural-indexer.ts",
+        "path": "lib/governance/scope-governance.ts",
         "source": "derived"
       },
       {
@@ -207,82 +162,58 @@
         "source": "derived"
       },
       {
+        "name": "copilot-hook-wiring.vitest.ts",
+        "kind": "test",
+        "path": "tests/copilot-hook-wiring.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-governance.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-governance.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "stage3-rerank-regression.vitest.ts",
+        "kind": "test",
+        "path": "tests/stage3-rerank-regression.vitest.ts",
+        "source": "derived"
+      },
+      {
         "name": "Memory Indexer Invariants",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Track A",
+        "name": "Unified Level",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Track B",
+        "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "GOVERNANCE_AUDIT_ACTIONS",
+        "name": "Index Scope",
         "kind": "proper_noun",
-        "path": "decision-record.md",
+        "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "shouldIndexForMemory",
+        "name": "Constitutional Tier",
         "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "shouldIndexForCodeGraph",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "fromScan",
-        "kind": "key_phrase",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "E_LINEAGE",
-        "kind": "key_phrase",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "candidate_changed",
-        "kind": "key_phrase",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "z_future",
-        "kind": "key_phrase",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "external",
-        "kind": "key_phrase",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "constitutional",
-        "kind": "key_phrase",
         "path": "spec.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Two invariant tracks over one memory-indexer runtime: Track A (lineage + concurrency) closes E_LINEAGE and candidate_changed; Track B (index scope + constitutional tier) enforces z_future / external exclusions and constitutional-path tier invariants with shared SSOT, defense-in-depth guards across every mutation surface, and transactional cleanup of existing DB pollution.",
+    "causal_summary": "The memory indexer shipped two independent but related regressions during the 026 optimization cycle. Both regressions modify the same runtime surface (`mcp_server/handlers/memory-save.ts`, `mcp_server/handlers/memory-index.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/lib/storage/post-insert-metadata.ts`, `mcp_server/lib/storage/checkpoints.ts`) and share the same evaluation surface, so they ship as one coordinated invariant packet under 026.",
     "created_at": "2026-04-24T17:21:38.685Z",
-    "last_save_at": "2026-04-24T19:25:00.000Z",
-    "save_lineage": "phase-merge",
+    "last_save_at": "2026-04-26T09:17:15.746Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

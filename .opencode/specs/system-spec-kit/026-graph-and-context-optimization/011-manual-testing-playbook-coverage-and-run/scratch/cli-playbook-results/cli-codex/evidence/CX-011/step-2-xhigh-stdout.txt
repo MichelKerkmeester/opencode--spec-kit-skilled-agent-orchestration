@@ -1,0 +1,1271 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019dc955-d3fc-7fd3-a166-e535dde0a6d1
+--------
+user
+@./.opencode/skill/cli-codex/SKILL.md Audit the §4 Rules section. For each ALWAYS, NEVER, and ESCALATE rule, identify the specific risk it mitigates and any edge cases where the rule alone is insufficient. Cite each rule by its number.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+SKILL ROUTING: ambiguous pass between `cli-codex` and `sk-code-review`; I’m using `cli-codex` because it is the explicit target file, plus `sk-code-review` for the audit posture. I’ll read the target section and the review skill, then cite rule numbers directly.
+exec
+/bin/zsh -lc "sed -n '/"'^## 4'"\\./,/"'^## 5'"\\./p' .opencode/skill/cli-codex/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+## 4. RULES
+
+### ALWAYS
+
+1. Verify Codex CLI is installed before first invocation (`command -v codex`).
+2. Use `--sandbox read-only` for review/analysis/research; `--sandbox workspace-write` (or `--full-auto`) for code generation/file modification — `codex exec` defaults to `read-only`, so omitting causes silent no-op on edit tasks.
+3. Validate Codex-generated code (XSS, injection, eval, syntax checks via `node --check`, `tsc --noEmit`, etc.) before applying.
+4. Capture stderr (`2>&1`) so rate-limit messages and errors surface.
+5. **Redirect codex stdin from `/dev/null`** when dispatching in a `while read` loop. Pattern: `codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &`. Without `</dev/null`, the backgrounded codex process inherits the loop's stdin (the file after `done < input.jsonl`) and silently consumes the remaining lines — the loop exits after 3-6 iterations with no error. See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption".
+6. **Specify model + effort + service tier explicitly** — never rely on caller environment. Default: `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`. Honor user overrides verbatim. Use `high`/`xhigh` for reasoning-heavy tasks (architecture, security, deep planning).
+7. Route to the appropriate `-p <profile>` when the task matches a specialization (see Section 3 routing table); use `codex exec review` (built-in subcommand) for git diff reviews.
+8. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 in `--full-auto` or non-interactive mode.
+9. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
+10. **Never inject user-level voice/personalization content into AI-orchestrated Codex delegations.** Codex CLI reads user-level voice from `~/.codex/AGENTS.md` (the human's global settings, loaded automatically). When an AI delegates via `codex exec`, the calling AI's own voice rules govern the response — do NOT read `~/.codex/AGENTS.md` and paste into delegation prompts. Keep delegations focused on task/model/sandbox/effort/(spec-folder pre-approval). If the user asks how to make Codex sound more like Claude in *their own* sessions, point to `~/.codex/AGENTS.md` — not any repo asset.
+
+### NEVER
+
+1. Use `--sandbox danger-full-access` without explicit user approval (full shell beyond workspace = damage risk). `--full-auto` (workspace-write + on-request approval) does not require pre-approval.
+2. Trust Codex output blindly for security-sensitive code, send sensitive data (API keys, passwords, credentials) in prompts, or hammer the API with rapid sequential calls.
+3. Use Codex for tasks where context is already loaded — direct action by the calling AI is faster.
+4. Assume Codex output is correct without verification — cross-reference codebase and project standards.
+
+### ESCALATE IF
+
+1. Codex CLI is not installed and user has not acknowledged (provide `npm i -g @openai/codex`).
+2. Rate limits are persistently exceeded (suggest checking API key quota or OAuth account limits).
+3. Codex output conflicts with existing code patterns (present both perspectives; user decides).
+4. Task requires `--sandbox danger-full-access` (describe risks; get explicit user approval). `--full-auto` does not require escalation.
+
+### Memory Handback Protocol
+
+When the calling AI needs to preserve session context from a Codex CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
+
+Codex-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §13.
+
+Example invocation:
+```bash
+printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+```
+
+---
+
+<!-- /ANCHOR:rules -->
+<!-- ANCHOR:references -->
+## 5. REFERENCES
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code-review/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+name: sk-code-review
+description: "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code-opencode, sk-code-web, and sk-code-full-stack standards."
+allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
+version: 1.2.0.0
+---
+
+<!-- Keywords: sk-code-review, code-review, pull-request, findings-first, security-review, quality-gate, stack-agnostic, baseline-overlay -->
+
+# Code Review Baseline - Stack-Agnostic Findings-First Review
+
+Universal `sk-code` review baseline for any codebase, implemented by `sk-code-review` and paired with one `sk-code-*` overlay skill for stack-specific rules.
+
+<!-- ANCHOR:when-to-use -->
+## 1. WHEN TO USE
+
+### Activation Triggers
+
+Use this skill when:
+- A user asks for code review, PR review, quality gate, or merge readiness.
+- A workflow dispatches `@review` for pre-commit or gate validation.
+- A user requests security/correctness risk analysis before merge.
+- A user wants severity-ranked findings with file:line evidence.
+
+### Keyword Triggers
+
+`review`, `code review`, `pr review`, `audit`, `security review`, `quality gate`, `request changes`, `findings`, `blocking issues`, `merge readiness`
+
+### Use Cases
+
+1. Review-only pass: findings-first output with no code edits.
+2. Gate validation: score + pass/fail recommendation for orchestrated workflows.
+3. Focused risk pass: security, concurrency, correctness, or removal-focused review.
+
+### When NOT to Use
+
+- Feature implementation without review intent.
+- Pure documentation editing where code behavior is not being assessed.
+- Git-only workflow tasks (branching, rebasing, commit hygiene) without code-quality evaluation intent.
+<!-- /ANCHOR:when-to-use -->
+
+---
+
+<!-- ANCHOR:smart-routing -->
+## 2. SMART ROUTING
+
+### Primary Detection Signal
+
+Review behavior follows a baseline+overlay model:
+
+- Baseline (always): `sk-code` (implemented by this skill: `sk-code-review`)
+- Overlay (exactly one `sk-code-*`):
+  - OpenCode system context -> `sk-code-opencode`
+  - Frontend/web context -> `sk-code-web`
+  - Default/other stacks -> `sk-code-full-stack`
+
+### Phase Detection
+
+```text
+TASK CONTEXT
+    |
+    +- STEP 0: Detect `sk-code` baseline + one `sk-code-*` overlay
+    +- STEP 1: Score intents (top-2 when ambiguity delta <= 1.0)
+    +- Phase 1: Scope and baseline checks
+    +- Phase 2: Overlay alignment
+    +- Phase 3: Findings-first analysis
+    +- Phase 4: Output contract and next action
+```
+
+### Resource Domains
+
+The router discovers markdown resources recursively from `references/` and `assets/`, then applies weighted intent scoring.
+
+Knowledge is organized by domain mapping:
+
+```text
+references/review_core.md
+references/review_ux_single_pass.md
+references/*_checklist.md
+assets/review/...
+```
+
+- `references/review_core.md` for shared doctrine consumed by both `@review` and `@deep-review`.
+- `references/review_ux_single_pass.md` for interactive single-pass review behavior.
+- `references/` for baseline review flow, severity contracts, and risk checklists.
+- `assets/` for optional reusable templates/checklists (if present in this skill).
+
+### Resource Loading Levels
+
+| Level | When to Load | Resources |
+| --- | --- | --- |
+| ALWAYS | Every invocation | `references/review_core.md`, `references/review_ux_single_pass.md`, `references/security_checklist.md`, `references/code_quality_checklist.md` |
+| CONDITIONAL | Intent score indicates need | `references/solid_checklist.md`, `references/code_quality_checklist.md`, `references/removal_plan.md`, `references/test_quality_checklist.md` |
+| ON_DEMAND | Explicit deep-dive request | Full mapped reference set |
+
+### Precedence Matrix
+
+| Rule Type | Source of Truth | Behavior |
+| --- | --- | --- |
+| Security/correctness minimums | `sk-code` baseline (`sk-code-review`) | Always enforced; never relaxed by overlay |
+| Stack style/process conventions | Overlay skill | Overlay guidance overrides baseline generic style/process advice |
+| Verification/build/test commands | Overlay skill | Overlay commands are authoritative for the detected stack |
+| Ambiguous conflicts | Escalation | Ask for clarification; do not guess |
+
+### Unknown Fallback Checklist
+
+If intent/stack detection is unclear, request:
+
+1. Review target scope (full diff, staged files, commit range, or explicit file list).
+2. Primary risk class (security, correctness, performance, maintainability).
+3. Architecture lens priority (KISS/DRY/SOLID strict or optional).
+4. Stack/context (OpenCode system code, web/frontend, or other/full-stack).
+5. Desired output mode (findings-only or findings + gated fix follow-up).
+
+### Smart Router Pseudocode
+
+```python
+from pathlib import Path
+
+SKILL_ROOT = Path(__file__).resolve().parent
+# Discover resources recursively across references and assets.
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
+DEFAULT_RESOURCES = [
+    "references/review_core.md",
+    "references/review_ux_single_pass.md",
+    "references/security_checklist.md",
+    "references/code_quality_checklist.md",
+]
+
+INTENT_SIGNALS = {
+    "SECURITY": {"weight": 5, "keywords": ["security", "auth", "injection", "vulnerability", "race"]},
+    "QUALITY": {"weight": 4, "keywords": ["correctness", "bug", "regression", "performance", "boundary", "contract", "breaking change", "backward compatible", "compatibility"]},
+    "KISS": {"weight": 3, "keywords": ["kiss", "simple", "simplicity", "over-engineer", "overengineering"]},
+    "DRY": {"weight": 3, "keywords": ["dry", "duplication", "duplicate", "copy-paste", "repeated logic"]},
+    "SOLID": {"weight": 3, "keywords": ["solid", "architecture", "design", "coupling", "cohesion", "module", "adapter", "interface", "abstraction", "responsibility", "dependency", "boundary"]},
+    "REMOVAL": {"weight": 3, "keywords": ["remove", "dead code", "cleanup", "deprecate"]},
+    "TESTING": {"weight": 3, "keywords": ["test", "tests", "testing", "coverage", "assertion", "mock", "stub", "fixture", "test quality", "brittle"]},
+}
+
+RESOURCE_MAP = {
+    "SECURITY": ["references/security_checklist.md"],
+    "QUALITY": ["references/code_quality_checklist.md"],
+    "KISS": ["references/code_quality_checklist.md"],
+    "DRY": ["references/code_quality_checklist.md"],
+    "SOLID": ["references/solid_checklist.md"],
+    "REMOVAL": ["references/removal_plan.md"],
+    "TESTING": ["references/test_quality_checklist.md"],
+}
+
+ON_DEMAND_KEYWORDS = ["deep review", "full review", "all checks", "comprehensive", "flag false positives", "blocking regressions", "list findings", "read-only only", "underrepresented", "scope correctly"]
+UNKNOWN_FALLBACK_CHECKLIST = [
+    "Confirm review scope (diff/staged/files/commit range)",
+    "Confirm risk priority (security/correctness/performance/maintainability/test quality/contract safety)",
+    "Confirm architecture lens (KISS/DRY/SOLID required or optional)",
+    "Confirm stack context (opencode/web/full-stack)",
+    "Confirm findings-only vs findings+fix follow-up",
+]
+
+
+def _task_text(task) -> str:
+    return " ".join([
+        str(getattr(task, "text", "")),
+        str(getattr(task, "query", "")),
+        str(getattr(task, "description", "")),
+        " ".join(getattr(task, "keywords", []) or []),
+    ]).lower()
+
+
+def _guard_in_skill(relative_path: str) -> str:
+    resolved = (SKILL_ROOT / relative_path).resolve()
+    resolved.relative_to(SKILL_ROOT)
+    if resolved.suffix.lower() != ".md":
+        raise ValueError(f"Only markdown resources are routable: {relative_path}")
+    return resolved.relative_to(SKILL_ROOT).as_posix()
+
+
+def discover_markdown_resources() -> set[str]:
+    docs = []
+    for base in RESOURCE_BASES:
+        if base.exists():
+            docs.extend(path for path in base.rglob("*.md") if path.is_file())
+    return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
+
+
+def score_intents(task) -> dict[str, float]:
+    text = _task_text(task)
+    scores = {intent: 0.0 for intent in INTENT_SIGNALS}
+    for intent, cfg in INTENT_SIGNALS.items():
+        for keyword in cfg["keywords"]:
+            if keyword in text:
+                scores[intent] += cfg["weight"]
+    return scores
+
+
+def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
+    ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
+    if not ranked or ranked[0][1] <= 0:
+        return ["QUALITY"]
+    selected = [ranked[0][0]]
+    if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
+        selected.append(ranked[1][0])
+    return selected[:max_intents]
+
+
+def detect_overlay_skill(task, workspace_files=None, changed_files=None) -> str:
+    text = _task_text(task)
+    files = " ".join((workspace_files or []) + (changed_files or [])).lower()
+
+    if "opencode" in text or ".opencode/" in files or "jsonc" in text or "mcp" in text:
+        return "sk-code-opencode"
+    if any(term in text for term in ["frontend", "web", "css", "dom", "browser", "webflow"]) or any(
+        marker in files for marker in ["next.config", "vite.config", "package.json", "src/"]
+    ):
+        return "sk-code-web"
+    return "sk-code-full-stack"
+
+
+def route_review_resources(task, workspace_files=None, changed_files=None):
+    inventory = discover_markdown_resources()
+    text = _task_text(task)
+
+codex
+The §4 rules are concrete operational guardrails, not style guidance. I’m checking the referenced routing and prompt-quality material too, because some edge cases depend on what the rule assumes outside the rule text.
+exec
+/bin/zsh -lc "sed -n '/"'^## 3'"\\./,/"'^## 4'"\\./p' .opencode/skill/cli-codex/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+## 3. HOW IT WORKS
+
+### Prerequisites
+
+```bash
+# Verify installation
+command -v codex || echo "Not installed. Run: npm i -g @openai/codex"
+
+# Authentication — API key OR ChatGPT OAuth
+export OPENAI_API_KEY=your-key-here
+codex login
+```
+
+**Authentication options**: `OPENAI_API_KEY` env var (direct API), or ChatGPT OAuth via `codex login` (uses ChatGPT account credentials).
+
+### Default Invocation (Skill Default)
+
+**Default model + effort + tier**: `gpt-5.5` · `medium` reasoning · `fast` service tier. Balances speed, cost, and quality for the typical delegation.
+
+```bash
+codex exec \
+  --model gpt-5.5 \
+  -c model_reasoning_effort="medium" \
+  -c service_tier="fast" \
+  -c approval_policy=never \
+  --sandbox workspace-write \
+  "<prompt>"
+```
+
+**User override** (honor explicit user phrasing verbatim):
+
+| User says | Resolve to |
+|-----------|------------|
+| (nothing specified) | `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"` |
+| "Use gpt 5.5 high fast" | `--model gpt-5.5 -c model_reasoning_effort="high" -c service_tier="fast"` |
+| "Use gpt 5.5 low" | `--model gpt-5.5 -c model_reasoning_effort="low" -c service_tier="fast"` (fast stays unless user drops it) |
+| "Use gpt 5.5 xhigh" | `--model gpt-5.5 -c model_reasoning_effort="xhigh" -c service_tier="fast"` |
+
+Only the reasoning-effort dimension changes via override; model stays on `gpt-5.5` and service tier stays on `fast` unless the user explicitly says otherwise.
+
+### Core Invocation Pattern
+
+```bash
+codex exec "prompt" --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast" 2>&1
+```
+
+> **Common flag mistakes**: `--reasoning`, `--reasoning-effort` and `--quiet` do NOT exist. Use `-c model_reasoning_effort="high"` for reasoning effort (or set it in `config.toml`). There is no quiet flag. Use `-o file.txt` to capture the last message to a file.
+
+| Flag / Option | Purpose |
+|---------------|---------|
+| `--model <id>` | Model selection — `gpt-5.5` (always; skill default) |
+| `-c model_reasoning_effort="<level>"` | Reasoning effort — `none`, `minimal`, `low`, `medium`, `high`, `xhigh` |
+| `-c service_tier="fast"` | **Fast mode** — routes through fast tier. **Always pass explicitly** when delegating from another AI so the call is self-documenting and never silently falls back to a slower tier. |
+| `--sandbox read-only` | Safe mode: read files, no writes or shell commands |
+| `--sandbox workspace-write` | Allow file writes within the workspace |
+| `--sandbox danger-full-access` | Full shell access — **requires explicit user approval** |
+| `--ask-for-approval untrusted` | Prompt before untrusted operations (default) |
+| `--ask-for-approval on-request` | Prompt only when Codex requests approval |
+| `--ask-for-approval never` | Auto-approve all operations (use with caution) |
+| `--full-auto` | Low-friction sandboxed automation: `workspace-write` sandbox + `on-request` approval. Default for unattended orchestration. |
+| `--search` | Enable live web browsing during task execution |
+| `--image` / `-i` | Attach an image file as visual input |
+
+> **Default sandbox behavior**: `codex exec` without an explicit `--sandbox` flag defaults to `read-only` with `approval: never`. **File modification tasks will silently fail** — the agent reads code and plans changes but cannot write them. Always pass `--sandbox workspace-write` (or `--full-auto`) when the task requires file edits.
+
+> **Fast mode (REQUIRED for cross-AI delegation)**: Always pass `-c service_tier="fast"` explicitly. This routes the call through the fast tier instead of relying on whatever the user's `~/.codex/config.toml` sets as default. Explicit means reproducible regardless of who runs it.
+
+### Model Selection
+
+The skill dispatches `gpt-5.5` for every task. Only the reasoning-effort dimension varies.
+
+| Model | ID | Use Case | Reasoning Effort |
+|-------|----|----------|-----------------|
+| **GPT-5.5** ★ default | `gpt-5.5` | All delegations — code generation, review, implementation, documentation, architecture, research | configurable via `-c model_reasoning_effort` (default `medium`; raise to `high` / `xhigh` for hard problems, lower to `low` / `minimal` for trivial lookups) |
+
+**Reasoning Effort Levels**: `none`, `minimal`, `low`, `medium` (skill default), `high` (user-override tier), `xhigh` (maximum depth — profile default for all agents).
+
+> **Note**: There is no `--reasoning-effort` CLI flag. Set via `-c model_reasoning_effort="medium"` or in `config.toml` / profile sections.
+
+**Selection Strategy**: `gpt-5.5` always; tune only reasoning effort: `medium` for most delegations (default), `high`/`xhigh` for architecture/security audits/complex planning, `low`/`minimal` for trivial lookups.
+
+### Codex Agent Delegation
+
+The calling AI is the conductor; Codex profiles in `config.toml` `[profiles.<name>]` shape HOW Codex processes the task (sandbox, reasoning).
+
+| Task Type | Profile | Invocation Pattern |
+|-----------|---------|-------------------|
+| Code review / security audit | review | `codex exec -p review "Review @./src/auth.ts for security issues" -m gpt-5.5` |
+| Git diff review | (built-in) | `codex exec review "Focus on security" --commit HEAD` |
+| Architecture exploration | context | `codex exec -p context "Analyze the architecture of this project" -m gpt-5.5` |
+| Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.5 --search` |
+| Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.5` |
+| Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.5` |
+| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.5` |
+
+**Profile setup**: Defined in `.codex/config.toml` under `[profiles.<name>]`. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
+
+See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster.
+
+### Unique Codex Capabilities
+
+| Capability | Purpose | Invocation |
+|------------|---------|------------|
+| `/review` command | Built-in diff-aware code review in TUI | `codex` then type `/review` |
+| `--search` flag | Live web browsing during exec | `codex exec "..." --search` |
+| `codex mcp` | Connect to Model Context Protocol servers | `codex mcp` subcommand |
+| Native hooks | Inject startup context and advisor briefs when `[features].codex_hooks = true` | `~/.codex/hooks.json` |
+| Session resume | Continue a previous Codex session | `codex resume [session-id]` |
+| Session fork | Branch from an existing session | `codex fork [session-id]` |
+| `--image` / `-i` | Attach images for visual input | `codex exec "..." -i screenshot.png` |
+| `codex cloud` | Remote task execution | `codex cloud` subcommand |
+
+### Essential Commands
+
+```bash
+# Code generation (workspace writes allowed)
+codex exec "Create [description] with [features]. Output complete file." --model gpt-5.5 --sandbox workspace-write
+
+# Code review (read-only — no file modifications)
+codex exec "Review @./src/auth.ts for security vulnerabilities" --model gpt-5.5 --sandbox read-only
+
+# Git diff review (built-in review subcommand)
+codex exec review "Focus on security vulnerabilities" --commit HEAD --model gpt-5.5
+
+# Web research (live web browsing enabled)
+codex exec "What's new in [topic]? Search the web for current information." --model gpt-5.5 --search --sandbox read-only
+
+# Background execution
+codex exec "[long task]" --model gpt-5.5 --sandbox workspace-write 2>&1 &
+
+# With image input
+codex exec "Implement this UI component based on the attached design" --model gpt-5.5 -i design.png --sandbox workspace-write
+
+# Profile-based task delegation
+codex exec -p research "Research latest security advisories for Express.js" --model gpt-5.5 --search
+```
+
+### Error Handling
+
+| Issue | Solution |
+|-------|----------|
+| CLI not installed | `npm i -g @openai/codex` |
+| `OPENAI_API_KEY` not set | `export OPENAI_API_KEY=your-key` or run `codex login` |
+| Rate limit exceeded | Wait for auto-retry or reduce request frequency |
+| Auth expired | Run `codex login` to re-authenticate via OAuth |
+| Sandbox violation | Match `--sandbox` level to task requirements |
+| Task ran but no files changed | `codex exec` defaults to `read-only` sandbox — add `--sandbox workspace-write` or `--full-auto` for edit tasks |
+| Agent asks for spec folder / approval | Non-interactive `exec` cannot answer prompts — include `(pre-approved, skip Gate 3)` in prompt and use `--full-auto` |
+| Context too large | Specify files explicitly with `@./path` rather than broad prompts |
+| No startup context or advisor brief | Enable `[features].codex_hooks = true` and verify `~/.codex/hooks.json` has Spec Kit Memory `SessionStart` and `UserPromptSubmit` entries. See `references/hook_contract.md`. |
+
+---
+
+<!-- /ANCHOR:how-it-works -->
+<!-- ANCHOR:rules -->
+## 4. RULES
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/cli-codex/assets/prompt_quality_card.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+title: Prompt Quality Card
+description: Fast-path framework selection and CLEAR checks for Codex CLI prompt construction.
+---
+
+<!-- sync: 9d3a5fd2 -->
+
+# Prompt Quality Card
+
+Fast-path prompt-quality guidance for Codex CLI dispatches. Use this asset before building a routine CLI prompt so the router stays lightweight while still applying framework selection and a quick CLEAR pass.
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Provide a small, always-load asset for Codex CLI prompt construction that improves quality without pulling in the full prompt-engineering skill on routine dispatches.
+
+### Usage
+
+Select a framework from the task map, run the CLEAR 5-check, and escalate to `@improve-prompt` when the task crosses the fast-path risk threshold.
+
+---
+
+<!-- /ANCHOR:overview -->
+<!-- ANCHOR:framework-selection-table -->
+## 2. Framework Selection Table
+
+| Framework | Best for | Complexity band | Core components |
+|-----------|----------|-----------------|-----------------|
+| `RCAF` | General implementation, edit, and documentation prompts | 1-6 | Role, Context, Action, Format |
+| `COSTAR` | Audience-aware communication and content generation | 3-6 | Context, Objective, Style, Tone, Audience, Response |
+| `RACE` | Fast single-output tasks where speed matters most | 1-3 | Role, Action, Context, Execute |
+| `CIDI` | Process instructions, tutorials, and SOP-style prompts | 4-6 | Context, Instructions, Details, Input |
+| `TIDD-EC` | Compliance, review, and quality-critical prompts | 6-8 | Task, Instructions, Do's, Don'ts, Examples, Context |
+| `CRISPE` | Research, strategic exploration, and option generation | 5-7 | Capacity, Insight, Statement, Personality, Experiment |
+| `CRAFT` | Complex multi-stakeholder planning and analysis | 7-10 | Context, Role, Action, Format, Target |
+
+---
+
+<!-- /ANCHOR:framework-selection-table -->
+<!-- ANCHOR:task-framework-map -->
+## 3. Task to Framework Map
+
+| Task | Framework |
+|------|-----------|
+| Generation | `RCAF` |
+| Review | `TIDD-EC` |
+| Research | `CRISPE` |
+| Edit | `RCAF + TIDD-EC` |
+| Analyze / plan | `CRAFT` |
+
+---
+
+<!-- /ANCHOR:task-framework-map -->
+<!-- ANCHOR:clear-check -->
+## 4. CLEAR 5-Check
+
+- Correctness: Does the prompt describe the real task and files without contradiction?
+- Logic: Does it explain how Codex should reason or decide?
+- Expression: Is the wording specific enough to avoid guesswork?
+- Arrangement: Is the order task -> context -> constraints -> output -> verification?
+- Reusability: Could this prompt be reused by swapping placeholders?
+
+---
+
+<!-- /ANCHOR:clear-check -->
+<!-- ANCHOR:escalation -->
+## 5. Escalate to `@improve-prompt`
+
+Use Task-based escalation when complexity is `>= 7/10`, compliance or security sensitivity appears, more than one stakeholder matters, or more than one requirement is unclear.
+
+Codex-specific example: if the task needs a crowded `codex exec` prompt plus explicit `service_tier="fast"` or sandbox guidance, get the structured `ENHANCED_PROMPT` from `@improve-prompt` first and then hand that to Codex CLI.
+
+---
+
+<!-- /ANCHOR:escalation -->
+<!-- ANCHOR:failure-patterns -->
+## 6. Failure Patterns
+
+- Missing output format or success criteria
+- Unbounded scope
+- Vague verbs
+- No repo or file anchors
+- No "do not change" guardrails
+
+---
+
+<!-- /ANCHOR:failure-patterns -->
+<!-- ANCHOR:related-resources -->
+## 7. Related Resources
+
+- `../../sk-improve-prompt/assets/cli_prompt_quality_card.md`
+- `./prompt_templates.md`
+- `../SKILL.md`
+
+<!-- /ANCHOR:related-resources -->
+
+exec
+/bin/zsh -lc "nl -ba .opencode/skill/cli-codex/SKILL.md | sed -n '/"'^ *[0-9][0-9]*'"\\t## 4\\./,/"'^ *[0-9][0-9]*'"\\t## 5\\./p'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+   308	## 4. RULES
+   309	
+   310	### ALWAYS
+   311	
+   312	1. Verify Codex CLI is installed before first invocation (`command -v codex`).
+   313	2. Use `--sandbox read-only` for review/analysis/research; `--sandbox workspace-write` (or `--full-auto`) for code generation/file modification — `codex exec` defaults to `read-only`, so omitting causes silent no-op on edit tasks.
+   314	3. Validate Codex-generated code (XSS, injection, eval, syntax checks via `node --check`, `tsc --noEmit`, etc.) before applying.
+   315	4. Capture stderr (`2>&1`) so rate-limit messages and errors surface.
+   316	5. **Redirect codex stdin from `/dev/null`** when dispatching in a `while read` loop. Pattern: `codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &`. Without `</dev/null`, the backgrounded codex process inherits the loop's stdin (the file after `done < input.jsonl`) and silently consumes the remaining lines — the loop exits after 3-6 iterations with no error. See `references/integration_patterns.md#background-execution` → "Silent Stdin Consumption".
+   317	6. **Specify model + effort + service tier explicitly** — never rely on caller environment. Default: `--model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"`. Honor user overrides verbatim. Use `high`/`xhigh` for reasoning-heavy tasks (architecture, security, deep planning).
+   318	7. Route to the appropriate `-p <profile>` when the task matches a specialization (see Section 3 routing table); use `codex exec review` (built-in subcommand) for git diff reviews.
+   319	8. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 in `--full-auto` or non-interactive mode.
+   320	9. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
+   321	10. **Never inject user-level voice/personalization content into AI-orchestrated Codex delegations.** Codex CLI reads user-level voice from `~/.codex/AGENTS.md` (the human's global settings, loaded automatically). When an AI delegates via `codex exec`, the calling AI's own voice rules govern the response — do NOT read `~/.codex/AGENTS.md` and paste into delegation prompts. Keep delegations focused on task/model/sandbox/effort/(spec-folder pre-approval). If the user asks how to make Codex sound more like Claude in *their own* sessions, point to `~/.codex/AGENTS.md` — not any repo asset.
+   322	
+   323	### NEVER
+   324	
+   325	1. Use `--sandbox danger-full-access` without explicit user approval (full shell beyond workspace = damage risk). `--full-auto` (workspace-write + on-request approval) does not require pre-approval.
+   326	2. Trust Codex output blindly for security-sensitive code, send sensitive data (API keys, passwords, credentials) in prompts, or hammer the API with rapid sequential calls.
+   327	3. Use Codex for tasks where context is already loaded — direct action by the calling AI is faster.
+   328	4. Assume Codex output is correct without verification — cross-reference codebase and project standards.
+   329	
+   330	### ESCALATE IF
+   331	
+   332	1. Codex CLI is not installed and user has not acknowledged (provide `npm i -g @openai/codex`).
+   333	2. Rate limits are persistently exceeded (suggest checking API key quota or OAuth account limits).
+   334	3. Codex output conflicts with existing code patterns (present both perspectives; user decides).
+   335	4. Task requires `--sandbox danger-full-access` (describe risks; get explicit user approval). `--full-auto` does not require escalation.
+   336	
+   337	### Memory Handback Protocol
+   338	
+   339	When the calling AI needs to preserve session context from a Codex CLI delegation, run the canonical 7-step procedure (extract `MEMORY_HANDBACK` section → build structured JSON → scrub secrets → invoke `generate-context.js` via `--stdin`/`--json`/temp-file → `memory_index_scan`). Full procedure and caveats: [`system-spec-kit/references/cli/memory_handback.md`](../system-spec-kit/references/cli/memory_handback.md).
+   340	
+   341	Codex-specific Memory Epilogue template: see [assets/prompt_templates.md](./assets/prompt_templates.md) §13.
+   342	
+   343	Example invocation:
+   344	```bash
+   345	printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --stdin [spec-folder]
+   346	```
+   347	
+   348	---
+   349	
+   350	<!-- /ANCHOR:rules -->
+   351	<!-- ANCHOR:references -->
+   352	## 5. REFERENCES
+
+exec
+/bin/zsh -lc 'rg -n "Silent Stdin Consumption|background|stdin|while read|/dev/null" .opencode/skill/cli-codex/references/integration_patterns.md' in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+133:<!-- ANCHOR:background-execution -->
+142:# Launch multiple Codex tasks in background
+167:kill -0 $PID1 2>/dev/null && echo "Still running" || echo "Complete"
+186:- Do not background tasks with `--sandbox workspace-write` or higher that write to the same files (race conditions)
+191:When an orchestrating AI (Claude Code, Copilot, etc.) uses its `Bash` tool to launch `codex exec ... &`, the shell command returns exit 0 immediately because the `&` backgrounds the process and the parent shell exits. The orchestrating AI's task system reports "completed" even though the codex process is still running.
+205:# Bash tool blocks until codex completes. Use run_in_background on the Bash call itself.
+210:2. Set `run_in_background: true` on each Bash tool call - this backgrounds the *tool call*, not the shell process
+214:### Silent Stdin Consumption When Dispatching in a `while read` Loop
+216:When a dispatcher script iterates over lines of input (e.g. a findings JSONL file) with `while IFS= read -r line; do ... done < input.jsonl` and launches `codex exec ... &` inside the loop body, **codex silently consumes the loop's stdin**. The loop exits after the first 3-6 iterations with no error, dropping most dispatches.
+220:**Root cause:** `codex exec` inherits the script's stdin by default. Because the `done < input.jsonl` redirection attaches the input file as the loop's stdin, each backgrounded codex process reads from that same file descriptor and races with the `read` command for lines — codex usually wins and consumes the remaining input.
+223:# BAD: codex inherits the loop's stdin, drains input.jsonl after iteration ~3
+230:# GOOD: redirect codex stdin from /dev/null so the loop keeps its own
+232:  codex exec "$PROMPT" > "$LOG" 2>&1 </dev/null &
+239:- Any `while read ... done < file` or `while read ... done < <(cmd)` pattern that launches `codex exec` in its body.
+243:**Always pair `codex exec ... &` inside a read-loop with `</dev/null` on the redirection.** This is independent of whether codex itself uses stdin — the issue is shared FD consumption, not a feature.
+245:<!-- /ANCHOR:background-execution -->
+358:| `workspace-write` + blind background | Parallel writes to same files | Use `read-only` for parallel background tasks |
+736:# GOOD: No & - use the orchestrator's own background mechanism instead
+737:# In Claude Code: Bash(command="codex exec ...", run_in_background=true)
+738:# In Copilot: background delegation
+
+codex
+The target section is self-contained, but the review skill wants its core review resources loaded for audit output. I’m doing that now and keeping the result scoped to §4 only.
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code-review/references/review_core.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+title: Review Core Doctrine
+description: Shared findings-first review doctrine for both single-pass and deep-review workflows.
+---
+
+# Review Core Doctrine
+
+Shared doctrine consumed by both `@review` and `@deep-review`.
+
+---
+
+## 1. SEVERITY DEFINITIONS
+
+| Level | Meaning | Handling |
+| --- | --- | --- |
+| P0 | Blocker: exploitable security issue, auth bypass, destructive data loss | Block merge |
+| P1 | Required: correctness bug, spec mismatch, must-fix gate issue | Fix before merge |
+| P2 | Suggestion: non-blocking improvement, documentation polish, style or maintainability follow-up | Optional or schedule follow-up |
+
+Escalation rule: if confidence is low but impact is high, classify toward the higher severity and state the uncertainty explicitly.
+
+---
+
+## 2. EVIDENCE REQUIREMENTS
+
+- Every `P0` and `P1` finding must include a concrete `file:line` citation.
+- Evidence must tie the finding to observed code behavior, not just a general concern.
+- `P2` findings should still include specific evidence when available, even if impact is advisory.
+- If evidence is incomplete, state the assumption and why the risk still matters.
+
+---
+
+## 3. FINDINGS OUTPUT ORDERING
+
+- Present findings before summary or praise sections.
+- Order findings by severity first: `P0`, then `P1`, then `P2`.
+- Keep ordering stable within a severity bucket by impact and confidence.
+- Separate required fixes from optional suggestions so merge decisions stay clear.
+
+---
+
+## 4. BASELINE + OVERLAY PRECEDENCE
+
+Apply this skill as the baseline first, then pair it with exactly one overlay:
+
+- OpenCode system code -> `sk-code-opencode`
+- Frontend/web code -> `sk-code-web`
+- Default/other stacks -> `sk-code-full-stack`
+
+Precedence rules:
+
+- Baseline security and correctness minimums are always enforced.
+- Overlay style, process, build, and test conventions override generic baseline guidance.
+- Unclear conflicts must be escalated rather than guessed.
+
+---
+
+## 5. BASELINE CHECK FAMILIES
+
+Mandatory baseline families:
+
+- Correctness minimums: regression risk, contract safety, spec mismatch, destructive side effects, and boundary handling.
+- Security minimums: auth and authorization gaps, injection exposure, unsafe secrets handling, privilege misuse, and reliability risks with security impact.
+
+These minimums cannot be relaxed by an overlay.
+
+---
+
+## 6. FINDING SCHEMA
+
+Each finding should provide:
+
+| Field | Requirement |
+| --- | --- |
+| `id` | Stable label within the review report, such as `P1-001` |
+| `severity` | One of `P0`, `P1`, `P2` |
+| `title` | Short, risk-oriented summary |
+| `file` | Primary `path:line` location |
+| `evidence` | Plain-language explanation tied to observed code |
+| `recommendation` | Specific, scope-proportional fix or follow-up |
+
+Suggested shape:
+
+```markdown
+### P1-001 [P1] Missing authorization check
+- File: path/to/file.ts:42
+- Evidence: Request handling reaches the write path before role validation.
+- Recommendation: Enforce the existing permission guard before mutation.
+```
+
+---
+
+## 7. RELATED RESOURCES
+
+- [review_ux_single_pass.md](./review_ux_single_pass.md) - Interactive single-pass report flow and next-step prompts.
+- [quick_reference.md](./quick_reference.md) - Lightweight index across baseline review references.
+- [security_checklist.md](./security_checklist.md) - Security and reliability checks.
+- [code_quality_checklist.md](./code_quality_checklist.md) - Correctness, KISS, DRY, and maintainability checks.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code-review/references/review_ux_single_pass.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+title: Review UX - Single Pass
+description: Interactive single-pass review behavior for human-facing review sessions.
+---
+
+# Review UX - Single Pass
+
+Interactive behavior for a one-pass review where findings are reported first and the human chooses what happens next.
+
+---
+
+## 1. HUMAN INTERACTION BEHAVIOR
+
+- Review first, implement second.
+- After publishing findings, ask the user what to do next before writing code.
+- Keep the prompt concrete and mode-aware; do not ask open-ended process questions unless scope is unclear.
+- If no blocking findings exist, still offer explicit next-step choices instead of assuming implementation work.
+
+Recommended next-step options:
+
+1. Fix all findings
+2. Fix `P0` and `P1` only
+3. Fix selected findings
+4. No implementation changes
+
+---
+
+## 2. REPORT FLOW
+
+Use this flow for interactive review responses:
+
+1. State what was reviewed and the scope source (`git diff`, staged diff, file list, or commit range).
+2. Publish findings ordered by severity.
+3. Summarize merge posture or risk level briefly.
+4. Ask the user what to do next.
+
+If no diff is present, report:
+
+- What was checked
+- That no diff was found
+- A concrete follow-up choice: staged changes only, specific commit/range, or selected files
+
+---
+
+## 3. MODE-SPECIFIC PRESENTATION
+
+Choose the lightest presentation that fits the request:
+
+- Findings-only: list the issues with evidence and stop after the next-step prompt.
+- Findings + gate recommendation: include `APPROVE`, `REQUEST_CHANGES`, or `COMMENT` after the findings.
+- Findings + fix follow-up options: present the review, then offer concrete remediation choices without starting implementation automatically.
+
+Presentation rules:
+
+- Keep findings ahead of summary sections.
+- Use plain-language impact statements.
+- Distinguish optional advice clearly from required fixes.
+- Acknowledge notable strengths briefly after the required findings, not before them.
+
+---
+
+## 4. PR AND PRE-COMMIT GUIDANCE
+
+For PR review:
+
+- Check for scope drift and call out unrelated changes that should be split.
+- Assess contract and backward-compatibility risk for externally visible changes.
+- Tie the overall recommendation to merge readiness.
+
+For pre-commit or staged review:
+
+- Focus on the staged diff or requested file set.
+- Prioritize the fastest blocking feedback first.
+- Keep remediation suggestions small and easy to apply before commit.
+
+---
+
+## 5. RELATED RESOURCES
+
+- [review_core.md](./review_core.md) - Shared doctrine used by both interactive and deep review modes.
+- [quick_reference.md](./quick_reference.md) - Lightweight index for the review reference set.
+- [test_quality_checklist.md](./test_quality_checklist.md) - Test quality and coverage checks for changed tests.
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code-review/references/security_checklist.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+title: Security and Reliability Checklist
+description: Structured risk checklist for security vulnerabilities, runtime reliability issues, and concurrent-behavior defects.
+---
+
+# Security and Reliability Checklist
+
+Structured risk checklist for security vulnerabilities, runtime reliability issues, and concurrent-behavior defects.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Help reviewers prioritize exploitability and business impact, not just code style.
+
+### Core Principle
+
+When impact is unclear, prefer conservative classification and state uncertainty explicitly.
+<!-- /ANCHOR:overview -->
+
+---
+
+<!-- ANCHOR:input-output -->
+## 2. INPUT/OUTPUT SAFETY
+
+Check for:
+- XSS via unsafe HTML rendering or template interpolation.
+- SQL/NoSQL/command injection via string concatenation.
+- SSRF through unvalidated user-controlled URLs.
+- Path traversal from unchecked path input (`../`).
+- Prototype pollution from unsafe object merge operations.
+
+Review prompts:
+- "What untrusted input reaches this sink?"
+- "Is validation context-aware for this output channel?"
+<!-- /ANCHOR:input-output -->
+
+---
+
+<!-- ANCHOR:auth -->
+## 3. AUTHENTICATION AND AUTHORIZATION
+
+Check for:
+- Missing auth guards on newly added entry points.
+- Missing ownership/tenant checks for read/write actions.
+- Trust in client-supplied role flags or user IDs.
+- IDOR patterns where entity IDs are accepted without authorization.
+- Weak token/session validation (`exp`, `iss`, `aud`, algorithm checks).
+
+High-impact rule: any missing authz control on data mutation is at least P1 and often P0.
+<!-- /ANCHOR:auth -->
+
+---
+
+<!-- ANCHOR:secrets-privacy -->
+## 4. SECRETS AND PRIVACY
+
+Check for:
+- Hardcoded credentials, API keys, tokens, private keys.
+- Sensitive logs exposing PII or operational secrets.
+- Internal stack traces or environment details in user-facing errors.
+- Client-side exposure of server-only configuration values.
+
+Quick command ideas:
+
+```bash
+rg -n -i "api[_-]?key|secret|token|password|BEGIN .* PRIVATE KEY"
+```
+<!-- /ANCHOR:secrets-privacy -->
+
+---
+
+<!-- ANCHOR:runtime-reliability -->
+## 5. RUNTIME RELIABILITY
+
+Check for:
+- Missing timeouts/retries for network dependencies.
+- Unbounded loops, recursion, or memory growth.
+- Blocking I/O on hot request paths.
+- Regex patterns vulnerable to catastrophic backtracking (ReDoS).
+- Missing idempotency keys for retry-prone write operations.
+
+Review prompt:
+- "What fails under load or partial network failure?"
+<!-- /ANCHOR:runtime-reliability -->
+
+---
+
+<!-- ANCHOR:concurrency -->
+## 6. CONCURRENCY AND RACE CONDITIONS
+
+Flag patterns:
+- Check-then-act without atomicity.
+- Read-modify-write on shared state without lock/transaction.
+- File/system operations split into non-atomic checks and actions.
+- Counter updates without atomic increment semantics.
+- Distributed coordination without lock/lease guarantees.
+
+Examples:
+
+```text
+if not exists(key):
+    create(key)
+
+value = get(key)
+value += 1
+set(key, value)
+```
+
+Reviewer questions:
+- "What happens if two requests hit this path at the same time?"
+- "Is this update atomic across all failure modes?"
+<!-- /ANCHOR:concurrency -->
+
+---
+
+<!-- ANCHOR:rate-limiting -->
+## 7. RATE LIMITING AND ABUSE PREVENTION
+
+Check for:
+- Missing rate limits on authentication endpoints (login, signup, password reset).
+- Unthrottled API endpoints accepting expensive operations.
+- Missing abuse vectors: account enumeration, credential stuffing, brute force.
+- Lack of per-user or per-IP request budgets on public-facing routes.
+
+Review prompt:
+- "What stops an attacker from calling this endpoint 10,000 times per second?"
+<!-- /ANCHOR:rate-limiting -->
+
+---
+
+<!-- ANCHOR:csp-headers -->
+## 8. CONTENT SECURITY POLICY AND HEADERS
+
+Check for:
+- Missing or overly permissive CSP headers (`unsafe-inline`, `unsafe-eval`, wildcard sources).
+- Missing security headers: `X-Content-Type-Options`, `X-Frame-Options`, `Strict-Transport-Security`.
+- CORS misconfiguration: wildcard origins, credentials with broad origins.
+- Missing `SameSite` attribute on sensitive cookies.
+
+Review prompt:
+- "Could an attacker embed, frame, or inject scripts into this page?"
+<!-- /ANCHOR:csp-headers -->
+
+---
+
+<!-- ANCHOR:dependency-supply-chain -->
+## 9. DEPENDENCY AND SUPPLY CHAIN SECURITY
+
+Check for:
+- Known vulnerabilities in dependencies (`npm audit`, `pip-audit`, `cargo audit`).
+- Unpinned or loosely pinned dependency versions (major version ranges).
+- Dependencies with no maintainer activity or known compromises.
+- Post-install scripts in untrusted packages.
+- Lock file integrity (committed and consistent with manifest).
+
+Review prompt:
+- "Are all dependencies pinned, audited, and from trusted sources?"
+<!-- /ANCHOR:dependency-supply-chain -->
+
+---
+
+<!-- ANCHOR:audit-logging -->
+## 10. AUDIT LOGGING AND OBSERVABILITY
+
+Check for:
+- Missing audit logs for security-sensitive operations (auth, permission changes, data deletion).
+- Insufficient context in logs (who, what, when, from where).
+- Logging sensitive data (passwords, tokens, PII) in plain text.
+- Missing alerting for anomalous patterns (repeated auth failures, privilege escalation).
+
+Review prompt:
+- "If this action were abused, would we know about it from the logs?"
+<!-- /ANCHOR:audit-logging -->
+
+---
+
+<!-- ANCHOR:privacy-data-handling -->
+## 11. PRIVACY AND DATA HANDLING
+
+Check for:
+- PII stored without encryption at rest or purpose limitation.
+- Missing data retention policies or deletion mechanisms.
+- Cross-border data transfer without adequate safeguards.
+- Excessive data collection beyond stated purpose.
+- Missing consent mechanisms for user data processing.
+
+Review prompt:
+- "Does this code collect, store, or transmit personal data - and is that justified and protected?"
+<!-- /ANCHOR:privacy-data-handling -->
+
+---
+
+<!-- ANCHOR:related-resources -->
+## 12. RELATED RESOURCES
+
+- [quick_reference.md](./quick_reference.md) - Findings-first review flow, severity model, and output contract.
+- [code_quality_checklist.md](./code_quality_checklist.md) - Correctness, scaling, and maintainability checks.
+- [solid_checklist.md](./solid_checklist.md) - Architecture cohesion and coupling checks.
+- [removal_plan.md](./removal_plan.md) - Safe deletion and deferred removal planning.
+
+Overlay portability: use this baseline with stack-specific controls from `sk-code-opencode`, `sk-code-web`, or `sk-code-full-stack`.
+<!-- /ANCHOR:related-resources -->
+
+exec
+/bin/zsh -lc "sed -n '1,220p' .opencode/skill/sk-code-review/references/code_quality_checklist.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+title: Code Quality Checklist
+description: Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+---
+
+# Code Quality Checklist
+
+Correctness, performance, and boundary-condition checklist for identifying production-impacting quality defects.
+
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+### Purpose
+
+Provide a systematic pass for non-security defects that still cause outages, regressions, or high maintenance cost.
+
+### Core Principle
+
+Prioritize silent-failure and data-corruption risks above stylistic concerns.
+<!-- /ANCHOR:overview -->
+
+---
+
+<!-- ANCHOR:error-handling -->
+## 2. ERROR HANDLING
+
+Flag:
+- Swallowed exceptions (`catch {}` or log-only catches).
+- Overly broad exception handling hiding root causes.
+- Missing async error propagation.
+- User-facing leakage of internal stack traces.
+- Missing fallback behavior for recoverable failures.
+
+Review prompts:
+- "Will callers know this failed?"
+- "Is there enough context to debug without exposing internals?"
+<!-- /ANCHOR:error-handling -->
+
+---
+
+<!-- ANCHOR:performance -->
+## 3. PERFORMANCE AND SCALING
+
+Flag:
+- N+1 query patterns.
+- Per-item network/database calls that should be batched.
+- Expensive work in hot loops without memoization/cache.
+- Synchronous blocking work in request paths.
+- Unbounded collections and memory growth risks.
+
+Review prompts:
+- "How does this behave with 10x data volume?"
+- "Can this call path be batched or cached safely?"
+<!-- /ANCHOR:performance -->
+
+---
+
+<!-- ANCHOR:boundaries -->
+## 4. BOUNDARY CONDITIONS
+
+Check:
+- Null/undefined handling and optional chaining misuse.
+- Empty collection behavior for first/last/indexed access.
+- Numeric boundaries (division by zero, overflow, negative values).
+- String boundaries (empty, whitespace-only, very long input, unicode).
+- Off-by-one errors in loops, pagination, and slicing.
+
+Common risky patterns:
+
+```javascript
+const first = items[0]              // no empty check
+const avg = total / count           // count may be zero
+if (value) { /* skips valid 0 */ }  // truthy trap
+```
+<!-- /ANCHOR:boundaries -->
+
+---
+
+<!-- ANCHOR:contract-safety -->
+## 5. DATA FLOW AND CONTRACT SAFETY
+
+Flag:
+- Function or method signature changes that break existing callers (added required parameters, removed parameters, changed return types).
+- New null or undefined return paths introduced where callers expect a value.
+- Data transformation functions that silently drop fields, truncate values, or lose type precision.
+- Default parameter value changes that alter behavior for existing callers without updating call sites.
+- Implicit behavioral contract changes (sort order, iteration order, timing guarantees) not documented in the diff.
+- Public API response shape changes without versioning or migration path.
+
+Review prompts:
+- "If an existing caller is not updated, will it still work correctly after this change?"
+- "Does any data transformation lose information that downstream consumers need?"
+- "Are implicit behavioral guarantees (ordering, timing, idempotency) preserved?"
+
+Severity guidance:
+- P0 for breaking changes to public APIs or shared interfaces with no migration path.
+- P1 for new null returns or type changes that existing callers do not handle.
+- P2 for implicit contract changes with low blast radius.
+<!-- /ANCHOR:contract-safety -->
+
+---
+
+<!-- ANCHOR:maintainability -->
+## 6. MAINTAINABILITY SIGNALS
+
+Watch for:
+- Repeated logic with inconsistent behavior.
+- Magic literals where domain constants are expected.
+- Overly nested control flow reducing readability.
+- Hidden coupling through global/shared mutable state.
+- Tests missing for newly introduced edge cases.
+- Functions exceeding 20 lines or 4+ nesting levels without structural justification.
+- Deep method chaining across more than two object boundaries (Law of Demeter: a.b().c().d()).
+- Functions that produce side effects not implied by their name or signature (Principle of Least Astonishment).
+- Error messages that lack actionable context for debugging (missing what failed and what to try).
+- TODO, FIXME, or HACK comments in production code paths without an associated tracking reference (issue link or ticket number).
+- Hardcoded environment-specific values (URLs, ports, timeout thresholds) that should be externalized for deployment flexibility.
+
+Decision cue: if reviewers cannot explain intent quickly, maintenance risk is likely at least P2.
+<!-- /ANCHOR:maintainability -->
+
+---
+
+<!-- ANCHOR:kiss-dry -->
+## 7. KISS / DRY ENFORCEMENT
+
+### KISS Checks
+
+Flag:
+- New abstraction layers without a current behavior need.
+- Generic helpers used in only one place.
+- Workflow complexity introduced "for future flexibility" without evidence.
+- Features, parameters, or configuration options added for speculative future use without a current requirement (YAGNI).
+
+### DRY Checks
+
+Flag:
+- Duplicated constants/rules across modules.
+- Copy-paste branches with minor name changes.
+- Repeated validation/parsing blocks that can share one source.
+- Abstractions extracted from only two instances without evidence of a shared concept. Apply the Rule of Three before consolidating to avoid premature generalization (AHA).
+
+Severity guidance:
+- P2 default for stylistic duplication/complexity.
+- Escalate to P1 if duplication or complexity introduces behavior/regression risk.
+<!-- /ANCHOR:kiss-dry -->
+
+---
+
+<!-- ANCHOR:related-resources -->
+## 8. RELATED RESOURCES
+
+- [quick_reference.md](./quick_reference.md) - Baseline review flow and severity output contract.
+- [security_checklist.md](./security_checklist.md) - Security, authz, abuse, and privacy risk checks.
+- [solid_checklist.md](./solid_checklist.md) - SOLID (SRP/OCP/LSP/ISP/DIP) and architecture risk prompts.
+- [removal_plan.md](./removal_plan.md) - Removal candidate classification and migration planning.
+- [test_quality_checklist.md](./test_quality_checklist.md) - Test quality, coverage, and anti-pattern checks.
+
+Overlay portability: pair this baseline with stack-specific quality guidance from `sk-code-opencode`, `sk-code-web`, or `sk-code-full-stack`.
+<!-- /ANCHOR:related-resources -->
+
+codex
+Scope: §4 Rules in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-codex/SKILL.md:308).
+
+**ALWAYS**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ALWAYS 1 | Prevents failed delegation from missing `codex` binary. | `command -v codex` does not verify version, auth, profile config, model access, or a compatible `PATH`. |
+| ALWAYS 2 | Prevents accidental writes during review and silent no-op edit tasks under default read-only mode. | Sandbox choice does not handle files outside workspace, parallel write races, approval-policy mismatch, or network/tool access needs. |
+| ALWAYS 3 | Reduces security and correctness risk from AI-generated code. | Syntax checks do not prove behavior. Security-sensitive changes still need tests, review, dependency checks, and runtime validation. |
+| ALWAYS 4 | Surfaces hidden CLI errors, auth failures, and rate-limit messages. | Capturing stderr is not enough without exit-code checks. Merging stdout/stderr can also break machine parsing or leak secrets into logs. |
+| ALWAYS 5 | Prevents backgrounded `codex exec` from consuming a `while read` loop’s input. | Only covers stdin-drain failures. It does not manage process lifecycle, wait status, log collection, or concurrent write conflicts. |
+| ALWAYS 6 | Avoids environment drift in model, effort, latency, and cost behavior. | Explicit flags can still reference unavailable models/tiers, conflict with profiles, or honor a user override that is unsuitable for the task. |
+| ALWAYS 7 | Routes work to the right Codex profile and uses diff-aware review where appropriate. | Profiles may be missing, stale, or override safety settings. Mixed tasks can need more than one specialization. |
+| ALWAYS 8 | Prevents non-interactive delegation from blocking on Gate 3 and preserves spec-folder continuity. | Passing a folder does not prove it is the right folder, valid, current, or sufficient for every delegated write. |
+| ALWAYS 9 | Reduces vague, unsafe, or underspecified dispatch prompts. | CLEAR is a lightweight check. It will not catch all domain constraints, hidden secrets, compliance requirements, or bad complexity scoring. |
+| ALWAYS 10 | Prevents privacy leakage, prompt bloat, and conflicting voice/personality instructions in delegations. | Task-specific style requirements may still need to be passed. It also assumes user-level voice is separate from project policy, which can blur in real AGENTS files. |
+
+**NEVER**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| NEVER 1 | Blocks high-blast-radius shell access without explicit approval. | Approval does not make the operation safe. The command scope, rollback path, and sandboxed alternatives still need review. |
+| NEVER 2 | Prevents vulnerable code acceptance, secret exposure, and API abuse. | Secret detection is hard in prompts/logs. “Rapid sequential calls” needs concrete backoff/budget guidance, and PII/proprietary data also matters. |
+| NEVER 3 | Avoids wasting time/tokens and losing already-loaded context. | A second opinion can still be useful for security, architecture, or review. User-directed delegation should override this when explicit. |
+| NEVER 4 | Prevents false confidence in Codex output. | Cross-referencing standards is not enough without tests, runtime checks, and scope-specific acceptance criteria. |
+
+**ESCALATE**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ESCALATE 1 | Avoids proceeding with a CLI path that cannot run. | Install method may vary by environment. Auth failure, wrong version, or missing model access should also be handled. |
+| ESCALATE 2 | Prevents retry loops, wasted quota, and stalled automation. | “Persistently” is undefined. The cause may be auth, outage, concurrency, tier choice, or prompt volume rather than quota alone. |
+| ESCALATE 3 | Prevents architectural drift when Codex suggests code that does not fit the repo. | Existing patterns can be obsolete or unsafe. The caller should still analyze and recommend, not merely defer neutrally to the user. |
+| ESCALATE 4 | Forces explicit consent for full shell access. | First challenge whether full access is actually required. Approval should be command-scoped and current, not blanket permission. |
+
+Main gap: the section has good guardrails, but several rules need companion checks for version/auth, exit codes, profile drift, concurrency, and post-generation verification.
+hook: Stop
+hook: Stop Completed
+2026-04-26T10:30:15.206373Z ERROR codex_core::session: failed to record rollout items: thread 019dc955-d3fc-7fd3-a166-e535dde0a6d1 not found
+tokens used
+51,705
+Scope: §4 Rules in [SKILL.md](/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/cli-codex/SKILL.md:308).
+
+**ALWAYS**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ALWAYS 1 | Prevents failed delegation from missing `codex` binary. | `command -v codex` does not verify version, auth, profile config, model access, or a compatible `PATH`. |
+| ALWAYS 2 | Prevents accidental writes during review and silent no-op edit tasks under default read-only mode. | Sandbox choice does not handle files outside workspace, parallel write races, approval-policy mismatch, or network/tool access needs. |
+| ALWAYS 3 | Reduces security and correctness risk from AI-generated code. | Syntax checks do not prove behavior. Security-sensitive changes still need tests, review, dependency checks, and runtime validation. |
+| ALWAYS 4 | Surfaces hidden CLI errors, auth failures, and rate-limit messages. | Capturing stderr is not enough without exit-code checks. Merging stdout/stderr can also break machine parsing or leak secrets into logs. |
+| ALWAYS 5 | Prevents backgrounded `codex exec` from consuming a `while read` loop’s input. | Only covers stdin-drain failures. It does not manage process lifecycle, wait status, log collection, or concurrent write conflicts. |
+| ALWAYS 6 | Avoids environment drift in model, effort, latency, and cost behavior. | Explicit flags can still reference unavailable models/tiers, conflict with profiles, or honor a user override that is unsuitable for the task. |
+| ALWAYS 7 | Routes work to the right Codex profile and uses diff-aware review where appropriate. | Profiles may be missing, stale, or override safety settings. Mixed tasks can need more than one specialization. |
+| ALWAYS 8 | Prevents non-interactive delegation from blocking on Gate 3 and preserves spec-folder continuity. | Passing a folder does not prove it is the right folder, valid, current, or sufficient for every delegated write. |
+| ALWAYS 9 | Reduces vague, unsafe, or underspecified dispatch prompts. | CLEAR is a lightweight check. It will not catch all domain constraints, hidden secrets, compliance requirements, or bad complexity scoring. |
+| ALWAYS 10 | Prevents privacy leakage, prompt bloat, and conflicting voice/personality instructions in delegations. | Task-specific style requirements may still need to be passed. It also assumes user-level voice is separate from project policy, which can blur in real AGENTS files. |
+
+**NEVER**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| NEVER 1 | Blocks high-blast-radius shell access without explicit approval. | Approval does not make the operation safe. The command scope, rollback path, and sandboxed alternatives still need review. |
+| NEVER 2 | Prevents vulnerable code acceptance, secret exposure, and API abuse. | Secret detection is hard in prompts/logs. “Rapid sequential calls” needs concrete backoff/budget guidance, and PII/proprietary data also matters. |
+| NEVER 3 | Avoids wasting time/tokens and losing already-loaded context. | A second opinion can still be useful for security, architecture, or review. User-directed delegation should override this when explicit. |
+| NEVER 4 | Prevents false confidence in Codex output. | Cross-referencing standards is not enough without tests, runtime checks, and scope-specific acceptance criteria. |
+
+**ESCALATE**
+| Rule | Risk Mitigated | Where Rule Alone Is Insufficient |
+|---|---|---|
+| ESCALATE 1 | Avoids proceeding with a CLI path that cannot run. | Install method may vary by environment. Auth failure, wrong version, or missing model access should also be handled. |
+| ESCALATE 2 | Prevents retry loops, wasted quota, and stalled automation. | “Persistently” is undefined. The cause may be auth, outage, concurrency, tier choice, or prompt volume rather than quota alone. |
+| ESCALATE 3 | Prevents architectural drift when Codex suggests code that does not fit the repo. | Existing patterns can be obsolete or unsafe. The caller should still analyze and recommend, not merely defer neutrally to the user. |
+| ESCALATE 4 | Forces explicit consent for full shell access. | First challenge whether full access is actually required. Approval should be command-scoped and current, not blanket permission. |
+
+Main gap: the section has good guardrails, but several rules need companion checks for version/auth, exit codes, profile drift, concurrency, and post-generation verification.

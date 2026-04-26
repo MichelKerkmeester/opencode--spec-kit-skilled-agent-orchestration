@@ -4,6 +4,8 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -20,7 +22,9 @@
       "phrase booster migration plan",
       "advisor phrase booster tasks",
       "phrase booster migration tasks",
-      "advisor phrase booster checklist"
+      "advisor phrase booster checklist",
+      "advisor phrase booster implementation",
+      "intent phrase migration complete"
     ],
     "key_topics": [
       "advisor",
@@ -37,32 +41,58 @@
       "optimization"
     ],
     "importance_tier": "normal",
-    "status": "planned",
+    "status": "in_progress",
     "key_files": [
-      ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
-      ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "scratch/phrase-boost-delta.md",
+      "scratch/post-regression.json",
       "checklist.md",
+      "scratch/baseline-regression.json",
+      "scratch/baseline-queries.md",
+      "implementation-summary.md",
       "spec.md",
       "plan.md",
-      "tasks.md"
+      "research/iterations/iteration-001.md",
+      "research/deep-research-state.jsonl",
+      "research/deep-research-strategy.md",
+      "research/deep-research-config.json",
+      "tasks.md",
+      "research/research.md"
     ],
     "entities": [
       {
-        "name": "skill_advisor.py",
-        "kind": "file",
-        "path": ".opencode/skill/skill-advisor/scripts/skill_advisor.py",
+        "name": "phrase-boost-delta.md",
+        "kind": "doc",
+        "path": "scratch/phrase-boost-delta.md",
         "source": "derived"
       },
       {
-        "name": "skill_advisor_regression_cases.jsonl",
-        "kind": "file",
-        "path": ".opencode/skill/skill-advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "name": "post-regression.json",
+        "kind": "config",
+        "path": "scratch/post-regression.json",
         "source": "derived"
       },
       {
         "name": "checklist.md",
         "kind": "doc",
         "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "baseline-regression.json",
+        "kind": "config",
+        "path": "scratch/baseline-regression.json",
+        "source": "derived"
+      },
+      {
+        "name": "baseline-queries.md",
+        "kind": "doc",
+        "path": "scratch/baseline-queries.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
         "source": "derived"
       },
       {
@@ -78,9 +108,45 @@
         "source": "derived"
       },
       {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-state.jsonl",
+        "kind": "file",
+        "path": "research/deep-research-state.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-strategy.md",
+        "kind": "doc",
+        "path": "research/deep-research-strategy.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research-config.json",
+        "kind": "config",
+        "path": "research/deep-research-config.json",
+        "source": "derived"
+      },
+      {
         "name": "tasks.md",
         "kind": "doc",
         "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "Authored Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       },
       {
@@ -92,17 +158,11 @@
       {
         "name": "Advisor Phrase",
         "kind": "proper_noun",
-        "path": "spec.md",
+        "path": "research/research.md",
         "source": "derived"
       },
       {
         "name": "Booster Tailoring",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "Authored Level",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -120,13 +180,13 @@
         "source": "derived"
       },
       {
-        "name": "Implementation Plan",
+        "name": "Canonical Public",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
       },
       {
-        "name": "Canonical Public",
+        "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
@@ -142,70 +202,20 @@
         "kind": "proper_noun",
         "path": "tasks.md",
         "source": "derived"
-      },
-      {
-        "name": "Task Notation",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Task Format",
-        "kind": "proper_noun",
-        "path": "tasks.md",
-        "source": "derived"
-      },
-      {
-        "name": "Verification Checklist",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "Execute Phase",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
-      },
-      {
-        "name": "Verification Protocol",
-        "kind": "proper_noun",
-        "path": "checklist.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "The skill advisor's `INTENT_BOOSTERS` dict (`skill_advisor.py:496`) contains **24 multi-word keys** that the advisor's tokenizer splits on whitespace — making those booster entries effective no-ops. The separate `PHRASE_INTENT_BOOSTERS` dict (`skill_advisor.py:788`) already provides the correct mechanism (substring match against the raw prompt before tokenization), but it's under-used: 6 of the 24 misplaced multi-word keys have no PHRASE equivalent, and recently-added Barter-context phrases like \"iron law\", \"barter-scrooge monorepo\", \"observe never modify\" have no phrase route. Users asking natural-language questions with multi-word identifiers receive lower confidence or fall back to weaker token matches, eroding Gate 2 routing quality.",
     "created_at": "2026-04-15T10:54:05.055Z",
-    "last_save_at": "2026-04-21T13:00:00Z",
+    "last_save_at": "2026-04-26T09:17:15.780Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
-    ],
-    "save_lineage": "same_pass"
-  },
-  "aliases": [
-    "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-    "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/013-advisor-phrase-booster-tailoring",
-    "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring"
-  ],
-  "migration": {
-    "moved_at": "2026-04-21T12:00:00Z",
-    "source_packet_id": "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-    "source_spec_folder": "system-spec-kit/026-graph-and-context-optimization/013-advisor-phrase-booster-tailoring",
-    "new_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring",
-    "consolidation": "026-phase-surface-29-to-9",
-    "flattened_at": "2026-04-21T13:00:00Z",
-    "layout": "phase-root-local-sequence",
-    "intermediate_packet_id": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/013-advisor-phrase-booster-tailoring",
-    "intermediate_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/013-advisor-phrase-booster-tailoring",
-    "new_spec_folder": "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring",
-    "local_phase_slug": "003-advisor-phrase-booster-tailoring",
-    "original_phase_slug": "013-advisor-phrase-booster-tailoring",
-    "renumbered_at": "2026-04-21T14:00:00Z"
-  },
-  "migrated": true,
-  "migration_source": "legacy"
+      "checklist.md",
+      "implementation-summary.md",
+      "research/research.md"
+    ]
+  }
 }

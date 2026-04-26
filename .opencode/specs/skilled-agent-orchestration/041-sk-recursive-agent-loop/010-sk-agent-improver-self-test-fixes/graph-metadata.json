@@ -10,20 +10,30 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [
-      "phase",
-      "009",
-      "self-test",
-      "found",
-      "issues",
+    "trigger_phrases": [
       "spec",
-      "fixes",
-      "reducer",
-      "improvements",
+      "self",
+      "test",
+      "010",
+      "agent",
       "plan",
       "tasks",
-      "010"
+      "phase",
+      "checklist"
+    ],
+    "key_topics": [
+      "spec",
+      "self",
+      "test",
+      "010",
+      "agent",
+      "plan",
+      "tasks",
+      "phase",
+      "checklist",
+      "009",
+      "self-test",
+      "found"
     ],
     "importance_tier": "important",
     "status": "planned",
@@ -173,7 +183,8 @@
     ],
     "causal_summary": "Phase 009 (self-test) found 5 issues:",
     "created_at": "2026-04-13T04:55:07.906Z",
-    "last_save_at": "2026-04-18T14:39:00.348Z",
+    "last_save_at": "2026-04-26T09:17:15.235Z",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
