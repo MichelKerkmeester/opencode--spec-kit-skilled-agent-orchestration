@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. CURRENT STATE](#3--current-state)
-- [4. USAGE NOTES](#4--usage-notes)
-- [5. RELATED](#5--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. CURRENT STATE](#3-current-state)
+- [4. USAGE NOTES](#4-usage-notes)
+- [5. RELATED](#5-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

@@ -568,7 +568,7 @@ Traces the causal chain for a spec-doc record to answer "why was this decision m
 MEMORY:SEARCH CAUSAL
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
   Depth       <maxDepth>
   Direction   <direction>
 
@@ -758,7 +758,7 @@ STATUS=OK ACTION=dashboard
 | Ablation warns about missing IDs | Continue with available IDs, then correct `groundTruthQueryIds` or rerun `scripts/evals/map-ground-truth-ids.ts` |
 | Ablation reports `Token budget overflow` below `recallK` | Report the run as investigation-only and fix truncation before using Recall@K as evidence |
 | No causal edges found | Display empty graph message |
-| Memory ID not found | `STATUS=FAIL ERROR="Memory #<id> not found"` |
+| Spec-doc record ID not found | `STATUS=FAIL ERROR="Memory #<id> not found"` (runtime string preserved verbatim) |
 | No learning history records | Suggest using `preflight` before tasks |
 
 ---

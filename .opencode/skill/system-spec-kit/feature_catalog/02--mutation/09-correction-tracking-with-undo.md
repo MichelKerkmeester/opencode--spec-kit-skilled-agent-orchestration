@@ -10,7 +10,7 @@ audited_post_018: true
 
 Covers the corrections module that records inter-memory relationship signals and adjusts stability scores during learning.
 
-When a newer memory replaces or refines an older one, the system records what changed and why. The old memory gets a lower confidence score while the new one gets a boost. This creates a paper trail of corrections so you can see how your knowledge evolved over time and understand why older information was updated.
+When a newer memory replaces or refines an older one, the system records what changed and why. The old spec-doc record gets a lower confidence score while the new one gets a boost. This creates a paper trail of corrections so you can see how your knowledge evolved over time and understand why older information was updated.
 
 ---
 

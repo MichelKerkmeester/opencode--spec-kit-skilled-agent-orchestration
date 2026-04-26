@@ -17,7 +17,7 @@ This scenario validates Signal vocabulary expansion (TM-08) for `040`. It focuse
 Operators run the exact prompt and command sequence for `040` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm signal category detection
-- Prompt: `As a memory-quality validation operator, validate Signal vocabulary expansion (TM-08) against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Signal vocabulary expansion (TM-08) against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary
 - Pass/fail: PASS: >=3 signal categories correctly classified from varied prompts; FAIL: Categories missing or misclassified
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `040` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm signal category detection against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm signal category detection against the documented validation surface. Verify signal categories (correction, preference, reinforcement) detected from prompt analysis; trigger matching reflects expanded vocabulary. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

@@ -10,7 +10,7 @@ audited_post_018: true
 
 Content-aware memory filename generation derives slugs from task context and session data instead of using the spec folder name alone.
 
-Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the memory is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains.
+Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the spec-doc record is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains.
 
 ---
 

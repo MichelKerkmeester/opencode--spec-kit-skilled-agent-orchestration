@@ -24,7 +24,7 @@ Edge bounds are enforced at insert time. Auto-generated edges (those with `creat
 
 A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during spec document indexing. The `createSpecDocumentChain()` function auto-links spec folder documents in a standard chain: spec causes plan, plan causes tasks, tasks cause implementation-summary. Checklist, decision-record and research documents get support relationships to the primary chain.
 
-Reference resolution for auto-extracted causal links now batches all references from the memory file before insertion begins. The resolver tries numeric IDs first, then exact `canonical_file_path`/`file_path` equality using normalized path candidates, then exact title matches, and only falls back to fuzzy `LIKE` lookups for unresolved path or title references. That exact-first order reduces false-positive fuzzy resolutions and avoids rerunning separate lookup queries for each edge candidate.
+Reference resolution for auto-extracted causal links now batches all references from the spec-doc record file before insertion begins. The resolver tries numeric IDs first, then exact `canonical_file_path`/`file_path` equality using normalized path candidates, then exact title matches, and only falls back to fuzzy `LIKE` lookups for unresolved path or title references. That exact-first order reduces false-positive fuzzy resolutions and avoids rerunning separate lookup queries for each edge candidate.
 
 ---
 

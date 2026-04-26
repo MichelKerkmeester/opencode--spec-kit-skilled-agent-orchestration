@@ -17,7 +17,7 @@ This scenario validates Pre-storage quality gate (TM-04) for `043`. It focuses o
 Operators run the exact prompt and command sequence for `043` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm 3-layer gate behavior
-- Prompt: `As a memory-quality validation operator, validate Pre-storage quality gate (TM-04) against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Pre-storage quality gate (TM-04) against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim
 - Pass/fail: PASS: Each failure class triggers the correct gate stage with accurate blocking vs advisory behavior; FAIL: A stage is skipped, severity is wrong, or the scenario claims a persisted decision log that runtime does not emit
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `043` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm 3-layer gate behavior against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm 3-layer gate behavior against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

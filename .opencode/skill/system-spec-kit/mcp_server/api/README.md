@@ -12,10 +12,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. AVAILABLE MODULES](#2--available-modules)
-- [3. CONSUMER POLICY](#3--consumer-policy)
-- [4. RELATED](#4--related)
+- [1. OVERVIEW](#1-overview)
+- [2. AVAILABLE MODULES](#2-available-modules)
+- [3. CONSUMER POLICY](#3-consumer-policy)
+- [4. RELATED](#4-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

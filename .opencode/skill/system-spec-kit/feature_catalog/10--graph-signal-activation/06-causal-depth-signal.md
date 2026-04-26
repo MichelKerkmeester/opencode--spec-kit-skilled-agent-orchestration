@@ -1,6 +1,6 @@
 ---
 title: "Causal depth signal"
-description: "Describes the SCC-condensed longest-path depth signal that normalizes each memory's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2."
+description: "Describes the SCC-condensed longest-path depth signal that normalizes each spec-doc record's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2."
 audited_post_018: true
 ---
 
@@ -8,9 +8,9 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-Describes the SCC-condensed longest-path depth signal that normalizes each memory's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2.
+Describes the SCC-condensed longest-path depth signal that normalizes each spec-doc record's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2.
 
-Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each memory sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
+Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each spec-doc record sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
 
 ---
 
@@ -18,7 +18,7 @@ Not all knowledge sits at the same level. A big decision that led to five smalle
 
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
-Causal depth measures each memory's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A memory in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
+Causal depth measures each spec-doc record's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A spec-doc record in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
 
 Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 

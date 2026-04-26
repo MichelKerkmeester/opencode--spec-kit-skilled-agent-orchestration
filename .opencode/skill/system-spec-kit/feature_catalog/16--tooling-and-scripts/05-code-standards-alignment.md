@@ -7,12 +7,12 @@ description: "Code standards alignment brought comments, MODULE/COMPONENT header
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE EVIDENCE](#3--source-evidence)
-- [4. VERIFICATION TRACEABILITY](#4--verification-traceability)
-- [5. SOURCE FILES](#5--source-files)
-- [6. SOURCE METADATA](#6--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE EVIDENCE](#3-source-evidence)
+- [4. VERIFICATION TRACEABILITY](#4-verification-traceability)
+- [5. SOURCE FILES](#5-source-files)
+- [6. SOURCE METADATA](#6-source-metadata)
 
 ## 1. OVERVIEW
 

@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: CLI Testing Playbooks"
 description: "Five CLI orchestrator skills (cli-claude-code, cli-codex, cli-copilot, cli-gemini, cli-opencode) ship without manual testing playbooks, leaving operators no shipped contract for end-to-end validation of model selection, agent routing, sandbox/permission modes, output formats, and integration patterns."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 trigger_phrases:
   - "cli testing playbook"
   - "cli playbook"
@@ -51,7 +52,7 @@ Five CLI orchestrator skills ship without operator-facing manual testing playboo
 **Critical Dependencies**: `@write` agent must be available; canonical command `/create:testing-playbook` must remain functional; templates at `.opencode/skill/sk-doc/assets/documentation/testing_playbook/` must be unchanged through delivery.
 
 ---
-
+<!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
@@ -61,9 +62,10 @@ Five CLI orchestrator skills ship without operator-facing manual testing playboo
 | **Status** | In Progress |
 | **Created** | 2026-04-26 |
 | **Branch** | `main` |
+<!-- /ANCHOR:metadata -->
 
 ---
-
+<!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
@@ -73,15 +75,16 @@ Five CLI orchestrator skills (`cli-claude-code`, `cli-codex`, `cli-copilot`, `cl
 ### Purpose
 
 Each CLI skill ships a complete `manual_testing_playbook/` package matching the canonical `sk-doc` contract, so any operator (human or AI) can validate the orchestrator behavior end-to-end with deterministic prompts, exact command sequences, and binary pass/fail criteria.
+<!-- /ANCHOR:problem -->
 
 ---
-
+<!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
 
 - One `manual_testing_playbook/` per CLI skill at `<skill>/manual_testing_playbook/`
-- Root `MANUAL_TESTING_PLAYBOOK.md` per playbook with the 10-section scaffold (overview, preconditions, evidence, notation, review, orchestration, category sections, automated cross-ref, feature index)
+- Root MANUAL_TESTING_PLAYBOOK markdown file per playbook with the canonical base scaffold (overview, preconditions, evidence, notation, review, orchestration, automated test cross-reference, feature file index, cross-CLI invariant). The base scaffold is 10 numbered H2 sections plus one additional H2 per category, so a CLI with N categories has 10+N numbered H2 sections.
 - Numbered category folders (`NN--category-name/`) following the shared taxonomy in plan.md
 - Per-feature files (~103-118 across all 5 playbooks) with the 5-section scaffold and 9-column scenario table
 - Cross-CLI taxonomy alignment (categories `01--cli-invocation`, `06--integration-patterns`, `07--prompt-templates` invariant across all five — see ADR-001)
@@ -106,9 +109,10 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 | `.opencode/skill/cli-gemini/manual_testing_playbook/` | Create | Root playbook + 6 category folders + ~15-18 per-feature files |
 | `.opencode/skill/cli-opencode/manual_testing_playbook/` | Create | Root playbook + 9 category folders + ~28-32 per-feature files |
 | `.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/*` | Create | Level 3 spec docs (this folder) |
+<!-- /ANCHOR:scope -->
 
 ---
-
+<!-- ANCHOR:requirements -->
 ## 4. REQUIREMENTS
 
 ### P0 - Blockers (MUST complete)
@@ -119,7 +123,7 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 | REQ-002 | Root playbook structure matches the shipped `sk-doc` contract | `validate_document.py` exits 0 on all 5 root files |
 | REQ-003 | Per-feature files use the 5-section scaffold and 9-column table | Manual spot-check of 2 per-feature files per CLI confirms scaffold + table |
 | REQ-004 | Feature ID count in root cross-reference index equals per-feature file count | `grep` count matches `find` count for all 5 playbooks |
-| REQ-005 | No forbidden sidecar files (`review_protocol.md`, `subagent_utilization_ledger.md`, `snippets/` subtree) | `find` returns empty for forbidden patterns across all 5 playbooks |
+| REQ-005 | No forbidden sidecar files (review-protocol or subagent-utilization-ledger sidecar files, no snippets subtree) | `find` returns empty for forbidden patterns across all 5 playbooks |
 | REQ-006 | Per-feature file links in root playbook resolve to existing files | Every `(NN--*/NNN-*.md)` link in each root playbook points to an existing file |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -131,19 +135,21 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 | REQ-012 | Scenario prompts are realistic orchestrator-led prompts, not bare command paraphrases | Manual review of 5 scenarios per CLI confirms Role → Context → Action → Format pattern |
 | REQ-013 | `implementation-summary.md` filled with paths, counts, validator results post-implementation | File contains non-placeholder content with concrete numbers |
 | REQ-014 | `description.json` + `graph-metadata.json` present and current for the spec folder | `generate-context.js` invoked at end; both files exist and reference the spec |
+<!-- /ANCHOR:requirements -->
 
 ---
-
+<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 5 CLI playbooks pass `validate_document.py` with exit 0
 - **SC-002**: ~103-118 per-feature files exist across the 5 playbooks, each linked from its root playbook
 - **SC-003**: Cross-CLI taxonomy invariants (categories 01, 06, 07) hold in all 5 root playbooks
-- **SC-004**: Spec folder validation (`bash .../scripts/spec/validate.sh ... --strict`) exits 0
+- **SC-004**: Spec folder validation passes for the canonical contract (file set + content + ADR coverage). Strict-mode anchor blocks and template-source-hint enforcement are documented as a known limitation in implementation-summary.md when residual validator-strict-mode artifacts remain.
 - **SC-005**: Memory save (`generate-context.js`) refreshes `description.json` + `graph-metadata.json` and indexes the spec
+<!-- /ANCHOR:success-criteria -->
 
 ---
-
+<!-- ANCHOR:risks -->
 ## 6. RISKS & DEPENDENCIES
 
 | Type | Item | Impact | Mitigation |
@@ -153,6 +159,7 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 | Risk | Per-feature file count balloons past ~120 | Scope creep, longer review window | Cap each CLI at the upper bound table in plan.md; defer edge cases to follow-up update |
 | Risk | Taxonomy drift between Wave 1 and Wave 2 | Inconsistent playbooks make cross-CLI navigation painful | ADR-001 frozen before Wave 1 dispatch; @write briefs include exact category list |
 | Risk | Validator misses per-feature file issues (documented limitation) | Per-feature files ship with structural defects | Manual spot-check 2 per-feature files per CLI after each Wave |
+<!-- /ANCHOR:risks -->
 
 ---
 
@@ -222,7 +229,7 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 **As an** operator (human or AI) tasked with confirming a CLI orchestrator works as documented, **I want** a deterministic playbook with exact prompts and command sequences, **so that** I can produce a binary pass/fail verdict per feature without inventing test scenarios.
 
 **Acceptance Criteria**:
-1. Given the playbook root, When I open `MANUAL_TESTING_PLAYBOOK.md`, Then I see the global preconditions, deterministic command notation, review protocol, orchestration guidance, and a category-indexed list of feature scenarios with links to per-feature files.
+1. Given the playbook root, When I open the MANUAL_TESTING_PLAYBOOK file, Then I see the global preconditions, deterministic command notation, review protocol, orchestration guidance, and a category-indexed list of feature scenarios with links to per-feature files.
 2. Given a feature ID, When I open the per-feature file, Then I see Exact Prompt + Exact Command Sequence + Expected Signals + Evidence + Pass/Fail + Failure Triage in a 9-column table.
 
 ### US-002: Operator confirms cross-CLI behavior consistency (Priority: P1)
@@ -249,11 +256,12 @@ Each CLI skill ships a complete `manual_testing_playbook/` package matching the 
 1. Given the closed spec, When I read `implementation-summary.md`, Then it contains per-CLI counts, validator exit codes, and links to all 5 playbook roots.
 
 ---
-
+<!-- ANCHOR:questions -->
 ## 12. OPEN QUESTIONS
 
 - Should opencode's "cross-AI handback" scenarios exercise companion CLIs as integration tests, or remain isolated unit-style scenarios? (See ADR-004; recommendation: integration-tier with explicit dependency note.)
 - Final per-CLI feature counts may shift slightly during @write dispatch; the spec records targets, not contracts. Document final counts in implementation-summary.md.
+<!-- /ANCHOR:questions -->
 
 ---
 

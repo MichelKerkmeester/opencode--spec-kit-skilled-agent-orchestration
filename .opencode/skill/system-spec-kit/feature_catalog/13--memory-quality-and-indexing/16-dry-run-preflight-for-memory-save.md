@@ -10,7 +10,7 @@ audited_post_018: true
 
 The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes.
 
-Before committing a memory to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.
+Before committing a spec-doc record to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.
 
 ---
 
@@ -25,7 +25,7 @@ Current dry-run behavior now surfaces the same early semantic decision points th
 - shared semantic sufficiency result
 - `rejectionCode` when insufficiency fails
 
-This allows agents to preview whether a memory is merely well-formed or actually durable enough to save.
+This allows agents to preview whether a spec-doc record is merely well-formed or actually durable enough to save.
 
 In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, sufficiency, quality-gate, PE-gating, and persistence flows. In dry-run mode those later stages are evaluated for reporting only and do not produce write, embedding, or indexing side effects.
 

@@ -26,7 +26,7 @@ The save workflow stays compatible with private and agent-scoped operation. When
 
 ### Execution Paths
 
-The memory system supports **2 independent execution paths**. Any method can be used standalone.
+The indexed-continuity store supports **2 independent execution paths**. Any method can be used standalone.
 
 ### Method Comparison
 
@@ -338,7 +338,7 @@ Content here...
 
 ### All Indexed Content Sources (3)
 
-The canonical save path updates packet docs first. During `memory_index_scan()`, the memory system indexes three active source families:
+The canonical save path updates packet docs first. During `memory_index_scan()`, the indexed-continuity store indexes three active source families:
 
 | Content Type | Location | Weight | Indexed By |
 |-------------|----------|--------|------------|
@@ -581,7 +581,7 @@ Legacy rendered continuity templates were retired in v3.4.0.0. The post-save qua
 | "Spec folder not found" | Invalid folder name | Check `ls specs/` for correct name |
 | "Permission denied"     | File permissions    | `chmod -R u+rw specs/###/`         |
 | "JSON parse error"      | Malformed input     | Validate with `jq . < input.json`  |
-| "No anchors found"      | Empty or new memory | Normal for new specs               |
+| "No anchors found"      | Empty or new spec-doc record | Normal for new specs               |
 | "Script not found"      | Wrong path          | Verify skill installation          |
 | `Invalid date format`   | Wrong separator/order | Use DD-MM-YY with hyphens        |
 | `Topic contains spaces` | Space in filename   | Convert to kebab-case              |

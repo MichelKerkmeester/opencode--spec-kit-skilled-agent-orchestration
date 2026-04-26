@@ -1,6 +1,6 @@
 ---
 title: "Memory causal trust display"
-description: "Display-only trust badges add confidence, extraction age, last access age, orphan status, and weight-history change state to each MemoryResultEnvelope result without changing causal storage."
+description: "Display-only trust badges add confidence, extraction age, last access age, orphan status, and weight-history change state to each result envelope without changing causal storage."
 audited_post_018: true
 ---
 

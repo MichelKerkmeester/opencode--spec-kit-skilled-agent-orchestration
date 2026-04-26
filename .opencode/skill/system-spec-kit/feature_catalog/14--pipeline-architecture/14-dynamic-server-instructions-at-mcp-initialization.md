@@ -1,6 +1,6 @@
 ---
 title: "Dynamic server instructions at MCP initialization"
-description: "Dynamic server instructions inject a memory-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup."
+description: "Dynamic server instructions inject a spec-doc record-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup."
 audited_post_018: true
 ---
 
@@ -8,9 +8,9 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-Dynamic server instructions inject a memory-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup.
+Dynamic server instructions inject a spec-doc record-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup.
 
-When the memory server starts up, it now tells the calling AI how many memories are stored, how many folders exist and which search methods are available. This is like a librarian greeting you at the door with a summary of what the library has today. It helps the AI make smarter decisions about how to search right from the start.
+When the spec-doc record server starts up, it now tells the calling AI how many memories are stored, how many folders exist and which search methods are available. This is like a librarian greeting you at the door with a summary of what the library has today. It helps the AI make smarter decisions about how to search right from the start.
 
 ---
 

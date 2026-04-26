@@ -200,7 +200,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | `SPECKIT_DYNAMIC_INIT` | ON | S9 | Inject dynamic startup instructions with live memory/index counts |
 | `SPECKIT_CONTEXT_HEADERS` | ON | S9 | Prepend contextual tree headers to markdown content results |
 | `SPECKIT_FILE_WATCHER` | OFF | S9 | Enable chokidar watcher for auto re-index on markdown changes |
-| `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles. Adjusts fusion-stage channel weights by query intent; distinct from `SPECKIT_MEMORY_ADAPTIVE_RANKING`, which applies per-memory score deltas from accumulated feedback signals. |
+| `SPECKIT_ADAPTIVE_FUSION` | ON | S5 | Intent-aware weighted RRF with 7 task-type profiles. Adjusts fusion-stage channel weights by query intent; distinct from `SPECKIT_MEMORY_ADAPTIVE_RANKING`, which applies per-record score deltas from accumulated feedback signals. |
 | `SPECKIT_TRM` | ON | S5 | Transparent Reasoning Module (evidence-gap detection) |
 | `ENABLE_BM25` | ON | S3 | Enables in-memory BM25 scoring channel. Set `false` to disable |
 | `SPECKIT_SHADOW_SCORING` | OFF | S7 | Shadow attribution logging (comparison path disabled; attribution tracking only) |
@@ -330,7 +330,7 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 | ~~`SPECKIT_MEMORY_SCOPE_ENFORCEMENT`~~ | - | - | Removed in commit `6f2c2c939` |
 | ~~`SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS`~~ | - | - | Removed in commit `6f2c2c939` |
 
-> **Adaptive ranking capabilities (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a memory is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.
+> **Adaptive ranking capabilities (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a spec-doc record is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.
 
 #### Runtime Configuration Parameters
 

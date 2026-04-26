@@ -1,6 +1,7 @@
 ---
 title: "Implementation Plan: CLI Testing Playbooks"
 description: "Three-phase delivery (scaffold → build in 2 waves → validate) of manual_testing_playbook packages for cli-claude-code, cli-codex, cli-copilot, cli-gemini, cli-opencode via /create:testing-playbook dispatched through @write."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->"
 trigger_phrases:
   - "cli playbook plan"
   - "048 plan"
@@ -35,7 +36,7 @@ _memory:
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
 
 ---
-
+<!-- ANCHOR:summary -->
 ## 1. SUMMARY
 
 ### Technical Context
@@ -50,9 +51,10 @@ _memory:
 ### Overview
 
 Spec scaffolding (this folder) + 5 playbook builds dispatched through the canonical `/create:testing-playbook <skill> create :auto` command via `@write` subagent. Builds split into two waves (3+2) to manage parallel dispatch stability. Validation runs per-playbook after each wave; final memory save closes the spec.
+<!-- /ANCHOR:summary -->
 
 ---
-
+<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 ### Definition of Ready
@@ -71,9 +73,10 @@ Spec scaffolding (this folder) + 5 playbook builds dispatched through the canoni
 - [ ] `implementation-summary.md` filled with non-placeholder content
 - [ ] `generate-context.js` refreshed `description.json` + `graph-metadata.json`
 - [ ] Spec folder validation `--strict` exits 0
+<!-- /ANCHOR:quality-gates -->
 
 ---
-
+<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ### Pattern
@@ -114,9 +117,10 @@ Wave 2 validation
         ▼
 implementation-summary.md + /memory:save
 ```
+<!-- /ANCHOR:architecture -->
 
 ---
-
+<!-- ANCHOR:phases -->
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Setup (spec scaffolding)
@@ -206,9 +210,10 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
 - [ ] Spec-folder validation `--strict`
 - [ ] Fill `implementation-summary.md` with concrete counts + validator exit codes
 - [ ] Run `generate-context.js` for `description.json` + `graph-metadata.json` refresh
+<!-- /ANCHOR:phases -->
 
 ---
-
+<!-- ANCHOR:testing -->
 ## 5. TESTING STRATEGY
 
 | Test Type | Scope | Tools |
@@ -216,13 +221,14 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
 | Structure | Root playbook H1 + frontmatter + numbered all-caps H2 + TOC | `validate_document.py` |
 | Link integrity | Per-feature file links from root playbook | `bash` (grep + test -f) |
 | Feature-ID count | Cross-reference index vs per-feature file count | `bash` (grep -c, find \| wc -l) |
-| Forbidden sidecars | No `review_protocol.md`, `subagent_utilization_ledger.md`, or `snippets/` | `bash` (find) |
+| Forbidden sidecars | No review-protocol or subagent-utilization-ledger sidecars; no snippets subtree | `bash` (find) |
 | Per-feature scaffold | Sections 1-5 + 9-column table | Manual spot-check |
 | Cross-CLI invariants | Categories 01/06/07 alignment | Manual review |
 | Spec folder | Required files, frontmatter, anchors | `bash .../scripts/spec/validate.sh ... --strict` |
+<!-- /ANCHOR:testing -->
 
 ---
-
+<!-- ANCHOR:dependencies -->
 ## 6. DEPENDENCIES
 
 | Dependency | Type | Status | Impact if Blocked |
@@ -232,9 +238,10 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
 | `validate_document.py` | Internal | Green | Cannot run H4 validation; manual structural review only |
 | `generate-context.js` | Internal | Green | Cannot refresh metadata; hand-edit `description.json` + `graph-metadata.json` |
 | Templates at `.opencode/skill/sk-doc/assets/documentation/testing_playbook/` | Internal | Green | Cannot generate playbook; halt |
+<!-- /ANCHOR:dependencies -->
 
 ---
-
+<!-- ANCHOR:rollback -->
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Validator failures cannot be resolved within 3 fix-and-revalidate iterations OR taxonomy drift discovered between waves
@@ -244,6 +251,7 @@ Each dispatch is `Agent(subagent_type="write", prompt="run /create:testing-playb
   3. Re-read decision-record.md to confirm taxonomy invariants
   4. Re-dispatch with corrected briefing
 - **Spec docs rollback**: spec docs are versioned in git; `git revert` the offending commit if scope drift discovered
+<!-- /ANCHOR:rollback -->
 
 ---
 
@@ -368,8 +376,9 @@ Phase 1 (Setup) ──► Phase 2 Wave 1 ──► Wave 1 validation ──► P
 
 See `decision-record.md` for full ADRs:
 
-- **ADR-001**: Shared category schema (categories 01/06/07 invariant across all 5 playbooks)
+- **ADR-001**: Shared category schema (categories 01/06/07 invariant by NAME and POSITION across all 5 playbooks; per-CLI content shape preserves real surface differences)
 - **ADR-002**: Per-CLI feature ID prefixes (`CC-`, `CX-`, `CP-`, `CG-`, `CO-`)
 - **ADR-003**: Per-CLI category counts (6/7/8/8/9 by CLI complexity)
 - **ADR-004**: Cross-AI handback scenarios stay isolated (no live companion-CLI dependency in default playbook)
 - **ADR-005**: Dispatch via `/create:testing-playbook` rather than hand-craft (contract enforcement)
+- **ADR-006**: Root summary prompts are a paraphrased subset of per-feature canonical prompts (per-feature file is the operator-execution contract)

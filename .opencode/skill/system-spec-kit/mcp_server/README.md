@@ -21,17 +21,17 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. FEATURES](#3--features)
-  - [3.1 HOW THE MEMORY SYSTEM WORKS](#31--how-the-memory-system-works)
-  - [3.2 TOOL REFERENCE](#32--tool-reference)
-- [4. STRUCTURE](#4--structure)
-- [5. CONFIGURATION](#5--configuration)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. FAQ](#8--faq)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+  - [3.1 HOW THE INDEXED-CONTINUITY STORE WORKS](#31-how-the-indexed-continuity-store-works)
+  - [3.2 TOOL REFERENCE](#32-tool-reference)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -46,9 +46,11 @@ Your AI assistant has amnesia. Every conversation starts from scratch. You expla
 
 Spec Kit Memory is a Model Context Protocol (MCP) server that gives AI assistants persistent memory. It stores decisions, code context and project history in a local SQLite database, then finds exactly what is relevant when you need it. Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task.
 
-The server works across sessions, models and tools. Switch from Claude to GPT to Gemini and back. The memory stays the same because it lives in a database on your machine, not inside any AI's context window.
+The server works across sessions, models and tools. Switch from Claude to GPT to Gemini and back. The spec-doc record stays the same because it lives in a database on your machine, not inside any AI's context window.
 
 Code-graph handlers share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
+
+> Note: When this server says "memory," it means our local indexed-continuity store — the SQLite-backed spec-doc record index that ships with this skill. It is **not** Anthropic Claude Memory (the managed product surfaced in claude.ai) and it is **not** the MCP reference `memory` server (the upstream community example). Identifiers (`memory_*` MCP tools, `memory_*` SQL tables, `memory-*.ts` handlers, `MEMORY_*` constants) are frozen by REQ-001; the disambiguation lives in operator-facing prose only.
 
 ### Key Numbers
 
@@ -84,7 +86,7 @@ Code-graph handlers share one readiness contract, session-resume auth binds to t
 
 ### How You Use It
 
-The memory system exposes its MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Dedicated code-graph, CocoIndex, and Skill Advisor tools live in the same server. Think of commands as doors into the system. Each door opens access only to the tools it needs.
+The indexed-continuity store exposes its MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Dedicated code-graph, CocoIndex, and Skill Advisor tools live in the same server. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
 | Command | What It Does | Tool Count |
 |---------|-------------|------------|
@@ -110,7 +112,7 @@ Module/runtime profile in this package:
 
 ### Index Scope Invariants
 
-The memory and code-graph scanners share one path-policy source at `lib/utils/index-scope.ts`.
+The spec-doc record and code-graph scanners share one path-policy source at `lib/utils/index-scope.ts`.
 
 - Memory indexing must never admit any path with a `z_future/`, `external/`, or `z_archive/` segment.
 - Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
@@ -230,9 +232,9 @@ The system reads your question, figures out you are looking for a past decision 
 <!-- ANCHOR:features -->
 ## 3. FEATURES
 
-### 3.1 HOW THE MEMORY SYSTEM WORKS
+### 3.1 HOW THE INDEXED-CONTINUITY STORE WORKS
 
-This section explains the main ideas behind the memory system in plain language. For the full tool reference with parameters, skip to [3.2 Tool Reference](#32-tool-reference).
+This section explains the main ideas behind the indexed-continuity store in plain language. For the full tool reference with parameters, skip to [3.2 Tool Reference](#32-tool-reference).
 
 ---
 
@@ -253,7 +255,7 @@ When you search for something, the system checks several sources at once. Think 
 
 **Graph-first routing** determines query dispatch order: structural queries route to the Code Graph first, then CocoIndex for semantic code discovery, then the 5-channel memory pipeline. This avoids forcing one search system to handle both structural relationships and semantic similarity.
 
-**Reciprocal Rank Fusion (RRF)** combines all channel results using the formula `1/(K + rank)`. The K parameter is tuned per query intent through sensitivity analysis across K values {10, 20, 40, 60, 80, 100, 120}. A memory that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
+**Reciprocal Rank Fusion (RRF)** combines all channel results using the formula `1/(K + rank)`. The K parameter is tuned per query intent through sensitivity analysis across K values {10, 20, 40, 60, 80, 100, 120}. A spec-doc record that scores well in multiple channels rises to the top because RRF gives exponential weight to high-ranking items while still including lower-ranked contributions.
 
 **Channel min-representation** guarantees every active channel gets at least one result in the final set, preventing a single dominant channel from drowning out useful evidence.
 
@@ -271,7 +273,7 @@ When you search for something, the system checks several sources at once. Think 
 
 **Calibrated overlap bonus** rewards memories found by multiple channels at once. The bonus scales based on how many channels found the result and how confidently they scored it, rather than applying a flat bonus.
 
-**Tool-level TTL cache** remembers recent results for 60 seconds. When you save, update or delete a memory, the cache for affected searches clears automatically. You never see stale results.
+**Tool-level TTL cache** remembers recent results for 60 seconds. When you save, update or delete a spec-doc record, the cache for affected searches clears automatically. You never see stale results.
 
 ---
 
@@ -279,7 +281,7 @@ When you search for something, the system checks several sources at once. Think 
 
 Every search goes through four stages. Each stage has one clear job and cannot change results from earlier stages.
 
-**Stage 1 -- Gather candidates** using graph-first routing: structural queries dispatch to Code Graph first, then CocoIndex for semantic code discovery, then the memory pipeline's active channels in parallel. Constitutional-tier memories are always injected regardless of score.
+**Stage 1 -- Gather candidates** using graph-first routing: structural queries dispatch to Code Graph first, then CocoIndex for semantic code discovery, then the spec-doc record pipeline's active channels in parallel. Constitutional-tier memories are always injected regardless of score.
 
 **Stage 2 -- Score and fuse** using RRF plus eight post-fusion scoring signals:
 
@@ -320,7 +322,7 @@ Before any search runs, the system figures out what kind of help you need. Think
 
 **Query expansion** automatically adds related terms when the question is complex, so you find relevant results even when the exact wording differs. Only kicks in for complex queries to avoid bloating simple lookups.
 
-**Index-time query surrogates** pre-generate alternative names, summaries and likely questions about content when a memory is first saved. These are stored alongside the original so future searches match against them too. Like a library cataloger adding subject headings and cross-references to a new book.
+**Index-time query surrogates** pre-generate alternative names, summaries and likely questions about content when a spec-doc record is first saved. These are stored alongside the original so future searches match against them too. Like a library cataloger adding subject headings and cross-references to a new book.
 
 **Context pressure monitoring** watches how full your context window is getting. Above 60% usage the system downgrades to focused mode. Above 80% it switches to quick mode.
 
@@ -333,7 +335,7 @@ For low-confidence deep searches, the system has two additional fallback strateg
 
 #### 3.1.4 MEMORY LIFECYCLE AND SCORING
 
-Not all memories are equally useful forever. The system tracks how fresh each memory is using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
+Not all memories are equally useful forever. The system tracks how fresh each spec-doc record is using FSRS (Free Spaced Repetition Scheduler), a model validated on 100M+ Anki flashcard users. The formula `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` calculates a retrievability score where `t` is time since last access and `S` is a stability parameter.
 
 Think of it like how your own brain works: things you reviewed recently are easy to recall, while things you have not thought about in months fade into the background.
 
@@ -349,7 +351,7 @@ A critical decision never fades. A temporary debugging note fades within days.
 
 **Cold-start novelty boost** -- fresh memories (under 48 hours) get an exponential boost of `0.15 * exp(-elapsed_hours / 12)` with a 12-hour half-life, capped at 0.95. This counteracts FSRS's natural tendency to underrank brand-new content.
 
-**Interference penalty** -- prevents similar memories from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, beyond ranking alone.
+**Interference penalty** -- prevents similar spec-doc records from flooding results together. If several memories in the same spec folder share more than 75% Jaccard similarity, each additional neighbor costs -0.08 points. Enforces diversity at the similarity level, beyond ranking alone.
 
 **Auto-promotion** -- memories earn their way up. After 5 positive validation marks, a normal memory promotes to important. After 10, important promotes to critical. Rate-limited to prevent bulk promotion during busy sessions.
 
@@ -386,13 +388,13 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Community detection** (Louvain algorithm) -- automatically clusters related memories into groups. When one memory in a cluster is relevant, its neighbors get a small boost. This surfaces related context you might not have thought to ask for.
 
-**Graph momentum** -- tracks how quickly a memory is gaining new connections. Trending knowledge (recently gaining links) surfaces higher than static nodes. Actively evolving decisions get more visibility.
+**Graph momentum** -- tracks how quickly a spec-doc record is gaining new connections. Trending knowledge (recently gaining links) surfaces higher than static nodes. Actively evolving decisions get more visibility.
 
 **Temporal contiguity** -- gives a time-proximity boost to memories created around the same time. If one memory from a Tuesday afternoon session is relevant, others from that same session probably are too. The boost fades as the time gap grows.
 
 **Typed traversal** -- pays attention to what kind of connection it follows based on your question. A "what caused this bug?" query prioritizes cause-and-effect links. A "what supports this decision?" query prioritizes evidence links. In smaller knowledge bases, the system takes shorter, more targeted steps.
 
-**Causal depth signals** -- measure how deep each memory sits in the decision tree. Root decisions (with many descendants) get different tiebreaker boosts than leaf tasks.
+**Causal depth signals** -- measure how deep each spec-doc record sits in the decision tree. Root decisions (with many descendants) get different tiebreaker boosts than leaf tasks.
 
 **Async LLM graph backfill** -- uses an AI to read important documents after they are saved and suggest additional causal connections that pattern matching missed. Runs in the background after initial save.
 
@@ -400,7 +402,7 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 **Unified graph retrieval** -- all graph features run through one consistent path with reproducible results and full explainability. A single switch turns off all graph features if anything goes wrong.
 
-**Causal trust display badges** -- `memory_search` results carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific Memory claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts.
+**Causal trust display badges** -- `memory_search` results carry an additive `trustBadges` payload per `MemoryResultEnvelope`, derived at response time from existing causal-edge columns. The `formatSearchResults()` formatter at `mcp_server/formatters/search-results.ts` batch-reads connected causal-edge data and attaches the following display-only fields to each result envelope: `confidence` (clamped from the strongest connected edge `strength`), `extractionAge` (human-readable age from the newest connected `extracted_at`), `lastAccessAge` (human-readable age from the newest connected `last_accessed`), `orphan` (`true` when the result has no incoming causal edges), and `weightHistoryChanged` (`true` when any connected edge has a `weight_history` row). The formatter fails open when the DB handle or `weight_history` table is unavailable, and preserves any precomputed `trustBadges` payload a caller already supplied. `mcp_server/lib/response/profile-formatters.ts` extends response-profile result typing so the `quick`, `research`, and `resume` profiles preserve the badge payload on `results[]` and `topResult` rather than dropping it during shaping. The placement decision is per-result, not top-level — the trust signal belongs beside the specific spec-doc record claim the user is judging. No schema change, no new relation types, no new storage of code/process/tool facts.
 
 ---
 
@@ -408,11 +410,11 @@ The system tracks how decisions relate to each other. Think of it like a corkboa
 
 When you save new knowledge, the system runs an arbitration process before storing anything. It runs a sophisticated arbitration process to decide what to do with incoming content.
 
-**Prediction Error gating** compares new content against existing memories and picks one of four outcomes:
+**Prediction Error gating** compares new content against existing spec-doc records and picks one of four outcomes:
 
 | Outcome | When | What Happens |
 |---------|------|-------------|
-| **CREATE** | No similar memory exists | Stored as new knowledge |
+| **CREATE** | No similar spec-doc record exists | Stored as new knowledge |
 | **REINFORCE** | Similar exists, new one adds value | Both kept, old one gets a confidence boost |
 | **UPDATE** | Similar exists, new one is better | Old version replaced in place |
 | **SUPERSEDE** | New knowledge contradicts the old | New version active, old one demoted to deprecated |
@@ -423,7 +425,7 @@ This is session-scoped to prevent cross-session interference.
 
 **Semantic sufficiency gating** -- rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
 
-**Verify-fix-verify loop** -- runs quality checks before saving. If the memory falls short, the system tries to fix problems automatically and checks again before storing.
+**Verify-fix-verify loop** -- runs quality checks before saving. If the spec-doc record falls short, the system tries to fix problems automatically and checks again before storing.
 
 **Content normalization** -- strips formatting clutter (bullet markers, code fences, header symbols) before generating embeddings. Cleaner fingerprints match your questions more accurately.
 
@@ -451,7 +453,7 @@ The system keeps track of what happened during your current conversation so it d
 
 #### 3.1.8 QUALITY GATES AND LEARNING
 
-Not everything deserves to be stored. Before a new memory enters the system, it goes through three layered checks:
+Not everything deserves to be stored. Before a new spec-doc record enters the system, it goes through three layered checks:
 
 1. **Structure gate** -- does the file have the required format, headings and metadata?
 2. **Semantic sufficiency gate** -- is there enough real content to be useful?
@@ -485,7 +487,7 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 **Cross-document entity linking** -- connects memories across folders when they reference the same concept, even if the surrounding text is completely different.
 
-**Memory summary search channel** -- creates a short summary of each memory when saved and searches against those summaries. Like reading the back-cover blurb of a book.
+**Memory summary search channel** -- creates a short summary of each spec-doc record when saved and searches against those summaries. Like reading the back-cover blurb of a book.
 
 **Contextual tree injection** -- labels each result with its position in the project hierarchy ("Project > Feature > Detail") so you always know where it belongs.
 
@@ -503,7 +505,7 @@ The system keeps the index accurate and performant as your project evolves.
 
 **Incremental indexing with content hashing** -- tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
 
-**Embedding retry orchestrator** -- when the embedding service is temporarily unavailable, the memory is saved without a vector and queued for retry. A background worker retries until it succeeds. A temporary outage never permanently blocks full searchability.
+**Embedding retry orchestrator** -- when the embedding service is temporarily unavailable, the spec-doc record is saved without a vector and queued for retry. A background worker retries until it succeeds. A temporary outage never permanently blocks full searchability.
 
 **Lexical-only fallback indexing** -- saves memories in a simpler text-searchable form when the embedding service is down. Keyword search still works. When the service returns, the system upgrades to full vector searchability automatically.
 
@@ -837,7 +839,7 @@ Check session readiness: priming status, code graph freshness and time since las
 
 ##### `memory_delete`
 
-Remove a memory by ID, or clear an entire folder at once. Before a big deletion, the system can take a snapshot so you can undo it. Deletions are all-or-nothing: either everything you asked to remove is gone or nothing changes.
+Remove a spec-doc record by ID, or clear an entire folder at once. Before a big deletion, the system can take a snapshot so you can undo it. Deletions are all-or-nothing: either everything you asked to remove is gone or nothing changes.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -849,7 +851,7 @@ Remove a memory by ID, or clear an entire folder at once. Before a big deletion,
 
 ##### `memory_update`
 
-Change a memory's title, keywords or importance without deleting and re-creating it. When you change the title, the search index updates automatically. If the update fails partway through, everything rolls back to the way it was before.
+Change a spec-doc record's title, keywords or importance without deleting and re-creating it. When you change the title, the search index updates automatically. If the update fails partway through, everything rolls back to the way it was before.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -975,7 +977,7 @@ Capture your knowledge after a task. The system calculates a Learning Index by c
 
 ##### `memory_drift_why`
 
-Trace the causal chain for a memory. Answers "why was this decision made?" by following links between memories. Think of it like pulling on a thread: you start with one decision and follow the connections back to the events that caused it.
+Trace the causal chain for a spec-doc record. Answers "why was this decision made?" by following links between memories. Think of it like pulling on a thread: you start with one decision and follow the connections back to the events that caused it.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1687,7 +1689,7 @@ A typical project with a few hundred indexed packet docs and generated continuit
 
 **Q: What does FSRS decay mean in practice?**
 
-FSRS (Free Spaced Repetition Scheduler) is a memory model validated on 100M+ Anki users. A memory you accessed yesterday has a retrievability score near 1.0. A memory you have not accessed in months is near 0. Higher importance tiers decay more slowly. The formula is `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` where `t` is time since last access and `S` is a stability parameter.
+FSRS (Free Spaced Repetition Scheduler) is a spec-doc record model validated on 100M+ Anki users. A spec-doc record you accessed yesterday has a retrievability score near 1.0. A spec-doc record you have not accessed in months is near 0. Higher importance tiers decay more slowly. The formula is `R(t, S) = (1 + (19/81) x t/S)^(-0.5)` where `t` is time since last access and `S` is a stability parameter.
 
 ---
 
@@ -1736,7 +1738,7 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | Resource | Description |
 |----------|-------------|
 | [Model Context Protocol Spec](https://modelcontextprotocol.io) | Official MCP specification and client documentation |
-| [FSRS Algorithm Paper](https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm) | The memory decay formula this server implements |
+| [FSRS Algorithm Paper](https://github.com/open-spaced-repetition/fsrs4anki/wiki/The-Algorithm) | The spec-doc record decay formula this server implements |
 | [sqlite-vec](https://github.com/asg017/sqlite-vec) | Vector similarity extension for embedding storage |
 | [Reciprocal Rank Fusion](https://dl.acm.org/doi/10.1145/1571941.1572114) | The fusion algorithm for combining channel results |
 

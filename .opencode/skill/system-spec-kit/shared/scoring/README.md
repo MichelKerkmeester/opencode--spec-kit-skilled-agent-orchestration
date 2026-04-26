@@ -16,12 +16,12 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. SCORING FORMULA](#3--scoring-formula)
-- [4. KEY EXPORTS](#4--key-exports)
-- [5. DESIGN DECISIONS](#5--design-decisions)
-- [6. RELATED](#6--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. SCORING FORMULA](#3-scoring-formula)
+- [4. KEY EXPORTS](#4-key-exports)
+- [5. DESIGN DECISIONS](#5-design-decisions)
+- [6. RELATED](#6-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

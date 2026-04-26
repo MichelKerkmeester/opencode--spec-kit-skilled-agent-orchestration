@@ -55,7 +55,7 @@ Issue Detected
 | MCP server not responding | Tool timeout errors | Restart MCP server, check `opencode.json` config |
 | Wrong script path | `File not found` | Use `.opencode/skill/system-spec-kit/` |
 | Arg format error | Invalid parameter | Use full folder name: `122-skill-standardization` |
-| Decay not applying | Old memories ranked high | Check `useDecay: true` in search params |
+| Decay not applying | Old spec-doc records ranked high | Check `useDecay: true` in search params |
 | Constitutional not surfacing | Critical memories missing | Verify tier is `constitutional` via `memory_list()` |
 
 ### Before/After: Common Mistakes
@@ -96,7 +96,7 @@ memory_search({ query: "test" })
 |-------|------------|------------|
 | `Vector search returned 0 results` | Index empty or corrupted | Run `memory_stats()` to verify index size; restart MCP server |
 | `Embedding generation failed` | Model unavailable or rate limited | Wait 60s and retry; check API key validity |
-| `Index out of sync` | New memories not indexed | Force re-index via server restart |
+| `Index out of sync` | New spec-doc records not indexed | Force re-index via server restart |
 | `Dimension mismatch` | Mixed embedding models | Clear index, regenerate with single model |
 
 ### MCP Tool Connection Problems
@@ -146,7 +146,7 @@ Only `normal` (0.80) and `temporary` (0.60) tiers experience decay.
 
 **Decay Models (v1.7.2 has TWO distinct decay systems):**
 
-**1. Long-term memory decay (FSRS day-based):** Used by `memory_search()` for ranking stored memories. Uses FSRS v4 spaced-repetition algorithm based on elapsed calendar days since last review.
+**1. Long-term memory decay (FSRS day-based):** Used by `memory_search()` for ranking stored spec-doc records. Uses FSRS v4 spaced-repetition algorithm based on elapsed calendar days since last review.
 ```
 retrievability = (1 + FSRS_FACTOR × (elapsed_days / stability)) ^ FSRS_DECAY
 
@@ -470,14 +470,14 @@ checkpoint_restore({ name: "checkpoint-###-prev" })
 
 **Symptom:** `memory_match_triggers()` returns no results even for relevant queries.
 
-**Cause:** Older memories may have been indexed before trigger phrase extraction was improved.
+**Cause:** Older spec-doc records may have been indexed before trigger phrase extraction was improved.
 
 **Solution:** Re-index memories with force flag:
 ```bash
 # Via MCP tool
 memory_index_scan({ force: true })
 
-# Or delete and re-save specific memories
+# Or delete and re-save specific spec-doc records
 memory_delete({ id: <memory_id> })
 # Then re-save the generated support artifact
 ```

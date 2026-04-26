@@ -13,11 +13,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. ROLE IN PIPELINE](#3--role-in-pipeline)
-- [4. NOTES](#4--notes)
-- [5. QUICK IMPORT CHECK](#5--quick-import-check)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. ROLE IN PIPELINE](#3-role-in-pipeline)
+- [4. NOTES](#4-notes)
+- [5. QUICK IMPORT CHECK](#5-quick-import-check)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

@@ -10,7 +10,7 @@ audited_post_018: true
 
 Tracks the fix that expands the BM25 re-index condition to include trigger phrase changes alongside title changes.
 
-When you change the keywords associated with a memory, the search index now updates itself to reflect those changes. Previously it only refreshed when you changed the title, so updated keywords were invisible to searches until a full rebuild. This fix makes sure the system stays in sync with your edits.
+When you change the keywords associated with a spec-doc record, the search index now updates itself to reflect those changes. Previously it only refreshed when you changed the title, so updated keywords were invisible to searches until a full rebuild. This fix makes sure the system stays in sync with your edits.
 
 ---
 

@@ -11,7 +11,7 @@ phase_018_change: "Phase 018 moved the canonical save writer into handlers/save/
 
 Pipeline and mutation hardening applies baseline fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality, data cleanup and checkpoint restore mutation safety.
 
-Ten small but important baseline fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Later hardening passes added more guardrails on top of that baseline, including a checkpoint restore maintenance barrier that blocks mutation traffic while restore and rebuild work is in flight.
+Ten small but important baseline fixes were applied to make the system more robust. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a spec-doc record left orphaned records behind. A few improved how the system handles word variations in searches. Later hardening passes added more guardrails on top of that baseline, including a checkpoint restore maintenance barrier that blocks mutation traffic while restore and rebuild work is in flight.
 
 ---
 

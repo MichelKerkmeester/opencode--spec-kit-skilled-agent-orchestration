@@ -18,11 +18,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. KEY EXPORTS](#3--key-exports)
-- [4. CHUNKING BEHAVIOR](#4--chunking-behavior)
-- [5. RELATED DOCUMENTS](#5--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. KEY EXPORTS](#3-key-exports)
+- [4. CHUNKING BEHAVIOR](#4-chunking-behavior)
+- [5. RELATED DOCUMENTS](#5-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 

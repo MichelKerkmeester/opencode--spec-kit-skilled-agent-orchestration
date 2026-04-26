@@ -10,7 +10,7 @@ audited_post_018: true
 
 Deferred lexical-only indexing stores memories with `embedding_status='pending'` when embedding generation fails, keeping them searchable via BM25/FTS5 until retry succeeds.
 
-Sometimes the system cannot create a full searchable fingerprint for a memory because the fingerprinting service is temporarily down. Instead of losing the memory entirely, this feature saves it in a simpler text-searchable form so you can still find it by keywords. When the fingerprinting service comes back, the system automatically retries and upgrades the memory to full searchability.
+Sometimes the system cannot create a full searchable fingerprint for a spec-doc record because the fingerprinting service is temporarily down. Instead of losing the spec-doc record entirely, this feature saves it in a simpler text-searchable form so you can still find it by keywords. When the fingerprinting service comes back, the system automatically retries and upgrades the spec-doc record to full searchability.
 
 ---
 

@@ -22,20 +22,20 @@ trigger_phrases:
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. FEATURES](#3--features)
-  - [3.1 SPEC FOLDER WORKFLOWS](#31--spec-folder-workflows)
-  - [3.2 MEMORY SYSTEM](#32--memory-system)
-  - [3.3 COMMANDS](#33--commands)
-  - [3.4 TEMPLATES](#34--templates)
-  - [3.5 SCRIPTS AND VALIDATION](#35--scripts-and-validation)
-- [4. STRUCTURE](#4--structure)
-- [5. CONFIGURATION](#5--configuration)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. FAQ](#8--faq)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FEATURES](#3-features)
+  - [3.1 SPEC FOLDER WORKFLOWS](#31-spec-folder-workflows)
+  - [3.2 MEMORY SYSTEM](#32-memory-system)
+  - [3.3 COMMANDS](#33-commands)
+  - [3.4 TEMPLATES](#34-templates)
+  - [3.5 SCRIPTS AND VALIDATION](#35-scripts-and-validation)
+- [4. STRUCTURE](#4-structure)
+- [5. CONFIGURATION](#5-configuration)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. FAQ](#8-faq)
+- [9. RELATED DOCUMENTS](#9-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -53,7 +53,9 @@ First, AI conversations that modify files leave no paper trail. A feature gets b
 
 Second, AI assistants have amnesia. Every conversation starts from a blank slate. You explain your architecture on Monday and by Wednesday the assistant has forgotten everything. Spec Kit fixes this with a **persistent memory system** -- an MCP server that stores decisions, context and project history in a local SQLite database so the next session can pick up where the last one left off, regardless of which AI model or tool you use.
 
-Together, these two halves form a documentation-and-memory loop: spec folders capture what happened, the memory system makes it searchable and the next session benefits from everything that came before.
+Together, these two halves form a documentation-and-memory loop: spec folders capture what happened, the indexed-continuity store makes it searchable and the next session benefits from everything that came before.
+
+> Note: When this skill says "memory," it means our local indexed-continuity store — the SQLite-backed spec-doc record index that ships with this skill. It is **not** Anthropic Claude Memory (the managed product surfaced in claude.ai) and it is **not** the MCP reference `memory` server (the upstream community example). Identifiers (`memory_*` MCP tools, `/memory:*` slash commands, `memory_*` SQL tables, `memory-*.ts` handlers, `references/memory/`, `MEMORY_*` constants, `_memory:` frontmatter) are frozen by REQ-001; the disambiguation lives in operator-facing prose only.
 
 ### Key Statistics
 
@@ -203,7 +205,7 @@ The system rebuilds continuation context in a fixed order: `handover.md` first, 
 
 ### Search for Context
 
-Ask the memory system a question in plain language:
+Ask the indexed-continuity store a question in plain language:
 
 ```text
 /memory:search "how did we decide on the auth architecture?"
@@ -338,9 +340,9 @@ Run with `--verbose` to see the details behind each rule, or `--recursive` to va
 
 ### 3.2 MEMORY SYSTEM
 
-The memory system lives in an MCP server that gives AI assistants persistent memory across sessions, models and tools. It stores context in a local SQLite database and retrieves exactly what is relevant when a new session starts.
+The indexed-continuity store lives in an MCP server that gives AI assistants persistent memory across sessions, models and tools. It stores context in a local SQLite database and retrieves exactly what is relevant when a new session starts.
 
-Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the memory stays the same because it lives on your machine, not inside any AI's context window.
+Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the spec-doc record stays the same because it lives on your machine, not inside any AI's context window.
 
 For full architecture details, the 51-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
@@ -356,7 +358,7 @@ When you search, the system checks five sources at once -- like a librarian who 
 | **Causal Graph** | Follows cause-and-effect links between memories     | "Why did we choose this?" questions            |
 | **Degree**       | Scores by graph connectivity, weighted by edge type | Finding important hub decisions                |
 
-Results from all channels are combined using Reciprocal Rank Fusion (RRF) with a K parameter tuned per query intent. A memory that scores well in multiple channels rises to the top.
+Results from all channels are combined using Reciprocal Rank Fusion (RRF) with a K parameter tuned per query intent. A spec-doc record that scores well in multiple channels rises to the top.
 
 #### Search Pipeline
 
@@ -415,7 +417,7 @@ The formatter at `mcp_server/formatters/search-results.ts` batch-derives the bad
 
 #### Save Intelligence
 
-When you save new content, the system runs an arbitration process before storing anything. Prediction Error gating compares incoming content against existing memories and picks one of four outcomes:
+When you save new content, the system runs an arbitration process before storing anything. Prediction Error gating compares incoming content against existing spec-doc records and picks one of four outcomes:
 
 | Outcome       | When                               | What Happens                                |
 | ------------- | ---------------------------------- | ------------------------------------------- |
@@ -429,7 +431,7 @@ Short decision-type memories can bypass the content-length gate when SPECKIT_SAV
 
 #### Evaluation Infrastructure
 
-The memory system includes built-in tools for measuring search quality:
+The indexed-continuity store includes built-in tools for measuring search quality:
 
 - **Ablation studies** -- turn off one search component at a time to measure its contribution, like removing one ingredient from a recipe to see if the dish still tastes good
 - **12-metric computation** -- MRR, NDCG, MAP and 9 other information retrieval metrics
@@ -571,7 +573,7 @@ The `scripts/spec/` directory contains 12 scripts that manage the full lifecycle
 
 #### Memory Scripts
 
-The `scripts/memory/` directory contains 10 scripts for the memory system:
+The `scripts/memory/` directory contains 10 scripts for the indexed-continuity store:
 
 | Script                        | Purpose                                                     |
 | ----------------------------- | ----------------------------------------------------------- |
@@ -579,10 +581,10 @@ The `scripts/memory/` directory contains 10 scripts for the memory system:
 | `backfill-frontmatter.ts`     | Add missing frontmatter to existing generated context artifacts |
 | `backfill-research-metadata.ts` | Backfill missing `description.json` and `graph-metadata.json` files under `research/*/iterations/` |
 | `rank-memories.ts`            | Rank memories by relevance for a query                      |
-| `reindex-embeddings.ts`       | Rebuild embedding vectors for stored memories               |
-| `cleanup-orphaned-vectors.ts` | Remove vector entries with no matching memory               |
+| `reindex-embeddings.ts`       | Rebuild embedding vectors for stored spec-doc records               |
+| `cleanup-orphaned-vectors.ts` | Remove vector entries with no matching spec-doc record               |
 | `rebuild-auto-entities.ts`    | Regenerate auto-extracted entity catalog                    |
-| `validate-memory-quality.ts`  | Run quality checks on stored memory content                 |
+| `validate-memory-quality.ts`  | Run quality checks on stored spec-doc record content                 |
 | `ast-parser.ts`               | Parse markdown AST for section extraction                   |
 | `fix-memory-h1.mjs`           | Fix heading levels in older generated context artifacts     |
 
@@ -709,7 +711,7 @@ Session starts
 
 ### Embedding Providers
 
-The memory system converts text to numerical embeddings for vector search. Three providers are supported:
+The indexed-continuity store converts text to numerical embeddings for vector search. Three providers are supported:
 
 | Provider          | Dimensions | Notes                                                            |
 | ----------------- | ---------- | ---------------------------------------------------------------- |
@@ -753,7 +755,7 @@ OpenCode, Claude Code, Codex, Gemini, and VS Code / Copilot use checked-in repo-
 
 ### Feature Flags
 
-The memory system uses runtime-resolved feature flags rather than import-time snapshots. Long-lived MCP processes re-read relevant `process.env` values during search, scoring, and rollout checks, so operator flips take effect without requiring a module reload.
+The indexed-continuity store uses runtime-resolved feature flags rather than import-time snapshots. Long-lived MCP processes re-read relevant `process.env` values during search, scoring, and rollout checks, so operator flips take effect without requiring a module reload.
 
 | Group                    | Controls                                                                                                   |
 | ------------------------ | ---------------------------------------------------------------------------------------------------------- |
@@ -767,7 +769,7 @@ For the full flag reference and rollback procedures, see [`references/workflows/
 
 ### Dynamic Token Budget
 
-The memory system adjusts token budgets per tier to control how much context is injected:
+The indexed-continuity store adjusts token budgets per tier to control how much context is injected:
 
 | Tier           | Budget       |
 | -------------- | ------------ |
@@ -933,7 +935,7 @@ node scripts/dist/memory/generate-context.js \
 
 ### Memory Save Rejected by Quality Gate
 
-**What you see**: The save completes but reports the memory was rejected by the semantic sufficiency gate or structure gate.
+**What you see**: The save completes but reports the spec-doc record was rejected by the semantic sufficiency gate or structure gate.
 
 **Common causes**: The content is too thin (not enough substance) or missing required structure (headings, metadata).
 
@@ -1047,13 +1049,13 @@ A: Spec folders capture what happened in structured documentation. `generate-con
 
 **Q: Can I use memory without spec folders?**
 
-A: The memory system can index any markdown file, beyond spec folder contents. But for implementation work the canonical continuity path is the spec folder itself: `generate-context.js` updates packet-local continuity surfaces and `/spec_kit:resume` recovers from those packet sources first. You can still save standalone memories with `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
+A: The indexed-continuity store can index any markdown file, beyond spec folder contents. But for implementation work the canonical continuity path is the spec folder itself: `generate-context.js` updates packet-local continuity surfaces and `/spec_kit:resume` recovers from those packet sources first. You can still save standalone memories with `memory_save`, but Gate 3 will still ask about a spec folder for file modifications.
 
 ---
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the memory system. The MCP server README (`mcp_server/README.md`) goes deep on the memory system: the 51-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the indexed-continuity store. The MCP server README (`mcp_server/README.md`) goes deep on the indexed-continuity store: the 51-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 

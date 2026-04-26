@@ -22,7 +22,7 @@ Five database-layer bugs were fixed:
 
 **B2: DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`. Only DML is wrapped in the transaction.
 
-**B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target memory ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
+**B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target spec-doc record ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
 
 **B4: Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
 
@@ -39,7 +39,7 @@ Five database-layer bugs were fixed:
 | `mcp_server/handlers/save/reconsolidation-bridge.ts` | Handler | **B1**: reconsolidation bridge reads/passes `importance_weight` for similar-memory records. |
 | `mcp_server/lib/storage/reconsolidation.ts` | Lib | **B1**: merge path boosts `importance_weight` via `Math.min(1.0, currentWeight + 0.1)`. |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | **B2**: runs `CREATE TABLE` / `ALTER TABLE` working-memory DDL before restore transaction execution. |
-| `mcp_server/lib/storage/causal-edges.ts` | Lib | **B3**: edge deletion filters by source OR target endpoint to remove only rows linked to the target memory. |
+| `mcp_server/lib/storage/causal-edges.ts` | Lib | **B3**: edge deletion filters by source OR target endpoint to remove only rows linked to the target spec-doc record. |
 | `mcp_server/handlers/pe-gating.ts` | Handler | **B4**: update/reinforcement paths check `result.changes` to reject zero-row updates. |
 
 ### Tests

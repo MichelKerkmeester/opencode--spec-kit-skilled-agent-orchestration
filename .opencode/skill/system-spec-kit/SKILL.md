@@ -567,7 +567,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 
 **Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 51 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
-**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the memory command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the spec-doc record command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
 **MCP Tools (18 most-used of 47 total - see [memory_system.md](./references/memory/memory_system.md) for full reference):**
 
@@ -578,7 +578,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 | `memory_quick_search()`         | L2    | Simplified search (query + optional spec folder)  |
 | `memory_match_triggers()`       | L2    | Trigger matching + cognitive (decay, tiers, co-activation) |
 | `memory_save()`                 | L2    | Index a saved continuity artifact or spec doc with pre-flight validation |
-| `memory_list()`                 | L3    | Browse stored memories with pagination (parent rows by default) |
+| `memory_list()`                 | L3    | Browse stored spec-doc records with pagination (parent rows by default) |
 | `memory_delete()`               | L4    | Delete memories by ID or spec folder              |
 | `checkpoint_create()`           | L5    | Create gzip-compressed checkpoint snapshot        |
 | `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
@@ -658,7 +658,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_INDEX_SPEC_DOCS`    | on      | Gates spec document indexing in `memory_index_scan()`. When enabled, discovers and indexes spec folder documents (specs, plans, tasks, etc.) with document-type scoring multipliers. Set `SPECKIT_INDEX_SPEC_DOCS=false` to disable. Also disables the Step 11.5 auto-index pass in `/memory:save`. |
 | `SPECKIT_AUTO_INDEX_TOUCHED` | on      | Enables Step 11.5 auto-index pass in `/memory:save` workflow: after canonical packet docs and `graph-metadata.json` are updated, an incremental `memory_index_scan` runs scoped to the target spec folder, re-indexing any touched canonical spec docs plus `graph-metadata.json`. Set `SPECKIT_AUTO_INDEX_TOUCHED=false` to disable (targeted opt-out, leaves `SPECKIT_INDEX_SPEC_DOCS` behavior unchanged). |
 | `SPECKIT_SAVE_QUALITY_GATE`  | on      | Pre-storage quality gate rejects content below 0.4 signal density (14-day warn-only period after activation) |
-| `SPECKIT_RECONSOLIDATION`    | off     | Auto-merges similar memories on save when similarity ≥0.88; supersedes at 0.75-0.88 when explicitly enabled |
+| `SPECKIT_RECONSOLIDATION`    | off     | Auto-merges similar spec-doc records on save when similarity ≥0.88; supersedes at 0.75-0.88 when explicitly enabled |
 | `SPECKIT_NEGATIVE_FEEDBACK`  | on      | `wasUseful=false` applies score demotion with 30-day recovery window |
 | `SPECKIT_LEARN_FROM_SELECTION` | on    | Tracks which search results are used and boosts them in future searches |
 | `SPECKIT_EMBEDDING_EXPANSION` | on     | Expands queries with semantic neighbors before vector search |
@@ -674,7 +674,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 | `SPECKIT_GRAPH_UNIFIED`      | on      | Unified graph retrieval with deterministic ranking and explainability |
 | `SPECKIT_SCORE_NORMALIZATION` | on     | Min-max score normalization across channels |
 | `SPECKIT_CLASSIFICATION_DECAY` | on    | Classification-based decay rates by memory type |
-| `SPECKIT_INTERFERENCE_SCORE` | on      | Interference detection scoring between similar memories |
+| `SPECKIT_INTERFERENCE_SCORE` | on      | Interference detection scoring between similar spec-doc records |
 | `SPECKIT_FOLDER_SCORING`     | on      | Folder-level relevance scoring boost |
 | `SPECKIT_SHADOW_SCORING`     | off     | Shadow attribution logging (comparison path disabled; attribution tracking only) |
 | `SPECKIT_DASHBOARD_LIMIT`    | 100     | Row cap for reporting dashboard queries |

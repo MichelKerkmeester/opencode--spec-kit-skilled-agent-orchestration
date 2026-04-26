@@ -30,7 +30,7 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
   - hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`)
   - strict mode rejects mismatched caller/session IDs; permissive mode logs and continues
 - **Pass/fail criteria**:
-  - PASS: All subsystem results and structuralContext fields are present in response when auth passes, the memory payload follows the resume ladder contract, degraded structural states emit the expected bootstrap guidance without throwing, and strict-vs-permissive session binding matches the documented contract
+  - PASS: All subsystem results and structuralContext fields are present in response when auth passes, the spec-doc record payload follows the resume ladder contract, degraded structural states emit the expected bootstrap guidance without throwing, and strict-vs-permissive session binding matches the documented contract
   - FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, missing type fields, or incorrect auth-binding behavior
 
 ---

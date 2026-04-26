@@ -11,10 +11,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. IMPLEMENTED STATE](#2--implemented-state)
-- [3. HARDENING NOTES](#3--hardening-notes)
-- [4. RELATED](#4--related)
+- [1. OVERVIEW](#1-overview)
+- [2. IMPLEMENTED STATE](#2-implemented-state)
+- [3. HARDENING NOTES](#3-hardening-notes)
+- [4. RELATED](#4-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

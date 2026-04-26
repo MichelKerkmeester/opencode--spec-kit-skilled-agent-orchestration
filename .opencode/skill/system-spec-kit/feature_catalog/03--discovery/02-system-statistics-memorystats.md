@@ -15,7 +15,7 @@ This is the dashboard for your knowledge base. It tells you how many memories yo
 
 ## 2. CURRENT REALITY
 
-`memory_stats` returns the discovery dashboard for the memory database: total memory count, embedding status breakdown, oldest/newest timestamps, total trigger phrase count, tier breakdown, database size, last indexed timestamp, graph channel metrics and the ranked folder summary.
+`memory_stats` returns the discovery dashboard for the spec-doc record database: total memory count, embedding status breakdown, oldest/newest timestamps, total trigger phrase count, tier breakdown, database size, last indexed timestamp, graph channel metrics and the ranked folder summary.
 
 Folder ranking supports four modes: `count`, `recency`, `importance`, and `composite`. Count mode ranks directly from `memory_index`. The scoring-based modes build folder rankings from `embedding_status = 'success'` rows and use `folderScoring.computeFolderScores()` before applying ranking-specific sorts. If scoring fails, the handler falls back to count-based folder totals.
 

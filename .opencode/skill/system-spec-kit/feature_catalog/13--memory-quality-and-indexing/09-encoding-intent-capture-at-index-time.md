@@ -10,7 +10,7 @@ audited_post_018: true
 
 Encoding-intent capture classifies content as `document`, `code` or `structured_data` at index time using heuristic scoring.
 
-When a memory is saved, the system labels it as regular text, code or structured data. Right now this label is stored but not used for search ranking. It is groundwork for the future: once the system knows what type of content it is looking at, it can treat a code snippet differently from a meeting note. Think of it as sorting your files into labeled folders before you need to search them.
+When a spec-doc record is saved, the system labels it as regular text, code or structured data. Right now this label is stored but not used for search ranking. It is groundwork for the future: once the system knows what type of content it is looking at, it can treat a code snippet differently from a meeting note. Think of it as sorting your files into labeled folders before you need to search them.
 
 ---
 

@@ -34,7 +34,7 @@ As a query-intelligence validation operator, verify bounded facet detection deco
 ### Commands
 
 1. Confirm `SPECKIT_QUERY_DECOMPOSITION` is unset or `true`
-2. `memory_search({ query: "What is the memory save workflow and how does query expansion work?", mode: "deep" })`
+2. `memory_search({ query: "What is the spec-doc record save workflow and how does query expansion work?", mode: "deep" })`
 3. Inspect decomposition output for sub-queries
 4. Verify sub-query count <= 3
 5. Run same query in non-deep mode, verify no decomposition

@@ -12,11 +12,11 @@ trigger_phrases:
 
 ## TABLE OF CONTENTS
 
-- [1. PURPOSE](#1--purpose)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. TEST COVERAGE](#4--test-coverage)
-- [5. RELATED](#5--related)
+- [1. PURPOSE](#1-purpose)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. TEST COVERAGE](#4-test-coverage)
+- [5. RELATED](#5-related)
 
 ---
 

@@ -13,10 +13,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. RECOMMENDED RUN ORDER](#3--recommended-run-order)
-- [4. FOCUS AREAS](#4--focus-areas)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. RECOMMENDED RUN ORDER](#3-recommended-run-order)
+- [4. FOCUS AREAS](#4-focus-areas)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

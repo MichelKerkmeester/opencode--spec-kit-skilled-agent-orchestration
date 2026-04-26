@@ -7,13 +7,13 @@ description: "Session capturing pipeline quality is the current reality-alignmen
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. FEATURE BREAKDOWN](#3--feature-breakdown)
-- [4. SOURCE FILES](#4--source-files)
-- [5. VERIFICATION SOURCES](#5--verification-sources)
-- [6. MANUAL COVERAGE MAP](#6--manual-coverage-map)
-- [7. SOURCE METADATA](#7--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. FEATURE BREAKDOWN](#3-feature-breakdown)
+- [4. SOURCE FILES](#4-source-files)
+- [5. VERIFICATION SOURCES](#5-verification-sources)
+- [6. MANUAL COVERAGE MAP](#6-manual-coverage-map)
+- [7. SOURCE METADATA](#7-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -49,7 +49,7 @@ The shipped session-capture pipeline enforces the following behavior:
    - at least two total evidence items
    - enough semantic substance to stand alone later
 18. `generate-context.js` diagnostic scores now reflect insufficiency explicitly instead of letting thin memories look healthy.
-19. Rendered memory files preserve `<!-- ANCHOR:id -->` and `<!-- /ANCHOR:id -->` comments through post-render cleanup while still stripping non-anchor workflow comments.
+19. Rendered spec-doc record files preserve `<!-- ANCHOR:id -->` and `<!-- /ANCHOR:id -->` comments through post-render cleanup while still stripping non-anchor workflow comments.
 20. Frontmatter `trigger_phrases` now render the same session-specific values as the trailing metadata block and fall back to `[]` instead of generic placeholders.
 21. Explicit JSON mode accepts the documented snake_case save contract as well as the existing camelCase fields.
 22. Structured JSON mode accepts both `generate-context.js --stdin` and `generate-context.js --json <string>` as the preferred AI-composed save paths.
@@ -190,7 +190,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/core/workflow.ts` | Alignment warnings/blocks, insufficiency blocking, template-contract blocking, contamination-source threading, enrichment insertion, quality abort, and tool-count recovery |
 | `scripts/core/tree-thinning.ts` | Tree-thinning safeguards used by session capturing before downstream rendering and scoring |
 | `scripts/utils/validation-utils.ts` | Render validation helpers that ignore literal template syntax inside code spans |
-| `scripts/memory/validate-memory-quality.ts` | V1-V11 post-render quality gate for rendered memory output, including exported `HARD_BLOCK_RULES` |
+| `scripts/memory/validate-memory-quality.ts` | V1-V11 post-render quality gate for rendered spec-doc record output, including exported `HARD_BLOCK_RULES` |
 | `scripts/utils/slug-utils.ts` | Memory title and filename normalization after captured operator/debug text |
 | `scripts/core/quality-scorer.ts` | Legacy quality-score calibration and insufficiency caps |
 | `scripts/extractors/quality-scorer.ts` | V2 quality-score calibration and insufficiency flags |

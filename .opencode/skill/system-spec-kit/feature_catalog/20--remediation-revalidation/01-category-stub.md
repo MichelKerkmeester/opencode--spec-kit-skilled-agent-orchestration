@@ -8,14 +8,14 @@ audited_post_018: true
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
-This category captures the runtime remediation surface that now exists across the MCP server rather than inside one isolated "repair" module. In practice, remediation happens in several layers: `memory_save` can preview failures in `dryRun`, reject hard validation problems before mutation, auto-fix some recoverable formatting issues, and stop or downgrade later indexing when stronger validation says the memory is unsafe. Save-time revalidation is split across `preflight.ts`, the V-rule bridge, the quality loop, and the pre-storage quality gate.
+This category captures the runtime remediation surface that now exists across the MCP server rather than inside one isolated "repair" module. In practice, remediation happens in several layers: `memory_save` can preview failures in `dryRun`, reject hard validation problems before mutation, auto-fix some recoverable formatting issues, and stop or downgrade later indexing when stronger validation says the spec-doc record is unsafe. Save-time revalidation is split across `preflight.ts`, the V-rule bridge, the quality loop, and the pre-storage quality gate.
 
 Operator remediation lives in `memory_health`, which can diagnose inconsistencies and, with explicit confirmation, perform bounded repair actions. Human-in-the-loop revalidation lives in `memory_validate`, which feeds confidence, promotion, negative feedback, and learned-feedback pipelines after results are used, while checkpoints provide the rollback safety net around destructive or high-risk remediation work. This means audit phase `021-remediation-revalidation` is now a real runtime category: the system both blocks bad writes and exposes targeted repair and revalidation paths after data has already been indexed.
 
@@ -33,7 +33,7 @@ The remediation surface is distributed but coherent:
 - `memory_health` is the operator-facing remediation tool. In `reportMode: "full"` it inspects database connectivity, vector search readiness, FTS consistency, alias divergence, and general integrity. With `autoRepair:true`, it never executes immediately; the caller must repeat the request with `confirmed:true`.
 - Confirmed `memory_health` auto-repair is intentionally bounded. It can rebuild `memory_fts`, refresh the trigger cache, clean orphaned causal edges, and auto-clean orphaned vectors and chunks. The response tracks `repair.requested`, `attempted`, `repaired`, `partialSuccess`, `actions`, `warnings`, and `errors`, so mixed outcomes stay visible instead of being collapsed into a single success flag.
 - `memory_health` also keeps a diagnostics-only lane. `reportMode: "divergent_aliases"` surfaces conflicting `.opencode/specs` versus `specs/` alias groups, but auto-repair is disabled there and the handler returns guidance instead of mutation.
-- Runtime revalidation is not limited to save-time gates. `memory_validate`, implemented in `checkpoints.ts`, records whether a surfaced memory was actually useful. Positive feedback updates confidence, writes an adaptive ranking signal, can trigger auto-promotion, can register ground-truth selection against a query, and can learn new query terms. Negative feedback persists a dedicated demotion event and can accumulate enough evidence to suggest the memory should be updated or removed.
+- Runtime revalidation is not limited to save-time gates. `memory_validate`, implemented in `checkpoints.ts`, records whether a surfaced memory was actually useful. Positive feedback updates confidence, writes an adaptive ranking signal, can trigger auto-promotion, can register ground-truth selection against a query, and can learn new query terms. Negative feedback persists a dedicated demotion event and can accumulate enough evidence to suggest the spec-doc record should be updated or removed.
 - Checkpoints are the rollback layer around remediation work. The same handler module exposes `checkpoint_create`, `checkpoint_list`, `checkpoint_restore`, and `checkpoint_delete`, so operators can snapshot memory state before risky cleanup or recovery operations and restore it later if a repair path goes wrong.
 
 ## 3. SOURCE FILES

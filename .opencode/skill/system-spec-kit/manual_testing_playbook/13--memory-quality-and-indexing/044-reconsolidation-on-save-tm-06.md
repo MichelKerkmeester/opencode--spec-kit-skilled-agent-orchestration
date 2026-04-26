@@ -17,7 +17,7 @@ This scenario validates Reconsolidation-on-save (TM-06) for `044`. It focuses on
 Operators run the exact prompt and command sequence for `044` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence
-- Prompt: `As a memory-quality validation operator, validate Reconsolidation-on-save (TM-06) against the documented validation surface. Verify merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Reconsolidation-on-save (TM-06) against the documented validation surface. Verify merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; stale predecessor changes abort merge instead of archiving/inserting; BM25 repair failure leaves merged lineage committed and sets `bm25_repair_needed=1`
 - Pass/fail: PASS: Threshold behavior is correct, stale predecessor writes return `predecessor_changed` or `predecessor_gone` without destructive merge side effects, and failed BM25 repair persists `bm25_repair_needed=1`; FAIL: Wrong threshold action, stale merge still commits, or BM25 repair debt is not recorded
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `044` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm merge/deprecate thresholds against the documented validation surface. Verify similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm merge/deprecate thresholds against the documented validation surface. Verify similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; thresholds documented in output. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -59,7 +59,7 @@ Verify similarity computation → Check threshold configuration → Inspect merg
 ### Prompt
 
 ```
-As a memory-quality validation operator, validate Abort stale merge when predecessor changes before commit against content_hash. Verify merge returns action: complement with status: predecessor_changed or status: predecessor_gone; no stale merged row is inserted; predecessor row reflects only the concurrent writer change. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, validate Abort stale merge when predecessor changes before commit against content_hash. Verify merge returns action: complement with status: predecessor_changed or status: predecessor_gone; no stale merged row is inserted; predecessor row reflects only the concurrent writer change. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -93,7 +93,7 @@ Verify predecessor snapshot capture (`content_hash`, `updated_at`) → Check in-
 ### Prompt
 
 ```
-As a memory-quality validation operator, validate Persist BM25 repair debt when post-commit repair fails against memory_index. Verify merge commits, warning is emitted, and the merged row persists bm25_repair_needed=1; predecessor is archived and lineage remains committed. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, validate Persist BM25 repair debt when post-commit repair fails against memory_index. Verify merge commits, warning is emitted, and the merged row persists bm25_repair_needed=1; predecessor is archived and lineage remains committed. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

@@ -85,8 +85,8 @@ This scenario remains prose-first because it carries compound operator logic, su
     - `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit/scripts`
     - `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing`
   - Manual/e2e scenarios:
-    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 009-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
-    - `M-007a` Rich JSON-mode save: use the documented snake_case JSON contract or camelCase equivalent, then verify `qualityValidation.valid === true`, indexing succeeds, and a memory ID is returned.
+    - `M-007a` Rich JSON-mode save: run `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js <json-data-file> 009-perfect-session-capturing` with a populated synthetic or sandbox JSON file and verify `qualityValidation.valid === true`, indexing succeeds, and a spec-doc record ID is returned.
+    - `M-007a` Rich JSON-mode save: use the documented snake_case JSON contract or camelCase equivalent, then verify `qualityValidation.valid === true`, indexing succeeds, and a spec-doc record ID is returned.
     - `M-007b` Thin JSON insufficiency: rerun `generate-context.js` with intentionally thin JSON input using the documented snake_case contract and verify it now fails `INSUFFICIENT_CONTEXT_ABORT` before file write, with a materially lower diagnostic score than `M-007a`.
     - `M-007c` Explicit-CLI mis-scoped captured-session warning: run a same-workspace captured-session save whose prompts, tool metadata, and file hints do not contain any target-spec anchor and verify it emits `ALIGNMENT_WARNING`. If the file-path overlap remains below the hard threshold, verify the run still fails `ALIGNMENT_BLOCK`.
     - `M-007d` Git/spec-folder enrichment and render quality: inspect generated output and confirm provenance-tagged observations/files from both git and spec-folder enrichment are present, ANCHOR comments remain in the rendered file, frontmatter `trigger_phrases` no longer contain `memory dashboard`, `session summary`, or `context template`, and the rendered-memory contract remains valid.
@@ -137,7 +137,7 @@ This scenario remains prose-first because it carries compound operator logic, su
 - All automated commands pass.
   - Package-clean MCP verification passes alongside the scripts-side closure suite.
   - `M-007a` validates and indexes successfully.
-  - `M-007b` proves thin aligned JSON now fails `INSUFFICIENT_CONTEXT_ABORT` with lower diagnostic quality than `M-007a` and with no new memory file written.
+  - `M-007b` proves thin aligned JSON now fails `INSUFFICIENT_CONTEXT_ABORT` with lower diagnostic quality than `M-007a` and with no new spec-doc record file written.
   - `M-007c` proves the explicit-CLI same-workspace captured-session run warns on missing anchors and still hard-fails `ALIGNMENT_BLOCK` when file overlap is too low.
   - `M-007d` shows provenance-tagged enrichment.
   - `M-007d` also proves ANCHOR preservation, rendered-memory contract compliance, and frontmatter trigger-phrase quality.

@@ -39,7 +39,7 @@
       "orchestrator"
     ],
     "importance_tier": "high",
-    "status": "complete",
+    "status": "in-progress",
     "key_files": [
       ".opencode/skill/cli-gemini/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",
       ".opencode/skill/cli-claude-code/manual_testing_playbook/MANUAL_TESTING_PLAYBOOK.md",

@@ -83,8 +83,8 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-g
 5. The active runtime for use case 1 and 3 scenarios is NOT OpenCode itself. Confirm by checking no `OPENCODE_*` env vars are set: `env | grep -q '^OPENCODE_' && echo IN-OPENCODE || echo OK`. Use case 2 scenarios (CO-026, CO-027, CO-028) explicitly include the parallel-session keywords required to permit the dispatch from inside OpenCode.
 6. The skill's reference and asset files exist at `.opencode/skill/cli-opencode/{references,assets}/` so prompt-quality, template and routing scenarios resolve.
 7. The project's MCP servers (Spec Kit Memory, CocoIndex Code) are registered in `opencode.json` so use case 1 (CO-006) and use case 3 (CO-021, CO-022) scenarios can call `memory_health`, CocoIndex search and `memory_search`.
-8. The Public repo path `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public` exists. Adapt the `--dir` argument across all scenarios to match the operator's local repo path if different.
-9. Destructive scenarios involving `--share` (CO-026, CO-027, CO-028) MUST NOT actually publish the share URL to anyone. The test only validates the session-creation path. Operator confirmation per CHK-033 is required before any real publication.
+8. The operator's repo root resolves via `REPO_ROOT="$(pwd)"` (run from the project root). Most scenarios pass `--dir "$(pwd)"` directly so they portably target whichever repo the operator runs them in; `<repo-root>` placeholders in prose refer to the same value. Adapt to a different absolute path only if a scenario explicitly requires a non-default repo (e.g., CO-029 cross-repo dispatch derives a sibling path via `dirname "$(pwd)"`).
+9. Destructive scenarios involving `--share` (CO-026, CO-027, CO-028) MUST follow strict sandboxing and recovery rules. Each MUST run with `--dir /tmp/co-share-sandbox-NNN/` (where NNN is the scenario ID), MUST NOT run with `--dir` pointing at the operator project tree, and MUST NOT actually publish the share URL to anyone without explicit operator confirmation per CHK-033. Recovery is mandatory after every run (pass or fail): (a) revoke every captured share URL via `opencode session revoke ${SESSION_ID}`; (b) remove the sandbox tmpdir via `rm -rf /tmp/co-share-sandbox-NNN/`. The test only validates the session-creation path; no real URL publication occurs.
 
 ---
 
@@ -298,7 +298,7 @@ Verify a Claude Code-led dispatch via cli-opencode reaches a fresh OpenCode sess
 
 #### Scenario Contract
 
-Prompt summary: You are Claude Code dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode call the memory_health MCP tool and return the database status. Constraints: must load system-spec-kit skill. Must call memory_health and return its result.
+Prompt summary: You are Claude Code dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode call the memory_health MCP tool and return the database status. Context: spec folder `<repo-root>/.opencode/specs/skilled-agent-orchestration/048-cli-testing-playbooks/` (pre-approved, skip Gate 3); plugin runtime required (Spec Kit Memory MCP). Constraints: must load system-spec-kit skill; must call memory_health and return its result. Success criteria: dispatched session emits a tool.call event for memory_health, returns the database status, and the session.completed event includes the status summary. Memory Epilogue is NOT required for this test.
 
 Expected signals: Dispatch exits 0. Tool.call event for memory_health appears. Session.completed references the database status.
 

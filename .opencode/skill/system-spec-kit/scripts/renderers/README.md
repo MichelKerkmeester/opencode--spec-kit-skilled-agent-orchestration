@@ -13,10 +13,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. BEHAVIOR](#3--behavior)
-- [4. RUNTIME](#4--runtime)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. BEHAVIOR](#3-behavior)
+- [4. RUNTIME](#4-runtime)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

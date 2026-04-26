@@ -34,7 +34,7 @@ As a pipeline validation operator, verify failed embeddings fall back to pending
 ### Commands
 
 1. Simulate embedding-provider unavailability during `memory_save` or `memory_index_scan`
-2. Confirm the memory is still saved and marked pending without vectors, with lexical-only fallback intact
+2. Confirm the spec-doc record is still saved and marked pending without vectors, with lexical-only fallback intact
 3. Restore provider availability and run or wait for the retry manager batch job
 4. Confirm pending items are retried, retry counters/backoff metadata update appropriately, and cache reuse is visible when content was embedded before
 5. Verify successful retry clears the pending state and refreshes vector/index rows for the affected memory

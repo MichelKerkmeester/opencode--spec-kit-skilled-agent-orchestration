@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. TROUBLESHOOTING](#4--troubleshooting)
-- [5. RELATED DOCUMENTS](#5--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. STRUCTURE](#3-structure)
+- [4. TROUBLESHOOTING](#4-troubleshooting)
+- [5. RELATED DOCUMENTS](#5-related-documents)
 
 ---
 

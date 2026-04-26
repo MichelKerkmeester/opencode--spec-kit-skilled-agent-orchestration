@@ -13,10 +13,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. NOTES](#3--notes)
-- [4. QUICK VALIDATION](#4--quick-validation)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. NOTES](#3-notes)
+- [4. QUICK VALIDATION](#4-quick-validation)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

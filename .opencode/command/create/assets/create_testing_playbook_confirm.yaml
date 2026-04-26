@@ -181,7 +181,7 @@ quality_standards:
   feature_file_requirements:
     - frontmatter
     - OVERVIEW
-    - CURRENT REALITY
+    - SCENARIO CONTRACT
     - TEST EXECUTION
     - SOURCE FILES or REFERENCES
     - SOURCE METADATA

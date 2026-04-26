@@ -37,7 +37,7 @@ When a save mutates indexed state, the runtime also updates the `DB_UPDATED_FILE
 
 ### Indexable Content Sources
 
-The memory system indexes content from two active sources, plus a retired-compatibility row preserved for read-side retrieval against historical packets:
+The indexed-continuity store indexes content from two active sources, plus a retired-compatibility row preserved for read-side retrieval against historical packets:
 
 | Source | Location Pattern | Memory Type | Default Tier | Discovery |
 |--------|-----------------|-------------|--------------|-----------|
@@ -109,7 +109,7 @@ Six-tier system for prioritizing memory relevance:
 | L2: Core | `memory_quick_search()` | Simplified search wrapper for fast lookups | Quick keyword-based retrieval |
 | L2: Core | `memory_match_triggers()` | Fast keyword matching (<50ms) with cognitive features | Gate enforcement |
 | L2: Core | `memory_save()` | Index a saved continuity artifact or spec doc. Re-generates embedding when **content hash** changes. Title-only changes do not trigger re-embedding. | After generate-context.js |
-| L3: Discovery | `memory_list()` | Browse stored memories with pagination (parent rows by default) | Review session history |
+| L3: Discovery | `memory_list()` | Browse stored spec-doc records with pagination (parent rows by default) | Review session history |
 | L3: Discovery | `memory_stats()` | Get memory system statistics with composite scoring | Check index health |
 | L3: Discovery | `memory_health()` | Check health status of memory system | Diagnose issues |
 | L3: Discovery | `session_health()` | Report session readiness, graph freshness, and priming status | Detect stale session context before continuing |
@@ -123,7 +123,7 @@ Six-tier system for prioritizing memory relevance:
 | L5: Lifecycle | `checkpoint_delete()` | Delete a checkpoint | Clean up old snapshots |
 | L6: Analysis | `task_preflight()` | Capture epistemic baseline before task execution | Start of implementation work |
 | L6: Analysis | `task_postflight()` | Capture epistemic state after task, calculate Learning Index | After completing implementation |
-| L6: Analysis | `memory_drift_why()` | Trace causal chain for a memory ("why was this decided?") | Understand decision lineage |
+| L6: Analysis | `memory_drift_why()` | Trace causal chain for a spec-doc record ("why was this decided?") | Understand decision lineage |
 | L6: Analysis | `memory_causal_link()` | Create causal relationship between two memories | Link decision to its cause |
 | L6: Analysis | `memory_causal_stats()` | Get statistics about the causal memory graph | Check causal coverage |
 | L6: Analysis | `memory_causal_unlink()` | Remove a causal relationship by edge ID | Clean up incorrect links |
@@ -366,7 +366,7 @@ For consistent exact matching, use the full spec folder name.
 
 > [VERIFIED: matches source code as of 2026-02-08]
 
-The memory system uses two complementary decay models, both **day-based** (calendar time), not turn-based.
+The indexed-continuity store uses two complementary decay models, both **day-based** (calendar time), not turn-based.
 
 ### Model A: Tier-Based Exponential Decay
 
@@ -374,7 +374,7 @@ The memory system uses two complementary decay models, both **day-based** (calen
 
 **Formula:** `score_decayed = score × decayRate^(elapsedDays / 30)`
 
-Where `elapsedDays` = calendar days since the memory's `updated_at` (or `created_at`). The 30-day normalization means the decay rate applies per 30-day period. Scores below `0.001` are clamped to 0.
+Where `elapsedDays` = calendar days since the spec-doc record's `updated_at` (or `created_at`). The 30-day normalization means the decay rate applies per 30-day period. Scores below `0.001` are clamped to 0.
 
 #### Tier-Specific Decay Rates
 
@@ -512,7 +512,7 @@ Constitutional files are stored in:
 
 > [VERIFIED: matches source code as of 2026-02-08]
 
-The memory system uses content hashing and session-aware deduplication to prevent redundant memories and reduce token usage.
+The indexed-continuity store uses content hashing and session-aware deduplication to prevent redundant memories and reduce token usage.
 
 ### Content Hashing
 
@@ -561,7 +561,7 @@ The hash priority: `content_hash` > `id:anchorId:file_path` > JSON of `{anchor, 
 | Scenario | Hash Match | Action |
 |----------|------------|--------|
 | Identical file content | Full SHA-256 match | Skip re-embedding, return existing ID |
-| Same memory in same session | 16-char hash match | Skip sending (session dedup) |
+| Same spec-doc record in same session | 16-char hash match | Skip sending (session dedup) |
 | Substantive file changes | No match | Re-index with new embedding |
 | Same content, different spec folder | Separate entries | Each folder gets its own index entry |
 
@@ -601,7 +601,7 @@ Indexed rows are classified into five states based on their **retrievability sco
 │  R ≥ 0.05    →  COLD      (low recall)                         │
 │  R < 0.05    →  DORMANT   (very low recall)                    │
 │  Constitutional/Critical tiers → always HOT (R = 1.0)           │
-│  Pinned memories (is_pinned=1) → always HOT (R = 1.0)          │
+│  Pinned spec-doc records (is_pinned=1) → always HOT (R = 1.0)          │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -610,7 +610,7 @@ Thresholds are configurable via environment variables (`HOT_THRESHOLD`, `WARM_TH
 
 ### State Classification
 
-The core classifier accepts either a numeric retrievability value or a memory object:
+The core classifier accepts either a numeric retrievability value or a spec-doc record object:
 
 ```typescript
 // lib/cognitive/tier-classifier.ts — classifyState()
@@ -627,7 +627,7 @@ function classifyState(
 }
 ```
 
-The richer `classifyTier()` function wraps this with half-life support, pinned-memory handling, and constitutional/critical exemptions. It computes retrievability using the FSRS formula (see Section 6, Model B) with an effective stability derived from the memory's type-specific half-life.
+The richer `classifyTier()` function wraps this with half-life support, pinned-memory handling, and constitutional/critical exemptions. It computes retrievability using the FSRS formula (see Section 6, Model B) with an effective stability derived from the spec-doc record's type-specific half-life.
 
 ### State Behaviors
 
@@ -642,13 +642,13 @@ HOT and WARM states have per-query limits (`maxHotMemories: 5`, `maxWarmMemories
 
 ### Half-Life to Stability Conversion
 
-Each memory type has a configured half-life (in days). This is converted to FSRS stability:
+Each spec-doc record type has a configured half-life (in days). This is converted to FSRS stability:
 
 ```
 S = half_life / ln(2) ≈ half_life / 0.693
 ```
 
-The effective stability is `max(fsrs_stability, type_stability)`, ensuring new memories benefit from their type's baseline while well-reviewed memories keep earned FSRS stability.
+The effective stability is `max(fsrs_stability, type_stability)`, ensuring new spec-doc records benefit from their type's baseline while well-reviewed memories keep earned FSRS stability.
 
 ### State Transitions
 

@@ -10,7 +10,7 @@ audited_post_018: true
 
 Canonical continuity save substrate routes canonical saves through contentRouter, anchorMergeOperation, atomicIndexMemory and the thin `_memory.continuity` block while preserving the resume ladder.
 
-This is the writer-side substrate that replaced the old memory-file assumption. It classifies incoming content, merges only into legal anchors, writes atomically, and keeps the continuity payload compact enough to live inside the spec doc instead of a separate file.
+This is the writer-side substrate that replaced the older spec-doc record-file assumption. It classifies incoming content, merges only into legal anchors, writes atomically, and keeps the continuity payload compact enough to live inside the spec doc instead of a separate file.
 
 ## 2. CURRENT REALITY
 

@@ -20,7 +20,7 @@ A fifth RRF channel scores memories by their graph connectivity. Edge type weigh
 
 Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. That cache is now scoped per database instance via `WeakMap<Database.Database, Map<string, number>>`, with `getDegreeCacheForDb(database)` for lookup and `clearDegreeCacheForDb(database)` for explicit invalidation, so scores from one DB can no longer leak into another.
 
-Cold-cache degree scoring now computes uncached candidate nodes in one batched SQL round-trip instead of one query per node. The query restricts edge scanning with `WHERE source_id IN (...) OR target_id IN (...)`, groups by candidate `node_id`, and caches the resolved global max typed degree alongside per-node boost values. This removes the prior N+1 query shape on cold cache while keeping repeat lookups in-memory until graph mutations invalidate the cache. When a memory has zero edges, the channel returns 0 rather than failing.
+Cold-cache degree scoring now computes uncached candidate nodes in one batched SQL round-trip instead of one query per node. The query restricts edge scanning with `WHERE source_id IN (...) OR target_id IN (...)`, groups by candidate `node_id`, and caches the resolved global max typed degree alongside per-node boost values. This removes the prior N+1 query shape on cold cache while keeping repeat lookups in-memory until graph mutations invalidate the cache. When a spec-doc record has zero edges, the channel returns 0 rather than failing.
 
 ---
 

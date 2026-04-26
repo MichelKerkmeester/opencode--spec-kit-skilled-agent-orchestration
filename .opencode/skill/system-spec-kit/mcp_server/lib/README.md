@@ -16,13 +16,13 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. TROUBLESHOOTING](#6--troubleshooting)
-- [7. RELATED DOCUMENTS](#7--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. STRUCTURE](#3-structure)
+- [4. FEATURES](#4-features)
+- [5. USAGE EXAMPLES](#5-usage-examples)
+- [6. TROUBLESHOOTING](#6-troubleshooting)
+- [7. RELATED DOCUMENTS](#7-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -69,7 +69,7 @@ Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the oper
 | **Classification Decay** | TM-03 tier/context 2D multiplier matrix for FSRS decay modulation |
 | **Learned Feedback** | R11 selection tracking boosts future searches (9 safeguards, 0.7x weight) |
 | **Save Quality Gate** | TM-04 pre-storage 3-layer gate rejects content below 0.4 signal density |
-| **Reconsolidation** | TM-06 auto-merges similar memories on save (>=0.88 similarity threshold) |
+| **Reconsolidation** | TM-06 auto-merges similar spec-doc records on save (>=0.88 similarity threshold) |
 | **Graph Signals** | N2a momentum scoring, N2b causal depth signal, N2c community detection |
 | **Chunk Thinning** | R7 anchor-aware chunk scoring and threshold-based dropping at index time |
 | **Entity Extraction** | R10 auto-extracts entities at save time for cross-document linking |
@@ -404,10 +404,10 @@ The tier classifier uses this priority order when calculating retrievability:
 **Prediction Error Gating**: Prevents duplicate memories using three-tier similarity thresholds
 
 ```typescript
-// Check if new memory is too similar to existing memories
+// Check if new spec-doc record is too similar to existing spec-doc records
 const isDuplicate = await cognitive.predictionErrorGate.is_duplicate(
-  newContent,         // New memory content
-  existingMemories,   // Array of existing memories in same folder
+  newContent,         // New spec-doc record content
+  existingMemories,   // Array of existing spec-doc records in same folder
   {
     tier1Threshold: 0.95,  // Near-identical threshold (BLOCK)
     tier2Threshold: 0.90,  // High similarity (WARN)

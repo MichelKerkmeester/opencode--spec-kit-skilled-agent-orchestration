@@ -7,10 +7,10 @@ description: "Extractor-layer session enrichment for files, diagrams, and activi
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -26,7 +26,7 @@ The shipped extractor behavior in this slice currently works as follows:
 2. File descriptions are ranked and merged instead of blindly overwritten. Cleaner, higher-tier descriptions replace weaker ones, while existing non-generic actions are preserved. The extractor also carries forward `_provenance`, `_synthetic`, and `MODIFICATION_MAGNITUDE` metadata and enforces the configured maximum file count.
 3. Semantic enrichment in `enhanceFilesWithSemanticDescriptions()` prefers exact path matches first, then falls back to unique basename matches only when the basename is unambiguous. Specific actions like `Created`, `Deleted`, `Renamed`, and `Read` are intentionally preserved rather than downgraded back to generic `Modified`.
 4. Observation anchoring in `buildObservationsWithAnchors()` classifies each observation into a semantic type such as bugfix, feature, refactor, decision, research, test, documentation, performance, or discovery; generates unique anchor IDs from the spec number and section category; and marks decision observations explicitly for downstream rendering.
-5. Repeated tool-call observations are compacted by `deduplicateObservations()`. Consecutive repeats with the same normalized title and file set are merged, duplicate fact strings are removed, and the surviving narrative gains a `(repeated N times)` suffix so noisy telemetry does not explode the rendered memory.
+5. Repeated tool-call observations are compacted by `deduplicateObservations()`. Consecutive repeats with the same normalized title and file set are merged, duplicate fact strings are removed, and the surviving narrative gains a `(repeated N times)` suffix so noisy telemetry does not explode the rendered spec-doc record.
 6. `diagram-extractor.ts` scans observation narratives and coerced fact text for box-drawing and arrow characters, classifies detected diagrams with the flowchart generator, and returns a bounded ASCII payload plus pattern, complexity, timestamps, and related-file metadata for each detected diagram.
 7. The same module derives conversation phases from observations by extracting tool usage from facts, ignoring prose-only tool mentions, classifying the phase for each observation, and summarizing up to three representative activities per phase. Those phases feed an auto-generated conversation flowchart even when no explicit user-authored diagram exists.
 8. The extractor intentionally returns an empty `AUTO_DECISION_TREES` list to avoid duplicating decision-tree content that is already rendered through the per-decision template path. Null collected data also returns an empty diagram payload rather than a simulation fallback.

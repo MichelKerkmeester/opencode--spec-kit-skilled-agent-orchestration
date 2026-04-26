@@ -17,7 +17,7 @@ This scenario validates Smarter memory content generation (S1) for `045`. It foc
 Operators run the exact prompt and command sequence for `045` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm quality/structure output and pathless batch-type isolation
-- Prompt: `As a memory-quality validation operator, validate Smarter memory content generation (S1) against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Smarter memory content generation (S1) against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results
 - Pass/fail: PASS: Structure preserved, output concise (<=2x input density), sections coherent, and pathless batch inputs stay isolated; FAIL: Structure lost, verbose output, incoherent sections, or pathless batch inputs collapse together
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `045` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm quality/structure output and pathless batch-type isolation against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm quality/structure output and pathless batch-type isolation against the documented validation surface. Verify generated content retains structural elements (headings, lists, code blocks); output is concise; coherence maintained across sections; multiple pathless batch inputs keep distinct inference results. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

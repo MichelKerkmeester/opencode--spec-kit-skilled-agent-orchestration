@@ -7,10 +7,10 @@ description: "Deterministic shell runbooks for listing, inspecting, and drilling
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -34,7 +34,7 @@ Those steps currently wrap `node dist/memory/reindex-embeddings.js` commands for
 
 `heal-ledger-mismatch.sh` follows the same deterministic pattern for mutation-ledger recovery. It runs `detect-ledger-divergence` and `replay-ledger` steps around `node dist/memory/cleanup-orphaned-vectors.js` commands and emits a recovery payload when ledger replay consistency is restored.
 
-The other two advertised classes are only partially live today. `heal-session-ambiguity.sh` now exits immediately with a deprecation notice saying session ambiguity moved into the memory-save pipeline via `generate-context.js`. Its older deterministic implementation is still retained below the early exit for reference, but it is not reachable in normal execution. `heal-telemetry-drift.sh` still parses options and applies the shared retry contract, but the current main flow exits with an error saying the telemetry drift runner was removed and a supported schema-doc parity workflow must be wired back in before use.
+The other two advertised classes are only partially live today. `heal-session-ambiguity.sh` now exits immediately with a deprecation notice saying session ambiguity moved into the spec-doc record-save pipeline via `generate-context.js`. Its older deterministic implementation is still retained below the early exit for reference, but it is not reachable in normal execution. `heal-telemetry-drift.sh` still parses options and applies the shared retry contract, but the current main flow exits with an error saying the telemetry drift runner was removed and a supported schema-doc parity workflow must be wired back in before use.
 
 That means the current runbook surface is intentionally uneven: the dispatcher and metadata still describe four failure classes, but only index drift and ledger mismatch provide end-to-end recovery paths. Session ambiguity is documented as deprecated, and telemetry drift is effectively a placeholder that fails fast after validation.
 
@@ -48,7 +48,7 @@ When `runbook.sh drill all` is used, the dispatcher executes all four classes in
 |------|-------|------|
 | `.opencode/skill/system-spec-kit/scripts/ops/runbook.sh` | Entrypoint | Lists failure classes, shows ownership and escalation metadata, and dispatches individual or aggregate remediation drills |
 | `.opencode/skill/system-spec-kit/scripts/ops/heal-index-drift.sh` | Remediator | Deterministic index-drift recovery flow with detect, rebuild, and verify steps |
-| `.opencode/skill/system-spec-kit/scripts/ops/heal-session-ambiguity.sh` | Remediator | Deprecated session-ambiguity runner that now exits immediately with a migration notice to the memory-save pipeline |
+| `.opencode/skill/system-spec-kit/scripts/ops/heal-session-ambiguity.sh` | Remediator | Deprecated session-ambiguity runner that now exits immediately with a migration notice to the spec-doc record-save pipeline |
 | `.opencode/skill/system-spec-kit/scripts/ops/heal-ledger-mismatch.sh` | Remediator | Deterministic ledger-mismatch recovery flow with detect and replay steps |
 | `.opencode/skill/system-spec-kit/scripts/ops/heal-telemetry-drift.sh` | Remediator | Telemetry-drift stub that validates arguments, then fails fast until a supported schema-doc parity workflow is restored |
 | `.opencode/skill/system-spec-kit/scripts/ops/ops-common.sh` | Shared library | Provides validation helpers, UTC logging, deterministic retry loops, escalation JSON emission, and recovery payload generation |

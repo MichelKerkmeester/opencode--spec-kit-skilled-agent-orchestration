@@ -46,18 +46,18 @@ Canonical source artifacts:
 - [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
-- [1. OVERVIEW](#1--overview)
-- [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
-- [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
-- [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
-- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
-- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
-- [7. EXISTING FEATURES](#7--existing-features)
-- [8. FEATURES](#8--features)
-- [9. PHASE SYSTEM FEATURES](#9--phase-system-features)
-- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
-- [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
-- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
+- [1. OVERVIEW](#1-overview)
+- [2. GLOBAL PRECONDITIONS](#2-global-preconditions)
+- [3. GLOBAL EVIDENCE REQUIREMENTS](#3-global-evidence-requirements)
+- [4. DETERMINISTIC COMMAND NOTATION](#4-deterministic-command-notation)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5-review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6-sub-agent-orchestration-and-wave-planning)
+- [7. EXISTING FEATURES](#7-existing-features)
+- [8. FEATURES](#8-features)
+- [9. PHASE SYSTEM FEATURES](#9-phase-system-features)
+- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10-dedicated-memoryspec-kit-scenarios-required)
+- [11. AUTOMATED TEST CROSS-REFERENCE](#11-automated-test-cross-reference)
+- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12-feature-catalog-cross-reference-index)
 
 ---
 
@@ -466,7 +466,7 @@ Prompt: `Update memory title and triggers. Capture the evidence needed to prove 
 
 Updated metadata reflected in retrieval
 
-Additional audit scenario: `Update a memory with new title, trigger phrases and a replacement embedding while forcing one failed vec write before a successful retry. Capture the evidence needed to prove the row stays pending until the vector write completes, never reports false success on the failed attempt, and cached searches reflect the successful metadata update immediately afterward. Return a concise user-facing pass/fail verdict with the main reason.`
+Additional audit scenario: `Update a spec-doc record with new title, trigger phrases and a replacement embedding while forcing one failed vec write before a successful retry. Capture the evidence needed to prove the row stays pending until the vector write completes, never reports false success on the failed attempt, and cached searches reflect the successful metadata update immediately afterward. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Pending-until-written embedding status; no false-success state; post-update cached search refreshes immediately
 
@@ -2403,7 +2403,7 @@ Each similarity band triggers the correct action; memory_conflicts rows are reco
 Confirm embedding-failure fallback and BM25 searchability.
 
 #### Scenario Contract
-Prompt: `Validate deferred lexical-only indexing fallback. Capture the evidence needed to prove Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate deferred lexical-only indexing fallback. Capture the evidence needed to prove Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Record saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the record; reindex transitions status to 'success'; vector search works after reindex
 
@@ -2515,7 +2515,7 @@ intentAdjustedScore set at Step 4 in trace; downstream signals modify score fiel
 Confirm collision resolution.
 
 #### Scenario Contract
-Prompt: `As a memory-quality validation operator, confirm collision resolution for ensureUniqueMemoryFilename. Verify duplicate saves reserve distinct filenames across the -1 and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.`
+Prompt: `As a spec-doc record-quality validation operator, confirm collision resolution for ensureUniqueMemoryFilename. Verify duplicate saves reserve distinct filenames across the -1 and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Second save produces filename with `-1` suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) | 0` coercion; and `memoryNameHistory` is updated.
 
@@ -2587,7 +2587,7 @@ Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled
 Verify Phase 1 readiness baselines capture/persist metrics and handle missing context DBs without throwing.
 
 #### Scenario Contract
-Prompt: `Run the memory roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and restoration of the prior eval DB handle after a forced initEvalDb failure. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the spec-doc record roadmap baseline snapshot verification suite. Capture the evidence needed to prove Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and restoration of the prior eval DB handle after a forced initEvalDb failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Targeted suite passes; transcript shows persisted snapshot rows, missing-context DB zero fallback coverage, and prior eval DB handle restoration after forced init failure
 
@@ -2865,10 +2865,10 @@ Constitutional memory manager
 > **Feature File:** [147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md)
 > **Catalog:** [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md)
 
-### 149 | Rendered memory template contract
+### 149 | Rendered spec-doc record template contract
 
 #### Description
-Confirm malformed rendered memories fail before write/index and valid rendered output remains validator-clean.
+Confirm malformed rendered spec-doc records fail before write/index and valid rendered output remains validator-clean.
 
 #### Scenario Contract
 Prompt: `Validate the rendered-memory template contract for memory_save and generate-context. Capture the evidence needed to prove Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean. Return a concise user-facing pass/fail verdict with the main reason.`
@@ -2927,7 +2927,7 @@ Zero symlinks found
 Verify the structured JSON summary contract for `generate-context.js`, including `toolCalls`/`exchanges` fields, file-backed JSON authority, and Wave 2 hardening.
 
 #### Scenario Contract
-Prompt: `Save a memory using generate-context.js --json with a payload containing toolCalls, exchanges, and snake_case fields. Verify the rendered output preserves all structured fields, decision confidence, and explicit counts. Return a concise user-facing pass/fail verdict.`
+Prompt: `Save a spec-doc record using generate-context.js --json with a payload containing toolCalls, exchanges, and snake_case fields. Verify the rendered output preserves all structured fields, decision confidence, and explicit counts. Return a concise user-facing pass/fail verdict.`
 
 Structured fields preserved in rendered output, counts match explicit input, file-backed JSON stays on the structured path
 
@@ -2966,10 +2966,10 @@ REVIEW block present in stdout; issue count and severity match the scenario; fix
 ### 156 | Graph refresh mode (SPECKIT_GRAPH_REFRESH_MODE)
 
 #### Description
-Verify dirty-node tracking fires in write_local mode when saving a memory with entity edges.
+Verify dirty-node tracking fires in write_local mode when saving a spec-doc record with entity edges.
 
 #### Scenario Contract
-Prompt: `Test SPECKIT_GRAPH_REFRESH_MODE=write_local. Save a memory with entity edges, then verify dirty-node tracking and local recompute execute. Capture the evidence needed to prove markDirty() populates the dirty-node set and recomputeLocal() runs for small components. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Test SPECKIT_GRAPH_REFRESH_MODE=write_local. Save a spec-doc record with entity edges, then verify dirty-node tracking and local recompute execute. Capture the evidence needed to prove markDirty() populates the dirty-node set and recomputeLocal() runs for small components. Return a concise user-facing pass/fail verdict with the main reason.`
 
 markDirty() populates dirty-node set; onWrite() returns localRecomputed=true and skipped=false; component size estimation runs; dirty nodes cleared after local recompute
 
@@ -3067,7 +3067,7 @@ HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low
 Verify surrogate metadata generated at index time and matched at query time with boost scores.
 
 #### Scenario Contract
-Prompt: `Test SPECKIT_QUERY_SURROGATES=true. Save a memory with rich content, then verify surrogates (aliases, headings, summary, surrogate questions) are generated at index time. Run a search using alias/question terms and verify surrogate matching produces boost scores. Capture the evidence needed to prove SurrogateMetadata is populated and SurrogateMatchResult returns matching scores. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Test SPECKIT_QUERY_SURROGATES=true. Save a spec-doc record with rich content, then verify surrogates (aliases, headings, summary, surrogate questions) are generated at index time. Run a search using alias/question terms and verify surrogate matching produces boost scores. Capture the evidence needed to prove SurrogateMetadata is populated and SurrogateMatchResult returns matching scores. Return a concise user-facing pass/fail verdict with the main reason.`
 
 SurrogateMetadata contains aliases (from parenthetical abbreviations), headings, summary (max 200 chars), and surrogateQuestions (2-5 entries); query-time matching produces SurrogateMatchResult with score in [0,1] and matchedSurrogates list; no LLM calls on the default path
 
@@ -3520,7 +3520,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `01--retrieval/09-tool-result-extraction-to-working-memory.md` | Automated only | Covered by `working-memory.vitest.ts`, `working-memory-event-decay.vitest.ts`, and `checkpoint-working-memory.vitest.ts` |
 | `02--mutation/07-namespace-management-crud-tools.md` | Deferred | Not yet implemented |
 | `02--mutation/09-correction-tracking-with-undo.md` | Automated only | Covered by mutation regression tests; no dedicated operator scenario yet |
-| `02--mutation/10-per-memory-history-log.md` | Manual + automated | Covered by mutation/history suites and dedicated direct manual scenario M-008 |
+| `02--mutation/10-per-record-history-log.md` | Manual + automated | Covered by mutation/history suites and dedicated direct manual scenario M-008 |
 | `10--graph-signal-activation/_deprecated/09-anchor-tags-as-graph-nodes.md` | Deprecated archival | Retained only as a historical deprecation record; anchor markers stay metadata-only |
 | `11--scoring-and-calibration/15-tool-level-ttl-cache.md` | Automated only | Cache policy behavior is exercised in scoring/cache tests |
 | `11--scoring-and-calibration/16-access-driven-popularity-scoring.md` | Automated only | Popularity heuristics are validated by ranking tests |
@@ -3609,7 +3609,7 @@ Expected signals: severity-ranked findings and final verdict.
 Outsourced agent output round-trips into searchable saved context.
 
 #### Scenario Contract
-Prompt: `As a memory-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
+Prompt: `As a spec-doc record-quality validation operator, validate Outsourced Agent Memory Capture Round-Trip against cli-codex. Verify agent output contains structured memory section; saved context is discoverable via search. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: Agent output contains structured memory section; saved context is discoverable via search.
 
@@ -3622,7 +3622,7 @@ Expected signals: Agent output contains structured memory section; saved context
 Continuity-ladder precedence and alignment guardrails for captured-session saves.
 
 #### Scenario Contract
-Prompt: `As a memory-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
+Prompt: `As a spec-doc record-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
 Expected signals: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table.
 
@@ -3661,7 +3661,7 @@ Prompt: `As a mutation validation operator, validate Feature 09 Direct Manual Sc
 Expected signals: repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage.
 
 #### Test Execution
-> **Feature File:** [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md)
+> **Feature File:** [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-record-history-log.md)
 
 ---
 
@@ -3855,7 +3855,7 @@ This split playbook keeps automated coverage references in three places:
 | 145 | Features | Contextual tree injection (P1-4) | [145](15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md) | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
 | 146 | Features | Dynamic server instructions (P1-6) | [146](14--pipeline-architecture/146-dynamic-server-instructions-p1-6.md) | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
 | 147 | Features | Constitutional memory manager command | [147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md) | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
-| 149 | Features | Rendered memory template contract | [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
+| 149 | Features | Rendered spec-doc record template contract | [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
 | 150 | Features | Source-dist alignment validation | [150](16--tooling-and-scripts/150-source-dist-alignment-validation.md) | [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) |
 | 151 | Features | MODULE_MAP.md accuracy validation | [151](16--tooling-and-scripts/151-module-map-accuracy.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
 | 152 | Features | No symlinks in lib/ tree | [152](16--tooling-and-scripts/152-no-symlinks-in-lib-tree.md) | [16--tooling-and-scripts/15-module-boundary-map.md](../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md) |
@@ -3905,7 +3905,7 @@ This split playbook keeps automated coverage references in three places:
 | M-005 | Dedicated Memory/Spec-Kit Scenarios | Outsourced Agent Memory Capture Round-Trip | [M-005](13--memory-quality-and-indexing/005-outsourced-agent-memory-capture-round-trip.md) | [13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md](../feature_catalog/13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md) |
 | M-006 | Dedicated Memory/Spec-Kit Scenarios | Session Enrichment and Alignment Guardrails | [M-006](13--memory-quality-and-indexing/006-session-enrichment-and-alignment-guardrails.md) | [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md) |
 | M-007 | Dedicated Memory/Spec-Kit Scenarios | Session Capturing Pipeline Quality | [M-007](16--tooling-and-scripts/007-session-capturing-pipeline-quality.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
-| M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md) | [02--mutation/10-per-memory-history-log.md](../feature_catalog/02--mutation/10-per-memory-history-log.md) |
+| M-008 | Dedicated Memory/Spec-Kit Scenarios | Feature 09 Direct Manual Scenario (Per-memory History Log) | [M-008](02--mutation/008-feature-09-direct-manual-scenario-per-record-history-log.md) | [02--mutation/10-per-record-history-log.md](../feature_catalog/02--mutation/10-per-record-history-log.md) |
 | 190 | Features | Session recovery via /spec_kit:resume | [190](01--retrieval/190-session-recovery-spec-kit-resume.md) | [01--retrieval/11-session-recovery-spec-kit-resume.md](../feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md) |
 | 125-map | Features | Audit phase mapping note (020) | — | [19--feature-flag-reference/08-audit-phase-020-mapping-note.md](../feature_catalog/19--feature-flag-reference/08-audit-phase-020-mapping-note.md) |
 | 020-stub | Features | Remediation and revalidation (stub) | — | [20--remediation-revalidation/01-category-stub.md](../feature_catalog/20--remediation-revalidation/01-category-stub.md) |

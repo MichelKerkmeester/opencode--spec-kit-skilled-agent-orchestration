@@ -7,12 +7,12 @@ description: "Routine saves prefer --json or --stdin structured input, while pos
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. FEATURE BREAKDOWN](#3--feature-breakdown)
-- [4. SOURCE FILES](#4--source-files)
-- [5. VERIFICATION SOURCES](#5--verification-sources)
-- [6. SOURCE METADATA](#6--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. FEATURE BREAKDOWN](#3-feature-breakdown)
+- [4. SOURCE FILES](#4-source-files)
+- [5. VERIFICATION SOURCES](#5-verification-sources)
+- [6. SOURCE METADATA](#6-source-metadata)
 
 ## 1. OVERVIEW
 

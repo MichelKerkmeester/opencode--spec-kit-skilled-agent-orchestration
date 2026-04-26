@@ -1,0 +1,1 @@
+EXIT1=0 EXIT2=0 SKILL_BYTES=850 CLI_BYTES=876 MODE=serial-only-per-operator-constraint

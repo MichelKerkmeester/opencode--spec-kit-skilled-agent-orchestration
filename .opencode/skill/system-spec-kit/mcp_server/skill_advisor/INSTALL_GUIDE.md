@@ -11,15 +11,15 @@ This is the canonical bootstrap guide for the Phase 027 native Skill Advisor. Th
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. PREREQUISITES](#2--prerequisites)
-- [3. INSTALLATION](#3--installation)
-- [4. VERIFICATION](#4--verification)
-- [5. NATIVE PACKAGE CHECKS](#5--native-package-checks)
-- [6. COMPAT SHIMS](#6--compat-shims)
-- [7. ROLLBACK](#7--rollback)
-- [8. OPERATOR CHECKS](#8--operator-checks)
-- [9. RELATED RESOURCES](#9--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. PREREQUISITES](#2-prerequisites)
+- [3. INSTALLATION](#3-installation)
+- [4. VERIFICATION](#4-verification)
+- [5. NATIVE PACKAGE CHECKS](#5-native-package-checks)
+- [6. COMPAT SHIMS](#6-compat-shims)
+- [7. ROLLBACK](#7-rollback)
+- [8. OPERATOR CHECKS](#8-operator-checks)
+- [9. RELATED RESOURCES](#9-related-resources)
 
 ---
 

@@ -36,7 +36,7 @@ repeated save/update activity is observable via retrieval output and packet meta
 both save outputs + follow-up search output showing the persisted packet content and metadata continuity.
 ### Pass/Fail
 
-direct operator run confirms per-memory history behavior without relying only on automated suites.
+direct operator run confirms per-record history behavior without relying only on automated suites.
 ### Failure Triage
 
 verify sandbox file path and spec scope -> rerun with `force:true` -> inspect memory metadata fields returned from save/search outputs.
@@ -46,7 +46,7 @@ verify sandbox file path and spec scope -> rerun with `force:true` -> inspect me
 ## 4. REFERENCES
 
 - Root playbook: [MANUAL_TESTING_PLAYBOOK.md](../MANUAL_TESTING_PLAYBOOK.md)
-- Feature catalog: [02--mutation/10-per-memory-history-log.md](../../feature_catalog/02--mutation/10-per-memory-history-log.md)
+- Feature catalog: [02--mutation/10-per-record-history-log.md](../../feature_catalog/02--mutation/10-per-record-history-log.md)
 
 ---
 
@@ -55,4 +55,4 @@ verify sandbox file path and spec scope -> rerun with `force:true` -> inspect me
 - Group: Mutation
 - Playbook ID: M-008
 - Canonical root source: `MANUAL_TESTING_PLAYBOOK.md`
-- Feature file path: `02--mutation/008-feature-09-direct-manual-scenario-per-memory-history-log.md`
+- Feature file path: `02--mutation/008-feature-09-direct-manual-scenario-per-record-history-log.md`

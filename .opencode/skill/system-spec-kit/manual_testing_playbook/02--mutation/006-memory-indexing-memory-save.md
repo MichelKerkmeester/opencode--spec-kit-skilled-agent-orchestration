@@ -1,6 +1,6 @@
 ---
 title: "EX-006 -- Memory indexing (memory_save)"
-description: "This scenario validates Memory indexing (memory_save) for `EX-006`. It focuses on New memory ingestion."
+description: "This scenario validates Memory indexing (memory_save) for `EX-006`. It focuses on New spec-doc record ingestion."
 audited_post_018: true
 phase_018_replaces: "legacy memory-file ingestion scenario with spec-doc anchored continuity save validation"
 ---

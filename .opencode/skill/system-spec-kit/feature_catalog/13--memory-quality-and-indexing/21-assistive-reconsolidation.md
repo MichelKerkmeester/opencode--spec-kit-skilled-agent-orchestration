@@ -6,7 +6,7 @@ audited_post_018: true
 
 # Assistive reconsolidation
 
-> **Status**: The assistive layer is advisory only. Near-duplicate pairs trigger a high-similarity compatibility note, review-tier pairs emit recommendations, and no assistive tier mutates stored memories.
+> **Status**: The assistive layer is advisory only. Near-duplicate pairs trigger a high-similarity compatibility note, review-tier pairs emit recommendations, and no assistive tier mutates stored spec-doc records.
 
 ## 1. OVERVIEW
 

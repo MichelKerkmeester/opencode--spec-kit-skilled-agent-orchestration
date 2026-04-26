@@ -15,7 +15,7 @@ This scenario validates the post-insert retry budget for `268`. It focuses on pr
 
 - Objective: Verify deferred enrichment retries stop after three `(memoryId, step, reason)` failures, emit structured `retry_attempt` telemetry at each decision point, and reset on success
 - Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: first three retries allowed; fourth skipped; structured exhaustion signal present; `retry_attempt` telemetry emitted with attempt/outcome fields; successful completion clears the memory-specific budget
+- Expected signals: first three retries allowed; fourth skipped; structured exhaustion signal present; `retry_attempt` telemetry emitted with attempt/outcome fields; successful completion clears the spec-doc record-specific budget
 - Pass/fail: PASS if the retry budget caps repeat failures deterministically and resets after success
 
 ---
@@ -33,7 +33,7 @@ As a lifecycle validation operator, validate the deferred enrichment retry budge
 1. Trigger the deferred enrichment path with a reproducible `partial_causal_link_unresolved` outcome
 2. Repeat the same failure three times and confirm retries are still scheduled
 3. Trigger the same failure a fourth time and confirm the retry is skipped
-4. Clear or resolve the condition and confirm a successful run resets the memory-specific budget
+4. Clear or resolve the condition and confirm a successful run resets the spec-doc record-specific budget
 
 ### Expected
 

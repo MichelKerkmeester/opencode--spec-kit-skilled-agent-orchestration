@@ -16,10 +16,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. IMPORT POLICY](#2--import-policy)
-- [3. SCRIPT INVENTORY](#3--script-inventory)
-- [4. REFERENCE](#4--reference)
+- [1. OVERVIEW](#1-overview)
+- [2. IMPORT POLICY](#2-import-policy)
+- [3. SCRIPT INVENTORY](#3-script-inventory)
+- [4. REFERENCE](#4-reference)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

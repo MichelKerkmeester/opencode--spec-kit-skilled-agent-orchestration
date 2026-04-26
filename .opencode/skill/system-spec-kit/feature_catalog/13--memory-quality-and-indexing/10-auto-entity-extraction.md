@@ -10,7 +10,7 @@ audited_post_018: true
 
 Auto entity extraction runs five regex rules at save time to capture technology names, project identifiers and architectural concepts from memory content.
 
-Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a memory and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.
+Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a spec-doc record and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.
 
 ---
 

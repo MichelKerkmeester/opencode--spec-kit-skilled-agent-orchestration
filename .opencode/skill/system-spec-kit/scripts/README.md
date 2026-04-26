@@ -14,11 +14,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. INVENTORY SNAPSHOT](#2--inventory-snapshot)
-- [3. POST-SPEC124/128/129 WORKFLOW](#3--post-spec124128129-workflow)
-- [4. BUILD AND RUNTIME](#4--build-and-runtime)
-- [5. RELATED READMES](#5--related-readmes)
+- [1. OVERVIEW](#1-overview)
+- [2. INVENTORY SNAPSHOT](#2-inventory-snapshot)
+- [3. POST-SPEC124/128/129 WORKFLOW](#3-post-spec124128129-workflow)
+- [4. BUILD AND RUNTIME](#4-build-and-runtime)
+- [5. RELATED READMES](#5-related-readmes)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

@@ -7,11 +7,11 @@ description: "This scenario validates the structured JSON summary contract for g
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. SCENARIO CONTRACT](#2--scenario-contract)
-- [3. TEST EXECUTION](#3--test-execution)
-- [4. REFERENCES](#4--references)
-- [5. SOURCE METADATA](#5--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. SCENARIO CONTRACT](#2-scenario-contract)
+- [3. TEST EXECUTION](#3-test-execution)
+- [4. REFERENCES](#4-references)
+- [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -52,7 +52,7 @@ All structured fields present in output, counts match, file-backed JSON stays on
 
 ### Evidence
 
-Rendered memory file content, CLI exit code 0
+Rendered spec-doc record file content, CLI exit code 0
 
 ### Pass / Fail
 
@@ -311,7 +311,7 @@ FILES section populated with filesModified entries
 
 ### Evidence
 
-Rendered memory file
+Rendered spec-doc record file
 
 ### Pass / Fail
 

@@ -13,10 +13,10 @@ This document captures the implemented behavior, source references, and validati
 
 ## TABLE OF CONTENTS
 
-- [OVERVIEW](#1--overview)
-- [CURRENT REALITY](#2--current-reality)
-- [SOURCE FILES](#3--source-files)
-- [SOURCE METADATA](#4--source-metadata)
+- [OVERVIEW](#1-overview)
+- [CURRENT REALITY](#2-current-reality)
+- [SOURCE FILES](#3-source-files)
+- [SOURCE METADATA](#4-source-metadata)
 
 ---
 
@@ -57,7 +57,7 @@ These flags turn major retrieval behaviors on or off, including fallback logic, 
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
-| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a memory-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
+| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a spec-doc record-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only; callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
 | `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | Deprecated inert alias for the removed eager-warmup toggle. The embedding provider always initializes lazily now, so setting this flag does not restore startup warmup. |
 | `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
@@ -94,7 +94,7 @@ These flags turn major retrieval behaviors on or off, including fallback logic, 
 | `SPECKIT_LEARNED_STAGE2_COMBINER` | `true` | boolean | `shared/ranking/learned-combiner.ts` | **Default ON (graduated, shadow-only).** Learned Stage 2 weight combiner. Regularized linear ranker (Ridge Regression, lambda=0.1) that learns combination weights from 8 Stage 2 features (rrf, overlap, graph, session, causal, feedback, validation, artifact). Includes LOOCV, SHAP feature importance, and model persistence. Scores computed but NOT used for ranking. |
 | `SPECKIT_LLM_GRAPH_BACKFILL` | `true` | boolean | `lib/search/graph-lifecycle.ts` | **Default ON (graduated).** Async LLM graph backfill for high-value documents. After deterministic extraction completes, schedules an asynchronous LLM-based enrichment pass to add probabilistic edges. No-op when `SPECKIT_GRAPH_REFRESH_MODE` is `off`. |
 | `SPECKIT_LLM_REFORMULATION` | `true` | boolean | `lib/search/llm-reformulation.ts` | **Default ON (graduated).** LLM corpus-grounded query reformulation. Deep-mode only. Step-back abstraction combined with corpus seed grounding (3 FTS5/BM25 seeds, no embedding call). Produces up to 2 query variants. Budget: 1 LLM call per reformulation (8s timeout). Cached via shared LLM cache (1h TTL). |
-| `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each memory and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
+| `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each spec-doc record and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | enum (`shadow`, `promoted`) | `mcp_server/lib/cognitive/adaptive-ranking.ts` | Active only when adaptive ranking is enabled. `shadow` is the default observe-only mode that records signals and persists bounded proposal payloads without changing returned search order. `promoted` marks proposals and persisted runs as `promoted` for evaluation and rollout drills, while the current `memory_search` path still attaches proposal metadata instead of reordering live results. |
 | `SPECKIT_MMR` | `true` | boolean | `lib/search/search-flags.ts` | Enables Maximal Marginal Relevance reranking after fusion to promote result diversity. Uses intent-specific lambda values from `INTENT_LAMBDA_MAP` (default `0.7`, continuity `0.65`). Requires embeddings to be loaded from `vec_memories` for top-N candidates. |
 | `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |

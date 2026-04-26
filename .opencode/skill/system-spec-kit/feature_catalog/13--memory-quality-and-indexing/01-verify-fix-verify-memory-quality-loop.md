@@ -10,13 +10,13 @@ audited_post_018: true
 
 The verify-fix-verify loop evaluates memory quality at save time and auto-retries fixes before accepting or rejecting the save.
 
-Before saving a new memory, the system checks whether it meets quality standards. If it falls short, the system tries to fix the problems automatically and checks again. Think of it like a spell checker that runs before you hit send: it catches obvious issues and corrects them so you do not store sloppy notes that will be hard to find later.
+Before saving a new spec-doc record, the system checks whether it meets quality standards. If it falls short, the system tries to fix the problems automatically and checks again. Think of it like a spell checker that runs before you hit send: it catches obvious issues and corrects them so you do not store sloppy notes that will be hard to find later.
 
 ---
 
 ## 2. CURRENT REALITY
 
-The quality loop is still the save-time auto-fix stage for recoverable formatting issues, but it is no longer the final semantic authority on whether a memory is good enough to save.
+The quality loop is still the save-time auto-fix stage for recoverable formatting issues, but it is no longer the final semantic authority on whether a spec-doc record is good enough to save.
 
 When `SPECKIT_QUALITY_LOOP` is enabled, the runtime still runs an initial quality evaluation and then up to 2 immediate auto-fix retries by default (`maxRetries=2`). Auto-fixes can re-extract trigger phrases from headings/title, normalize unclosed anchors, and trim content to the shared token budget.
 
@@ -27,7 +27,7 @@ What changed is the handoff after the loop:
 - if sufficiency fails, the save aborts with `INSUFFICIENT_CONTEXT_ABORT`
 - if sufficiency passes, the runtime still validates the rendered-memory template contract before storage
 
-That means the quality loop can improve structure, but it cannot invent semantic evidence or bless malformed rendered output. A memory that still lacks a specific title, durable file/tool/decision evidence, enough semantic substance, or the required anchor/frontmatter contract remains rejected even after successful auto-fixes.
+That means the quality loop can improve structure, but it cannot invent semantic evidence or bless malformed rendered output. A spec-doc record that still lacks a specific title, durable file/tool/decision evidence, enough semantic substance, or the required anchor/frontmatter contract remains rejected even after successful auto-fixes.
 
 `attempts` still reports the actual number of evaluations used, not the configured ceiling. If a retry applies no fixes, the loop breaks early, so a case with `maxRetries=5` can still reject after only 2 total attempts (1 initial evaluation + 1 no-op retry). The rejection reason also reports the actual auto-fix attempt count.
 

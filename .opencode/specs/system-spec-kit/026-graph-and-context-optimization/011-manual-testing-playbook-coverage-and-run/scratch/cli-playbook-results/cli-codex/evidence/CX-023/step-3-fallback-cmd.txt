@@ -1,0 +1,2 @@
+codex exec review --uncommitted --model gpt-5.5 -c service_tier="fast" "Categorize findings under headings: SECURITY, BUGS, STYLE, PERFORMANCE. Reference the staged line by content."
+NOTE: TUI environment unavailable in agent runtime; using documented triage fallback (failure-triage column item 3 from scenario file: "if TUI input is unavailable in the operator's environment, fall back to codex exec review --uncommitted (CX-003 surface) and document as 'TUI environment unavailable'"). Working dir: /tmp/cli-codex-playbook-cx023

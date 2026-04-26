@@ -34,7 +34,7 @@ As a mutation validation operator, confirm 5-action PE decision engine during sa
 
 ### Commands
 
-1. save a memory with unique content → expect CREATE action
+1. save a spec-doc record with unique content → expect CREATE action
 2. save identical content → expect REINFORCE (similarity >=0.95)
 3. save slightly modified content (no contradiction) → expect UPDATE (0.85-0.94)
 4. save modified content with contradiction → expect SUPERSEDE (0.85-0.94 + contradiction)

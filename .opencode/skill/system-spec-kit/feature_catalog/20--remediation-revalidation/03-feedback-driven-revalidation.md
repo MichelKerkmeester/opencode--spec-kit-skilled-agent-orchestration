@@ -8,10 +8,10 @@ audited_post_018: true
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -23,7 +23,7 @@ This feature is the system's revalidation path after retrieval. Instead of treat
 
 ## 2. CURRENT REALITY
 
-`memory_validate` requires a positive integer `id` and a boolean `wasUseful`. The handler initializes the memory database, records the validation through `confidenceTracker.recordValidation()`, and returns updated `confidence`, `validationCount`, `positiveValidationCount`, and `promotionEligible` values in the success payload. Positive feedback increments confidence by `0.1` up to `1.0`; negative feedback decrements it by `0.05` down to `0.0`. Promotion eligibility is based on positive validations, not raw total validations.
+`memory_validate` requires a positive integer `id` and a boolean `wasUseful`. The handler initializes the spec-doc record database, records the validation through `confidenceTracker.recordValidation()`, and returns updated `confidence`, `validationCount`, `positiveValidationCount`, and `promotionEligible` values in the success payload. Positive feedback increments confidence by `0.1` up to `1.0`; negative feedback decrements it by `0.05` down to `0.0`. Promotion eligibility is based on positive validations, not raw total validations.
 
 Every validation also attempts to emit an adaptive-ranking signal. Positive feedback is stored as an `outcome` signal and negative feedback as a `correction` signal, with query/session metadata included when available. This write is intentionally best-effort: if adaptive tables are disabled or unavailable, validation still succeeds and the handler continues without failing the request.
 

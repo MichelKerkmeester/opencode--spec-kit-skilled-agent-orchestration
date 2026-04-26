@@ -54,8 +54,8 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `importanceTiers.important.decay` | `false` | Documents that important memories should not decay. |
 | `importanceTiers.normal.decay` | `true` | Documents that normal memories are decay-eligible. |
 | `importanceTiers.temporary.decay` | `true` | Documents that temporary memories are decay-eligible. |
-| `importanceTiers.deprecated.decay` | `false` | Documents that deprecated memories should not decay further. |
-| `importanceTiers.deprecated.excludeFromSearch` | `true` | Documents search exclusion for deprecated memories. |
+| `importanceTiers.deprecated.decay` | `false` | Documents that deprecated spec-doc records should not decay further. |
+| `importanceTiers.deprecated.excludeFromSearch` | `true` | Documents search exclusion for deprecated spec-doc records. |
 | `hybridSearch.enabled` | `true` | Documents hybrid retrieval as enabled. |
 | `hybridSearch.fallbackEnabled` | `true` | Documents fallback behavior when one search leg is unavailable. |
 | `contextTypeDetection.enabled` | `true` | Documents automatic context-type detection as enabled. |

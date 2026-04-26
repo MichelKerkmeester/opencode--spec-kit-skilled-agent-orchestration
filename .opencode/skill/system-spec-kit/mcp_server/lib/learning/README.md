@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE EXAMPLES](#4-usage-examples)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -75,7 +75,7 @@ learning/
 
 | Type | Code | Description |
 |------|------|-------------|
-| **Superseded** | `superseded` | Old memory replaced by new, more accurate one |
+| **Superseded** | `superseded` | Old spec-doc record replaced by new, more accurate one |
 | **Deprecated** | `deprecated` | Memory marked as outdated but preserved |
 | **Refined** | `refined` | Memory content improved or clarified |
 | **Merged** | `merged` | Multiple memories consolidated into one |
@@ -93,7 +93,7 @@ learning/
 |----------|---------|
 | `record_correction(params)` | Record a correction with stability updates |
 | `undo_correction(id)` | Reverse a correction, restore stability |
-| `get_corrections_for_memory(id)` | Get correction history for a memory |
+| `get_corrections_for_memory(id)` | Get correction history for a spec-doc record |
 | `get_correction_chain(id)` | Traverse full correction graph |
 | `get_corrections_stats()` | Aggregate statistics |
 
@@ -137,7 +137,7 @@ console.log(result.stability_changes);
 // }
 ```
 
-### Deprecating a Memory
+### Deprecating a Spec-Doc Record
 
 ```typescript
 import { deprecate_memory } from './index';

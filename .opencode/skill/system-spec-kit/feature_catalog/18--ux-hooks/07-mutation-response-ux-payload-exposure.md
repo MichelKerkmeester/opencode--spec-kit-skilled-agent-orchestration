@@ -9,7 +9,7 @@ description: "Mutation response UX payload exposure makes post-mutation hook dat
 
 Mutation response UX payload exposure makes post-mutation hook data available directly in tool responses on successful mutation paths.
 
-When you save a memory, the system now includes helpful follow-up information right in the response, like whether caches were refreshed or if any hints are available. Previously that information existed internally but was not shown to you. It is like a bank transaction that now prints a full receipt instead of just saying "transaction complete."
+When you save a spec-doc record, the system now includes helpful follow-up information right in the response, like whether caches were refreshed or if any hints are available. Previously that information existed internally but was not shown to you. It is like a bank transaction that now prints a full receipt instead of just saying "transaction complete."
 
 ---
 

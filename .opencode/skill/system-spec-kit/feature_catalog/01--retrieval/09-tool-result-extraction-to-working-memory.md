@@ -18,7 +18,7 @@ When the system finds something useful during a search, it keeps a mental note o
 
 The working memory module (`lib/cognitive/working-memory.ts`) captures salient results from tool invocations and stores them as session-scoped attention items. When a retrieval tool returns results, the system extracts key findings and inserts them into the `working_memory` table with an attention score. These extracted items persist across turns within the same session, enabling cross-turn context continuity.
 
-The extraction adapter (`lib/extraction/extraction-adapter.ts`) is the primary caller for tool-result capture. After eligible tool responses are summarized and redaction-checked, it resolves a memory ID and calls `upsertExtractedEntry()` so salient findings are inserted into working memory with provenance fields.
+The extraction adapter (`lib/extraction/extraction-adapter.ts`) is the primary caller for tool-result capture. After eligible tool responses are summarized and redaction-checked, it resolves a spec-doc record ID and calls `upsertExtractedEntry()` so salient findings are inserted into working memory with provenance fields.
 
 The working-memory schema now adds two session-local performance indexes: `idx_wm_session_focus_lru` on `(session_id, last_focused ASC, id ASC)` for deterministic least-recently-focused eviction and `idx_wm_session_attention_focus` on `(session_id, attention_score DESC, last_focused DESC)` for attention-ordered reads. `upsertExtractedEntry()` also no longer performs a pre-upsert existence probe before writing. It relies on a single `INSERT ... ON CONFLICT(session_id, memory_id) DO UPDATE` statement, then checks the resulting row state to decide whether the capacity limiter should run only for newly inserted entries.
 

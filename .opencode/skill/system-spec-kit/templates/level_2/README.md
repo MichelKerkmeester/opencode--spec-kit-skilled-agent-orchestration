@@ -31,14 +31,14 @@ Use for medium-scope work that needs explicit validation.
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. REQUIRED FILES](#2--required-files)
-- [3. OPTIONAL FILES](#3--optional-files)
-- [4. LEVEL 2 ADDITIONS](#4--level-2-additions)
-- [5. QUICK START](#5--quick-start)
-- [6. WORKFLOW NOTES](#6--workflow-notes)
-- [7. PHASE DECOMPOSITION](#7--phase-decomposition)
-- [8. RELATED](#8--related)
+- [1. OVERVIEW](#1-overview)
+- [2. REQUIRED FILES](#2-required-files)
+- [3. OPTIONAL FILES](#3-optional-files)
+- [4. LEVEL 2 ADDITIONS](#4-level-2-additions)
+- [5. QUICK START](#5-quick-start)
+- [6. WORKFLOW NOTES](#6-workflow-notes)
+- [7. PHASE DECOMPOSITION](#7-phase-decomposition)
+- [8. RELATED](#8-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

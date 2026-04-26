@@ -12,7 +12,7 @@ Structured-first spec folder routing with alignment scoring for context preserva
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The memory system uses a **structured-first architecture**. Routine saves pass structured JSON plus an explicit target spec folder, and all saves go through alignment scoring.
+The indexed-continuity store uses a **structured-first architecture**. Routine saves pass structured JSON plus an explicit target spec folder, and all saves go through alignment scoring.
 
 ### Core Principle
 

@@ -12,13 +12,13 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. NOTABLE COVERAGE](#4--notable-coverage)
-- [5. TROUBLESHOOTING](#5--troubleshooting)
-- [6. RUNNING VERIFICATION](#6--running-verification)
-- [7. RELATED](#7--related)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. STRUCTURE](#3-structure)
+- [4. NOTABLE COVERAGE](#4-notable-coverage)
+- [5. TROUBLESHOOTING](#5-troubleshooting)
+- [6. RUNNING VERIFICATION](#6-running-verification)
+- [7. RELATED](#7-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -98,7 +98,7 @@ Support assets:
 <!-- ANCHOR:notable-coverage -->
 ## 4. NOTABLE COVERAGE
 
-Recent/high-signal suites relevant to the memory database refinement work:
+Recent/high-signal suites relevant to the spec-doc record database refinement work:
 
 - `content-hash-dedup.vitest.ts` - same-path and cross-path content-hash dedup behavior.
 - `interference.vitest.ts` - interference scoring and retrieval penalty behavior.

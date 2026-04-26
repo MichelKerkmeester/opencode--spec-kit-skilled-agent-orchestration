@@ -15,7 +15,7 @@ This scenario validates the phase 018 spec-doc structure validator for `201`. It
 Operators run the validator against a real spec doc and confirm the phase-018 rule surface rejects malformed continuity/frontmatter state before the doc can be accepted.
 
 - Objective: Verify the five-rule validator bridge and continuity block enforcement
-- Prompt: `As a memory-quality validation operator, validate Spec-doc structure validator and continuity frontmatter against _memory.continuity. Verify the five-rule validator bridge and continuity block enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Spec-doc structure validator and continuity frontmatter against _memory.continuity. Verify the five-rule validator bridge and continuity block enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: five named rules execute in order; malformed `_memory.continuity` fails closed; valid docs pass cleanly
 - Pass/fail: PASS if the five rules run in order and malformed continuity/frontmatter state fails closed; FAIL if a rule is skipped or invalid continuity state is accepted
 
@@ -24,7 +24,7 @@ Operators run the validator against a real spec doc and confirm the phase-018 ru
 ### Prompt
 
 ```
-As a memory-quality validation operator, verify the five-rule validator bridge and continuity block enforcement against _memory.continuity. Verify five named rules execute in order; malformed _memory.continuity fails closed; valid docs pass cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, verify the five-rule validator bridge and continuity block enforcement against _memory.continuity. Verify five named rules execute in order; malformed _memory.continuity fails closed; valid docs pass cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

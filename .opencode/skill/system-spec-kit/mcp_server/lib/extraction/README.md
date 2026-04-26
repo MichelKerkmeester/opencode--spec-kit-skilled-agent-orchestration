@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE EXAMPLES](#4-usage-examples)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -29,7 +29,7 @@ trigger_phrases:
 ## 1. OVERVIEW
 <!-- ANCHOR:overview -->
 
-The extraction module provides the post-tool extraction pipeline for automated memory creation. It handles two distinct concerns: orchestrating extraction with deterministic memory ID resolution (`extraction-adapter.ts`) and blocking PII or secret content before it reaches the memory insert path (`redaction-gate.ts`).
+The extraction module provides the post-tool extraction pipeline for automated memory creation. It handles two distinct concerns: orchestrating extraction with deterministic memory ID resolution (`extraction-adapter.ts`) and blocking PII or secret content before it reaches the spec-doc record insert path (`redaction-gate.ts`).
 
 Gate E alignment: automated extraction feeds the same canonical continuity model as manual saves. Tool output is normalized once, then routed into canonical spec-document continuity plus supporting `_memory.continuity` state. There is no parallel fallback insert path.
 
@@ -98,7 +98,7 @@ extraction/
 
 ### Redaction Gate (`redaction-gate.ts`)
 
-**Purpose**: Block PII and secret content before it enters the memory store.
+**Purpose**: Block PII and secret content before it enters the spec-doc record store.
 
 | Aspect | Details |
 |--------|---------|
@@ -180,7 +180,7 @@ if (!result.allowed) {
 }
 ```
 
-### Example 2: Resolve a Memory ID with Deterministic Fallback
+### Example 2: Resolve a Spec-Doc Record ID with Deterministic Fallback
 
 ```typescript
 import { resolveMemoryId } from './extraction-adapter';
@@ -213,7 +213,7 @@ console.log(`Resolved ID: ${memoryId}`);
 | Environment Variable      | Default | Purpose                                                                 |
 |---------------------------|---------|-------------------------------------------------------------------------|
 | `SPECKIT_EXTRACTION`      | false   | Enable the post-tool extraction pipeline for automated memory creation. When `false`, extraction is disabled and tool outputs are not automatically processed into memories. |
-| `SPECKIT_REDACTION_GATE`  | true    | Enable the PII/secret redaction gate before memory insert. When `true`, all content passes through pattern-based PII and secret detection before reaching the memory store. Set to `false` only in trusted environments where redaction overhead is unnecessary. |
+| `SPECKIT_REDACTION_GATE`  | true    | Enable the PII/secret redaction gate before memory insert. When `true`, all content passes through pattern-based PII and secret detection before reaching the spec-doc record store. Set to `false` only in trusted environments where redaction overhead is unnecessary. |
 | `SPECKIT_AUTO_ENTITIES`   | true    | Enable auto entity extraction (R10). When `true`, entities are extracted from memory content at save time using rule-based extraction and stored in the `memory_entities` table. Required by entity linking (S5). |
 
 <!-- /ANCHOR:configuration -->

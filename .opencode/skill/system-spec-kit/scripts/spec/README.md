@@ -14,11 +14,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. UPGRADE FLOW (SPEC124/128/129/136-139)](#3--upgrade-flow-spec124128129136-139)
-- [4. COMPLETION GATE](#4--completion-gate)
-- [5. NOTES](#5--notes)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. UPGRADE FLOW (SPEC124/128/129/136-139)](#3-upgrade-flow-spec124128129136-139)
+- [4. COMPLETION GATE](#4-completion-gate)
+- [5. NOTES](#5-notes)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

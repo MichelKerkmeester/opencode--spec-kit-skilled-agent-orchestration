@@ -16,18 +16,18 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-  - [4-STAGE PIPELINE ARCHITECTURE](#4--stage-pipeline-architecture)
-- [2. KEY CONCEPTS](#2--key-concepts)
-- [3. MODULE STRUCTURE](#3--module-structure)
-- [4. FEATURES](#4--features)
+- [1. OVERVIEW](#1-overview)
+  - [4-STAGE PIPELINE ARCHITECTURE](#4-stage-pipeline-architecture)
+- [2. KEY CONCEPTS](#2-key-concepts)
+- [3. MODULE STRUCTURE](#3-module-structure)
+- [4. FEATURES](#4-features)
   - [GRAPH SIGNAL FEATURES](#graph-signal-features)
   - [SAVE-TIME PROCESSING PIPELINE](#save-time-processing-pipeline)
   - [SCORING ENHANCEMENTS](#scoring-enhancements)
 - [FTS CAPABILITY CASCADE FLOOR](#fts-capability-cascade-floor)
-- [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. RECENT CHANGES (SPRINT 8)](#6--recent-changes-sprint-8)
-- [7. RELATED RESOURCES](#7--related-resources)
+- [5. USAGE EXAMPLES](#5-usage-examples)
+- [6. RECENT CHANGES (SPRINT 8)](#6-recent-changes-sprint-8)
+- [7. RELATED RESOURCES](#7-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -672,7 +672,7 @@ Measures graph density and reports metrics used for R10 entity extraction escala
 <a id="save-time-processing-pipeline"></a>
 ### Save-Time Processing Pipeline
 
-Processing steps applied during `memory_save` before a memory is persisted.
+Processing steps applied during `memory_save` before a spec-doc record is persisted.
 
 **PI-A5: Verify-Fix-Verify Loop** (`memory-save.ts` / `quality-loop.ts`):
 Opt-in quality loop gated by `SPECKIT_QUALITY_LOOP`. When enabled, the save path performs 1 initial evaluation plus up to 2 immediate auto-fix retries by default. The reported `attempts` count reflects actual evaluations used, so early-break cases can stop before the configured ceiling. Accepted saves persist metadata fixes and carry rewritten body content in-memory until later hard-reject gates clear under lock. Rejected memories return structured rejection feedback instead of continuing to storage.
@@ -687,7 +687,7 @@ Same-path `unchanged` only applies to healthy existing rows (`success`, `pending
 |-------|-------|---------|
 | 1. Structural | Title, content length, spec folder format | Min content: 50 chars |
 | 2. Content Quality | 5-dimension weighted signal density | Dimensions: title (0.25), triggers (0.20), length (0.20), anchors (0.15), metadata (0.20) |
-| 3. Semantic Dedup | Cosine similarity against existing memories | Threshold: 0.92 rejects near-duplicates |
+| 3. Semantic Dedup | Cosine similarity against existing spec-doc records | Threshold: 0.92 rejects near-duplicates |
 
 Signal density threshold: **0.4** — below this, content quality is too low. Activation metadata can still be recorded for diagnostics, but continuity no longer depends on staged rollout windows.
 
@@ -698,9 +698,9 @@ Similarity-based merge/conflict/complement routing gated via `SPECKIT_RECONSOLID
 |-----------|--------|----------|
 | >= 0.88 | **Merge** | Append unique content lines, boost importance_weight +0.1 |
 | 0.75 - 0.88 | **Conflict** | Supersede: deprecate existing, create `supersedes` causal edge |
-| < 0.75 | **Complement** | Store as new memory unchanged |
+| < 0.75 | **Complement** | Store as new spec-doc record unchanged |
 
-Checks top-3 most similar memories in the spec folder.
+Checks top-3 most similar spec-doc records in the spec folder.
 
 **R7: Chunk Thinning** (`chunk-thinning.ts`):
 Scores chunks by anchor presence + content density. Composite score: `anchorScore * ANCHOR_WEIGHT + densityScore * DENSITY_WEIGHT`. Chunks below the `DEFAULT_THINNING_THRESHOLD=0.3` are dropped before indexing.
@@ -743,7 +743,7 @@ The same invariants are enforced at `memory_update`, post-insert metadata applic
 Min-max normalization maps composite scores to [0,1], fixing 15:1 magnitude mismatches between scoring dimensions. Gated via `SPECKIT_SCORE_NORMALIZATION` (default ON, graduated Sprint 4). Single-result sets normalize to 1.0; equal scores normalize to 1.0.
 
 **TM-01: Interference Scoring** (`../scoring/interference-scoring.ts`):
-Counts similar memories in the same spec folder using Jaccard word-overlap similarity. Threshold: **0.75**. Penalty: **-0.08** per interfering memory (additive, clamped to [0,1]). Gated via `SPECKIT_INTERFERENCE_SCORE` (default ON).
+Counts similar spec-doc records in the same spec folder using Jaccard word-overlap similarity. Threshold: **0.75**. Penalty: **-0.08** per interfering memory (additive, clamped to [0,1]). Gated via `SPECKIT_INTERFERENCE_SCORE` (default ON).
 
 **Degree Cache Invalidation** (`graph-search-fn.ts`):
 Typed-degree ranking is cached per database connection and invalidated through `clearDegreeCache()` / `clearDegreeCacheForDb()` after causal-edge and mutation flows, so the degree channel stays in sync with recent graph writes.

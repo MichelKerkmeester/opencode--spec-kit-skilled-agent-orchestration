@@ -9,7 +9,7 @@ description: "The standalone admin CLI provides non-MCP database maintenance com
 
 The standalone admin CLI provides non-MCP database maintenance commands for stats, bulk-delete, reindex and schema-downgrade operations.
 
-This is a command-line maintenance tool for the memory database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
+This is a command-line maintenance tool for the spec-doc record database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
 
 ---
 

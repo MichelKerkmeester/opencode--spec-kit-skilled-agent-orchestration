@@ -18,17 +18,17 @@ The constitutional tier is the highest importance level in the Spec Kit Memory s
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. CONFIGURATION](#5--configuration)
-- [6. CREATING CONSTITUTIONAL MEMORIES](#6--creating-constitutional-memories)
-- [7. CUSTOMIZATION](#7--customization)
-- [8. USAGE EXAMPLES](#8--usage-examples)
-- [9. TROUBLESHOOTING](#9--troubleshooting)
-- [10. RELATED DOCUMENTS](#10--related-documents)
-- [11. SUMMARY](#11--summary)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. STRUCTURE](#3-structure)
+- [4. FEATURES](#4-features)
+- [5. CONFIGURATION](#5-configuration)
+- [6. CREATING CONSTITUTIONAL MEMORIES](#6-creating-constitutional-memories)
+- [7. CUSTOMIZATION](#7-customization)
+- [8. USAGE EXAMPLES](#8-usage-examples)
+- [9. TROUBLESHOOTING](#9-troubleshooting)
+- [10. RELATED DOCUMENTS](#10-related-documents)
+- [11. SUMMARY](#11-summary)
 
 ---
 
@@ -208,7 +208,7 @@ Constitutional memories support **fast trigger phrase matching** (<50ms) for pro
 **How it works:**
 
 1. Define trigger phrases in YAML frontmatter
-2. When user message contains a trigger phrase, the memory surfaces
+2. When user message contains a trigger phrase, the spec-doc record surfaces
 3. No embedding generation required. Pure string matching
 
 **Example triggers:**
@@ -222,7 +222,7 @@ triggerPhrases:
   - spec folder
 ```
 
-When a user says "fix the login bug", the memory with "fix" trigger surfaces immediately.
+When a user says "fix the login bug", the spec-doc record with "fix" trigger surfaces immediately.
 
 ### 4.3 ANCHOR Format
 
@@ -382,7 +382,7 @@ Your rule content here...
 | ... | ... |
 ```
 
-#### Step 5: Index the Memory
+#### Step 5: Index the Spec-Doc Record
 
 ```bash
 # Option 1: Restart MCP server (auto-indexes on startup)

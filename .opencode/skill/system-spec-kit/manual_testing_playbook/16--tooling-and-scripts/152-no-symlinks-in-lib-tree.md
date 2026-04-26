@@ -7,11 +7,11 @@ description: "This scenario validates the no-symlinks policy by confirming zero 
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. SCENARIO CONTRACT](#2--scenario-contract)
-- [3. TEST EXECUTION](#3--test-execution)
-- [4. REFERENCES](#4--references)
-- [5. SOURCE METADATA](#5--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. SCENARIO CONTRACT](#2-scenario-contract)
+- [3. TEST EXECUTION](#3-test-execution)
+- [4. REFERENCES](#4-references)
+- [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
 

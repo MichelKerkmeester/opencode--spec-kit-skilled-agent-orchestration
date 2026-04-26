@@ -1,6 +1,7 @@
 ---
 title: "Decision Record: CLI Testing Playbooks"
 description: "ADRs for spec 048 — shared category taxonomy, per-CLI feature ID prefixes, per-CLI category counts, cross-AI handback isolation, and command-driven generation."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 trigger_phrases:
   - "048 adr"
   - "cli playbook adr"
@@ -63,6 +64,8 @@ Five CLI orchestrator skills will each ship their own `manual_testing_playbook/`
 **We chose**: An invariant subset of three categories (`01--cli-invocation`, `06--integration-patterns`, `07--prompt-templates`) appears in the same numeric position in all 5 CLI playbooks; CLI-specific categories slot between 02–05 and append from 08+.
 
 **How it works**: Every CLI playbook starts with `01--cli-invocation` (base flag/model/output-format scenarios), uses `06--integration-patterns` for cross-AI delegation patterns, and uses `07--prompt-templates` for template + CLEAR-card scenarios. Categories 02–05 and 08+ vary per CLI and reflect that CLI's unique surface.
+
+**Clarification (content shape contract)**: The invariant is the NAME and POSITION of categories 01, 06, and 07 across all 5 playbooks. The CONTENT shape inside each invariant category is per-CLI specific to honor real surface differences. Category `06--integration-patterns` is the canonical example: cli-claude-code's category 06 covers cross-AI delegation through file IO and JSON envelopes, while cli-opencode's category 06 covers cross-AI handback via session resume and shared state. Both honor the integration-patterns invariant by name and position, but the per-feature scenarios under each are scoped to that CLI's actual integration surface. Operators navigating across CLIs find the right category by position; the scenarios within reflect what that CLI can actually do.
 
 ---
 
@@ -151,7 +154,7 @@ Per-feature files have a Feature ID in their frontmatter and in the root playboo
 
 **We chose**: Each CLI playbook uses a distinct 2-letter prefix derived from the CLI name: `CC-` (cli-claude-code), `CX-` (cli-codex), `CP-` (cli-copilot), `CG-` (cli-gemini), `CO-` (cli-opencode).
 
-**How it works**: Per-feature file frontmatter uses `title: "CC-001 -- {Feature Name}"`; root cross-reference index uses `| CC-001 | {Feature Name} | ... |`; per-feature filename uses `001-feature-slug.md`.
+**How it works**: Per-feature file frontmatter uses `title: "CC-001 -- {Feature Name}"`; root cross-reference index uses `| CC-001 | {Feature Name} | ... |`; per-feature filename uses the slug pattern 001-feature-slug, ending in .md.
 
 ---
 
@@ -449,3 +452,84 @@ The work could be done either by hand-crafting all root + per-feature files in t
 **What changes**: 5 @write dispatches in 2 waves per plan.md §4.
 
 **How to roll back**: `git checkout` the affected playbook trees and re-dispatch with corrected briefing.
+
+---
+
+## ADR-006: Root Prompt Text Is a Paraphrased Subset of Per-Feature Canonical Prompts
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-26 |
+| **Deciders** | spec author + deep-review iter-005 finding response |
+
+---
+
+### Context
+
+Each per-feature scenario file carries a canonical Role then Context then Action then Format prompt sized to fully specify the operator action. The root MANUAL_TESTING_PLAYBOOK file in each playbook also lists summary prompts in its 9-column scenario table for navigability. Iter-005 of the deep review surfaced 76 drift entries between root summary prompts and per-feature canonical prompts. The drift is structural: the root cells trade fidelity for compactness so an operator scanning the table can find the right scenario without opening every per-feature file.
+
+### Constraints
+
+- The 9-column scenario table at the root level must remain readable across a single visual sweep; full canonical prompts would push every row to 200+ characters.
+- The per-feature file is the single source of truth for scenario execution; operators run from there, not from the root summary.
+- Renaming the root field would force a per-feature file rewrite of the cross-reference index.
+
+---
+
+### Decision
+
+**We chose**: Root summary prompts in each MANUAL_TESTING_PLAYBOOK file are intentionally a paraphrased subset of the per-feature canonical prompts. The contract is that the root summary names the role, context and target outcome in compact form, and the per-feature file carries the full Role then Context then Action then Format prompt as the operator-execution contract. The 76 drift entries flagged by iter-005 are not bugs; they are the contracted relationship.
+
+**How it works**: When generating or updating a playbook via `/create:testing-playbook`, the root summary cell is auto-derived from the per-feature canonical prompt by the workflow. Operators executing a scenario should always open the per-feature file to read the canonical prompt; the root summary is the navigation breadcrumb.
+
+---
+
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **Root summary is paraphrased subset** (chosen) | Keeps root tables scannable; per-feature files stay authoritative | Requires this ADR to make the relationship explicit | 9/10 |
+| Rename root field to `Prompt summary` | Names the field accurately; matches reality | Breaks backwards compatibility with existing playbooks; forces per-feature index rewrite | 5/10 |
+| Force root prompts to match per-feature canonical prompts verbatim | Single source of truth, no drift | 200+ character rows destroy table readability; defeats the navigation purpose | 3/10 |
+
+**Why this one**: The drift is intentional, not accidental. Making it explicit through this ADR is cheaper than restructuring 5 root playbooks plus the canonical command workflow.
+
+---
+
+### Consequences
+
+**What improves**: Future updates can refresh root summaries without anxiety about per-feature drift; the per-feature file remains the canonical execution contract; operators have explicit guidance to open the per-feature file for execution.
+
+**What it costs**: This relationship has to be documented in onboarding for new contributors so they don't try to "fix" the drift.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Operator runs from root summary without opening per-feature file | M | Root playbook overview section explicitly states "open the per-feature file before executing"; Failure Triage steps live only in per-feature files, so partial execution self-corrects |
+| Future updates regenerate one but not the other | L | `/create:testing-playbook update` regenerates both atomically |
+
+---
+
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Without this ADR, drift triggers a P1 finding every review cycle |
+| 2 | **Beyond Local Maxima?** | PASS | Considered renaming the field and forcing verbatim copies |
+| 3 | **Sufficient?** | PASS | Documents the contract; per-feature files remain authoritative |
+| 4 | **Fits Goal?** | PASS | Operator navigability is a primary spec success criterion |
+| 5 | **Open Horizons?** | PASS | Future automated drift detection can target the per-feature canonical prompt as the source of truth |
+
+**Checks Summary**: 5/5 PASS
+
+---
+
+### Implementation
+
+**What changes**: implementation-summary.md Known Limitations §6 cites this ADR. No playbook content changes.
+
+**How to roll back**: Force-regenerate root summaries from per-feature canonical prompts via a one-shot script; accepts the readability hit.

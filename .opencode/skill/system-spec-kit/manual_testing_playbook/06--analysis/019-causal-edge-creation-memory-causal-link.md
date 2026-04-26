@@ -35,7 +35,7 @@ As an analysis validation operator, validate Causal provenance linking plus exac
 
 1. Create a direct edge with `memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 })`
 2. Confirm the edge is visible via `memory_drift_why({ memoryId:"<memory-id-b>", direction:"both", maxDepth:4 })`
-3. Prepare or update a memory file containing multiple causal-link references, including exact canonical/file-path references and one fallback-only fuzzy reference, then run the indexing path that triggers `processCausalLinks()`
+3. Prepare or update a spec-doc record file containing multiple causal-link references, including exact canonical/file-path references and one fallback-only fuzzy reference, then run the indexing path that triggers `processCausalLinks()`
 4. Capture processor logs, diagnostics, or test-harness evidence showing `resolveMemoryReferencesBatch()` resolves the reference set once, exact `canonical_file_path`/`file_path` equality is attempted before fuzzy `LIKE`, and only unresolved references fall through to the fuzzy pass
 5. Verify the inserted auto-extracted edges appear in causal trace output or storage inspection
 

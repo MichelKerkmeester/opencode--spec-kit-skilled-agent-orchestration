@@ -16,14 +16,14 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. KEY CONCEPTS](#2--key-concepts)
-- [3. STRUCTURE](#3--structure)
-- [4. FEATURES](#4--features)
-- [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. TROUBLESHOOTING](#6--troubleshooting)
-- [7. FAQ](#7--faq)
-- [8. RELATED RESOURCES](#8--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. KEY CONCEPTS](#2-key-concepts)
+- [3. STRUCTURE](#3-structure)
+- [4. FEATURES](#4-features)
+- [5. USAGE EXAMPLES](#5-usage-examples)
+- [6. TROUBLESHOOTING](#6-troubleshooting)
+- [7. FAQ](#7-faq)
+- [8. RELATED RESOURCES](#8-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 

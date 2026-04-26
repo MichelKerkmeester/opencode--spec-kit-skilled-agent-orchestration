@@ -18,7 +18,7 @@ Creating a numerical fingerprint (embedding) for each spec-doc record requires c
 
 The retry manager (`lib/providers/retry-manager.ts`) orchestrates background retry of failed embedding operations. When the primary embedding provider is unavailable or returns errors during `memory_save` or `memory_index_scan`, the affected memories are marked with `embedding_status = 'pending'` and stored without vectors (lexical-only fallback). The retry manager runs as a background job with configurable interval and batch size, picking up pending memories and re-attempting embedding generation.
 
-Each retry attempt uses the embedding cache to avoid redundant API calls for content that was previously embedded successfully. The retry stats (`pending`, `retry`, `failed` counts) are exposed for monitoring. Failed memories increment a `retry_count` for progressive backoff. On success, the retry manager itself updates `memory_index`, clears any prior `vec_memories` row for the memory, and inserts the refreshed embedding buffer as part of its transaction.
+Each retry attempt uses the embedding cache to avoid redundant API calls for content that was previously embedded successfully. The retry stats (`pending`, `retry`, `failed` counts) are exposed for monitoring. Failed memories increment a `retry_count` for progressive backoff. On success, the retry manager itself updates `memory_index`, clears any prior `vec_memories` row for the spec-doc record, and inserts the refreshed embedding buffer as part of its transaction.
 
 ---
 

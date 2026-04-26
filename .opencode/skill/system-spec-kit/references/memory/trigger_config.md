@@ -14,7 +14,7 @@ Complete configuration guide for memory trigger phrases and the fast trigger mat
 
 **Core Principle:** Trigger detection must be fast (<50ms) and reliable, using optimized phrase matching to surface relevant spec-doc records without impacting conversation flow.
 
-The memory workflow supports manual activation mechanisms:
+The spec-doc record workflow supports manual activation mechanisms:
 1. **Command Trigger** - `/memory:save` command for explicit saves
 2. **Phrase Triggers** - User phrases that directly invoke memory operations
 
@@ -87,10 +87,10 @@ The `memory_match_triggers` MCP tool provides fast trigger phrase matching witho
 // Fast trigger matching (<50ms) - no embeddings required
 const result = await spec_kit_memory_memory_match_triggers({
   prompt: "I want to save context for this session",
-  limit: 3  // Maximum matching memories to return
+  limit: 3  // Maximum matching spec-doc records to return
 });
 
-// Returns matching memories based on trigger phrases
+// Returns matching spec-doc records based on trigger phrases
 // Ideal for proactive memory surfacing during conversation
 ```
 
@@ -150,9 +150,9 @@ Beyond the default trigger phrases, the system recognizes expanded signal types 
 
 | Signal | Purpose | Example Phrases |
 |--------|---------|----------------|
-| `CORRECTION` | Tracks when a memory is corrected or superseded | "actually", "correction", "that was wrong", "update previous" |
+| `CORRECTION` | Tracks when a spec-doc record is corrected or superseded | "actually", "correction", "that was wrong", "update previous" |
 | `PREFERENCE` | Captures user preference signals | "I prefer", "use this instead", "default to", "always do" |
-| `REINFORCEMENT` | Positive validation of existing memories | "that's right", "confirmed", "keep this" |
+| `REINFORCEMENT` | Positive validation of existing spec-doc records | "that's right", "confirmed", "keep this" |
 | `DEPRECATION` | Marks memories as outdated | "no longer valid", "deprecated", "removed", "obsolete" |
 
 These signals are detected during `memory_match_triggers()` processing and influence save-time arbitration (prediction-error scoring) and correction tracking.

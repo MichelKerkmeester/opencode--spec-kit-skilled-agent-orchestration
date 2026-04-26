@@ -16,13 +16,13 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. TYPE ARCHITECTURE](#3--type-architecture)
-- [4. INTERFACES](#4--interfaces)
-- [5. ROOT TYPE: SESSIONDATA](#5--root-type-sessiondata)
-- [6. MIGRATION NOTES](#6--migration-notes)
-- [7. RELATED](#7--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. TYPE ARCHITECTURE](#3-type-architecture)
+- [4. INTERFACES](#4-interfaces)
+- [5. ROOT TYPE: SESSIONDATA](#5-root-type-sessiondata)
+- [6. MIGRATION NOTES](#6-migration-notes)
+- [7. RELATED](#7-related)
 
 ---
 

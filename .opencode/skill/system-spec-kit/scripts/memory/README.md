@@ -14,12 +14,12 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. MEMORY SAVE RULE COMMANDS](#3--memory-save-rule-commands)
-- [4. MAINTENANCE COMMANDS](#4--maintenance-commands)
-- [5. WORKFLOW ALIGNMENT](#5--workflow-alignment)
-- [6. FRONTMATTER NORMALIZATION + REINDEX](#6--frontmatter-normalization--reindex)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. MEMORY SAVE RULE COMMANDS](#3-memory-save-rule-commands)
+- [4. MAINTENANCE COMMANDS](#4-maintenance-commands)
+- [5. WORKFLOW ALIGNMENT](#5-workflow-alignment)
+- [6. FRONTMATTER NORMALIZATION + REINDEX](#6-frontmatter-normalization--reindex)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -101,7 +101,7 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js
 - Derives `MEMORY_TITLE` from the content slug via `slugToTitle(contentSlug)` and writes it into the H1 heading. A blank line separates the frontmatter close `---` from the `# H1`.
 - Writes `MEMORY_DASHBOARD_TITLE` into context template frontmatter so dashboard titles stay disambiguated.
 - Runs post-render memory quality validation so contaminated headings or stale decision leaks are caught after template population. The post-save quality pipeline includes 3-layer gates (structure, semantic sufficiency, duplicate detection), heuristic calibration for scoring thresholds, and trigger sanitization to prevent noisy or over-broad trigger phrases from persisting in the index.
-- Retroactive title refresh for existing memories: run `memory_index_scan({ force: true })` after parser/template updates.
+- Retroactive title refresh for existing spec-doc records: run `memory_index_scan({ force: true })` after parser/template updates.
 <!-- /ANCHOR:workflow-alignment -->
 
 <!-- ANCHOR:frontmatter-normalization-reindex -->

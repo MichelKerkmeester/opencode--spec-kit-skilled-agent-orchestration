@@ -10,7 +10,7 @@ audited_post_018: true
 
 Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule, gated by the `SPECKIT_HYBRID_DECAY_POLICY` flag.
 
-Some memories should never fade. A decision record or a constitutional rule is just as important six months from now as it is today. Without this feature, all memories decay according to the same FSRS schedule, causing important permanent artifacts to gradually lose relevance. The hybrid decay policy classifies each memory by its context type and assigns permanent artifacts an infinite stability, exempting them from decay while letting everything else follow the normal forgetting curve.
+Some memories should never fade. A decision record or a constitutional rule is just as important six months from now as it is today. Without this feature, all memories decay according to the same FSRS schedule, causing important permanent artifacts to gradually lose relevance. The hybrid decay policy classifies each spec-doc record by its context type and assigns permanent artifacts an infinite stability, exempting them from decay while letting everything else follow the normal forgetting curve.
 
 ---
 

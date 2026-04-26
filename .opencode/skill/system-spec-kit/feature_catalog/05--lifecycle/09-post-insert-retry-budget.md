@@ -9,7 +9,7 @@ description: "Phase 017 added a bounded retry budget for save-time enrichment so
 
 Phase 017 added a bounded retry budget for save-time enrichment so structurally non-retryable post-insert failures stop after three attempts instead of looping indefinitely.
 
-This is lifecycle control for the enrichment pipeline. It keeps the save path from re-scheduling the same doomed repair work forever and gives operators a deterministic reset point when a memory is retried successfully or the process restarts.
+This is lifecycle control for the enrichment pipeline. It keeps the save path from re-scheduling the same doomed repair work forever and gives operators a deterministic reset point when a spec-doc record is retried successfully or the process restarts.
 
 ---
 
@@ -21,7 +21,7 @@ The retry budget keys attempts on `(memoryId, step, reason)` tuples. `shouldRetr
 
 The current `N=3` cap is a heuristic bounded hot-loop budget, not an empirically calibrated threshold. Runtime retry decisions now emit structured `retry_attempt` events with `{memoryId, step, reason, attempt, outcome, timestamp}` so future tuning can use real attempt histograms instead of guesswork.
 
-The current consumer is the deferred post-insert enrichment path. If causal-link backfill keeps returning `partial_causal_link_unresolved`, the save pipeline now stops requeueing after the third failure and emits a structured warning instead of continuing an unbounded retry loop. A successful completion clears the memory-specific budget.
+The current consumer is the deferred post-insert enrichment path. If causal-link backfill keeps returning `partial_causal_link_unresolved`, the save pipeline now stops requeueing after the third failure and emits a structured warning instead of continuing an unbounded retry loop. A successful completion clears the spec-doc record-specific budget.
 
 The budget is intentionally process-local. It resets on restart, which is acceptable for the current save lifecycle because the feature is designed to prevent hot-loop retry churn inside one MCP process rather than to persist retry state across deployments.
 

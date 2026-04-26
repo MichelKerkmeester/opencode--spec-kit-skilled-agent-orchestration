@@ -16,7 +16,7 @@ Sometimes the words you use in a question do not match the words stored in the s
 
 ## 2. CURRENT REALITY
 
-Embedding-based query expansion broadens retrieval for complex queries by mining similar memories from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
+Embedding-based query expansion broadens retrieval for complex queries by mining similar spec-doc records from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
 
 When R15 classifies a query as "simple", the embedding-based expansion path is suppressed because expanding a trigger-phrase lookup would add noise. If embedding expansion produces no additional terms, the original query proceeds unchanged. Separately, `query-expander.ts` provides rule-based synonym variants for deep-mode retrieval; that is a distinct path and should not be conflated with vector-mined expansion. In the 4-stage pipeline, Stage 1 runs the baseline and expanded-query searches in parallel with deduplication (baseline-first). Runs behind the `SPECKIT_EMBEDDING_EXPANSION` flag (default ON).
 

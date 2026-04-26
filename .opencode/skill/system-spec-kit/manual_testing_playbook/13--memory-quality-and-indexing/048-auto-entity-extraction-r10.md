@@ -17,7 +17,7 @@ This scenario validates Auto entity extraction (R10) for `048`. It focuses on Co
 Operators run the exact prompt and command sequence for `048` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm entity pipeline persistence
-- Prompt: `As a memory-quality validation operator, validate Auto entity extraction (R10) against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Auto entity extraction (R10) against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded
 - Pass/fail: PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `048` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm entity pipeline persistence against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm entity pipeline persistence against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

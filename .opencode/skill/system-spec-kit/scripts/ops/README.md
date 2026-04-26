@@ -17,14 +17,14 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. FAILURE CLASSES](#3--failure-classes)
-- [4. SCRIPT MAP](#4--script-map)
-- [5. RETRY AND ESCALATION CONTRACT](#5--retry-and-escalation-contract)
-- [6. USAGE EXAMPLES](#6--usage-examples)
-- [7. TROUBLESHOOTING](#7--troubleshooting)
-- [8. RELATED RESOURCES](#8--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. FAILURE CLASSES](#3-failure-classes)
+- [4. SCRIPT MAP](#4-script-map)
+- [5. RETRY AND ESCALATION CONTRACT](#5-retry-and-escalation-contract)
+- [6. USAGE EXAMPLES](#6-usage-examples)
+- [7. TROUBLESHOOTING](#7-troubleshooting)
+- [8. RELATED RESOURCES](#8-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 ---

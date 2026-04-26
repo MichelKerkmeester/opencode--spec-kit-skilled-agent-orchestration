@@ -13,11 +13,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT INVENTORY](#2--current-inventory)
-- [3. RUNTIME MODEL](#3--runtime-model)
-- [4. WORKFLOW NOTES](#4--workflow-notes)
-- [5. QUICK VERIFICATION](#5--quick-verification)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT INVENTORY](#2-current-inventory)
+- [3. RUNTIME MODEL](#3-runtime-model)
+- [4. WORKFLOW NOTES](#4-workflow-notes)
+- [5. QUICK VERIFICATION](#5-quick-verification)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -33,7 +33,7 @@ Current source inventory: 17 TypeScript modules plus `index.ts` barrel export.
 
 - `alignment-validator.ts` - spec folder alignment checking and tree-thinning application for file change lists
 - `config.ts` - config loading and path/constants wiring
-- `content-cleaner.ts` - HTML stripping and literal anchor escaping for rendered memory content
+- `content-cleaner.ts` - HTML stripping and literal anchor escaping for rendered spec-doc record content
 - `file-writer.ts` - write/validation helpers for generated files
 - `frontmatter-editor.ts` - frontmatter metadata injection and trigger phrase YAML rendering
 - `memory-indexer.ts` - indexing hooks and metadata preparation
@@ -75,7 +75,7 @@ cd .opencode/skill/system-spec-kit/scripts && npm run build
 - `file-writer.ts` and `memory-indexer.ts` keep generated context output consistent with indexing expectations.
 - `post-save-review.ts` runs after writes in JSON-mode save flows to compare saved frontmatter against the input payload and surface severity-graded drift findings.
 - `workflow.ts` now treats the canonical continuity path as unconditional. The save flow uses a single canonical path with no staged migration layer.
-- `workflow.ts` updates per-folder `description.json` after each memory save (increments `memorySequence`, appends to `memoryNameHistory`). This tracking is best-effort — failures are non-fatal.
+- `workflow.ts` updates per-folder `description.json` after each spec-doc record save (increments `memorySequence`, appends to `memoryNameHistory`). This tracking is best-effort — failures are non-fatal.
 
 
 <!-- /ANCHOR:workflow-notes -->

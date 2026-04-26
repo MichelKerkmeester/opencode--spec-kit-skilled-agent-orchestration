@@ -16,14 +16,14 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. STRUCTURAL TRUST CONTRACT (006)](#4--structural-trust-contract-006)
-- [5. USAGE EXAMPLES](#5--usage-examples)
-- [6. RELATED RESOURCES](#6--related-resources)
-- [8. GRAPH PAYLOAD VALIDATOR AND TRUST PRESERVATION (011)](#8--graph-payload-validator-and-trust-preservation-011)
-- [9. AUDITABLE SAVINGS PUBLICATION CONTRACT (009)](#9--auditable-savings-publication-contract-009)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. STRUCTURAL TRUST CONTRACT (006)](#4-structural-trust-contract-006)
+- [5. USAGE EXAMPLES](#5-usage-examples)
+- [6. RELATED RESOURCES](#6-related-resources)
+- [8. GRAPH PAYLOAD VALIDATOR AND TRUST PRESERVATION (011)](#8-graph-payload-validator-and-trust-preservation-011)
+- [9. AUDITABLE SAVINGS PUBLICATION CONTRACT (009)](#9-auditable-savings-publication-contract-009)
 
 <!-- /ANCHOR:table-of-contents -->
 

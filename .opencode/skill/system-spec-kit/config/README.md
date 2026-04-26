@@ -16,10 +16,10 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. CONFIGURATION OPTIONS](#2--configuration-options)
-- [3. USAGE](#3--usage)
-- [4. RELATED DOCUMENTS](#4--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. CONFIGURATION OPTIONS](#2-configuration-options)
+- [3. USAGE](#3-usage)
+- [4. RELATED DOCUMENTS](#4-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 

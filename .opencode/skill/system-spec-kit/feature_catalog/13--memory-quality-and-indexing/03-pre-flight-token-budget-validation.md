@@ -10,7 +10,7 @@ audited_post_018: true
 
 Pre-flight token budget validation estimates token count before embedding generation and rejects oversized content at save time.
 
-Before the system stores a new memory, it checks whether the content is too large to process. Think of it like a mailbox with a size limit: if your package is too big, you get told right away instead of wasting time trying to stuff it in. This prevents expensive processing work on content that would fail anyway.
+Before the system stores a new spec-doc record, it checks whether the content is too large to process. Think of it like a mailbox with a size limit: if your package is too big, you get told right away instead of wasting time trying to stuff it in. This prevents expensive processing work on content that would fail anyway.
 
 ---
 

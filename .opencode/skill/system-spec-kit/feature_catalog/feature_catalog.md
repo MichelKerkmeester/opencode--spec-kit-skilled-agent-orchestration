@@ -15,28 +15,28 @@ This document combines two complementary views of the Spec Kit Memory system int
 - [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
-- [1. OVERVIEW](#1--overview)
-- [2. RETRIEVAL](#2--retrieval)
-- [3. MUTATION](#3--mutation)
-- [4. DISCOVERY](#4--discovery)
-- [5. MAINTENANCE](#5--maintenance)
-- [6. LIFECYCLE](#6--lifecycle)
-- [7. ANALYSIS](#7--analysis)
-- [8. EVALUATION](#8--evaluation)
-- [9. BUG FIXES AND DATA INTEGRITY](#9--bug-fixes-and-data-integrity)
-- [10. EVALUATION AND MEASUREMENT](#10--evaluation-and-measurement)
-- [11. GRAPH SIGNAL ACTIVATION](#11--graph-signal-activation)
-- [12. SCORING AND CALIBRATION](#12--scoring-and-calibration)
-- [13. QUERY INTELLIGENCE](#13--query-intelligence)
-- [14. MEMORY QUALITY AND INDEXING](#14--memory-quality-and-indexing)
-- [15. PIPELINE ARCHITECTURE](#15--pipeline-architecture)
-- [16. RETRIEVAL ENHANCEMENTS](#16--retrieval-enhancements)
-- [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
-- [18. GOVERNANCE](#18--governance)
-- [19. FEATURE FLAG REFERENCE](#19--feature-flag-reference)
-- [20. REMEDIATION REVALIDATION](#20--remediation-revalidation)
-- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21--implement-and-remove-deprecated-features)
-- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22--context-preservation-and-code-graph)
+- [1. OVERVIEW](#1-overview)
+- [2. RETRIEVAL](#2-retrieval)
+- [3. MUTATION](#3-mutation)
+- [4. DISCOVERY](#4-discovery)
+- [5. MAINTENANCE](#5-maintenance)
+- [6. LIFECYCLE](#6-lifecycle)
+- [7. ANALYSIS](#7-analysis)
+- [8. EVALUATION](#8-evaluation)
+- [9. BUG FIXES AND DATA INTEGRITY](#9-bug-fixes-and-data-integrity)
+- [10. EVALUATION AND MEASUREMENT](#10-evaluation-and-measurement)
+- [11. GRAPH SIGNAL ACTIVATION](#11-graph-signal-activation)
+- [12. SCORING AND CALIBRATION](#12-scoring-and-calibration)
+- [13. QUERY INTELLIGENCE](#13-query-intelligence)
+- [14. MEMORY QUALITY AND INDEXING](#14-memory-quality-and-indexing)
+- [15. PIPELINE ARCHITECTURE](#15-pipeline-architecture)
+- [16. RETRIEVAL ENHANCEMENTS](#16-retrieval-enhancements)
+- [17. TOOLING AND SCRIPTS](#17-tooling-and-scripts)
+- [18. GOVERNANCE](#18-governance)
+- [19. FEATURE FLAG REFERENCE](#19-feature-flag-reference)
+- [20. REMEDIATION REVALIDATION](#20-remediation-revalidation)
+- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21-implement-and-remove-deprecated-features)
+- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22-context-preservation-and-code-graph)
 
 ---
 
@@ -168,7 +168,7 @@ Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improveme
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **51 tools** overall across the 7-layer MCP surface (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`; deferred / internal-only handlers do NOT count). The command layer wraps the memory-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the memory/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **51 tools** overall across the 7-layer MCP surface (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`; deferred / internal-only handlers do NOT count). The command layer wraps the spec-doc record-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the spec-doc record/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
@@ -330,7 +330,7 @@ See [`01--retrieval/05-4-stage-pipeline-architecture.md`](01--retrieval/05-4-sta
 
 #### Description
 
-When you change the keywords associated with a memory, the search index now updates itself to reflect those changes. Previously it only refreshed when you changed the title, so updated keywords were invisible to searches until a full rebuild. This fix makes sure the system stays in sync with your edits.
+When you change the keywords associated with a spec-doc record, the search index now updates itself to reflect those changes. Previously it only refreshed when you changed the title, so updated keywords were invisible to searches until a full rebuild. This fix makes sure the system stays in sync with your edits.
 
 #### Current Reality
 
@@ -448,15 +448,15 @@ The canonical router now classifies save chunks across 8 categories: `narrative_
 
 Before embedding generation, content normalization strips structural markdown noise. Seven primitives (frontmatter, anchors, HTML comments, code fences, tables, lists, headings) run in sequence to produce cleaner text for the embedding model. BM25 has a separate normalization entry point (`normalizeContentForBM25`) that currently delegates to the embedding normalizer, and it is used on rebuild-from-database paths. In live save paths, raw content is passed to BM25 tokenization (`addDocument`) before tokenizer normalization.
 
-The interesting part is what happens before the record is created. A Prediction Error (PE) gating system compares the new content against existing memories via cosine similarity and decides one of five actions. CREATE stores a new record when no similar memory exists. REINFORCE boosts the FSRS stability of an existing duplicate without creating a new entry (the system already knows this, so it strengthens the memory). UPDATE overwrites an existing high-similarity memory in-place when the new version supersedes the old. SUPERSEDE marks the old memory as deprecated, creates a new record and links them with a causal edge. CREATE_LINKED stores a new memory with a relationship edge to a similar but distinct existing memory.
+The interesting part is what happens before the record is created. A Prediction Error (PE) gating system compares the new content against existing spec-doc records via cosine similarity and decides one of five actions. CREATE stores a new record when no similar spec-doc record exists. REINFORCE boosts the FSRS stability of an existing duplicate without creating a new entry (the system already knows this, so it strengthens the spec-doc record). UPDATE overwrites an existing high-similarity memory in-place when the new version supersedes the old. SUPERSEDE marks the older spec-doc record as deprecated, creates a new record and links them with a causal edge. CREATE_LINKED stores a new spec-doc record with a relationship edge to a similar but distinct existing spec-doc record.
 
 A three-layer quality gate runs before storage when `SPECKIT_SAVE_QUALITY_GATE` is enabled (default ON). Layer 1 validates structure (title exists, content at least 50 characters, valid spec folder path). Layer 2 scores content quality across five dimensions (title, triggers, length, anchors, metadata) against a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity, rejecting near-duplicates above 0.92. A warn-only mode runs for the first 14 days after activation, logging would-reject decisions without blocking saves.
 
 When `SPECKIT_QUALITY_LOOP=true`, the save path also runs a verify-fix-verify loop before storage. The runtime performs one initial evaluation and then up to 2 immediate auto-fix retries by default. The reported `attempts` count is the actual number of evaluations used, so early-break cases do not claim the full configured retry budget. Accepted saves persist quality-loop metadata fixes, while rewritten body content stays in-memory until later hard-reject gates clear under the per-spec-folder lock. If the loop rejects the save, `indexMemoryFile()` returns `status: 'rejected'`, and `atomicSaveMemory()` rolls back the just-written file instead of retrying indexing again.
 
-Two earlier hard-blocks now sit between the quality loop and the older pre-storage quality gate. First, a shared semantic sufficiency evaluator rejects thin aligned memories with `INSUFFICIENT_CONTEXT_ABORT`. Second, a rendered-memory template contract validator rejects malformed outputs when required frontmatter keys, mandatory section anchors/HTML ids, or cleanup invariants are missing, or when raw Mustache/template artifacts leak into the final markdown. Dry-run responses can surface these rejection reasons without indexing side effects.
+Two earlier hard-blocks now sit between the quality loop and the older pre-storage quality gate. First, a shared semantic sufficiency evaluator rejects thin aligned spec-doc records with `INSUFFICIENT_CONTEXT_ABORT`. Second, a rendered-memory template contract validator rejects malformed outputs when required frontmatter keys, mandatory section anchors/HTML ids, or cleanup invariants are missing, or when raw Mustache/template artifacts leak into the final markdown. Dry-run responses can surface these rejection reasons without indexing side effects.
 
-Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
+Reconsolidation-on-save runs after embedding generation only when `SPECKIT_RECONSOLIDATION=true` (default OFF). The system checks the top-3 most similar spec-doc records in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and `importance_weight` is boosted (capped at 1.0). Similarity between 0.75 and 0.88 triggers conflict resolution: the older spec-doc record is deprecated and a `supersedes` causal edge is created. Below 0.75, the spec-doc record stores unchanged. A checkpoint must exist for the spec folder before reconsolidation can run.
 
 For large files exceeding the chunking threshold, the system splits into a parent record (metadata only) plus child chunk records, each with its own embedding. Before indexing, anchor-aware chunk thinning scores each chunk using a composite of anchor presence (weight 0.6, binary) and content density (weight 0.4, 0-1). Chunks scoring below 0.3 are dropped to reduce storage and search noise. The thinning never returns an empty array. Chunk embedding cache keys now hash normalized content, matching the main embedding path, so structurally equivalent chunks reuse the same cache entry.
 
@@ -464,11 +464,11 @@ When `SPECKIT_ENCODING_INTENT` is enabled (default ON), the content type is clas
 
 After every successful save, a consolidation cycle hook fires when `SPECKIT_CONSOLIDATION` is enabled (default ON). The N3-lite consolidation engine scans for contradictions (memory pairs above 0.85 cosine similarity with negation keyword conflicts), runs Hebbian strengthening on recently accessed edges (+0.05 per cycle with a 30-day decay), detects stale edges (unfetched for 90+ days) and enforces edge bounds (maximum 20 per node). The cycle runs on a weekly cadence.
 
-The `asyncEmbedding` parameter (boolean, default `false`) enables non-blocking saves. When set to `true`, embedding generation is deferred: the memory record is written immediately with a `pending` embedding status, and an async background attempt generates the embedding afterward. The memory is immediately searchable via BM25 and FTS5 while the embedding processes. When `false` (the default), the save blocks until embedding generation completes before returning. Watcher- and ingest-driven reindex paths no longer force deferred embeddings on ordinary cache misses. They follow this normal synchronous path unless `asyncEmbedding: true` was explicitly requested or embedding generation actually fails.
+The `asyncEmbedding` parameter (boolean, default `false`) enables non-blocking saves. When set to `true`, embedding generation is deferred: the spec-doc record is written immediately with a `pending` embedding status, and an async background attempt generates the embedding afterward. The spec-doc record is immediately searchable via BM25 and FTS5 while the embedding processes. When `false` (the default), the save blocks until embedding generation completes before returning. Watcher- and ingest-driven reindex paths no longer force deferred embeddings on ordinary cache misses. They follow this normal synchronous path unless `asyncEmbedding: true` was explicitly requested or embedding generation actually fails.
 
-Safety mechanisms run deep. Path security validation checks the file against an allowlist of base paths. File type validation accepts only `.md` and `.txt` in approved directories. Pre-flight validation checks anchor format, detects duplicates and estimates token budget before investing in embedding generation. A per-spec-folder mutex lock prevents TOCTOU race conditions when multiple saves target the same folder. SHA-256 content hashing skips same-path saves only when the existing row is in a healthy state (`success`, `pending`, or valid chunked-parent `partial`), so unhealthy rows still re-enter indexing. Cross-path hash dedup also accepts chunked parents in `partial` state and ignores invalid parent rows marked `complete`. A mutation ledger records every create, update, reinforce and supersede action for audit. The trigger matcher cache, tool cache and constitutional cache are all invalidated on write, and `memory_index_scan` now routes scan-triggered invalidation through the broader mutation-hook behavior used by other mutation paths. If embedding generation fails, the memory is still stored and searchable via BM25/FTS5 with the embedding marked as pending for later re-indexing.
+Safety mechanisms run deep. Path security validation checks the file against an allowlist of base paths. File type validation accepts only `.md` and `.txt` in approved directories. Pre-flight validation checks anchor format, detects duplicates and estimates token budget before investing in embedding generation. A per-spec-folder mutex lock prevents TOCTOU race conditions when multiple saves target the same folder. SHA-256 content hashing skips same-path saves only when the existing row is in a healthy state (`success`, `pending`, or valid chunked-parent `partial`), so unhealthy rows still re-enter indexing. Cross-path hash dedup also accepts chunked parents in `partial` state and ignores invalid parent rows marked `complete`. A mutation ledger records every create, update, reinforce and supersede action for audit. The trigger matcher cache, tool cache and constitutional cache are all invalidated on write, and `memory_index_scan` now routes scan-triggered invalidation through the broader mutation-hook behavior used by other mutation paths. If embedding generation fails, the spec-doc record is still stored and searchable via BM25/FTS5 with the embedding marked as pending for later re-indexing.
 
-Successful insertions now clear the search cache immediately instead of waiting for delete-time invalidation or TTL expiry. `index_memory()` calls `clear_search_cache()` after the transactional insert, active-projection update and optional `vec_memories` write succeed, so a brand-new memory becomes visible to repeated `memory_search` calls right away. The fix closes a stale-results gap where the save path could report success while cached searches still replayed a pre-insert snapshot.
+Successful insertions now clear the search cache immediately instead of waiting for delete-time invalidation or TTL expiry. `index_memory()` calls `clear_search_cache()` after the transactional insert, active-projection update and optional `vec_memories` write succeed, so a brand-new spec-doc record becomes visible to repeated `memory_search` calls right away. The fix closes a stale-results gap where the save path could report success while cached searches still replayed a pre-insert snapshot.
 
 Document type affects importance weighting automatically: constitutional files get 1.0, spec documents 0.8, plans 0.7, memory files 0.5 and scratch files 0.25.
 
@@ -482,13 +482,13 @@ See [`02--mutation/01-memory-indexing-memorysave.md`](02--mutation/01-memory-ind
 
 #### Description
 
-You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
+You can rename a spec-doc record or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
 
 #### Current Reality
 
-You can change the title, trigger phrases, importance weight or importance tier on any existing memory by its numeric ID. The system verifies the memory exists, validates your parameters (importance weight between 0 and 1, tier from the valid enum) and applies the changes.
+You can change the title, trigger phrases, importance weight or importance tier on any existing spec-doc record by its numeric ID. The system verifies the spec-doc record exists, validates your parameters (importance weight between 0 and 1, tier from the valid enum) and applies the changes.
 
-When the title changes, the system regenerates the vector embedding to keep search results aligned. This is a critical detail: if you rename a memory from "Authentication setup guide" to "OAuth2 configuration reference", the old embedding no longer represents the content accurately. Automatic regeneration fixes that.
+When the title changes, the system regenerates the vector embedding to keep search results aligned. This is a critical detail: if you rename a spec-doc record from "Authentication setup guide" to "OAuth2 configuration reference", the old embedding no longer represents the content accurately. Automatic regeneration fixes that.
 
 By default, if embedding regeneration fails (API timeout, provider outage), the entire update rolls back with no changes applied. Nothing happens. With `allowPartialUpdate` enabled, the metadata changes persist and the embedding is marked as pending for later re-indexing by the next `memory_index_scan`. That mode is useful when you need to fix metadata urgently and can tolerate a temporarily stale embedding.
 
@@ -514,7 +514,7 @@ You can remove one memory at a time or clear out an entire folder at once. Befor
 
 Two deletion modes in one tool. Pass a numeric `id` for single delete or a `specFolder` string (with `confirm: true`) for bulk folder delete.
 
-Single deletes run inside a database transaction: remove the memory record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
+Single deletes run inside a database transaction: remove the spec-doc record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
 
 Bulk deletes by spec folder are more involved. The system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching spec-doc records inside a database transaction with per-record causal edge cleanup and per-record mutation ledger entries. The entire operation is atomic: either all spec-doc records in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint.
 
@@ -532,7 +532,7 @@ This is the cleanup tool for large-scale housekeeping. You can delete all outdat
 
 #### Current Reality
 
-For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated memories, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), creates a safety checkpoint, then deletes within a database transaction.
+For large-scale cleanup operations. Instead of targeting a folder, you target an importance tier: delete all deprecated spec-doc records, or all temporary memories older than 30 days. The tool counts affected memories first (so the response tells you exactly how many were deleted), creates a safety checkpoint, then deletes within a database transaction.
 
 Constitutional and critical tier memories receive extra protection. Unscoped deletion of these tiers is refused outright. You must provide a `specFolder` to delete constitutional or critical memories in bulk. The `skipCheckpoint` speed optimization, which skips the safety checkpoint for faster execution, is also rejected for these tiers. If the checkpoint creation itself fails for constitutional/critical, the entire operation aborts. For lower tiers, a checkpoint failure triggers a warning but the deletion proceeds because the risk of losing deprecated or temporary memories is low.
 
@@ -556,7 +556,7 @@ After a search result is shown to you, you can tell the system whether it was he
 
 Every search result is either helpful or not. This tool lets you record that judgment and triggers several downstream systems based on the feedback.
 
-Positive feedback adds 0.1 to the memory's confidence score (capped at 1.0). Negative feedback subtracts 0.05 (floored at 0.0). The base confidence for any memory starts at 0.5. The asymmetry between positive (+0.1) and negative (-0.05) increments is intentional. It takes one good validation to raise confidence by 0.1 but two bad validations to cancel that out. This bias toward preservation reflects the assumption that a memory might be unhelpful for one query but still valuable for another.
+Positive feedback adds 0.1 to the spec-doc record's confidence score (capped at 1.0). Negative feedback subtracts 0.05 (floored at 0.0). The base confidence for any memory starts at 0.5. The asymmetry between positive (+0.1) and negative (-0.05) increments is intentional. It takes one good validation to raise confidence by 0.1 but two bad validations to cancel that out. This bias toward preservation reflects the assumption that a spec-doc record might be unhelpful for one query but still valuable for another.
 
 Auto-promotion fires unconditionally on every positive validation. When a normal-tier memory accumulates 5 positive validations, it is promoted to important. When an important-tier memory reaches 10, it is promoted to critical. A throttle safeguard limits promotions to 3 per 8-hour rolling window. Constitutional, critical, temporary and deprecated tiers are non-promotable. The response includes `autoPromotion` metadata showing whether promotion was attempted, the previous and new tier and the reason.
 
@@ -592,11 +592,11 @@ See [`02--mutation/06-transaction-wrappers-on-mutation-handlers.md`](02--mutatio
 
 #### Description
 
-When you save new information, the system checks whether it already knows something similar. If it does, it decides the smartest action: strengthen the existing memory, update it in place, replace it with the new version or store both as related but different items. This prevents the knowledge base from filling up with near-identical copies while still capturing genuinely new information.
+When you save new information, the system checks whether it already knows something similar. If it does, it decides the smartest action: strengthen the existing spec-doc record, update it in place, replace it with the new version or store both as related but different items. This prevents the knowledge base from filling up with near-identical copies while still capturing genuinely new information.
 
 #### Current Reality
 
-5-action decision engine during the save path. Examines semantic similarity of new content against existing memories: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new memory + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). The arbitration path runs only when `force` is false and an embedding is available, and when `sessionId` is present it filters candidates from other sessions so one session cannot trigger false duplicate, update, or supersede decisions in another.
+5-action decision engine during the save path. Examines semantic similarity of new content against existing spec-doc records: REINFORCE (>=0.95, boost FSRS stability), UPDATE (0.85-0.94 no contradiction, in-place update), SUPERSEDE (0.85-0.94 with contradiction, deprecate old + create new), CREATE_LINKED (0.70-0.84, new spec-doc record + causal edge), CREATE (<0.70, standalone). Contradiction detection via regex patterns. All decisions are logged to the `memory_conflicts` table with similarity, action, contradiction flag, reason and spec_folder. Document-type-aware weighting (constitutional=1.0 down to scratch=0.25). The arbitration path runs only when `force` is false and an embedding is available, and when `sessionId` is present it filters candidates from other sessions so one session cannot trigger false duplicate, update, or supersede decisions in another.
 
 #### Source Files
 
@@ -608,11 +608,11 @@ See [`02--mutation/08-prediction-error-save-arbitration.md`](02--mutation/08-pre
 
 #### Description
 
-When a newer memory replaces or refines an older one, the system records what changed and why. The old memory gets a lower confidence score while the new one gets a boost. This creates a paper trail of corrections so you can see how your knowledge evolved over time and understand why older information was updated.
+When a newer memory replaces or refines an older one, the system records what changed and why. The old spec-doc record gets a lower confidence score while the new one gets a boost. This creates a paper trail of corrections so you can see how your knowledge evolved over time and understand why older information was updated.
 
 #### Current Reality
 
-The corrections module (`lib/learning/corrections.ts`) tracks inter-memory relationship signals during the learning pipeline. When a memory supersedes, deprecates, refines, or merges with another, the correction is recorded with before/after stability scores and applied penalty/boost values. Four correction types are supported: `superseded`, `deprecated`, `refined`, and `merged`.
+The corrections module (`lib/learning/corrections.ts`) tracks inter-memory relationship signals during the learning pipeline. When a spec-doc record supersedes, deprecates, refines, or merges with another, the correction is recorded with before/after stability scores and applied penalty/boost values. Four correction types are supported: `superseded`, `deprecated`, `refined`, and `merged`.
 
 Each correction adjusts the stability scores of both the original and correcting memories: the original receives a penalty while the correction receives a boost. Stability changes are tracked in a `StabilityChanges` structure for audit purposes. The feature is gated by `SPECKIT_RELATIONS` (default `true`). When disabled, relational learning corrections are skipped and no stability adjustments are applied.
 
@@ -626,17 +626,17 @@ See [`02--mutation/09-correction-tracking-with-undo.md`](02--mutation/09-correct
 
 #### Description
 
-Every time a memory is created, changed or deleted, the system writes a log entry recording what happened, when and who did it. This is like a change history on a shared document. If something looks wrong later, you can trace back to exactly what changed and when it happened.
+Every time a spec-doc record is created, changed or deleted, the system writes a log entry recording what happened, when and who did it. This is like a change history on a shared document. If something looks wrong later, you can trace back to exactly what changed and when it happened.
 
 #### Current Reality
 
-The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
+The `memory_history` table records a per-record audit trail of mutation events. Each row captures the spec-doc record ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
 
 The history log is written by mutation handlers (`memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`) and lower-level mutation helpers (`delete_memories`, `delete_memory_by_path`). `lib/storage/history.ts` owns schema-safe initialization/migration and read/write helpers, while `vector-index-schema.ts` ensures initialization runs at DB startup. The orphan cleanup script removes orphaned history rows when parent memories are missing.
 
 #### Source Files
 
-See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-history-log.md) for full implementation and test file listings.
+See [`02--mutation/10-per-record-history-log.md`](02--mutation/10-per-record-history-log.md) for full implementation and test file listings.
 
 > **Playbook:** [110](../manual_testing_playbook/manual_testing_playbook.md)
 
@@ -648,7 +648,7 @@ See [`02--mutation/10-per-memory-history-log.md`](02--mutation/10-per-memory-his
 
 #### Description
 
-This lets you browse through all stored memories page by page, like scrolling through a list of saved notes. You can sort by date or importance to find what you need. It is the simplest way to see what the system has stored without running a search query.
+This lets you browse through all stored spec-doc records page by page, like scrolling through a list of saved notes. You can sort by date or importance to find what you need. It is the simplest way to see what the system has stored without running a search query.
 
 #### Current Reality
 
@@ -672,7 +672,7 @@ This is the dashboard for your knowledge base. It tells you how many memories yo
 
 #### Current Reality
 
-`memory_stats` returns the discovery dashboard for the memory database: total memory count, embedding status breakdown, oldest/newest timestamps, total trigger phrase count, tier breakdown, database size, last indexed timestamp, graph channel metrics and the ranked folder summary.
+`memory_stats` returns the discovery dashboard for the spec-doc record database: total memory count, embedding status breakdown, oldest/newest timestamps, total trigger phrase count, tier breakdown, database size, last indexed timestamp, graph channel metrics and the ranked folder summary.
 
 Folder ranking supports four modes: `count`, `recency`, `importance`, and `composite`. Count mode ranks directly from `memory_index`. The scoring-based modes build folder rankings from `embedding_status = 'success'` rows and use `folderScoring.computeFolderScores()` before applying ranking-specific sorts. If scoring fails, the handler falls back to count-based folder totals.
 
@@ -720,7 +720,7 @@ This tool scans your project folders for new or changed files and adds them to t
 
 #### Current Reality
 
-This is the tool that keeps the memory database synchronized with the filesystem. Without it, new or modified memory files would be invisible to search.
+This is the tool that keeps the spec-doc record database synchronized with the filesystem. Without it, new or modified memory files would be invisible to search.
 
 Spec documents are still indexed by default. During scan they flow through `memory_save` with `qualityGateMode: 'warn-only'`, so template, sufficiency, and quality issues surface as warnings instead of silently bypassing retrieval.
 
@@ -812,7 +812,7 @@ Restoring from a named checkpoint decompresses the gzip snapshot, validates ever
 
 The `clearExisting` mode deserves explanation. When true, the entire restore runs inside a database transaction. If the restore encounters an error halfway through, the transaction rolls back and existing data is untouched. This atomicity guarantee (a T101 fix) is critical because clearing existing data and then failing to restore would leave you with an empty database and no way back.
 
-When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing memories that match the logical key are skipped rather than duplicated.
+When merging (the default), the system checks for duplicates using a logical key of `spec_folder + file_path + anchor_id`. Existing spec-doc records that match the logical key are skipped rather than duplicated.
 
 After restore, vectors are restored from the checkpoint snapshot when vector payloads are present. The restore handler then clears in-memory search/constitutional caches, rebuilds BM25 from live DB content when BM25 is enabled and refreshes the trigger cache. This keeps restored memories immediately discoverable without forcing a full re-embedding pass.
 
@@ -906,11 +906,11 @@ This gives you a health report on the web of connections between your spec-doc r
 
 #### Current Reality
 
-Returns the health metrics of the causal graph in a single call. Total edge count, breakdown by relationship type (how many caused edges, how many supports edges and so on), average edge strength across all edges, unique source and target memory counts and the link coverage percentage.
+Returns the health metrics of the causal graph in a single call. Total edge count, breakdown by relationship type (how many caused edges, how many supports edges and so on), average edge strength across all edges, unique source and target spec-doc record counts and the link coverage percentage.
 
 Link coverage is the most important metric: what percentage of memories participate in at least one causal relationship? The target is 60% (CHK-065). Below that, the graph is too sparse for the graph search channel to contribute meaningfully. The tool reports pass or fail against that target.
 
-Orphaned edges (edges referencing source or target memories that no longer exist in `memory_index`) are detected and counted. When orphans exist, the health status changes from "healthy" to "has_orphans." You can use `memory_drift_why` to find the edge IDs and `memory_causal_unlink` to clean them up.
+Orphaned edges (edges referencing source or target spec-doc records that no longer exist in `memory_index`) are detected and counted. When orphans exist, the health status changes from "healthy" to "has_orphans." You can use `memory_drift_why` to find the edge IDs and `memory_causal_unlink` to clean them up.
 
 #### Source Files
 
@@ -922,13 +922,13 @@ See [`06--analysis/02-causal-graph-statistics-memorycausalstats.md`](06--analysi
 
 #### Description
 
-This removes a connection between two memories. If you delete a memory entirely, all its connections are cleaned up automatically. You only need this tool when you want to remove a specific connection while keeping both memories intact, like cutting one thread on a corkboard without taking down the pins.
+This removes a connection between two memories. If you delete a spec-doc record entirely, all its connections are cleaned up automatically. You only need this tool when you want to remove a specific connection while keeping both memories intact, like cutting one thread on a corkboard without taking down the pins.
 
 #### Current Reality
 
 Removes a single causal relationship edge by its numeric edge ID. You get edge IDs from `memory_drift_why` traversal results (a T202 enhancement that added edge IDs to the response specifically to enable this workflow).
 
-A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing a given memory ID. This variant is called automatically during memory deletion (`memory_delete`) to maintain graph integrity. You do not need to manually clean up edges when deleting a memory. The system handles it.
+A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing a given memory ID. This variant is called automatically during memory deletion (`memory_delete`) to maintain graph integrity. You do not need to manually clean up edges when deleting a spec-doc record. The system handles it.
 
 #### Source Files
 
@@ -1108,7 +1108,7 @@ Some highly connected memories kept showing up in every search result regardless
 
 #### Current Reality
 
-Hub memories with many connections dominated co-activation results no matter what you searched for. If a memory had 40 causal edges, it showed up everywhere.
+Hub memories with many connections dominated co-activation results no matter what you searched for. If a spec-doc record had 40 causal edges, it showed up everywhere.
 
 A fan-effect divisor helper (`1 / sqrt(neighbor_count)`) exists in `co-activation.ts`, and Stage 2 now applies the same `sqrt(max(1, relatedCount))` dampening when spread-activation boosts are written back into the reranked result set. In practice, co-activation traversal produces candidate activation scores, then Stage 2 multiplies by `SPECKIT_COACTIVATION_STRENGTH`, divides by the fan-effect term and syncs the result across `score`, `rrfScore` and `intentAdjustedScore`. This keeps hub memories from overwhelming the top-N results even when they have many related neighbors.
 
@@ -1150,7 +1150,7 @@ Five database-layer bugs were fixed:
 
 **B2: DDL inside transaction:** `checkpoints.ts` placed DDL statements (`CREATE TABLE IF NOT EXISTS`, `ALTER TABLE ADD COLUMN`) inside a `database.transaction()` block. SQLite silently auto-commits on DDL, which corrupted the transaction boundary during checkpoint restore. DDL now runs before `BEGIN`. Only DML is wrapped in the transaction.
 
-**B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target memory ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
+**B3: Edge-deletion filter correctness:** `causal-edges.ts` delete path must match edges where either endpoint equals the target spec-doc record ID (`source_id = ? OR target_id = ?`). Regression coverage validates deletion remains scoped to intended source/target rows.
 
 **B4: Missing changes guard:** Save-path UPDATE statements in `handlers/pe-gating.ts` now validate SQLite update results (`result.changes`). Zero-row updates are treated as no-ops/errors instead of false success.
 
@@ -1194,7 +1194,7 @@ See [`08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`](08--bug-fix
 
 #### Description
 
-The same memory was sometimes listed multiple times in search results because different parts of the system referred to it using slightly different labels. This fix standardizes how memories are identified internally so duplicates are correctly detected and merged in the results every time.
+The same spec-doc record was sometimes listed multiple times in search results because different parts of the system referred to it using slightly different labels. This fix standardizes how memories are identified internally so duplicates are correctly detected and merged in the results every time.
 
 #### Current Reality
 
@@ -1542,13 +1542,13 @@ This remains a cross-cutting meta-improvement applied across multiple modules.
 
 #### Description
 
-Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the memory system is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout.
+Before rolling out a big upgrade, you want to take a "before" photo so you can compare it with the "after." This feature captures a snapshot of how the indexed-continuity store is performing right now, including how many searches are happening and whether the storage is set up correctly. That snapshot becomes the baseline you measure progress against during the rollout.
 
 #### Current Reality
 
-`captureMemoryStateBaselineSnapshot()` records a small Phase 1 readiness baseline for the memory-roadmap rollout slice. It reads retrieval-volume metrics from the eval database (`eval_queries`, `eval_channel_results`, `eval_final_results`) and isolation/schema metrics from the target context database (`memory_index`, `schema_version`), then returns a single snapshot with timestamp, eval run ID, metrics map and metadata.
+`captureMemoryStateBaselineSnapshot()` records a small Phase 1 readiness baseline for the spec-doc record-roadmap rollout slice. It reads retrieval-volume metrics from the eval database (`eval_queries`, `eval_channel_results`, `eval_final_results`) and isolation/schema metrics from the target context database (`memory_index`, `schema_version`), then returns a single snapshot with timestamp, eval run ID, metrics map and metadata.
 
-When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved memory-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
+When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved spec-doc record-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
 The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated. The path switch is also wrapped in `try/finally`, so even if `initEvalDb()` fails after closing the previous singleton, the prior eval DB handle is restored instead of leaving global eval state clobbered for later calls.
 
@@ -1590,7 +1590,7 @@ This gives a search bonus to memories that are well-connected to other memories,
 
 A fifth RRF channel scores memories by their graph connectivity. Edge type weights range from caused at 1.0 down to supports at 0.5, with logarithmic normalization and a hub cap (`MAX_TYPED_DEGREE=15`, `MAX_TOTAL_DEGREE=50`, `DEGREE_BOOST_CAP=0.15`) to prevent any single memory from dominating results through connections alone.
 
-Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. That cache is now scoped per database instance via `WeakMap<Database.Database, Map<string, number>>`, with `getDegreeCacheForDb(database)` for lookup and `clearDegreeCacheForDb(database)` for explicit invalidation, so scores from one DB can no longer leak into another. When a memory has zero edges, the channel returns 0 rather than failing.
+Constitutional memories are excluded from degree boosting because they already receive top-tier visibility. The channel runs behind the `SPECKIT_DEGREE_BOOST` feature flag with a degree cache that invalidates only on graph mutations, not per query. That cache is now scoped per database instance via `WeakMap<Database.Database, Map<string, number>>`, with `getDegreeCacheForDb(database)` for lookup and `clearDegreeCacheForDb(database)` for explicit invalidation, so scores from one DB can no longer leak into another. When a spec-doc record has zero edges, the channel returns 0 rather than failing.
 
 #### Source Files
 
@@ -1656,17 +1656,17 @@ See [`10--graph-signal-activation/04-weight-history-audit-tracking.md`](10--grap
 
 #### Description
 
-This tracks how quickly a piece of knowledge is gaining connections to other knowledge. Think of it like a trending topic: the faster something connects to related ideas, the more likely it is to be relevant right now. A memory that gained three new links this week gets a small search boost compared to one whose connections have not changed in months.
+This tracks how quickly a piece of knowledge is gaining connections to other knowledge. Think of it like a trending topic: the faster something connects to related ideas, the more likely it is to be relevant right now. A spec-doc record that gained three new links this week gets a small search boost compared to one whose connections have not changed in months.
 
 #### Current Reality
 
-Graph connectivity changes over time, and that trajectory carries signal. A memory gaining three new edges this week is more actively relevant than one whose connections have been static for months.
+Graph connectivity changes over time, and that trajectory carries signal. A spec-doc record gaining three new edges this week is more actively relevant than one whose connections have been static for months.
 
 Graph momentum computes a temporal degree delta: `current_degree - degree_7d_ago`. The `degree_snapshots` table records per-node degree counts at daily granularity with a UNIQUE constraint on `(memory_id, snapshot_date)`. The `snapshotDegrees()` function captures the current state, and `computeMomentum()` looks back 7 days to calculate the delta.
 
 The momentum signal applies as an additive bonus in Stage 2 of the pipeline, capped at +0.05 per result. Batch computation via `computeMomentumScores()` is session-cached to avoid repeated database queries within a single search request. Cache invalidation follows the established pattern from `graph-search-fn.ts`: caches clear on edge mutations via `clearGraphSignalsCache()`.
 
-When no snapshot exists for the 7-day lookback (common during initial rollout), the momentum defaults to zero rather than penalizing the memory. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2b).
+When no snapshot exists for the 7-day lookback (common during initial rollout), the momentum defaults to zero rather than penalizing the spec-doc record. Runs behind the `SPECKIT_GRAPH_SIGNALS` flag (default ON, shared with N2b).
 
 #### Source Files
 
@@ -1678,13 +1678,13 @@ See [`10--graph-signal-activation/05-graph-momentum-scoring.md`](10--graph-signa
 
 #### Description
 
-Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each memory sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
+Not all knowledge sits at the same level. A big decision that led to five smaller tasks is a "root" while those tasks are "leaves." This feature measures how deep each spec-doc record sits in that tree of cause-and-effect relationships. It gives a small search boost based on that depth, acting as a tiebreaker when two results are otherwise equally relevant.
 
 #### Current Reality
 
 Not all memories sit at the same level of abstraction. A root decision that caused five downstream implementation memories occupies a different position in the knowledge graph than a leaf node.
 
-Causal depth measures each memory's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A memory in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
+Causal depth measures each spec-doc record's longest structural distance from a root strongly connected component. The causal graph is first condensed into SCCs, then longest-path depth is computed across the resulting DAG so shortcut edges do not suppress deeper chains and cycle members share one bounded depth layer. The raw component depth is normalized by the deepest reachable component chain to produce a [0,1] score. A spec-doc record in a component at depth 3 within a graph whose deepest reachable component chain is 6 scores 0.5.
 
 Like momentum, the depth signal applies as an additive bonus in Stage 2, capped at +0.05. Batch computation via `computeCausalDepthScores()` shares the same session cache infrastructure as momentum. Both signals are applied together by `applyGraphSignals()`, which iterates over pipeline rows and adds the combined bonus. A single-node variant of `computeCausalDepth` was removed during Sprint 8 remediation as dead code (the batch version `computeCausalDepthScores` is the only caller).
 
@@ -1722,7 +1722,7 @@ See [`10--graph-signal-activation/07-community-detection.md`](10--graph-signal-a
 
 #### Description
 
-This is a collection of seven bug fixes for the relationship graph and memory scoring systems. Problems included a memory linking to itself (a loop that makes no sense), cluster detection that could not tell when links were deleted and replaced, and scores that could climb higher than they should. Without these fixes, the graph connections and scoring would slowly drift into unreliable territory.
+This is a collection of seven bug fixes for the relationship graph and memory scoring systems. Problems included a spec-doc record linking to itself (a loop that makes no sense), cluster detection that could not tell when links were deleted and replaced, and scores that could climb higher than they should. Without these fixes, the graph connections and scoring would slowly drift into unreliable territory.
 
 #### Current Reality
 
@@ -1898,7 +1898,7 @@ Before normalization, RRF and composite scoring used different raw scales. In `s
 
 Min-max normalization now maps both outputs to `0-1`, letting relevance signals compete on comparable scale instead of whichever subsystem emits larger raw magnitudes. Single-result queries and equal-score edge cases normalize to `1.0`.
 
-Normalization is batch-relative (the same memory can score differently across different queries), which is expected for min-max. Runtime gating uses `SPECKIT_SCORE_NORMALIZATION`: `isScoreNormalizationEnabled()`/`normalizeRrfScores()` in `shared/algorithms/rrf-fusion.ts` and `isCompositeNormalizationEnabled()`/`normalizeCompositeScores()` in `mcp_server/lib/scoring/composite-scoring.ts`.
+Normalization is batch-relative (the same spec-doc record can score differently across different queries), which is expected for min-max. Runtime gating uses `SPECKIT_SCORE_NORMALIZATION`: `isScoreNormalizationEnabled()`/`normalizeRrfScores()` in `shared/algorithms/rrf-fusion.ts` and `isCompositeNormalizationEnabled()`/`normalizeCompositeScores()` in `mcp_server/lib/scoring/composite-scoring.ts`.
 
 #### Source Files
 
@@ -1910,11 +1910,11 @@ See [`11--scoring-and-calibration/01-score-normalization.md`](11--scoring-and-ca
 
 #### Description
 
-Brand-new memories start with a disadvantage because the scoring system has not had time to learn how useful they are. This feature gives freshly saved memories a temporary boost that fades over two days, like a "new arrival" spotlight at a bookstore. It has since been turned off because testing showed it was not making a practical difference, but the logic is kept around in case it is needed later.
+Brand-new spec-doc records start with a disadvantage because the scoring system has not had time to learn how useful they are. This feature gives freshly saved memories a temporary boost that fades over two days, like a "new arrival" spotlight at a bookstore. It has since been turned off because testing showed it was not making a practical difference, but the logic is kept around in case it is needed later.
 
 #### Current Reality
 
-FSRS temporal decay biases against recent items. A memory indexed 2 hours ago has barely any retrievability score, even when it is exactly what you need.
+FSRS temporal decay biases against recent items. A spec-doc record indexed 2 hours ago has barely any retrievability score, even when it is exactly what you need.
 
 The novelty boost applies an exponential decay (`0.15 * exp(-elapsed_hours / 12)`) to memories under 48 hours old, counteracting that bias. At indexing time, the boost is 0.15. After 12 hours, it drops to about 0.055. By 48 hours, it is effectively zero.
 
@@ -1938,7 +1938,7 @@ If you have five nearly identical memories about the same thing, they can all cr
 
 Memories in dense similarity clusters tend to crowd out unique results. If you have five near-identical memories about the same topic, all five can occupy the top results and push out a different memory that might be more relevant.
 
-Interference scoring penalizes cluster density: for each memory, the system counts how many neighbors exceed a 0.75 text similarity threshold (Jaccard over word tokens from title and trigger phrases) within the same spec folder, then applies a `-0.08 * interference_score` penalty in composite scoring. (Novelty boost remains disabled in the hot path.)
+Interference scoring penalizes cluster density: for each spec-doc record, the system counts how many neighbors exceed a 0.75 text similarity threshold (Jaccard over word tokens from title and trigger phrases) within the same spec folder, then applies a `-0.08 * interference_score` penalty in composite scoring. (Novelty boost remains disabled in the hot path.)
 
 Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be tuned empirically after two R13 evaluation cycles, tracked as FUT-S2-001. Runs behind the `SPECKIT_INTERFERENCE_SCORE` flag.
 
@@ -1960,7 +1960,7 @@ Not all memories should decay at the same rate. A decision record from six month
 
 FSRS decay rates now vary by a two-dimensional multiplier matrix. On the context axis: decisions never decay (stability set to Infinity), research memories get 2x stability and implementation/discovery/general memories follow the standard rate. On the tier axis: constitutional and critical memories never decay, important memories get 1.5x stability, normal memories follow the standard, temporary memories decay at 0.5x and deprecated at 0.25x.
 
-The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. The memory-type config validator now rejects `halfLifeDays: 0` in addition to negative values, matching the `positive number or null` contract and blocking undefined zero-half-life schedules from entering classification-backed decay configuration. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
+The combined multiplier uses `Infinity` for never-decay cases, which produces `R(t) = 1.0` for all t without special-case logic. The spec-doc record-type config validator now rejects `halfLifeDays: 0` in addition to negative values, matching the `positive number or null` contract and blocking undefined zero-half-life schedules from entering classification-backed decay configuration. Runs behind the `SPECKIT_CLASSIFICATION_DECAY` flag.
 
 #### Source Files
 
@@ -1972,11 +1972,11 @@ See [`11--scoring-and-calibration/04-classification-based-decay.md`](11--scoring
 
 #### Description
 
-Instead of searching through every memory equally, this feature first ranks the folders they live in. Recent, important and actively used folders rise to the top while archived folders sink to the bottom. The system then searches within the top folders first. It is like checking the most promising filing cabinets before digging through the dusty ones in the back.
+Instead of searching through every spec-doc record equally, this feature first ranks the folders they live in. Recent, important and actively used folders rise to the top while archived folders sink to the bottom. The system then searches within the top folders first. It is like checking the most promising filing cabinets before digging through the dusty ones in the back.
 
 #### Current Reality
 
-A four-factor weighted formula scores each spec folder: `score = (recency * 0.40) + (importance * 0.30) + (activity * 0.20) + (validation * 0.10)`. Recency uses a decay function `1 / (1 + days * 0.10)` so a 7-day-old folder scores about 0.59 and a 10-day-old folder about 0.50. Importance averages the tier weights of all memories in the folder. Activity caps at 1.0 when a folder has 5 or more memories. Archive folders (`z_archive/`, `scratch/`, `test-`, `prototype/`) receive a 0.1-0.2 multiplier to keep them out of top results.
+A four-factor weighted formula scores each spec folder: `score = (recency * 0.40) + (importance * 0.30) + (activity * 0.20) + (validation * 0.10)`. Recency uses a decay function `1 / (1 + days * 0.10)` so a 7-day-old folder scores about 0.59 and a 10-day-old folder about 0.50. Importance averages the tier weights of all spec-doc records in the folder. Activity caps at 1.0 when a folder has 5 or more memories. Archive folders (`z_archive/`, `scratch/`, `test-`, `prototype/`) receive a 0.1-0.2 multiplier to keep them out of top results.
 
 This scoring enables two-phase retrieval: first rank folders by aggregated score, then search within the top-ranked folders. The DocScore formula `(1/sqrt(M+1)) * SUM(score(m))` provides damped aggregation so large folders do not dominate by volume alone. Runs behind the `SPECKIT_FOLDER_SCORING` flag (default ON).
 
@@ -2048,11 +2048,11 @@ See [`11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md`](11--s
 
 #### Description
 
-When you tell the system a result was not helpful, it remembers that feedback and pushes that memory lower in future searches. The more times you say "not useful," the further it drops, but it can never be completely hidden. Over time the penalty fades, giving the memory a chance to recover. This way the system learns from your feedback without permanently burying anything.
+When you tell the system a result was not helpful, it remembers that feedback and pushes that memory lower in future searches. The more times you say "not useful," the further it drops, but it can never be completely hidden. Over time the penalty fades, giving the spec-doc record a chance to recover. This way the system learns from your feedback without permanently burying anything.
 
 #### Current Reality
 
-When you mark a memory as not useful via `memory_validate(wasUseful: false)`, the signal now flows into composite scoring as a demotion multiplier. The multiplier starts at 1.0, decreases by 0.1 per negative validation and floors at 0.3 so a memory is never suppressed below 30% of its natural score. Time-based recovery with a 30-day half-life (`RECOVERY_HALF_LIFE_MS`) gradually restores the multiplier: the penalty halves every 30 days since the last negative validation.
+When you mark a spec-doc record as not useful via `memory_validate(wasUseful: false)`, the signal now flows into composite scoring as a demotion multiplier. The multiplier starts at 1.0, decreases by 0.1 per negative validation and floors at 0.3 so a spec-doc record is never suppressed below 30% of its natural score. Time-based recovery with a 30-day half-life (`RECOVERY_HALF_LIFE_MS`) gradually restores the multiplier: the penalty halves every 30 days since the last negative validation.
 
 Negative feedback events are persisted to a `negative_feedback_events` table. The search handler reads these events and applies the multiplier during the feedback signals step in Stage 2 of the pipeline. Runs behind the `SPECKIT_NEGATIVE_FEEDBACK` flag (default ON).
 
@@ -2068,7 +2068,7 @@ See [`11--scoring-and-calibration/09-negative-feedback-confidence-signal.md`](11
 
 #### Description
 
-When a memory keeps proving useful over and over, it earns a promotion. After five thumbs-up reviews, a regular memory becomes "important." After ten, it becomes "critical." This happens automatically so you do not have to manually tag your most valuable knowledge. A speed limit prevents too many promotions from happening at once during a busy session.
+When a spec-doc record keeps proving useful over and over, it earns a promotion. After five thumbs-up reviews, a regular memory becomes "important." After ten, it becomes "critical." This happens automatically so you do not have to manually tag your most valuable knowledge. A speed limit prevents too many promotions from happening at once during a busy session.
 
 #### Current Reality
 
@@ -2174,7 +2174,7 @@ See [`11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`]
 
 #### Description
 
-When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save, update or delete a memory, the cache for affected searches is cleared automatically so you never see stale results.
+When you ask the same question twice within a short time, the system should not redo all the expensive work. This feature remembers recent results for up to 60 seconds so repeat requests get instant answers from the cache. When you save, update or delete a spec-doc record, the cache for affected searches is cleared automatically so you never see stale results.
 
 #### Current Reality
 
@@ -2192,7 +2192,7 @@ See [`11--scoring-and-calibration/15-tool-level-ttl-cache.md`](11--scoring-and-c
 
 #### Description
 
-Memories that get looked up frequently are probably more useful than ones that sit untouched. This feature counts how often each memory is retrieved and gives frequently accessed ones a higher score, like how a popular library book gets a front-of-shelf display. It also helps identify neglected memories that might be candidates for archiving.
+Memories that get looked up frequently are probably more useful than ones that sit untouched. This feature counts how often each spec-doc record is retrieved and gives frequently accessed ones a higher score, like how a popular library book gets a front-of-shelf display. It also helps identify neglected memories that might be candidates for archiving.
 
 #### Current Reality
 
@@ -2210,11 +2210,11 @@ See [`11--scoring-and-calibration/16-access-driven-popularity-scoring.md`](11--s
 
 #### Description
 
-This checks whether a memory's claims make sense in the order things actually happened. If a memory says it was caused by something that did not exist yet at the time, that is a red flag. Think of it like a fact-checker catching a biography that references events before the person was born. Memories that fail this time-logic check get a lower quality score and may be rejected from the index.
+This checks whether a spec-doc record's claims make sense in the order things actually happened. If a spec-doc record says it was caused by something that did not exist yet at the time, that is a red flag. Think of it like a fact-checker catching a biography that references events before the person was born. Memories that fail this time-logic check get a lower quality score and may be rejected from the index.
 
 #### Current Reality
 
-The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The coherence score measures how well a memory's content structure aligns with its temporal context, specifically whether the claimed relationships (references to other memories, spec folder associations, causal links) are consistent with the chronological ordering of events. Incoherent memories that reference future events or claim relationships with non-existent predecessors receive a lower coherence score, which reduces their overall quality assessment.
+The quality loop handler (`handlers/quality-loop.ts`) includes a coherence dimension in its quality score breakdown. The coherence score measures how well a spec-doc record's content structure aligns with its temporal context, specifically whether the claimed relationships (references to other memories, spec folder associations, causal links) are consistent with the chronological ordering of events. Incoherent memories that reference future events or claim relationships with non-existent predecessors receive a lower coherence score, which reduces their overall quality assessment.
 
 The coherence signal feeds into the composite quality score alongside trigger coverage, anchor density and token budget efficiency. A low coherence score can trigger a quality loop rejection, preventing temporally inconsistent content from entering the index.
 
@@ -2420,7 +2420,7 @@ Sometimes the words you use in a question do not match the words stored in the s
 
 #### Current Reality
 
-Embedding-based query expansion broadens retrieval for complex queries by mining similar memories from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
+Embedding-based query expansion broadens retrieval for complex queries by mining similar spec-doc records from the vector index and extracting related terms to append to the original query, producing an enriched combined query string. Stop-words are filtered out and tokens shorter than 3 characters are discarded.
 
 When R15 classifies a query as "simple", expansion is suppressed because expanding a trigger-phrase lookup would add noise. If expansion produces no additional terms, the original query proceeds unchanged. In the 4-stage pipeline, Stage 1 runs the baseline and expanded-query searches in parallel with deduplication (baseline-first). Runs behind the `SPECKIT_EMBEDDING_EXPANSION` flag (default ON).
 
@@ -2516,7 +2516,7 @@ See [`12--query-intelligence/09-index-time-query-surrogates.md`](12--query-intel
 
 #### Description
 
-Before saving a new memory, the system checks whether it meets quality standards. If it falls short, the system tries to fix the problems automatically and checks again. Think of it like a spell checker that runs before you hit send: it catches obvious issues and corrects them so you do not store sloppy notes that will be hard to find later.
+Before saving a new spec-doc record, the system checks whether it meets quality standards. If it falls short, the system tries to fix the problems automatically and checks again. Think of it like a spell checker that runs before you hit send: it catches obvious issues and corrects them so you do not store sloppy notes that will be hard to find later.
 
 #### Current Reality
 
@@ -2556,7 +2556,7 @@ See [`13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md`](13--me
 
 #### Description
 
-Before the system stores a new memory, it checks whether the content is too large to process. Think of it like a mailbox with a size limit: if your package is too big, you get told right away instead of wasting time trying to stuff it in. This prevents expensive processing work on content that would fail anyway.
+Before the system stores a new spec-doc record, it checks whether the content is too large to process. Think of it like a mailbox with a size limit: if your package is too big, you get told right away instead of wasting time trying to stuff it in. This prevents expensive processing work on content that would fail anyway.
 
 #### Current Reality
 
@@ -2584,7 +2584,7 @@ Each spec folder now has its own `description.json` containing identity metadata
 (`specId`, `folderSlug`, `parentChain`) and memory tracking fields
 (`memorySequence`, `memoryNameHistory`). These per-folder files are the primary
 source of truth, auto-generated by `create.sh` on folder creation and updated
-by the memory save workflow.
+by the spec-doc record save workflow.
 
 A one-time backfill using `generate-description.js` populated `description.json`
 across the existing spec inventory, so per-folder descriptions are now present
@@ -2642,11 +2642,11 @@ See [`13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`](
 
 #### Description
 
-This is the bouncer at the door before a memory enters the system. It checks three things: is the memory properly structured, is the content actually useful and is it different enough from what is already stored? If a memory fails any of these checks, it gets turned away. Without this gate, the system would fill up with junk and near-duplicates that pollute future search results.
+This is the bouncer at the door before a spec-doc record enters the system. It checks three things: is the spec-doc record properly structured, is the content actually useful and is it different enough from what is already stored? If a spec-doc record fails any of these checks, it gets turned away. Without this gate, the system would fill up with junk and near-duplicates that pollute future search results.
 
 #### Current Reality
 
-A three-layer quality gate on memory save validates content before it enters the index. Layer 1 checks structural validity (title exists, content at least 50 characters, valid spec folder path format). Layer 2 scores content quality across five dimensions (title quality, trigger quality, length quality, anchor quality, metadata quality) with a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity against existing memories in the same spec folder, rejecting near-duplicates above 0.92.
+A three-layer quality gate on memory save validates content before it enters the index. Layer 1 checks structural validity (title exists, content at least 50 characters, valid spec folder path format). Layer 2 scores content quality across five dimensions (title quality, trigger quality, length quality, anchor quality, metadata quality) with a 0.4 signal density threshold. Layer 3 checks semantic deduplication via cosine similarity against existing spec-doc records in the same spec folder, rejecting near-duplicates above 0.92.
 
 The gate starts in warn-only mode for 14 days after activation per the MR12 mitigation: it logs would-reject decisions without blocking saves while the thresholds are being validated. After the warn-only period, hard rejections apply. Runs behind the `SPECKIT_SAVE_QUALITY_GATE` flag (default ON).
 
@@ -2664,7 +2664,7 @@ When you save a new spec-doc record that is very similar to one already stored, 
 
 #### Current Reality
 
-After embedding generation, the save pipeline checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and the `importance_weight` is incremented via `Math.min(1.0, currentWeight + 0.1)`. Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores as a new complement.
+After embedding generation, the save pipeline checks the top-3 most similar spec-doc records in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and the `importance_weight` is incremented via `Math.min(1.0, currentWeight + 0.1)`. Similarity between 0.75 and 0.88 triggers conflict resolution: the older spec-doc record is deprecated and a `supersedes` causal edge is created. Below 0.75, the spec-doc record stores as a new complement.
 
 **Sprint 8 update:** The original merge logic referenced a non-existent `frequency_counter` column, which would have caused runtime crashes on reconsolidation. This was replaced with `importance_weight` merge logic that properly uses an existing column.
 
@@ -2718,7 +2718,7 @@ See [`13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md`](13--me
 
 #### Description
 
-When a memory is saved, the system labels it as regular text, code or structured data. Right now this label is stored but not used for search ranking. It is groundwork for the future: once the system knows what type of content it is looking at, it can treat a code snippet differently from a meeting note. Think of it as sorting your files into labeled folders before you need to search them.
+When a spec-doc record is saved, the system labels it as regular text, code or structured data. Right now this label is stored but not used for search ranking. It is groundwork for the future: once the system knows what type of content it is looking at, it can treat a code snippet differently from a meeting note. Think of it as sorting your files into labeled folders before you need to search them.
 
 #### Current Reality
 
@@ -2736,7 +2736,7 @@ See [`13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.m
 
 #### Description
 
-Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a memory and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.
+Your notes mention tools, projects and concepts by name, but those names were never formally cataloged. This feature automatically spots those names when you save a spec-doc record and adds them to a shared catalog. Later, the system can use that catalog to connect memories that mention the same things, even if the surrounding text is completely different. It is like an automatic index at the back of a book that builds itself as you write.
 
 #### Current Reality
 
@@ -2762,7 +2762,7 @@ See [`13--memory-quality-and-indexing/10-auto-entity-extraction.md`](13--memory-
 
 #### Description
 
-Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the memory is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains.
+Previously, every saved memory in the same folder got nearly the same filename, making it impossible to tell them apart at a glance. This feature names each file based on what the spec-doc record is actually about, like labeling your photo albums by vacation instead of just numbering them. You can now scan a folder and instantly see what each file contains.
 
 #### Current Reality
 
@@ -2816,7 +2816,7 @@ See [`13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md`](13-
 
 #### Description
 
-Sometimes the system cannot create a full searchable fingerprint for a memory because the fingerprinting service is temporarily down. Instead of losing the memory entirely, this feature saves it in a simpler text-searchable form so you can still find it by keywords. When the fingerprinting service comes back, the system automatically retries and upgrades the memory to full searchability.
+Sometimes the system cannot create a full searchable fingerprint for a spec-doc record because the fingerprinting service is temporarily down. Instead of losing the spec-doc record entirely, this feature saves it in a simpler text-searchable form so you can still find it by keywords. When the fingerprinting service comes back, the system automatically retries and upgrades the spec-doc record to full searchability.
 
 #### Current Reality
 
@@ -2834,7 +2834,7 @@ See [`13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`](13-
 
 #### Description
 
-Before committing a memory to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.
+Before committing a spec-doc record to storage, you can do a practice run to see if it would pass all the checks. Nothing gets saved or changed. It is like using the "print preview" button before printing: you catch problems before they become permanent, without wasting paper.
 
 #### Current Reality
 
@@ -2854,7 +2854,7 @@ See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](
 
 #### Description
 
-When work is delegated to an external helper (like a different AI tool), the results need to come back in a clean format the memory system can understand. This feature makes sure that incoming data files are properly validated and that follow-up actions are captured, so nothing important gets lost when work passes between different tools.
+When work is delegated to an external helper (like a different AI tool), the results need to come back in a clean format the indexed-continuity store can understand. This feature makes sure that incoming data files are properly validated and that follow-up actions are captured, so nothing important gets lost when work passes between different tools.
 
 #### Current Reality
 
@@ -2879,7 +2879,7 @@ See [`13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`](13
 
 #### Description
 
-When a memory is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the memory actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
+When a spec-doc record is saved with minimal context, the system fills in the gaps by pulling relevant details from the project folder and recent changes. At the same time, it checks that the spec-doc record actually belongs to the project it claims to be part of and blocks saves that clearly belong somewhere else. Think of it as an assistant who fills out missing form fields for you but refuses to file the form in the wrong cabinet.
 
 #### Current Reality
 
@@ -2910,7 +2910,7 @@ See [`13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards
 
 #### Description
 
-After the system saves a memory file, it runs a quick proof-reading step to check that nothing was lost in transcription. It compares the saved file against the original JSON payload to catch cases where the rendering pipeline silently dropped or degraded caller-supplied fields — like a generic title replacing a meaningful one, or trigger phrases that are file paths instead of natural-language keywords. Think of it as a proof-reader who checks the printed form against the original application before it goes into the filing cabinet.
+After the system saves a spec-doc record file, it runs a quick proof-reading step to check that nothing was lost in transcription. It compares the saved file against the original JSON payload to catch cases where the rendering pipeline silently dropped or degraded caller-supplied fields — like a generic title replacing a meaningful one, or trigger phrases that are file paths instead of natural-language keywords. Think of it as a proof-reader who checks the printed form against the original application before it goes into the filing cabinet.
 
 #### Current Reality
 
@@ -2980,7 +2980,7 @@ Weekly batch feedback learning aggregates implicit feedback events from the ledg
 
 #### Current Reality
 
-The batch learning pipeline runs on a 7-day window. It reads implicit feedback events and aggregates per-memory signals with confidence-weighted scoring: strong = 1.0, medium = 0.5, weak = 0.1. Guards: minimum 3 distinct sessions required before a signal is eligible, max boost delta of 0.10 per cycle. Results are logged for auditability. Shadow-only: no live ranking columns are mutated. Default OFF, set `SPECKIT_BATCH_LEARNED_FEEDBACK=true` to enable.
+The batch learning pipeline runs on a 7-day window. It reads implicit feedback events and aggregates per-record signals with confidence-weighted scoring: strong = 1.0, medium = 0.5, weak = 0.1. Guards: minimum 3 distinct sessions required before a signal is eligible, max boost delta of 0.10 per cycle. Results are logged for auditability. Shadow-only: no live ranking columns are mutated. Default OFF, set `SPECKIT_BATCH_LEARNED_FEEDBACK=true` to enable.
 
 #### Source Files
 
@@ -3044,7 +3044,7 @@ A long document gets split into smaller pieces for searching, but you want to se
 
 #### Current Reality
 
-When a memory file splits into chunks, each chunk gets its own score. Multi-Parent Aggregated Bonus combines those chunk scores into a single memory-level score using the formula `sMax + 0.3 * sum(remaining) / sqrt(N)`. The top chunk score becomes the base, and the remaining chunks contribute a damped bonus.
+When a spec-doc record file splits into chunks, each chunk gets its own score. Multi-Parent Aggregated Bonus combines those chunk scores into a single memory-level score using the formula `sMax + 0.3 * sum(remaining) / sqrt(N)`. The top chunk score becomes the base, and the remaining chunks contribute a damped bonus.
 
 Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 applies MPAB. The bonus coefficient (0.3) is exported as `MPAB_BONUS_COEFFICIENT` for tuning. The aggregation runs in Stage 3 of the 4-stage pipeline after RRF fusion and before state filtering. Runs behind the `SPECKIT_DOCSCORE_AGGREGATION` flag (default ON).
 
@@ -3210,7 +3210,7 @@ See [`14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`](14--pipeline-
 
 #### Description
 
-Ten small but important fixes were applied to make the system more resilient. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a memory left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
+Ten small but important fixes were applied to make the system more resilient. Some exposed missing options that were supposed to be available. Others fixed cleanup problems where deleting a spec-doc record left orphaned records behind. A few improved how the system handles word variations in searches. Together, these fixes close gaps that could have caused subtle data inconsistencies or missed search results over time.
 
 #### Current Reality
 
@@ -3275,7 +3275,7 @@ See [`14--pipeline-architecture/13-strict-zod-schema-validation.md`](14--pipelin
 
 #### Description
 
-When the memory server starts up, it now tells the calling AI how many memories are stored, how many folders exist and which search methods are available. This is like a librarian greeting you at the door with a summary of what the library has today. It helps the AI make smarter decisions about how to search right from the start.
+When the spec-doc record server starts up, it now tells the calling AI how many memories are stored, how many folders exist and which search methods are available. This is like a librarian greeting you at the door with a summary of what the library has today. It helps the AI make smarter decisions about how to search right from the start.
 
 #### Current Reality
 
@@ -3291,7 +3291,7 @@ See [`14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initializa
 
 #### Description
 
-Right now, the memory server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
+Right now, the spec-doc record server starts fresh every time it is called and shuts down when the conversation ends. This planned feature would keep the server running in the background so it is always warm and ready, like leaving your car engine idling instead of restarting it every time you need to drive. It is deferred until the underlying connection standards settle down.
 
 #### Current Reality
 
@@ -3341,7 +3341,7 @@ See [`14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`](14--pipel
 
 #### Description
 
-When saving a memory, the system first writes the file safely to a temporary location and only moves it to the final spot once the write is confirmed complete. If a crash happens mid-save, the half-written file can be recovered on the next startup. This prevents data loss the same way a word processor auto-saves a draft before overwriting your real document.
+When saving a spec-doc record, the system first writes the file safely to a temporary location and only moves it to the final spot once the write is confirmed complete. If a crash happens mid-save, the half-written file can be recovered on the next startup. This prevents data loss the same way a word processor auto-saves a draft before overwriting your real document.
 
 #### Current Reality
 
@@ -3395,13 +3395,13 @@ See [`14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md`](14--p
 
 #### Description
 
-If the system crashes in the middle of saving a memory, the file might be left in a half-finished state on disk. When the server starts back up, this feature scans for those half-finished files and completes the save if the database already recorded it. It is like a delivery service checking for undelivered packages each morning and finishing the route from where it left off.
+If the system crashes in the middle of saving a spec-doc record, the file might be left in a half-finished state on disk. When the server starts back up, this feature scans for those half-finished files and completes the save if the database already recorded it. It is like a delivery service checking for undelivered packages each morning and finishing the route from where it left off.
 
 #### Current Reality
 
 The transaction manager maintains an atomic write protocol where memory files are first written to a `_pending` path and only renamed to their final location after the database transaction commits. When a crash or error interrupts this sequence after DB commit but before rename, a `_pending` file is left on disk as a recoverable artifact.
 
-The `findPendingFiles()` function scans the memory directories for files matching the `_pending` suffix. Each discovered pending file is checked against the database: if the corresponding DB row exists (committed), the file is renamed to its final path completing the interrupted operation. The `recoverPendingFile()` function handles individual file recovery and updates the `totalRecoveries` metric. This mechanism ensures zero data loss from interrupted save operations.
+The `findPendingFiles()` function scans the spec-doc record directories for files matching the `_pending` suffix. Each discovered pending file is checked against the database: if the corresponding DB row exists (committed), the file is renamed to its final path completing the interrupted operation. The `recoverPendingFile()` function handles individual file recovery and updates the `totalRecoveries` metric. This mechanism ensures zero data loss from interrupted save operations.
 
 #### Source Files
 
@@ -3413,11 +3413,11 @@ See [`14--pipeline-architecture/21-atomic-pending-file-recovery.md`](14--pipelin
 
 #### Description
 
-Every time a memory is saved, the system adds a timestamped record of that change to a history log. When you need to know what a memory looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each memory that you can rewind to any date, useful for understanding what changed and when.
+Every time a spec-doc record is saved, the system adds a timestamped record of that change to a history log. When you need to know what a spec-doc record looked like at a specific point in the past, the system can look up the history and give you the exact version from that moment. Think of it as a timeline for each spec-doc record that you can rewind to any date, useful for understanding what changed and when.
 
 #### Current Reality
 
-Phase 2 introduced versioned lineage state as a first-class storage primitive. Save-time writes append immutable lineage rows, while a deterministic active projection resolves which row is currently effective for a memory.
+Phase 2 introduced versioned lineage state as a first-class storage primitive. Save-time writes append immutable lineage rows, while a deterministic active projection resolves which row is currently effective for a spec-doc record.
 
 The active projection supports deterministic `asOf` resolution: for any timestamp, the runtime selects the latest valid lineage state at or before that point. Transition validation now compares parsed epoch timestamps, not raw strings, so non-ISO formatting or timezone variants cannot be misordered during predecessor checks. This enables time-consistent retrieval, deterministic rollback planning and predictable replay behavior for migration and audit workflows.
 
@@ -3443,7 +3443,7 @@ When you are working on something, this feature automatically brings up importan
 
 Memory auto-surface hooks fire at two lifecycle points beyond explicit search: tool dispatch for non-memory-aware tools (using extracted context hints), and session compaction (when context is compressed, critical memories are re-injected).
 
-Each hook point has a per-point token budget of 4,000 tokens maximum. The tool dispatch hook checks incoming tool arguments for context hints (input, query, prompt, specFolder, filePath or concepts) and surfaces constitutional-tier and trigger-matched memories, but skips memory-aware tools to avoid recursive surfacing loops. Memory-aware tools are handled in-band by the context-server pre-dispatch branch (`autoSurfaceMemories` / `autoSurfaceAtCompaction`). Constitutional memories are cached for 1 minute via an in-memory cache.
+Each hook point has a per-point token budget of 4,000 tokens maximum. The tool dispatch hook checks incoming tool arguments for context hints (input, query, prompt, specFolder, filePath or concepts) and surfaces constitutional-tier and trigger-matched spec-doc records, but skips memory-aware tools to avoid recursive surfacing loops. Memory-aware tools are handled in-band by the context-server pre-dispatch branch (`autoSurfaceMemories` / `autoSurfaceAtCompaction`). Constitutional memories are cached for 1 minute via an in-memory cache.
 
 #### Source Files
 
@@ -3493,7 +3493,7 @@ See [`15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure
 
 #### Description
 
-Over time, stored memories can contradict each other or grow stale. This feature runs periodic housekeeping to spot conflicts, strengthen connections that get used often and flag relationships that have not been touched in months. Think of it as a librarian who regularly walks the shelves to catch duplicate entries and retire outdated references.
+Over time, stored spec-doc records can contradict each other or grow stale. This feature runs periodic housekeeping to spot conflicts, strengthen connections that get used often and flag relationships that have not been touched in months. Think of it as a librarian who regularly walks the shelves to catch duplicate entries and retire outdated references.
 
 #### Current Reality
 
@@ -3513,7 +3513,7 @@ See [`15--retrieval-enhancements/04-lightweight-consolidation.md`](15--retrieval
 
 #### Description
 
-Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each memory when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
+Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each spec-doc record when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
 
 #### Current Reality
 
@@ -3724,7 +3724,7 @@ See [`16--tooling-and-scripts/05-code-standards-alignment.md`](16--tooling-and-s
 
 #### Description
 
-Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a memory file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.
+Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a spec-doc record file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.
 
 #### Current Reality
 
@@ -3742,7 +3742,7 @@ See [`16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`
 
 #### Description
 
-This is a command-line maintenance tool for the memory database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
+This is a command-line maintenance tool for the spec-doc record database that you can run directly without going through the normal system. It lets you check database statistics, delete old records in bulk, rebuild the search index or roll back a database upgrade. Think of it as the "service panel" for the system that only operators use when routine maintenance or emergency recovery is needed.
 
 #### Current Reality
 
@@ -3910,7 +3910,7 @@ When you delete or rename a file on your computer, the search index needs to cle
 
 The chokidar-based file watcher (`lib/ops/file-watcher.ts`) handles more than just add/change events. When a watched memory file is deleted or renamed, the watcher receives an `unlink` event and invokes the configured `removeFn` callback to purge the corresponding memory index entry, BM25 tokens and vector embedding from the database. This prevents orphaned index entries from appearing in search results after a file is moved or removed on disk.
 
-Rename detection is handled as an unlink followed by an add, which means the memory gets a fresh index entry at the new path while the old entry is cleaned up. The 2-second debounce window collapses rapid rename sequences into a single reindex cycle.
+Rename detection is handled as an unlink followed by an add, which means the spec-doc record gets a fresh index entry at the new path while the old entry is cleaned up. The 2-second debounce window collapses rapid rename sequences into a single reindex cycle.
 
 Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which exercises unlink cleanup, rename lifecycle handling, debounce behavior, burst rename deduplication and concurrent rename handling.
 
@@ -3944,7 +3944,7 @@ Session capturing pipeline quality is the current reality-alignment feature for 
 
 #### Current Reality
 
-The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. Structured `--stdin` / `--json` input is the only save path; direct positional saves exit non-zero with migration guidance. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered memory files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index so routine saves stay structurally clean. Decision confidence, truncated outcome handling, and `git_changed_file_count` follow stable priority chains that respect explicit input values.
+The shipped session-capture pipeline enforces crypto session IDs, atomic batch writes with rollback, contamination filtering, quality abort thresholds, alignment blocking, and configurable pipeline constants. Structured `--stdin` / `--json` input is the only save path; direct positional saves exit non-zero with migration guidance. A semantic sufficiency gate rejects aligned but under-evidenced saves with `INSUFFICIENT_CONTEXT_ABORT`. Rendered spec-doc record files preserve ANCHOR comments through post-render cleanup, render session-specific trigger phrases, and accept both camelCase and snake_case save contracts. The shared rendered-memory template contract validates structural output before write/index so routine saves stay structurally clean. Decision confidence, truncated outcome handling, and `git_changed_file_count` follow stable priority chains that respect explicit input values.
 
 #### Source Files
 
@@ -4070,7 +4070,7 @@ See [`18--ux-hooks/01-shared-post-mutation-hook-wiring.md`](18--ux-hooks/01-shar
 
 #### Description
 
-When you run a health check on the memory system and ask it to fix problems, it now tells you exactly what it tried to repair, what succeeded and what failed. Before this, you would only get a pass or fail result. Now you get a detailed report, like a car mechanic who hands you an itemized list showing which parts were replaced and which still need attention.
+When you run a health check on the indexed-continuity store and ask it to fix problems, it now tells you exactly what it tried to repair, what succeeded and what failed. Before this, you would only get a pass or fail result. Now you get a detailed report, like a car mechanic who hands you an itemized list showing which parts were replaced and which still need attention.
 
 #### Current Reality
 
@@ -4157,7 +4157,7 @@ See [`18--ux-hooks/06-mutation-hook-result-contract-expansion.md`](18--ux-hooks/
 
 #### Description
 
-When you save a memory, the system now includes helpful follow-up information right in the response, like whether caches were refreshed or if any hints are available. Previously that information existed internally but was not shown to you. It is like a bank transaction that now prints a full receipt instead of just saying "transaction complete."
+When you save a spec-doc record, the system now includes helpful follow-up information right in the response, like whether caches were refreshed or if any hints are available. Previously that information existed internally but was not shown to you. It is like a bank transaction that now prints a full receipt instead of just saying "transaction complete."
 
 #### Current Reality
 
@@ -4469,7 +4469,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
-| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a memory-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
+| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a spec-doc record-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only; callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
 | `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | Deprecated inert alias for the removed eager-warmup toggle. The embedding provider always initializes lazily now, so setting this flag does not restore startup warmup. |
 | `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
@@ -4491,7 +4491,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_GRAPH_SIGNALS` | `true` | boolean | `lib/search/search-flags.ts` | Enables N2a graph momentum scoring and N2b causal depth signals. Applied during Stage 2 fusion as additional scoring inputs from the causal graph structure. |
 | `SPECKIT_GRAPH_UNIFIED` | `true` | boolean | `lib/search/graph-flags.ts` | Unified graph channel gate. Legacy compatibility shim that controls whether the graph search channel participates in hybrid retrieval. Disabled with explicit `'false'`. |
 | `SPECKIT_GRAPH_WALK_ROLLOUT` | inherited from `SPECKIT_GRAPH_SIGNALS` | enum (`off`, `trace_only`, `bounded_runtime`) | `lib/search/search-flags.ts` | Controls the bounded graph-walk ladder. `off` disables the walk bonus, `trace_only` keeps rollout state and diagnostics visible with zero applied bonus, and `bounded_runtime` applies the capped Stage 2 graph-walk bonus while preserving deterministic ordering protections. |
-| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Phase label for the memory-roadmap snapshot. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, and `scope-governance`; unknown values fall back to `scope-governance`. |
+| `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | string | `lib/config/capability-flags.ts` | Phase label for the spec-doc record-roadmap snapshot. Supported values are `baseline`, `lineage`, `graph`, `adaptive`, and `scope-governance`; unknown values fall back to `scope-governance`. |
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on lineage roadmap flag surfaced in metadata snapshots. |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | `lib/config/capability-flags.ts` | Default-on unified-graph roadmap flag. It remains intentionally separate from the runtime `SPECKIT_GRAPH_UNIFIED` retrieval gate so roadmap metadata cannot misreport live graph-channel defaults. |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | `lib/config/capability-flags.ts` | Default-off adaptive-ranking roadmap flag. Phase 4 adaptive ranking remains dormant in production, so roadmap metadata keeps this flag off unless explicitly enabled with `true` or `1`. |
@@ -4505,7 +4505,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_LEARNED_STAGE2_COMBINER` | `true` | boolean | `shared/ranking/learned-combiner.ts` | **Default ON (graduated, shadow-only).** Learned Stage 2 weight combiner. Regularized linear ranker (Ridge Regression, lambda=0.1) that learns combination weights from 8 Stage 2 features (rrf, overlap, graph, session, causal, feedback, validation, artifact). Includes LOOCV, SHAP feature importance, and model persistence. Scores computed but NOT used for ranking. |
 | `SPECKIT_LLM_GRAPH_BACKFILL` | `true` | boolean | `lib/search/graph-lifecycle.ts` | **Default ON (graduated).** Async LLM graph backfill for high-value documents. After deterministic extraction completes, schedules an asynchronous LLM-based enrichment pass to add probabilistic edges. No-op when `SPECKIT_GRAPH_REFRESH_MODE` is `off`. |
 | `SPECKIT_LLM_REFORMULATION` | `true` | boolean | `lib/search/llm-reformulation.ts` | **Default ON (graduated).** LLM corpus-grounded query reformulation. Deep-mode only. Step-back abstraction combined with corpus seed grounding (3 FTS5/BM25 seeds, no embedding call). Produces up to 2 query variants. Budget: 1 LLM call per reformulation (8s timeout). Cached via shared LLM cache (1h TTL). |
-| `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each memory and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
+| `SPECKIT_MEMORY_SUMMARIES` | `true` | boolean | `lib/search/search-flags.ts` | R8 TF-IDF extractive summary generation. At index time, generates a top-3-sentence extractive summary for each spec-doc record and joins those sentences into summary text. Summaries serve as a lightweight search channel for fallback matching. |
 | `SPECKIT_MMR` | `true` | boolean | `lib/search/search-flags.ts` | Enables Maximal Marginal Relevance reranking after fusion to promote result diversity. Uses intent-specific lambda values from `INTENT_LAMBDA_MAP` (default `0.7`, continuity `0.65`). Requires embeddings to be loaded from `vec_memories` for top-N candidates. |
 | `SPECKIT_MULTI_QUERY` | `true` | boolean | `lib/search/search-flags.ts` | Enables multi-query expansion for deep-mode retrieval. The query is expanded into up to 3 variants via `expandQuery()`, each variant runs hybrid search in parallel, and results merge with deduplication. |
 | `SPECKIT_NEGATIVE_FEEDBACK` | `true` | boolean | `lib/search/search-flags.ts` | T002b/A4 negative-feedback confidence demotion. Applies a confidence multiplier (starts at 1.0, decreases 0.1 per negative validation, floors at 0.3) with 30-day half-life recovery. |
@@ -4592,9 +4592,9 @@ These are guardrail settings for save-time validation. They define size limits, 
 |---|---|---|---|---|
 | `MCP_ANCHOR_STRICT` | `false` | boolean | `lib/validation/preflight.ts` | When `'true'`, enforces strict anchor format validation during pre-flight checks. Invalid anchor IDs cause the save to be rejected. Default is lenient mode which logs warnings but does not block. |
 | `MCP_CHARS_PER_TOKEN` | `4` | number | `lib/validation/preflight.ts` | Characters-per-token ratio used for save-time token budget estimation during pre-flight validation. The same ratio is also shared by the quality loop when trimming to its default token budget. |
-| `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new memory is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
-| `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts` | Maximum allowed content length in characters for a memory file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
-| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight hard-fails with PF020 (`TOKEN_BUDGET_EXCEEDED`) when a memory exceeds this limit. |
+| `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new spec-doc record is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
+| `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts` | Maximum allowed content length in characters for a spec-doc record file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
+| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight hard-fails with PF020 (`TOKEN_BUDGET_EXCEEDED`) when a spec-doc record exceeds this limit. |
 | `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
 | `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
 

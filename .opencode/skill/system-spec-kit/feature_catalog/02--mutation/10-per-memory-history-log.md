@@ -1,6 +1,6 @@
 ---
 title: "Per-memory history log"
-description: "Covers the per-memory audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table."
+description: "Covers the per-record audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table."
 audited_post_018: true
 phase_018_change: "History logging remains live across the post-018 mutation paths"
 ---
@@ -9,15 +9,15 @@ phase_018_change: "History logging remains live across the post-018 mutation pat
 
 ## 1. OVERVIEW
 
-Covers the per-memory audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table.
+Covers the per-record audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table.
 
-Every time a memory is created, changed or deleted, the system writes a log entry recording what happened, when and who did it. This is like a change history on a shared document. If something looks wrong later, you can trace back to exactly what changed and when it happened.
+Every time a spec-doc record is created, changed or deleted, the system writes a log entry recording what happened, when and who did it. This is like a change history on a shared document. If something looks wrong later, you can trace back to exactly what changed and when it happened.
 
 ---
 
 ## 2. CURRENT REALITY
 
-The `memory_history` table records a per-memory audit trail of mutation events. Each row captures the memory ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
+The `memory_history` table records a per-record audit trail of mutation events. Each row captures the spec-doc record ID, event type (`ADD`, `UPDATE`, `DELETE`), timestamp, actor and optional `prev_value`/`new_value` payloads. This provides a lifecycle trace for individual memories and supports audit/debug workflows such as "show me all mutation events for memory #42."
 
 The history log is written by mutation handlers (`memory_save`, `memory_update`, `memory_delete`, `memory_bulk_delete`) and lower-level mutation helpers, including the post-merge atomic save commit and deletion helpers. `lib/storage/history.ts` owns schema-safe initialization/migration and read/write helpers, while `vector-index-schema.ts` ensures initialization runs at DB startup. The orphan cleanup script removes orphaned history rows when parent memories are missing.
 

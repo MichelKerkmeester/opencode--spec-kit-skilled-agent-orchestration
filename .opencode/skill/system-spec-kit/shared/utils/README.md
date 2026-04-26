@@ -16,12 +16,12 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. PATH SECURITY](#3--path-security)
-- [4. RETRY](#4--retry)
-- [5. TOKEN ESTIMATE](#5--token-estimate)
-- [6. RELATED](#6--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. PATH SECURITY](#3-path-security)
+- [4. RETRY](#4-retry)
+- [5. TOKEN ESTIMATE](#5-token-estimate)
+- [6. RELATED](#6-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

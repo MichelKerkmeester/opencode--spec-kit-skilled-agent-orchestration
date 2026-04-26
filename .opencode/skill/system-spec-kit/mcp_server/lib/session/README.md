@@ -16,12 +16,12 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. TROUBLESHOOTING](#5--troubleshooting)
-- [6. RELATED RESOURCES](#6--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE EXAMPLES](#4-usage-examples)
+- [5. TROUBLESHOOTING](#5-troubleshooting)
+- [6. RELATED RESOURCES](#6-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -81,7 +81,7 @@ session/
 
 ### Session Deduplication (v1.2.0)
 
-**Purpose**: Prevent sending the same memory content twice in a session, saving tokens.
+**Purpose**: Prevent sending the same spec-doc record content twice in a session, saving tokens.
 
 | Aspect | Details |
 |--------|---------|
@@ -195,7 +195,7 @@ checkpointSession(sessionId, {
 |---------|------|-------------|
 | Check if should send | `shouldSendMemory(sessionId, memory)` | Before returning single memory |
 | Batch check | `shouldSendMemoriesBatch(sessionId, memories)` | Before returning multiple memories |
-| Mark single sent | `markMemorySent(sessionId, memory)` | After returning a memory |
+| Mark single sent | `markMemorySent(sessionId, memory)` | After returning a spec-doc record |
 | Mark batch sent | `markMemoriesSentBatch(sessionId, memories)` | After returning multiple memories |
 | Clear session | `clearSession(sessionId)` | On explicit session end |
 | Get session stats | `getSessionStats(sessionId)` | For debugging/logging |

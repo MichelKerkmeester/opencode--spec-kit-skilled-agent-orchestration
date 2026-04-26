@@ -17,7 +17,7 @@ This scenario validates Verify-fix-verify memory quality loop (PI-A5) for `039`.
 Operators run the exact prompt and command sequence for `039` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm retry then reject path
-- Prompt: `As a memory-quality validation operator, validate Verify-fix-verify memory quality loop (PI-A5) against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Verify-fix-verify memory quality loop (PI-A5) against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged
 - Pass/fail: PASS: Quality loop retries up to max attempts then rejects with reason; FAIL: No retry attempted or infinite retry loop
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `039` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm retry then reject path against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm retry then reject path against the documented validation surface. Verify low-quality memory triggers retry cycle; final reject after max retries; rejection reason logged. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

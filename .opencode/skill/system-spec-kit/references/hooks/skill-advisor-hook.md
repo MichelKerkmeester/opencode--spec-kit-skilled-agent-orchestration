@@ -15,14 +15,14 @@ This reference describes the current prompt-time Skill Advisor integrations afte
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. RUNTIME MATRIX](#2--runtime-matrix)
-- [3. SHARED BEHAVIOR](#3--shared-behavior)
-- [4. SETUP AND SMOKE TESTS](#4--setup-and-smoke-tests)
-- [5. CONTROL FLAGS](#5--control-flags)
-- [6. OPERATOR STATES](#6--operator-states)
-- [7. PRIVACY AND DIAGNOSTICS](#7--privacy-and-diagnostics)
-- [8. VALIDATION](#8--validation)
+- [1. OVERVIEW](#1-overview)
+- [2. RUNTIME MATRIX](#2-runtime-matrix)
+- [3. SHARED BEHAVIOR](#3-shared-behavior)
+- [4. SETUP AND SMOKE TESTS](#4-setup-and-smoke-tests)
+- [5. CONTROL FLAGS](#5-control-flags)
+- [6. OPERATOR STATES](#6-operator-states)
+- [7. PRIVACY AND DIAGNOSTICS](#7-privacy-and-diagnostics)
+- [8. VALIDATION](#8-validation)
 
 ---
 

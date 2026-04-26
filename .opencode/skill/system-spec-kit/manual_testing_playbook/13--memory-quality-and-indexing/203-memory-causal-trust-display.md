@@ -17,7 +17,7 @@ This scenario validates memory causal trust display for `203`. It focuses on add
 Operators validate the display layer, not storage. The scenario confirms `memory_search` results surface `trustBadges` derived from existing causal-edge metadata, and that response profiles preserve the same per-result badge payload instead of dropping it during shaping.
 
 - Objective: Verify additive per-result trust badges for confidence, extraction age, last access age, orphan status, and weight-history change state
-- Prompt: `As a memory-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: `trustBadges` appear on search results; confidence is sourced from edge strength; ages render from causal-edge timestamps; orphan becomes true when inbound causal edges are absent; weight-history change becomes true when `weight_history` contains a connected edge; quick and research profiles preserve the badge payload
 - Pass/fail: PASS if formatter output contains the five badge fields with stable values and response profiles preserve them. FAIL if badges are missing, top-level only, dependent on new schema, or stripped by profile formatting.
 
@@ -28,7 +28,7 @@ Operators validate the display layer, not storage. The scenario confirms `memory
 ### Prompt
 
 ```text
-As a memory-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -41,7 +41,7 @@ As a memory-quality validation operator, validate Memory causal trust display ag
 
 **Block B — Cache invalidation on causal-edge mutation (R-007-12, 010/007/T-F):**
 
-4. **Setup**: pick a memory ID `<M>` that already exists. Run `memory_search({ query: "<predictable-query>", limit: 5, enableCausalBoost: true })`. Capture the response and the cache-key fingerprint (or response hash) — call this `H1`.
+4. **Setup**: pick a spec-doc record ID `<M>` that already exists. Run `memory_search({ query: "<predictable-query>", limit: 5, enableCausalBoost: true })`. Capture the response and the cache-key fingerprint (or response hash) — call this `H1`.
 5. **Re-run identical query** without any mutation: `memory_search({ query: "<predictable-query>", limit: 5, enableCausalBoost: true })`. Capture fingerprint `H1'`. Assert `H1 === H1'` (cache hit on the same generation; the underlying response is stable).
 6. **Mutate causal edges**: call `memory_causal_link({ sourceId: "<M>", targetId: "<other-id>", relation: "supports", strength: 0.7 })` to bump the causal-edges generation counter (R-007-12 fix bumps the counter inside `invalidateDegreeCache()`, the universal mutation call site).
 7. **Re-run identical query**: `memory_search({ query: "<predictable-query>", limit: 5, enableCausalBoost: true })`. Capture fingerprint `H2`. Assert `H2 !== H1` — the generation counter was folded into the cache key, forcing a fresh computation. The new boosted ranking may surface `<M>` higher in results.

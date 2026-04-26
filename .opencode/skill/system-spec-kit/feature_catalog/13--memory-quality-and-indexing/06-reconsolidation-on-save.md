@@ -1,6 +1,6 @@
 ---
 title: "Reconsolidation-on-save"
-description: "Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds."
+description: "Reconsolidation-on-save merges, supersedes or complements new spec-doc records with existing similar spec-doc records based on cosine similarity thresholds."
 audited_post_018: true
 ---
 
@@ -8,7 +8,7 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-Reconsolidation-on-save merges, supersedes or complements new memories with existing similar memories based on cosine similarity thresholds.
+Reconsolidation-on-save merges, supersedes or complements new spec-doc records with existing similar spec-doc records based on cosine similarity thresholds.
 
 When you save a new spec-doc record that is very similar to one already stored, the system decides what to do with the overlap. If the two are nearly identical, it merges them into one stronger record. If the new one contradicts the old one, the old one is retired and the new one takes over. If they are different enough, both are kept side by side. This keeps your indexed continuity clean and up to date instead of cluttered with redundant entries.
 
@@ -16,7 +16,7 @@ When you save a new spec-doc record that is very similar to one already stored, 
 
 ## 2. CURRENT REALITY
 
-After embedding generation, the save pipeline checks the top-3 most similar memories in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and the `importance_weight` is incremented via `Math.min(1.0, currentWeight + 0.1)`. Similarity between 0.75 and 0.88 triggers conflict resolution: the old memory is deprecated and a `supersedes` causal edge is created. Below 0.75, the memory stores as a new complement.
+After embedding generation, the save pipeline checks the top-3 most similar spec-doc records in the same spec folder. Similarity at or above 0.88 triggers a merge where content is combined and the `importance_weight` is incremented via `Math.min(1.0, currentWeight + 0.1)`. Similarity between 0.75 and 0.88 triggers conflict resolution: the older spec-doc record is deprecated and a `supersedes` causal edge is created. Below 0.75, the spec-doc record stores as a new complement.
 
 **Sprint 8 update:** The original merge logic referenced a non-existent `frequency_counter` column, which would have caused runtime crashes on reconsolidation. This was replaced with `importance_weight` merge logic that properly uses an existing column.
 

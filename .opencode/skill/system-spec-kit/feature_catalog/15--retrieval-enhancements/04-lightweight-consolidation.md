@@ -10,7 +10,7 @@ audited_post_018: true
 
 Lightweight consolidation is invoked after every save, but contradiction scanning, Hebbian edge strengthening, staleness detection and edge bounds enforcement execute on a weekly cadence.
 
-Over time, stored memories can contradict each other or grow stale. This feature runs periodic housekeeping to spot conflicts, strengthen connections that get used often and flag relationships that have not been touched in months. Think of it as a librarian who regularly walks the shelves to catch duplicate entries and retire outdated references.
+Over time, stored spec-doc records can contradict each other or grow stale. This feature runs periodic housekeeping to spot conflicts, strengthen connections that get used often and flag relationships that have not been touched in months. Think of it as a librarian who regularly walks the shelves to catch duplicate entries and retire outdated references.
 
 ---
 

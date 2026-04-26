@@ -9,7 +9,7 @@ description: "Covers the paginated browse endpoint that lists indexed memories w
 
 Covers the paginated browse endpoint that lists indexed memories with sorting and chunk inclusion options.
 
-This lets you browse through all stored memories page by page, like scrolling through a list of saved notes. You can sort by date or importance to find what you need. It is the simplest way to see what the system has stored without running a search query.
+This lets you browse through all stored spec-doc records page by page, like scrolling through a list of saved notes. You can sort by date or importance to find what you need. It is the simplest way to see what the system has stored without running a search query.
 
 ---
 

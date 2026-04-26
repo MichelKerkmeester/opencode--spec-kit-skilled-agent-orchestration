@@ -10,7 +10,7 @@ audited_post_018: true
 
 Tracks the fix for mixed ID format deduplication failures in hybrid search caused by string/number mismatches.
 
-The same memory was sometimes listed multiple times in search results because different parts of the system referred to it using slightly different labels. This fix standardizes how memories are identified internally so duplicates are correctly detected and merged in the results every time.
+The same spec-doc record was sometimes listed multiple times in search results because different parts of the system referred to it using slightly different labels. This fix standardizes how memories are identified internally so duplicates are correctly detected and merged in the results every time.
 
 ---
 

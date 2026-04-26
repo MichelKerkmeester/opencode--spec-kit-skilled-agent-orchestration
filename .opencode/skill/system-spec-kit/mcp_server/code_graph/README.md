@@ -19,11 +19,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. CONTEXT SURFACES](#3--context-surfaces)
-- [4. SCAN DEFAULTS](#4--scan-defaults)
-- [5. RELATED DOCUMENTS](#5--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. CONTEXT SURFACES](#3-context-surfaces)
+- [4. SCAN DEFAULTS](#4-scan-defaults)
+- [5. RELATED DOCUMENTS](#5-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 

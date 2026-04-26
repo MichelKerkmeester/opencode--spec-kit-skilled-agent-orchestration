@@ -10,7 +10,7 @@ audited_post_018: true
 
 Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls, gated by the `SPECKIT_QUERY_DECOMPOSITION` flag.
 
-When you ask a complex question that covers multiple topics at once (for example "What is the memory save workflow and how does query expansion work?"), the system may fail to find good results because it tries to match everything at once. This feature detects coordinating conjunctions ("and", "or", "also") and multiple wh-question words to split such queries into focused sub-queries. Each sub-query retrieves independently, and results are merged by facet coverage. This only activates in deep mode, where the extra retrieval cost is acceptable.
+When you ask a complex question that covers multiple topics at once (for example "What is the spec-doc record save workflow and how does query expansion work?"), the system may fail to find good results because it tries to match everything at once. This feature detects coordinating conjunctions ("and", "or", "also") and multiple wh-question words to split such queries into focused sub-queries. Each sub-query retrieves independently, and results are merged by facet coverage. This only activates in deep mode, where the extra retrieval cost is acceptable.
 
 ---
 

@@ -202,7 +202,7 @@ Both systems use the same `###-name/` naming convention for child folders and bo
 <!-- ANCHOR:generate-context-js-integration -->
 ## 9. generate-context.js Integration
 
-When using subfolder versioning, the memory save script (`generate-context.js`) fully supports nested paths.
+When using subfolder versioning, the spec-doc record save script (`generate-context.js`) fully supports nested paths.
 
 ### Supported Input Formats
 

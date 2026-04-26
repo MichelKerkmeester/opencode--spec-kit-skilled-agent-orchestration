@@ -17,7 +17,7 @@ This scenario validates Implemented: auto entity extraction (R10) for `092`. It 
 Operators run the exact prompt and command sequence for `092` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm deferred->implemented status
-- Prompt: `As a memory-quality validation operator, validate Implemented: auto entity extraction (R10) against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Implemented: auto entity extraction (R10) against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied
 - Pass/fail: PASS if entity extraction runs automatically on save and produces correctly typed entities with default settings
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `092` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm deferred->implemented status against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm deferred->implemented status against the documented validation surface. Verify entities automatically extracted on save; entity outputs contain expected entity types; default extraction settings are applied. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

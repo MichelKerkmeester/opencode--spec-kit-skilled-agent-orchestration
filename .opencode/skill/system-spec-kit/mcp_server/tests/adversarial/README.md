@@ -139,8 +139,8 @@ instead of forking lineage" (lines 72-129)
 
 **Adversarial interleave exercised:** Same `staleSnapshot`
 (predecessor row id 1, content_hash 'hash-original') is handed to two
-sequential `executeConflict()` calls — one with new memory id 2, one
-with new memory id 3.
+sequential `executeConflict()` calls — one with new spec-doc record id 2, one
+with new spec-doc record id 3.
 
 **Post-fix behaviour verified:**
 

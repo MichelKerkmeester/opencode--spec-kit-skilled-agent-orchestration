@@ -17,7 +17,7 @@ This scenario validates Dry-run preflight for memory_save for `133`. It focuses 
 Operators run the exact prompt and command sequence for `133` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects
-- Prompt: `As a memory-quality validation operator, validate Dry-run preflight for memory_save against memory_stats(). Verify dry-run previews preflight plus semantic insufficiency without indexing side effects. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Dry-run preflight for memory_save against memory_stats(). Verify dry-run previews preflight plus semantic insufficiency without indexing side effects. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
 - Pass/fail: PASS if dry-run surfaces sufficiency explicitly with no index mutation, forced thin save still rejects, and rich non-dry-run save makes the record searchable
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `133` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm dry-run previews preflight plus semantic insufficiency without indexing side effects against memory_stats(). Verify dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm dry-run previews preflight plus semantic insufficiency without indexing side effects against memory_stats(). Verify dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -39,7 +39,7 @@ As a memory-quality validation operator, confirm dry-run previews preflight plus
 4. `memory_stats()` and `memory_search({query:"<thin title>"})` to verify no new indexed record from dry-run
 5. `memory_save({filePath:"<thin-sandbox-file>", force:true})` and verify it still rejects before indexing
 6. `memory_save({filePath:"<rich-sandbox-file>", dryRun:true})` and verify `would_pass:true` with no side effects
-7. `memory_save({filePath:"<rich-sandbox-file>", dryRun:false})` and verify the memory becomes searchable
+7. `memory_save({filePath:"<rich-sandbox-file>", dryRun:false})` and verify the spec-doc record becomes searchable
 
 ### Expected
 

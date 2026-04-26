@@ -7,12 +7,12 @@ description: "Structured JSON summary support for generate-context.js, including
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. FEATURE BREAKDOWN](#3--feature-breakdown)
-- [4. SOURCE FILES](#4--source-files)
-- [5. VERIFICATION SOURCES](#5--verification-sources)
-- [6. SOURCE METADATA](#6--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. FEATURE BREAKDOWN](#3-feature-breakdown)
+- [4. SOURCE FILES](#4-source-files)
+- [5. VERIFICATION SOURCES](#5-verification-sources)
+- [6. SOURCE METADATA](#6-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -33,7 +33,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 5. Truncated outcome/title handling respects explicit input values instead of silently replacing them.
 6. `git_changed_file_count` follows a stable 3-tier priority chain: explicit count > enrichment-derived count > provenance-based count.
 7. Template assembly preserves explicit session-level message and tool counts when conversation arrays are sparse.
-8. After the memory file is written (Step 10.5), a post-save quality review validates that JSON payload fields propagated correctly to the saved memory, using both frontmatter and the `## MEMORY METADATA` YAML block before indexing begins.
+8. After the spec-doc record file is written (Step 10.5), a post-save quality review validates that JSON payload fields propagated correctly to the saved memory, using both frontmatter and the `## MEMORY METADATA` YAML block before indexing begins.
 9. JSON payload fields `sessionSummary`, `triggerPhrases`, `keyDecisions`, and `contextType` now properly flow through to rendered frontmatter via RC1–RC5 fixes (see §3.4).
 
 ---
@@ -68,7 +68,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 ### 3.5 Post-save quality review (Step 10.5)
 
-- After the memory file is written but before indexing begins, a post-save review step compares the saved frontmatter against the original JSON payload.
+- After the spec-doc record file is written but before indexing begins, a post-save review step compares the saved frontmatter against the original JSON payload.
 - Detects propagation failures including generic titles, path-fragment trigger phrases, importance_tier mismatch, decision_count of zero, contextType mismatch, and generic descriptions.
 - Reads authoritative `decision_count` from either frontmatter or `## MEMORY METADATA`, matching the shipped runtime parser.
 - Emits a machine-readable review with severity levels (HIGH/MEDIUM/LOW) so callers can surface actionable field-level failures.

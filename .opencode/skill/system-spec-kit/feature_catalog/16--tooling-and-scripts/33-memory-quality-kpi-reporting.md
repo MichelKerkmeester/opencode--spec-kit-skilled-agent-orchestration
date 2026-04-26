@@ -5,14 +5,14 @@ description: "Shell-based KPI reporting that scans saved memory markdown for pla
 
 # Memory Quality KPI Reporting
 
-This document captures the implemented behavior, source references, and remediation metadata for the memory-quality KPI reporting script surface.
+This document captures the implemented behavior, source references, and remediation metadata for the spec-doc record-quality KPI reporting script surface.
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 

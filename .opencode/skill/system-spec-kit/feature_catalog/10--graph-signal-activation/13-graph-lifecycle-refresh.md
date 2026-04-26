@@ -10,7 +10,7 @@ audited_post_018: true
 
 Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the `SPECKIT_GRAPH_REFRESH_MODE` flag.
 
-When you save or update a memory that has graph edges, the nearby graph nodes become "dirty" and need recalculating. This feature controls how that recalculation happens. In local mode, small clusters are recomputed right away during the save. In scheduled mode, larger clusters are queued for a background pass. By default, graph refresh runs in `write_local` mode; set `SPECKIT_GRAPH_REFRESH_MODE=off` if you want zero refresh overhead.
+When you save or update a spec-doc record that has graph edges, the nearby graph nodes become "dirty" and need recalculating. This feature controls how that recalculation happens. In local mode, small clusters are recomputed right away during the save. In scheduled mode, larger clusters are queued for a background pass. By default, graph refresh runs in `write_local` mode; set `SPECKIT_GRAPH_REFRESH_MODE=off` if you want zero refresh overhead.
 
 ---
 

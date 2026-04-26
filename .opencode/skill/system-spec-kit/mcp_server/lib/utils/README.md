@@ -18,11 +18,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE EXAMPLES](#4-usage-examples)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -94,7 +94,7 @@ Shared path-policy module (Packet 026/010/002) used as the single source of trut
 
 | Function | Purpose |
 |----------|---------|
-| `shouldIndexForMemory` | Predicate: is a given path admissible for the memory index under current policy? Rejects `z_future/` and `/external/` paths; callers use this at both discovery and save time for defense-in-depth |
+| `shouldIndexForMemory` | Predicate: is a given path admissible for the spec-doc record index under current policy? Rejects `z_future/` and `/external/` paths; callers use this at both discovery and save time for defense-in-depth |
 | `shouldIndexForCodeGraph` | Predicate: is a given path admissible for code-graph scanning? Shares exclusion rules with `shouldIndexForMemory` but may accept packet-specific overlays where additive |
 | `resolveCanonicalPath` | Resolve a path via `realpathSync` before policy evaluation so symlinked / aliased escape attempts cannot bypass exclusion checks |
 | `GOVERNANCE_AUDIT_ACTIONS` | Stable string constants for governance-audit `action` values: `tier_downgrade_non_constitutional_path` (save-time normalization) and `tier_downgrade_non_constitutional_path_cleanup` (CLI cleanup). Part of the operator-facing contract — do not rename |

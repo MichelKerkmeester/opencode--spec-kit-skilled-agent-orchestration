@@ -12,12 +12,12 @@ trigger_phrases:
 
 ## TABLE OF CONTENTS
 
-- [1. SCENARIO](#1--scenario)
-- [2. SETUP](#2--setup)
-- [3. STEPS](#3--steps)
-- [4. EXPECTED](#4--expected)
-- [5. FAILURE MODES](#5--failure-modes)
-- [6. RELATED](#6--related)
+- [1. SCENARIO](#1-scenario)
+- [2. SETUP](#2-setup)
+- [3. STEPS](#3-steps)
+- [4. EXPECTED](#4-expected)
+- [5. FAILURE MODES](#5-failure-modes)
+- [6. RELATED](#6-related)
 
 ---
 

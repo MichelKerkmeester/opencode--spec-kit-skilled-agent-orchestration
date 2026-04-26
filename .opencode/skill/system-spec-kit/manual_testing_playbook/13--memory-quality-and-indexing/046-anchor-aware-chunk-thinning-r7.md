@@ -17,7 +17,7 @@ This scenario validates Anchor-aware chunk thinning (R7) for `046`. It focuses o
 Operators run the exact prompt and command sequence for `046` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm anchor-priority thinning
-- Prompt: `As a memory-quality validation operator, validate Anchor-aware chunk thinning (R7) against the documented validation surface. Verify anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Anchor-aware chunk thinning (R7) against the documented validation surface. Verify anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order
 - Pass/fail: PASS: All anchor chunks retained; filler removed; retained set non-empty; FAIL: Anchor chunks removed or empty retained set
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `046` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm anchor-priority thinning against the documented validation surface. Verify anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm anchor-priority thinning against the documented validation surface. Verify anchor chunks retained; filler chunks thinned; retained set is non-empty; anchor priority respected in thinning order. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

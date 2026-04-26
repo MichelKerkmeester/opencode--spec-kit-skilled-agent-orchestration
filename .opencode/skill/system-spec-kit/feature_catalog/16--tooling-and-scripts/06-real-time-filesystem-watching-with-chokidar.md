@@ -9,7 +9,7 @@ description: "Real-time filesystem watching uses chokidar to push-index changed 
 
 Real-time filesystem watching uses chokidar to push-index changed memory files with debounce, content-hash deduplication and retry logic.
 
-Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a memory file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.
+Instead of waiting for you to ask the system to re-scan your files, this feature watches your project folder in real time. When you save, rename or delete a spec-doc record file, the system notices and updates its index automatically. It works like how your email app shows new messages as they arrive rather than making you hit refresh.
 
 ---
 

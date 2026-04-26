@@ -17,11 +17,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. MODULE INVENTORY](#2--module-inventory)
-- [3. FEATURE CATALOG MAPPING](#3--feature-catalog-mapping)
-- [4. DEPENDENCY DIRECTIONS (T139)](#4--dependency-directions-t139)
-- [5. CANONICAL LOCATIONS](#5--canonical-locations)
+- [1. OVERVIEW](#1-overview)
+- [2. MODULE INVENTORY](#2-module-inventory)
+- [3. FEATURE CATALOG MAPPING](#3-feature-catalog-mapping)
+- [4. DEPENDENCY DIRECTIONS (T139)](#4-dependency-directions-t139)
+- [5. CANONICAL LOCATIONS](#5-canonical-locations)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -87,7 +87,7 @@ Notes:
 
 ### `cognitive/`
 
-- Purpose: Owns the memory-science side of the system: decay, retrievability, working memory, co-activation, pressure monitoring, and adaptive ranking inputs. It is the main "how memory behaves over time" module family.
+- Purpose: Owns the spec-doc record-science side of the system: decay, retrievability, working memory, co-activation, pressure monitoring, and adaptive ranking inputs. It is the main "how memory behaves over time" module family.
 - Key files:
   - `working-memory.ts` — working-memory writes, cleanup, and short-horizon memory behavior.
   - `fsrs-scheduler.ts` — FSRS-based spaced-repetition scheduling and retrievability math.
@@ -334,7 +334,7 @@ Notes:
 
 ### `storage/`
 
-- Purpose: Owns persistence behavior outside the search algorithm itself: checkpoints, history, access tracking, lineage state, transactions, consolidation, reconsolidation, and index refresh flows. This is the long-lived state management layer for the memory system.
+- Purpose: Owns persistence behavior outside the search algorithm itself: checkpoints, history, access tracking, lineage state, transactions, consolidation, reconsolidation, and index refresh flows. This is the long-lived state management layer for the indexed-continuity store.
 - Key files:
   - `checkpoints.ts` — checkpoint create/list/restore/delete operations.
   - `incremental-index.ts` — incremental indexing and deferred lexical-only indexing helpers.

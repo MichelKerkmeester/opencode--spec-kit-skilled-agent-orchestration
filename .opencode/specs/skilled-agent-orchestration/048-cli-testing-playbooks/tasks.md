@@ -1,6 +1,7 @@
 ---
 title: "Tasks: CLI Testing Playbooks"
 description: "Task list for spec 048: scaffold spec docs, dispatch /create:testing-playbook in two waves, validate, close out."
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->"
 trigger_phrases:
   - "048 tasks"
   - "cli playbook tasks"
@@ -31,7 +32,7 @@ _memory:
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
 
 ---
-
+<!-- ANCHOR:notation -->
 ## Task Notation
 
 | Prefix | Meaning |
@@ -42,22 +43,26 @@ _memory:
 | `[B]` | Blocked |
 
 **Task Format**: `T### [P?] Description (file path)`
+<!-- /ANCHOR:notation -->
 
 ---
-
+<!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] T001 Create `spec.md` (`048-cli-testing-playbooks/spec.md`)
-- [x] T002 Create `plan.md` (`048-cli-testing-playbooks/plan.md`)
-- [x] T003 Create `tasks.md` (this file)
-- [x] T004 Create `checklist.md` (`048-cli-testing-playbooks/checklist.md`)
-- [x] T005 Create `decision-record.md` (`048-cli-testing-playbooks/decision-record.md`)
-- [x] T006 Create `implementation-summary.md` placeholder (`048-cli-testing-playbooks/implementation-summary.md`)
-- [ ] T007 Run `generate-context.js` to create `description.json` + `graph-metadata.json` for the spec folder
+- [x] T001 Create spec.md (048-cli-testing-playbooks/spec.md)
+- [x] T002 Create plan.md (048-cli-testing-playbooks/plan.md)
+- [x] T003 Create tasks.md (this file)
+- [x] T004 Create checklist.md (048-cli-testing-playbooks/checklist.md)
+- [x] T005 Create decision-record.md (048-cli-testing-playbooks/decision-record.md)
+- [x] T006 Create implementation-summary.md placeholder (048-cli-testing-playbooks/implementation-summary.md)
+- [ ] T007 Run generate-context.js to create description.json + graph-metadata.json for the spec folder
+<!-- /ANCHOR:phase-1 -->
 
 ---
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
 
-## Phase 2: Wave 1 (parallel @write dispatch × 3)
+### Wave 1 (parallel @write dispatch × 3)
 
 - [ ] T010 [P] Dispatch `/create:testing-playbook cli-gemini create :auto` via @write (output: `.opencode/skill/cli-gemini/manual_testing_playbook/`)
 - [ ] T011 [P] Dispatch `/create:testing-playbook cli-claude-code create :auto` via @write (output: `.opencode/skill/cli-claude-code/manual_testing_playbook/`)
@@ -68,13 +73,11 @@ _memory:
 - [ ] T015 Run `validate_document.py` on cli-gemini, cli-claude-code, cli-codex root playbooks
 - [ ] T016 Link integrity check on Wave 1 playbooks (every per-feature link resolves)
 - [ ] T017 Feature-ID count check on Wave 1 playbooks (root index count == per-feature file count)
-- [ ] T018 Forbidden sidecar scan on Wave 1 playbooks (no `review_protocol.md`, `subagent_utilization_ledger.md`, `snippets/`)
+- [ ] T018 Forbidden sidecar scan on Wave 1 playbooks (no review-protocol or subagent-utilization-ledger sidecars, no snippets subtree)
 - [ ] T019 Cross-CLI invariant manual review for Wave 1 (categories 01/06/07 numbered identically)
 - [ ] T020 Spot-check 2 per-feature files per Wave 1 CLI (6 reads)
 
----
-
-## Phase 2: Wave 2 (parallel @write dispatch × 2)
+### Wave 2 (parallel @write dispatch × 2)
 
 - [ ] T030 [P] Dispatch `/create:testing-playbook cli-copilot create :auto` via @write (output: `.opencode/skill/cli-copilot/manual_testing_playbook/`)
 - [ ] T031 [P] Dispatch `/create:testing-playbook cli-opencode create :auto` via @write (output: `.opencode/skill/cli-opencode/manual_testing_playbook/`)
@@ -87,10 +90,13 @@ _memory:
 - [ ] T038 Forbidden sidecar scan on Wave 2 playbooks
 - [ ] T039 Cross-CLI invariant manual review for Wave 2 (categories 01/06/07 vs Wave 1 baselines)
 - [ ] T040 Spot-check 2 per-feature files per Wave 2 CLI (4 reads)
+<!-- /ANCHOR:phase-2 -->
 
 ---
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
 
-## Phase 3: Verification & Close-out
+### Close-out
 
 - [ ] T050 Cross-playbook taxonomy diff: confirm categories 01/06/07 align across all 5 playbooks
 - [ ] T051 Run spec-folder validation `--strict`
@@ -98,22 +104,25 @@ _memory:
 - [ ] T053 Run `generate-context.js` (full save) to refresh `description.json` + `graph-metadata.json` and index the spec
 - [ ] T054 Mark all P0 + P1 checklist items in `checklist.md`
 - [ ] T055 Final review of `implementation-summary.md` post-save quality output
+<!-- /ANCHOR:phase-3 -->
 
 ---
-
+<!-- ANCHOR:completion -->
 ## Completion Criteria
 
 - [ ] All tasks marked `[x]`
 - [ ] No `[B]` blocked tasks remaining
 - [ ] All P0 checklist items complete with evidence
-- [ ] `implementation-summary.md` non-placeholder
-- [ ] `description.json` + `graph-metadata.json` current
+- [ ] implementation-summary.md non-placeholder
+- [ ] description.json + graph-metadata.json current
+<!-- /ANCHOR:completion -->
 
 ---
-
+<!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
-- **Checklist**: See `checklist.md`
-- **Decisions**: See `decision-record.md`
+- **Specification**: See spec.md
+- **Plan**: See plan.md
+- **Checklist**: See checklist.md
+- **Decisions**: See decision-record.md
+<!-- /ANCHOR:cross-refs -->

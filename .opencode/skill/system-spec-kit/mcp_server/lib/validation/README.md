@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE EXAMPLES](#4--usage-examples)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE EXAMPLES](#4-usage-examples)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -160,7 +160,7 @@ Default cap is `MCP_MAX_CONTENT_LENGTH=250000` (250KB), configurable via environ
 |-------|-------|---------|
 | Layer 1 | Structural | Content length, spec folder format, title presence |
 | Layer 2 | Content Quality | Weighted signal density across 5 dimensions (title 0.25, triggers 0.20, length 0.20, anchors 0.15, metadata 0.20). Threshold: 0.4 |
-| Layer 3 | Semantic Dedup | Cosine similarity against existing memories. Threshold: 0.92 |
+| Layer 3 | Semantic Dedup | Cosine similarity against existing spec-doc records. Threshold: 0.92 |
 
 **Activation Metadata**: Quality-gate activation timing is persisted to SQLite config so diagnostics and compatibility helpers can inspect the live gate state without introducing a staged rollout model into the continuity workflow.
 

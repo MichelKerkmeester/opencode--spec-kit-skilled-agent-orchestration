@@ -15,10 +15,10 @@ Reference-only examples for level formatting and depth.
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. USAGE](#3--usage)
-- [4. RELATED](#4--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. USAGE](#3-usage)
+- [4. RELATED](#4-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

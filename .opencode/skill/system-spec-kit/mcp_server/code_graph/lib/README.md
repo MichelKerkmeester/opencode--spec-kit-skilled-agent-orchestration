@@ -29,4 +29,4 @@ The compact-merger combines all three under a 4000-token budget for compaction i
 
 ## Database
 
-`code-graph.sqlite` stored alongside the memory index DB. Schema: `code_files`, `code_nodes` (indexes on symbol_id, kind, name), `code_edges` (directional indexes on source_id, target_id).
+`code-graph.sqlite` stored alongside the spec-doc record index DB. Schema: `code_files`, `code_nodes` (indexes on symbol_id, kind, name), `code_edges` (directional indexes on source_id, target_id).

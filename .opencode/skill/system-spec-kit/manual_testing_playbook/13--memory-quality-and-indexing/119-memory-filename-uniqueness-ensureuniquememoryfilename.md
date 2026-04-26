@@ -17,7 +17,7 @@ This scenario validates Memory filename uniqueness (ensureUniqueMemoryFilename) 
 Operators run the exact prompt and command sequence for `119` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm collision resolution
-- Prompt: `As a memory-quality validation operator, validate Memory filename uniqueness (ensureUniqueMemoryFilename) against -1. Verify memory filename uniqueness (ensureUniqueMemoryFilename). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Memory filename uniqueness (ensureUniqueMemoryFilename) against -1. Verify memory filename uniqueness (ensureUniqueMemoryFilename). Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: 
 - Pass/fail: Second save produces filename with -1 suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence)
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `119` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm collision resolution for `ensureUniqueMemoryFilename`. Verify duplicate saves reserve distinct filenames across the `-1` and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm collision resolution for `ensureUniqueMemoryFilename`. Verify duplicate saves reserve distinct filenames across the `-1` and random-fallback paths, then return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

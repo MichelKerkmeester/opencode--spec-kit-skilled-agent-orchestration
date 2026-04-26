@@ -17,7 +17,7 @@ This scenario validates Description.json batch backfill validation (PI-B3) for `
 Operators run the exact prompt and command sequence for `131` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm batch-generated folder descriptions exist and conform to schema
-- Prompt: `As a memory-quality validation operator, validate Description.json batch backfill validation (PI-B3) against specId. Verify batch-generated folder descriptions exist and conform to schema. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Description.json batch backfill validation (PI-B3) against specId. Verify batch-generated folder descriptions exist and conform to schema. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback
 - Pass/fail: PASS if description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `131` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm batch-generated folder descriptions exist and conform to schema against specId. Verify description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm batch-generated folder descriptions exist and conform to schema against specId. Verify description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with specId string, parentChain array of strings, and memorySequence number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

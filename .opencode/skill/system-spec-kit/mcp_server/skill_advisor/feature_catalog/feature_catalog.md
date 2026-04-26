@@ -16,14 +16,14 @@ This catalog is the post-Phase-027 inventory for the skill advisor. The package 
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. DAEMON AND FRESHNESS](#2--daemon-and-freshness)
-- [3. AUTO-INDEXING](#3--auto-indexing)
-- [4. LIFECYCLE ROUTING](#4--lifecycle-routing)
-- [5. SCORER FUSION](#5--scorer-fusion)
-- [6. MCP SURFACE](#6--mcp-surface)
-- [7. HOOKS AND PLUGIN](#7--hooks-and-plugin)
-- [8. PYTHON COMPAT](#8--python-compat)
+- [1. OVERVIEW](#1-overview)
+- [2. DAEMON AND FRESHNESS](#2-daemon-and-freshness)
+- [3. AUTO-INDEXING](#3-auto-indexing)
+- [4. LIFECYCLE ROUTING](#4-lifecycle-routing)
+- [5. SCORER FUSION](#5-scorer-fusion)
+- [6. MCP SURFACE](#6-mcp-surface)
+- [7. HOOKS AND PLUGIN](#7-hooks-and-plugin)
+- [8. PYTHON COMPAT](#8-python-compat)
 
 ---
 

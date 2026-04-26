@@ -16,7 +16,7 @@ Tracks access counts per memory and computes a log-scale ranking boost (0-0.10) 
 
 Enabled by default (graduated). Set `SPECKIT_USAGE_RANKING=false` to disable.
 
-The usage tracking module records access counts each time a memory is returned in search results. The ranking signal module computes a log-scale boost from the access count, capped at 0.10 to prevent heavily accessed memories from overwhelming relevance-based scoring. The logarithmic scale ensures diminishing returns — the boost grows quickly for the first few accesses and flattens for very popular memories.
+The usage tracking module records access counts each time a spec-doc record is returned in search results. The ranking signal module computes a log-scale boost from the access count, capped at 0.10 to prevent heavily accessed memories from overwhelming relevance-based scoring. The logarithmic scale ensures diminishing returns — the boost grows quickly for the first few accesses and flattens for very popular memories.
 
 ---
 

@@ -703,7 +703,7 @@ Task tool -> @debug for specs/007-feature/
 
 **Integration with SpecKit:**
 - Saved to spec folder root for reference
-- Can be loaded in future sessions via memory
+- Can be loaded in future sessions via the indexed-continuity store
 - Documents debugging history for the feature
 
 ---

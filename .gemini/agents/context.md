@@ -145,7 +145,7 @@ Every exploration traverses all 3 layers for comprehensive context.
 - Run `memory_match_triggers(prompt)` to surface saved rules and prior work that may affect the current task
 - Run `memory_context({ input: topic, mode: "deep" })` only when packet-local continuity still leaves gaps or broader history is needed
 
-**Output**: Packet-local continuity summary plus any relevant memories with titles, trigger matches, and brief summaries.
+**Output**: Packet-local continuity summary plus any relevant indexed spec-doc records with titles, trigger matches, and brief summaries.
 
 ### Layer 2 — Codebase Discovery
 
@@ -165,9 +165,9 @@ Every exploration traverses all 3 layers for comprehensive context.
 **Tools**: `memory_search`, `memory_context (deep)`, `memory_list`
 
 **Strategy**: Comprehensive semantic search to complement Layers 1-2:
-- `memory_search({ query: topic, includeContent: true })` — 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion across all memories with full content
+- `memory_search({ query: topic, includeContent: true })` — 3-channel hybrid search (Vector, BM25, FTS5) with RRF fusion across all indexed spec-doc records with full content
 - `memory_context({ input: topic, mode: "deep" })` — comprehensive retrieval with full analysis, ranked intent-aware results
-- `memory_list({ specFolder: relevant_spec })` — browse all memories in a specific spec folder
+- `memory_list({ specFolder: relevant_spec })` — browse all indexed spec-doc records in a specific spec folder
 - Spec folder inspection — Glob for related spec folders, Read spec.md/plan.md/checklist.md for context
 
 **Output**: Full memory context, spec folder state, decision history, and cross-references.
@@ -205,10 +205,10 @@ Every exploration MUST return a structured Context Package. This is the @context
 ## Context Package: [Topic]
 
 ### 🗄️ Memory Context
-[Prior decisions, saved context, relevant memories]
-- Memory #[ID]: [Title] — [Brief relevant finding]
-- Memory #[ID]: [Title] — [Brief relevant finding]
-- _No relevant memories found_ (if none)
+[Prior decisions, saved context, relevant spec-doc records]
+- Record #[ID]: [Title] — [Brief relevant finding]
+- Record #[ID]: [Title] — [Brief relevant finding]
+- _No relevant spec-doc records found_ (if none)
 
 ### 📁 Codebase Findings
 [File locations, patterns found, code structure]
@@ -332,7 +332,7 @@ When the orchestrator specifies `Output Size: summary-only` or `minimal`, compre
 - Search beyond the requested scope
 - Provide implementation advice or code suggestions
 - Dispatch any sub-agents (nested dispatch is illegal)
-- Skip the memory check (Layer 1)
+- Skip the indexed-continuity check (Layer 1)
 - Claim "nothing found" without actually searching
 - Omit sections from the Context Package
 

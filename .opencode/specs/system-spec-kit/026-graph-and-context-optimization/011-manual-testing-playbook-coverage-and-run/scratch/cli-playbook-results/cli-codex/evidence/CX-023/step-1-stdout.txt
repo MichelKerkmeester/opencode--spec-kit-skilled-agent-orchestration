@@ -1,0 +1,7 @@
+total 8
+drwxr-xr-x    4 michelkerkmeester  wheel    128 Apr 26 16:19 .
+drwxrwxrwt  639 root               wheel  20448 Apr 26 16:19 ..
+drwxr-xr-x   12 michelkerkmeester  wheel    384 Apr 26 16:19 .git
+-rw-r--r--    1 michelkerkmeester  wheel     48 Apr 26 16:19 scratch.md
+---PORCELAIN---
+M  scratch.md

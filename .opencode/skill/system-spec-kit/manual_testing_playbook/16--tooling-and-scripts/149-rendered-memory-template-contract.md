@@ -1,13 +1,13 @@
 ---
-title: "149 -- Rendered memory template contract"
-description: "This scenario validates Rendered memory template contract for `149`. It focuses on Confirm malformed rendered memories fail before write/index and active corpus stays structurally clean."
+title: "149 -- Rendered spec-doc record template contract"
+description: "This scenario validates Rendered spec-doc record template contract for `149`. It focuses on Confirm malformed rendered spec-doc records fail before write/index and active corpus stays structurally clean."
 ---
 
-# 149 -- Rendered memory template contract
+# 149 -- Rendered spec-doc record template contract
 
 ## 1. OVERVIEW
 
-This scenario validates Rendered memory template contract for `149`. It focuses on Confirm malformed rendered memories fail before write/index and active corpus stays structurally clean.
+This scenario validates Rendered spec-doc record template contract for `149`. It focuses on Confirm malformed rendered spec-doc records fail before write/index and active corpus stays structurally clean.
 
 ---
 
@@ -15,8 +15,8 @@ This scenario validates Rendered memory template contract for `149`. It focuses 
 
 Operators run the exact prompt and command sequence for `149` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm malformed rendered memories fail before write/index and active corpus stays structurally clean
-- Prompt: `As a tooling validation operator, validate Rendered memory template contract against memory_save({ filePath:"<sandbox-file>", dryRun:true }). Verify malformed rendered memories fail before write/index and active corpus stays structurally clean. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm malformed rendered spec-doc records fail before write/index and active corpus stays structurally clean
+- Prompt: `As a tooling validation operator, validate Rendered spec-doc record template contract against memory_save({ filePath:"<sandbox-file>", dryRun:true }). Verify malformed rendered spec-doc records fail before write/index and active corpus stays structurally clean. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean
 - Pass/fail: PASS if malformed files are rejected before write/index and valid rendered output remains validator-clean
 
@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `149` and confirm the ex
 ### Prompt
 
 ```
-As a tooling validation operator, confirm malformed rendered memories fail before write/index and valid rendered output remains validator-clean against memory_save({ filePath:"<sandbox-file>", dryRun:true }). Verify dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a tooling validation operator, confirm malformed rendered spec-doc records fail before write/index and valid rendered output remains validator-clean against memory_save({ filePath:"<sandbox-file>", dryRun:true }). Verify dry-run surfaces template-contract violations; non-dry-run rejects malformed files before index side effects; valid rendered output remains validator-clean. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

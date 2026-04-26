@@ -7,7 +7,7 @@ phase_018_change: added dedicated catalog companion for playbook 125
 
 # Memory roadmap capability flags (SPECKIT_MEMORY_*)
 
-This document captures the implemented behavior, source references, and validation scope for the memory roadmap capability resolvers. The roadmap metadata contract stays separate from live runtime gates such as `SPECKIT_GRAPH_UNIFIED`.
+This document captures the implemented behavior, source references, and validation scope for the spec-doc record roadmap capability resolvers. The roadmap metadata contract stays separate from live runtime gates such as `SPECKIT_GRAPH_UNIFIED`.
 
 ---
 

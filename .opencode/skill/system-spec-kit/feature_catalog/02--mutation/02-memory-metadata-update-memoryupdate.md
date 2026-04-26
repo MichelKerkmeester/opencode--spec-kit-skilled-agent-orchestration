@@ -11,19 +11,19 @@ phase_018_change: "Metadata update remains live under the post-018 save and inde
 
 Covers the update tool that modifies memory metadata and auto-regenerates embeddings when titles change.
 
-You can rename a memory or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
+You can rename a spec-doc record or change its priority without deleting and re-creating it. When you change the title, the system automatically updates its internal search index to match. If the update fails partway through, everything rolls back to the way it was before so you never end up with a half-changed record.
 
 ---
 
 ## 2. CURRENT REALITY
 
-You can change the title, trigger phrases, importance weight or importance tier on any existing memory by its numeric ID. The system verifies the memory exists, validates your parameters (importance weight between 0 and 1, tier from the valid enum) and applies the changes.
+You can change the title, trigger phrases, importance weight or importance tier on any existing spec-doc record by its numeric ID. The system verifies the spec-doc record exists, validates your parameters (importance weight between 0 and 1, tier from the valid enum) and applies the changes.
 
-When the title changes, the system regenerates the vector embedding to keep search results aligned. This is a critical detail: if you rename a memory from "Authentication setup guide" to "OAuth2 configuration reference", the old embedding no longer represents the content accurately. Automatic regeneration fixes that.
+When the title changes, the system regenerates the vector embedding to keep search results aligned. This is a critical detail: if you rename a spec-doc record from "Authentication setup guide" to "OAuth2 configuration reference", the old embedding no longer represents the content accurately. Automatic regeneration fixes that.
 
 By default, if embedding regeneration fails (API timeout, provider outage), the entire update rolls back with no changes applied. Nothing happens. With `allowPartialUpdate` enabled, the metadata changes persist and the embedding is marked as pending for later re-indexing by the next `memory_index_scan`. That mode is useful when you need to fix metadata urgently and can tolerate a temporarily stale embedding.
 
-After any optional embedding regeneration finishes, the handler enters `runInTransaction()`. That transactional block writes pending embedding status when needed, updates the memory row, refreshes BM25, records history, and appends the mutation ledger together so the metadata path does not commit half-finished state.
+After any optional embedding regeneration finishes, the handler enters `runInTransaction()`. That transactional block writes pending embedding status when needed, updates the spec-doc record row, refreshes BM25, records history, and appends the mutation ledger together so the metadata path does not commit half-finished state.
 
 BM25 refresh is not limited to title edits. Whenever either `title` or `triggerPhrases` changes, the handler re-reads the updated row and rebuilds the BM25 document from `title`, `content_text`, `trigger_phrases`, and `file_path` so lexical search stays aligned with metadata edits. Infrastructure-level BM25 outages are downgraded to warnings, but data-path BM25 failures from an otherwise live index still abort the transaction and roll the update back.
 

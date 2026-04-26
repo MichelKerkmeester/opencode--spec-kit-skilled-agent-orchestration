@@ -16,9 +16,9 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. RELATED DOCUMENTS](#3--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. RELATED DOCUMENTS](#3-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -27,7 +27,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder is the default storage location for SQLite databases created at runtime by the memory indexer. It does not contain source code.
+This folder is the default storage location for SQLite databases created at runtime by the spec-doc record indexer. It does not contain source code.
 These databases back supporting retrieval artifacts; canonical packet continuity still lives in `handover.md -> _memory.continuity -> spec docs` and is resumed through `/spec_kit:resume`.
 
 **Path resolution:** `shared/config.ts` resolves this directory by walking up from `__dirname` to find `mcp_server/database/`. The path can be overridden with the `SPEC_KIT_DB_DIR` or `SPECKIT_DB_DIR` environment variable.

@@ -17,7 +17,7 @@ This scenario validates Quality gate timer persistence for `073`. It focuses on 
 Operators run the exact prompt and command sequence for `073` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm restart persistence
-- Prompt: `As a memory-quality validation operator, validate Quality gate timer persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Prompt: `As a spec-doc record-quality validation operator, validate Quality gate timer persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected signals: Activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart
 - Pass/fail: PASS if activation timestamp persists across restart and quality gate honors the original timer
 
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `073` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm restart persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm restart persistence against the documented validation surface. Verify activation timestamp survives service restart; quality gate respects persisted timer; no timer reset on restart. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands

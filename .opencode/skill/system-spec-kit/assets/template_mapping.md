@@ -308,7 +308,7 @@ Content that will be indexed...
 - Orphaned anchors (missing pair) will cause validation errors
 
 **Common Anchor Names:**
-- `summary` - Executive summary of the memory
+- `summary` - Executive summary of the spec-doc record
 - `decisions` - Key decisions made
 - `blockers` - Current blockers or issues
 - `next-steps` - Planned next actions

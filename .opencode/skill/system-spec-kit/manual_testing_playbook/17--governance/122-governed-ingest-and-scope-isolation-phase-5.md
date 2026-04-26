@@ -41,7 +41,7 @@ As a governance validation operator, confirm governed saves require provenance a
 
 ### Expected
 
-Missing provenance rejects governed ingest; successful governed ingest persists scope metadata; mismatched scope cannot retrieve the memory; allow/deny decisions are written to `governance_audit`.
+Missing provenance rejects governed ingest; successful governed ingest persists scope metadata; mismatched scope cannot retrieve the spec-doc record; allow/deny decisions are written to `governance_audit`.
 
 ### Evidence
 

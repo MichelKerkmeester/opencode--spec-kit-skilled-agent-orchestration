@@ -17,15 +17,15 @@ trigger_phrases:
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. QUICK START](#2--quick-start)
-- [3. CURRENT ARCHITECTURE](#3--current-architecture)
-- [4. RUNTIME INTEGRATIONS](#4--runtime-integrations)
-- [5. FEATURE SUMMARY](#5--feature-summary)
-- [6. VALIDATION BASELINE](#6--validation-baseline)
-- [7. PACKAGE STRUCTURE](#7--package-structure)
-- [8. ROLLBACK AND TROUBLESHOOTING](#8--rollback-and-troubleshooting)
-- [9. RELATED DOCUMENTS](#9--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. QUICK START](#2-quick-start)
+- [3. CURRENT ARCHITECTURE](#3-current-architecture)
+- [4. RUNTIME INTEGRATIONS](#4-runtime-integrations)
+- [5. FEATURE SUMMARY](#5-feature-summary)
+- [6. VALIDATION BASELINE](#6-validation-baseline)
+- [7. PACKAGE STRUCTURE](#7-package-structure)
+- [8. ROLLBACK AND TROUBLESHOOTING](#8-rollback-and-troubleshooting)
+- [9. RELATED DOCUMENTS](#9-related-documents)
 
 ---
 

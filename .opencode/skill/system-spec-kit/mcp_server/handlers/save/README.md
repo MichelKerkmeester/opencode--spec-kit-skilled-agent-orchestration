@@ -1,6 +1,6 @@
 ---
 title: "Save Handler Pipeline"
-description: "Decomposed pipeline modules for the memory_save MCP tool handler, covering dedup, embedding, PE gating, record creation, reconsolidation and response assembly."
+description: "Decomposed pipeline modules for `memory_save` MCP tool handler, covering dedup, embedding, PE gating, record creation, reconsolidation and response assembly."
 trigger_phrases:
   - "save handler"
   - "memory save pipeline"
@@ -14,11 +14,11 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. PIPELINE FLOW](#3--pipeline-flow)
-- [4. KEY CONCEPTS](#4--key-concepts)
-- [5. RELATED DOCUMENTS](#5--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. PIPELINE FLOW](#3-pipeline-flow)
+- [4. KEY CONCEPTS](#4-key-concepts)
+- [5. RELATED DOCUMENTS](#5-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -40,7 +40,7 @@ Gate E alignment: this is the single canonical save pipeline. Successful writes 
 | `index.ts`                  | Barrel re-export of all save sub-modules.                                                                            |
 | `dedup.ts`                  | Pre-save deduplication. `checkExistingRow` matches by file path but returns `unchanged` only for healthy rows (`success`, `pending`, `partial`); `checkContentHashDedup` matches by content hash and accepts chunked parents only when their status is valid `partial`. |
 | `embedding-pipeline.ts`     | Embedding generation with persistent cache. Cache keys hash normalized content, matching the main and chunked embedding paths. Checks the embedding cache first, falls back to the provider, and stores new embeddings for future re-index. Async/deferred mode is opt-in. |
-| `pe-orchestration.ts`       | Prediction-error (PE) gate orchestration. Finds similar memories, evaluates via `predictionErrorGate`, and applies REINFORCE, SUPERSEDE, UPDATE or CREATE_LINKED actions with mutation ledger logging. Cross-file guard (Packet 026/010/001): when the selected candidate's `canonical_file_path` differs from the current save target, lineage-bearing `UPDATE` and `REINFORCE` actions are downgraded to `CREATE` so sibling packet docs cannot drive cross-file lineage reuse (prevents the `E_LINEAGE` false-positive class). |
+| `pe-orchestration.ts`       | Prediction-error (PE) gate orchestration. Finds similar spec-doc records, evaluates via `predictionErrorGate`, and applies REINFORCE, SUPERSEDE, UPDATE or CREATE_LINKED actions with mutation ledger logging. Cross-file guard (Packet 026/010/001): when the selected candidate's `canonical_file_path` differs from the current save target, lineage-bearing `UPDATE` and `REINFORCE` actions are downgraded to `CREATE` so sibling packet docs cannot drive cross-file lineage reuse (prevents the `E_LINEAGE` false-positive class). |
 | `reconsolidation-bridge.ts` | TM-06 reconsolidation bridge. When enabled and a checkpoint exists, delegates to the reconsolidation engine for merge/conflict resolution before falling through to normal creation. |
 | `create-record.ts`          | Core record creation. Inserts into vector index (or deferred index), applies post-insert metadata, links related memories and indexes into BM25 when enabled. |
 | `db-helpers.ts`             | Database utility functions: `applyPostInsertMetadata` builds a dynamic UPDATE for metadata columns, `hasReconsolidationCheckpoint` verifies TM-06 safety gate prerequisites. |
@@ -67,11 +67,11 @@ Gate E alignment: this is the single canonical save pipeline. Successful writes 
 <!-- ANCHOR:key-concepts -->
 ## 4. KEY CONCEPTS
 
-- **Prediction-Error (PE) Gate** -- Compares new content against existing memories to decide between CREATE, REINFORCE, UPDATE, SUPERSEDE or CREATE_LINKED actions.
+- **Prediction-Error (PE) Gate** -- Compares new content against existing spec-doc records to decide between CREATE, REINFORCE, UPDATE, SUPERSEDE or CREATE_LINKED actions.
 - **Cross-File PE Guard** -- `SimilarMemory.canonical_file_path` is carried through PE gating. When the candidate's canonical path differs from the current target, `UPDATE` / `REINFORCE` are forced back to `CREATE` to preserve same-file identity and prevent cross-file lineage reuse (Packet 026/010/001).
 - **`fromScan` Save Contract** -- Scan-originated saves (calls from `handleMemoryIndexScan` / `memory_index_scan`) are tagged with `fromScan: true`. The save handler uses this flag to skip only the transactional complement-recheck path that previously caused `candidate_changed` false-positives on scan-triggered reindexing; interactive (non-scan) saves retain the full recheck (Packet 026/010/001). An earlier forced `scanBatchSize = 1` serialization was rolled back in favor of this bypass, so the default `BATCH_SIZE` applies again.
 - **Index-Scope Invariants** -- The save path rejects excluded paths (`z_future/`, `/external/`) and downgrades non-constitutional `importanceTier: constitutional` to `important` before persistence, recording a `tier_downgrade_non_constitutional_path` governance-audit row. Shared policy lives in `../../lib/utils/index-scope.ts` (`shouldIndexForMemory()`, `resolveCanonicalPath()`). See the `lib/utils/` README for the full exported helper set (Packet 026/010/002).
-- **Deferred Indexing** -- When embedding generation fails or async mode is explicitly requested, the memory is stored with `embedding_status = 'pending'` and remains searchable via BM25/FTS5. Normal watcher/ingest reindex cache misses still run the eager provider path.
+- **Deferred Indexing** -- When embedding generation fails or async mode is explicitly requested, the spec-doc record is stored with `embedding_status = 'pending'` and remains searchable via BM25/FTS5. Normal watcher/ingest reindex cache misses still run the eager provider path.
 - **Reconsolidation** -- Optional merge/conflict resolution pass that requires a pre-reconsolidation checkpoint (TM-06 safety gate).
 - **Mutation Ledger** -- Every create/update action appends to the mutation ledger for audit trail.
 

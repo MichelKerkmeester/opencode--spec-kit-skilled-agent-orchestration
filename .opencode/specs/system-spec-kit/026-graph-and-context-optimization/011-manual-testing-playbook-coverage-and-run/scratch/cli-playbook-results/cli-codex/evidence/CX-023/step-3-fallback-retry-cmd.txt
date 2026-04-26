@@ -1,0 +1,2 @@
+codex exec review --uncommitted --model gpt-5.5 -c service_tier="fast"
+NOTE: First fallback attempt rejected by CLI ("--uncommitted cannot be used with [PROMPT]"); retrying without inline prompt. TUI environment unavailable in agent runtime; documented triage fallback per scenario failure-triage column item 3.

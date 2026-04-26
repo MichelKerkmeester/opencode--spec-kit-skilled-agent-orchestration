@@ -15,11 +15,11 @@ Shared base components for level template composition.
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. CONTENTS](#2--contents)
-- [3. ARCHITECTURE](#3--architecture)
-- [4. USAGE RULES](#4--usage-rules)
-- [5. RELATED](#5--related)
+- [1. OVERVIEW](#1-overview)
+- [2. CONTENTS](#2-contents)
+- [3. ARCHITECTURE](#3-architecture)
+- [4. USAGE RULES](#4-usage-rules)
+- [5. RELATED](#5-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

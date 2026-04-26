@@ -490,7 +490,7 @@ Excluded paths (`z_future/`, `/external/`) are rejected outright at save time an
 MEMORY:TIER
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
   Old Tier    <old_tier>
   New Tier    <new_tier>
 
@@ -511,7 +511,7 @@ STATUS=OK ID=<id> TIER=<tier>
 MEMORY:TRIGGERS
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
 
 → Current Triggers ─────────────────────────────────
   1) <phrase1>
@@ -540,7 +540,7 @@ STATUS=OK ID=<id> TRIGGERS=<N>
 MEMORY:VALIDATE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
   Feedback    <useful|not useful>
   Confidence  <old>% → <new>%
 
@@ -558,7 +558,7 @@ STATUS=OK ID=<id> USEFUL=<true|false>
 **⚠️ Confirmation required before deletion.**
 
 1. Retrieve spec-doc record details via `memory_list`
-2. If ID not found → `STATUS=FAIL ERROR="Memory #<id> not found"`
+2. If ID not found → `STATUS=FAIL ERROR="Memory #<id> not found"` (runtime string preserved verbatim)
 3. If tier is `constitutional` or `critical`:
    - Show warning, require typing `DELETE <title>` to confirm
 4. If other tier: Ask `[y]es | [n]o`
@@ -577,7 +577,7 @@ MEMORY:DELETE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
   WARN  Protected spec-doc record
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
   Tier        <tier>
   Created     <date>
 
@@ -589,7 +589,7 @@ For other tiers:
 MEMORY:DELETE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-  Memory      #<id> "<title>"
+  Record      #<id> "<title>"
   Tier        <tier>
   Created     <date>
 
@@ -873,7 +873,7 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 | Condition                | Response                                                                                                                         |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | Unknown subcommand       | `STATUS=FAIL`: list valid subcommands                                                                                            |
-| Memory ID not found      | `STATUS=FAIL ERROR="Memory #<id> not found"`                                                                                     |
+| Spec-doc record ID not found | `STATUS=FAIL ERROR="Memory #<id> not found"` (runtime string preserved verbatim) |
 | Invalid tier             | `STATUS=FAIL ERROR="Invalid tier: <tier>"`                                                                                       |
 | Database locked          | `STATUS=FAIL ERROR="Database locked"`                                                                                            |
 | Permission denied        | `STATUS=FAIL ERROR="Cannot access database"`                                                                                     |
@@ -994,7 +994,7 @@ spec_kit_memory_memory_ingest_cancel({ jobId: "<jobId>" })
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `id` | number | Yes | Memory ID to validate |
-| `wasUseful` | boolean | Yes | Whether the memory was useful |
+| `wasUseful` | boolean | Yes | Whether the spec-doc record was useful |
 | `queryId` | string | No | Query identifier for implicit feedback context |
 | `queryTerms` | string[] | No | Normalized query terms for learned feedback term extraction |
 | `resultRank` | number | No | Rank position (1-based) of the selected memory in search results |

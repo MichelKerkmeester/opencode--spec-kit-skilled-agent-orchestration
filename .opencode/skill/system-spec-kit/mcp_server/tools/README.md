@@ -12,9 +12,9 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. IMPLEMENTED STATE](#2--implemented-state)
-- [3. RELATED](#3--related)
+- [1. OVERVIEW](#1-overview)
+- [2. IMPLEMENTED STATE](#2-implemented-state)
+- [3. RELATED](#3-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

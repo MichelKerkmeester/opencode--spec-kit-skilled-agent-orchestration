@@ -17,11 +17,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. USAGE](#3--usage)
-- [4. METRICS](#4--metrics)
-- [5. RELATED DOCUMENTS](#5--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. USAGE](#3-usage)
+- [4. METRICS](#4-metrics)
+- [5. RELATED DOCUMENTS](#5-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 ---
@@ -75,7 +75,7 @@ The argument is a relative path under `.opencode/specs/`.
 ## 4. METRICS
 <!-- ANCHOR:metrics -->
 
-The script checks every memory markdown file for four defect classes:
+The script checks every spec-doc record markdown file for four defect classes:
 
 | Metric | Detection Rule |
 | --- | --- |

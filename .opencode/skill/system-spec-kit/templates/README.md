@@ -15,12 +15,12 @@ Source of truth for Spec Kit documentation templates.
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. LEVEL SELECTION](#3--level-selection)
-- [4. WORKFLOW NOTES](#4--workflow-notes)
-- [5. PHASE SYSTEM](#5--phase-system)
-- [6. RELATED](#6--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. LEVEL SELECTION](#3-level-selection)
+- [4. WORKFLOW NOTES](#4-workflow-notes)
+- [5. PHASE SYSTEM](#5-phase-system)
+- [6. RELATED](#6-related)
 
 <!-- /ANCHOR:table-of-contents -->
 

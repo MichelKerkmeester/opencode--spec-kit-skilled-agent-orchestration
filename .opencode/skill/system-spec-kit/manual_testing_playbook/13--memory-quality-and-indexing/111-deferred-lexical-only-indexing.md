@@ -17,8 +17,8 @@ This scenario validates Deferred lexical-only indexing for `111`. It focuses on 
 Operators run the exact prompt and command sequence for `111` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm embedding-failure fallback and BM25 searchability
-- Prompt: `As a memory-quality validation operator, validate Deferred lexical-only indexing against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex
+- Prompt: `As a spec-doc record-quality validation operator, validate Deferred lexical-only indexing against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected signals: Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex
 - Pass/fail: PASS if embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding
 
 ---
@@ -28,7 +28,7 @@ Operators run the exact prompt and command sequence for `111` and confirm the ex
 ### Prompt
 
 ```
-As a memory-quality validation operator, confirm embedding-failure fallback and BM25 searchability against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a spec-doc record-quality validation operator, confirm embedding-failure fallback and BM25 searchability against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -42,7 +42,7 @@ As a memory-quality validation operator, confirm embedding-failure fallback and 
 
 ### Expected
 
-Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the memory; reindex transitions status to 'success'; vector search works after reindex
+Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex
 
 ### Evidence
 

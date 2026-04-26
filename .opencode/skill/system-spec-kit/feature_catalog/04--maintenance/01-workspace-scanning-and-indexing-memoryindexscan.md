@@ -1,13 +1,13 @@
 ---
 title: "Workspace scanning and indexing (memory_index_scan)"
-description: "Covers the filesystem scanner that keeps the memory database synchronized with spec folder files via incremental indexing."
+description: "Covers the filesystem scanner that keeps the spec-doc record database synchronized with spec folder files via incremental indexing."
 ---
 
 # Workspace scanning and indexing (memory_index_scan)
 
 ## 1. OVERVIEW
 
-Covers the filesystem scanner that keeps the memory database synchronized with spec folder files via incremental indexing.
+Covers the filesystem scanner that keeps the spec-doc record database synchronized with spec folder files via incremental indexing.
 
 This tool scans your project folders for new or changed files and adds them to the searchable knowledge base. It is like a librarian walking through the stacks every day to catalog new arrivals and update records for books that have been revised. Files that have not changed are skipped to save time. If a file fails to process, the system remembers and retries it next time.
 
@@ -15,7 +15,7 @@ This tool scans your project folders for new or changed files and adds them to t
 
 ## 2. CURRENT REALITY
 
-This is the tool that keeps the memory database synchronized with the filesystem. Without it, new or modified memory files would be invisible to search.
+This is the tool that keeps the spec-doc record database synchronized with the filesystem. Without it, new or modified memory files would be invisible to search.
 
 Spec documents are still indexed by default. When a scan touches `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `research/research.md`, or `handover.md`, it routes that save through `memory_save` in warn-only quality mode so validation problems remain visible without dropping the document out of retrieval.
 

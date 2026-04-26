@@ -18,16 +18,16 @@ Background processing primitives for file-change detection and sequential job ex
 
 ## Table of Contents
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. KEY CONCEPTS](#3--key-concepts)
-- [4. RELATED DOCUMENTS](#4--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. KEY CONCEPTS](#3-key-concepts)
+- [4. RELATED DOCUMENTS](#4-related-documents)
 
 ---
 
 ## 1. OVERVIEW
 
-The `ops/` directory provides two background operation modules that keep the memory index current without blocking the main MCP request path:
+The `ops/` directory provides two background operation modules that keep the spec-doc record index current without blocking the main MCP request path:
 
 For Gate E, these background jobs support the canonical packet flow rather than defining it: `/spec_kit:resume` restores context through `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
 

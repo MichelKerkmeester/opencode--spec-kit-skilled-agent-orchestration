@@ -1,6 +1,6 @@
 ---
 title: "Memory summary search channel"
-description: "The memory summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories."
+description: "The spec-doc record summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories."
 audited_post_018: true
 ---
 
@@ -8,9 +8,9 @@ audited_post_018: true
 
 ## 1. OVERVIEW
 
-The memory summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories.
+The spec-doc record summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories.
 
-Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each memory when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
+Long documents can bury their key points in paragraphs of detail. This feature creates a short summary of each spec-doc record when it is saved and searches against those summaries instead of the full text. It is like reading the back-cover blurb of a book rather than skimming every page to decide if it is relevant.
 
 ---
 

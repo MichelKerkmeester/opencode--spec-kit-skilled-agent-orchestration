@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. FEATURES](#3--features)
-- [4. USAGE](#4--usage)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. FEATURES](#3-features)
+- [4. USAGE](#4-usage)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -49,7 +49,7 @@ Gate E keeps that document-aware behavior anchored on `/spec_kit:resume` and the
 | L1 | Orchestration | 2000 | Unified entry points with intent-aware routing |
 | L2 | Core | 1500 | Primary memory operations (search, save, triggers) |
 | L3 | Discovery | 800 | Browse and explore (list, stats, health) |
-| L4 | Mutation | 500 | Modify existing memories (update, delete, validate) |
+| L4 | Mutation | 500 | Modify existing spec-doc records (update, delete, validate) |
 | L5 | Lifecycle | 600 | Checkpoint and version management |
 | L6 | Analysis | 1200 | Deep inspection and causal analysis |
 | L7 | Maintenance | 1000 | System maintenance and bulk operations |

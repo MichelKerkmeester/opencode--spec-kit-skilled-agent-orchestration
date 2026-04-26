@@ -7,10 +7,10 @@ description: "Operator-facing eval runners and policy checks that measure retrie
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 
@@ -26,7 +26,7 @@ The requested files split into two groups. `run-ablation.ts`, `run-bm25-baseline
 
 `run-bm25-baseline.ts` is the BM25-only contingency benchmark. It opens the production database in read-only mode, verifies FTS5 availability, initializes the eval database, loads ground-truth rows, adapts `fts5Bm25Search()` to the baseline runner contract, records baseline metrics, prints both the metric summary and the contingency decision, includes bootstrap 95 percent confidence interval details when present, and writes `/tmp/bm25-baseline-result.json`.
 
-`run-performance-benchmarks.ts` is the performance harness for the memory-system boost and extraction features. It must be run with `tsx`, requires a spec-folder path, creates an in-memory benchmark database with synthetic `memory_index`, `working_memory`, and `causal_edges` rows, temporarily enables the session-boost, causal-boost, extraction, and event-decay flags, measures p95 latency for session boost, causal traversal, extraction hooks, a 1000-request concurrent load test, and boosted-vs-baseline comparisons, then writes both `performance-benchmark-metrics.json` and `performance-benchmark-report.md` into the target spec folder's `scratch/` directory.
+`run-performance-benchmarks.ts` is the performance harness for the spec-doc record-system boost and extraction features. It must be run with `tsx`, requires a spec-folder path, creates an in-memory benchmark database with synthetic `memory_index`, `working_memory`, and `causal_edges` rows, temporarily enables the session-boost, causal-boost, extraction, and event-decay flags, measures p95 latency for session boost, causal traversal, extraction hooks, a 1000-request concurrent load test, and boosted-vs-baseline comparisons, then writes both `performance-benchmark-metrics.json` and `performance-benchmark-report.md` into the target spec folder's `scratch/` directory.
 
 `map-ground-truth-ids.ts` is the read-only ground-truth provenance helper. It opens the production `context-index.sqlite` in read-only mode, scores candidate parent memories for each non-negative query, writes a preview artifact to `/tmp/ground-truth-id-mapping.json`, and gives operators a concrete way to confirm whether `ground-truth.json` still matches the live parent-memory ID space after DB rebuilds or imports.
 

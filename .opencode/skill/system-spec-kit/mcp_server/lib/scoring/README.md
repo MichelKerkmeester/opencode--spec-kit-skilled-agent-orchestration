@@ -16,11 +16,11 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. KEY CONCEPTS](#2--key-concepts)
-- [3. STRUCTURE](#3--structure)
-- [4. USAGE](#4--usage)
-- [5. RELATED RESOURCES](#5--related-resources)
+- [1. OVERVIEW](#1-overview)
+- [2. KEY CONCEPTS](#2-key-concepts)
+- [3. STRUCTURE](#3-structure)
+- [4. USAGE](#4-usage)
+- [5. RELATED RESOURCES](#5-related-resources)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -124,7 +124,7 @@ The scoring module supports an event-based decay model that replaces pure time-b
 
 ### Human Validation Rate (HVR) Integration (Spec 137)
 
-HVR integration extends the confidence tracking system by incorporating human validation signals into composite scoring. The HVR score reflects how often users confirm a memory as useful versus not useful, creating a feedback-weighted confidence metric.
+HVR integration extends the confidence tracking system by incorporating human validation signals into composite scoring. The HVR score reflects how often users confirm a spec-doc record as useful versus not useful, creating a feedback-weighted confidence metric.
 
 **Key properties:**
 - HVR score = validated_useful_count / total_validation_count
@@ -181,7 +181,7 @@ scoring/
 | `importance-tiers.ts` | Tier definitions, boost functions, SQL helpers |
 | `folder-scoring.ts` | Re-export from @spec-kit/shared/scoring/folder-scoring |
 | `confidence-tracker.ts` | Feedback loop: validation -> promotion |
-| `interference-scoring.ts` | TM-01 interference penalty: counts similar memories in same spec_folder, applied as scoring penalty to demote redundant results |
+| `interference-scoring.ts` | TM-01 interference penalty: counts similar spec-doc records in same spec_folder, applied as scoring penalty to demote redundant results |
 | `mpab-aggregation.ts` | Multi-Parent Aggregated Bonus (MPAB) for chunk-to-memory score aggregation; computes aggregated scores after RRF fusion, collapses and reassembles chunk results |
 | `negative-feedback.ts` | Negative validation confidence multiplier with 30-day half-life recovery; records negative feedback events and batch-loads stats for scoring pipeline |
 

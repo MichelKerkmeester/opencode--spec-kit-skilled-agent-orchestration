@@ -11,14 +11,14 @@ This guide covers the current setup for `.opencode/skill/system-spec-kit/mcp_ser
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. CANONICAL INSTALL PATH](#2--canonical-install-path)
-- [3. COMPATIBILITY SHIM](#3--compatibility-shim)
-- [4. RUNTIME HOOKS AND PLUGIN](#4--runtime-hooks-and-plugin)
-- [5. VALIDATION](#5--validation)
-- [6. ROLLBACK CONTROLS](#6--rollback-controls)
-- [7. OPERATOR STATES](#7--operator-states)
-- [8. REFERENCE COMMANDS](#8--reference-commands)
+- [1. OVERVIEW](#1-overview)
+- [2. CANONICAL INSTALL PATH](#2-canonical-install-path)
+- [3. COMPATIBILITY SHIM](#3-compatibility-shim)
+- [4. RUNTIME HOOKS AND PLUGIN](#4-runtime-hooks-and-plugin)
+- [5. VALIDATION](#5-validation)
+- [6. ROLLBACK CONTROLS](#6-rollback-controls)
+- [7. OPERATOR STATES](#7-operator-states)
+- [8. REFERENCE COMMANDS](#8-reference-commands)
 
 ---
 

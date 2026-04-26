@@ -115,7 +115,7 @@ This guide addresses the full installation lifecycle and common failures after m
 
 The checked-in repo configs currently point `SPEC_KIT_DB_DIR` at `mcp_server/database/`. The runtime then derives the actual sqlite filename from the active embedding profile: local fallback stays on `context-index.sqlite`, while Voyage and OpenAI profiles get their own profile-specific filenames in the same directory. Override `MEMORY_DB_PATH` only when you intentionally want to pin one exact sqlite file.
 
-The Code Graph system uses a separate database stored alongside the memory index:
+The Code Graph system uses a separate database stored alongside the spec-doc record index:
 
 - `code-graph.sqlite` (auto-created on first `code_graph_scan`, stored alongside `context-index.sqlite`)
 - Tables: `code_files` (indexed source files), `code_nodes` (symbols), `code_edges` (relationships)
@@ -430,7 +430,7 @@ You should see `spec_kit_memory` tools listed, including:
 - `memory_context` (unified context retrieval)
 - `memory_search` (semantic search)
 - `memory_match_triggers` (fast trigger matching)
-- `memory_save` (index new memories)
+- `memory_save` (index new spec-doc records)
 - `memory_index_scan` (bulk indexing)
 - `memory_stats` (system statistics)
 - `code_graph_scan` (structural code indexing)
@@ -575,7 +575,7 @@ opencode
 
 ### Common Operations
 
-**Index new memories:**
+**Index new spec-doc records:**
 ```
 # Ask your AI assistant:
 "Scan for new packet continuity docs and supporting artifacts"
@@ -668,7 +668,7 @@ Query expansion activates automatically when you use `mode="deep"`.
 
 ### memory_stats: System Statistics
 
-`memory_stats()` returns counts, dates and top-ranked folders for the memory system. Use it to confirm indexing is working and to inspect database health.
+`memory_stats()` returns counts, dates and top-ranked folders for the indexed-continuity store. Use it to confirm indexing is working and to inspect database health.
 
 ### Causal Lineage System
 
@@ -713,7 +713,7 @@ Routes retrieval requests through per-type strategies based on the artifact bein
 
 ### Append-Only Mutation Ledger
 
-Every memory mutation (index, update, delete, force-reindex) appends a timestamped record to an immutable audit trail. No entry is ever overwritten or removed. Use the ledger to debug unexpected index state or audit what changed during a session.
+Every spec-doc record mutation (index, update, delete, force-reindex) appends a timestamped record to an immutable audit trail. No entry is ever overwritten or removed. Use the ledger to debug unexpected index state or audit what changed during a session.
 
 ### Typed Retrieval Contracts
 
@@ -825,7 +825,7 @@ Search memory for why we chose SQLite over PostgreSQL
 # Check the database:
 sqlite3 .opencode/skill/system-spec-kit/mcp_server/database/context-index.sqlite \
   "SELECT COUNT(*) FROM memory_index"
-# Shows the memory count
+# Shows the spec-doc record count
 
 # If 0 or very low:
 # Ask your AI: "Reindex packet continuity docs and supporting artifacts"

@@ -6,10 +6,10 @@ description: "The evaluation API surface provides a stable public import boundar
 # Evaluation API Surface
 
 ## TABLE OF CONTENTS
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
+- [1. OVERVIEW](#1-overview)
+- [2. CURRENT REALITY](#2-current-reality)
+- [3. SOURCE FILES](#3-source-files)
+- [4. SOURCE METADATA](#4-source-metadata)
 
 ## 1. OVERVIEW
 The Evaluation API Surface is a narrow public facade for the system's evaluation tooling. Instead of having scripts import directly from internal `lib/eval/*` modules, the codebase exposes a single stable entry point at `mcp_server/api/eval.ts` for ablation experiments, BM25 baseline runs, ground-truth loading, and evaluation database initialization.

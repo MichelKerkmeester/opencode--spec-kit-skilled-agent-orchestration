@@ -1,0 +1,10 @@
+---PRE STATUS---
+M  scratch.md
+---DIFF CACHED---
+diff --git a/scratch.md b/scratch.md
+index e79c5e8..a295edb 100644
+--- a/scratch.md
++++ b/scratch.md
+@@ -1 +1,2 @@
+ initial
++added line for /review TUI manual check

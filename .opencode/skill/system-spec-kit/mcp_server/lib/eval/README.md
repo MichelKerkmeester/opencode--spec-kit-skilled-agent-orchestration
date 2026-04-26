@@ -1,6 +1,6 @@
 ---
 title: "Evaluation Modules"
-description: "Evaluation, logging, baselines, quality proxies, ablation, and reporting for the memory retrieval pipeline."
+description: "Evaluation, logging, baselines, quality proxies, ablation, and reporting for the spec-doc record retrieval pipeline."
 trigger_phrases:
   - "eval modules"
   - "ablation"
@@ -13,10 +13,10 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. IMPLEMENTED STATE](#3--implemented-state)
-- [4. RELATED](#4--related)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. IMPLEMENTED STATE](#3-implemented-state)
+- [4. RELATED](#4-related)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->

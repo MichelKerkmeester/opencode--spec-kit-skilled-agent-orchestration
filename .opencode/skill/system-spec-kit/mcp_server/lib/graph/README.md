@@ -18,10 +18,10 @@ trigger_phrases:
 ## TABLE OF CONTENTS
 <!-- ANCHOR:table-of-contents -->
 
-- [1. OVERVIEW](#1--overview)
-- [2. STRUCTURE](#2--structure)
-- [3. KEY CONCEPTS](#3--key-concepts)
-- [4. RELATED DOCUMENTS](#4--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. STRUCTURE](#2-structure)
+- [3. KEY CONCEPTS](#3-key-concepts)
+- [4. RELATED DOCUMENTS](#4-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 
@@ -125,8 +125,8 @@ graph/
 | `getValidEdges` | temporal-edges.ts | Returns edges where invalid_at IS NULL |
 | `detectContradictions` | contradiction-detection.ts | Checks if new edge contradicts existing edges, auto-invalidates |
 | `ensureUsageColumn` | usage-tracking.ts | Adds access_count column to memory_index |
-| `incrementAccessCount` | usage-tracking.ts | Increments access count for a memory |
-| `getAccessCount` | usage-tracking.ts | Returns access count for a memory |
+| `incrementAccessCount` | usage-tracking.ts | Increments access count for a spec-doc record |
+| `getAccessCount` | usage-tracking.ts | Returns access count for a spec-doc record |
 | `computeUsageBoost` | usage-ranking-signal.ts | Log-scale boost (0.0-0.10) from access count |
 
 <!-- /ANCHOR:structure -->

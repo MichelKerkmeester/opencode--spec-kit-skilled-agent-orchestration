@@ -12,8 +12,8 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1--overview)
-- [2. RELATED DOCUMENTS](#2--related-documents)
+- [1. OVERVIEW](#1-overview)
+- [2. RELATED DOCUMENTS](#2-related-documents)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
