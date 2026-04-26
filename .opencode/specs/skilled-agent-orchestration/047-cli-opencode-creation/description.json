@@ -4,15 +4,11 @@
   "keywords": [
     "feature",
     "specification",
-    "cli",
-    "opencode",
+    "cli-opencode",
     "skill",
-    "creation",
-    "advisor",
-    "changelog",
-    "sibling"
+    "creation"
   ],
-  "lastUpdated": "2026-04-26T05:00:00Z",
+  "lastUpdated": "2026-04-26T07:03:47.395Z",
   "specId": "047",
   "folderSlug": "cli-opencode-creation",
   "parentChain": [

@@ -21,6 +21,11 @@
         "target": "cli-gemini",
         "weight": 0.5,
         "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-opencode",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
       }
     ],
     "conflicts_with": [],

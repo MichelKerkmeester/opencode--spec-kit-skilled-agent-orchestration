@@ -54,7 +54,7 @@ Together, these systems enable context-aware development with traceability, hard
 | MCP Servers | 4 | Spec Kit Memory, CocoIndex Code, Code Mode, Sequential Thinking |
 | MCP Tools | 56 | 47 memory + 7 code mode + 1 CocoIndex + 1 sequential thinking |
 | Agents | 12 | Base agent definitions in `.opencode/agent/*.md` |
-| Skills | 20 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
+| Skills | 21 | Skill modules in `.opencode/skill/` (excluding `skill/scripts/`) |
 | Commands | 23 | Markdown command entry points in `.opencode/command/` (6 spec_kit + 4 memory + 6 create + 2 improve + 3 doctor + 1 utility + 1 standalone); spec_kit list shows `--intake-only` as a separate row even though it shares `plan.md` |
 | Templates | 83 | Spec Kit CORE + ADDENDUM templates |
 | YAML assets | 32 | Command execution YAML files |
@@ -139,6 +139,7 @@ Skills are specialized, on-demand capabilities invoked for complex workflows:
 | `cli-codex` | Codex CLI orchestration for cross-AI task delegation via OpenAI Codex, parallel code generation, and multi-agent task dispatch (v1.2.0) |
 | `cli-claude-code` | Claude Code CLI orchestration enabling external AIs to invoke Claude Code for deep reasoning, extended thinking, code editing, and structured output (v1.0) |
 | `cli-copilot` | Copilot CLI orchestration for multi-model tasks, cloud delegation, plan mode, autopilot, and repository memory (v1.2.0) |
+| `cli-opencode` | OpenCode CLI orchestration for full plugin/skill/MCP runtime dispatch, parallel detached sessions, and cross-AI orchestration (v1.0.0) |
 | `sk-improve-agent` | Evaluator-first agent improvement with 5-dimension integration-aware scoring, dynamic profiling, deterministic benchmarks, and guarded promotion (v1.0.0) |
 | `sk-deep-research` | Autonomous deep-research loop protocol with iterative investigation and convergence handling (v1.0) |
 | `sk-deep-review` | Autonomous iterative code review with severity-weighted findings, dimension coverage, convergence detection, and release readiness verdicts (v1.0) |

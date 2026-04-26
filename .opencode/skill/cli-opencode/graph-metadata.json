@@ -1,0 +1,151 @@
+{
+  "schema_version": 2,
+  "skill_id": "cli-opencode",
+  "family": "cli",
+  "category": "cli-orchestrator",
+  "edges": {
+    "depends_on": [],
+    "enhances": [],
+    "siblings": [
+      {
+        "target": "cli-claude-code",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-codex",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-copilot",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      },
+      {
+        "target": "cli-gemini",
+        "weight": 0.5,
+        "context": "CLI orchestrator peer"
+      }
+    ],
+    "conflicts_with": [],
+    "prerequisite_for": []
+  },
+  "domains": [
+    "cli",
+    "delegation",
+    "cross-ai",
+    "spec-kit-runtime",
+    "parallel-sessions"
+  ],
+  "intent_signals": [
+    "opencode cli",
+    "opencode run",
+    "delegate to opencode",
+    "parallel detached session",
+    "spec kit runtime"
+  ],
+  "derived": {
+    "trigger_phrases": [
+      "opencode cli",
+      "opencode run",
+      "delegate to opencode",
+      "parallel detached session",
+      "spec kit runtime",
+      "opencode cli orchestration",
+      "full plugin runtime dispatch",
+      "in-opencode parallel session",
+      "cross-ai handback opencode",
+      "ablation suite opencode",
+      "worker farm opencode",
+      "cli-opencode",
+      "cli opencode"
+    ],
+    "key_topics": [
+      "cli",
+      "delegation",
+      "cross-ai",
+      "spec-kit-runtime",
+      "parallel-sessions",
+      "opencode cli",
+      "opencode run",
+      "full plugin runtime",
+      "parallel detached sessions",
+      "self-invocation guard",
+      "share url",
+      "agent dispatch",
+      "memory handback"
+    ],
+    "key_files": [
+      ".opencode/skill/cli-opencode/SKILL.md",
+      ".opencode/skill/cli-opencode/README.md",
+      ".opencode/skill/cli-opencode/references/cli_reference.md",
+      ".opencode/skill/cli-opencode/references/integration_patterns.md",
+      ".opencode/skill/cli-opencode/references/opencode_tools.md",
+      ".opencode/skill/cli-opencode/references/agent_delegation.md",
+      ".opencode/skill/cli-opencode/assets/prompt_templates.md",
+      ".opencode/skill/cli-opencode/assets/prompt_quality_card.md"
+    ],
+    "entities": [
+      {
+        "name": "cli-opencode",
+        "kind": "skill",
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "opencode_tools",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/references/opencode_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_quality_card",
+        "kind": "reference",
+        "path": ".opencode/skill/cli-opencode/assets/prompt_quality_card.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "OpenCode CLI orchestrator enabling external AI runtimes (Claude Code, Codex, Copilot, Gemini, raw shell) and in-OpenCode operators to invoke opencode run for full plugin, skill, and MCP runtime dispatch, plus parallel detached sessions for ablation, worker farms, and cross-AI handback. It matters because it is the only one-shot dispatch path that loads every project plugin, skill, MCP server, and the Spec Kit Memory database; the four sibling cli-* skills only dispatch raw models without project context.",
+    "source_docs": [
+      "SKILL.md",
+      "README.md",
+      "references/cli_reference.md",
+      "references/integration_patterns.md",
+      "references/opencode_tools.md",
+      "references/agent_delegation.md"
+    ],
+    "created_at": "2026-04-26T00:00:00Z",
+    "last_updated_at": "2026-04-26T00:00:00Z"
+  }
+}
