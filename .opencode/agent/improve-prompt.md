@@ -1,7 +1,7 @@
 ---
 name: improve-prompt
 description: Improve-prompt specialist for framework selection, CLEAR validation, and dispatch-ready prompt packages for high-stakes external CLI invocations
-mode: subagent
+mode: all
 temperature: 0.1
 permission:
   read: allow

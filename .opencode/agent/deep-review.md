@@ -1,7 +1,7 @@
 ---
 name: deep-review
 description: "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL."
-mode: subagent
+mode: all
 temperature: 0.1
 permission:
   read: allow

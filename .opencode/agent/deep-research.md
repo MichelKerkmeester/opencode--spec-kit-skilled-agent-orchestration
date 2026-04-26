@@ -1,7 +1,7 @@
 ---
 name: deep-research
 description: "Autonomous deep research agent executing single iteration cycles with externalized state"
-mode: subagent
+mode: all
 temperature: 0.1
 permission:
   read: allow

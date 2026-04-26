@@ -1,7 +1,7 @@
 ---
 name: context
 description: "Production context agent — comprehensive retrieval with canonical continuity recovery and structured Context Packages"
-mode: subagent
+mode: all
 temperature: 0.1
 permission:
   read: allow

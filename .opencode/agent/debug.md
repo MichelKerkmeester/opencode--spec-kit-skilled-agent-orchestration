@@ -1,7 +1,7 @@
 ---
 name: debug
 description: Fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Dispatched via Task tool when failure_count >= 3 during implementation, or explicitly by user.
-mode: subagent
+mode: all
 temperature: 0.2
 permission:
   read: allow

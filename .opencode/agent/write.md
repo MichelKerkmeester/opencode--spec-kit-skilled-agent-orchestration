@@ -1,7 +1,7 @@
 ---
 name: write
 description: Documentation generation and maintenance specialist using sk-doc skill for DQI-compliant, template-aligned output
-mode: subagent
+mode: all
 temperature: 0.1
 permission:
   read: allow
