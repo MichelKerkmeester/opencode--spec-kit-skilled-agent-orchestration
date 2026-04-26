@@ -1,7 +1,7 @@
 ---
 name: improve-agent
 description: Proposal-only mutator for bounded improve-agent candidate generation with evaluator-first rules
-mode: all
+mode: subagent
 temperature: 0.2
 permission:
   read: allow
