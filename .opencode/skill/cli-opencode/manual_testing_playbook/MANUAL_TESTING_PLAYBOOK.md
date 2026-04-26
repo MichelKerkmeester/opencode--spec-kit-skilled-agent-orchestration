@@ -55,7 +55,7 @@ Canonical package artifacts:
 
 This playbook provides 31 deterministic scenarios across 9 categories validating the `cli-opencode` skill surface. Each feature keeps its global `CO-NNN` ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-26): Covers the canonical default invocation (`anthropic/claude-opus-4-7` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (Anthropic/OpenAI/Google with full variant range), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / ultra-think), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
+Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-go/deepseek-v4-pro` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (Anthropic/OpenAI/Google with full variant range), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / ultra-think), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
 
 ### Realistic Test Model
 
@@ -79,7 +79,7 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`anthropic/
 1. Working directory is project root and contains `.git/`.
 2. OpenCode CLI is installed and on PATH: `command -v opencode` returns a non-empty path. If absent, install via `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install | bash`.
 3. OpenCode CLI version is at or near the v1.3.17 baseline pinned in `references/cli_reference.md`. Drift handled per `references/cli_reference.md` §9.
-4. At least one provider is authenticated: either `ANTHROPIC_API_KEY` is exported OR `opencode auth login anthropic` has succeeded. Multi-provider scenarios (CO-010, CO-011) additionally require OpenAI and Google authentication respectively.
+4. The opencode-go subscription is active and registered in `opencode auth list` (the canonical default `opencode-go/deepseek-v4-pro` resolves through it). Multi-provider override scenarios (CO-010, CO-011) additionally require OpenAI and Google authentication respectively. The Anthropic provider is optional — only required if a scenario explicitly overrides to `anthropic/...`.
 5. The active runtime for use case 1 and 3 scenarios is NOT OpenCode itself. Confirm by checking no `OPENCODE_*` env vars are set: `env | grep -q '^OPENCODE_' && echo IN-OPENCODE || echo OK`. Use case 2 scenarios (CO-026, CO-027, CO-028) explicitly include the parallel-session keywords required to permit the dispatch from inside OpenCode.
 6. The skill's reference and asset files exist at `.opencode/skill/cli-opencode/{references,assets}/` so prompt-quality, template and routing scenarios resolve.
 7. The project's MCP servers (Spec Kit Memory, CocoIndex Code) are registered in `opencode.json` so use case 1 (CO-006) and use case 3 (CO-021, CO-022) scenarios can call `memory_health`, CocoIndex search and `memory_search`.
@@ -185,8 +185,8 @@ This section records wave planning and capacity guidance for the manual testing 
 
 ### Recommended Wave Plan
 
-- **Wave 1** (parallel-safe, read-only, fast): CO-001..CO-005 (CLI invocation), CO-009 (Anthropic default), CO-013..CO-017 (agent routing), CO-018..CO-020 (session continuity), CO-023..CO-025 (prompt templates), CO-029, CO-030, CO-031 (cross-repo plus nested guard).
-- **Wave 2** (multi-provider, requires non-Anthropic auth): CO-007 (Codex calling), CO-010 (OpenAI), CO-011 (Google), CO-012 (variant comparison).
+- **Wave 1** (parallel-safe, read-only, fast): CO-001..CO-005 (CLI invocation), CO-009 (opencode-go default), CO-013..CO-017 (agent routing), CO-018..CO-020 (session continuity), CO-023..CO-025 (prompt templates), CO-029, CO-030, CO-031 (cross-repo plus nested guard).
+- **Wave 2** (multi-provider, requires extra provider auth): CO-007 (Codex calling), CO-010 (OpenAI), CO-011 (Google), CO-012 (variant comparison).
 - **Wave 3** (use-case-specific): CO-006 (Claude Code calling MCP), CO-008 (self-invocation refusal), CO-021 (cross-AI handback), CO-022 (memory epilogue).
 - **Wave 4** (parallel detached, port-isolated): CO-026 (parallel detached session), CO-027 (worker farm with `</dev/null`), CO-028 (ablation suite).
 
@@ -208,9 +208,9 @@ This category covers 5 scenario summaries while the linked feature files remain 
 
 #### Description
 
-Verify the canonical `opencode run --model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir <repo-root> "<prompt>"` returns a parseable JSON event stream and exits 0 from a non-OpenCode runtime.
+Verify the canonical `opencode run --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir <repo-root> "<prompt>"` returns a parseable JSON event stream and exits 0 from a non-OpenCode runtime.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor dispatching a fresh OpenCode session via the cli-opencode default invocation shape, send a short request that exercises the full plugin/skill/MCP runtime. Verify the JSON event stream emits a session.started, at least one message.delta and a session.completed event and the process exits 0.
 
@@ -226,7 +226,7 @@ Expected signals: `command -v opencode` returns a path. No OPENCODE_* env vars s
 
 Verify `--format default` returns formatted human-readable output and `--format json` returns a parseable newline-delimited event stream for the same prompt.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying both opencode run output formats are intact, dispatch the same short prompt twice with --format default and --format json, then compare. Verify the default output is human-readable and the JSON output parses with jq and contains the documented event shape.
 
@@ -242,7 +242,7 @@ Expected signals: Both formats exit 0. Default output mentions the expected conc
 
 Verify `--dir <path>` pins the dispatched session's working directory rather than inheriting the caller's CWD, even when the caller is in a different directory.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying --dir pinning works, change to /tmp before dispatching, but pin --dir to the Public repo root. Ask the dispatched session to use its bash tool to print the working directory and the first three entries it sees. Verify the working directory matches the pinned --dir, not /tmp.
 
@@ -258,7 +258,7 @@ Expected signals: Dispatched session reports CWD as the pinned path. Tool.result
 
 Verify `-f <path>` attaches a file to the message and the dispatched session references its contents in its reply without requiring inline embedding in the prompt body.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying file attachment works without inline pasting, write a tiny TypeScript snippet to /tmp/co-004-sample.ts and dispatch opencode run with -f /tmp/co-004-sample.ts and a prompt that asks the session to summarize the attached file's purpose in one sentence. Verify the reply names the function defined in the attachment.
 
@@ -274,7 +274,7 @@ Expected signals: Dispatch exits 0. Reply mentions the unique function name `hel
 
 Verify `--pure` runs without external plugins, `--print-logs --log-level DEBUG` streams verbose logs to stderr and the stdout JSON event stream remains parseable in both cases.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor exercising the diagnostic flag surface, dispatch the same short prompt three times: (1) baseline default. (2) with --pure to disable plugins. (3) with --print-logs --log-level DEBUG to capture verbose logs. Verify (1) and (3) produce parseable JSON event streams on stdout, (2) exits without plugin loader errors and (3) writes a non-empty stderr log.
 
@@ -296,7 +296,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Verify a Claude Code-led dispatch via cli-opencode reaches a fresh OpenCode session that loads the project's full plugin / skill / MCP runtime, with the dispatched session demonstrating access to a project-specific MCP tool (memory_health) it could not call without the runtime.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: You are Claude Code dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode call the memory_health MCP tool and return the database status. Constraints: must load system-spec-kit skill. Must call memory_health and return its result.
 
@@ -312,7 +312,7 @@ Expected signals: Dispatch exits 0. Tool.call event for memory_health appears. S
 
 Verify a Codex-originated cli-opencode dispatch routes to use case 1 (general full-runtime) when the prompt does not name a spec-kit subsystem and the dispatched OpenCode session loads the project plugin runtime to call CocoIndex semantic search.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: You are Codex dispatching from a fresh shell into a new OpenCode session via cli-opencode use case 1. Goal: have OpenCode confirm CocoIndex semantic search MCP is loaded and reachable, then run a single small semantic search to validate. Context: this is use case 1 (general full-runtime), not use case 3 (spec-kit handback).
 
@@ -328,7 +328,7 @@ Expected signals: Dispatch exits 0. Tool.call event for CocoIndex search MCP app
 
 Verify the cli-opencode self-invocation guard (ADR-001 layered detection: env + ancestry + lockfile) refuses a dispatch when the originating runtime IS OpenCode AND the prompt does NOT include parallel-session keywords and the refusal message includes the three documented remediation options.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an in-OpenCode operator simulating a self-dispatch attempt, export OPENCODE_CONFIG_DIR=/tmp/co-008-fake to trip the layer 1 detection signal, then attempt to invoke cli-opencode for a generic dispatch (no parallel-session keywords). Verify the skill refuses with the documented message including all three remediation options.
 
@@ -342,23 +342,23 @@ Expected signals: Layer 1 (env var) detection trips. Refusal message in referenc
 
 ## 9. MULTI-PROVIDER (`CO-009..CO-012`)
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. The category exercises the documented provider matrix (Anthropic default, OpenAI override, Google override) plus the variant-level reasoning effort range.
+This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. The category exercises the documented provider matrix (opencode-go default, OpenAI override, Google override) plus the variant-level reasoning effort range.
 
-### CO-009 | Anthropic provider default (claude-opus-4-7)
+### CO-009 | opencode-go provider default (deepseek-v4-pro)
 
 #### Description
 
-Verify `--model anthropic/claude-opus-4-7 --variant high` resolves correctly via the Anthropic provider, produces a deep-reasoning response and the JSON session.completed payload reports the model id matching `claude-opus-4-7`.
+Verify `--model opencode-go/deepseek-v4-pro --variant high` resolves correctly via the opencode-go provider, produces a deep-reasoning response and the JSON session.completed payload reports a model id containing `deepseek-v4-pro`.
 
-#### Current Reality
+#### Scenario Contract
 
-Prompt summary: As an external-AI conductor verifying the cli-opencode default model resolution, dispatch with --model anthropic/claude-opus-4-7 --variant high and a multi-dimensional architecture trade-off prompt. Verify the response weighs at least 3 dimensions, the JSON session.completed event identifies the model as claude-opus-4-7 and the response is materially longer than a one-paragraph reply.
+Prompt summary: As an external-AI conductor verifying the cli-opencode default model resolution, dispatch with --model opencode-go/deepseek-v4-pro --variant high and a multi-dimensional architecture trade-off prompt. Verify the response weighs at least 3 dimensions, the JSON session.completed event identifies the model as deepseek-v4-pro and the response is materially longer than a one-paragraph reply.
 
-Expected signals: Exit 0. Model id `claude-opus-4-7` referenced in session.completed. >=3 dimensions discussed. Response > 1000 bytes.
+Expected signals: Exit 0. Model id contains `deepseek-v4-pro` referenced in session.completed. >=3 dimensions discussed. Response > 1000 bytes.
 
 #### Test Execution
 
-> **Feature File:** [CO-009](03--multi-provider/001-anthropic-default-opus.md)
+> **Feature File:** [CO-009](03--multi-provider/001-opencode-go-default-deepseek.md)
 
 ### CO-010 | OpenAI provider override (gpt-5.5)
 
@@ -366,7 +366,7 @@ Expected signals: Exit 0. Model id `claude-opus-4-7` referenced in session.compl
 
 Verify `--model openai/gpt-5.5 --variant high` resolves successfully via the OpenAI provider, executes a small code-generation prompt and the JSON session.completed payload identifies the model as `gpt-5.5`.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor exercising the OpenAI provider override path documented in SKILL.md, dispatch --model openai/gpt-5.5 --variant high with a small code-generation prompt (write a TypeScript helper). Verify the dispatch exits 0, the JSON event stream identifies the model as gpt-5.5 and the generated TypeScript code is syntactically valid.
 
@@ -382,7 +382,7 @@ Expected signals: Exit 0. Model id `gpt-5.5` in session.completed. Helper file c
 
 Verify `--model google/gemini-2.5-pro --variant high` resolves correctly via the Google provider and produces a coherent summarization response that references content from a `-f` attached markdown file.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor exercising the Google provider, dispatch --model google/gemini-2.5-pro --variant high with -f attached to a short markdown file and ask the session to summarize it in one paragraph. Verify the dispatch exits 0, the JSON event stream identifies the model as gemini-2.5-pro and the summary references content from the attachment.
 
@@ -398,7 +398,7 @@ Expected signals: Exit 0. Model id `gemini-2.5-pro` in session.completed. Summar
 
 Verify `--variant minimal` and `--variant max` produce materially different response depth for the same prompt, proving the variant flag actually drives provider reasoning effort rather than being a no-op.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying the variant flag truly drives reasoning depth, dispatch the same multi-dimensional architecture trade-off prompt twice with --variant minimal and --variant max. Verify both runs exit 0, the max-variant response is at least 2x longer than the minimal response and the max response weighs at least 2 more dimensions than the minimal response.
 
@@ -420,7 +420,7 @@ This category covers 5 scenario summaries while the linked feature files remain 
 
 Verify `--agent general` loads the project's general agent definition from `.opencode/agent/general.md` and the dispatched session demonstrates implementation-style behavior with full read/write/dispatch tool permissions.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying the general-agent default route, dispatch --agent general with a prompt that requires a Read tool call against a small project file and a multi-step reasoning summary. Verify the JSON event stream shows a tool.call for Read, the response references content from the file and the agent slug general is identified in the session metadata.
 
@@ -436,7 +436,7 @@ Expected signals: Exit 0. Read tool.call appears. Agent slug `general` in sessio
 
 Verify `--agent context` produces a structured architecture map of a target directory AND enforces the LEAF read-only constraint (no sub-dispatches, no writes, mtime-stable target files).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor needing a safe read-only architecture map of an unfamiliar module, dispatch --agent context against .opencode/skill/cli-opencode/. Snapshot mtimes before and after. Verify the response identifies SKILL.md as the entry point, references/ and assets/ as supporting structure and that no mtimes changed and no Edit/Write tool.call events appear.
 
@@ -452,7 +452,7 @@ Expected signals: Exit 0. Mtime diff is empty. No Edit/Write tool.calls. Respons
 
 Verify `--agent review` produces severity-tagged security findings (P0/P1/P2 OR critical/high/medium/low) with file:line citations against a target file with an obvious vulnerability, AND respects the read-only sandbox constraint.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor wanting an independent security audit before merging, write a small TS file with at least one obvious vulnerability to /tmp/co-015-target.ts. Dispatch --agent review against the file with an OWASP checklist (XSS, injection, auth bypass, hardcoded secrets). Verify the response surfaces findings with severity tags and line references and that the target file mtime does NOT change.
 
@@ -468,7 +468,7 @@ Expected signals: Exit 0. Severity tag present. Line reference present. Target f
 
 Verify `--agent write` loads the sk-doc skill, applies the appropriate template (e.g., readme_template.md), runs the DQI score and produces a documentation file at the requested path within its workspace-write permission.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor wanting a template-driven README for a small documentation skill, dispatch --agent write to generate /tmp/co-016-readme/README.md for a fictional skill called Demo Skill. Verify the dispatch loads sk-doc, applies readme_template.md, writes the README file and the file contains a TABLE OF CONTENTS plus emoji-prefixed H2 sections.
 
@@ -484,7 +484,7 @@ Expected signals: Exit 0. Write tool.call for the README path. README file exist
 
 Verify `--agent ultra-think` produces at least 3 distinct solution strategies scored across at least 3 dimensions with an explicit recommendation, AND respects the planning-only constraint (no file modifications).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor planning a CommonJS-to-ESM migration of a single hypothetical module, dispatch --agent ultra-think to compare three strategies (big-bang rewrite, incremental wrapper, dual-build). Verify the response presents three distinct strategies, scores each across risk/effort/timeline/reversibility, recommends one with rationale and does NOT modify any files in the repo.
 
@@ -506,7 +506,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Verify `-c` (alias `--continue`) resumes the most recent session in the project and the follow-up dispatch has direct access to the prior turn's context without re-explanation.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor running a 2-step opencode workflow, dispatch the first opencode run to define a unique technical concept (the "snowflake reducer") in one paragraph. Then dispatch the second opencode run with -c and a follow-up question about the concept. Verify the second response references the snowflake reducer concept without asking for re-explanation.
 
@@ -522,7 +522,7 @@ Expected signals: Both exit 0. Second turn references "snowflake reducer" or its
 
 Verify `-s <id>` (alias `--session <id>`) resumes the named session by its captured id and the resumed turn has access to that session's content.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor managing a captured session id, dispatch a first opencode run with --format json and use jq to extract session_id from the session.started event. Then dispatch a second opencode run with -s <captured-id> and a follow-up question that requires access to the first turn's content.
 
@@ -538,7 +538,7 @@ Expected signals: Both exit 0. SID captured non-empty. Second turn references pr
 
 Verify `--fork --continue` creates a new session id distinct from the parent, AND that `--share` is documented as opt-in requiring operator confirmation per CHK-033 (NEVER rule 2).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying both --fork and --share contracts, (1) dispatch a first turn and capture its session id, (2) dispatch a second turn with --fork --continue and capture the new session id, (3) verify the new session id is distinct from the first turn's id, AND (4) grep the cli-opencode SKILL.md NEVER rules to confirm --share is documented as opt-in requiring operator confirmation per CHK-033.
 
@@ -560,7 +560,7 @@ This category covers 2 scenario summaries while the linked feature files remain 
 
 Verify a Codex-originated cli-opencode dispatch routes to use case 3 (cross-AI handback) when the prompt names a spec-kit subsystem (memory_search) and the dispatched OpenCode session calls the named MCP tool successfully.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: You are Codex (or a non-Anthropic external runtime) dispatching from a fresh shell into OpenCode for a spec-kit-specific workflow via cli-opencode use case 3. Goal: have OpenCode call memory_search for the query "self-invocation guard" and return the top 3 results filtered by importance_tier in [critical, important].
 
@@ -576,7 +576,7 @@ Expected signals: Exit 0. Tool.call for memory_search appears. Session.completed
 
 Verify a cli-opencode dispatch with the Template 13 Memory Epilogue produces a properly-delimited MEMORY_HANDBACK block containing a structured JSON payload that parses successfully and includes the documented canonical fields.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor preserving context from a cli-opencode dispatch, dispatch a small task with the Template 13 Memory Epilogue appended. Verify the response includes the MEMORY_HANDBACK_START / END delimiters, the contents between them parse as valid JSON and the JSON includes specFolder, sessionSummary, user_prompts, observations, recent_context, FILES and nextSteps.
 
@@ -598,7 +598,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Verify `assets/prompt_templates.md` contains exactly 13 numbered templates (TEMPLATE 1 through TEMPLATE 13), each with a framework tag and an invocation shape (or refusal-message body for Template 12, Memory Epilogue for Template 13).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor wanting to verify the prompt template inventory before constructing a dispatch, load assets/prompt_templates.md and count the TEMPLATE N section headers. Verify all 13 templates are present, each named template includes a Framework tag and each invocation template includes a bash code block (Templates 1-11).
 
@@ -614,7 +614,7 @@ Expected signals: 13 unique TEMPLATE headers. >=12 Framework lines. >=11 bash co
 
 Verify `assets/prompt_quality_card.md` documents the CLEAR 5-check (Correctness, Logic, Expression, Arrangement, Reusability), the 7-framework selection table, the task-to-framework map and the escalation rule to `@improve-prompt` when complexity is `>= 7/10`.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor about to construct a non-trivial OpenCode dispatch prompt, load the prompt quality card and verify it explicitly documents (a) the CLEAR 5-check, (b) the framework selection table with all 7 frameworks and complexity bands, (c) the task-to-framework map and (d) the escalation rule for complexity >= 7/10 to @improve-prompt.
 
@@ -630,7 +630,7 @@ Expected signals: All 5 CLEAR criteria listed. 7 frameworks present. Task map pr
 
 Verify TEMPLATE 5 (Code Review, TIDD-EC, --agent review) populated with a real target file dispatches successfully and produces severity-tagged findings with file:line citations matching the template's documented output shape.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor reusing a vetted template instead of authoring from scratch, load TEMPLATE 5 (Code Review, TIDD-EC framework, --agent review) from assets/prompt_templates.md and populate it for /tmp/co-025-target.ts with one obvious vulnerability. Dispatch with the populated prompt. Verify the dispatch exits 0, the response surfaces P0/P1/P2-tagged findings with file:line citations and the response respects the template's READ-ONLY constraint (no file writes).
 
@@ -652,7 +652,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Verify `opencode run --share --port <N>` (with explicit parallel-session keywords in the prompt) creates a SEPARATE session with its own session id and its own state directory under `~/.opencode/state/` and the dispatch is NOT refused by the self-invocation guard.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an in-OpenCode operator (or external runtime simulating one) spawning a parallel detached OpenCode session for a small isolated worker task, dispatch opencode run with --share --port 4096 and a prompt that explicitly says "parallel detached session" + "ablation suite" so the smart router permits use case 2. Verify the dispatch creates a new session with its own session id, its own state directory at ~/.opencode/state/<id>/ and that the dispatch is NOT refused.
 
@@ -668,7 +668,7 @@ Expected signals: Exit 0. New SID captured non-empty. State directory exists. Ze
 
 Verify a 3-worker farm loop with the documented `</dev/null` redirect spawns all 3 sessions and produces 3 distinct session ids, demonstrating the canonical fix for silent stdin consumption (per `references/integration_patterns.md` §6).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an in-OpenCode operator (or fresh shell) running a parallel worker farm, dispatch a 3-worker loop using TEMPLATE 8 from prompt_templates.md. Each worker uses opencode run with --share --port (4100 + N) and a small isolated task. Critically, append the documented </dev/null redirect to each backgrounded invocation. After the loop, wait for all workers to complete and verify all 3 produced output files.
 
@@ -684,7 +684,7 @@ Expected signals: WAIT exit 0. 3 logs with content. 3 distinct session ids. Each
 
 Verify two parallel detached sessions running an ablation comparison (variant high vs variant minimal) produce two distinct outputs with measurably different reasoning depth, demonstrating the variant flag drives the depth difference under parallel load.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an in-OpenCode operator (or fresh shell) running an ablation suite per TEMPLATE 7 (CIDI framework), dispatch two parallel detached opencode run sessions on different ports, one with --variant high and one with --variant minimal, both asking the same multi-dimensional architecture trade-off question. Capture each session's output to its own log file. Compute the byte-count ratio between the two responses. Verify the high-variant response is at least 2x larger than the minimal-variant response.
 
@@ -706,7 +706,7 @@ This category covers 3 scenario summaries while the linked feature files remain 
 
 Verify `--dir <other-repo-path>` targets a different repository's plugin / skill / MCP runtime and the dispatched session reports the cross-repo path as its working directory rather than the caller's CWD.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor verifying cross-repo dispatch, dispatch opencode run with --dir set to a different valid repo path on the machine. Ask the dispatched session to use the bash tool to list the top 5 entries in its working directory. Verify the listed files match the cross-repo path, not the Public repo.
 
@@ -722,7 +722,7 @@ Expected signals: Exit 0. Cross-repo path referenced in tool.result. Zero refere
 
 Verify the documented `--attach <url>` flag combined with `--dir <remote-path>` is part of the cli-opencode skill surface (live remote server execution is out of scope, and the test validates documentation and CLI surface contract).
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an external-AI conductor preparing to dispatch into a remote OpenCode server, verify the cli-opencode documentation contract for cross-server dispatch is intact. Grep the cli_reference.md flag table for --attach, grep the subcommand map for opencode attach and run opencode run --help to confirm the flag is in the live binary's help output.
 
@@ -738,7 +738,7 @@ Expected signals: cli_reference.md §4 + §3 document `--attach` and `opencode a
 
 Verify the documented self-invocation guard correctly refuses a nested cli-opencode dispatch even when the nested target is a different repo via `--dir`. Cross-repo does NOT bypass the guard. Only the explicit parallel-session keywords do.
 
-#### Current Reality
+#### Scenario Contract
 
 Prompt summary: As an in-OpenCode operator (simulated by exporting OPENCODE_CONFIG_DIR=/tmp/co-031-fake) attempting a nested cross-repo dispatch, restate the request as a generic cross-repo cli-opencode invocation with --dir pointing at a different path but WITHOUT any parallel-session keywords. Verify the smart router refuses with the documented self-invocation message AND the refusal message includes the parallel-session keyword option among the three remediation paths.
 
@@ -784,7 +784,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 ### MULTI-PROVIDER
 
-- CO-009: [Anthropic provider default (claude-opus-4-7)](03--multi-provider/001-anthropic-default-opus.md)
+- CO-009: [opencode-go provider default (deepseek-v4-pro)](03--multi-provider/001-opencode-go-default-deepseek.md)
 - CO-010: [OpenAI provider override (gpt-5.5)](03--multi-provider/002-openai-gpt-5-5.md)
 - CO-011: [Google provider (gemini-2.5-pro)](03--multi-provider/003-google-gemini-2-5-pro.md)
 - CO-012: [Variant levels (minimal/low/medium/high/max)](03--multi-provider/004-variant-levels-comparison.md)

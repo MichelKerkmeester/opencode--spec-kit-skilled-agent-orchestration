@@ -60,7 +60,7 @@ At the end of your response, include a structured handback inside delimiters:
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -100,7 +100,7 @@ Success criteria:
 opencode run \
   --share \
   --port 4096 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -143,7 +143,7 @@ Memory Epilogue: include MEMORY_HANDBACK delimiters as in Template 1.
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -163,7 +163,7 @@ Dispatch a task to a specific agent slug. See `../references/agent_delegation.md
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent <slug> \
   --variant high \
   --format json \
@@ -207,7 +207,7 @@ Context: Spec folder: <path> (pre-approved, skip Gate 3).
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent review \
   --variant high \
   --format json \
@@ -241,7 +241,7 @@ Experiment: <list of files to read and queries to run>
 opencode run \
   --share \
   --port 4096 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -279,7 +279,7 @@ Input: <input data path>
 opencode run \
   --share \
   --port 4097 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -316,7 +316,7 @@ for n in $(seq 1 8); do
   opencode run \
     --share \
     --port "$port" \
-    --model anthropic/claude-opus-4-7 \
+    --model opencode-go/deepseek-v4-pro \
     --agent general \
     --variant high \
     --format json \
@@ -350,7 +350,7 @@ Format: structured JSON event stream. Memory Epilogue at the end.
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -379,7 +379,7 @@ Target: an implementation-ready plan that another agent can execute.
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent ultra-think \
   --variant high \
   --format json \
@@ -406,7 +406,7 @@ Format: markdown.
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent write \
   --variant high \
   --format json \

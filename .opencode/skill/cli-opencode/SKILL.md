@@ -178,11 +178,11 @@ opencode providers
 
 ### Default Invocation (Skill Default)
 
-**Default model + variant + agent + format + dir**: `anthropic/claude-opus-4-7` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity.
+**Default model + variant + agent + format + dir**: `opencode-go/deepseek-v4-pro` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity.
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -194,21 +194,21 @@ opencode run \
 
 | User says | Resolve to |
 |-----------|------------|
-| (nothing specified) | `--model anthropic/claude-opus-4-7 --agent general --variant high --format json` |
+| (nothing specified) | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use anthropic claude sonnet 4-7" | `--model anthropic/claude-sonnet-4-7 --agent general --variant high --format json` |
-| "Use the deep-research agent" | `--model anthropic/claude-opus-4-7 --agent deep-research --variant high --format json` |
+| "Use the deep-research agent" | `--model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json` |
 | "Use openai gpt-5.5 high" | `--model openai/gpt-5.5 --agent general --variant high --format json` |
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
 
 ### Core Invocation Pattern
 
 ```bash
-opencode run "prompt" --model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir /repo 2>&1
+opencode run "prompt" --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir /repo 2>&1
 ```
 
 | Flag / Option | Purpose |
 |---------------|---------|
-| `--model <provider/model>` | Provider-prefixed model selector (e.g. `anthropic/claude-opus-4-7`) |
+| `--model <provider/model>` | Provider-prefixed model selector (e.g. `opencode-go/deepseek-v4-pro`) |
 | `--agent <slug>` | Agent definition from `.opencode/agent/<slug>.md` |
 | `--variant <level>` | Provider-specific reasoning effort (`minimal`, `low`, `medium`, `high`, `max`) |
 | `--format default \| json` | Human-readable log OR newline-delimited JSON event stream |
@@ -230,13 +230,13 @@ opencode run "prompt" --model anthropic/claude-opus-4-7 --agent general --varian
 
 | Provider | Model id | Reasoning effort range | Use case |
 |----------|----------|------------------------|----------|
-| Anthropic | `anthropic/claude-opus-4-7` (default) | `minimal`, `low`, `medium`, `high`, `max` | Deep reasoning, planning, code review |
-| Anthropic | `anthropic/claude-sonnet-4-7` | same | Balanced cost / depth |
-| Anthropic | `anthropic/claude-haiku-4-5` | same | Fast classification, cheap batch ops |
-| OpenAI | `openai/gpt-5.5` | `minimal`, `low`, `medium`, `high`, `xhigh` | Codex-style code generation |
-| Google | `google/gemini-2.5-pro` | `minimal`, `low`, `medium`, `high` | Web research, long context |
+| opencode-go | `opencode-go/deepseek-v4-pro` (default) | `--variant` accepted; effect depends on opencode-go routing | Deep reasoning, planning, code review |
+| opencode-go | `opencode-go/deepseek-v4-flash` | same | Lower-tier sibling for cost/latency |
+| Anthropic | `anthropic/claude-opus-4-7` | `minimal`, `low`, `medium`, `high`, `max` | Available with `opencode auth login anthropic` |
+| OpenAI | `openai/gpt-5.4` | `minimal`, `low`, `medium`, `high`, `xhigh` | Available with openai auth |
+| Google | `google/gemini-2.5-pro` | `minimal`, `low`, `medium`, `high` | Available with google auth |
 
-`opencode models <provider>` enumerates available models. The skill defaults to `anthropic/claude-opus-4-7 --variant high` because the typical task benefits from elevated reasoning.
+`opencode models <provider>` enumerates available models. The skill defaults to `opencode-go/deepseek-v4-pro --variant high` because the typical task benefits from elevated reasoning.
 
 ### OpenCode Agent Delegation
 
@@ -273,31 +273,31 @@ See [agent_delegation.md](./references/agent_delegation.md) for the complete age
 ```bash
 # 1. External runtime to OpenCode (use case 1)
 opencode run \
-  --model anthropic/claude-opus-4-7 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run memory_search for 'spec kit memory health' and return top 5 results."
 
 # 2. Parallel detached session (use case 2 — only valid from inside OpenCode)
 opencode run --share --port 4096 \
-  --model anthropic/claude-opus-4-7 --agent deep-research --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run iteration 3 of the deep-research loop on packet 047."
 
 # 3. Cross-AI handback (use case 3 — Codex / Copilot / Gemini calling)
 opencode run \
-  --model anthropic/claude-opus-4-7 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Use system-spec-kit to validate packet 047. Return JSON validation report."
 
 # 4. Code review with the review agent
 opencode run \
-  --model anthropic/claude-opus-4-7 --agent review --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent review --variant high --format json \
   --dir /repo \
   "Review @src/auth.ts for security issues. Surface P0 / P1 with file:line evidence."
 
 # 5. Cross-repo dispatch (Barter sibling)
 opencode run \
-  --model anthropic/claude-opus-4-7 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
   "Draft a Level 1 spec for the auth refresh feature."
 ```
@@ -326,7 +326,7 @@ opencode run \
 
 1. Verify OpenCode CLI is installed before first invocation; confirm version baseline against v1.3.17 (drift handling per `references/cli_reference.md` §9).
 2. **Run the self-invocation guard before dispatch** (ADR-001): Layer 1 env-var lookup for any `OPENCODE_*`, Layer 2 process-ancestry probe for `opencode` parent, Layer 3 `~/.opencode/state/<id>/lock` probe. Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords.
-3. Pin model + agent + variant + format + dir explicitly. Default: `--model anthropic/claude-opus-4-7 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim.
+3. Pin model + agent + variant + format + dir explicitly. Default: `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim.
 4. Pass `--format json` unless the calling AI explicitly wants formatted output — JSON event stream is what external runtimes parse incrementally.
 5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
 6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.

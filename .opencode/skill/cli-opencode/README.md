@@ -53,7 +53,7 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 |----------|-------|---------|
 | **Use cases** | 3 | External runtime, in-OpenCode parallel detached, cross-AI handback |
 | **Self-invocation layers** | 3 | Env var, process ancestry, lock-file probe |
-| **Default invocation** | `--model anthropic/claude-opus-4-7 --agent general --variant high --format json` | Pinned shape for routine dispatches |
+| **Default invocation** | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` | Pinned shape for routine dispatches |
 | **References** | 4 | cli_reference, integration_patterns, opencode_tools, agent_delegation |
 | **Assets** | 2 | prompt_quality_card, prompt_templates (13 templates) |
 | **Version baseline** | opencode v1.3.17 | Pinned in cli_reference §9 |
@@ -120,7 +120,7 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "live O
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -132,7 +132,7 @@ opencode run \
 
 ```bash
 opencode run --share --port 4096 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -173,11 +173,11 @@ The skill is built around a self-invocation guard that protects against circular
 
 | Provider | Model id | Variant range | Default for cli-opencode? |
 |----------|----------|---------------|---------------------------|
-| Anthropic | `anthropic/claude-opus-4-7` | minimal / low / medium / high / max | YES |
-| Anthropic | `anthropic/claude-sonnet-4-7` | same | No |
-| Anthropic | `anthropic/claude-haiku-4-5` | same | No |
-| OpenAI | `openai/gpt-5.5` | minimal / low / medium / high / xhigh | No |
-| Google | `google/gemini-2.5-pro` | minimal / low / medium / high | No |
+| opencode-go | `opencode-go/deepseek-v4-pro` | provider-specific (variant flag accepted; effect depends on opencode-go routing) | YES |
+| opencode-go | `opencode-go/deepseek-v4-flash` | same | No (lower-tier sibling for cost/latency) |
+| Anthropic | `anthropic/claude-opus-4-7` | minimal / low / medium / high / max | No (requires `opencode auth login anthropic`) |
+| OpenAI | `openai/gpt-5.4` | minimal / low / medium / high / xhigh | No (requires openai auth) |
+| Google | `google/gemini-2.5-pro` | minimal / low / medium / high | No (requires google auth) |
 
 #### Core Flags
 
@@ -253,7 +253,7 @@ OpenCode resolves credentials through configured providers. Use `opencode provid
 
 ### Model Defaults
 
-cli-opencode defaults to `anthropic/claude-opus-4-7 --variant high` for cross-AI dispatches because routine cli-opencode tasks benefit from elevated reasoning. Override per invocation:
+cli-opencode defaults to `opencode-go/deepseek-v4-pro --variant high` for cross-AI dispatches because routine cli-opencode tasks benefit from elevated reasoning. Override per invocation:
 
 ```bash
 opencode run \
@@ -286,7 +286,7 @@ opencode run \
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -298,7 +298,7 @@ opencode run \
 
 ```bash
 opencode run --share --port 4096 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -311,7 +311,7 @@ opencode run --share --port 4096 \
 ```bash
 # Calling AI is Codex / Copilot / Gemini — needs OpenCode for spec-kit workflow
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -323,7 +323,7 @@ opencode run \
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent review \
   --variant high \
   --format json \
@@ -337,7 +337,7 @@ opencode run \
 for n in $(seq 1 8); do
   port=$((4100 + n))
   opencode run --share --port "$port" \
-    --model anthropic/claude-opus-4-7 \
+    --model opencode-go/deepseek-v4-pro \
     --agent general \
     --variant high \
     --format json \
@@ -411,7 +411,7 @@ A: Three layers (per ADR-001). Layer 1 checks for any `OPENCODE_*` env var. Laye
 ### Models
 
 **Q: Which model should I default to?**
-A: `anthropic/claude-opus-4-7` with `--variant high`. cli-opencode dispatches typically benefit from elevated reasoning because the dispatched session has full project context.
+A: `opencode-go/deepseek-v4-pro` with `--variant high`. cli-opencode dispatches typically benefit from elevated reasoning because the dispatched session has full project context.
 
 **Q: Can I use OpenAI or Google models?**
 A: Yes — pass `--model openai/gpt-5.5` or `--model google/gemini-2.5-pro`. Run `opencode models <provider>` to enumerate.

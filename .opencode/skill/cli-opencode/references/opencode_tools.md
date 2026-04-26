@@ -49,7 +49,7 @@ A Claude Code CLI dispatch via `claude -p "<prompt>"` runs raw Claude with no pl
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -83,7 +83,7 @@ For ablation suites, worker farms, and parallel research sweeps, the operator wa
 opencode run \
   --share \
   --port 4096 \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -111,7 +111,7 @@ External runtimes (Claude Code, Codex, Copilot, Gemini) parse the event stream i
 ```bash
 opencode run \
   --format json \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --dir /repo \
@@ -143,7 +143,7 @@ Sibling cli-* skills that have agent equivalents (cli-claude-code's `--agent` fl
 ```bash
 opencode run \
   --agent deep-review \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --variant high \
   --format json \
   --dir /repo \
@@ -171,7 +171,7 @@ A calling AI in one repo (e.g. a sibling project) can dispatch into a different 
 # From a session in repo A, dispatch into repo B's runtime
 opencode run \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \

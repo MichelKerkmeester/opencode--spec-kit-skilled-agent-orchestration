@@ -19,7 +19,7 @@ A subtle failure mode is for an in-OpenCode operator to assume cross-repo dispat
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-031` and confirm the expected signals without contradictory evidence.
 

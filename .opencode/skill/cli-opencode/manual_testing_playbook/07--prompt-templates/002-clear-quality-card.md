@@ -19,7 +19,7 @@ ALWAYS rule 7 in SKILL.md mandates loading `assets/prompt_quality_card.md` befor
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-024` and confirm the expected signals without contradictory evidence.
 

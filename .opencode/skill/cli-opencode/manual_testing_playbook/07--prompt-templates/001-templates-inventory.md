@@ -19,7 +19,7 @@ The 13 templates are the operator's first stop for routine cli-opencode dispatch
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-023` and confirm the expected signals without contradictory evidence.
 

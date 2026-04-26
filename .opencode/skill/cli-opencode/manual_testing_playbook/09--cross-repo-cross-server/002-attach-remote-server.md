@@ -19,7 +19,7 @@ Cross-server dispatch is the documented capability that lets an operator target 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-030` and confirm the expected signals without contradictory evidence.
 

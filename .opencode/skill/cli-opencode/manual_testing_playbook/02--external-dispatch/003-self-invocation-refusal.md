@@ -19,7 +19,7 @@ The self-invocation guard is the single most important safety contract in cli-op
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-008` and confirm the expected signals without contradictory evidence.
 

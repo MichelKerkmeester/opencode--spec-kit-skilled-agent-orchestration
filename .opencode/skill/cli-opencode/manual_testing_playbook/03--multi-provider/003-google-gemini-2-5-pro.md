@@ -19,7 +19,7 @@ The Google provider is the third documented provider in the cli-opencode skill (
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-011` and confirm the expected signals without contradictory evidence.
 

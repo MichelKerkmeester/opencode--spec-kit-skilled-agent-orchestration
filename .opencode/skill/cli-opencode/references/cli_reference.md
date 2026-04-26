@@ -100,7 +100,7 @@ OpenCode exposes a multi-subcommand surface. The cli-opencode skill primarily in
 | `-s`, `--session` | string | Continue a specific session id |
 | `--fork` | boolean | Fork before continuing — requires `--continue` or `--session` |
 | `--share` | boolean | Publish a shareable URL for this session |
-| `-m`, `--model` | string | Provider/model selector — e.g. `anthropic/claude-opus-4-7` |
+| `-m`, `--model` | string | Provider/model selector — e.g. `opencode-go/deepseek-v4-pro` |
 | `--agent` | string | Agent slug (loads from `.opencode/agent/<slug>.md`) |
 | `--format` | enum | `default` (formatted) or `json` (raw event stream) |
 | `-f`, `--file` | array | Attach files to the message |
@@ -118,7 +118,7 @@ The skill builds every dispatch from a base shape and overlays use-case-specific
 
 ```bash
 opencode run \
-  --model anthropic/claude-opus-4-7 \
+  --model opencode-go/deepseek-v4-pro \
   --agent <agent-slug> \
   --variant high \
   --format json \
@@ -151,7 +151,7 @@ OpenCode resolves models through configured providers. The cli-opencode skill su
 
 | Provider | Example model id | Use case |
 |----------|------------------|----------|
-| `anthropic` | `anthropic/claude-opus-4-7` | Deep reasoning, code review, planning |
+| `anthropic` | `opencode-go/deepseek-v4-pro` | Deep reasoning, code review, planning |
 | `anthropic` | `anthropic/claude-sonnet-4-7` | General tasks, balanced cost |
 | `anthropic` | `anthropic/claude-haiku-4-5` | Fast classification, cheap batch ops |
 | `openai` | `openai/gpt-5.5` | Codex-style code generation |

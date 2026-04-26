@@ -19,7 +19,7 @@ cli-opencode supports provider switching via the `--model` flag plus the OpenAI 
 
 ---
 
-## 2. CURRENT REALITY
+## 2. SCENARIO CONTRACT
 
 Operators run the exact prompt and command sequence for `CO-010` and confirm the expected signals without contradictory evidence.
 
