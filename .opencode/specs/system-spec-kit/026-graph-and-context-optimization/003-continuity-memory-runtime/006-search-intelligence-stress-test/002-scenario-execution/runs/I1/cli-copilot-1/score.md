@@ -10,3 +10,17 @@
 | **Total** | **1/10** | |
 
 **Notable**: WORST CELL OF SWEEP: copilot autonomous-mode failure-mode on a vague intent. Cost 9.6 min and 2M tokens for low-quality output. Strong recommendation: don't dispatch ambiguous intent prompts to copilot in autonomous mode.
+
+---
+
+### v1.0.1 (rubric calibration)
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 0 | Took 9.6 minutes (576s) — likely tried to invoke /memory:save and got stuck in tool-loop, eventually returned descriptive text |
+| Tool Selection | 0 | Wrong tool fit: copilot has no /memory:save command; spent 2.1M tokens exploring |
+| Latency | 0 | 576s (>300s — catastrophic outlier) (576455ms) |
+| Hallucination | 1 | Description okay but invented intermediate state along the way |
+| **Total** | **1/8** | |
+
+**Δ from v1.0.0**: 1/10 → 1/8 (10% → 12.5%) — remains worst cell of sweep

@@ -10,3 +10,17 @@
 | **Total** | **5/10** | |
 
 **Notable**: Slow but correct. Copilot's broad exploration ate tokens.
+
+---
+
+### v1.0.1 (rubric calibration)
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 2 | Identified 005 packet; recommended spec.md as starting point |
+| Tool Selection | 1 | grep-based discovery; no advisor routing |
+| Latency | 1 | 104.4s (60-300s band) (104430ms) |
+| Hallucination | 2 | Cited packet exists |
+| **Total** | **6/8** | |
+
+**Δ from v1.0.0**: 5/10 → 6/8 (50% → 75%)

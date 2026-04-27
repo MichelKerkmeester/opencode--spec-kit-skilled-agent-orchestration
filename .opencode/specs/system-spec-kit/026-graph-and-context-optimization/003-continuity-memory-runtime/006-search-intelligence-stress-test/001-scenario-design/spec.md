@@ -199,7 +199,18 @@ Ship the design artifacts (scenarios, rubric, matrix, scripts) that sub-phase 00
 
 ## Scoring Rubric
 
-Each scenario × CLI run gets scored on 5 dimensions, 0-2 scale (10 pts max), plus 1 narrative dim.
+> **Active version**: v1.0.1 (4 dimensions, 0-2 scale, 8 pts max + 1 narrative dim).
+> **Historical**: v1.0.0 (5 dimensions, 10 pts max) preserved at the bottom of this section as `### v1.0.0 (deprecated)` for audit-trail purposes only. All 30 cells in `002-scenario-execution/runs/` are scored under v1.0.0 in their original score table and v1.0.1 in an appended block.
+
+### v1.0.1 Calibration Note
+
+**What changed**:
+1. **Dropped Dimension 4 (Token Efficiency).** The bytes/4 estimator in `meta.json` over-counts CLI session bloat: cli-codex stdout includes the full reasoning trace, cli-copilot reports cumulative session burn that routinely exceeds 10k after a few tool calls, and cli-opencode MCP traversal naturally sits above the 10k floor. The 30/30 zero pattern in v1.0.0 confirmed this dimension was unwinnable rather than discriminating. API-reported tokens are not uniformly available across the three CLIs (only codex emits a `tokens used: NNNN` summary line in stdout), so a fair re-anchor on real-token counts isn't tractable from the existing artifacts either.
+2. **Recalibrated Dimension 3 (Latency)** to `0 = >300s, 1 = 60-300s, 2 = <60s` (was `0 = >60s, 1 = 10-60s, 2 = <10s`). The original 10s/60s thresholds were tuned for stdlib calls; no MCP-using cell can hit <10s once tool round-trips and a single Read are added, so 14/30 cells scored 0 and 15/30 scored 1 — collapsing the dimension.
+3. **Re-numbered remaining dimensions** as 1 Correctness, 2 Tool Selection, 3 Latency (recalibrated), 4 Hallucination.
+4. **New per-cell max** is **8/8** (was 10/10). Narrative dimension retained as-is, no points.
+
+**Why this matters**: under v1.0.0 the four-CLI averages were codex 5.67, opencode 5.67, copilot 4.22, opencode-pure 5.33 — capped near 6/10 ceiling because two dimensions were structurally unwinnable. The underlying AI quality on Correctness + Tool Selection + Hallucination was 72-82%, which the v1.0.1 rescoring surfaces.
 
 ### Dimension 1 — Correctness
 - **0**: Wrong answer / no answer / hallucinated content
@@ -211,17 +222,12 @@ Each scenario × CLI run gets scored on 5 dimensions, 0-2 scale (10 pts max), pl
 - **1**: Suboptimal tool (works but inefficient, e.g., generic memory_search when memory_search with anchors would be cleaner)
 - **2**: Optimal tool selection per expected behavior; uses CocoIndex/code_graph/memory_search correctly per scenario
 
-### Dimension 3 — Latency
-- **0**: > 60 seconds wall-clock
-- **1**: 10-60 seconds
-- **2**: < 10 seconds
+### Dimension 3 — Latency (recalibrated v1.0.1)
+- **0**: > 300 seconds wall-clock
+- **1**: 60-300 seconds
+- **2**: < 60 seconds
 
-### Dimension 4 — Token Efficiency
-- **0**: > 10k total tokens (in + out)
-- **1**: 3k-10k tokens
-- **2**: < 3k tokens
-
-### Dimension 5 — Hallucination
+### Dimension 4 — Hallucination
 - **0**: Invents data (file paths, line numbers, content) that don't exist
 - **1**: Acknowledges uncertainty but still includes some unverified claims
 - **2**: All claims cite verifiable evidence (file paths, exact text, tool outputs)
@@ -230,9 +236,26 @@ Each scenario × CLI run gets scored on 5 dimensions, 0-2 scale (10 pts max), pl
 Free-text observation: surprising wins, unexpected failures, regressions, novel patterns.
 
 ### Aggregate
-- Per-run total: sum of dims 1-5 (max 10)
+- Per-run total: sum of dims 1-4 (max 8)
 - Per-scenario CLI rank: sort cells by total descending
-- Per-CLI scenario coverage: % scenarios where CLI scored ≥7/10
+- Per-CLI scenario coverage: % scenarios where CLI scored ≥7/8
+
+---
+
+### v1.0.0 (deprecated)
+
+> Preserved for audit trail only. Each of the 30 score files in `002-scenario-execution/runs/` keeps its original v1.0.0 table and appends a v1.0.1 table below it. New work MUST score against v1.0.1.
+
+5 dimensions, 0-2 scale (10 pts max), plus 1 narrative dim.
+
+- **D1 Correctness**: 0 wrong / 1 partial / 2 correct
+- **D2 Tool Selection**: 0 wrong tool / 1 suboptimal / 2 optimal
+- **D3 Latency**: 0 > 60s / 1 10-60s / 2 < 10s
+- **D4 Token Efficiency**: 0 > 10k / 1 3k-10k / 2 < 3k (tokens in + out)
+- **D5 Hallucination**: 0 invented / 1 some unverified / 2 fully cited
+- Narrative dim: free-text notable behavior
+
+Aggregate: sum of D1-D5 (max 10); per-CLI coverage = % scenarios at >=7/10.
 
 ---
 

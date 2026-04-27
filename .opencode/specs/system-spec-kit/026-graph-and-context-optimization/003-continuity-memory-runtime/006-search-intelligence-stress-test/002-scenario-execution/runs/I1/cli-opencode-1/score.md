@@ -10,3 +10,17 @@
 | **Total** | **7/10** | |
 
 **Notable**: Best of three. The MCP advantage is real for command-aware intent routing. Note: did NOT actually call /memory:save (no spec folder context); behaved correctly per planner-first contract.
+
+---
+
+### v1.0.1 (rubric calibration)
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 2 | Recognized /memory:save intent; correctly identified as planner-first contract; did not mutate per 004 contract |
+| Tool Selection | 2 | MCP-aware: knows /memory:save exists and is planner-first by default |
+| Latency | 2 | 23.2s (<60s) (23199ms) |
+| Hallucination | 2 | Stated planner-first default accurately |
+| **Total** | **8/8** | |
+
+**Δ from v1.0.0**: 7/10 → 8/8 (70% → 100%) — perfect under v1.0.1

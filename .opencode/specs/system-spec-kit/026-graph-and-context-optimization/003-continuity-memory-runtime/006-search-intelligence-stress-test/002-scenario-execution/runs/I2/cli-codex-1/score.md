@@ -10,3 +10,17 @@
 | **Total** | **6/10** | |
 
 **Notable**: Best correctness on I2. Codex found the canonical packet without MCP advisor.
+
+---
+
+### v1.0.1 (rubric calibration)
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 2 | Identified 005-memory-search-runtime-bugs packet by name + path + summarized REQ list + spec.md §8 probes |
+| Tool Selection | 2 | grep on 'search bug' + Read of 005 spec — found correct packet |
+| Latency | 1 | 73.1s (60-300s band) (73063ms) |
+| Hallucination | 2 | 005 packet verified to exist with cited REQs |
+| **Total** | **7/8** | |
+
+**Δ from v1.0.0**: 6/10 → 7/8 (60% → 87.5%)

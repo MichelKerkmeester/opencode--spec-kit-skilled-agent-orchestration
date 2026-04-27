@@ -10,3 +10,17 @@
 | **Total** | **6/10** | |
 
 **Notable**: Without spec-kit MCP, codex correctly refrains from inventing — answers about the contract, not from it.
+
+---
+
+### v1.0.1 (rubric calibration)
+
+| Dimension | Score | Evidence |
+|-----------|-------|----------|
+| Correctness | 1 | Recognized save intent and described action; did NOT route to /memory:save (no command surface available) |
+| Tool Selection | 1 | External CLI has no /memory:save; codex described what would happen |
+| Latency | 2 | 12.4s (<60s) (12384ms) |
+| Hallucination | 2 | Acknowledged no save tool; correct meta-answer |
+| **Total** | **6/8** | |
+
+**Δ from v1.0.0**: 6/10 → 6/8 (60% → 75%)
