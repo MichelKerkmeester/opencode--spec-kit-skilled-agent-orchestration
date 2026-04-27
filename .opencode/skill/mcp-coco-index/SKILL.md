@@ -15,6 +15,8 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 <!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
+> **Forked From**: This skill bundles a soft-fork of [cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0). Upstream version forked: 0.2.3. Current fork version: 0.2.3+spec-kit-fork.0.2.0. Patches: 009 packet REQ-001..006 (mirror dedup + path-class reranking). See NOTICE and changelog/CHANGELOG.md for the full attribution and modification list.
+
 ### Activation Triggers
 
 **Use when**:
@@ -430,6 +432,13 @@ When sending multiple searches in sequence (e.g., exploring a codebase):
 <!-- /ANCHOR:rules -->
 <!-- ANCHOR:references -->
 ## 5. REFERENCES
+
+### Fork Attribution
+
+- **Upstream**: [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code)
+- **License**: [LICENSE](./LICENSE)
+- **Attribution and modifications**: [NOTICE](./NOTICE)
+- **Changelog**: [changelog/CHANGELOG.md](./changelog/CHANGELOG.md)
 
 ### Essential CLI Commands
 

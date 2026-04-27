@@ -12,7 +12,7 @@ trigger_phrases:
 Complete installation and configuration guide for CocoIndex Code, a semantic code search engine for AI-assisted development. Provides natural language code search across your entire codebase with configurable embedding models (local or API-based). Runs as an MCP server exposing a single `search` tool to AI assistants, while `status`, `index`, `reset`, and `daemon` remain CLI commands.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
-> **Package:** `cocoindex-code` (PyPI) | **Dependencies:** Python 3.11+
+> **Package:** local editable `cocoindex-code` soft-fork | **Dependencies:** Python 3.11+
 
 **Version:** 1.0.0 | **Updated:** 2026-03-18 | **Protocol:** MCP (stdio)
 
@@ -40,7 +40,7 @@ Guide me through each step with the exact commands needed.
 
 The AI will:
 - Verify Python 3.11+ is available on your system
-- Run the install script to create a venv and install cocoindex-code
+- Run the install script to create a venv and install the local editable cocoindex-code fork
 - Initialize the semantic index for your project
 - Configure the MCP server for your AI platform
 - Test with a sample semantic search query
@@ -94,7 +94,8 @@ CocoIndex Code gives AI assistants the ability to search your codebase by meanin
 
 | Property      | Value                                                                 |
 | ------------- | --------------------------------------------------------------------- |
-| **PyPI**      | [cocoindex-code](https://pypi.org/project/cocoindex-code/)           |
+| **Upstream**  | [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) |
+| **Fork**      | Local editable package at `.opencode/skill/mcp-coco-index/mcp_server` |
 | **Binary**    | `ccc`                                                                 |
 | **License**   | Apache-2.0                                                            |
 | **Embedding** | Configurable (default: all-MiniLM-L6-v2 local, recommended: Voyage Code 3) |
@@ -242,19 +243,19 @@ bash .opencode/skill/mcp-coco-index/scripts/install.sh
 
 The script will:
 1. Create a Python 3.11 venv at `.opencode/skill/mcp-coco-index/mcp_server/.venv/`
-2. Install `cocoindex-code` from PyPI into the venv
+2. Install the local editable `cocoindex-code` fork into the venv
 3. Verify the `ccc` binary works
 4. Initialize the index directory if it does not exist
 
 ### Alternative: pipx System-Wide
 
-If you prefer a system-wide installation:
+If you prefer a system-wide upstream installation:
 
 ```bash
 pipx install --python python3.11 cocoindex-code
 ```
 
-> **Note**: The MCP configuration examples in this guide use the venv path. If you use pipx, replace the binary path with `ccc` (or the full pipx path from `which ccc`).
+> **Note**: `pipx install cocoindex-code` installs upstream from PyPI, not the spec-kit fork. The MCP configuration examples in this guide use the venv path. Keep the local fork active with `bash .opencode/skill/mcp-coco-index/scripts/install.sh`, which runs `pip install --upgrade --editable ".opencode/skill/mcp-coco-index/mcp_server"`.
 
 ### Verify the Binary
 
@@ -349,7 +350,7 @@ Below are repo-portable patterns that match the checked-in integration.
       ],
       "environment": {
         "COCOINDEX_CODE_ROOT_PATH": ".",
-        "_NOTE_1_PACKAGE": "PyPI: cocoindex-code, installed via scripts/install.sh",
+        "_NOTE_1_PACKAGE": "Local editable cocoindex-code fork, installed via scripts/install.sh",
         "_NOTE_2_EMBEDDING": "Default: all-MiniLM-L6-v2 (local, no API key needed)",
         "_NOTE_3_INDEX": "Index stored in .cocoindex_code/ (gitignored)"
       }
@@ -404,7 +405,7 @@ Below are repo-portable patterns that match the checked-in integration.
       "args": ["mcp"],
       "env": {
         "COCOINDEX_CODE_ROOT_PATH": ".",
-        "_NOTE_1_PACKAGE": "PyPI: cocoindex-code, installed via scripts/install.sh",
+        "_NOTE_1_PACKAGE": "Local editable cocoindex-code fork, installed via scripts/install.sh",
         "_NOTE_2_EMBEDDING": "Default: all-MiniLM-L6-v2 (local, no API key needed)",
         "_NOTE_3_INDEX": "Index stored in .cocoindex_code/ (gitignored)"
       }
@@ -424,7 +425,7 @@ args = ["mcp"]
 
 [mcp_servers.cocoindex_code.env]
 COCOINDEX_CODE_ROOT_PATH = "."
-_NOTE_1 = "Requires: pipx install --python python3.11 cocoindex-code"
+_NOTE_1 = "Requires local editable fork: bash .opencode/skill/mcp-coco-index/scripts/install.sh"
 _NOTE_2 = "Default embedding: all-MiniLM-L6-v2 (local, no API key needed)"
 _NOTE_3 = "Index stored in .cocoindex_code/ (gitignored)"
 ```
@@ -473,6 +474,16 @@ embedding:
 
 <!-- ANCHOR:verification -->
 ## 5. VERIFICATION
+
+### Verify the fork is active
+
+```bash
+.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc --version
+```
+
+Expected output: `0.2.3+spec-kit-fork.0.2.0` (or higher local-version).
+
+If the version does NOT contain `+spec-kit-fork.`, the fork install was overridden by an upstream PyPI install. Re-run `bash scripts/install.sh` to restore the fork.
 
 ### One-Command Health Check
 
@@ -703,6 +714,7 @@ ccc index
 | `Python 3.11 not found` | Python 3.11 not installed | Install with `brew install python@3.11` (macOS) or `apt install python3.11` (Linux) |
 | `No such file or directory: .cocoindex_code/` | Index not initialized | Run `ccc init` then `ccc index` from project root |
 | `ModuleNotFoundError` | Package not installed in venv | Re-run `bash .opencode/skill/mcp-coco-index/scripts/install.sh` |
+| Fork version missing | Upstream PyPI install overrode the local editable fork | Re-run `bash .opencode/skill/mcp-coco-index/scripts/install.sh` and verify `ccc --version` contains `+spec-kit-fork.` |
 | `No results found` | Index is empty or stale | Run `ccc index` to rebuild. Check `ccc status` for indexed file count |
 | `MCP server not appearing in tools` | Config file error or path incorrect | Verify config JSON syntax and binary path. Restart AI client |
 | `COCOINDEX_CODE_ROOT_PATH not set` | Environment variable missing from config | Add `COCOINDEX_CODE_ROOT_PATH` to your MCP config's env section |
@@ -760,6 +772,14 @@ rm -rf .opencode/skill/mcp-coco-index/mcp_server/.venv
 bash .opencode/skill/mcp-coco-index/scripts/install.sh
 ```
 
+### Fork Version Missing
+
+If `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc --version` does not contain `+spec-kit-fork.`, an upstream PyPI install has overridden the local fork. Re-run:
+
+```bash
+bash .opencode/skill/mcp-coco-index/scripts/install.sh
+```
+
 <!-- /ANCHOR:troubleshooting -->
 
 ---
@@ -788,7 +808,8 @@ bash .opencode/skill/mcp-coco-index/scripts/install.sh
 
 ### External Resources
 
-- **PyPI**: [cocoindex-code](https://pypi.org/project/cocoindex-code/)
+- **Upstream**: [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code)
+- **PyPI upstream package**: [cocoindex-code](https://pypi.org/project/cocoindex-code/)
 - **Default Embedding**: [all-MiniLM-L6-v2](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
 - **Recommended Embedding**: [Voyage Code 3](https://docs.voyageai.com/docs/embeddings)
 

@@ -54,7 +54,7 @@ The framework adds three layers on top of the base platform:
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 21 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 agent_router |
 | **🔧 60 MCP Tools** | spec_kit_memory (51), code mode (7), CocoIndex (1), sequential thinking (1) — see canonical count in FAQ |
-| **🔍 CocoIndex Code** | Semantic code search via vector embeddings - natural-language discovery across 28+ languages |
+| **🔍 CocoIndex Code** | [Forked](.opencode/skill/mcp-coco-index/NOTICE) from [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0) - semantic code search via vector embeddings and natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
 

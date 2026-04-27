@@ -15,6 +15,23 @@ trigger_phrases:
 
 > Find code by what it does, not what it says: natural-language queries resolved to semantically relevant results across 28+ languages via CLI or a single MCP tool.
 
+## Forked From
+
+This skill bundles a soft-fork of [`cocoindex-code`](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0).
+
+| Field | Value |
+|-------|-------|
+| Upstream version forked | 0.2.3 |
+| Current fork version | 0.2.3+spec-kit-fork.0.2.0 |
+| License | Apache License, Version 2.0 (see [LICENSE](./LICENSE)) |
+| Attribution + modifications | [NOTICE](./NOTICE) |
+| Changelog | [changelog/CHANGELOG.md](./changelog/CHANGELOG.md) |
+| Source location | [`mcp_server/cocoindex_code/`](./mcp_server/cocoindex_code/) |
+
+Modifications are limited to the `cocoindex_code` Python wrapper. The Rust-based upstream `cocoindex` package is NOT forked - it is still pulled from PyPI as a dependency.
+
+Patches landed (per packet 009 in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup/`): mirror-folder duplicate suppression, canonical path identity, path-class reranking for implementation-intent queries, and ranking telemetry.
+
 ---
 
 <!-- ANCHOR:table-of-contents -->
