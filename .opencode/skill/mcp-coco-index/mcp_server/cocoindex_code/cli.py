@@ -1,5 +1,6 @@
 """CLI entry point for cocoindex-code (ccc command)."""
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
 from pathlib import Path
@@ -142,9 +143,21 @@ def print_search_results(response: SearchResponse) -> None:
         _typer.echo("No results found.")
         return
 
+    _typer.echo(
+        f"dedupedAliases: {response.dedupedAliases} | "
+        f"uniqueResultCount: {response.uniqueResultCount}"
+    )
+
     for i, r in enumerate(response.results, 1):
-        _typer.echo(f"\n--- Result {i} (score: {r.score:.3f}) ---")
-        _typer.echo(f"File: {r.file_path}:{r.start_line}-{r.end_line} [{r.language}]")
+        _typer.echo(
+            f"\n--- Result {i} (score: {r.score:.3f}, raw_score: {r.raw_score:.3f}) ---"
+        )
+        _typer.echo(
+            f"File: {r.file_path}:{r.start_line}-{r.end_line} "
+            f"[{r.language}, {r.path_class}]"
+        )
+        if r.rankingSignals:
+            _typer.echo(f"rankingSignals: {', '.join(r.rankingSignals)}")
         _typer.echo(r.content)
 
 

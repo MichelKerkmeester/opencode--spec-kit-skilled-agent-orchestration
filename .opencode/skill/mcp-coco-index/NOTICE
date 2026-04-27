@@ -11,9 +11,22 @@ Modifications by the spec-kit-skilled-agent-orchestration project:
   Phase 1 (2026-04-27): Vendored upstream source into the repo at
   .opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/ to enable
   in-repo patching for spec-kit-fork.0.2.0 and later. Zero behavior
-  change vs upstream 0.2.3 in this release.
+  change vs upstream 0.2.3 in 0.2.3+spec-kit-fork.0.1.0.
 
-  Future modifications will be enumerated here as they land.
+  Phase 2 (2026-04-27, version 0.2.3+spec-kit-fork.0.2.0): Applied 009 packet patches:
+  - REQ-001: Excluded .gemini/.codex/.claude/.agents specs runtime mirrors from indexing
+  - REQ-002: Added source_realpath + content_hash schema fields per chunk
+  - REQ-003: Over-fetch (limit*4) + canonical-path dedup at query time + dedupedAliases/uniqueResultCount telemetry
+  - REQ-004: Added path_class field with implementation/tests/docs/spec_research/generated/vendor taxonomy
+  - REQ-005: Bounded path-class reranking (+0.05 implementation, -0.05 docs/spec_research) for implementation-intent queries
+  - REQ-006: Exposed rankingSignals telemetry per result row
+  Modified files: indexer.py, query.py, schema.py
+  Runtime passthrough files: cli.py, daemon.py, protocol.py, server.py, shared.py
+  Acceptance probe note: In the Codex sandbox, `ccc index` and `ccc search` could not
+  start the daemon because AF_UNIX socket/log writes outside the allowed sandbox were
+  blocked. Probe outputs were:
+    - REQ-018 probe: `Error: Failed to connect to daemon: [Errno 1] Operation not permitted: '/Users/michelkerkmeester/.cocoindex_code/daemon.log'`
+    - REQ-019 probe: `Error: Failed to connect to daemon: [Errno 1] Operation not permitted: '/Users/michelkerkmeester/.cocoindex_code/daemon.log'`
 
 The Rust-based upstream `cocoindex` package is NOT forked. It is
 still pulled from PyPI as a dependency.

@@ -1,5 +1,6 @@
 """IPC message types and serialization helpers for daemon communication."""
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
 import msgspec as _msgspec
@@ -98,6 +99,9 @@ class SearchResult(_msgspec.Struct):
     start_line: int
     end_line: int
     score: float
+    raw_score: float = 0.0
+    path_class: str = "implementation"
+    rankingSignals: list[str] = []
 
 
 class SearchResponse(_msgspec.Struct, tag="search"):
@@ -105,6 +109,8 @@ class SearchResponse(_msgspec.Struct, tag="search"):
     results: list[SearchResult] = []
     total_returned: int = 0
     offset: int = 0
+    dedupedAliases: int = 0
+    uniqueResultCount: int = 0
     message: str | None = None
 
 

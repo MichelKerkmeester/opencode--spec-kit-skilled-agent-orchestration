@@ -1,7 +1,10 @@
 """CocoIndex app for indexing codebases."""
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
+import hashlib
+import os
 from collections.abc import Iterable
 from pathlib import Path, PurePath
 
@@ -31,6 +34,60 @@ CHUNK_OVERLAP = 150
 
 # Chunking splitter (stateless, can be module-level)
 splitter = RecursiveSplitter()
+
+
+def _normalize_chunk_content(content: str) -> str:
+    """Normalize whitespace so semantically identical chunks hash together."""
+    return " ".join(content.strip().split())
+
+
+def _path_parts(path: PurePath) -> tuple[str, ...]:
+    return tuple(part.lower() for part in path.parts)
+
+
+def _is_under_specs(path: PurePath) -> bool:
+    return "specs" in _path_parts(path)
+
+
+def classify_path(path: PurePath) -> str:
+    """Classify a source path for bounded query-time reranking."""
+    path_posix = path.as_posix()
+    path_lower = path_posix.lower()
+    parts = _path_parts(path)
+    name = path.name.lower()
+    suffix = path.suffix.lower()
+
+    if any(part in {"vendor", "node_modules", ".venv"} for part in parts):
+        return "vendor"
+    if (
+        any(part in {"dist", "build", ".next"} for part in parts)
+        or path_lower.endswith(".min.js")
+    ):
+        return "generated"
+    if "specs" in parts:
+        specs_idx = parts.index("specs")
+        specs_tail = parts[specs_idx + 1 :]
+        if (
+            "research" in specs_tail
+            or name == "research.md"
+            or "iterations" in specs_tail
+        ):
+            return "spec_research"
+    if (
+        (suffix == ".py" and "test" in name)
+        or path_lower.endswith(".vitest.ts")
+        or "tests" in parts
+        or (suffix == ".py" and name.startswith("test_"))
+        or "__tests__" in parts
+    ):
+        return "tests"
+    if not _is_under_specs(path) and (
+        (name.startswith("readme") and suffix == ".md")
+        or (suffix == ".md" and "docs" in parts)
+        or (suffix == ".md" and len(path.parts) == 1)
+    ):
+        return "docs"
+    return "implementation"
 
 
 def _normalize_gitignore_lines(lines: Iterable[str], directory: PurePath) -> list[str]:
@@ -157,6 +214,10 @@ async def process_file(
         or detect_code_language(filename=file.file_path.path.name)
         or "text"
     )
+    file_path = file.file_path.path.as_posix()
+    project_root = coco.use_context(CODEBASE_DIR)
+    source_realpath = os.path.realpath(project_root / file.file_path.path)
+    path_class = classify_path(file.file_path.path)
 
     chunks = splitter.split(
         content,
@@ -169,12 +230,16 @@ async def process_file(
     id_gen = IdGenerator()
 
     async def process(chunk: Chunk) -> None:
+        normalized_content = _normalize_chunk_content(chunk.text)
         table.declare_row(
             row=CodeChunk(
                 id=await id_gen.next_id(chunk.text),
-                file_path=file.file_path.path.as_posix(),
+                file_path=file_path,
+                source_realpath=source_realpath,
                 language=language,
                 content=chunk.text,
+                content_hash=hashlib.sha256(normalized_content.encode()).hexdigest(),
+                path_class=path_class,
                 start_line=chunk.start.line,
                 end_line=chunk.end.line,
                 embedding=await embedder.embed(chunk.text),
@@ -200,7 +265,15 @@ async def indexer_main() -> None:
         ),
         virtual_table_def=Vec0TableDef(
             partition_key_columns=["language"],
-            auxiliary_columns=["file_path", "content", "start_line", "end_line"],
+            auxiliary_columns=[
+                "file_path",
+                "source_realpath",
+                "content",
+                "content_hash",
+                "path_class",
+                "start_line",
+                "end_line",
+            ],
         ),
     )
 

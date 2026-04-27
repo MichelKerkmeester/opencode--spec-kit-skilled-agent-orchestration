@@ -7,6 +7,7 @@ Supports two modes:
    auto-creates settings from env vars and delegates to the daemon.
 """
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
 import asyncio
@@ -47,6 +48,12 @@ class CodeChunkResult(BaseModel):
     start_line: int = Field(description="Starting line number (1-indexed)")
     end_line: int = Field(description="Ending line number (1-indexed)")
     score: float = Field(description="Similarity score (0-1, higher is better)")
+    raw_score: float = Field(description="Raw vector similarity score before reranking")
+    path_class: str = Field(description="Source path class used for bounded reranking")
+    rankingSignals: list[str] = Field(
+        default_factory=list,
+        description="Ranking boosts or penalties applied to this result",
+    )
 
 
 class SearchResultModel(BaseModel):
@@ -56,6 +63,8 @@ class SearchResultModel(BaseModel):
     results: list[CodeChunkResult] = Field(default_factory=list)
     total_returned: int = Field(default=0)
     offset: int = Field(default=0)
+    dedupedAliases: int = Field(default=0)
+    uniqueResultCount: int = Field(default=0)
     message: str | None = None
 
 
@@ -150,11 +159,16 @@ def create_mcp_server(client: DaemonClient, project_root: str) -> FastMCP:
                         start_line=r.start_line,
                         end_line=r.end_line,
                         score=r.score,
+                        raw_score=r.raw_score,
+                        path_class=r.path_class,
+                        rankingSignals=r.rankingSignals,
                     )
                     for r in resp.results
                 ],
                 total_returned=resp.total_returned,
                 offset=resp.offset,
+                dedupedAliases=resp.dedupedAliases,
+                uniqueResultCount=resp.uniqueResultCount,
                 message=resp.message,
             )
         except Exception as e:

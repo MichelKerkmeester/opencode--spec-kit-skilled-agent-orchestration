@@ -1,5 +1,6 @@
 """Shared context keys, embedder factory, and CodeChunk schema."""
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
 import logging
@@ -81,8 +82,11 @@ class CodeChunk:
 
     id: int
     file_path: str
+    source_realpath: str
     language: str
     content: str
+    content_hash: str
+    path_class: str
     start_line: int
     end_line: int
     embedding: Annotated[NDArray, embedder]  # type: ignore[type-arg]

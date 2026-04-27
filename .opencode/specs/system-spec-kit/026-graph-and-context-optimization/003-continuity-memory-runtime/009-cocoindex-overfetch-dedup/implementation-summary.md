@@ -1,7 +1,7 @@
 ---
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: CocoIndex over-fetch + dedup [system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup/implementation-summary]"
-description: "Placeholder until cli-codex implementation lands."
+description: "009 packet patches landed in the vendored cocoindex-code fork as 0.2.3+spec-kit-fork.0.2.0; live daemon probes were blocked by Codex sandbox AF_UNIX/log permissions."
 trigger_phrases:
   - "cocoindex dedup summary"
 importance_tier: "important"
@@ -9,22 +9,22 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup"
-    last_updated_at: "2026-04-27T10:15:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Located CocoIndex source in pipx; deferred to Phase D pending vendor-vs-fork decision"
-    next_safe_action: "Phase D — apply settings.yml exclude rule standalone OR initiate vendor-vs-fork decision"
+    last_updated_at: "2026-04-27T11:15:00Z"
+    last_updated_by: "codex-gpt-5"
+    recent_action: "REQ-001-006"
+    next_safe_action: "Run live ccc index/search probes outside the Codex sandbox and commit the landed patch set"
     blockers:
-      - "CocoIndex source is in pipx site-packages outside repo — vendor-vs-fork decision required from user"
+      - "Codex sandbox blocks CocoIndex daemon log/socket startup, preventing live ccc index/search acceptance probes in-session"
     key_files:
       - "spec.md"
       - "plan.md"
       - "tasks.md"
       - "implementation-summary.md"
-    completion_pct: 30
-    open_questions:
-      - "Vendor or fork CocoIndex source? Vendor=copy .py files into repo. Fork=patch upstream + reinstall via pipx."
+    completion_pct: 85
+    open_questions: []
     answered_questions:
       - "Where is CocoIndex source? Answer: ~/.local/pipx/venvs/cocoindex-code/lib/python3.11/site-packages/cocoindex_code"
+      - "Vendor or fork CocoIndex source? Answer: vendored soft-fork under .opencode/skill/mcp-coco-index/mcp_server/cocoindex_code"
 ---
 # Implementation Summary
 
@@ -40,7 +40,7 @@ _memory:
 | Field | Value |
 |-------|-------|
 | **Spec Folder** | 009-cocoindex-overfetch-dedup |
-| **Completed** | PENDING |
+| **Completed** | 2026-04-27 (code landed; live daemon probes blocked in Codex sandbox) |
 | **Level** | 1 |
 <!-- /ANCHOR:metadata -->
 
@@ -49,46 +49,29 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-DEFERRED to Phase D. The packet remains scaffolded with full spec/plan/tasks ready for execution. Implementation is deferred because the CocoIndex source-of-truth lives outside the repo:
+LANDED in the vendored `cocoindex-code` soft-fork as version `0.2.3+spec-kit-fork.0.2.0`. The earlier Phase D vendor-vs-fork blocker is resolved by Phase 1 commit `3711ad221`, which moved the Python package source into `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/`.
 
-```text
-$ python3 -c "import cocoindex_code; print(cocoindex_code.__file__)"
-ModuleNotFoundError: No module named 'cocoindex_code'
+The current patch set implements the full 009 fix, replacing the earlier settings-only mitigation:
 
-$ find ~/.local -name "cocoindex_code" -type d
-/Users/michelkerkmeester/.local/pipx/venvs/cocoindex-code/lib/python3.11/site-packages/cocoindex_code
-```
+- REQ-001: `.cocoindex_code/settings.yml` now excludes `.gemini/.codex/.claude/.agents/specs/**` mirror roots.
+- REQ-002: chunk rows now store `source_realpath` and `content_hash`.
+- REQ-003: query-time over-fetch uses `limit * 4`, dedups aliases by canonical identity, and carries `dedupedAliases` / `uniqueResultCount`.
+- REQ-004: chunk rows now store `path_class` with the 007 §5 taxonomy.
+- REQ-005: implementation-intent queries get bounded path-class reranking while preserving `raw_score`.
+- REQ-006: each result carries `rankingSignals`.
 
-CocoIndex is installed as a pipx-managed package (`cocoindex-code v0.2.3`). The 007 research (§12 Open Questions, §6 Runtime Limitations) anticipated this case and recommended that implementation locate the source-of-truth and decide vendor-vs-fork strategy with the user before patching. Phase C does NOT do that decision for the user; the safe, autonomous next step is to defer this packet and surface the decision in the orchestrator summary.
-
-### Recommended Phase D Strategy
-1. Decide vendor-vs-fork: (a) vendor `cocoindex_code/*.py` into the repo at a chosen path and patch in-place, OR (b) fork the upstream `cocoindex-code` package, patch the fork, install the fork via pipx.
-2. If vendoring: copy `~/.local/pipx/venvs/cocoindex-code/lib/python3.11/site-packages/cocoindex_code/{indexer.py,query.py,project.py,server.py}` to a chosen repo path; update CocoIndex bootstrap to import from the vendor path.
-3. Apply the patches per 009 spec.md REQ-001..006.
-4. Reindex via `ccc reindex`.
-5. Run live probes per 009 tasks.md Phase 3.
-
-### Settings.yml Mitigation (low-risk partial fix)
-Even without the source-of-truth decision, the user can apply the settings exclude rule alone. This single change recovers ~80% of REQ-018 dedup benefit without touching the indexer or query layer:
-
-```yaml
-# .cocoindex_code/settings.yml — add to exclude list
-exclude:
-  - ".gemini/specs/**"
-  - ".codex/specs/**"
-  - ".claude/specs/**"
-  - ".agents/specs/**"
-```
-
-After settings change, run `ccc reindex` to drop the alias chunks. This is a 1-line config change with no Python source modification needed.
+The runtime passthrough layer (`protocol.py`, `daemon.py`, `server.py`, `cli.py`) was updated so the new query telemetry is visible through MCP and `ccc search` output.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.cocoindex_code/settings.yml` | DEFERRED | Settings-only mitigation possible standalone |
-| `cocoindex_code/indexer.py` (in pipx site-packages) | DEFERRED | Requires vendor-vs-fork decision |
-| `cocoindex_code/query.py` (in pipx site-packages) | DEFERRED | Requires vendor-vs-fork decision |
+| `.cocoindex_code/settings.yml` | LANDED | Excludes runtime spec mirror roots |
+| `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/indexer.py` | LANDED | Adds canonical identity, content hash, and path class per chunk |
+| `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/query.py` | LANDED | Adds over-fetch, dedup, rerank, raw score, and ranking signals |
+| `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/schema.py` | LANDED | Extends chunk/result dataclasses with 009 fields |
+| `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/shared.py` | LANDED | Extends the actual CocoIndex table schema dataclass |
+| `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/{protocol.py,daemon.py,server.py,cli.py}` | LANDED | Passes result telemetry through daemon IPC, MCP, and CLI display |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -96,9 +79,7 @@ After settings change, run `ccc reindex` to drop the alias chunks. This is a 1-l
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
-NOT delivered in this session. CocoIndex source-of-truth is in pipx site-packages, not in the repo. Per 007 §12 open question and §6 mutation cost (HIGH for canonical-identity changes), this packet defers to Phase D where the user can decide vendor-vs-fork strategy.
-
-The settings.yml exclude rule (Phase 2 partial mitigation above) can land standalone without source modification and recovers most of the REQ-018 dedup benefit.
+Delivered by patching the vendored soft-fork in place, bumping the fork version, reinstalling the editable package, and running code-level verification. The live daemon-backed `ccc index` and `ccc search` probes could not complete inside this Codex sandbox because daemon startup requires log/socket writes that are denied here.
 <!-- /ANCHOR:how-delivered -->
 
 ---
@@ -119,13 +100,19 @@ The settings.yml exclude rule (Phase 2 partial mitigation above) can land standa
 
 | Check | Result | Evidence |
 |-------|--------|----------|
-| Source location identified | PASS | pipx site-packages at `~/.local/pipx/venvs/cocoindex-code/lib/python3.11/site-packages/cocoindex_code` |
-| Vendor-vs-fork decision | DEFERRED to Phase D | Requires user input |
-| Reindex | DEFERRED | `ccc reindex` after schema change |
-| pytest | DEFERRED | `cd cocoindex_code && pytest tests/` (if test suite exists) |
-| ccc search REQ-018 repro | DEFERRED | `ccc search "semantic search vector embedding implementation" --limit 10` — assert ≤ 1 unique chunk per logical location |
-| ccc search REQ-019 repro | DEFERRED | `ccc search "code graph traversal callers query" --limit 10` — assert implementation source in top 3 |
-| Settings-only partial mitigation | AVAILABLE | 1-line edit to `.cocoindex_code/settings.yml` covers ~80% of REQ-018 |
+| Source location identified | PASS | Vendored source at `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/` |
+| Vendor-vs-fork decision | LANDED | Phase 1 soft-fork commit `3711ad221` |
+| `ccc --version` | LANDED | `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc --version` -> `0.2.3+spec-kit-fork.0.2.0` |
+| Reinstall editable fork | LANDED | `bash .opencode/skill/mcp-coco-index/scripts/install.sh` completed; dependency resolution used no-deps fallback because sandbox network is unavailable |
+| `ccc reset` | LANDED | `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc reset --force` deleted `cocoindex.db` and `target_sqlite.db`, preserving settings |
+| Reindex | BLOCKED in Codex sandbox | `ccc index` failed because daemon startup could not write/bind under sandbox: default dir -> `Operation not permitted: '/Users/michelkerkmeester/.cocoindex_code/daemon.log'`; workspace dir -> `AF_UNIX path too long`; temp dirs -> `Operation not permitted` on socket bind |
+| pytest | BLOCKED | `.venv/bin/python -m pytest ...` failed: `No module named pytest` |
+| Python syntax | PASS | `PYTHONPYCACHEPREFIX=/tmp/codex-pycache python3 -m py_compile ...` passed for patched Python files |
+| Query dedup/rerank unit probe | PASS | Direct `_dedup_and_rank_rows` probe produced `dedupedAliases 1`, `uniqueResultCount 2`, implementation result above spec research with `implementation_boost` and `spec_research_penalty` |
+| Protocol telemetry round-trip | PASS | `SearchResponse` msgpack round-trip preserved `dedupedAliases=2`, `uniqueResultCount=1`, and `rankingSignals=['implementation_boost']` |
+| ccc search REQ-018 repro | BLOCKED in Codex sandbox | Probe file `/tmp/cocoindex-probe-1.txt`: `Error: Failed to connect to daemon: [Errno 1] Operation not permitted: '/Users/michelkerkmeester/.cocoindex_code/daemon.log'` |
+| ccc search REQ-019 repro | BLOCKED in Codex sandbox | Probe file `/tmp/cocoindex-probe-2.txt`: `Error: Failed to connect to daemon: [Errno 1] Operation not permitted: '/Users/michelkerkmeester/.cocoindex_code/daemon.log'` |
+| Settings-only partial mitigation | REPLACED by full fix | Config exclude landed plus canonical identity, query dedup, path-class rerank, and telemetry passthrough |
 <!-- /ANCHOR:verification -->
 
 ---
@@ -133,7 +120,7 @@ The settings.yml exclude rule (Phase 2 partial mitigation above) can land standa
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **DEFERRED to Phase D.** CocoIndex source is in pipx site-packages outside the repo. Patching requires vendor-vs-fork decision the user owns. See "How It Was Delivered" above.
-2. **Settings-only mitigation is independently valid.** The user can apply the `.cocoindex_code/settings.yml` exclude rule today without source changes; that alone recovers ~80% of REQ-018 dedup benefit. The remaining 20% (REQ-019 path-class reranking, REQ-002 source_realpath canonical identity) requires the source-of-truth decision.
-3. **Reindex required after any change.** Schema migration means a full `ccc reindex` is needed before any query-side dedup or rerank takes effect.
+1. **Live acceptance remains environment-blocked in this Codex session.** The patch set is landed, but daemon-backed `ccc index` / `ccc search` could not run because the sandbox blocks the daemon's log/socket startup paths.
+2. **Reindex still required outside the sandbox.** Schema migration means `ccc reset && ccc index` must be run in a normal shell before live query-side dedup/rerank evidence is available.
+3. **Settings-only mitigation is no longer the current state.** It has been replaced by the full layered fix.
 <!-- /ANCHOR:limitations -->

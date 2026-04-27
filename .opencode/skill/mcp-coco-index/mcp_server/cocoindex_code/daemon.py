@@ -1,5 +1,6 @@
 """Daemon process: listener loop, project registry, request dispatch."""
 
+# Modified by spec-kit-skilled-agent-orchestration: 009 packet REQ-001..006 (see ../NOTICE)
 from __future__ import annotations
 
 import asyncio
@@ -55,6 +56,25 @@ from .settings import (
 from .shared import SQLITE_DB, Embedder, create_embedder
 
 logger = logging.getLogger(__name__)
+
+
+class SearchResults(list[SearchResult]):
+    """Search results with response-level dedup telemetry."""
+
+    dedupedAliases: int
+    uniqueResultCount: int
+
+    def __init__(
+        self,
+        results: list[SearchResult],
+        *,
+        deduped_aliases: int,
+        unique_result_count: int,
+    ) -> None:
+        super().__init__(results)
+        self.dedupedAliases = deduped_aliases
+        self.uniqueResultCount = unique_result_count
+
 
 # ---------------------------------------------------------------------------
 # Daemon paths
@@ -245,7 +265,7 @@ class ProjectRegistry:
         paths: list[str] | None = None,
         limit: int = 5,
         offset: int = 0,
-    ) -> list[SearchResult]:
+    ) -> SearchResults:
         """Search within a project."""
         project = await self.get_project(project_root)
         root = Path(project_root)
@@ -259,7 +279,7 @@ class ProjectRegistry:
             languages=languages,
             paths=paths,
         )
-        return [
+        search_results = [
             SearchResult(
                 file_path=r.file_path,
                 language=r.language,
@@ -267,9 +287,17 @@ class ProjectRegistry:
                 start_line=r.start_line,
                 end_line=r.end_line,
                 score=r.score,
+                raw_score=r.raw_score,
+                path_class=r.path_class,
+                rankingSignals=r.rankingSignals,
             )
             for r in results
         ]
+        return SearchResults(
+            search_results,
+            deduped_aliases=results.dedupedAliases,
+            unique_result_count=results.uniqueResultCount,
+        )
 
     def get_status(self, project_root: str) -> ProjectStatusResponse:
         """Get index stats for a project."""
@@ -443,6 +471,8 @@ async def _search_with_wait(
             results=results,
             total_returned=len(results),
             offset=req.offset,
+            dedupedAliases=results.dedupedAliases,
+            uniqueResultCount=results.uniqueResultCount,
         )
     except Exception as e:
         yield ErrorResponse(message=str(e))
@@ -485,6 +515,8 @@ async def _dispatch(
                 results=results,
                 total_returned=len(results),
                 offset=req.offset,
+                dedupedAliases=results.dedupedAliases,
+                uniqueResultCount=results.uniqueResultCount,
             )
 
         if isinstance(req, ProjectStatusRequest):

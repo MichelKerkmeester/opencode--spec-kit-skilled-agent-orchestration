@@ -6,6 +6,28 @@ This fork uses PEP 440 local version identifiers: `<upstream-version>+spec-kit-f
 
 ---
 
+## 0.2.3+spec-kit-fork.0.2.0 — 2026-04-27
+
+**Apply 009 packet — mirror dedup + path-class reranking**
+
+### Added
+- `source_realpath` + `content_hash` chunk fields (REQ-002)
+- `path_class` chunk field with implementation/tests/docs/spec_research/generated/vendor taxonomy (REQ-004)
+- Query-time over-fetch (`limit * 4`) + canonical-path dedup; results carry `dedupedAliases` + `uniqueResultCount` (REQ-003)
+- Bounded path-class reranking for implementation-intent queries (+0.05 implementation, -0.05 docs/spec_research) (REQ-005)
+- `rankingSignals` telemetry per result row (REQ-006)
+- Settings exclude rules for `.gemini/.codex/.claude/.agents/specs/**` mirror paths (REQ-001)
+
+### Changed
+- Version bumped from `0.2.3+spec-kit-fork.0.1.0` → `0.2.3+spec-kit-fork.0.2.0`
+- Modified-file headers added to `indexer.py`, `query.py`, `schema.py`
+
+### Notes
+- A reindex (`ccc reset && ccc index`) is required for new schema fields to populate on existing chunks.
+- Backward compatible: missing `source_realpath` falls back to `content_hash` for dedup grouping.
+
+---
+
 ## 0.2.3+spec-kit-fork.0.1.0 — 2026-04-27
 
 **Fork inception — vendored upstream cocoindex-code source**

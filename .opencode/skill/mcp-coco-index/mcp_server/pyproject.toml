@@ -7,7 +7,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cocoindex-code"
-version = "0.2.3+spec-kit-fork.0.1.0"
+version = "0.2.3+spec-kit-fork.0.2.0"
 description = "Soft-fork of cocoindex-code for spec-kit in-repo patching"
 requires-python = ">=3.11"
 license = { text = "Apache-2.0" }
