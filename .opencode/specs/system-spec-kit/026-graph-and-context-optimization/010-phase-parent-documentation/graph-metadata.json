@@ -21,7 +21,10 @@
       "phase parent documentation",
       "phase parent lean trio",
       "phased spec documentation",
-      "parent doc staleness"
+      "parent doc staleness",
+      "resource map",
+      "010-phase-parent-documentation resource map",
+      "path catalog 010-phase-parent-documentation"
     ],
     "key_topics": [
       "phase",
@@ -33,18 +36,20 @@
       "spec",
       "doc",
       "staleness",
-      "folder",
-      "children",
-      "carries"
+      "resource",
+      "map",
+      "010-phase-parent-documentation"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "templates/phase_parent/spec.md",
       "001-validator-and-docs/spec.md",
       "002-generator-and-polish/spec.md",
-      "templates/context-index.md"
+      "templates/context-index.md",
+      "resource-map.md",
+      "templates/README.md"
     ],
     "entities": [
       {
@@ -60,6 +65,18 @@
         "source": "derived"
       },
       {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "templates/README.md",
+        "source": "derived"
+      },
+      {
         "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -67,12 +84,6 @@
       },
       {
         "name": "Phase Parent Documentation",
-        "kind": "proper_noun",
-        "path": "spec.md",
-        "source": "derived"
-      },
-      {
-        "name": "In Progress",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
@@ -94,17 +105,60 @@
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Map",
+        "kind": "proper_noun",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "2. Documents",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "6. Specs",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "9. Config",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Map: 010-phase-parent-documentation",
+        "kind": "quoted",
+        "path": "resource-map.md",
+        "source": "derived"
       }
     ],
     "causal_summary": "A spec folder with phase children carries duplicate state at the parent level: `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md` describe program-level intent at the time of decomposition, but the children own the real work and pivot as they execute. Over weeks, the parent docs drift from child reality. AI assistants reading the resume ladder treat the stale parent docs as authoritative, hallucinate current state, and propose work against outdated plans.",
     "created_at": "2026-04-27T08:55:00Z",
-    "last_save_at": "2026-04-27T11:56:04.050Z",
+    "last_save_at": "2026-04-27T15:56:03.099Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md"
+      "spec.md",
+      "resource-map.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004-retroactive-phase-parent-migration",
-    "last_active_at": "2026-04-27T15:01:11.596Z"
+    "last_active_child_id": null,
+    "last_active_at": "2026-04-27T15:56:04.872Z"
   }
 }

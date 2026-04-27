@@ -39,7 +39,7 @@
       "worker"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "templates/phase_parent/spec.md",
@@ -198,7 +198,7 @@
     ],
     "causal_summary": "The lean-trio policy is enforced for new phase parents (validator, template, generator, resume, docs). But the repo already contains 28 legacy phase parents created before the policy: 21 active and 7 archived. They split into two practical states:",
     "created_at": "2026-04-27T14:00:00Z",
-    "last_save_at": "2026-04-27T15:01:11.544Z",
+    "last_save_at": "2026-04-27T15:51:53.232821+00:00",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
