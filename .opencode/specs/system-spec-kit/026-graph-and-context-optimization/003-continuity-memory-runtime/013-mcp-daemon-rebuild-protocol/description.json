@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/013-mcp-daemon-rebuild-protocol",
+  "description": "Feature Specification: MCP daemon rebuild + restart protocol",
+  "keywords": [
+    "feature",
+    "specification",
+    "mcp",
+    "daemon",
+    "rebuild",
+    "restart",
+    "protocol"
+  ],
+  "lastUpdated": "2026-04-27T07:56:42.216Z",
+  "specId": "013",
+  "folderSlug": "mcp-daemon-rebuild-protocol",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

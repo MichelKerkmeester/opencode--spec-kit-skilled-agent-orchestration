@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/011-causal-graph-window-metrics",
+  "description": "Feature Specification: causal-graph relation-window balance metrics + auto-edge caps",
+  "keywords": [
+    "feature",
+    "specification",
+    "causal-graph",
+    "relation-window",
+    "balance",
+    "metrics",
+    "auto-edge",
+    "caps"
+  ],
+  "lastUpdated": "2026-04-27T07:56:25.140Z",
+  "specId": "011",
+  "folderSlug": "causal-graph-window-metrics",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
