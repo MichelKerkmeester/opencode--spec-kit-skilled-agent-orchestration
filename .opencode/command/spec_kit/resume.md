@@ -102,8 +102,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
      A) Yes, resume  B) Select different folder  C) Cancel
 
    Q2. Continuation Validation (if handoff pattern with mismatch):
-     Handoff claims: Last=[X], Next=[Y] | Memory shows: Last=[A], Next=[B]
-     A) Use handoff claims  B) Use memory state  C) Investigate first
+     Handoff claims: Last=[X], Next=[Y] | Indexed continuity shows: Last=[A], Next=[B]
+     A) Use handoff claims  B) Use indexed-continuity state  C) Investigate first
 
    Q3. Missing Artifacts (if artifacts_valid != yes):
      Missing: [list]

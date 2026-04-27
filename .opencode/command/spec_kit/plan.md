@@ -89,7 +89,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    > Gate 3 spec-folder trigger classification is typed: `.opencode/skill/system-spec-kit/shared/gate-3-classifier.ts` (`classifyPrompt()`). Invocations of `/spec_kit:plan` are already inside a write flow, so Gate 3 is pre-answered by command dispatch — no extra inference needed here.
    - Store: prior_work_found = [yes/no], prior_work_count = [N]
 
-5. Memory loading question needed ONLY if user selects A or C for spec folder AND memory/ has files.
+5. Prior-work loading question needed ONLY if user selects A or C for spec folder AND prior continuity records exist for this spec.
 
 5a. CHECK intake contract requirement when `spec_path` is explicit or can be derived from Q1 / `--phase-folder`:
    ├─ Inspect `{spec_path}` for `spec.md`, `description.json`, `graph-metadata.json`, and tracked placeholder markers per intake-contract.md §3 Folder State Classification
@@ -114,8 +114,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    Q3. Dispatch Mode (required):
      A) Single Agent (Recommended)  B) Multi-Agent (1+2)  C) Multi-Agent (1+3)
 
-   Q4. Memory Context (if existing spec with memory/):
-     A) Load most recent  B) Load all recent (up to 3)  C) Skip
+   Q4. Prior Work Context (when prior continuity records exist for this spec):
+     A) Load most recent spec-doc record  B) Load up to 3 most recent spec-doc records  C) Skip
 
    Q5. Research Intent (required):
      A) add_feature  B) fix_bug  C) refactor  D) understand

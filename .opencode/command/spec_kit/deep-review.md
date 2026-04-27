@@ -279,7 +279,7 @@ STATUS=FAIL ERROR="[message]"
 
 ### After Completing
 - `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder]`
-- Verify that `{spec_folder}/memory/` contains the generated memory artifact
+- Verify that the canonical save routed continuity into the expected packet doc (decision-record.md / implementation-summary.md / handover.md)
 
 ### Anchor Tags (Automatic)
 `ANCHOR:deep-review-[target]`, `ANCHOR:findings`, `ANCHOR:convergence-report`

@@ -135,12 +135,12 @@ SETUP EXECUTION LOGIC:
        E) Phase folder
 
        Optional for reference-only/asset-only:
-       A) Attach existing spec path for memory tracking
+       A) Attach existing spec path for continuity tracking
        B) Skip spec linkage
 
-   Q4. Memory Context (if existing spec has memory files)
-       A) Load latest memory
-       B) Load up to 3 recent memories
+   Q4. Prior Work Context (when the existing spec has prior continuity records)
+       A) Load most recent spec-doc record
+       B) Load up to 3 most recent spec-doc records
        C) Skip
 
    Q5. Execution Mode (if no suffix)

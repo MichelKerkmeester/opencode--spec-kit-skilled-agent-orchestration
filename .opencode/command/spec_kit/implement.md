@@ -67,11 +67,11 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - tasks.md (create if missing), checklist.md (REQUIRED Level 2+)
 
 5. CHECK for prior incomplete sessions:
-   - Search memory/ for incomplete markers, unchecked tasks in tasks.md
+   - Read handover.md / canonical packet docs for incomplete markers, unchecked tasks in tasks.md
    - IF found -> Show warning with options:
      A) Resume from where left off  B) Restart (archives prior)  C) Cancel
 
-6. Check if memory/ exists with files for spec folder
+6. Check if handover.md or canonical packet docs exist for this spec folder
 
 7. ASK user (include only applicable questions):
 
@@ -93,8 +93,8 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
       B) Multi-Agent (1+2)
       C) Multi-Agent (1+3)
 
-   Q4. Memory Context (if memory/ has files):
-      A) Load most recent  B) Load up to 3 recent  C) Skip (fresh start)
+   Q4. Prior Work Context (when prior continuity records exist for this spec):
+      A) Load most recent spec-doc record  B) Load up to 3 most recent spec-doc records  C) Skip (fresh start)
 
    Reply with answers, e.g.: "A, A, A, B" or "specs/007-auth/, A, A, B"
 

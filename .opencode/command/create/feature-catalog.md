@@ -108,9 +108,9 @@ SETUP EXECUTION LOGIC:
        D) Skip
        E) Phase folder
 
-   Q4. Memory Context (if existing spec has memory files)
-       A) Load latest memory
-       B) Load up to 3 recent memories
+   Q4. Prior Work Context (when the existing spec has prior continuity records)
+       A) Load most recent spec-doc record
+       B) Load up to 3 most recent spec-doc records
        C) Skip
 
    Q5. Execution Mode (if no suffix)
