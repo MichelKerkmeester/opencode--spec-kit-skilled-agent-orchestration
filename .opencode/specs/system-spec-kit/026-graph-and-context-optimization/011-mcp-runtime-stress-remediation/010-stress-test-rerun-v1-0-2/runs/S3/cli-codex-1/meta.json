@@ -1,0 +1,15 @@
+{
+  "scenario_id": "S3",
+  "cli": "cli-codex",
+  "run_n": 1,
+  "model": "gpt-5.5",
+  "effort": "medium",
+  "service_tier": "fast",
+  "sandbox": "read-only",
+  "started_at": "2026-04-27T14:33:08Z",
+  "completed_at": "2026-04-27T14:33:49Z",
+  "latency_ms": 41670,
+  "tokens_in_estimate": 30,
+  "tokens_out_estimate": 335344,
+  "exit_code": 0
+}

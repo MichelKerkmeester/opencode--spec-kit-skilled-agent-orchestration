@@ -1,0 +1,48 @@
+● Search (grep)
+  │ "planner-first|/memory:save" in *.{md,json,ts,js,py} (.opencode, specs)
+  └ 7 lines found
+
+● memory_quick_search (MCP: spec_kit_memory) · "/memory:save" planner-first contract · query: ""/me…
+  └ {"summary":"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathe...
+
+I found one likely candidate in the memory index, but the retrieval confidence was weak. I’m narrowing it against the actual spec files so I can return the canonical path with a concrete citation.
+
+● Search (glob)
+  │ "**/004-memory-save-rewrite/*" in .opencode/specs/system-spec-kit
+  └ 9 files found
+
+● Search (grep)
+  │ "planner-first" in *.md (.opencode/specs)
+  └ 6 lines found
+
+● Search (grep)
+  │ "memory:save" in *.md (.opencode/specs/system-spec-kit)
+  └ 6 lines found
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/spec.md
+  └ L1:220 (213 lines read)
+
+● Read plan.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/plan.md
+  └ L1:240 (240 lines read)
+
+● Read decision-record.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/decision-record.md
+  └ L1:260 (260 lines read)
+
+**Spec folder:** `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite`
+
+**Canonical citation:** `spec.md` in that folder, especially:
+1. `<!-- ANCHOR:problem -->` — states the purpose is to “Ship a `/memory:save` contract ... planner-first by default”.
+2. `<!-- ANCHOR:requirements -->` — `REQ-001`: “The default `/memory:save` path must be planner-first and non-mutating.”
+
+It is also explicitly titled **`# Feature Specification: /memory:save Planner-First Default`** in `spec.md`.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 5s)
+Tokens    ↑ 192.8k • ↓ 1.5k • 136.2k (cached) • 718 (reasoning)

@@ -1,0 +1,133 @@
+● Read AGENTS.md
+  └ 1 line read
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Find stuff about memory.", limit: 5
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":...
+
+● memory_quick_search (MCP: spec_kit_memory) · memory · query: "memory", limit: 10
+  └ {"summary":"Found 5 memories","data":{"searchType":"hybrid","count":1,"c...
+
+I found the repo’s memory-related area, but the first broad search was noisy. I’m narrowing it to the main docs, commands, and specs so I can hand you the useful bits instead of a raw dump.
+
+● Search (grep)
+  │ "memory" (AGENTS.md, README.md)
+  └ 6 lines found
+
+● Search (grep)
+  │ "Spec Kit Memory|/memory:|memory_" in *.md (.opencode/skill/system-spec-kit)
+  └ 7 lines found
+
+● Search (grep)
+  │ "memory" (.opencode/skill/system-spec-kit)
+  └ 9 files found
+
+● Search (glob)
+  │ "**/*memory*" in .opencode/skill, .opencode/specs
+  └ 7 files found
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md
+  └ L1:260 (260 lines read)
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/README.md
+  └ L1:220 (180 lines read)
+
+● Search (glob)
+  │ "**/*memory*.md" in .opencode/skill/system-spec-kit,
+  │ .opencode/specs/system-spec-kit
+  └ 7 files found
+
+● Search (grep)
+  │ "^#|^##|/memory:|memory_search|memory_context|session_resume|session_bootstr
+  │ ap" (.opencode/skill/system-spec-kit/README.md,
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md)
+  └ 8 lines found
+
+I’ve got the main entry points now: the memory MCP README, the broader skill README, and a cluster of memory-focused specs. I’m pulling the sections that explain what exists and where the deeper design/history lives.
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/README.md
+  └ L320:470 (151 lines read)
+
+● Read README.md
+  │ .opencode/skill/system-spec-kit/README.md
+  └ L175:320 (146 lines read)
+
+● Search (grep)
+  │ "^#|^##|^###" in
+  │ **/*memory*/{spec,plan,tasks,implementation-summary,research}.md
+  │ (.opencode/specs/system-spec-kit)
+  └ 7 lines found
+
+● Search (glob)
+  │ "**/*memory*/{spec.md,plan.md,tasks.md,implementation-summary.md,research.md
+  │ }" in .opencode/specs/system-spec-kit
+  └ 7 files found
+
+I’ve got enough to curate this instead of surfacing hundreds of hits. One last pass: key code entry points and the most relevant spec folders with “memory” in their names.
+
+● Search (grep)
+  │ "^## 3\.2 MEMORY SYSTEM|^## 3\.3 COMMANDS|^### 3\.2 TOOL REFERENCE|^## 2\.
+  │ QUICK START" (.opencode/skill/system-spec-kit/README.md,
+  │ .opencode/skill/system-spec-kit/mcp_server/README.md)
+  └ 3 lines found
+
+● Search (grep)
+  │ "memory_save|memory_search|memory_context|session_resume|session_bootstrap|m
+  │ emory_health" (.opencode/skill/system-spec-kit/mcp_server)
+  └ 142 files found
+
+● List memory-related MCP files (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && find
+  │ .opencode/skill/system-spec-kit/mcp_server -iname '*memory*' | sort | sed -n
+  │ '1,80p'
+  └ 81 lines...
+
+● List memory-related spec docs (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public && find
+  │ .opencode/specs/system-spec-kit -path '*memory*' \( -name 'spec.md' -o -name
+  │ 'research.md' -o -name 'implementation-summary.md' \) | sort | sed -n
+  │ '1,80p'
+  └ 81 lines...
+
+**Found it:** the repo’s memory system is **Spec Kit Memory**, a local SQLite-backed indexed-continuity store under `.opencode/skill/system-spec-kit/`. In this codebase, “memory” explicitly means that local store — **not** Claude Memory and **not** the reference MCP memory server.
+
+**Best entry points**
+1. `.opencode/skill/system-spec-kit/mcp_server/README.md` — canonical overview, quick start, and tool reference for the memory MCP.
+2. `.opencode/skill/system-spec-kit/README.md` — higher-level “Memory System” and command docs.
+3. `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` — memory-related `SPECKIT_*` config.
+4. `.opencode/skill/system-spec-kit/mcp_server/database/memory.db` — local database file.
+
+**Key runtime/code files**
+- `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/tools/memory-tools.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-resume.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/session-bootstrap.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-triggers.ts`
+
+**Main memory workflows surfaced in docs**
+- `/memory:search`
+- `/memory:save`
+- `/memory:manage`
+- `/memory:learn`
+- `/spec_kit:resume`
+
+**Notable memory-focused specs**
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/`
+- `.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift/005-memory-causal-trust-display/`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/`
+
+If you just want the quickest read path, start with:
+`mcp_server/README.md` → `system-spec-kit/README.md` → `026-graph-and-context-optimization/003-continuity-memory-runtime/`
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 53s)
+Tokens    ↑ 331.0k • ↓ 4.0k • 299.3k (cached) • 1.8k (reasoning)

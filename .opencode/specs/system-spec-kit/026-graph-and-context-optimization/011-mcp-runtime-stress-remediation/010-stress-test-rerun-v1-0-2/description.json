@@ -1,27 +1,4 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
-  "description": "Re-run the v1.0.1 30-cell stress-test sweep against the post-fix dist (fork v0.2.3+spec-kit-fork.0.2.0; remediation packets 003-009 landed). Score under the same v1.0.1 rubric; classify per-cell deltas as WIN/NEUTRAL/REGRESSION; aggregate per-packet verdicts. Closes HANDOVER-deferred §2.1 when findings.md ships.",
-  "keywords": [
-    "stress-test",
-    "rerun",
-    "v1.0.2",
-    "post-fix",
-    "sweep",
-    "delta",
-    "verdict",
-    "fork-telemetry",
-    "close-the-loop"
-  ],
-  "lastUpdated": "2026-04-27T15:00:00Z",
-  "specId": "010",
-  "folderSlug": "stress-test-rerun-v1.0.2",
-  "parentChain": [
-    "system-spec-kit",
-    "026-graph-and-context-optimization",
-    "011-mcp-runtime-stress-remediation"
-  ],
-  "memorySequence": 0,
-  "memoryNameHistory": [],
   "trigger_phrases": [
     "010-stress-test-rerun-v1-0-2",
     "v1.0.2 stress test rerun",
@@ -30,5 +7,25 @@
     "30-cell rerun",
     "per-packet verdict",
     "stress-test v1.0.2"
-  ]
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+  "description": "Feature Specification: Stress-Test Rerun v1.0.2 — close-the-loop measurement",
+  "keywords": [
+    "feature",
+    "specification",
+    "stress-test",
+    "rerun",
+    "close-the-loop",
+    "measurement"
+  ],
+  "lastUpdated": "2026-04-27T14:15:10.509Z",
+  "specId": "010",
+  "folderSlug": "stress-test-rerun-v1-0-2",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }
