@@ -105,7 +105,7 @@ The MCP daemon restart procedure is owned by packet 013-mcp-daemon-rebuild-proto
 | `grep -l preEnforcementTokens .opencode/skill/system-spec-kit/mcp_server/dist/handlers/memory-context.js` | PASS | Found compiled marker. |
 | `grep -l returnedTokens .opencode/skill/system-spec-kit/mcp_server/dist/handlers/memory-context.js` | PASS | Found compiled marker. |
 | `grep -l droppedAllResultsReason .opencode/skill/system-spec-kit/mcp_server/dist/handlers/memory-context.js` | PASS | Found compiled marker. |
-| Live `memory_context({input:"Semantic Search", mode:"auto"})` probe | PENDING | Requires user restart of MCP-owning client/daemon first. |
+| Live `memory_context({input:"Semantic Search", mode:"auto"})` probe | PASS | Recorded 2026-04-27T10:12:36.021Z (fresh Claude Code session post-2026-04-26 dist rebuild). `meta.tokenBudgetEnforcement`: `preEnforcementTokens:7410`, `returnedTokens:1278`, `actualTokens:1278`, `enforced:true`, `truncated:true`, `originalResultCount:5`, `returnedResultCount:2`. Over-budget path with payload preserved (no `droppedAllResultsReason`). Confirms REQ-001/002/004 markers are live. |
 
 REQ acceptance criteria:
 

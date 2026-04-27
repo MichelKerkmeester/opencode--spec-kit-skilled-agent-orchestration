@@ -108,7 +108,7 @@ Implemented directly against `spec.md`, `tasks.md`, 007/Q6, 007 §9, 007 §11 Re
 | `grep -l "nextTool" .opencode/skill/system-spec-kit/mcp_server/dist/code_graph/handlers/query.js` | PASS: matched `dist/code_graph/handlers/query.js` |
 | `grep -l "retryAfter" .opencode/skill/system-spec-kit/mcp_server/dist/code_graph/handlers/query.js` | PASS: matched `dist/code_graph/handlers/query.js` |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/010-code-graph-fast-fail --strict` | PASS: Errors 0, Warnings 0 |
-| Live probe after restart | NOT RUN: packet 013 requires MCP-owning client/runtime restart before live probes reflect rebuilt dist output |
+| Live `code_graph_query({operation:"calls_to", subject:"handleCodeGraphQuery"})` probe | PASS (fresh-graph branch): recorded 2026-04-27T10:12:38.462Z; `data.readiness.freshness:"fresh"`, `freshnessAuthority:"live"`, `evidenceStatus:"confirmed"`, `selfHealAttempted:true`, `selfHealResult:"ok"`; no `fallbackDecision` field — fresh-graph path confirmed; function definition returned 0 CALLS edges (other 6 fq_name matches are imports/exports/test imports), `ambiguous_subject` warning surfaced with `selectionReason:"callable kind preference"` as expected. Note: probe template uses `operation:"callers"` but the schema enum is `calls_to` — `calls_to` is the structural equivalent of "who calls this"; template wording is a doc-only mismatch, not a runtime gap. |
 <!-- /ANCHOR:verification -->
 
 ---

@@ -113,7 +113,7 @@ Per packet 013, source + tests + build + dist greps are not enough for live runt
 | `grep -l backendRouting .opencode/skill/system-spec-kit/mcp_server/dist/lib/search/intent-classifier.js` | PASS | matched `dist/lib/search/intent-classifier.js` |
 | `grep -l paraphraseGroup .opencode/skill/system-spec-kit/mcp_server/dist/lib/search/intent-classifier.js` | PASS | matched `dist/lib/search/intent-classifier.js` |
 | `grep -l classificationKind .opencode/skill/system-spec-kit/mcp_server/dist/lib/search/intent-classifier.js` | PASS | matched `dist/lib/search/intent-classifier.js` |
-| Live `memory_context({input:"Semantic Search", mode:"auto"})` probe | NOT RUN | Requires MCP-owning client/daemon restart first per packet 013 |
+| Live `memory_context({input:"Semantic Search", mode:"auto"})` probe | PASS | Recorded 2026-04-27T10:12:36.021Z (fresh Claude Code session post-2026-04-26 dist rebuild). `meta.intent.taskIntent.intent:"understand"`, `classificationKind:"task-intent"`. `data.queryIntentRouting.classificationKind:"backend-routing"`, `route:"semantic"`, `confidence:0.8`, `matchedKeywords:["search"]`. `meta.intent.paraphraseGroup:"search-semantic"`, `meta.intent.backendRouting.route:"semantic"`. Confirms `emitIntentTelemetry()` is live with both `taskIntent` and `backendRouting` fields and the `paraphraseGroup` annotation per REQ-001. |
 
 REQ acceptance criteria:
 

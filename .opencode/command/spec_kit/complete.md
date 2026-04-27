@@ -24,7 +24,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, spec_k
 
 - **DO NOT** dispatch any agent (`@review`, `@debug`, `@context`, `@deep-research`) from this document
 - **DO NOT** dispatch `@review` to review this workflow or command prompt
-- **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 10) and the workflow has already prepared a diagnostic summary for the Task-tool handoff
+- **DO NOT** dispatch `@debug` autonomously under any condition; the workflow surfaces a prompted offer when `failure_count >= 3` during Step 10 and the user dispatches via Task tool themselves with the pre-filled debug-delegation.md scaffold as the structured handoff
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
 
@@ -503,7 +503,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 | Implementation complete | Verify in browser | Test functionality |
 | Need to refresh search support | `/memory:save [spec-folder-path]` | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 | Ending session | `/memory:save [spec-folder-path]` | Refresh canonical continuity before pausing |
-| Found bugs | `Task tool → @debug` | Dispatch a focused debugging pass after user escalation |
+| Found bugs | `Task tool → @debug` | User-dispatched fresh-perspective debugging (workflow prompts; user opts in) |
 | Ready for next feature | `/spec_kit:complete [feature-description]` | Start new workflow |
 | Need crash recovery | `/spec_kit:resume` | Session recovery and continuation |
 | Record constitutional rule | `/memory:learn [rule]` | Save a durable repo-wide rule |

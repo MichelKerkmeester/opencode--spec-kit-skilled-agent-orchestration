@@ -95,9 +95,10 @@ Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) m
 
 1. Use `/spec_kit:resume` as the canonical recovery surface
 2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
-3. If structural context is stale or missing, run `session_bootstrap()` and then `code_graph_scan` when needed
-4. If the graph remains unavailable, use CocoIndex + direct file reads for code exploration, but keep the packet-local continuity ladder above as source-of-truth
-5. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+3. **Phase parent branch:** if the resume target is a phase parent (folder has `[0-9]{3}-name/` children with their own spec.md/description.json), `/spec_kit:resume` lists the children with statuses so you can pick which phase to continue. Do NOT read parent's `plan.md`/`tasks.md`/`implementation-summary.md` — those don't exist at a phase parent (per the lean trio policy: only `spec.md`, `description.json`, `graph-metadata.json` live at parent). Read the chosen child's continuity ladder instead.
+4. If structural context is stale or missing, run `session_bootstrap()` and then `code_graph_scan` when needed
+5. If the graph remains unavailable, use CocoIndex + direct file reads for code exploration, but keep the packet-local continuity ladder above as source-of-truth
+6. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
 
 ---
 
@@ -264,8 +265,11 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 | **2**  | 100-499        | Level 1 + checklist.md                                | QA validation needed               |
 | **3**  | ≥500           | Level 2 + decision-record.md (+ optional research.md, resource-map.md) | Complex/architecture changes       |
 | **3+** | Complexity 80+ | Level 3 + AI protocols, extended checklist, sign-offs | Multi-agent, enterprise governance |
+| **Phase Parent** | n/a (manifest only) | spec.md, description.json, graph-metadata.json | Folder contains phase children (`[0-9]{3}-name/` subdirs with their own spec.md/description.json) |
 
-**Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` - copy from `.opencode/skill/system-spec-kit/templates/` as needed.
+**Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` - copy from `.opencode/skill/system-spec-kit/templates/` as needed. For phase parents that have undergone reorganization (renames, gap renumbering, consolidation), `context-index.md` provides a migration bridge — optional, no required template.
+
+> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate to that phase's actual work. Detection rule: `is_phase_parent()` (shell, in `lib/shell-common.sh`) and `isPhaseParent()` (TS/JS, in `mcp_server/lib/spec/is-phase-parent.ts` + `scripts/dist/spec/is-phase-parent.js`) are the single source of truth — both must agree. **Content discipline:** the phase-parent `spec.md` must NOT narrate consolidation, merge, or migration history — it documents root purpose, sub-phase manifest, and what needs done. Migration history goes in `context-index.md` if needed. Resume on a phase parent lists child phases with statuses (per `/spec_kit:resume` step 3b) so the user can pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate; soft-deprecation is a follow-on packet.
 
 > **Note:** `implementation-summary.md` is REQUIRED for all levels but created **after implementation completes**, not at spec folder creation time. See SKILL.md §4 Rule 13.
 

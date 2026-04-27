@@ -114,7 +114,7 @@ Packet 013 requires source diff, targeted tests, dist verification, runtime rest
 | `grep -l enforceRelationWindowCap .opencode/skill/system-spec-kit/mcp_server/dist/lib/storage/causal-edges.js` | PASS | Matched `dist/lib/storage/causal-edges.js` |
 | Dist timestamp check | PASS | `dist/handlers/causal-graph.js` and `dist/lib/storage/causal-edges.js` mtimes are newer than their source files |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/011-causal-graph-window-metrics --strict` | PASS | Errors 0, Warnings 0 |
-| Live `memory_causal_stats()` probe | NOT RUN | Requires MCP-owning client/runtime restart per packet 013 |
+| Live `memory_causal_stats()` probe | PASS | Recorded 2026-04-27T10:12:36.021Z (fresh Claude Code session post-2026-04-26 dist rebuild). `total_edges:2527`, `link_coverage_percent:"85.65%"`, `health:"healthy"`, `meetsTarget:true`. All 6 `by_relation` keys present (`caused:1193`, `enabled:0`, `supersedes:819`, `contradicts:0`, `derived_from:0`, `supports:515`). `deltaByRelation` zero-filled, `balanceStatus:"insufficient_data"`, `windowStartedAt:"2026-04-27T09:57:39.113Z"`, `dominantRelation:null`, `dominantRelationShare:0` — consistent idle-window state per REQ-003. Burst skew branch (REQ-004) not exercised on this probe; covered by `T014-CS6` fixture. |
 
 REQ acceptance criteria:
 

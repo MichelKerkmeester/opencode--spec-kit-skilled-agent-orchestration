@@ -102,7 +102,8 @@ Implemented directly against `spec.md`, `tasks.md`, and the 007 research anchors
 | `grep -l citationPolicy .opencode/skill/system-spec-kit/mcp_server/dist/formatters/search-results.js` | PASS: matched `dist/formatters/search-results.js` |
 | `grep -l ask_disambiguation .opencode/skill/system-spec-kit/mcp_server/dist/lib/search/recovery-payload.js` | PASS: matched `dist/lib/search/recovery-payload.js` |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/014-memory-search-response-policy --strict` | PASS: Errors 0, Warnings 0 |
-| 006/I2 live repro after restart | NOT RUN: requires user to restart MCP-owning client/runtime first |
+| Live `memory_search({query:"find the spec for the cache warning hooks packet"})` probe | PASS (cite_results branch): recorded 2026-04-27T10:12:37.318Z; `data.citationPolicy:"cite_results"`, `requestQuality.label:"good"`, `intent.type:"find_spec"`, top hit is the `001-cache-warning-hooks` spec at similarity 84.07. `evidenceGapWarning` still surfaces (`Z=1.21`) per 007/Q4 contract. Weak-quality branch (`do_not_cite_results`/`responsePolicy.noCanonicalPathClaims`/`safeResponse`/`ask_disambiguation`) not exercised here — covered by `tests/d5-recovery-payload.vitest.ts` and `tests/empty-result-recovery.vitest.ts`; restart confirms cite_results path is live in production. |
+| 006/I2 weak-quality live repro after restart | DEFERRED: still requires the original 006/I2 query that yielded `requestQuality:"weak"`; this probe used a good-quality query to confirm cite_results path. Recommend running 006/I2 reproduction during item 2.2 sweep re-run. |
 <!-- /ANCHOR:verification -->
 
 ---

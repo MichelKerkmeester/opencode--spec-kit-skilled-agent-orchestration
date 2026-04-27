@@ -1,0 +1,29 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs",
+  "description": "Phase 1 of the phase-parent-documentation packet: validator phase-parent branches (check-files.sh + check-level-match.sh), detection helpers (is_phase_parent shell + isPhaseParent ESM JS), templates/phase_parent/spec.md, graph-metadata schema additive accept-path, and CLAUDE.md / AGENTS.md / AGENTS sync triad / SKILL.md documentation sync. Tolerant migration policy preserves legacy parents like 026.",
+  "keywords": [
+    "phase",
+    "parent",
+    "validator",
+    "detection",
+    "template",
+    "graph-metadata",
+    "tolerant",
+    "migration",
+    "lean",
+    "trio"
+  ],
+  "lastUpdated": "2026-04-27T12:15:00Z",
+  "specId": "001",
+  "folderSlug": "validator-and-docs",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-phase-parent-documentation"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "27-04-26_10-13__authored-level-2-planning-packet-for-the-phase.md",
+    "27-04-26_10-51__implementation-complete-phase-parents-now-require.md"
+  ]
+}

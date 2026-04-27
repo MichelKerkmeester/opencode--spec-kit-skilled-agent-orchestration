@@ -462,7 +462,7 @@ PRE-DELIVERY VERIFICATION:
 
 | Command              | Purpose                                 |
 | -------------------- | --------------------------------------- |
-| `Task tool -> @debug` | Dispatch debug agent after repeated failures |
+| `Task tool -> @debug` | User-dispatched fresh-perspective debugging (workflow prompts; user opts in) |
 | `/spec_kit:complete` | Return to full workflow after debug     |
 
 ### Agents

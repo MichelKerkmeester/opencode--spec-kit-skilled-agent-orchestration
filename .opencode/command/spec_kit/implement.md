@@ -21,7 +21,7 @@ allowed-tools: Read, Write, Edit, Bash, Grep, Glob, Task, memory_context, memory
 
 - **DO NOT** dispatch any agent (`@review`, `@debug`) from this document
 - **DO NOT** dispatch `@review` to review this workflow or command prompt
-- **DO NOT** dispatch `@debug` unless `failure_count >= 3` during the Development step (Step 6)
+- **DO NOT** dispatch `@debug` autonomously under any condition; the workflow surfaces a prompted offer when `failure_count >= 3` during Step 6 and the user dispatches via Task tool themselves
 - **ALL** agent dispatching is handled by the YAML workflow steps — this document is setup + reference only
 - **FIRST ACTION** is always: load the YAML file, then execute it step by step
 
@@ -356,7 +356,7 @@ Prerequisite: `/spec_kit:plan [feature-description]` (creates spec.md, plan.md)
 | Implementation complete   | Verify in browser                          | Test functionality              |
 | Need to refresh search support | `/memory:save [spec-folder-path]`     | Refresh the indexed canonical spec document while canonical continuity stays in spec docs |
 | Ending session            | `/memory:save [spec-folder-path]`          | Refresh canonical continuity before pausing |
-| Found bugs during testing | `Task tool → @debug`                       | Dispatch a focused debugging pass after user escalation |
+| Found bugs during testing | `Task tool → @debug`                       | User-dispatched fresh-perspective debugging (workflow prompts; user opts in) |
 | Ready for next feature    | `/spec_kit:complete [feature-description]` | Start new workflow              |
 | Need crash recovery       | `/spec_kit:resume`                         | Session recovery and continuation |
 

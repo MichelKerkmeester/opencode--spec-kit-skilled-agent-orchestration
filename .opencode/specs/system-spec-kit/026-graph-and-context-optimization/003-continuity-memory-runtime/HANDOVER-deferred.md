@@ -1,20 +1,22 @@
 # HANDOVER — Deferred Items After Autonomous Run
 
-> Residual work from the 2026-04-26 to 2026-04-27 autonomous run, updated after the 009 cocoindex fork closed on 2026-04-27.
+> Residual work from the 2026-04-26 to 2026-04-27 autonomous run, updated after item 2.1 (live MCP probes) closed on 2026-04-27.
 
 ---
 
 ## 1. OVERVIEW
 
-The autonomous run that started 2026-04-26 shipped 6 of 7 remediation packets (008, 010, 011, 012, 013, 014) plus rubric v1.0.1 plus the 10-iter deep research synthesis. Packet 009 was deferred pending a vendor-vs-fork decision and closed on 2026-04-27 by vendoring `cocoindex-code` into `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/` as soft-fork `0.2.3+spec-kit-fork.0.2.0`.
+The autonomous run that started 2026-04-26 shipped 6 of 7 remediation packets (008, 010, 011, 012, 013, 014) plus rubric v1.0.1 plus the 10-iter deep research synthesis. Packet 009 was deferred pending a vendor-vs-fork decision and closed on 2026-04-27 by vendoring `cocoindex-code` into `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/` as soft-fork `0.2.3+spec-kit-fork.0.2.0`. Item 2.1 (live MCP probes for packets 008/010/011/012/014) closed later on 2026-04-27 once a fresh Claude Code session restart picked up the rebuilt `dist/`.
 
-Five follow-up items remain. They split into one prerequisite (live verification probes), one closing-the-loop measurement (re-run 006), and three optional enhancements (packets 011 v2, 012 v2, hallucination guard expansion).
+Four follow-up items remain. They split into one closing-the-loop measurement (re-run the 006 sweep, which also covers the weak-quality 014 reproduction probe) and three optional enhancements (packets 011 v2, 012 v2, hallucination guard expansion).
 
 ### Closed Since the Original Handover
 
 | Item | Closure date | Closure evidence |
 |------|--------------|------------------|
 | Packet 009 vendor-vs-fork decision | 2026-04-27 | Commits `3711ad221`, `1b62e976d`, `b08dc8494`, `6e284285a`, `f60d97c79` on `main`. Live probes pass: `dedupedAliases` 29 and 30 across REQ-018 and REQ-019. |
+| Item 2.1 — live MCP probes for packets 008, 010, 011, 012 | 2026-04-27T10:12:36–10:12:38Z | Fresh Claude Code session post-2026-04-26 dist rebuild. Verbatim probe output now in each packet's verification row: 008 (`memory_context` token-budget fields populated, `preEnforcementTokens:7410`, `returnedTokens:1278`); 010 (`code_graph_query` fresh-graph branch, `freshnessAuthority:"live"`, no `fallbackDecision`); 011 (`memory_causal_stats`, all 6 by_relation keys, `health:"healthy"`, `meetsTarget:true`, idle-window `balanceStatus:"insufficient_data"`); 012 (`memory_context` intent telemetry, `taskIntent.intent:"understand"`, `paraphraseGroup:"search-semantic"`, `backendRouting.route:"semantic"`). All five packets re-validated PASS strict. |
+| Item 2.1 — live MCP probe for packet 014 (cite_results branch) | 2026-04-27T10:12:37Z | `memory_search` good-quality call returned `citationPolicy:"cite_results"`, `requestQuality.label:"good"`, `evidenceGapWarning` still surfaces (`Z=1.21`). Weak-quality branch (`do_not_cite_results`/`responsePolicy.noCanonicalPathClaims`/`safeResponse`/`ask_disambiguation`) NOT exercised on this probe — folded into item 2.1 (006 sweep re-run) below. |
 
 ---
 

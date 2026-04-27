@@ -912,25 +912,20 @@ workflow:
       fallback: "Proceed with activities below"
 
     debug_escalation:
-      failure_tracking: { enabled: true, counter_name: "task_failure_count", reset_on: "new_task", threshold: 3 }
+      prompt_threshold: { enabled: true, counter_name: "task_failure_count", reset_on: "new_task", threshold: 3, mode: "operator-judgment", note: "Workflow surfaces prompt; never auto-routes." }
       on_threshold_reached:
-        action: "prompt_user"
+        action: "prompt_user_with_y_n_skip"
+        no_autonomous_routing: true
         prompt: |
-          Multiple fix attempts failed (3+) for task {current_task_id}
-          Provide a diagnostic summary, then wait for the user's decision:
-          A) Dispatch @debug via Task tool
-          B) Continue debugging manually
-          C) Skip task - Move to next task
-          D) Pause - Stop workflow and review
-        on_A: dispatch_debug
-        on_B: reset_failure_count, continue
-        on_C: mark_task_skipped, next_task
-        on_D: pause_workflow
-      debug_dispatch:
-        subagent_type: "debug"
-        timeout_ms: 120000
-        context_includes: [error_message, affected_files, previous_attempts, current_task_id]
-        on_complete: "show_checkpoint"
+          ⚠️  3+ fix attempts failed for task {current_task_id}. The @debug agent runs a 5-phase fresh-perspective root-cause pass with no prior context — it costs one Task-tool dispatch and writes findings to a structured report.
+          Dispatch @debug? (y / continue manually / skip)
+        on_y: |
+          1. Run scaffold-debug-delegation.sh to generate {spec_folder}/debug-delegation.md (versioned to debug-delegation-NNN.md if a prior file exists), populated from the failure trail using the Debug Context Handoff schema in .opencode/agent/debug.md.
+          2. Surface a one-line confirmation with the scaffold path and a Task-tool invocation example for the user to copy-paste.
+          3. The workflow STOPS and waits — it NEVER invokes Task tool → @debug itself. The user dispatches.
+        on_continue_manually: 'Log "user declined debug at threshold N", proceed with existing manual flow, do NOT reset the failure counter.'
+        on_skip: "Apply existing skip semantics (failure counter resets per reset_on: new_task)."
+      reference: ".opencode/specs/skilled-agent-orchestration/050-agent-debug-integration/spec.md (REQ-005 — no autonomous routing). Mirror of spec_kit_complete_auto.yaml debug_escalation block."
 
     activities:
     - Parse tasks.md structure

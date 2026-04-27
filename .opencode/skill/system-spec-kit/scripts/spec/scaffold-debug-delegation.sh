@@ -92,22 +92,22 @@ case "$SPEC_FOLDER_ABS" in
         ;;
 esac
 
-# Pick versioned output filename so we never overwrite a prior scaffold
-# or user-authored debug-delegation.md.
+# Pick versioned output filename atomically so we never overwrite a prior scaffold,
+# user-authored debug-delegation.md, or another concurrent invocation's claim.
+# Each attempt uses `set -C` (noclobber) to fail atomically when the target exists.
 OUTPUT_BASENAME="debug-delegation.md"
 OUTPUT_PATH="$SPEC_FOLDER_ABS/$OUTPUT_BASENAME"
-if [[ -e "$OUTPUT_PATH" ]]; then
-    next=2
-    while [[ -e "$SPEC_FOLDER_ABS/debug-delegation-$(printf '%03d' "$next").md" ]]; do
-        next=$((next + 1))
-        if [[ $next -gt 999 ]]; then
-            echo "Error: too many debug-delegation files (>999). Clean up before scaffolding." >&2
-            exit 1
-        fi
-    done
+next=1
+while ! ( set -C; : > "$OUTPUT_PATH" ) 2>/dev/null; do
+    next=$((next + 1))
+    if [[ $next -gt 999 ]]; then
+        echo "Error: too many debug-delegation files (>999). Clean up before scaffolding." >&2
+        exit 1
+    fi
     OUTPUT_BASENAME="debug-delegation-$(printf '%03d' "$next").md"
     OUTPUT_PATH="$SPEC_FOLDER_ABS/$OUTPUT_BASENAME"
-fi
+done
+# At this point OUTPUT_PATH exists as an empty file we own; the heredoc below fills it.
 
 # Resolve the failure trail. Three sources, in order of preference:
 #   --errors-json (inline)  ->  --errors-file  ->  empty placeholder
@@ -163,6 +163,27 @@ PACKET_POINTER="${SPEC_FOLDER_ABS#*/.opencode/specs/}"
 if [[ "$PACKET_POINTER" == "$SPEC_FOLDER_ABS" ]]; then
     PACKET_POINTER="${SPEC_FOLDER_ABS#*/specs/}"
 fi
+
+# Sanitize user-supplied strings before heredoc interpolation to block backtick / $() command-substitution
+# attempts in failure-trail content. Script-controlled values (TASK_ID, NOW_ISO, ...) are left untouched.
+_sanitize_for_heredoc() {
+    local s="$1"
+    s="${s//\\/\\\\}"   # backslash first
+    s="${s//\`/\\\`}"   # backticks
+    s="${s//\$/\\\$}"   # dollar signs (blocks $(...) and ${...})
+    printf '%s' "$s"
+}
+ERROR_MESSAGE="$(_sanitize_for_heredoc "$ERROR_MESSAGE")"
+A1_APPROACH="$(_sanitize_for_heredoc "$A1_APPROACH")"
+A1_RESULT="$(_sanitize_for_heredoc "$A1_RESULT")"
+A1_DIFF="$(_sanitize_for_heredoc "$A1_DIFF")"
+A2_APPROACH="$(_sanitize_for_heredoc "$A2_APPROACH")"
+A2_RESULT="$(_sanitize_for_heredoc "$A2_RESULT")"
+A3_APPROACH="$(_sanitize_for_heredoc "$A3_APPROACH")"
+A3_RESULT="$(_sanitize_for_heredoc "$A3_RESULT")"
+HYPOTHESIS_TEXT="$(_sanitize_for_heredoc "$HYPOTHESIS_TEXT")"
+A1_DIFF_BLOCK="$(_sanitize_for_heredoc "$A1_DIFF_BLOCK")"
+AFFECTED_FILES_BLOCK="$(_sanitize_for_heredoc "$AFFECTED_FILES_BLOCK")"
 
 cat > "$OUTPUT_PATH" <<EOF
 ---

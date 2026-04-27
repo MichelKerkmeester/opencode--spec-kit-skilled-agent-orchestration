@@ -293,10 +293,13 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 | **2**  | 100-499        | Level 1 + checklist.md                                | QA validation needed               |
 | **3**  | ≥500           | Level 2 + decision-record.md (+ optional research.md, resource-map.md) | Complex/architecture changes       |
 | **3+** | Complexity 80+ | Level 3 + AI protocols, extended checklist, sign-offs | Multi-agent, enterprise governance |
+| **Phase Parent** | n/a (manifest only) | spec.md, description.json, graph-metadata.json | Folder contains phase children (`[0-9]{3}-name/` subdirs with their own spec.md/description.json) |
 
 > **Note:** `implementation-summary.md` is REQUIRED for all levels but created **after implementation completes**, not at spec folder creation time. See SKILL.md §4 Rule 13.
 >
 > **Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` — copy from `.opencode/skill/system-spec-kit/templates/` as needed.
+
+> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children. Phase-parent `spec.md` documents root purpose, sub-phase manifest, and what needs done — NEVER consolidation, merge, or migration history. Resume on a phase parent lists child phases with statuses so you pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate.
 
 **Rules:** When in doubt → higher level. LOC is soft guidance (risk/complexity can override). Single typo/whitespace fixes (<5 characters in one file) are exempt.
 

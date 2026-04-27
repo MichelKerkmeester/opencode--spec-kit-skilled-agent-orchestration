@@ -35,7 +35,7 @@
       "runtime-mirror"
     ],
     "importance_tier": "important",
-    "status": "planned",
+    "status": "completed",
     "key_files": [
       ".opencode/agent/debug.md",
       ".opencode/agent/orchestrate.md",

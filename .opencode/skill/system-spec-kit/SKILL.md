@@ -365,6 +365,9 @@ When user selects **B) New**, AI estimates complexity and recommends a level:
 | 100-499 | 2     | `templates/level_2/`  |
 | ≥500    | 3     | `templates/level_3/`  |
 | Complex | 3+    | `templates/level_3+/` |
+| Phase Parent | n/a | `templates/phase_parent/` |
+
+**Phase Parent Mode** — When a spec folder has phase children (≥1 direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`), the validator detects it via `is_phase_parent()` (shell, in `scripts/lib/shell-common.sh`) and `isPhaseParent()` (TS at `mcp_server/lib/spec/is-phase-parent.ts`, ESM JS at `scripts/dist/spec/is-phase-parent.js`) — both must agree. The parent then requires ONLY the lean trio: `spec.md`, `description.json`, `graph-metadata.json`. All heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate. Phase-parent `spec.md` content discipline: root purpose + sub-phase manifest + what needs done; NEVER merge/consolidation/migration narratives (those rot fast and cause hallucinations during resume). Migration history goes into an optional `context-index.md` if needed. `/spec_kit:resume` on a phase parent lists children with statuses so the user picks which phase to continue. Tolerant policy preserves legacy phase parents that retain heavy docs.
 
 **See:** [quick_reference.md](./references/workflows/quick_reference.md) for detailed examples.
 

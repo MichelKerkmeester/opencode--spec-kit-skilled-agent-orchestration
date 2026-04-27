@@ -35,6 +35,9 @@ for (const key of requiredTopLevel) {
 if (!Array.isArray(parsed.children_ids)) process.exit(3);
 if (!parsed.manual || !Array.isArray(parsed.manual.depends_on) || !Array.isArray(parsed.manual.supersedes) || !Array.isArray(parsed.manual.related_to)) process.exit(4);
 if (!parsed.derived || !Array.isArray(parsed.derived.trigger_phrases) || !Array.isArray(parsed.derived.key_files) || !Array.isArray(parsed.derived.source_docs)) process.exit(5);
+// Phase-parent optional fields: last_active_child_id (string|null) and last_active_at (string|null) are accepted but not required.
+if ('last_active_child_id' in parsed.derived && parsed.derived.last_active_child_id !== null && typeof parsed.derived.last_active_child_id !== 'string') process.exit(6);
+if ('last_active_at' in parsed.derived && parsed.derived.last_active_at !== null && typeof parsed.derived.last_active_at !== 'string') process.exit(7);
 process.exit(0);
 EOF
     then
