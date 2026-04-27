@@ -15,7 +15,7 @@ This scenario validates the github-copilot Anthropic alternative for `CO-010`. I
 
 ### Why This Matters
 
-The skill exposes exactly two github-copilot models by name: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative). When an operator wants Anthropic-flavored reasoning for a code review or balanced response without leaving the Copilot OAuth boundary, they should be able to override via `--model github-copilot/claude-sonnet-4.6` and have the dispatch resolve cleanly. If the override silently falls through to gpt-5.5 (the default) or fails resolution, the surfaced two-model surface loses its value.
+The skill exposes exactly two github-copilot models by name: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative). When an operator wants Anthropic-flavored reasoning for a code review or balanced response without leaving the Copilot OAuth boundary, they should be able to override via `--model github-copilot/claude-sonnet-4.6` and have the dispatch resolve cleanly. If the override silently falls through to gpt-5.4 (the default) or fails resolution, the surfaced two-model surface loses its value.
 
 ---
 
@@ -60,7 +60,7 @@ For variant range coverage, repeat the test with `--variant max` (claude-sonnet-
 | File | Role |
 |---|---|
 | `manual_testing_playbook.md` | Root directory page and scenario summary |
-| `../../references/cli_reference.md` (§5 MODEL SELECTION) | github-copilot model surface (gpt-5.5 + claude-sonnet-4.6) and variant range |
+| `../../references/cli_reference.md` (§5 MODEL SELECTION) | github-copilot model surface (gpt-5.4 + claude-sonnet-4.6) and variant range |
 
 ### Implementation And Test Anchors
 

@@ -53,7 +53,7 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 |----------|-------|---------|
 | **Use cases** | 3 | External runtime, in-OpenCode parallel detached, cross-AI handback |
 | **Self-invocation layers** | 3 | Env var, process ancestry, lock-file probe |
-| **Default invocation** | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` | Pinned shape for routine dispatches; GitHub Copilot is the default provider — `gpt-5.5` (default) and `claude-sonnet-4.6` are the only Copilot models surfaced by name |
+| **Default invocation** | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` | Pinned shape for routine dispatches; GitHub Copilot is the default provider — `gpt-5.4` (default) and `claude-sonnet-4.6` are the only Copilot models surfaced by name |
 | **Supported providers** | 3 | `github-copilot` (DEFAULT), `opencode-go`, `deepseek` |
 | **References** | 4 | cli_reference, integration_patterns, opencode_tools, agent_delegation |
 | **Assets** | 2 | prompt_quality_card, prompt_templates (13 templates) |
@@ -121,7 +121,7 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "live O
 
 ```bash
 opencode run \
-  --model github-copilot/gpt-5.5 \
+  --model github-copilot/gpt-5.4 \
   --agent general \
   --variant high \
   --format json \
@@ -133,7 +133,7 @@ opencode run \
 
 ```bash
 opencode run --share --port 4096 \
-  --model github-copilot/gpt-5.5 \
+  --model github-copilot/gpt-5.4 \
   --agent deep-research \
   --variant high \
   --format json \
@@ -176,7 +176,7 @@ The skill ships with three providers — `github-copilot` (DEFAULT), `opencode-g
 
 | Provider | Model id | Variant range | Default for cli-opencode? |
 |----------|----------|---------------|---------------------------|
-| github-copilot | `github-copilot/gpt-5.5` | minimal / low / medium / high / xhigh | YES (DEFAULT) |
+| github-copilot | `github-copilot/gpt-5.4` | minimal / low / medium / high / xhigh | YES (DEFAULT) |
 | github-copilot | `github-copilot/claude-sonnet-4.6` | minimal / low / medium / high / max | No (Anthropic alternative for balanced reasoning, code review) |
 | opencode-go | `opencode-go/deepseek-v4-pro` | provider-specific (variant flag accepted) | No (DeepSeek via OpenCode Go gateway) |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | No (lower-tier sibling for cost/latency) |
@@ -258,7 +258,7 @@ OpenCode resolves credentials through configured providers. Use `opencode provid
 
 ### Model Defaults
 
-cli-opencode defaults to `github-copilot/gpt-5.5 --variant high` for cross-AI dispatches. GitHub Copilot is the default provider — it ships pre-authenticated for active subscribers and `gpt-5.5` is the newest GPT for complex implementation work. Only two Copilot models are surfaced by name: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative for balanced reasoning, code review). Override per invocation:
+cli-opencode defaults to `github-copilot/gpt-5.4 --variant high` for cross-AI dispatches. GitHub Copilot is the default provider — it ships pre-authenticated for active subscribers and `gpt-5.4` is the newest GPT for complex implementation work. Only two Copilot models are surfaced by name: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative for balanced reasoning, code review). Override per invocation:
 
 ```bash
 # Switch to the Anthropic alternative
@@ -438,7 +438,7 @@ A: Three layers (per ADR-001). Layer 1 checks for any `OPENCODE_*` env var. Laye
 A: `opencode-go/deepseek-v4-pro` with `--variant high`. cli-opencode dispatches typically benefit from elevated reasoning because the dispatched session has full project context.
 
 **Q: Which providers does this skill support?**
-A: Three: `github-copilot` (default — `gpt-5.5` and `claude-sonnet-4.6`), `opencode-go` (DeepSeek and other open models via the OpenCode Go gateway), and `deepseek` (direct DeepSeek API). Run `opencode models <provider>` to enumerate the live model list per install.
+A: Three: `github-copilot` (default — `gpt-5.4` and `claude-sonnet-4.6`), `opencode-go` (DeepSeek and other open models via the OpenCode Go gateway), and `deepseek` (direct DeepSeek API). Run `opencode models <provider>` to enumerate the live model list per install.
 
 ### Sessions
 

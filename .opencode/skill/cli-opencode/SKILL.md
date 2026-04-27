@@ -178,11 +178,11 @@ opencode providers
 
 ### Default Invocation (Skill Default)
 
-**Default model + variant + agent + format + dir**: `github-copilot/gpt-5.5` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity. GitHub Copilot is the default provider — it ships pre-authenticated for users with an active Copilot subscription and exposes the broadest model surface under one OAuth token. The skill names two Copilot models: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative).
+**Default model + variant + agent + format + dir**: `github-copilot/gpt-5.4` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity. GitHub Copilot is the default provider — it ships pre-authenticated for users with an active Copilot subscription and exposes the broadest model surface under one OAuth token. The skill names two Copilot models: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative).
 
 ```bash
 opencode run \
-  --model github-copilot/gpt-5.5 \
+  --model github-copilot/gpt-5.4 \
   --agent general \
   --variant high \
   --format json \
@@ -194,17 +194,17 @@ opencode run \
 
 | User says | Resolve to |
 |-----------|------------|
-| (nothing specified) | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` |
-| "Use copilot gpt-5.5 high" | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` |
+| (nothing specified) | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` |
+| "Use copilot gpt-5.4 high" | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` |
 | "Use opencode-go deepseek" | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use deepseek v4 pro" | `--model deepseek/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use the deep-research subagent loop" | `--model github-copilot/gpt-5.5 --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
+| "Use the deep-research subagent loop" | `--model github-copilot/gpt-5.4 --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
 
 ### Core Invocation Pattern
 
 ```bash
-opencode run "prompt" --model github-copilot/gpt-5.5 --agent general --variant high --format json --dir /repo 2>&1
+opencode run "prompt" --model github-copilot/gpt-5.4 --agent general --variant high --format json --dir /repo 2>&1
 ```
 
 | Flag / Option | Purpose |
@@ -233,7 +233,7 @@ The skill supports three providers. Run `opencode providers list` to confirm cre
 
 | Provider | Example model id | Reasoning effort range | Use case |
 |----------|------------------|------------------------|----------|
-| github-copilot (DEFAULT) | `github-copilot/gpt-5.5` (default) | `minimal`, `low`, `medium`, `high`, `xhigh` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
+| github-copilot (DEFAULT) | `github-copilot/gpt-5.4` (default) | `minimal`, `low`, `medium`, `high`, `xhigh` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
 | github-copilot | `github-copilot/claude-sonnet-4.6` | `minimal`, `low`, `medium`, `high`, `max` | Anthropic alternative — balanced reasoning, code review |
 | opencode-go | `opencode-go/deepseek-v4-pro` | `--variant` accepted; effect depends on opencode-go routing | Deep reasoning at low cost via the OpenCode Go gateway |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | Lower-tier sibling for cost/latency |
@@ -241,7 +241,7 @@ The skill supports three providers. Run `opencode providers list` to confirm cre
 | deepseek (direct API) | `deepseek/deepseek-v4-pro` | `--variant` accepted | Direct DeepSeek API — bypasses opencode-go routing |
 | deepseek | `deepseek/deepseek-v4-flash` | non-reasoning (variant ignored) | Latency-optimized sibling |
 
-`opencode models <provider>` enumerates the live model list per provider. The skill defaults to `github-copilot/gpt-5.5 --variant high` because GitHub Copilot ships pre-authenticated for users with an active subscription and exposes the broadest model surface; routine cli-opencode tasks benefit from elevated reasoning. Only two Copilot models are surfaced by name: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative).
+`opencode models <provider>` enumerates the live model list per provider. The skill defaults to `github-copilot/gpt-5.4 --variant high` because GitHub Copilot ships pre-authenticated for users with an active subscription and exposes the broadest model surface; routine cli-opencode tasks benefit from elevated reasoning. Only two Copilot models are surfaced by name: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative).
 
 ### OpenCode Agent Delegation
 
@@ -291,19 +291,19 @@ See [agent_delegation.md](./references/agent_delegation.md) for the complete age
 ```bash
 # 1. External runtime to OpenCode (use case 1) — default Copilot dispatch
 opencode run \
-  --model github-copilot/gpt-5.5 --agent general --variant high --format json \
+  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run memory_search for 'spec kit memory health' and return top 5 results."
 
 # 2. Parallel detached session (use case 2 — only valid from inside OpenCode)
 opencode run --share --port 4096 \
-  --model github-copilot/gpt-5.5 --agent deep-research --variant high --format json \
+  --model github-copilot/gpt-5.4 --agent deep-research --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run iteration 3 of the deep-research loop on packet 047."
 
 # 3. Cross-AI handback (use case 3 — Codex / Copilot CLI / Gemini calling)
 opencode run \
-  --model github-copilot/gpt-5.5 --agent general --variant high --format json \
+  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Use system-spec-kit to validate packet 047. Return JSON validation report."
 
@@ -327,7 +327,7 @@ opencode run \
 
 # 7. Cross-repo dispatch (Barter sibling)
 opencode run \
-  --model github-copilot/gpt-5.5 --agent general --variant high --format json \
+  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
   "Draft a Level 1 spec for the auth refresh feature."
 ```
@@ -356,7 +356,7 @@ opencode run \
 
 1. Verify OpenCode CLI is installed before first invocation; confirm version baseline against v1.3.17 (drift handling per `references/cli_reference.md` §9).
 2. **Run the self-invocation guard before dispatch** (ADR-001): Layer 1 env-var lookup for any `OPENCODE_*`, Layer 2 process-ancestry probe for `opencode` parent, Layer 3 `~/.opencode/state/<id>/lock` probe. Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords.
-3. Pin model + agent + variant + format + dir explicitly. Default: `--model github-copilot/gpt-5.5 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`).
+3. Pin model + agent + variant + format + dir explicitly. Default: `--model github-copilot/gpt-5.4 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`).
 4. Pass `--format json` unless the calling AI explicitly wants formatted output — JSON event stream is what external runtimes parse incrementally.
 5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
 6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.

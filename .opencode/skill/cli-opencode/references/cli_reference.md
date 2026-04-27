@@ -118,7 +118,7 @@ The skill builds every dispatch from a base shape and overlays use-case-specific
 
 ```bash
 opencode run \
-  --model github-copilot/gpt-5.5 \
+  --model github-copilot/gpt-5.4 \
   --agent <agent-slug> \
   --variant high \
   --format json \
@@ -128,7 +128,7 @@ opencode run \
 
 | Flag | Default | Reason |
 |------|---------|--------|
-| `--model` | `github-copilot/gpt-5.5` | Copilot is the default provider — pre-authenticated for active subscribers; operator may override (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`) |
+| `--model` | `github-copilot/gpt-5.4` | Copilot is the default provider — pre-authenticated for active subscribers; operator may override (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`) |
 | `--agent` | per use case | Required for use case 1 / 3; optional for use case 2 |
 | `--variant high` | high | Routine cli-opencode dispatches benefit from elevated reasoning effort |
 | `--format json` | json | Structured event stream is what external runtimes parse |
@@ -151,7 +151,7 @@ OpenCode resolves models through configured providers. The cli-opencode skill su
 
 | Provider | Example model id | Use case |
 |----------|------------------|----------|
-| `github-copilot` (DEFAULT) | `github-copilot/gpt-5.5` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
+| `github-copilot` (DEFAULT) | `github-copilot/gpt-5.4` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
 | `github-copilot` | `github-copilot/claude-sonnet-4.6` | Anthropic alternative — balanced reasoning, code review |
 | `opencode-go` | `opencode-go/deepseek-v4-pro` | Deep reasoning at low cost via OpenCode Go gateway |
 | `opencode-go` | `opencode-go/deepseek-v4-flash` | Latency-optimized DeepSeek sibling |
@@ -169,7 +169,7 @@ The `--variant` flag maps to provider-specific reasoning effort. Underlying-mode
 
 | Provider | Variant values |
 |----------|----------------|
-| `github-copilot/gpt-5.5` | `minimal`, `low`, `medium`, `high`, `xhigh` |
+| `github-copilot/gpt-5.4` | `minimal`, `low`, `medium`, `high`, `xhigh` |
 | `github-copilot/claude-sonnet-4.6` | `minimal`, `low`, `medium`, `high`, `max` |
 | `opencode-go` | `--variant` accepted; effect depends on opencode-go routing |
 | `deepseek` (`deepseek-v4-pro`) | reasoning effort accepted |
