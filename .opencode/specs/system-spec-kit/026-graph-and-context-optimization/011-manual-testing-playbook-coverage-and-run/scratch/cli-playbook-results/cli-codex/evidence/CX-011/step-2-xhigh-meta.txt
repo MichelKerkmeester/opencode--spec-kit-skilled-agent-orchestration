@@ -1,5 +1,0 @@
-EXIT=0
-DUR_MS=77751
-LABEL=step-2-xhigh
-CMD_FILE=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/evidence/CX-011/step-2-xhigh-cmd.txt
-OUT_FILE=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/evidence/CX-011/step-2-xhigh-stdout.txt

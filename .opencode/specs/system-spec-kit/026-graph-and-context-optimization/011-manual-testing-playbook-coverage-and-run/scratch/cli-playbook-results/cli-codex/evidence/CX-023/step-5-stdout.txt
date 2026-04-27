@@ -1,6 +1,0 @@
----POST STATUS---
-M  scratch.md
----DIFF (pre vs post)---
-
----DIFF EXIT CODE---
-0

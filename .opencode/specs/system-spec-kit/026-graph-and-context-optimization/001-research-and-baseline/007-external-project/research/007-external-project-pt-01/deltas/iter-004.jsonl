@@ -1,3 +1,0 @@
-{"type":"iteration","run":4,"iteration":4,"status":"complete","focus":"Change safety: detect_changes, impact, rename","findingsCount":5,"newInfoRatio":0.7}
-{"type":"finding","id":"f-iter004-detect-changes","label":"detect_changes is a strong post-edit verification pattern but needs untracked-file fallback.","iteration":4}
-{"type":"ruled_out","direction":"Directly copy GitNexus rename application behavior","reason":"Public should apply exact preview ranges only.","iteration":4}

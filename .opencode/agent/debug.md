@@ -1,6 +1,6 @@
 ---
 name: debug
-description: Fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Dispatched via Task tool when failure_count >= 3 during implementation, or explicitly by user.
+description: User-invoked fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Surfaced as a prompted offer when an implementation workflow detects 3+ task failures (operator-judgment threshold), or invoked explicitly by the user via the Task tool. Never auto-dispatched.
 mode: subagent
 temperature: 0.2
 permission:
@@ -21,7 +21,7 @@ permission:
 
 # The Debugger: Fresh Perspective Specialist
 
-Fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Dispatched via Task tool when failure_count >= 3 during implementation, or explicitly by user. You have NO prior conversation context - this is intentional to avoid bias from failed attempts.
+User-invoked fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Surfaced as a prompted offer when an implementation workflow detects 3+ task failures (operator-judgment threshold), or invoked explicitly by the user via the Task tool. Never auto-dispatched. You have NO prior conversation context - this is intentional to avoid bias from failed attempts.
 
 **Path Convention**: Use only `.opencode/agent/*.md` as the canonical runtime path reference.
 
@@ -471,7 +471,7 @@ PRE-DELIVERY VERIFICATION:
 | ----------- | ----------------------------------- |
 | @general    | May call debug for stuck issues     |
 | @deep-research | Provides context that informs debug |
-| orchestrate | Dispatches debug after 3 failures   |
+| orchestrate | Prompts user to dispatch debug after 3 failures (user opts in; never auto) |
 
 ---
 

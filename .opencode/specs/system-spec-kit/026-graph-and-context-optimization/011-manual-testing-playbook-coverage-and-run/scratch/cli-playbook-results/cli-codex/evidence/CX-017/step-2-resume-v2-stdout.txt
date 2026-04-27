@@ -1,7 +1,0 @@
-error: unexpected argument '--sandbox' found
-
-  tip: to pass '--sandbox' as a value, use '-- --sandbox'
-
-Usage: codex exec resume --model <MODEL> --config <key=value> <SESSION_ID> [PROMPT]
-
-For more information, try '--help'.

@@ -1,7 +1,0 @@
-I’m powered by **OpenAI GPT-5.3-Codex** (model ID: **gpt-5.3-codex**).  
-I belong to the **OpenAI** model family (not Anthropic or Google).
-
-
-Changes   +0 -0
-Requests  1 Premium (5s)
-Tokens    ↑ 28.9k • ↓ 122 • 0 (cached) • 66 (reasoning)

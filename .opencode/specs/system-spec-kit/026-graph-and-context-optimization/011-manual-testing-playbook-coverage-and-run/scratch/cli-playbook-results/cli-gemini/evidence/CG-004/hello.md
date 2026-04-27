@@ -1,1 +1,0 @@
-hello from cli-gemini cg-004

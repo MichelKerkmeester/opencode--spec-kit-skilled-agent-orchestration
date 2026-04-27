@@ -1,1 +1,0 @@
-codex exec -i /tmp/cli-codex-playbook-cx020/wireframe.png --model gpt-5.5 --sandbox read-only -c model_reasoning_effort=medium -c service_tier=fast Describe\ the\ attached\ image\ in\ one\ sentence:\ name\ the\ dominant\ color\ \(one\ word\)\ and\ approximate\ pixel\ dimensions\ in\ WxH\ format. 

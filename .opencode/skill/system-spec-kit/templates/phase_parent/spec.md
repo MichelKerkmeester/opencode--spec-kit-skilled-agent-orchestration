@@ -1,0 +1,117 @@
+---
+title: "Feature Specification: [YOUR_VALUE_HERE: feature-name]"
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
+description: "[YOUR_VALUE_HERE: one-line description]"
+trigger_phrases:
+  - "[YOUR_VALUE_HERE: trigger phrase 1]"
+  - "[YOUR_VALUE_HERE: trigger phrase 2]"
+importance_tier: "important"
+contextType: "implementation"
+---
+
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- CONTENT DISCIPLINE: PHASE PARENT
+  FORBIDDEN content (do NOT author at phase-parent level):
+    - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
+    - migrated from, ported from, originally in
+    - heavy docs: plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md — these belong in child phase folders only
+  REQUIRED content (MUST author at phase-parent level):
+    - Root purpose: what problem does this entire phased decomposition solve?
+    - Sub-phase manifest: which child phase folders exist and what each one does
+    - What needs done: the high-level outcome the phases work toward
+-->
+
+# Feature Specification: [YOUR_VALUE_HERE: feature-name]
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Draft |
+| **Created** | [YOUR_VALUE_HERE: YYYY-MM-DD] |
+| **Branch** | `main` |
+| **Parent Spec** | `../spec.md` |
+| **Parent Packet** | [YOUR_VALUE_HERE: packet-id] |
+| **Predecessor** | [YOUR_VALUE_HERE: predecessor-packet] |
+| **Successor** | [YOUR_VALUE_HERE: successor-packet, or "None"] |
+| **Handoff Criteria** | Validator + template + generator changes ship so parent validates under tolerant policy |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[YOUR_VALUE_HERE: one-paragraph problem statement — what needs solving and why]
+
+### Purpose
+[YOUR_VALUE_HERE: one-paragraph purpose — what this phased decomposition achieves]
+
+> **Phase-parent note:** This spec.md is the ONLY authored document at the parent level. All detailed planning, task breakdowns, checklists, and decisions live in the child phase folders listed in the Phase Documentation Map below. This keeps the parent from drifting stale as phases execute and pivot.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+[YOUR_VALUE_HERE: bullet list of what this phase decomposition covers]
+
+### Out of Scope
+[YOUR_VALUE_HERE: bullet list of what is explicitly excluded]
+
+### Files to Change
+[YOUR_VALUE_HERE: summary table of files touched across all phases — for audit trail only; per-phase detail lives in each child's plan.md]
+
+| File Path | Change Type | Phase | Description |
+|-----------|-------------|-------|-------------|
+| [YOUR_VALUE_HERE: path] | [YOUR_VALUE_HERE: Modify/Create] | [YOUR_VALUE_HERE: phase-name] | [YOUR_VALUE_HERE: description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+<!-- [YOUR_VALUE_HERE: PHASE_ROW] — Replaced by create.sh with full 4-column table rows -->
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+<!-- [YOUR_VALUE_HERE: HANDOFF_ROW] — Replaced by create.sh with full 4-column table rows -->
+<!-- /ANCHOR:phase-map -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 4. OPEN QUESTIONS
+
+- [YOUR_VALUE_HERE: open question 1]
+- [YOUR_VALUE_HERE: open question 2]
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase spec.md, plan.md, tasks.md
+- **Parent Spec**: See `../spec.md`
+- **Graph Metadata**: See `graph-metadata.json` for `derived.last_active_child_id` pointer

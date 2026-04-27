@@ -1,1 +1,0 @@
-bash: cd /tmp/cli-codex-playbook-cx023 && git status --porcelain > /tmp/cli-codex-cx023-pre.txt && git diff --cached > /tmp/cli-codex-cx023-diff.txt

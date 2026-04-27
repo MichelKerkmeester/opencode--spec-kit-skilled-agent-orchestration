@@ -1,8 +1,0 @@
-error: unexpected argument '--search' found
-
-  tip: to pass '--search' as a value, use '-- --search'
-
-Usage: codex exec [OPTIONS] [PROMPT]
-       codex exec [OPTIONS] <COMMAND> [ARGS]
-
-For more information, try '--help'.

@@ -1,3 +1,0 @@
-{"type":"iteration","run":2,"iteration":2,"status":"complete","focus":"Graph schema, edge vocabulary, confidence, and persistence","findingsCount":5,"newInfoRatio":0.86}
-{"type":"finding","id":"f-iter002-edge-metadata","label":"GitNexus edge metadata is richer than Public code_edges and should be adapted before storage migration.","iteration":2}
-{"type":"edge","id":"e-iter002-edge-metadata-code-graph","relation":"ENRICHES","source":"gitnexus-edge-metadata","target":"public-code-graph","iteration":2}

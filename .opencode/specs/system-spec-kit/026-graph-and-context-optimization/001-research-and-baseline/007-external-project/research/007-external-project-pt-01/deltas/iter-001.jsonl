@@ -1,3 +1,0 @@
-{"type":"iteration","run":1,"iteration":1,"status":"complete","focus":"Architecture baseline and pipeline DAG","findingsCount":5,"newInfoRatio":1.0}
-{"type":"finding","id":"f-iter001-phase-dag","label":"GitNexus uses a static typed phase DAG with explicit dependencies and topological validation.","iteration":1}
-{"type":"edge","id":"e-iter001-phase-dag-code-graph","relation":"ADAPTS","source":"gitnexus-phase-dag","target":"public-code-graph","iteration":1}

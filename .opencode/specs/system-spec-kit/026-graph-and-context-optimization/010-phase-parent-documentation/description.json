@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+  "description": "Phase Parent Documentation: when a spec folder has phase children, the parent only requires the lean trio (spec.md, description.json, graph-metadata.json). Heavier docs at the parent (plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md) drift from child reality and cause AI hallucinations during resume. Continuity for phase parents lives in graph-metadata.json derived.last_active_child_id and is followed by /spec_kit:resume into the active child.",
+  "keywords": [
+    "phase",
+    "parent",
+    "documentation",
+    "lean",
+    "trio",
+    "validator",
+    "graph-metadata",
+    "continuity",
+    "resume"
+  ],
+  "lastUpdated": "2026-04-27T09:13:58.451Z",
+  "specId": "010",
+  "folderSlug": "phase-parent-documentation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "27-04-26_10-13__authored-level-2-planning-packet-for-the-phase.md"
+  ]
+}

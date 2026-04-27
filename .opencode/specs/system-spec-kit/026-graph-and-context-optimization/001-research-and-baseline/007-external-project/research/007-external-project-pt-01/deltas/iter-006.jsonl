@@ -1,3 +1,0 @@
-{"type":"iteration","run":6,"iteration":6,"status":"complete","focus":"Group Contract Registry and cross-repo impact","findingsCount":5,"newInfoRatio":0.58}
-{"type":"finding","id":"f-iter006-contract-registry","label":"Contract Registry is the strongest cross-repo adaptation candidate for Code Graph and Skill Graph.","iteration":6}
-{"type":"edge","id":"e-iter006-contract-code-graph","relation":"ENABLES","source":"gitnexus-contract-registry","target":"public-code-graph","iteration":6}

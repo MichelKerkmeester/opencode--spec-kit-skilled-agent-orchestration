@@ -1,3 +1,0 @@
-{"type":"iteration","run":5,"iteration":5,"status":"complete","focus":"Route, API, shape, and tool maps","findingsCount":5,"newInfoRatio":0.64}
-{"type":"finding","id":"f-iter005-tool-map","label":"Tool nodes and HANDLES_TOOL edges map naturally to Skill Graph entrypoint modeling.","iteration":5}
-{"type":"edge","id":"e-iter005-tool-map-skill-graph","relation":"INFORMS","source":"gitnexus-tool-map","target":"public-skill-graph","iteration":5}

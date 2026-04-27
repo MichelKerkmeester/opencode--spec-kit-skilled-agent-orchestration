@@ -320,12 +320,12 @@ agent_availability:
     not_for: "reviewing this workflow prompt, reviewing the command, or any pre-step validation"
   debug:
     available_at_step: 10
-    condition: "ONLY dispatch when failure_count >= 3 during Step 10 development"
+    condition: "ONLY surface a prompted offer when 3+ task failures observed during Step 10 development. Never auto-dispatch — the user opts in via Task tool."
     agent_file: "[runtime_agent_path]/debug.md"
     fallback: "general-purpose"
-    failure_tracking: { counter: "task_failure_count", reset_on: "new_task", threshold: 3 }
-    on_threshold: "Escalate to user with a diagnostic summary; user may dispatch @debug via Task tool"
-    not_for: "proactive debugging, pre-step investigation, or reviewing this workflow"
+    prompt_threshold: { counter: "task_failure_count", reset_on: "new_task", threshold: 3, mode: "operator-judgment", note: "Counter is documentation-only; the workflow operator surfaces the prompt based on observed repeated failures, never auto-routes." }
+    on_threshold: "Surface a single direct prompt: 'Dispatch @debug for fresh-perspective root-cause? (y / continue manually / skip)'. On y, generate debug-delegation.md scaffold and instruct user to dispatch @debug via Task tool. The workflow itself NEVER calls Task tool → @debug."
+    not_for: "proactive debugging, pre-step investigation, reviewing this workflow, or any autonomous routing"
 
 # ─────────────────────────────────────────────────────────────────
 # QUALITY GATES
@@ -896,21 +896,20 @@ workflow:
           medium_40_79: { action: "Implement with extra validation", requirement: "Add inline comments" }
           low_below_40: { action: "STOP - Do not implement uncertain code", wait_for: "Resolution" }
     debug_escalation:
-      failure_tracking: { enabled: true, counter_name: "task_failure_count", reset_on: "new_task", threshold: 3 }
+      prompt_threshold: { enabled: true, counter_name: "task_failure_count", reset_on: "new_task", threshold: 3, mode: "operator-judgment", note: "Workflow surfaces prompt; never auto-routes." }
       on_threshold_reached:
-        action: "escalate_to_user"
+        action: "prompt_user_with_y_n_skip"
+        no_autonomous_routing: true
         prompt: |
-          Multiple fix attempts failed (3+) for task {current_task_id}
-          Provide a diagnostic summary, then wait for the user's decision:
-          A) Dispatch @debug via Task tool
-          B) Continue debugging manually
-          C) Skip task - Move to next task
-          D) Pause - Stop workflow and review
-      debug_dispatch:
-        subagent_type: "debug"
-        timeout_ms: 120000
-        context_includes: [error_message, affected_files, previous_attempts, current_task_id]
-        on_complete: "show_checkpoint"
+          ⚠️  3+ fix attempts failed for task {current_task_id}. The @debug agent runs a 5-phase fresh-perspective root-cause pass with no prior context — it costs one Task-tool dispatch and writes findings to a structured report.
+          Dispatch @debug? (y / continue manually / skip)
+        on_y: |
+          1. Run scaffold-debug-delegation.sh to generate {spec_folder}/debug-delegation.md (versioned to debug-delegation-NNN.md if a prior file exists), populated from the failure trail using the Debug Context Handoff schema in .opencode/agent/debug.md.
+          2. Surface a one-line confirmation with the scaffold path and a Task-tool invocation example for the user to copy-paste.
+          3. The workflow STOPS and waits — it NEVER invokes Task tool → @debug itself. The user dispatches.
+        on_continue_manually: 'Log "user declined debug at threshold N", proceed with existing manual flow, do NOT reset the failure counter.'
+        on_skip: "Apply existing skip semantics (failure counter resets per reset_on: new_task)."
+      reference: ".opencode/specs/skilled-agent-orchestration/050-agent-debug-integration/spec.md (REQ-005 — no autonomous routing)"
 
     completion_checkpoint:
       enforcement: HARD_BLOCK

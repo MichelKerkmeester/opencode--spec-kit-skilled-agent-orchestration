@@ -1,5 +1,0 @@
-[93m[1m! [0m agent "general" is a subagent, not a primary agent. Falling back to default agent
-[94m[1m~  https://opncd.ai/share/gjEjnXPT
-{"type":"step_start","timestamp":1777219168938,"sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","part":{"id":"prt_dca846aa8001FmADFyu6NKhR4B","messageID":"msg_dca846551001HDNwoBZe1RB4QI","sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","type":"step-start"}}
-{"type":"text","timestamp":1777219170390,"sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","part":{"id":"prt_dca846e040013oenOqF0YR3kye","messageID":"msg_dca846551001HDNwoBZe1RB4QI","sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","type":"text","text":"Worker 1 online — ready to process tasks in the parallel detached worker farm.","time":{"start":1777219170388,"end":1777219170388}}}
-{"type":"step_finish","timestamp":1777219170393,"sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","part":{"id":"prt_dca847056001pPdqKvirebTLtd","reason":"stop","messageID":"msg_dca846551001HDNwoBZe1RB4QI","sessionID":"ses_2357b9f34ffeBzU0H6gjEjnXPT","type":"step-finish","tokens":{"total":10345,"input":8383,"output":17,"reasoning":25,"cache":{"write":0,"read":1920}},"cost":0.01476042}}

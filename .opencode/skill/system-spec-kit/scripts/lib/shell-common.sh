@@ -38,6 +38,38 @@ _json_escape() {
 }
 
 # ───────────────────────────────────────────────────────────────
+# Phase parent detection — determines whether a folder is a phase
+# parent (contains at least one populated NNN-* child folder).
+# Contract: ≥1 direct child matching ^[0-9]{3}-[a-z0-9-]+$ AND
+# ≥1 such child has spec.md OR description.json.
+# Usage: is_phase_parent "/path/to/spec-folder"
+# Returns: 0 if phase parent, 1 if not
+# ───────────────────────────────────────────────────────────────
+is_phase_parent() {
+    local parent_folder="$1"
+    local has_nnn_child=false
+    local has_populated_child=false
+
+    local saved_nullglob
+    saved_nullglob=$(shopt -p nullglob 2>/dev/null || true)
+    shopt -s nullglob 2>/dev/null || true
+
+    for phase_dir in "$parent_folder"/[0-9][0-9][0-9]-[a-z0-9][a-z0-9-]*/; do
+        if [[ -d "$phase_dir" ]]; then
+            has_nnn_child=true
+            if [[ -f "$phase_dir/spec.md" ]] || [[ -f "$phase_dir/description.json" ]]; then
+                has_populated_child=true
+                break
+            fi
+        fi
+    done
+
+    eval "$saved_nullglob" 2>/dev/null || true
+
+    [[ "$has_nnn_child" == "true" ]] && [[ "$has_populated_child" == "true" ]]
+}
+
+# ───────────────────────────────────────────────────────────────
 # Repository root detection — walks parent directories looking
 # For .git or .specify markers.
 # Usage: find_repo_root "/some/starting/directory"

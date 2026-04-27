@@ -130,6 +130,15 @@ run_check() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
+    # Phase-parent early branch: skip level-match enforcement at phase parents.
+    # The parent surface is the lean trio (spec.md, description.json, graph-metadata.json);
+    # level is informational only. Real level enforcement happens at child phase folders.
+    if is_phase_parent "$folder"; then
+        RULE_STATUS="info"
+        RULE_MESSAGE="Phase parent: level enforcement skipped (lean trio policy)"
+        return 0
+    fi
+
     local warnings=()
     local errors=()
 

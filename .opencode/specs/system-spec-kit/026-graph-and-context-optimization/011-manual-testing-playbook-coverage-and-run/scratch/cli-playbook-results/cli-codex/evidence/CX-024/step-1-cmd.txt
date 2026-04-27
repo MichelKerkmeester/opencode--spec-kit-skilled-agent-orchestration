@@ -1,1 +1,0 @@
-codex exec --search --model gpt-5.5 --sandbox read-only -c model_reasoning_effort=high -c service_tier=fast What\ was\ the\ headline\ release\ of\ any\ major\ JavaScript\ runtime\ announced\ in\ March\ 2026\?\ Cite\ one\ source\ URL\ or\ quote\ phrasing\ like\ \'according\ to\ \<source\>\'. 

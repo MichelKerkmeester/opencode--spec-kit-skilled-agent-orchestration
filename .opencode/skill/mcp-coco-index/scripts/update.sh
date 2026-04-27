@@ -1,112 +1,116 @@
 #!/usr/bin/env bash
-# ╔══════════════════════════════════════════════════════════════════════════╗
-# ║ CocoIndex Code MCP Updater                                               ║
-# ╚══════════════════════════════════════════════════════════════════════════╝
-# Update CocoIndex Code to the latest version in the skill folder venv.
-# Usage: bash .opencode/skill/mcp-coco-index/scripts/update.sh
+# Upstream sync helper for the cocoindex-code soft-fork.
+#
+# This script does NOT auto-overwrite vendored source. It downloads the latest
+# upstream cocoindex-code release into a temp dir, diffs against our vendored
+# copy, and surfaces conflicts for manual resolution. The 009 patch summary is
+# printed so the operator can re-apply patches on top of upstream changes.
+#
+# Workflow:
+#   1. Run this script.
+#   2. Review the diff output. If clean (no conflicts on patched files),
+#      apply via `cp` from $TEMP_UPSTREAM/$file to mcp_server/cocoindex_code/$file.
+#   3. Re-apply 009 patches (REQ-001..006) on the updated files.
+#   4. Bump version in _version.py and pyproject.toml.
+#   5. Add a changelog/CHANGELOG.md entry under the new version.
+#   6. Update NOTICE with the new sync date.
+#   7. Reinstall via install.sh and reindex via `ccc reset && ccc index`.
+#   8. Verify acceptance probes (see plan §Verification).
 
 set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SKILL_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
+VENDORED_DIR="$SKILL_DIR/mcp_server/cocoindex_code"
+TEMP_UPSTREAM=$(mktemp -d -t cocoindex-upstream-XXXXX)
+trap 'rm -rf "$TEMP_UPSTREAM"' EXIT
 
-source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/common.sh"
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 1. CONFIGURATION
-# ─────────────────────────────────────────────────────────────────────────────
-
-PROJECT_ROOT_INPUT=""
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 2. FUNCTIONS
-# ─────────────────────────────────────────────────────────────────────────────
-
-check_venv() {
-    if [[ ! -d "$VENV_DIR" ]]; then
-        echo "Error: Venv not found at $VENV_DIR" >&2
-        echo "Run install.sh first: bash $COMMON_SCRIPT_DIR/install.sh" >&2
-        exit 1
-    fi
-}
-
-get_version() {
-    "$VENV_DIR/bin/pip" show "$PACKAGE_NAME" 2>/dev/null | grep "^Version:" | cut -d' ' -f2
-}
-
-update_package() {
-    local current_version
-    current_version="$(get_version)"
-    echo "  Current version: $current_version"
-
-    echo "  Updating $PACKAGE_NAME..."
-    "$VENV_DIR/bin/pip" install --upgrade --quiet "$PACKAGE_NAME"
-
-    local new_version
-    new_version="$(get_version)"
-    echo "  Updated version: $new_version"
-
-    if [[ "$current_version" == "$new_version" ]]; then
-        echo "  Already at latest version."
-    fi
-}
-
-verify_binary() {
-    if ! "$VENV_DIR/bin/ccc" --help > /dev/null 2>&1; then
-        echo "Error: ccc binary not functional after update" >&2
-        exit 1
-    fi
-    echo "  Binary verified: $VENV_DIR/bin/ccc"
-}
-
-show_help() {
-    cat <<'EOF'
-Usage: bash .opencode/skill/mcp-coco-index/scripts/update.sh [--root <path>]
-
-Options:
-  --root <path>  Override the project root used for post-update health checks
-  -h, --help     Show this help message
-EOF
-}
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 3. MAIN
-# ─────────────────────────────────────────────────────────────────────────────
-
-echo "=== CocoIndex Code MCP Update Script ==="
+echo "=== CocoIndex upstream-sync helper ==="
+echo "Vendored: $VENDORED_DIR"
+echo "Temp upstream: $TEMP_UPSTREAM"
 echo ""
 
-while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --root)
-            if [[ $# -lt 2 ]]; then
-                log_error "Missing value for --root"
-                exit 1
-            fi
-            PROJECT_ROOT_INPUT="$2"
-            shift 2
-            ;;
-        -h|--help)
-            show_help
-            exit 0
-            ;;
-        *)
-            log_error "Unknown argument: $1"
-            show_help
-            exit 1
-            ;;
-    esac
-done
+# Discover current pinned versions
+CURRENT_FORK_VERSION=$(grep -E "^__version__|^version" "$VENDORED_DIR/_version.py" | head -1 | sed 's/.*= *//;s/["'"'"']//g' || echo "unknown")
+echo "Current fork version: $CURRENT_FORK_VERSION"
 
-PROJECT_ROOT="$(resolve_project_root "$PROJECT_ROOT_INPUT")"
-check_venv
-update_package
-verify_binary
-
-echo ""
-echo "=== Update complete ==="
-STATUS_OUTPUT="$(get_index_status_output "$PROJECT_ROOT" || true)"
-FILES_COUNT="$(parse_status_files "$STATUS_OUTPUT" || printf '0')"
-CHUNKS_COUNT="$(parse_status_chunks "$STATUS_OUTPUT" || printf '0')"
-if [[ "${FILES_COUNT:-0}" -gt 0 && "${CHUNKS_COUNT:-0}" -gt 0 ]]; then
-    echo "  Index health: ${FILES_COUNT} files, ${CHUNKS_COUNT} chunks"
-else
-    log_warn "Index is missing or empty after update. Run: bash $COMMON_SCRIPT_DIR/ensure_ready.sh --root \"$PROJECT_ROOT\""
+# Fetch latest upstream
+LATEST_VERSION="${1:-}"
+if [[ -z "$LATEST_VERSION" ]]; then
+  echo "Tip: pass a version arg to pin (e.g. ./update.sh 0.2.4). Resolving 'latest' from PyPI..."
+  LATEST_VERSION=$(pip index versions cocoindex-code 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1 || echo "")
+  if [[ -z "$LATEST_VERSION" ]]; then
+    echo "ERROR: could not resolve latest cocoindex-code version. Pass it explicitly: ./update.sh <version>" >&2
+    exit 1
+  fi
 fi
+echo "Target upstream version: $LATEST_VERSION"
+echo ""
+
+# Download upstream tarball + extract
+echo "=== Fetching upstream cocoindex-code==$LATEST_VERSION ==="
+pip download --no-deps --no-binary :all: --dest "$TEMP_UPSTREAM" "cocoindex-code==$LATEST_VERSION" >/dev/null
+TARBALL=$(ls "$TEMP_UPSTREAM"/cocoindex_code-*.tar.gz 2>/dev/null | head -1)
+if [[ -z "$TARBALL" ]]; then
+  TARBALL=$(ls "$TEMP_UPSTREAM"/cocoindex-code-*.tar.gz 2>/dev/null | head -1)
+fi
+if [[ -z "$TARBALL" ]]; then
+  echo "ERROR: tarball not found in $TEMP_UPSTREAM" >&2
+  exit 1
+fi
+tar -xzf "$TARBALL" -C "$TEMP_UPSTREAM"
+UPSTREAM_SRC=$(find "$TEMP_UPSTREAM" -type d -name "cocoindex_code" | grep -v '\.dist-info' | head -1)
+if [[ -z "$UPSTREAM_SRC" ]]; then
+  echo "ERROR: cocoindex_code source dir not found in extracted tarball" >&2
+  exit 1
+fi
+echo "Upstream source: $UPSTREAM_SRC"
+echo ""
+
+# Diff every file
+echo "=== Diff: vendored vs upstream $LATEST_VERSION ==="
+PATCHED_FILES=("indexer.py" "query.py" "schema.py")
+echo ""
+for f in $(ls "$UPSTREAM_SRC"/*.py); do
+  base=$(basename "$f")
+  if [[ -f "$VENDORED_DIR/$base" ]]; then
+    if diff -q "$VENDORED_DIR/$base" "$f" >/dev/null 2>&1; then
+      echo "  unchanged: $base"
+    else
+      is_patched="false"
+      for p in "${PATCHED_FILES[@]}"; do
+        [[ "$base" == "$p" ]] && is_patched="true"
+      done
+      if [[ "$is_patched" == "true" ]]; then
+        echo "  ⚠ PATCHED FILE WITH UPSTREAM CHANGES: $base — manual merge required"
+      else
+        echo "  ⓘ updated upstream: $base"
+      fi
+    fi
+  else
+    echo "  + new upstream file: $base (would be added)"
+  fi
+done
+echo ""
+
+# Print 009 patch summary
+echo "=== 009 patches that must be re-applied if you accept the diff ==="
+cat <<'PATCHES'
+REQ-001 — settings.yml: exclude .gemini/.codex/.claude/.agents/specs/** mirror roots
+REQ-002 — indexer.py: add source_realpath (via os.path.realpath) + content_hash (SHA256 of normalized content) per chunk
+REQ-003 — query.py: over-fetch limit*4, dedup by (source_realpath, start_line, end_line) with content_hash fallback, expose dedupedAliases + uniqueResultCount
+REQ-004 — indexer.py + schema.py: path_class taxonomy (implementation/tests/docs/spec_research/generated/vendor)
+REQ-005 — query.py: bounded reranking +0.05 implementation, -0.05 docs/spec_research for implementation-intent queries
+REQ-006 — query.py: rankingSignals telemetry list per result row
+PATCHES
+echo ""
+echo "=== Next steps ==="
+echo "1. Review the diff output above. For non-patched files, run:"
+echo "     cp $UPSTREAM_SRC/<file>.py $VENDORED_DIR/<file>.py"
+echo "2. For patched files (indexer.py, query.py, schema.py), manually merge upstream changes preserving 009 patches"
+echo "3. Bump version in _version.py + pyproject.toml (e.g. $LATEST_VERSION+spec-kit-fork.0.1.0)"
+echo "4. Update NOTICE + CHANGELOG.md with the new sync entry"
+echo "5. Reinstall: bash $SKILL_DIR/scripts/install.sh"
+echo "6. Reindex: $SKILL_DIR/mcp_server/.venv/bin/ccc reset && $SKILL_DIR/mcp_server/.venv/bin/ccc index"
+echo "7. Verify: $SKILL_DIR/mcp_server/.venv/bin/ccc --version"
+echo ""
+echo "Done. Temp dir cleaned up on exit."

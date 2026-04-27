@@ -1,4 +1,0 @@
-total 8
-drwxr-xr-x    3 michelkerkmeester  wheel     96 Apr 26 12:30 .
-drwxrwxrwt  618 root               wheel  19776 Apr 26 12:30 ..
--rw-r--r--    1 michelkerkmeester  wheel     40 Apr 26 12:30 hello-copilot.md

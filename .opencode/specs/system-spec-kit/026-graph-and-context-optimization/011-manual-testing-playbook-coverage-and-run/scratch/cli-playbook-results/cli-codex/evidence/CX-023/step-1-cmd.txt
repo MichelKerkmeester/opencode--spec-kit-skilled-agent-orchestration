@@ -1,1 +1,0 @@
-bash: rm -rf /tmp/cli-codex-playbook-cx023 && mkdir -p /tmp/cli-codex-playbook-cx023 && cd /tmp/cli-codex-playbook-cx023 && git init -q && printf 'initial\n' > scratch.md && git add scratch.md && git commit -q -m init && printf 'initial\nadded line for /review TUI manual check\n' > scratch.md && git add scratch.md

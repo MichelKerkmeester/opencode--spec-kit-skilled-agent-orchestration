@@ -1,1 +1,0 @@
-bash: cd /tmp/cli-codex-playbook-cx023 && git status --porcelain > /tmp/cli-codex-cx023-post.txt && diff /tmp/cli-codex-cx023-pre.txt /tmp/cli-codex-cx023-post.txt

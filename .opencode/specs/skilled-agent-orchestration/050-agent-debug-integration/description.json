@@ -1,0 +1,33 @@
+{
+  "specFolder": "050-agent-debug-integration",
+  "description": "Debug Agent Integration: truth-up aspirational auto-dispatch claims across 4 runtime definitions and improve discoverability of the failure-threshold ",
+  "keywords": [
+    "debug",
+    "agent",
+    "integration",
+    "truth-up",
+    "aspirational",
+    "auto-dispatch",
+    "claims",
+    "across",
+    "runtime",
+    "definitions",
+    "improve",
+    "discoverability",
+    "failure-threshold",
+    "prompt",
+    "pre-filled",
+    "debug-delegation",
+    "scaffold",
+    "user-invoked",
+    "only",
+    "autonomous",
+    "routing"
+  ],
+  "lastUpdated": "2026-04-27T08:59:37.419Z",
+  "specId": "050",
+  "folderSlug": "agent-debug-integration",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

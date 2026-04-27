@@ -36,6 +36,24 @@ run_check() {
 # 2. VALIDATION LOGIC
 # ───────────────────────────────────────────────────────────────
 
+    # Phase-parent early branch: if folder is a phase parent, only spec.md is required
+    # at the parent level. Plan, tasks, checklist, decision-record, and
+    # implementation-summary all live in child phase folders.
+    if is_phase_parent "$folder"; then
+        [[ ! -f "$folder/spec.md" ]] && missing+=("spec.md")
+
+        if [[ ${#missing[@]} -eq 0 ]]; then
+            RULE_STATUS="pass"
+            RULE_MESSAGE="Phase parent: spec.md present (lean trio policy)"
+        else
+            RULE_STATUS="fail"
+            RULE_MESSAGE="Phase parent: missing 1 required file"
+            RULE_DETAILS=("${missing[@]}")
+            RULE_REMEDIATION="Phase parents require only spec.md. Create it from templates/phase_parent/spec.md"
+        fi
+        return 0
+    fi
+
     # Level 1 requirements
     [[ ! -f "$folder/spec.md" ]] && missing+=("spec.md")
     [[ ! -f "$folder/plan.md" ]] && missing+=("plan.md")

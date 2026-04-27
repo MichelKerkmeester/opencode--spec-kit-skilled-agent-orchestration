@@ -1,4 +1,0 @@
-MCP issues detected. Run /mcp list for status.The reference document provides a comprehensive guide to using Google's Gemini CLI, detailing its installation, authentication methods, configuration via files like `settings.json` and `GEMINI.md`, and supported models. It also outlines practical usage instructions, including command-line flags, interactive REPL slash commands, special input syntax for file and shell execution, and troubleshooting steps for common issues.
-Created execution plan for SessionEnd: 1 hook(s) to execute in parallel
-Expanding hook command: bash -c 'cd "$(git rev-parse --show-toplevel 2>/dev/null || pwd)" && node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/gemini/session-stop.js' (cwd: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public)
-Hook execution for SessionEnd: 1 hooks executed successfully, total duration: 88ms

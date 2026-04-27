@@ -96,7 +96,7 @@ flowchart TD
 | 4        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
 | 5        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
 | 6        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
-| 7        | Debugging when `failure_count >= 3` and the Task tool dispatches a focused debug pass | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
+| 7        | Debugging when `failure_count >= 3` — workflow surfaces a prompted offer; user opts in via Task tool. Never auto-dispatched. | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
 
 ### Nesting Depth Protocol (NDP)
 
@@ -489,7 +489,7 @@ STOP (do not synthesize rejected output) → provide specific feedback stating e
 ### Retry → Reassign → Escalate Protocol
 
 1. **RETRY (Attempts 1-2):** Provide additional context from other sub-agents, clarify success criteria, re-dispatch same agent with enhanced prompt. If still fails → REASSIGN.
-2. **REASSIGN (Attempt 3):** Try different agent type (e.g., @general instead of @context), or dispatch `@debug` via Task tool when `failure_count >= 3`. Document what was tried and why it failed. If still fails → ESCALATE.
+2. **REASSIGN (Attempt 3):** Try different agent type (e.g., @general instead of @context), or surface a prompted offer to dispatch `@debug` via Task tool when `failure_count >= 3` (user opts in; orchestrator does not auto-dispatch). Document what was tried and why it failed. If still fails → ESCALATE.
 3. **ESCALATE (After 3+ failures):** Report to user with complete attempt history, all partial findings, and suggested alternative approaches. Request user decision.
 
 ### Aborted Task Recovery
@@ -536,7 +536,7 @@ Isolate failures to prevent cascading issues. States: CLOSED (normal) → OPEN (
 
 ### Debug Delegation Trigger
 
-After 3 failed attempts on the same error, prepare a diagnostic summary and dispatch `@debug` via Task tool. Auto-detect keywords: "stuck", "tried everything", "same error", "keeps failing", or 3+ sub-agent dispatches returning errors.
+After 3 failed attempts on the same error, prepare a diagnostic summary and prompt the user to dispatch `@debug` via Task tool. Never auto-dispatch — the user opts in. Auto-detect keywords for surfacing the prompt: "stuck", "tried everything", "same error", "keeps failing", or 3+ sub-agent dispatches returning errors.
 
 ---
 
@@ -592,7 +592,7 @@ When ANY context pressure signal fires:
 
 | Condition                              | Suggest              | Reason                                 |
 | -------------------------------------- | -------------------- | -------------------------------------- |
-| Sub-agent stuck 3+ times on same error | `Task tool → @debug` | Fresh perspective debugging dispatch   |
+| Sub-agent stuck 3+ times on same error | Surface prompted offer; user dispatches `Task tool → @debug` | Fresh perspective debugging (user-invoked) |
 | Session ending or user says "stopping" | `/memory:save`       | Preserve canonical continuity          |
 | Need formal research before planning   | `/spec_kit:deep-research` | Autonomous iterative research loop  |
 | Claiming task completion               | `/spec_kit:complete` | Verification workflow with checklist   |

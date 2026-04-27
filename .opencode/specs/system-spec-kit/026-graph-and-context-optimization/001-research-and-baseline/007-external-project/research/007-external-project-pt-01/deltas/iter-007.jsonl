@@ -1,3 +1,0 @@
-{"type":"iteration","run":7,"iteration":7,"status":"complete","focus":"Spec Kit Memory causal graph fit and boundaries","findingsCount":5,"newInfoRatio":0.52}
-{"type":"finding","id":"f-iter007-memory-boundary","label":"Memory should store evidence links to Code Graph snapshots, not duplicate structural code relations.","iteration":7}
-{"type":"edge","id":"e-iter007-code-evidence-memory","relation":"SUPPORTS","source":"gitnexus-edge-metadata","target":"memory-causal-graph","iteration":7}

@@ -1,5 +1,0 @@
-[93m[1m! [0m agent "general" is a subagent, not a primary agent. Falling back to default agent
-[94m[1m~  https://opncd.ai/share/o3gXaThk
-{"type":"step_start","timestamp":1777219169550,"sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","part":{"id":"prt_dca846d0c00136HWe9Rm0x44dG","messageID":"msg_dca846453001iHbMSMc25CV61A","sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","type":"step-start"}}
-{"type":"text","timestamp":1777219170586,"sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","part":{"id":"prt_dca846fc3002c2XADtfWN49bSE","messageID":"msg_dca846453001iHbMSMc25CV61A","sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","type":"text","text":"Worker 3 here — ready for parallel detached tasks.","time":{"start":1777219170584,"end":1777219170584}}}
-{"type":"step_finish","timestamp":1777219170589,"sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","part":{"id":"prt_dca84711b001BLwE0BaqE4zpCo","reason":"stop","messageID":"msg_dca846453001iHbMSMc25CV61A","sessionID":"ses_2357b9fe3ffeTVV1hAo3gXaThk","type":"step-finish","tokens":{"total":10333,"input":8383,"output":12,"reasoning":18,"cache":{"write":0,"read":1920}},"cost":0.01471866}}

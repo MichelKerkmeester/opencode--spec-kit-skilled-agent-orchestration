@@ -1,8 +1,0 @@
-● skill(cli-copilot)
-
-The **cli-copilot** skill lets an external orchestrator such as Claude Code delegate selected work to the standalone GitHub Copilot CLI for collaborative planning, model-targeted generation, review, autonomous execution, and GitHub cloud delegation, while the calling AI remains the conductor and validates the results. It is explicitly a **cross-AI delegation** bridge, not something Copilot should use to call itself. PASS
-
-
-Changes   +0 -0
-Requests  1 Premium (16s)
-Tokens    ↑ 64.6k • ↓ 720 • 57.2k (cached) • 575 (reasoning)

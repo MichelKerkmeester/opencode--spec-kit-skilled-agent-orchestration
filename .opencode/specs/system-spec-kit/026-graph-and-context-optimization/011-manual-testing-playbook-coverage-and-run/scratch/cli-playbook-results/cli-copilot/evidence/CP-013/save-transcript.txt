@@ -1,9 +1,0 @@
-● Memory stored testing marker
-  └ cli-copilot test marker for spec 048 wave 2 is CP-013-MARKER.
-
-Saved to repository memory: **cli-copilot test marker for spec 048 wave 2 is `CP-013-MARKER`**.
-
-
-Changes   +0 -0
-Requests  1 Premium (24s)
-Tokens    ↑ 81.9k • ↓ 391 • 64.0k (cached) • 179 (reasoning)

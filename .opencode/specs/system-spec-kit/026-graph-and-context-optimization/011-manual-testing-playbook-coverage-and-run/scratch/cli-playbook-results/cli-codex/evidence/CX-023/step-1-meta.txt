@@ -1,4 +1,0 @@
-EXIT=0
-DUR_MS=79
-LABEL=step-1
-CMD_FILE=/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-manual-testing-playbook-coverage-and-run/scratch/cli-playbook-results/cli-codex/evidence/CX-023/step-1-cmd.txt

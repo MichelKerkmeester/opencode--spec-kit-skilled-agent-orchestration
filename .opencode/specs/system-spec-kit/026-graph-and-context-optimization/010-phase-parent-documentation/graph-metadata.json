@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase parent documentation",
+      "phase parent lean trio",
+      "phased spec documentation",
+      "parent doc staleness",
+      "phase parent plan",
+      "phase parent rollout",
+      "phase parent validator",
+      "phase parent tasks",
+      "phase parent task list",
+      "phase parent checklist",
+      "phase parent verification"
+    ],
+    "key_topics": [
+      "phase",
+      "parent",
+      "documentation",
+      "lean",
+      "trio",
+      "phased",
+      "spec",
+      "doc",
+      "staleness",
+      "plan",
+      "rollout",
+      "validator"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "spec.md",
+      "templates/resource-map.md",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-files.sh",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-level-match.sh",
+      ".opencode/skill/system-spec-kit/scripts/lib/shell-common.sh",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+      ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      "lib/shell-common.sh",
+      "scripts/lib/shell-common.sh",
+      "references/hooks/skill-advisor-hook.md",
+      "templates/addendum/phase/phase-parent-section.md",
+      "scripts/rules/check-files.sh",
+      "scripts/rules/check-level-match.sh",
+      "scripts/rules/check-graph-metadata.sh"
+    ],
+    "entities": [
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "check-files.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/rules/check-files.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-level-match.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/rules/check-level-match.sh",
+        "source": "derived"
+      },
+      {
+        "name": "shell-common.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/shell-common.sh",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor-hook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "phase-parent-section.md",
+        "kind": "doc",
+        "path": "templates/addendum/phase/phase-parent-section.md",
+        "source": "derived"
+      },
+      {
+        "name": "check-graph-metadata.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-graph-metadata.sh",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent Documentation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement When",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Sharpen",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Layered",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "When a spec folder has phase children (e.g. `026/{007-code-graph,008-skill-advisor,...}/`), the parent currently authors a full Level 1/2/3 document set (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) describing program-level intent. As phases execute, pivot, and converge over weeks, the parent docs drift from child reality. AI assistants reading the resume ladder treat the stale parent docs as authoritative, hallucinate current state, and propose work against outdated plans.",
+    "created_at": "2026-04-27T08:55:00Z",
+    "last_save_at": "2026-04-27T09:13:58.451Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

@@ -1,3 +1,0 @@
-{"type":"iteration","run":10,"iteration":10,"status":"complete","focus":"Follow-up implementation packet proposals and convergence","findingsCount":5,"newInfoRatio":0.22}
-{"type":"finding","id":"f-iter010-followups","label":"Follow-up work should split by owner: Code Graph phase/impact/routes, Skill Graph contracts, Memory evidence links.","iteration":10}
-{"type":"edge","id":"e-iter010-followup-derived","relation":"DERIVED_FROM","source":"adopt-adapt-reject-matrix","target":"followup-packets","iteration":10}
