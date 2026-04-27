@@ -1,0 +1,23 @@
+{
+  "openQuestions": [
+    {"id": "Q1", "text": "Why are 005 P0 fixes (Cluster 1, 2, 3) not active in the running daemon?"},
+    {"id": "Q2", "text": "How to fix cocoindex mirror-folder duplicates (005 REQ-018)?"},
+    {"id": "Q3", "text": "How to fix cocoindex source-vs-markdown ranking imbalance (005 REQ-019)?"},
+    {"id": "Q4", "text": "How to harden against the model-side hallucination class on weak retrieval (006 I2)?"},
+    {"id": "Q5", "text": "Why does memory_context wrapper truncate to count:0 at 2 percent budget (005 REQ-002)?"},
+    {"id": "Q6", "text": "How to recover from empty code-graph (005 REQ-017)?"},
+    {"id": "Q7", "text": "How to address lopsided causal-graph edge growth (005 REQ-010)?"},
+    {"id": "Q8", "text": "Intent classifier improvements beyond Cluster 2 fix (005 REQ-001/004/016)?"}
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 8,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}

@@ -118,7 +118,7 @@ The skill builds every dispatch from a base shape and overlays use-case-specific
 
 ```bash
 opencode run \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/claude-sonnet-4.6 \
   --agent <agent-slug> \
   --variant high \
   --format json \
@@ -128,7 +128,7 @@ opencode run \
 
 | Flag | Default | Reason |
 |------|---------|--------|
-| `--model` | provider/model string | Operator may override; default is the calling AI's preferred Anthropic model |
+| `--model` | `github-copilot/claude-sonnet-4.6` | Copilot is the default provider — pre-authenticated for active subscribers and exposes the broadest model surface; operator may override (e.g. `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-reasoner`) |
 | `--agent` | per use case | Required for use case 1 / 3; optional for use case 2 |
 | `--variant high` | high | Routine cli-opencode dispatches benefit from elevated reasoning effort |
 | `--format json` | json | Structured event stream is what external runtimes parse |
@@ -147,28 +147,35 @@ opencode run \
 <!-- ANCHOR:models -->
 ## 5. MODEL SELECTION
 
-OpenCode resolves models through configured providers. The cli-opencode skill surfaces the most common providers below; consult `opencode providers` for the full list on a given install.
+OpenCode resolves models through configured providers. The cli-opencode skill supports three providers — `github-copilot` (default), `opencode-go`, and `deepseek` — confirmed against `opencode providers list` and `opencode models`. Run `opencode models [provider]` for the full live list on a given install.
 
 | Provider | Example model id | Use case |
 |----------|------------------|----------|
-| `anthropic` | `opencode-go/deepseek-v4-pro` | Deep reasoning, code review, planning |
-| `anthropic` | `anthropic/claude-sonnet-4-7` | General tasks, balanced cost |
-| `anthropic` | `anthropic/claude-haiku-4-5` | Fast classification, cheap batch ops |
-| `openai` | `openai/gpt-5.5` | Codex-style code generation |
-| `google` | `google/gemini-2.5-pro` | Web research, long context |
-| `local` | `local/<model>` | Local inference when configured |
+| `github-copilot` (DEFAULT) | `github-copilot/gpt-5.5` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
+| `github-copilot` | `github-copilot/claude-sonnet-4.6` | Anthropic alternative — balanced reasoning, code review |
+| `opencode-go` | `opencode-go/deepseek-v4-pro` | Deep reasoning at low cost via OpenCode Go gateway |
+| `opencode-go` | `opencode-go/deepseek-v4-flash` | Latency-optimized DeepSeek sibling |
+| `opencode-go` | `opencode-go/glm-5.1` | Open-weight alternative |
+| `opencode-go` | `opencode-go/kimi-k2.6` | Long-context Kimi via opencode-go |
+| `opencode-go` | `opencode-go/qwen3.6-plus` | Qwen 3.6 routed through opencode-go |
+| `deepseek` | `deepseek/deepseek-v4-pro` | Direct DeepSeek API — bypasses opencode-go |
+| `deepseek` | `deepseek/deepseek-reasoner` | Step-by-step reasoning chains (R1-style) |
+| `deepseek` | `deepseek/deepseek-chat` | General chat / fast responses (non-reasoning) |
+| `deepseek` | `deepseek/deepseek-v4-flash` | Latency-optimized direct-API sibling |
 
 `opencode models <provider>` lists every model id the provider exposes. The model string passed to `--model` is always `provider/model-id`.
 
 ### Reasoning effort via `--variant`
 
-The `--variant` flag maps to provider-specific reasoning effort:
+The `--variant` flag maps to provider-specific reasoning effort. Underlying-model conventions still apply (e.g. a Claude model under `github-copilot/` accepts the Claude variant range; a GPT model under `github-copilot/` accepts the GPT variant range).
 
 | Provider | Variant values |
 |----------|----------------|
-| Anthropic | `high`, `max`, `minimal` (varies by model release) |
-| OpenAI | `minimal`, `low`, `medium`, `high`, `xhigh` |
-| Google | `minimal`, `low`, `medium`, `high` |
+| `github-copilot/gpt-5.5` | `minimal`, `low`, `medium`, `high`, `xhigh` |
+| `github-copilot/claude-sonnet-4.6` | `minimal`, `low`, `medium`, `high`, `max` |
+| `opencode-go` | `--variant` accepted; effect depends on opencode-go routing |
+| `deepseek` (`deepseek-reasoner`, `deepseek-v4-pro`) | reasoning effort accepted |
+| `deepseek` (`deepseek-chat`, `deepseek-v4-flash`) | non-reasoning — `--variant` ignored |
 
 Default skill behavior: pass `--variant high` for cross-AI dispatches. Operators may override via the prompt template's variant field.
 

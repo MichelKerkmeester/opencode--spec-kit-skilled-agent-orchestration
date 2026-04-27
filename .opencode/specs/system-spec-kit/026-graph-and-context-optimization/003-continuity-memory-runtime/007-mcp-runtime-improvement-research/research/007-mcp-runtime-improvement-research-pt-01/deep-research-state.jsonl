@@ -1,0 +1,4 @@
+{"type":"config","topic":"MCP runtime improvement research investigating root causes for memory layer, code graph, cocoindex, and intent classifier defects from 005 + 006 findings","maxIterations":10,"convergenceThreshold":0.05,"resource_map_present":false,"resource_map":{"emit":true},"createdAt":"2026-04-27T06:30:04Z","specFolder":".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/007-mcp-runtime-improvement-research"}
+{"type":"event","event":"session_started","mode":"research","sessionId":"dr-007-20260427T063004Z-876e4eae","parentSessionId":null,"lineageMode":"new","generation":1,"timestamp":"2026-04-27T06:30:04Z"}
+{"type":"iteration","iteration":1,"newInfoRatio":0.86,"status":"insight","focus":"Q1 phantom fix root cause","timestamp":"2026-04-27T06:43:00Z"}
+{"type":"iteration","iteration":1,"newInfoRatio":0.82,"status":"insight","focus":"Q1 phantom fix root cause","timestamp":"2026-04-27T06:34:16Z"}
