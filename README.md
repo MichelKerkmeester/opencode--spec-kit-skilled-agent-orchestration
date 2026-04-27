@@ -729,7 +729,7 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 - **git-commit**: conventional commit format, staged change analysis, scope detection
 - **git-finish**: PR creation via `gh pr create`, branch cleanup, integration workflows
 
-**sk-deep-research** (v1.6.2.0)
+**sk-deep-research** 
 - Autonomous research investigation system with iterative LEAF cycles
 - Fresh context per iteration, externalized JSONL state, 3-signal convergence detection (Rolling Average + MAD Noise Floor + Coverage/Age)
 - Semantic coverage graph with 7 relation types, question coverage tracking, sourceDiversity and evidenceDepth guards
@@ -737,7 +737,7 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 - Fail-closed corruption handling, graph convergence fallback scoring, terminal stop metadata parsing
 - Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-research` command
 
-**sk-deep-review** (v1.3.2.0)
+**sk-deep-review** 
 - Autonomous code quality auditing system with iterative LEAF cycles
 - P0/P1/P2 severity-weighted findings across 4 dimensions (Correctness, Security, Traceability, Maintainability)
 - 3-signal convergence model, P0 override blocks stop, adversarial self-check (Hunter/Skeptic/Referee)
@@ -745,6 +745,33 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 - 9-section review report with PASS/CONDITIONAL/FAIL verdict
 - Fail-closed corruption, claim-adjudication `finalSeverity`, stale STOP veto auto-clearing
 - Lifecycle modes: `new`, `resume`, `restart`. Dispatched by `/spec_kit:deep-review` command
+
+&nbsp;
+#### CROSS-AI CLI
+
+These skills let you run **cross-CLI agent teams from any starting CLI**. Whichever assistant you're talking to (Claude Code, Codex, Copilot, Gemini, OpenCode, raw shell), it can dispatch the other AI CLIs as specialist sub-tools — each one a one-shot non-interactive call that streams structured output back to the caller. The conducting AI stays in charge; the dispatched CLI handles the part it's best at and returns. Use this to compose a Gemini web search + Codex implementation + Claude review pipeline from inside any one of them.
+
+> **Self-invocation guard:** every skill refuses to call itself. A Claude Code session never dispatches `cli-claude-code`, an OpenCode session never dispatches `cli-opencode`, etc. Cross-AI delegation only — no cycles.
+
+**cli-gemini**
+- Gemini CLI orchestrator. Use it for **real-time web search via Google Search grounding** — no other CLI skill has this — and for analyzing very large codebases (1M+ token context).
+- Single model: `gemini-3.1-pro-preview`.
+
+**cli-codex**
+- OpenAI Codex CLI orchestrator. Use it for **code generation, diff-aware review (`/review`), web browsing (`--search`), and screenshot analysis (`--image`)**. Supports session resume/fork, agent profiles, and cost control via `--max-budget-usd`.
+- Default model: `gpt-5.5` at medium reasoning, fast service tier. `gpt-5.3-codex` and other GPT-5.x variants available via override.
+
+**cli-claude-code**
+- Claude Code CLI orchestrator. Use it for **extended thinking (chain-of-thought), surgical diff-based edits, and JSON-schema-validated structured output**. Ships with 9 built-in agents and session continuity.
+- Three models: `claude-opus-4-6` (deep reasoning), `claude-sonnet-4-6` (default, balanced), `claude-haiku-4-5` (fast/cheap).
+
+**cli-copilot**
+- GitHub Copilot CLI orchestrator. Use it for **autopilot autonomous execution, cloud delegation via `/delegate`, MCP server integration, and Explore/Task agents** for architecture mapping. Native GitHub ecosystem perspective (repo memory, PR awareness).
+- Default model: `gpt-5.4`. Other surfaced models: `gpt-5.5`, `gpt-5.3-codex`, `claude-opus-4.7`, `claude-sonnet-4.6`, `gemini-3.1-pro-preview` (5 picks across OpenAI / Anthropic / Google).
+
+**cli-opencode**
+- OpenCode CLI orchestrator. Use it when the dispatched task needs **the project's full plugin / skill / MCP / Spec Kit Memory runtime** — a one-shot `opencode run` boots every plugin in `opencode.json`, every skill under `.opencode/skill/`, every MCP server, and the memory database. Also handles **parallel detached sessions** (`--share --port N` for ablation suites, worker farms) and **cross-repo dispatch** (`--dir <path>`).
+- Three providers: `github-copilot` (default, with `gpt-5.4` default + `claude-sonnet-4.6` alternative), `opencode-go` (DeepSeek + GLM/Kimi/Qwen via gateway), `deepseek` (direct DeepSeek API).
 
 &nbsp;
 #### MCP INTEGRATION
@@ -775,33 +802,6 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 - MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
 
 &nbsp;
-#### CROSS-AI CLI
-
-These skills let you run **cross-CLI agent teams from any starting CLI**. Whichever assistant you're talking to (Claude Code, Codex, Copilot, Gemini, OpenCode, raw shell), it can dispatch the other AI CLIs as specialist sub-tools — each one a one-shot non-interactive call that streams structured output back to the caller. The conducting AI stays in charge; the dispatched CLI handles the part it's best at and returns. Use this to compose a Gemini web search + Codex implementation + Claude review pipeline from inside any one of them.
-
-> **Self-invocation guard:** every skill refuses to call itself. A Claude Code session never dispatches `cli-claude-code`, an OpenCode session never dispatches `cli-opencode`, etc. Cross-AI delegation only — no cycles.
-
-**cli-gemini**
-- Gemini CLI orchestrator. Use it for **real-time web search via Google Search grounding** — no other CLI skill has this — and for analyzing very large codebases (1M+ token context).
-- Single model: `gemini-3.1-pro-preview`.
-
-**cli-codex**
-- OpenAI Codex CLI orchestrator. Use it for **code generation, diff-aware review (`/review`), web browsing (`--search`), and screenshot analysis (`--image`)**. Supports session resume/fork, agent profiles, and cost control via `--max-budget-usd`.
-- Default model: `gpt-5.5` at medium reasoning, fast service tier. `gpt-5.3-codex` and other GPT-5.x variants available via override.
-
-**cli-claude-code**
-- Claude Code CLI orchestrator. Use it for **extended thinking (chain-of-thought), surgical diff-based edits, and JSON-schema-validated structured output**. Ships with 9 built-in agents and session continuity.
-- Three models: `claude-opus-4-6` (deep reasoning), `claude-sonnet-4-6` (default, balanced), `claude-haiku-4-5` (fast/cheap).
-
-**cli-copilot**
-- GitHub Copilot CLI orchestrator. Use it for **autopilot autonomous execution, cloud delegation via `/delegate`, MCP server integration, and Explore/Task agents** for architecture mapping. Native GitHub ecosystem perspective (repo memory, PR awareness).
-- Default model: `gpt-5.4`. Other surfaced models: `gpt-5.5`, `gpt-5.3-codex`, `claude-opus-4.7`, `claude-sonnet-4.6`, `gemini-3.1-pro-preview` (5 picks across OpenAI / Anthropic / Google).
-
-**cli-opencode**
-- OpenCode CLI orchestrator. Use it when the dispatched task needs **the project's full plugin / skill / MCP / Spec Kit Memory runtime** — a one-shot `opencode run` boots every plugin in `opencode.json`, every skill under `.opencode/skill/`, every MCP server, and the memory database. Also handles **parallel detached sessions** (`--share --port N` for ablation suites, worker farms) and **cross-repo dispatch** (`--dir <path>`).
-- Three providers: `github-copilot` (default, with `gpt-5.4` default + `claude-sonnet-4.6` alternative), `opencode-go` (DeepSeek + GLM/Kimi/Qwen via gateway), `deepseek` (direct DeepSeek API).
-
-&nbsp;
 #### OTHER
 
 **sk-improve-prompt**
@@ -809,7 +809,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - DEPTH thinking methodology with 3-10 iteration rounds of progressive refinement
 - CLEAR quality scoring: Clarity, Logic, Expression, Reliability (40+/50 pass threshold)
 
-**sk-improve-agent** (v1.2.2.0)
+**sk-improve-agent** 
 - Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
 - Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
 - Dynamic profile generator derives scoring rubric from any agent's own rules, no hardcoded profiles needed
@@ -836,12 +836,6 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Search order: `match_triggers` → `memory_context` → `memory_search` → grep/glob
 - Returns structured Context Packages combining memory findings with codebase evidence
 - Uses both CocoIndex semantic search and the 5-channel memory system. Read-only.
-
-**Speckit**
-- The ONLY agent permitted to write `*.md` files inside spec folders
-- Template-first: copies from `templates/level_N/` - never creates from scratch
-- Supports Level 1-3+ documentation with CORE + ADDENDUM architecture and 20-rule validation
-- Exceptions: `scratch/` (any agent), `handover.md`, `research.md`, `graph-metadata.json` (via generate-context.js)
 
 **Debug**
 - Fresh-perspective debugger that receives structured context handoff (not conversation history)
@@ -893,12 +887,6 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Template-first: MUST load template before proceeding (hard gate)
 - Runs `extract_structure.py` and `validate_document.py` for DQI quality scoring
 - Handles READMEs, install guides, skills, agents, commands. Cannot write inside `specs/` directories.
-
-**Handover**
-- Session continuation specialist for context preservation across conversations
-- Always gathers context from spec folder files before creating the handover
-- Produces 5-section format: key decisions, blockers, current phase, continuation instructions, next steps
-- Has special permission to write `handover.md` inside spec folders
 
 **Ultra-Think**
 - Multi-strategy planning architect dispatching diverse thinking strategies
