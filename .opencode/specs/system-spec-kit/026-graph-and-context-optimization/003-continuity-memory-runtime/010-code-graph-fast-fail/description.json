@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/010-code-graph-fast-fail",
+  "description": "Feature Specification: code_graph fail-fast routing with fallbackDecision",
+  "keywords": [
+    "feature",
+    "specification",
+    "fail-fast",
+    "routing",
+    "fallbackdecision"
+  ],
+  "lastUpdated": "2026-04-27T07:48:04.558Z",
+  "specId": "010",
+  "folderSlug": "code-graph-fast-fail",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "003-continuity-memory-runtime"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

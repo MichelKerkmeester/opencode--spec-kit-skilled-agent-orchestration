@@ -1,0 +1,205 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "009-cocoindex-overfetch-dedup",
+      "cocoindex mirror duplicate dedup",
+      "cocoindex source_realpath canonical identity",
+      "cocoindex path_class rerank",
+      "cocoindex over-fetch limit times 4",
+      "REQ-018 REQ-019 cocoindex",
+      "cocoindex dedup plan",
+      "cocoindex dedup tasks",
+      "cocoindex dedup summary"
+    ],
+    "key_topics": [
+      "009-cocoindex-overfetch-dedup",
+      "cocoindex",
+      "mirror",
+      "duplicate",
+      "dedup",
+      "canonical",
+      "identity",
+      "rerank",
+      "over-fetch",
+      "limit",
+      "times",
+      "req-018"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      ".cocoindex_code/settings.yml",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "settings.yml",
+        "kind": "config",
+        "path": ".cocoindex_code/settings.yml",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Make",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Change Type",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Three",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Layered",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "All Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "rules",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "fallback",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-intent",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Make CocoIndex code-first by default. Exclude runtime spec mirrors at index time. Add `source_realpath` and `content_hash` canonical identity fields. Over-fetch `limit * 4` candidates, dedup by `(source_realpath, line_range)` or `(content_hash, line_range)`, prefer canonical paths in returned rows. Add `path_class` source-role and bounded reranking that surfaces `implementation` above `spec_research` for implementation-intent queries.",
+    "created_at": "2026-04-27T07:48:04.774Z",
+    "last_save_at": "2026-04-27T07:48:04.774Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}
