@@ -28,6 +28,15 @@ export interface ContextHandlerArgs {
     kind?: string;
     nodeId?: string;
     symbolId?: string;
+    // ── Q-OPP / packet 015 — CocoIndex fork telemetry passthrough ──
+    // Both snake_case (wire) and camelCase (internal) variants accepted.
+    // Normalized to camelCase by the CocoIndex seed branch below before
+    // delegating to seed-resolver. Pure metadata — never alters scoring.
+    rawScore?: number;
+    raw_score?: number;
+    pathClass?: string;
+    path_class?: string;
+    rankingSignals?: string[];
   }>;
   budgetTokens?: number;
   profile?: string;
@@ -170,7 +179,22 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
       const cocoindexFile = seed.file ?? seed.filePath;
 
       if (seed.provider === 'cocoindex' && cocoindexFile) {
-        return {
+        // ── Q-OPP / packet 015 — wire-name normalization for CocoIndex fork ──
+        // Fork emits snake_case (`raw_score`, `path_class`); internal
+        // ArtifactRef + downstream code uses camelCase. Accept both, prefer
+        // camelCase if both are present (camelCase = explicit caller intent).
+        // Pure passthrough — no scoring / ordering change.
+        const rawScore = typeof seed.rawScore === 'number'
+          ? seed.rawScore
+          : (typeof seed.raw_score === 'number' ? seed.raw_score : undefined);
+        const pathClass = typeof seed.pathClass === 'string' && seed.pathClass.length > 0
+          ? seed.pathClass
+          : (typeof seed.path_class === 'string' && seed.path_class.length > 0 ? seed.path_class : undefined);
+        const rankingSignals = Array.isArray(seed.rankingSignals)
+          ? seed.rankingSignals
+          : undefined;
+
+        const cocoSeed: Record<string, unknown> = {
           provider: 'cocoindex' as const,
           file: cocoindexFile,
           range: seed.range ?? { start: seed.startLine ?? 1, end: seed.endLine ?? seed.startLine ?? 1 },
@@ -178,6 +202,10 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
           snippet: seed.snippet,
           source,
         };
+        if (rawScore !== undefined) cocoSeed.rawScore = rawScore;
+        if (pathClass !== undefined) cocoSeed.pathClass = pathClass;
+        if (rankingSignals !== undefined) cocoSeed.rankingSignals = rankingSignals;
+        return cocoSeed;
       }
 
       if (seed.provider === 'manual' && seed.symbolName) {
@@ -242,18 +270,31 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
             canonicalReadiness: readinessBlock.canonicalReadiness,
             trustState: readinessBlock.trustState,
             lastPersistedAt,
-            anchors: result.resolvedAnchors.map(a => ({
-              file: a.filePath,
-              line: a.startLine,
-              symbol: a.fqName,
-              resolution: a.resolution,
-              confidence: a.confidence,
-              source: resolveSeedSource(args, a) ?? a.source,
-              provider: a.provider,
-              score: a.score,
-              snippet: a.snippet,
-              range: a.range,
-            })),
+            anchors: result.resolvedAnchors.map(a => {
+              // ── Q-OPP / packet 015 — CocoIndex fork telemetry passthrough ──
+              // Emit rawScore / pathClass / rankingSignals ONLY when the
+              // resolved anchor carries them (i.e., when the upstream seed
+              // was a CocoIndex seed with fork telemetry). Omit absent
+              // fields entirely; never serialize null placeholders. This
+              // preserves backward compatibility for callers that never
+              // sent telemetry. Additive metadata — no scoring change.
+              const anchor: Record<string, unknown> = {
+                file: a.filePath,
+                line: a.startLine,
+                symbol: a.fqName,
+                resolution: a.resolution,
+                confidence: a.confidence,
+                source: resolveSeedSource(args, a) ?? a.source,
+                provider: a.provider,
+                score: a.score,
+                snippet: a.snippet,
+                range: a.range,
+              };
+              if (typeof a.rawScore === 'number') anchor.rawScore = a.rawScore;
+              if (typeof a.pathClass === 'string' && a.pathClass.length > 0) anchor.pathClass = a.pathClass;
+              if (Array.isArray(a.rankingSignals)) anchor.rankingSignals = a.rankingSignals;
+              return anchor;
+            }),
             graphContext: result.graphContext,
             textBrief: result.textBrief,
             metadata: result.metadata,

@@ -1,0 +1,123 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "013-graph-degraded-stress-cell",
+      "code_graph_query degraded sweep",
+      "fallbackDecision integration test",
+      "SPEC_KIT_DB_DIR isolation sweep",
+      "packet 005 PROVEN verdict",
+      "graph degraded stress cell plan",
+      "graph degraded stress cell tasks",
+      "graph degraded stress cell summary"
+    ],
+    "key_topics": [
+      "013-graph-degraded-stress-cell",
+      "fallbackdecision",
+      "degraded",
+      "stress-cell",
+      "code_graph_query",
+      "integration-test",
+      "spec-kit-db-dir",
+      "isolation",
+      "fast-fail",
+      "packet-005-followup"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/tests/code-graph-degraded-sweep.vitest.ts",
+      "mcp_server/code_graph/handlers/query.ts",
+      "mcp_server/code_graph/lib/ensure-ready.ts",
+      "mcp_server/code_graph/lib/code-graph-db.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "code-graph-degraded-sweep.vitest.ts",
+        "kind": "code",
+        "path": "mcp_server/tests/code-graph-degraded-sweep.vitest.ts",
+        "source": "manual"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ensure-ready.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/ensure-ready.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Test-only packet that adds a deterministic integration sweep exercising code_graph_query fallbackDecision routing end-to-end through three buckets (empty graph + broad-stale → code_graph_scan; readiness exception → rg; fresh → no fallbackDecision). Uses initDb(tmpdir) isolation pattern so the live code-graph.sqlite is byte-equal before and after the sweep, closing the v1.0.2 NEUTRAL verdict on packet 005 fast-fail without any production code change.",
+    "created_at": "2026-04-27T19:58:00Z",
+    "last_save_at": "2026-04-27T19:58:00Z",
+    "save_lineage": "manual_authoring",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

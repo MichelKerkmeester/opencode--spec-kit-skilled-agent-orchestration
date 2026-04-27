@@ -14,7 +14,7 @@ import {
   computePSI,
   type EdgeDistribution,
 } from '../lib/edge-drift.js';
-import { getGraphFreshness } from '../lib/ensure-ready.js';
+import { getGraphFreshness, getGraphReadinessSnapshot } from '../lib/ensure-ready.js';
 import { isRecord } from '../lib/query-result-adapter.js';
 import { buildReadinessBlock } from '../lib/readiness-contract.js';
 
@@ -160,7 +160,14 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
   try {
     const stats = graphDb.getStats();
     const edgeDriftSummary = buildEdgeDriftSummary(stats.edgesByType);
-    const freshness = getGraphFreshness(process.cwd());
+    // Packet 014 / Q-P2: read-only readiness snapshot. Surfaces the action
+    // (`full_scan` | `selective_reindex` | `none`) that `ensureCodeGraphReady`
+    // would emit, without mutating the DB or running an inline scan. Replaces
+    // the previous behavior where readiness.action was hard-coded to "none"
+    // even when the graph was empty/stale, which forced operators to invoke
+    // `code_graph_scan` (mutating) just to find out the next step.
+    const snapshot = getGraphReadinessSnapshot(process.cwd());
+    const freshness = snapshot.freshness;
     const lastGoldVerification = graphDb.getLastGoldVerification();
     const goldVerificationTrust = getGoldVerificationTrust(
       lastGoldVerification,
@@ -170,7 +177,10 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
     const verificationPassPolicy = getVerificationPassPolicy(lastGoldVerification);
     // PR 4 / F71 step 7: switch on the unified V2 freshness enum so each
     // canonical state has its own status reason (no more V4 string-mapping
-    // that swallowed 'error' as 'missing').
+    // that swallowed 'error' as 'missing'). Packet 014: prefer the snapshot
+    // reason when present (it carries action-level detail like "graph is
+    // empty (0 nodes)" or "<N> stale files exceed selective threshold");
+    // fall back to the canonical state reason otherwise.
     let statusReason: string;
     switch (freshness) {
       case 'fresh':
@@ -186,11 +196,14 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
         statusReason = 'status probe crashed; graph is unavailable';
         break;
     }
+    const readinessReason = snapshot.reason && snapshot.reason.length > 0
+      ? snapshot.reason
+      : statusReason;
     const readinessBlock = buildReadinessBlock({
       freshness,
-      action: 'none',
+      action: snapshot.action,
       inlineIndexPerformed: false,
-      reason: statusReason,
+      reason: readinessReason,
     });
 
     return {

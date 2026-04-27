@@ -53,7 +53,7 @@ export interface EnsureReadyOptions {
 const AUTO_INDEX_TIMEOUT_MS = 10_000;
 
 /** Maximum stale files before we switch from selective to full reindex */
-const SELECTIVE_REINDEX_THRESHOLD = 50;
+export const SELECTIVE_REINDEX_THRESHOLD = 50;
 
 // ───────────────────────────────────────────────────────────────
 // Internal helpers
@@ -464,5 +464,61 @@ export function getGraphFreshness(rootDir: string): GraphFreshness {
     return state.freshness;
   } catch {
     return 'error';
+  }
+}
+
+// ───────────────────────────────────────────────────────────────
+// Read-only readiness snapshot (Packet 014)
+// ───────────────────────────────────────────────────────────────
+// Surfaces the same `action` + `freshness` + `reason` triplet that
+// `ensureCodeGraphReady` would emit, but WITHOUT mutating any state:
+//   - no debounce cache writes
+//   - no cleanup of deleted tracked files
+//   - no inline indexing (full or selective)
+//   - no `setLastGitHead` updates
+//
+// Used by `code_graph_status` so operators can distinguish
+// "needs full scan" vs "needs selective reindex" vs "fresh"
+// without invoking `code_graph_scan` (which mutates).
+//
+// See:
+//   .opencode/specs/system-spec-kit/026-graph-and-context-optimization/
+//   011-mcp-runtime-stress-remediation/011-post-stress-followup-research/
+//   research/research.md §5 (Q-P2)
+
+export interface GraphReadinessSnapshot {
+  freshness: GraphFreshness;
+  action: ReadyAction;
+  reason: string;
+}
+
+/**
+ * Compute the readiness action that `ensureCodeGraphReady` WOULD take,
+ * without performing any mutation. Safe to call from `code_graph_status`
+ * and any other read-only diagnostic surface.
+ *
+ * Reuses the detection-only branch of {@link detectState}; intentionally
+ * does NOT touch the cache (`readinessDebounce`), the deleted-file cleanup
+ * (`cleanupDeletedTrackedFiles`), or the inline indexer.
+ *
+ * On probe crash, returns `{ freshness: 'error', action: 'none', reason }`
+ * so the consumer can render an unavailable state instead of inheriting an
+ * exception.
+ */
+export function getGraphReadinessSnapshot(rootDir: string): GraphReadinessSnapshot {
+  try {
+    const state = detectState(rootDir);
+    return {
+      freshness: state.freshness,
+      action: state.action,
+      reason: state.reason,
+    };
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return {
+      freshness: 'error',
+      action: 'none',
+      reason: `readiness probe crashed: ${msg}`,
+    };
   }
 }

@@ -479,6 +479,17 @@ const codeGraphSeedSchema = z.object({
   kind: z.string().optional(),
   nodeId: z.string().optional(),
   symbolId: z.string().optional(),
+  // ── Q-OPP / packet 015 — CocoIndex fork telemetry passthrough ──
+  // The fork (cocoindex_code v0.2.3+spec-kit-fork.0.2.0) emits these
+  // fields on each QueryResult. Both snake_case (wire) and camelCase
+  // (internal) are accepted on input and normalized to camelCase by
+  // the context handler. ADDITIVE METADATA ONLY — never used to alter
+  // anchor scoring, confidence, resolution, or ordering.
+  rawScore: safeNumericPreprocess.pipe(z.number()).optional(),
+  raw_score: safeNumericPreprocess.pipe(z.number()).optional(),
+  pathClass: z.string().optional(),
+  path_class: z.string().optional(),
+  rankingSignals: z.array(z.string()).optional(),
 });
 
 const codeGraphContextSchema = getSchema({

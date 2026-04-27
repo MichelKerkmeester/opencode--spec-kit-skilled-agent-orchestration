@@ -109,7 +109,11 @@ Harden the MCP runtime end-to-end against the regressions surfaced by the v1.0.1
 | 8 | `008-mcp-daemon-rebuild-protocol/` | Canonical rebuild + restart + live-probe contract that gates the others | complete |
 | 9 | `009-memory-search-response-policy/` | `responsePolicy` / `citationPolicy` refusal contract for low-quality searches | complete (client-side guard deferred — HANDOVER-deferred §2.4) |
 | 10 | `010-stress-test-rerun-v1-0-2/` | v1.0.2 re-run of the v1.0.1 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict (closes HANDOVER-deferred §2.1 when findings ship) | complete (sweep complete, findings shipped 2026-04-27, HANDOVER §2.1 CLOSED) |
-| 11 | `011-post-stress-followup-research/` | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams | draft (scaffold; deep-research loop pending) |
+| 11 | `011-post-stress-followup-research/` | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams | complete (10/10 iters converged 2026-04-27; research.md synthesized) |
+| 12 | `012-copilot-target-authority-helper/` | (P0) Shared `buildCopilotPromptArg` helper in `executor-config.ts` — typed `targetAuthority` token wrapping cli-copilot deep-loop dispatch; closes the I1/cli-copilot Gate 3 bypass | draft (scaffold + agent implementation pending) |
+| 13 | `013-graph-degraded-stress-cell/` | (P1) Deterministic isolated-`SPEC_KIT_DB_DIR` integration sweep exercising all 4 `fallbackDecision` matrix branches; closes packet 005 NEUTRAL verdict | draft (scaffold + agent implementation pending) |
+| 14 | `014-graph-status-readiness-snapshot/` | (P2) Read-only `getGraphReadinessSnapshot()` helper used by `code_graph_status` to surface action-level readiness; observability for staleness drift | draft (scaffold + agent implementation pending) |
+| 15 | `015-cocoindex-seed-telemetry-passthrough/` | (P2) Per-seed telemetry passthrough (`rawScore`, `pathClass`, `rankingSignals`) through `code_graph_context` anchors; preserves CocoIndex fork signals as audit/explanation data | draft (scaffold + agent implementation pending) |
 
 ### Phase Transition Rules
 

@@ -596,14 +596,13 @@ workflow:
         if_cli_copilot:
           command: |
             node --experimental-strip-types --input-type=module <<'EOF'
-            import { readFileSync } from 'node:fs';
+            import { readFileSync, writeFileSync } from 'node:fs';
 
             import { runAuditedExecutorCommand } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts';
-            import { resolveCopilotPromptArg } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
+            import { buildCopilotPromptArg } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const promptPath = '{state_paths.prompt_dir}/iteration-{current_iteration}.md';
             const prompt = readFileSync(promptPath, 'utf8');
-            const promptArg = resolveCopilotPromptArg(promptPath, prompt);
             const executor = {
               kind: 'cli-copilot',
               model: '{config.executor.model}',
@@ -613,17 +612,45 @@ workflow:
               timeoutSeconds: Number('{config.executor.timeoutSeconds}'),
             };
 
+            // Workflow-resolved spec folder is the only legal write authority.
+            // The helper (`validateSpecFolder` inside `buildCopilotPromptArg`)
+            // is the single source of truth for rejecting empty / unresolved
+            // template / whitespace-only / string-coerced empty values. The
+            // YAML hands the raw `{spec_folder}` directly; on rejection the
+            // helper safe-fails to `kind:"missing", writeIntent:true` (Gate-3
+            // enforcement, --allow-all-tools stripped).
+            const specFolderRaw = '{spec_folder}';
+            const targetAuthority = { kind: 'approved', specFolder: specFolderRaw };
+
+            const baseArgs = [
+              '-p',
+              prompt,
+              '--model',
+              executor.model,
+              '--allow-all-tools',
+              '--no-ask-user',
+            ];
+
+            const built = buildCopilotPromptArg({
+              promptPath,
+              prompt,
+              targetAuthority,
+              baseArgv: baseArgs,
+            });
+
+            // Large-prompt @PROMPT_PATH wrapper: helper emits a `promptFileBody`
+            // containing `<TARGET AUTHORITY preamble>\n\n---\n\n<original>`.
+            // Write it to disk so the file Copilot reads via @path opens with
+            // the authority block. Without this, recovered/bootstrap folder
+            // mentions inside the file could still anchor the model.
+            if (built.promptFileBody !== undefined) {
+              writeFileSync(promptPath, built.promptFileBody, 'utf8');
+            }
+
             process.exit(
               runAuditedExecutorCommand({
                 command: 'copilot',
-                args: [
-                  '-p',
-                  promptArg,
-                  '--model',
-                  executor.model,
-                  '--allow-all-tools',
-                  '--no-ask-user',
-                ],
+                args: built.argv,
                 cwd: '{repo_root}',
                 timeoutSeconds: executor.timeoutSeconds,
                 stateLogPath: '{state_paths.state_log}',
@@ -640,6 +667,9 @@ workflow:
             - "cli-copilot keeps a fixed permission posture via --allow-all-tools; sandboxMode is intentionally unsupported"
             - "Size check uses 16KB threshold; above that uses @PROMPT_PATH wrapper prompt"
             - "Large-prompt path relies on copilot honoring @path references within its prompt string"
+            - "buildCopilotPromptArg attaches a TARGET AUTHORITY preamble bound to the workflow-approved spec folder; recovered context cannot override it (packet 026/011/012)"
+            - "If spec_folder is missing/malformed/unresolved on a write-intent dispatch, the helper enforces plan-only by replacing the prompt with a Gate-3 question and stripping --allow-all-tools"
+            - "Large-prompt wrapper mode rewrites the prompt file at promptPath to include the TARGET AUTHORITY preamble (prefix + divider + original body); the argv becomes a bare @promptPath reference"
         if_cli_gemini:
           command: |
             node --experimental-strip-types --input-type=module <<'EOF'

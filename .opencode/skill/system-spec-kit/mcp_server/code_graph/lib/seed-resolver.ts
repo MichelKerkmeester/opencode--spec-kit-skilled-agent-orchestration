@@ -24,6 +24,14 @@ export interface CocoIndexSeed {
   score: number;
   snippet?: string;
   source?: string;
+  // ── Q-OPP / packet 015 — CocoIndex fork telemetry passthrough ──
+  // These fields are ADDITIVE METADATA only. They are preserved from the
+  // CocoIndex fork (cocoindex_code v0.2.3+spec-kit-fork.0.2.0) for audit
+  // and explanation purposes. They MUST NOT influence anchor scoring,
+  // confidence, resolution, or ordering. See research.md §6.
+  rawScore?: number;
+  pathClass?: string;
+  rankingSignals?: string[];
 }
 
 /** Manual seed with symbol name (no file path required) */
@@ -61,6 +69,13 @@ export interface ArtifactRef {
   range: { start: number; end: number } | null;
   provider: 'graph' | 'manual' | 'cocoindex' | 'code_graph';
   source?: string;
+  // ── Q-OPP / packet 015 — CocoIndex fork telemetry passthrough ──
+  // Optional. Populated only when the upstream seed (typically a
+  // CocoIndexSeed) carried fork telemetry. Never derived. Never used to
+  // alter score / confidence / resolution / ordering. Pure audit data.
+  rawScore?: number;
+  pathClass?: string;
+  rankingSignals?: string[];
 }
 
 // ── Type guards ──────────────────────────────────────────────
@@ -100,7 +115,7 @@ export function resolveCocoIndexSeed(seed: CocoIndexSeed): ArtifactRef {
     endLine: seed.range.end,
     source: seed.source,
   });
-  return {
+  const ref: ArtifactRef = {
     ...resolved,
     score: seed.score,
     snippet: seed.snippet ?? null,
@@ -108,6 +123,15 @@ export function resolveCocoIndexSeed(seed: CocoIndexSeed): ArtifactRef {
     provider: 'cocoindex',
     source: seed.source,
   };
+  // ── Q-OPP / packet 015 — preserve fork telemetry as additive metadata ──
+  // Only emit fields that were actually carried on the seed. Do NOT emit
+  // null / undefined placeholders — the JSON envelope must omit absent
+  // fields entirely (backward compatibility for callers that never sent
+  // telemetry). No score / ordering / confidence change.
+  if (typeof seed.rawScore === 'number') ref.rawScore = seed.rawScore;
+  if (typeof seed.pathClass === 'string' && seed.pathClass.length > 0) ref.pathClass = seed.pathClass;
+  if (Array.isArray(seed.rankingSignals)) ref.rankingSignals = seed.rankingSignals;
+  return ref;
 }
 
 /** Resolve a ManualSeed by looking up the symbol name in the DB */
