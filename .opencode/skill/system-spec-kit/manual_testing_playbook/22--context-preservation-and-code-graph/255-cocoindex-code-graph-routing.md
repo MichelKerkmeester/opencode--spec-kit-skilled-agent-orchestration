@@ -126,6 +126,67 @@ Vitest output for `code-graph-context-handler`, `code-graph-query-handler`, and 
 
 Check `code-graph-context.ts`, `handlers/context.ts`, `handlers/query.ts`, and `seed-resolver.ts` for mode handling, blocked-read payloads, and seed normalization logic
 
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate cocoindex_code fork telemetry presence on search responses against mcp__cocoindex_code__search({ query:"memory search pipeline", limit:5 }). Verify each result carries dedupedAliases (int), uniqueResultCount (int, response-level), path_class (string ∈ documented enum), rankingSignals (object), source_realpath (string), content_hash (string), raw_score (number). Return a concise pass/fail verdict with the main reason and cited evidence.
+```
+
+### Commands
+
+1. `mcp__cocoindex_code__search({ query:"memory search pipeline", limit:5 })`
+2. Inspect each result for the 7 telemetry fields and the response-level `uniqueResultCount`
+
+### Expected
+
+All 7 fork telemetry fields present per result (`rankingSignals` object non-empty); `dedupedAliases` reflects symlink alias collapsing; `uniqueResultCount` reflects post-dedup count; `path_class` value is from the documented enum; `source_realpath` is a canonical path; `content_hash` is a stable digest; `raw_score` is a finite number.
+
+### Evidence
+
+cocoindex_code search response with telemetry fields highlighted
+
+### Pass / Fail
+
+- **Pass**: every telemetry field present and well-formed across all results
+- **Fail**: any field missing, rankingSignals empty, path_class outside documented enum, or aliases not deduped
+
+### Failure Triage
+
+Inspect the cocoindex fork search handler telemetry serializer; confirm packet 004 dist marker on the cocoindex bridge; cross-check `dedupedAliases` against the symlink fixture
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate seed-telemetry passthrough on code_graph_context anchors. Verify when seeds carry raw_score/path_class/rankingSignals (snake_case wire) OR rawScore/pathClass/rankingSignals (camelCase internal), the returned anchors carry rawScore, pathClass, rankingSignals next to existing score/snippet/range. Backward-compat: seeds without telemetry produce anchors without those fields (byte-equal envelope to pre-packet-015 baseline). Return a concise pass/fail verdict.
+```
+
+### Commands
+
+1. `code_graph_context({ seeds:[{ ..., raw_score, path_class, rankingSignals }] })` — anchors should carry camelCase telemetry fields
+2. `code_graph_context({ seeds:[{ ..., rawScore, pathClass, rankingSignals }] })` — anchors should preserve fields verbatim
+3. `code_graph_context({ seeds:[{ ... no telemetry ... }] })` — anchors should be byte-equal to pre-packet-015 baseline (no extra keys)
+
+### Expected
+
+Telemetry survives expansion as additive metadata; score/confidence/resolution/ordering byte-equal pre vs post; no second rerank in the cocoindex bridge (verify via static grep on `lib/search`).
+
+### Evidence
+
+code_graph_context anchor payloads for all three seed shapes plus a diff against the pre-packet-015 baseline
+
+### Pass / Fail
+
+- **Pass**: telemetry passes through additively; baseline byte-equal when telemetry absent; no rerank introduced
+- **Fail**: telemetry stripped, anchor ordering changes, baseline drift, or new rerank pass detected
+
+### Failure Triage
+
+Inspect `mcp_server/code_graph/lib/seed-resolver.ts` and `code_graph/handlers/context.ts` anchor builder; confirm packet 015 dist marker; grep `lib/search` for any new rerank function
+
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)

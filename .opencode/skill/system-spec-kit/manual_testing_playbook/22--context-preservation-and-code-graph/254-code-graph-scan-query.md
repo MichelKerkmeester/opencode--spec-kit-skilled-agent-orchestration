@@ -29,7 +29,7 @@ This scenario validates Code graph storage and query.
   - `code_graph_query` for outline mode returns symbol list for a given file
   - `code_graph_query` for calls mode returns callers/callees of a symbol
   - `code_graph_query` for imports mode returns import relationships
-  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary` and `graphQualitySummary.graphEdgeEnrichmentSummary`
+  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper (per packet 014). Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).
   - Database uses WAL journal mode and has foreign keys enabled
 - **Pass/fail criteria**:
   - PASS: All tables populated correctly, query tools return expected results, WAL mode confirmed
@@ -181,6 +181,39 @@ Vitest output showing symlink escape rejection and scan boundary enforcement
 ### Failure Triage
 
 Check `handlers/code-graph/scan.ts` realpath-based boundary check and `tests/unit-path-security.vitest.ts` for escape scenarios
+
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate code_graph_status readiness.action snapshot against four engineered states. Verify readiness.action ∈ {full_scan, selective_reindex, none} matches the engineered state, and that calling code_graph_status does NOT mutate the live code-graph DB (sha256 byte-equal pre/post). Return a concise pass/fail verdict.
+```
+
+### Commands
+
+1. With an empty graph fixture → `code_graph_status()` should report `readiness.action === "full_scan"`
+2. With >50 stale tracked files → `code_graph_status()` should report `readiness.action === "full_scan"`
+3. With ≤50 stale tracked files (bounded staleness) → `code_graph_status()` should report `readiness.action === "selective_reindex"`
+4. With a fresh state → `code_graph_status()` should report `readiness.action === "none"`
+5. Capture sha256 of `mcp_server/database/code-graph.sqlite` before and after the four invocations; assert byte-equal
+
+### Expected
+
+`readiness.action` matches the documented enum for every engineered state; the live code-graph DB is byte-equal pre/post (proves side-effect freedom of `getGraphReadinessSnapshot()`).
+
+### Evidence
+
+code_graph_status responses for the four states + sha256 hash pair (before/after) with diff confirmation
+
+### Pass / Fail
+
+- **Pass**: all four readiness.action values correct AND live DB byte-equal pre/post
+- **Fail**: any wrong readiness.action OR live DB sha256 mismatch (handler called a write-side export)
+
+### Failure Triage
+
+Inspect `mcp_server/code_graph/handlers/status.ts` and `lib/get-graph-readiness-snapshot.ts`; ensure no call to `ensureCodeGraphReady`; confirm packet 014 dist marker
 
 ## 4. REFERENCES
 

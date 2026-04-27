@@ -31,6 +31,8 @@ Operators run the exact prompt and command sequence for `CP-002` and confirm the
 - Desired user-visible outcome: PASS verdict reporting the absolute sandbox path and approximate file size, plus a one-line note that the project tree was unchanged
 - Pass/fail: PASS if the sandbox file is created with expected content AND project tree is unchanged AND no operator prompt blocked stdin. FAIL if the file is missing/wrong, the project tree shows a diff or the operator was prompted for approval
 
+> **Deep-loop dispatch caveat (packet 012, v1.0.2 P0):** For `/spec_kit:deep-research:auto` and `/spec_kit:deep-review:auto`, `--allow-all-tools` MUST be paired with a `kind:'approved'` `targetAuthority` token through `buildCopilotPromptArg`. CP-002 covers direct CLI use only; deep-loop dispatch authority enforcement is covered by **CP-022** (approved preamble), **CP-023** (missing-authority plan-only), **CP-024** (I1-replay zero-mutation), and **CP-025** (large-prompt @PROMPT_PATH wrapper preamble).
+
 ---
 
 ## 3. TEST EXECUTION

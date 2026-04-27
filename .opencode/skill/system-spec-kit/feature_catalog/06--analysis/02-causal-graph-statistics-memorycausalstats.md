@@ -22,6 +22,8 @@ Link coverage is the most important metric: what percentage of memories particip
 
 Orphaned edges (edges referencing source or target spec-doc records that no longer exist in `memory_index`) are detected and counted. When orphans exist, the health status changes from "healthy" to "has_orphans." You can use `memory_drift_why` to find the edge IDs and `memory_causal_unlink` to clean them up.
 
+The response now also reports rolling-window deltas and balance metrics: `deltaByRelation` (per-relation count of new edges in the active window), `dominantRelation` and `dominantRelationShare` (largest relation type and its share of the window total), `balanceStatus` (one of `balanced`, `relation_skewed`, `insufficient_data`), `remediationHint` (a string naming the producer when skew is detected, e.g. prediction-error supersede burst), and `windowStartedAt`. `by_relation` is zero-filled across all 6 relation types so a missing type appears as 0 rather than disappearing. When `dominantRelationShare > 0.80` AND total new edges in window >= 50, `balanceStatus` is `relation_skewed` and `remediationHint` is set. Auto-edge insertion on PE / reconsolidation paths now respects a per-relation per-window cap routed through shared cap logic so supersedes bursts cannot dominate the graph.
+
 ---
 
 ## 3. SOURCE FILES

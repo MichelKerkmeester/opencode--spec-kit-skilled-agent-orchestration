@@ -40,6 +40,8 @@ That means the current runbook surface is intentionally uneven: the dispatcher a
 
 When `runbook.sh drill all` is used, the dispatcher executes all four classes in sequence and returns non-zero if any one drill fails. In practice, that means aggregate drills currently surface the degraded state of the deprecated or placeholder remediators rather than pretending the whole self-healing surface is healthy.
 
+For canonical post-implementation verification of MCP daemon changes, see the four reference docs under packet `008-mcp-daemon-rebuild-protocol/references/`: `mcp-rebuild-restart-protocol.md` (rebuild + restart sequence), `live-probe-template.md` (live-probe envelope), `dist-marker-grep-cheatsheet.md` (dist-marker grep patterns), and `implementation-verification-checklist.md` (post-rebuild verification checklist).
+
 ## 3. SOURCE FILES
 
 ### Implementation

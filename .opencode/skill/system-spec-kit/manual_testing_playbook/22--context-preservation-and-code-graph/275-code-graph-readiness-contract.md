@@ -34,10 +34,11 @@ As a context-and-code-graph validation operator, validate the shared code-graph 
 2. Exercise `ccc_status`, `ccc_reindex`, and `ccc_feedback`
 3. Compare the returned readiness fields across the siblings
 4. Confirm the CCC trio exposes `reason: "readiness_not_applicable"` with the documented stub trust-state behavior
+5. Side-effect freedom of `code_graph_status` (packet 014, criterion E): capture sha256 of `mcp_server/database/code-graph.sqlite` before and after a `code_graph_status()` invocation; assert byte-equal — handler MUST NOT call any write-side `code-graph-db` export (`ensureCodeGraphReady`, `runScan`, etc.)
 
 ### Expected
 
-Shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior
+Shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior; `code_graph_status` invocation is side-effect free (live `code-graph.sqlite` byte-equal pre/post per packet 014 criterion E)
 
 ### Evidence
 
@@ -45,8 +46,8 @@ Handler outputs for the six siblings plus the shared readiness test output
 
 ### Pass / Fail
 
-- **Pass**: the sibling handlers now share one readiness contract instead of drifting by handler
-- **Fail**: a sibling still omits or reshapes the readiness fields, or the CCC stub behavior is inconsistent
+- **Pass**: the sibling handlers now share one readiness contract instead of drifting by handler AND `code_graph_status` is byte-equal-safe on the live DB
+- **Fail**: a sibling still omits or reshapes the readiness fields, the CCC stub behavior is inconsistent, OR `code_graph_status` mutates the live `code-graph.sqlite`
 
 ### Failure Triage
 

@@ -55,6 +55,37 @@ Tool outputs + mode selection
 
 Check specFolder/intent mismatch, retry with explicit intent
 
+---
+
+### Prompt
+
+```
+As a retrieval validation operator, validate the token-budget envelope contract on memory_context against memory_context({ input:"...", maxTokens:N }) at three budgets. Verify the response includes preEnforcementTokens (int >= returnedTokens), returnedTokens (int <= maxTokens), and when ALL results are dropped, droppedAllResultsReason is one of the documented enum values. Return a concise pass/fail verdict.
+```
+
+### Commands
+
+1. `memory_context({ input:"large query expected to overflow context budget with many anchored results", maxTokens:500 })` — assert `preEnforcementTokens > returnedTokens` and no `droppedAllResultsReason`
+2. `memory_context({ input:"<intentionally-too-narrow-bogus-query-string-with-no-anchor>", maxTokens:50 })` — force ALL-dropped, assert `droppedAllResultsReason` ∈ documented enum
+3. `memory_context({ input:"any reasonable spec query", maxTokens:99999 })` — under-budget, assert `preEnforcementTokens === returnedTokens`
+
+### Expected
+
+`preEnforcementTokens` and `returnedTokens` always present (int, non-negative). `droppedAllResultsReason` only present when zero results returned and is one of the documented enum values. No envelope drift across budgets.
+
+### Evidence
+
+memory_context responses for all three budgets with envelope fields highlighted
+
+### Pass / Fail
+
+- **Pass**: envelope fields present and consistent across under-budget, over-budget, and ALL-dropped scenarios
+- **Fail**: any envelope field missing, integer invariants violated, or `droppedAllResultsReason` present when results were returned
+
+### Failure Triage
+
+Inspect `mcp_server/handlers/memory/context.ts` token-budget enforcement path and the envelope serializer; confirm packet 003 dist marker present
+
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)

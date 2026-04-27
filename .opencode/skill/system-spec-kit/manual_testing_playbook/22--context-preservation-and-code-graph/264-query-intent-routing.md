@@ -116,6 +116,38 @@ memory_context response with merged results
 
 Check hybrid scoring threshold and merge logic
 
+---
+
+### Prompt
+
+```
+As a context-and-code-graph validation operator, validate the canonical IntentTelemetry envelope shape across runtimes against memory_context({ input:"any structural-keyword query" }). Verify the response carries IntentTelemetry { intent, confidence, matchedKeywords, classifierVersion, runtimeId } at the documented response path. Aggregate runtimeId across cli-copilot, cli-codex, cli-claude-code, cli-gemini calls and confirm shape parity for cross-CLI aggregation. Return a concise pass/fail verdict.
+```
+
+### Commands
+
+1. `memory_context({ input:"what calls handleMemoryContext" })` from cli-copilot — capture IntentTelemetry envelope
+2. `memory_context({ input:"what calls handleMemoryContext" })` from cli-codex — capture envelope
+3. `memory_context({ input:"what calls handleMemoryContext" })` from cli-claude-code — capture envelope
+4. Compare the envelopes for shape parity (keys, field types, classifierVersion stability)
+
+### Expected
+
+A single shape across runtimes; `confidence` is a number ∈ [0,1]; `matchedKeywords` is an array of strings; `classifierVersion` is identical across runtimes for the same source build; `runtimeId` reflects the active CLI executor.
+
+### Evidence
+
+IntentTelemetry envelopes from all three runtimes side-by-side
+
+### Pass / Fail
+
+- **Pass**: envelope shape is byte-stable across runtimes; only `runtimeId` differs
+- **Fail**: any envelope key missing, confidence outside [0,1], classifierVersion drift across runtimes, or matchedKeywords not an array of strings
+
+### Failure Triage
+
+Inspect `mcp_server/handlers/memory/context.ts` IntentTelemetry serializer and the query-intent-classifier; confirm packet 007 dist marker present across all runtimes
+
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)

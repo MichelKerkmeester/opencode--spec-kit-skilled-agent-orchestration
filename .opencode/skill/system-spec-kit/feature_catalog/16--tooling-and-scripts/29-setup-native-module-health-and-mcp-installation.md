@@ -32,6 +32,8 @@ The shipped behavior in this slice currently works as follows:
 8. `check-native-modules.sh` is the standalone diagnostic probe. It compares the current Node runtime against `.node-version-marker`, reports Node and `MODULE_VERSION`, and attempts to load `better-sqlite3` plus optional `onnxruntime-node` and `sharp` installs so ABI mismatches show up as explicit `[FAIL]` lines.
 9. `rebuild-native-modules.sh` is the repair path for ABI drift. It rebuilds `better-sqlite3` inside `mcp_server`, runs `npm rebuild` in `shared/` when that workspace is installed, optionally clears the global Hugging Face cache interactively, and then calls `record-node-version.js` to rewrite `.node-version-marker` with the current Node version, module ABI, platform, architecture, and timestamp.
 
+For canonical post-rebuild verification, see the four reference docs under packet `008-mcp-daemon-rebuild-protocol/references/`: `mcp-rebuild-restart-protocol.md` documents the rebuild + restart sequence, `live-probe-template.md` defines the live-probe envelope used to confirm a fresh daemon is responding to MCP traffic, `dist-marker-grep-cheatsheet.md` lists the grep patterns for verifying a `dist/` artifact carries the expected source change, and `implementation-verification-checklist.md` is the canonical checklist run after every MCP rebuild.
+
 ## 3. SOURCE FILES
 
 ### Implementation

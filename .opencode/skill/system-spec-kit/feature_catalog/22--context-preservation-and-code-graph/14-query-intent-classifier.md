@@ -16,7 +16,7 @@ Keyword-dictionary scoring classifies queries into three intents: structural (sy
 
 ## 2. CURRENT REALITY
 
-mcp_server/code_graph/lib/query-intent-classifier.ts
+The classifier exposes its output through a normalized `IntentTelemetry` envelope so consumers (`memory_context`, `memory_search`) see the same shape across both classification sites. The envelope carries `taskIntent.classificationKind` and `backendRouting.classificationKind` markers identifying which heuristic produced each label (the two classification sites are the task-intent classifier and the backend-routing classifier; `classificationKind` is the third site marker for downstream telemetry that needs to disambiguate them). It also carries a stable `paraphraseGroup` token so paraphrased queries map to the same group across sessions: identical paraphrase groups receive identical routing without re-running the classifier. Confidence scores and matched keywords are still returned alongside the classification.
 
 ---
 
