@@ -5,25 +5,22 @@
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [
     "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs",
-    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish"
+    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish",
+    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync"
   ],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
     "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/002-resource-map-template",
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
-      "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
-      "system-spec-kit/026-graph-and-context-optimization/009-hook-parity"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
       "phase parent documentation",
       "phase parent lean trio",
       "phased spec documentation",
-      "parent doc staleness",
-      "spec folder with phases"
+      "parent doc staleness"
     ],
     "key_topics": [
       "phase",
@@ -31,27 +28,82 @@
       "documentation",
       "lean",
       "trio",
-      "validator",
-      "graph-metadata",
-      "continuity",
-      "resume",
-      "phased"
+      "phased",
+      "spec",
+      "doc",
+      "staleness",
+      "folder",
+      "children",
+      "carries"
     ],
     "importance_tier": "important",
-    "status": "in_progress",
+    "status": "planned",
     "key_files": [
       "spec.md",
-      "001-validator-and-docs/implementation-summary.md",
-      "002-generator-and-polish/spec.md"
+      "templates/phase_parent/spec.md",
+      "001-validator-and-docs/spec.md",
+      "002-generator-and-polish/spec.md",
+      "templates/context-index.md"
     ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.md",
+        "kind": "doc",
+        "path": "templates/context-index.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent Documentation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "A spec folder with phase children carries duplicate state at the parent level: `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md` describe program-level intent at the time of decomposition, but the children own the real work and pivot as they execute. Over weeks, the parent docs drift from child reality. AI assistants reading the resume ladder treat the stale parent docs as authoritative, hallucinate current state, and propose work against outdated plans.",
+    "created_at": "2026-04-27T08:55:00Z",
+    "last_save_at": "2026-04-27T11:56:04.050Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
     "source_docs": [
       "spec.md"
     ],
-    "created_at": "2026-04-27T08:55:00Z",
-    "last_save_at": "2026-04-27T12:25:00Z",
-    "save_lineage": "phase_parent_restructure",
-    "last_accessed_at": null,
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs",
-    "last_active_at": "2026-04-27T11:50:00Z"
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
+    "last_active_at": "2026-04-27T12:47:40.395Z"
   }
 }

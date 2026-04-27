@@ -221,8 +221,12 @@ PY
 
 ## 10. RELATED RESOURCES
 
+> **Output shape.** The configs in this file control how the MCP server is wired and how it's invoked, but they do NOT describe the *response* shape your client will see. This skill bundles a soft-fork of `cocoindex-code` (`0.2.3+spec-kit-fork.0.2.0`) that emits seven additional fields beyond vanilla upstream output (`source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals`). If your config integrates with downstream code that parses results, see the Tool Reference §7 entry below for the full schema and reading guidance before writing parsers.
+
 | Resource | Location |
 | --- | --- |
 | Install Guide | `.opencode/skill/mcp-coco-index/INSTALL_GUIDE.md` |
 | Tool Reference | `.opencode/skill/mcp-coco-index/references/tool_reference.md` |
+| Tool Reference §7 (Fork-Specific Output Telemetry) | `.opencode/skill/mcp-coco-index/references/tool_reference.md` (anchor: `#-7-fork-specific-output-telemetry`) |
+| Fork CHANGELOG | `.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md` |
 | Cross-CLI Playbook | `.opencode/skill/mcp-coco-index/references/cross_cli_playbook.md` |

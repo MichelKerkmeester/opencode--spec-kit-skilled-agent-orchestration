@@ -40,6 +40,8 @@ Default flow:
 6. Renderer returns a short `Advisor: ...` brief or an empty fail-open result.
 7. Diagnostics are written without raw prompt text.
 
+When the prompt resumes a phase-parent target and `graph-metadata.json` has a fresh `derived.last_active_child_id` pointer (non-null and `derived.last_active_at` within 24 hours), the brief surfaces that active child as the next-action target instead of the parent's child listing. Missing, null, stale, or invalid pointers fall back to the parent manifest/listing behavior.
+
 Native tool baseline:
 
 | Tool | Purpose |

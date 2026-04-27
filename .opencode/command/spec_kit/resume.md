@@ -59,12 +59,17 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - Found → spec_path = extracted, detection_method = "ranked"
    - Not found → detection_method = "none" (include Q0)
 
-3b. CHECK --phase-folder flag OR detect phase parent:
+3b. CHECK --phase-folder flag, --no-redirect, OR detect phase parent:
    - IF --phase-folder=<path> provided → auto-resolve spec_path to that child folder
      Set spec_path = <path>, detection_method = "phase-folder"
      Validate path matches pattern: `{specs|.opencode/specs}/[###]-*/[0-9][0-9][0-9]-*/`
+   - IF --no-redirect is present → skip pointer redirect entirely; show the parent `spec.md` and child manifest when spec_path is a phase parent
    - IF spec_path is a parent phase folder (contains numbered child folders like 001-*, 002-*):
-     List child phases with completion status:
+     Unless --no-redirect is present, read `graph-metadata.json` first:
+       - If `derived.last_active_child_id` is a non-null string AND `derived.last_active_at` parses as ISO-8601 within the last 24 hours, resolve that child under the parent and recurse directly into that child resume flow
+       - If the pointer child is missing, null, malformed, missing `last_active_at`, or older than 24 hours, ignore it and continue to list fallback
+       - When redirecting, report the redirect target and timestamp so the user can backtrack with `--no-redirect`
+     List fallback: child phases with completion status:
        $ ls -d [spec_path]/[0-9][0-9][0-9]-*/ 2>/dev/null
      For each child: check tasks.md completion %, show status (not started / in progress / complete)
      Present phase selection to user so they can choose which phase to resume

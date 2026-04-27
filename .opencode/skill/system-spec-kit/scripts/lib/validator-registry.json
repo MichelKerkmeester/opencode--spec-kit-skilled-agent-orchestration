@@ -112,6 +112,14 @@
     "description": "Checks parent/child phase-link consistency."
   },
   {
+    "rule_id": "PHASE_PARENT_CONTENT",
+    "aliases": [],
+    "script_path": "rules/check-phase-parent-content.sh",
+    "severity": "warn",
+    "category": "authored_template",
+    "description": "Warns when phase-parent spec.md includes migration-history narrative tokens."
+  },
+  {
     "rule_id": "AI_PROTOCOLS",
     "aliases": ["AI_PROTOCOL"],
     "script_path": "rules/check-ai-protocols.sh",

@@ -309,7 +309,7 @@ Seven tools, unchanged across the Phase 028 migration:
 
 ### coco-index facade pattern
 
-The `ccc_*` handlers are TypeScript facades that spawn the coco-index CLI binary from `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc`. This isolates the Python-based semantic index behind a uniform MCP interface without pulling it into the TypeScript process boundary.
+The `ccc_*` handlers are TypeScript facades that spawn the coco-index CLI binary from `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` — specifically the spec-kit fork at version `0.2.3+spec-kit-fork.0.2.0`, NOT a vanilla upstream `cocoindex-code` install. This isolates the Python-based semantic index behind a uniform MCP interface without pulling it into the TypeScript process boundary. Because the binary is the fork, search results emit fork-specific telemetry fields (`dedupedAliases`, `uniqueResultCount`, `rankingSignals`, etc.) that the facade layer passes through verbatim. Schema details: `.opencode/skill/mcp-coco-index/references/tool_reference.md` §7.
 
 ### Readiness contract
 

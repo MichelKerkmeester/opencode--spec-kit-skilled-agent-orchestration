@@ -55,6 +55,7 @@ This document provides comprehensive documentation for every validation rule enf
 | `LEVEL_MATCH`        | ERROR    | All files     | Level consistent across all spec files         |
 | `SECTION_COUNTS`     | WARNING  | All levels    | Section counts within expected ranges          |
 | `PHASE_LINKS`        | WARNING  | Phased specs  | Parent-child phase references valid            |
+| `PHASE_PARENT_CONTENT` | WARNING | Phase parents | Phase-parent `spec.md` avoids consolidation/migration narratives |
 
 ---
 
@@ -72,6 +73,9 @@ This document provides comprehensive documentation for every validation rule enf
 | 1     | `spec.md`, `plan.md`, `tasks.md`, `implementation-summary.md`  |
 | 2     | Level 1 + `checklist.md`                                       |
 | 3     | Level 2 + `decision-record.md`                                 |
+| **Phase Parent** | `spec.md`, `description.json`, `graph-metadata.json` (lean trio only; heavy docs live in phase children) |
+
+> **Phase Parent Mode:** A spec folder is treated as a phase parent when at least one direct child matches `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`. Detection is implemented identically by `is_phase_parent()` (shell, in `scripts/lib/shell-common.sh`) and `isPhaseParent()` (ESM JS, at `scripts/dist/spec/is-phase-parent.js`). When detected, FILE_EXISTS skips Level-N file requirements at the parent and accepts only the lean trio. Phase children continue to follow their own Level 1/2/3/3+ contract. Tolerant policy: legacy phase parents that retain heavy docs continue to validate without churn.
 
 ### Implementation Summary (All Levels)
 
@@ -151,6 +155,37 @@ cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007
 ---
 
 <!-- /ANCHOR:file-exists -->
+
+## 3.5 PHASE_PARENT_CONTENT
+
+**Severity:** WARNING (advisory; does not block validation pass)
+**Description:** When a spec folder qualifies as a phase parent, its `spec.md` must avoid migration-history narratives. The phase-parent surface is a manifest of children plus root purpose; consolidation, merge, or rename history rots fast and creates the very hallucination surface the lean trio policy was designed to eliminate.
+
+**Detection:** Runs only when `is_phase_parent($folder)` returns true. Skips automatically on regular spec folders, phase children, and any folder that lacks NNN-named populated children.
+
+**Forbidden tokens** (case-insensitive scan, code-fence + HTML-comment aware):
+
+```
+consolidat[a-z]*    # consolidate, consolidated, consolidation
+merged from
+renamed from
+collapsed
+[0-9]+→[0-9]+       # arrow-style narrative ("29→9 phases")
+reorganization
+```
+
+The scanner skips matches inside fenced code blocks (triple-backtick) and inside HTML comment blocks (`<!-- -->`), so legitimate examples in templates and reference docs do not trigger the rule.
+
+**Required content (mirrored from `templates/phase_parent/spec.md`):** root purpose, sub-phase manifest, what needs done. Migration history goes in an optional `context-index.md` (template at `.opencode/skill/system-spec-kit/templates/context-index.md`).
+
+**Implementation:** `.opencode/skill/system-spec-kit/scripts/rules/check-phase-parent-content.sh`. Registered as `PHASE_PARENT_CONTENT` in `scripts/lib/validator-registry.json` (severity: warn, category: authored_template).
+
+### How to Fix
+
+Move any flagged narrative to `context-index.md` (create the file if it does not exist; the template carries Author Instructions explaining when to use it). Replace the parent's narrative with a sub-phase manifest table linking each phase folder to its focus and current status.
+
+---
+
 <!-- ANCHOR:placeholder-filled -->
 ## 4. PLACEHOLDER_FILLED
 

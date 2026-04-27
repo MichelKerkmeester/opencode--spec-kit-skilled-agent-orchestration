@@ -30,7 +30,9 @@ This skill bundles a soft-fork of [`cocoindex-code`](https://github.com/cocoinde
 
 Modifications are limited to the `cocoindex_code` Python wrapper. The Rust-based upstream `cocoindex` package is NOT forked - it is still pulled from PyPI as a dependency.
 
-Patches landed (per packet 009 in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/009-cocoindex-overfetch-dedup/`): mirror-folder duplicate suppression, canonical path identity, path-class reranking for implementation-intent queries, and ranking telemetry.
+Patches landed per the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (the cocoindex-overfetch-dedup packet — currently numbered `004` in the renumbered phase tree, tracked as `009` during research and in commit history such as `1b62e976d`): mirror-folder duplicate suppression, canonical path identity, path-class reranking for implementation-intent queries, and ranking telemetry.
+
+**Vanilla cocoindex-code returns** per result: `file`, `lines`, `snippet`, `score`, `language`. **This fork additionally returns:** `source_realpath`, `content_hash`, `path_class` (chunk-level identity + taxonomy), `dedupedAliases`, `uniqueResultCount` (mirror-folder dedup signals), `raw_score` (pre-rerank score), and `rankingSignals` (per-result rerank breakdown). Callers writing client code against this MCP/CLI must account for the extended shape — see [`references/tool_reference.md` §7 Fork-Specific Output Telemetry](references/tool_reference.md#-7-fork-specific-output-telemetry) for the full schema, types, and reading guidance.
 
 ---
 

@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "phase parent doc sync",
+      "references readme lean trio",
+      "phase definitions lean",
+      "save workflow phase parent",
+      "phase parent doc sync plan",
+      "references readme sync plan",
+      "phase parent doc sync tasks",
+      "phase parent doc sync checklist",
+      "phase parent doc sync shipped",
+      "references readme lean trio shipped"
+    ],
+    "key_topics": [
+      "phase",
+      "parent",
+      "doc",
+      "sync",
+      "references",
+      "readme",
+      "lean",
+      "trio",
+      "definitions",
+      "save",
+      "workflow",
+      "plan"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "references/structure/phase_definitions.md",
+      "plan.md",
+      "tasks.md",
+      "templates/phase_parent/spec.md",
+      "references/memory/save_workflow.md",
+      "implementation-summary.md",
+      "references/validation/validation_rules.md",
+      "templates/README.md",
+      "references/validation/template_compliance_contract.md",
+      "references/intake-contract.md",
+      "templates/context-index.md",
+      "references/workflows/quick_reference.md",
+      "assets/template_mapping.md",
+      ".opencode/command/spec_kit/plan.md",
+      "references/structure/folder_routing.md",
+      "references/config/hook_system.md",
+      ".opencode/command/spec_kit/complete.md",
+      "scratch/regression-baseline-pre-003.txt",
+      "spec.md",
+      ".opencode/skill/system-spec-kit/references/structure/phase_definitions.md"
+    ],
+    "entities": [
+      {
+        "name": "phase_definitions.md",
+        "kind": "doc",
+        "path": "references/structure/phase_definitions.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "save_workflow.md",
+        "kind": "doc",
+        "path": "references/memory/save_workflow.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "validation_rules.md",
+        "kind": "doc",
+        "path": "references/validation/validation_rules.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "templates/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_compliance_contract.md",
+        "kind": "doc",
+        "path": "references/validation/template_compliance_contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "intake-contract.md",
+        "kind": "doc",
+        "path": "references/intake-contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.md",
+        "kind": "doc",
+        "path": "templates/context-index.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": "references/workflows/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "template_mapping.md",
+        "kind": "doc",
+        "path": "assets/template_mapping.md",
+        "source": "derived"
+      },
+      {
+        "name": "folder_routing.md",
+        "kind": "doc",
+        "path": "references/structure/folder_routing.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": "references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "complete.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/complete.md",
+        "source": "derived"
+      },
+      {
+        "name": "regression-baseline-pre-003.txt",
+        "kind": "file",
+        "path": "scratch/regression-baseline-pre-003.txt",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Trio Sync",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phases",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phases 001 and 002 shipped the lean-trio policy end-to-end: validator phase-parent branches across five rules, the new content-discipline validator, the generator pointer-write and bubble-up, the resume pointer-first redirect, the lean phase-parent template, and base documentation in CLAUDE.md, AGENTS.md, AGENTS_Barter.md, AGENTS_example_fs_enterprises.md, and the system-spec-kit `SKILL.md`. But a deep audit of the rest of the skill surface (3 parallel Explore agents covering 30+ files) found 13 reference docs, READMEs, command docs, and assets still describing the pre-policy state. Three contradict shipped behavior outright: `references/structure/phase_definitions.md` shows phase parents with `plan.md`/`tasks.md`/`decision-record.md`/`memory/`; `references/memory/save_workflow.md` Output Format does not differentiate phase-parent saves; `templates/README.md` STRUCTURE table is missing rows for the new `phase_parent/` and `context-index.md` templates. The new `PHASE_PARENT_CONTENT` validator rule is not documented anywhere outside its own script and the validator-registry.",
+    "created_at": "2026-04-27T13:30:00Z",
+    "last_save_at": "2026-04-27T12:47:26.864Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

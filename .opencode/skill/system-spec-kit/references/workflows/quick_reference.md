@@ -511,6 +511,14 @@ whether you need the coordination root or an active child.
 Load/save memory in the child packet by default.
 Only load root memory when updating coordination snapshots.
 
+**Phase-Parent Resume Ladder**: When the resume target is a phase parent (folder has `[0-9]{3}-name/` children with `spec.md` or `description.json`), `/spec_kit:resume` honors the pointer first:
+
+1. Read `derived.last_active_child_id` from the parent's `graph-metadata.json`. If non-null AND `derived.last_active_at` parses as ISO-8601 within the last 24 hours, recurse directly into that child and apply the child's normal handover → `_memory.continuity` → spec docs ladder.
+2. If the pointer is null, missing, malformed, or older than 24 hours, fall back to listing children with statuses (sourced from each child's `graph-metadata.json` `derived.status`) and let the user pick.
+3. `--no-redirect` flag bypasses the pointer step entirely and shows the parent's spec.md plus child manifest.
+
+The pointer is maintained automatically by the generator: parent-level saves write `last_active_child_id = null`; child saves bubble up the child's `packet_id`. Atomic write via temp+rename. No `_memory.continuity` block exists at a phase parent (per the lean trio policy — parents have no `implementation-summary.md`).
+
 **Save location:**
 - Primary: the active packet's canonical continuity surfaces
 - Core continuity block: `_memory.continuity` in `implementation-summary.md`

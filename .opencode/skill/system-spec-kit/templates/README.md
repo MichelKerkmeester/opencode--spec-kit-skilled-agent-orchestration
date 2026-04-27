@@ -51,6 +51,8 @@ Use level templates for real work. Do not copy from `core/` or `addendum/` direc
 | `handover.md` | Session handover template |
 | `debug-delegation.md` | Debug delegation template |
 | `resource-map.md` | Optional cross-cutting path catalog (any level) |
+| `phase_parent/` | Lean phase-parent `spec.md` template — used by `create.sh --phase` to scaffold parents that hold only the lean trio |
+| `context-index.md` | Optional migration-bridge template for phase parents that have undergone reorganization (renames, gap renumbers, consolidation); never auto-scaffolded |
 | `examples/` | Filled references only |
 | `changelog/` | Packet-local nested changelog templates for root specs and phase children |
 | `scratch/` | Temporary workspace for non-committed artifacts |
@@ -101,7 +103,7 @@ Large specs can be decomposed into ordered phases using the Phase System (Spec 1
   - `phase-parent-section.md` — appended to the parent spec to list and track child phases.
 - Phase completion can also publish packet-local changelog files into the parent `changelog/` folder.
 
-Phase children follow the same level system (1-3+) as standalone specs.
+**Phase Parent Folder.** When `create.sh --phase` (or `/spec_kit:plan :with-phases`) creates a phase decomposition, the parent scaffolds from `phase_parent/spec.md` (lean — only the spec.md plus auto-generated `description.json` and `graph-metadata.json`). Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live exclusively in the children. Detection is single-source-of-truth: `is_phase_parent()` (shell, `scripts/lib/shell-common.sh`) and `isPhaseParent()` (ESM JS, `scripts/dist/spec/is-phase-parent.js`) MUST agree. Phase children follow the same level system (1-3+) as standalone specs.
 
 <!-- /ANCHOR:phase-system -->
 

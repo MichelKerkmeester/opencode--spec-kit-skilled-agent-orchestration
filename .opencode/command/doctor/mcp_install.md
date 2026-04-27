@@ -55,7 +55,7 @@ Check system prerequisites. **STOP if blocking prerequisites are missing.**
 
 ```bash
 node --version    # Must be v18+
-python3 --version # Must be 3.11+ (for CocoIndex)
+python3 --version # Must be 3.11+ (for the spec-kit CocoIndex fork at .opencode/skill/mcp-coco-index/; upstream cocoindex-code may have different Python bounds)
 npm --version
 npx --version
 ```

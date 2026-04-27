@@ -79,34 +79,33 @@ Phase child folders use the standard 3-digit numbered naming convention:
 
 **Format:** `[0-9][0-9][0-9]-[name]/` (e.g., `001-foundation/`, `002-api-layer/`)
 
-### Parent Folder Structure
+### Parent Folder Structure (lean trio policy)
 
-The parent spec folder contains a Phase Documentation Map in its `spec.md` that tracks all child phases:
+A phase parent only requires **the lean trio** at the parent level: `spec.md`, `description.json`, `graph-metadata.json`. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live exclusively in the phase children where they stay accurate to that phase's actual work. The parent's `spec.md` carries the Phase Documentation Map; the parent's `graph-metadata.json` carries the structured rollup including `derived.last_active_child_id` and `derived.last_active_at` pointer fields:
 
 ```
 specs/###-parent-feature/
-├── spec.md                    # Contains Phase Documentation Map
-├── plan.md                    # High-level coordination plan
-├── tasks.md                   # Cross-phase task tracking
-├── decision-record.md         # Architectural decisions (if L3+)
-├── changelog/                 # Packet-local root + phase changelog files
-├── memory/                    # Parent-level context
-├── 001-foundation/            # Phase 1
-│   ├── spec.md                # Phase-specific spec (back-references parent)
-│   ├── plan.md
-│   ├── tasks.md
-│   └── memory/
-├── 002-api-layer/             # Phase 2
+├── spec.md                    # Vision, scope, Phase Documentation Map
+├── description.json           # Discovery metadata
+├── graph-metadata.json        # Children list + derived rollup + last_active_child_id pointer
+├── 001-foundation/            # Phase 1 (full Level-N child)
 │   ├── spec.md
+│   ├── description.json
+│   ├── graph-metadata.json
 │   ├── plan.md
 │   ├── tasks.md
-│   └── memory/
-└── 003-frontend/              # Phase 3
-    ├── spec.md
-    ├── plan.md
-    ├── tasks.md
-    └── memory/
+│   ├── checklist.md           # Level 2+
+│   ├── decision-record.md     # Level 3+
+│   └── implementation-summary.md  # Created post-implementation
+├── 002-api-layer/             # Phase 2 (same shape as 001)
+└── 003-frontend/              # Phase 3 (same shape as 001)
 ```
+
+**Detection rule (single source of truth):** A spec folder is a phase parent iff (a) it has at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND (b) at least one such child has `spec.md` OR `description.json`. The shell helper `is_phase_parent()` (in `.opencode/skill/system-spec-kit/scripts/lib/shell-common.sh`) and the ESM JS helper `isPhaseParent()` (in `.opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js`) both implement this contract; they MUST agree on every input. The validator's phase-parent branches in `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, and `check-template-headers.sh` skip Level-N expectations when this returns true.
+
+**Parent template:** New phase decompositions via `create.sh --phase` scaffold the parent from `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md` (lean) and each child from the appropriate `templates/level_N/` set. The lean template carries an inline content-discipline comment listing FORBIDDEN narrative tokens (consolidation, merge, migration history) and REQUIRED content (root purpose, sub-phase manifest, what needs done) — the new `PHASE_PARENT_CONTENT` validator enforces this advisory.
+
+**Tolerant migration policy:** Legacy phase parents that retain heavy docs (e.g. `026-graph-and-context-optimization/`) continue to validate without churn. Soft deprecation of legacy heavy docs is a separate follow-on packet.
 
 ### Parent spec.md: Phase Documentation Map
 

@@ -1,0 +1,25 @@
+{
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research",
+  "description": "Feature Specification: MCP Runtime Improvement Deep Research",
+  "keywords": [
+    "feature",
+    "specification",
+    "mcp",
+    "runtime",
+    "improvement",
+    "deep",
+    "research"
+  ],
+  "lastUpdated": "2026-04-27T06:26:37.169Z",
+  "specId": "002",
+  "folderSlug": "mcp-runtime-improvement-research",
+  "parentChain": [
+    ".opencode",
+    "specs",
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

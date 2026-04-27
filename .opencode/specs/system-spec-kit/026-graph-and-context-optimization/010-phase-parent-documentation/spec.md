@@ -91,7 +91,8 @@ Make the parent of a phased spec folder a manifest, not a state-bearing document
 | Phase | Folder | Focus | Status (point-in-time) |
 |-------|--------|-------|------------------------|
 | 1 | `001-validator-and-docs/` | Validator phase-parent branches, `is_phase_parent`/`isPhaseParent` detection helpers, lean spec template, graph-metadata schema additive accept-path, CLAUDE.md / AGENTS.md / AGENTS sync triad / SKILL.md docs sync | complete |
-| 2 | `002-generator-and-polish/` | Generator pointer-write + bubble-up, `create.sh --phase` lean-template swap, `templates/context-index.md`, `resource-map.md` polish, resume pointer-redirect, hook brief redirect, content-discipline validator (P2), end-to-end test | draft |
+| 2 | `002-generator-and-polish/` | Generator pointer-write + bubble-up, `create.sh --phase` lean-template swap, `templates/context-index.md`, `resource-map.md` polish, resume pointer-redirect, hook brief redirect, content-discipline validator (P2), end-to-end test | complete |
+| 3 | `003-references-and-readme-sync/` | Doc-only sync of 13 reference docs, READMEs, command docs, and assets to align with the lean-trio policy: `phase_definitions.md`, `save_workflow.md`, `validation_rules.md`, top-level `README.md`, `templates/README.md`, plus 6 medium-severity files and 2 minor clarifications | draft |
 
 ### Phase Transition Rules
 
@@ -123,6 +124,7 @@ Make the parent of a phased spec folder a manifest, not a state-bearing document
 ## RELATED DOCUMENTS
 
 - **Phase 1 — shipped**: See `001-validator-and-docs/` (full spec, plan, tasks, checklist, implementation-summary)
-- **Phase 2 — draft**: See `002-generator-and-polish/` (full spec, plan, tasks, checklist)
+- **Phase 2 — shipped**: See `002-generator-and-polish/` (full spec, plan, tasks, checklist, implementation-summary)
+- **Phase 3 — draft**: See `003-references-and-readme-sync/` (doc-only sync; 13 files; full spec, plan, tasks, checklist)
 - **Parent Spec**: See `../spec.md`
-- **Graph Metadata**: See `graph-metadata.json` for derived rollup and `last_active_child_id` pointer (populated when Phase 2 ships)
+- **Graph Metadata**: See `graph-metadata.json` for derived rollup and `last_active_child_id` pointer

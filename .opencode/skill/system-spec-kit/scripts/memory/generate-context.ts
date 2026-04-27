@@ -27,6 +27,7 @@ import { runWorkflow, releaseFilesystemLock } from '../core/workflow.js';
 import { loadCollectedData } from '../loaders/index.js';
 import { collectSessionData } from '../extractors/collect-session-data.js';
 import { isMainModule } from '../lib/esm-entry.js';
+import { isPhaseParent } from '../spec/is-phase-parent.js';
 
 type StructuredCollectedData = Record<string, unknown> & { _source: 'file' };
 
@@ -49,6 +50,7 @@ export interface SpecFolderValidation {
 }
 
 const SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE = getSessionScopedSaveContextExample();
+const GRAPH_METADATA_FILE = 'graph-metadata.json';
 
 // ───────────────────────────────────────────────────────────────
 // 3. HELP TEXT
@@ -323,6 +325,125 @@ function extractPayloadSpecFolder(data: Record<string, unknown>): string | null 
   }
 
   return null;
+}
+
+function resolveExistingSpecFolderPath(rawArg: string | null): string | null {
+  if (!rawArg) return null;
+
+  if (path.isAbsolute(rawArg)) {
+    return fsSync.existsSync(rawArg) ? path.resolve(rawArg) : null;
+  }
+
+  const projectScoped = path.resolve(CONFIG.PROJECT_ROOT, rawArg);
+  if (fsSync.existsSync(projectScoped)) {
+    return projectScoped;
+  }
+
+  const cleaned = rawArg
+    .replace(/^\.opencode\/specs\//, '')
+    .replace(/^specs\//, '')
+    .replace(/\/+$/, '');
+  const segments = cleaned.split('/').filter(Boolean);
+  if (segments.length === 0) return null;
+
+  for (const specsDir of getSpecsDirectories()) {
+    const candidate = path.join(specsDir, ...segments);
+    if (fsSync.existsSync(candidate)) {
+      return path.resolve(candidate);
+    }
+  }
+
+  return null;
+}
+
+function readGraphMetadata(graphFile: string): Record<string, unknown> {
+  if (!fsSync.existsSync(graphFile)) {
+    return {};
+  }
+
+  const raw = fsSync.readFileSync(graphFile, 'utf8');
+  const parsed = JSON.parse(raw) as unknown;
+  if (typeof parsed !== 'object' || parsed === null || Array.isArray(parsed)) {
+    throw new Error(`Expected object JSON in ${graphFile}`);
+  }
+  return parsed as Record<string, unknown>;
+}
+
+function atomicWriteJson(filePath: string, value: unknown): void {
+  const dir = path.dirname(filePath);
+  const tempPath = path.join(
+    dir,
+    `.${path.basename(filePath)}.${process.pid}.${Date.now()}.tmp`,
+  );
+  const data = `${JSON.stringify(value, null, 2)}\n`;
+  fsSync.writeFileSync(tempPath, data, 'utf8');
+  fsSync.renameSync(tempPath, filePath);
+}
+
+function getPacketIdFromGraphMetadata(specFolderPath: string): string {
+  const graphFile = path.join(specFolderPath, GRAPH_METADATA_FILE);
+  try {
+    const metadata = readGraphMetadata(graphFile);
+    if (typeof metadata.packet_id === 'string' && metadata.packet_id.trim().length > 0) {
+      return metadata.packet_id;
+    }
+  } catch {
+    // Fall through to path-derived packet id.
+  }
+
+  for (const specsDir of getSpecsDirectories()) {
+    const relative = path.relative(path.resolve(specsDir), path.resolve(specFolderPath));
+    if (relative && !relative.startsWith('..') && !path.isAbsolute(relative)) {
+      return relative.replace(/\\/g, '/');
+    }
+  }
+
+  return path.basename(specFolderPath);
+}
+
+export function updatePhaseParentPointer(
+  phaseParentPath: string,
+  activeChildId: string | null,
+  timestamp: string,
+): void {
+  const graphFile = path.join(phaseParentPath, GRAPH_METADATA_FILE);
+  const metadata = readGraphMetadata(graphFile);
+  const derived = (
+    typeof metadata.derived === 'object' &&
+    metadata.derived !== null &&
+    !Array.isArray(metadata.derived)
+  )
+    ? { ...(metadata.derived as Record<string, unknown>) }
+    : {};
+
+  metadata.derived = {
+    ...derived,
+    last_active_child_id: activeChildId,
+    last_active_at: timestamp,
+  };
+
+  atomicWriteJson(graphFile, metadata);
+}
+
+export function updatePhaseParentPointersAfterSave(
+  specFolderPath: string,
+  timestamp: string = new Date().toISOString(),
+): void {
+  const resolvedSpecFolder = path.resolve(specFolderPath);
+
+  if (isPhaseParent(resolvedSpecFolder)) {
+    updatePhaseParentPointer(resolvedSpecFolder, null, timestamp);
+    return;
+  }
+
+  const directParent = path.dirname(resolvedSpecFolder);
+  if (directParent !== resolvedSpecFolder && isPhaseParent(directParent)) {
+    updatePhaseParentPointer(
+      directParent,
+      getPacketIdFromGraphMetadata(resolvedSpecFolder),
+      timestamp,
+    );
+  }
 }
 
 async function readAllStdin(stdin: NodeJS.ReadStream = process.stdin): Promise<string> {
@@ -607,6 +728,11 @@ async function main(
       sessionId: parsed.sessionId ?? undefined,
       plannerMode: parsed.plannerMode,
     });
+
+    const savedSpecFolder = resolveExistingSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
+    if (savedSpecFolder) {
+      updatePhaseParentPointersAfterSave(savedSpecFolder);
+    }
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     const isExpected = /Spec folder not found|No spec folders|specs\/ directory|retry attempts|Expected|Invalid JSON provided|requires a target spec folder|requires an inline JSON string|required a non-empty JSON object|JSON object payload|no longer supported|session-id requires/.test(errMsg);

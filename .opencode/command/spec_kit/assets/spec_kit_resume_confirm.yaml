@@ -58,7 +58,8 @@ session_detection:
       fallback: "report no session"
   phase_folder_detection:
     trigger: "After spec folder resolved, check if it contains [0-9][0-9][0-9]-*/ child directories"
-    action: "If phase children found → list them with per-child tasks.md completion status → present phase selection UI before proceeding"
+    action: "If phase children found and --no-redirect is absent → read graph-metadata.json derived.last_active_child_id + derived.last_active_at first. If child id is non-null, points to an existing direct child, and last_active_at is ISO-8601 within 24h, redirect/recurse directly to that child and report the target + timestamp. If pointer is null, missing, stale, malformed, or the child is missing, fall back to listing children with per-child tasks.md completion status and present phase selection UI."
+    no_redirect: "If --no-redirect is provided, skip pointer redirect entirely and show the parent spec.md plus child manifest/listing."
     skip: "If --phase-folder was provided in $ARGUMENTS, skip detection and use the specified child directly"
     detection_method_value: "phase-folder"
   fallback: { on_no_memory: "Report no active session, suggest /spec_kit:complete" }

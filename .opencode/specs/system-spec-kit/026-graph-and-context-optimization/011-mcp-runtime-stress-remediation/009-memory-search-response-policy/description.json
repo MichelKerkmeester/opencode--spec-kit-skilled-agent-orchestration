@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+  "description": "Feature Specification: memory_search hard response policy + citation policy",
+  "keywords": [
+    "feature",
+    "specification",
+    "hard",
+    "response",
+    "policy",
+    "citation"
+  ],
+  "lastUpdated": "2026-04-27T07:48:04.667Z",
+  "specId": "009",
+  "folderSlug": "memory-search-response-policy",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

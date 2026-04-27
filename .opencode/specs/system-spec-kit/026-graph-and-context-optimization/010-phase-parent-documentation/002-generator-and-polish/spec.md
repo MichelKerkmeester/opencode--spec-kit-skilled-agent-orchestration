@@ -122,6 +122,18 @@ Close the deferred items so the phase-parent surface is uniformly lean by defaul
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-009 | `check-phase-parent-content.sh` validator. | Scans phase-parent `spec.md` for forbidden narrative tokens (consolidate*, merged from, renamed from, collapsed, X→Y). Emits warning via validator-registry as severity `warn`. Acceptable to defer if reviewer discipline holds. |
+
+### Acceptance Scenarios
+
+**Given** a save targets a phase parent, **when** the generator completes, **then** the parent's `graph-metadata.json` stores `derived.last_active_child_id = null` and a fresh `derived.last_active_at`.
+
+**Given** a save targets a direct child of a phase parent, **when** the generator completes, **then** the parent's `graph-metadata.json` points `derived.last_active_child_id` at the child's packet id.
+
+**Given** `create.sh --phase --phases 2` creates a new parent, **when** the parent folder is listed, **then** it contains the lean trio only: `spec.md`, `description.json`, and `graph-metadata.json`.
+
+**Given** `/spec_kit:resume` targets a phase parent with a fresh pointer, **when** `--no-redirect` is absent, **then** the workflow resolves directly to the active child instead of listing all children.
+
+**Given** `/spec_kit:resume --no-redirect` targets a phase parent with a fresh pointer, **when** the workflow reaches phase-parent handling, **then** it skips pointer redirect and shows the parent surface plus child manifest.
 <!-- /ANCHOR:requirements -->
 
 ---

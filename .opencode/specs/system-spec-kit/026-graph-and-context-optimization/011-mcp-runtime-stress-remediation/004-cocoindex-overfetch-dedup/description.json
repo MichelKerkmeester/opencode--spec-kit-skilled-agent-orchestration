@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup",
+  "description": "Feature Specification: CocoIndex over-fetch + canonical-identity dedup + path-class rerank",
+  "keywords": [
+    "feature",
+    "specification",
+    "cocoindex",
+    "over-fetch",
+    "canonical-identity",
+    "dedup",
+    "path-class",
+    "rerank"
+  ],
+  "lastUpdated": "2026-04-27T07:48:04.460Z",
+  "specId": "004",
+  "folderSlug": "cocoindex-overfetch-dedup",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

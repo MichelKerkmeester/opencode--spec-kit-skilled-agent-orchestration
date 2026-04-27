@@ -1,0 +1,204 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "008-mcp-daemon-rebuild-protocol",
+      "MCP daemon restart protocol",
+      "phantom fix problem",
+      "dist marker verification",
+      "live MCP probe contract",
+      "Q1 four-part verification",
+      "MCP rebuild restart protocol plan",
+      "MCP rebuild restart protocol tasks",
+      "MCP rebuild restart protocol summary"
+    ],
+    "key_topics": [
+      "008-mcp-daemon-rebuild-protocol",
+      "mcp",
+      "daemon",
+      "restart",
+      "protocol",
+      "phantom",
+      "fix",
+      "problem",
+      "dist",
+      "marker",
+      "verification",
+      "live"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Semantic Search",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Author",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Claude Code",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Daemon Restart Required",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "All Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "canonical",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Summary",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Folder",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "What Was Built",
+        "kind": "proper_noun",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The 005 packet implementation summary claimed Cluster 1-3 P0 fixes landed. The post-remediation verification (recorded in 005/spec.md §7) showed Probes A and B regressing the original defect: live `memory_context({input:\"Semantic Search\"})` still emitted `meta.intent.type:\"fix_bug\"` (0.098) and `data.content[0].text:{count:0,results:[]}`. 007/Q1 (Iteration 001) ruled out a missing dist rebuild — `dist/` markers were present and timestamps were newer than source. The remaining cause was that the MCP-owning client/runtime had not been restarted; the running daemon child process continued using the old code. This is the canonical \"phantom fix\" failure mode and it is structural, not implementation-specific.",
+    "created_at": "2026-04-27T07:56:42.313Z",
+    "last_save_at": "2026-04-27T07:56:42.313Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

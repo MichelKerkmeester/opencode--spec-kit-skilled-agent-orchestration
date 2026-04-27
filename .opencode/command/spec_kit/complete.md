@@ -245,7 +245,7 @@ When `--phase-folder=<path>` is provided or spec folder selection includes a pha
 | `:auto` | `/spec_kit:complete :auto "feature"` | Execute all steps without approval gates |
 | `:confirm` | `/spec_kit:complete :confirm "feature"` | Pause at each step for approval |
 | `:with-research` | `/spec_kit:complete :with-research "feature"` | Insert research phase after Step 2 (before specification) |
-| `:with-phases` | `/spec_kit:complete :with-phases "feature"` | Insert phase decomposition before Step 1, then complete first child |
+| `:with-phases` | `/spec_kit:complete :with-phases "feature"` | Insert phase decomposition before Step 1, then complete first child. The parent scaffolds from `templates/phase_parent/spec.md` (lean trio only — `spec.md` + `description.json` + `graph-metadata.json` at parent); plan/tasks/checklist/decisions live in each child. |
 | (default) | `/spec_kit:complete "feature"` | Ask user to choose mode during setup |
 
 ---

@@ -430,6 +430,8 @@ Runs after setup, before Step 1:
 - Normal Steps 1-8 execute targeting that first child
 - Subsequent children: invoke `/spec_kit:plan --phase-folder=<child-path>` per child
 
+> **Lean parent.** The parent created by `create.sh --phase` scaffolds from `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md` (the lean phase-parent template) and contains ONLY the lean trio: `spec.md`, `description.json`, `graph-metadata.json`. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live exclusively in the phase children. Each child receives the appropriate Level-N templates as today. The validator's phase-parent branches in `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, and `check-template-headers.sh` skip Level-N expectations on the parent automatically. Tolerant policy preserves legacy phase parents that retain heavy docs.
+
 ### Checkpoint
 
 ```

@@ -1,0 +1,32 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
+  "description": "Phase 3 of the phase-parent-documentation packet. Doc-only sync of 13 reference docs, READMEs, command docs, and assets to align with the shipped phase-parent lean-trio policy. Three sub-phases: Critical contradictions (5 files), Medium clarity gaps (5 files), Low minor clarifications (2 files) plus verification.",
+  "keywords": [
+    "phase",
+    "parent",
+    "doc",
+    "sync",
+    "references",
+    "readme",
+    "lean",
+    "trio",
+    "validation_rules",
+    "phase_definitions",
+    "save_workflow",
+    "PHASE_PARENT_CONTENT"
+  ],
+  "lastUpdated": "2026-04-27T12:47:26.864Z",
+  "specId": "003",
+  "folderSlug": "references-and-readme-sync",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "010-phase-parent-documentation"
+  ],
+  "memorySequence": 4,
+  "memoryNameHistory": [
+    "27-04-26_13-30__created-003-references-and-readme-sync-as-phase-3.md",
+    "27-04-26_13-45__phase-3-doc-sync-shipped-natively-claude-opus-13.md",
+    "27-04-26_13-47__phase-3-doc-sync-complete-13-files-updated-end-to.md"
+  ]
+}

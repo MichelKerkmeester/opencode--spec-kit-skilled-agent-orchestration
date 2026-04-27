@@ -4,54 +4,222 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
-      "system-spec-kit/026-graph-and-context-optimization/007-code-graph"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
       "phase parent generator",
       "phase parent pointer",
       "phase parent followon",
-      "last_active_child_id"
+      "last_active_child_id",
+      "phase parent followon plan",
+      "phase parent pointer plan",
+      "phase parent followon tasks",
+      "phase parent followon checklist",
+      "phase parent generator implementation",
+      "phase parent pointer shipped",
+      "lean phase parent default"
     ],
     "key_topics": [
       "phase",
       "parent",
       "generator",
       "pointer",
-      "bubble-up",
-      "resume",
-      "redirect",
-      "context-index",
-      "create.sh",
-      "validator"
+      "followon",
+      "plan",
+      "tasks",
+      "checklist",
+      "implementation",
+      "shipped",
+      "lean",
+      "default"
     ],
     "importance_tier": "important",
-    "status": "draft",
+    "status": "complete",
     "key_files": [
+      ".opencode/command/spec_kit/resume.md",
+      "scripts/spec/create.sh",
+      "templates/phase_parent/spec.md",
+      "templates/context-index.md",
+      "templates/resource-map.md",
       "spec.md",
-      "plan.md",
-      "tasks.md",
-      "checklist.md"
+      "references/hooks/skill-advisor-hook.md",
+      ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/is-phase-parent.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js",
+      ".opencode/skill/system-spec-kit/scripts/tsconfig.json",
+      ".opencode/skill/system-spec-kit/scripts/spec/create.sh",
+      ".opencode/skill/system-spec-kit/templates/context-index.md",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-phase-parent-content.sh",
+      ".opencode/skill/system-spec-kit/scripts/lib/validator-registry.json",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+      ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+      ".opencode/skill/system-spec-kit/scripts/tests/phase-parent-pointer.vitest.ts"
     ],
+    "entities": [
+      {
+        "name": "resume.md",
+        "kind": "doc",
+        "path": ".opencode/command/spec_kit/resume.md",
+        "source": "derived"
+      },
+      {
+        "name": "create.sh",
+        "kind": "script",
+        "path": "scripts/spec/create.sh",
+        "source": "derived"
+      },
+      {
+        "name": "context-index.md",
+        "kind": "doc",
+        "path": "templates/context-index.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor-hook.md",
+        "kind": "doc",
+        "path": "references/hooks/skill-advisor-hook.md",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "is-phase-parent.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/is-phase-parent.ts",
+        "source": "derived"
+      },
+      {
+        "name": "is-phase-parent.js",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js",
+        "source": "derived"
+      },
+      {
+        "name": "tsconfig.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/tsconfig.json",
+        "source": "derived"
+      },
+      {
+        "name": "check-phase-parent-content.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/rules/check-phase-parent-content.sh",
+        "source": "derived"
+      },
+      {
+        "name": "validator-registry.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/validator-registry.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_resume_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/spec_kit/assets/spec_kit_resume_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "phase-parent-pointer.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/scripts/tests/phase-parent-pointer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent Generator Pointer",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Phase",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Three",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Layered",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 001 shipped the lean-trio enforcement and documentation but deferred several additive items. Today, `/spec_kit:resume` on a phase parent walks the filesystem to list children — works correctly, but each resume pays the listing cost. `create.sh --phase` scaffolds the parent with level-N templates plus the phase-parent-section addendum — the resulting surface validates as a phase parent, but it carries vestigial heavy docs that the new lean template would skip entirely. There is no automated check warning a reviewer when a phase-parent `spec.md` slips into merge/migration narrative. And no end-to-end walkthrough exists to confirm the round trip from `/spec_kit:plan :with-phases` through `/spec_kit:resume`.",
+    "created_at": "2026-04-27T12:20:00Z",
+    "last_save_at": "2026-04-27T11:11:29.101Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
-      "checklist.md"
-    ],
-    "created_at": "2026-04-27T12:20:00Z",
-    "last_save_at": "2026-04-27T12:20:00Z",
-    "save_lineage": "initial_planning",
-    "last_accessed_at": null,
-    "last_active_child_id": null,
-    "last_active_at": null
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

@@ -20,6 +20,16 @@ run_check() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
+    # Phase-parent early branch: skip Level-N template-header expectations at phase parents.
+    # The lean phase-parent template (templates/phase_parent/spec.md) has its own header
+    # set, distinct from level_N templates; comparing against level_N produces false
+    # structural deviations on the manifest-only parent.
+    if is_phase_parent "$folder"; then
+        RULE_STATUS="info"
+        RULE_MESSAGE="Phase parent: template-header enforcement skipped (lean trio policy)"
+        return 0
+    fi
+
     local rule_dir
     rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local helper_script="$rule_dir/../utils/template-structure.js"

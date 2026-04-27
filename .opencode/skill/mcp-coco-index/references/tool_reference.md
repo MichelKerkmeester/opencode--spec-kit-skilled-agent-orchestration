@@ -75,6 +75,8 @@ ccc search "new feature" --refresh
 - Relevance score (0.0 to 1.0)
 - Language
 
+> **Fork-specific telemetry.** This skill bundles a soft-fork of `cocoindex-code` (version `0.2.3+spec-kit-fork.0.2.0`) that adds dedup + path-class reranking. Result rows from `ccc search` carry additional fields (`dedupedAliases`, `uniqueResultCount`, `rankingSignals`, `source_realpath`, `content_hash`, `path_class`, `raw_score`) that vanilla upstream cocoindex-code does NOT emit. See [§7 Fork-Specific Output Telemetry](#-7-fork-specific-output-telemetry) for the full schema.
+
 ---
 
 ### ccc index
@@ -273,6 +275,8 @@ Perform semantic search across the indexed codebase.
 - `score`: Relevance score (0.0 to 1.0)
 - `language`: Detected programming language
 
+> **Fork-specific telemetry.** Each result row also carries `dedupedAliases`, `uniqueResultCount`, `rankingSignals`, `source_realpath`, `content_hash`, `path_class`, and `raw_score` — these come from this skill's bundled fork (`0.2.3+spec-kit-fork.0.2.0`) and are NOT present in vanilla upstream cocoindex-code. Callers writing client code against this MCP must account for the extended shape. See [§7 Fork-Specific Output Telemetry](#-7-fork-specific-output-telemetry) for the full schema.
+
 ---
 
 <!-- /ANCHOR:mcp-tools -->
@@ -376,12 +380,89 @@ For detailed schema and configuration examples, see the upstream test files in `
 ---
 
 <!-- /ANCHOR:settings-schema -->
+<!-- ANCHOR:fork-telemetry -->
+## 7. FORK-SPECIFIC OUTPUT TELEMETRY
+
+This skill bundles a vendored soft-fork of `cocoindex-code` (Python wrapper) at version `0.2.3+spec-kit-fork.0.2.0`. The fork ships REQ-001 through REQ-006 patches that add dedup, canonical path identity, path-class reranking, and ranking telemetry. All search responses (CLI `ccc search` and MCP `search` tool) include the fields below in addition to the standard `file` / `lines` / `snippet` / `score` / `language` baseline. **Vanilla upstream `cocoindex-code` 0.2.3 does NOT emit any of these fields.**
+
+The canonical field-to-REQ mapping lives in [`../changelog/CHANGELOG.md`](../changelog/CHANGELOG.md#0-2-3-spec-kit-fork-0-2-0--2026-04-27); the per-REQ rationale and patch scope live in the originating spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/`.
+
+### 7.1 Chunk-level fields (stored at index time)
+
+| Field | Type | REQ | When present | Interpretation |
+|-------|------|-----|--------------|----------------|
+| `source_realpath` | string (absolute filesystem path) | REQ-002 | Always after a fresh `ccc reset && ccc index` against fork ≥0.2.0; absent on chunks indexed by an older binary | Canonical realpath of the source file. Primary dedup key — chunks whose mirror copies share the same realpath are grouped before scoring. |
+| `content_hash` | string (16-hex SHA-256 prefix) | REQ-002 | Always after fork ≥0.2.0 reindex | Stable hash of the chunk's source bytes. Fallback dedup key when `source_realpath` is missing (older index rows or symlinked imports). |
+| `path_class` | enum string | REQ-004 | Always after fork ≥0.2.0 reindex | One of: `implementation`, `tests`, `docs`, `spec_research`, `generated`, `vendor`. Drives the implementation-intent rerank in §7.3. |
+
+### 7.2 Result-row dedup signals (added at query time)
+
+| Field | Type | REQ | When present | Interpretation |
+|-------|------|-----|--------------|----------------|
+| `dedupedAliases` | integer (≥0) | REQ-003 | Always on fork queries | Count of mirror-folder duplicates that were collapsed into this representative result. `0` means the chunk was unique; `>0` means N+1 alias copies existed and were folded under this single hit. |
+| `uniqueResultCount` | integer | REQ-003 | Top-level metadata on the response (not per-row) | Number of unique results actually returned, after over-fetch (`limit * 4`) and dedup. Lower than `limit` when the corpus has fewer dedup-distinct hits than requested. |
+
+### 7.3 Ranking transparency (added at query time)
+
+| Field | Type | REQ | When present | Interpretation |
+|-------|------|-----|--------------|----------------|
+| `raw_score` | float (0.0–1.0) | REQ-005 | Always on fork queries | The pre-rerank relevance score. Preserved verbatim so callers can introspect or override the rerank. The `score` field is the post-rerank value. |
+| `rankingSignals` | object | REQ-006 | Always on fork queries | Per-result breakdown of the score derivation. Keys include the path-class delta (`+0.05` for implementation matches on implementation-intent queries; `-0.05` for docs/spec_research matches), the dedup pre-grouping signal, and the raw vector similarity. Use this to debug "why did THIS result rank where it did". |
+
+### 7.4 Implementation-intent reranking (REQ-005)
+
+When the query intent classifier detects an implementation-seeking question (e.g., "where is X implemented", "show me the function that does Y"), the fork applies a bounded post-vector rerank:
+
+- `path_class == implementation` → score boosted by `+0.05`
+- `path_class ∈ {docs, spec_research}` → score reduced by `-0.05`
+- All other classes (`tests`, `generated`, `vendor`) → unchanged
+
+The boost is bounded so it cannot flip an obviously-wrong hit to the top; it nudges ties and near-ties toward implementation files. Both `score` (post-rerank) and `raw_score` (pre-rerank) are emitted so callers can audit the rerank decision.
+
+### 7.5 Reading example
+
+```jsonc
+// MCP `search` response excerpt — note the extended fields beyond vanilla shape
+{
+  "uniqueResultCount": 8,         // top-level: 8 dedup-distinct results returned
+  "results": [
+    {
+      "file": "src/auth/middleware.py",
+      "lines": [42, 78],
+      "snippet": "def verify_token(token): ...",
+      "score": 0.81,              // post-rerank
+      "raw_score": 0.76,          // pre-rerank (REQ-005)
+      "language": "python",
+      "source_realpath": "/repo/src/auth/middleware.py",   // REQ-002
+      "content_hash": "a3f2b1c8e9d0",                       // REQ-002
+      "path_class": "implementation",                       // REQ-004
+      "dedupedAliases": 2,        // 2 mirror copies were collapsed under this row
+      "rankingSignals": {         // REQ-006
+        "vectorSim": 0.76,
+        "pathClassDelta": 0.05,
+        "dedupGrouping": "by_realpath"
+      }
+    }
+  ]
+}
+```
+
+### 7.6 Compatibility notes
+
+- **Backward-compatible reads.** A caller written against vanilla `cocoindex-code` will see the standard fields and silently ignore the extras. No breakage.
+- **Forward-compatible writes.** Callers SHOULD NOT write code that *requires* these fields to be absent — i.e. don't assert `assert "rankingSignals" not in result`, since that asserts vanilla and breaks under this fork.
+- **Reindex required.** Existing indexes built by an older binary won't have `source_realpath` / `content_hash` / `path_class` populated on their chunk rows. Run `ccc reset && ccc index` once after upgrading to fork ≥0.2.0 to populate. The fallback path (using `content_hash` only when `source_realpath` is missing) keeps the dedup correct during the transition.
+- **Verifying the binary.** Run `ccc --version` — a fork build reports `0.2.3+spec-kit-fork.0.2.0`. If the version string does NOT contain `+spec-kit-fork.`, the binary is upstream PyPI cocoindex-code and none of the fields above will be emitted. See `INSTALL_GUIDE.md` §Verify and §Reinstall for recovery.
+
+<!-- /ANCHOR:fork-telemetry -->
 <!-- ANCHOR:related-resources -->
-## 7. RELATED RESOURCES
+## 8. RELATED RESOURCES
 
 | Resource         | Location                                                            |
 | ---------------- | ------------------------------------------------------------------- |
 | INSTALL_GUIDE    | `.opencode/skill/mcp-coco-index/INSTALL_GUIDE.md`              |
+| Fork CHANGELOG   | `.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md`        |
+| Fork MAINTENANCE | `.opencode/skill/mcp-coco-index/mcp_server/MAINTENANCE.md`     |
 | Search Patterns  | `.opencode/skill/mcp-coco-index/references/search_patterns.md` |
 | Cross-CLI Playbook | `.opencode/skill/mcp-coco-index/references/cross_cli_playbook.md` |
 | Config Templates | `.opencode/skill/mcp-coco-index/assets/config_templates.md`    |

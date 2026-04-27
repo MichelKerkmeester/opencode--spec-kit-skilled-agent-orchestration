@@ -102,6 +102,14 @@ Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder t
 | **2: Verification** | Level 1 + `checklist.md`           | QA checklist            | See Level 2 commands below |
 | **3: Full**         | Level 2 + `decision-record.md`     | ADR + optional research | See Level 3 commands below |
 | **3+: Extended**    | Level 3 + approval workflow + compliance + stakeholders | Review tracking + coordination | See Level 3+ commands below |
+| **Phase Parent**    | `spec.md` + `description.json` + `graph-metadata.json` (lean trio) | None (manifest only) | `cp .opencode/skill/system-spec-kit/templates/phase_parent/spec.md <parent>/spec.md` |
+
+**Phase Parent** rows above apply when the target folder qualifies as a phase parent (≥1 direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND ≥1 such child has `spec.md` OR `description.json`). At a phase parent:
+- **Required:** `spec.md` (lean — sourced from `templates/phase_parent/spec.md`), `description.json`, `graph-metadata.json`
+- **Prohibited at parent (live in children only):** `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
+- **Optional:** `templates/context-index.md` (migration-bridge, only if reorganized)
+
+Phase children continue to follow the normal Level 1–3+ rows above for their assigned level. Tolerant policy: legacy phase parents that retain heavy docs continue to validate without churn.
 
 **Level 1 Copy Commands (Baseline):**
 ```bash

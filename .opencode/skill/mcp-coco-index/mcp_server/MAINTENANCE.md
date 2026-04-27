@@ -1,12 +1,12 @@
 # Upstream Sync Workflow
 
-> Steps for merging a new upstream `cocoindex-code` release into the spec-kit fork while preserving the 009 packet patches.
+> Steps for merging a new upstream `cocoindex-code` release into the spec-kit fork while preserving the patches from `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (the cocoindex-overfetch-dedup packet — currently numbered `004`; tracked as `009` during research and in commit history).
 
 ---
 
 ## 1. OVERVIEW
 
-This guide explains how to pull a new upstream `cocoindex-code` release into the vendored soft-fork at `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/` without losing the 009 packet modifications. The workflow uses `scripts/update.sh` to surface diffs, then walks through manual merge, version bump, attribution updates, reinstall, and acceptance probes.
+This guide explains how to pull a new upstream `cocoindex-code` release into the vendored soft-fork at `.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/` without losing the spec-kit fork patches (REQ-001..006). Those patches were authored in `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` — the cocoindex-overfetch-dedup packet, currently numbered `004` in the renumbered phase tree (tracked as `009` during research and in commit history such as `1b62e976d`). The workflow uses `scripts/update.sh` to surface diffs, then walks through manual merge, version bump, attribution updates, reinstall, and acceptance probes.
 
 ### When to Sync
 

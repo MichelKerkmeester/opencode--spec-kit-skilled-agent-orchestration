@@ -233,11 +233,11 @@ Agents MUST meet these thresholds to avoid warnings:
 <!-- ANCHOR:phase-folder-addenda -->
 ## 8. PHASE FOLDER ADDENDA
 
-Phase parent/child folders (e.g., `specs/NNN-name/001-phase/`) inherit the
-base contract for their level plus phase-specific addenda. These are enforced
-automatically by `validate.sh` via `inferPhaseSpecAddenda()` in
-`template-structure.js`. No additional agent knowledge is needed — follow the
-base contract and validate after writing.
+Phase **children** (e.g., `specs/NNN-name/001-phase/`) inherit the base contract for their level plus phase-specific addenda. These are enforced automatically by `validate.sh` via `inferPhaseSpecAddenda()` in `template-structure.js`. No additional agent knowledge is needed for children — follow the base contract and validate after writing.
+
+Phase **parents** are NOT subject to Level 1–3+ structural contracts. When a folder qualifies as a phase parent (≥1 direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND ≥1 such child has `spec.md` OR `description.json`), the parent uses the lean phase-parent template at `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md` exclusively and only requires the lean trio: `spec.md` + `description.json` + `graph-metadata.json`. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the children, not at the parent. The validator's phase-parent branch in `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, and `check-template-headers.sh` automatically skips Level-N expectations when `is_phase_parent($folder)` returns true.
+
+Phase-parent `spec.md` content discipline is enforced by the advisory `PHASE_PARENT_CONTENT` rule (severity: warn): the parent must avoid consolidation/merge/migration narratives. Required content is root purpose + sub-phase manifest + what-needs-done. Migration history goes into an optional `templates/context-index.md` if needed. Tolerant policy preserves legacy phase parents that retain heavy docs.
 
 ---
 

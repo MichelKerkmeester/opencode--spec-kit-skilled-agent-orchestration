@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "002-scenario-execution",
+      "stress test execution",
+      "scenario run harness",
+      "manual scoring workflow",
+      "findings aggregation",
+      "cross-AI comparison",
+      "execution scaffold"
+    ],
+    "key_topics": [
+      "002-scenario-execution",
+      "execution",
+      "dispatch",
+      "scoring",
+      "findings",
+      "scaffold",
+      "playbook"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {"name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived"},
+      {"name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived"},
+      {"name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived"},
+      {"name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived"},
+      {"name": "Execution Workflow", "kind": "proper_noun", "path": "spec.md", "source": "derived"},
+      {"name": "Findings Format", "kind": "proper_noun", "path": "spec.md", "source": "derived"}
+    ],
+    "causal_summary": "Sub-phase 002 of the Search Intelligence Stress-Test Playbook. Execution scaffold consuming 001's dispatch matrix and scripts. Defines a 4-stage flow: pre-flight (verify CLIs + auth + DB snapshot + CocoIndex daemon), dispatch (loop 9 scenarios × 3 CLIs + ablation cells), manual scoring (operator fills score.md per cell using 001 rubric), aggregation (synthesize findings.md with cross-CLI comparison + top wins/failures + 005-defect cross-references + recommendations). Concurrency: serial for cli-codex and cli-opencode; max 3 concurrent for cli-copilot per repo Phase 018 convention. Idempotency via run-folder existence check enables resume mid-sweep. Per-run artifacts capture prompt + output + meta.json (latency, tokens, model, exit_code, db_snapshot_hash) + score.md per 001 output schema. Manual scoring is operator-time-bound (~5 min/cell × 27 cells ≈ 2-3 hours); auto-scoring deferred to v2. Aggregation requires human judgment for cross-CLI insight; finishings.md template provides skeleton with required sections. Actual execution deferred to a dedicated session; this packet defines the contract.",
+    "created_at": "2026-04-26T15:00:00Z",
+    "last_save_at": "2026-04-26T15:00:00Z",
+    "save_lineage": "manual",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

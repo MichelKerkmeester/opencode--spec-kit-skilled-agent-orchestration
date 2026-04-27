@@ -264,6 +264,7 @@ Not every change needs the same amount of paperwork. A one-line bug fix does not
 | **2**  | 100 - 499      | Level 1 + checklist.md                                | Features needing QA verification, multi-file changes |
 | **3**  | 500+           | Level 2 + decision-record.md                          | Architecture changes, complex refactors              |
 | **3+** | Complexity 80+ | Level 3 + approval workflow, compliance, stakeholders  | High-complexity work needing review tracking          |
+| **Phase Parent** | n/a (manifest only) | spec.md, description.json, graph-metadata.json | Folder contains phase children (`[0-9]{3}-name/` subdirs with their own spec.md/description.json) |
 
 The LOC ranges are guidance, not hard rules. Risk, complexity and the number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
@@ -291,6 +292,8 @@ specs/<###-feature-name>/
 ```
 
 `generate-context.js` updates the packet's continuity state for `/spec_kit:resume`, refreshes `description.json.lastUpdated`, and rewrites `graph-metadata.json` derived fields on every canonical save; recovery then rebuilds context from `handover.md`, `_memory.continuity`, and the packet docs.
+
+**Phase parents** are an exception. When a folder contains phase children (matching `^[0-9]{3}-[a-z0-9-]+$` with their own `spec.md` or `description.json`), the parent only requires the **lean trio**: `spec.md`, `description.json`, `graph-metadata.json`. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live exclusively in the children where they stay accurate to that phase's actual work. The parent's `spec.md` carries a Phase Documentation Map; the parent's `graph-metadata.json` carries `derived.last_active_child_id` + `derived.last_active_at` pointer fields that the generator atomically updates on every save (parent saves write `null`; child saves bubble up the child's `packet_id`). `/spec_kit:resume` reads the pointer first when the target is a phase parent — fresh pointer (<24h) recurses directly into the active child; stale or missing pointer falls back to listing children with statuses. Detection is a single source of truth: `is_phase_parent()` (shell) and `isPhaseParent()` (ESM JS) MUST agree.
 
 #### Checklist Priority System (Level 2+)
 
@@ -320,11 +323,13 @@ specs/022-big-feature/             # Parent spec folder
     └── ...
 ```
 
-Use `create.sh --phase` to create a parent with its first child in one step. Run `validate.sh --recursive` to validate the parent and all children together.
+Use `create.sh --phase` to create a parent with its first child in one step. The parent scaffolds from `templates/phase_parent/spec.md` (lean) and each child from the appropriate `templates/level_N/` set. Run `validate.sh --recursive` to validate the parent and all children together; the validator's phase-parent branch automatically skips Level-N expectations on the lean parent (rules with branches: `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, `check-template-headers.sh`).
+
+Tolerant migration policy: legacy phase parents that retain heavy docs continue to validate without churn. Soft deprecation is a separate follow-on packet.
 
 #### Validation
 
-The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency. In strict flows, the validation surface now includes `_memory.continuity` freshness checks plus strict `EVIDENCE` marker linting, with the bracket-depth audit script available for repair sweeps before rerunning validation.
+The `validate.sh` script runs 20+ rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency. The new `PHASE_PARENT_CONTENT` rule (severity: warn) scans phase-parent `spec.md` for forbidden migration-history tokens (consolidation/merge/rename narratives) and is code-fence + HTML-comment aware. In strict flows, the validation surface includes `_memory.continuity` freshness checks plus strict `EVIDENCE` marker linting, with the bracket-depth audit script available for repair sweeps before rerunning validation.
 
 | Exit Code | Meaning        | Action                              |
 | --------- | -------------- | ----------------------------------- |

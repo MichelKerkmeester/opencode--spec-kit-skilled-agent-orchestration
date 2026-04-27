@@ -190,6 +190,7 @@ contextType: "general"
 
 **Scope shape:**
 - For phase-heavy packets, generate one resource-map per phase child OR a single parent-level map that aggregates across children — pick the shape that reads most cleanly, and state the choice in the `Scope` line of the Summary block.
+- At phase parents, prefer ONE mode: parent-aggregate (a single map listing children's touched paths) OR per-child resource-maps. Do not author both for the same packet. Document the chosen mode in the `Scope` line.
 
 **Size budget:**
 - Keep this file ≤ ~250 lines of content. If it grows larger, split by sub-scope or promote detail into `implementation-summary.md` / `decision-record.md`.

@@ -29,6 +29,7 @@
     "memory/**/*.ts",
     "observability/**/*.ts",
     "renderers/**/*.ts",
+    "spec/**/*.ts",
     "spec-folder/**/*.ts",
     "types/**/*.ts",
     "utils/**/*.ts",

@@ -27,6 +27,16 @@ run_check() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
+    # Phase-parent early branch: skip Level-N anchor expectations at phase parents.
+    # The lean phase-parent template has its own (lighter) anchor contract
+    # (metadata/problem/scope/phase-map/questions); enforcing the full Level-N
+    # set against a manifest-only parent produces false-positive errors.
+    if is_phase_parent "$folder"; then
+        RULE_STATUS="info"
+        RULE_MESSAGE="Phase parent: anchor validation skipped (lean trio policy)"
+        return 0
+    fi
+
     local -a all_files=()
 
 # ───────────────────────────────────────────────────────────────

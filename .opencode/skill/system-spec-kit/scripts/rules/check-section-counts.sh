@@ -92,6 +92,15 @@ run_check() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
+    # Phase-parent early branch: skip Level-N section-count expectations at phase parents.
+    # The lean phase-parent template intentionally carries fewer sections (manifest only);
+    # the full Level-N section count is not the right contract here.
+    if is_phase_parent "$folder"; then
+        RULE_STATUS="info"
+        RULE_MESSAGE="Phase parent: section-count enforcement skipped (lean trio policy)"
+        return 0
+    fi
+
     local warnings=()
     local errors=()
 

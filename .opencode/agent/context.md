@@ -153,7 +153,7 @@ Every exploration traverses all 3 layers for comprehensive context.
 
 **Strategy**: Start broad, narrow progressively:
 - **Code graph** — Run `code_graph_status()` once per session, then use `code_graph_query` / `code_graph_context` for structural questions when the index is healthy.
-- **CocoIndex** — Semantic search for concept-based discovery. Use 1-3 short queries (3-5 words). Examples: `ccc search "authentication middleware"`, `ccc search "error handling patterns"`. Set `refresh_index=false` after first query.
+- **CocoIndex** — Semantic search for concept-based discovery. Use 1-3 short queries (3-5 words). Examples: `ccc search "authentication middleware"`, `ccc search "error handling patterns"`. Set `refresh_index=false` after first query. (Verify the binary is the spec-kit fork: `ccc --version` should report `0.2.3+spec-kit-fork.0.2.0` — the fork emits dedup + path-class fields used by ranking interpretation; if the substring `+spec-kit-fork.` is missing, run `bash .opencode/skill/mcp-coco-index/scripts/install.sh` to recover.)
 - **Glob** — Cast a wide net for file discovery. Use 5-10 patterns. Examples: `src/**/*auth*`, `**/*.config.*`, `*.md`
 - **Grep** — Find specific usage within discovered paths. Use file paths from Glob to narrow search scope. Examples: `authenticate(`, `import.*auth`
 - **Read** — Inspect 5-8 key files. SUMMARIZE contents — never return raw file dumps

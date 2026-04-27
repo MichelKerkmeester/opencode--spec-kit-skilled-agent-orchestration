@@ -2,8 +2,11 @@
 # ╔══════════════════════════════════════════════════════════════════════════╗
 # ║ CocoIndex Code MCP Installer                                            ║
 # ╚══════════════════════════════════════════════════════════════════════════╝
-# Install CocoIndex Code MCP server into the skill folder venv.
-# Usage: bash .opencode/skill/mcp-coco-index/scripts/install.sh
+# Install the spec-kit CocoIndex Code soft-fork into the skill folder venv.
+# Source: vendored fork at .opencode/skill/mcp-coco-index/mcp_server/
+#         (version 0.2.3+spec-kit-fork.0.2.0 — NOT upstream PyPI cocoindex-code)
+# Usage:  bash .opencode/skill/mcp-coco-index/scripts/install.sh
+# Verify: ccc --version  → must contain '+spec-kit-fork.'
 
 set -euo pipefail
 

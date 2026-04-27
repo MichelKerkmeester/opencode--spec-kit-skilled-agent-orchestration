@@ -287,6 +287,28 @@ specs/###-feature-name/
 └── handover.md                  # optional recovery surface refreshed through `/memory:save`
 ```
 
+### Phase Parent Save Routing
+
+When the save target is a phase parent (detected via `isPhaseParent()` from `.opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js`), the generator follows a different routing contract that matches the lean trio policy:
+
+- **At a phase parent**: skip the `implementation-summary.md` continuity write at parent (parents do not require that file at all). Instead, atomically update the parent's `graph-metadata.json` `derived.last_active_child_id = null` and `derived.last_active_at = ISO_8601_NOW`. Logic at `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:428` (`updatePhaseParentPointersAfterSave`).
+- **At a child of a phase parent**: write the child's normal `_memory.continuity` to its `implementation-summary.md` AND atomically update the parent's `graph-metadata.json` `derived.last_active_child_id` to the child's `packet_id` plus a fresh `last_active_at`. The bubble-up uses the same atomic write helper.
+- **Atomic write**: same-directory temp file + `fs.renameSync` (POSIX-atomic). Helper at `.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:372` (`atomicWriteJson`). Prevents torn JSON state under concurrent saves.
+- **Resume integration**: `/spec_kit:resume` reads `derived.last_active_child_id` first when the target is a phase parent. If non-null and `last_active_at` is within 24 hours, recurse directly into that child. Otherwise fall back to listing children with statuses. `--no-redirect` bypasses the pointer entirely.
+
+#### Phase Parent Output Location (lean trio)
+
+```
+specs/###-parent-feature/
+├── spec.md                      # vision + Phase Documentation Map (no continuity block)
+├── description.json             # discovery metadata
+├── graph-metadata.json          # children rollup + derived.last_active_child_id pointer
+├── 001-phase/                   # phase children carry implementation-summary.md + heavy docs
+└── 002-phase/
+```
+
+The parent has NO `implementation-summary.md`, NO `plan.md`, NO `tasks.md`, NO `checklist.md`, NO `decision-record.md`. Continuity for a phase parent is the pointer in `graph-metadata.json`, refreshed every save by the generator. The lean phase-parent template at `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md` is the canonical scaffold.
+
 ---
 
 <!-- /ANCHOR:output-format -->

@@ -101,6 +101,8 @@ Spec folder is passed explicitly as a CLI argument with alignment validation to 
 | 4    | Calculate alignment | Score against conversation context            |
 | 5    | Proceed or warn     | Low score triggers warning only               |
 
+> **Explicit-target priority.** When the caller passes an explicit `[spec-folder]` CLI argument, that target is authoritative — it always wins over auto-detect, alignment scoring, and any heuristic preference. At a phase parent specifically, this means a save invoked with the parent path runs the parent-level pointer-write path (`derived.last_active_child_id = null` + `derived.last_active_at = now`); a save invoked with an explicit child path bubbles up the child's `packet_id` into the parent's pointer. Re-run with the explicit target you actually want if a save routed to the wrong folder.
+
 ---
 
 <!-- /ANCHOR:detection-logic -->

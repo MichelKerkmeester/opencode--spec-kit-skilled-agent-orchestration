@@ -13,16 +13,18 @@
     "resume",
     "phased"
   ],
-  "lastUpdated": "2026-04-27T12:25:00Z",
+  "lastUpdated": "2026-04-27T11:56:04.050Z",
   "specId": "010",
   "folderSlug": "phase-parent-documentation",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 4,
+  "memorySequence": 6,
   "memoryNameHistory": [
     "27-04-26_10-13__authored-level-2-planning-packet-for-the-phase.md",
-    "27-04-26_10-51__implementation-complete-phase-parents-now-require.md"
+    "27-04-26_10-51__implementation-complete-phase-parents-now-require.md",
+    "27-04-26_11-18__restructured-010-into-nested-phase-parent-moved.md",
+    "27-04-26_12-56__p3-follow-on-shipped-extended-phase-parent-early.md"
   ]
 }

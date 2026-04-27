@@ -15,7 +15,7 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 <!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
-> **Forked From**: This skill bundles a soft-fork of [cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0). Upstream version forked: 0.2.3. Current fork version: 0.2.3+spec-kit-fork.0.2.0. Patches: 009 packet REQ-001..006 (mirror dedup + path-class reranking). See NOTICE and changelog/CHANGELOG.md for the full attribution and modification list.
+> **Forked From**: This skill bundles a soft-fork of [cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0). Upstream version forked: 0.2.3. Current fork version: 0.2.3+spec-kit-fork.0.2.0. Patches: REQ-001..006 (mirror dedup + path-class reranking) from the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (currently numbered `004`; tracked as `009` during research and in commit history). See NOTICE and changelog/CHANGELOG.md for the full attribution and modification list.
 
 ### Activation Triggers
 
@@ -312,11 +312,13 @@ STEP 5: Search Execution
 Each result includes:
 - **File path** - Location of the matching code
 - **Chunk content** - The code fragment that matched
-- **Similarity score** - Cosine similarity (0.0 to 1.0, higher is better)
+- **Similarity score** - Cosine similarity (0.0 to 1.0, higher is better; this is the post-rerank value, see fork-specific telemetry below)
 - **Language** - Detected programming language
 - **Line range** - Start and end lines within the file
 
 Scores above 0.5 typically indicate strong semantic relevance. Always verify results with the Read tool since semantic search can surface false positives.
+
+> **Fork-specific telemetry (skill bundles a soft-fork at `0.2.3+spec-kit-fork.0.2.0`).** Result rows carry seven additional fields that vanilla upstream cocoindex-code does NOT emit: `source_realpath` and `content_hash` (canonical chunk identity), `path_class` (taxonomy: implementation / tests / docs / spec_research / generated / vendor), `dedupedAliases` and `uniqueResultCount` (mirror-folder dedup signals), `raw_score` (pre-rerank score, preserved for audit), and `rankingSignals` (per-result rerank breakdown). Implementation-intent queries get a bounded `±0.05` rerank toward `path_class == implementation`. Full schema, types, examples, and reading guidance live in [`references/tool_reference.md` §7 Fork-Specific Output Telemetry](references/tool_reference.md#-7-fork-specific-output-telemetry); the canonical field-to-REQ mapping lives in [`changelog/CHANGELOG.md`](changelog/CHANGELOG.md).
 
 ---
 

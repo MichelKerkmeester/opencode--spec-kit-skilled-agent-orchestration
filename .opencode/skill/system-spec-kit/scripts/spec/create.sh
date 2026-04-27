@@ -383,7 +383,10 @@ create_graph_metadata_file() {
 
     local source_docs_json='["spec.md","plan.md","tasks.md"]'
     local key_files_json='["spec.md","plan.md","tasks.md"]'
-    if [[ -f "$folder_path/checklist.md" && -f "$folder_path/decision-record.md" ]]; then
+    if [[ -f "$folder_path/spec.md" && ! -f "$folder_path/plan.md" && ! -f "$folder_path/tasks.md" ]]; then
+        source_docs_json='["spec.md"]'
+        key_files_json='["spec.md"]'
+    elif [[ -f "$folder_path/checklist.md" && -f "$folder_path/decision-record.md" ]]; then
         source_docs_json='["spec.md","plan.md","tasks.md","checklist.md","decision-record.md"]'
         key_files_json='["spec.md","plan.md","tasks.md","checklist.md","decision-record.md"]'
     elif [[ -f "$folder_path/checklist.md" ]]; then
@@ -654,11 +657,12 @@ create_git_branch() {
 
 if [[ "$PHASE_MODE" = true ]]; then
     # Phase mode creates: parent spec folder + N child phase folders
-    # Parent gets level templates + Phase Documentation Map injection
+    # Parent gets the lean phase-parent trio
     # Each child gets level 1 templates + parent back-reference injection
 
     TEMPLATES_BASE="$REPO_ROOT/.opencode/skill/system-spec-kit/templates"
     readonly PHASE_ADDENDUM_DIR="$TEMPLATES_BASE/addendum/phase"
+    readonly LEAN_PHASE_PARENT_TEMPLATE="$TEMPLATES_BASE/phase_parent/spec.md"
 
     # Trap for temp file cleanup on error exit
     PHASE_TMP_FILES=()
@@ -668,6 +672,10 @@ if [[ "$PHASE_MODE" = true ]]; then
     # Validate addendum templates exist
     if [[ ! -f "$PHASE_ADDENDUM_DIR/phase-parent-section.md" ]]; then
         echo "Error: Phase parent template not found at $PHASE_ADDENDUM_DIR/phase-parent-section.md" >&2
+        exit 1
+    fi
+    if [[ ! -f "$LEAN_PHASE_PARENT_TEMPLATE" ]]; then
+        echo "Error: Lean phase parent template not found at $LEAN_PHASE_PARENT_TEMPLATE" >&2
         exit 1
     fi
     if [[ ! -f "$PHASE_ADDENDUM_DIR/phase-child-header.md" ]]; then
@@ -719,8 +727,6 @@ if [[ "$PHASE_MODE" = true ]]; then
             FEATURE_NUM="000"
         fi
 
-        mkdir -p "$FEATURE_DIR/scratch"
-        touch "$FEATURE_DIR/scratch/.gitkeep"
         create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
     else
         # ── Branch name generation (shared function) ──
@@ -729,25 +735,7 @@ if [[ "$PHASE_MODE" = true ]]; then
 
         # ── Create parent spec folder ──
         FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
-        mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch"
-        touch "$FEATURE_DIR/scratch/.gitkeep"
-        create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
-
-        # Copy parent templates based on documentation level
-        DOC_LEVEL_NUM="${DOC_LEVEL/+/}"
-        LEVEL_TEMPLATES_DIR=$(get_level_templates_dir "$DOC_LEVEL" "$TEMPLATES_BASE")
-
-        if [[ ! -d "$LEVEL_TEMPLATES_DIR" ]]; then
-            >&2 echo "[speckit] Warning: Level folder not found at $LEVEL_TEMPLATES_DIR, using base templates"
-            LEVEL_TEMPLATES_DIR="$TEMPLATES_BASE"
-        fi
-
-        for template_file in "$LEVEL_TEMPLATES_DIR"/*.md; do
-            if [[ -f "$template_file" ]]; then
-                template_name=$(basename "$template_file")
-                PARENT_CREATED_FILES+=("$(copy_template "$template_name" "$FEATURE_DIR" "$LEVEL_TEMPLATES_DIR" "$TEMPLATES_BASE")")
-            fi
-        done
+        mkdir -p "$FEATURE_DIR"
     fi
 
     # ── Build child folder name list ──
@@ -782,41 +770,97 @@ if [[ "$PHASE_MODE" = true ]]; then
         CHILD_FOLDERS+=("${_child_num}-${_child_slug}")
     done
 
-    # ── Inject or append Phase Documentation Map into parent spec.md ──
+    # ── Build Phase Documentation Map rows for this invocation ──
     PARENT_SPEC="$FEATURE_DIR/spec.md"
+    PHASE_ROWS=""
+    for (( _i=1; _i<=PHASE_COUNT; _i++ )); do
+        _folder="${CHILD_FOLDERS[$((_i - 1))]}"
+        _phase_number=$((PHASE_START_INDEX + _i - 1))
+        if [[ -n "$PHASE_ROWS" ]]; then
+            PHASE_ROWS="${PHASE_ROWS}"$'\n'
+        fi
+        PHASE_ROWS="${PHASE_ROWS}| ${_phase_number} | ${_folder}/ | [Phase ${_phase_number} scope] | Pending |"
+    done
+
+    HANDOFF_ROWS=""
+    if [[ -n "$LAST_EXISTING_PHASE" ]]; then
+        _first_new="${CHILD_FOLDERS[0]}"
+        HANDOFF_ROWS="| ${LAST_EXISTING_PHASE} | ${_first_new} | [Criteria TBD] | [Verification TBD] |"
+    fi
+    for (( _i=1; _i<=PHASE_COUNT; _i++ )); do
+        if [[ $_i -lt $PHASE_COUNT ]]; then
+            _from="${CHILD_FOLDERS[$((_i - 1))]}"
+            _to="${CHILD_FOLDERS[$_i]}"
+            if [[ -n "$HANDOFF_ROWS" ]]; then
+                HANDOFF_ROWS="${HANDOFF_ROWS}"$'\n'
+            fi
+            HANDOFF_ROWS="${HANDOFF_ROWS}| ${_from} | ${_to} | [Criteria TBD] | [Verification TBD] |"
+        fi
+    done
+
+    if [[ "$APPEND_TO_EXISTING_PARENT" != true ]]; then
+        _tmp_parent_spec=$(mktemp)
+        PHASE_TMP_FILES+=("$_tmp_parent_spec")
+        _feature_slug="$(basename "$FEATURE_DIR")"
+        _today="$(date -u +"%Y-%m-%d")"
+        _phase_parent_problem="This phased decomposition tracks ${FEATURE_DESCRIPTION} across independently executable child phase folders."
+        _phase_parent_purpose="Keep parent documentation lean while child phases own detailed plans, tasks, checklists, and continuity."
+        _scope_rows="- Root purpose and child phase manifest for ${FEATURE_DESCRIPTION}"$'\n'"- Per-phase implementation details in child folders"
+        _file_row="| [Per-child files] | Modify/Create | Child phases | Detailed file scope lives in each child phase |"
+
+        while IFS= read -r _line; do
+            case "$_line" in
+                *"[YOUR_VALUE_HERE: PHASE_ROW]"*)
+                    printf '%s\n' "$PHASE_ROWS"
+                    ;;
+                *"[YOUR_VALUE_HERE: HANDOFF_ROW]"*)
+                    if [[ -n "$HANDOFF_ROWS" ]]; then
+                        printf '%s\n' "$HANDOFF_ROWS"
+                    else
+                        printf '%s\n' "| (single phase - no handoffs) | | | |"
+                    fi
+                    ;;
+                *)
+                    _line="${_line//\[YOUR_VALUE_HERE: feature-name\]/$FEATURE_DESCRIPTION}"
+                    _line="${_line//\[YOUR_VALUE_HERE: one-line description\]/Phase parent for ${FEATURE_DESCRIPTION}}"
+                    _line="${_line//\[YOUR_VALUE_HERE: trigger phrase 1\]/$_feature_slug}"
+                    _line="${_line//\[YOUR_VALUE_HERE: trigger phrase 2\]/phase parent}"
+                    _line="${_line//\[YOUR_VALUE_HERE: YYYY-MM-DD\]/$_today}"
+                    _line="${_line//\[YOUR_VALUE_HERE: packet-id\]/$_feature_slug}"
+                    _line="${_line//\[YOUR_VALUE_HERE: predecessor-packet\]/None}"
+                    _line="${_line//\[YOUR_VALUE_HERE: successor-packet, or \"None\"\]/None}"
+                    _line="${_line//\[YOUR_VALUE_HERE: one-paragraph problem statement — what needs solving and why\]/$_phase_parent_problem}"
+                    _line="${_line//\[YOUR_VALUE_HERE: one-paragraph purpose — what this phased decomposition achieves\]/$_phase_parent_purpose}"
+                    if [[ "$_line" == *"[YOUR_VALUE_HERE: bullet list of what this phase decomposition covers]"* ]]; then
+                        printf '%s\n' "$_scope_rows"
+                    elif [[ "$_line" == *"[YOUR_VALUE_HERE: bullet list of what is explicitly excluded]"* ]]; then
+                        printf '%s\n' "- Detailed per-phase implementation plans at the parent level"
+                    elif [[ "$_line" == *"[YOUR_VALUE_HERE: summary table of files touched across all phases"* ]]; then
+                        printf '%s\n' "Summary of aggregate file scope. Per-phase detail lives in child plans."
+                    elif [[ "$_line" == *"| [YOUR_VALUE_HERE: path] |"* ]]; then
+                        printf '%s\n' "$_file_row"
+                    elif [[ "$_line" == *"[YOUR_VALUE_HERE: open question 1]"* ]]; then
+                        printf '%s\n' "- Which child phase should execute first?"
+                    elif [[ "$_line" == *"[YOUR_VALUE_HERE: open question 2]"* ]]; then
+                        printf '%s\n' "- What handoff criteria must each child satisfy?"
+                    else
+                        printf '%s\n' "$_line"
+                    fi
+                    ;;
+            esac
+        done < "$LEAN_PHASE_PARENT_TEMPLATE" > "$_tmp_parent_spec"
+
+        mv "$_tmp_parent_spec" "$PARENT_SPEC"
+        PARENT_CREATED_FILES+=("spec.md")
+        create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
+    fi
+
+    # ── Append Phase Documentation Map into existing parent spec.md ──
     if [[ -f "$PARENT_SPEC" ]]; then
         PHASE_MAP_EXISTS=false
         if grep -q "<!-- ANCHOR:phase-map -->" "$PARENT_SPEC"; then
             PHASE_MAP_EXISTS=true
         fi
-
-        # Build phase table rows for this invocation
-        PHASE_ROWS=""
-        for (( _i=1; _i<=PHASE_COUNT; _i++ )); do
-            _folder="${CHILD_FOLDERS[$((_i - 1))]}"
-            _phase_number=$((PHASE_START_INDEX + _i - 1))
-            if [[ -n "$PHASE_ROWS" ]]; then
-                PHASE_ROWS="${PHASE_ROWS}"$'\n'
-            fi
-            PHASE_ROWS="${PHASE_ROWS}| ${_phase_number} | ${_folder}/ | [Phase ${_phase_number} scope] | [deps] | Pending |"
-        done
-
-        # Build handoff criteria rows for this invocation
-        HANDOFF_ROWS=""
-        if [[ -n "$LAST_EXISTING_PHASE" ]]; then
-            _first_new="${CHILD_FOLDERS[0]}"
-            HANDOFF_ROWS="| ${LAST_EXISTING_PHASE} | ${_first_new} | [Criteria TBD] | [Verification TBD] |"
-        fi
-        for (( _i=1; _i<=PHASE_COUNT; _i++ )); do
-            if [[ $_i -lt $PHASE_COUNT ]]; then
-                _from="${CHILD_FOLDERS[$((_i - 1))]}"
-                _to="${CHILD_FOLDERS[$_i]}"
-                if [[ -n "$HANDOFF_ROWS" ]]; then
-                    HANDOFF_ROWS="${HANDOFF_ROWS}"$'\n'
-                fi
-                HANDOFF_ROWS="${HANDOFF_ROWS}| ${_from} | ${_to} | [Criteria TBD] | [Verification TBD] |"
-            fi
-        done
 
         if [[ "$APPEND_TO_EXISTING_PARENT" = true ]] && [[ "$PHASE_MAP_EXISTS" = true ]]; then
             >&2 echo "[speckit] Existing PHASE DOCUMENTATION MAP found; appending new phase rows and handoffs"
@@ -870,7 +914,7 @@ if [[ "$PHASE_MODE" = true ]]; then
             ' "$PARENT_SPEC" > "$_tmp_parent_spec"
 
             mv "$_tmp_parent_spec" "$PARENT_SPEC"
-        else
+        elif [[ "$APPEND_TO_EXISTING_PARENT" = true ]]; then
             # Read the parent section template
             PHASE_PARENT_TEMPLATE=$(< "$PHASE_ADDENDUM_DIR/phase-parent-section.md")
 
