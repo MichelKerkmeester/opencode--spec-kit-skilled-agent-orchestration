@@ -4,34 +4,27 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
   "children_ids": [],
-  "migrated": false,
-  "migration_source": null,
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-memory-quality-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/001-cache-warning-hooks",
-      "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
       "005-memory-search-runtime-bugs",
       "memory search runtime bugs",
-      "memory_context truncation",
-      "intent classifier dissonance",
-      "auto-triggered vocabulary",
+      "memory_context truncation drops results",
+      "intent classifier dual-source dissonance",
+      "auto-triggered vocabulary violation",
       "causal-stats relation omission",
       "ephemeral session dedup",
       "folder-discovery misfire",
-      "lopsided causal edge growth",
-      "quality gap fallback",
-      "memory:search command",
-      "026-graph-and-context-optimization",
-      "003-continuity-memory-runtime"
+      "context quality degraded false hint",
+      "memory search remediation plan",
+      "intent classifier root cause",
+      "truncation wrapper repair"
     ],
     "key_topics": [
       "005-memory-search-runtime-bugs",
@@ -39,24 +32,45 @@
       "search",
       "runtime",
       "bugs",
+      "truncation",
+      "drops",
+      "results",
       "intent",
       "classifier",
-      "truncation",
-      "causal-stats",
-      "vocabulary",
-      "rendering",
-      "session-dedup",
-      "folder-discovery"
+      "dual-source",
+      "dissonance"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
+      "mcp_server/handlers/memory-context.ts",
+      "mcp_server/lib/search/intent-classifier.ts",
+      ".opencode/command/memory/search.md",
       "spec.md",
       "plan.md",
       "tasks.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "mcp_server/code_graph/lib/query-intent-classifier.ts"
     ],
     "entities": [
+      {
+        "name": "memory-context.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/memory-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "intent-classifier.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/intent-classifier.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search.md",
+        "kind": "doc",
+        "path": ".opencode/command/memory/search.md",
+        "source": "derived"
+      },
       {
         "name": "spec.md",
         "kind": "doc",
@@ -82,40 +96,112 @@
         "source": "derived"
       },
       {
-        "name": "memory_context",
+        "name": "query-intent-classifier.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/",
+        "path": "mcp_server/code_graph/lib/query-intent-classifier.ts",
         "source": "derived"
       },
       {
-        "name": "memory_causal_stats",
-        "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/",
-        "source": "derived"
-      },
-      {
-        "name": "/memory:search",
-        "kind": "command",
-        "path": ".opencode/command/memory/search.md",
-        "source": "derived"
-      },
-      {
-        "name": "Findings Spec",
+        "name": "Feature Specification",
         "kind": "proper_noun",
         "path": "spec.md",
         "source": "derived"
       },
       {
-        "name": "Root-Cause Clusters",
+        "name": "Runtime Bugs",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Findings Captured",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Sibling Phases",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
+      },
+      {
+        "name": "Runtime Remediation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Spec Kit Memory",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Each Cluster",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Findings",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Setup This",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Deferred",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Live /memory:search invocation against the indexed-continuity runtime exposed 17 defects across the retrieval, output rendering, and causal-graph subcommands. P0 issues: intent classifier returns fix_bug at confidence 0.098 for 'Semantic Search' instead of the documented understand fallback; memory_context wrapper reports truncated=true with returnedResultCount>0 yet emits count:0,results:[] in the payload while consuming only 2% of token budget; output rendering uses 'Auto-triggered memories' — explicitly forbidden by spec §4A Step 4b; dual classifiers (meta.intent vs data.queryIntentRouting) emit different intents with no resolution policy. P1 issues: causal-stats returns 3 of 6 documented relation types, labels itself healthy while meetsTarget=false, exhibits lopsided supersedes-only edge growth (+344 in 15 min, caused/supports unchanged); ephemeral session defaults defeat enableDedup; 'Context quality is degraded' hint emitted unconditionally; folder-discovery binds on weak signal. P2 issues: CocoIndex daemon failure silent; QUALITY=gap flag does not trigger documented 3-tier FTS fallback; AskUserQuestion custom-answer routing undefined; 'code graph' vs 'causal graph' naming collision. Findings clustered into 7 root-cause buckets in plan.md for staged remediation by a follow-up packet.",
+    "causal_summary": "A live `/memory:search` session against the indexed-continuity runtime exposed contract violations and degraded UX across the retrieval, output rendering, and causal-graph subcommands. The empty-arguments gate fired correctly, but every downstream stage produced at least one observable defect: the intent classifier emitted `fix_bug` (confidence 0.098) for the query \"Semantic Search\" despite the spec mandating `understand` as the no-keyword-match fallback; the `memory_context` wrapper reported `truncated=true` and zero `results` while consuming only 2% of its 3000-3500 token budget; the assistant rendering used the explicitly-forbidden phrase \"Auto-triggered memories\"; `causal-stats` returned three of six valid relation types and labeled itself `health: \"healthy\"` while reporting `meetsTarget: false`. The root spec at `.opencode/command/memory/search.md` documents the intended behavior, but the runtime drifts from it on multiple axes.",
     "created_at": "2026-04-26T14:33:00Z",
-    "last_save_at": "2026-04-26T14:33:00Z",
-    "save_lineage": "manual",
+    "last_save_at": "2026-04-27T07:22:58.728Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",

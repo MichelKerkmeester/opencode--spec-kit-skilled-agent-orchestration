@@ -24,7 +24,7 @@
     "bugs",
     "refinements"
   ],
-  "lastUpdated": "2026-04-26T18:11:53.896Z",
+  "lastUpdated": "2026-04-27T07:22:58.728Z",
   "specId": "005",
   "folderSlug": "memory-search-runtime-bugs",
   "parentChain": [
@@ -32,6 +32,8 @@
     "026-graph-and-context-optimization",
     "003-continuity-memory-runtime"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "27-04-26_08-22__deep-research-007-mcp-runtime-improvement-10.md"
+  ]
 }
