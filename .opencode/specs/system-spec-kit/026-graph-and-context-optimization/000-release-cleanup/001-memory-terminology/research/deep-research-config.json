@@ -7,7 +7,7 @@
   "maxToolCallsPerIteration": 12,
   "maxMinutesPerIteration": 10,
   "progressiveSynthesis": true,
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
   "createdAt": "2026-04-26T07:04:00.000Z",
   "completedAt": "2026-04-26T09:05:00.000Z",
   "status": "complete",
@@ -41,9 +41,9 @@
   "reducer": {
     "enabled": true,
     "version": "1.0",
-    "registryFile": "research/002-memory-terminology-pt-01/findings-registry.json",
-    "dashboardFile": "research/002-memory-terminology-pt-01/deep-research-dashboard.md",
-    "strategyFile": "research/002-memory-terminology-pt-01/deep-research-strategy.md",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
     "machineOwnedSections": [
       "key-questions",
       "answered-questions",
@@ -62,8 +62,8 @@
   "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
   "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
   "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
-  "pauseSentinelPath": "research/002-memory-terminology-pt-01/.deep-research-pause",
-  "archiveRoot": "research_archive/002-memory-terminology-pt-01",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research_archive/001-memory-terminology-pt-01",
   "migrationWindowDays": 28,
   "fileProtection": {
     "deep-research-config.json": "immutable",

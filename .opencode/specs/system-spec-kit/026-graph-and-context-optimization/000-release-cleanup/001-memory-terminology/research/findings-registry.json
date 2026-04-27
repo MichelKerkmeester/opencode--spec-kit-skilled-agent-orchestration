@@ -1304,13 +1304,13 @@
       "text": "All 10 strategy.md key questions answered (iter-5 #7 + #8 closed the last two).",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {
@@ -1318,13 +1318,13 @@
       "text": "All 5 implementation risks have concrete mitigations.",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {
@@ -1332,13 +1332,13 @@
       "text": "Cross-row dependency audit: 5/6 fully closed; L4 soft implicit + L5 sequencing are plan.md / DR scope.",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {
@@ -1346,13 +1346,13 @@
       "text": "newInfoRatio 0.30 (low — convergence pattern).",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {
@@ -1360,13 +1360,13 @@
       "text": "No fundamental contradictions across iter-1..iter-5 (all 7 pair comparisons are NONE or REFINEMENT).",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {
@@ -1374,13 +1374,13 @@
       "text": "Tool budget: 4 calls (consolidation target 4-6).",
       "addedAtIteration": 6,
       "sources": [
-        "`research/002-memory-terminology-pt-01/deep-research-config.json`",
-        "`research/002-memory-terminology-pt-01/deep-research-state.jsonl`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-001.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-002.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-003.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-004.md`",
-        "`research/002-memory-terminology-pt-01/iterations/iteration-005.md`"
+        "`research/deep-research-config.json`",
+        "`research/deep-research-state.jsonl`",
+        "`research/iterations/iteration-001.md`",
+        "`research/iterations/iteration-002.md`",
+        "`research/iterations/iteration-003.md`",
+        "`research/iterations/iteration-004.md`",
+        "`research/iterations/iteration-005.md`"
       ]
     },
     {

@@ -1,5 +1,5 @@
 ---
-title: "Feature Specification: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec]"
+title: "Feature Specification: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec]"
 description: "Phrasing pass across user-visible surfaces. Where docs say 'memories' / 'load recent memories' / 'save your memory', replace with concrete behavioral language that names what the system actually loads, saves, and retrieves (spec-doc records, indexed continuity, constitutional rules, packet folders). No command names, no MCP tool names, no SQL tables, no frontmatter keys, no behavior changes — pure phrasing across markdown docs, MCP tool description strings, and runtime output messages."
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-verify | v2.2 -->"
 trigger_phrases:
@@ -14,7 +14,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Retroactively authored Level 3 spec docs (plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md) after all 9 PRs shipped across 6 main commits; upgraded template_source_hint from level2-verify to level3-verify to match actual scope (~600 edits, 250+ files, deep-review PASS hasAdvisories=true)"
@@ -28,11 +28,11 @@ _memory:
       - "checklist.md"
       - "decision-record.md"
       - "implementation-summary.md"
-      - "review/002-memory-terminology-pt-01/review-report.md"
+      - "review/review-report.md"
     session_dedup:
       fingerprint: "sha256:phrasing-audit-shipped-retroactive-docs-2026-04-27"
-      session_id: "002-memory-terminology-retroactive-docs-2026-04-27"
-      parent_session_id: "002-memory-terminology-phrasing-pivot-2026-04-26"
+      session_id: "001-memory-terminology-retroactive-docs-2026-04-27"
+      parent_session_id: "001-memory-terminology-phrasing-pivot-2026-04-26"
     completion_pct: 100
     open_questions: []
     answered_questions:

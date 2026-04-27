@@ -4031,7 +4031,7 @@
       "lastUpdated": "2026-04-26T07:03:47.437Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
       "description": "Feature Specification: Memory→Behavioral Phrasing Audit",
       "keywords": [
         "feature",

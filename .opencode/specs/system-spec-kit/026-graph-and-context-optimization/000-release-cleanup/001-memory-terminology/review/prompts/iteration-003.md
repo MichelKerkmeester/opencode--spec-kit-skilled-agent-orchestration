@@ -71,12 +71,12 @@ Every new P0/P1 must include: claim, evidenceRefs, counterevidenceSought, altern
 
 ## STATE FILES
 
-- Config: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-config.json`
-- State Log: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-state.jsonl`
-- Findings Registry: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-findings-registry.json`
-- Strategy: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-strategy.md`
-- Iteration narrative: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-003.md`
-- Delta file: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-003.jsonl`
+- Config: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-config.json`
+- State Log: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-state.jsonl`
+- Findings Registry: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-findings-registry.json`
+- Strategy: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-strategy.md`
+- Iteration narrative: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-003.md`
+- Delta file: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-003.jsonl`
 
 ## CONSTRAINTS
 

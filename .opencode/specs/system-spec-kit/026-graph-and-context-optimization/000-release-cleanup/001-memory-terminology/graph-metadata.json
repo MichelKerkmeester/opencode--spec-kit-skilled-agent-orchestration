@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
-  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
   "children_ids": [],
   "manual": {

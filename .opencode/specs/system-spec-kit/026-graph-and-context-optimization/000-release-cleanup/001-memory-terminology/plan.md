@@ -1,5 +1,5 @@
 ---
-title: "Implementation Plan: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/plan]"
+title: "Implementation Plan: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/plan]"
 description: "Sequenced PR plan for modernizing operator-facing 'memory' phrasing to concrete behavioral language across docs, MCP tool descriptions, and runtime output strings — without renaming any frozen identifier (REQ-001). Dispatched as 5 primary PRs (PR1-PR5) plus 4 corrective follow-on PRs surfaced by deep-review and operator feedback."
 trigger_phrases:
   - "phrasing audit plan"
@@ -12,7 +12,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:40:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Retroactively created Level 3 plan.md after PR1-PR5 + 4 follow-on PRs shipped"
@@ -21,7 +21,7 @@ _memory:
     key_files:
       - "spec.md"
       - "phrasing-audit.md"
-      - "review/002-memory-terminology-pt-01/review-report.md"
+      - "review/review-report.md"
 ---
 
 # Implementation Plan: Memory→Behavioral Phrasing Audit

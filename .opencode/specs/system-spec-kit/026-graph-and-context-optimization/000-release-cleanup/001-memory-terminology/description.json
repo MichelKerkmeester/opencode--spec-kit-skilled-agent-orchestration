@@ -1,5 +1,5 @@
 {
-  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
   "description": "Feature Specification: Memory→Behavioral Phrasing Audit",
   "keywords": [
     "feature",
@@ -10,14 +10,14 @@
     "audit"
   ],
   "lastUpdated": "2026-04-27T10:12:36.223Z",
-  "specId": "002",
+  "specId": "001",
   "folderSlug": "memory-terminology",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization",
     "000-release-cleanup"
   ],
-  "memorySequence": 2,
+  "memorySequence": 1,
   "memoryNameHistory": [
     "26-04-26_14-18__pivoted-scope-from-full-code-command-memory.md",
     "27-04-26_10-35__closed-five-residual-gaps-in-the-002-memory.md"

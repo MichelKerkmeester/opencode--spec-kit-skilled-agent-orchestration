@@ -5,7 +5,7 @@
 STATE SUMMARY:
 Iteration: 1 of 5
 Dimension: correctness (inventory pass + cognitive carve-out validation + cross-runtime parity audit)
-Review Target: PR1-PR5 phrasing-audit verification on 002-memory-terminology + corrective wave (PR3-extra)
+Review Target: PR1-PR5 phrasing-audit verification on 001-memory-terminology + corrective wave (PR3-extra)
 Review Scope: 41 files spanning spec packet (2), top-level skill prose (8), feature_catalog mirrors (5), manual_testing_playbook (1), slash commands (12: 4 .opencode + 4 .claude + 4 .gemini), agent definitions (4: 3 .md + 1 .toml across .opencode/.claude/.gemini/.codex), runtime code (4), cognitive carve-out (4)
 Prior Findings: P0=0 P1=0 P2=0 (fresh session, but corrective edits already landed pre-dispatch — see deep-review-state.jsonl `pre_iteration_correction` event)
 Resource Map Coverage: resource-map.md not present; skipping coverage gate.
@@ -50,7 +50,7 @@ A. **Identifier-rename audit (highest priority — any hit = P0)** — grep acro
    grep -rn 'memory_search\|memory_save\|memory_context\|memory_match_triggers' .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts | wc -l
    grep -rn 'memory_quick_search\|memory_list\|memory_update\|memory_delete' .opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts | wc -l
    grep -rn '/memory:save\|/memory:search\|/memory:learn\|/memory:manage' .opencode/command/memory/
-   grep -rn '^_memory:' .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md
+   grep -rn '^_memory:' .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md
    ls .opencode/skill/system-spec-kit/mcp_server/handlers/memory-*.ts | wc -l    # expect 17
    ```
    All 21 tools should appear; `memory-*.ts` count == 17; `_memory:` frontmatter intact.
@@ -112,12 +112,12 @@ Every new P0/P1 finding MUST include: `claim`, `evidenceRefs`, `counterevidenceS
 
 ## STATE FILES (paths relative to repo root)
 
-- Config: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-config.json`
-- State Log: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-state.jsonl`
-- Findings Registry: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-findings-registry.json`
-- Strategy: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-strategy.md`
-- Write iteration narrative to: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-001.md`
-- Write per-iteration delta file to: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-001.jsonl`
+- Config: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-config.json`
+- State Log: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-state.jsonl`
+- Findings Registry: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-findings-registry.json`
+- Strategy: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-strategy.md`
+- Write iteration narrative to: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-001.md`
+- Write per-iteration delta file to: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-001.jsonl`
 
 ## CONSTRAINTS
 
@@ -131,7 +131,7 @@ Every new P0/P1 finding MUST include: `claim`, `evidenceRefs`, `counterevidenceS
 
 You MUST produce THREE artifacts:
 
-1. **Iteration narrative markdown** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-001.md`. Sections: Dimension, Files Reviewed (with counts), Findings by Severity (P0/P1/P2 with file:line evidence), Traceability Checks, Verdict, Next Dimension recommendation.
+1. **Iteration narrative markdown** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-001.md`. Sections: Dimension, Files Reviewed (with counts), Findings by Severity (P0/P1/P2 with file:line evidence), Traceability Checks, Verdict, Next Dimension recommendation.
 
 2. **Canonical JSONL iteration record** APPENDED to the state log. EXACT type=iteration:
 
@@ -141,7 +141,7 @@ You MUST produce THREE artifacts:
 
 Single-line JSON. Newline-terminated. Use `printf '%s\n' '<single-line-json>' >> <state_log_path>`.
 
-3. **Per-iteration delta file** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-001.jsonl`. One iteration record + one record per finding/classification/ruled_out/graphEvent.
+3. **Per-iteration delta file** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-001.jsonl`. One iteration record + one record per finding/classification/ruled_out/graphEvent.
 
 All three artifacts are REQUIRED.
 

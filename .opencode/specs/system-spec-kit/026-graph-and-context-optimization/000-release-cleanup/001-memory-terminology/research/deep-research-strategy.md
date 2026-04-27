@@ -14,7 +14,7 @@ Persistent brain for the deep-research session converging on the spec.md §12 op
 
 ### Usage
 
-- **Init:** Orchestrator copied this template to `research/002-memory-terminology-pt-01/deep-research-strategy.md` and populated topic + key questions from spec.md §12 + Phase 1 inventory data already in conversation context.
+- **Init:** Orchestrator copied this template to `research/deep-research-strategy.md` and populated topic + key questions from spec.md §12 + Phase 1 inventory data already in conversation context.
 - **Per iteration:** @deep-research reads Next Focus, runs 3–5 research actions (WebFetch + Grep + Read + memory_search), writes iteration-NNN.md. Reducer refreshes machine-owned sections.
 - **Mutability:** Mutable. Analyst-owned sections (Topic, Non-goals, Stop conditions, Known Context, Research Boundaries) stable; reducer rewrites Sections 3, 6, 7–11.
 
@@ -344,7 +344,7 @@ resource-map.md not present; skipping coverage gate.
 - research/research.md ownership: workflow-owned canonical synthesis output
 - Lifecycle branches: `resume`, `restart` (live); `fork`, `completed-continue` (deferred)
 - Machine-owned sections: reducer controls Sections 3, 6, 7–11
-- Canonical pause sentinel: `research/002-memory-terminology-pt-01/.deep-research-pause`
+- Canonical pause sentinel: `research/.deep-research-pause`
 - Capability matrix: `.opencode/skill/sk-deep-research/assets/runtime_capabilities.json`
 - Capability matrix doc: `.opencode/skill/sk-deep-research/references/capability_matrix.md`
 - Capability resolver: `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs`

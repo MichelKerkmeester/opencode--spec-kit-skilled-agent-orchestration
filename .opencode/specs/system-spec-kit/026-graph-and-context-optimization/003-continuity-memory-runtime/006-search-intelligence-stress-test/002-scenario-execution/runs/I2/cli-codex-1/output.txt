@@ -5687,8 +5687,8 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-003-graph-metadata-validation-pt-02/deltas/iter-004.jsonl
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-003-graph-metadata-validation-pt-02/deltas/iter-006.jsonl
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/003-code-graph-context-and-scan-scope/research/research.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/phrasing-audit.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/phrasing-audit.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/002-memory-quality-remediation/review/deep-review-config.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/003-advisor-phrase-booster-tailoring/research/deep-research-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-07/deep-review-config.json
@@ -5811,7 +5811,7 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/description.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/implementation-summary.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/002-code-graph-self-contained-package/graph-metadata.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-config.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-config.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/deep-review-config.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design/scripts/prompts/Q1.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design/scripts/prompts/I2.md
@@ -5829,12 +5829,12 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design/implementation-summary.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/001-scenario-design/graph-metadata.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-002-content-routing-accuracy-pt-01/deep-review-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-004.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-005.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-001.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-002.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/iterations/iteration-003.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-state.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-004.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-005.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-001.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-002.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/iterations/iteration-003.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-state.jsonl
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/implementation-summary.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/iterations/iteration-010.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/iterations/iteration-004.md
@@ -5848,11 +5848,11 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/iterations/iteration-009.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/deep-review-state.jsonl
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-001-search-fusion-tuning-pt-01/deep-review-dashboard.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/prompts/iteration-004.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/prompts/iteration-005.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/prompts/iteration-001.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/prompts/iteration-002.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/prompts/iteration-003.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/prompts/iteration-004.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/prompts/iteration-005.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/prompts/iteration-001.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/prompts/iteration-002.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/prompts/iteration-003.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-002-content-routing-accuracy-pt-01/iterations/iteration-010.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-002-content-routing-accuracy-pt-01/iterations/iteration-004.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/006-search-routing-advisor-002-content-routing-accuracy-pt-01/iterations/iteration-005.md
@@ -5924,17 +5924,17 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience/review/deep-review-config.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience/review/resource-map.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-release-cleanup-playbooks/review/006-continuity-refactor-gates-pt-01/008-cmd-memory-speckit-revisit/deep-review-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-001.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-003.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-005.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-002.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deltas/iter-004.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-findings-registry.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-strategy.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/review-report.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-001.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-003.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-005.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-002.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deltas/iter-004.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-findings-registry.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-strategy.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/review-report.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/deep-review-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/description.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/graph-metadata.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/description.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/graph-metadata.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/002-skill-advisor-graph/research/deep-research-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/deep-review-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/review-report.md
@@ -6076,8 +6076,8 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/review/deep-review-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/review/review-report.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/checklist.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deep-research-strategy.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/resource-map.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deep-research-strategy.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/resource-map.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/archive-invalid-2026-04-13T16-59-27Z/iterations/iteration-010.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/archive-invalid-2026-04-13T16-59-27Z/iterations/iteration-004.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-02/archive-invalid-2026-04-13T16-59-27Z/iterations/iteration-020.md
@@ -6184,16 +6184,16 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/description.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/001-code-graph-upgrades/implementation-summary.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/001-search-and-routing-tuning/review/010-search-and-routing-tuning-pt-11/deep-review-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-010.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-004.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-005.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-001.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-006.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-002.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-003.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-007.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-008.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/iterations/iteration-009.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-010.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-004.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-005.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-001.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-006.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-002.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-003.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-007.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-008.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/iterations/iteration-009.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/resource-map.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/spec.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/plan.md
@@ -6292,7 +6292,7 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review/description.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review/graph-metadata.json
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-advisor-refinement/review/015-code-graph-advisor-refinement-pt-01/deep-review-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/research.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/research.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-advisor-refinement/research/015-code-graph-advisor-refinement-pt-01/deep-research-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/005-code-graph-advisor-refinement/research/015-code-graph-advisor-refinement-pt-01/resource-map.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review/research/resource-map.md
@@ -6324,20 +6324,20 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/review/deep-review-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/review/review-report.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/checklist.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-008.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-009.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-010.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-001.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-003.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-007.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-005.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-002.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-004.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deltas/iter-006.jsonl
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deep-research-config.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deep-research-dashboard.md
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/findings-registry.json
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/002-memory-terminology-pt-01/deep-research-state.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-008.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-009.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-010.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-001.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-003.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-007.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-005.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-002.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-004.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deltas/iter-006.jsonl
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deep-research-config.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deep-research-dashboard.md
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/findings-registry.json
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/research_archive/rename-pivot-2026-04-26-pt-01/001-memory-terminology-pt-01/deep-research-state.jsonl
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/004-code-graph-hook-improvements/research/030-code-graph-gap-investigation-pt-01/deep-research-strategy.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-release-cleanup-playbooks/review/006-continuity-refactor-gates-pt-01/010-remove-shared-memory/iterations/iteration-014.md
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-release-cleanup-playbooks/review/006-continuity-refactor-gates-pt-01/010-remove-shared-memory/iterations/iteration-007.md
@@ -9544,8 +9544,8 @@ exec
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/plan.md:51:A two-sub-phase architecture: 001 designs the playbook (scenarios, rubric, dispatch matrix, scripts), 002 executes it (runs the matrix, scores outputs, synthesizes findings). The asymmetry between cli-opencode (full Spec Kit Memory MCP) and cli-codex/cli-copilot (external runtimes) is the test's primary signal — it quantifies whether our search intelligence adds measurable value over off-the-shelf AI capabilities.
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/plan.md:110:            ├──> Pre-flight: check CLIs installed, mem DB snapshot, CocoIndex daemon
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/006-search-intelligence-stress-test/plan.md:170:| CocoIndex daemon running | External | Red (down per 005 evidence) | Vector channel unavailable; document in findings |
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md:96:- Parser-fallback infrastructure, deprecation alias matrices, glossary lint validators, pre-commit hooks. The prior research output produced a 4-PR plan optimized for a rename — none of that ships.
-.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md:199:- **Archived prior research** (`research_archive/rename-pivot-2026-04-26-pt-01/`) — 10 iterations of `/spec_kit:deep-research` scoped for a code+command+key rename; substrate (6-layer concept model, 21-tool inventory, Anthropic + MCP-registry collision analysis) is still useful but the recommendations (rename, alias matrix, parser-fallback, glossary-lint, 4-PR plan) are out-of-scope per the user's pivot. Kept for reference only.
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md:96:- Parser-fallback infrastructure, deprecation alias matrices, glossary lint validators, pre-commit hooks. The prior research output produced a 4-PR plan optimized for a rename — none of that ships.
+.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md:199:- **Archived prior research** (`research_archive/rename-pivot-2026-04-26-pt-01/`) — 10 iterations of `/spec_kit:deep-research` scoped for a code+command+key rename; substrate (6-layer concept model, 21-tool inventory, Anthropic + MCP-registry collision analysis) is still useful but the recommendations (rename, alias matrix, parser-fallback, glossary-lint, 4-PR plan) are out-of-scope per the user's pivot. Kept for reference only.
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/003-contextador/tasks.md:71:- [x] T018 Iteration 6 - compare against current Public retrieval surfaces (CocoIndex, Code Graph MCP, Spec Kit Memory)
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite/spec.md:3:description: "Make /memory:save planner-first (non-mutating) by default while preserving full-auto as an explicit fallback, retire the legacy [spec]/memory/*.md write path, and decouple freshness (graph-metadata refresh, spec-doc reindex, enrichment) from the hot save path via explicit follow-up APIs."
 .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite/spec.md:9:  - "full-auto fallback"

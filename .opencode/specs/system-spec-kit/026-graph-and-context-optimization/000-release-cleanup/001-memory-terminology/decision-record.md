@@ -1,5 +1,5 @@
 ---
-title: "Decision Record: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/decision-record]"
+title: "Decision Record: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/decision-record]"
 description: "ADR ledger documenting the architectural choices made during the docs-only phrasing audit: scope freeze, vocabulary key, runtime carve-outs, and template-contract handling for grandfathered constitutional rules."
 trigger_phrases:
   - "phrasing audit ADR"
@@ -12,7 +12,7 @@ importance_tier: "important"
 contextType: "decision"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:46:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Authored retroactive decision-record.md with 7 ADRs covering all major architectural choices"
@@ -21,7 +21,7 @@ _memory:
     key_files:
       - "spec.md"
       - "phrasing-audit.md"
-      - "review/002-memory-terminology-pt-01/review-report.md"
+      - "review/review-report.md"
 ---
 
 # Decision Record: Memory→Behavioral Phrasing Audit

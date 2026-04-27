@@ -1,8 +1,8 @@
-# Deep Review Strategy — 002-memory-terminology PR1-PR5 Verification
+# Deep Review Strategy — 001-memory-terminology PR1-PR5 Verification
 
 ## Review Charter
 
-**Target:** PR1-PR5 phrasing-audit verification on `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology`
+**Target:** PR1-PR5 phrasing-audit verification on `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology`
 
 **Verify the ~164 edits across ~25 files hold the scope-freeze contract** from `spec.md` REQ-001:
 

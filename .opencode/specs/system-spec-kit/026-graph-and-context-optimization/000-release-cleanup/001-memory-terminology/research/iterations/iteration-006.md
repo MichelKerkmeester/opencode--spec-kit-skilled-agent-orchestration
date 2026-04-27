@@ -67,13 +67,13 @@ None — this iteration produced clean structural insight without dead ends.
 
 ## Sources Consulted
 
-- `research/002-memory-terminology-pt-01/deep-research-config.json`
-- `research/002-memory-terminology-pt-01/deep-research-state.jsonl`
-- `research/002-memory-terminology-pt-01/iterations/iteration-001.md`
-- `research/002-memory-terminology-pt-01/iterations/iteration-002.md`
-- `research/002-memory-terminology-pt-01/iterations/iteration-003.md`
-- `research/002-memory-terminology-pt-01/iterations/iteration-004.md`
-- `research/002-memory-terminology-pt-01/iterations/iteration-005.md`
+- `research/deep-research-config.json`
+- `research/deep-research-state.jsonl`
+- `research/iterations/iteration-001.md`
+- `research/iterations/iteration-002.md`
+- `research/iterations/iteration-003.md`
+- `research/iterations/iteration-004.md`
+- `research/iterations/iteration-005.md`
 
 ## Assessment
 

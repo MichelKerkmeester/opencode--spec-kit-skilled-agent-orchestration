@@ -1,12 +1,12 @@
 {
-  "topic": "Review: PR1-PR5 phrasing-audit verification on 002-memory-terminology",
+  "topic": "Review: PR1-PR5 phrasing-audit verification on 001-memory-terminology",
   "mode": "review",
   "sessionId": "2026-04-26T13:30:56Z",
   "parentSessionId": null,
   "lineageMode": "new",
   "generation": 1,
   "continuedFromRun": null,
-  "reviewTarget": "PR1-PR5 phrasing-audit verification on 002-memory-terminology — verify the ~164 edits across ~25 files hold the scope-freeze contract from spec.md REQ-001: zero identifier renames; cognitive-science loanwords preserved; vocabulary substitutions accurate per phrasing-audit.md; no semantic drift; no broken anchors; runtime output strings don't break vitest snapshot tests; spec.md + phrasing-audit.md internally consistent.",
+  "reviewTarget": "PR1-PR5 phrasing-audit verification on 001-memory-terminology — verify the ~164 edits across ~25 files hold the scope-freeze contract from spec.md REQ-001: zero identifier renames; cognitive-science loanwords preserved; vocabulary substitutions accurate per phrasing-audit.md; no semantic drift; no broken anchors; runtime output strings don't break vitest snapshot tests; spec.md + phrasing-audit.md internally consistent.",
   "reviewTargetType": "spec-folder",
   "reviewDimensions": [
     "correctness",
@@ -16,8 +16,8 @@
   ],
   "resource_map_present": false,
   "reviewScopeFiles": [
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md",
-    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/phrasing-audit.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md",
+    ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/phrasing-audit.md",
     ".opencode/skill/system-spec-kit/SKILL.md",
     ".opencode/skill/system-spec-kit/README.md",
     ".opencode/skill/system-spec-kit/config/README.md",
@@ -74,7 +74,7 @@
   "convergenceThreshold": 0.1,
   "stuckThreshold": 2,
   "maxDurationMinutes": 120,
-  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology",
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
   "resource_map": {
     "emit": false
   },

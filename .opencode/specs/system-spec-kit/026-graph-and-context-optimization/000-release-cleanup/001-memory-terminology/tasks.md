@@ -1,5 +1,5 @@
 ---
-title: "Tasks: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/tasks]"
+title: "Tasks: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/tasks]"
 description: "Task ledger for the 9-PR phrasing-audit landing sequence. All tasks complete; ledger captured retroactively after the work shipped."
 trigger_phrases:
   - "phrasing audit tasks"
@@ -11,7 +11,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:42:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Retroactive task ledger created after all PRs shipped"
@@ -107,7 +107,7 @@ User-flagged gaps that the original PR3 dispatch missed.
 
 ### Phase 2.1 — 5-Iteration Deep Review
 
-- [x] **T10** Init review packet at `review/002-memory-terminology-pt-01/`
+- [x] **T10** Init review packet at `review/`
   - config.json (executor: cli-copilot, model: gpt-5.5, reasoningEffort: high), state.jsonl, strategy.md, findings-registry.json
   - Acquire .deep-review.lock
 
@@ -247,7 +247,7 @@ User flagged: "Well a lot of implementation was done so it shouldn't be a spec o
 - Plan: `plan.md` (5 implementation phases + dependencies + rollback)
 - Quality gates: `checklist.md` (P0/P1/P2 ledger with iter evidence per row)
 - Decisions: `decision-record.md` (7 ADRs covering scope freeze, vocabulary key, executor choice, Q4 label, manual-fallback indexing, skill_id fix, P2 deferral)
-- Synthesis: `review/002-memory-terminology-pt-01/review-report.md` (deep-review final verdict)
+- Synthesis: `review/review-report.md` (deep-review final verdict)
 - Vocabulary key: `phrasing-audit.md` (current→proposed grid + hard no-touch list)
 
 <!-- /ANCHOR:cross-refs -->

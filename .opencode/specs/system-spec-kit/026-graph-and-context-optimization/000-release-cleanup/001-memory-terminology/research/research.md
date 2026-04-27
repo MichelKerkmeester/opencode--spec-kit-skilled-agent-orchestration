@@ -226,4 +226,4 @@ Full content in `iterations/iteration-009.md`.
 - Last 3 iteration summaries: iter-8 glossary content drafts (ratio 0.15) | iter-9 edge case content drafts (ratio 0.15) | iter-10 synthesis prep + STOP (ratio 0.15)
 - Convergence threshold: 0.05
 
-STATUS=OK PATH=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology
+STATUS=OK PATH=.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology

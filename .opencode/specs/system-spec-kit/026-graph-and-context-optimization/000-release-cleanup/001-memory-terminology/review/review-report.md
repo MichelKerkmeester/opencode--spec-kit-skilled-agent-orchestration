@@ -1,6 +1,6 @@
-# Deep-Review Report — 002-memory-terminology PR1-PR5 Verification
+# Deep-Review Report — 001-memory-terminology PR1-PR5 Verification
 
-**Review Target:** PR1-PR5 phrasing-audit verification on `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology` — verify the ~164 PR1-PR5 + ~16 PR3-extra runtime-mirror edits hold the spec.md REQ-001 scope-freeze contract (zero identifier renames; cognitive-science loanwords preserved; vocabulary substitutions accurate; no semantic drift; no broken anchors; runtime output strings safe; spec.md ↔ phrasing-audit.md internally consistent).
+**Review Target:** PR1-PR5 phrasing-audit verification on `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology` — verify the ~164 PR1-PR5 + ~16 PR3-extra runtime-mirror edits hold the spec.md REQ-001 scope-freeze contract (zero identifier renames; cognitive-science loanwords preserved; vocabulary substitutions accurate; no semantic drift; no broken anchors; runtime output strings safe; spec.md ↔ phrasing-audit.md internally consistent).
 
 **Review Type:** spec-folder
 **Iterations Run:** 5 of 5 (max)
@@ -161,8 +161,8 @@ None required.
 
 ### Sources Reviewed (selected)
 
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md` (REQ-001..REQ-008)
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/phrasing-audit.md` (vocabulary key + grid)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md` (REQ-001..REQ-008)
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/phrasing-audit.md` (vocabulary key + grid)
 - `.opencode/skill/system-spec-kit/SKILL.md`
 - `.opencode/skill/system-spec-kit/README.md` + `mcp_server/README.md` (Note: callouts)
 - `.opencode/skill/system-spec-kit/references/memory/{memory_system,trigger_config}.md`
@@ -198,7 +198,7 @@ None required.
 
 **PASS** with `hasAdvisories=true`.
 
-The 002-memory-terminology phrasing-audit has converged. All 8 spec.md acceptance criteria (REQ-001..REQ-008) PASS:
+The 001-memory-terminology phrasing-audit has converged. All 8 spec.md acceptance criteria (REQ-001..REQ-008) PASS:
 
 - **REQ-001** (zero identifier renames): VERIFIED — 21 tools / 17 handlers / 4 commands / `_memory:` / SQL tables / folder names all intact.
 - **REQ-002** (vocabulary substitutions per phrasing-audit.md): VERIFIED — concrete behavioral language in MCP tool descriptions and operator-facing prose.

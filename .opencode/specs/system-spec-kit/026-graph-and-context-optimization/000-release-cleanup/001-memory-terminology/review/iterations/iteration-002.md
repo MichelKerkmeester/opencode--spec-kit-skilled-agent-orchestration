@@ -34,9 +34,9 @@ Primary evidence surfaces:
 - `.opencode/skill/sk-deep-review/SKILL.md`
 - `.opencode/skill/sk-deep-review/references/quick_reference.md`
 - `.opencode/skill/sk-code-review/references/review_core.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-state.jsonl`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-findings-registry.json`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/review/002-memory-terminology-pt-01/deep-review-strategy.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-state.jsonl`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-findings-registry.json`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/review/deep-review-strategy.md`
 - `.opencode/skill/system-spec-kit/README.md`
 - `.opencode/skill/system-spec-kit/mcp_server/README.md`
 - `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`

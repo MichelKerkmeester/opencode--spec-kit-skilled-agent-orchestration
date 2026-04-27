@@ -91,7 +91,7 @@ Evidence:
 
 ## Checklist Evidence
 
-N/A. The packet has no `checklist.md`; `test -f .../002-memory-terminology/checklist.md` returned exit code 1. This iteration records `checklist_evidence: N/A` rather than failing a missing Level 2 checklist because the user explicitly scoped checklist evidence as not applicable for this packet.
+N/A. The packet has no `checklist.md`; `test -f .../001-memory-terminology/checklist.md` returned exit code 1. This iteration records `checklist_evidence: N/A` rather than failing a missing Level 2 checklist because the user explicitly scoped checklist evidence as not applicable for this packet.
 
 ## Overlay Checks
 

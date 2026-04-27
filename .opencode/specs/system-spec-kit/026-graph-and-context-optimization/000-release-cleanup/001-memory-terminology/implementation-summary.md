@@ -1,5 +1,5 @@
 ---
-title: "Implementation Summary: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/implementation-summary]"
+title: "Implementation Summary: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/implementation-summary]"
 description: "What shipped: 9 PRs across 6 commits modernizing operator-facing 'memory' phrasing to concrete behavioral language without renaming any frozen identifier. Includes 5-iteration deep-review (PASS hasAdvisories=true), index/graph optimization pass, and 4 operator-surfaced corrective follow-ons."
 trigger_phrases:
   - "phrasing audit summary"
@@ -12,7 +12,7 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:48:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Authored retroactive implementation-summary.md after all 9 PRs landed and 6 commits shipped to main"
@@ -21,7 +21,7 @@ _memory:
     key_files:
       - "spec.md"
       - "phrasing-audit.md"
-      - "review/002-memory-terminology-pt-01/review-report.md"
+      - "review/review-report.md"
       - "decision-record.md"
 ---
 
@@ -38,7 +38,7 @@ _memory:
 
 | Field | Value |
 |---|---|
-| Packet | `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology` |
+| Packet | `system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology` |
 | Level | 3 |
 | Verdict | PASS hasAdvisories=true |
 | Release-readiness | ready |
@@ -198,9 +198,9 @@ See `decision-record.md` for the full ADR ledger. Summary of the 7 ADRs:
 - `.opencode/skill/mcp-coco-index/graph-metadata.json`
 
 **Deep-review packet:**
-- `review/002-memory-terminology-pt-01/{deep-review-config.json,deep-review-state.jsonl,deep-review-findings-registry.json,deep-review-strategy.md,review-report.md}`
-- `review/002-memory-terminology-pt-01/iterations/iteration-{001..005}.md`
-- `review/002-memory-terminology-pt-01/deltas/iter-{001..005}.jsonl`
+- `review/{deep-review-config.json,deep-review-state.jsonl,deep-review-findings-registry.json,deep-review-strategy.md,review-report.md}`
+- `review/iterations/iteration-{001..005}.md`
+- `review/deltas/iter-{001..005}.jsonl`
 
 <!-- /ANCHOR:files-modified -->
 

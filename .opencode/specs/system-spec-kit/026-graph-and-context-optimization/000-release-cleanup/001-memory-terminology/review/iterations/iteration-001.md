@@ -4,7 +4,7 @@
 
 correctness
 
-Inventory pass plus cognitive carve-out validation and cross-runtime parity audit for `002-memory-terminology`.
+Inventory pass plus cognitive carve-out validation and cross-runtime parity audit for `001-memory-terminology`.
 
 ## Files Reviewed
 

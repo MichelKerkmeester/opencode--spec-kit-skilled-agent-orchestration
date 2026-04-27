@@ -31,8 +31,8 @@ Adjudication: The prompt says remaining closure hits are P0 regressions. P2-001 
 
 ## Files Sampled
 
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec.md`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/phrasing-audit.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/spec.md`
+- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/phrasing-audit.md`
 - `.opencode/skill/system-spec-kit/README.md`
 - `.opencode/skill/system-spec-kit/SKILL.md`
 - `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts`

@@ -1,5 +1,5 @@
 ---
-title: "QA Checklist: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/checklist]"
+title: "QA Checklist: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/checklist]"
 description: "QA validation checklist for the phrasing-audit packet. All P0/P1 items verified post-flight; deep-review-supplied evidence cited per row."
 trigger_phrases:
   - "phrasing audit checklist"
@@ -12,15 +12,15 @@ importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
     last_updated_at: "2026-04-27T11:55:00Z"
     last_updated_by: "claude-opus-4-7"
     recent_action: "Restructured checklist.md to match v2.2 template section headers (Verification Protocol, Pre-Implementation, Code Quality, Testing, Security, Documentation, File Organization, Verification Summary)"
     next_safe_action: "Validate via scripts/spec/validate.sh --strict"
     blockers: []
     key_files:
-      - "review/002-memory-terminology-pt-01/review-report.md"
-      - "review/002-memory-terminology-pt-01/deep-review-state.jsonl"
+      - "review/review-report.md"
+      - "review/deep-review-state.jsonl"
 ---
 
 # Verification Checklist: Memory→Behavioral Phrasing Audit
@@ -168,7 +168,7 @@ P1 — Vocabulary modernization (REQ-002 / REQ-003 / REQ-004 / REQ-005 / REQ-007
 ## File Organization
 
 - [x] Spec packet contains all required Level 3 docs: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, description.json, graph-metadata.json
-- [x] Deep-review packet at `review/002-memory-terminology-pt-01/` contains: review-report.md + 5 iteration narratives + 5 delta files + state log + findings registry + strategy + dashboard
+- [x] Deep-review packet at `review/` contains: review-report.md + 5 iteration narratives + 5 delta files + state log + findings registry + strategy + dashboard
 - [x] research_archive/ retains the pre-pivot rename-shaped 10-iteration deep research for audit
 - [x] phrasing-audit.md sibling holds the vocabulary key + grid
 
@@ -199,6 +199,6 @@ P2 — Substitution polish drift (advisory, non-blocking):
 
 **Verdict:** PASS with `hasAdvisories=true`. Release-readiness state: ready.
 
-**Source-of-truth:** `review/002-memory-terminology-pt-01/review-report.md` (deep-review synthesis)
+**Source-of-truth:** `review/review-report.md` (deep-review synthesis)
 
 <!-- /ANCHOR:verification-summary -->
