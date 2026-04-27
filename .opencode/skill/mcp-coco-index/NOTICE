@@ -1,0 +1,19 @@
+This skill bundles a soft-fork of cocoindex-code (Apache 2.0).
+
+Original work:
+  Copyright the cocoindex-io contributors
+  https://github.com/cocoindex-io/cocoindex-code
+  Upstream version forked: 0.2.3
+  Fork inception version: 0.2.3+spec-kit-fork.0.1.0
+  License: Apache License, Version 2.0 (see LICENSE)
+
+Modifications by the spec-kit-skilled-agent-orchestration project:
+  Phase 1 (2026-04-27): Vendored upstream source into the repo at
+  .opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/ to enable
+  in-repo patching for spec-kit-fork.0.2.0 and later. Zero behavior
+  change vs upstream 0.2.3 in this release.
+
+  Future modifications will be enumerated here as they land.
+
+The Rust-based upstream `cocoindex` package is NOT forked. It is
+still pulled from PyPI as a dependency.

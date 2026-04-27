@@ -1,0 +1,64 @@
+# Soft-fork of upstream cocoindex-code:
+# https://github.com/cocoindex-io/cocoindex-code
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cocoindex-code"
+version = "0.2.3+spec-kit-fork.0.1.0"
+description = "Soft-fork of cocoindex-code for spec-kit in-repo patching"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "cocoindex-io contributors" }
+]
+keywords = ["cocoindex", "codebase", "indexing", "mcp", "vector-search"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Apache Software License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "cocoindex[litellm]==1.0.0a33",
+    "einops>=0.8.2",
+    "mcp>=1.0.0",
+    "msgspec>=0.19.0",
+    "numpy>=1.24.0",
+    "pathspec>=0.12.1",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "sentence-transformers>=2.2.0",
+    "sqlite-vec>=0.1.0",
+    "typer>=0.9.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/cocoindex-io/cocoindex-code"
+Repository = "https://github.com/cocoindex-io/cocoindex-code"
+Issues = "https://github.com/cocoindex-io/cocoindex-code/issues"
+
+[project.scripts]
+ccc = "cocoindex_code.cli:app"
+
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.0.0",
+    "prek>=0.1.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+    "pytest>=7.0.0",
+    "ruff>=0.1.0",
+]
+
+[tool.setuptools.packages.find]
+include = ["cocoindex_code*"]
+
+[tool.setuptools.package-data]
+cocoindex_code = ["LICENSE"]

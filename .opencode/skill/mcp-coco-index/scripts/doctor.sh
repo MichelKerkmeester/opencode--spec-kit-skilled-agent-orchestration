@@ -156,6 +156,13 @@ else
     log_warn "Binary not ready"
 fi
 
+VERSION_OUTPUT="$("$CCC_BIN" --version 2>&1 || true)"
+if echo "$VERSION_OUTPUT" | grep -q "spec-kit-fork"; then
+  echo "✓ Fork version detected: $VERSION_OUTPUT"
+else
+  echo "⚠ WARNING: ccc version does not contain 'spec-kit-fork' marker. Re-run install.sh to restore the fork."
+fi
+
 if [[ "$READINESS_SKILL_PAYLOAD_READY" == true ]]; then
     log_pass "Skill payload present"
 else

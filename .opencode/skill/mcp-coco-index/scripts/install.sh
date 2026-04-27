@@ -43,7 +43,10 @@ create_venv() {
 
 install_package() {
     echo "  Installing $PACKAGE_NAME..."
-    "$VENV_DIR/bin/pip" install --upgrade --quiet "$PACKAGE_NAME"
+    if ! "$VENV_DIR/bin/pip" install --upgrade --quiet --no-build-isolation --editable "$SKILL_DIR/mcp_server"; then
+        echo "  Dependency resolution failed; retrying local editable install without dependency resolution..."
+        "$VENV_DIR/bin/pip" install --upgrade --quiet --no-build-isolation --no-deps --editable "$SKILL_DIR/mcp_server"
+    fi
 
     local version
     version="$("$VENV_DIR/bin/pip" show "$PACKAGE_NAME" 2>/dev/null | grep "^Version:" | cut -d' ' -f2)"
