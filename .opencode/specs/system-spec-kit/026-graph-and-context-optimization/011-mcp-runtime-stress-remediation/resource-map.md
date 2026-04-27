@@ -18,11 +18,11 @@ contextType: "general"
 <!-- ANCHOR:summary -->
 ## Summary
 
-- **Total references**: 34
-- **By category**: Documents=3, Specs=23, Skills=1, Config=1, Meta=3, READMEs=0, Commands=0, Agents=0, Scripts=0, Tests=0
+- **Total references**: 35
+- **By category**: Documents=3, Specs=24, Skills=1, Config=1, Meta=3, READMEs=0, Commands=0, Agents=0, Scripts=0, Tests=0
 - **Missing on disk**: 0 (the original autonomous-run handover document was deleted before this phase was created and is intentionally not tracked here; see `./context-index.md` §Deleted Predecessor Docs)
 - **Scope**: Parent-aggregate ledger for the 011 phase parent, covering (a) the 2026-04-27 carve-out that moved 9 packets from `003-continuity-memory-runtime/` into this folder, (b) the same-day in-place renumber of those 9 packets from the 006-014 range to the 001-009 range, and (c) the 2026-04-27 scaffold of the 010 v1.0.2 stress-test re-run packet.
-- **Generated**: 2026-04-27T15:00:00Z
+- **Generated**: 2026-04-27T18:45:00Z
 
 > **Action vocabulary**: `Created` · `Updated` · `Analyzed` · `Removed` · `Cited` · `Validated` · `Moved` · `Renamed`.
 > **Status vocabulary**: `OK` (exists on disk) · `MISSING` (referenced but absent) · `PLANNED` (intentional future path).
@@ -60,7 +60,8 @@ contextType: "general"
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability/` | Moved + Renamed | OK | From `003-…/012-intent-classifier-stability/`. IntentTelemetry + paraphrase corpus. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol/` | Moved + Renamed | OK | From `003-…/013-mcp-daemon-rebuild-protocol/`. Daemon rebuild + restart contract. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/` | Moved + Renamed | OK | From `003-…/014-memory-search-response-policy/`. Refusal contract for low-quality searches. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/` | Created | OK | v1.0.2 re-run of the 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict (closes §2.1 when findings ship). Scaffold-stage; sweep execution pending. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/` | Created | OK | v1.0.2 re-run of the 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict. **Complete 2026-04-27** — sweep done, findings shipped, HANDOVER §2.1 CLOSED. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research/` | Created | OK | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams. Scaffold-stage; deep-research loop pending (cli-codex/gpt-5.5/high/fast). |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/**/description.json` | Updated | OK | Each renumbered child's `specId`, `specFolder`, `parentChain` rewired to the new parent + new local number. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/**/graph-metadata.json` | Updated | OK | Each renumbered child's `packet_id`, `spec_folder`, `parent_id` rewired. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/**/spec.md` | Updated | OK | Path-form `Spec Folder` and frontmatter pointers rewired across the renumbered children. |

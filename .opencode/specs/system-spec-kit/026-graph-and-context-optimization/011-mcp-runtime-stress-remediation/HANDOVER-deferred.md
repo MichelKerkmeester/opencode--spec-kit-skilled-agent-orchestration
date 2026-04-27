@@ -73,9 +73,13 @@ Three follow-up items remain after the v1.0.2 scaffold lands. They split into th
 3. **Item 2.3** (packet 007 v2) and **Item 2.4** (hallucination guard) — independent enhancements. Run when prioritized.
 
 ### Newly surfaced from v1.0.2 sweep (2026-04-27)
-4. **(P0)** cli-copilot `/memory:save` Gate 3 bypass — see `./010-stress-test-rerun-v1-0-2/findings.md` Recommendation #1. Tighten copilot's planner-first default or add explicit Gate 3 prompt at CLI entry point.
-5. **(P1)** Re-test packet 005 under deterministically-degraded graph — Q1 cells in v1.0.2 didn't exercise `fallbackDecision` because graph was healthy post-pre-flight. Packet 005 verdict NEUTRAL not PROVEN.
-6. **(P2)** Code-graph file-watcher debounce — pre-flight detected 4-hour staleness drift in this run.
+
+> **Status**: items 4-6 are scaffolded into a single research packet at [`./011-post-stress-followup-research/`](./011-post-stress-followup-research/). A 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.5, high reasoning, fast service tier) refines actionable fix proposals for all four (P0/P1/P2 + the CocoIndex-telemetry opportunity) plus a light architectural touch on intelligence-system seams. The loop's `research/research.md` is the deliverable; per-follow-up remediation packets are downstream work the user authors after reviewing the synthesis.
+
+4. **(P0)** cli-copilot `/memory:save` Gate 3 bypass — see `./010-stress-test-rerun-v1-0-2/findings.md` Recommendation #1. Tighten copilot's planner-first default or add explicit Gate 3 prompt at CLI entry point. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P0 section.
+5. **(P1)** Re-test packet 005 under deterministically-degraded graph — Q1 cells in v1.0.2 didn't exercise `fallbackDecision` because graph was healthy post-pre-flight. Packet 005 verdict NEUTRAL not PROVEN. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P1 section.
+6. **(P2)** Code-graph file-watcher debounce — pre-flight detected 4-hour staleness drift in this run. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P2 section.
+7. **(opportunity)** CocoIndex fork telemetry not yet leveraged downstream — fork ships 7 new fields (`dedupedAliases`, `uniqueResultCount`, `path_class`, `rankingSignals`, `source_realpath`, `content_hash`, `raw_score`) but no consumers in `mcp_server/lib/search/`. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §Opportunity section.
 
 ---
 

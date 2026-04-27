@@ -16,6 +16,8 @@ trigger_phrases:
   - "007 intent classifier stability"
   - "008 mcp daemon rebuild protocol"
   - "009 memory search response policy"
+  - "010 stress test rerun v1.0.2"
+  - "011 post stress followup research"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -106,7 +108,8 @@ Harden the MCP runtime end-to-end against the regressions surfaced by the v1.0.1
 | 7 | `007-intent-classifier-stability/` | Normalized `IntentTelemetry` + paraphrase corpus | complete (embedding-based v2 deferred — HANDOVER-deferred §2.3) |
 | 8 | `008-mcp-daemon-rebuild-protocol/` | Canonical rebuild + restart + live-probe contract that gates the others | complete |
 | 9 | `009-memory-search-response-policy/` | `responsePolicy` / `citationPolicy` refusal contract for low-quality searches | complete (client-side guard deferred — HANDOVER-deferred §2.4) |
-| 10 | `010-stress-test-rerun-v1-0-2/` | v1.0.2 re-run of the v1.0.1 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict (closes HANDOVER-deferred §2.1 when findings ship) | draft (scaffold; sweep execution pending daemon-restart attestation) |
+| 10 | `010-stress-test-rerun-v1-0-2/` | v1.0.2 re-run of the v1.0.1 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict (closes HANDOVER-deferred §2.1 when findings ship) | complete (sweep complete, findings shipped 2026-04-27, HANDOVER §2.1 CLOSED) |
+| 11 | `011-post-stress-followup-research/` | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams | draft (scaffold; deep-research loop pending) |
 
 ### Phase Transition Rules
 
