@@ -1,0 +1,6 @@
+{"type":"config","topic":"Refine v1.0.2 follow-ups","maxIterations":10,"convergenceThreshold":0.05,"resource_map_present":false,"resource_map":{"emit":true},"createdAt":"2026-04-27T17:00:49Z","specFolder":"system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research","executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900},"lineage":{"sessionId":"dr-20260427T170049Z-011-post-stress-followup","lineageMode":"new","generation":1}}
+{"type":"event","event":"session_started","sessionId":"dr-20260427T170049Z-011-post-stress-followup","timestamp":"2026-04-27T17:00:49Z"}
+{"type":"event","event":"executor_audit","executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900},"timestamp":"2026-04-27T17:00:49Z"}
+{"type":"event","event":"iteration_started","iteration":1,"timestamp":"2026-04-27T17:03:28Z"}
+{"type":"event","event":"iteration_completed","iteration":1,"timestamp":"2026-04-27T17:09:22Z"}
+{"type":"event","event":"iteration_started","iteration":2,"timestamp":"2026-04-27T17:09:22Z"}

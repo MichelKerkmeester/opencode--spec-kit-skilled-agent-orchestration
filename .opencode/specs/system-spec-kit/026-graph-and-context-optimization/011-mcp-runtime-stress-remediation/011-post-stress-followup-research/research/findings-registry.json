@@ -1,0 +1,20 @@
+{
+  "openQuestions": [
+    {"id": "Q-P0", "topic": "cli-copilot /memory:save Gate 3 bypass", "priority": "P0"},
+    {"id": "Q-P1", "topic": "code-graph fast-fail not testable", "priority": "P1"},
+    {"id": "Q-P2", "topic": "code-graph file-watcher debounce", "priority": "P2"},
+    {"id": "Q-OPP", "topic": "CocoIndex fork telemetry leverage", "priority": "P2"},
+    {"id": "Q-ARCH", "topic": "intelligence-system seams (light touch)", "priority": "P3"}
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 5,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}
