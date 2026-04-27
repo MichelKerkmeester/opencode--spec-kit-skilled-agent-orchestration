@@ -12,6 +12,7 @@ import { toErrorMessage } from '../utils/index.js';
 
 // Intent classifier
 import * as intentClassifier from '../lib/search/intent-classifier.js';
+import type { IntentTelemetry } from '../lib/search/intent-classifier.js';
 
 // Query-intent routing (Phase 020: structural/semantic/hybrid classification)
 import { classifyQueryIntent } from '../code_graph/lib/query-intent-classifier.js';
@@ -47,7 +48,7 @@ import { logSearchQuery, logChannelResult, logFinalResult } from '../lib/eval/ev
 import * as vectorIndex from '../lib/search/vector-index.js';
 
 // Shared handler types
-import type { MCPResponse, IntentClassification } from './types.js';
+import type { MCPResponse } from './types.js';
 
 // PI-B3: Folder discovery integration
 import { discoverSpecFolder, getSpecsBasePaths } from '../lib/search/folder-discovery.js';
@@ -158,6 +159,7 @@ interface SessionLifecycleResolution {
 interface EffectiveModeIntentClassification {
   detectedIntent?: string;
   intentConfidence: number;
+  intentEvidence: string[];
   resumeHeuristicApplied: boolean;
   source: 'explicit' | 'auto-detected';
 }
@@ -191,6 +193,14 @@ interface BuildResponseMetaParams {
   includeTrace: boolean;
   sessionTransition: SessionTransitionTrace;
   structuralRoutingNudge: StructuralRoutingNudgeMeta | null;
+  intentTelemetry: IntentTelemetry | null;
+}
+
+interface QueryIntentMetadata {
+  queryIntent: string;
+  routedBackend: string;
+  confidence: number;
+  matchedKeywords?: string[];
 }
 
 interface StrategyErrorPayload {
@@ -1122,15 +1132,17 @@ function resolveEffectiveMode(
   let effectiveMode = requestedMode;
   let detectedIntent = explicitIntent;
   let intentConfidence = explicitIntent ? 1.0 : 0;
+  let intentEvidence: string[] = [];
   let pressureOverrideTargetMode: PressureOverrideTargetMode = null;
   let pressureOverrideApplied = false;
   let pressureWarning: string | null = null;
   let resumeHeuristicApplied = false;
 
   if (!detectedIntent && requestedMode !== 'quick') {
-    const classification: IntentClassification = intentClassifier.classifyIntent(normalizedInput);
+    const classification = intentClassifier.classifyIntent(normalizedInput);
     detectedIntent = classification.intent;
     intentConfidence = classification.confidence;
+    intentEvidence = classification.keywords;
   }
 
   if (requestedMode === 'auto') {
@@ -1184,6 +1196,7 @@ function resolveEffectiveMode(
     intentClassification: {
       detectedIntent,
       intentConfidence,
+      intentEvidence,
       resumeHeuristicApplied,
       source: explicitIntent ? 'explicit' : 'auto-detected',
     },
@@ -1254,6 +1267,7 @@ function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unkn
     includeTrace,
     sessionTransition,
     structuralRoutingNudge,
+    intentTelemetry,
   } = params;
   const { detectedIntent, intentConfidence, source } = intentClassification;
 
@@ -1307,7 +1321,15 @@ function buildResponseMeta(params: BuildResponseMetaParams): Record<string, unkn
     // backend channel selection only (structural / hybrid / semantic) and MUST
     // NOT be conflated with this intent. The classification kind is annotated
     // explicitly here to remove ambiguity for downstream consumers.
-    intent: detectedIntent ? {
+    intent: intentTelemetry ? {
+      ...intentTelemetry,
+      // Backward-compatible aliases retained for existing callers.
+      type: intentTelemetry.taskIntent.intent,
+      confidence: intentTelemetry.taskIntent.confidence,
+      source,
+      classificationKind: 'task-intent',
+      authoritativeFor: ['rendering', 'anchors', 'mode-routing', 'weights'],
+    } : detectedIntent ? {
       type: detectedIntent,
       confidence: intentConfidence,
       source,
@@ -1384,12 +1406,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   // graph context for structural/hybrid queries. Entire block is
   // wrapped in try/catch — any failure silently falls through to
   // existing semantic logic.
-  let queryIntentMetadata: {
-    queryIntent: string;
-    routedBackend: string;
-    confidence: number;
-    matchedKeywords?: string[];
-  } | null = null;
+  let queryIntentMetadata: QueryIntentMetadata | null = null;
   let graphContextResult: Record<string, unknown> | null = null;
 
   if (requested_mode !== 'resume') {
@@ -1563,6 +1580,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   const {
     detectedIntent,
     intentConfidence,
+    intentEvidence,
     resumeHeuristicApplied,
     source: intentSource,
   } = intentClassification;
@@ -1700,6 +1718,17 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   // T205: Enforce token budget AFTER all context injection
   const { result: budgetedResult, enforcement } = enforceTokenBudget(tracedResult0, effectiveBudget);
   const tracedResult = budgetedResult;
+  const intentTelemetry = detectedIntent ? intentClassifier.emitIntentTelemetry(normalizedInput, {
+    taskIntent: {
+      intent: detectedIntent,
+      confidence: intentConfidence,
+      evidence: intentEvidence,
+    },
+    backendRouting: {
+      route: queryIntentMetadata?.routedBackend ?? 'semantic',
+      confidence: queryIntentMetadata?.confidence ?? 0,
+    },
+  }) : null;
 
   // Phase 020: Attach graph context and query-intent routing metadata
   const responseData: ContextResult & Record<string, unknown> = { ...tracedResult };
@@ -1711,9 +1740,10 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
     // backend-channel selector with the authoritative `meta.intent` task intent.
     responseData.queryIntentRouting = {
       ...queryIntentMetadata,
+      route: queryIntentMetadata.routedBackend,
       classificationKind: 'backend-routing',
       authoritativeFor: ['channel-selection'],
-      seeAlso: 'meta.intent (task-intent classification, authoritative for rendering)',
+      seeAlso: 'meta.intent',
     };
   }
   const structuralRoutingNudge = buildStructuralRoutingNudge(
@@ -1753,6 +1783,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       intentClassification: {
         detectedIntent,
         intentConfidence,
+        intentEvidence,
         resumeHeuristicApplied,
         source: intentSource,
       },
@@ -1760,6 +1791,7 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
       includeTrace: options.includeTrace === true,
       sessionTransition,
       structuralRoutingNudge,
+      intentTelemetry,
     })
   });
 

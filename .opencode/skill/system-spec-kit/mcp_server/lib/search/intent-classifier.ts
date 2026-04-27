@@ -20,6 +20,34 @@ interface IntentResult {
   rankedIntents: RankedIntent[];
 }
 
+type IntentTelemetry = {
+  taskIntent: {
+    intent: string;
+    confidence: number;
+    classificationKind: 'task-intent';
+    evidence: string[];
+  };
+  backendRouting: {
+    route: string;
+    confidence: number;
+    classificationKind: 'backend-routing';
+    seeAlso: 'meta.intent';
+  };
+  paraphraseGroup?: string;
+};
+
+interface IntentTelemetryOptions {
+  taskIntent?: {
+    intent: string;
+    confidence: number;
+    evidence?: string[];
+  };
+  backendRouting?: {
+    route?: string;
+    confidence?: number;
+  };
+}
+
 interface IntentWeights {
   recency: number;
   importance: number;
@@ -208,6 +236,37 @@ const MIN_CONFIDENCE_THRESHOLD = 0.08;
  */
 const CENTROID_ONLY_CONFIDENCE_THRESHOLD = 0.30;
 const MAX_RANKED_INTENTS = 3;
+
+const PARAPHRASE_STOPWORDS = new Set([
+  'a',
+  'an',
+  'and',
+  'are',
+  'about',
+  'at',
+  'be',
+  'for',
+  'from',
+  'how',
+  'i',
+  'in',
+  'is',
+  'it',
+  'me',
+  'of',
+  'on',
+  'or',
+  'please',
+  'related',
+  'stuff',
+  'tell',
+  'the',
+  'this',
+  'to',
+  'what',
+  'with',
+  'you',
+]);
 
 const INTENT_WEIGHT_ADJUSTMENTS: Record<IntentType, IntentWeights> = {
   add_feature: { recency: 0.3, importance: 0.4, similarity: 0.3, contextType: 'implementation' },
@@ -547,6 +606,43 @@ function detectIntent(query: string): IntentResult {
   return classifyIntent(query);
 }
 
+function deriveParaphraseGroup(query: string): string {
+  if (!query || typeof query !== 'string') {
+    return '';
+  }
+
+  return (query.toLowerCase().match(/[a-z0-9_]+/g) ?? [])
+    .filter((token) => token.length > 1 && !PARAPHRASE_STOPWORDS.has(token))
+    .sort((left, right) => left.localeCompare(right))
+    .join('-');
+}
+
+function emitIntentTelemetry(query: string, options: IntentTelemetryOptions = {}): IntentTelemetry {
+  const classification = classifyIntent(query);
+  const paraphraseGroup = deriveParaphraseGroup(query);
+  const taskIntent = options.taskIntent ?? {
+    intent: classification.intent,
+    confidence: classification.confidence,
+    evidence: classification.keywords,
+  };
+
+  return {
+    taskIntent: {
+      intent: taskIntent.intent,
+      confidence: taskIntent.confidence,
+      classificationKind: 'task-intent',
+      evidence: taskIntent.evidence ?? classification.keywords,
+    },
+    backendRouting: {
+      route: options.backendRouting?.route ?? 'semantic',
+      confidence: options.backendRouting?.confidence ?? 0,
+      classificationKind: 'backend-routing',
+      seeAlso: 'meta.intent',
+    },
+    ...(paraphraseGroup ? { paraphraseGroup } : {}),
+  };
+}
+
 /**
  * Get weight adjustments for an intent.
  *
@@ -738,6 +834,8 @@ export {
   // Classification
   classifyIntent,
   detectIntent,
+  deriveParaphraseGroup,
+  emitIntentTelemetry,
   getIntentWeights,
   applyIntentWeights,
   getQueryWeights,
@@ -750,6 +848,7 @@ export {
 
 export type {
   IntentType,
+  IntentTelemetry,
   IntentResult,
   RankedIntent,
   IntentWeights,

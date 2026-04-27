@@ -124,6 +124,26 @@ describe('T037: Query Classifier', () => {
     expect(Array.isArray(result.rankedIntents)).toBe(true);
   });
 
+  it('emit_intent_telemetry returns normalized task and backend routing shape', () => {
+    const telemetry = intentClassifier.emitIntentTelemetry('fix the login bug', {
+      backendRouting: { route: 'semantic', confidence: 0.42 },
+    });
+
+    expect(telemetry.taskIntent).toMatchObject({
+      intent: 'fix_bug',
+      classificationKind: 'task-intent',
+    });
+    expect(typeof telemetry.taskIntent.confidence).toBe('number');
+    expect(Array.isArray(telemetry.taskIntent.evidence)).toBe(true);
+    expect(telemetry.backendRouting).toEqual({
+      route: 'semantic',
+      confidence: 0.42,
+      classificationKind: 'backend-routing',
+      seeAlso: 'meta.intent',
+    });
+    expect(telemetry.paraphraseGroup).toBe('bug-fix-login');
+  });
+
   it('classify_intent handles empty query', () => {
     const result = intentClassifier.classifyIntent('');
     expect(result.intent).toBe('understand');
