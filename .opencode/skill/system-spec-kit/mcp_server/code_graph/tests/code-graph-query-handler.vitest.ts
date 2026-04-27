@@ -171,6 +171,10 @@ describe('code-graph-query handler', () => {
         },
         canonicalReadiness: 'missing',
         trustState: 'unavailable',
+        fallbackDecision: {
+          nextTool: 'rg',
+          reason: 'scan_failed',
+        },
       },
     });
     expect(mocks.ensureCodeGraphReady).toHaveBeenCalledTimes(1);

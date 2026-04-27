@@ -135,6 +135,8 @@ function buildStartupSurface(args: {
     'Session context received. Current state:',
     '',
     `- Memory: ${memoryLine}`,
+    // 005/REQ-017: this startup label refers to the structural code graph,
+    // distinct from the memory causal graph surfaced by memory_causal_stats.
     `- Code Graph: ${codeGraphLine}`,
     `- CocoIndex: ${args.cocoIndexAvailable ? 'available' : 'missing'}`,
     '- Note: this is a startup snapshot; later structural reads may differ if the repo state changed.',

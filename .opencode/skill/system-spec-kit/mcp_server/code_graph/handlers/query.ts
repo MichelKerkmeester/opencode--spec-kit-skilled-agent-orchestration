@@ -192,6 +192,12 @@ type BlastRadiusFailureCode =
   | 'empty_source'
   | 'compute_error';
 
+type FallbackDecision = {
+  nextTool: 'code_graph_scan' | 'code_graph_query' | 'rg';
+  reason: 'full_scan_required' | 'selective_reindex' | 'scan_failed' | 'scan_declined';
+  retryAfter?: 'scan_complete';
+};
+
 function querySubjectMatches(
   field: 'fq_name' | 'name',
   subject: string,
@@ -428,9 +434,15 @@ function buildGraphQueryPayload<T extends Record<string, unknown>>(
 ) {
   const { readiness: _incomingReadiness, ...rest } = payload as Record<string, unknown>;
   const { graphMetadata, structuralTrust } = buildQueryTrustMetadata(readiness);
+  const fallbackDecision = Object.prototype.hasOwnProperty.call(rest, 'fallbackDecision')
+    ? null
+    : buildFallbackDecision(readiness);
+  const payloadWithFallback = fallbackDecision
+    ? { ...rest, fallbackDecision }
+    : rest;
   const base = graphMetadata
-    ? { ...rest, graphMetadata, readiness: buildReadinessBlock(readiness) }
-    : { ...rest, readiness: buildReadinessBlock(readiness) };
+    ? { ...payloadWithFallback, graphMetadata, readiness: buildReadinessBlock(readiness) }
+    : { ...payloadWithFallback, readiness: buildReadinessBlock(readiness) };
   const withTrust = attachStructuralTrustFields(
     base as T & { readiness: ReturnType<typeof buildReadinessBlock> },
     structuralTrust,
@@ -776,11 +788,31 @@ function shouldBlockReadPath(readiness: ReadyResult): boolean {
   return readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true;
 }
 
+function buildFallbackDecision(readiness: ReadyResult): FallbackDecision | null {
+  if (readiness.freshness === 'error') {
+    return {
+      nextTool: 'rg',
+      reason: 'scan_failed',
+    };
+  }
+
+  if (readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true) {
+    return {
+      nextTool: 'code_graph_scan',
+      reason: 'full_scan_required',
+      retryAfter: 'scan_complete',
+    };
+  }
+
+  return null;
+}
+
 function buildBlockedReadPayload(
   readiness: ReadyResult,
   operation: QueryArgs['operation'],
   subject: string,
 ) {
+  const fallbackDecision = buildFallbackDecision(readiness);
   return {
     status: 'blocked',
     message: `code_graph_full_scan_required: ${readiness.reason}`,
@@ -792,6 +824,7 @@ function buildBlockedReadPayload(
       graphAnswersOmitted: true,
       requiredAction: 'code_graph_scan',
       blockReason: 'full_scan_required',
+      ...(fallbackDecision ? { fallbackDecision } : {}),
     }, readiness, `code_graph_query ${operation} blocked payload`),
   };
 }
@@ -1080,6 +1113,7 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
             readiness: crashBlock,
             canonicalReadiness: crashBlock.canonicalReadiness,
             trustState: crashBlock.trustState,
+            fallbackDecision: buildFallbackDecision(crashReadiness),
           },
         }),
       }],
