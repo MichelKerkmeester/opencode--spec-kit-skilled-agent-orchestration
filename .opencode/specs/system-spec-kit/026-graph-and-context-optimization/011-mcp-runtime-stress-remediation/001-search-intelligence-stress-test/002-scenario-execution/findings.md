@@ -187,3 +187,5 @@ Under v1.0.0 cli-codex-1 and cli-opencode-1 tied at 5.67. Under v1.0.1 cli-openc
 ### Reading the corrected scores
 
 The v1.0.1 normalization moves the field from 52% to 77% mean quality, which more accurately reflects the underlying AI behavior observed in the 30 cells: Correctness, Tool Selection, and Hallucination dimensions consistently scored 1-2 across CLIs, and the only true differentiator is intent-classification on vague prompts (I1/I2). The rank order is stable in spirit (codex/opencode top, copilot bottom) but v1.0.1 surfaces opencode's MCP-routing advantage on memory-aware scenarios that v1.0.0's collapsed dimensions had buried. Future sweep iterations should standardize on v1.0.1 and treat the 17 v1.0.0 zero-Latency cells as an artifact of the deprecated rubric, not a runtime regression.
+
+> v1.0.2 re-run: scaffold landed at [`../../010-stress-test-rerun-v1-0-2/`](../../010-stress-test-rerun-v1-0-2/); sweep execution pending. This v1.0.1 findings document remains frozen as the baseline.

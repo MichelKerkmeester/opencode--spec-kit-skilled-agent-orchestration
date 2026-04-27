@@ -11,7 +11,8 @@
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/006-causal-graph-window-metrics",
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability",
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
-      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy"
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2"
     ],
     "layout": "phase-root-children",
     "rationale": "Structural metadata only. See ./context-index.md for the carve-out + renumber narrative."
@@ -28,7 +29,7 @@
     "v1.0.1",
     "rubric"
   ],
-  "lastUpdated": "2026-04-27T12:30:00Z",
+  "lastUpdated": "2026-04-27T15:00:00Z",
   "specId": "011",
   "folderSlug": "mcp-runtime-stress-remediation",
   "parentChain": [

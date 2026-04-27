@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+        "reason": "v1.0.1 baseline corpus + rubric + dispatch matrix + per-cell baseline scores read from this packet",
+        "source": "010-scaffold-2026-04-27",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
+        "reason": "pre-flight daemon-restart attestation gate uses the live-probe template authored by this packet",
+        "source": "010-scaffold-2026-04-27",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
+        "reason": "Fork-telemetry assertion REQ-013 exercises this packet's contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/003-memory-context-truncation-contract"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup",
+        "reason": "Fork-telemetry assertion REQ-008 + REQ-010 exercise this packet's contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail",
+        "reason": "Fork-telemetry assertion REQ-009 + REQ-010 exercise this packet's contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/006-causal-graph-window-metrics",
+        "reason": "Indirect signal-cleanliness check for cells using causal-graph traversal",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/006-causal-graph-window-metrics"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability",
+        "reason": "Fork-telemetry assertion REQ-012 exercises this packet's contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+        "reason": "Fork-telemetry assertion REQ-011 exercises this packet's contract; SC-003 is the load-bearing closure evidence for this packet's I2 fix",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010-stress-test-rerun-v1-0-2",
+      "v1.0.2 stress test rerun",
+      "post-fix sweep",
+      "close-the-loop measurement",
+      "30-cell rerun",
+      "per-packet verdict",
+      "stress-test v1.0.2"
+    ],
+    "key_topics": [
+      "stress-test",
+      "rerun",
+      "v1.0.2",
+      "post-fix",
+      "delta-classification",
+      "per-packet-verdict",
+      "fork-telemetry",
+      "daemon-attestation",
+      "rubric-frozen",
+      "i2-hallucination-recovery"
+    ],
+    "importance_tier": "important",
+    "status": "draft",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stress-Test Rerun v1.0.2",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "v1.0.2",
+        "kind": "version",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Per-Packet Verdict",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Scaffolded packet that re-runs the v1.0.1 30-cell stress-test against the post-fix dist (fork 0.2.3+spec-kit-fork.0.2.0). Reuses v1.0.1 corpus + rubric + dispatch matrix verbatim; adds (a) pre-flight daemon-restart attestation gate, (b) per-cell fork-telemetry assertions exercising the contract fields shipped by packets 003-009, and (c) per-cell delta classification (WIN/NEUTRAL/REGRESSION) aggregated into a per-packet verdict in findings.md. Closes HANDOVER-deferred §2.1 when findings.md ships. Headline closure evidence: SC-003 (I2 cli-opencode recovers from v1.0.1's 1/10 catastrophic hallucination to ≥6/8 under v1.0.1 rubric).",
+    "created_at": "2026-04-27T15:00:00Z",
+    "last_save_at": "2026-04-27T15:00:00Z",
+    "save_lineage": "scaffold-creation",
+    "last_active_child_id": null,
+    "last_active_at": "2026-04-27T15:00:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

@@ -106,6 +106,7 @@ Harden the MCP runtime end-to-end against the regressions surfaced by the v1.0.1
 | 7 | `007-intent-classifier-stability/` | Normalized `IntentTelemetry` + paraphrase corpus | complete (embedding-based v2 deferred — HANDOVER-deferred §2.3) |
 | 8 | `008-mcp-daemon-rebuild-protocol/` | Canonical rebuild + restart + live-probe contract that gates the others | complete |
 | 9 | `009-memory-search-response-policy/` | `responsePolicy` / `citationPolicy` refusal contract for low-quality searches | complete (client-side guard deferred — HANDOVER-deferred §2.4) |
+| 10 | `010-stress-test-rerun-v1-0-2/` | v1.0.2 re-run of the v1.0.1 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict (closes HANDOVER-deferred §2.1 when findings ship) | draft (scaffold; sweep execution pending daemon-restart attestation) |
 
 ### Phase Transition Rules
 
