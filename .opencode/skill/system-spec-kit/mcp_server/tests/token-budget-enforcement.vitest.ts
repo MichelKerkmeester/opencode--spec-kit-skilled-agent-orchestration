@@ -5,6 +5,7 @@ import * as path from 'path';
 
 import * as layerDefs from '../lib/architecture/layer-definitions';
 import * as memoryContext from '../handlers/memory-context';
+import { expectReturnedCountMatchesPayload } from './_support/token-budget-assertions';
 
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 
@@ -64,10 +65,13 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
         mode: 'quick',
         content: [{ type: 'text', text: '{"data":{"results":[{"id":1}]},"meta":{}}' }],
       };
-      const { enforcement } = memoryContext.enforceTokenBudget(smallResult, 2000);
+      const { result, enforcement } = memoryContext.enforceTokenBudget(smallResult, 2000);
       expect(enforcement.enforced).toBe(false);
       expect(enforcement.truncated).toBe(false);
+      expect(enforcement.preEnforcementTokens).toBe(enforcement.returnedTokens);
+      expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
       expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, 1);
     });
 
     it('T205-B2: Large result over budget IS truncated', () => {
@@ -86,13 +90,16 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
         }]
       };
 
-      const { enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
+      const { result, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
       expect(enforcement.enforced).toBe(true);
       expect(enforcement.truncated).toBe(true);
       expect(enforcement.originalResultCount).toBe(50);
       expect(enforcement.returnedResultCount).toBeLessThan(50);
       expect(enforcement.returnedResultCount).toBeGreaterThanOrEqual(1);
+      expect(enforcement.preEnforcementTokens).toBeGreaterThan(enforcement.budgetTokens);
+      expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
       expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
     });
 
     it('T205-B3: Truncation preserves highest-scored results', () => {
@@ -113,7 +120,9 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
 
       const { result: truncatedResult, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
       expect(enforcement.truncated).toBe(true);
+      expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
       expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      expectReturnedCountMatchesPayload(truncatedResult as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
       const content = truncatedResult.content as Array<{ text: string }>;
       const parsed = JSON.parse(content[0].text) as { data: { results: Array<{ id: number }> } };
       const returnedIds = parsed.data.results.map((r) => r.id);
@@ -153,13 +162,92 @@ describe('T205: Token Budget Enforcement [deferred - requires DB test fixtures]'
       expect(enforcement.truncated).toBe(true);
       expect(enforcement.originalResultCount).toBe(1);
       expect(enforcement.returnedResultCount).toBe(1);
+      expect(enforcement.preEnforcementTokens).toBeGreaterThan(enforcement.budgetTokens);
+      expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
       expect(enforcement.actualTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
 
       const parsed = JSON.parse((result.content as Array<{ text: string }>)[0].text) as {
         data: { results: Array<{ content: string }>; count: number };
       };
       expect(parsed.data.count).toBe(1);
       expect(parsed.data.results[0].content.length).toBeLessThan(results[0].content.length);
+    });
+
+    it('T205-B6: Under-budget payload exposes equal token telemetry', () => {
+      const results = Array.from({ length: 5 }, (_, i) => ({
+        id: i,
+        title: `M${i}`,
+      }));
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'deep',
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ data: { results, count: results.length }, meta: {} }),
+        }],
+      };
+
+      const { result, enforcement } = memoryContext.enforceTokenBudget(mockResult, 3500);
+
+      expect(enforcement.enforced).toBe(false);
+      expect(enforcement.truncated).toBe(false);
+      expect(enforcement.preEnforcementTokens).toBe(enforcement.returnedTokens);
+      expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
+      expect(enforcement.droppedAllResultsReason).toBeUndefined();
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, 5);
+    });
+
+    it('T205-B7: Over-budget resolvable payload separates pre and returned tokens', () => {
+      const results = Array.from({ length: 5 }, (_, i) => ({
+        id: i,
+        title: `Large memory ${i}`,
+        content: 'D'.repeat(1200),
+        score: 1.0 - (i * 0.01),
+      }));
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ data: { results, count: results.length }, meta: {} }),
+        }],
+      };
+
+      const { result, enforcement } = memoryContext.enforceTokenBudget(mockResult, 500);
+
+      expect(enforcement.enforced).toBe(true);
+      expect(enforcement.truncated).toBe(true);
+      expect(enforcement.preEnforcementTokens).toBeGreaterThan(enforcement.budgetTokens);
+      expect(enforcement.returnedTokens).toBeLessThanOrEqual(enforcement.budgetTokens);
+      expect(enforcement.actualTokens).toBe(enforcement.returnedTokens);
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
+    });
+
+    it('T205-B8: Impossible budget reports droppedAllResultsReason', () => {
+      const results = [{
+        id: 1,
+        title: 'Impossible memory',
+        content: 'E'.repeat(8000),
+        score: 0.99,
+      }];
+      const mockResult: Parameters<typeof memoryContext.enforceTokenBudget>[0] = {
+        strategy: 'test',
+        mode: 'quick',
+        content: [{
+          type: 'text',
+          text: JSON.stringify({ data: { results, count: results.length }, meta: {} }),
+        }],
+      };
+
+      const { result, enforcement } = memoryContext.enforceTokenBudget(mockResult, 1);
+
+      expect(enforcement.enforced).toBe(true);
+      expect(enforcement.truncated).toBe(true);
+      expect(enforcement.returnedResultCount).toBe(0);
+      expect(enforcement.droppedAllResultsReason).toBe('impossible_budget');
+      expect(enforcement.actualTokens).toBe(enforcement.returnedTokens);
+      expectReturnedCountMatchesPayload(result as { content: Array<{ text: string }> }, 0);
     });
   });
 

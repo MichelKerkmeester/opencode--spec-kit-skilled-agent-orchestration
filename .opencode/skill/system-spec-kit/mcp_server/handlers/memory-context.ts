@@ -129,13 +129,19 @@ interface ContextArgs {
 }
 
 /** T205: Token budget enforcement metadata */
+type DroppedAllResultsReason = 'impossible_budget' | 'parse_failed' | 'no_survivor_fits';
+
 interface TokenBudgetEnforcement {
   budgetTokens: number;
+  preEnforcementTokens: number;
+  returnedTokens: number;
+  /** Backward-compatible alias of returnedTokens. */
   actualTokens: number;
   enforced: boolean;
   truncated: boolean;
   originalResultCount?: number;
   returnedResultCount?: number;
+  droppedAllResultsReason?: DroppedAllResultsReason;
 }
 
 type PressureOverrideTargetMode = 'quick' | 'focused' | null;
@@ -446,15 +452,17 @@ function buildStructuralRoutingNudge(
  */
 function enforceTokenBudget(result: ContextResult, budgetTokens: number): { result: ContextResult; enforcement: TokenBudgetEnforcement } {
   const serialized = JSON.stringify(result);
-  const actualTokens = estimateTokens(serialized);
+  const preEnforcementTokens = estimateTokens(serialized);
 
   // Under budget — no enforcement needed
-  if (actualTokens <= budgetTokens) {
+  if (preEnforcementTokens <= budgetTokens) {
     return {
       result,
       enforcement: {
         budgetTokens,
-        actualTokens,
+        preEnforcementTokens,
+        returnedTokens: preEnforcementTokens,
+        actualTokens: preEnforcementTokens,
         enforced: false,
         truncated: false,
       }
@@ -466,12 +474,14 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   // payload, or budget was passed in as a tiny number), short-circuit and return
   // the unmodified result. This prevents the historical regression where a
   // 71-token payload against a 3000-token budget was nuked to count:0,results:[].
-  if (budgetTokens > 0 && actualTokens / budgetTokens < 0.50) {
+  if (budgetTokens > 0 && preEnforcementTokens / budgetTokens < 0.50) {
     return {
       result,
       enforcement: {
         budgetTokens,
-        actualTokens,
+        preEnforcementTokens,
+        returnedTokens: preEnforcementTokens,
+        actualTokens: preEnforcementTokens,
         enforced: false,
         truncated: false,
       }
@@ -485,6 +495,20 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
   let parseFailed = false;
   let originalResultCount: number | undefined;
   let returnedResultCount: number | undefined;
+  let droppedAllResultsReason: DroppedAllResultsReason | undefined;
+
+  const extractNestedResultCount = (candidate: ContextResult): number | undefined => {
+    try {
+      const candidateContent = (candidate as Record<string, unknown>).content as Array<{ text?: string }> | undefined;
+      if (!candidateContent?.[0]?.text) {
+        return undefined;
+      }
+      const parsed = JSON.parse(candidateContent[0].text) as { data?: { results?: unknown[] } };
+      return Array.isArray(parsed?.data?.results) ? parsed.data.results.length : undefined;
+    } catch {
+      return undefined;
+    }
+  };
 
   const fallbackToStructuredBudget = (
     baseResult: ContextResult,
@@ -590,6 +614,9 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
     }
 
     for (const innerEnvelope of candidateInnerStates) {
+      const candidateResults = (innerEnvelope.data as { results?: unknown[] } | undefined)?.results;
+      const candidateResultCount = Array.isArray(candidateResults) ? candidateResults.length : undefined;
+
       if (contentClone.length > 0) {
         contentClone[0] = { ...contentClone[0], text: JSON.stringify(innerEnvelope) };
         (fallbackResult as Record<string, unknown>).content = contentClone;
@@ -600,10 +627,14 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
       }
 
       if (estimateTokens(JSON.stringify(fallbackResult)) <= budgetTokens) {
+        if (candidateResultCount === 0) {
+          droppedAllResultsReason = 'impossible_budget';
+        }
         return fallbackResult;
       }
     }
 
+    droppedAllResultsReason = 'impossible_budget';
     return {
       strategy: baseResult.strategy,
       mode: baseResult.mode,
@@ -702,7 +733,7 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
         // Results should already be sorted by score (highest first)
         // Remove items from the end until we fit within budget
         const currentResults = [...innerResults];
-        let currentTokens = actualTokens;
+        let currentTokens = preEnforcementTokens;
 
         // Phase 1: Adaptive content truncation — truncate content fields before dropping results
         const MAX_CONTENT_CHARS = 500;
@@ -766,6 +797,8 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
             result: truncatedResult,
             enforcement: {
               budgetTokens,
+              preEnforcementTokens,
+              returnedTokens: newSerializedTokens,
               actualTokens: newSerializedTokens,
               enforced: true,
               truncated: true,
@@ -781,6 +814,8 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
             result: compacted.result,
             enforcement: {
               budgetTokens,
+              preEnforcementTokens,
+              returnedTokens: compacted.actualTokens,
               actualTokens: compacted.actualTokens,
               enforced: true,
               truncated: true,
@@ -811,28 +846,24 @@ function enforceTokenBudget(result: ContextResult, budgetTokens: number): { resu
 
   // Re-extract the actual returned count from the fallback envelope so the
   // metadata never advertises survivors that the payload no longer contains.
-  let fallbackReturnedCount = returnedResultCount;
-  try {
-    const fallbackContent = (fallbackResult as Record<string, unknown>).content as Array<{ text?: string }> | undefined;
-    if (fallbackContent && fallbackContent[0]?.text) {
-      const parsedFallback = JSON.parse(fallbackContent[0].text) as { data?: { results?: unknown[] } };
-      if (Array.isArray(parsedFallback?.data?.results)) {
-        fallbackReturnedCount = parsedFallback.data!.results!.length;
-      }
-    }
-  } catch {
-    // keep the prior returnedResultCount on parse failure
+  const extractedFallbackCount = extractNestedResultCount(fallbackResult);
+  const fallbackReturnedCount = extractedFallbackCount ?? returnedResultCount;
+  if (fallbackReturnedCount === 0 && !droppedAllResultsReason) {
+    droppedAllResultsReason = 'impossible_budget';
   }
 
   return {
     result: fallbackResult,
     enforcement: {
       budgetTokens,
+      preEnforcementTokens,
+      returnedTokens: fallbackTokens,
       actualTokens: fallbackTokens,
       enforced: true,
       truncated: true,
       originalResultCount,
       returnedResultCount: fallbackReturnedCount,
+      ...(droppedAllResultsReason ? { droppedAllResultsReason } : {}),
     }
   };
 }

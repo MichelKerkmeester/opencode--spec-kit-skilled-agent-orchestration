@@ -35,6 +35,7 @@ import {
   attachSessionTransitionTrace,
   buildSessionTransitionTrace,
 } from '../lib/search/session-transition';
+import { expectReturnedCountMatchesPayload } from './_support/token-budget-assertions';
 
 /* ───────────────────────────────────────────────────────────────
    TYPE DEFINITIONS
@@ -908,11 +909,14 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
     };
 
     // Use a small budget to force truncation
-    const { enforcement } = enforceTokenBudget(mockResult, 500);
+    const { result: truncated, enforcement } = enforceTokenBudget(mockResult, 500);
     expect(enforcement.enforced).toBe(true);
     expect(enforcement.truncated).toBe(true);
     expect(enforcement.originalResultCount).toBe(50);
     expect(enforcement.returnedResultCount || 0).toBeLessThan(50);
+    expect(enforcement.preEnforcementTokens).toBeGreaterThan(enforcement.budgetTokens);
+    expect(enforcement.returnedTokens).toBe(enforcement.actualTokens);
+    expectReturnedCountMatchesPayload(truncated as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
   });
 
   it('T204: Truncation preserves highest-scored results (first items)', () => {
@@ -962,10 +966,14 @@ describe('T201-T220: Token Budget Enforcement (T205) [deferred - requires DB tes
       content: [{ type: 'text', text: JSON.stringify(innerEnvelope) }]
     };
 
-    const { enforcement } = enforceTokenBudget(mockResult, 0);
+    const { result: truncated, enforcement } = enforceTokenBudget(mockResult, 0);
     expect(enforcement.enforced).toBe(true);
-    // With only 1 result, it can't truncate below 1 (minimum is 1 result kept)
+    expect(enforcement.truncated).toBe(true);
     expect(enforcement.actualTokens).toBeGreaterThan(0);
+    expect(enforcement.actualTokens).toBe(enforcement.returnedTokens);
+    expect(enforcement.returnedResultCount).toBe(0);
+    expect(enforcement.droppedAllResultsReason).toBe('impossible_budget');
+    expectReturnedCountMatchesPayload(truncated as { content: Array<{ text: string }> }, enforcement.returnedResultCount ?? 0);
   });
 
   it('T207: Result without content array reports truncated when over budget', () => {
