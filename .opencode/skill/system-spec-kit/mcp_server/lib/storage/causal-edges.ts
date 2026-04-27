@@ -46,9 +46,18 @@ const MAX_EDGES_LIMIT = 100;
 const MAX_EDGES_PER_NODE = 20;
 const MAX_AUTO_STRENGTH = 0.5;
 const MAX_STRENGTH_INCREASE_PER_CYCLE = 0.05;
+const WINDOW_MS = parsePositiveIntegerEnv('SPECKIT_CAUSAL_RELATION_WINDOW_MS', 15 * 60 * 1000);
+const CAP_PER_WINDOW = parsePositiveIntegerEnv('SPECKIT_CAUSAL_RELATION_CAP_PER_WINDOW', 100);
 const STALENESS_THRESHOLD_DAYS = 90;
 const DECAY_STRENGTH_AMOUNT = 0.1;
 const DECAY_PERIOD_DAYS = 30;
+
+function parsePositiveIntegerEnv(name: string, fallback: number): number {
+  const value = process.env[name];
+  if (!value) return fallback;
+  const parsed = Number.parseInt(value, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : fallback;
+}
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
@@ -191,6 +200,32 @@ function invalidateDegreeCache(): void {
   }
 }
 
+function enforceRelationWindowCap(
+  relation: string,
+  database: Database.Database,
+  windowMs: number = WINDOW_MS,
+  capPerWindow: number = CAP_PER_WINDOW,
+): boolean {
+  try {
+    const windowStart = new Date(Date.now() - windowMs).toISOString();
+    const row = (database.prepare(`
+      SELECT COUNT(*) as count FROM causal_edges
+      WHERE relation = ?
+        AND datetime(extracted_at) >= datetime(?)
+    `) as Database.Statement).get(relation, windowStart) as { count: number };
+    const count = row.count;
+    if (count >= capPerWindow) {
+      console.warn(`[causal-edges] cap exceeded for relation ${relation}: ${count}/${capPerWindow} in ${windowMs}ms window`);
+      return false;
+    }
+    return true;
+  } catch (error: unknown) {
+    const msg = error instanceof Error ? error.message : String(error);
+    console.warn(`[causal-edges] relation cap check failed for ${relation}: ${msg}`);
+    return true;
+  }
+}
+
 /* ───────────────────────────────────────────────────────────────
    4. INITIALIZATION
 ----------------------------------------------------------------*/
@@ -302,6 +337,10 @@ function insertEdge(
           existing.id,
         );
       } else {
+        if (!enforceRelationWindowCap(relation, database)) {
+          return 0;
+        }
+
         (database.prepare(`
           INSERT INTO causal_edges (
             source_id,
@@ -445,6 +484,10 @@ function bulkInsertEdges(edges: Array<Record<string, unknown>>): { inserted: num
           continue;
         }
         if (edge.source_id === edge.target_id) {
+          failed++;
+          continue;
+        }
+        if (!enforceRelationWindowCap(edge.relation, database)) {
           failed++;
           continue;
         }
@@ -1006,11 +1049,14 @@ export {
   MAX_EDGES_PER_NODE,
   MAX_AUTO_STRENGTH,
   MAX_STRENGTH_INCREASE_PER_CYCLE,
+  WINDOW_MS,
+  CAP_PER_WINDOW,
   STALENESS_THRESHOLD_DAYS,
   DECAY_STRENGTH_AMOUNT,
   DECAY_PERIOD_DAYS,
 
   init,
+  enforceRelationWindowCap,
   insertEdge,
   insertEdgesBatch,
   bulkInsertEdges,

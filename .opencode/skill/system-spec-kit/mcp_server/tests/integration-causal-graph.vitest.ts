@@ -23,6 +23,15 @@ type MCPEnvelope = {
   hints?: string[];
 };
 
+const EXPECTED_RELATIONS = [
+  'caused',
+  'enabled',
+  'supersedes',
+  'contradicts',
+  'derived_from',
+  'supports',
+] as const;
+
 function parseEnvelope(response: unknown): { envelope: MCPEnvelope; isError: boolean } {
   const cast = response as MCPTextResponse;
   expect(cast.content?.[0]?.text).toBeTypeOf('string');
@@ -246,6 +255,11 @@ describe('Integration Causal Graph (T528)', () => {
       expect(envelope.data).toHaveProperty('by_relation');
       expect(envelope.data).toHaveProperty('avg_strength');
       expect(envelope.data).toHaveProperty('health');
+      expect(envelope.data).toHaveProperty('deltaByRelation');
+      expect(envelope.data).toHaveProperty('dominantRelation');
+      expect(envelope.data).toHaveProperty('dominantRelationShare');
+      expect(envelope.data).toHaveProperty('balanceStatus');
+      expect(envelope.data).toHaveProperty('windowStartedAt');
       expect(envelope.data).toHaveProperty('link_coverage_percent');
       expect(envelope.data).toHaveProperty('orphanedEdges');
     });
@@ -272,6 +286,63 @@ describe('Integration Causal Graph (T528)', () => {
 
       expect(envelope.summary).toContain('edges');
       expect(envelope.summary).toContain('coverage');
+    });
+
+    it('T014-CS4: empty DB zero-fills all relation buckets', async () => {
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      expect(isError).toBe(false);
+
+      const byRelation = envelope.data.by_relation as Record<string, number>;
+      const deltaByRelation = envelope.data.deltaByRelation as Record<string, number>;
+      expect(Object.keys(byRelation).sort()).toEqual([...EXPECTED_RELATIONS].sort());
+      expect(Object.keys(deltaByRelation).sort()).toEqual([...EXPECTED_RELATIONS].sort());
+      for (const relation of EXPECTED_RELATIONS) {
+        expect(byRelation[relation]).toBe(0);
+        expect(deltaByRelation[relation]).toBe(0);
+      }
+      expect(envelope.data.balanceStatus).toBe('insufficient_data');
+    });
+
+    it('T014-CS5: meetsTarget false reports degraded health', async () => {
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      expect(isError).toBe(false);
+
+      expect(envelope.data.meetsTarget).toBe(false);
+      expect(envelope.data.health).toBe('degraded');
+    });
+
+    it('T014-CS6: supersedes burst reports relation skew and remediation hint', async () => {
+      expect(isolatedDb).not.toBeNull();
+      const db = isolatedDb as InstanceType<typeof Database>;
+      const insertMemory = db.prepare(`
+        INSERT INTO memory_index (id, title, spec_folder, file_path)
+        VALUES (?, ?, 'test-spec', ?)
+      `);
+      const insertEdge = db.prepare(`
+        INSERT INTO causal_edges (source_id, target_id, relation, strength, evidence, created_by)
+        VALUES (?, ?, 'supersedes', 1.0, 'burst fixture', 'auto')
+      `);
+
+      db.transaction(() => {
+        for (let i = 1; i <= 120; i++) {
+          insertMemory.run(String(i), `Memory ${i}`, `/mem/${i}.md`);
+        }
+        for (let i = 1; i <= 60; i++) {
+          insertEdge.run(String(i), String(i + 60));
+        }
+      })();
+
+      const response = await causalHandler.handleMemoryCausalStats({} as CausalStatsArgs);
+      const { envelope, isError } = parseEnvelope(response);
+      expect(isError).toBe(false);
+
+      expect(envelope.data.balanceStatus).toBe('relation_skewed');
+      expect(envelope.data.dominantRelation).toBe('supersedes');
+      expect(envelope.data.dominantRelationShare).toBeCloseTo(1.0);
+      expect(envelope.data.remediationHint).toBe('prediction-error supersedes burst — review create-record producer');
+      expect((envelope.data.deltaByRelation as Record<string, number>).supersedes).toBe(60);
     });
   });
 

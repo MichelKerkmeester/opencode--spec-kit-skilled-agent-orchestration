@@ -94,6 +94,83 @@ interface CausalUnlinkArgs {
   edgeId: number;
 }
 
+type RelationBalance = {
+  deltaByRelation: Record<string, number>;
+  dominantRelation: string | null;
+  dominantRelationShare: number;
+  balanceStatus: 'balanced' | 'relation_skewed' | 'insufficient_data';
+  remediationHint?: string;
+  windowStartedAt: string;
+};
+
+const RELATION_BALANCE_WINDOW_MS = 15 * 60 * 1000;
+const RELATION_SKEW_SHARE_THRESHOLD = 0.80;
+const RELATION_SKEW_MIN_TOTAL = 50;
+const RELATION_INSUFFICIENT_TOTAL = 5;
+const VALID_CAUSAL_RELATIONS = Object.values(causalEdges.RELATION_TYPES) as string[];
+
+function createZeroFilledRelationCounts(seed: Record<string, number> = {}): Record<string, number> {
+  const counts: Record<string, number> = {};
+  for (const relation of VALID_CAUSAL_RELATIONS) {
+    counts[relation] = seed[relation] ?? 0;
+  }
+  return counts;
+}
+
+function parseEdgeTimestampMs(timestamp: string): number | null {
+  const normalized = timestamp.includes('T')
+    ? timestamp
+    : `${timestamp.replace(' ', 'T')}Z`;
+  const parsed = Date.parse(normalized);
+  return Number.isFinite(parsed) ? parsed : null;
+}
+
+function computeRelationBalance(
+  edges: CausalEdge[],
+  windowMs: number = RELATION_BALANCE_WINDOW_MS,
+): RelationBalance {
+  const nowMs = Date.now();
+  const windowStartMs = nowMs - windowMs;
+  const deltaByRelation = createZeroFilledRelationCounts();
+
+  for (const edge of edges) {
+    const edgeMs = parseEdgeTimestampMs(edge.extracted_at);
+    if (edgeMs === null || edgeMs < windowStartMs || edgeMs > nowMs) {
+      continue;
+    }
+    if (Object.prototype.hasOwnProperty.call(deltaByRelation, edge.relation)) {
+      deltaByRelation[edge.relation] += 1;
+    }
+  }
+
+  const entries = Object.entries(deltaByRelation);
+  const total = entries.reduce((sum, [, count]) => sum + count, 0);
+  const [dominantRelation, dominantCount] = entries.reduce<[string | null, number]>(
+    (current, [relation, count]) => count > current[1] ? [relation, count] : current,
+    [null, 0],
+  );
+  const dominantRelationShare = total > 0 ? dominantCount / total : 0;
+  const balanceStatus = total < RELATION_INSUFFICIENT_TOTAL
+    ? 'insufficient_data'
+    : dominantRelationShare >= RELATION_SKEW_SHARE_THRESHOLD && total >= RELATION_SKEW_MIN_TOTAL
+      ? 'relation_skewed'
+      : 'balanced';
+
+  const result: RelationBalance = {
+    deltaByRelation,
+    dominantRelation,
+    dominantRelationShare,
+    balanceStatus,
+    windowStartedAt: new Date(windowStartMs).toISOString(),
+  };
+
+  if (balanceStatus === 'relation_skewed' && dominantRelation === causalEdges.RELATION_TYPES.SUPERSEDES) {
+    result.remediationHint = 'prediction-error supersedes burst — review create-record producer';
+  }
+
+  return result;
+}
+
 function logCausalHandlerError(tool: string, error: unknown): void {
   const message = error instanceof Error ? error.message : String(error);
   console.error(`[${tool}] ${message}`);
@@ -711,12 +788,16 @@ async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPRespo
     }
 
     const safeTotalEdges = stats.totalEdges ?? 0;
+    const byRelation = createZeroFilledRelationCounts(stats.byRelation);
+    const relationBalance = computeRelationBalance(causalEdges.getAllEdges(1000));
     const coveragePercent = totalMemories.count > 0
       ? Math.round((uniqueLinked.size / totalMemories.count) * 10000) / 100
       : 0;
 
     const meetsTarget = coveragePercent >= 60;
-    const health = orphanedEdges.length === 0 ? 'healthy' : 'has_orphans';
+    const health = !meetsTarget
+      ? 'degraded'
+      : orphanedEdges.length === 0 ? 'healthy' : 'has_orphans';
 
     const summary = `Causal graph: ${safeTotalEdges} edges, ${coveragePercent}% coverage (${health})`;
 
@@ -736,10 +817,11 @@ async function handleMemoryCausalStats(_args: CausalStatsArgs): Promise<MCPRespo
       summary,
       data: {
         total_edges: safeTotalEdges,
-        by_relation: stats.byRelation,
+        by_relation: byRelation,
         avg_strength: stats.avgStrength,
         unique_sources: stats.uniqueSources,
         unique_targets: stats.uniqueTargets,
+        ...relationBalance,
         link_coverage_percent: coveragePercent + '%',
         orphanedEdges: orphanedEdges.length,
         health,
@@ -846,6 +928,7 @@ export {
   handleMemoryCausalStats,
   handleMemoryCausalUnlink,
   flattenCausalTree,
+  computeRelationBalance,
 };
 
 // Backward-compatible aliases (snake_case)

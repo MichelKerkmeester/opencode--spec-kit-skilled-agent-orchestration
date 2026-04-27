@@ -241,6 +241,38 @@ describe('Causal Edges (T043-T047, T128-T141)', () => {
       expect(new Set(edges.map((edge) => edge.relation))).toEqual(new Set(relationTypes));
     });
 
+    it('caps supersedes inserts per rolling relation window', () => {
+      const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+      let inserted = 0;
+      let throttled = 0;
+
+      try {
+        for (let i = 0; i < 105; i++) {
+          const edgeId = causalEdges.insertEdge(
+            `cap-source-${i}`,
+            `cap-target-${i}`,
+            causalEdges.RELATION_TYPES.SUPERSEDES,
+            1.0,
+            'cap fixture',
+          );
+          if (edgeId === null) {
+            throttled++;
+          } else {
+            inserted++;
+          }
+        }
+
+        expect(inserted).toBe(100);
+        expect(throttled).toBe(5);
+        expect(warnSpy).toHaveBeenCalledTimes(5);
+        expect(warnSpy).toHaveBeenCalledWith(
+          expect.stringContaining('[causal-edges] cap exceeded for relation supersedes: 100/100 in 900000ms window'),
+        );
+      } finally {
+        warnSpy.mockRestore();
+      }
+    });
+
     it('rethrows database write failures so handlers can classify them', () => {
       const originalPrepare = testDb.prepare.bind(testDb);
       const prepareSpy = vi.spyOn(testDb, 'prepare').mockImplementation((sql: string) => {
