@@ -1,7 +1,7 @@
 ---
 title: "Feature Specification: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology/spec]"
 description: "Phrasing pass across user-visible surfaces. Where docs say 'memories' / 'load recent memories' / 'save your memory', replace with concrete behavioral language that names what the system actually loads, saves, and retrieves (spec-doc records, indexed continuity, constitutional rules, packet folders). No command names, no MCP tool names, no SQL tables, no frontmatter keys, no behavior changes — pure phrasing across markdown docs, MCP tool description strings, and runtime output messages."
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2 -->"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level3-verify | v2.2 -->"
 trigger_phrases:
   - "memory phrasing audit"
   - "load recent memories rephrase"
@@ -15,22 +15,32 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-memory-terminology"
-    last_updated_at: "2026-04-26T11:25:00Z"
+    last_updated_at: "2026-04-27T11:50:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Pivoted scope from rename to phrasing-audit-only; archived prior rename-shaped 10-iteration deep research to research_archive/rename-pivot-2026-04-26-pt-01/; rewrote spec.md and dropped phrasing-audit.md with concrete current→proposed grid"
-    next_safe_action: "Review phrasing-audit.md current→proposed grid; redline disagreements; then apply edits in 2-3 PRs grouped by surface (.md docs, tool-schemas descriptions, runtime output strings)"
+    recent_action: "Retroactively authored Level 3 spec docs (plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md) after all 9 PRs shipped across 6 main commits; upgraded template_source_hint from level2-verify to level3-verify to match actual scope (~600 edits, 250+ files, deep-review PASS hasAdvisories=true)"
+    next_safe_action: "Validate via scripts/spec/validate.sh --strict; commit + push retroactive docs; packet then in fully ship-ready state"
     blockers: []
     key_files:
       - "spec.md"
       - "phrasing-audit.md"
-      - "research_archive/rename-pivot-2026-04-26-pt-01/"
+      - "plan.md"
+      - "tasks.md"
+      - "checklist.md"
+      - "decision-record.md"
+      - "implementation-summary.md"
+      - "review/002-memory-terminology-pt-01/review-report.md"
     session_dedup:
-      fingerprint: "sha256:phrasing-audit-pivot-2026-04-26"
-      session_id: "002-memory-terminology-phrasing-pivot-2026-04-26"
-      parent_session_id: null
-    completion_pct: 25
+      fingerprint: "sha256:phrasing-audit-shipped-retroactive-docs-2026-04-27"
+      session_id: "002-memory-terminology-retroactive-docs-2026-04-27"
+      parent_session_id: "002-memory-terminology-phrasing-pivot-2026-04-26"
+    completion_pct: 100
     open_questions: []
-    answered_questions: []
+    answered_questions:
+      - "Q: Rename or rephrase? A: Rephrase only (REQ-001 freeze list)."
+      - "Q: How to handle cognitive loanwords? A: Preserve verbatim (REQ-007 carve-out)."
+      - "Q: Q4 setup-prompt label? A: 'Prior Work Context' (operator's mental model)."
+      - "Q: gate-tool-routing.md indexing? A: Manual-fallback mode with anchors + Code References."
+      - "Q: skill_id mismatch fix? A: Rename metadata, not folder."
 ---
 # Feature Specification: Memory→Behavioral Phrasing Audit
 
@@ -193,7 +203,7 @@ These are implementation-phase questions, not research questions. The phrasing d
 
 ---
 
-## 8. RELATED DOCUMENTS
+## RELATED DOCUMENTS
 
 - **`phrasing-audit.md`** (sibling of this spec) — the concrete current→proposed phrase grid; the implementation phase's working diff target.
 - **Archived prior research** (`research_archive/rename-pivot-2026-04-26-pt-01/`) — 10 iterations of `/spec_kit:deep-research` scoped for a code+command+key rename; substrate (6-layer concept model, 21-tool inventory, Anthropic + MCP-registry collision analysis) is still useful but the recommendations (rename, alias matrix, parser-fallback, glossary-lint, 4-PR plan) are out-of-scope per the user's pivot. Kept for reference only.
