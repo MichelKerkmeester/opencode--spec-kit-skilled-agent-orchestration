@@ -10,6 +10,7 @@ import {
   shouldTriggerRecovery,
   isEmptyResultRecoveryEnabled,
   type RecoveryContext,
+  type RecoveryAction,
   type RecoveryPayload,
 } from '../lib/search/recovery-payload';
 
@@ -233,18 +234,18 @@ describe('buildRecoveryPayload() — recommendedAction mapping', () => {
     expect(payload.recommendedAction).toBe('switch_mode');
   });
 
-  it('recommends "save_memory" for no_results + knowledge_gap', () => {
+  it('recommends "refuse_without_evidence" for no_results + knowledge_gap', () => {
     const payload = buildRecoveryPayload(makeCtx({
       resultCount: 0,
       hasSpecFolderFilter: false,
       query: 'the complete architecture of the advanced fusion pipeline v3',
     }));
-    expect(payload.recommendedAction).toBe('save_memory');
+    expect(payload.recommendedAction).toBe('refuse_without_evidence');
   });
 
-  it('recommends "retry_broader" for partial results', () => {
+  it('recommends "broaden_or_ask" for partial results', () => {
     const payload = buildRecoveryPayload(makeCtx({ resultCount: 1 }));
-    expect(payload.recommendedAction).toBe('retry_broader');
+    expect(payload.recommendedAction).toBe('broaden_or_ask');
   });
 
   it('recommends "ask_user" for low_confidence + knowledge_gap', () => {
@@ -256,6 +257,18 @@ describe('buildRecoveryPayload() — recommendedAction mapping', () => {
     }));
     expect(payload.status).toBe('low_confidence');
     expect(payload.recommendedAction).toBe('ask_user');
+  });
+
+  it('recommends "ask_disambiguation" for low_confidence + low_signal_query', () => {
+    const payload = buildRecoveryPayload(makeCtx({
+      resultCount: 5,
+      avgConfidence: 0.2,
+      hasSpecFolderFilter: false,
+      query: 'routing',
+    }));
+    expect(payload.status).toBe('low_confidence');
+    expect(payload.reason).toBe('low_signal_query');
+    expect(payload.recommendedAction).toBe('ask_disambiguation');
   });
 });
 
@@ -307,6 +320,19 @@ describe('buildRecoveryPayload() — suggestedQueries', () => {
     expect(unique.size).toBe(payload.suggestedQueries.length);
     expect(payload.suggestedQueries.every((s) => s.trim().length > 0)).toBe(true);
   });
+
+  it('synthesizes safe broadening suggestions when ask_user would be empty', () => {
+    const payload = buildRecoveryPayload(makeCtx({
+      resultCount: 5,
+      avgConfidence: 0.2,
+      hasSpecFolderFilter: false,
+      query: 'advanced scoring module',
+    }));
+
+    expect(payload.recommendedAction).toBe('ask_user');
+    expect(payload.suggestedQueries.length).toBeGreaterThanOrEqual(2);
+    expect(payload.suggestedQueries.every((s) => s.trim().length > 0)).toBe(true);
+  });
 });
 
 // -- buildRecoveryPayload — payload shape --
@@ -333,8 +359,30 @@ describe('buildRecoveryPayload() — payload shape contract', () => {
   });
 
   it('recommendedAction is one of the valid literals', () => {
-    const validActions = ['retry_broader', 'switch_mode', 'save_memory', 'ask_user'] as const;
+    const validActions = [
+      'retry_broader',
+      'switch_mode',
+      'save_memory',
+      'ask_user',
+      'ask_disambiguation',
+      'refuse_without_evidence',
+      'broaden_or_ask',
+    ] as const satisfies readonly RecoveryAction[];
     const payload = buildRecoveryPayload(makeCtx({ resultCount: 0 }));
     expect(validActions).toContain(payload.recommendedAction);
+  });
+
+  it('includes the response-policy action literals in the RecoveryAction type', () => {
+    const policyActions = [
+      'ask_disambiguation',
+      'refuse_without_evidence',
+      'broaden_or_ask',
+    ] as const satisfies readonly RecoveryAction[];
+
+    expect(policyActions).toEqual([
+      'ask_disambiguation',
+      'refuse_without_evidence',
+      'broaden_or_ask',
+    ]);
   });
 });

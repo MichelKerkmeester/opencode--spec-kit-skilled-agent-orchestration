@@ -17,6 +17,15 @@ const VALID_RECOVERY_ACTIONS = [
   'switch_mode',
   'save_memory',
   'ask_user',
+  'ask_disambiguation',
+  'refuse_without_evidence',
+  'broaden_or_ask',
+] as const;
+
+const VALID_RESPONSE_POLICY_ACTIONS = [
+  'ask_disambiguation',
+  'broaden_or_ask',
+  'refuse_without_evidence',
 ] as const;
 
 interface RecoveryPayload {
@@ -26,11 +35,20 @@ interface RecoveryPayload {
   recommendedAction: (typeof VALID_RECOVERY_ACTIONS)[number];
 }
 
+interface ResponsePolicy {
+  requiredAction: (typeof VALID_RESPONSE_POLICY_ACTIONS)[number];
+  noCanonicalPathClaims: boolean;
+  citationRequiredForPaths: boolean;
+  safeResponse: string;
+}
+
 interface SearchEnvelope {
   data: {
     count: number;
     results: Array<Record<string, unknown>>;
     recovery?: RecoveryPayload;
+    citationPolicy?: 'cite_results' | 'do_not_cite_results';
+    responsePolicy?: ResponsePolicy;
     [key: string]: unknown;
   };
 }
@@ -161,6 +179,69 @@ describe('D5 Phase A: empty result recovery', () => {
 
     expect(envelope.data.count).toBe(2);
     expect(envelope.data.recovery?.status).toBe('low_confidence');
+    expect(envelope.data.citationPolicy).toBe('do_not_cite_results');
+    expect(envelope.data.responsePolicy).toEqual(
+      expect.objectContaining({
+        requiredAction: 'broaden_or_ask',
+        noCanonicalPathClaims: true,
+        citationRequiredForPaths: true,
+        safeResponse: expect.any(String),
+      }),
+    );
+  });
+
+  it('emits citationPolicy without responsePolicy for good-quality results', async () => {
+    const envelope = await formatEnvelope(
+      [
+        makeResult(1, {
+          intentAdjustedScore: 0.95,
+          rrfScore: 0.93,
+          rerankerScore: 0.91,
+          rerankerApplied: true,
+          scoringMethod: 'reranker',
+          sources: ['semantic', 'fts'],
+          anchorMetadata: [
+            { id: 'decision-1', type: 'decision' },
+            { id: 'plan-1', type: 'plan' },
+            { id: 'task-1', type: 'task' },
+          ],
+        }),
+        makeResult(2, {
+          intentAdjustedScore: 0.91,
+          rrfScore: 0.89,
+          rerankerScore: 0.87,
+          rerankerApplied: true,
+          scoringMethod: 'reranker',
+          sources: ['semantic', 'fts'],
+          anchorMetadata: [
+            { id: 'decision-2', type: 'decision' },
+            { id: 'plan-2', type: 'plan' },
+            { id: 'task-2', type: 'task' },
+          ],
+        }),
+        makeResult(3, {
+          intentAdjustedScore: 0.88,
+          rrfScore: 0.86,
+          rerankerScore: 0.84,
+          rerankerApplied: true,
+          scoringMethod: 'reranker',
+          sources: ['semantic', 'fts'],
+          anchorMetadata: [
+            { id: 'decision-3', type: 'decision' },
+            { id: 'plan-3', type: 'plan' },
+            { id: 'task-3', type: 'task' },
+          ],
+        }),
+      ],
+      {
+        query: 'memory search response policy',
+        normalizedQuery: 'memory search response policy',
+      },
+    );
+
+    expect(envelope.data.requestQuality).toEqual({ label: 'good' });
+    expect(envelope.data.citationPolicy).toBe('cite_results');
+    expect(envelope.data.responsePolicy).toBeUndefined();
   });
 
   it('classifies incomplete coverage as partial results', async () => {
@@ -204,6 +285,70 @@ describe('D5 Phase A: empty result recovery', () => {
       'record',
       'fusion',
     ]);
+  });
+
+  it('does not leave ask_user with empty suggestions and no disambiguation policy', async () => {
+    const envelope = await formatEnvelope(
+      [
+        makeResult(1, {
+          similarity: 18,
+          averageSimilarity: 18,
+          intentAdjustedScore: 0.18,
+          rrfScore: 0.16,
+          fts_score: 0.03,
+          rerankerScore: 0.05,
+          anchorMetadata: [],
+        }),
+        makeResult(2, {
+          similarity: 17,
+          averageSimilarity: 17,
+          intentAdjustedScore: 0.17,
+          rrfScore: 0.15,
+          fts_score: 0.02,
+          rerankerScore: 0.04,
+          anchorMetadata: [],
+        }),
+        makeResult(3, {
+          similarity: 16,
+          averageSimilarity: 16,
+          intentAdjustedScore: 0.16,
+          rrfScore: 0.14,
+          fts_score: 0.01,
+          rerankerScore: 0.03,
+          anchorMetadata: [],
+        }),
+        makeResult(4, {
+          similarity: 15,
+          averageSimilarity: 15,
+          intentAdjustedScore: 0.15,
+          rrfScore: 0.13,
+          fts_score: 0.01,
+          rerankerScore: 0.02,
+          anchorMetadata: [],
+        }),
+        makeResult(5, {
+          similarity: 14,
+          averageSimilarity: 14,
+          intentAdjustedScore: 0.14,
+          rrfScore: 0.12,
+          fts_score: 0.01,
+          rerankerScore: 0.01,
+          anchorMetadata: [],
+        }),
+      ],
+      {
+        query: 'advanced scoring module',
+        normalizedQuery: 'advanced scoring module',
+      },
+    );
+
+    expect(envelope.data.recovery?.recommendedAction).toBe('ask_user');
+
+    const suggestions = envelope.data.recovery?.suggestedQueries ?? [];
+    const hasDisambiguationPolicy =
+      envelope.data.responsePolicy?.requiredAction === 'ask_disambiguation';
+
+    expect(suggestions.length >= 2 || hasDisambiguationPolicy).toBe(true);
   });
 
   it('omits the recovery payload when SPECKIT_EMPTY_RESULT_RECOVERY_V1 is false', async () => {

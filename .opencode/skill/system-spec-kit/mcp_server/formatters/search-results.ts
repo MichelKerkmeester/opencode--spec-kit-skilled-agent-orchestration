@@ -41,6 +41,7 @@ import {
   assessRequestQuality,
   isResultConfidenceEnabled,
   type ScoredResult,
+  type RequestQualityAssessment,
 } from '../lib/search/confidence-scoring.js';
 
 // REQ-D5-002: Two-Tier Explainability
@@ -202,6 +203,16 @@ export interface MemoryParserLike {
   extractAnchors(content: string): Record<string, string>;
 }
 
+type ResponsePolicyAction = 'ask_disambiguation' | 'broaden_or_ask' | 'refuse_without_evidence';
+type CitationPolicy = 'cite_results' | 'do_not_cite_results';
+
+interface ResponsePolicy {
+  requiredAction: ResponsePolicyAction;
+  noCanonicalPathClaims: boolean;
+  citationRequiredForPaths: boolean;
+  safeResponse: string;
+}
+
 export interface TrustBadgeSnapshot {
   confidence: number | null;
   extractedAt: string | null;
@@ -257,6 +268,35 @@ function clampConfidence(value: unknown): number | null {
   const numeric = toNullableNumber(value);
   if (numeric === null) return null;
   return Math.max(0, Math.min(1, numeric));
+}
+
+function deriveResponsePolicy(
+  requestQuality: RequestQualityAssessment | null,
+  recovery: RecoveryPayload | null,
+): ResponsePolicy | null {
+  if (!requestQuality || requestQuality.requestQuality?.label === 'good') return null;
+  if (!recovery) return null;
+
+  if (recovery.recommendedAction === 'ask_user' && recovery.suggestedQueries.length === 0) {
+    return {
+      requiredAction: 'ask_disambiguation',
+      noCanonicalPathClaims: true,
+      citationRequiredForPaths: true,
+      safeResponse: 'No canonical context found from the current retrieval. Ask a clarifying question or request a broader query.',
+    };
+  }
+
+  return {
+    requiredAction: 'broaden_or_ask',
+    noCanonicalPathClaims: true,
+    citationRequiredForPaths: true,
+    safeResponse: 'Retrieval quality is weak. Broaden the query or ask the user for disambiguation before citing any path.',
+  };
+}
+
+function deriveCitationPolicy(requestQuality: RequestQualityAssessment | null): CitationPolicy {
+  const label = requestQuality?.requestQuality?.label;
+  return label === 'good' ? 'cite_results' : 'do_not_cite_results';
 }
 
 /**
@@ -723,6 +763,8 @@ export async function formatSearchResults(
         resultCount: 0,
       });
     }
+    const responsePolicy = deriveResponsePolicy(requestQualityData, recoveryPayload);
+    const citationPolicy = deriveCitationPolicy(requestQualityData);
 
     // REQ-019: Use standardized empty response envelope
     return createMCPEmptyResponse({
@@ -736,6 +778,8 @@ export async function formatSearchResults(
         ...(extraData ?? {}),
         // REQ-D5-001: Attach recovery payload (additive, only when flag enabled)
         ...(recoveryPayload !== null ? { recovery: recoveryPayload } : {}),
+        citationPolicy,
+        ...(responsePolicy !== null ? { responsePolicy } : {}),
       },
       hints: [
         'Try broadening your search query',
@@ -1022,6 +1066,9 @@ export async function formatSearchResults(
       ) as Array<Record<string, unknown>>
     : resultsWithConfidence;
 
+  const responsePolicy = deriveResponsePolicy(requestQualityData, recoveryPayload);
+  const citationPolicy = deriveCitationPolicy(requestQualityData);
+
   // REQ-019: Use standardized success response envelope
   const responseData: Record<string, unknown> = {
     searchType: searchType,
@@ -1032,11 +1079,21 @@ export async function formatSearchResults(
     ...(requestQualityData !== null ? requestQualityData : {}),
     // REQ-D5-001: Recovery payload for weak/partial results (additive)
     ...(recoveryPayload !== null ? { recovery: recoveryPayload } : {}),
+    citationPolicy,
+    ...(responsePolicy !== null ? { responsePolicy } : {}),
   };
   // Always spread caller-provided extraData (pipeline trace, timing, evidence gaps, etc.).
   // Spread extraData first, then re-assert canonical keys to prevent overwrites.
   if (extraData && Object.keys(extraData).length > 0) {
-    const { searchType: _s, count: _c, constitutionalCount: _cc, results: _r, ...safeExtra } = extraData as Record<string, unknown>;
+    const {
+      searchType: _s,
+      count: _c,
+      constitutionalCount: _cc,
+      results: _r,
+      citationPolicy: _cp,
+      responsePolicy: _rp,
+      ...safeExtra
+    } = extraData as Record<string, unknown>;
     Object.assign(responseData, safeExtra);
   }
 

@@ -14,7 +14,7 @@
 //   "status": "no_results" | "low_confidence" | "partial",
 //   "reason": "spec_filter_too_narrow" | "low_signal_query" | "knowledge_gap",
 //   "suggestedQueries": ["broader alternative 1", "rephrased alternative 2"],
-//   "recommendedAction": "retry_broader" | "switch_mode" | "save_memory" | "ask_user"
+//   "recommendedAction": "retry_broader" | "switch_mode" | "save_memory" | "ask_user" | "ask_disambiguation" | "refuse_without_evidence" | "broaden_or_ask"
 // }
 
 // -- Types --
@@ -26,7 +26,14 @@ export type RecoveryStatus = 'no_results' | 'low_confidence' | 'partial';
 export type RecoveryReason = 'spec_filter_too_narrow' | 'low_signal_query' | 'knowledge_gap';
 
 /** Recommended next action for the calling agent. */
-export type RecoveryAction = 'retry_broader' | 'switch_mode' | 'save_memory' | 'ask_user';
+export type RecoveryAction =
+  | 'retry_broader'
+  | 'switch_mode'
+  | 'save_memory'
+  | 'ask_user'
+  | 'ask_disambiguation'
+  | 'refuse_without_evidence'
+  | 'broaden_or_ask';
 
 /** Structured recovery payload attached to search responses. */
 export interface RecoveryPayload {
@@ -147,20 +154,65 @@ function generateSuggestedQueries(ctx: RecoveryContext): string[] {
 }
 
 /**
+ * Synthesize broad, safe suggestions when the normal heuristics cannot
+ * reformulate the query. These are intentionally generic: they keep only
+ * caller-supplied tokens and avoid inventing packet IDs or paths.
+ */
+function synthesizeBroadeningSuggestions(ctx: RecoveryContext): string[] {
+  const q = ctx.query?.trim() ?? '';
+  const rawTokens = q.split(/\s+/).filter(Boolean);
+  const stopWords = new Set([
+    'a',
+    'an',
+    'and',
+    'for',
+    'from',
+    'in',
+    'of',
+    'on',
+    'or',
+    'the',
+    'to',
+    'with',
+  ]);
+  const tokens = rawTokens
+    .map((token) => token.replace(/^[^\w-]+|[^\w-]+$/g, '').toLowerCase())
+    .filter((token) => token.length > 0 && !stopWords.has(token));
+
+  if (tokens.length === 0) {
+    return ['recent memory context', 'related implementation notes'];
+  }
+  if (tokens.length === 1) {
+    return [`${tokens[0]} context`, `${tokens[0]} implementation`];
+  }
+
+  const firstPair = tokens.slice(0, 2).join(' ');
+  const firstTriple = tokens.slice(0, 3).join(' ');
+  const suggestions = [
+    firstPair,
+    firstTriple,
+    tokens.join(' '),
+  ].filter((suggestion) => suggestion.length > 0);
+
+  return [...new Set(suggestions)].slice(0, 2);
+}
+
+/**
  * Map status + reason to a recommended next action.
  */
 function recommendAction(status: RecoveryStatus, reason: RecoveryReason): RecoveryAction {
   if (status === 'no_results') {
     if (reason === 'spec_filter_too_narrow') return 'retry_broader';
     if (reason === 'low_signal_query') return 'switch_mode';
-    return 'save_memory'; // knowledge_gap — user may need to add context first
+    return 'refuse_without_evidence';
   }
   if (status === 'low_confidence') {
     if (reason === 'knowledge_gap') return 'ask_user';
+    if (reason === 'low_signal_query') return 'ask_disambiguation';
     return 'switch_mode';
   }
   // partial
-  return 'retry_broader';
+  return 'broaden_or_ask';
 }
 
 // -- Graph-Expanded Fallback (Phase B T017) -----------------------------------
@@ -272,8 +324,11 @@ export function buildGraphExpandedFallback(
 export function buildRecoveryPayload(ctx: RecoveryContext): RecoveryPayload {
   const status = classifyStatus(ctx);
   const reason = classifyReason(ctx, status);
-  const suggestedQueries = generateSuggestedQueries(ctx);
   const recommendedAction = recommendAction(status, reason);
+  const generatedSuggestions = generateSuggestedQueries(ctx);
+  const suggestedQueries = recommendedAction === 'ask_user' && generatedSuggestions.length === 0
+    ? synthesizeBroadeningSuggestions(ctx)
+    : generatedSuggestions;
 
   return {
     status,
