@@ -1,0 +1,107 @@
+{
+  "worker_id": "2",
+  "model": "gpt-5.4",
+  "effort": "medium",
+  "scope_description": "00--ai-systems subtree (6) + 024-compact-code-graph (2) + 026/011-stress-remediation/001-search-intelligence (1)",
+  "phase_parents_processed": [
+    {
+      "path": ".opencode/specs/00--ai-systems/001-global-shared",
+      "category": "B",
+      "pre_error_rules": [],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Lean parent spec already in place; refreshed description.json and graph-metadata.json, then revalidated."
+    },
+    {
+      "path": ".opencode/specs/00--ai-systems/002-sales-communication-flows",
+      "category": "B",
+      "pre_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "post_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "new_error_rules": [],
+      "notes": "Lean parent spec retained; metadata refreshed. Existing integrity errors remain but no new error rules were introduced."
+    },
+    {
+      "path": ".opencode/specs/00--ai-systems/003-sales-process-automation",
+      "category": "B",
+      "pre_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "post_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "new_error_rules": [],
+      "notes": "Lean parent spec retained; metadata refreshed. Existing integrity errors remain but no new error rules were introduced."
+    },
+    {
+      "path": ".opencode/specs/00--ai-systems/004-prompt-improver",
+      "category": "B",
+      "pre_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "post_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "new_error_rules": [],
+      "notes": "Lean parent spec retained; metadata refreshed. Existing integrity errors remain but no new error rules were introduced."
+    },
+    {
+      "path": ".opencode/specs/00--ai-systems/005-sales-direct-communication",
+      "category": "B",
+      "pre_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Lean parent spec retained; metadata refreshed. Pre-existing integrity error cleared during the migration pass."
+    },
+    {
+      "path": ".opencode/specs/00--ai-systems/006-product-owner",
+      "category": "B",
+      "pre_error_rules": [],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Lean parent spec retained; metadata refreshed. No new validation errors."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+      "category": "B",
+      "pre_error_rules": [],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Parent spec reshaped into the lean phase-parent form while preserving the original Problem Statement and Purpose verbatim."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/024-compact-code-graph",
+      "category": "C",
+      "pre_error_rules": [
+        "FILE_EXISTS",
+        "CANONICAL_SAVE_ROOT_SPEC_REQUIRED"
+      ],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Synthesized missing root spec.md, refreshed parent metadata, and cleared both missing-root error rules."
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+      "category": "B",
+      "pre_error_rules": [],
+      "post_error_rules": [],
+      "new_error_rules": [],
+      "notes": "Parent spec reshaped into the lean phase-parent form; metadata refreshed and validation stayed error-free."
+    }
+  ],
+  "skipped": [],
+  "blocked": [],
+  "summary": {
+    "total_processed": 9,
+    "total_skipped": 0,
+    "manual_block_violations": 0,
+    "narrative_violations": 0,
+    "new_error_rules_anywhere": 0,
+    "scope_note": "Prompt said 8 phase parents but listed 9 explicit paths; the explicit path list was treated as authoritative."
+  }
+}

@@ -1,0 +1,1074 @@
+Reading additional input from stdin...
+OpenAI Codex v0.125.0 (research preview)
+--------
+workdir: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+model: gpt-5.5
+provider: openai
+approval: never
+sandbox: read-only
+reasoning effort: medium
+reasoning summaries: none
+session id: 019dcf7d-9772-7c83-a6a6-03aadbf4437c
+--------
+user
+Run /memory:search preflight specs/026/003/005 T101.
+hook: SessionStart
+hook: SessionStart
+hook: SessionStart Completed
+hook: SessionStart Completed
+hook: UserPromptSubmit
+hook: UserPromptSubmit
+hook: UserPromptSubmit Completed
+hook: UserPromptSubmit Completed
+codex
+SKILL ROUTING: system-spec-kit. This is a read-only memory preflight, so I’m loading only the workflow bits needed to run it cleanly.
+exec
+/bin/zsh -lc "sed -n '1,220p' /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/SKILL.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+---
+name: system-spec-kit
+description: "Unified documentation and context preservation: spec folder workflow (levels 1-3+), CORE + ADDENDUM template architecture (v2.2), validation, and Spec Kit Memory for context preservation. Mandatory for all file modifications."
+allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
+version: 3.3.1.0
+---
+
+<!-- Keywords: spec-kit, speckit, documentation-workflow, spec-folder, template-enforcement, context-preservation, progressive-documentation, validation, spec-kit-memory, vector-search, hybrid-search, bm25, rrf-fusion, fsrs-decay, constitutional-tier, checkpoint, importance-tiers, cognitive-memory, co-activation, tiered-injection -->
+
+# Spec Kit - Mandatory Conversation Documentation
+
+Orchestrates mandatory spec folder creation for all conversations involving file modifications. Ensures proper documentation level selection (1-3+), template usage, and context preservation through AGENTS.md-enforced workflows.
+
+
+<!-- ANCHOR:when-to-use -->
+## 1. WHEN TO USE
+
+### What is a Spec Folder?
+
+A **spec folder** is a numbered directory (e.g., `007-auth-feature/`) that contains documentation for a single feature/task or a coordinated packet of related phase work:
+
+Spec folders may also be nested as coordination-root packets with direct-child phase folders (e.g., `specs/02--track/022-feature/011-phase/002-child/`).
+
+- **Purpose**: Track specifications, plans, tasks, and decisions for one unit of work
+- **Location**: Under `specs/` using either `###-short-name/` at the root or nested packet paths for phased coordination
+- **Contents**: Markdown files (spec.md, plan.md, tasks.md, and implementation-summary.md when work is complete) plus optional support folders such as `scratch/`, `research/`, or `review/`
+
+Think of it as a "project folder" for AI-assisted development - it keeps context organized and enables session continuity.
+
+### Activation Triggers
+
+**MANDATORY for ALL file modifications:**
+- Code files: JS, TS, Python, CSS, HTML
+- Documentation: Markdown, README, guides
+- Configuration: JSON, YAML, TOML, env templates
+- Templates, knowledge base, build/tooling files
+
+**Request patterns that trigger activation:**
+- "Add/implement/create [feature]"
+- "Fix/update/refactor [code]"
+- "Modify/change [configuration]"
+- Any keyword: add, implement, fix, update, create, modify, rename, delete, configure, analyze, phase
+
+**Example triggers:**
+- "Add email validation to the signup form" → Level 1-2
+- "Refactor the authentication module" → Level 2-3
+- "Fix the button alignment bug" → Level 1
+- "Implement user dashboard with analytics" → Level 3
+
+### When NOT to Use
+
+- Pure exploration/reading (no file modifications)
+- Single typo fixes (<5 characters in one file)
+- Whitespace-only changes
+- Auto-generated file updates (package-lock.json)
+- User explicitly selects Option D (skip documentation)
+
+**Rule of thumb:** If modifying ANY file content → Activate this skill.
+Status: ✅ This requirement applies immediately once file edits are requested.
+
+### Distributed Governance Rule
+
+Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
+
+- `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation.
+- `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
+- `resource-map.md` is a peer cross-cutting template under `.opencode/skill/system-spec-kit/templates/`; it remains optional at any level and gives reviewers a lean file ledger alongside `implementation-summary.md`.
+
+### Utility Template Triggers
+
+| Template              | Trigger Keywords                                                                                                              | Action                    |
+| --------------------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------- |
+| `handover.md`         | "handover", "next session", "continue later", "pass context", "ending session", "save state", "multi-session", "for next AI"  | Suggest `/memory:save` handover maintenance |
+| `debug-delegation.md` | "stuck", "can't fix", "tried everything", "same error", "fresh eyes", "hours on this", "still failing", "need help debugging" | Suggest Task-tool debug delegation |
+
+**Rule:** When detected, proactively suggest the appropriate action.
+
+---
+
+<!-- /ANCHOR:when-to-use -->
+<!-- ANCHOR:smart-routing -->
+## 2. SMART ROUTING
+
+### Resource Domains
+
+The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `RESOURCE_MAP`. Keep this section domain-focused rather than static file inventories.
+
+- `references/memory/` for context retrieval, save workflows, trigger behavior, and indexing.
+- `references/templates/` for level selection, template composition, and structure guides.
+- `references/validation/` for checklist policy, verification rules, decision formats, and template compliance contracts.
+- `references/structure/` for folder organization and sub-folder versioning.
+- `references/workflows/` for command workflows and worked examples.
+- `references/debugging/` for troubleshooting and root-cause methodology.
+- `references/config/` for runtime environment configuration.
+
+### Template and Script Sources of Truth
+
+- Level definitions and template size guidance: [level_specifications.md](./references/templates/level_specifications.md)
+- Template usage and composition rules: [template_guide.md](./references/templates/template_guide.md)
+- Use `templates/level_N/` for operational templates; `core/` and `addendum/` remain composition inputs.
+- Use `templates/changelog/` for packet-local nested changelog generation at completion time.
+- Script architecture, build outputs, and runtime entrypoints: [scripts/README.md](./scripts/README.md)
+- Memory save JSON schema and workflow contracts: [save_workflow.md](./references/memory/save_workflow.md)
+- Nested packet changelog workflow: [nested_changelog.md](./references/workflows/nested_changelog.md)
+
+Primary operational scripts:
+- `spec/validate.sh`
+- `spec/create.sh`
+- `spec/archive.sh`
+- `spec/check-completion.sh`
+- `spec/recommend-level.sh`
+- `templates/compose.sh`
+
+### Resource Loading Levels
+
+| Level       | When to Load               | Resources                    |
+| ----------- | -------------------------- | ---------------------------- |
+| ALWAYS      | Every skill invocation     | Shared patterns + SKILL.md   |
+| CONDITIONAL | If intent signals match   | Intent-mapped references     |
+| ON_DEMAND   | Only on explicit request   | Deep-dive quality standards  |
+
+`references/workflows/quick_reference.md` is the primary first-touch command surface. Keep the compact `spec_kit` and `memory` command map there, including `/spec_kit:plan --intake-only` as the standalone intake entry, `/spec_kit:plan` and `/spec_kit:complete` smart delegation notes, and the pointer from `/spec_kit:deep-research` to `../sk-deep-research/references/spec_check_protocol.md`, and use this file only to point readers to it rather than duplicating the full matrix.
+
+### Smart Router Pseudocode
+
+The authoritative routing logic for scoped loading, weighted intent scoring, and ambiguity handling.
+
+```python
+from pathlib import Path
+
+SKILL_ROOT = Path(__file__).resolve().parent
+RESOURCE_BASES = (SKILL_ROOT / "references", SKILL_ROOT / "assets")
+DEFAULT_RESOURCE = "references/workflows/quick_reference.md"
+
+INTENT_SIGNALS = {
+    "PLAN": {"weight": 3, "keywords": ["plan", "design", "new spec", "level selection", "option b"]},
+    "RESEARCH": {"weight": 3, "keywords": ["investigate", "explore", "analyze", "prior work", "evidence"]},
+    "IMPLEMENT": {"weight": 3, "keywords": ["implement", "build", "execute", "workflow"]},
+    "DEBUG": {"weight": 4, "keywords": ["stuck", "error", "not working", "failed", "debug"]},
+    "COMPLETE": {"weight": 4, "keywords": ["done", "complete", "finish", "verify", "checklist"]},
+    "MEMORY": {"weight": 4, "keywords": ["memory", "save context", "resume", "checkpoint", "context"]},
+    "HANDOVER": {"weight": 4, "keywords": ["handover", "continue later", "next session", "pause"]},
+    "PHASE": {"weight": 4, "keywords": ["phase", "decompose", "split", "workstream", "multi-phase", "phased approach", "phased", "multi-session"]},
+    "RETRIEVAL_TUNING": {"weight": 3, "keywords": ["retrieval", "search tuning", "fusion", "scoring", "pipeline"]},
+    "EVALUATION": {"weight": 3, "keywords": ["evaluate", "ablation", "benchmark", "baseline", "metrics"]},
+    "SCORING_CALIBRATION": {"weight": 3, "keywords": ["calibration", "scoring", "normalization", "decay", "interference"]},
+    "ROLLOUT_FLAGS": {"weight": 3, "keywords": ["feature flag", "rollout", "toggle", "enable", "disable"]},
+    "GOVERNANCE": {"weight": 3, "keywords": ["governance", "tenant", "retention", "audit"]},
+}
+
+RESOURCE_MAP = {
+    "PLAN": [
+        "references/templates/level_specifications.md",
+        "references/templates/template_guide.md",
+        "references/validation/template_compliance_contract.md",
+    ],
+    "RESEARCH": [
+        "references/workflows/quick_reference.md",
+        "references/workflows/worked_examples.md",
+        "references/memory/epistemic_vectors.md",
+    ],
+    "IMPLEMENT": [
+        "references/validation/validation_rules.md",
+        "references/validation/template_compliance_contract.md",
+        "references/templates/template_guide.md",
+    ],
+    "DEBUG": [
+        "references/debugging/troubleshooting.md",
+        "references/workflows/quick_reference.md",
+        "manual_testing_playbook/manual_testing_playbook.md",
+    ],
+    "COMPLETE": [
+        "references/validation/validation_rules.md",
+        "references/workflows/nested_changelog.md",
+    ],
+    "MEMORY": [
+        "references/memory/memory_system.md",
+        "references/memory/save_workflow.md",
+        "references/memory/trigger_config.md",
+    ],
+    "HANDOVER": [
+        "references/workflows/quick_reference.md",
+    ],
+    "PHASE": [
+        "references/structure/phase_definitions.md",
+        "references/structure/sub_folder_versioning.md",
+        "references/validation/phase_checklists.md",
+    ],
+    "RETRIEVAL_TUNING": [
+        "references/memory/embedding_resilience.md",
+        "references/memory/trigger_config.md",
+    ],
+    "EVALUATION": [
+        "references/memory/epistemic_vectors.md",
+        "references/config/environment_variables.md",
+        "manual_testing_playbook/manual_testing_playbook.md",
+    ],
+    "SCORING_CALIBRATION": [
+        "references/config/environment_variables.md",
+    ],
+    "ROLLOUT_FLAGS": [
+        "references/config/environment_variables.md",
+        "feature_catalog/19--feature-flag-reference/",
+    ],
+    "GOVERNANCE": [
+        "references/config/environment_variables.md",
+    ],
+}
+
+COMMAND_BOOSTS = {
+    "/spec_kit:plan": "PLAN",
+    "/spec_kit:implement": "IMPLEMENT",
+    "/spec_kit:complete": "COMPLETE",
+    "/spec_kit:plan :with-phases": "PHASE",
+    "/memory:search": "MEMORY",
+    "/memory:save": "MEMORY",
+    "/memory:manage": "MEMORY",
+    "/memory:learn": "MEMORY",
+    "/spec_kit:resume": "MEMORY",
+}
+
+codex
+The command maps to the Spec Kit memory surface. I’m checking the available callable tool name now, then I’ll run the preflight against `specs/026/003/005` and task `T101`.
+exec
+/bin/zsh -lc "rg -n \"preflight|/memory:search\" .opencode/skill/system-spec-kit -g '*.md' -g '*.js' -g '*.ts'" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+.opencode/skill/system-spec-kit/SKILL.md:215:    "/memory:search": "MEMORY",
+.opencode/skill/system-spec-kit/SKILL.md:522:  - `preflight` / `postflight` - Epistemic baseline snapshots (`knowledgeScore`, `uncertaintyScore`, `contextScore`, `gaps[]`, `confidence`)
+.opencode/skill/system-spec-kit/SKILL.md:573:**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the spec-doc record command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
+.opencode/skill/system-spec-kit/SKILL.md:621:**Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
+.opencode/skill/system-spec-kit/SKILL.md:776:| `detect_changes` | Read-only preflight: maps unified-diff hunks to indexed symbols via line-range overlap. Returns `status: 'blocked'` on any non-`fresh` readiness state — no false-safe answers on stale graphs (012/002, ADR-012-001 clean-room). Registered as a top-level MCP tool (010/007 T-A) alongside the handler in `handlers/index.ts`, dispatcher in `code_graph/tools/code-graph-tools.ts`, JSON schema in `tool-schemas.ts`, and Zod validator in `schemas/tool-input-schemas.ts` |
+.opencode/skill/system-spec-kit/mcp_server/tools/types.ts:237:/** Arguments for task preflight requests. */
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:69:  phase: 'preflight' | 'complete';
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:70:  preflight: LearningScoreSnapshot;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:76:  phase: 'preflight';
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:112:  phase: 'preflight' | 'complete';
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:134:    phase TEXT NOT NULL CHECK(phase IN ('preflight', 'complete')),
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:300:/** Handle task_preflight tool - captures baseline knowledge scores before a task begins */
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:343:       AND phase = 'preflight'
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:370:        tool: 'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:379:            phase: 'preflight',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:388:          note: 'Existing preflight record was updated (not replaced)'
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:393:      throw new MemoryError(ErrorCodes.DATABASE_ERROR, `Failed to update preflight record: ${message}`, {});
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:400:    VALUES (?, ?, 'preflight', ?, ?, ?, ?, ?, ?, ?)
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:420:      tool: 'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:429:          phase: 'preflight',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:448:    console.error('[session-learning] Failed to insert preflight record:', message);
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:449:    throw new MemoryError(ErrorCodes.DATABASE_ERROR, 'Failed to store preflight record', { originalError: message });
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:505:    AND phase IN ('preflight', 'complete')
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:506:    ORDER BY CASE phase WHEN 'preflight' THEN 0 ELSE 1 END,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:512:  const preflightCandidates = candidates.filter((row) => row.phase === 'preflight');
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:515:  if (normalizedSessionId === null && preflightCandidates.length > 1) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:518:      `Multiple open preflight records found for spec_folder="${spec_folder}" and task_id="${taskId}". Provide sessionId to disambiguate postflight.`,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:523:  if (normalizedSessionId === null && preflightCandidates.length === 0 && completeCandidates.length > 1) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:531:  const preflightRecord = (preflightCandidates[0] ?? completeCandidates[0]) as PreflightRecord | undefined;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:533:  if (!preflightRecord) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:537:        ? `No preflight record found for spec_folder="${spec_folder}" and task_id="${taskId}". Call task_preflight first.`
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:538:        : `No preflight record found for spec_folder="${spec_folder}", task_id="${taskId}", session_id="${normalizedSessionId}". Call task_preflight first.`,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:543:  const deltaKnowledge = knowledge_score - preflightRecord.pre_knowledge_score;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:544:  const deltaUncertainty = preflightRecord.pre_uncertainty_score - uncertainty_score;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:545:  const deltaContext = context_score - preflightRecord.pre_context_score;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:594:      preflightRecord.id
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:601:      originalGaps = preflightRecord.knowledge_gaps ? JSON.parse(preflightRecord.knowledge_gaps) : [];
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:612:          id: preflightRecord.id,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:615:          sessionId: (preflightRecord.session_id as string | null) ?? normalizedSessionId,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:617:            knowledge: preflightRecord.pre_knowledge_score,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:618:            uncertainty: preflightRecord.pre_uncertainty_score,
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:619:            context: preflightRecord.pre_context_score
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:720:        phase: row.phase as 'preflight' | 'complete',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:721:        preflight: {
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:755:        phase: 'preflight',
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:832:      : `Learning history: ${learningHistory.length} preflight records`;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:872:const handle_task_preflight = handleTaskPreflight;
+.opencode/skill/system-spec-kit/mcp_server/handlers/session-learning.ts:878:  handle_task_preflight,
+.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md:22:- Expected signals: Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence
+.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md:32:As a remediation validation operator, confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts. Verify targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md:39:3. inspect assertions covering `memory_save` preflight, V-rule disposition handling, quality-loop rejection or repair, and downstream save-quality-gate outcomes
+.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md:45:Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence
+.opencode/skill/system-spec-kit/manual_testing_playbook/20--remediation-revalidation/225-remediation-runtime-surface.md:58:Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflight.ts`, `mcp_server/handlers/v-rule-bridge.ts`, `mcp_server/handlers/quality-loop.ts`, `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/handlers/checkpoints.ts`, and `mcp_server/handlers/memory-crud-health.ts` if any remediation-stage signal is missing or contradictory
+.opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts:4:// Dispatch for L6-L7 lifecycle tools: index_scan, preflight,
+.opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts:41:  'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/tools/lifecycle-tools.ts:58:    case 'task_preflight':             return handleTaskPreflight(parseArgs<PreflightArgs>(validateToolArgs('task_preflight', args)));
+.opencode/skill/system-spec-kit/mcp_server/handlers/save/types.ts:13:// Feature catalog: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/mcp_server/handlers/save/markdown-evidence-builder.ts:11:// Feature catalog: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:6:  - "preflight"
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:38:| Modules | 2 | preflight.ts, save-quality-gate.ts |
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:61: preflight.ts         # Pre-flight validation before expensive operations
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:70:| `preflight.ts` | All validation logic: anchors, duplicates, tokens, content size, unified preflight |
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:196:import { runPreflight } from './preflight';
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:218:import { validateAnchorFormat } from './preflight';
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md:229:import { checkTokenBudget, estimateTokens } from './preflight';
+.opencode/skill/system-spec-kit/mcp_server/handlers/save/validation-responses.ts:24:// Feature catalog: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:33:import * as preflight from '../lib/validation/preflight.js';
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:167:// Feature catalog: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1359:        summary: 'Atomic save preflight failed',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:1386:      sourceField: params.routeAs === 'metadata_only' ? 'preflight' : 'observations',
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2752:  // Shared dry-run response builder — both the skipPreflight and post-preflight
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2757:    preflightValidation: {
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2759:      errors: preflight.PreflightIssue[];
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2760:      warnings: preflight.PreflightResult['warnings'];
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2777:    const dryRunSummary = !preflightValidation.wouldPass
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2778:      ? `Pre-flight validation failed: ${preflightValidation.errors.length} error(s)`
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2787:    const wouldPass = preflightValidation.wouldPass
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2793:    const hints: string[] = !preflightValidation.wouldPass
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2798:            ...(preflightValidation.skipped ? ['Pre-flight checks were skipped because skipPreflight=true'] : []),
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2805:            ...(preflightValidation.skipped ? ['Pre-flight checks were skipped because skipPreflight=true'] : []),
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2810:            ...(!preflightValidation.skipped
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2824:        validation: preflightValidation.skipped
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2826:          : { errors: preflightValidation.errors, warnings: preflightValidation.warnings, details: preflightValidation.details },
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2843:  // DryRun must remain non-mutating even when preflight is explicitly skipped.
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2867:    const preflightResult = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2873:        find_similar: findSimilarMemories as Parameters<typeof preflight.runPreflight>[0]['find_similar'],
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2914:        errors: preflightResult.errors,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2915:        warnings: preflightResult.warnings,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2916:        details: preflightResult.details,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2917:        wouldPass: preflightResult.dry_run_would_pass ?? preflightResult.pass,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2921:    if (!preflightResult.pass) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2938:            blockers: preflightResult.errors.map((entry: string | { message: string; code?: string }) =>
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2947:            advisories: preflightResult.warnings.map((entry: string | { message: string }) =>
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2974:      const errorMessages = preflightResult.errors.map((e: string | { message: string }) =>
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2980:      const firstError = preflightResult.errors[0];
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2983:        : preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID;
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2984:      throw new preflight.PreflightError(
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2988:          errors: preflightResult.errors,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2989:          warnings: preflightResult.warnings,
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2996:    if (preflightResult.warnings.length > 0) {
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2997:      console.warn(`[preflight] ${validatedPath}: ${preflightResult.warnings.length} warning(s)`);
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:2998:      preflightResult.warnings.forEach((w: string | { message: string }) => {
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:3000:        console.warn(`[preflight]   - ${msg}`);
+.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts:3160:            summary: 'Atomic save preflight failed',
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:9:// Feature catalog: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:30:/** Configuration for preflight checks */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:42:/** Issue (error or warning) reported during preflight */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:115:/** Parameters for the unified preflight check */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:128:/** Options for the unified preflight check */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:139:/** Details within a preflight result */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:147:/** Unified preflight result */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:165:/** Minimal database interface for preflight checks */
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:549:      console.warn('[preflight] Exact duplicate check failed:', message);
+.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts:586:      console.warn('[preflight] Similar duplicate check failed:', message);
+.opencode/skill/system-spec-kit/mcp_server/handlers/index.ts:289:export const handle_task_preflight = lazyFunction(getSessionLearningModule, 'handle_task_preflight');
+.opencode/skill/system-spec-kit/mcp_server/README.md:93:| `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
+.opencode/skill/system-spec-kit/mcp_server/README.md:554:**`detect_changes` preflight MCP tool:** A read-only handler at `code_graph/handlers/detect-changes.ts` is registered alongside the other Code Graph handlers in `code_graph/handlers/index.ts` and exposed as a top-level MCP tool via the dispatcher (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and strict Zod validator (`schemas/tool-input-schemas.ts`). It accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, so any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed and `affectedSymbols[]` is empty (false-safe RISK-03 mitigation). A clean-room minimal unified-diff parser at `code_graph/lib/diff-parser.ts` handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency is required. Symbol attribution uses pure line-range overlap against `queryOutline(filePath)` rows; synthetic per-file `module` nodes are excluded so they don't drown per-symbol signal. New route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`) remain deferred; the routine MCP exposure of this read-only handler is unaffected.
+.opencode/skill/system-spec-kit/mcp_server/README.md:944:##### `task_preflight`
+.opencode/skill/system-spec-kit/mcp_server/README.md:962:Capture your knowledge after a task. The system calculates a Learning Index by comparing these scores to the preflight baseline.
+.opencode/skill/system-spec-kit/mcp_server/README.md:968:| `specFolder` | string | **Required.** Must match the preflight call |
+.opencode/skill/system-spec-kit/mcp_server/README.md:969:| `taskId` | string | **Required.** Must match the preflight call |
+.opencode/skill/system-spec-kit/mcp_server/README.md:1109:View learning records (preflight/postflight pairs) for a spec folder. Shows how the Learning Index changed over time.
+.opencode/skill/system-spec-kit/mcp_server/README.md:1116:| `onlyComplete` | boolean | Only return paired preflight+postflight records |
+.opencode/skill/system-spec-kit/mcp_server/README.md:1177:Read-only preflight MCP tool backed by the handler at `code_graph/handlers/detect-changes.ts`. Maps a unified-diff input to the structural symbols it touches via line-range overlap, refusing to answer when the graph is stale. Registered in `code_graph/handlers/index.ts`, the dispatcher `code_graph/tools/code-graph-tools.ts`, the JSON schema catalog `tool-schemas.ts`, and the strict Zod validator in `schemas/tool-input-schemas.ts`. External clients call it as a top-level MCP tool alongside `code_graph_query` and `code_graph_context`.
+.opencode/skill/system-spec-kit/mcp_server/README.md:1487:  "tool": "task_preflight",
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:79:/** Aggregates preflight and postflight comparison results. */
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:184:  const preflight = collectedData?.preflight;
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:187:    preflight && (
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:188:      typeof preflight.knowledgeScore === 'number' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:189:      typeof preflight.uncertaintyScore === 'number' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:190:      typeof preflight.contextScore === 'number' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:191:      typeof preflight.timestamp === 'string' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:192:      (preflight.gaps?.length ?? 0) > 0 ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:193:      typeof preflight.confidence === 'number' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:194:      typeof preflight.uncertaintyRaw === 'number' ||
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:195:      typeof preflight.readiness === 'string'
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:199:    preflight && postflight &&
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:200:    Number.isFinite(preflight.knowledgeScore) &&
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:202:    Number.isFinite(preflight.uncertaintyScore) &&
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:204:    Number.isFinite(preflight.contextScore) &&
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:214:  const preflightData = {
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:215:    PREFLIGHT_KNOW_SCORE: safeNum(preflight?.knowledgeScore),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:216:    PREFLIGHT_UNCERTAINTY_SCORE: safeNum(preflight?.uncertaintyScore),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:217:    PREFLIGHT_CONTEXT_SCORE: safeNum(preflight?.contextScore),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:218:    PREFLIGHT_KNOW_ASSESSMENT: getScoreAssessment(preflight?.knowledgeScore, 'knowledge'),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:219:    PREFLIGHT_UNCERTAINTY_ASSESSMENT: getScoreAssessment(preflight?.uncertaintyScore, 'uncertainty'),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:220:    PREFLIGHT_CONTEXT_ASSESSMENT: getScoreAssessment(preflight?.contextScore, 'context'),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:221:    PREFLIGHT_TIMESTAMP: preflight?.timestamp ?? DEFAULT_VALUE,
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:222:    PREFLIGHT_GAPS: preflight?.gaps?.map((g) => ({ GAP_DESCRIPTION: g })) ?? [],
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:223:    PREFLIGHT_CONFIDENCE: safeNum(preflight?.confidence),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:224:    PREFLIGHT_UNCERTAINTY_RAW: safeNum(preflight?.uncertaintyRaw ?? preflight?.uncertaintyScore),
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:225:    PREFLIGHT_READINESS: preflight?.readiness ?? DEFAULT_VALUE
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:251:    LEARNING_SUMMARY: 'Learning metrics will be calculated when both preflight and postflight data are provided.'
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:255:    const deltaKnow = (postflight?.knowledgeScore ?? 0) - (preflight?.knowledgeScore ?? 0);
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:256:    const deltaUncert = (preflight?.uncertaintyScore ?? 0) - (postflight?.uncertaintyScore ?? 0);
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:257:    const deltaContext = (postflight?.contextScore ?? 0) - (preflight?.contextScore ?? 0);
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:283:    ...preflightData,
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:1529:  const preflightPostflightData = extractPreflightPostflightData(data);
+.opencode/skill/system-spec-kit/scripts/extractors/collect-session-data.ts:1616:    ...preflightPostflightData,
+.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:602:  task_preflight: taskPreflightSchema as unknown as ToolInputSchema,
+.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:662:  task_preflight: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore', 'knowledgeGaps', 'sessionId'],
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/024-post-task-learning-measurement-task-postflight.md:53:Verify taskId matches preflight
+.opencode/skill/system-spec-kit/mcp_server/handlers/README.md:38:- `session-learning.ts` - Task preflight, postflight, and learning history handlers.
+.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:4:// Read-only preflight. Maps a unified-diff input to the structural
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:2:title: "EX-023 -- Epistemic baseline capture (task_preflight)"
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:3:description: "This scenario validates Epistemic baseline capture (task_preflight) for `EX-023`. It focuses on Pre-task baseline logging."
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:7:# EX-023 -- Epistemic baseline capture (task_preflight)
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:11:This scenario validates Epistemic baseline capture (task_preflight) for `EX-023`. It focuses on Pre-task baseline logging.
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:20:- Prompt: `As an analysis validation operator, validate Epistemic baseline capture (task_preflight) against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.`
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:31:As an analysis validation operator, validate Pre-task baseline logging against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:36:1. task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore)
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:58:- Feature catalog: [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/023-epistemic-baseline-capture-task-preflight.md:67:- Feature file path: `06--analysis/023-epistemic-baseline-capture-task-preflight.md`
+.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:403:  name: 'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:411:  inputSchema: { type: 'object', additionalProperties: false, properties: { specFolder: { type: 'string', minLength: 1, description: 'Path to spec folder (must match preflight)' }, taskId: { type: 'string', minLength: 1, description: 'Task identifier (must match preflight)' }, knowledgeScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task knowledge level (0-100)' }, uncertaintyScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task uncertainty level (0-100)' }, contextScore: { type: 'number', minimum: 0, maximum: 100, description: 'Post-task context completeness (0-100)' }, gapsClosed: { type: 'array', items: { type: 'string' }, description: 'List of knowledge gaps closed during task (optional)' }, newGapsDiscovered: { type: 'array', items: { type: 'string' }, description: 'List of new gaps discovered during task (optional)' }, sessionId: { type: 'string', description: 'Optional session identifier. Required when multiple sessions share the same taskId and you need to target a specific learning cycle.' } }, required: ['specFolder', 'taskId', 'knowledgeScore', 'uncertaintyScore', 'contextScore'] },
+.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:662:  description: '[L6:Analysis] Read-only preflight: maps a unified-diff input to the structural symbols it touches via line-range overlap against indexed code_nodes. Refuses to answer when graph readiness is anything other than "fresh" — returns status: "blocked" instead of a false-safe empty affectedSymbols[]. Use BEFORE acting on a diff so callers see hard refuse on stale/empty/error state. Token Budget: 1200.',
+.opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts:196:  { pattern: /\|\s*(Knowledge|Uncertainty|Context) Score\s*\|\s*\/100\s*\|/i, label: 'empty preflight score' },
+.opencode/skill/system-spec-kit/scripts/lib/validate-memory-quality.ts:197:  { pattern: /\|\s*Timestamp\s*\|\s*\|\s*Session start\s*\|/i, label: 'empty preflight timestamp' },
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:72:| 012/002 | `03--discovery` | EX-014 | [`03--discovery/014-detect-changes-preflight.md`](03--discovery/014-detect-changes-preflight.md) — stale vs fresh `detect_changes` walkthrough with explicit pass/fail (false-safe RISK-03 mitigation); MCP-tool wired in 010/007 T-A |
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:691:### EX-023 | Epistemic baseline capture (task_preflight)
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:697:Prompt: `Create preflight for pipeline-v2-audit. Capture the evidence needed to prove Baseline record created. Return a concise user-facing pass/fail verdict with the main reason.`
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:702:> **Feature File:** [EX-023](06--analysis/023-epistemic-baseline-capture-task-preflight.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:703:> **Catalog:** [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:1414:Confirm save-time preflight warn/fail behavior.
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2682:### 133 | Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2685:Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects.
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2688:Prompt: `Validate memory_save dryRun preview behavior, including insufficiency detection. Capture the evidence needed to prove Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise user-facing pass/fail verdict with the main reason.`
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2690:Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2693:> **Feature File:** [133](13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:2694:> **Catalog:** [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3703:| EX-023 | Existing Features | Epistemic baseline capture (task_preflight) | [EX-023](06--analysis/023-epistemic-baseline-capture-task-preflight.md) | [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md) |
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3845:| 133 | Features | Dry-run preflight for memory_save | [133](13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md) | [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) |
+.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md:3868:| 185 | Features | /memory:search command routing | [185](01--retrieval/185-memory-search-command-routing.md) | [feature_catalog.md#command-surface-contract](../feature_catalog/feature_catalog.md#command-surface-contract) |
+.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md:478:#### 4a. `detect_changes` preflight (012/002, MCP-tool wired in 010/007 T-A)
+.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/diff-parser.ts:5:// the `detect_changes` preflight handler. Handles `diff --git`
+.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:62:  | 'preflight'
+.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:383:      || chunk.sourceField === 'preflight'
+.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:451:    /\b(trigger_phrases|importance_tier|contextType|_memory\.continuity|fingerprint|preflight|postflight|learningIndex)\b/i,
+.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1016:  if (/\bpreflight|postflight|trigger_phrases|importance_tier|contexttype|fingerprint|knowledgeScore\b/i.test(normalizedText)) {
+.opencode/skill/system-spec-kit/mcp_server/lib/routing/content-router.ts:1291:    '- metadata_only: machine-owned continuity payload such as preflight, postflight, causal links, fingerprints, or compact continuity fields; usually implementation-summary.md::_memory.continuity',
+.opencode/skill/system-spec-kit/mcp_server/tests/k-value-optimization.vitest.ts:168:    query: 'Which preflight and postflight continuity fields were last saved',
+.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md:386:- Purpose: Owns preflight validation and save-time quality gates that reject malformed, duplicate, or low-signal writes before expensive work happens. It is a defensive boundary ahead of mutation and indexing paths.
+.opencode/skill/system-spec-kit/mcp_server/lib/MODULE_MAP.md:388:  - `preflight.ts` — dry-run and full preflight validation before save/index work.
+.opencode/skill/system-spec-kit/README.md:123:**`detect_changes` preflight (012/002, MCP tool wired in 010/007 T-A):** A read-only handler at `mcp_server/code_graph/handlers/detect-changes.ts` accepts `{ diff: string, rootDir?: string }` and returns `{ status, affectedSymbols[], affectedFiles[], blockedReason?, timestamp, readiness }`. The P1 safety invariant is hard: `ensureCodeGraphReady` runs first with `allowInlineIndex: false` and `allowInlineFullScan: false`, and any non-`fresh` readiness state returns `status: 'blocked'` before the diff is parsed. A clean-room minimal unified-diff parser (`mcp_server/code_graph/lib/diff-parser.ts`) handles `diff --git`, `--- a/<path>`, `+++ b/<path>`, and `@@ -oldStart[,oldLines] +newStart[,newLines] @@` headers, returning `parse_error` on malformed input — no new npm dependency was added (ADR-012-001). The handler is exported from `handlers/index.ts`, dispatched via `code_graph/tools/code-graph-tools.ts`, and validated by the JSON schema in `tool-schemas.ts` and the Zod schema in `schemas/tool-input-schemas.ts` (010/007 T-A wiring).
+.opencode/skill/system-spec-kit/README.md:211:/memory:search "how did we decide on the auth architecture?"
+.opencode/skill/system-spec-kit/README.md:482:| `/memory:search` | 13         | Search, retrieve and analyze knowledge. Auto-detects task intent from 7 types                                                           |
+.opencode/skill/system-spec-kit/README.md:488:Some commands own their tools (they are the primary home) while others borrow tools from `/memory:search` or `/memory:manage`. A borrowed tool works the same way -- it is just administered somewhere else.
+.opencode/skill/system-spec-kit/README.md:889:| Check prior decisions         | `/memory:search "query"`            | Starting a related task           |
+.opencode/skill/system-spec-kit/mcp_server/tests/mcp-tool-dispatch.vitest.ts:20:  { tool: 'task_preflight', handler: 'handleTaskPreflight', layer: 'L6' },
+.opencode/skill/system-spec-kit/mcp_server/tests/mcp-tool-dispatch.vitest.ts:46:  { camel: 'handleTaskPreflight', snake: 'handle_task_preflight' },
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:3:description: "This scenario validates Pre-flight token budget validation (PI-A3) for `041`. It focuses on Confirm save-time preflight warn/fail behavior."
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:11:This scenario validates Pre-flight token budget validation (PI-A3) for `041`. It focuses on Confirm save-time preflight warn/fail behavior.
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:19:- Objective: Confirm save-time preflight warn/fail behavior
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:22:- Pass/fail: PASS: Save-time preflight returns the expected warning/failure result without indexing side effects; FAIL: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:31:As a spec-doc record-quality validation operator, confirm save-time preflight warn/fail behavior against memory_save({filePath:"<sandbox-file>", dryRun:true}). Verify token estimate is computed before embedding/database writes; near-limit input emits PF021 warning; over-limit input emits PF020 failure; behavior follows MCP_CHARS_PER_TOKEN, MCP_MAX_MEMORY_TOKENS, and MCP_TOKEN_WARNING_THRESHOLD. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:37:2. Run `memory_save({filePath:"<sandbox-file>", dryRun:true})` or the equivalent save preflight path
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:38:3. Verify warning/failure payloads from `preflight.ts`
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:50:- **Pass**: Save-time preflight returns the expected warning/failure result without indexing side effects
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:51:- **Fail**: Retrieval-time truncation is required or preflight thresholds/codes drift from runtime behavior
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/041-pre-flight-token-budget-validation-pi-a3.md:55:Verify `preflight.ts` token counting math → Check `MCP_CHARS_PER_TOKEN`, `MCP_MAX_MEMORY_TOKENS`, and `MCP_TOKEN_WARNING_THRESHOLD` wiring → Inspect dry-run/save preflight behavior
+.opencode/skill/system-spec-kit/shared/parsing/memory-template-contract.ts:47:  { sectionId: 'preflight', commentId: 'preflight', headingPattern: /^##\s+PREFLIGHT BASELINE\s*$/i, required: 'conditional' },
+.opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts:170: * preflight). Callers that perform null-specific narrowing (e.g. `=== null`,
+.opencode/skill/system-spec-kit/mcp_server/lib/architecture/layer-definitions.ts:100:      'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/lib/README.md:262:│   ├── preflight.ts            # Preflight checks
+.opencode/skill/system-spec-kit/mcp_server/lib/README.md:344:| `validation/preflight.ts` | Input validation and security checks |
+.opencode/skill/system-spec-kit/mcp_server/lib/README.md:677:| Validation errors | Check input against `INPUT_LIMITS` in validation/preflight |
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:2:title: "133 -- Dry-run preflight for memory_save"
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:3:description: "This scenario validates Dry-run preflight for memory_save for `133`. It focuses on Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects."
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:7:# 133 -- Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:11:This scenario validates Dry-run preflight for memory_save for `133`. It focuses on Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects.
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:19:- Objective: Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:20:- Prompt: `As a spec-doc record-quality validation operator, validate Dry-run preflight for memory_save against memory_stats(). Verify dry-run previews preflight plus semantic insufficiency without indexing side effects. Return a concise pass/fail verdict with the main reason and cited evidence.`
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:21:- Expected signals: Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:31:As a spec-doc record-quality validation operator, confirm dry-run previews preflight plus semantic insufficiency without indexing side effects against memory_stats(). Verify dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report INSUFFICIENT_CONTEXT_ABORT without indexing/database mutation; force:true does not bypass insufficiency; rich non-dry-run save indexes the same file. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:38:3. `memory_save({filePath:"<thin-sandbox-file>", dryRun:true})` and verify preflight details, `qualityLoop`, `sufficiency`, and `rejectionCode:"INSUFFICIENT_CONTEXT_ABORT"`
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:46:Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:59:Inspect `handlers/memory-save.ts` dryRun and insufficiency branches, `shared/parsing/memory-sufficiency.ts`, `handlers/quality-loop.ts`, and `lib/validation/preflight.ts`
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:64:- Feature catalog: [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md:73:- Feature file path: `13--memory-quality-and-indexing/133-dry-run-preflight-for-memory-save.md`
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:190:  it('routes preflight state to metadata-only continuity target', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:193:      text: 'preflight knowledgeScore 42 uncertaintyScore 71 contextScore 38 knowledgeGaps resume latency dedup key shape',
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:194:      sourceField: 'preflight',
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:656:  it('routes metadata-only preflight content to the continuity target', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:659:      text: 'preflight knowledgeScore 55 uncertaintyScore 40 contextScore 62 knowledgeGaps graph traversal caching',
+.opencode/skill/system-spec-kit/mcp_server/tests/content-router.vitest.ts:660:      sourceField: 'preflight',
+.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md:3:description: "Maps the live runtime safety surface for remediation: preflight checks, V-rule enforcement, save-time auto-fix and revalidation, health auto-repair, validation feedback, and checkpoint-backed rollback."
+.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md:18:This category captures the runtime remediation surface that now exists across the MCP server rather than inside one isolated "repair" module. In practice, remediation happens in several layers: `memory_save` can preview failures in `dryRun`, reject hard validation problems before mutation, auto-fix some recoverable formatting issues, and stop or downgrade later indexing when stronger validation says the spec-doc record is unsafe. Save-time revalidation is split across `preflight.ts`, the V-rule bridge, the quality loop, and the pre-storage quality gate.
+.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md:27:- `preflight.ts` is the earliest save-time guard. It validates anchor structure, duplicate risk, approximate token budget, and content-size bounds. In `dryRun` mode it reports whether the write would pass without mutating files, the database, or indexes. In normal mode it throws structured `PreflightError`s unless the caller explicitly uses `skipPreflight:true`.
+.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md:45:| `.opencode/skill/system-spec-kit/mcp_server/lib/validation/preflight.ts` | Validation lib | Early save-time preflight checks for anchors, duplicates, token budget, and content size, with structured dry-run reporting |
+.opencode/skill/system-spec-kit/feature_catalog/20--remediation-revalidation/01-category-stub.md:49:| `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-save.ts` | Handler | Main orchestration path that wires preflight, V-rules, quality loop, later validation gates, dry-run, rejection, and rollback semantics together |
+.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md:2:title: "EX-014 -- detect_changes preflight (Code Graph)"
+.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md:6:# EX-014 -- detect_changes preflight (Code Graph)
+.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md:30:As a discovery validation operator, validate detect_changes preflight against the documented validation surface. Run it once when the graph is intentionally stale, once after a fresh code_graph_scan with a single-file diff, once with an adversarial path-traversal diff, and once with a 3-file diff. Verify status='blocked' on stale (NEVER 'ok' with empty affectedSymbols), status='ok' with the expected affected symbols on fresh single-file, status='parse_error' on path traversal, and status='ok' with all three files attributed on multi-file. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md:82:- Feature catalog: [03--discovery/04-detect-changes-preflight.md](../../feature_catalog/03--discovery/04-detect-changes-preflight.md)
+.opencode/skill/system-spec-kit/manual_testing_playbook/03--discovery/014-detect-changes-preflight.md:91:- Feature file path: `03--discovery/014-detect-changes-preflight.md`
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/190-session-recovery-spec-kit-resume.md:43:7. Verify the final recovery response includes actionable state and next steps, then routes appropriately to continued `/spec_kit:resume` work or `/memory:search history <spec-folder>` depending on user need
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:2:title: "185 -- /memory:search command routing"
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:3:description: "This scenario validates /memory:search command routing for `185`. It focuses on Verify the command's routing logic: no args prompts intent, query triggers retrieval mode, and analysis subcommands route correctly."
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:7:# 185 -- /memory:search command routing
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:11:This scenario validates /memory:search command routing for `185`. It focuses on Verify the command's routing logic: no args prompts intent, query triggers retrieval mode, and analysis subcommands route correctly.
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:19:- Objective: Verify `/memory:search` command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard)
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:20:- Prompt: `As a retrieval validation operator, validate /memory:search command routing against /memory:search. Verify /memory:search command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard). Return a concise pass/fail verdict with the main reason and cited evidence.`
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:21:- Expected signals: No-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard) each route to the correct tool
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:31:As a retrieval validation operator, verify /memory:search command routing logic covers no-args, retrieval, and analysis modes against /memory:search. Verify no-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands each route to the correct tool. Return a concise pass/fail verdict with the main reason and cited evidence.
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:36:1. Invoke `/memory:search` with no arguments and verify the interactive intent selection prompt appears (Add feature, Fix bug, Refactor, Security audit, Understand, Find spec, Find decision, Analysis tools)
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:37:2. Invoke `/memory:search "implement auth"` and verify retrieval mode activates with auto-detected `add_feature` intent and appropriate weight boosts (implementation 1.5x, architecture 1.3x, patterns 1.2x)
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:38:3. Invoke `/memory:search "auth bug" --intent:fix_bug` and verify the explicit intent override is respected
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:39:4. Invoke `/memory:search preflight specs/007-test T1` and verify `task_preflight()` is called
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:40:5. Invoke `/memory:search postflight specs/007-test T1` and verify `task_postflight()` is called
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:41:6. Invoke `/memory:search history specs/007-test` and verify `memory_get_learning_history()` is called
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:42:7. Invoke `/memory:search causal 42` and verify `memory_drift_why()` is called
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:43:8. Invoke `/memory:search ablation` and verify `eval_run_ablation()` is called
+.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/185-memory-search-command-routing.md:44:9. Invoke `/memory:search dashboard` and verify `eval_reporting_dashboard()` is called
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:2:title: "Epistemic baseline capture (task_preflight)"
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:3:description: "Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution."
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:7:# Epistemic baseline capture (task_preflight)
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:11:Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:21:Records are stored in the `session_learning` table with a `UNIQUE` constraint on `(spec_folder, task_id)`. If a preflight record already exists for the same combination and is still in the "preflight" phase, calling preflight again updates the existing record rather than creating a duplicate. Completed records (where postflight has already run) cannot be overwritten. That guard prevents accidental resets of finished learning cycles.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:23:The purpose of preflight is establishing a baseline for learning measurement. Without knowing where you started, you cannot measure how much you learned. The postflight tool completes the measurement.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:33:| `mcp_server/handlers/session-learning.ts` | Session learning handler: preflight baseline capture, UNIQUE constraint on (spec_folder, task_id) |
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:36:| `mcp_server/schemas/tool-input-schemas.ts` | Zod input schemas for `task_preflight` arguments |
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:37:| `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `task_preflight` |
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:54:| `EX-023` | Direct manual validation for creating the task preflight baseline |
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md:61:- Source feature title: Epistemic baseline capture (task_preflight)
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md:19:Retrieves learning records for a spec folder with optional filtering by session ID and completion status. Each record shows the preflight scores, postflight scores, computed deltas and Learning Index.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/07-learning-history-memorygetlearninghistory.md:23:Pass `onlyComplete: true` to restrict results to tasks where both preflight and postflight were recorded. This gives you clean data for trend analysis without incomplete records skewing the averages. Summary statistics are included by default; pass `includeSummary: false` when you only want the raw learning history rows. Records are ordered by `updated_at` descending so the most recent learning cycles appear first.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md:3:description: "Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline."
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md:11:Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md:19:After completing implementation work, this tool captures the post-task epistemic state and computes a Learning Index by comparing against the preflight baseline. The formula weights three deltas: `LI = (KnowledgeDelta * 0.4) + (UncertaintyReduction * 0.35) + (ContextImprovement * 0.25)`.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md:25:You can track gaps closed during the task and new gaps discovered. Both are stored as JSON arrays alongside the scores. The phase updates from "preflight" to "complete" after postflight runs. Calling postflight without a matching preflight record throws an error.
+.opencode/skill/system-spec-kit/feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md:27:The handler also supports re-correction runs. It accepts both "preflight" and already-"complete" records, so you can call `task_postflight` again for the same task to recompute the deltas and overwrite the stored postflight values after refining your assessment.
+.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md:235:- `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:21:| `MCP_ANCHOR_STRICT` | `false` | boolean | `lib/validation/preflight.ts` | When `'true'`, enforces strict anchor format validation during pre-flight checks. Invalid anchor IDs cause the save to be rejected. Default is lenient mode which logs warnings but does not block. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:22:| `MCP_CHARS_PER_TOKEN` | `4` | number | `lib/validation/preflight.ts`, `handlers/quality-loop.ts` | Characters-per-token ratio used for save-time token budget estimation during pre-flight validation. The same ratio is also shared by the quality loop when trimming to its default token budget. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:23:| `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new spec-doc record is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:24:| `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts`, `lib/parsing/memory-parser.ts` | Maximum allowed content length in characters for a spec-doc record file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:25:| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight hard-fails with PF020 (`TOKEN_BUDGET_EXCEEDED`) when a spec-doc record exceeds this limit. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:26:| `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
+.opencode/skill/system-spec-kit/feature_catalog/19--feature-flag-reference/03-3-mcp-configuration.md:27:| `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md:31:- **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md:83:| `mcp_server/handlers/memory-save.ts` | Handler | Uses first preflight error code dynamically in failure response and blocks save traffic during restore maintenance |
+.opencode/skill/system-spec-kit/feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md:106:| `mcp_server/tests/preflight.vitest.ts` | Preflight error-code contract used by save handler responses |
+.opencode/skill/system-spec-kit/mcp_server/tests/integration-error-recovery.vitest.ts:126:          name: 'learning-preflight',
+.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md:12:This is a data-integrity fix because scope normalization affects governed save, reconsolidation, lineage, and preflight filtering. The Phase 017 change removed drift-prone copies and then added a validator guard so the duplication does not reappear in a later packet.
+.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md:23:- `mcp_server/lib/validation/preflight.ts`
+.opencode/skill/system-spec-kit/feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md:41:| `mcp_server/lib/validation/preflight.ts` | Lib | Preflight scope normalization routed through the canonical helper |
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:108:        phase TEXT NOT NULL CHECK(phase IN ('preflight', 'complete')),
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:176:    `).run('003-memory-and-spec-kit', 'T1', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:214:    `).run('001-old-folder', 'T-old', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:220:    `).run('002-new-folder', 'T-new', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:295:    `).run('099-stale-folder', 'T-stale', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:332:    `).run('001-ancient-folder', 'T-ancient', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:338:    `).run('002-recent-folder', 'T-recent', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:375:    `).run('003-edge-case', 'T-edge', 'preflight');
+.opencode/skill/system-spec-kit/scripts/tests/test-folder-detector-functional.js:845:      pass('T-FD06b: Real DB queryable', 'Query succeeded, no recent records (expected if no recent preflight)');
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:147:        '<!-- ANCHOR:preflight -->',    // line 1
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:148:        'preflight content',            // line 2
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:149:        '<!-- /ANCHOR:preflight -->',   // line 3
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:162:      expect(result[0].id).toBe('preflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:202:      const ids = ['preflight', 'summary', 'state', 'decisions', 'postflight'];
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-metadata.vitest.ts:432:      const content = '<!-- ANCHOR:preflight -->\ntext\n<!-- /ANCHOR:preflight -->';
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:868:  const taskIdMatch = definition.exactPrompt.match(/(?:preflight|postflight) for ([a-z0-9-]+)/i);
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:963:    case 'task_preflight':
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:1139:    task_preflight: 'handleTaskPreflight',
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:1338:      case 'task_preflight':
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.ts:1706:          defaultArgsForTool('task_preflight', fixture, {
+.opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md:2:title: "detect_changes preflight (Code Graph)"
+.opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md:6:# detect_changes preflight (Code Graph)
+.opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md:41:| `mcp_server/code_graph/handlers/detect-changes.ts` | Handler | Read-only preflight; orchestrates readiness probe, diff parse, and overlap attribution |
+.opencode/skill/system-spec-kit/feature_catalog/03--discovery/04-detect-changes-preflight.md:62:- Source feature title: detect_changes preflight (Code Graph)
+.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md:20:- **`memory_context`** (from `/memory:search`) -- Helper recovery path in `resume` mode when the handover packet is thin. In `mcp_server/handlers/memory-context.ts`, resume mode is a dedicated `memory_search`-backed strategy with anchors `["state", "next-steps", "summary", "blockers"]`, default `limit=5`, a 1200-token budget, `minState=WARM`, `includeContent=true`, and both dedup and decay disabled. When auto-resume is enabled and the caller resumes a reusable working-memory session, `systemPromptContext` is injected before token-budget enforcement.
+.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md:22:- **`memory_search`** (from `/memory:search`) -- Fallback for thin summaries when `memory_context` resolves the right folder but does not return enough state detail. Uses the same resume anchors.
+.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/11-session-recovery-spec-kit-resume.md:47:- Broader historical analysis: recommend `/memory:search history <spec-folder>`
+.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts:140:        task_preflight: 'L6',
+.opencode/skill/system-spec-kit/mcp_server/tests/layer-definitions.vitest.ts:241:        { tool: 'task_preflight', desc: 'Capture baseline', prefix: '[L6:Analysis]' },
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:51:| 012/002 | `03--discovery` | [`03--discovery/04-detect-changes-preflight.md`](03--discovery/04-detect-changes-preflight.md) — read-only `detect_changes` preflight MCP tool with hard refuse on stale graph (010/007 T-A wired the dispatcher, JSON schema, and Zod validator) |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:175:| `/memory:search` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:181:**Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:417:After recovery, the command continues directly inside `/spec_kit:resume` for structured spec-folder work or routes to `/memory:search history` for broader historical analysis, depending on user intent.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:963:### Epistemic baseline capture (task_preflight)
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:973:Records are stored in the `session_learning` table with a `UNIQUE` constraint on `(spec_folder, task_id)`. If a preflight record already exists for the same combination and is still in the "preflight" phase, calling preflight again updates the existing record rather than creating a duplicate. Completed records (where postflight has already run) cannot be overwritten. That guard prevents accidental resets of finished learning cycles.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:975:The purpose of preflight is establishing a baseline for learning measurement. Without knowing where you started, you cannot measure how much you learned. The postflight tool completes the measurement.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:979:See [`06--analysis/05-epistemic-baseline-capture-taskpreflight.md`](06--analysis/05-epistemic-baseline-capture-taskpreflight.md) for full implementation and test file listings.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:991:After completing implementation work, this tool captures the post-task epistemic state and computes a Learning Index by comparing against the preflight baseline. The formula weights three deltas: `LI = (KnowledgeDelta * 0.4) + (UncertaintyReduction * 0.35) + (ContextImprovement * 0.25)`.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:997:You can track gaps closed during the task and new gaps discovered. Both are stored as JSON arrays alongside the scores. The phase updates from "preflight" to "complete" after postflight runs. Calling postflight without a matching preflight record throws an error.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:1013:Retrieves learning records for a spec folder with optional filtering by session ID and completion status. Each record shows the preflight scores, postflight scores, computed deltas and Learning Index.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:1017:Pass `onlyComplete: true` to restrict results to tasks where both preflight and postflight were recorded. This gives you clean data for trend analysis without incomplete records skewing the averages. Records are ordered by `updated_at` descending so the most recent learning cycles appear first. The handler now tracks schema initialization per database instance rather than per process, so fresh DB connections still create `session_learning` correctly, and score validation rejects `NaN` so malformed learning inputs cannot silently persist.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:1499:- **Postflight re-correction (#35):** `task_postflight` SELECT now matches `phase IN ('preflight', 'complete')` so re-posting updates the existing record instead of failing.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2529:The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` through `MCP_CHARS_PER_TOKEN` so both save-time checks use the same token estimate.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2563:Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a retrieval-time truncation feature. Before embedding generation, the runtime estimates token count from content length using `Math.ceil(text.length / charsPerToken)`, where `charsPerToken` defaults to `4` and can be overridden with `MCP_CHARS_PER_TOKEN`.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2833:### Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2841:The `memory_save` tool accepts a `dryRun` parameter that runs preflight validation only (content size, anchor validation, token budget estimation and exact duplicate checks) without indexing, database mutation, or file writes. In dry-run mode, handler responses are returned from the preflight result (`would_pass`, validation errors/warnings/details) and can also preview later save-path rejection reasons such as semantic insufficiency or rendered-template-contract failure.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2843:This allows agents to preview validation outcomes before committing while still using the same preflight validator used by non-dry-run requests. In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, quality-gate, PE-gating and persistence flows.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:2847:See [`13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`](13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md) for full implementation and test file listings.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:3228:- **Dynamic preflight error code (#23):** Preflight validation uses the actual error code from `preflightResult.errors[0].code` instead of hardcoding `ANCHOR_FORMAT_INVALID`.
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4593:| `MCP_ANCHOR_STRICT` | `false` | boolean | `lib/validation/preflight.ts` | When `'true'`, enforces strict anchor format validation during pre-flight checks. Invalid anchor IDs cause the save to be rejected. Default is lenient mode which logs warnings but does not block. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4594:| `MCP_CHARS_PER_TOKEN` | `4` | number | `lib/validation/preflight.ts` | Characters-per-token ratio used for save-time token budget estimation during pre-flight validation. The same ratio is also shared by the quality loop when trimming to its default token budget. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4595:| `MCP_DUPLICATE_THRESHOLD` | `0.95` | number | `lib/validation/preflight.ts` | Cosine similarity threshold above which a new spec-doc record is considered a near-duplicate of an existing one during pre-flight validation. Duplicates above this threshold are rejected by the quality gate Layer 3. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4596:| `MCP_MAX_CONTENT_LENGTH` | `250000` | number | `lib/validation/preflight.ts` | Maximum allowed content length in characters for a spec-doc record file. Files exceeding this limit are rejected at pre-flight validation before any embedding generation or database writes. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4597:| `MCP_MAX_MEMORY_TOKENS` | `8000` | number | `lib/validation/preflight.ts` | Maximum token budget per memory (estimated via `MCP_CHARS_PER_TOKEN`). Pre-flight hard-fails with PF020 (`TOKEN_BUDGET_EXCEEDED`) when a spec-doc record exceeds this limit. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4598:| `MCP_MIN_CONTENT_LENGTH` | `10` | number | `lib/validation/preflight.ts` | Minimum content length in characters for a valid memory file. Files shorter than this are rejected at pre-flight. The quality gate Layer 1 requires at least 50 characters, so this lower floor catches truly empty files. |
+.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md:4599:| `MCP_TOKEN_WARNING_THRESHOLD` | `0.8` | number | `lib/validation/preflight.ts` | Fraction of `MCP_MAX_MEMORY_TOKENS` at which a token budget warning is emitted. At 0.8, a warning fires when estimated tokens exceed 80% of the max. |
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:40:    const preflight = await import('../lib/validation/preflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:42:    const at50k = preflight.validateContentSize('x'.repeat(50000));
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:45:    const at100k = preflight.validateContentSize('x'.repeat(100000));
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:48:    const at250k = preflight.validateContentSize('x'.repeat(250000));
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:51:    const over250k = preflight.validateContentSize('x'.repeat(250001));
+.opencode/skill/system-spec-kit/mcp_server/tests/regression-010-index-large-files.vitest.ts:53:    expect(over250k.errors.some((e: { code: string }) => e.code === preflight.PreflightErrorCodes.CONTENT_TOO_LARGE)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/mcp-input-validation.vitest.ts:125:    tool: 'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/tests/scope-governance-normalizer-parity.vitest.ts:9:// lib/validation/preflight inline lambda).
+.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/007-session-capturing-pipeline-quality.md:83:    - `cd .opencode/skill/system-spec-kit/mcp_server && npm run test:core -- tests/handler-memory-save.vitest.ts tests/recovery-hints.vitest.ts tests/quality-loop.vitest.ts tests/save-quality-gate.vitest.ts tests/preflight.vitest.ts tests/integration-save-pipeline.vitest.ts`
+.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:99:JSON Data Format (with preflight/postflight, session/git, and tool/exchange enrichment):
+.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:111:    "preflight": {
+.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:139:  - Knowledge Delta = postflight.knowledgeScore - preflight.knowledgeScore
+.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:140:  - Uncertainty Reduction = preflight.uncertaintyScore - postflight.uncertaintyScore
+.opencode/skill/system-spec-kit/scripts/memory/generate-context.ts:141:  - Context Delta = postflight.contextScore - preflight.contextScore
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:16:describe('T207 - INSERT OR REPLACE removed from preflight', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:18:  let preflightCode: string;
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:26:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:27:    expect(preflightStart).not.toBe(-1);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:29:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:30:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:31:    postflightCode = preflightEnd > 0 ? source.substring(preflightEnd) : '';
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:34:  it('T207-SRC1: No INSERT OR REPLACE in preflight', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:36:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:37:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:38:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:40:    expect(preflightCode).not.toContain('INSERT OR REPLACE');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:45:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:46:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:47:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:49:    expect(preflightCode).toContain('SELECT id, phase');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:50:    expect(preflightCode).toContain('FROM session_learning');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:51:    expect(preflightCode).toContain('AND phase = \'preflight\'');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:56:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:57:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:58:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:60:    expect(preflightCode).toContain("phase = 'preflight'");
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:61:    expect(preflightCode).not.toContain('cannot be overwritten');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:66:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:67:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:68:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:70:    expect(preflightCode).toMatch(/INSERT\s+INTO\s+session_learning/);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:71:    expect(preflightCode).not.toMatch(/INSERT\s+OR\s+REPLACE\s+INTO\s+session_learning/);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:74:  it('T207-SRC5: UPDATE path for re-recording preflight', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:76:    const preflightStart = source.indexOf('async function handleTaskPreflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:77:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:78:    preflightCode = source.substring(preflightStart, preflightEnd > 0 ? preflightEnd : undefined);
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:80:    expect(preflightCode).toContain('UPDATE session_learning');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:85:    const preflightEnd = source.indexOf('async function handleTaskPostflight');
+.opencode/skill/system-spec-kit/mcp_server/tests/protect-learning.vitest.ts:86:    postflightCode = preflightEnd > 0 ? source.substring(preflightEnd) : '';
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:2:title: "Dry-run preflight for memory_save"
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:3:description: "The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes."
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:7:# Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:11:The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes.
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:19:The `memory_save` tool accepts a `dryRun` parameter that still performs preflight validation without indexing, database mutation, or file writes, but dry-run no longer stops at preflight-only reporting.
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:23:- preflight status (`would_pass`, errors, warnings, details)
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:30:In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=true`) and then `indexMemoryFile` executes quality-loop, sufficiency, quality-gate, PE-gating, and persistence flows. In dry-run mode those later stages are evaluated for reporting only and do not produce write, embedding, or indexing side effects.
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:42:| `mcp_server/lib/validation/preflight.ts` | Lib | Pre-flight validation logic |
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:51:| `mcp_server/tests/preflight.vitest.ts` | Pre-flight validation tests |
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:62:  - `tests/preflight.vitest.ts`
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md:70:- Source feature title: Dry-run preflight for memory_save
+.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md:22:- **Postflight re-correction (#35):** `task_postflight` SELECT now matches `phase IN ('preflight', 'complete')` so re-posting updates the existing record instead of failing.
+.opencode/skill/system-spec-kit/feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md:37:| `mcp_server/handlers/session-learning.ts` | Handler | #35 Postflight SELECT matches `phase IN ('preflight', 'complete')` for re-correction |
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md:36:The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` through `MCP_CHARS_PER_TOKEN` so both save-time checks use the same token estimate.
+.opencode/skill/system-spec-kit/mcp_server/tests/token-budget-enforcement.vitest.ts:34:        task_preflight: 1500,
+.opencode/skill/system-spec-kit/scripts/spec-folder/folder-detector.ts:1341:  // Priority 2.5: Session learning DB lookup (most recent preflight spec folder)
+.opencode/skill/system-spec-kit/scripts/types/session-types.ts:144:  preflight?: PreflightData;
+.opencode/skill/system-spec-kit/scripts/types/session-types.ts:254:/** Describes an identified gap between preflight and postflight state. */
+.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:1021:  // T06: Propagate preflight/postflight epistemic data through slow-path
+.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:1022:  const slowPreflight = (data as Record<string, unknown>).preflight;
+.opencode/skill/system-spec-kit/scripts/utils/input-normalizer.ts:1024:    (normalized as Record<string, unknown>).preflight = slowPreflight;
+.opencode/skill/system-spec-kit/scripts/core/workflow.ts:1391:          // staleness detectors, /memory:search ranking) see a live timestamp.
+.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:177:      'task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:300:      'task_preflight', 'task_postflight', 'memory_get_learning_history',
+.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:2242:    const nonAwareTools = ['memory_delete', 'checkpoint_create', 'task_preflight']
+.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts:2624:      'task_preflight': '[L6:Analysis]',
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md:19:Pre-flight token budget validation is a save-time guard in `preflight.ts`, not a retrieval-time truncation feature. Before embedding generation, the runtime estimates token count from content length using `Math.ceil(text.length / charsPerToken)`, where `charsPerToken` defaults to `4` and can be overridden with `MCP_CHARS_PER_TOKEN`.
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md:33:| `mcp_server/lib/validation/preflight.ts` | Lib | Token estimation, thresholds, and pre-flight pass/warn/fail behavior |
+.opencode/skill/system-spec-kit/feature_catalog/13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md:39:| `mcp_server/tests/preflight.vitest.ts` | Token-budget validation and pre-flight error/warning behavior |
+.opencode/skill/system-spec-kit/scripts/tests/test-validation-system.js:717:    // Test duplicate anchor IDs (both closed) -- rejected to match preflight parity.
+.opencode/skill/system-spec-kit/scripts/tests/test-naming-migration.js:82:  ['mcp_server/lib/validation/preflight.ts', 1],
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.js:667:    const taskIdMatch = definition.exactPrompt.match(/(?:preflight|postflight) for ([a-z0-9-]+)/i);
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.js:762:        case 'task_preflight':
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.js:914:        task_preflight: 'handleTaskPreflight',
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.js:1098:            case 'task_preflight':
+.opencode/skill/system-spec-kit/scripts/tests/manual-playbook-runner.js:1426:                await handlers.handleTaskPreflight(defaultArgsForTool('task_preflight', fixture, {
+.opencode/skill/system-spec-kit/scripts/tests/test-extractors-loaders.js:223:  preflight: {
+.opencode/skill/system-spec-kit/scripts/tests/fixtures/manual-playbook-fixture.js:467:                'Thin sandbox content for dry-run and preflight checks.',
+.opencode/skill/system-spec-kit/references/cli/memory_handback.md:22:3. **Convert to structured JSON**: Build the JSON-primary payload that `generate-context.js` documents. Use `specFolder`, `user_prompts`, `observations`, and `recent_context` as the canonical field names in new examples. Add `FILES`, `sessionSummary`, `keyDecisions`, `nextSteps`, `triggerPhrases`, `toolCalls`, `exchanges`, `preflight`, and `postflight` when the delegated run produced that evidence.
+.opencode/skill/system-spec-kit/mcp_server/tests/session-learning-regressions.vitest.ts:68:    expect(sessA.phase).toBe('preflight');
+.opencode/skill/system-spec-kit/references/workflows/quick_reference.md:126:- `/memory:search` - retrieve prior context, decisions, and analysis
+.opencode/skill/system-spec-kit/scripts/tests/fixtures/manual-playbook-fixture.ts:695:        'Thin sandbox content for dry-run and preflight checks.',
+.opencode/skill/system-spec-kit/mcp_server/tests/session-learning.vitest.ts:15:      phase: 'preflight' | 'complete';
+.opencode/skill/system-spec-kit/references/intake-contract.md:43:**Outputs** (returned to caller, or surfaced alongside caller-local preflight state when the invoking workflow emits both):
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:96:      // Session A: preflight + postflight (complete, LI known)
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:113:      // Session B: preflight + postflight (complete, different scores)
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:239:      // Create one complete and one preflight-only record
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:262:      // No postflight — stays as 'preflight' phase
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:345:      const preflightOnlyTask = uniqueId('T-COMBO-PREFLIGHT');
+.opencode/skill/system-spec-kit/mcp_server/tests/learning-stats-filters.vitest.ts:365:        taskId: preflightOnlyTask,
+.opencode/skill/system-spec-kit/mcp_server/tests/anchor-prefix-matching.vitest.ts:277:        'preflight',
+.opencode/skill/system-spec-kit/mcp_server/tests/integration-learning-history.vitest.ts:13:    it('T530-1: Missing all preflight params rejected', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/integration-learning-history.vitest.ts:45:    it('T530-4: Score > 100 rejected in preflight', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:5:import * as preflight from '../lib/validation/preflight';
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:7:type DuplicateParams = Parameters<typeof preflight.checkDuplicate>[0];
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:22:- Decision 1: Use preflight validation
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:28:- test preflight
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:71:      const result = preflight.validateAnchorFormat(TEST_CONTENT_VALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:79:      const result = preflight.validateAnchorFormat(TEST_CONTENT_UNCLOSED_ANCHOR);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:82:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.ANCHOR_UNCLOSED)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:86:      const result = preflight.validateAnchorFormat(TEST_CONTENT_INVALID_ANCHOR_ID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:88:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.ANCHOR_ID_INVALID)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:92:      const result = preflight.validateAnchorFormat(TEST_CONTENT_DUPLICATE_ANCHOR);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:94:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:98:      const result = preflight.validateAnchorFormat('');
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:110:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:120:      const hash1 = preflight.computeContentHash(TEST_CONTENT_VALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:121:      const hash2 = preflight.computeContentHash(TEST_CONTENT_VALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:122:      const hash3 = preflight.computeContentHash(TEST_CONTENT_VALID + ' ');
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:128:      const contentHash = preflight.computeContentHash(TEST_CONTENT_VALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:139:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:161:      const tokens = preflight.estimateTokens(content);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:167:      const result = preflight.checkTokenBudget(TEST_CONTENT_VALID, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:176:      const result = preflight.checkTokenBudget(TEST_CONTENT_LARGE, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:181:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.TOKEN_BUDGET_EXCEEDED)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:186:      const result = preflight.checkTokenBudget(content, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:201:      const result = preflight.validateContentSize(TEST_CONTENT_VALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:207:      const result = preflight.validateContentSize(TEST_CONTENT_SMALL, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:211:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.CONTENT_TOO_SMALL)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:215:      const result = preflight.validateContentSize(TEST_CONTENT_LARGE, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:219:      expect(result.errors.some(e => e.code === preflight.PreflightErrorCodes.CONTENT_TOO_LARGE)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:223:      const result = preflight.validateContentSize(TEST_CONTENT_LARGE);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:226:      expect(result.warnings.some(w => w.code === preflight.PreflightErrorCodes.CONTENT_TOO_LARGE)).toBe(true);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:235:    it('run_preflight with valid content passes', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:236:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:244:    it('run_preflight with invalid content fails', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:245:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:254:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:264:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:279:      const error = new preflight.PreflightError(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:280:        preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID,
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:285:      expect(error.code).toBe(preflight.PreflightErrorCodes.ANCHOR_FORMAT_INVALID);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:299:      const minError = new preflight.PreflightError('TEST001', 'Minimal error');
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:323:      const codes = preflight.PreflightErrorCodes;
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:330:      const codes = preflight.PreflightErrorCodes;
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:337:      const codes = preflight.PreflightErrorCodes;
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:343:      const codes = preflight.PreflightErrorCodes;
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:349:      const codes = preflight.PreflightErrorCodes;
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:375:      const result = preflight.validateAnchorFormat(validIdContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:389:      const result = preflight.validateAnchorFormat(duplicateContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:406:      const result = preflight.validateAnchorFormat(matchingContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:416:      const mixedResult = preflight.validateAnchorFormat(mixedCaseContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:428:      const result = preflight.validateAnchorFormat(unclosedContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:433:        e.code === preflight.PreflightErrorCodes.ANCHOR_UNCLOSED
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:448:      const contentHash = preflight.computeContentHash(testContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:461:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:483:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:495:      const contentHash = preflight.computeContentHash(testContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:513:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:537:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:560:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:570:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:599:      const contentHash = preflight.computeContentHash(testContent);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:616:      const result = preflight.checkDuplicate(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:644:      const tokens400 = preflight.estimateTokens('a'.repeat(400));
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:648:      const tokens800 = preflight.estimateTokens('b'.repeat(800));
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:652:      const tokens40 = preflight.estimateTokens('c'.repeat(40));
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:656:      const tokens1000 = preflight.estimateTokens('d'.repeat(1000));
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:665:      const result = preflight.checkTokenBudget(content, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:679:        expect(warning.code).toBe(preflight.PreflightErrorCodes.TOKEN_BUDGET_WARNING);
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:686:      const result = preflight.checkTokenBudget(content, {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:699:     run_preflight() Combined (T156)
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:702:  describe('run_preflight() Combined (T156)', () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:713:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:745:      const result = preflight.runPreflight(
+.opencode/skill/system-spec-kit/mcp_server/tests/preflight.vitest.ts:759:        e.code === preflight.PreflightErrorCodes.CONTENT_TOO_SMALL
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:1500:          content: 'preflight: routed metadata should stay on the canonical implementation summary continuity block',
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:3115:      const filePath = createAtomicSaveTargetPath('dryrun-skip-preflight.md');
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:3149:    it('passes emitEvalMetrics=false into quality loop during dry-run preflight', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:3151:      const filePath = createAtomicSaveTargetPath('dryrun-preflight-no-eval-logging.md');
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-save.vitest.ts:3152:      fs.writeFileSync(filePath, '# dry run preflight no eval logging', 'utf8');
+.opencode/skill/system-spec-kit/mcp_server/tests/ablation-framework.vitest.ts:230:  describe('ground truth alignment preflight', () => {
+.opencode/skill/system-spec-kit/references/memory/epistemic_vectors.md:399:1. **`task_preflight()`** — Captures epistemic baseline before work begins. Records uncertainty score (0-100), knowledge gaps, and context coverage.
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-session-learning.vitest.ts:46:        'handle_task_preflight',
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-session-learning.vitest.ts:145:    it('T011-OG1: Re-preflight on complete record starts a fresh cycle', async () => {
+.opencode/skill/system-spec-kit/mcp_server/tests/handler-session-learning.vitest.ts:153:          phase TEXT NOT NULL CHECK(phase IN ('preflight', 'complete')),
+.opencode/skill/system-spec-kit/references/memory/memory_system.md:124:| L6: Analysis | `task_preflight()` | Capture epistemic baseline before task execution | Start of implementation work |
+.opencode/skill/system-spec-kit/references/memory/memory_system.md:138:| L7: Maintenance | `memory_get_learning_history()` | Get learning history (preflight/postflight records) | Analyze learning patterns |
+.opencode/skill/system-spec-kit/references/memory/save_workflow.md:141:/memory:search  # Unified retrieval + analysis: search, epistemic baselines, causal graph, evaluation
+
+exec
+/bin/zsh -lc "sed -n '500,640p' .opencode/skill/system-spec-kit/SKILL.md && sed -n '380,440p' .opencode/skill/system-spec-kit/references/memory/epistemic_vectors.md && sed -n '120,170p' .opencode/skill/system-spec-kit/references/memory/save_workflow.md" in /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+ succeeded in 0ms:
+
+**Full documentation:** See [sub_folder_versioning.md](./references/structure/sub_folder_versioning.md)
+
+### Context Preservation
+
+**Manual context save (MANDATORY workflow):**
+- Trigger: `/memory:save`, "save context", or "save memory"
+- **MUST use:** `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js`
+- Default `/memory:save` is no longer a metadata no-op. Every canonical save refreshes `description.json.lastUpdated` plus `graph-metadata.json` derived fields.
+- Canonical saves via `generate-context.js` also refresh `graph-metadata.json` derived fields in the spec folder.
+- Continuity freshness still uses a heuristic one-sided 10-minute policy budget pending telemetry calibration; date-only timestamps should be treated as low-precision inputs rather than precise save-latency evidence.
+- Deferred post-insert enrichment also uses a heuristic bounded hot-loop retry budget (`N=3`) with no empirical calibration data yet. Runtime retry decisions now emit structured `retry_attempt` telemetry so future tuning can use real attempt histograms instead of guesswork.
+- Derived graph metadata now follows the parser contract:
+  - `status` is normalized to lowercase and falls back to `implementation-summary.md` presence plus checklist completion when explicit status is absent.
+  - `trigger_phrases` are deduplicated and capped at 12.
+  - `key_files` are sanitized before storage so shell commands, version tokens, and title-like noise do not survive into the packet surface.
+  - `entities` are deduplicated by name, preferring canonical packet-doc paths over basename-only candidates.
+- AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md` for session continuity updates.
+- **JSON mode (PREFERRED):** AI composes structured JSON → pass via `--json`, `--stdin`, or temp file. The AI has strictly better information about its own session than any DB query.
+- **Structured JSON fields:** The JSON payload supports optional structured summary fields that improve memory quality:
+  - `toolCalls[]` - AI-composed tool call records (`tool`, `inputSummary`, `outputSummary`, `status`)
+  - `exchanges[]` - Key conversation turns (`userInput`, `assistantResponse`, `timestamp`)
+  - `preflight` / `postflight` - Epistemic baseline snapshots (`knowledgeScore`, `uncertaintyScore`, `contextScore`, `gaps[]`, `confidence`)
+  - `sessionSummary` - Free-text session narrative (used for conversation synthesis when conversation prompts are sparse)
+  - The AI has strictly better information about its own session than any DB extraction; these fields provide richer context at source.
+- Location: target packet canonical continuity surfaces
+- Primary continuity block: `_memory.continuity` in `implementation-summary.md`
+- Retired `[spec]/memory/*.md` notes are no longer produced. Active continuity now lives in `handover.md`, `_memory.continuity` in `implementation-summary.md`, and routed updates to canonical packet docs such as `decision-record.md` and `implementation-summary.md`.
+- Content includes: packet pointer, recent action, next safe action, key files, and routed packet-state updates
+
+**Subfolder Support:**
+
+The generate-context script supports nested spec folder paths (parent/child format):
+
+```bash
+# Full nested path (parent/child)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit/121-script-audit","sessionSummary":"..."}' system-spec-kit/121-script-audit
+
+# Bare child name (auto-searches all parents for unique match)
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"121-script-audit","sessionSummary":"..."}' 121-script-audit
+
+# With specs/ prefix
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"specs/system-spec-kit/121-script-audit","sessionSummary":"..."}' specs/system-spec-kit/121-script-audit
+
+# Flat folder
+node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --json '{"specFolder":"system-spec-kit","sessionSummary":"..."}' system-spec-kit
+```
+
+Explicit CLI targets update the selected root-spec or phase packet. The canonical recovery ladder is `handover.md -> _memory.continuity -> spec docs`; `generate-context.js` refreshes packet continuity and `graph-metadata.json`, and the retired `[spec]/memory/*.md` write surface is no longer produced. If a bare child name matches multiple parents, the script reports an error and requires the full `parent/child` path.
+
+Canonical routed saves use the live 8-category content router: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 3 LLM routing is part of the live save handler by default: when `LLM_REFORMULATION_ENDPOINT` is reachable and returns a usable decision, it participates automatically; otherwise saves stay on Tier 1/Tier 2 routing with safe fallback or refusal. Delivery routing now keys off sequencing, gating, rollout, and verification language, handover stays reserved for stop-state and resume instructions, and hard transcript/tool telemetry still routes to `drop`. `routeAs` may force a category and preserve the natural decision for audit, while `packet_kind` is derived from spec metadata first with parent-phase fallback only when metadata is silent. See [save_workflow.md](./references/memory/save_workflow.md) for the detailed routing contract.
+
+For manual corpus repair, `scripts/dist/graph/backfill-graph-metadata.js` is inclusive by default and refreshes all packet folders, including `z_archive/` and `z_future/`. Use `--active-only` only when you intentionally want to skip archived trees.
+For research trees, `scripts/memory/backfill-research-metadata.ts` fills in missing `description.json` and `graph-metadata.json` files under `research/*/iterations/` without rewriting folders that are already complete.
+
+**Canonical Continuity Shape:**
+```markdown
+---
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/121-script-audit"
+    recent_action: "Completed auth middleware"
+    next_safe_action: "Add unit tests for login flow"
+    key_files: ["src/middleware/auth.ts", "src/utils/jwt.ts"]
+---
+```
+
+### Spec Kit Memory System (Integrated)
+
+Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
+
+**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 51 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+
+**Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the spec-doc record command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
+
+**MCP Tools (18 most-used of 47 total - see [memory_system.md](./references/memory/memory_system.md) for full reference):**
+
+| Tool                            | Layer | Purpose                                           |
+| ------------------------------- | ----- | ------------------------------------------------- |
+| `memory_context()`              | L1    | Unified entry point - modes: auto, quick, deep, focused, resume |
+| `memory_search()`               | L2    | 5-channel hybrid retrieval with intent-aware routing, channel normalization, graph/degree signals, reranking, and filtered output |
+| `memory_quick_search()`         | L2    | Simplified search (query + optional spec folder)  |
+| `memory_match_triggers()`       | L2    | Trigger matching + cognitive (decay, tiers, co-activation) |
+| `memory_save()`                 | L2    | Index a saved continuity artifact or spec doc with pre-flight validation |
+| `memory_list()`                 | L3    | Browse stored spec-doc records with pagination (parent rows by default) |
+| `memory_delete()`               | L4    | Delete memories by ID or spec folder              |
+| `checkpoint_create()`           | L5    | Create gzip-compressed checkpoint snapshot        |
+| `checkpoint_restore()`          | L5    | Transaction-wrapped restore with rollback         |
+| `memory_stats()`                | L3    | System statistics and memory counts                |
+| `memory_health()`              | L3    | Diagnostics: orphan detection, index consistency   |
+| `memory_index_scan()`          | L7    | Workspace scanning and re-indexing                 |
+| `checkpoint_list()`            | L5    | List available checkpoint snapshots                |
+| `checkpoint_delete()`          | L5    | Delete checkpoint by name (with confirmName safety)|
+
+> **Search architecture:** The search pipeline uses a 4-stage architecture (candidate generation → fusion → reranking → filtering). Current retrieval uses five channels, normalizes fallback thresholds correctly, keeps disabled channels disabled through fallback, defers irreversible confidence truncation until after reranking, and enforces token budgets using actual post-truncation counts. Adaptive fusion includes an internal continuity profile (`semantic 0.52`, `keyword 0.18`, `recency 0.07`, `graph 0.23`), Stage 3 uses a minimum rerank gate of 4 candidates, the retained `applyLengthPenalty` input is a compatibility no-op, and `getRerankerStatus()` exposes reranker cache hits, misses, stale hits, and evictions. See [search/README.md](./mcp_server/lib/search/README.md) for pipeline details, scoring algorithms, and graph signal features.
+
+**memory_context() - Mode Routing:**
+
+| Mode | Token Budget | When `mode=auto`: Intent Routing |
+| --- | --- | --- |
+| `quick` | 800 | - |
+| `deep` | 3500 | `add_feature`, `refactor`, `security_audit` |
+| `focused` | 3000 | `fix_bug`, `understand` |
+| `resume` | 1200 | - |
+
+**memory_search() - Key Rules:**
+- **REQUIRED:** `query` (string) OR `concepts` (2-5 strings). `specFolder` alone causes E040 error.
+- Use `anchors` with `includeContent: true` for token-efficient section retrieval (~90% savings).
+- Intent weights auto-adjust scoring: `fix_bug` boosts recency, `security_audit` boosts importance, `refactor`/`understand` boost similarity.
+- **Full parameter reference:** See [memory_system.md](./references/memory/memory_system.md)
+
+**memory_save() - Save-Time Processing:**
+- Runs a pre-storage quality gate (threshold 0.4 signal density). Low-quality saves receive warnings or rejection when strict. See `SPECKIT_SAVE_QUALITY_GATE` flag.
+- An exception path allows short decision-type records to bypass the length gate when SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS=true and at least two structural signals are present.
+- Similar existing spec-doc records are auto-merged via reconsolidation (≥0.88 similarity). The save may update an existing record instead of creating a new one. See `SPECKIT_RECONSOLIDATION` flag.
+- A verify-fix-verify loop auto-corrects trigger phrases, anchors, and token budget (up to 2 retries).
+- Preflight parses are revalidated inside the write lock when file contents change, and duplicate short-circuits verify stored content before trusting a stale hash hit.
+- Delete and replacement paths now treat vector cleanup and projection replacement as integrity-critical instead of best-effort, so stale vector/projection rows do not silently survive successful writes.
+- Entities are extracted and linked cross-document at save time. See `SPECKIT_AUTO_ENTITIES` and `SPECKIT_ENTITY_LINKING` flags.
+- Governed save and retrieval flows can carry `tenantId`, `userId`, and `agentId` so private and agent-scoped memory boundaries stay aligned end to end.
+
+**Epistemic Learning:** Use `task_preflight()` before and `task_postflight()` after implementation to measure knowledge gains. Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`. Review trends via `memory_get_learning_history()`. See [epistemic_vectors.md](./references/memory/epistemic_vectors.md).
+
+**Key Concepts:**
+- **Constitutional tier** - 3.0x search boost + 2.0x importance multiplier; merged into normal scoring pipeline
+- **Document-type scoring** - 10 indexed document types with multipliers: spec (1.4x), plan (1.3x), constitutional (2.0x), decision_record (1.4x), tasks (1.1x), implementation_summary (1.1x), scratch (0.6x), checklist (1.0x), handover (1.0x), memory (1.0x). README files and skill-doc trees (`sk-*`, including `references/` and `assets/`) are excluded from memory indexing.
+- **Decay scoring** - FSRS v4 power-law model; recent spec-doc records rank higher than older ones
+- **Import-path hardening** - MCP import paths are validated for memory runtime modules (context server and attention decay wiring)
+- **Metadata preservation** - `memory_save` update/reinforce paths preserve `document_type` and `spec_level` with synchronized vector-index metadata
+- **Descriptive memory titles** - `MEMORY_TITLE` is derived from the content slug via `generateContentSlug()` and `slugToTitle()`, producing unique and deterministic H1 headings. The parser falls back to feature/overview content when the top heading is generic
+- **Causal edge stability** - conflict-update semantics maintain stable causal edge IDs during re-link and graph maintenance
+- **Real-time sync** - Use `memory_save` or `memory_index_scan` after creating files
+- **Checkpoints** - Gzip-compressed JSON snapshots of memory_index + working_memory; max 10 stored; transaction-wrapped restore
+- **Indexing persistence** - After `generate-context.js`, call `memory_index_scan()` or `memory_save()` for immediate MCP visibility
+- **Artifact routing** - 9 artifact classes (spec, plan, tasks, checklist, decision-record, implementation-summary, memory, research, unknown) with per-type retrieval strategies applied at query time
+- **Adaptive fusion** - Intent-aware weighted RRF with the 7 public task-type profiles (fix_bug, add_feature, understand, refactor, security_audit, find_spec, find_decision) plus the internal continuity profile used for resume-oriented retrieval, along with corrected channel fallback and normalization behavior in the live hybrid pipeline
+- **Adaptive ranking** - Feedback-driven shadow ranking that accumulates access/outcome/correction signals and applies bounded score deltas (±0.08 max) per spec-doc record. Each signal event carries an optional `query` field for per-query attribution. Runs silently in shadow mode by default; promote to active ranking via `SPECKIT_MEMORY_ADAPTIVE_MODE=promoted`. Thresholds persist to SQLite with `last_tune_watermark` idempotency. Enable with `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`.
+- **Causal graph diagnostics** - `memory_drift_why()` now wraps traversal reads in a read transaction and returns truncation metadata when per-node edge caps make lineage incomplete
+- **Eval guardrails** - Ablation reporting preserves per-channel dashboard breakdowns, treats missing query IDs explicitly, and avoids persisting synthetic zeroed token-usage snapshots as if they were measured results
+- **Runtime-resolved flags** - Long-lived MCP processes re-read rollout and scoring flags at runtime for graph-walk rollout, co-activation, relation handling, and related search toggles instead of freezing values at import time
+- **Retrieval trace** - Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
+
+### Combined Assessment Format
+
+```
+DUAL-THRESHOLD CHECK:
+├─ Confidence: [NN]% → [HIGH/MEDIUM/LOW]
+├─ Uncertainty: [0.NN] → [LOW/MEDIUM/HIGH]
+├─ READINESS: [READY/NOT READY]
+└─ ACTION: [PROCEED/INVESTIGATE/ESCALATE]
+```
+
+---
+
+<!-- /ANCHOR:integration-with-gates -->
+<!-- ANCHOR:learning-index-workflow -->
+## 7b. LEARNING INDEX WORKFLOW
+
+Three MCP tools measure knowledge gains across implementation tasks:
+
+1. **`task_preflight()`** — Captures epistemic baseline before work begins. Records uncertainty score (0-100), knowledge gaps, and context coverage.
+2. **`task_postflight()`** — Measures post-task state. Computes Learning Index: `LI = (KnowledgeDelta × 0.4) + (UncertaintyReduction × 0.35) + (ContextImprovement × 0.25)`.
+3. **`memory_get_learning_history()`** — Returns historical learning measurements with trend analysis.
+
+**Score Interpretation (0-100):**
+
+| Range | Interpretation |
+|-------|---------------|
+| 80-100 | Significant learning — major knowledge gains |
+| 60-79 | Moderate learning — meaningful progress |
+| 40-59 | Incremental learning — steady improvement |
+| 20-39 | Execution-focused — task completed, limited new knowledge |
+| 0-19 | Knowledge regression — review needed |
+
+**Mapping to Uncertainty Factors:** The `uncertaintyScore` (0-100) returned by these tools is derived from the four-factor weighted model (§2) scaled to integer range: `uncertaintyScore = round(weightedAverage × 100)`.
+
+---
+
+<!-- /ANCHOR:learning-index-workflow -->
+<!-- ANCHOR:related-resources -->
+## 8. RELATED RESOURCES
+
+### AGENTS.md Reference
+- **Section 4**: Confidence & Clarification Framework (includes uncertainty tracking)
+- **Section 2**: Mandatory Gates (dual-threshold validation in Gate 1)
+
+### Related Skills
+- `system-spec-kit` - Parent skill using uncertainty tracking in gates
+- `sk-code-web` - Implementation skill with verification gates
+<!-- /ANCHOR:related-resources -->
+| ----------------------------------------- | ------------------ |
+| End of work session, want AI to summarize | **Slash Command**  |
+| CI/CD pipeline, automated saves           | **Direct Script**  |
+| Quick manual save, no AI available        | **Direct Script**  |
+| Testing memory system functionality       | **Direct Script**  |
+| Batch processing multiple saves           | **Direct Script**  |
+| Interactive session with full context     | **Slash Command**  |
+
+---
+
+<!-- /ANCHOR:method-selection -->
+<!-- ANCHOR:slash-commands -->
+## 3. SLASH COMMANDS
+
+**When to Use:** Manual save with AI-powered conversation analysis
+**Requirement:** Slash command files exist in `.opencode/command/memory/`
+
+### Available Commands
+
+```
+/memory:save       # Save current conversation context
+/memory:search  # Unified retrieval + analysis: search, epistemic baselines, causal graph, evaluation
+```
+
+### Execution Flow
+
+1. Slash command expands to full prompt
+2. AI agent analyzes conversation history
+3. AI agent creates structured JSON summary (the main agent or a delegated packet writer can invoke generate-context.js for memory under distributed governance)
+4. AI agent calls `generate-context.js` with JSON data
+5. Canonical continuity updated inside the active root-spec or phase packet
+
+### Validation Checkpoints
+
+| Checkpoint       | Verification                   | Action on Failure         |
+| ---------------- | ------------------------------ | ------------------------- |
+| Command exists   | `ls .opencode/command/memory/` | Create command file       |
+| AI agent active  | Check response capability      | Use Direct Script instead |
+| Spec folder arg  | Passed via CLI argument        | Specify folder manually   |
+| Write permission | `test -w specs/###/`           | Check packet permissions  |
+
+### Example Output
+
+```
+✓ Context analyzed (12 exchanges detected)
+✓ Spec folder: 049-anchor-context-retrieval
+✓ Continuity surfaces updated for: 049-anchor-context-retrieval
+✓ Primary continuity block: implementation-summary.md::_memory.continuity
+✓ Packet docs reindexed
+```
+
+
+codex
+This preflight needs numeric baseline scores. Since you didn’t provide explicit scores, I’m recording the honest current baseline: low packet/task knowledge, high uncertainty, and clear gaps around T101 requirements and touched files.
+mcp: spec_kit_memory/task_preflight started
+mcp: spec_kit_memory/task_preflight (failed)
+user cancelled MCP tool call
+codex
+Preflight did not run: the MCP `task_preflight` call was cancelled.
+
+I was about to record this baseline for `specs/026/003/005` / `T101`:
+
+`knowledgeScore: 25`, `uncertaintyScore: 70`, `contextScore: 20`
+
+Main gaps: T101 scope, target files, prior decisions/checklist expectations.
+hook: Stop
+hook: Stop Completed
+2026-04-27T15:10:40.862040Z ERROR codex_core::session: failed to record rollout items: thread 019dcf7d-9772-7c83-a6a6-03aadbf4437c not found
+tokens used
+171,227
+Preflight did not run: the MCP `task_preflight` call was cancelled.
+
+I was about to record this baseline for `specs/026/003/005` / `T101`:
+
+`knowledgeScore: 25`, `uncertaintyScore: 70`, `contextScore: 20`
+
+Main gaps: T101 scope, target files, prior decisions/checklist expectations.

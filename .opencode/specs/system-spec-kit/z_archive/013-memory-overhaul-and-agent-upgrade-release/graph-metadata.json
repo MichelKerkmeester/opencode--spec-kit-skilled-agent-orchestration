@@ -3,7 +3,15 @@
   "packet_id": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
   "spec_folder": "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
   "parent_id": null,
-  "children_ids": [],
+  "children_ids": [
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/001-readme-alignment",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/002-skill-speckit-alignment",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/003-command-alignment",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/004-agent-alignment",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/005-changelog-updates",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/006-global-readme-update",
+    "system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release/007-github-release"
+  ],
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -196,7 +204,7 @@
     ],
     "causal_summary": "This archived system-spec-kit archive folder captures work related to Memory Overhaul And Agent Upgrade Release. The earlier markdown drifted away from the active templates, which caused validator failures and made the archive harder to trust.",
     "created_at": "2026-04-12T09:02:53.566Z",
-    "last_save_at": "2026-04-26T09:17:16.021Z",
+    "last_save_at": "2026-04-27T13:33:11Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [

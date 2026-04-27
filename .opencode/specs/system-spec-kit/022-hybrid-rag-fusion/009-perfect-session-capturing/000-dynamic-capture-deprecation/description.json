@@ -9,7 +9,7 @@
     "deprecation",
     "branch"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.356Z",
+  "lastUpdated": "2026-04-27T13:38:47.634Z",
   "specId": "000",
   "folderSlug": "dynamic-capture-deprecation",
   "parentChain": [
@@ -17,6 +17,9 @@
     "022-hybrid-rag-fusion",
     "009-perfect-session-capturing"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "27-04-26_15-35__retroactive-migration-by-worker-1.md",
+    "27-04-26_15-38__retroactive-migration-by-worker-1.md"
+  ]
 }

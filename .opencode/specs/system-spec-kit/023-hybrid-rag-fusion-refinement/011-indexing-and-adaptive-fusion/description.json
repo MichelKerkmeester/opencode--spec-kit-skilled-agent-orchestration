@@ -9,15 +9,16 @@
     "fusion",
     "enablement"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.722Z",
+  "lastUpdated": "2026-04-27T13:38:47.634Z",
   "specId": "011",
   "folderSlug": "indexing-and-adaptive-fusion",
   "parentChain": [
     "system-spec-kit",
     "023-hybrid-rag-fusion-refinement"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "01-04-26_11-37__autonomous-multi-agent-implementation-of-all.md"
+    "01-04-26_11-37__autonomous-multi-agent-implementation-of-all.md",
+    "27-04-26_15-38__retroactive-migration-by-worker-1.md"
   ]
 }

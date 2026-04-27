@@ -1,0 +1,104 @@
+● skill(system-spec-kit)
+
+I’m checking the command surface first so I can run the right preflight against the right spec path.
+
+● Search (glob)
+  │ "**/026*/**/003*/**/005*" in specs, .opencode/specs
+  └ No matches found
+
+● Search (grep)
+  │ "preflight" in *.md (.opencode/command, .opencode/skill/system-spec-kit,
+  │ .claude/skills/system-spec-kit)
+  └ 6 lines found
+
+● Search (grep)
+  │ "T101" in *.md (specs, .opencode/specs)
+  └ 5 lines found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Run /memory:search preflight specs/026/00…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":...
+
+I found this is in the Spec Kit Memory surface; now I’m narrowing the exact subcommand and packet path before running it.
+
+● Search (grep)
+  │ "^#{1,6} .*|T101" in **/tasks.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization)
+  └ 7 lines found
+
+● Search (grep)
+  │ "(/memory:search.*preflight|preflight.*task_preflight|task_preflight\()" in
+  │ *.md (.opencode/command, .opencode/skill/system-spec-kit,
+  │ .claude/skills/system-spec-kit)
+  └ 27 lines found
+
+● Search (glob)
+  │ "**/026-*/003-*/005-*" in .opencode/specs, specs
+  └ No matches found
+
+● Search (glob)
+  │ "**/026-*/**/003-*/**/005-*" in .opencode/specs, specs
+  └ No matches found
+
+● Read search.md
+  │ .opencode/command/memory/search.md
+  └ L460:540 (81 lines read)
+
+● Search (glob)
+  │ "026-graph-and-context-optimization/003-*/*" in
+  │ .opencode/specs/system-spec-kit
+  └ No matches found
+
+● Search (glob)
+  │ "026-graph-and-context-optimization/003-*" in
+  │ .opencode/specs/system-spec-kit
+  └ No matches found
+
+I’ve confirmed the command maps to `task_preflight()`. Next I’m resolving the numeric shorthand to the full packet folder so I can run it against the correct spec.
+
+● List directory .opencode/specs/system-spec-kit/026-graph-and-context-optimization
+  └ 18 files found
+
+● Search (grep)
+  │ "^## .*T101|^- \[.\] T101|^- \[x\] T101|T101" in **/tasks.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization)
+  └ 19 lines found
+
+I’ve mapped the shorthand to `system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs`. I’m pulling the packet docs now to score the baseline from the actual task context instead of guessing.
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/spec.md
+  └ L1:220 (220 lines read)
+
+● Read tasks.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/tasks.md
+  └ L1:220 (167 lines read)
+
+● Read plan.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/005-memory-search-runtime-bugs/plan.md
+  └ L1:220 (167 lines read)
+
+I’ve got the packet context. One nuance: `T101` is already marked complete in that packet’s `tasks.md`, but I can still record the requested baseline under this session so it’s isolated cleanly.
+
+● Read search.md
+  │ .opencode/command/memory/search.md
+  └ L890:920 (31 lines read)
+
+● task_preflight (MCP: spec_kit_memory) · specFolder: "specs/system-spec-kit/026-graph-and-context-…
+  └ {"summary":"Preflight baseline captured for T101","data":{"success":true...
+
+**Done.** I recorded the preflight for `T101` against `specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/005-memory-search-runtime-bugs` as record **#3** in session **`c1419618-c5fb-4304-a78c-ea078d16e893`**.
+
+- **Knowledge:** 74/100
+- **Uncertainty:** 29/100
+- **Context:** 71/100
+- **Knowledge gaps:** live `memory_context` zero-fill behavior vs documented fixes; task-intent vs backend-routing authority; source of `causal-stats` relation/health mismatch
+
+`T101` is already marked complete in that packet’s `tasks.md`, but the requested baseline was stored cleanly under the current session.
+
+
+Changes   +0 -0
+Requests  1 Premium (2m 28s)
+Tokens    ↑ 554.9k • ↓ 4.5k • 488.8k (cached) • 2.5k (reasoning)

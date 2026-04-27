@@ -225,7 +225,7 @@
     ],
     "causal_summary": "The finished 20-iteration research in `research/research.md` locked the migration strategy that this packet now records as shipped. The delivered implementation migrated `@spec-kit/shared` and `@spec-kit/mcp-server` to native ESM, kept `@spec-kit/scripts` as CommonJS, and used explicit package-boundary async loading plus scripts-owned bridge code where CommonJS had to cross into ESM. Dual-build or conditional exports remained a fallback option only and were not needed for the shipped path.",
     "created_at": "2026-04-12T09:02:50.316Z",
-    "last_save_at": "2026-04-26T09:17:15.568Z",
+    "last_save_at": "2026-04-27T13:38:47.634Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
@@ -235,6 +235,22 @@
       "checklist.md",
       "implementation-summary.md",
       "research/research.md"
+    ],
+    "children_ids": [
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/001-shared-esm-migration",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/002-mcp-server-esm-migration",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/003-scripts-interop-refactor",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/004-verification-and-standards",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/005-test-and-scenario-remediation",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/006-review-remediation",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/007-hybrid-search-null-db-fix",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/008-spec-memory-compliance-audit",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/009-reindex-validator-false-positives",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/010-search-retrieval-quality-fixes",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/012-memory-save-quality-pipeline",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/013-fts5-fix-and-search-dashboard",
+      "system-spec-kit/023-hybrid-rag-fusion-refinement/014-feedback-signal-pipeline"
     ]
   }
 }

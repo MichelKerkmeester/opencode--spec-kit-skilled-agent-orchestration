@@ -231,7 +231,7 @@
     ],
     "causal_summary": "This parent pack now carries one stable audit baseline and one repaired direct-child phase map.",
     "created_at": "2026-04-12T09:02:50.263Z",
-    "last_save_at": "2026-04-26T09:17:15.440Z",
+    "last_save_at": "2026-04-27T13:35:50.897Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
@@ -242,6 +242,28 @@
       "decision-record.md",
       "implementation-summary.md",
       "research/research.md"
+    ],
+    "children_ids": [
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/001-quality-scorer-unification",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/002-contamination-detection",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/003-data-fidelity",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/004-type-consolidation",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/005-confidence-calibration",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/006-description-enrichment",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/007-phase-classification",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/008-signal-extraction",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/009-embedding-optimization",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/010-integration-testing",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/011-template-compliance",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/012-auto-detection-fixes",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/013-spec-descriptions",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/014-stateless-quality-gates",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/015-runtime-contract-and-indexability",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/018-memory-save-quality-fixes",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/019-architecture-remediation"
     ]
   }
 }

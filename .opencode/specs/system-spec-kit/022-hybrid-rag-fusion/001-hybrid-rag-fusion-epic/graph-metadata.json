@@ -222,7 +222,7 @@
     ],
     "causal_summary": "This parent packet is the entry point for the Hybrid RAG Fusion epic. It replaces the previous consolidation-heavy parent docs with a current-state coordination packet that points at the live 12 direct children, records their current statuses, and keeps remaining sprint-family drift explicit.",
     "created_at": "2026-04-12T09:02:50.224Z",
-    "last_save_at": "2026-04-26T09:17:15.330Z",
+    "last_save_at": "2026-04-27T13:33:11.717Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
@@ -234,6 +234,19 @@
       "implementation-summary.md",
       "research/research.md",
       "handover.md"
+    ],
+    "children_ids": [
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/001-sprint-0-measurement-foundation",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/002-sprint-1-graph-signal-activation",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/003-sprint-2-scoring-calibration",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/004-sprint-3-query-intelligence",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/005-sprint-4-feedback-and-quality",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/006-sprint-5-pipeline-refactor",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/007-sprint-6-indexing-and-graph",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/008-sprint-7-long-horizon",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/009-sprint-8-deferred-features",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/010-sprint-9-extra-features",
+      "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement"
     ]
   }
 }

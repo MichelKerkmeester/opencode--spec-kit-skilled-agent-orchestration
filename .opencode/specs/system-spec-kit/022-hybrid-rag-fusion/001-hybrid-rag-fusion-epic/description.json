@@ -6,16 +6,17 @@
     "specification",
     "001-hybrid-rag-fusion-epic"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.111Z",
+  "lastUpdated": "2026-04-27T13:33:11.717Z",
   "specId": "001",
   "folderSlug": "hybrid-rag-fusion-epic",
   "parentChain": [
     "system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "20-03-26_12-22__hybrid-rag-fusion-epic.md",
-    "20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for.md"
+    "20-03-26_15-24__sprint-1-quick-wins-implemented-6-p0-p1-fixes-for.md",
+    "27-04-26_15-33__retroactive-migration-by-worker-1.md"
   ]
 }

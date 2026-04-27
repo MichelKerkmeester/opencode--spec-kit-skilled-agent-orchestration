@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+  "spec_folder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+  "parent_id": "system-spec-kit/z_future/agentic-system-upgrade",
+  "children_ids": [
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/001-agent-lightning-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/002-babysitter-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/003-claude-code-mastery-project-starter-kit-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/004-get-it-right-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/005-intellegix-code-agent-toolkit-master",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/006-ralph-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/007-relay-main",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/008-bmad-autonomous-development",
+    "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems/009-xethryon"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "001-research-agentic-systems",
+      "001 research agentic systems",
+      "001-agent-lightning-main",
+      "002-babysitter-main",
+      "003-claude-code-mastery-project-starter-kit-main",
+      "004-get-it-right-main",
+      "005-intellegix-code-agent-toolkit-master",
+      "006-ralph-main"
+    ],
+    "key_topics": [
+      "001",
+      "research",
+      "agentic",
+      "systems",
+      "001-agent-lightning-main",
+      "002-babysitter-main",
+      "003-claude-code-mastery-project-starter-kit-main",
+      "004-get-it-right-main",
+      "005-intellegix-code-agent-toolkit-master",
+      "006-ralph-main"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "doc",
+        "path": "description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "doc",
+        "path": "graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "001 Research Agentic Systems",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Feature Specification: 001 Research Agentic Systems",
+    "created_at": "2026-04-27T13:33:11Z",
+    "last_save_at": "2026-04-27T13:33:11Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md"
+    ]
+  }
+}

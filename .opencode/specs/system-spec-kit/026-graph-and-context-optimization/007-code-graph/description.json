@@ -8,13 +8,15 @@
     "graph",
     "package"
   ],
-  "lastUpdated": "2026-04-26T07:03:47.513Z",
+  "lastUpdated": "2026-04-27T13:33:11Z",
   "specId": "007",
   "folderSlug": "code-graph",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "Feature Specification: Code Graph Package"
+  ]
 }

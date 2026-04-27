@@ -6,7 +6,8 @@
   "children_ids": [
     "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs",
     "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish",
-    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync"
+    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
+    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004-retroactive-phase-parent-migration"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -103,7 +104,7 @@
     "source_docs": [
       "spec.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync",
-    "last_active_at": "2026-04-27T12:47:40.395Z"
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004-retroactive-phase-parent-migration",
+    "last_active_at": "2026-04-27T15:01:11.596Z"
   }
 }

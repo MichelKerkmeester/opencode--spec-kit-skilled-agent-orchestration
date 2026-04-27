@@ -1,0 +1,166 @@
+● Read AGENTS.md
+  └ L1:220 (219 lines read)
+
+● Search (grep)
+  │ "memory_search|memory_context|memory_match_triggers|search routing|search
+  │ system|CocoIndex|code graph|search query|search results" in
+  │ **/*.{ts,js,json,md,py,sh}
+  └ 10 files found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Show me anything related to the search sy…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":...
+
+● search (MCP: cocoindex_code) · search system: semantic search, trigger matching, routing, context…
+  └ {"success":true,"results":[{"file_path":".gemini/skills/system-spec-kit/...
+
+I found the routing/docs layer first; now I’m pulling the concrete handlers and a couple of spec packets so the summary ties behavior to implementation.
+
+● Read README.md
+  └ L355:380 (26 lines read)
+
+● Search (glob)
+  │ ".opencode/skill/system-spec-kit/**/*search*.{ts,js,md,json,py,sh}"
+  └ 59 files found
+
+● Search (grep)
+  │ "export async function
+  │ handleMemorySearch|handleMemorySearch|memory_search|memory_context|memory_ma
+  │ tch_triggers|code_graph_query|code_graph_context|RRF|hybrid
+  │ search|graph-first routing" in **/*.{ts,js,md,json,py}
+  │ (.opencode/skill/system-spec-kit)
+  └ 8 lines found
+
+● Search (grep)
+  │ "search routing|hybrid search|RRF|code
+  │ graph|CocoIndex|memory_search|memory_context" in **/*.{md,json}
+  │ (.opencode/specs)
+  └ 6 lines found
+
+I’ve narrowed it down to the actual search pipeline files. Next I’m sampling the main handler, the hybrid engine, routing, and one spec/feature doc so the summary stays concrete.
+
+● Read memory-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts
+  └ L1:260 (260 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1:320 (319 lines read)
+
+● Read search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/api/search.ts
+  └ L1:260 (20 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L220:330 (111 lines read)
+
+● Read 04-hybrid-search-pipeline.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/04-hybrid-sear
+  │ ch-pipeline.md
+  └ L1:220 (84 lines read)
+
+● Read 12-search-api-surface.md
+  │ .opencode/skill/system-spec-kit/feature_catalog/01--retrieval/12-search-api-
+  │ surface.md
+  └ L1:220 (43 lines read)
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/022-hybrid-rag-fusion/spec.md
+  └ L1:220 (204 lines read)
+
+● Search (glob)
+  │ ".opencode/specs/**/*search*.md"
+  └ 7 files found
+
+● Search (glob)
+  │ ".opencode/specs/**/*routing*.md"
+  └ 3 files found
+
+● Search (glob)
+  │ ".opencode/specs/**/*coco*.md"
+  └ 2 files found
+
+● Search (glob)
+  │ ".opencode/specs/**/*graph*.md"
+  └ 15 files found
+
+● Read changelog-024-009-code-graph-storage-query.md
+  │ .opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-0
+  │ 24-009-code-graph-storage-query.md
+  └ L1:220 (57 lines read)
+
+● Read changelog-024-020-query-routing-integration.md
+  │ .opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-0
+  │ 24-020-query-routing-integration.md
+  └ L1:220 (124 lines read)
+
+● Read changelog-024-012-cocoindex-ux-utilization.md
+  │ .opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-0
+  │ 24-012-cocoindex-ux-utilization.md
+  └ L1:220 (159 lines read)
+
+● Read search-weights.json
+  │ .opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json
+  └ L1:220 (29 lines read)
+
+● Read gate-tool-routing.md
+  │ .opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md
+  └ L1:180 (117 lines read)
+
+● Search (grep)
+  │ "export async function|async function handle|executePipeline\(|classifyInten
+  │ t|getStrategyForQuery|buildProgressiveResponse"
+  │ (.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts)
+  └ 8 lines found
+
+● Search (grep)
+  │ "export async function hybridSearchEnhanced|searchWithFallback|routeQuery\(|
+  │ fuseResultsMulti|adaptiveFuse|applyMMR|computeDegreeScores"
+  │ (.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts)
+  └ 15 lines found
+
+● Read memory-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts
+  └ L613:970 (358 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1028:1320 (293 lines read)
+
+● Read hybrid-search.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts
+  └ L1790:2235 (446 lines read)
+
+**High-signal search-system map:**
+
+- **Main runtime entrypoint:** `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:613`  
+  `handleMemorySearch()` validates query/cursor input, auto-detects intent (`:795`), applies artifact routing (`:774`, `:837`), then hands off to the 4-stage pipeline via `executePipeline(...)` (`:912-949`).
+
+- **Core search engine:** `.opencode/skill/system-spec-kit/mcp_server/lib/search/hybrid-search.ts`  
+  The active channels are `vector`, `fts`, `bm25`, `graph`, and `degree` (`:1036-1047`). Fusion happens through adaptive weights / RRF (`:1248-1310`), then fallback widens through 3 tiers, ending in SQL structural fallback (`:1798-1840`, `:1853-1913`, `:2175+`).
+
+- **Public API surface:** `.opencode/skill/system-spec-kit/mcp_server/api/search.ts:1-20`  
+  Stable barrel for scripts: `initHybridSearch`, `hybridSearchEnhanced`, FTS helpers, and the `vectorIndex` namespace.
+
+- **Routing rules:**  
+  `.opencode/skill/system-spec-kit/constitutional/gate-tool-routing.md:37-80` says:  
+  semantic/concept queries -> **CocoIndex**; structural queries -> **code_graph_query**; exact text -> **Grep**.  
+  `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:267-330` adds structural-query nudges toward `code_graph_query`.
+
+- **Search docs/specs worth reading:**  
+  `README.md:363-373` summarizes the live hybrid search model.  
+  `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/04-hybrid-search-pipeline.md` is the best “how it works” doc.  
+  `.opencode/skill/system-spec-kit/feature_catalog/01--retrieval/12-search-api-surface.md` documents the public import boundary.  
+  `.opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-024-020-query-routing-integration.md` covers intent routing and fallback.  
+  `.opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-024-012-cocoindex-ux-utilization.md` covers CocoIndex-first routing and `ccc_*` tools.  
+  `.opencode/specs/system-spec-kit/024-compact-code-graph/changelog/changelog-024-009-code-graph-storage-query.md` covers the structural query layer.
+
+- **Config:** `.opencode/skill/system-spec-kit/mcp_server/configs/search-weights.json:1-29`  
+  Holds ranking-related config like document-type multipliers and smart-ranking weights.
+
+**Short version:** this repo’s “search system” is a hybrid memory retrieval pipeline centered on `memory_search`, backed by multi-channel fusion plus fallback, with routing rules that push semantic code discovery to CocoIndex and structural questions to the code graph.
+
+
+Changes   +0 -0
+Requests  1 Premium (2m 22s)
+Tokens    ↑ 534.3k • ↓ 4.6k • 483.7k (cached) • 2.0k (reasoning)

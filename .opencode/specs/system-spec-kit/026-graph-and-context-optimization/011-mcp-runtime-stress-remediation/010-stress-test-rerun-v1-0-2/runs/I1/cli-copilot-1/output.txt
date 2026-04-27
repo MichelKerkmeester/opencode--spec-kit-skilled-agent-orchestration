@@ -1,0 +1,134 @@
+● skill(system-spec-kit)
+
+I’m locating the active spec target first so the save lands in the right packet, then I’ll write the conversation context through the canonical save flow.
+
+● List directory specs
+  └ 1 file found
+
+● Search (glob)
+  │ "**/graph-metadata.json" in specs
+  └ No matches found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Save the context for this conversation.",…
+  └ {"summary":"Matched 5 memories via trigger phrases","data":{"matchType":...
+
+The repo-level `specs/` folder isn’t the active packet tree here, so I’m checking the Spec Kit continuity surfaces under `.opencode/specs` to recover the best target before writing the save.
+
+● List directory .opencode/specs
+  └ 7 files found
+
+● Search (glob)
+  │ "**/handover.md" in .opencode/specs
+  └ 20 files found
+
+● Search (glob)
+  │ "**/implementation-summary.md" in .opencode/specs
+  └ 7 files found
+
+● session_resume (MCP: spec_kit_memory) · minimal: true
+  └ {"status":"ok","data":{"mode":"minimal","codeGraph":{"status":"stale","l...
+
+I’ve got the packet tree; now I’m ranking recent continuity files so the save goes to the most recently active spec instead of a stale archive.
+
+● Search (grep)
+  │ "last_active_child_id|"status"\s*:|packet_pointer:|next_safe_action:" in
+  │ **/{graph-metadata.json,implementation-summary.md,handover.md}
+  │ (.opencode/specs)
+  └ 7 lines found
+
+● List recent spec continuity files (shell)
+  │ python3 - <<'PY'
+  │ from pathlib import Path
+  │ root = Path('/Users/michelkerkmeester/MEGA/Development/Code_Environment/Pu
+  │ blic/.opencode/specs')
+  │ files = []…
+  └ 33 lines...
+
+● Read graph-metadata.json
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase
+  │ -parent-documentation/graph-metadata.json
+  └ 110 lines read
+
+● Read implementation-summary.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase
+  │ -parent-documentation/004-retroactive-phase-parent-migration/implementation-
+  │ summary.md
+  └ L1:120 (120 lines read)
+
+● Read implementation-summary.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-r
+  │ untime-stress-remediation/010-stress-test-rerun-v1-0-2/implementation-summar
+  │ y.md
+  └ L1:120 (107 lines read)
+
+I found a strong continuity target: `system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004-retroactive-phase-parent-migration`. Its own continuity block explicitly says the next safe action is to run `/memory:save` against `004`, so I’m persisting there and re-indexing that packet afterward.
+
+● memory_index_scan (MCP: spec_kit_memory) · specFolder: "system-spec-kit/026-graph-and-context-opt…
+  └ {"summary":"Scan complete: 6 indexed, 0 updated, 0 unchanged, 0 deleted,...
+
+● Save session context to active spec packet (shell)
+  │ set -euo pipefail && cd
+  │ /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public &&
+  │ tmp_json=$(mktemp) && python3 - <<'PY' "$tmp_json"
+  │ import json, sys
+  │ path = sys.argv[1]…
+  └ 133 lines...
+
+The save completed, but the first index scan overlapped the write window. I’m checking the actual continuity update and then doing one clean post-save re-index for the target packet.
+
+● Read implementation-summary.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase
+  │ -parent-documentation/004-retroactive-phase-parent-migration/implementation-
+  │ summary.md
+  └ L1:40 (40 lines read)
+
+● Read graph-metadata.json
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase
+  │ -parent-documentation/004-retroactive-phase-parent-migration/graph-metadata.
+  │ json
+  └ L1:140 (140 lines read)
+
+● Show saved continuity diff (shell)
+  │ cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public &&
+  │ git --no-pager diff -- .opencode/specs/system-spec-kit/026-graph-and-conte
+  │ xt-optimization/010-phase-parent-documentation/004-retroactive-phase-paren
+  │ t-migration/implementation-summary.md .opencode/specs/system-spec-kit/026-
+  │ graph-and-context-optimization/010-phase-parent-documentation/004-retroact…
+  └ 2 lines...
+
+The canonical save path succeeded; I’m confirming the save markers and then I’ll do one final post-save index pass now that the write window is closed.
+
+● Search (grep)
+  │ "last_save_at|last_active_at|status|save_lineage" (.opencode/specs/system-sp
+  │ ec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004
+  │ -retroactive-phase-parent-migration/graph-metadata.json)
+  └ 3 lines found
+
+✗ memory_index_scan (MCP: spec_kit_memory) · specFolder: "system-spec-kit/026-graph-and-context-opt…
+  └ MCP server 'spec_kit_memory': {"summary":"Error: Rate
+    limited","data":{"error":"Rate limited","code":"E429","details":{"waitSecond
+    s":20,"reason":"cooldown"}},"hints":["Please wait 20 seconds before scanning
+    again","Wait for cooldown period","Consider using incremental=true for
+    faster subsequent scans"],"meta":{"tool":"memory_index_scan","tokenCount":12
+    9,"cacheHit":false,"isError":true,"severity":"warning","tokenBudget":1000}}
+
+The save timestamp is in place at `2026-04-27T15:01:11.544Z`. The indexer is just in its cooldown window, so I’m waiting that out and then re-running the packet scan once.
+
+● Wait for memory scan cooldown (shell)
+  │ sleep 21
+  └ 1 line...
+
+● memory_index_scan (MCP: spec_kit_memory) · specFolder: "system-spec-kit/026-graph-and-context-opt…
+  └ {"summary":"Scan complete: 0 indexed, 1 updated, 5 unchanged, 0 deleted,...
+
+● memory_search (MCP: spec_kit_memory) · retroactive phase parent migration continuity refresh save…
+  └ {"summary":"> **[EVIDENCE GAP DETECTED]: Retrieved context has low mathe...
+
+**Saved.** I persisted this conversation to `system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/004-retroactive-phase-parent-migration` via the canonical Spec Kit memory save flow.
+
+The packet now has a fresh continuity save marker in `graph-metadata.json` (`derived.last_save_at: 2026-04-27T15:01:11.544Z`), and the packet was re-indexed so it’s available through memory retrieval.
+
+
+Changes   +0 -0
+Requests  1 Premium (3m 52s)
+Tokens    ↑ 817.9k • ↓ 6.4k • 749.3k (cached) • 3.5k (reasoning)

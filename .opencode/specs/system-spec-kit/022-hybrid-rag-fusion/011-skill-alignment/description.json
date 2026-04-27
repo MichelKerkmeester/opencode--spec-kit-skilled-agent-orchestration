@@ -8,15 +8,16 @@
     "alignment",
     "system-spec-kit"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.496Z",
+  "lastUpdated": "2026-04-27T13:38:47.634Z",
   "specId": "011",
   "folderSlug": "skill-alignment",
   "parentChain": [
     "system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 1,
+  "memorySequence": 2,
   "memoryNameHistory": [
-    "15-03-26_11-31__manual-context-save.md"
+    "15-03-26_11-31__manual-context-save.md",
+    "27-04-26_15-38__retroactive-migration-by-worker-1.md"
   ]
 }

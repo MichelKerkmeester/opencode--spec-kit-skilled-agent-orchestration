@@ -9,16 +9,17 @@
     "per",
     "catalog"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.215Z",
+  "lastUpdated": "2026-04-27T13:33:11.717Z",
   "specId": "007",
   "folderSlug": "code-audit-per-feature-catalog",
   "parentChain": [
     "system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 2,
+  "memorySequence": 3,
   "memoryNameHistory": [
     "22-03-26_20-00__deep-research-on-code-audit-gaps-10-iterations-11.md",
-    "24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per.md"
+    "24-03-26_22-50__20-iteration-deep-review-of-007-code-audit-per.md",
+    "27-04-26_15-33__retroactive-migration-by-worker-1.md"
   ]
 }

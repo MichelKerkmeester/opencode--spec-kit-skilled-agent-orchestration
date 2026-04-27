@@ -1,19 +1,14 @@
 {
   "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
-  "description": "Phase Parent Documentation: when a spec folder has phase children, the parent only requires the lean trio (spec.md, description.json, graph-metadata.json). Phase 1 shipped the validator branches, detection helpers, lean template, schema accept-path, and docs sync. Phase 2 (draft) lands deferred generator pointer-write, create.sh template swap, content validator, and end-to-end test.",
+  "description": "Feature Specification: Phase Parent Documentation",
   "keywords": [
+    "feature",
+    "specification",
     "phase",
     "parent",
-    "documentation",
-    "lean",
-    "trio",
-    "validator",
-    "graph-metadata",
-    "continuity",
-    "resume",
-    "phased"
+    "documentation"
   ],
-  "lastUpdated": "2026-04-27T11:56:04.050Z",
+  "lastUpdated": "2026-04-27T14:15:10.449Z",
   "specId": "010",
   "folderSlug": "phase-parent-documentation",
   "parentChain": [

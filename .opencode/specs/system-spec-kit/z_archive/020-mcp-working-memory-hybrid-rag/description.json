@@ -10,13 +10,15 @@
     "hybrid",
     "rag"
   ],
-  "lastUpdated": "2026-04-06T09:57:55.677Z",
+  "lastUpdated": "2026-04-27T13:33:11Z",
   "specId": "020",
   "folderSlug": "mcp-working-memory-hybrid-rag",
   "parentChain": [
     "system-spec-kit",
     "z_archive"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "Feature Specification: MCP Working Memory Hybrid Rag"
+  ]
 }

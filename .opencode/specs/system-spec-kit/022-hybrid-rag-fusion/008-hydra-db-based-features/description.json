@@ -6,14 +6,14 @@
     "specification",
     "008-hydra-db-based-features"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.319Z",
+  "lastUpdated": "2026-04-27T13:35:50.897Z",
   "specId": "008",
   "folderSlug": "hydra-db-based-features",
   "parentChain": [
     "system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 9,
+  "memorySequence": 11,
   "memoryNameHistory": [
     "13-03-26_18-00__hydra-baseline-controls-delivered.md",
     "14-03-26_10-48__markovian-architectures.md",
@@ -23,6 +23,8 @@
     "14-03-26_13-22__implemented-the-first-milestone-markovian.md",
     "14-03-26_13-23__markovian-architectures.md",
     "14-03-26_13-24__the-bounded-first-milestone-for-017-markovian.md",
-    "14-03-26_14-52__synced-the-017-markovian-architectures-spec.md"
+    "14-03-26_14-52__synced-the-017-markovian-architectures-spec.md",
+    "27-04-26_15-34__retroactive-migration-by-worker-1.md",
+    "27-04-26_15-35__retroactive-migration-by-worker-1.md"
   ]
 }

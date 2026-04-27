@@ -1,0 +1,254 @@
+{
+  "schema_version": 1,
+  "migration": "004-retroactive-phase-parent-migration",
+  "completed_at": "2026-04-27T13:50:45.626296+00:00",
+  "executor": "cli-codex/gpt-5.4-medium-fast",
+  "workers": [
+    {
+      "worker_id": "1",
+      "scope": "022-hybrid-rag-fusion subtree (assigned phase parents) + 023-hybrid-rag-fusion-refinement (parent + 011 child)",
+      "processed_count": 11,
+      "skipped_count": 0,
+      "blocked_count": 1,
+      "manual_violations": 0,
+      "narrative_violations": 0,
+      "new_error_rules_count": 0,
+      "archived_count": 0,
+      "parents": [
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement",
+          "category": "C",
+          "in_archive": false,
+          "new_error_rules": []
+        }
+      ]
+    },
+    {
+      "worker_id": "2",
+      "scope": "00--ai-systems subtree (6) + 024-compact-code-graph (2) + 026/011-stress-remediation/001-search-intelligence (1)",
+      "processed_count": 9,
+      "skipped_count": 0,
+      "blocked_count": 0,
+      "manual_violations": 0,
+      "narrative_violations": 0,
+      "new_error_rules_count": 0,
+      "archived_count": 0,
+      "parents": [
+        {
+          "path": ".opencode/specs/00--ai-systems/001-global-shared",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/00--ai-systems/002-sales-communication-flows",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/00--ai-systems/003-sales-process-automation",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/00--ai-systems/004-prompt-improver",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/00--ai-systems/005-sales-direct-communication",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/00--ai-systems/006-product-owner",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/024-compact-code-graph",
+          "category": "C",
+          "in_archive": false,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+          "category": "B",
+          "in_archive": false,
+          "new_error_rules": []
+        }
+      ]
+    },
+    {
+      "worker_id": "3",
+      "scope": "026-graph-and-context-optimization C-category active (2 listed) + z_archive/z_future entries (~9)",
+      "processed_count": 11,
+      "skipped_count": 0,
+      "blocked_count": 0,
+      "manual_violations": 0,
+      "narrative_violations": 0,
+      "new_error_rules_count": 6,
+      "archived_count": 9,
+      "parents": [
+        {
+          "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+          "category": "C",
+          "in_archive": false,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+          "category": "C",
+          "in_archive": false,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/00--anobel.com/z_archive/004-table-of-content",
+          "category": "C",
+          "in_archive": true,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
+          "category": "B",
+          "in_archive": true,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+          "category": "C",
+          "in_archive": true,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement",
+          "category": "C",
+          "in_archive": true,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
+          "category": "B",
+          "in_archive": true,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+          "category": "B",
+          "in_archive": true,
+          "new_error_rules": [
+            "SPEC_DOC_INTEGRITY"
+          ]
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+          "category": "C",
+          "in_archive": true,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
+          "category": "B",
+          "in_archive": true,
+          "new_error_rules": []
+        },
+        {
+          "path": ".opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+          "category": "B",
+          "in_archive": true,
+          "new_error_rules": []
+        }
+      ]
+    }
+  ],
+  "totals": {
+    "total_processed": 31,
+    "total_skipped": 0,
+    "total_blocked": 1,
+    "total_manual_violations": 0,
+    "total_narrative_violations": 0,
+    "total_new_error_rules": 6,
+    "total_archived": 9
+  }
+}

@@ -210,7 +210,7 @@
     ],
     "causal_summary": "Phases 001 and 002 shipped the lean-trio policy end-to-end: validator phase-parent branches across five rules, the new content-discipline validator, the generator pointer-write and bubble-up, the resume pointer-first redirect, the lean phase-parent template, and base documentation in CLAUDE.md, AGENTS.md, AGENTS_Barter.md, AGENTS_example_fs_enterprises.md, and the system-spec-kit `SKILL.md`. But a deep audit of the rest of the skill surface (3 parallel Explore agents covering 30+ files) found 13 reference docs, READMEs, command docs, and assets still describing the pre-policy state. Three contradict shipped behavior outright: `references/structure/phase_definitions.md` shows phase parents with `plan.md`/`tasks.md`/`decision-record.md`/`memory/`; `references/memory/save_workflow.md` Output Format does not differentiate phase-parent saves; `templates/README.md` STRUCTURE table is missing rows for the new `phase_parent/` and `context-index.md` templates. The new `PHASE_PARENT_CONTENT` validator rule is not documented anywhere outside its own script and the validator-registry.",
     "created_at": "2026-04-27T13:30:00Z",
-    "last_save_at": "2026-04-27T12:47:26.864Z",
+    "last_save_at": "2026-04-27T13:09:50.958Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [

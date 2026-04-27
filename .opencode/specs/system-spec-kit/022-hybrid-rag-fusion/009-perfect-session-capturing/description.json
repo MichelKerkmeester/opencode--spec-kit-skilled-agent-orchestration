@@ -8,14 +8,14 @@
     "session",
     "capturing"
   ],
-  "lastUpdated": "2026-04-24T15:56:55.352Z",
+  "lastUpdated": "2026-04-27T13:35:50.897Z",
   "specId": "009",
   "folderSlug": "perfect-session-capturing",
   "parentChain": [
     "system-spec-kit",
     "022-hybrid-rag-fusion"
   ],
-  "memorySequence": 40,
+  "memorySequence": 41,
   "memoryNameHistory": [
     "15-03-26_12-05__perfect-session-capturing.md",
     "15-03-26_12-22__verified-trigger-phrase-yaml-rendering.md",
@@ -36,6 +36,7 @@
     "17-03-26_16-16__post-re-analysis-documentation-maintenance-for.md",
     "17-03-26_16-44__strict-closeout-evidence-refreshed.md",
     "17-03-26_19-49__bimodal-quality-distribution-in-historical-memory.md",
-    "18-03-26_11-46__test-nextsteps-persistence.md"
+    "18-03-26_11-46__test-nextsteps-persistence.md",
+    "27-04-26_15-35__retroactive-migration-by-worker-1.md"
   ]
 }

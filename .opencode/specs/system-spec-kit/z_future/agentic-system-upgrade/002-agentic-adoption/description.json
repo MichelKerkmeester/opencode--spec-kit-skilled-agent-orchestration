@@ -8,7 +8,7 @@
     "agentic",
     "adoption"
   ],
-  "lastUpdated": "2026-04-24T15:56:56.905Z",
+  "lastUpdated": "2026-04-27T13:33:11Z",
   "specId": "002",
   "folderSlug": "agentic-adoption",
   "parentChain": [
@@ -16,6 +16,8 @@
     "z_future",
     "agentic-system-upgrade"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "Feature Specification: 002 Agentic Adoption"
+  ]
 }

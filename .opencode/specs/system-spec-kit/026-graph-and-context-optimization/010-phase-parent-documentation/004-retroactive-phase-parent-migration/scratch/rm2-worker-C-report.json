@@ -1,0 +1,365 @@
+{
+  "worker_id": "C",
+  "model": "gpt-5.4",
+  "version": 2,
+  "scope_description": "system-spec-kit active, archive, and future phase parents assigned to Worker C for resource-map action refinement",
+  "phase_parents_processed": [
+    {
+      "path": ".opencode/specs/system-spec-kit",
+      "implementation_summaries_found": 347,
+      "rows_total": 27,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 27,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization",
+      "implementation_summaries_found": 70,
+      "rows_total": 52,
+      "rows_changed_from_cited": 1,
+      "action_distribution": {
+        "Cited": 51,
+        "Created": 0,
+        "Updated": 1,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+      "implementation_summaries_found": 1,
+      "rows_total": 63,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 63,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline",
+      "implementation_summaries_found": 6,
+      "rows_total": 241,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 241,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-resource-map-template",
+      "implementation_summaries_found": 3,
+      "rows_total": 80,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 80,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime",
+      "implementation_summaries_found": 5,
+      "rows_total": 230,
+      "rows_changed_from_cited": 14,
+      "action_distribution": {
+        "Cited": 216,
+        "Created": 6,
+        "Updated": 8,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/004-runtime-executor-hardening",
+      "implementation_summaries_found": 3,
+      "rows_total": 143,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 143,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift",
+      "implementation_summaries_found": 7,
+      "rows_total": 130,
+      "rows_changed_from_cited": 1,
+      "action_distribution": {
+        "Cited": 129,
+        "Created": 0,
+        "Updated": 1,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+      "implementation_summaries_found": 8,
+      "rows_total": 429,
+      "rows_changed_from_cited": 14,
+      "action_distribution": {
+        "Cited": 415,
+        "Created": 8,
+        "Updated": 6,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
+      "implementation_summaries_found": 12,
+      "rows_total": 937,
+      "rows_changed_from_cited": 16,
+      "action_distribution": {
+        "Cited": 921,
+        "Created": 11,
+        "Updated": 5,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
+      "implementation_summaries_found": 8,
+      "rows_total": 204,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 204,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+      "implementation_summaries_found": 4,
+      "rows_total": 43,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 43,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+      "implementation_summaries_found": 3,
+      "rows_total": 153,
+      "rows_changed_from_cited": 18,
+      "action_distribution": {
+        "Cited": 135,
+        "Created": 18,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive",
+      "implementation_summaries_found": 79,
+      "rows_total": 985,
+      "rows_changed_from_cited": 75,
+      "action_distribution": {
+        "Cited": 910,
+        "Created": 75,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive",
+      "implementation_summaries_found": 46,
+      "rows_total": 805,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 805,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
+      "implementation_summaries_found": 1,
+      "rows_total": 18,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 18,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+      "implementation_summaries_found": 2,
+      "rows_total": 61,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 61,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement",
+      "implementation_summaries_found": 0,
+      "rows_total": 39,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 39,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
+      "implementation_summaries_found": 7,
+      "rows_total": 59,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 59,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+      "implementation_summaries_found": 7,
+      "rows_total": 62,
+      "rows_changed_from_cited": 28,
+      "action_distribution": {
+        "Cited": 34,
+        "Created": 0,
+        "Updated": 28,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade",
+      "implementation_summaries_found": 8,
+      "rows_total": 12,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 12,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+      "implementation_summaries_found": 7,
+      "rows_total": 1391,
+      "rows_changed_from_cited": 26,
+      "action_distribution": {
+        "Cited": 1365,
+        "Created": 14,
+        "Updated": 12,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
+      "implementation_summaries_found": 1,
+      "rows_total": 116,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 116,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade",
+      "implementation_summaries_found": 1,
+      "rows_total": 9,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 9,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+      "implementation_summaries_found": 1,
+      "rows_total": 116,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 116,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    }
+  ],
+  "summary": {
+    "total_processed": 25,
+    "total_skipped": 0,
+    "total_blocked": 0,
+    "total_rows_refined": 193,
+    "total_implementation_summaries_consulted": 637
+  }
+}

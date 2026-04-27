@@ -115,8 +115,9 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 1. Call `session_bootstrap()` — one composite call that runs `session_resume` + `session_health` and returns structural context
 2. If structural context shows `stale` or `missing`, run `code_graph_scan` to rebuild
-3. If the graph remains unavailable, fall back to CocoIndex + direct file reads
-4. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+3. **Phase parent branch:** if the resume target is a phase parent (folder has `[0-9]{3}-name/` children with their own spec.md/description.json), `/spec_kit:resume` first honors a fresh `graph-metadata.json` `derived.last_active_child_id` pointer (within 24h), then falls back to listing children with statuses so you can pick which phase to continue. Do NOT read parent's `plan.md`/`tasks.md`/`implementation-summary.md` — those don't exist at a phase parent (per the lean trio policy: only `spec.md`, `description.json`, `graph-metadata.json` live at parent). Read the chosen child's continuity ladder instead.
+4. If the graph remains unavailable, fall back to CocoIndex + direct file reads
+5. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
 
 ---
 
@@ -297,9 +298,9 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 > **Note:** `implementation-summary.md` is REQUIRED for all levels but created **after implementation completes**, not at spec folder creation time. See SKILL.md §4 Rule 13.
 >
-> **Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` — copy from `.opencode/skill/system-spec-kit/templates/` as needed.
+> **Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` — copy from `.opencode/skill/system-spec-kit/templates/` as needed. For phase parents that have undergone reorganization (renames, gap renumbering, consolidation), `context-index.md` provides a migration bridge — optional, no auto-scaffold.
 
-> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children. Phase-parent `spec.md` documents root purpose, sub-phase manifest, and what needs done — NEVER consolidation, merge, or migration history. Resume on a phase parent lists child phases with statuses so you pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate.
+> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate to that phase's actual work. Detection rule: `is_phase_parent()` (shell, in `lib/shell-common.sh`) and `isPhaseParent()` (TS/JS, in `mcp_server/lib/spec/is-phase-parent.ts` + `scripts/dist/spec/is-phase-parent.js`) are the single source of truth — both must agree. **Content discipline:** the phase-parent `spec.md` must NOT narrate consolidation, merge, or migration history — it documents root purpose, sub-phase manifest, and what needs done. Migration history goes in `context-index.md` if needed. Resume on a phase parent first follows a fresh `derived.last_active_child_id` pointer from `graph-metadata.json`; missing, null, stale, or `--no-redirect` cases list child phases with statuses so the user can pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate; soft-deprecation is a follow-on packet.
 
 **Rules:** When in doubt → higher level. LOC is soft guidance (risk/complexity can override). Single typo/whitespace fixes (<5 characters in one file) are exempt.
 

@@ -207,7 +207,7 @@
     ],
     "causal_summary": "This packet had drifted into a historical phase container that no longer matched active system-spec-kit template rules. The top-level docs lacked template markers, anchors, and required section structure, which prevented recursive strict validation even though the child phases capture real implementation work.",
     "created_at": "2026-04-12T09:02:50.276Z",
-    "last_save_at": "2026-04-26T09:17:15.476Z",
+    "last_save_at": "2026-04-27T13:38:47.634Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
@@ -216,6 +216,12 @@
       "tasks.md",
       "implementation-summary.md",
       "research/research.md"
+    ],
+    "children_ids": [
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/001-initial-enrichment",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/002-scoring-and-filter",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/003-field-integrity-and-schema",
+      "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/004-indexing-and-coherence"
     ]
   }
 }

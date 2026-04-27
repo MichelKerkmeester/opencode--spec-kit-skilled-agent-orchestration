@@ -20,7 +20,7 @@
     "stress-test",
     "playbook"
   ],
-  "lastUpdated": "2026-04-26T18:11:53.902Z",
+  "lastUpdated": "2026-04-27T13:33:57.271Z",
   "specId": "001",
   "folderSlug": "search-intelligence-stress-test",
   "parentChain": [
@@ -28,6 +28,8 @@
     "026-graph-and-context-optimization",
     "011-mcp-runtime-stress-remediation"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "27-04-26_13-33__retroactive-phase-parent-migration-worker-2.md"
+  ]
 }

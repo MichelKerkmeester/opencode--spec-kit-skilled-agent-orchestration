@@ -1,43 +1,45 @@
 ---
-title: "Feature Specification [system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/spec]"
-description: "Restore indexing channels after workspace path drift and ensure adaptive fusion defaults are explicitly documented and configured."
+title: "Feature Specification: Indexing and Adaptive Fusion Enablement"
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
+description: "Feature Specification: Indexing and Adaptive Fusion Enablement"
 trigger_phrases:
   - "indexing enablement"
   - "adaptive fusion"
   - "cocoindex path drift"
-  - "code graph init"
 importance_tier: "important"
 contextType: "implementation"
-_memory:
-  continuity:
-    packet_pointer: "system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion"
-    last_updated_at: "2026-04-24T14:55:00Z"
-    last_updated_by: "copilot-gpt-5-4"
-    recent_action: "Backfilled memory block"
-    next_safe_action: "Revalidate packet docs"
-    key_files: ["spec.md"]
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ---
-<!-- SPECKIT_LEVEL: 1 -->
+
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- CONTENT DISCIPLINE: PHASE PARENT
+  FORBIDDEN content (do NOT author at phase-parent level):
+    - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
+    - migrated from, ported from, originally in
+    - heavy docs: plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md — these belong in child phase folders only
+  REQUIRED content (MUST author at phase-parent level):
+    - Root purpose: what problem does this entire phased decomposition solve?
+    - Sub-phase manifest: which child phase folders exist and what each one does
+    - What needs done: the high-level outcome the phases work toward
+-->
 
 # Feature Specification: Indexing and Adaptive Fusion Enablement
-
----
 
 <!-- ANCHOR:metadata -->
 ## 1. METADATA
 
 | Field | Value |
 |-------|-------|
-| **Level** | 1 |
+| **Level** | 2 |
 | **Priority** | P0 |
 | **Status** | Review |
 | **Created** | 2026-03-31 |
 | **Branch** | `system-speckit/024-compact-code-graph` |
-| **Parent Spec** | ../spec.md |
+| **Parent Spec** | `../spec.md` |
+| **Parent Packet** | `system-spec-kit/023-hybrid-rag-fusion-refinement` |
 | **Predecessor** | 010-search-retrieval-quality-fixes |
 | **Successor** | 012-memory-save-quality-pipeline |
+| **Handoff Criteria** | Validator + phase-parent trio stay current while child packets remain the detailed execution surface |
 <!-- /ANCHOR:metadata -->
 
 ---
@@ -46,10 +48,12 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-After repository path changes, indexing subsystems were inconsistent: CocoIndex environment paths were stale, code-graph initialization could fail lazily, and adaptive fusion defaults were not explicitly represented across MCP config surfaces. Lexical score visibility through fusion traces was also incomplete.
+Feature Specification: Indexing and Adaptive Fusion Enablement
 
 ### Purpose
-Stabilize indexing and fusion behavior so channel availability and trace visibility are consistent across environments.
+After repository path changes, indexing subsystems were inconsistent: CocoIndex environment paths were stale, code-graph initialization could fail lazily, and adaptive fusion defaults were not explicitly represented across MCP config surfaces. Lexical score visibility through fusion traces was also incomplete.
+
+> **Phase-parent note:** This spec.md is the ONLY authored document at the parent level. All detailed planning, task breakdowns, checklists, and decisions live in the child phase folders listed in the Phase Documentation Map below. This keeps the parent from drifting stale as phases execute and pivot.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -58,104 +62,78 @@ Stabilize indexing and fusion behavior so channel availability and trace visibil
 ## 3. SCOPE
 
 ### In Scope
-- Restore CocoIndex environment/config health for current workspace location.
-- Ensure code-graph DB initialization path is resilient on first access.
-- Ensure adaptive fusion ON-default behavior is represented consistently in MCP configs.
-- Surface lexical score fallback data after fusion.
+- Child packet `001-wire-promotion-gate/` remains the authoritative implementation surface for its phase.
+- Child packet `002-persist-tuned-thresholds/` remains the authoritative implementation surface for its phase.
+- Child packet `003-real-feedback-labels/` remains the authoritative implementation surface for its phase.
+- Child packet `004-fix-access-signal-path/` remains the authoritative implementation surface for its phase.
+- Maintain the parent-level phase manifest, navigation pointers, and status surface only.
 
 ### Out of Scope
-- New retrieval channel design.
-- Ranking algorithm redesign.
-- Historical phase-subfolder backfills outside this phase.
+- Rewriting child-phase plans, tasks, or checklists from this parent packet.
+- Using the parent spec as a changelog or migration-history ledger.
+- Treating parent heavy docs as the source of implementation truth.
 
 ### Files to Change
-
-| File Path | Change Type | Description |
-|-----------|-------------|-------------|
-| `.cocoindex_code/settings.yml` | Modify | Align include/exclude patterns with real workspace |
-| `mcp_server/lib/code-graph/code-graph-db.ts` | Modify | Ensure lazy init path resolves DB safely |
-| `mcp_server/formatters/search-results.ts` | Modify | Preserve lexical score fallback in trace output |
-| `opencode.json` and MCP config variants | Modify | Explicit adaptive fusion env alignment |
+| File Path | Change Type | Phase | Description |
+|-----------|-------------|-------|-------------|
+| `.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/spec.md` | Modify/Create | parent | Lean phase-parent specification and child manifest |
+| `.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/description.json` | Modify | parent | Refresh save metadata for the migration pass |
+| `.opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/graph-metadata.json` | Modify | parent | Refresh derived child pointers and save timestamp |
 <!-- /ANCHOR:scope -->
 
 ---
 
-<!-- ANCHOR:requirements -->
-## 4. REQUIREMENTS
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
 
-### P0 - Blockers (MUST complete)
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children.
 
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-001 | CocoIndex path/config drift resolved | Indexing runs against current repo location without stale-path failures |
-| REQ-002 | Code graph initialization resilient | First access no longer fails due uninitialized DB handle |
-| REQ-003 | Adaptive fusion defaults explicit in config surfaces | Config docs/env blocks consistently represent expected ON behavior |
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 001 | `001-wire-promotion-gate/` | Wire Promotion Gate: Wire PromotionGate to Action | complete |
+| 002 | `002-persist-tuned-thresholds/` | Persist Tuned Thresholds: Phase 2 — Persist Tuned Thresholds | complete |
+| 003 | `003-real-feedback-labels/` | Real Feedback Labels: Real Feedback Labels for Evaluation | complete |
+| 004 | `004-fix-access-signal-path/` | Fix Access Signal Path | complete |
+| 005 | `005-e2e-integration-test/` | E2e Integration Test: Phase 5 — End-to-End Integration Test | complete |
+| 006 | `006-default-on-boost-rollout/` | Default On Boost Rollout: Default-ON Boost Rollout — Session, Causal & Deep Expansion | complete |
+| 007 | `007-external-graph-memory-research/` | External Graph Memory Research | complete |
+| 008 | `008-create-sh-phase-parent/` | Create Sh Phase Parent: Append Nested Child Phases in create.sh | complete |
+| 009 | `009-graph-retrieval-improvements/` | Graph Retrieval Improvements | complete |
 
-### P1 - Required (complete OR user-approved deferral)
+### Phase Transition Rules
 
-| ID | Requirement | Acceptance Criteria |
-|----|-------------|---------------------|
-| REQ-004 | Lexical score fallback preserved in trace output | Fused results still expose keyword/fts/bm25 provenance |
-<!-- /ANCHOR:requirements -->
+- Each phase MUST pass `validate.sh` independently before the next phase begins.
+- Parent spec tracks aggregate progress via this map.
+- Use `/spec_kit:resume system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion/NNN-phase/` to resume a specific phase.
+- Run `validate.sh --recursive` on the parent to validate all phases as an integrated unit.
 
----
+### Phase Handoff Criteria
 
-<!-- ANCHOR:success-criteria -->
-## 5. SUCCESS CRITERIA
-
-- **SC-001**: Recursive strict validator reports no structural errors for Phase 011 docs.
-- **SC-002**: Indexing/fusion stabilization scope is documented consistently across phase files.
-<!-- /ANCHOR:success-criteria -->
-
----
-
-<!-- ANCHOR:risks -->
-
-### Acceptance Scenarios
-
-**Given** the phase scope and requirements are loaded, **when** implementation starts, **then** only in-scope files and behaviors are changed.
-
-**Given** the phase deliverables are implemented, **when** verification runs, **then** required checks complete without introducing regressions.
-
-**Given** this phase depends on predecessor outputs, **when** those dependencies are present, **then** this phase behavior composes correctly with adjacent phases.
-
-**Given** this phase modifies documented behavior, **when** packet docs are reviewed, **then** spec/plan/tasks/checklist remain internally consistent.
-
-**Given** this phase is rerun in a clean environment, **when** the same commands are executed, **then** outcomes are reproducible.
-
-**Given** completion is claimed, **when** evidence is inspected, **then** each required acceptance outcome is explicitly supported.
-
-## 6. RISKS & DEPENDENCIES
-
-| Type | Item | Impact | Mitigation |
-|------|------|--------|------------|
-| Dependency | Local index/db artifacts | Validation confidence can vary with local state | Keep runtime verification explicit and separate from structural edits |
-| Risk | Config divergence across repos | Behavior confusion between environments | Keep env key/value alignment documented per surface |
-<!-- /ANCHOR:risks -->
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 001 | 002 | 001-wire-promotion-gate is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `001-wire-promotion-gate/` |
+| 002 | 003 | 002-persist-tuned-thresholds is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `002-persist-tuned-thresholds/` |
+| 003 | 004 | 003-real-feedback-labels is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `003-real-feedback-labels/` |
+| 004 | 005 | 004-fix-access-signal-path is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `004-fix-access-signal-path/` |
+| 005 | 006 | 005-e2e-integration-test is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `005-e2e-integration-test/` |
+| 006 | 007 | 006-default-on-boost-rollout is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `006-default-on-boost-rollout/` |
+| 007 | 008 | 007-external-graph-memory-research is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `007-external-graph-memory-research/` |
+| 008 | 009 | 008-create-sh-phase-parent is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `008-create-sh-phase-parent/` |
+| 009 | Complete | Child packet validates and records implementation state. | `validate.sh --strict --no-recursive` on `009-graph-retrieval-improvements/` |
+<!-- /ANCHOR:phase-map -->
 
 ---
 
 <!-- ANCHOR:questions -->
-## 7. OPEN QUESTIONS
+## 4. OPEN QUESTIONS
 
-- Should adaptive fusion env defaults be centralized into one generated config source?
-- Should channel-availability health checks run automatically on startup for all clients?
+- Should any child packet status in the phase map be reclassified beyond the implementation-summary heuristic?
+- Does this parent packet need additional navigation references outside the lean trio for future resume flows?
 <!-- /ANCHOR:questions -->
 
 ---
 
-## PHASE DOCUMENTATION MAP
+## RELATED DOCUMENTS
 
-> This phase uses child phase decomposition. Each child folder is an independently executable phase packet.
-
-| Phase | Folder | Focus | Deps | Status |
-|-------|--------|-------|------|--------|
-| 1 | 001-wire-promotion-gate/ | Wire promotion-gate heuristics into adaptive boost pipeline | None | Complete |
-| 2 | 002-persist-tuned-thresholds/ | Persist tuned threshold values and retrieval defaults | 001-wire-promotion-gate | Complete |
-| 3 | 003-real-feedback-labels/ | Promote real feedback labels into scoring signals | 002-persist-tuned-thresholds | Complete |
-| 4 | 004-fix-access-signal-path/ | Correct access-signal routing and state updates | 003-real-feedback-labels | Complete |
-| 5 | 005-e2e-integration-test/ | Validate end-to-end fusion behavior under real scenarios | 004-fix-access-signal-path | Complete |
-| 6 | 006-default-on-boost-rollout/ | Roll out default-on boost behavior and guardrails | 005-e2e-integration-test | Complete |
-| 7 | 007-external-graph-memory-research/ | External graph-memory validation and findings | 006-default-on-boost-rollout | Complete |
-| 8 | 008-create-sh-phase-parent/ | Parent-phase wiring and packet structure completion | 007-external-graph-memory-research | Complete |
-| 9 | 009-graph-retrieval-improvements/ | Graph retrieval quality improvements and parity checks | 008-create-sh-phase-parent | Complete |
+- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase `spec.md`, `plan.md`, and `tasks.md`.
+- **Parent packet metadata**: See `description.json` and `graph-metadata.json` for save lineage and active-child pointers.

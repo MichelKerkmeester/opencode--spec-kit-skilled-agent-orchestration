@@ -1,0 +1,72 @@
+● Search (glob)
+  │ "**/026-*/*003-*/*004-*"
+  └ No matches found
+
+● Search (grep)
+  │ "SPECKIT_SAVE_PLANNER_MODE"
+  └ 5 lines found
+
+● memory_match_triggers (MCP: spec_kit_memory) · prompt: "Find decisions in 026/003/004 about SPECK…
+  └ {"summary":"Matched 3 memories via trigger phrases","data":{"matchType":...
+
+I found the relevant packet under `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite`. I’m pulling the decision-bearing docs and anchor names now.
+
+● Read decision-record.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/decision-record.md
+  └ L1:260 (260 lines read)
+
+● Search (grep)
+  │ "SPECKIT_SAVE_PLANNER_MODE|save planner mode|planner
+  │ mode|full-auto|hybrid|plan-only" in *.md
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-cont
+  │ inuity-memory-runtime/004-memory-save-rewrite)
+  └ 6 lines found
+
+● Search (glob)
+  │ ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-cont
+  │ inuity-memory-runtime/004-memory-save-rewrite/**/*"
+  └ 18 files found
+
+● Read spec.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/spec.md
+  └ L1:260 (213 lines read)
+
+● Read implementation-summary.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/implementation-summary.md
+  └ L1:260 (172 lines read)
+
+I’ve got the main decision and the fallback/reserved behavior; I’m checking the exact anchor coverage so I cite packet-local anchors rather than just line ranges.
+
+● Read decision-record.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/decision-record.md
+  └ L88:240 (153 lines read)
+
+● Search (grep)
+  │ "ANCHOR:|ADR-00[2-8]|SPECKIT_SAVE_PLANNER_MODE|hybrid|plan-only|full-auto"
+  │ (.opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-cont
+  │ inuity-memory-runtime/004-memory-save-rewrite/decision-record.md)
+  └ 30 lines found
+
+● Read decision-record.md
+  │ .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-conti
+  │ nuity-memory-runtime/004-memory-save-rewrite/decision-record.md
+  └ L240:360 (121 lines read)
+
+**Decision found:** in `026/003/004`, `SPECKIT_SAVE_PLANNER_MODE` was decided as **planner-first by default**, with **`full-auto` kept as an explicit fallback** and **`hybrid` kept reserved, currently behaving like `plan-only`**.
+
+| Decision | Rationale | Source anchor |
+|---|---|---|
+| Default mode is planner-first / non-mutating | Research concluded the save path already had enough route, legality, and follow-up information to return a plan without mutating. That made the default path reviewable, reduced hot-path cost, and removed dependence on optional subsystems. | `decision-record.md#adr-001` *(ADR-002 lives inside this anchored ADR ledger)*, `implementation-summary.md#what-built` |
+| `full-auto` remains available only as explicit fallback | The canonical atomic writer was still considered load-bearing and worth preserving for cases that truly need automatic mutation, safety parity, rollback, and same-path identity. | `decision-record.md#adr-001` *(ADR-002 in ledger)*, `spec.md#scope`, `implementation-summary.md#decisions` |
+| `hybrid` is reserved and currently behaves like `plan-only` | The packet explicitly chose documentation honesty over implying mixed behavior that does not yet exist, so operators do not assume unsupported semantics. | `spec.md#scope`, `spec.md#requirements`, `implementation-summary.md#limitations` |
+
+**Most direct rationale text:** “Make planner-first output the default `/memory:save` contract and preserve `full-auto` as explicit fallback,” because keeping `full-auto` as default would preserve “unnecessary hot-path cost,” while planner-first makes the default path “reviewable and non-mutating.” Source: `decision-record.md#adr-001` *(ADR-002 section within that anchor)*.
+
+
+Changes   +0 -0
+Requests  1 Premium (1m 19s)
+Tokens    ↑ 204.5k • ↓ 3.3k • 184.8k (cached) • 2.0k (reasoning)

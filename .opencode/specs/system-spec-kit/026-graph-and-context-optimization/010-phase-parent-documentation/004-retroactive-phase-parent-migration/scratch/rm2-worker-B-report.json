@@ -1,0 +1,211 @@
+{
+  "worker_id": "B",
+  "model": "gpt-5.4",
+  "version": 2,
+  "scope_description": "Resource-map action refinement for 14 assigned phase parents in 022/023/024 system-spec-kit trees.",
+  "phase_parents_processed": [
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion",
+      "implementation_summaries_found": 125,
+      "rows_total": 35,
+      "rows_changed_from_cited": 5,
+      "action_distribution": {
+        "Cited": 30,
+        "Created": 1,
+        "Updated": 4,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+      "implementation_summaries_found": 12,
+      "rows_total": 25,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 25,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+      "implementation_summaries_found": 1,
+      "rows_total": 14,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 14,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+      "implementation_summaries_found": 23,
+      "rows_total": 27,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 27,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+      "implementation_summaries_found": 7,
+      "rows_total": 26,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 26,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+      "implementation_summaries_found": 36,
+      "rows_total": 33,
+      "rows_changed_from_cited": 4,
+      "action_distribution": {
+        "Cited": 29,
+        "Created": 4,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+      "implementation_summaries_found": 6,
+      "rows_total": 18,
+      "rows_changed_from_cited": 9,
+      "action_distribution": {
+        "Cited": 9,
+        "Created": 7,
+        "Updated": 2,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+      "implementation_summaries_found": 5,
+      "rows_total": 24,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 24,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+      "implementation_summaries_found": 3,
+      "rows_total": 26,
+      "rows_changed_from_cited": 6,
+      "action_distribution": {
+        "Cited": 20,
+        "Created": 0,
+        "Updated": 6,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+      "implementation_summaries_found": 23,
+      "rows_total": 21,
+      "rows_changed_from_cited": 6,
+      "action_distribution": {
+        "Cited": 15,
+        "Created": 0,
+        "Updated": 6,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement",
+      "implementation_summaries_found": 23,
+      "rows_total": 37,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 37,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+      "implementation_summaries_found": 10,
+      "rows_total": 26,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 26,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/024-compact-code-graph",
+      "implementation_summaries_found": 40,
+      "rows_total": 44,
+      "rows_changed_from_cited": 5,
+      "action_distribution": {
+        "Cited": 39,
+        "Created": 0,
+        "Updated": 5,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/024-compact-code-graph/030-opencode-graph-plugin",
+      "implementation_summaries_found": 7,
+      "rows_total": 33,
+      "rows_changed_from_cited": 0,
+      "action_distribution": {
+        "Cited": 33,
+        "Created": 0,
+        "Updated": 0,
+        "Removed": 0,
+        "Renamed": 0,
+        "Moved": 0
+      }
+    }
+  ],
+  "summary": {
+    "total_processed": 14,
+    "total_skipped": 0,
+    "total_blocked": 0,
+    "total_rows_refined": 35,
+    "total_implementation_summaries_consulted": 321
+  }
+}

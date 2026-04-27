@@ -213,7 +213,7 @@
     ],
     "causal_summary": "The `011-skill-alignment` pack preserved an older story that no longer matched the repository. It mixed a finished-state label with draft or pre-implementation language, cited superseded command-surface counts, and had to reconcile the final `system-spec-kit` skill/reference/asset drift after the live memory surface settled at **33 tools**, **4 commands**, with retrieval documented under `/memory:search` and shared-memory lifecycle routed through `/memory:manage shared`.",
     "created_at": "2026-04-12T09:02:50.284Z",
-    "last_save_at": "2026-04-26T09:17:15.495Z",
+    "last_save_at": "2026-04-27T13:38:47.634Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
@@ -222,6 +222,10 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md"
+    ],
+    "children_ids": [
+      "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/001-post-session-capturing-alignment",
+      "system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment/002-skill-review-post-022"
     ]
   }
 }

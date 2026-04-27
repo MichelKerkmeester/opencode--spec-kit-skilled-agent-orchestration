@@ -27,15 +27,14 @@ Three follow-up items remain after the v1.0.2 scaffold lands. They split into th
 
 ## 2. STILL DEFERRED
 
-### 2.1 RE-RUN THE 001 STRESS-TEST SWEEP (v1.0.2)
+### 2.1 RE-RUN THE 001 STRESS-TEST SWEEP (v1.0.2) — **CLOSED 2026-04-27**
 
 | Field | Value |
 |-------|-------|
 | Source | 001 packet (predecessor) |
-| Status | **Scaffolded — see ./010-stress-test-rerun-v1-0-2/.** Sweep execution pending daemon-restart attestation gate (REQ-001 in the new packet). |
-| Blocker | Daemon must be live at fork version 0.2.3+spec-kit-fork.0.2.0 when execution starts. The new packet's pre-flight gate enforces this; no other blockers. |
-| Output target | `./010-stress-test-rerun-v1-0-2/findings.md` (created at execution time) with v1.0.1 baseline + v1.0.2 score + delta + classification per cell, per-CLI averages side-by-side, and a per-packet verdict for packets 003-009. The 001 v1.0.1 findings stays frozen as the baseline — only a one-line forward pointer is appended. Sub-target: weak-quality `memory_search` reproduction probe that exercises the `do_not_cite_results` / `responsePolicy.noCanonicalPathClaims` / `safeResponse` / `ask_disambiguation` branch (the branch the 2026-04-27 cite_results probe did not cover). |
-| Why it matters | This is the close-the-loop measurement. It is the only remaining item that proves the autonomous run actually moved the needle on retrieval quality, latency, and intent stability. Highest impact of the three deferred items. Headline closure evidence: SC-003 in the new packet (I2 cli-opencode recovers from v1.0.1's 1/10 catastrophic hallucination to ≥6/8 under the v1.0.1 rubric). |
+| Status | **CLOSED 2026-04-27T17:30Z.** Sweep complete: 30/30 cells dispatched (exit_code:0), 30/30 scored, findings.md synthesized at `./010-stress-test-rerun-v1-0-2/findings.md`. |
+| Closure evidence | Overall 76.7% → 83.8% (+7.2pp), 0 REGRESSIONs, 6/7 packets PROVEN (003, 004, 006, 007, 008, 009). **SC-003 PROVEN at I2/cli-opencode-1**: recovered from v1.0.1's 1/10 catastrophic hallucination to 6/8 with 3-of-4 paths verified, 0 fabricated spec packets. Packet 005 (code-graph-fast-fail) NEUTRAL — graph healthy post-pre-flight, weak-state path not exercised; flagged as P1 follow-up. |
+| Follow-ups surfaced | (P0) cli-copilot `/memory:save` Gate 3 bypass on I1 — see findings.md Recommendation #1. (P1) Re-test packet 005 under deterministically degraded graph. (P2) File-watcher debounce, REQ-003 vocabulary sweep, higher-N variance pass on I2 load-bearing cell. |
 
 ### 2.2 PACKET 006 PRODUCTION TUNING
 
@@ -69,9 +68,14 @@ Three follow-up items remain after the v1.0.2 scaffold lands. They split into th
 
 ## 3. RECOMMENDED ORDER
 
-1. **Item 2.1** (execute the v1.0.2 sweep at `./010-stress-test-rerun-v1-0-2/`) — highest impact. Now scaffolded; execution unblocks all other items by surfacing real telemetry.
-2. **Item 2.2** (packet 006 production tuning) — informed by item 2.1 telemetry.
+1. ~~**Item 2.1** (execute the v1.0.2 sweep)~~ — **CLOSED 2026-04-27.** Findings at `./010-stress-test-rerun-v1-0-2/findings.md`.
+2. **Item 2.2** (packet 006 production tuning) — now unblocked by v1.0.2 telemetry.
 3. **Item 2.3** (packet 007 v2) and **Item 2.4** (hallucination guard) — independent enhancements. Run when prioritized.
+
+### Newly surfaced from v1.0.2 sweep (2026-04-27)
+4. **(P0)** cli-copilot `/memory:save` Gate 3 bypass — see `./010-stress-test-rerun-v1-0-2/findings.md` Recommendation #1. Tighten copilot's planner-first default or add explicit Gate 3 prompt at CLI entry point.
+5. **(P1)** Re-test packet 005 under deterministically-degraded graph — Q1 cells in v1.0.2 didn't exercise `fallbackDecision` because graph was healthy post-pre-flight. Packet 005 verdict NEUTRAL not PROVEN.
+6. **(P2)** Code-graph file-watcher debounce — pre-flight detected 4-hour staleness drift in this run.
 
 ---
 

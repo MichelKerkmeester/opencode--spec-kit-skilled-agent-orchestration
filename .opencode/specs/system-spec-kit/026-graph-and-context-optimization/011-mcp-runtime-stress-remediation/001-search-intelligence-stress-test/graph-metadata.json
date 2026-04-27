@@ -61,7 +61,7 @@
     ],
     "causal_summary": "Root packet for a cross-AI stress-test playbook of system-spec-kit Search/Query/Intelligence features. Defines the design (9 scenarios × 3 CLIs × 5-dim rubric) and execution architecture (per-run artifacts + aggregate findings). Two sub-phases enforce design-before-execute separation: 001-scenario-design ships the corpus + rubric + dispatch matrix + scripts; 002-scenario-execution runs the matrix and synthesizes findings. The asymmetry between cli-opencode (full Spec Kit Memory MCP) and cli-codex/cli-copilot (external) is the primary signal, quantifying the value our search intelligence adds over off-the-shelf AI capabilities. Cross-references the sibling defects packet 005-memory-search-runtime-bugs (17 known defects) so scenarios with expected-fail behavior can be tagged.",
     "created_at": "2026-04-26T14:50:00Z",
-    "last_save_at": "2026-04-26T14:50:00Z",
+    "last_save_at": "2026-04-27T13:33:57.271Z",
     "save_lineage": "manual",
     "last_accessed_at": null,
     "source_docs": [

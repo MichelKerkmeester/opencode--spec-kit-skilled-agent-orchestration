@@ -1,0 +1,132 @@
+{
+  "worker_id": "1",
+  "model": "gpt-5.4",
+  "effort": "medium",
+  "scope_description": "022-hybrid-rag-fusion subtree (assigned phase parents) + 023-hybrid-rag-fusion-refinement (parent + 011 child)",
+  "phase_parents_processed": [
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/007-code-audit-per-feature-catalog",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/008-hydra-db-based-features",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "PHASE_PARENT_CONTENT", "CONTINUITY_FRESHNESS", "EVIDENCE_MARKER_LINT"]},
+      "validator_post": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "PHASE_PARENT_CONTENT", "CONTINUITY_FRESHNESS", "EVIDENCE_MARKER_LINT"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/000-dynamic-capture-deprecation",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "SPEC_DOC_SUFFICIENCY", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/011-skill-alignment",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "PHASE_LINKS", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": ["SPEC_DOC_SUFFICIENCY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "PHASE_LINKS", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/022-hybrid-rag-fusion/015-manual-testing-per-playbook",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_SUFFICIENCY", "SPEC_DOC_INTEGRITY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": ["SPEC_DOC_SUFFICIENCY", "SPEC_DOC_INTEGRITY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement/011-indexing-and-adaptive-fusion",
+      "category": "B",
+      "actions": ["spec.md_synthesized", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "validator_post": {"errors": [], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "CONTINUITY_FRESHNESS"]},
+      "new_error_rules": []
+    },
+    {
+      "path": "specs/system-spec-kit/023-hybrid-rag-fusion-refinement",
+      "category": "C",
+      "actions": ["spec.md_created", "description.json_refreshed", "graph-metadata.json_derived_refreshed"],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {"errors": ["SPEC_DOC_INTEGRITY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "COMPLEXITY_MATCH"]},
+      "validator_post": {"errors": ["SPEC_DOC_INTEGRITY"], "warnings": ["SECTIONS_PRESENT", "FRONTMATTER_MEMORY_BLOCK", "COMPLEXITY_MATCH"]},
+      "new_error_rules": []
+    }
+  ],
+  "skipped": [],
+  "blocked": [
+    {
+      "path": "batch-recovery",
+      "error": "Initial validator-driven batch was interrupted mid-run. The report uses final recovery-pass validator snapshots for validator_pre/validator_post on already-migrated parents because the original pre-edit validator JSON was not retained for every folder."
+    }
+  ],
+  "summary": {
+    "total_processed": 11,
+    "total_skipped": 0,
+    "manual_block_violations": 0,
+    "narrative_violations": 0,
+    "new_error_rules_anywhere": 0
+  }
+}

@@ -1,0 +1,145 @@
+● Read AGENTS.md
+  └ L1:220 (219 lines read)
+
+● Search (grep)
+  │ "memory_context" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+I’ve got the raw hits; now I’m narrowing them to actual caller functions rather than tool definitions and tests.
+
+● Search (grep)
+  │ "memory_context" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 40 files found
+
+● Search (grep)
+  │ "['\"]memory_context['\"]" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 58 lines found
+
+● Search (grep)
+  │ "memoryContext|handleMemoryContext|memory_context\s*\(" in
+  │ **/*.{ts,js,mjs,cjs} (.opencode/skill/system-spec-kit/mcp_server)
+  └ 7 lines found
+
+● Search (grep)
+  │ "memory_context\s*\(" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 29 lines found
+
+● Search (grep)
+  │ "handleMemoryContext\(" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 60 lines found
+
+● Search (grep)
+  │ "callTool\(|dispatchTool|routeTool|executeTool" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 36 lines found
+
+● Read custom-instructions.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions
+  │ .ts
+  └ L1:70 (70 lines read)
+
+● Read memory-surface.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts
+  └ L430:475 (46 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts
+  └ L45:115 (71 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts
+  └ L115:175 (61 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts
+  └ L55:115 (61 lines read)
+
+● Read session-start.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/codex/session-start.ts
+  └ L80:110 (31 lines read)
+
+● Read passive-enrichment.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/lib/enrichment/passive-enrichment
+  │ .ts
+  └ L110:140 (31 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L800:830 (31 lines read)
+
+I’m reading the surrounding function definitions now so I can give you named callers, not just raw string hits.
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/gemini/session-prime.ts
+  └ L175:255 (81 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts
+  └ L230:320 (91 lines read)
+
+● Read session-prime.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/copilot/session-prime.ts
+  └ L175:255 (71 lines read)
+
+● Read memory-surface.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/hooks/memory-surface.ts
+  └ L390:470 (81 lines read)
+
+● Read context-tools.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts
+  └ L1:40 (19 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L995:1020 (26 lines read)
+
+● Read index.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/index.ts
+  └ L90:125 (22 lines read)
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L900:980 (81 lines read)
+
+● Search (grep)
+  │ "setRequestHandler|CallToolRequestSchema|createServer|async \(request"
+  │ (.opencode/skill/system-spec-kit/mcp_server/context-server.ts)
+  └ 3 lines found
+
+● Read context-tools.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts
+  └ L12:18 (7 lines read)
+
+● Read index.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/tools/index.ts
+  └ L98:109 (12 lines read)
+
+● Search (grep)
+  │ "handleMemoryContext\(|dispatchTool\(['\"]memory_context['\"]|handleTool\(['
+  │ \"]memory_context['\"]|name === 'memory_context'" in **/*.{ts,js,mjs,cjs}
+  │ (.opencode/skill/system-spec-kit/mcp_server)
+  └ 67 lines found
+
+● Read context-server.ts
+  │ .opencode/skill/system-spec-kit/mcp_server/context-server.ts
+  └ L920:1014 (95 lines read)
+
+**Actual internal callers are just 3 in production code**; most other `memory_context` hits in `mcp_server` are prompt/help strings or tests.
+
+| Caller | File:line | How it calls `memory_context` |
+| --- | --- | --- |
+| `handleTool` | `.opencode/skill/system-spec-kit/mcp_server/tools/context-tools.ts:14-16` | Switches on `name === 'memory_context'` and directly calls `handleMemoryContext(...)`. |
+| `dispatchTool` | `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:98-107` | Routes tool names to the matching dispatcher, which reaches `handleTool` for `memory_context`. |
+| `CallToolRequestSchema` request handler *(anonymous async handler passed to `server.setRequestHandler`)* | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts:920-923,1011-1013` | Receives the MCP tool call and invokes `dispatchTool(name, args)`, which dispatches `memory_context` when requested. |
+
+**Nearby non-callers:** functions like `buildPrimePackage`, `handleResume`, `defaultResumeSections`, and the various `handleCompact` helpers only **emit text telling clients to call** `memory_context`; they do not invoke the handler themselves.
+
+
+Changes   +0 -0
+Requests  1 Premium (2m 36s)
+Tokens    ↑ 488.6k • ↓ 4.9k • 454.7k (cached) • 2.6k (reasoning)

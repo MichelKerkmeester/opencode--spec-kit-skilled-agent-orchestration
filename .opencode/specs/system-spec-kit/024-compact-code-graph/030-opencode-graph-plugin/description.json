@@ -10,13 +10,15 @@
     "phased",
     "execution"
   ],
-  "lastUpdated": "2026-04-12T15:47:03.500Z",
+  "lastUpdated": "2026-04-27T13:33:57.271Z",
   "specId": "030",
   "folderSlug": "opencode-graph-plugin",
   "parentChain": [
     "system-spec-kit",
     "024-compact-code-graph"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "27-04-26_13-33__retroactive-phase-parent-migration-worker-2.md"
+  ]
 }

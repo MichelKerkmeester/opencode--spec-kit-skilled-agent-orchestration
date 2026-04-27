@@ -1,0 +1,3542 @@
+{
+  "worker_id": "3",
+  "model": "gpt-5.4",
+  "effort": "medium",
+  "scope_description": "026-graph-and-context-optimization C-category active (2 listed) + z_archive/z_future entries (~9)",
+  "phase_parents_processed": [
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+      "category": "C",
+      "in_archive": false,
+      "actions": [
+        "create spec.md",
+        "create description.json",
+        "create graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-7bnrodys/000-release-cleanup",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "pass",
+            "message": "All spec-doc frontmatter memory blocks are structurally valid"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "No TOC-restricted spec documents found (skipped)"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "5 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '000-release-cleanup' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "warn",
+            "message": "graph-metadata.json is missing"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "No spec documentation files found (skipped)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save root-spec check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save source-doc check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save lineage check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Canonical-save packet-identity check not applicable to this folder"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "3 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '000-release-cleanup' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+      "category": "C",
+      "in_archive": false,
+      "actions": [
+        "create spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-akk2hjsd/007-code-graph",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "pass",
+            "message": "All spec-doc frontmatter memory blocks are structurally valid"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "No TOC-restricted spec documents found (skipped)"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "14 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '007-code-graph' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "No spec documentation files found (skipped)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "error",
+            "message": "Live packet root has metadata but no canonical root spec.md"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 2,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "9 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '007-code-graph' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/00--anobel.com/z_archive/004-table-of-content",
+      "category": "C",
+      "in_archive": true,
+      "actions": [
+        "create spec.md",
+        "create description.json",
+        "create graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-j3gdt324/004-table-of-content",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "3 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "8 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '004-table-of-content' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "warn",
+            "message": "graph-metadata.json is missing"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "3 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 3 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save root-spec check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save source-doc check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save lineage check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Canonical-save packet-identity check not applicable to this folder"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 5,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/00--anobel.com/z_archive/004-table-of-content",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "4 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "7 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "Complexity level consistent with content (Level 2; phases=3, tasks=13, stories=0, scenarios=0)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '004-table-of-content' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 4 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 0,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": []
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
+      "category": "B",
+      "in_archive": true,
+      "actions": [
+        "write spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-x03crbfx/019-speckit-refinement",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 3 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "warn",
+            "message": "Found 18 checklist item(s) without priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "5 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "error",
+            "message": "2 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "5 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '019-speckit-refinement' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "25 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 5 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 5,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/019-speckit-refinement",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 3 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "warn",
+            "message": "Found 18 checklist item(s) without priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "5 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "error",
+            "message": "2 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "4 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '019-speckit-refinement' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "21 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 5 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 5,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": []
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+      "category": "C",
+      "in_archive": true,
+      "actions": [
+        "create spec.md",
+        "create description.json",
+        "create graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-ux639ak0/023-path-scoped-rules",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "pass",
+            "message": "All spec-doc frontmatter memory blocks are structurally valid"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "No TOC-restricted spec documents found (skipped)"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "4 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '023-path-scoped-rules' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "warn",
+            "message": "graph-metadata.json is missing"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "No spec documentation files found (skipped)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save root-spec check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save source-doc check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save lineage check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Canonical-save packet-identity check not applicable to this folder"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/023-path-scoped-rules",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "3 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '023-path-scoped-rules' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement",
+      "category": "C",
+      "in_archive": true,
+      "actions": [
+        "create spec.md",
+        "create description.json",
+        "create graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-l46wp1es/027-memory-plugin-and-refinement",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "pass",
+            "message": "All spec-doc frontmatter memory blocks are structurally valid"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "No TOC-restricted spec documents found (skipped)"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "7 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '027-memory-plugin-and-refinement' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "warn",
+            "message": "graph-metadata.json is missing"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "No spec documentation files found (skipped)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save root-spec check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save source-doc check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save lineage check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Canonical-save packet-identity check not applicable to this folder"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_archive/001-fix-command-dispatch/z_archive/027-memory-plugin-and-refinement",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "6 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '027-memory-plugin-and-refinement' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
+      "category": "B",
+      "in_archive": true,
+      "actions": [
+        "write spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-h74vzl1a/013-memory-overhaul-and-agent-upgrade-release",
+        "level": 1,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 1 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "13 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 1"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '013-memory-overhaul-and-agent-upgrade-release' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 0,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_archive/013-memory-overhaul-and-agent-upgrade-release",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "12 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '013-memory-overhaul-and-agent-upgrade-release' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+      "category": "B",
+      "in_archive": true,
+      "actions": [
+        "write spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-gtp14lv0/020-mcp-working-memory-hybrid-rag",
+        "level": 1,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 1 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "2 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "20 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 1"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '020-mcp-working-memory-hybrid-rag' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 0,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_archive/020-mcp-working-memory-hybrid-rag",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "2 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "19 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '020-mcp-working-memory-hybrid-rag' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "2 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 5,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": [
+        "SPEC_DOC_INTEGRITY"
+      ]
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+      "category": "C",
+      "in_archive": true,
+      "actions": [
+        "create spec.md",
+        "create description.json",
+        "create graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-4ug9dwkh/001-research-agentic-systems",
+        "level": 1,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "error",
+            "message": "Phase parent: missing 1 required file"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "pass",
+            "message": "All spec-doc frontmatter memory blocks are structurally valid"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "No TOC-restricted spec documents found (skipped)"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "22 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md missing; content-discipline scan skipped"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 1"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '001-research-agentic-systems' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "warn",
+            "message": "graph-metadata.json is missing"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "13 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "No spec documentation files found (skipped)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save root-spec check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save source-doc check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "Canonical-save lineage check not applicable to this folder"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Canonical-save packet-identity check not applicable to this folder"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "1 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "21 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '001-research-agentic-systems' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "error",
+            "message": "15 spec documentation integrity issue(s) found"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 1 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: implementation-summary.md missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 1,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": []
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
+      "category": "B",
+      "in_archive": true,
+      "actions": [
+        "write spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-89mecq8g/002-agentic-adoption",
+        "level": 3,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "pass",
+            "message": "All required sections found"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 3 explicitly declared"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "pass",
+            "message": "All checklist items have priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "6 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "pass",
+            "message": "Phase links valid (18 phases verified)"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md contains migration-history token(s)"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocols present and complete (4/4)"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "Complexity level consistent with content (Level 3; phases=3, tasks=13, stories=6, scenarios=12)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '002-agentic-adoption' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 6 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 0,
+          "warnings": 3,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_future/agentic-system-upgrade/002-agentic-adoption",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 1 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "pass",
+            "message": "All checklist items have priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "6 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "warn",
+            "message": "1 spec_doc_sufficiency issue(s) found"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "pass",
+            "message": "Phase links valid (18 phases verified)"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "warn",
+            "message": "Phase parent spec.md contains migration-history token(s)"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "Complexity level consistent with content (Level 2; phases=3, tasks=13, stories=0, scenarios=0)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '002-agentic-adoption' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "pass",
+            "message": "Frontmatter validation passed"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "pass",
+            "message": "Template source headers present in all 6 spec files"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 0,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": []
+    },
+    {
+      "path": ".opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+      "category": "B",
+      "in_archive": true,
+      "actions": [
+        "write spec.md",
+        "write description.json",
+        "write graph-metadata.json"
+      ],
+      "manual_block_preserved": true,
+      "narrative_preserved": true,
+      "validator_pre": {
+        "version": "2.0.0",
+        "folder": "/var/folders/3c/zfqcqsts0kn19cgblj82gqhm0000gn/T/worker3-pre-w3x_l5hk/002-hybrid-rag-adoption",
+        "level": 3,
+        "levelMethod": "inferred",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 7 recommended section(s)"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "pass",
+            "message": "All checklist items have priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "6 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "53 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "warn",
+            "message": "AI protocol incomplete (0/4 components)"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "pass",
+            "message": "No declared level found in spec.md (using inferred level)"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '002-hybrid-rag-adoption' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "error",
+            "message": "Found 6 frontmatter issue(s)"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "error",
+            "message": "Template source header missing in 6 file(s)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "validator_post": {
+        "version": "2.0.0",
+        "folder": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption",
+        "level": 2,
+        "levelMethod": "explicit",
+        "config": null,
+        "results": [
+          {
+            "rule": "FILE_EXISTS",
+            "status": "pass",
+            "message": "Phase parent: spec.md present (lean trio policy)"
+          },
+          {
+            "rule": "PLACEHOLDER_FILLED",
+            "status": "pass",
+            "message": "No unfilled placeholders found"
+          },
+          {
+            "rule": "SECTIONS_PRESENT",
+            "status": "warn",
+            "message": "Missing 5 recommended section(s)"
+          },
+          {
+            "rule": "LEVEL_DECLARED",
+            "status": "pass",
+            "message": "Level 2 explicitly declared"
+          },
+          {
+            "rule": "PRIORITY_TAGS",
+            "status": "pass",
+            "message": "All checklist items have priority context"
+          },
+          {
+            "rule": "EVIDENCE_CITED",
+            "status": "pass",
+            "message": "All completed P0/P1 items have evidence"
+          },
+          {
+            "rule": "FRONTMATTER_MEMORY_BLOCK",
+            "status": "warn",
+            "message": "6 frontmatter_memory_block issue(s) found"
+          },
+          {
+            "rule": "MERGE_LEGALITY",
+            "status": "pass",
+            "message": "No merge plan supplied; legality check skipped"
+          },
+          {
+            "rule": "SPEC_DOC_SUFFICIENCY",
+            "status": "pass",
+            "message": "All targeted spec-doc anchors meet the sufficiency baseline"
+          },
+          {
+            "rule": "CROSS_ANCHOR_CONTAMINATION",
+            "status": "pass",
+            "message": "No routing payload supplied; contamination check skipped"
+          },
+          {
+            "rule": "POST_SAVE_FINGERPRINT",
+            "status": "pass",
+            "message": "No post-save payload supplied; fingerprint check skipped"
+          },
+          {
+            "rule": "TOC_POLICY",
+            "status": "pass",
+            "message": "TOC policy passed: no TOC headings in non-research spec documents"
+          },
+          {
+            "rule": "PHASE_LINKS",
+            "status": "warn",
+            "message": "52 phase link issue(s) found"
+          },
+          {
+            "rule": "PHASE_PARENT_CONTENT",
+            "status": "pass",
+            "message": "Phase parent content avoids migration-history tokens"
+          },
+          {
+            "rule": "AI_PROTOCOL",
+            "status": "pass",
+            "message": "AI protocol check not applicable for Level 2"
+          },
+          {
+            "rule": "COMPLEXITY_MATCH",
+            "status": "warn",
+            "message": "Content metrics may not match declared Level 2"
+          },
+          {
+            "rule": "FOLDER_NAMING",
+            "status": "pass",
+            "message": "Folder name '002-hybrid-rag-adoption' follows naming convention"
+          },
+          {
+            "rule": "FRONTMATTER_VALID",
+            "status": "error",
+            "message": "Found 5 frontmatter issue(s)"
+          },
+          {
+            "rule": "GRAPH_METADATA_PRESENT",
+            "status": "pass",
+            "message": "graph-metadata.json is present and passes the rollout shape check"
+          },
+          {
+            "rule": "NORMALIZER_LINT",
+            "status": "pass",
+            "message": "No local normalizeScope*/getOptionalString declarations found outside allowed files"
+          },
+          {
+            "rule": "LINKS_VALID",
+            "status": "pass",
+            "message": "Wikilink validation skipped (set SPECKIT_VALIDATE_LINKS=true to enable)"
+          },
+          {
+            "rule": "SPEC_DOC_INTEGRITY",
+            "status": "pass",
+            "message": "Spec doc references, metadata, and handover targets resolve cleanly"
+          },
+          {
+            "rule": "TEMPLATE_SOURCE",
+            "status": "error",
+            "message": "Template source header missing in 5 file(s)"
+          },
+          {
+            "rule": "CANONICAL_SAVE_ROOT_SPEC_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root exposes a canonical spec.md surface"
+          },
+          {
+            "rule": "CANONICAL_SAVE_SOURCE_DOCS_REQUIRED",
+            "status": "pass",
+            "message": "Live packet root graph metadata has non-empty derived.source_docs"
+          },
+          {
+            "rule": "CANONICAL_SAVE_LINEAGE_REQUIRED",
+            "status": "pass",
+            "message": "save_lineage is present for the refreshed graph metadata"
+          },
+          {
+            "rule": "CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED",
+            "status": "pass",
+            "message": "Packet identity is normalized across continuity, description, and graph surfaces"
+          },
+          {
+            "rule": "CONTINUITY_FRESHNESS",
+            "status": "pass",
+            "message": "Continuity freshness skipped: _memory.continuity.last_updated_at missing"
+          },
+          {
+            "rule": "EVIDENCE_MARKER_LINT",
+            "status": "pass",
+            "message": "Evidence marker lint passed: all markers closed with balanced brackets"
+          }
+        ],
+        "summary": {
+          "errors": 2,
+          "warnings": 4,
+          "info": 0
+        },
+        "passed": false,
+        "strict": true,
+        "_exit_code": 2
+      },
+      "new_error_rules": []
+    }
+  ],
+  "skipped": [],
+  "blocked": [],
+  "summary": {
+    "total_processed": 11,
+    "total_skipped": 0,
+    "manual_block_violations": 0,
+    "narrative_violations": 0,
+    "new_error_rules_anywhere": 6,
+    "archived_count": 9
+  }
+}

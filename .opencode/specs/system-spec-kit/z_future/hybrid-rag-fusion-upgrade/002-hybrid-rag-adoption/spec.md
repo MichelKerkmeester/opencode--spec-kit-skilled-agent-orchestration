@@ -1,64 +1,158 @@
 ---
-title: "002-hybrid-rag-adoption: Hybrid RAG [system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/spec]"
-description: "Executive synthesis of the completed five-system research into nine adopt-now sub-phases plus nine investigation sub-phases for Public."
+title: "Feature Specification: hybrid-rag-adoption: Hybrid RAG Adoption"
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
+description: "002-hybrid-rag-adoption: Hybrid RAG Adoption"
 trigger_phrases:
   - "002"
   - "hybrid"
   - "rag"
   - "adoption"
   - "spec"
+  - "implementation"
+  - "plan"
+  - "tasks"
+  - "verification"
+  - "checklist"
+  - "decision"
+  - "record"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# 002-hybrid-rag-adoption: Hybrid RAG Adoption
 
-## 1. Scope
-This packet converts the completed `001-research-hybrid-rag-fusion-systems` work into two coordinated tracks: nine implementation-ready adopt-now sub-phases and nine investigation sub-phases that answer the remaining prototype-later, measurement, and new-feature questions without widening current scope. It preserves Public's current authorities and only imports proven patterns as thin facades. The adopt-now track covers authority freezing, `memory_review`, JSON-primary save ergonomics, compaction preservation, bootstrap guidance, doctor/debug overlays, workflow routing guidance, rollout evidence gates, and a bounded prototype backlog. The investigation track covers passive capture, tool-profile bundling, drift-checker applicability, FSRS decay defaults, BM25 field weighting, RRF/hybrid evaluation, connected-doc hints, temporal facts, and wake-up layering.
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- CONTENT DISCIPLINE: PHASE PARENT
+  FORBIDDEN content (do NOT author at phase-parent level):
+    - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
+    - migrated from, ported from, originally in
+    - heavy docs: plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md — these belong in child phase folders only
+  REQUIRED content (MUST author at phase-parent level):
+    - Root purpose: what problem does this entire phased decomposition solve?
+    - Sub-phase manifest: which child phase folders exist and what each one does
+    - What needs done: the high-level outcome the phases work toward
+-->
 
-### Sub-Phases And Dependencies
-#### Adoption Track
-- `001-architecture-boundary-freeze`: prerequisite for every other sub-phase because it locks the "import patterns, not backends" rule.
-- `002-memory-review-tool`: depends on `001`; establishes the first new helper surface using existing FSRS and validation primitives.
-- `003-save-ergonomics`: depends on `001`; wraps `generate-context.js` without changing save authority.
-- `004-compaction-checkpointing`: depends on `001` and `003`; reuses JSON-primary save authority during compaction.
-- `005-bootstrap-guidance`: depends on `001`; teaches at existing `session_bootstrap` and startup surfaces.
-- `006-doctor-debug-overlay`: depends on `001`; summarizes existing health, validation, and routing evidence without creating a new repair authority.
-- `007-workflow-guidance-map`: depends on `001`; maps operator tasks to existing tools and new thin facades.
-- `008-rollout-evidence-gates`: depends on `001` and should be finalized after `002` through `007` define the surfaces being gated.
-- `009-prototype-backlog`: depends on `001` and `008`; records flag-only prototypes such as connected-doc hints, bounded lexical fallback, and temporal-fact follow-up candidates.
+# Feature Specification: hybrid-rag-adoption: Hybrid RAG Adoption
 
-#### Investigation Track
-- `010-passive-capture-investigation`: depends on `001`; evaluates whether Engram-style close-session or passive capture can wrap `generate-context.js` without creating a second save authority.
-- `011-tool-profile-split-investigation`: depends on `001`; evaluates whether Engram-style agent/admin tool bundles should exist only as a delivery-layer packaging experiment.
-- `012-drift-detection-evaluation`: depends on `001`; determines which Mex checker families belong on Public spec and memory surfaces beyond the already-approved advisory trio.
-- `013-fsrs-memory-decay-study`: depends on `001` and `002`; measures whether any Modus-inspired FSRS default changes are justified before adopting a due-state or review-queue contract.
-- `014-bm25-field-weight-evaluation`: depends on `001`; measures whether Modus-style field weighting would improve constrained lexical retrieval without re-architecting hybrid search.
-- `015-rrf-hybrid-retrieval-evaluation`: depends on `001`; benchmarks Mnemosyne's documented BM25/vector/RRF story against Public's current hybrid stack and retrieval-regression lanes.
-- `016-connected-doc-hints-investigation`: depends on `001` and `009`; measures whether Modus-style connected-doc appendices improve operator trust without competing with graph or causal authority.
-- `017-temporal-knowledge-graph-investigation`: depends on `001` and `009`; designs the narrowest safe temporal-fact sidecar and authority boundary before any NEW FEATURE proposal advances.
-- `018-wake-up-context-layering-study`: depends on `001` and `005`; evaluates whether a bounded wake-up formatter on top of `session_bootstrap` improves recovery versus today's bootstrap surfaces.
+<!-- ANCHOR:metadata -->
+## 1. METADATA
 
-## 2. Research Basis
-- Cross-phase consensus on scoped surfaces, layered continuity, explicit hygiene, and backend rejection: `001-research-hybrid-rag-fusion-systems/001-engram-main/research/iterations/iteration-039.md:7-45`, `001-research-hybrid-rag-fusion-systems/002-mex-main/research/iterations/iteration-039.md:7-45`, `001-research-hybrid-rag-fusion-systems/003-modus-memory-main/research/iterations/iteration-039.md:7-53`, `001-research-hybrid-rag-fusion-systems/005-mempalace/research/iterations/iteration-039.md:7-53`.
-- Ranked delivery portfolio and first-move ordering: `001-research-hybrid-rag-fusion-systems/003-modus-memory-main/research/iterations/iteration-040.md:1-44`, `001-research-hybrid-rag-fusion-systems/005-mempalace/research/iterations/iteration-040.md:88-158`.
-- Mnemosyne late-iteration adoption boundary for compaction guidance, safe aliases, and non-goals: `001-research-hybrid-rag-fusion-systems/004-opencode-mnemosyne-main/research/iterations/iteration-039.md:224-235`, `001-research-hybrid-rag-fusion-systems/004-opencode-mnemosyne-main/research/iterations/iteration-040.md:117-137`.
-- Investigation backlog for prototype-later and NEW FEATURE seams: `001-research-hybrid-rag-fusion-systems/001-engram-main/research/iterations/iteration-038.md:31-35`, `001-research-hybrid-rag-fusion-systems/002-mex-main/research/iterations/iteration-038.md:8-27`, `001-research-hybrid-rag-fusion-systems/003-modus-memory-main/research/iterations/iteration-038.md:16-36`, `001-research-hybrid-rag-fusion-systems/004-opencode-mnemosyne-main/research/iterations/iteration-038.md:9218-9261`, `001-research-hybrid-rag-fusion-systems/005-mempalace/research/iterations/iteration-038.md:39-59`.
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | In Progress |
+| **Created** | 2026-04-13 |
+| **Branch** | `main` |
+| **Parent Spec** | None (collection root) |
+| **Parent Packet** | `hybrid-rag-fusion-upgrade` |
+| **Predecessor** | `See child ordering above` |
+| **Successor** | None |
+| **Handoff Criteria** | Parent manifest, `description.json`, and `graph-metadata.json` stay aligned with the current child phase folders and pass tolerant phase-parent validation. |
+<!-- /ANCHOR:metadata -->
 
-## 3. Architecture Constraints
-- Keep `memory_search`, `memory_context`, `memory_match_triggers`, `session_bootstrap`, `generate-context.js`, CocoIndex, code graph, causal links, and health/status tooling as the authorities.
-- New UX must compile into existing authorities instead of introducing a competing backend, router, or lifecycle owner.
-- Retrieval and code intelligence stay separate: memory helpers must not absorb CocoIndex or code-graph ownership.
-- Compaction and bootstrap improvements must be fail-open, provenance-aware, and governance-backed.
+---
 
-## 4. Success Criteria
-- All eighteen sub-phases have `spec.md`, `plan.md`, `tasks.md`, and `checklist.md` files grounded in cited research.
-- The adoption track remains implementation-oriented, while the investigation track names measurable experiments, decision criteria, and exit conditions instead of premature implementation commitments.
-- Parent docs make sequencing and dependency order explicit enough that a future implementation pass can start with `001` and proceed without reopening the research.
-- Decision records lock the six architectural choices the research settled.
-- The packet names explicit non-goals so future work does not reinterpret the research as backend-replacement approval.
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
 
-## 5. Explicit Non-Goals
-- Replacing Public's retrieval, save, bootstrap, graph, or governance backends with Engram, Mex, Modus, Mnemosyne, or MemPalace substrates.
-- Treating investigation-track phases as approval to ship those ideas immediately.
-- Treating markdown-first authority, raw-verbatim-by-default storage, palace taxonomy, `core=true`, basename scope, or periodic blocking hooks as approved Public architecture.
-- Modifying any files outside `002-hybrid-rag-adoption/` in this packet-creation pass.
+### Problem Statement
+This parent packet coordinates the phased work under `hybrid-rag-adoption: Hybrid RAG Adoption` so the child packets stay discoverable and the root purpose remains clear while implementation details live below the parent level. The current child surface includes 001-architecture-boundary-freeze, 002-memory-review-tool, 003-save-ergonomics, and other child phases.
+
+### Purpose
+Keep this sealed phase-parent packet validator-compliant as a lean manifest that preserves the original purpose, lists the child phases, and leaves detailed planning, execution, and verification in the child folders without rewriting archive history.
+
+> **Phase-parent note:** This `spec.md` is the ONLY authored document at the parent level. All detailed planning, task breakdowns, checklists, decisions, and implementation summaries live in the child phase folders listed in the Phase Documentation Map below. This keeps the parent from drifting stale as phases execute and pivot.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- Preserve the root purpose for `002-hybrid-rag-adoption` without rewriting child-phase intent.
+- Keep the parent packet discoverable as a lean manifest over the current child phase folders.
+- Refresh parent discovery metadata and graph rollup so resume and validation surfaces point at the correct child packets.
+
+### Out of Scope
+- Editing any child packet content under `002-hybrid-rag-adoption/[0-9][0-9][0-9]-*/`.
+- Deleting or archiving legacy heavy parent docs that already exist beside the lean trio.
+- Reconstructing missing historical detail beyond what is needed for the parent manifest.
+
+### Files to Change
+[Parent-level scope is limited to `spec.md`, `description.json`, and `graph-metadata.json`. Detailed execution, planning, and verification remain inside the child phase folders.]
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children. Status is derived from each child `graph-metadata.json` `derived.status` when present.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 1 | `001-architecture-boundary-freeze/` | architecture-boundary-freeze: Freeze Authority Boundaries | planned |
+| 2 | `002-memory-review-tool/` | memory-review-tool: Ship Memory Review First | planned |
+| 3 | `003-save-ergonomics/` | save-ergonomics: Wrap JSON-Primary Save Authority | planned |
+| 4 | `004-compaction-checkpointing/` | compaction-checkpointing: Preserve Context Before Compaction | planned |
+| 5 | `005-bootstrap-guidance/` | bootstrap-guidance: Teach At Existing Bootstrap Surfaces | planned |
+| 6 | `006-doctor-debug-overlay/` | doctor-debug-overlay: Add Compact Diagnostics | planned |
+| 7 | `007-workflow-guidance-map/` | workflow-guidance-map: Publish Task-To-Tool Routing | planned |
+| 8 | `008-rollout-evidence-gates/` | rollout-evidence-gates: Define Measurable Adoption Gates | planned |
+| 9 | `009-prototype-backlog/` | prototype-backlog: Record Flagged Prototype Candidates | planned |
+| 10 | `010-passive-capture-investigation/` | passive-capture-investigation: Investigate Passive Capture | planned |
+| 11 | `011-tool-profile-split-investigation/` | tool-profile-split-investigation: Investigate Tool Profile Splits | planned |
+| 12 | `012-drift-detection-evaluation/` | drift-detection-evaluation: Evaluate Drift Detection | planned |
+| 13 | `013-fsrs-memory-decay-study/` | fsrs-memory-decay-study: Study FSRS Decay Defaults | planned |
+| 14 | `014-bm25-field-weight-evaluation/` | bm25-field-weight-evaluation: Evaluate BM25 Field Weights | planned |
+| 15 | `015-rrf-hybrid-retrieval-evaluation/` | rrf-hybrid-retrieval-evaluation: Evaluate RRF Hybrid Retrieval | planned |
+| 16 | `016-connected-doc-hints-investigation/` | connected-doc-hints-investigation: Investigate Connected-Doc Hints | planned |
+| 17 | `017-temporal-knowledge-graph-investigation/` | temporal-knowledge-graph-investigation: Investigate Temporal Knowledge Graphs | planned |
+| 18 | `018-wake-up-context-layering-study/` | wake-up-context-layering-study: Study Wake-Up Context Layering | planned |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins.
+- Parent spec tracks aggregate progress via this map plus `graph-metadata.json` child rollup.
+- Use `/spec_kit:resume system-spec-kit/z_future/hybrid-rag-fusion-upgrade/002-hybrid-rag-adoption/[NNN-phase]/` to resume a specific child phase.
+- Run `validate.sh --recursive` on the parent when validating the integrated phase train.
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| `001-architecture-boundary-freeze` | `002-memory-review-tool` | `001-architecture-boundary-freeze` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `002-memory-review-tool` |
+| `002-memory-review-tool` | `003-save-ergonomics` | `002-memory-review-tool` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `003-save-ergonomics` |
+| `003-save-ergonomics` | `004-compaction-checkpointing` | `003-save-ergonomics` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `004-compaction-checkpointing` |
+| `004-compaction-checkpointing` | `005-bootstrap-guidance` | `004-compaction-checkpointing` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `005-bootstrap-guidance` |
+| `005-bootstrap-guidance` | `006-doctor-debug-overlay` | `005-bootstrap-guidance` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `006-doctor-debug-overlay` |
+| `006-doctor-debug-overlay` | `007-workflow-guidance-map` | `006-doctor-debug-overlay` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `007-workflow-guidance-map` |
+| `007-workflow-guidance-map` | `008-rollout-evidence-gates` | `007-workflow-guidance-map` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `008-rollout-evidence-gates` |
+| `008-rollout-evidence-gates` | `009-prototype-backlog` | `008-rollout-evidence-gates` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `009-prototype-backlog` |
+| `009-prototype-backlog` | `010-passive-capture-investigation` | `009-prototype-backlog` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `010-passive-capture-investigation` |
+| `010-passive-capture-investigation` | `011-tool-profile-split-investigation` | `010-passive-capture-investigation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `011-tool-profile-split-investigation` |
+| `011-tool-profile-split-investigation` | `012-drift-detection-evaluation` | `011-tool-profile-split-investigation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `012-drift-detection-evaluation` |
+| `012-drift-detection-evaluation` | `013-fsrs-memory-decay-study` | `012-drift-detection-evaluation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `013-fsrs-memory-decay-study` |
+| `013-fsrs-memory-decay-study` | `014-bm25-field-weight-evaluation` | `013-fsrs-memory-decay-study` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `014-bm25-field-weight-evaluation` |
+| `014-bm25-field-weight-evaluation` | `015-rrf-hybrid-retrieval-evaluation` | `014-bm25-field-weight-evaluation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `015-rrf-hybrid-retrieval-evaluation` |
+| `015-rrf-hybrid-retrieval-evaluation` | `016-connected-doc-hints-investigation` | `015-rrf-hybrid-retrieval-evaluation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `016-connected-doc-hints-investigation` |
+| `016-connected-doc-hints-investigation` | `017-temporal-knowledge-graph-investigation` | `016-connected-doc-hints-investigation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `017-temporal-knowledge-graph-investigation` |
+| `017-temporal-knowledge-graph-investigation` | `018-wake-up-context-layering-study` | `017-temporal-knowledge-graph-investigation` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `018-wake-up-context-layering-study` |
+<!-- /ANCHOR:phase-map -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 4. OPEN QUESTIONS
+
+- No additional parent-level open questions are required here. Phase-specific unknowns live in the child folders.
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase `spec.md`, `plan.md`, `tasks.md`, and verification docs.
+- **Graph metadata**: See `graph-metadata.json` for the current child rollup and derived status.

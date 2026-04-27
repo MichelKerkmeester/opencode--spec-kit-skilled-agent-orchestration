@@ -1,0 +1,17 @@
+{
+  "scenario_id": "I2",
+  "cli": "cli-opencode",
+  "run_n": 1,
+  "model": "opencode-go/deepseek-v4-pro",
+  "agent": "general",
+  "variant": "high",
+  "format": "json",
+  "ablation_mode": "none",
+  "pure_flag": "",
+  "started_at": "2026-04-27T15:08:22Z",
+  "completed_at": "2026-04-27T15:10:06Z",
+  "latency_ms": 103987,
+  "tokens_in_estimate": 171,
+  "tokens_out_estimate": 41971,
+  "exit_code": 0
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/z_future/agentic-system-upgrade/001-research-agentic-systems",
+  "description": "Feature Specification: 001 Research Agentic Systems",
+  "keywords": [
+    "001",
+    "research",
+    "agentic",
+    "systems"
+  ],
+  "lastUpdated": "2026-04-27T13:33:11Z",
+  "specId": "001",
+  "folderSlug": "research-agentic-systems",
+  "parentChain": [
+    "system-spec-kit",
+    "z_future",
+    "agentic-system-upgrade"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "Feature Specification: 001 Research Agentic Systems"
+  ]
+}

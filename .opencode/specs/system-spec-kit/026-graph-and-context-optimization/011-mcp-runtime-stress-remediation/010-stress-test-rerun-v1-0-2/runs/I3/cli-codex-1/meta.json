@@ -1,0 +1,15 @@
+{
+  "scenario_id": "I3",
+  "cli": "cli-codex",
+  "run_n": 1,
+  "model": "gpt-5.5",
+  "effort": "medium",
+  "service_tier": "fast",
+  "sandbox": "read-only",
+  "started_at": "2026-04-27T15:10:06Z",
+  "completed_at": "2026-04-27T15:10:41Z",
+  "latency_ms": 34399,
+  "tokens_in_estimate": 13,
+  "tokens_out_estimate": 36876,
+  "exit_code": 0
+}

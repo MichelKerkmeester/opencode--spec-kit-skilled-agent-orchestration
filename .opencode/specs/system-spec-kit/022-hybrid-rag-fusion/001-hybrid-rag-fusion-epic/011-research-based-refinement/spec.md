@@ -1,26 +1,27 @@
 ---
-title: "Feature Specif [system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/spec]"
-description: "Parent phase coordinating 5 sub-phases of research-driven improvements to the Hybrid RAG Fusion system across fusion scoring, query intelligence, graph retrieval, feedback learning, and retrieval UX."
+title: "Feature Specification: Research-Based Refinement"
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
+description: "Feature Specification: Research-Based Refinement"
 trigger_phrases:
   - "research refinement"
   - "d1 d2 d3 d4 d5"
   - "29 recommendations"
-  - "research-based improvements"
-  - "fusion query graph feedback ux"
 importance_tier: "important"
 contextType: "implementation"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-parent | v2.2 -->"
-_memory:
-  continuity:
-    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement"
-    last_updated_at: "2026-04-24T15:25:01Z"
-    last_updated_by: "backfill-memory-block"
-    recent_action: "Backfilled _memory block (repo-wide frontmatter sweep)"
-    next_safe_action: "Revalidate packet docs and update continuity on next save"
-    key_files: ["spec.md"]
 ---
+
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 2 -->
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + phase-parent | v2.2 -->
+<!-- CONTENT DISCIPLINE: PHASE PARENT
+  FORBIDDEN content (do NOT author at phase-parent level):
+    - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
+    - migrated from, ported from, originally in
+    - heavy docs: plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md — these belong in child phase folders only
+  REQUIRED content (MUST author at phase-parent level):
+    - Root purpose: what problem does this entire phased decomposition solve?
+    - Sub-phase manifest: which child phase folders exist and what each one does
+    - What needs done: the high-level outcome the phases work toward
+-->
 
 # Feature Specification: Research-Based Refinement
 
@@ -33,126 +34,98 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Implemented |
 | **Created** | 2026-03-21 |
+| **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
-| **Parent Plan** | `../plan.md` |
-| **Phase** | 11 of 12 |
+| **Parent Packet** | `system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic` |
 | **Predecessor** | `../010-sprint-9-extra-features/spec.md` |
 | **Successor** | None (latest live direct phase) |
-| **Children** | 5 sub-phase folders |
+| **Handoff Criteria** | Validator + phase-parent trio stay current while child packets remain the detailed execution surface |
 <!-- /ANCHOR:metadata -->
+
+---
 
 <!-- ANCHOR:problem -->
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-
 The deep research (spec `019-deep-research-rag-improvement`) produced 29 prioritized recommendations from 5 GPT 5.4 agents (1.35M tokens, ~52 web searches). The key finding: the system is more mature than expected — the gap is **calibration and wiring**, not missing code. Flat heuristic constants (k=60, convergence +0.10, graph boost 1.5x, FSRS decay, Stage 2 signal weights) need data-driven calibration. Graph value lies in typed traversal, not community detection. Feedback needs an event ledger before any learned ranking.
 
 ### Purpose
-
 Turn the 29 research recommendations into 5 implementable sub-phases, each with concrete requirements, implementation phases, feature flags, and files to change.
+
+> **Phase-parent note:** This spec.md is the ONLY authored document at the parent level. All detailed planning, task breakdowns, checklists, and decisions live in the child phase folders listed in the Phase Documentation Map below. This keeps the parent from drifting stale as phases execute and pivot.
 <!-- /ANCHOR:problem -->
+
+---
 
 <!-- ANCHOR:scope -->
 ## 3. SCOPE
 
 ### In Scope
-
-- 29 research recommendations across 5 dimensions
-- 28 new feature flags for gradual rollout
-- Calibration of existing heuristic constants
-- New modules for feedback logging, graph lifecycle, query decomposition, result explainability
-- Shadow scoring and evaluation infrastructure
+- Child packet `001-fusion-scoring-intelligence/` remains the authoritative implementation surface for its phase.
+- Child packet `002-query-intelligence-reformulation/` remains the authoritative implementation surface for its phase.
+- Child packet `003-graph-augmented-retrieval/` remains the authoritative implementation surface for its phase.
+- Child packet `004-feedback-quality-learning/` remains the authoritative implementation surface for its phase.
+- Maintain the parent-level phase manifest, navigation pointers, and status surface only.
 
 ### Out of Scope
+- Rewriting child-phase plans, tasks, or checklists from this parent packet.
+- Using the parent spec as a changelog or migration-history ledger.
+- Treating parent heavy docs as the source of implementation truth.
 
-- Breaking changes to existing MCP tool contracts
-- Database schema migrations (all changes additive via feature flags)
-- Changes to the embedding provider or model
-- External service integrations beyond existing LLM API
-
-### Research Source
-
-All recommendations come from the Phase 11 research output (historical, original path `019-deep-research-rag-improvement` no longer exists).
+### Files to Change
+| File Path | Change Type | Phase | Description |
+|-----------|-------------|-------|-------------|
+| `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/spec.md` | Modify/Create | parent | Lean phase-parent specification and child manifest |
+| `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/description.json` | Modify | parent | Refresh save metadata for the migration pass |
+| `.opencode/specs/system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/graph-metadata.json` | Modify | parent | Refresh derived child pointers and save timestamp |
 <!-- /ANCHOR:scope -->
 
-<!-- ANCHOR:phase-map -->
-## 4. PHASE DOCUMENTATION MAP
+---
 
-| Phase | Folder | Focus | Recommendations | Status |
-|-------|--------|-------|-----------------|--------|
-| 1 | `001-fusion-scoring-intelligence/` | Fusion calibration, shadow labs, learned weights | #1, #8, #9, #22, #23, #28 | Implemented |
-| 2 | `002-query-intelligence-reformulation/` | Decomposition, concept routing, LLM reformulation | #10, #11, #12, #24, #25 | Implemented |
-| 3 | `003-graph-augmented-retrieval/` | Typed traversal, graph lifecycle, signal calibration | #4, #5, #13, #14, #15, #29 | Implemented |
-| 4 | `004-feedback-quality-learning/` | Event ledger, FSRS hybrid, reconsolidation, shadow scoring | #2, #3, #7, #19, #20, #21 | Implemented |
-| 5 | `005-retrieval-ux-presentation/` | Recovery UX, explainability, confidence, progressive disclosure | #6, #16, #17, #18, #26, #27 | Implemented |
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+| 001 | `001-fusion-scoring-intelligence/` | Fusion Scoring Intelligence: Fusion & Scoring Intelligence | draft |
+| 002 | `002-query-intelligence-reformulation/` | Query Intelligence Reformulation: Query Intelligence & Reformulation | draft |
+| 003 | `003-graph-augmented-retrieval/` | Graph Augmented Retrieval: Graph-Augmented Retrieval | draft |
+| 004 | `004-feedback-quality-learning/` | Feedback Quality Learning: Feedback & Quality Learning | draft |
+| 005 | `005-retrieval-ux-presentation/` | Retrieval Ux Presentation: Retrieval UX & Result Presentation | draft |
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins.
+- Parent spec tracks aggregate progress via this map.
+- Use `/spec_kit:resume system-spec-kit/022-hybrid-rag-fusion/001-hybrid-rag-fusion-epic/011-research-based-refinement/NNN-phase/` to resume a specific phase.
+- Run `validate.sh --recursive` on the parent to validate all phases as an integrated unit.
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+| 001 | 002 | 001-fusion-scoring-intelligence is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `001-fusion-scoring-intelligence/` |
+| 002 | 003 | 002-query-intelligence-reformulation is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `002-query-intelligence-reformulation/` |
+| 003 | 004 | 003-graph-augmented-retrieval is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `003-graph-augmented-retrieval/` |
+| 004 | 005 | 004-feedback-quality-learning is validated and its child packet state is recorded. | `validate.sh --strict --no-recursive` on `004-feedback-quality-learning/` |
+| 005 | Complete | Child packet validates and records implementation state. | `validate.sh --strict --no-recursive` on `005-retrieval-ux-presentation/` |
 <!-- /ANCHOR:phase-map -->
 
-<!-- ANCHOR:requirements -->
-## 5. REQUIREMENTS
-
-| ID | Requirement | Phase | Priority |
-|----|-------------|-------|----------|
-| REQ-011-001 | Implement D1 fusion calibration and scoring intelligence (6 items) | 001 | P1 |
-| REQ-011-002 | Implement D2 query intelligence and reformulation (5 items) | 002 | P1 |
-| REQ-011-003 | Implement D3 graph-augmented retrieval improvements (6 items) | 003 | P1 |
-| REQ-011-004 | Implement D4 feedback loops and quality learning (6 items) | 004 | P0 |
-| REQ-011-005 | Implement D5 retrieval UX and result presentation (6 items) | 005 | P1 |
-| REQ-011-006 | All 29 recommendations covered with no orphans | All | P0 |
-| REQ-011-007 | All new features gated behind feature flags | All | P0 |
-| REQ-011-008 | Simple-query fast path latency preserved (sub-second p95) | All | P0 |
-<!-- /ANCHOR:requirements -->
-
-<!-- ANCHOR:success-criteria -->
-## 6. SUCCESS CRITERIA
-
-- SC-011-001: All 5 child specs implemented and validated
-- SC-011-002: 29/29 recommendations have corresponding code changes
-- SC-011-003: 28 feature flags created and documented
-- SC-011-004: MRR@5, NDCG@10, Recall@20, HitRate@1 measured pre/post per dimension
-- SC-011-005: Simple-query p95 latency unchanged (regression test)
-- SC-011-006: All existing tests pass (4876+ test suite)
-
-### Acceptance Scenarios
-
-- **Given** the refinement packet is validated, **when** a reviewer opens the parent spec, **then** all 29 recommendations map cleanly to child phases with no orphan work.
-- **Given** the refinement fixes are delivered, **when** feature flags remain enabled selectively, **then** graduated behavior stays server-gated and reversible.
-- **Given** runtime and test updates changed across waves, **when** verification evidence is reviewed, **then** the packet still points to current tests and build outputs.
-- **Given** release alignment normalizes this packet, **when** strict validation runs, **then** the documentation structure matches the active Level 2 template.
-
-<!-- /ANCHOR:success-criteria -->
-
-<!-- ANCHOR:risks -->
-## 7. RISKS & DEPENDENCIES
-
-| Type | Item | Impact | Mitigation |
-|------|------|--------|------------|
-| Dependency | D1 needs D3 graph signals for query-aware graph weight | D1 Phase C blocked | Execute D3 Phase A in Wave 1 |
-| Dependency | D1 needs D4 judged data for learned weights | D1 Phase D blocked | Execute D4 Phase A in Wave 1 |
-| Dependency | D5 needs D1 channel attribution for explainability | D5 Phase B blocked | Execute D1 Phase A in Wave 1 |
-| Risk | Small corpus size may cause overfitting in learned features | Medium | Use regularization, holdout evaluation, shadow scoring |
-| Risk | LLM reformulation adds latency to query path | Medium | Gate to deep/complex queries only; cache results |
-| Risk | Graph enrichment may flood graph with noise | Medium | Density guards, denylists, `created_by='auto'` tagging |
-<!-- /ANCHOR:risks -->
-
-### Related Documents
-
-- [Parent Spec](../spec.md) — Epic coordination
-- [Parent Plan](../plan.md) — Epic plan
-- Research source was in the Phase 11 scratch artifacts (original path `019-deep-research-rag-improvement/scratch/` no longer exists).
-- [Plan](plan.md) — Cross-phase implementation waves
-- [Tasks](tasks.md) — Cross-phase tracking
-- [Checklist](checklist.md) — Parent verification
-
-<!--
-LEVEL 2 SPEC — Phase 11 of epic
-- Parent phase with 5 children (D1-D5)
-- 29 research recommendations from 5 GPT 5.4 agents
-- Research-based calibration and improvements
--->
+---
 
 <!-- ANCHOR:questions -->
-## 10. OPEN QUESTIONS
+## 4. OPEN QUESTIONS
 
-None at this time.
+- Should any child packet status in the phase map be reclassified beyond the implementation-summary heuristic?
+- Does this parent packet need additional navigation references outside the lean trio for future resume flows?
 <!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase `spec.md`, `plan.md`, and `tasks.md`.
+- **Parent packet metadata**: See `description.json` and `graph-metadata.json` for save lineage and active-child pointers.
