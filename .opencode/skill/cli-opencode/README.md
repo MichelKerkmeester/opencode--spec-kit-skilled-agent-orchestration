@@ -53,7 +53,7 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 |----------|-------|---------|
 | **Use cases** | 3 | External runtime, in-OpenCode parallel detached, cross-AI handback |
 | **Self-invocation layers** | 3 | Env var, process ancestry, lock-file probe |
-| **Default invocation** | `--model github-copilot/claude-sonnet-4.6 --agent general --variant high --format json` | Pinned shape for routine dispatches; GitHub Copilot is the default provider |
+| **Default invocation** | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` | Pinned shape for routine dispatches; GitHub Copilot is the default provider — `gpt-5.5` (default) and `claude-sonnet-4.6` are the only Copilot models surfaced by name |
 | **Supported providers** | 3 | `github-copilot` (DEFAULT), `opencode-go`, `deepseek` |
 | **References** | 4 | cli_reference, integration_patterns, opencode_tools, agent_delegation |
 | **Assets** | 2 | prompt_quality_card, prompt_templates (13 templates) |
@@ -121,7 +121,7 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "live O
 
 ```bash
 opencode run \
-  --model github-copilot/claude-sonnet-4.6 \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --format json \
@@ -133,7 +133,7 @@ opencode run \
 
 ```bash
 opencode run --share --port 4096 \
-  --model github-copilot/claude-sonnet-4.6 \
+  --model github-copilot/gpt-5.5 \
   --agent deep-research \
   --variant high \
   --format json \
@@ -176,18 +176,12 @@ The skill ships with three providers — `github-copilot` (DEFAULT), `opencode-g
 
 | Provider | Model id | Variant range | Default for cli-opencode? |
 |----------|----------|---------------|---------------------------|
-| github-copilot | `github-copilot/claude-sonnet-4.6` | minimal / low / medium / high / max | YES (DEFAULT) |
-| github-copilot | `github-copilot/claude-opus-4.7` | minimal / low / medium / high / max | No (deeper reasoning) |
-| github-copilot | `github-copilot/claude-haiku-4.5` | minimal / low / medium / high | No (fast / cheap) |
-| github-copilot | `github-copilot/gpt-5.4` | minimal / low / medium / high / xhigh | No (codex-style code gen) |
-| github-copilot | `github-copilot/gpt-5.5` | minimal / low / medium / high / xhigh | No (newer GPT) |
-| github-copilot | `github-copilot/gemini-2.5-pro` | minimal / low / medium / high | No (long context via Copilot) |
+| github-copilot | `github-copilot/gpt-5.5` | minimal / low / medium / high / xhigh | YES (DEFAULT) |
+| github-copilot | `github-copilot/claude-sonnet-4.6` | minimal / low / medium / high / max | No (Anthropic alternative for balanced reasoning, code review) |
 | opencode-go | `opencode-go/deepseek-v4-pro` | provider-specific (variant flag accepted) | No (DeepSeek via OpenCode Go gateway) |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | No (lower-tier sibling for cost/latency) |
 | opencode-go | `opencode-go/glm-5.1`, `opencode-go/kimi-k2.6`, `opencode-go/qwen3.6-plus` | provider-specific | No (alternative open models) |
 | deepseek | `deepseek/deepseek-v4-pro` | reasoning effort accepted | No (direct DeepSeek API — bypasses opencode-go) |
-| deepseek | `deepseek/deepseek-reasoner` | reasoning effort accepted | No (R1-style step-by-step) |
-| deepseek | `deepseek/deepseek-chat` | non-reasoning (variant ignored) | No (fast chat) |
 | deepseek | `deepseek/deepseek-v4-flash` | non-reasoning | No (latency-optimized) |
 
 #### Core Flags
@@ -264,12 +258,12 @@ OpenCode resolves credentials through configured providers. Use `opencode provid
 
 ### Model Defaults
 
-cli-opencode defaults to `github-copilot/claude-sonnet-4.6 --variant high` for cross-AI dispatches. GitHub Copilot is the default provider — it ships pre-authenticated for active subscribers, exposes the broadest model surface (Claude / GPT / Gemini under one OAuth token), and `claude-sonnet-4.6` provides balanced reasoning for routine cli-opencode tasks. Override per invocation:
+cli-opencode defaults to `github-copilot/gpt-5.5 --variant high` for cross-AI dispatches. GitHub Copilot is the default provider — it ships pre-authenticated for active subscribers and `gpt-5.5` is the newest GPT for complex implementation work. Only two Copilot models are surfaced by name: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative for balanced reasoning, code review). Override per invocation:
 
 ```bash
-# Switch to deeper Claude reasoning
+# Switch to the Anthropic alternative
 opencode run \
-  --model github-copilot/claude-opus-4.7 \
+  --model github-copilot/claude-sonnet-4.6 \
   --variant high \
   --agent general \
   --format json \
@@ -285,9 +279,9 @@ opencode run \
   --dir /repo \
   "<prompt>"
 
-# Use the DeepSeek direct API (R1-style step-by-step reasoning)
+# Use the DeepSeek direct API (bypasses opencode-go gateway)
 opencode run \
-  --model deepseek/deepseek-reasoner \
+  --model deepseek/deepseek-v4-pro \
   --variant high \
   --agent general \
   --format json \
@@ -443,8 +437,8 @@ A: Three layers (per ADR-001). Layer 1 checks for any `OPENCODE_*` env var. Laye
 **Q: Which model should I default to?**
 A: `opencode-go/deepseek-v4-pro` with `--variant high`. cli-opencode dispatches typically benefit from elevated reasoning because the dispatched session has full project context.
 
-**Q: Can I use OpenAI or Google models?**
-A: Yes — pass `--model openai/gpt-5.5` or `--model google/gemini-2.5-pro`. Run `opencode models <provider>` to enumerate.
+**Q: Which providers does this skill support?**
+A: Three: `github-copilot` (default — `gpt-5.5` and `claude-sonnet-4.6`), `opencode-go` (DeepSeek and other open models via the OpenCode Go gateway), and `deepseek` (direct DeepSeek API). Run `opencode models <provider>` to enumerate the live model list per install.
 
 ### Sessions
 

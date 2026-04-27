@@ -1,9 +1,9 @@
 ---
-title: "CO-011 -- Google provider (gemini-2.5-pro)"
-description: "This scenario validates the Google provider for `CO-011`. It focuses on confirming `--model google/gemini-2.5-pro --variant high` runs successfully via the Google provider plugin and supports a long-context summarization task."
+title: "CO-011 -- deepseek direct API (deepseek-v4-pro)"
+description: "This scenario validates the deepseek direct API provider for `CO-011`. It focuses on confirming `--model deepseek/deepseek-v4-pro --variant high` runs successfully via the direct deepseek provider (bypasses opencode-go) and produces a coherent response."
 ---
 
-# CO-011 -- Google provider (gemini-2.5-pro)
+# CO-011 -- deepseek direct API (deepseek-v4-pro)
 
 This document captures the realistic user-testing contract, current behavior, execution flow, source anchors and metadata for `CO-011`.
 
@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates Google provider for `CO-011`. It focuses on confirming `--model google/gemini-2.5-pro --variant high` runs successfully through the Google provider plugin and supports the long-context summarization use case documented in `references/cli_reference.md` §5 (model selection table).
+This scenario validates the deepseek direct API for `CO-011`. It focuses on confirming `--model deepseek/deepseek-v4-pro --variant high` runs successfully through the direct DeepSeek provider — bypassing the opencode-go gateway — and produces a coherent response. The direct deepseek provider is the third surface alongside `github-copilot` and `opencode-go` in the cli-opencode skill model selection table.
 
 ### Why This Matters
 
-The Google provider is the third documented provider in the cli-opencode skill (alongside Anthropic and OpenAI). Its primary use case is long-context tasks (web research, multi-file summarization). If the Google provider plugin does not load or the model id is not resolved correctly, operators lose access to Gemini's long-context advantage from inside an OpenCode dispatch. This test proves the Google provider works for a representative summarization request.
+The cli-opencode skill supports three providers: `github-copilot` (default), `opencode-go` (gateway routing for DeepSeek and other open models), and `deepseek` (direct DeepSeek API). The direct path matters when the operator wants the DeepSeek model without the opencode-go middleware (different latency, different rate limits, separate credentials). If `--model deepseek/deepseek-v4-pro` silently falls back to opencode-go's `opencode-go/deepseek-v4-pro` or fails resolution, the documented direct-API surface is broken and operators cannot bypass the gateway.
 
 ---
 
@@ -23,13 +23,13 @@ The Google provider is the third documented provider in the cli-opencode skill (
 
 Operators run the exact prompt and command sequence for `CO-011` and confirm the expected signals without contradictory evidence.
 
-- Objective: Confirm `--model google/gemini-2.5-pro --variant high` resolves correctly via the Google provider and produces a coherent summarization response.
-- Real user request: `Run opencode run with Google Gemini 2.5 pro and have it summarize a small attached markdown file. Confirm the model id in the JSON event stream is gemini-2.5-pro and the summary is coherent.`
-- Prompt: `As an external-AI conductor exercising the Google provider, dispatch --model google/gemini-2.5-pro --variant high with -f attached to a short markdown file and ask the session to summarize it in one paragraph. Verify the dispatch exits 0, the JSON event stream identifies the model as gemini-2.5-pro, and the summary references content from the attachment. Return a concise pass/fail verdict naming the resolved model id and one quoted phrase from the summary.`
-- Expected execution process: External-AI orchestrator writes a small markdown file with a unique phrase, dispatches with the Google provider override and -f attachment, captures the response, validates the summary references the unique phrase and validates the model id in session.completed.
-- Expected signals: Dispatch exits 0. Session.completed references `gemini-2.5-pro`. Summary mentions the unique phrase from the attachment. Runtime under 120 seconds.
-- Desired user-visible outcome: Verdict naming the model id, the unique phrase and the summary length.
-- Pass/fail: PASS if exit 0 AND model is `gemini-2.5-pro` AND summary references the unique attachment phrase. FAIL if model resolves differently, summary is generic or dispatch fails.
+- Objective: Confirm `--model deepseek/deepseek-v4-pro --variant high` resolves correctly via the direct deepseek provider and produces a coherent response, validating the provider is registered and reachable independent of opencode-go.
+- Real user request: `Run opencode run with the direct DeepSeek API (deepseek/deepseek-v4-pro, not the opencode-go gateway) and have it answer a small implementation-planning question. Confirm the model id in the JSON event stream is deepseek-v4-pro and the response is coherent.`
+- Prompt: `As an external-AI conductor exercising the direct deepseek provider, dispatch --model deepseek/deepseek-v4-pro --variant high with a small implementation-planning prompt. Verify the dispatch exits 0, the JSON event stream identifies the model as deepseek-v4-pro, and the response is a coherent paragraph (not empty, not an error). Return a concise pass/fail verdict naming the resolved model id and one quoted sentence from the response.`
+- Expected execution process: External-AI orchestrator dispatches with `--model deepseek/deepseek-v4-pro --variant high` plus a planning prompt, captures the JSON event stream, parses the session.completed event for the model identifier and inspects the response for coherence.
+- Expected signals: Dispatch exits 0. Session.completed references `deepseek-v4-pro`. Response is non-empty and coherent. Runtime under 180 seconds.
+- Desired user-visible outcome: Verdict naming the resolved model id and one quoted sentence from the response.
+- Pass/fail: PASS if exit 0 AND model is `deepseek-v4-pro` AND response is non-empty and coherent. FAIL if model resolves differently, response is empty/an error, or dispatch fails.
 
 ---
 
@@ -38,18 +38,18 @@ Operators run the exact prompt and command sequence for `CO-011` and confirm the
 ### Recommended Orchestration Process
 
 1. Restate the user request in plain user language.
-2. Write a small markdown file with a uniquely-named technical concept.
-3. Dispatch with the explicit Google provider override and -f attachment.
-4. Validate the response references the unique phrase and the model id.
-5. Return a verdict naming the model id and one quoted phrase.
+2. Dispatch with `--model deepseek/deepseek-v4-pro --variant high` plus a planning prompt.
+3. Parse the JSON event stream and extract the model identifier from session.completed.
+4. Confirm the response is non-empty and coherent.
+5. Return a verdict naming model id with a quoted excerpt.
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CO-011 | Google provider (gemini-2.5-pro) | Confirm `--model google/gemini-2.5-pro --variant high` resolves and produces a summary referencing attached content | `As an external-AI conductor exercising the Google provider, dispatch --model google/gemini-2.5-pro --variant high with -f attached to a short markdown file and ask the session to summarize it in one paragraph. Verify the dispatch exits 0, the JSON event stream identifies the model as gemini-2.5-pro, and the summary references content from the attachment. Return a concise pass/fail verdict naming the resolved model id and one quoted phrase from the summary.` | 1. `bash: printf '# Quantum Snowflake Algorithm CO011\n\nThe quantum snowflake algorithm is a fictional sorting strategy that uses superposition over six branches. Its key invariant is the snowflake symmetry property which guarantees O(log n) collisions per branch.\n' > /tmp/co-011-doc.md && cat /tmp/co-011-doc.md` -> 2. `bash: opencode run --model google/gemini-2.5-pro --agent general --variant high --format json --dir "$(pwd)" -f /tmp/co-011-doc.md "Summarize the attached markdown file in one short paragraph. Mention the algorithm name explicitly." > /tmp/co-011-events.jsonl 2>&1` -> 3. `bash: echo "Exit: $?"` -> 4. `bash: jq -r 'select(.type == "session.completed") \| .payload' /tmp/co-011-events.jsonl \| grep -ciE 'gemini-2.5-pro'` -> 5. `bash: jq -r 'select(.type == "message.delta" or .type == "session.completed") \| .payload' /tmp/co-011-events.jsonl \| grep -ciE '(quantum snowflake\|snowflake algorithm\|CO011)'` | Step 1: doc.md written and confirmed via cat; Step 2: events captured non-empty; Step 3: exit 0; Step 4: gemini-2.5-pro identified in session.completed; Step 5: summary mentions the unique phrase (count >= 1) | `/tmp/co-011-doc.md`, `/tmp/co-011-events.jsonl`, terminal grep output | PASS if exit 0 AND model id is gemini-2.5-pro AND summary references the unique phrase; FAIL if any check fails | 1. If dispatch fails with `provider/model not found`, run `opencode providers` to confirm Google is registered and authenticated (`auth login google`); 2. If summary is generic, the attachment may have been silently dropped — verify with `--print-logs --log-level DEBUG` and look for an attachment confirmation event; 3. If model id is missing from JSON, fall back to `opencode models google` to confirm `gemini-2.5-pro` is the correct slug; 4. If `GOOGLE_API_KEY` (or equivalent) is missing, the Google provider fails at session start |
+| CO-011 | deepseek direct API (deepseek-v4-pro) | Confirm `--model deepseek/deepseek-v4-pro --variant high` resolves via the direct deepseek provider and produces a coherent response | `As an external-AI conductor exercising the direct deepseek provider, dispatch --model deepseek/deepseek-v4-pro --variant high with a small implementation-planning prompt. Verify the dispatch exits 0, the JSON event stream identifies the model as deepseek-v4-pro, and the response is a coherent paragraph (not empty, not an error). Return a concise pass/fail verdict naming the resolved model id and one quoted sentence from the response.` | 1. `bash: opencode run --model deepseek/deepseek-v4-pro --agent general --variant high --format json --dir "$(pwd)" "Plan a three-step migration sequence for adding a NOT NULL column with a default value to a 1M-row PostgreSQL table without taking the table offline. Be concise but specific about each step." > /tmp/co-011-events.jsonl 2>&1` -> 2. `bash: echo "Exit: $?"` -> 3. `bash: jq -r 'select(.type == "session.completed") \| .payload' /tmp/co-011-events.jsonl \| grep -ciE 'deepseek-v4-pro'` -> 4. `bash: jq -r 'select(.type == "message.delta" or .type == "session.completed") \| .payload' /tmp/co-011-events.jsonl \| wc -c` | Step 1: events captured non-empty; Step 2: exit 0; Step 3: deepseek-v4-pro identified in session.completed (count >= 1); Step 4: response byte count > 400 (coherent paragraph, not empty / error) | `/tmp/co-011-events.jsonl`, terminal grep counts | PASS if exit 0 AND model id is deepseek-v4-pro AND response > 400 bytes; FAIL if any check fails | 1. If dispatch fails with `provider/model not found`, run `opencode providers` to confirm direct `deepseek` is registered (separate from `opencode-go`) and authenticated (`opencode providers login deepseek`); 2. If `DEEPSEEK_API_KEY` is missing, the direct provider fails at session start — set the env var and retry; 3. If model id is missing from JSON, fall back to `--print-logs --log-level DEBUG` and look for the resolution event to confirm the dispatch went through `deepseek/` and not `opencode-go/`; 4. If response is empty or an error, re-run with `--print-logs --log-level DEBUG` to capture the upstream error |
 
 ### Optional Supplemental Checks
 
-For long-context validation, swap the small attachment for a large multi-paragraph file (e.g., a copy of a SKILL.md) and confirm the summary still captures the unique phrase. This stress-tests the long-context value prop the Google provider is documented for.
+For provider-isolation validation, also dispatch the same prompt against `--model opencode-go/deepseek-v4-pro` and confirm the resolved provider differs (deepseek vs opencode-go) even though both touch the same DeepSeek model id. This proves the two providers are independent surfaces, not aliases.
 
 ---
 
@@ -60,14 +60,14 @@ For long-context validation, swap the small attachment for a large multi-paragra
 | File | Role |
 |---|---|
 | `manual_testing_playbook.md` | Root directory page and scenario summary |
-| `../../references/cli_reference.md` (§5 MODEL SELECTION, Google row) | Google model id and variant range |
+| `../../references/cli_reference.md` (§5 MODEL SELECTION) | Provider table includes deepseek direct API alongside opencode-go and github-copilot |
 
 ### Implementation And Test Anchors
 
 | File | Role |
 |---|---|
-| `../../SKILL.md` | §3 model selection table (Google row) |
-| `../../references/cli_reference.md` | §5 Google variant values, model use case (Web research, long context) |
+| `../../SKILL.md` | §3 user override table — deepseek direct API as third provider surface |
+| `../../references/cli_reference.md` | §5 deepseek model ids (`deepseek-v4-pro`, `deepseek-v4-flash`) and reasoning-effort variant range |
 
 ---
 
@@ -76,4 +76,4 @@ For long-context validation, swap the small attachment for a large multi-paragra
 - Group: Multi-Provider
 - Playbook ID: CO-011
 - Canonical root source: `manual_testing_playbook.md`
-- Feature file path: `03--multi-provider/003-google-gemini-2-5-pro.md`
+- Feature file path: `03--multi-provider/003-deepseek-direct-api.md`

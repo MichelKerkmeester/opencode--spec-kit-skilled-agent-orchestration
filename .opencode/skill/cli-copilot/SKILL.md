@@ -188,13 +188,14 @@ Spec Kit uses the supported file-based workaround: the repository `userPromptSub
 
 ### Model Selection
 
-Copilot CLI supports 5 recommended models across 3 providers:
+Copilot CLI supports 6 recommended models across 3 providers. **`gpt-5.4` is the skill default** — frontier reasoning with configurable effort levels; override per invocation with `--model`.
 
 | Model | ID | Provider |
 |-------|----|----------|
-| **GPT-5.4** | `gpt-5.4` | OpenAI |
+| **GPT-5.4** (DEFAULT) | `gpt-5.4` | OpenAI |
+| **GPT-5.5** | `gpt-5.5` | OpenAI |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI |
-| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic |
+| **Claude Opus 4.7** | `claude-opus-4.7` | Anthropic |
 | **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic |
 | **Gemini 3.1 Pro Preview** | `gemini-3.1-pro-preview` | Google |
 
@@ -211,7 +212,8 @@ Copilot CLI supports 5 recommended models across 3 providers:
 
 | Model | Supported Levels | Default |
 |-------|-----------------|---------|
-| `gpt-5.4` | low, medium, high, **xhigh** | high |
+| `gpt-5.4` (skill default) | low, medium, high, **xhigh** | high |
+| `gpt-5.5` | low, medium, high, **xhigh** | high |
 | `gpt-5.3-codex` | low, medium, high, xhigh | high |
 | `gpt-5.1-codex-max` | low, medium, high, xhigh | high |
 | `gpt-5.1-codex` | low, medium, high | medium |

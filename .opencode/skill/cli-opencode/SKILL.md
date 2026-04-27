@@ -197,7 +197,6 @@ opencode run \
 | (nothing specified) | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` |
 | "Use copilot gpt-5.5 high" | `--model github-copilot/gpt-5.5 --agent general --variant high --format json` |
 | "Use opencode-go deepseek" | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use deepseek reasoner" | `--model deepseek/deepseek-reasoner --agent general --variant high --format json` |
 | "Use deepseek v4 pro" | `--model deepseek/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use the deep-research subagent loop" | `--model github-copilot/gpt-5.5 --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
@@ -239,10 +238,8 @@ The skill supports three providers. Run `opencode providers list` to confirm cre
 | opencode-go | `opencode-go/deepseek-v4-pro` | `--variant` accepted; effect depends on opencode-go routing | Deep reasoning at low cost via the OpenCode Go gateway |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | Lower-tier sibling for cost/latency |
 | opencode-go | `opencode-go/glm-5.1`, `opencode-go/kimi-k2.6`, `opencode-go/qwen3.6-plus` | provider-specific | Alternative open models routed through opencode-go |
-| deepseek (direct API) | `deepseek/deepseek-v4-pro` | `--variant` accepted on reasoner-class models | Direct DeepSeek API — bypasses opencode-go routing |
-| deepseek | `deepseek/deepseek-reasoner` | reasoning effort accepted | Step-by-step reasoning chains |
-| deepseek | `deepseek/deepseek-chat` | non-reasoning (variant ignored) | General chat / fast responses |
-| deepseek | `deepseek/deepseek-v4-flash` | same | Latency-optimized sibling |
+| deepseek (direct API) | `deepseek/deepseek-v4-pro` | `--variant` accepted | Direct DeepSeek API — bypasses opencode-go routing |
+| deepseek | `deepseek/deepseek-v4-flash` | non-reasoning (variant ignored) | Latency-optimized sibling |
 
 `opencode models <provider>` enumerates the live model list per provider. The skill defaults to `github-copilot/gpt-5.5 --variant high` because GitHub Copilot ships pre-authenticated for users with an active subscription and exposes the broadest model surface; routine cli-opencode tasks benefit from elevated reasoning. Only two Copilot models are surfaced by name: `gpt-5.5` (default) and `claude-sonnet-4.6` (Anthropic alternative).
 
@@ -324,7 +321,7 @@ opencode run \
 
 # 6. DeepSeek direct API — bypasses opencode-go routing
 opencode run \
-  --model deepseek/deepseek-reasoner --agent general --variant high --format json \
+  --model deepseek/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Walk through the migration sequence for packet 047."
 
@@ -359,7 +356,7 @@ opencode run \
 
 1. Verify OpenCode CLI is installed before first invocation; confirm version baseline against v1.3.17 (drift handling per `references/cli_reference.md` §9).
 2. **Run the self-invocation guard before dispatch** (ADR-001): Layer 1 env-var lookup for any `OPENCODE_*`, Layer 2 process-ancestry probe for `opencode` parent, Layer 3 `~/.opencode/state/<id>/lock` probe. Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords.
-3. Pin model + agent + variant + format + dir explicitly. Default: `--model github-copilot/gpt-5.5 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-reasoner`).
+3. Pin model + agent + variant + format + dir explicitly. Default: `--model github-copilot/gpt-5.5 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`).
 4. Pass `--format json` unless the calling AI explicitly wants formatted output — JSON event stream is what external runtimes parse incrementally.
 5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
 6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.

@@ -153,10 +153,11 @@ The Explore agent fills a distinct niche for read-only codebase analysis. It map
 
 | Model | ID | Provider | Best For |
 |-------|----|----------|----------|
-| **GPT-5.4** | `gpt-5.4` | OpenAI | Frontier reasoning with configurable effort levels |
+| **GPT-5.4** (DEFAULT) | `gpt-5.4` | OpenAI | Default — frontier reasoning with configurable effort levels |
+| **GPT-5.5** | `gpt-5.5` | OpenAI | Newer GPT for complex implementation work |
 | **GPT-5.3-Codex** | `gpt-5.3-codex` | OpenAI | Code generation and implementation |
-| **Claude Opus 4.6** | `claude-opus-4.6` | Anthropic | Complex architecture and detailed logic |
-| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding and speed (default) |
+| **Claude Opus 4.7** | `claude-opus-4.7` | Anthropic | Complex architecture and detailed logic |
+| **Claude Sonnet 4.6** | `claude-sonnet-4.6` | Anthropic | General coding and speed |
 | **Gemini 3.1 Pro** | `gemini-3.1-pro-preview` | Google | Large context analysis |
 
 #### Core Flags
@@ -244,7 +245,7 @@ Copilot reads settings from `~/.copilot/config.json`:
 
 ```json
 {
-  "model": "claude-sonnet-4.6",
+  "model": "gpt-5.4",
   "reasoning_effort": "high"
 }
 ```
@@ -364,7 +365,7 @@ A: Yes. The standalone `copilot` binary is the current implementation. `gh copil
 A: Yes. Use `/model` in interactive mode to switch between all 5 available models from 3 providers. The selection persists to config automatically.
 
 **Q: Which model is the default?**
-A: Claude Sonnet 4.6 is the default for general coding tasks. Override with `--model` per invocation.
+A: GPT-5.5 is the default — newest GPT for complex implementation work. Override with `--model` per invocation (e.g. `--model claude-sonnet-4.6` for the Anthropic alternative).
 
 ### Cloud Delegation
 

@@ -49,7 +49,7 @@ A Claude Code CLI dispatch via `claude -p "<prompt>"` runs raw Claude with no pl
 
 ```bash
 opencode run \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --format json \
@@ -111,7 +111,7 @@ External runtimes (Claude Code, Codex, Copilot, Gemini) parse the event stream i
 ```bash
 opencode run \
   --format json \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --dir /repo \
@@ -171,7 +171,7 @@ A calling AI in one repo (e.g. a sibling project) can dispatch into a different 
 # From a session in repo A, dispatch into repo B's runtime
 opencode run \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --format json \

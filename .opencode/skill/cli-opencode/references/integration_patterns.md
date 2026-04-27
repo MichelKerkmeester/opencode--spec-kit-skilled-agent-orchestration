@@ -67,7 +67,7 @@ Memory epilogue: include MEMORY_HANDBACK delimiters at the end of the response s
 
 ```bash
 opencode run \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --format json \
@@ -191,7 +191,7 @@ Memory epilogue: include MEMORY_HANDBACK delimiters at the end so the calling ru
 
 ```bash
 opencode run \
-  --model opencode-go/deepseek-v4-pro \
+  --model github-copilot/gpt-5.5 \
   --agent general \
   --variant high \
   --format json \
