@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
-import { basename, dirname, extname, join, relative, resolve } from 'node:path';
+import { basename, extname, join, relative, resolve } from 'node:path';
 import { applyAntiStuffing } from './anti-stuffing.js';
 import { computeProvenanceFingerprint, fileDependency, workspaceRelativeFilePath, type ProvenanceBuckets } from './provenance.js';
 import { sanitizeDerivedArray } from './sanitizer.js';
@@ -42,18 +42,6 @@ const STOP_WORDS = new Set([
   'uses', 'using', 'your', 'you', 'are', 'can', 'all', 'not', 'must', 'should', 'will', 'skill',
   'skills', 'file', 'files', 'code', 'system', 'workflow', 'workflows',
 ]);
-const SOURCE_CATEGORIES: readonly DerivedSourceCategory[] = [
-  'frontmatter',
-  'headings',
-  'body',
-  'examples',
-  'references',
-  'assets',
-  'intent_signals',
-  'source_docs',
-  'key_files',
-];
-
 // ───────────────────────────────────────────────────────────────
 // 3. PARSING HELPERS
 // ───────────────────────────────────────────────────────────────

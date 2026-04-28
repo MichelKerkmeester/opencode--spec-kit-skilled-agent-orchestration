@@ -873,7 +873,6 @@ describe('structural-indexer', () => {
 
   describe('extractEdges', () => {
     it('creates CONTAINS edges for class methods', async () => {
-      const content = `class Foo {\n  bar() {}\n}`;
       // We need Python to get methods with parentName
       const pyContent = `class Foo:\n    def bar(self):\n        pass`;
       const result = await parseFile('/test.py', pyContent, 'python');

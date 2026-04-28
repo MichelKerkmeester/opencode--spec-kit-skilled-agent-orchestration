@@ -6,7 +6,8 @@
   "children_ids": [
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-feature-catalog",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-dead-code-audit"
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-dead-code-audit",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/004-dead-code-pruning"
   ],
   "manual": {
     "depends_on": [],
@@ -19,7 +20,8 @@
       "000 release cleanup",
       "001-memory-terminology",
       "002-feature-catalog",
-      "003-dead-code-audit"
+      "003-dead-code-audit",
+      "004-dead-code-pruning"
     ],
     "key_topics": [
       "000",
@@ -27,7 +29,8 @@
       "cleanup",
       "001-memory-terminology",
       "002-feature-catalog",
-      "003-dead-code-audit"
+      "003-dead-code-audit",
+      "004-dead-code-pruning"
     ],
     "importance_tier": "important",
     "status": "in_progress",
@@ -64,10 +67,10 @@
     ],
     "causal_summary": "Feature Specification: 000 Release Cleanup",
     "created_at": "2026-04-27T13:33:11Z",
-    "last_save_at": "2026-04-28T08:35:00Z",
+    "last_save_at": "2026-04-28T09:00:00Z",
     "save_lineage": "child-added",
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-dead-code-audit",
-    "last_active_at": "2026-04-28T08:35:00Z",
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/004-dead-code-pruning",
+    "last_active_at": "2026-04-28T09:00:00Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md"

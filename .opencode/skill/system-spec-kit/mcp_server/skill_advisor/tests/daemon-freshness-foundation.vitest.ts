@@ -2,7 +2,7 @@
 // MODULE: Daemon Freshness Foundation Tests
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';
 import Database from 'better-sqlite3';

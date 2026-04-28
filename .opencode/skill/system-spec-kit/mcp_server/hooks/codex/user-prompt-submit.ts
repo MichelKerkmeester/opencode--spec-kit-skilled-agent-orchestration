@@ -86,7 +86,6 @@ interface HookDiagnosticInput {
 }
 
 export const DEFAULT_CODEX_HOOK_TIMEOUT_MS = 3000;
-const DEFAULT_TOKEN_CAP = 80;
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null && !Array.isArray(value);

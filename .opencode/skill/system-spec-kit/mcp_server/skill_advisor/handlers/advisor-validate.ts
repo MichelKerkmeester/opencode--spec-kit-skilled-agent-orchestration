@@ -400,20 +400,6 @@ export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun:
   const regressionSuite = evaluateRegressionCases(loadRegressionCases(workspaceRoot), workspaceRoot);
   const outcomeSummary = summarizeAdvisorHookOutcomeRecords(workspaceRoot);
   const scopedOutcomeTotals = summarizeScopedOutcomeTotals(outcomeSummary.records, selectedSkillSlug);
-  const p0Checks = [
-    fullSlice.passed,
-    holdoutSlice.passed,
-    full.unknown <= UNKNOWN_TARGET_MAX,
-    explicitRegressions.length === 0,
-    ambiguity,
-    derivedComplete,
-    safety,
-    latency.gatePassed,
-    regressionSuite.p0PassRate >= 1.0,
-    regressionSuite.failedCount === 0,
-    regressionSuite.commandBridgeFalsePositiveRate <= 0.05,
-  ];
-  const failedCount = p0Checks.filter((passed) => !passed).length;
   const perSkill = [...full.aggregates.entries()]
     .sort(([left], [right]) => left.localeCompare(right))
     .map(([skillId, aggregate]) => ({

@@ -3,7 +3,7 @@
 // ───────────────────────────────────────────────────────────────
 
 import { resolve } from 'node:path';
-import { acquireSkillGraphLease, type SkillGraphLease } from './lease.js';
+import { acquireSkillGraphLease } from './lease.js';
 import { createSkillGraphWatcher, type SkillGraphWatcher, type SkillGraphWatcherOptions } from './watcher.js';
 import { publishSkillGraphGeneration, readSkillGraphGeneration } from '../freshness/generation.js';
 import { createTrustState, type TrustStateSnapshot } from '../freshness/trust-state.js';

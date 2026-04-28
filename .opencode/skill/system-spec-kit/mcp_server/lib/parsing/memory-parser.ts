@@ -945,11 +945,7 @@ export function hasCausalLinks(causalLinks: CausalLinks | null | undefined): boo
 
 // ───────────────────────────────────────────────────────────────
 // 4. VALIDATION FUNCTIONS
-
 // ───────────────────────────────────────────────────────────────
-function isMarkdownOrTextFile(filePath: string): boolean {
-  return /\.(md|txt)$/i.test(filePath);
-}
 
 /** Check if a file path is indexable by the memory system (spec document or constitutional memory) */
 export function isMemoryFile(filePath: string): boolean {

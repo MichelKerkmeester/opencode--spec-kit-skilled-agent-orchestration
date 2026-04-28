@@ -94,7 +94,6 @@ import { publishSkillGraphGeneration } from './skill_advisor/lib/freshness/gener
 import * as sessionBoost from './lib/search/session-boost.js';
 import * as causalBoost from './lib/search/causal-boost.js';
 import * as bm25Index from './lib/search/bm25-index.js';
-import * as memoryParser from './lib/parsing/memory-parser.js';
 import { getSpecsBasePaths } from './lib/search/folder-discovery.js';
 import {
   registerGlobalRefreshFn,

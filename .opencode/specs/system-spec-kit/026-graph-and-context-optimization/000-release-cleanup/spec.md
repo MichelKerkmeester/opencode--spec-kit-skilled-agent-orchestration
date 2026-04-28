@@ -8,6 +8,7 @@ trigger_phrases:
   - "001-memory-terminology"
   - "002-feature-catalog"
   - "003-dead-code-audit"
+  - "004-dead-code-pruning"
 importance_tier: "important"
 contextType: "implementation"
 ---
@@ -50,7 +51,7 @@ contextType: "implementation"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-This parent packet coordinates the phased work under `000 Release Cleanup` so the child packets stay discoverable and the root purpose remains clear while implementation details live below the parent level. The current child surface includes 001-memory-terminology, 002-feature-catalog, 003-dead-code-audit.
+This parent packet coordinates the phased work under `000 Release Cleanup` so the child packets stay discoverable and the root purpose remains clear while implementation details live below the parent level. The current child surface includes 001-memory-terminology, 002-feature-catalog, 003-dead-code-audit, 004-dead-code-pruning.
 
 ### Purpose
 Keep this phase-parent packet validator-compliant as a lean manifest that preserves the original purpose, lists the child phases, and leaves detailed planning, execution, and verification in the child folders.
@@ -88,7 +89,8 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 |-------|--------|-------|--------|
 | 1 | `001-memory-terminology/` | Memory→Behavioral Phrasing Audit | planned |
 | 2 | `002-feature-catalog/` | 002 Feature Catalog | unknown |
-| 3 | `003-dead-code-audit/` | Dead-code & disconnected-code audit across `system-spec-kit` + `mcp_server/`. Inventory findings; deletions deferred to a downstream remediation packet. | draft (scaffold; audit execution pending) |
+| 3 | `003-dead-code-audit/` | Dead-code & disconnected-code audit across `system-spec-kit` + `mcp_server/`. Inventory findings; deletions deferred to a downstream remediation packet. | complete |
+| 4 | `004-dead-code-pruning/` | Apply 13 high-confidence dead-code deletes from 003-audit; cascade-orphan cleanup; verify by tsc + vitest. | complete |
 
 ### Phase Transition Rules
 
@@ -103,6 +105,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 |------|-----|----------|--------------|
 | `001-memory-terminology` | `002-feature-catalog` | `001-memory-terminology` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `002-feature-catalog` |
 | `002-feature-catalog` | `003-dead-code-audit` | `002-feature-catalog` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `003-dead-code-audit` |
+| `003-dead-code-audit` | `004-dead-code-pruning` | `003-dead-code-audit` ships `dead-code-audit-report.md` with 13 high-confidence deletes; pruning packet applies them | Parent `spec.md` phase map and `graph-metadata.json` child list both include `004-dead-code-pruning` |
 <!-- /ANCHOR:phase-map -->
 
 ---

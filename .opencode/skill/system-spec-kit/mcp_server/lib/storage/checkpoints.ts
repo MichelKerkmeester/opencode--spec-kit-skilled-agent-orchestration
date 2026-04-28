@@ -29,7 +29,6 @@ import { detectCommunities, storeCommunityAssignments } from '../graph/community
 import { generateCommunitySummaries } from '../graph/community-summaries.js';
 import { storeCommunities } from '../graph/community-storage.js';
 import { snapshotDegrees } from '../graph/graph-signals.js';
-import { deleteEdgesForMemory } from './causal-edges.js';
 import { runLineageBackfill } from './lineage-state.js';
 import { isConstitutionalPath, shouldIndexForMemory } from '../utils/index-scope.js';
 
@@ -621,16 +620,6 @@ function snapshotCausalEdgesForMemoryIds(
   }
 }
 
-function deleteCausalEdgesForMemoryIds(database: Database.Database, memoryIds: number[]): void {
-  if (memoryIds.length === 0 || !tableExists(database, 'causal_edges')) {
-    return;
-  }
-
-  for (const memoryId of new Set(memoryIds.map((id) => String(id)))) {
-    deleteEdgesForMemory(memoryId);
-  }
-}
-
 function getTableSnapshotColumns(database: Database.Database, tableName: string): string[] {
   if (tableName === 'vec_memories') {
     return ['rowid', 'embedding'];
@@ -885,11 +874,9 @@ function clearTableForRestoreScope(
   }
 
   if (tableName === 'causal_edges') {
-    // T112 FIX: Use the passed `database` handle directly instead of
-    // `deleteCausalEdgesForMemoryIds` which delegates to `deleteEdgesForMemory`
-    // in causal-edges.ts. That function uses its own module-level `db` variable,
-    // not the scoped `database` parameter, causing scoped restores to delete
-    // from the wrong database handle.
+    // T112 FIX: Use the passed `database` handle directly. Delegating through
+    // module-level `db` helpers in causal-edges.ts caused scoped restores to
+    // delete from the wrong database handle.
     if (memoryIds.length > 0 && tableExists(database, 'causal_edges')) {
       const idSet = Array.from(new Set(memoryIds.map(String)));
       for (const memoryId of idSet) {
