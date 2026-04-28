@@ -31,6 +31,16 @@ _memory:
 Run a structured 4-pass audit of `.opencode/skill/system-spec-kit/` (focus: `mcp_server/`) to inventory dead and disconnected code, classify findings, and produce a single canonical `dead-code-audit-report.md`. Audit-only; deletions are downstream work.
 
 **Strategy**: build the "alive graph" first (REQ-004 reachability anchors), then run `ts-prune` + `tsc --noEmit` to surface candidates, cross-check each candidate against grep for dynamic-load patterns, classify into 4 buckets, recommend actions with safety rankings.
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript, JavaScript/CJS, Python, shell |
+| **Framework** | MCP server package plus Spec Kit CLI scripts |
+| **Storage** | Existing codebase files only; no runtime database mutation |
+| **Testing** | `tsc --noEmit`, unused-code TypeScript diagnostics, grep/path checks, stale-dist and stale-test resolvers, spec validation |
+
 <!-- /ANCHOR:summary -->
 
 ---

@@ -128,6 +128,12 @@ This packet ships the audit + report only. Actual deletions are downstream remed
 | **REQ-008** | P1 | Output MUST be a single canonical `dead-code-audit-report.md` at packet root with structured sections per category. |
 | **REQ-009** | P2 | Report SHOULD include a per-directory summary table (e.g., `mcp_server/handlers/`: 23 files, 2 dead, 1 disconnected, 0 false-positive). |
 | **REQ-010** | P2 | Report SHOULD include a tooling-and-replication appendix so a future audit can reproduce findings. |
+
+### Acceptance Scenarios
+
+**Given** the operator reviews `dead-code-audit-report.md`, **when** they inspect any finding, **then** the finding provides a scoped `.opencode/skill/system-spec-kit/` file:line citation, evidence, recommended action, and safety ranking.
+
+**Given** a future pruning packet scopes deletions from this audit, **when** it selects high-confidence delete candidates, **then** it can reproduce the alive graph and candidate sets from `audit-state.jsonl` plus the tooling appendix before touching code.
 <!-- /ANCHOR:requirements -->
 
 ---

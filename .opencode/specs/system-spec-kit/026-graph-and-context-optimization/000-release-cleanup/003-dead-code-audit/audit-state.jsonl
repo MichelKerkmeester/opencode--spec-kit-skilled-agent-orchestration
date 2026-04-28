@@ -1,0 +1,80 @@
+{"type":"phase","phase":"setup","timestamp":"2026-04-28T06:42:00Z","scope_root":".opencode/skill/system-spec-kit/","write_scope":".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-dead-code-audit/","notes":["Audit excludes third-party node_modules; owned source and generated dist files remain in scope.","No production code was modified."]}
+{"type":"tool_version","tool":"ts-prune","command":"npx ts-prune --version","status":"unavailable","evidence":"npm ENOTFOUND registry.npmjs.org under restricted network; package not installed locally"}
+{"type":"tool_version","tool":"knip","command":"npx knip --version","status":"unavailable","evidence":"npm ENOTFOUND registry.npmjs.org under restricted network; package not installed locally"}
+{"type":"tool_version","tool":"typescript","command":"npx tsc --version","status":"ok","version":"5.9.3"}
+{"type":"tool_version","tool":"ripgrep","command":"rg --version","status":"ok","version":"15.1.0"}
+{"type":"coverage","audited_code_files":2648,"by_extension":{"ts":1876,"js":676,"cjs":20,"py":10,"sh":66},"excluded":["**/node_modules/**"]}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_context","handler_path":"mcp_server/tools/context-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_search","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_quick_search","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_match_triggers","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_save","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_list","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_stats","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_health","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_delete","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_update","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_validate","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_bulk_delete","handler_path":"mcp_server/tools/memory-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"checkpoint_create","handler_path":"mcp_server/tools/checkpoint-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"checkpoint_list","handler_path":"mcp_server/tools/checkpoint-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"checkpoint_restore","handler_path":"mcp_server/tools/checkpoint-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"checkpoint_delete","handler_path":"mcp_server/tools/checkpoint-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"task_preflight","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"task_postflight","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_drift_why","handler_path":"mcp_server/tools/causal-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_causal_link","handler_path":"mcp_server/tools/causal-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_causal_stats","handler_path":"mcp_server/tools/causal-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_causal_unlink","handler_path":"mcp_server/tools/causal-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"eval_run_ablation","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"eval_reporting_dashboard","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_index_scan","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_get_learning_history","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_ingest_start","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_ingest_status","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"memory_ingest_cancel","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"session_health","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"session_resume","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"session_bootstrap","handler_path":"mcp_server/tools/lifecycle-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"code_graph_scan","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"code_graph_query","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"code_graph_status","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"code_graph_context","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"code_graph_verify","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"detect_changes","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"ccc_status","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"ccc_reindex","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"ccc_feedback","handler_path":"mcp_server/code_graph/tools/code-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"skill_graph_scan","handler_path":"mcp_server/tools/skill-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"skill_graph_query","handler_path":"mcp_server/tools/skill-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"skill_graph_status","handler_path":"mcp_server/tools/skill-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"skill_graph_validate","handler_path":"mcp_server/tools/skill-graph-tools.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"advisor_recommend","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"advisor_status","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"advisor_validate","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"deep_loop_graph_upsert","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"deep_loop_graph_query","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"deep_loop_graph_status","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"mcp_tool_registry","tool_name":"deep_loop_graph_convergence","handler_path":"mcp_server/tools/index.ts"}
+{"type":"alive_anchor","anchor":"cli_scripts","path_glob":"scripts/**/*.{ts,cjs,js,sh}","count":783,"invokers":["package.json scripts","README/SKILL command examples",".opencode/command/spec_kit/*.md"]}
+{"type":"alive_anchor","anchor":"hook_registry","loader_pattern":"external runtime command registrations plus static source imports","evidence":[".claude/settings.local.json:31",".codex/settings.json:8",".gemini/settings.json:77","mcp_server/hooks/README.md:43"]}
+{"type":"alive_anchor","anchor":"agent_command_markdown","searched_roots":[".opencode/agent/",".opencode/command/spec_kit/",".claude/agents/",".codex/agents/",".gemini/agents/"],"notable_hits":["generate-context.js","validate.sh","context-server.js","dist/hooks/*"]}
+{"type":"alive_anchor","anchor":"api_barrels","paths":["mcp_server/api/eval.ts","mcp_server/api/index.ts","mcp_server/api/indexing.ts","mcp_server/api/providers.ts","mcp_server/api/search.ts","mcp_server/api/storage.ts"]}
+{"type":"alive_anchor","anchor":"test_imports","test_files":476,"note":"Relative .js imports were resolved to paired .ts sources; imports inside string fixtures were excluded during corrected stale-test classification."}
+{"type":"candidate_set","detector":"tsc --noEmit --noUnusedLocals --noUnusedParameters","status":"exit_2_expected_for_unused_scan","count":13}
+{"type":"candidate_set","detector":"stale_scripts_dist","status":"ok","checked":244,"count":0}
+{"type":"candidate_set","detector":"stale_tests_corrected","status":"ok","test_files":476,"count":0}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/context-server.ts","line":97,"symbol":"memoryParser","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts","line":89,"symbol":"DEFAULT_TOKEN_CAP","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts","line":950,"symbol":"isMarkdownOrTextFile","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/lib/storage/checkpoints.ts","line":624,"symbol":"deleteCausalEdgesForMemoryIds","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-validate.ts","line":416,"symbol":"failedCount","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lifecycle.ts","line":6,"symbol":"SkillGraphLease","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts","line":6,"symbol":"statSync","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/extract.ts","line":6,"symbol":"dirname","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/extract.ts","line":45,"symbol":"SOURCE_CATEGORIES","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/generation.ts","line":12,"symbol":"join","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-indexer.vitest.ts","line":876,"symbol":"content","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-seed-resolver.vitest.ts","line":8,"symbol":"vi","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding","category":"dead","path":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/daemon-freshness-foundation.vitest.ts","line":5,"symbol":"existsSync","safety":"high-confidence-delete","action":"delete"}
+{"type":"finding_summary","categories":{"dead":13,"disconnected":0,"dynamic_only_reference":15,"false_positive":5},"verification":{"sample_findings_checked":10,"dead_reference_checks":5,"stale_dist":"0/244","stale_tests":"0 real broken imports after resolver correction"}}
