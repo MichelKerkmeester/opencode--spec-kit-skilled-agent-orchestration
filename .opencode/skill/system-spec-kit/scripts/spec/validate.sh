@@ -136,6 +136,7 @@ parse_args() {
 
 has_phase_children() {
     local parent_folder="$1"
+    local phase_dir
     for phase_dir in "$parent_folder"/[0-9][0-9][0-9]-*/; do
         if [[ -d "$phase_dir" ]]; then
             return 0

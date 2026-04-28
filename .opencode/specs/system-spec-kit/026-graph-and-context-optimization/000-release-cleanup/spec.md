@@ -91,6 +91,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 | 2 | `002-sk-code-opencode-alignment/` | Align `sk-code-opencode` standards, checklists, verifier guidance, and metadata with current system-spec-kit runtime behavior. | draft |
 | 3 | `003-dead-code-audit/` | Dead-code & disconnected-code audit across `system-spec-kit` + `mcp_server/`. Inventory findings; deletions deferred to a downstream remediation packet. | complete |
 | 4 | `004-dead-code-pruning/` | Apply 13 high-confidence dead-code deletes from 003-audit; cascade-orphan cleanup; verify by tsc + vitest. | complete |
+| 5 | `005-review-remediation/` | Coordinated remediation for 026 release-readiness deep-review findings, including post-program cleanup. | in_progress |
 
 ### Phase Transition Rules
 
@@ -106,6 +107,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 | `001-memory-terminology` | `002-sk-code-opencode-alignment` | `001-memory-terminology` remains discoverable and the standards-alignment successor is explicit in the parent manifest | Parent phase map and graph metadata child list both include `002-sk-code-opencode-alignment` |
 | `002-sk-code-opencode-alignment` | `003-dead-code-audit` | `sk-code-opencode` standards alignment is planned before later cleanup packets rely on those standards | Parent phase map and graph metadata child list both include `003-dead-code-audit` |
 | `003-dead-code-audit` | `004-dead-code-pruning` | `003-dead-code-audit` ships the audit report with 13 high-confidence deletes; pruning packet applies them | Parent phase map and graph metadata child list both include `004-dead-code-pruning` |
+| `004-dead-code-pruning` | `005-review-remediation` | Release-readiness review remediation follows cleanup/pruning so source-packet findings can be closed against current topology | Parent phase map and graph metadata child list both include `005-review-remediation` |
 <!-- /ANCHOR:phase-map -->
 
 ---

@@ -1,0 +1,105 @@
+# Autonomous Review → Synthesize → Implement Loop — 005 Post-Program Cleanup
+
+**GATE 3 PRE-ANSWERED — A**: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/005-post-program-cleanup` is pre-approved for the entire 3-phase autonomous workflow. DO NOT re-ask Gate 3.
+
+**TARGET AUTHORITY**: All write paths in this prompt are pre-approved under that spec folder + the 13 declared dependencies (every packet in 026 that received remediation). NO writes outside the 026 phase parent.
+
+You are dispatched to execute a full **review → synthesize → implement** autonomous loop against the post-program state of the 026 packet. The previous 6-hour deep-review program just landed (commit `8c8c3fcc4` on main). This loop closes the staleness/integration/audit gaps that the program itself introduced or didn't address.
+
+## CONTEXT
+
+The previous deep-review program closed 56/65 findings across 8 packets via 4 remediation sub-phases. Validator status post-program:
+
+- **Validator-green source packets (5)**: 008/007, 008/008, 009/002, 009/005, 006/008
+- **Validator-FAIL source packets (3)**: 005-memory-indexer-invariants, 011-mcp-runtime-stress-remediation (template debt; remediation sub-phases ARE green), 006/001 (DEFERRED — license audit P0 gates further work)
+- **Validator-green remediation sub-phases**: all 4 (001/002/003/004 under 005-review-remediation)
+
+Pre-investigation surfaced 4 leverage tiers:
+
+- **Tier A**: status/metadata staleness (refresh `derived.status` on 005, 011, 008/008; close sub-phase 001 + 004 status drift; refresh root spec.md PHASE MAP; bring 005 + 011 source packets to strict-validator green)
+- **Tier B**: cross-cutting integration consistency audit (6 new SSOT helpers + 2 fixtures from program)
+- **Tier C**: deferred (H license audit P0 + CHK-T15) — DO NOT touch; honor deferrals
+- **Tier D**: implementation summary cross-checking + `findings-rubric.json` input verification
+
+## YOUR EXECUTION CONTRACT
+
+Execute 3 phases sequentially in this single dispatch:
+
+### PHASE 1 — REVIEW
+
+Audit the post-program state across Tiers A/B/D. Tier C is OUT OF SCOPE (deferred). Surface findings as P0/P1/P2 with file:line evidence.
+
+Write `review-report.md` at `specs/.../005-post-program-cleanup/review/005-post-program-cleanup-pt-01/review-report.md` using the standard 9-section structure + Planning Packet. Adversarial Hunter→Skeptic→Referee on any P0/P1.
+
+**Specific review angles:**
+
+- **A1** Survey `derived.status` in graph-metadata.json across: 005-memory-indexer-invariants, 011-mcp-runtime-stress-remediation, 008/008-skill-graph-daemon-and-advisor-unification, 005-review-remediation/{001,002,003,004}. Flag any that don't reflect their actual completion state.
+- **A2** Confirm 005-review-remediation/{001,004} sub-phase `derived.status` is `planned` while their `implementation-summary.md` says complete with green tests. P1 if confirmed.
+- **A3** Read `026/spec.md` PHASE DOCUMENTATION MAP. Confirm 005-review-remediation isn't listed as a child of `000-release-cleanup`. P2 traceability.
+- **A4** Run `validate.sh --strict` on `005-memory-indexer-invariants` and `011-mcp-runtime-stress-remediation`. Catalog the failure modes. Same kind of template debt as fixed in the program's hygiene pass for 7 OTHER packets.
+- **B1** Audit cross-cutting consistency of the 6 new SSOT helpers introduced by the program:
+  - `mcp_server/lib/utils/index-scope.ts` `isIndexableConstitutionalMemoryPath()` (storage)
+  - `mcp_server/skill_advisor/lib/auth/trusted-caller.ts` `requireTrustedCaller()` (auth)
+  - `mcp_server/handlers/skill-graph/response-envelope.ts` `SkillGraphResponse` schema
+  - `mcp_server/skill_advisor/lib/scorer/lane-registry.ts` lane registry
+  - `mcp_server/skill_advisor/lib/compat/contract.ts` compat contract single-source
+  - `mcp_server/skill_advisor/lib/daemon/state-mutation.ts` daemon mutation helper
+  Are their patterns aligned? Naming consistency? Export shape? Discoverability (are they findable from a top-level index)?
+- **B2** Audit two new test fixtures: `mcp_server/tests/fixtures/memory-index-db.ts` and `mcp_server/tests/fixtures/skill-graph-db.ts`. Do they share infrastructure or duplicate setup? Could they be unified?
+- **B3** Run the FULL focused vitest suite (or sample 3-5 of the new regression tests) and confirm no inter-test state collisions or process leakage. The program tested focused subsets but never the full sweep with all new fixtures + tests loaded together.
+- **D1** Cross-check the 4 implementation-summary.md files (under 005-review-remediation/001/, 002/, 003/, 004/) for contradictions. E.g., do file:line citations agree across summaries when they reference the same file? Did codex's autonomous closures introduce any disposition drift between sub-phases?
+- **D2** Verify `findings-rubric.json` (002 sub-phase) — confirm the 30-cell scores actually map to data in `010-stress-test-rerun-v1-0-2/findings.md`. If any cell scores were synthesized due to gaps in the markdown narrative, that's a P1 audit issue.
+
+### PHASE 2 — SYNTHESIZE
+
+Compile a Planning Packet from the review findings. Author spec.md + plan.md + tasks.md + checklist.md at `specs/.../005-post-program-cleanup/`. Use the established L2 template structure:
+
+- ANCHOR HTML comments around all required sections
+- `_memory.continuity` blocks in plan.md and tasks.md frontmatter
+- Compact `recent_action` field (≤80 chars, non-narrative)
+- Files to Change table in spec.md §3
+- REQ-* table in spec.md §4 with severity classification
+- Phase-grouped tasks in tasks.md (T1..TN)
+
+### PHASE 3 — IMPLEMENT
+
+Execute the plan you authored in Phase 2. Each task in tasks.md is atomic; mark `[x]` with file:line evidence. Same pattern as previous remediation sub-phases.
+
+**Priority ordering:**
+
+1. Tier A4 first (validator hygiene on 005 + 011) — highest leverage, smallest blast radius
+2. Tier A1/A2 (status refreshes) — mechanical
+3. Tier A3 (root spec.md PHASE MAP update) — single edit
+4. Tier B1/B2 (cross-cutting consistency) — pattern unification IF Phase 1 surfaces real divergence
+5. Tier B3 (full test suite run) — verification only; document result
+6. Tier D1/D2 (implementation summary cross-check + rubric verification) — surface as findings if drift exists; close if findable
+
+**After all tasks complete:**
+
+- Author `implementation-summary.md` with disposition for each finding closed.
+- Update spec.md frontmatter `_memory.continuity.completion_pct: 100` and `recent_action`.
+- Run final validators on this sub-phase + the now-touched source packets (005, 011, plus any others).
+- Strict validators MUST exit 0 on this sub-phase + on 005 + on 011. Any other packet that fails → leave with rationale documented.
+
+## CRITICAL RULES
+
+- **DO NOT touch 006/001** (license audit P0 deferred).
+- **DO NOT touch CHK-T15** on 005 (live MCP rescan operator gate).
+- **DO NOT introduce new SSOT helpers** — Phase 3 work is consistency/refactor of EXISTING helpers, not adding new ones.
+- **DO NOT change the 056/065 closure tally** from the previous program — this loop only addresses post-program staleness gaps, not the original deep-review findings.
+- **PRESERVE all existing review-report.md / implementation-summary.md** content from previous sub-phases.
+- **Cite EVERY P0/P1 with file:line + Hunter→Skeptic→Referee adversarial self-check.**
+- **Test-driven**: if Tier B3 surfaces inter-test collision, write a regression test demonstrating it BEFORE attempting the fix.
+- **Halt and report** on any test/validator failure after 2 fix attempts; document in implementation-summary.md "Known Limitations".
+
+## OUTPUT CONTRACT
+
+After all 3 phases complete, the output deliverables are:
+
+1. `005-post-program-cleanup/review/.../review-report.md` (9-section + Planning Packet)
+2. `005-post-program-cleanup/{spec,plan,tasks,checklist,implementation-summary}.md` + description.json + graph-metadata.json
+3. Modified files in dependent packets per the implementation
+4. Strict-validator green status for this sub-phase + 005 + 011 + any newly-touched packet
+5. Final summary in implementation-summary.md with full disposition table
+
+GO. Take however many tool calls are needed. Single autonomous dispatch covers all 3 phases. Normal service tier — no rush, prioritize correctness.

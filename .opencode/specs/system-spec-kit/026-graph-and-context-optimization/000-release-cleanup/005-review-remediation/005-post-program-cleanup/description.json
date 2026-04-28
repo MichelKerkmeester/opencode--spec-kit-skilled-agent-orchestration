@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/005-post-program-cleanup",
+  "description": "Post-program cleanup for 026 release-remediation status drift, parent traceability, validator hygiene, B1/B2 fixture consistency audit, and D1/D2 summary/rubric verification.",
+  "keywords": [
+    "post-program-cleanup",
+    "validator-hygiene",
+    "status-drift",
+    "phase-map",
+    "review-remediation"
+  ],
+  "lastUpdated": "2026-04-28T19:26:58Z",
+  "specId": "005",
+  "folderSlug": "post-program-cleanup",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1
+}

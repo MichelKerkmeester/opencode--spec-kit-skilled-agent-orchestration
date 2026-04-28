@@ -70,7 +70,7 @@ Live scans on `026/009` surfaced `E_LINEAGE=68` errors caused by the prediction-
 
 ---
 
-## ADR-002: Track A Fix B — B2 (`fromScan` Flag Bypasses Transactional Recheck)
+### ADR-002: Track A Fix B — B2 (`fromScan` Flag Bypasses Transactional Recheck)
 
 ### Metadata
 | Field | Value |
@@ -107,7 +107,7 @@ After A2 landed, live acceptance on `026/009` showed `E_LINEAGE` → `0` but `ca
 ---
 
 <!-- ANCHOR:adr-003 -->
-## ADR-003: Shared Index-Scope Helper and Save-Time Guard (Track B SSOT)
+### ADR-003: Shared Index-Scope Helper and Save-Time Guard (Track B SSOT)
 
 ### Metadata
 | Field | Value |
@@ -145,7 +145,7 @@ Memory discovery, spec-doc classification, `isMemoryFile()`, direct saves, and c
 
 ---
 
-## ADR-004: Delete `z_future` Pollution Instead of Downgrading
+### ADR-004: Delete `z_future` Pollution Instead of Downgrading
 
 ### Metadata
 | Field | Value |
@@ -181,7 +181,7 @@ Live DB inspection showed thousands of indexed rows under `z_future`, including 
 
 ---
 
-## ADR-005: Downgrade Invalid Constitutional Saves to `important`
+### ADR-005: Downgrade Invalid Constitutional Saves to `important`
 
 ### Metadata
 | Field | Value |
@@ -214,7 +214,7 @@ The parser accepts `importanceTier: constitutional` from frontmatter anywhere, a
 
 ---
 
-## ADR-006: Keep Constitutional README Out of the Memory Index
+### ADR-006: Keep Constitutional README Out of the Memory Index
 
 ### Metadata
 | Field | Value |
@@ -251,7 +251,7 @@ The first implementation pass backfilled `.opencode/skill/system-spec-kit/consti
 
 ---
 
-## ADR-007: Wave-1 Uses SQL-Layer Tier Guards and Atomic Restore Validation
+### ADR-007: Wave-1 Uses SQL-Layer Tier Guards and Atomic Restore Validation
 
 ### Metadata
 | Field | Value |
@@ -294,7 +294,7 @@ The deep-review pass-1 found two release-blocking bypasses after the original sa
 
 ---
 
-## ADR-008: Cleanup Audits Are Durable Historical Evidence
+### ADR-008: Cleanup Audits Are Durable Historical Evidence
 
 ### Metadata
 | Field | Value |
@@ -323,7 +323,7 @@ Deep-review pass-2 found that the cleanup CLI bulk-downgraded invalid constituti
 
 ---
 
-## ADR-009: Spec-Doc Exclusions Stay Additive Around `index-scope.ts`
+### ADR-009: Spec-Doc Exclusions Stay Additive Around `index-scope.ts`
 
 ### Metadata
 | Field | Value |
@@ -352,7 +352,7 @@ Packet already established `index-scope.ts` as the canonical memory/code-graph i
 
 ---
 
-## ADR-010: Realpath Hardening Wins Over String-Normalized Paths
+### ADR-010: Realpath Hardening Wins Over String-Normalized Paths
 
 ### Metadata
 | Field | Value |
@@ -381,7 +381,7 @@ Pass-1 flagged that `memory-save.ts` and `structural-indexer.ts` used `path.reso
 
 ---
 
-## ADR-011: Cleanup Apply Builds Its Plan on the Transaction Snapshot
+### ADR-011: Cleanup Apply Builds Its Plan on the Transaction Snapshot
 
 ### Metadata
 | Field | Value |
@@ -410,7 +410,7 @@ Pass-1 flagged that `memory-save.ts` and `structural-indexer.ts` used `path.reso
 
 ---
 
-## ADR-012: Governance-Audit Actions and Tier-Downgrade Emission Are Shared Helpers
+### ADR-012: Governance-Audit Actions and Tier-Downgrade Emission Are Shared Helpers
 
 ### Metadata
 | Field | Value |

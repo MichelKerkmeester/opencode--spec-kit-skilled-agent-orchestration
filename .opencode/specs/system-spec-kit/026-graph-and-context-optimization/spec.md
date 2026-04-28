@@ -108,7 +108,7 @@ Provide one canonical 10-wrapper active map after two topical consolidation pass
 
 | Folder | Theme | Notes |
 |--------|-------|-------|
-| `000-release-cleanup-playbooks/` | Release alignment, cleanup/audit, and playbook repair/remediation (root-only Phase 5 merge) | No child phases — three former sub-packets merged into root docs. |
+| `000-release-cleanup/` | Release alignment, cleanup/audit, dead-code pruning, review remediation, and post-program cleanup | Five child phases, including `005-review-remediation/` for the 026 release-readiness deep-review remediation train. |
 | `001-research-and-baseline/` | External research, adoption decisions, and initial graph/context baselines | Original phase `001-research-graph-context-systems/` merged into the wrapper root. |
 | `002-resource-map-template/` | Resource-map template introduction, deep-loop integration, and reverse parent folder restoration | Three child phases. |
 | `003-continuity-memory-runtime/` | Cache hooks, memory quality, continuity refactor, and memory-save rewrite | Four child phases preserved intact. |

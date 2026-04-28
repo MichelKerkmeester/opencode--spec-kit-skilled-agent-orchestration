@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/005-post-program-cleanup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/005-post-program-cleanup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/001-memory-indexer-storage-boundary",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/002-mcp-stress-cycle-cleanup",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/003-skill-advisor-fail-open",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/004-tier2-remediation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "005-post-program-cleanup",
+      "026 validator hygiene",
+      "post-program status drift"
+    ],
+    "key_topics": [
+      "validator-hygiene",
+      "status-refresh",
+      "phase-map",
+      "rubric-replay"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "review/005-post-program-cleanup-pt-01/review-report.md"
+    ],
+    "entities": [],
+    "causal_summary": "Post-program cleanup packet for 026 release remediation status drift, validator hygiene, phase-map traceability, helper/fixture integration audit, and rubric replay verification.",
+    "created_at": "2026-04-28T19:26:58Z",
+    "last_save_at": "2026-04-28T19:26:58Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "review/005-post-program-cleanup-pt-01/review-report.md"
+    ]
+  }
+}

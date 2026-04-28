@@ -212,7 +212,7 @@
     ],
     "causal_summary": "The memory indexer shipped two independent but related regressions during the 026 optimization cycle. Both regressions modify the same runtime surface (`mcp_server/handlers/memory-save.ts`, `mcp_server/handlers/memory-index.ts`, `mcp_server/lib/search/vector-index-mutations.ts`, `mcp_server/lib/storage/post-insert-metadata.ts`, `mcp_server/lib/storage/checkpoints.ts`) and share the same evaluation surface, so they ship as one coordinated invariant packet under 026.",
     "created_at": "2026-04-24T17:21:38.685Z",
-    "last_save_at": "2026-04-26T09:17:15.746Z",
+    "last_save_at": "2026-04-28T19:26:58Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": [
