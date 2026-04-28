@@ -186,7 +186,8 @@ sk-code-opencode/
 │   ├── shared/
 │   │   ├── universal_patterns.md         # Naming, commenting principles (loaded always)
 │   │   ├── code_organization.md          # File structure, section conventions (loaded always)
-│   │   └── alignment_verification_automation.md  # Verifier contract and automation workflow
+│   │   ├── alignment_verification_automation.md  # Verifier contract and automation workflow
+│   │   └── hooks.md                      # Runtime hook entrypoints (Claude/Codex/Gemini/Copilot) and wiring
 │   ├── javascript/
 │   │   ├── style_guide.md                # JS box-drawing headers, 'use strict', section format
 │   │   ├── quality_standards.md          # Error handling, guard clauses, logging
@@ -418,6 +419,7 @@ A: No. This skill covers OpenCode system code: MCP servers, validators, advisors
 | Universal patterns | `.opencode/skill/sk-code-opencode/references/shared/universal_patterns.md` | Cross-language naming and commenting principles |
 | Code organization | `.opencode/skill/sk-code-opencode/references/shared/code_organization.md` | File structure and section conventions |
 | Verifier contract | `.opencode/skill/sk-code-opencode/references/shared/alignment_verification_automation.md` | Verifier output contract and automation workflow |
+| Runtime hooks | `.opencode/skill/sk-code-opencode/references/shared/hooks.md` | Runtime hook entrypoints across Claude/Codex/Gemini/Copilot and wiring rules |
 | Universal checklist | `.opencode/skill/sk-code-opencode/assets/checklists/universal_checklist.md` | Cross-language P0 quality gates |
 | sk-code-full-stack | `.opencode/skill/sk-code-full-stack/SKILL.md` | Full development lifecycle orchestration across stacks |
 | sk-code-review | `.opencode/skill/sk-code-review/SKILL.md` | Findings-first code review, severity model, merge decisions |

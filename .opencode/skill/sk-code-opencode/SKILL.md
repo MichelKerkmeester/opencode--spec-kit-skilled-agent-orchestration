@@ -520,7 +520,7 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 
 | Language   | Files                                                          |
 | ---------- | -------------------------------------------------------------- |
-| Shared     | `universal_patterns.md`, `code_organization.md`                |
+| Shared     | `universal_patterns.md`, `code_organization.md`, `hooks.md`    |
 | JavaScript | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
 | TypeScript | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
 | Python     | `style_guide.md`, `quality_standards.md`, `quick_reference.md` |
