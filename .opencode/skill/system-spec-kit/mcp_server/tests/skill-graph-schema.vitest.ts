@@ -134,6 +134,7 @@ describe('skill_graph_* dispatcher — schema and routing (T244)', () => {
     await handleTool('skill_graph_scan', { skillsRoot: '/custom/path' });
     expect(mockScan).toHaveBeenCalledWith(
       expect.objectContaining({ skillsRoot: '/custom/path' }),
+      undefined,
     );
   });
 

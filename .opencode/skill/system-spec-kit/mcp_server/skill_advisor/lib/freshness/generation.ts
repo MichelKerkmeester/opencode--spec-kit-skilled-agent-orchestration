@@ -85,7 +85,7 @@ function acquireGenerationLock(filePath: string): () => void {
         continue;
       }
       if (Date.now() - startedAt > GENERATION_LOCK_WAIT_MS) {
-        throw new Error(`Timed out acquiring skill graph generation lock: ${lockPath}`);
+        throw new Error('Timed out acquiring skill graph generation lock');
       }
     }
   }

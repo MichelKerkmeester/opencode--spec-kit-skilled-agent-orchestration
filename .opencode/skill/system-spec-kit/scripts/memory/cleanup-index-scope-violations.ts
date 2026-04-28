@@ -9,7 +9,9 @@ import { fileURLToPath } from 'node:url';
 import {
   GOVERNANCE_AUDIT_ACTIONS,
   buildGovernanceLogicalKey,
+  isIndexableConstitutionalMemoryPath,
   recordTierDowngradeAudit,
+  shouldIndexForMemory,
 } from '@spec-kit/mcp-server/api';
 import { isMainModule } from '../lib/esm-entry.js';
 
@@ -20,6 +22,9 @@ interface CountRow {
 interface MemoryIdRow {
   id: number;
   content_hash: string | null;
+  spec_folder: string | null;
+  file_path: string | null;
+  canonical_file_path: string | null;
 }
 
 interface CleanupDowngradeRow {
@@ -98,7 +103,33 @@ function countQuery(database: InstanceType<typeof Database>, sql: string, ...par
   return row?.count ?? 0;
 }
 
+function rowIndexPath(row: { file_path?: string | null; canonical_file_path?: string | null; spec_folder?: string | null }): string {
+  return row.canonical_file_path || row.file_path || row.spec_folder || '';
+}
+
+function isExcludedMemoryIndexRow(row: { file_path?: string | null; canonical_file_path?: string | null; spec_folder?: string | null }): boolean {
+  return !shouldIndexForMemory(rowIndexPath(row));
+}
+
+function allMemoryIndexRows(database: InstanceType<typeof Database>): MemoryIdRow[] {
+  return database.prepare(`
+    SELECT id, content_hash, spec_folder, file_path, canonical_file_path
+    FROM memory_index
+    ORDER BY id
+  `).all() as MemoryIdRow[];
+}
+
+function allConstitutionalRows(database: InstanceType<typeof Database>): CleanupDowngradeRow[] {
+  return database.prepare(`
+    SELECT id, spec_folder, file_path, canonical_file_path, anchor_id, importance_tier
+    FROM memory_index
+    WHERE importance_tier = 'constitutional'
+    ORDER BY id
+  `).all() as CleanupDowngradeRow[];
+}
+
 function collectSummary(database: InstanceType<typeof Database>): ViolationSummary {
+  const constitutionalRows = allConstitutionalRows(database);
   return {
     constitutionalTotal: countQuery(
       database,
@@ -116,10 +147,9 @@ function collectSummary(database: InstanceType<typeof Database>): ViolationSumma
       database,
       "SELECT COUNT(*) AS count FROM memory_index WHERE file_path LIKE '%/external/%'",
     ),
-    invalidConstitutionalRows: countQuery(
-      database,
-      "SELECT COUNT(*) AS count FROM memory_index WHERE importance_tier = 'constitutional' AND file_path NOT LIKE '%/constitutional/%'",
-    ),
+    invalidConstitutionalRows: constitutionalRows
+      .filter(row => !isIndexableConstitutionalMemoryPath(rowIndexPath(row)))
+      .length,
     gateEnforcementDuplicates: countQuery(
       database,
       "SELECT COUNT(*) AS count FROM memory_index WHERE file_path LIKE '%/constitutional/gate-enforcement.md'",
@@ -128,14 +158,7 @@ function collectSummary(database: InstanceType<typeof Database>): ViolationSumma
 }
 
 function buildPlan(database: InstanceType<typeof Database>): CleanupPlan {
-  const forbiddenRows = database.prepare(`
-    SELECT id, content_hash
-    FROM memory_index
-    WHERE file_path LIKE '%/z_future/%'
-       OR spec_folder LIKE '%z_future%'
-       OR file_path LIKE '%/external/%'
-    ORDER BY id
-  `).all() as MemoryIdRow[];
+  const forbiddenRows = allMemoryIndexRows(database).filter(isExcludedMemoryIndexRow);
 
   const duplicateRows = database.prepare(`
     SELECT id, created_at
@@ -151,13 +174,8 @@ function buildPlan(database: InstanceType<typeof Database>): CleanupPlan {
     ...duplicateOldIds,
   ]);
 
-  const downgradeRows = database.prepare(`
-    SELECT id, spec_folder, file_path, canonical_file_path, anchor_id, importance_tier
-    FROM memory_index
-    WHERE importance_tier = 'constitutional'
-      AND file_path NOT LIKE '%/constitutional/%'
-    ORDER BY id
-  `).all() as CleanupDowngradeRow[];
+  const downgradeRows = allConstitutionalRows(database)
+    .filter(row => !isIndexableConstitutionalMemoryPath(rowIndexPath(row)));
 
   return {
     forbiddenIds: forbiddenRows.map(row => row.id),

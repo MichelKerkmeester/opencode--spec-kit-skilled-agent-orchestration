@@ -71,7 +71,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 ### Track B — Index Scope and Constitutional Tier
 
 - [x] **CHK-B01** [P0] Shared helper enforces memory exclusions for `z_future`, `external`, and `z_archive`. [EVIDENCE: `lib/utils/index-scope.ts` + wiring in `memory-index-discovery.ts`, `spec-doc-paths.ts`, `memory-parser.ts`.]
-- [x] **CHK-B02** [P0] Shared helper enforces code-graph exclusions for `external` plus existing default excludes. [EVIDENCE: `code-graph/lib/indexer-types.ts` preserves legacy excludes; `structural-indexer.ts` consults `shouldIndexForCodeGraph()`.]
+- [x] **CHK-B02** [P0] Shared helper enforces code-graph exclusions for `external` plus existing default excludes. [EVIDENCE: `code_graph/lib/indexer-types.ts` preserves legacy excludes; `structural-indexer.ts` consults `shouldIndexForCodeGraph()`.]
 - [x] **CHK-B03** [P0] Save-time guard rejects excluded paths and downgrades invalid constitutional tiers. [EVIDENCE: `handlers/memory-save.ts` rejects helper-excluded paths and downgrades non-constitutional constitutional saves to `important` before DB writes.]
 - [x] **CHK-B04** [P1] Constitutional README stays excluded while constitutional rule files remain indexable. [EVIDENCE: `memory-index-discovery.ts` and `memory-parser.ts` reject README under the constitutional folder; `handler-memory-index`, `memory-parser-extended`, `full-spec-doc-indexing`, `gate-d-regression-constitutional-memory` all pass.]
 
@@ -85,8 +85,8 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 
 - [x] **CHK-W2-01** [P1] Cleanup retains historical `governance_audit` rows for deleted memories and emits `tier_downgrade_non_constitutional_path_cleanup` rows for every cleanup downgrade. [EVIDENCE: `scripts/memory/cleanup-index-scope-violations.ts`.]
 - [x] **CHK-W2-02** [P1] Spec-doc classification and discovery inherit `EXCLUDED_FOR_MEMORY` through helper calls rather than duplicated exclusion arrays. [EVIDENCE: `lib/config/spec-doc-paths.ts`, `handlers/memory-index-discovery.ts`.]
-- [x] **CHK-W2-03** [P1] Memory-save and code-graph specific-file indexing resolve symlinks before invariant checks. [EVIDENCE: `lib/utils/canonical-path.ts`, `handlers/memory-save.ts`, `code-graph/lib/structural-indexer.ts`.]
-- [x] **CHK-W2-04** [P1] Recursive walkers cap `.gitignore` reads at 1MB, stop descending past depth 20, and abort past 50,000 nodes with warnings. [EVIDENCE: `handlers/memory-index-discovery.ts`, `code-graph/lib/structural-indexer.ts`.]
+- [x] **CHK-W2-03** [P1] Memory-save and code-graph specific-file indexing resolve symlinks before invariant checks. [EVIDENCE: `lib/utils/canonical-path.ts`, `handlers/memory-save.ts`, `code_graph/lib/structural-indexer.ts`.]
+- [x] **CHK-W2-04** [P1] Recursive walkers cap `.gitignore` reads at 1MB, stop descending past depth 20, and abort past 50,000 nodes with warnings. [EVIDENCE: `handlers/memory-index-discovery.ts`, `code_graph/lib/structural-indexer.ts`.]
 - [x] **CHK-W2-05** [P2] Governance-audit action strings are centralized and operator-documented. [EVIDENCE: `lib/governance/scope-governance.ts`, `.opencode/skill/system-spec-kit/mcp_server/README.md`.]
 - [x] **CHK-W2-06** [P1] Cleanup apply rebuilds its plan inside the transaction snapshot (TOCTOU closed). [EVIDENCE: `scripts/memory/cleanup-index-scope-violations.ts:429-435`.]
 <!-- /ANCHOR:code-quality -->
@@ -146,8 +146,8 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 
 - [x] **CHK-F01** [P1] Runtime edits stay inside `mcp_server/`. [EVIDENCE: touched runtime files all live under `.opencode/skill/system-spec-kit/mcp_server/`.]
 - [x] **CHK-F02** [P1] Cleanup script stays inside `scripts/memory/`. [EVIDENCE: `scripts/memory/cleanup-index-scope-violations.ts`.]
-- [x] **CHK-F03** [P1] Packet docs stay inside the root folder (no phase folders). [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`, `graph-metadata.json` all live at `010-memory-indexer-invariants/` root.]
-- [x] **CHK-F04** [P1] Parent 026 metadata references this packet. [EVIDENCE: parent `description.json` and `graph-metadata.json` reference `010-memory-indexer-invariants`.]
+- [x] **CHK-F03** [P1] Packet docs stay inside the root folder (no phase folders). [EVIDENCE: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, `description.json`, `graph-metadata.json` all live at `005-memory-indexer-invariants/` root.]
+- [x] **CHK-F04** [P1] Parent 026 metadata references this packet. [EVIDENCE: parent `description.json` and `graph-metadata.json` reference `005-memory-indexer-invariants`.]
 <!-- /ANCHOR:file-org -->
 
 ---

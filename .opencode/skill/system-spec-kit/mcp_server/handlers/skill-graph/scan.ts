@@ -5,8 +5,11 @@
 
 import { resolve } from 'node:path';
 import { indexSkillMetadata } from '../../lib/skill-graph/skill-graph-db.js';
+import type { MCPCallerContext } from '../../lib/context/caller-context.js';
+import { requireTrustedCaller } from '../../skill_advisor/lib/auth/trusted-caller.js';
 import { computeAdvisorSourceSignature } from '../../skill_advisor/lib/freshness.js';
 import { publishSkillGraphGeneration } from '../../skill_advisor/lib/freshness/generation.js';
+import { errorResponse, okResponse, redactDiagnosticText } from './response-envelope.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -25,15 +28,21 @@ type HandlerResponse = { content: Array<{ type: string; text: string }> };
 /** Handle skill_graph_scan tool call */
 export async function handleSkillGraphScan(
   args: ScanArgs,
+  callerContext?: MCPCallerContext | null,
 ): Promise<HandlerResponse> {
   try {
+    const trustedCaller = requireTrustedCaller(callerContext);
+    if (!trustedCaller.ok) {
+      return errorResponse(trustedCaller.error, trustedCaller.code);
+    }
+
     const cwd = process.cwd();
     const skillsRoot = resolve(cwd, args.skillsRoot ?? '.opencode/skill');
 
     // Workspace escape guard: resolved path must stay under cwd
     if (!skillsRoot.startsWith(cwd + '/') && skillsRoot !== cwd) {
       return errorResponse(
-        `Refusing to scan outside workspace: ${skillsRoot} is not under ${cwd}`,
+        `Refusing to scan outside workspace: ${redactDiagnosticText(skillsRoot)} is not under ${redactDiagnosticText(cwd)}`,
       );
     }
 
@@ -53,29 +62,7 @@ export async function handleSkillGraphScan(
     });
   } catch (err: unknown) {
     return errorResponse(
-      `Skill graph scan failed: ${err instanceof Error ? err.message : String(err)}`,
+      `Skill graph scan failed: ${redactDiagnosticText(err instanceof Error ? err.message : String(err))}`,
     );
   }
-}
-
-// ───────────────────────────────────────────────────────────────
-// 3. RESPONSE HELPERS
-// ───────────────────────────────────────────────────────────────
-
-function okResponse(data: Record<string, unknown>): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'ok', data }),
-    }],
-  };
-}
-
-function errorResponse(error: string): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'error', error }),
-    }],
-  };
 }

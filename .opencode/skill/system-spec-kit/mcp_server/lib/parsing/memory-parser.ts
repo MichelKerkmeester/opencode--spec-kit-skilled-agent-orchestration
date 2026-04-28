@@ -22,7 +22,7 @@ import {
   matchesSpecDocumentPath,
   SPEC_DOCUMENT_FILENAMES,
 } from '../config/spec-doc-paths.js';
-import { isConstitutionalPath, shouldIndexForMemory } from '../utils/index-scope.js';
+import { isIndexableConstitutionalMemoryPath, shouldIndexForMemory } from '../utils/index-scope.js';
 import {
   graphMetadataToIndexableText,
   packetReferencesToCausalLinks,
@@ -967,9 +967,8 @@ export function isMemoryFile(filePath: string): boolean {
   // Constitutional memories in skill folder
   const isConstitutional = (
     normalizedPath.endsWith('.md') &&
-    basename !== 'readme.md' &&
     normalizedPath.includes('/.opencode/skill/') &&
-    isConstitutionalPath(normalizedPath)
+    isIndexableConstitutionalMemoryPath(normalizedPath)
   );
 
   return isSpecDocument || isConstitutional;

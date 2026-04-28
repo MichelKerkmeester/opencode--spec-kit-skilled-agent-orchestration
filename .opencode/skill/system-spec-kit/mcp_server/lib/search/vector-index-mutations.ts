@@ -13,7 +13,7 @@ import {
 import { clearGraphSignalsCache } from '../graph/graph-signals.js';
 import { recordHistory } from '../storage/history.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
-import { isConstitutionalPath } from '../utils/index-scope.js';
+import { isIndexableConstitutionalMemoryPath } from '../utils/index-scope.js';
 import { createLogger } from '../utils/logger.js';
 import { clearDegreeCacheForDb } from './graph-search-fn.js';
 import * as bm25Index from './bm25-index.js';
@@ -447,9 +447,9 @@ export function update_memory(
         existingRow
       ) {
         const guardPath = existingRow.canonical_file_path || existingRow.file_path;
-        const hasNonConstitutionalPath = guardPath && !isConstitutionalPath(guardPath);
+        const hasNonConstitutionalPath = guardPath && !isIndexableConstitutionalMemoryPath(guardPath);
         if (hasNonConstitutionalPath && importanceTier === 'constitutional') {
-          // See ADR-006 in packet 026/011.
+          // See ADR-006 in packet 026/005.
           nextImportanceTier = 'important';
         }
         if (

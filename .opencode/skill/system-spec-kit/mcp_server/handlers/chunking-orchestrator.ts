@@ -23,6 +23,7 @@ import { recordHistory } from '../lib/storage/history.js';
 import { appendMutationLedgerSafe } from './memory-crud-utils.js';
 import { calculateDocumentWeight, isSpecDocumentType } from './pe-gating.js';
 import { detectSpecLevelFromParsed } from './handler-utils.js';
+import { applyPostInsertMetadata as applyGuardedPostInsertMetadata } from '../lib/storage/post-insert-metadata.js';
 
 // Feature catalog: Chunking Orchestrator Safe Swap
 // Feature catalog: Memory indexing (memory_save)
@@ -90,32 +91,12 @@ function computeNormalizedChunkCacheKey(content: string): string {
   return cacheContentHash(normalizeContentForEmbedding(content));
 }
 
-const ALLOWED_METADATA_COLUMNS = new Set([
-  'content_hash', 'context_type', 'importance_tier', 'memory_type',
-  'type_inference_source', 'stability', 'difficulty', 'review_count',
-  'file_mtime_ms', 'embedding_status', 'encoding_intent', 'document_type',
-  'spec_level', 'quality_score', 'quality_flags', 'parent_id',
-  'chunk_index', 'chunk_label',
-]);
-
 function applyPostInsertMetadataFallback(
   db: BetterSqlite3.Database,
   memoryId: number,
   fields: PostInsertMetadataFields,
 ): void {
-  const entries = Object.entries(fields).filter(
-    ([col, value]) => ALLOWED_METADATA_COLUMNS.has(col) && value !== undefined
-  );
-  if (entries.length === 0) {
-    return;
-  }
-
-  // Use COALESCE for encoding_intent to preserve existing value when new value is null
-  const setClause = entries.map(([column]) =>
-    column === 'encoding_intent' ? `${column} = COALESCE(?, ${column})` : `${column} = ?`
-  ).join(', ');
-  const values = entries.map(([, value]) => value);
-  db.prepare(`UPDATE memory_index SET ${setClause} WHERE id = ?`).run(...values, memoryId);
+  applyGuardedPostInsertMetadata(db, memoryId, fields);
 }
 
 function deleteMemoriesBulk(memoryIds: number[]): { deletedIds: number[]; failedIds: number[] } {

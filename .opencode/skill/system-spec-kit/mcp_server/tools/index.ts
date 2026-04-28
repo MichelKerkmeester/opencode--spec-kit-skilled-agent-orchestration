@@ -20,6 +20,7 @@ import { handleCoverageGraphQuery } from '../handlers/coverage-graph/query.js';
 import { handleCoverageGraphStatus } from '../handlers/coverage-graph/status.js';
 import { handleCoverageGraphUpsert } from '../handlers/coverage-graph/upsert.js';
 import { parseArgs, type MCPResponse } from './types.js';
+import type { MCPCallerContext } from '../lib/context/caller-context.js';
 
 function toMCP(result: { content: Array<{ type: string; text: string }> }): MCPResponse {
   return {
@@ -98,12 +99,16 @@ export const ALL_DISPATCHERS = [
 export async function dispatchTool(
   name: string,
   args: Record<string, unknown>,
+  callerContext?: MCPCallerContext | null,
 ): Promise<import('./types.js').MCPResponse | null> {
   for (const dispatcher of ALL_DISPATCHERS) {
     if (dispatcher.TOOL_NAMES.has(name)) {
       const validatedArgs = SCHEMA_VALIDATED_TOOL_NAMES.has(name)
         ? validateToolArgs(name, args)
         : args;
+      if (dispatcher === skillGraphTools) {
+        return skillGraphTools.handleTool(name, validatedArgs, callerContext);
+      }
       return dispatcher.handleTool(name, validatedArgs);
     }
   }

@@ -2,11 +2,14 @@
 // Helper for packet 026/007/009. This file intentionally lives outside
 // `.opencode/plugins/` so OpenCode discovers only real plugin entrypoints.
 
-const STATUS_VALUES = new Set(['ok', 'skipped', 'degraded', 'fail_open']);
-const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
-const FORCE_LOCAL_ENV = 'SPECKIT_SKILL_ADVISOR_FORCE_LOCAL';
-const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;
-const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;
+import { readFileSync } from 'node:fs';
+
+const COMPAT_CONTRACT = JSON.parse(readFileSync(new URL('../skill_advisor/schemas/compat-contract.json', import.meta.url), 'utf8'));
+const STATUS_VALUES = new Set(COMPAT_CONTRACT.statusValues);
+const DISABLED_ENV = COMPAT_CONTRACT.disabledEnv;
+const FORCE_LOCAL_ENV = COMPAT_CONTRACT.forceLocalEnv;
+const DEFAULT_CONFIDENCE_THRESHOLD = COMPAT_CONTRACT.defaults.confidenceThreshold;
+const DEFAULT_UNCERTAINTY_THRESHOLD = COMPAT_CONTRACT.defaults.uncertaintyThreshold;
 
 function response(args) {
   return {

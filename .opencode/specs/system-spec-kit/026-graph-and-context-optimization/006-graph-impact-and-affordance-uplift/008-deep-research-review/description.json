@@ -1,12 +1,12 @@
 {
-  "specFolder": "026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review",
-  "description": "Deep Research Review: Phase 010 + 010/007 + 011 Independent Audit (008)",
+  "specFolder": "026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift/008-deep-research-review",
+  "description": "Deep Research Review: Phase 006 + 006/007 + 011 Independent Audit (008)",
   "keywords": [
     "deep",
     "research",
     "review",
     "phase",
-    "010",
+    "006",
     "007",
     "011",
     "independent",
@@ -18,7 +18,7 @@
   "folderSlug": "deep-research-review",
   "parentChain": [
     "026-graph-and-context-optimization",
-    "010-graph-impact-and-affordance-uplift"
+    "006-graph-impact-and-affordance-uplift"
   ],
   "memorySequence": 0,
   "memoryNameHistory": []

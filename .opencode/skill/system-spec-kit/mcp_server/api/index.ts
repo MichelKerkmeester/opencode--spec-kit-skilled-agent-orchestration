@@ -70,6 +70,11 @@ export {
   recordGovernanceAudit,
   recordTierDowngradeAudit,
 } from '../lib/governance/scope-governance.js';
+
+export {
+  isIndexableConstitutionalMemoryPath,
+  shouldIndexForMemory,
+} from '../lib/utils/index-scope.js';
 export type {
   GovernanceAuditAction,
   GovernanceAuditEntry,

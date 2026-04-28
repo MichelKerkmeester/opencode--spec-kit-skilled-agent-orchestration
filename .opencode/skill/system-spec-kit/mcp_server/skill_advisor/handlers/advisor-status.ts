@@ -10,6 +10,7 @@ import { readSkillGraphGeneration } from '../lib/freshness/generation.js';
 import { createTrustState } from '../lib/freshness/trust-state.js';
 import { DEFAULT_SCORER_WEIGHTS } from '../lib/scorer/weights-config.js';
 import { errorMessage } from '../lib/utils/error-format.js';
+import { redactDiagnosticText } from '../../handlers/skill-graph/response-envelope.js';
 import {
   AdvisorStatusInputSchema,
   AdvisorStatusOutputSchema,
@@ -149,7 +150,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
     };
     return AdvisorStatusOutputSchema.parse(output);
   } catch (error: unknown) {
-    const message = errorMessage(error);
+    const message = redactDiagnosticText(errorMessage(error));
     const sourceScan = scanSkillMetadataFiles(skillRoot, args.maxMetadataFiles ?? DEFAULT_MAX_METADATA_FILES);
     const trustState = createTrustState({
       hasSources: existsSync(skillRoot),

@@ -8,6 +8,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import * as skillGraphDb from '../../lib/skill-graph/skill-graph-db.js';
+import { errorResponse, okResponse } from './response-envelope.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. CONSTANTS
@@ -211,22 +212,4 @@ function resolveSourcePath(sourcePath: string | null): string | null {
 
 function getCount(row: CountRow | undefined): number {
   return row?.count ?? 0;
-}
-
-function okResponse(data: Record<string, unknown>): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'ok', data }),
-    }],
-  };
-}
-
-function errorResponse(error: string): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'error', error }),
-    }],
-  };
 }

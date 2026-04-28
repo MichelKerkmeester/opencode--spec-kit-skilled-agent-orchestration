@@ -100,6 +100,45 @@ describe('Spec Kit compact code graph plugin', () => {
     expect(output.system[0]).toContain('OpenCode Startup Digest');
   });
 
+  it('initializes missing host output arrays before compact injection', async () => {
+    const hooks = await SpecKitCompactCodeGraphPlugin({ directory: process.cwd() }, { cacheTtlMs: 5000 });
+    const systemOutput = {} as { system?: string[] };
+    const compactOutput = { context: null } as unknown as { context: string[] };
+
+    await hooks['experimental.chat.system.transform']?.(
+      { sessionID: 's-output-guard', model: { id: 'test-model' } as never },
+      systemOutput as never,
+    );
+    await hooks['experimental.session.compacting']?.(
+      { sessionID: 's-output-guard-compact' },
+      compactOutput,
+    );
+
+    expect(systemOutput.system).toHaveLength(1);
+    expect(systemOutput.system?.[0]).toContain('OpenCode Startup Digest');
+    expect(compactOutput.context).toHaveLength(1);
+    expect(compactOutput.context[0]).toContain('OpenCode Compaction Resume Note');
+  });
+
+  it('normalizes object-shaped session IDs for compact cache keys', async () => {
+    const hooks = await SpecKitCompactCodeGraphPlugin({ directory: process.cwd() }, { cacheTtlMs: 5000 });
+    const firstOutput = { system: [] as string[] };
+    const secondOutput = { system: [] as string[] };
+
+    await hooks['experimental.chat.system.transform']?.(
+      { sessionID: { b: 2, a: 1 }, model: { id: 'test-model' } as never },
+      firstOutput,
+    );
+    await hooks['experimental.chat.system.transform']?.(
+      { sessionID: { a: 1, b: 2 }, model: { id: 'test-model' } as never },
+      secondOutput,
+    );
+
+    expect(mockedBridge.execFile).toHaveBeenCalledTimes(1);
+    expect(firstOutput.system[0]).toContain('OpenCode Startup Digest');
+    expect(secondOutput.system[0]).toContain('OpenCode Startup Digest');
+  });
+
   it('exports the plugin function and parser contract helper', async () => {
     const pluginModule = await import('../../../../plugins/spec-kit-compact-code-graph.js');
 

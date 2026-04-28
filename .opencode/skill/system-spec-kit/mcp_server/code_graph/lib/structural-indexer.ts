@@ -41,6 +41,12 @@ interface FileFindResult {
   files: string[];
   excludedByDefault: number;
   excludedByGitignore: number;
+  warnings: string[];
+  capExceeded: {
+    maxNodes: boolean;
+    depth: boolean;
+    gitignoreSize: boolean;
+  };
 }
 
 type PathAlias = NonNullable<IndexerConfig['pathAliases']>[number];
@@ -71,6 +77,8 @@ export interface IndexFilesOptions {
 
 export interface IndexFilesResult extends Array<ParseResult> {
   preParseSkippedCount: number;
+  warnings: string[];
+  capExceeded: FileFindResult['capExceeded'];
 }
 
 const require = createRequire(import.meta.url);
@@ -1316,6 +1324,8 @@ function loadIgnoreFactory(): IgnoreFactory {
 function loadGitignore(
   directoryPath: string,
   gitignoreCache: Map<string, IgnoreInstance | null>,
+  warnings: string[] = [],
+  capExceeded?: FileFindResult['capExceeded'],
 ): IgnoreInstance | null {
   if (gitignoreCache.has(directoryPath)) {
     return gitignoreCache.get(directoryPath) ?? null;
@@ -1325,9 +1335,12 @@ function loadGitignore(
     const gitignorePath = resolve(directoryPath, '.gitignore');
     const stats = statSync(gitignorePath);
     if (stats.size > MAX_GITIGNORE_BYTES) {
-      console.warn(
-        `[structural-indexer] Skipping oversized .gitignore (${stats.size} bytes > ${MAX_GITIGNORE_BYTES} bytes): ${gitignorePath}`,
-      );
+      const warning = `[structural-indexer] Skipping oversized .gitignore (${stats.size} bytes > ${MAX_GITIGNORE_BYTES} bytes): ${gitignorePath}`;
+      console.warn(warning);
+      warnings.push(warning);
+      if (capExceeded) {
+        capExceeded.gitignoreSize = true;
+      }
       gitignoreCache.set(directoryPath, null);
       return null;
     }
@@ -1369,17 +1382,22 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
   let excludedByGitignore = 0;
   let visitedNodes = 0;
   let abortedByNodeLimit = false;
+  const warnings: string[] = [];
+  const capExceeded = { maxNodes: false, depth: false, gitignoreSize: false };
 
   function walk(currentDir: string, inheritedGitignores: GitignoreContext[], depth: number): void {
     if (abortedByNodeLimit) {
       return;
     }
     if (depth >= FIND_FILES_MAX_DEPTH) {
-      console.warn(`[structural-indexer] Aborting descent at maxDepth=${FIND_FILES_MAX_DEPTH}: ${currentDir}`);
+      const warning = `[structural-indexer] Aborting descent at maxDepth=${FIND_FILES_MAX_DEPTH}: ${currentDir}`;
+      console.warn(warning);
+      warnings.push(warning);
+      capExceeded.depth = true;
       return;
     }
 
-    const localGitignore = loadGitignore(currentDir, gitignoreCache);
+    const localGitignore = loadGitignore(currentDir, gitignoreCache, warnings, capExceeded);
     const activeGitignores = localGitignore
       ? [...inheritedGitignores, { baseDir: currentDir, matcher: localGitignore }]
       : inheritedGitignores;
@@ -1391,7 +1409,10 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
     for (const entry of entries) {
       visitedNodes += 1;
       if (visitedNodes > FIND_FILES_MAX_NODES) {
-        console.warn(`[structural-indexer] Aborting walk after ${FIND_FILES_MAX_NODES} filesystem nodes at ${currentDir}`);
+        const warning = `[structural-indexer] Aborting walk after ${FIND_FILES_MAX_NODES} filesystem nodes at ${currentDir}`;
+        console.warn(warning);
+        warnings.push(warning);
+        capExceeded.maxNodes = true;
         abortedByNodeLimit = true;
         return;
       }
@@ -1422,7 +1443,7 @@ function findFiles(rootDir: string, pattern: string, excludeGlobs: string[], max
   }
 
   walk(rootDir, [], 0);
-  return { files: results, excludedByDefault, excludedByGitignore };
+  return { files: results, excludedByDefault, excludedByGitignore, warnings, capExceeded };
 }
 
 function collectSpecificFiles(rootDir: string, specificFiles: string[], maxSize: number): string[] {
@@ -2026,9 +2047,13 @@ export function finalizeIndexResults(
  *   3. finalize         → cross-file dedup + heuristic edges
  *   4. emit-metrics     → speckit metrics histograms/counters
  */
-type FindCandidatesOutput = { candidateFiles: string[] };
-type ParseCandidatesOutput = { results: ParseResult[]; preParseSkippedCount: number };
-type FinalizeOutput = { finalizedResults: ParseResult[]; preParseSkippedCount: number };
+type FindCandidatesOutput = {
+  candidateFiles: string[];
+  warnings: string[];
+  capExceeded: FileFindResult['capExceeded'];
+};
+type ParseCandidatesOutput = FindCandidatesOutput & { results: ParseResult[]; preParseSkippedCount: number };
+type FinalizeOutput = { finalizedResults: ParseResult[]; preParseSkippedCount: number; warnings: string[]; capExceeded: FileFindResult['capExceeded'] };
 
 function buildIndexPhases(
   config: IndexerConfig,
@@ -2050,22 +2075,32 @@ function buildIndexPhases(
           config.maxFileSizeBytes,
         );
         console.info(`[structural-indexer] refreshed ${candidateFiles.length} specific file(s)`);
-        return { candidateFiles };
+        return {
+          candidateFiles,
+          warnings: [],
+          capExceeded: { maxNodes: false, depth: false, gitignoreSize: false },
+        };
       }
 
       const allFiles = new Set<string>();
       let excludedByDefault = 0;
       let excludedByGitignore = 0;
+      const warnings: string[] = [];
+      const capExceeded = { maxNodes: false, depth: false, gitignoreSize: false };
 
       for (const pattern of config.includeGlobs) {
         const found = findFiles(config.rootDir, pattern, config.excludeGlobs, config.maxFileSizeBytes);
         excludedByDefault += found.excludedByDefault;
         excludedByGitignore += found.excludedByGitignore;
+        warnings.push(...found.warnings);
+        capExceeded.maxNodes = capExceeded.maxNodes || found.capExceeded.maxNodes;
+        capExceeded.depth = capExceeded.depth || found.capExceeded.depth;
+        capExceeded.gitignoreSize = capExceeded.gitignoreSize || found.capExceeded.gitignoreSize;
         found.files.forEach(f => allFiles.add(f));
       }
 
       console.info(`[structural-indexer] scanned ${allFiles.size} files (excluded: gitignored=${excludedByGitignore}, default=${excludedByDefault})`);
-      return { candidateFiles: [...allFiles] };
+      return { candidateFiles: [...allFiles], warnings, capExceeded };
     },
   };
 
@@ -2073,7 +2108,7 @@ function buildIndexPhases(
     name: 'parse-candidates',
     inputs: ['find-candidates'],
     async run(deps) {
-      const { candidateFiles } = deps['find-candidates'];
+      const { candidateFiles, warnings, capExceeded } = deps['find-candidates'];
       const results: ParseResult[] = [];
       let preParseSkippedCount = 0;
 
@@ -2096,7 +2131,7 @@ function buildIndexPhases(
         } catch { /* skip unreadable */ }
       }
 
-      return { results, preParseSkippedCount };
+      return { candidateFiles, results, preParseSkippedCount, warnings, capExceeded };
     },
   };
 
@@ -2104,9 +2139,9 @@ function buildIndexPhases(
     name: 'finalize',
     inputs: ['parse-candidates'],
     run(deps) {
-      const { results, preParseSkippedCount } = deps['parse-candidates'];
+      const { results, preParseSkippedCount, warnings, capExceeded } = deps['parse-candidates'];
       const finalizedResults = finalizeIndexResults(results, moduleResolver, config.edgeWeights);
-      return { finalizedResults, preParseSkippedCount };
+      return { finalizedResults, preParseSkippedCount, warnings, capExceeded };
     },
   };
 
@@ -2159,6 +2194,8 @@ export async function indexFiles(config: IndexerConfig, options: IndexFilesOptio
     // ensure-ready.ts) keep working unchanged (R-002-3 backward compat).
     const finalizedResults = emitOutput.finalizedResults as IndexFilesResult;
     finalizedResults.preParseSkippedCount = emitOutput.preParseSkippedCount;
+    finalizedResults.warnings = emitOutput.warnings;
+    finalizedResults.capExceeded = emitOutput.capExceeded;
     return finalizedResults;
   } catch (error: unknown) {
     scanOutcomeRef.value = 'error';

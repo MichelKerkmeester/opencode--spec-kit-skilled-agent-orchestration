@@ -25,8 +25,8 @@ describe('copilot hook wiring', () => {
 
     expect(parsed.hooks.sessionStart[0].bash).toBe('.github/hooks/scripts/session-start.sh');
     expect(parsed.hooks.userPromptSubmitted[0].bash).toBe('.github/hooks/scripts/user-prompt-submitted.sh');
-    expect(parsed.hooks.sessionEnd[0].bash).toContain('copilot-hook.sh sessionEnd');
-    expect(parsed.hooks.postToolUse[0].bash).toContain('copilot-hook.sh postToolUse');
+    expect(parsed.hooks.sessionEnd[0].bash).toBe('.github/hooks/scripts/superset-notify.sh sessionEnd');
+    expect(parsed.hooks.postToolUse[0].bash).toBe('.github/hooks/scripts/superset-notify.sh postToolUse');
   });
 
   it('sessionStart wrapper emits the startup banner and snapshot note', () => {

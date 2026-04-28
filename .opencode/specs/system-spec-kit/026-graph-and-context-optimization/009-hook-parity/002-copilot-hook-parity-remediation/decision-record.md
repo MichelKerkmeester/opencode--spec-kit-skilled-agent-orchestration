@@ -1,21 +1,22 @@
 ---
-title: "...ec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation/decision-record]"
-description: "ADRs for scoping decisions. The load-bearing decision (wire hooks vs. document gap) lands after Phase 1 investigation — this file carries placeholder scoping ADRs until then."
+title: "Decision Record: Copilot CLI Hook Parity Remediation"
+template_source: "SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2"
+description: "ADRs for Copilot parity outcome B, repo-local wrapper routing, and managed custom-instructions retention."
 trigger_phrases:
   - "026/009/004 adr"
   - "copilot hook parity decisions"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation"
-    last_updated_at: "2026-04-23T13:55:57Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Implemented Copilot file workaround and updated operator docs"
-    next_safe_action: "Author ADR-003 after T-07 classifies outcome A/B/C"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Strict validator closure"
+    next_safe_action: "Keep validators green"
     completion_pct: 100
 ---
+
 # Decision Record: Copilot CLI Hook Parity Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -23,79 +24,121 @@ _memory:
 
 ---
 
-## ADR-001: Investigate before implementing
+<!-- ANCHOR:adr-001 -->
+## ADR-001: Copilot parity ships through managed custom instructions
 
-**Status**: Accepted
+### Metadata
 
-**Context**: When spec 020 wired Claude Code's hook surface, Copilot CLI parity wasn't verified. The user discovered the gap empirically. Two outcome shapes are plausible: (a) Copilot has a hook API we didn't use — implementation is a port; (b) Copilot has no hook API — the fix is a workaround or a documented limitation. These outcomes require radically different effort and produce different artifacts.
-
-**Decision**: Gate all implementation on a Phase 1 investigation that establishes Copilot CLI's actual extension surface with primary sources. Do not write Copilot hook code until that investigation classifies the outcome as A (full parity possible) or B (reduced-scope workaround possible).
-
-**Consequences**:
-- **Positive**: prevents implementation against a non-existent API; prevents re-investigation in a later attempt.
-- **Positive**: produces a durable research artifact (`research.md`) that any future CLI-parity effort (Gemini, etc.) can reuse.
-- **Negative**: adds one investigation pass before any code lands. Acceptable because the alternative is worse — speculative code against an undocumented API.
+| Field | Value |
+|-------|-------|
+| **Status** | Accepted |
+| **Date** | 2026-04-22, updated 2026-04-28 |
+| **Deciders** | Spec Kit maintainers |
 
 ---
 
-## ADR-002: Accept "documented limitation" as a valid phase outcome
+<!-- ANCHOR:adr-001-context -->
+### Context
 
-**Status**: Accepted
+Spec 020 wired Claude Code's native hooks for startup context and prompt-submit advisor brief. Copilot CLI did not surface those payloads. Research found Copilot customer hooks exist, but `sessionStart` output is ignored and `userPromptSubmitted` cannot mutate prompts. Copilot custom instructions are available through the home-level instructions file, which makes file-backed next-prompt freshness feasible.
 
-**Context**: If Phase 1 finds Copilot CLI has no usable extension surface at all (outcome C), the user has two options: (1) accept the asymmetry and ship docs that make it discoverable; (2) hold the phase open indefinitely waiting for Copilot to ship an extension API. Option 2 blocks closure on an external party's roadmap, which is not a sustainable phase state.
+### Constraints
 
-**Decision**: Treat outcome C as a complete-with-limitation closure. The phase ships documentation in `cli-copilot/SKILL.md` + `README.md` stating the gap explicitly, and the parent summary records the outcome. If Copilot later ships an extension API, a new phase reopens the parity work; this one stays closed.
-
-**Consequences**:
-- **Positive**: phase has a bounded completion condition regardless of Copilot's roadmap.
-- **Positive**: user-visible docs prevent re-discovery of the gap.
-- **Negative**: users in Copilot CLI remain without the advisor brief + graph context. Mitigated by the P2 best-effort shell-wrapper workaround if feasible.
-
----
-
-## ADR-003: Final implementation path — B (file-based workaround)
-
-**Status**: Accepted (2026-04-22) — classified from 10-iteration deep-research synthesis in `../../research/007-deep-review-remediation-pt-01/research.md`.
-
-**Context**: 10 deep-research iterations via cli-copilot converged on a clear picture of Copilot CLI 1.0.34's extension surface. Copilot *does* have a documented hook system (`sessionStart`, `userPromptSubmitted`, `preToolUse`, `postToolUse`, `sessionEnd`, `errorOccurred`) — but the hook reference explicitly says: `sessionStart` output is ignored, `userPromptSubmitted` output is ignored ("prompt modification is not currently supported in customer hooks"), and `postToolUse`/`errorOccurred` outputs are ignored. Only `preToolUse` can affect behavior (deny/ask/allow a tool call) — not a prompt-text channel. That rules out outcome A (full hook parity mirroring Claude).
-
-Copilot DOES have a native startup-context mechanism: auto-loaded custom instructions from `.github/copilot-instructions.md`, `AGENTS.md`, `$HOME/.copilot/copilot-instructions.md`, path-specific `.github/instructions/**/*.instructions.md`, plus extra directories via `COPILOT_CUSTOM_INSTRUCTIONS_DIRS`. This is file-based/static but gives us a real parity path.
-
-`--acp` (Agent Client Protocol) server mode exposes bidirectional injection if Spec Kit Memory acts as an external ACP client wrapper — but that's significant engineering cost against a public-preview API with open gaps (no `ask_user` extension, no arbitrary JSON-RPC methods, slash-command coverage missing).
-
-**Decision**: Accept **outcome B (file-based workaround)**. Primary implementation path is **static file rewrite** (option 1 in matrix below) targeting `$HOME/.copilot/copilot-instructions.md`. Supplementary: shell wrapper around `copilot -p` for programmatic-mode coverage (option 2). Defer ACP client wrapper (option 3) until the ACP API stabilizes.
-
-**Decision matrix (real entries from research)**:
-
-| # | Path                                                 | Feasibility | Eng. cost | Runtime cost | Coverage                                                           | Recommended |
-|---|------------------------------------------------------|-------------|-----------|--------------|--------------------------------------------------------------------|-------------|
-| 1 | Static file rewrite at `$HOME/.copilot/copilot-instructions.md` | High | Low (~1 day) | Negligible (file write per update) | Startup context + advisor brief; freshness bounded by writer cadence (typically < 1 prompt) | **Yes — primary** |
-| 2 | Shell wrapper for `copilot -p` programmatic mode     | High        | Low (~1h) | <100ms per call | Programmatic/scripting mode only; no interactive TUI coverage       | Yes — supplementary |
-| 3 | ACP client wrapper (`copilot --acp` as child)        | Medium (API in public preview, evolving) | High (~1-2 weeks) | Protocol overhead per turn | Full dynamic injection, all modes including TUI | Medium priority — defer |
-| 4 | Custom-agent profile with static prompt              | Low         | Low       | None         | Only when user selects agent; static; wrong abstraction            | No          |
-| 5 | MCP tool proxy (advisor exposed as callable tool)    | Low (agent must voluntarily call) | Medium | Per-call | Unreliable (pull-based; agent may skip)                        | No          |
-| 6 | `preToolUse` hook inject                             | None (hook is a decision gate, not text channel) | — | — | Zero text coverage | No          |
-| 7 | Document limitation, no action                       | High        | Zero      | None         | Zero parity                                                        | No — options 1-3 viable |
-
-**Consequences**:
-- **Positive**: options 1 + 2 together cover both interactive TUI (via option 1's file) and programmatic/CI (via option 2's wrapper). Low engineering cost, high feasibility.
-- **Positive**: no dependency on Copilot's evolving ACP API for the primary path.
-- **Positive**: Spec Kit Memory already has the advisor/context generation logic — only a new writer target is needed for option 1, not new logic.
-- **Negative**: freshness bounded by writer cadence — if advisor brief changes mid-prompt, only the most recent value lands on next prompt. Acceptable for this use case.
-- **Negative**: static-file parity doesn't match Claude's true in-turn injection. Users of cli-copilot will see slightly-stale briefs vs cli-claude-code. Documented in cli-copilot SKILL.md as expected behavior.
-- **Negative**: multi-tenant / shared-host scenarios need `COPILOT_HOME` per-session override work, out of scope for primary path.
-
-**References**:
-- Full synthesis: `../../research/007-deep-review-remediation-pt-01/research.md` — §5 decision matrix, §6 recommended plan.
-- Primary-source URLs: 30+ in `research.md` §2.
-- Upstream evolution to watch (gates the option 3 revisit): [GitHub issue #1245](https://github.com/github/copilot-cli/issues/1245), [#2044](https://github.com/github/copilot-cli/issues/2044), [#2555](https://github.com/github/copilot-cli/issues/2555).
+- Copilot hook output cannot provide true current-turn prompt mutation.
+- Human-authored Copilot instructions must be preserved.
+- Superset notification remains optional and must not replace the Spec Kit writer.
+<!-- /ANCHOR:adr-001-context -->
 
 ---
 
-## CROSS-REFERENCES
+<!-- ANCHOR:adr-001-decision -->
+### Decision
 
-- **Spec**: `spec.md` §2 (problem), §4 (requirements)
-- **Plan**: `plan.md` §2 Phase 1 exit criteria
-- **Tasks**: `tasks.md` T-06, T-07 (investigation → classification), T-19 (ADR-003 finalization)
-- **Research artifact**: `research.md` (to be authored during Phase 1)
-- **Referenced spec**: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/`
+**We chose**: outcome B, a managed custom-instructions file workaround targeting `$HOME/.copilot/copilot-instructions.md`.
+
+**How it works**: repo-local wrappers run Spec Kit Copilot hooks before optional Superset notification. The hooks refresh a `SPEC-KIT-COPILOT-CONTEXT` managed block scoped to the workspace root. Copilot reads that block on the next prompt.
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| Managed custom-instructions file | Low cost, documented Copilot input, covers interactive use | Next-prompt freshness, not true prompt mutation | 9/10 |
+| Shell wrapper for `copilot -p` | Same-command programmatic coverage | Does not cover interactive TUI by itself | 7/10 |
+| ACP client wrapper | Could support richer dynamic injection | Higher cost, public-preview API gaps | 5/10 |
+| Direct hook prompt mutation | Would match Claude | Unsupported by Copilot hook contract | 0/10 |
+| Document limitation only | Honest and cheap | Leaves viable file path unused | 3/10 |
+
+**Why this one**: managed custom instructions are the lowest-risk working transport. It preserves user instructions and avoids depending on Copilot ACP stabilization.
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- Copilot users get startup/advisor context through a supported file surface.
+- The parity state is discoverable in docs and ADRs.
+- Superset notification remains available after Spec Kit writer execution.
+
+**What it costs**:
+- Copilot remains next-prompt fresh rather than current-turn fresh. Mitigation: document this explicitly.
+- Workspace scoping relies on Copilot honoring the instruction. Mitigation: render the workspace root inside the managed block.
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| Superset wrapper regeneration bypasses repo-local writer | Medium | ADR-004 records repo-local wrappers as source of truth. |
+| Global file leaks stale context | High | Workspace-scoped managed block and ignore-mismatch instruction. |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | PASS | Copilot lacked Claude-equivalent startup/advisor context. |
+| 2 | **Beyond Local Maxima?** | PASS | Hook mutation, shell wrapper, ACP, MCP proxy, and no-action options were compared. |
+| 3 | **Sufficient?** | PASS | File-backed transport gives practical context without unsupported APIs. |
+| 4 | **Fits Goal?** | PASS | The goal is Copilot parity under actual transport limits. |
+| 5 | **Open Horizons?** | PASS | ACP remains available as future work when stable. |
+
+**Checks Summary**: 5/5 PASS
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- `hooks/copilot/custom-instructions.ts` owns managed block rendering and writes.
+- `.github/hooks/scripts/session-start.sh` and `user-prompt-submitted.sh` route events through Spec Kit before optional Superset notification.
+- cli-copilot docs describe outcome B and next-prompt freshness.
+
+**How to roll back**: disable writes with `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED` or revert repo-local hook routing; then rerun focused Copilot/Claude hook tests.
+
+### ADR-002: Investigate before implementing
+
+Status: Accepted. Implementation was gated on research because Copilot could have had either a direct hook API or no usable injection surface. The research-first approach prevented speculative code against an unsupported API.
+
+### ADR-003: Documented limitation remains a valid outcome
+
+Status: Accepted. If Copilot had no viable surface, documentation-only closure would have been valid. Outcome B superseded that path because custom instructions are viable.
+
+### ADR-004: Repo-local wrappers own routing before Superset notification
+
+Status: Accepted. `sessionStart` and `userPromptSubmitted` route through repo-local wrappers first, then optionally call Superset if present.
+
+### ADR-005: Managed retention is workspace-scoped and atomically updated
+
+Status: Accepted. The writer renders `Workspace: <root>`, tells Copilot to ignore mismatched roots, serializes writes with a lock file, and replaces the target through atomic rename.
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->

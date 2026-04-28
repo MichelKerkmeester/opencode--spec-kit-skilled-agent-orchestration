@@ -369,7 +369,7 @@ export function recordGovernanceAudit(database: Database.Database, entry: Govern
   );
 }
 
-// See ADR-012 in packet 026/011.
+// See ADR-012 in packet 026/005.
 export function recordTierDowngradeAudit(
   database: Database.Database,
   params: TierDowngradeAuditParams,

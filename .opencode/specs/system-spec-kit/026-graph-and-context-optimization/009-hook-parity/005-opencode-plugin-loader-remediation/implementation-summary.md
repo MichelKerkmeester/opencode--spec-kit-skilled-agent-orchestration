@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation"
-    last_updated_at: "2026-04-23T07:48:00Z"
-    last_updated_by: "codex-gpt-5"
-    recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
-    next_safe_action: "Resolve parent-tracked Copilot hook wiring mismatch only if full-suite verification is required"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     blockers:
       - "Full `npx vitest run` fails in `copilot-hook-wiring.vitest.ts` because current `.github/hooks/superset-notify.json` points at Superset hook commands while the test expects repo-local Copilot hook commands."
     completion_pct: 100
@@ -36,7 +36,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 007-opencode-plugin-loader-remediation |
+| **Spec Folder** | 005-opencode-plugin-loader-remediation |
 | **Completed** | 2026-04-22 |
 | **Level** | 3 |
 | **Outcome** | A, helper isolation plus legacy export hardening |
@@ -48,7 +48,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-OpenCode plugin helper modules now live outside the plugin discovery folder. `.opencode/plugins/` contains only the two real plugin entrypoints plus `README.md`; the three helper modules moved to `.opencode/plugin-helpers/`.
+OpenCode plugin helper modules now live outside the plugin discovery folder. `.opencode/plugins/` contains only the two real plugin entrypoints plus `README.md`; the three helper modules moved to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`.
 
 The two plugin entrypoints were updated to resolve relocated helpers by relative `import.meta.url` paths. `spec-kit-compact-code-graph.js` also hardens its named `parseTransportPlan()` export so legacy loader invocation returns an empty hook object instead of `null`.
 
@@ -74,7 +74,7 @@ The status tool now exposes `advisor_lookups` so cache accounting is explicit: `
 
 Phase 1 documented the OpenCode discovery contract in ADR-001 using official docs, installed package types, installed binary strings, and sandbox-safe empirical probes. ADR-002 selected Outcome A and rejected no-op helper plugins and undocumented opt-outs.
 
-Phase 2 moved the helper files to `.opencode/plugin-helpers/`, updated the two plugin entrypoints, and preserved the subprocess bridge architecture. `git mv` was attempted, but sandbox permissions prevented taking `.git/index.lock`; the filesystem move was used instead.
+Phase 2 moved the helper files to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`, updated the two plugin entrypoints, and preserved the subprocess bridge architecture. `git mv` was attempted, but sandbox permissions prevented taking `.git/index.lock`; the filesystem move was used instead.
 
 Phase 3 added the regression guard, README, helper comments, focused test updates, parent docs entry, checklist evidence, and this implementation summary.
 
@@ -115,7 +115,7 @@ Focused vitest added readiness, cache-invariant, output-guard, and object-sessio
 | `opencode --version` | PASS, returned `1.3.17` during the probe |
 | Pre-fix probe | PASS, XDG-isolated OpenCode reproduced `TypeError: null is not an object (evaluating 'plugin2.auth')` |
 | `ls .opencode/plugins/` | PASS, shows only `README.md`, `spec-kit-compact-code-graph.js`, and `spec-kit-skill-advisor.js` |
-| `ls .opencode/plugin-helpers/` | PASS, shows the three relocated helper files |
+| `ls .opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` | PASS, shows the three relocated helper files |
 | `node --check` on both plugin entrypoints | PASS |
 | Public exact smoke | PASS for target symptom, no `plugin2.auth`; sandbox then blocked home-state DB/lock writes |
 | Barter exact smoke | PASS for target symptom, no `plugin2.auth`; sandbox then blocked home-state DB writes |
@@ -157,6 +157,10 @@ Focused vitest added readiness, cache-invariant, output-guard, and object-sessio
 - **Module-global state refactor (P2):** still deferred. The plugin keeps module-global state for this phase; a future per-instance closure or WeakMap design can address multi-instance races.
 - **In-flight bridge dedup (P2):** still deferred. Concurrent identical misses may spawn duplicate bridge subprocesses until a later hardening pass adds promise deduplication.
 - **Unbounded prompt/brief sizes (P2):** still deferred. Prompt and brief size caps remain a broader plugin-hardening item, not part of Phase 5.
+
+### Tier 2 Closure Addendum
+
+2026-04-28 Tier 2 remediation corrected stale helper-location evidence from `.opencode/plugin-helpers/` to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` across this packet's canonical docs. It also closed the compact-plugin P2 advisories by adding defensive output-array guards and stable object-sessionID cache keys to `.opencode/plugins/spec-kit-compact-code-graph.js`, with focused coverage in `mcp_server/tests/opencode-plugin.vitest.ts`.
 
 ### Deferred Gates
 

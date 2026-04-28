@@ -9,10 +9,10 @@ contextType: "planning"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface"
-    last_updated_at: "2026-04-19T06:40:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Decision record scaffolded with ADR-001 (research-first) + ADR-002 (pattern reuse)"
-    next_safe_action: "Populate additional ADRs as research converges"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 # Decision Record: Skill-Advisor Hook Surface
@@ -209,6 +209,44 @@ The advisor subprocess might fail for legitimate reasons: Python not in PATH on 
 
 - See `spec.md §6 Risks` row "Hook failure blocks turn completion"
 - See `spec.md §8 Edge Cases` "Error Scenarios"
+
+---
+
+### ADR-005: Copilot advisor freshness is next-prompt, not same-current-turn
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-04-28 |
+| **Status** | Accepted |
+| **Author** | codex-gpt-5 |
+| **Severity** | P1 |
+
+### Context
+
+Tier 2 review D found that the Copilot adapter computes the advisor brief for the current `userPromptSubmitted` payload, writes it into `$HOME/.copilot/copilot-instructions.md`, and returns `{}`. The repository-owned managed block says Copilot reads custom instructions on the next submitted prompt. That transport cannot provide the same-current-turn `hookSpecificOutput.additionalContext` semantics used by Claude, Gemini, and Codex.
+
+### Decision
+
+Accept Copilot as a documented next-prompt transport. Do not attempt a brittle current-turn workaround until Copilot exposes a supported prompt-mutating hook or stable ACP context injection. The parity claim for this parent packet is therefore four-runtime advisor coverage with runtime-specific freshness, not four-runtime same-turn delivery.
+
+### Consequences
+
+**Positive**:
+- The contract matches the live Copilot CLI hook model and avoids unsupported transport hacks.
+- The managed custom-instructions writer remains prompt-safe and fail-open.
+- Future reviews can test the correct thing: file refresh on current hook, model visibility on the next prompt.
+
+**Negative**:
+- Copilot users may see an advisor brief one prompt late.
+- Cross-runtime parity docs must call out the asymmetry whenever they compare Copilot to Claude/Gemini/Codex.
+
+### Implementation
+
+- `hooks/copilot/custom-instructions.ts` renders the managed block with the next-prompt freshness contract and workspace scoping.
+- `hooks/copilot/user-prompt-submit.ts` refreshes the managed block from the current prompt and returns `{}`.
+- `.github/hooks/scripts/user-prompt-submitted.sh` invokes the compiled Copilot writer before Superset notification, preserving repository-owned routing.
 
 ---
 

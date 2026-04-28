@@ -11,7 +11,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify +
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification"
-    last_updated_at: "2026-04-21T15:42:05Z"
+    last_updated_at: "2026-04-28T15:30:03Z"
     last_updated_by: "codex-gpt-5.4"
     recent_action: "Shipped implementation preserved; strict validation follow-up still pending"
     next_safe_action: "Keep validation green"
@@ -29,7 +29,7 @@ packet_level: 3
 
 Phase 027 unified the skill-advisor subsystem around a live skill graph, derived metadata, native TypeScript scoring, MCP tools, compatibility shims, and promotion gates. The completed implementation preserves legacy advisor entrypoints while routing the durable implementation through the system-spec-kit MCP server.
 
-**Key Decisions**: chokidar watcher plus hash-aware SQLite indexer; self-contained `mcp_server/skill-advisor/` package; five-lane analytical fusion; workspace-scoped single-writer lease; additive schema migration; semantic lane shadow-only until promotion gates pass.
+**Key Decisions**: chokidar watcher plus hash-aware SQLite indexer; self-contained `mcp_server/skill_advisor/` package; five-lane analytical fusion; workspace-scoped single-writer lease; trusted-caller gating for mutable maintenance tools; additive schema migration; semantic lane shadow-only until promotion gates pass.
 
 **Critical Dependencies**: Phase 027 children 001 through 007, advisor test suites, and strict packet validation.
 
@@ -41,7 +41,7 @@ Phase 027 unified the skill-advisor subsystem around a live skill graph, derived
 |-------|-------|
 | **Level** | 3 |
 | **Priority** | P1 architecture |
-| **Status** | In Progress |
+| **Status** | Complete |
 | **Created** | 2026-04-20 |
 | **Branch** | `009-hook-parity` |
 | **Parent Spec** | `../spec.md` |
@@ -88,7 +88,7 @@ Ship a unified advisor architecture where skill graph freshness, derived metadat
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `.opencode/skill/system-spec-kit/mcp_server/skill-advisor/**` | Modify | Native advisor implementation, daemon, tools, handlers, and tests. |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/**` | Modify | Native advisor implementation, daemon, tools, handlers, and tests. |
 | `.opencode/skill/skill-advisor/scripts/skill_advisor.py` | Modify | Compatibility shim for legacy callers. |
 | `.opencode/plugins/spec-kit-skill-advisor.js` | Modify | Runtime adapter for native advisor routing. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/**` | Modify | Phase 027 packet evidence and strict validation shape. |
@@ -116,6 +116,7 @@ Ship a unified advisor architecture where skill graph freshness, derived metadat
 | REQ-006 | Advisor tools must expose recommendation, status, and validation surfaces. | MCP handlers register the three tool contracts. |
 | REQ-007 | Legacy scripts and plugins must keep working. | Compatibility shims route to native advisor when available and fall back safely. |
 | REQ-008 | Promotion gates must guard learned and semantic live influence. | Semantic weight remains 0.00 until accuracy, safety, latency, and shadow-cycle gates pass. |
+| REQ-011 | Public mutable skill-graph maintenance tools must require trusted caller context. | `skill_graph_scan` rejects untrusted callers with a typed envelope before indexing or publishing generation metadata. |
 
 ### P2 - Should complete where in scope
 
@@ -166,6 +167,7 @@ Ship a unified advisor architecture where skill graph freshness, derived metadat
 
 - **NFR-S01**: Derived metadata is sanitized before it becomes advisor-visible.
 - **NFR-S02**: Compatibility shims must not execute untrusted skill content.
+- **NFR-S03**: Public MCP callers are untrusted by default for mutable maintenance operations; trusted context is transport-provided, not accepted from tool arguments.
 
 ### Reliability
 
@@ -242,7 +244,7 @@ Ship a unified advisor architecture where skill graph freshness, derived metadat
 
 ### PHASE DOCUMENTATION MAP
 
-All 7 sub-phases (001–007) have been flattened into this parent packet (2026-04-24). Sub-phase summaries are consolidated in `implementation-summary.md` under `## Sub-phase summaries`. Sub-phase directories have been deleted; research artifacts remain in the `research/` subtree (skill-owned, untouched).
+All 7 sub-phases (001–007) have been flattened into this parent packet (2026-04-24). Sub-phase summaries are consolidated in `implementation-summary.md` under `### Sub-phase summaries`. Sub-phase directories have been deleted; research artifacts remain in the `research/` subtree (skill-owned, untouched).
 
 | Child | Original Purpose | Status |
 |-------|-----------------|--------|

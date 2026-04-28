@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import {
   EXCLUDED_FOR_CODE_GRAPH,
   EXCLUDED_FOR_MEMORY,
+  isIndexableConstitutionalMemoryPath,
   shouldIndexForCodeGraph,
   shouldIndexForMemory,
 } from '../lib/utils/index-scope.js';
@@ -67,6 +68,13 @@ describe('index-scope helper', () => {
     expect(shouldIndexForCodeGraph('/workspace/dist/generated.js')).toBe(false);
     expect(shouldIndexForCodeGraph('/workspace/vendor/lib.ts')).toBe(false);
     expect(shouldIndexForCodeGraph('/workspace/z_future/idea.ts')).toBe(false);
+  });
+
+  it('accepts constitutional rule files but rejects constitutional README files', () => {
+    expect(isIndexableConstitutionalMemoryPath('/workspace/.opencode/skill/system-spec-kit/constitutional/gate-enforcement.md')).toBe(true);
+    expect(isIndexableConstitutionalMemoryPath('/workspace/.opencode/skill/system-spec-kit/constitutional/README.md')).toBe(false);
+    expect(isIndexableConstitutionalMemoryPath('/workspace/.opencode/skill/system-spec-kit/constitutional/readme.MD')).toBe(false);
+    expect(isIndexableConstitutionalMemoryPath('/workspace/.opencode/specs/system-spec-kit/001-active/spec.md')).toBe(false);
   });
 });
 

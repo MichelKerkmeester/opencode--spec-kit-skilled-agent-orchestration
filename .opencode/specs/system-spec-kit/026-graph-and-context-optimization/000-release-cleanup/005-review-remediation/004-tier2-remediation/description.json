@@ -1,0 +1,15 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/004-tier2-remediation",
+  "description": "Close 15 actionable findings from Tier 2 deep-review program (D 008/007, E 009/005, F 009/002, G 006/008). H 006/001 license audit P0 deferred to human verification.",
+  "keywords": ["tier-2", "remediation", "review", "copilot", "plugin-loader", "deep-research-review", "state-hygiene", "review-program"],
+  "lastUpdated": "2026-04-28T18:35:00.000Z",
+  "specId": "004",
+  "folderSlug": "tier2-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1
+}

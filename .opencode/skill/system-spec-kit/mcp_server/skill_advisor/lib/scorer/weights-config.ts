@@ -3,37 +3,27 @@
 // ───────────────────────────────────────────────────────────────
 
 import { z } from 'zod';
+import {
+  DEFAULT_SCORER_LANE_WEIGHTS,
+  SCORER_LANE_IDS,
+  SCORER_LANE_REGISTRY,
+  isLiveScorerLane,
+} from './lane-registry.js';
 import type { ScorerLane } from './types.js';
 
-export const EXPLICIT_AUTHOR_WEIGHT = 0.45;
-export const LEXICAL_WEIGHT = 0.30;
-export const GRAPH_CAUSAL_WEIGHT = 0.15;
-export const DERIVED_GENERATED_WEIGHT = 0.15;
-export const SEMANTIC_SHADOW_WEIGHT = 0.00;
+export const EXPLICIT_AUTHOR_WEIGHT = DEFAULT_SCORER_LANE_WEIGHTS.explicit_author;
+export const LEXICAL_WEIGHT = DEFAULT_SCORER_LANE_WEIGHTS.lexical;
+export const GRAPH_CAUSAL_WEIGHT = DEFAULT_SCORER_LANE_WEIGHTS.graph_causal;
+export const DERIVED_GENERATED_WEIGHT = DEFAULT_SCORER_LANE_WEIGHTS.derived_generated;
+export const SEMANTIC_SHADOW_WEIGHT = DEFAULT_SCORER_LANE_WEIGHTS.semantic_shadow;
 
-export const DEFAULT_SCORER_WEIGHTS = {
-  explicit_author: EXPLICIT_AUTHOR_WEIGHT,
-  lexical: LEXICAL_WEIGHT,
-  graph_causal: GRAPH_CAUSAL_WEIGHT,
-  derived_generated: DERIVED_GENERATED_WEIGHT,
-  semantic_shadow: SEMANTIC_SHADOW_WEIGHT,
-} as const satisfies Record<ScorerLane, number>;
+export const DEFAULT_SCORER_WEIGHTS = DEFAULT_SCORER_LANE_WEIGHTS as Readonly<Record<ScorerLane, number>>;
 
-export const SCORER_LANES = [
-  'explicit_author',
-  'lexical',
-  'graph_causal',
-  'derived_generated',
-  'semantic_shadow',
-] as const satisfies readonly ScorerLane[];
+export const SCORER_LANES = SCORER_LANE_IDS;
 
-export const ScorerWeightsSchema = z.object({
-  explicit_author: z.literal(EXPLICIT_AUTHOR_WEIGHT),
-  lexical: z.literal(LEXICAL_WEIGHT),
-  graph_causal: z.literal(GRAPH_CAUSAL_WEIGHT),
-  derived_generated: z.literal(DERIVED_GENERATED_WEIGHT),
-  semantic_shadow: z.literal(SEMANTIC_SHADOW_WEIGHT),
-}).strict();
+export const ScorerWeightsSchema = z.object(Object.fromEntries(
+  SCORER_LANE_REGISTRY.map((lane) => [lane.id, z.literal(lane.weight)]),
+) as Record<ScorerLane, z.ZodLiteral<number>>).strict();
 
 export type ScorerWeights = z.infer<typeof ScorerWeightsSchema>;
 
@@ -43,7 +33,7 @@ export function parseScorerWeights(input: unknown = DEFAULT_SCORER_WEIGHTS): Sco
 
 export function liveWeightTotal(weights: ScorerWeights = DEFAULT_SCORER_WEIGHTS): number {
   return SCORER_LANES.reduce((total, lane) => {
-    if (lane === 'semantic_shadow') return total;
+    if (!isLiveScorerLane(lane)) return total;
     return total + weights[lane];
   }, 0);
 }

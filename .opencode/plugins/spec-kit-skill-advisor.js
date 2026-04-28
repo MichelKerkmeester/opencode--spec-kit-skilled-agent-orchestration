@@ -154,6 +154,17 @@ function normalizeWorkspaceRoot(workspaceRoot) {
   return resolvePath(process.cwd());
 }
 
+function statusSafePath(label) {
+  return `[${label}]`;
+}
+
+function statusSafeBinary(binary) {
+  if (typeof binary === 'string' && (binary.includes('/') || binary.includes('\\'))) {
+    return '[configured-node]';
+  }
+  return binary;
+}
+
 function cacheKeyForPrompt(prompt, options, sessionID, sourceSignature, workspaceRoot) {
   const sessionKey = normalizeSessionID(sessionID);
   const promptKey = createHash('sha256')
@@ -667,9 +678,9 @@ export default async function SpecKitSkillAdvisorPlugin(ctx, rawOptions) {
             `max_brief_chars=${options.maxBriefChars}`,
             `max_cache_entries=${options.maxCacheEntries}`,
             `runtime_ready=${state.runtimeReady}`,
-            `node_binary=${options.nodeBinary}`,
+            `node_binary=${statusSafeBinary(options.nodeBinary)}`,
             `bridge_timeout_ms=${options.bridgeTimeoutMs}`,
-            `bridge_path=${BRIDGE_PATH}`,
+            `bridge_path=${statusSafePath('skill-advisor-bridge')}`,
             `last_bridge_status=${state.lastBridgeStatus}`,
             `last_runtime_status=${state.lastBridgeStatus}`,
             `last_error_code=${state.lastErrorCode ?? 'none'}`,

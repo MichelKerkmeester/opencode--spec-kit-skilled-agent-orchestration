@@ -275,4 +275,29 @@ describe('chunking orchestrator deferred anchor identity', () => {
       `${parsed.specFolder}::${parentRow.canonical_file_path}::chunk-c`,
     ]);
   });
+
+  it('routes fallback metadata through the constitutional tier guard', async () => {
+    const filePath = path.join(tempDir ?? os.tmpdir(), 'non-constitutional-chunks.md');
+    fs.writeFileSync(filePath, '# Chunked content', 'utf8');
+
+    vi.mocked(embeddings.generateDocumentEmbedding).mockResolvedValue(new Float32Array([0.1, 0.2, 0.3]));
+
+    const parsed = {
+      ...createParsedMemory(filePath),
+      importanceTier: 'constitutional',
+    };
+    const result = await indexChunkedMemoryFile(filePath, parsed);
+
+    expect(result.status).toBe('indexed');
+
+    const rows = requireTestDb().prepare(`
+      SELECT importance_tier
+      FROM memory_index
+      WHERE id = ? OR parent_id = ?
+      ORDER BY id ASC
+    `).all(result.id, result.id) as Array<{ importance_tier: string }>;
+
+    expect(rows).toHaveLength(4);
+    expect(rows.every((row) => row.importance_tier !== 'constitutional')).toBe(true);
+  });
 });

@@ -11,10 +11,10 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface"
-    last_updated_at: "2026-04-19T11:45:00Z"
-    last_updated_by: "claude-opus-4.7-1m"
-    recent_action: "Wave-3 patches landed; battle plan authored"
-    next_safe_action: "Execute T1 per battle-plan"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     blockers: []
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot fallback"
 ---
@@ -40,7 +40,7 @@ _memory:
 
 ## What Happened This Session
 
-1. **Scaffolded 8 implementation children** (002-009) under `001-skill-advisor-hook-surface/` based on wave-1 + wave-2 research convergence. Plan in `/Users/michelkerkmeester/.claude/plans/start-running-all-iterations-bright-seal.md`.
+1. **Scaffolded 8 implementation children** (002-009) under `001-skill-advisor-hook-surface/` based on wave-1 + wave-2 research convergence. Plan in /Users/michelkerkmeester/.claude/plans/start-running-all-iterations-bright-seal.md.
 2. **Dispatched wave-3 validation research** via `/spec_kit:deep-research :auto` (cli-copilot gpt-5.4 high, 20-iter budget). Orchestrator script at `/tmp/wave3-orchestrator.sh`.
 3. **Wave-3 converged early** at iter 13 (rolling avg 0.0367 < 0.05). All 10 validation angles (V1-V10) answered.
 4. **Ran final synthesis** via one more cli-copilot call (orchestrator had synthesis on iter 20; convergence fired earlier). Produced the research-validation.md synthesis (111 lines, 20KB) in the wave-3 artifact folder.
@@ -189,7 +189,7 @@ No active background tasks.
 2. **Do not scaffold new children** — 8 children (002-009) are the finalized decomposition.
 3. **Patches are landed** — wave-3 P0 (005 impossible gate) + all 9 P1 items are applied and validated. No additional spec edits needed before implementation.
 4. **Executor policy** — cli-codex gpt-5.4 high fast primary; cli-copilot gpt-5.4 high fallback. Do not mix other executors into the 020 train without updating the continuity frontmatter.
-5. **Plan file at `/Users/michelkerkmeester/.claude/plans/start-running-all-iterations-bright-seal.md`** is from an earlier planning pass — treat as historical reference, not current state.
+5. **Plan file at /Users/michelkerkmeester/.claude/plans/start-running-all-iterations-bright-seal.md** is from an earlier planning pass — treat as historical reference, not current state.
 
 ## Recommended First Message Post-Compact
 

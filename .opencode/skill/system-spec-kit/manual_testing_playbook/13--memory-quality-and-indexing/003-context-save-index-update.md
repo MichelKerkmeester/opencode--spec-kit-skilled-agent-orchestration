@@ -14,7 +14,7 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 ## 2. SCENARIO CONTRACT
 
-This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix. Packet 026/010 added index-scope + tier invariants and a scan-originated save contract (`fromScan`); this scenario validates both.
+This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix. Packet 026/005 added index-scope + tier invariants and a scan-originated save contract (`fromScan`); this scenario validates those invariants plus the storage-boundary remediation for constitutional README rows.
 
 - Prompt: `As a spec-doc record-quality validation operator, validate Context Save + Index Update against node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json specs/<target-spec>. Verify saved context artifacts are discoverable, no new candidate_changed false-positives fire on scan-originated saves, the permanent z_future/external exclusions still hold, and non-constitutional paths cannot persist as importanceTier: constitutional. Return a concise pass/fail verdict with the main reason and cited evidence.`
 
@@ -35,6 +35,9 @@ This scenario remains prose-first because it carries compound operator logic, su
 - Cleanup verify reports `constitutional_total=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0` (packet 002 invariant)
 - No row appears in the indexed set for paths under `z_future/` or `/external/` (packet 002 permanent exclusions)
 - The constitutional `README.md` stays excluded from the spec-doc record index (ADR-005)
+- A poisoned checkpoint or existing row for `.opencode/skill/system-spec-kit/constitutional/README.md` is downgraded to `important` and emits `tier_downgrade_non_constitutional_path`
+- `memory_save` on an excluded path returns `E_MEMORY_INDEX_SCOPE_EXCLUDED` with `canonicalPath`
+- `memory_index_scan` and `code_graph_scan` return structured `warnings` and `capExceeded` metadata when walker caps trigger
 
 ### Evidence
 
@@ -42,6 +45,10 @@ This scenario remains prose-first because it carries compound operator logic, su
 - `memory_search` / `memory_context` results for the saved artifact
 - Stdout of `cleanup-index-scope-violations.js --verify` matching the four expected counts
 - For tier-invariant spot-check: attempt a `memory_save` of a non-constitutional-path memory with `importanceTier: "constitutional"` and confirm it lands as `important` with a `tier_downgrade_non_constitutional_path` row in the governance audit
+- For cleanup apply/rollback: take a SQLite backup, run `cleanup-index-scope-violations.js --apply`, verify counts, then restore the backup and confirm `--verify` reports the pre-apply violations again
+- For restore validation: replay a checkpoint fixture containing constitutional `README.md` and confirm the restored row is `important`
+- For walker DoS: run scan fixtures with depth >20, node cap, and oversized `.gitignore`; capture `warnings` and `capExceeded`
+- For promotion bypass: try `memory_update` or chunking fallback paths with `importanceTier: "constitutional"` outside `/constitutional/` and confirm the stored tier is not constitutional
 
 ### Pass/Fail
 

@@ -61,6 +61,8 @@ describe('walker DoS caps', () => {
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('Skipping oversized .gitignore'))
     ).toBe(true);
+    expect(results.capExceeded.gitignoreSize).toBe(true);
+    expect(results.warnings.some((message) => message.includes('Skipping oversized .gitignore'))).toBe(true);
   });
 
   it('stops descending spec discovery past the configured max depth and keeps shallower packets indexable', () => {
@@ -82,5 +84,8 @@ describe('walker DoS caps', () => {
     expect(
       warnSpy.mock.calls.some(([message]) => String(message).includes('maxDepth=20'))
     ).toBe(true);
+    const discovery = findSpecDocuments(tempRoot);
+    expect(discovery.capExceeded.depth).toBe(true);
+    expect(discovery.warnings.some((message) => message.includes('maxDepth=20'))).toBe(true);
   });
 });

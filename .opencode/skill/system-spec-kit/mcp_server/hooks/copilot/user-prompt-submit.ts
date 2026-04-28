@@ -123,6 +123,7 @@ function buildStartupSurface(dependencies: CopilotUserPromptSubmitDependencies):
 
 async function refreshCopilotInstructions(
   brief: string | null,
+  workspaceRoot: string,
   dependencies: CopilotUserPromptSubmitDependencies,
 ): Promise<CopilotCustomInstructionsWriteResult> {
   const writeInstructions = dependencies.writeInstructions ?? writeCopilotCustomInstructions;
@@ -130,6 +131,7 @@ async function refreshCopilotInstructions(
     advisorBrief: brief,
     startupSurface: buildStartupSurface(dependencies),
     source: 'system-spec-kit copilot userPromptSubmitted hook',
+    workspaceRoot,
   }, {
     instructionsPath: dependencies.instructionsPath,
   });
@@ -212,7 +214,7 @@ export async function refreshCopilotAdvisorInstructions(
 
     return {
       brief,
-      writeResult: await refreshCopilotInstructions(brief, dependencies),
+      writeResult: await refreshCopilotInstructions(brief, workspaceRoot, dependencies),
     };
   } catch {
     emitDiagnostic({

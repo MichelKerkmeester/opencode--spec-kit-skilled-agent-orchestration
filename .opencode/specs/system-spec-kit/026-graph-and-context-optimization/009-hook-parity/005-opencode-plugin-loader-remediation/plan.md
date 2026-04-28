@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation"
-    last_updated_at: "2026-04-22T13:32:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
-    next_safe_action: "Execute Phase 1 contract investigation"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     completion_pct: 100
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 ---
@@ -76,7 +76,7 @@ OpenCode 1.3.17 ships as a single bun-bundled binary at `/Users/michelkerkmeeste
 ├── spec-kit-compact-code-graph.js             ← plugin
 └── README.md                                  ← convention doc
 
-.opencode/plugin-helpers/                       ← NEW, outside loader scope
+.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/                       ← NEW, outside loader scope
 ├── spec-kit-skill-advisor-bridge.mjs
 ├── spec-kit-compact-code-graph-bridge.mjs
 └── spec-kit-opencode-message-schema.mjs
@@ -107,7 +107,7 @@ Methodology: search upstream `sst/opencode` repo + `@opencode-ai/plugin` package
 
 Atomic commit:
 1. `git grep -l "spec-kit-skill-advisor-bridge\|spec-kit-compact-code-graph-bridge\|spec-kit-opencode-message-schema"` to inventory references.
-2. `mkdir .opencode/plugin-helpers/`.
+2. `mkdir .opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`.
 3. `git mv` the 3 helper files.
 4. Update `BRIDGE_PATH` constant in both plugin files (relative path `../plugin-helpers/...`).
 5. Update the `from './spec-kit-opencode-message-schema.mjs'` import in `spec-kit-compact-code-graph.js`.
@@ -118,7 +118,7 @@ Atomic commit:
 ### Phase 3: Regression Guard + Documentation
 
 1. Author `tests/opencode-plugins-folder-purity.vitest.ts`: scans `.opencode/plugins/*.{js,mjs,ts}` (excluding `README.md`), `import()`s each file, asserts each has a default export.
-2. Author/update a new README inside `.opencode/plugins/` with the "entrypoints only" convention, listing current plugins and pointing to `.opencode/plugin-helpers/`.
+2. Author/update a new README inside `.opencode/plugins/` with the "entrypoints only" convention, listing current plugins and pointing to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`.
 3. Add a top-of-file comment to each relocated helper explaining why it lives outside `.opencode/plugins/` and referencing this packet.
 4. Update parent docs with phase outcome.
 5. Run strict spec validation; run `generate-context.js` for canonical save.
@@ -237,7 +237,7 @@ The critical path is: contract probe → outcome selection → atomic move → T
 | Rule | Application |
 |------|-------------|
 | TASK-SEQ | Investigate → choose outcome → atomic move → smoke → guard → docs. Do not interleave. |
-| TASK-SCOPE | Touch only `.opencode/plugins/`, the new `.opencode/plugin-helpers/`, the regression test, and this packet's docs. |
+| TASK-SCOPE | Touch only `.opencode/plugins/`, the new `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`, the regression test, and this packet's docs. |
 | TASK-VERIFY | Record TUI smoke output (or absence of error) in checklist evidence. |
 
 **Status Reporting Format**

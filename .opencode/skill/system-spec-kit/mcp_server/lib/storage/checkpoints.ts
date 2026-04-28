@@ -30,7 +30,7 @@ import { generateCommunitySummaries } from '../graph/community-summaries.js';
 import { storeCommunities } from '../graph/community-storage.js';
 import { snapshotDegrees } from '../graph/graph-signals.js';
 import { runLineageBackfill } from './lineage-state.js';
-import { isConstitutionalPath, shouldIndexForMemory } from '../utils/index-scope.js';
+import { isIndexableConstitutionalMemoryPath, shouldIndexForMemory } from '../utils/index-scope.js';
 
 function batchedInQuery<T>(db: Database.Database, sql: string, ids: (number | string)[], batchSize = 500): T[] {
   const results: T[] = [];
@@ -1309,7 +1309,7 @@ function validateMemoryRow(
     ? r.canonical_file_path
     : r.file_path;
 
-  // See ADR-006 in packet 026/011.
+  // See ADR-006 in packet 026/005.
   if (!shouldIndexForMemory(resolvedPath as string)) {
     governanceAudits.push({
       action: GOVERNANCE_AUDIT_ACTIONS.CHECKPOINT_RESTORE_EXCLUDED_PATH_REJECTED,
@@ -1332,7 +1332,7 @@ function validateMemoryRow(
     throw new Error(`Checkpoint row ${index}: path excluded from memory indexing (${resolvedPath as string})`);
   }
 
-  if (r.importance_tier === 'constitutional' && !isConstitutionalPath(resolvedPath as string)) {
+  if (r.importance_tier === 'constitutional' && !isIndexableConstitutionalMemoryPath(resolvedPath as string)) {
     tierDowngradeAudits.push({
       memoryId: r.id as number,
       logicalKey: buildGovernanceLogicalKey(

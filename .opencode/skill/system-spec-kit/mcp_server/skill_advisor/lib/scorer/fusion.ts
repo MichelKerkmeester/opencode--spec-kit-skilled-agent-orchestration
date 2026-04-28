@@ -25,6 +25,7 @@ import {
   liveWeightTotal,
   parseScorerWeights,
 } from './weights-config.js';
+import { isLiveScorerLane } from './lane-registry.js';
 import type {
   AdvisorProjection,
   AdvisorScoredRecommendation,
@@ -51,13 +52,7 @@ type AdvisorRuntimeLabel = (typeof ADVISOR_RUNTIME_VALUES)[number];
 type AdvisorFreshnessLabel = (typeof ADVISOR_HOOK_FRESHNESS_VALUES)[number];
 
 function emptyLaneScores(): MutableLaneScores {
-  return {
-    explicit_author: [],
-    lexical: [],
-    graph_causal: [],
-    derived_generated: [],
-    semantic_shadow: [],
-  };
+  return Object.fromEntries(SCORER_LANES.map((lane) => [lane, []])) as unknown as MutableLaneScores;
 }
 
 function normalizeRuntimeLabel(value: string | undefined): AdvisorRuntimeLabel | null {
@@ -257,10 +252,10 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
   const laneScores = buildLaneScores(prompt, projection, disabled, affordances);
   const liveTotal = SCORER_LANES
     .filter((lane) => !disabled.has(lane))
-    .reduce((total, lane) => lane === 'semantic_shadow' ? total : total + weights[lane], 0) || liveWeightTotal(weights);
+    .reduce((total, lane) => isLiveScorerLane(lane) ? total + weights[lane] : total, 0) || liveWeightTotal(weights);
   if (isSpeckitMetricsEnabled() && liveTotal > 0) {
     for (const lane of SCORER_LANES) {
-      if (lane === 'semantic_shadow' || disabled.has(lane)) continue;
+      if (!isLiveScorerLane(lane) || disabled.has(lane)) continue;
       speckitMetrics.setGauge('spec_kit.scorer.fusion_live_weight_share', weights[lane] / liveTotal, { lane });
     }
   }
@@ -274,7 +269,7 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
     if (!isDefaultRoutable(promptLower, skill)) continue;
     const contributions: LaneContribution[] = SCORER_LANES.map((lane) => {
       const rawScore = laneRawScore(laneScores[lane], skill.id);
-      const shadowOnly = lane === 'semantic_shadow';
+      const shadowOnly = !isLiveScorerLane(lane);
       return {
         lane,
         rawScore,
@@ -376,7 +371,7 @@ export function scoreAdvisorPrompt(prompt: string, options: AdvisorScoringOption
     ambiguous: isAmbiguousTopTwo(ranked),
     metrics: {
       candidateCount: ranked.length,
-      liveLaneCount: SCORER_LANES.filter((lane) => lane !== 'semantic_shadow' && !disabled.has(lane)).length,
+      liveLaneCount: SCORER_LANES.filter((lane) => isLiveScorerLane(lane) && !disabled.has(lane)).length,
     },
   };
 }

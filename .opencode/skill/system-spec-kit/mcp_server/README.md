@@ -118,6 +118,19 @@ The spec-doc record and code-graph scanners share one path-policy source at `lib
 - Code-graph scanning must never admit any path with an `external/` segment, and it preserves the existing `.git/`, `node_modules/`, `dist/`, `vendor/`, `z_future/`, `z_archive/`, and `mcp-coco-index/mcp_server/` exclusions.
 - `importanceTier: constitutional` is only valid for files inside `/constitutional/`; non-constitutional saves are downgraded to `important` at save time instead of failing hard.
 
+#### Repair / Verify / Rollback
+
+```bash
+cd .opencode/skill/system-spec-kit
+node scripts/dist/memory/cleanup-index-scope-violations.js --verify
+cp mcp_server/database/context-index__voyage__voyage-4__1024.sqlite /tmp/context-index.before-scope-cleanup.sqlite
+node scripts/dist/memory/cleanup-index-scope-violations.js --apply
+node scripts/dist/memory/cleanup-index-scope-violations.js --verify
+cp /tmp/context-index.before-scope-cleanup.sqlite mcp_server/database/context-index__voyage__voyage-4__1024.sqlite
+```
+
+Rollback is the final `cp` line; rerun `--verify` after rollback to confirm the restored database state is the one you intended.
+
 ### Governance Audit Action Strings
 
 - `tier_downgrade_non_constitutional_path`: a runtime save, update, checkpoint, or post-insert write tried to apply constitutional priority to a non-constitutional path and the tier was normalized away from `constitutional`.

@@ -12,7 +12,7 @@ loop_executor: cli-codex/gpt-5.5/high/fast
 
 ## 1. Executive Summary
 
-Ten cli-codex (gpt-5.5 high fast) iterations converted four v1.0.2 stress-test follow-ups (`../../010-stress-test-rerun-v1-0-2/findings.md` Recommendations §1–§5) from "tagged" to "actionable patch-sized proposals." Convergence was clean: `newInfoRatio` decayed monotonically from 0.74 → 0.22 across the loop, with no contradictions surfaced after iteration 7. Total wall-clock: 28 minutes; 0 failed iterations.
+Ten cli-codex (gpt-5.5 high fast) iterations converted four v1.0.2 stress-test follow-ups (`../../010-stress-test-rerun-v1-0-2/findings.md` Recommendations §1–§5) from "tagged" to "actionable patch-sized proposals." Convergence was clean overall: `newInfoRatio` moved from 0.74 → 0.22 across the loop, with brief rebounds at iterations 5 and 8 and no contradictions surfaced after iteration 7. Total wall-clock: 28 minutes; 0 failed iterations.
 
 **Headline outcomes:**
 
@@ -44,7 +44,7 @@ Ten cli-codex (gpt-5.5 high fast) iterations converted four v1.0.2 stress-test f
 | Sources read across loop | 21 distinct files (010 findings, 003-009 specs, mcp_server/code_graph/, mcp_server/lib/search/, hooks/copilot/, cocoindex_code fork, executor-config) |
 | Outputs | 10 `iterations/iteration-NNN.md` + 10 `deltas/iter-NNN.jsonl` + this synthesis |
 
-**newInfoRatio trajectory**: 0.74 → 0.58 → 0.46 → 0.41 → 0.46 → 0.38 → 0.34 → 0.46 → 0.27 → 0.22. Clean monotonic decay = converged. No oscillation, no rebound, no contradictions after iteration 7. The brief +0.05 lift at iter-5 reflects the `Q-OPP` reframing from "duplicated rerank?" → "seed-fidelity gap" — a concept shift that surfaced fresh evidence rather than churn.
+**newInfoRatio trajectory**: 0.74 → 0.58 → 0.46 → 0.41 → 0.46 → 0.38 → 0.34 → 0.46 → 0.27 → 0.22. The evidence shows an overall downward trajectory with two rebounds, not strict monotonic decay. The brief +0.05 lift at iter-5 reflects the `Q-OPP` reframing from "duplicated rerank?" → "seed-fidelity gap"; the iter-8 rebound similarly surfaced late explanatory detail rather than a contradiction. The endpoint still supports convergence: no contradictions after iteration 7 and the final two iterations drop to 0.27 → 0.22.
 
 ---
 

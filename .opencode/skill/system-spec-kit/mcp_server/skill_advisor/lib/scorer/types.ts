@@ -3,13 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 
 import type { AffordanceInput } from '../affordance-normalizer.js';
+import type { ScorerLaneId } from './lane-registry.js';
 
-export type ScorerLane =
-  | 'explicit_author'
-  | 'lexical'
-  | 'graph_causal'
-  | 'derived_generated'
-  | 'semantic_shadow';
+export type ScorerLane = ScorerLaneId;
 
 export type SkillLifecycleStatus = 'active' | 'deprecated' | 'archived' | 'future';
 
@@ -55,13 +51,7 @@ export interface LaneMatch {
   readonly shadowOnly?: boolean;
 }
 
-export interface LaneScores {
-  readonly explicit_author: readonly LaneMatch[];
-  readonly lexical: readonly LaneMatch[];
-  readonly graph_causal: readonly LaneMatch[];
-  readonly derived_generated: readonly LaneMatch[];
-  readonly semantic_shadow: readonly LaneMatch[];
-}
+export type LaneScores = Readonly<Record<ScorerLane, readonly LaneMatch[]>>;
 
 export interface LaneContribution {
   readonly lane: ScorerLane;

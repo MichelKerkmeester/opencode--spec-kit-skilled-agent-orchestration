@@ -46,7 +46,7 @@ import {
 } from '../lib/search/search-flags.js';
 
 import { getCanonicalPathKey, resolveCanonicalPath } from '../lib/utils/canonical-path.js';
-import { isConstitutionalPath, shouldIndexForMemory } from '../lib/utils/index-scope.js';
+import { isIndexableConstitutionalMemoryPath, shouldIndexForMemory } from '../lib/utils/index-scope.js';
 import { findSimilarMemories } from './pe-gating.js';
 import { runPostMutationHooks } from './mutation-hooks.js';
 import { buildMutationHookFeedback } from '../hooks/mutation-feedback.js';
@@ -171,6 +171,7 @@ import { refreshAutoEntitiesForMemory } from '../lib/extraction/entity-extractor
 // Create local path validator
 const validateFilePathLocal = createFilePathValidator(ALLOWED_BASE_PATHS, validateFilePath);
 const MANUAL_FALLBACK_SOURCE_CLASSIFICATION = 'manual-fallback' as const;
+export const MEMORY_INDEX_SCOPE_EXCLUDED_ERROR_CODE = 'E_MEMORY_INDEX_SCOPE_EXCLUDED';
 const ROUTED_CONTINUITY_ANCHOR_ID = '_memory.continuity';
 const tier3RoutingCache = new InMemoryRouterCache();
 
@@ -183,6 +184,28 @@ interface PreparedParsedMemory {
   specDocHealth: SpecDocHealthResult | null;
   finalizedFileContent: string | null;
   sourceClassification: 'template-generated' | typeof MANUAL_FALLBACK_SOURCE_CLASSIFICATION;
+}
+
+function createIndexScopeExcludedResponse(
+  requestId: string,
+  canonicalPath: string,
+  originalPath: string,
+): MCPResponse {
+  return createMCPErrorResponse({
+    tool: 'memory_save',
+    error: `Memory indexing excluded for path: ${canonicalPath}`,
+    code: MEMORY_INDEX_SCOPE_EXCLUDED_ERROR_CODE,
+    details: {
+      requestId,
+      canonicalPath,
+      filePath: originalPath,
+    },
+    recovery: {
+      hint: 'Move the file into an indexable spec folder or constitutional rule path before retrying.',
+      actions: ['Verify the path is not under z_future/, z_archive/, or external/'],
+      severity: 'warning',
+    },
+  });
 }
 
 type ParsedMemoryWithIndexHints = ReturnType<typeof memoryParser.parseMemoryFile> & {
@@ -305,12 +328,12 @@ function prepareParsedMemoryForIndexing(
     qualityLoopMode?: 'advisory' | 'full-auto';
   } = {},
 ): PreparedParsedMemory {
-  // See ADR-006 and ADR-010 in packet 026/011.
+  // See ADR-006 and ADR-010 in packet 026/005.
   const canonicalFilePath = resolveCanonicalPath(path.resolve(parsed.filePath));
   if (!shouldIndexForMemory(canonicalFilePath)) {
     throw new Error(`Memory indexing excluded for path: ${parsed.filePath}`);
   }
-  if (parsed.importanceTier === 'constitutional' && !isConstitutionalPath(canonicalFilePath)) {
+  if (parsed.importanceTier === 'constitutional' && !isIndexableConstitutionalMemoryPath(canonicalFilePath)) {
     console.warn('[memory-save] importance_tier=constitutional rejected for non-constitutional path; downgrading to important', {
       file_path: parsed.filePath,
     });
@@ -2712,7 +2735,7 @@ async function handleMemorySave(args: SaveArgs): Promise<MCPResponse> {
   const database = requireDb();
 
   if (!shouldIndexForMemory(canonicalValidatedPath)) {
-    throw new Error(`Memory indexing excluded for path: ${canonicalValidatedPath}`);
+    return createIndexScopeExcludedResponse(requestId, canonicalValidatedPath, validatedPath);
   }
 
   if (!memoryParser.isMemoryFile(validatedPath)) {

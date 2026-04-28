@@ -29,6 +29,8 @@ import {
   findGraphMetadataFiles,
   findSpecDocuments,
   detectSpecLevel,
+  type DiscoveryCapExceeded,
+  type DiscoveryFileList,
 } from './memory-index-discovery.js';
 import {
   EMPTY_ALIAS_CONFLICT_SUMMARY,
@@ -74,6 +76,27 @@ function isIndexResult(result: IndexResult | RetryErrorResult): result is IndexR
   );
 }
 
+function emptyDiscoveryCapExceeded(): DiscoveryCapExceeded {
+  return { maxNodes: false, depth: false, gitignoreSize: false };
+}
+
+function mergeDiscoveryCapExceeded(...caps: Array<DiscoveryCapExceeded | undefined>): DiscoveryCapExceeded {
+  return caps.reduce<DiscoveryCapExceeded>((merged, cap) => ({
+    maxNodes: merged.maxNodes || cap?.maxNodes === true,
+    depth: merged.depth || cap?.depth === true,
+    gitignoreSize: merged.gitignoreSize || cap?.gitignoreSize === true,
+  }), emptyDiscoveryCapExceeded());
+}
+
+function discoveryWarnings(files: string[] | DiscoveryFileList): string[] {
+  const maybeWarnings = (files as Partial<DiscoveryFileList>).warnings;
+  return Array.isArray(maybeWarnings) ? maybeWarnings : [];
+}
+
+function discoveryCaps(files: string[] | DiscoveryFileList): DiscoveryCapExceeded | undefined {
+  return (files as Partial<DiscoveryFileList>).capExceeded;
+}
+
 /** Individual file result from a memory index scan. */
 interface ScanFileEntry {
   file: string;
@@ -114,6 +137,8 @@ interface ScanResults {
   };
   aliasConflicts: AliasConflictSummary;
   divergenceReconcile: DivergenceReconcileSummary;
+  warnings: string[];
+  capExceeded: DiscoveryCapExceeded;
 }
 
 interface CategorizedFiles {
@@ -222,8 +247,20 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
   const workspacePath: string = DEFAULT_BASE_PATH;
 
   const constitutionalFiles: string[] = include_constitutional ? findConstitutionalFiles(workspacePath) : [];
-  const specDocFiles: string[] = include_spec_docs ? findSpecDocuments(workspacePath, { specFolder: spec_folder }) : [];
-  const graphMetadataFiles: string[] = include_spec_docs ? findGraphMetadataFiles(workspacePath, { specFolder: spec_folder }) : [];
+  const specDocFiles = include_spec_docs
+    ? findSpecDocuments(workspacePath, { specFolder: spec_folder })
+    : Object.assign([], { warnings: [], capExceeded: emptyDiscoveryCapExceeded() }) as DiscoveryFileList;
+  const graphMetadataFiles = include_spec_docs
+    ? findGraphMetadataFiles(workspacePath, { specFolder: spec_folder })
+    : Object.assign([], { warnings: [], capExceeded: emptyDiscoveryCapExceeded() }) as DiscoveryFileList;
+  const walkerWarnings = [
+    ...discoveryWarnings(specDocFiles),
+    ...discoveryWarnings(graphMetadataFiles),
+  ];
+  const walkerCapExceeded = mergeDiscoveryCapExceeded(
+    discoveryCaps(specDocFiles),
+    discoveryCaps(graphMetadataFiles),
+  );
 
   const canonicalKeyCache = new Map<string, string>();
   const getCachedKey = (filePath: string): string => {
@@ -332,6 +369,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
         failed: 0,
         staleDeleted,
         staleDeleteFailed,
+        warnings: walkerWarnings,
+        capExceeded: walkerCapExceeded,
       },
       hints: [
         ...(staleDeleted > 0 ? [`Removed ${staleDeleted} stale index record(s) for deleted files`] : []),
@@ -371,6 +410,8 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     },
     aliasConflicts: { ...EMPTY_ALIAS_CONFLICT_SUMMARY },
     divergenceReconcile: createDefaultDivergenceReconcileSummary(),
+    warnings: walkerWarnings,
+    capExceeded: walkerCapExceeded,
   };
 
   let filesToIndex: string[] = files;

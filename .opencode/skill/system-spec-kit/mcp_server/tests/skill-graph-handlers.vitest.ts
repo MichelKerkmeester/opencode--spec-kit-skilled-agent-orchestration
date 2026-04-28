@@ -1,30 +1,28 @@
-import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { handleSkillGraphQuery } from '../handlers/skill-graph/query.js';
 import { handleSkillGraphScan } from '../handlers/skill-graph/scan.js';
+import { runWithCallerContext, type MCPCallerContext } from '../lib/context/caller-context.js';
 import { closeDb, getDb, indexSkillMetadata, initDb } from '../lib/skill-graph/skill-graph-db.js';
+import { writeGraphMetadata } from './fixtures/skill-graph-db.js';
 
 type HandlerResponse = { content: Array<{ type: string; text: string }> };
 
-function writeGraphMetadata(skillRoot: string, skillId: string, edges: Record<string, unknown[]> = {}): void {
-  const skillDir = join(skillRoot, skillId);
-  mkdirSync(skillDir, { recursive: true });
-  writeFileSync(join(skillDir, 'graph-metadata.json'), JSON.stringify({
-    schema_version: 1,
-    skill_id: skillId,
-    family: 'system',
-    category: 'test',
-    domains: ['test'],
-    intent_signals: [skillId],
-    derived: {},
-    edges,
-  }), 'utf8');
-}
-
 function parsePayload(result: HandlerResponse): Record<string, unknown> {
   return JSON.parse(result.content[0].text) as Record<string, unknown>;
+}
+
+function trustedCaller(): MCPCallerContext & { readonly trusted: true } {
+  return {
+    sessionId: 'trusted-scan',
+    transport: 'stdio',
+    connectedAt: '2026-04-28T00:00:00.000Z',
+    callerPid: 4242,
+    trusted: true,
+    metadata: { source: 'vitest', trusted: true },
+  };
 }
 
 function assertNoInternalFields(value: unknown, path = 'root'): void {
@@ -99,11 +97,17 @@ describe('skill graph handlers', () => {
       initDb(join(root, 'db'));
       writeGraphMetadata(skillRoot, 'alpha');
 
-      const firstScan = parsePayload(await handleSkillGraphScan({}));
+      const firstScan = parsePayload(await runWithCallerContext(
+        trustedCaller(),
+        () => handleSkillGraphScan({}),
+      ));
       expect(firstScan.status).toBe('ok');
       expect(getDb().prepare('SELECT id FROM skill_nodes').all()).toEqual([{ id: 'alpha' }]);
 
-      const emptyScan = parsePayload(await handleSkillGraphScan({ skillsRoot: 'empty-skills' }));
+      const emptyScan = parsePayload(await runWithCallerContext(
+        trustedCaller(),
+        () => handleSkillGraphScan({ skillsRoot: 'empty-skills' }),
+      ));
 
       expect(emptyScan.status).toBe('ok');
       expect(getDb().prepare('SELECT id FROM skill_nodes').all()).toEqual([{ id: 'alpha' }]);

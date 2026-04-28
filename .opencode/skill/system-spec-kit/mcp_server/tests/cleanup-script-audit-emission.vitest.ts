@@ -1,39 +1,16 @@
 import Database from 'better-sqlite3';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import { ensureGovernanceRuntime } from '../lib/governance/scope-governance.js';
 import {
   applyCleanup,
   buildPlan,
 } from '../../scripts/memory/cleanup-index-scope-violations.js';
+import { createMemoryIndexTestDatabase } from './fixtures/memory-index-db.js';
 
 let database: Database.Database;
 
-function createTestDatabase(): Database.Database {
-  const db = new Database(':memory:');
-  db.exec(`
-    CREATE TABLE memory_index (
-      id INTEGER PRIMARY KEY,
-      spec_folder TEXT,
-      file_path TEXT NOT NULL,
-      canonical_file_path TEXT,
-      anchor_id TEXT,
-      content_hash TEXT,
-      importance_tier TEXT DEFAULT 'normal',
-      created_at TEXT DEFAULT CURRENT_TIMESTAMP,
-      tenant_id TEXT,
-      user_id TEXT,
-      agent_id TEXT,
-      session_id TEXT,
-      delete_after TEXT
-    )
-  `);
-  ensureGovernanceRuntime(db);
-  return db;
-}
-
 beforeEach(() => {
-  database = createTestDatabase();
+  database = createMemoryIndexTestDatabase();
 });
 
 afterEach(() => {

@@ -79,7 +79,11 @@ describe('realpath hardening for symlinked paths', () => {
 
       const { handleMemorySave } = await import('../handlers/memory-save.js');
 
-      await expect(handleMemorySave({ filePath: safeSpecPath })).rejects.toThrow(/z_future/);
+      const response = await handleMemorySave({ filePath: safeSpecPath });
+      const envelope = JSON.parse(response.content[0].text);
+      expect(response.isError).toBe(true);
+      expect(envelope.data.code).toBe('E_MEMORY_INDEX_SCOPE_EXCLUDED');
+      expect(envelope.data.details.canonicalPath).toContain('/z_future/');
     } finally {
       database.close();
       rmSync(root, { recursive: true, force: true });

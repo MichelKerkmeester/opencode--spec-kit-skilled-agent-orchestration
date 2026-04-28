@@ -175,6 +175,13 @@ if (input.mode === 'status') {
 """
 
 RUNTIME_PATH = os.path.join(SCRIPT_DIR, "skill_advisor_runtime.py")
+COMPAT_CONTRACT_PATH = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "schemas", "compat-contract.json"))
+with open(COMPAT_CONTRACT_PATH, "r", encoding="utf-8") as _compat_contract_file:
+    COMPAT_CONTRACT = json.load(_compat_contract_file)
+DISABLE_ADVISOR_ENV = COMPAT_CONTRACT["disabledEnv"]
+FORCE_LOCAL_ENV = COMPAT_CONTRACT["forceLocalEnv"]
+NATIVE_DEFAULT_CONFIDENCE_THRESHOLD = COMPAT_CONTRACT["defaults"]["confidenceThreshold"]
+NATIVE_DEFAULT_UNCERTAINTY_THRESHOLD = COMPAT_CONTRACT["defaults"]["uncertaintyThreshold"]
 _RUNTIME_SPEC = None
 _runtime_module = None
 _runtime_load_error: Optional[Exception] = None
@@ -1642,8 +1649,8 @@ PHRASE_INTENT_BOOSTERS = {
     "tidd-ec": [("sk-improve-prompt", 2.0)],
 }
 
-DEFAULT_CONFIDENCE_THRESHOLD = 0.8
-DEFAULT_UNCERTAINTY_THRESHOLD = 0.35
+DEFAULT_CONFIDENCE_THRESHOLD = NATIVE_DEFAULT_CONFIDENCE_THRESHOLD
+DEFAULT_UNCERTAINTY_THRESHOLD = NATIVE_DEFAULT_UNCERTAINTY_THRESHOLD
 
 COMMAND_BRIDGES = {
     # ─────────────────────────────────────────────────────────────────

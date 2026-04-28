@@ -36,6 +36,10 @@ This synthesis covers the research packet for `.opencode/specs/system-spec-kit/0
 
 The packet used the fixed 40-iteration deep-research protocol in `deep-research-strategy.md`: iterations 1-31 answered one A-D sub-question each, iterations 32-35 checked cross-track coherence, and iterations 36-40 produced synthesis intermediates and final consolidation. Each iteration required concrete evidence, analysis, a verdict, confidence, dependencies, and metrics. The final synthesis reads the iteration files as the evidence-of-record and normalizes verdict spelling to `adopt_now`, `prototype_later`, and `reject` for the registry.
 
+<!-- ANCHOR:research-citations -->
+Primary citations are the packet-local iteration files referenced throughout the findings tables, for example `iterations/iteration-001.md:6`, `iterations/iteration-008.md:55`, `iterations/iteration-025.md:67`, and `iterations/iteration-031.md:41`.
+<!-- /ANCHOR:research-citations -->
+
 ## 4. TRACK A FINDINGS
 
 | ID | Verdict | Confidence | Rationale | Evidence |

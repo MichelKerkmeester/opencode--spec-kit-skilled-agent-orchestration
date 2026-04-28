@@ -1,0 +1,9 @@
+{
+  "statusValues": ["ok", "skipped", "degraded", "fail_open"],
+  "disabledEnv": "SPECKIT_SKILL_ADVISOR_HOOK_DISABLED",
+  "forceLocalEnv": "SPECKIT_SKILL_ADVISOR_FORCE_LOCAL",
+  "defaults": {
+    "confidenceThreshold": 0.8,
+    "uncertaintyThreshold": 0.35
+  }
+}

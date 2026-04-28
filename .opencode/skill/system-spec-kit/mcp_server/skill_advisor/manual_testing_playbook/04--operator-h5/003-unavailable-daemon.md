@@ -47,11 +47,12 @@ advisor_status({"workspaceRoot":"/tmp/path-to-copy"})
 4. Trigger rebuild:
 
 ```text
-skill_graph_scan({})
+skill_graph_scan({}) from a trusted operator/daemon context
 advisor_status({"workspaceRoot":"/tmp/path-to-copy"})
 ```
 
 5. If MCP scan is unavailable, restart the MCP server after deleting only the corrupt copied database.
+6. Negative auth check: call `skill_graph_scan({})` from an untrusted public MCP context and confirm the response is `status: "error"`, `code: "UNTRUSTED_CALLER"`, with no graph mutation.
 
 ---
 
@@ -70,6 +71,7 @@ advisor_status({"workspaceRoot":"/tmp/path-to-copy"})
 | Runtime crashes on corrupt DB | MCP server exits or throws raw SQLite stack to user | Block release; recovery must fail open. |
 | Rebuild uses stale JSON only | Status remains absent/unavailable after scan | Inspect rebuild-from-source path and file permissions. |
 | Live DB corrupted | Real repo status remains unavailable | Restore from backup or rebuild immediately before other tests. |
+| Untrusted scan mutates graph | `skill_graph_scan({})` succeeds without trusted context | Block release; trusted-caller gate must reject before indexing. |
 
 ---
 

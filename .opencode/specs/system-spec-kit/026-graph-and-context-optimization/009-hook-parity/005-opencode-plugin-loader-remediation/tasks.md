@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | 
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation"
-    last_updated_at: "2026-04-22T13:32:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
-    next_safe_action: "Resolve out-of-scope Copilot hook wiring test, then rerun full vitest"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     completion_pct: 100
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch | v2.2 -->"
 ---
@@ -54,7 +54,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch 
 ## Phase 2: Implementation
 
 - [x] **T-10** Inventory all references to the 3 helper files: `git grep -l "spec-kit-skill-advisor-bridge\|spec-kit-compact-code-graph-bridge\|spec-kit-opencode-message-schema"`. [EVIDENCE: grep surfaced plugin imports, focused bridge tests, live docs, and archival spec references.]
-- [x] **T-11** Create target folder per chosen outcome (e.g., `mkdir .opencode/plugin-helpers/` for outcome A). [EVIDENCE: `.opencode/plugin-helpers/` exists.]
+- [x] **T-11** Create target folder per chosen outcome (e.g., `mkdir .opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` for outcome A). [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` exists.]
 - [x] **T-12** Move helpers atomically with `git mv` to the new location. [EVIDENCE: filesystem move completed; `git mv` was attempted but sandbox blocked `.git/index.lock`, so status shows delete/add pairs instead of staged renames.]
 - [x] **T-13** Update `BRIDGE_PATH` constant in `.opencode/plugins/spec-kit-skill-advisor.js` to target relocated bridge. [EVIDENCE: path now resolves `../plugin-helpers/spec-kit-skill-advisor-bridge.mjs`.]
 - [x] **T-14** Update `BRIDGE_PATH` constant + schema-helper import in `.opencode/plugins/spec-kit-compact-code-graph.js` to target relocated files. [EVIDENCE: bridge path and schema import now resolve via `../plugin-helpers/`.]
@@ -73,7 +73,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch 
 - [x] **T-20** Author `.opencode/skill/system-spec-kit/mcp_server/tests/opencode-plugins-folder-purity.vitest.ts`: scans `.opencode/plugins/*.{js,mjs,ts}`, dynamically imports each, asserts each has a default export. [EVIDENCE: test file created.]
 - [x] **T-21** Negative-test the regression guard: drop a stub no-default-export file, assert vitest red; remove stub, assert green. [EVIDENCE: temporary `__regression_probe.mjs` failed the guard as expected; removal restored green.]
 - [ ] **T-22** Run full vitest suite to ensure no regression: `cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run`. [EVIDENCE: deferred per P1-04 — see implementation-summary.md Known Limitations item 1; out-of-scope Copilot hook wiring blocker is tracked in parent 009-hook-parity docs as priority follow-up. Focused plugin-loader tests passed 15/15.]
-- [x] **T-23** Author or update a new README inside `.opencode/plugins/` documenting the "entrypoints only" convention; list current plugin entrypoints; reference `.opencode/plugin-helpers/` (or whichever target outcome A/B/C selected). [EVIDENCE: `.opencode/plugins/README.md` created.]
+- [x] **T-23** Author or update a new README inside `.opencode/plugins/` documenting the "entrypoints only" convention; list current plugin entrypoints; reference `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` (or whichever target outcome A/B/C selected). [EVIDENCE: `.opencode/plugins/README.md` created.]
 - [x] **T-24** Add top-of-file comment to each relocated helper explaining why it lives outside `.opencode/plugins/` and citing this packet. [EVIDENCE: all three helpers start with packet 026/009/007 relocation comments.]
 - [x] **T-25** Update parent docs (the sibling-level handover.md in `009-hook-parity/`) with phase outcome. [EVIDENCE: parent docs now record the 007 phase outcome.]
 - [x] **T-26** Walk `checklist.md` with evidence (P0/P1/P2 entries). [EVIDENCE: checklist updated with evidence and the full-suite limitation.]

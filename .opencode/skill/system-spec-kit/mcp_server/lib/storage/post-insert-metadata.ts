@@ -9,7 +9,7 @@ import {
   buildGovernanceLogicalKey,
   recordTierDowngradeAudit,
 } from '../governance/scope-governance.js';
-import { isConstitutionalPath } from '../utils/index-scope.js';
+import { isIndexableConstitutionalMemoryPath } from '../utils/index-scope.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -101,8 +101,8 @@ export function applyPostInsertMetadata(
     } | undefined;
 
     const guardPath = row?.canonical_file_path || row?.file_path || null;
-    if (guardPath && !isConstitutionalPath(guardPath)) {
-      // See ADR-006 in packet 026/011.
+    if (guardPath && !isIndexableConstitutionalMemoryPath(guardPath)) {
+      // See ADR-006 in packet 026/005.
       normalizedFields.importance_tier = 'important';
       try {
         recordTierDowngradeAudit(db, {

@@ -39,7 +39,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core + level
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | 010-memory-indexer-invariants |
+| **Spec Folder** | 005-memory-indexer-invariants |
 | **Level** | 3 |
 | **Completed** | 2026-04-24 (Track B fully; Track A code complete, pending live MCP rescan) |
 | **Status** | Code Complete Pending Track A Live Rescan |
@@ -100,8 +100,8 @@ Pass-2 flagged five P1 items and doc drift; Wave-2 closed all of them surgically
 |-------------|---------------|----------|
 | `P1-pass2-004`, `P2-pass2-006` | `scripts/memory/cleanup-index-scope-violations.ts:318-358,429-435` | Cleanup preserves historical `governance_audit` rows for deleted memories, emits `tier_downgrade_non_constitutional_path_cleanup` per downgraded row, and rebuilds the apply plan inside the transaction snapshot |
 | `P1-013`, `P1-014` | `lib/config/spec-doc-paths.ts:29-80`; `handlers/memory-index-discovery.ts:28-49,89-130,243-285` | Spec-doc classification and discovery call `shouldIndexForMemory()` as SSOT with additive overlays only |
-| `P1-003`, `P1-017` | `lib/utils/canonical-path.ts:32-41`; `handlers/memory-save.ts:308-325,2714-2718`; `code-graph/lib/structural-indexer.ts:1273-1285` | Save-time invariant checks and code-graph `specificFiles` evaluate `fs.realpathSync()` results instead of string-normalized paths |
-| `P1-001`, `P1-009` | `scripts/memory/cleanup-index-scope-violations.ts:429-435`; `handlers/memory-index-discovery.ts:28-49,91-110,253-273`; `code-graph/lib/structural-indexer.ts:1161-1240` | Cleanup apply builds from the transaction snapshot; `.gitignore` reads cap at 1MB, recursive walkers stop at depth 20 or 50,000 nodes with warnings |
+| `P1-003`, `P1-017` | `lib/utils/canonical-path.ts:32-41`; `handlers/memory-save.ts:308-325,2714-2718`; `code_graph/lib/structural-indexer.ts:1273-1285` | Save-time invariant checks and code-graph `specificFiles` evaluate `fs.realpathSync()` results instead of string-normalized paths |
+| `P1-001`, `P1-009` | `scripts/memory/cleanup-index-scope-violations.ts:429-435`; `handlers/memory-index-discovery.ts:28-49,91-110,253-273`; `code_graph/lib/structural-indexer.ts:1161-1240` | Cleanup apply builds from the transaction snapshot; `.gitignore` reads cap at 1MB, recursive walkers stop at depth 20 or 50,000 nodes with warnings |
 | `P2-pass2-003`, `P2-pass2-004`, `P2-pass2-007`, `P1-015` | `lib/governance/scope-governance.ts:117-137,184-195,372-390`; `lib/search/vector-index-mutations.ts:64-100,450-472`; `handlers/memory-crud-update.ts:156-200`; `lib/storage/post-insert-metadata.ts:91-116`; `handlers/memory-save.ts:318-325`; `lib/storage/checkpoints.ts:92-100,1291-1368,1570-1572,1651,1858-1862`; `.opencode/skill/system-spec-kit/mcp_server/README.md:119-123` | Shared action strings and `recordTierDowngradeAudit()` drive every tier-downgrade emitter; update-path `constitutional → critical` transitions are audited; the operator README documents the stable action strings |
 
 ### Cleanup CLI

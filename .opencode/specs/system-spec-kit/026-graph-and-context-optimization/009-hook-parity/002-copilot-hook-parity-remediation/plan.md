@@ -1,21 +1,22 @@
 ---
-title: "Imp [system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation/plan]"
-description: "Three-phase plan: investigate Copilot CLI extension surface, decide between wire-hooks vs document-gap, execute the chosen path. Implementation is conditional on Phase 1 findings."
+title: "Implementation Plan: Copilot CLI Hook Parity Remediation"
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2"
+description: "Investigation-first plan that selected outcome B: managed custom-instructions file workaround for Copilot CLI."
 trigger_phrases:
   - "026/009/004 plan"
   - "copilot hook parity plan"
 importance_tier: "important"
 contextType: "planning"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level3-arch | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation"
-    last_updated_at: "2026-04-23T13:55:57Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Implemented Copilot file workaround and updated operator docs"
-    next_safe_action: "Begin Phase 1 — survey Copilot CLI extension surface"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Strict validator closure"
+    next_safe_action: "Keep validators green"
     completion_pct: 100
 ---
+
 # Implementation Plan: Copilot CLI Hook Parity Remediation
 
 <!-- SPECKIT_LEVEL: 3 -->
@@ -23,120 +24,179 @@ _memory:
 
 ---
 
-## 1. APPROACH
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
 
-Investigation-first, implementation-conditional. Phase 1 establishes what's possible before Phase 2 commits to a path. This is deliberately cautious because the root cause could be "Copilot CLI has no hook API" (documentation outcome) or "Copilot CLI has a hook API we didn't use" (implementation outcome) — and the work required differs by an order of magnitude.
+### Technical Context
 
-**Ordering rationale:**
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | TypeScript, Shell, Markdown |
+| **Framework** | Spec Kit hooks, Copilot CLI hooks, GitHub hook config |
+| **Storage** | `$HOME/.copilot/copilot-instructions.md` managed block |
+| **Testing** | Vitest, shell syntax, real Copilot smoke, strict validator |
 
-1. **Investigate first** — the cheapest possible wrong outcome is starting to implement against a non-existent API. An hour of documentation-reading saves days of backtracking.
-2. **Decide explicitly** — a written ADR in `decision-record.md` locks the chosen path so later phases don't re-litigate.
-3. **Execute** — whether that means wiring hooks or writing docs, it's the same phase from a lifecycle standpoint.
-
----
-
-## 2. PHASES
-
-### Phase 1 — Investigate Copilot CLI's extension surface
-
-**Goal**: establish empirically what Copilot CLI supports for context injection at session start and at prompt submit.
-
-**Steps**:
-
-1. Read the official Copilot CLI docs for: hooks, pre-prompt scripts, plugin/agent APIs, custom-instructions files, config directives, env-var injection.
-2. Read the `github/copilot-cli` GitHub repo for any undocumented extension points (issues, PRs mentioning "hook", "plugin", "extension").
-3. Check release notes for the last 6 months for any new extensibility features.
-4. Test empirically: can Copilot read a file at `~/.copilot/AGENTS.md` or similar at startup? Does it honor any env-var like `COPILOT_INSTRUCTIONS`? Does it run a script referenced from config?
-5. Document findings in a `research.md` in this folder (expected: 5-15 primary-source citations + 2-4 empirical test results).
-
-**Exit criteria**: one of three clear outcomes:
-- **A**: Copilot CLI has a usable hook/injection API → proceed to Phase 2 (implementation).
-- **B**: Copilot CLI has no hook API but has a readable config/instructions path → proceed to Phase 2 with a reduced-scope workaround (file-based, not hook-based).
-- **C**: Copilot CLI has no usable injection surface at all → proceed to Phase 3 (documentation only).
+### Overview
+The plan investigated Copilot CLI extension surfaces before implementation and selected outcome B: a file-based workaround using managed custom instructions. Current-turn prompt mutation remains unsupported by Copilot hooks, so the implementation writes a workspace-scoped managed block and documents next-prompt freshness.
+<!-- /ANCHOR:summary -->
 
 ---
 
-### Phase 2 — Implement parity (conditional on Phase 1 outcome A or B)
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
 
-**Goal**: ship the chosen transport. Only runs if Phase 1 finds a viable mechanism.
+### Definition of Ready
+- [x] Copilot hook limitation researched and captured in decision-record.md.
+- [x] Outcome B accepted as the implementation path.
+- [x] Existing Claude hook behavior treated as a regression gate.
 
-**Steps (Outcome A — full hook wiring):**
-
-1. Create `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/` mirror of the `claude/` structure.
-2. Port `user-prompt-submit.ts` + any session-start handler, adapting to Copilot's hook contract.
-3. Wire the Copilot hook registration wherever the Claude equivalent is registered (scan mcp_server for the registration point).
-4. Create `.opencode/skill/system-spec-kit/mcp_server/tests/copilot-user-prompt-submit-hook.vitest.ts` mirroring Claude's test surface.
-5. Manual smoke test: start a fresh Copilot CLI session; run the user's empirical test ("describe the startup context you were given" + "what skill did the advisor recommend"). Expect non-empty answers.
-
-**Steps (Outcome B — file-based workaround):**
-
-1. If Copilot reads a file at session start (e.g., `~/.copilot/AGENTS.md`): write a periodic job or hook in the advisor pipeline that writes the current brief to that file.
-2. Document the latency/freshness trade-off (brief could be up to N seconds stale).
-3. Manual smoke test: edit the file, start a session, confirm the content flows through.
-
-**Exit criteria**: REQ-004 verified (Claude tests still pass); SC-002 verified (empirical test passes in Copilot); REQ-005 met (parity tests exist).
+### Definition of Done
+- [x] Copilot custom-instructions writer implemented and documented.
+- [x] Repo-local wrappers route `sessionStart` and `userPromptSubmitted`.
+- [x] Focused tests, shell syntax, typecheck, build, and Copilot smoke evidence recorded.
+- [x] Strict validator exits 0 after this closure pass.
+<!-- /ANCHOR:quality-gates -->
 
 ---
 
-### Phase 3 — Document the gap (runs in all outcomes)
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
 
-**Goal**: make the current state discoverable and prevent re-investigation.
+### Pattern
+File-backed context transport. Copilot hooks run repo-local wrappers; wrappers refresh the managed block; Copilot reads the file on the next prompt.
 
-**Steps**:
+### Key Components
+- **Copilot writer**: `hooks/copilot/custom-instructions.ts`
+- **Prompt hook**: `hooks/copilot/user-prompt-submit.ts`
+- **Session hook**: `hooks/copilot/session-prime.ts`
+- **Repo wrappers**: `.github/hooks/scripts/session-start.sh` and `.github/hooks/scripts/user-prompt-submitted.sh`
+- **Docs**: cli-copilot skill, README, hook docs, feature catalog, and manual playbook.
 
-1. Update `.opencode/skill/cli-copilot/SKILL.md` + `README.md` with explicit parity status. If no hooks: document that in a FAQ entry. If hooks shipped: document the new behavior in the feature reference.
-2. Update parent `009-hook-parity/implementation-summary.md` with a bulleted phase outcome entry.
-3. Update spec 020's docs (if still relevant) to note that its hook wiring is Claude-scoped and point to this phase for Copilot parity status.
-4. Write `implementation-summary.md` for this phase.
-5. Run `generate-context.js` to regenerate `description.json` + `graph-metadata.json`.
-6. Mark `checklist.md` P0/P1 items with evidence.
-
-**Exit criteria**: SC-001 passes (5-minute discoverability); SC-003 passes (docs state the truth); REQ-007 met (parent summary updated).
-
----
-
-## 3. DEPENDENCIES
-
-| Dependency                                                                                    | Required for    | Status                    |
-| --------------------------------------------------------------------------------------------- | --------------- | ------------------------- |
-| Untracked `hooks/claude/user-prompt-submit.ts` + test committed                               | Phase 2 port    | Uncommitted (parallel work) |
-| Access to Copilot CLI docs + GitHub repo                                                      | Phase 1         | Public                    |
-| Ability to run Copilot CLI locally for empirical tests                                        | Phase 1 step 4 + Phase 2 smoke | Confirmed (user ran earlier) |
-| Advisor brief generator stable (from spec 020)                                                | Phase 2         | Shipped                   |
+### Data Flow
+Copilot event -> repo-local shell wrapper -> compiled Spec Kit hook -> managed custom-instructions block -> next Copilot prompt reads scoped context.
+<!-- /ANCHOR:architecture -->
 
 ---
 
-## 4. ROLLBACK STRATEGY
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
 
-- **Phase 1**: pure investigation, no code to roll back. Abandon by leaving `research.md` incomplete; no blast radius.
-- **Phase 2 (Outcome A)**: `rm -rf hooks/copilot/` and revert any shared-code changes. Run Claude test to confirm no regression.
-- **Phase 2 (Outcome B)**: remove the workaround file-writer job; restore previous advisor pipeline to pre-change state.
-- **Phase 3**: docs only; `git revert` the documentation commit.
+### Phase 1: Setup
+- Research official Copilot hook/custom-instructions surfaces and classify available mechanisms.
+- Decide between full hook parity, file-based workaround, ACP wrapper, or documented limitation.
 
-All three phases are individually reversible; the parent `009-hook-parity` spec is unaffected.
+### Phase 2: Core Implementation
+- Implement outcome B writer and hook wrappers.
+- Preserve human-authored instructions outside managed markers.
+- Add workspace-scope, lock, and atomic replacement behavior.
 
----
-
-## 5. VALIDATION STRATEGY
-
-**Automated:**
-- `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <this-phase> --strict` passes.
-- `vitest run` in the mcp_server directory — all tests green (Claude-unchanged + any new Copilot tests).
-
-**Manual (user-executable):**
-- Paste the original user test into a fresh Copilot CLI session:
-  - "Describe the startup context you were given. Include the exact values you see for code graph file count, node count, edge count, and whether the graph is marked fresh or stale."
-  - "I want to refactor the CSS in our landing page. What skill did the advisor recommend? Quote the advisor line verbatim."
-- Outcome A expected response: non-empty startup metrics + verbatim advisor line.
-- Outcome B expected response: whatever the file-based path can deliver (may be stale but non-empty).
-- Outcome C expected response: "no startup context observed" / "no advisor brief observed" — matches pre-phase state; docs must explicitly acknowledge this.
+### Phase 3: Verification
+- Run focused Copilot/Claude hook tests and shell syntax checks.
+- Run real Copilot smoke to confirm the advisor line is visible.
+- Update docs and strict-validator structure.
+<!-- /ANCHOR:phases -->
 
 ---
 
-## 6. RELATED DOCUMENTS
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
 
-- **Specification**: `spec.md`
-- **Tasks**: `tasks.md`
-- **Checklist**: `checklist.md`
-- **Decisions**: `decision-record.md` (to be written at end of Phase 1)
-- **Research artifact**: `research.md` (to be written during Phase 1)
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit/focused | Copilot writer, wrappers, Claude regression | Vitest |
+| Syntax | Hook shell wrappers | `bash -n` |
+| Build/typecheck | MCP server/system-spec-kit | npm scripts |
+| Manual | Real Copilot advisor-line visibility | `copilot -p` smoke |
+| Spec validation | Packet docs | `validate.sh --strict` |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| Copilot custom instructions | External | Available | Outcome B would be impossible without this file surface. |
+| Copilot prompt-mutation hooks | External | Unsupported | Explains why outcome A was rejected. |
+| Superset notification wrapper | Local integration | Optional | Repo-local wrappers call it after Spec Kit writer when present. |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- Disable managed writes with `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED`.
+- Revert `.github/hooks/superset-notify.json` wrapper routing if Copilot hook execution regresses.
+- Restore prior docs only if a new Copilot API enables true current-turn prompt mutation.
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+```text
+Research -> ADR outcome B -> writer + wrappers -> tests/smoke -> docs -> strict validation
+```
+
+| Component | Depends On | Produces | Blocks |
+|-----------|------------|----------|--------|
+| Research | Copilot docs and empirical probes | Outcome matrix | ADR |
+| ADR | Research | Outcome B | Implementation |
+| Writer/wrappers | ADR | Managed block refresh | Tests/docs |
+| Docs | Implementation evidence | Discoverable parity state | Completion |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. Research Copilot capabilities.
+2. Accept outcome B.
+3. Implement managed custom-instructions writer and wrappers.
+4. Verify with focused tests and real Copilot smoke.
+5. Repair strict-validator template shape.
+
+**Parallel Opportunities**: docs and checklist evidence can be updated after implementation evidence exists.
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | Outcome classified | ADR-003 accepted | Complete |
+| M2 | File-backed transport shipped | Copilot smoke sees advisor line | Complete |
+| M3 | Strict docs repaired | Validator exits 0 | Closure pass |
+<!-- /ANCHOR:milestones -->
+
+---
+
+### AI EXECUTION PROTOCOL
+
+#### Pre-Task Checklist
+- Confirm the packet root is the only write scope.
+- Preserve outcome B, completion status, and existing verification evidence.
+- Avoid runtime code changes in this closure pass.
+
+#### Task Execution Rules
+
+| Rule | Handling |
+|------|----------|
+| TASK-SCOPE | Rewrite headings and anchors without changing outcome. |
+| TASK-SEQ | Run strict validation after edits and iterate within the authorized limit. |
+| Evidence preservation | Keep test commands, smoke results, and ADR conclusions intact. |
+
+#### Status Reporting Format
+- Packet path.
+- Strict validator exit code.
+- PASS or FAIL with remaining issue count.
+
+#### Blocked Task Protocol
+- Stop after three validation iterations if errors remain.
+- Report remaining validator rule names and rationale in the temporary hygiene summary.

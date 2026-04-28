@@ -97,7 +97,9 @@ describe('Copilot UserPromptSubmitted advisor workaround', () => {
     expect(written).toContain(SPEC_KIT_COPILOT_CONTEXT_BEGIN);
     expect(written).toContain('Session context received. Current state:');
     expect(written).toContain('Advisor: live; use sk-code-opencode 0.91/0.23 pass.');
+    expect(written).toContain('Workspace: /workspace/project');
     expect(written).toContain('Copilot CLI reads custom instructions on the next submitted prompt');
+    expect(written).toContain('scoped to the Workspace above');
 
     const diagnostic = parseDiagnostic(diagnostics.records[0] ?? '{}');
     expect(validateAdvisorHookDiagnosticRecord(diagnostic)).toBe(true);

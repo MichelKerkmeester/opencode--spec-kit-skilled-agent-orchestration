@@ -12,7 +12,7 @@ The autonomous run shipped 6 of 7 remediation packets (003, 005, 006, 007, 008, 
 
 After live probes closed, the remaining work was the close-the-loop measurement: re-run the 30-cell sweep against the post-fix dist and produce v1.0.2 findings with per-packet verdicts. That work is now scaffolded as the new `010-stress-test-rerun-v1-0-2/` sibling packet at this folder root; sweep execution is downstream of the scaffold.
 
-Three follow-up items remain after the v1.0.2 scaffold lands. They split into the v1.0.2 sweep execution itself (item 2.1) and three optional enhancements (006 production tuning, 007 v2 classifier, client-side hallucination guard).
+The v1.0.2 sweep and the four post-stress follow-up proposals have now been split into owned child packets. Items still listed in this handover either point to the owning downstream packet or remain deferred with an explicit reason.
 
 ### Closed Since the Original Handover
 
@@ -74,12 +74,26 @@ Three follow-up items remain after the v1.0.2 scaffold lands. They split into th
 
 ### Newly surfaced from v1.0.2 sweep (2026-04-27)
 
-> **Status**: items 4-6 are scaffolded into a single research packet at [`./011-post-stress-followup-research/`](./011-post-stress-followup-research/). A 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.5, high reasoning, fast service tier) refines actionable fix proposals for all four (P0/P1/P2 + the CocoIndex-telemetry opportunity) plus a light architectural touch on intelligence-system seams. The loop's `research/research.md` is the deliverable; per-follow-up remediation packets are downstream work the user authors after reviewing the synthesis.
+> **Status**: the research packet at [`./011-post-stress-followup-research/`](./011-post-stress-followup-research/) is complete. Its follow-up work is now tracked downstream in child packets 012-018, not as ambiguous deferred research.
 
-4. **(P0)** cli-copilot `/memory:save` Gate 3 bypass — see `./010-stress-test-rerun-v1-0-2/findings.md` Recommendation #1. Tighten copilot's planner-first default or add explicit Gate 3 prompt at CLI entry point. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P0 section.
-5. **(P1)** Re-test packet 005 under deterministically-degraded graph — Q1 cells in v1.0.2 didn't exercise `fallbackDecision` because graph was healthy post-pre-flight. Packet 005 verdict NEUTRAL not PROVEN. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P1 section.
-6. **(P2)** Code-graph file-watcher debounce — pre-flight detected 4-hour staleness drift in this run. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §P2 section.
-7. **(opportunity)** CocoIndex fork telemetry not yet leveraged downstream — fork ships 7 new fields (`dedupedAliases`, `uniqueResultCount`, `path_class`, `rankingSignals`, `source_realpath`, `content_hash`, `raw_score`) but no consumers in `mcp_server/lib/search/`. **Refinement target**: `./011-post-stress-followup-research/research/research.md` §Opportunity section.
+4. **(P0)** cli-copilot `/memory:save` Gate 3 bypass — tracked downstream in [`./012-copilot-target-authority-helper/`](./012-copilot-target-authority-helper/) and regression-tested by [`./017-cli-copilot-dispatch-test-parity/`](./017-cli-copilot-dispatch-test-parity/).
+5. **(P1)** Re-test packet 005 under deterministically-degraded graph — tracked downstream in [`./013-graph-degraded-stress-cell/`](./013-graph-degraded-stress-cell/).
+6. **(P2)** Code-graph file-watcher debounce / status observability — tracked downstream in [`./014-graph-status-readiness-snapshot/`](./014-graph-status-readiness-snapshot/) with degraded-envelope parity work in [`./016-degraded-readiness-envelope-parity/`](./016-degraded-readiness-envelope-parity/).
+7. **(opportunity)** CocoIndex fork telemetry not yet leveraged downstream — tracked downstream in [`./015-cocoindex-seed-telemetry-passthrough/`](./015-cocoindex-seed-telemetry-passthrough/) and catalog/playbook alignment in [`./018-catalog-playbook-degraded-alignment/`](./018-catalog-playbook-degraded-alignment/).
+
+### Downstream Ownership Snapshot
+
+| Follow-up | Current owner | Status |
+|-----------|---------------|--------|
+| cli-copilot target-authority helper | `012-copilot-target-authority-helper/` | complete |
+| deterministic degraded graph sweep | `013-graph-degraded-stress-cell/` | complete |
+| read-only graph readiness snapshot | `014-graph-status-readiness-snapshot/` | complete |
+| CocoIndex seed telemetry passthrough | `015-cocoindex-seed-telemetry-passthrough/` | complete |
+| degraded-readiness envelope parity | `016-degraded-readiness-envelope-parity/` | complete |
+| cli-copilot dispatch test parity | `017-cli-copilot-dispatch-test-parity/` | complete |
+| catalog/playbook degraded alignment | `018-catalog-playbook-degraded-alignment/` | in progress |
+
+Items 2.2, 2.3, and 2.4 above remain deferred because they are product-tuning or client-side hardening work that needs a separate owner and acceptance criteria; they are no longer mixed with the v1.0.2 P0/P1/P2 remediation packets.
 
 ---
 

@@ -6,6 +6,7 @@
 
 import type { SkillFamily } from '../../lib/skill-graph/skill-graph-db.js';
 import * as skillGraphQueries from '../../lib/skill-graph/skill-graph-queries.js';
+import { errorResponse, okResponse as envelopeOkResponse } from './response-envelope.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -204,19 +205,5 @@ function sanitizeQueryOutput(value: unknown): unknown {
 }
 
 function okResponse(data: Record<string, unknown>): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'ok', data: sanitizeQueryOutput(data) }),
-    }],
-  };
-}
-
-function errorResponse(error: string): HandlerResponse {
-  return {
-    content: [{
-      type: 'text',
-      text: JSON.stringify({ status: 'error', error }),
-    }],
-  };
+  return envelopeOkResponse(sanitizeQueryOutput(data) as Record<string, unknown>);
 }

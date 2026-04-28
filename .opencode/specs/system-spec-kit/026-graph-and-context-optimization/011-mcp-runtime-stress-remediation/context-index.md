@@ -16,6 +16,46 @@ This phase parent was extracted from `003-continuity-memory-runtime/` on 2026-04
 
 ---
 
+## CYCLE PHASE NAVIGATOR
+
+### Baseline
+
+- `001-search-intelligence-stress-test/` — v1.0.1 rubric design, 30-cell baseline sweep, and per-CLI findings.
+
+### Research
+
+- `002-mcp-runtime-improvement-research/` — Q1-Q8 deep-research synthesis that produced the contract diagnoses.
+
+### Remediation
+
+- `003-memory-context-truncation-contract/` — token-budget envelope contract.
+- `004-cocoindex-overfetch-dedup/` — vendored CocoIndex fork, dedup, and path-class reranking.
+- `005-code-graph-fast-fail/` — `fallbackDecision` routing on blocked code-graph reads.
+- `006-causal-graph-window-metrics/` — relation-window metrics and per-relation cap.
+- `007-intent-classifier-stability/` — normalized IntentTelemetry and paraphrase grouping.
+- `008-mcp-daemon-rebuild-protocol/` — rebuild, restart, and live-probe protocol.
+- `009-memory-search-response-policy/` — weak-result refusal and citation policy.
+
+### Rerun
+
+- `010-stress-test-rerun-v1-0-2/` — post-fix v1.0.2 rerun, scores, and findings.
+
+### Followup Research
+
+- `011-post-stress-followup-research/` — post-stress research loop converting v1.0.2 follow-ups into patch-sized proposals.
+
+### Planned Fixes
+
+- `012-copilot-target-authority-helper/` — cli-copilot target-authority dispatch helper.
+- `013-graph-degraded-stress-cell/` — deterministic degraded-graph stress cell.
+- `014-graph-status-readiness-snapshot/` — read-only graph readiness snapshot for status.
+- `015-cocoindex-seed-telemetry-passthrough/` — CocoIndex seed telemetry passthrough.
+- `016-degraded-readiness-envelope-parity/` — degraded-readiness envelope parity.
+- `017-cli-copilot-dispatch-test-parity/` — cli-copilot dispatch test parity.
+- `018-catalog-playbook-degraded-alignment/` — catalog/playbook degraded-alignment follow-up.
+
+---
+
 ## OLD → NEW PATH MAP
 
 | Original location (under `003-continuity-memory-runtime/`) | Carve-out location (this phase parent) | Final renumbered location (current) |

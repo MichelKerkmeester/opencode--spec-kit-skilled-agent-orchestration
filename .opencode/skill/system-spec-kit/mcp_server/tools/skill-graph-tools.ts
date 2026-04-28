@@ -11,6 +11,7 @@ import {
 
 import { parseArgs } from './types.js';
 import type { MCPResponse } from './types.js';
+import type { MCPCallerContext } from '../lib/context/caller-context.js';
 
 /** Tool names handled by this module */
 export const TOOL_NAMES = new Set([
@@ -48,10 +49,17 @@ function validationError(tool: string, missingKeys: string[]): MCPResponse {
 }
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
-export async function handleTool(name: string, args: Record<string, unknown>): Promise<MCPResponse | null> {
+export async function handleTool(
+  name: string,
+  args: Record<string, unknown>,
+  callerContext?: MCPCallerContext | null,
+): Promise<MCPResponse | null> {
   switch (name) {
     case 'skill_graph_scan':
-      return toMCP(await handleSkillGraphScan(parseArgs<Parameters<typeof handleSkillGraphScan>[0]>(args)));
+      return toMCP(await handleSkillGraphScan(
+        parseArgs<Parameters<typeof handleSkillGraphScan>[0]>(args),
+        callerContext,
+      ));
     case 'skill_graph_query': {
       const missingKeys = getMissingRequiredStringArgs(args, ['queryType']);
       if (missingKeys.length > 0) {

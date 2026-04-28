@@ -5,9 +5,9 @@
 import { createHash } from 'node:crypto';
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, readdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { basename, dirname, join, relative, resolve, sep } from 'node:path';
-import Database from 'better-sqlite3';
 import chokidar from 'chokidar';
 import { indexSkillMetadata } from '../../../lib/skill-graph/skill-graph-db.js';
+import { runDaemonStateMutation } from './state-mutation.js';
 import { workspaceRelativeFilePath } from '../derived/provenance.js';
 import { computeAdvisorSourceSignature } from '../freshness.js';
 import { publishSkillGraphGeneration } from '../freshness/generation.js';
@@ -108,7 +108,7 @@ function isSqliteBusyError(error: unknown): boolean {
   return code === 'SQLITE_BUSY' || /SQLITE_BUSY/i.test(message);
 }
 
-async function withBusyRetry<T>(operation: () => Promise<T> | T, delaysMs: readonly number[]): Promise<T> {
+export async function runWithBusyRetry<T>(operation: () => Promise<T> | T, delaysMs: readonly number[]): Promise<T> {
   let attempt = 0;
   while (true) {
     try {
@@ -220,10 +220,7 @@ function quarantineDbPath(workspaceRoot: string, override?: string): string {
   return override ?? join(resolve(workspaceRoot), '.opencode', 'skill', '.advisor-state', 'skill-graph-daemon-lease.sqlite');
 }
 
-function openQuarantineDb(workspaceRoot: string, override?: string): Database.Database {
-  const dbPath = quarantineDbPath(workspaceRoot, override);
-  mkdirSync(dirname(dbPath), { recursive: true });
-  const db = new Database(dbPath);
+function initializeQuarantineDb(db: { exec: (sql: string) => void }): void {
   db.exec(`
     CREATE TABLE IF NOT EXISTS quarantined_skill (
       skill_slug TEXT PRIMARY KEY,
@@ -233,12 +230,10 @@ function openQuarantineDb(workspaceRoot: string, override?: string): Database.Da
       recovered_at TEXT
     );
   `);
-  return db;
 }
 
 export function quarantineSkill(workspaceRoot: string, skillSlug: string, filePath: string, reason: string, dbPath?: string): void {
-  const db = openQuarantineDb(workspaceRoot, dbPath);
-  try {
+  runDaemonStateMutation(quarantineDbPath(workspaceRoot, dbPath), initializeQuarantineDb, (db) => {
     db.prepare(`
       INSERT INTO quarantined_skill (skill_slug, path, reason, quarantined_at, recovered_at)
       VALUES (?, ?, ?, ?, NULL)
@@ -248,32 +243,24 @@ export function quarantineSkill(workspaceRoot: string, skillSlug: string, filePa
         quarantined_at = excluded.quarantined_at,
         recovered_at = NULL
     `).run(skillSlug, filePath, reason, new Date().toISOString());
-  } finally {
-    db.close();
-  }
+  });
 }
 
 export function recoverQuarantinedSkill(workspaceRoot: string, skillSlug: string, dbPath?: string): void {
-  const db = openQuarantineDb(workspaceRoot, dbPath);
-  try {
+  runDaemonStateMutation(quarantineDbPath(workspaceRoot, dbPath), initializeQuarantineDb, (db) => {
     db.prepare(`
       UPDATE quarantined_skill
       SET recovered_at = ?
       WHERE skill_slug = ? AND recovered_at IS NULL
     `).run(new Date().toISOString(), skillSlug);
-  } finally {
-    db.close();
-  }
+  });
 }
 
 export function countActiveQuarantines(workspaceRoot: string, dbPath?: string): number {
-  const db = openQuarantineDb(workspaceRoot, dbPath);
-  try {
+  return runDaemonStateMutation(quarantineDbPath(workspaceRoot, dbPath), initializeQuarantineDb, (db) => {
     const row = db.prepare('SELECT COUNT(*) AS count FROM quarantined_skill WHERE recovered_at IS NULL').get() as { count: number };
     return row.count;
-  } finally {
-    db.close();
-  }
+  });
 }
 
 function fsyncPath(targetPath: string): void {
@@ -404,7 +391,7 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
       return;
     }
 
-    await withBusyRetry(async () => {
+    await runWithBusyRetry(async () => {
       await reindexSkill({
         skillSlug: request.skillSlug,
         skillDir: request.skillDir,
@@ -489,5 +476,5 @@ export const __testables = {
   isSqliteBusyError,
   quarantineDbPath,
   skillSlugForPath,
-  withBusyRetry,
+  withBusyRetry: runWithBusyRetry,
 };

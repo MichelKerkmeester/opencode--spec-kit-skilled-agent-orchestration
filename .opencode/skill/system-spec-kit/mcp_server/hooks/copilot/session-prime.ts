@@ -206,11 +206,18 @@ function buildStartupBanner(input: CopilotHookInput | null): string {
   ].join('\n');
 }
 
-async function refreshStartupInstructions(startupSurface: string): Promise<void> {
+function workspaceRootFor(input: CopilotHookInput | null): string {
+  return typeof input?.cwd === 'string' && input.cwd.trim().length > 0
+    ? input.cwd.trim()
+    : process.cwd();
+}
+
+async function refreshStartupInstructions(startupSurface: string, input: CopilotHookInput | null): Promise<void> {
   await writeCopilotCustomInstructions({
     startupSurface,
     advisorBrief: null,
     source: 'system-spec-kit copilot sessionStart hook',
+    workspaceRoot: workspaceRootFor(input),
   });
 }
 
@@ -227,7 +234,7 @@ async function main(): Promise<void> {
     : buildStartupBanner(input);
 
   if (source !== 'compact') {
-    await refreshStartupInstructions(output);
+    await refreshStartupInstructions(output, input);
   }
 
   process.stdout.write(`${output}\n`);

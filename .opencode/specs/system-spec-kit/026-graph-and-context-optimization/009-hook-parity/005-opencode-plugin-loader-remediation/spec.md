@@ -15,10 +15,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify +
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation"
-    last_updated_at: "2026-04-22T13:32:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
-    next_safe_action: "Run Phase 1 contract probe"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     blockers: []
     key_files:
       - ".opencode/plugins/spec-kit-skill-advisor.js"
@@ -295,7 +295,7 @@ This is Level 3 because the change spans:
 1. What exact glob does OpenCode 1.3.17 use for plugin discovery? `.opencode/plugins/*.{js,mjs,ts}`? `.opencode/plugins/**/*.{js,mjs,ts}` (recursive)?
 2. Does OpenCode treat `*.mjs` and `*.js` identically, or filter on extension?
 3. Is there a documented opt-out mechanism (e.g., underscore prefix `_helper.mjs`, `opencode.json` `plugins.exclude` array, manifest file)?
-4. What is the upstream-recommended location for plugin helper modules that ship alongside plugins but are not themselves plugins? (e.g., `.opencode/plugin-helpers/`, `.opencode/plugins/_internal/`, sibling to `.opencode/plugins/` entirely?)
+4. What is the upstream-recommended location for plugin helper modules that ship alongside plugins but are not themselves plugins? (e.g., `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`, `.opencode/plugins/_internal/`, sibling to `.opencode/plugins/` entirely?)
 5. Does the OpenCode `@opencode-ai/plugin` package export a contract type that would let us add an explicit `isPluginModule` marker?
 6. What is the loader's behavior on `export default null` or `export default undefined` — does it skip silently or still crash?
 <!-- /ANCHOR:questions -->
@@ -304,7 +304,7 @@ This is Level 3 because the change spans:
 
 ## 8. RELATED DOCUMENTS
 
-- **Parent packet**: `../spec.md`, `../plan.md`, `../implementation-summary.md`
+- **Parent packet**: parent hook-parity phase context (parent heavy docs are not present in this checkout)
 - **Sibling phase 004**: `../002-copilot-hook-parity-remediation/` — Copilot CLI hook gap (different runtime, missing transport)
 - **Sibling phase 005**: `../003-codex-hook-parity-remediation/` — Codex CLI hook parity (different runtime, ship complete)
 - **Affected plugins**: `.opencode/plugins/spec-kit-skill-advisor.js`, `.opencode/plugins/spec-kit-compact-code-graph.js`

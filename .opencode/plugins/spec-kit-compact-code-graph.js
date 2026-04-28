@@ -94,6 +94,31 @@ function normalizePositiveInt(value, fallback) {
   return Number.isFinite(value) && value > 0 ? Math.trunc(value) : fallback;
 }
 
+function stableStringify(value) {
+  if (!value || typeof value !== 'object') {
+    return JSON.stringify(String(value));
+  }
+
+  if (Array.isArray(value)) {
+    return `[${value.map((entry) => stableStringify(entry)).join(',')}]`;
+  }
+
+  return `{${Object.keys(value)
+    .sort()
+    .map((key) => `${JSON.stringify(key)}:${stableStringify(value[key])}`)
+    .join(',')}}`;
+}
+
+function normalizeSessionID(value) {
+  if (value === null || value === undefined || value === '') {
+    return '__global__';
+  }
+  if (typeof value === 'object') {
+    return stableStringify(value);
+  }
+  return String(value);
+}
+
 function normalizeOptions(rawOptions) {
   if (!rawOptions || typeof rawOptions !== 'object') {
     return {
@@ -118,7 +143,7 @@ function normalizeOptions(rawOptions) {
 }
 
 function cacheKeyForSession(sessionID, specFolder) {
-  return `${specFolder ?? '__workspace__'}::${sessionID ?? '__global__'}`;
+  return `${specFolder ?? '__workspace__'}::${normalizeSessionID(sessionID)}`;
 }
 
 export function parseTransportPlan(responseText) {
@@ -271,14 +296,23 @@ function extractEventSessionID(event) {
   if (typeof event.sessionID === 'string') {
     return event.sessionID;
   }
+  if (event.sessionID && typeof event.sessionID === 'object') {
+    return normalizeSessionID(event.sessionID);
+  }
 
   if (event.properties && typeof event.properties === 'object') {
     if (typeof event.properties.sessionID === 'string') {
       return event.properties.sessionID;
     }
+    if (event.properties.sessionID && typeof event.properties.sessionID === 'object') {
+      return normalizeSessionID(event.properties.sessionID);
+    }
     if (event.properties.info && typeof event.properties.info === 'object') {
       if (typeof event.properties.info.sessionID === 'string') {
         return event.properties.info.sessionID;
+      }
+      if (event.properties.info.sessionID && typeof event.properties.info.sessionID === 'object') {
+        return normalizeSessionID(event.properties.info.sessionID);
       }
       if (typeof event.properties.info.id === 'string') {
         return event.properties.info.id;
@@ -286,6 +320,9 @@ function extractEventSessionID(event) {
     }
     if (event.properties.part && typeof event.properties.part === 'object' && typeof event.properties.part.sessionID === 'string') {
       return event.properties.part.sessionID;
+    }
+    if (event.properties.part && typeof event.properties.part === 'object' && event.properties.part.sessionID && typeof event.properties.part.sessionID === 'object') {
+      return normalizeSessionID(event.properties.part.sessionID);
     }
   }
 
@@ -361,7 +398,12 @@ export default async function SpecKitCompactCodeGraphPlugin(ctx, rawOptions) {
       }),
     },
 
-    'experimental.chat.system.transform': async (input, output) => {
+    'experimental.chat.system.transform': async (input, output = { system: [] }) => {
+      if (!output || typeof output !== 'object') {
+        return;
+      }
+      output.system = Array.isArray(output.system) ? output.system : [];
+
       const plan = await loadTransportPlan({
         projectDir,
         sessionID: input.sessionID,
@@ -434,7 +476,12 @@ export default async function SpecKitCompactCodeGraphPlugin(ctx, rawOptions) {
       }
     },
 
-    'experimental.session.compacting': async (input, output) => {
+    'experimental.session.compacting': async (input, output = { context: [] }) => {
+      if (!output || typeof output !== 'object') {
+        return;
+      }
+      output.context = Array.isArray(output.context) ? output.context : [];
+
       const plan = await loadTransportPlan({
         projectDir,
         sessionID: input.sessionID,

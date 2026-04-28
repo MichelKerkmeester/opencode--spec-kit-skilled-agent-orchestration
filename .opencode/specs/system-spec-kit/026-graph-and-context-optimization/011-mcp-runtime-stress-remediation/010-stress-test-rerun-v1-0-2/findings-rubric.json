@@ -1,0 +1,97 @@
+{
+  "version": "v1.0.2",
+  "source": {
+    "findings": "findings.md",
+    "scoreFilesGlob": "runs/*/*/score.md",
+    "baseline": "../001-search-intelligence-stress-test/002-scenario-execution/findings.md"
+  },
+  "rubric": {
+    "name": "v1.0.1 4-dimension stress-test rubric",
+    "dimensions": [
+      "correctness",
+      "toolSelection",
+      "latency",
+      "hallucination"
+    ],
+    "scale": {
+      "min": 0,
+      "max": 2
+    },
+    "weights": {
+      "correctness": 1,
+      "toolSelection": 1,
+      "latency": 1,
+      "hallucination": 1
+    },
+    "maxCellScore": 8
+  },
+  "deltaClassification": {
+    "win": "delta >= 1",
+    "neutral": "absolute delta < 1",
+    "regression": "delta <= -1"
+  },
+  "cells": [
+    {"id":"S1/cli-codex-1","scenario":"S1","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":2,"hallucination":2},"total":7,"baselineApprox":7,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/S1/cli-codex-1/score.md"},
+    {"id":"S1/cli-copilot-1","scenario":"S1","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":7,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/S1/cli-copilot-1/score.md"},
+    {"id":"S1/cli-opencode-1","scenario":"S1","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":7,"deltaApprox":1,"classification":"WIN","source":"runs/S1/cli-opencode-1/score.md"},
+    {"id":"S1/cli-opencode-pure-1","scenario":"S1","cli":"cli-opencode-pure-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":6,"deltaApprox":2,"classification":"WIN","source":"runs/S1/cli-opencode-pure-1/score.md"},
+    {"id":"S2/cli-codex-1","scenario":"S2","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":5,"deltaApprox":1,"classification":"WIN","source":"runs/S2/cli-codex-1/score.md"},
+    {"id":"S2/cli-copilot-1","scenario":"S2","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":5,"deltaApprox":2,"classification":"WIN","source":"runs/S2/cli-copilot-1/score.md"},
+    {"id":"S2/cli-opencode-1","scenario":"S2","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":6,"deltaApprox":2,"classification":"WIN","source":"runs/S2/cli-opencode-1/score.md"},
+    {"id":"S2/cli-opencode-pure-1","scenario":"S2","cli":"cli-opencode-pure-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":5,"deltaApprox":3,"classification":"WIN","source":"runs/S2/cli-opencode-pure-1/score.md"},
+    {"id":"S3/cli-codex-1","scenario":"S3","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":2,"hallucination":2},"total":7,"baselineApprox":7,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/S3/cli-codex-1/score.md"},
+    {"id":"S3/cli-copilot-1","scenario":"S3","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":6,"deltaApprox":1,"classification":"WIN","source":"runs/S3/cli-copilot-1/score.md"},
+    {"id":"S3/cli-opencode-1","scenario":"S3","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":7,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/S3/cli-opencode-1/score.md"},
+    {"id":"S3/cli-opencode-pure-1","scenario":"S3","cli":"cli-opencode-pure-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":5,"deltaApprox":3,"classification":"WIN","source":"runs/S3/cli-opencode-pure-1/score.md"},
+    {"id":"Q1/cli-codex-1","scenario":"Q1","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":6,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/Q1/cli-codex-1/score.md"},
+    {"id":"Q1/cli-copilot-1","scenario":"Q1","cli":"cli-copilot-1","scores":{"correctness":1,"toolSelection":1,"latency":1,"hallucination":2},"total":5,"baselineApprox":3,"deltaApprox":2,"classification":"WIN","source":"runs/Q1/cli-copilot-1/score.md"},
+    {"id":"Q1/cli-opencode-1","scenario":"Q1","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":4,"deltaApprox":3,"classification":"WIN","source":"runs/Q1/cli-opencode-1/score.md"},
+    {"id":"Q2/cli-codex-1","scenario":"Q2","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":5,"deltaApprox":1,"classification":"WIN","source":"runs/Q2/cli-codex-1/score.md"},
+    {"id":"Q2/cli-copilot-1","scenario":"Q2","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":5,"deltaApprox":1,"classification":"WIN","source":"runs/Q2/cli-copilot-1/score.md"},
+    {"id":"Q2/cli-opencode-1","scenario":"Q2","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":6,"deltaApprox":1,"classification":"WIN","source":"runs/Q2/cli-opencode-1/score.md","note":"The score table row text says latency 2 but immediately corrects it to 1 because 63.5s is in the 60-300s band; total 7/8 is used."},
+    {"id":"Q3/cli-codex-1","scenario":"Q3","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":6,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/Q3/cli-codex-1/score.md"},
+    {"id":"Q3/cli-copilot-1","scenario":"Q3","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":3,"deltaApprox":3,"classification":"WIN","source":"runs/Q3/cli-copilot-1/score.md"},
+    {"id":"Q3/cli-opencode-1","scenario":"Q3","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":6,"deltaApprox":1,"classification":"WIN","source":"runs/Q3/cli-opencode-1/score.md"},
+    {"id":"I1/cli-codex-1","scenario":"I1","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":6,"deltaApprox":2,"classification":"WIN","source":"runs/I1/cli-codex-1/score.md"},
+    {"id":"I1/cli-copilot-1","scenario":"I1","cli":"cli-copilot-1","scores":{"correctness":0,"toolSelection":1,"latency":1,"hallucination":0},"total":2,"baselineApprox":1,"deltaApprox":1,"classification":"WIN_WITH_CAVEAT","source":"runs/I1/cli-copilot-1/score.md","note":"Counted as WIN in the findings summary, but explicitly caveated because the Gate 3 bypass pathology persisted."},
+    {"id":"I1/cli-opencode-1","scenario":"I1","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":2,"hallucination":2},"total":8,"baselineApprox":7,"deltaApprox":1,"classification":"WIN","source":"runs/I1/cli-opencode-1/score.md"},
+    {"id":"I2/cli-codex-1","scenario":"I2","cli":"cli-codex-1","scores":{"correctness":2,"toolSelection":1,"latency":1,"hallucination":2},"total":6,"baselineApprox":6,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/I2/cli-codex-1/score.md"},
+    {"id":"I2/cli-copilot-1","scenario":"I2","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":5,"deltaApprox":2,"classification":"WIN","source":"runs/I2/cli-copilot-1/score.md"},
+    {"id":"I2/cli-opencode-1","scenario":"I2","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":1},"total":6,"baselineApprox":1,"deltaApprox":5,"classification":"WIN","source":"runs/I2/cli-opencode-1/score.md"},
+    {"id":"I3/cli-codex-1","scenario":"I3","cli":"cli-codex-1","scores":{"correctness":1,"toolSelection":1,"latency":2,"hallucination":2},"total":6,"baselineApprox":3,"deltaApprox":3,"classification":"WIN","source":"runs/I3/cli-codex-1/score.md"},
+    {"id":"I3/cli-copilot-1","scenario":"I3","cli":"cli-copilot-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":3,"deltaApprox":4,"classification":"WIN","source":"runs/I3/cli-copilot-1/score.md"},
+    {"id":"I3/cli-opencode-1","scenario":"I3","cli":"cli-opencode-1","scores":{"correctness":2,"toolSelection":2,"latency":1,"hallucination":2},"total":7,"baselineApprox":7,"deltaApprox":0,"classification":"NEUTRAL-CEILING","source":"runs/I3/cli-opencode-1/score.md"}
+  ],
+  "aggregate": {
+    "method": "sum(cells.total) / (cells.length * rubric.maxCellScore)",
+    "cellCount": 30,
+    "scoreSum": 201,
+    "maxScore": 240,
+    "value": 0.8375,
+    "percentRounded": 83.8,
+    "baselineFromFindings": {
+      "averageScorePerCell": 6.13,
+      "percentRounded": 76.7,
+      "deltaPercentagePoints": 7.2,
+      "note": "Baseline aggregate is copied from findings.md per-CLI averages. Individual score files cite approximate baseline mappings, so baseline per-cell integers are not used to recompute the 76.7% source aggregate."
+    }
+  },
+  "verdictSummary": {
+    "proven": 6,
+    "neutral": 1,
+    "regression": 0,
+    "packets": {
+      "003-memory-context-truncation-contract": "PROVEN",
+      "004-cocoindex-overfetch-dedup": "PROVEN",
+      "005-code-graph-fast-fail": "NEUTRAL",
+      "006-causal-graph-window-metrics": "PROVEN",
+      "007-intent-classifier-stability": "PROVEN",
+      "008-mcp-daemon-rebuild-protocol": "PROVEN",
+      "009-memory-search-response-policy": "PROVEN"
+    }
+  },
+  "knownLimitations": [
+    "The sidecar uses the v1.0.2 score.md files as source of truth for per-cell dimension scores and totals. Q2/cli-opencode-1 has an internal latency row correction; this sidecar follows the corrected total.",
+    "The v1.0.1 baseline aggregate is copied from findings.md because per-cell baseline scores in the v1.0.2 score files are approximate mapped values, not a lossless baseline score ledger."
+  ]
+}

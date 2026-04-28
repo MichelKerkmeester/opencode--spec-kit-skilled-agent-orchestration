@@ -163,6 +163,7 @@ describe('caller-context', () => {
       readonly transport: 'stdio' | 'sse' | 'ws' | 'unknown';
       readonly connectedAt: string;
       readonly callerPid?: number;
+      readonly trusted?: boolean;
       readonly metadata: Record<string, unknown>;
     }>();
   });

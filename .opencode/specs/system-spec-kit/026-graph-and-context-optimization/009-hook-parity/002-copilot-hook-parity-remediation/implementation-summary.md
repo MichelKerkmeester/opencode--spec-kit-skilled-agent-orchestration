@@ -11,10 +11,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 --
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation"
-    last_updated_at: "2026-04-23T13:55:57Z"
-    last_updated_by: "codex-gpt-5"
-    recent_action: "Implemented Copilot file workaround and updated operator docs"
-    next_safe_action: "Monitor Copilot ACP"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     blockers:
       - "Full package lint has unused-variable findings outside this packet's write scope."
     key_files:
@@ -50,14 +50,14 @@ _memory:
 
 | Field | Value |
 |-------|-------|
-| **Spec Folder** | `009-hook-parity/004-copilot-hook-parity-remediation` |
+| **Spec Folder** | 002-copilot-hook-parity-remediation |
 | **Completed** | 2026-04-22 |
 | **Level** | 3 |
 | **Outcome** | B, file-based workaround |
-<!-- /ANCHOR:metadata -->
 
 ---
 
+<!-- /ANCHOR:metadata -->
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
@@ -73,11 +73,11 @@ Copilot now has a working Spec Kit context path without pretending its customer 
 
 ### Documentation and Programmatic Wrapper
 
-`cli-copilot/SKILL.md`, `cli-copilot/README.md`, and `hooks/copilot/README.md` now state the actual parity model: file-based, next-prompt fresh, not in-turn `additionalContext`. `cli-copilot/assets/shell_wrapper.md` ships an optional `cpx()` pattern for non-interactive `copilot -p` calls that need to prepend the freshly generated managed block in the same command.
-<!-- /ANCHOR:what-built -->
+cli-copilot/SKILL.md, cli-copilot/README.md, and hooks/copilot/README.md now state the actual parity model: file-based, next-prompt fresh, not in-turn `additionalContext`. cli-copilot/assets/shell_wrapper.md ships an optional `cpx()` pattern for non-interactive `copilot -p` calls that need to prepend the freshly generated managed block in the same command.
 
 ---
 
+<!-- /ANCHOR:what-built -->
 <!-- ANCHOR:how-delivered -->
 ## How It Was Delivered
 
@@ -90,10 +90,10 @@ Implementation steps:
 3. Updated tests to assert file writes and privacy-safe diagnostics instead of JSON `additionalContext`.
 4. Documented the final state in cli-copilot docs, Copilot hook docs, hook references, feature catalog entries, manual testing playbooks, tasks, checklist, and parent summary.
 5. Ran a real Copilot smoke after refreshing the managed block; Copilot returned the advisor line from custom instructions.
-<!-- /ANCHOR:how-delivered -->
 
 ---
 
+<!-- /ANCHOR:how-delivered -->
 <!-- ANCHOR:decisions -->
 ## Key Decisions
 
@@ -103,10 +103,10 @@ Implementation steps:
 | Return `{}` from Copilot hooks | GitHub's hook reference says `sessionStart` output is ignored and `userPromptSubmitted` cannot modify prompts. |
 | Preserve human instructions outside markers | Users may already have personal Copilot instructions; the writer should own only its generated block. |
 | Keep ACP deferred | ACP could support deeper dynamic injection later, but it is higher cost and not needed for this low-risk workaround. |
-<!-- /ANCHOR:decisions -->
 
 ---
 
+<!-- /ANCHOR:decisions -->
 <!-- ANCHOR:verification -->
 ## Verification
 
@@ -125,10 +125,10 @@ Implementation steps:
 | Operator doc sweep | PASS, hook reference/validation docs, runtime hook matrix, feature catalog, manual testing playbook, README, and architecture docs now describe Copilot's custom-instructions transport. |
 | Copilot temp-file doc smoke | PASS, temp `SPECKIT_COPILOT_INSTRUCTIONS_PATH` run returned `{}` and wrote `SPEC-KIT-COPILOT-CONTEXT` with `Advisor: stale; use sk-code-opencode 0.92/0.00 pass.` |
 | Doc diff whitespace | PASS, `git diff --check` on touched docs returned no issues. |
-<!-- /ANCHOR:verification -->
 
 ---
 
+<!-- /ANCHOR:verification -->
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
@@ -137,6 +137,7 @@ Implementation steps:
 3. **Memory indexing was not clean.** `generate-context.js` refreshed graph metadata but canonical spec-doc indexing failed and the post-save reviewer errored.
 4. **Full lint remains red.** `npm run check` is blocked by package-wide unused-variable findings outside this packet's write scope. Touched-file lint, typecheck, build, focused tests, shell syntax, and real Copilot smoke passed.
 5. **ACP remains deferred.** Full dynamic injection through `copilot --acp` is still a future phase once the public-preview API stabilizes.
-6. **`userPromptSubmitted` hook was crashing in every Copilot session (resolved 2026-04-22 by packet 010).** Post-ship empirical testing (see packet `../../009-hook-parity/006-copilot-wrapper-schema-fix/` and research `../../research/007-deep-review-remediation-pt-03/research.md`) revealed that Copilot CLI 1.0.34 merges hooks from BOTH `.github/hooks/*.json` AND `.claude/settings.local.json`. Claude's nested matcher wrapper has no top-level `bash`/`powershell`, so Copilot's executor `g2()` at `~/.copilot/pkg/universal/1.0.34/app.js:1201` threw `Neither 'bash' nor 'powershell' specified in hook command configuration` on every prompt. The flat `.github/hooks/superset-notify.json` entries were executing successfully; the crash came from the additional Claude wrapper. Packet 010 applies the empirically-verified cross-runtime-safe fix (top-level `type`/`bash:"true"`/`timeoutSec` on each Claude wrapper). The schema asymmetry — `sessionStart` surviving, `userPromptSubmitted` crashing — is because `sessionStart` filters entries by `type === "command"` before `g2()` while `userPromptSubmitted` does not. The error had existed across Copilot 1.0.14 → 1.0.32 → 1.0.34 — it was never a 1.0.34 regression.
+6. **`userPromptSubmitted` hook was crashing in every Copilot session (resolved 2026-04-22 by packet 010).** Post-ship empirical testing (see packet `../../009-hook-parity/006-copilot-wrapper-schema-fix/` and research ../../research/007-deep-review-remediation-pt-03/research.md) revealed that Copilot CLI 1.0.34 merges hooks from BOTH `.github/hooks/*.json` AND `.claude/settings.local.json`. Claude's nested matcher wrapper has no top-level `bash`/`powershell`, so Copilot's executor `g2()` at `~/.copilot/pkg/universal/1.0.34/app.js:1201` threw `Neither 'bash' nor 'powershell' specified in hook command configuration` on every prompt. The flat `.github/hooks/superset-notify.json` entries were executing successfully; the crash came from the additional Claude wrapper. Packet 010 applies the empirically-verified cross-runtime-safe fix (top-level `type`/`bash:"true"`/`timeoutSec` on each Claude wrapper). The schema asymmetry — `sessionStart` surviving, `userPromptSubmitted` crashing — is because `sessionStart` filters entries by `type === "command"` before `g2()` while `userPromptSubmitted` does not. The error had existed across Copilot 1.0.14 → 1.0.32 → 1.0.34 — it was never a 1.0.34 regression.
 7. **Writer-wiring secondary gap (not addressed by packet 010).** The Superset wrapper at `~/.superset/bin/copilot:30-69` rewrites `.github/hooks/superset-notify.json` on every launch to point `userPromptSubmitted` at `~/.superset/hooks/copilot-hook.sh` — which only posts Superset notifications and does NOT invoke `dist/hooks/copilot/user-prompt-submit.js`. So after packet 010, the schema crash is fixed, but the `Refreshed:` timestamp in `$HOME/.copilot/copilot-instructions.md` still won't advance per-prompt. A follow-on packet must either (a) replace `"bash": "true"` in the Claude wrapper with the Copilot writer command, or (b) patch the Superset wrapper generator.
+
 <!-- /ANCHOR:limitations -->

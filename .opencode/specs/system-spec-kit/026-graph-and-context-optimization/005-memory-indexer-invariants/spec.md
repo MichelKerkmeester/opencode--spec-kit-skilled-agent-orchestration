@@ -3,6 +3,7 @@ title: "Spec: Memory Indexer Invariants [system-spec-kit/026-graph-and-context-o
 description: "Unified Level 3 spec for the two memory-indexer invariant tracks: Track A closes the E_LINEAGE and candidate_changed save-path failures; Track B enforces permanent index-scope exclusions (z_future, external) and stops constitutional-tier pollution through a shared SSOT plus multi-layer defense."
 trigger_phrases:
   - "026/010 memory indexer invariants"
+  - "026/005 memory indexer invariants"
   - "memory indexer lineage fix"
   - "constitutional tier pollution fix"
   - "index scope invariants"
@@ -146,8 +147,8 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 | `mcp_server/lib/governance/scope-governance.ts` | B | Modify | Centralize `GOVERNANCE_AUDIT_ACTIONS` + `recordTierDowngradeAudit()` + `buildGovernanceLogicalKey()` |
 | `mcp_server/handlers/memory-crud-update.ts` | B | Modify | Route update-path constitutional transitions through the shared audit helper |
 | `mcp_server/api/index.ts` | B | Modify | Re-export audit action strings for operator tooling |
-| `mcp_server/code-graph/lib/indexer-types.ts` | B | Modify | Preserve legacy default excludes and add `/external/` |
-| `mcp_server/code-graph/lib/structural-indexer.ts` | B | Modify | Apply `shouldIndexForCodeGraph()` in recursive + `specificFiles` paths; realpath + walker caps |
+| `mcp_server/code_graph/lib/indexer-types.ts` | B | Modify | Preserve legacy default excludes and add `/external/` |
+| `mcp_server/code_graph/lib/structural-indexer.ts` | B | Modify | Apply `shouldIndexForCodeGraph()` in recursive + `specificFiles` paths; realpath + walker caps |
 | `mcp_server/tests/pe-orchestration.vitest.ts` | A | Add | Sibling-doc lineage regression |
 | `mcp_server/tests/handler-memory-index.vitest.ts` | A | Modify | `fromScan` propagation + non-scan control |
 | `mcp_server/tests/index-scope.vitest.ts` | B | Add | Shared-helper unit coverage |
@@ -190,7 +191,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 | REQ-011 | Duplicate gate-enforcement constitutional-folder rule rows are consolidated safely. | Cleanup keeps the newer row (`id=9868`), deletes the older row (`id=1`), and rewrites lineage + feedback references to the kept row. |
 | REQ-012 | Constitutional README stays non-indexable while rule files stay indexable. | Discovery and parser both reject `README.md` under `/constitutional/`; focused Vitest regressions (`handler-memory-index`, `memory-parser-extended`, `full-spec-doc-indexing`, `gate-d-regression-constitutional-memory`) all pass. |
 | REQ-013 | Build and typecheck commands run and are recorded. | `npm run typecheck`, `npm run build`, focused Vitest commands, and `npm run test:core` outcomes are captured in `implementation-summary.md` with honest carryover notes. |
-| REQ-014 | Parent topology includes this packet. | `026-graph-and-context-optimization/description.json` and `graph-metadata.json` reference `010-memory-indexer-invariants`. |
+| REQ-014 | Parent topology includes this packet. | `026-graph-and-context-optimization/description.json` and `graph-metadata.json` reference `005-memory-indexer-invariants`; `005-memory-indexer-invariants` remains only as a legacy alias where explicitly documented. |
 
 ### P2 — Recommended
 
@@ -198,6 +199,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 |----|-------------|---------------------|
 | REQ-015 | Track A live packet acceptance is recorded honestly. | In a runtime with embedding access, `memory_index_scan` on `026/009-hook-parity` completes with zero `E_LINEAGE` and zero `candidate_changed`, and the exact counts are written to `implementation-summary.md`. |
 | REQ-016 | Operator README documents the invariants and stable audit action strings. | `.opencode/skill/system-spec-kit/mcp_server/README.md` describes the three index-scope invariants, the helper location, and the `GOVERNANCE_AUDIT_ACTIONS` set. |
+| REQ-017 | Storage-layer memory mutation surfaces reject or downgrade constitutional README rows with the same rule-file-only predicate used by parser and discovery. | A path under constitutional `README.md` cannot persist as `importance_tier='constitutional'` through checkpoint restore, SQL update, post-insert metadata, cleanup, or save-time validation. |
 <!-- /ANCHOR:requirements -->
 
 ### Acceptance Scenarios

@@ -13,6 +13,8 @@ export interface MCPCallerContext {
   readonly connectedAt: string;
   /** Process PID of the caller (if available from transport). */
   readonly callerPid?: number;
+  /** Whether this caller is authorized for mutable maintenance operations. */
+  readonly trusted?: boolean;
   /** Arbitrary transport-provided metadata. */
   readonly metadata: Record<string, unknown>;
 }

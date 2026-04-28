@@ -342,6 +342,22 @@ afterEach(() => {
 });
 
 describe('memory-save index scope and constitutional tier invariants', () => {
+  it('returns a stable error code and canonical path for excluded memory paths', async () => {
+    const filePath = '/workspace/.opencode/specs/system-spec-kit/z_future/011/spec.md';
+    const harness = await loadMemorySaveHarness(buildParsedMemory(filePath));
+
+    const response = await harness.module.handleMemorySave({ filePath });
+    const envelope = JSON.parse(response.content[0].text);
+
+    expect(response.isError).toBe(true);
+    expect(envelope.data).toMatchObject({
+      code: 'E_MEMORY_INDEX_SCOPE_EXCLUDED',
+      details: {
+        canonicalPath: filePath,
+      },
+    });
+  });
+
   it('downgrades invalid constitutional tier during direct memory_save and logs a warning', async () => {
     const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
     const filePath = '/workspace/.opencode/specs/system-spec-kit/011-index-scope-and-constitutional-tier-invariants/plan.md';

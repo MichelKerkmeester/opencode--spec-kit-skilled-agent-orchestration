@@ -12,10 +12,10 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/008-deep-research-review"
-    last_updated_at: "2026-04-25T23:15:00Z"
-    last_updated_by: "claude-opus-4-7-orchestrator"
-    recent_action: "10-iteration cli-codex deep-research review complete. 18 distinct findings (1 P1, 17 P2) across all 010 + 010/007 + 011 surfaces. 33-closure systematic audit: 20 in code, 8 doc-only, 5 contradicted. Final convergence 0.93."
-    next_safe_action: "Plan + scaffold 010/008-closure-integrity-and-pathfix-remediation (P1 + 8 P2) and optionally 010/009-test-rig-adversarial-coverage (4 P2)."
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     blockers: []
     key_files:
       - "research.md"
@@ -181,9 +181,9 @@ The 33-closure audit (iter 8) classified 5 closures as CONTRADICTED-BY-CODE. Eac
 **Claim** (010/007/T-F implementation-summary): "51 spec_kit_memory tools, synced across all umbrella docs."
 
 **Code reality**: Synced in root README (lines 7, 56, 1261, 1281, 1301, 677). NOT synced in:
-- `system-spec-kit/SKILL.md` — still claims 48/47 in places
-- `mcp_server/INSTALL_GUIDE.md` — still claims 43
-- `mcp_server/README.md` — detailed tool reference omits 11 of 51 entries
+- system-spec-kit/SKILL.md — still claims 48/47 in places
+- mcp_server/INSTALL_GUIDE.md — still claims 43
+- mcp_server/README.md — detailed tool reference omits 11 of 51 entries
 - `feature_catalog` command-surface paragraph — still says 43
 
 ### D5 — R-007-1 010/001 license docs (related drift, P2)
@@ -372,9 +372,9 @@ All findings carry file:line citations from the shipped code on `main`. Primary 
 - `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md`
 - `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md`
-- `010/{001-006}/spec.md` + `implementation-summary.md` + `decision-record.md`
-- `010/007-review-remediation/implementation-summary.md`
-- `011-manual-testing-playbook-coverage-and-run/implementation-summary.md`
+- `010/{001-006}/spec.md` + implementation-summary.md + decision-record.md
+- 010/007-review-remediation/implementation-summary.md
+- 011-manual-testing-playbook-coverage-and-run/implementation-summary.md
 
 ---
 
@@ -386,7 +386,7 @@ Per-iteration findings, deltas, logs, and prompts are preserved at:
 
 | File | Content |
 |---|---|
-| `strategy.md` | Research charter, per-iteration focus rotation, convergence detection |
+| strategy.md | Research charter, per-iteration focus rotation, convergence detection |
 | `deep-research-config.json` | Frozen config (executor, RQs, non-goals, stop conditions) |
 | `deep-research-state.jsonl` | Append-only event log (init + 10 iteration_complete events) |
 | `prompts/iteration-{001..010}.md` | Per-iteration cli-codex prompts |

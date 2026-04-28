@@ -113,6 +113,25 @@ function absentOutput(
   });
 }
 
+function unavailableOutput(
+  status: AdvisorStatus,
+  workspaceRoot: string,
+  effectiveThresholds: AdvisorRecommendOutput['effectiveThresholds'],
+): AdvisorRecommendOutput {
+  return emptyOutput({
+    workspaceRoot,
+    effectiveThresholds,
+    freshness: 'unavailable',
+    trustState: {
+      ...status.trustState,
+      state: 'unavailable',
+      reason: 'advisor_unavailable',
+    },
+    warnings: ['advisor_unavailable', ...(status.errors ?? [])],
+    abstainReasons: ['Skill advisor freshness is unavailable; returning fail-open empty recommendations.'],
+  });
+}
+
 function safeMany(values: readonly string[] | undefined): string[] {
   return (values ?? [])
     .map((value) => sanitizeSkillLabel(value))
@@ -159,6 +178,9 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
     uncertaintyThreshold: input.options?.uncertaintyThreshold,
   });
   const status = readAdvisorStatus({ workspaceRoot });
+  if (status.freshness === 'unavailable') {
+    return unavailableOutput(status, workspaceRoot, effectiveThresholds);
+  }
   if (status.freshness === 'absent') {
     return absentOutput(status, workspaceRoot, effectiveThresholds);
   }

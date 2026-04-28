@@ -46,6 +46,12 @@ export interface ScanResult {
   previousGitHead?: string | null;
   detectorProvenanceSummary?: graphDb.DetectorProvenanceSummary;
   graphEdgeEnrichmentSummary?: graphDb.GraphEdgeEnrichmentSummary | null;
+  warnings: string[];
+  capExceeded: {
+    maxNodes: boolean;
+    depth: boolean;
+    gitignoreSize: boolean;
+  };
   verification?: VerifyResult;
 }
 
@@ -313,6 +319,8 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     previousGitHead,
     detectorProvenanceSummary,
     graphEdgeEnrichmentSummary,
+    warnings: results.warnings ?? [],
+    capExceeded: results.capExceeded ?? { maxNodes: false, depth: false, gitignoreSize: false },
   };
   const lastPersistedAt = graphDb.getStats().lastScanTimestamp;
   const shouldVerify = args.verify === true && incremental === false;

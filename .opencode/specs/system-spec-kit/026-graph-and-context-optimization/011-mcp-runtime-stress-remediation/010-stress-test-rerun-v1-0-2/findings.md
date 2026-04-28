@@ -3,6 +3,8 @@
 > **Status**: complete as of 2026-04-27T17:30Z. All 30 cells dispatched (exit_code:0) and scored.
 >
 > **Frozen v1.0.1 baseline**: `../001-search-intelligence-stress-test/002-scenario-execution/findings.md` (do not modify above the trailing forward-pointer line).
+>
+> **Machine-readable replay sidecar**: `findings-rubric.json` captures the v1.0.1 rubric, the 30 per-cell v1.0.2 scores, baseline mappings, deltas, and aggregate math used to recompute the 83.8% verdict.
 
 ---
 

@@ -10,10 +10,10 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-ver
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation"
-    last_updated_at: "2026-04-22T13:32:00Z"
-    last_updated_by: "claude-opus-4-7"
-    recent_action: "Phase 5 status accuracy and defensive guards implemented and verified"
-    next_safe_action: "Resolve Copilot hook wiring mismatch, rerun full vitest, then refresh canonical save if needed"
+    last_updated_at: "2026-04-28T19:30:00Z"
+    last_updated_by: "codex-gpt-5-hygiene-pass"
+    recent_action: "Hygiene pass - validator structure"
+    next_safe_action: "Keep validators green"
     completion_pct: 100
 template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-verify + level3-arch | v2.2 -->"
 ---
@@ -33,7 +33,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - [x] **P0-02** Crash reproduced in Barter directory. [EVIDENCE: user-provided reproduction for Barter; same `.opencode` plugin folder was in scope and post-fix Barter smoke removed the `plugin2.auth` error.]
 - [x] **P0-03** Plugin discovery contract documented in ADR-001. [EVIDENCE: ADR-001 cites official docs, installed package types, binary-string contract, and empirical probe logs.]
 - [x] **P0-04** Outcome selected and accepted in ADR-002. [EVIDENCE: ADR-002 accepted Outcome A with mechanism/cost/risk matrix and the legacy export hardening addendum.]
-- [x] **P0-05** Helper files relocated atomically. [EVIDENCE: 3 helpers moved from `.opencode/plugins/` to `.opencode/plugin-helpers/`; imports updated. `git mv` could not take `.git/index.lock` in the sandbox, so the worktree records delete/add pairs until staged by the user.]
+- [x] **P0-05** Helper files relocated atomically. [EVIDENCE: 3 helpers moved from `.opencode/plugins/` to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`; imports updated. `git mv` could not take `.git/index.lock` in the sandbox, so the worktree records delete/add pairs until staged by the user.]
 - [x] **P0-06** TUI smoke green in Public root. [EVIDENCE: exact home-state command no longer emitted `plugin2.auth` but hit sandbox state/DB locks; XDG-writable smoke bootstrapped TUI/server logs with no `plugin2.auth`.]
 - [x] **P0-07** TUI smoke green in Barter. [EVIDENCE: exact command no longer emitted `plugin2.auth` but hit sandbox DB locks; XDG-writable Barter smoke bootstrapped TUI/server logs with no `plugin2.auth`.]
 - [x] **P0-08** Bridge subprocess architecture preserved. [EVIDENCE: `BRIDGE_PATH` constants resolve to `../plugin-helpers/...`; direct advisor and compact bridge subprocess smokes passed.]
@@ -90,7 +90,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] **P1-S01** Helper relocation does not expose new attack surface. [EVIDENCE: helper files moved to `.opencode/plugin-helpers/` and remain invoked by `node` subprocess spawn from plugin code; no new OpenCode plugin entrypoint was added.]
+- [x] **P1-S01** Helper relocation does not expose new attack surface. [EVIDENCE: helper files moved to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` and remain invoked by `node` subprocess spawn from plugin code; no new OpenCode plugin entrypoint was added.]
 - [x] **P1-S02** No secrets or credentials moved or exposed. [EVIDENCE: scoped diff contains file moves, relative import/path edits, README/test/docs, and helper comments.]
 <!-- /ANCHOR:security -->
 
@@ -109,7 +109,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 ## File Organization
 
 - [x] **P1-F01** `.opencode/plugins/` contains ONLY plugin entrypoint files (and `README.md`). [EVIDENCE: `ls .opencode/plugins/` shows `README.md`, `spec-kit-compact-code-graph.js`, and `spec-kit-skill-advisor.js`.]
-- [x] **P1-F02** Helper files live in their new home (e.g., `.opencode/plugin-helpers/`) and are reachable from the plugin imports. [EVIDENCE: `ls .opencode/plugin-helpers/` shows the 3 helper files; focused bridge tests and direct smokes pass.]
+- [x] **P1-F02** Helper files live in their new home (e.g., `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`) and are reachable from the plugin imports. [EVIDENCE: `ls .opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` shows the 3 helper files; focused bridge tests and direct smokes pass.]
 - [x] **P1-F03** Spec packet docs remain in this child phase folder. [EVIDENCE: this checklist, tasks, plan, spec, decision-record, and implementation summary live in the phase folder.]
 <!-- /ANCHOR:file-org -->
 
@@ -122,11 +122,13 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 
 - [x] **P2-03** Memory save emits no high post-save quality issues. [EVIDENCE: post-save reviewer returned `REVIEWER_ERROR` with `issues: []` and `blocking: false`; no HIGH issues were emitted.]
 - [x] **P2-04** OpenCode version pinned + upgrade checklist documented. [EVIDENCE: README notes OpenCode 1.3.17 and records the upgrade probe checklist.]
+- [x] **TIER2-P2-001** Compact plugin output-shape guard mirrors skill-advisor defensive posture. [EVIDENCE: `.opencode/plugins/spec-kit-compact-code-graph.js` initializes `output.system` and `output.context`; `mcp_server/tests/opencode-plugin.vitest.ts` covers `{}` and `{ context: null }` host outputs.]
+- [x] **TIER2-P2-002** Compact plugin normalizes non-string session IDs before cache-key use. [EVIDENCE: `.opencode/plugins/spec-kit-compact-code-graph.js` normalizes object-shaped IDs through stable stringification; `mcp_server/tests/opencode-plugin.vitest.ts` covers reordered object session IDs hitting the same cache entry.]
 
 ### Verification Log
 
 - 2026-04-22T15:12Z PASS: ADR-001/ADR-002 populated from docs, package types, binary inspection, probes, and logs.
-- 2026-04-22T15:13Z PASS: Outcome A implemented; three helpers moved to `.opencode/plugin-helpers/`; two plugin files updated.
+- 2026-04-22T15:13Z PASS: Outcome A implemented; three helpers moved to `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`; two plugin files updated.
 - 2026-04-22T15:14Z PASS: Public and Barter XDG-writable OpenCode smokes reached TUI/server bootstrap with no `plugin2.auth`; exact home-state commands no longer showed `plugin2.auth` but were blocked by sandbox state/DB permissions.
 - 2026-04-22T15:16Z PASS: advisor bridge direct smoke, compact bridge `--minimal`, and legacy parser guard direct smoke passed.
 - 2026-04-22T15:17Z PASS: regression guard failed on temporary no-default-export stub and passed after removal.

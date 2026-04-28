@@ -28,13 +28,14 @@ Keep the canonical lane weights in exactly one place and expose them to callers 
 
 ## 2. CURRENT REALITY
 
-`lib/scorer/weights-config.ts` defines the canonical weights: `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.10`, `semantic_shadow: 0.00`. These values are surfaced through `advisor_status.laneWeights` and consumed by `lib/scorer/fusion.ts`.
+`lib/scorer/weights-config.ts` defines the canonical weights from `lib/scorer/lane-registry.ts`: `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.15`, `semantic_shadow: 0.00`. These values are surfaced through `advisor_status.laneWeights` and consumed by `lib/scorer/fusion.ts`.
 
 ---
 
 ## 3. SOURCE FILES
 
 - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/weights-config.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lane-registry.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts`
 

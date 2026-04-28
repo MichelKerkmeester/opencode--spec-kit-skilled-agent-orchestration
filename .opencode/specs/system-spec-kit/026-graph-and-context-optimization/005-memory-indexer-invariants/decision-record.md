@@ -314,6 +314,13 @@ Deep-review pass-2 found that the cleanup CLI bulk-downgraded invalid constituti
 - Cleanup remains repair-oriented but becomes auditable after the fact.
 - Operators can distinguish runtime guard downgrades from maintenance-time normalization.
 
+### Alternatives Considered
+
+| Alternative | Why Rejected |
+|-------------|--------------|
+| Delete governance-audit rows with their memory rows | Loses forensic evidence exactly when cleanup is repairing historical corruption. |
+| Reuse the runtime downgrade action string for cleanup | Makes maintenance-time normalization indistinguishable from a live runtime guard firing. |
+
 ---
 
 ## ADR-009: Spec-Doc Exclusions Stay Additive Around `index-scope.ts`
@@ -335,6 +342,13 @@ Packet already established `index-scope.ts` as the canonical memory/code-graph i
 ### Consequences
 - Changing `EXCLUDED_FOR_MEMORY` automatically changes spec-doc classification and discovery.
 - Packet-specific walker exclusions still exist, but only for behavior intentionally outside the core invariant set.
+
+### Alternatives Considered
+
+| Alternative | Why Rejected |
+|-------------|--------------|
+| Keep duplicate exclusion lists in each walker | Reintroduces the drift class this packet is meant to close. |
+| Move every spec-doc overlay into `index-scope.ts` | Mixes packet-structure filters with global storage-boundary invariants. |
 
 ---
 
@@ -358,6 +372,13 @@ Pass-1 flagged that `memory-save.ts` and `structural-indexer.ts` used `path.reso
 - Symlinked files no longer bypass invariant enforcement on the save path or specific-file code-graph refreshes.
 - The helper stays fail-open for missing paths so atomic save flows still work for not-yet-created files.
 
+### Alternatives Considered
+
+| Alternative | Why Rejected |
+|-------------|--------------|
+| Continue using `path.resolve()` only | Normalizes strings but does not follow symlinks into excluded directories. |
+| Fail closed whenever `realpathSync()` throws | Breaks legitimate atomic save flows for files that do not exist yet. |
+
 ---
 
 ## ADR-011: Cleanup Apply Builds Its Plan on the Transaction Snapshot
@@ -380,6 +401,13 @@ Pass-1 flagged that `memory-save.ts` and `structural-indexer.ts` used `path.reso
 - Cleanup-apply decisions match the same transactional snapshot as the writes they perform.
 - Dry-run output remains informative, but the authoritative plan for mutation lives inside the transaction.
 
+### Alternatives Considered
+
+| Alternative | Why Rejected |
+|-------------|--------------|
+| Trust the dry-run plan during `--apply` | Leaves a race between planning and mutation where new violations can survive. |
+| Lock out every writer before planning | Heavier operational coupling than needed; SQLite transaction snapshot is enough for this repair. |
+
 ---
 
 ## ADR-012: Governance-Audit Actions and Tier-Downgrade Emission Are Shared Helpers
@@ -401,3 +429,10 @@ Pass-2 found the same audit payload shape duplicated across save, update, checkp
 ### Consequences
 - Audit payload drift is reduced across runtime and maintenance surfaces.
 - Operators and tests can filter on a stable action-string set documented in the README.
+
+### Alternatives Considered
+
+| Alternative | Why Rejected |
+|-------------|--------------|
+| Keep local action-string literals near each caller | Makes spelling drift likely and weakens operator filtering. |
+| Centralize only the constants, not the insert helper | Still leaves payload shape and logical-key construction duplicated across mutation surfaces. |

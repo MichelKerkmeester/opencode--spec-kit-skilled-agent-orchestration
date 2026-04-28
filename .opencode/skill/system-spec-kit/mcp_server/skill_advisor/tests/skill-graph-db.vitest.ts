@@ -7,21 +7,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { closeDb, getDb, indexSkillMetadata, initDb } from '../../lib/skill-graph/skill-graph-db.js';
-
-function writeGraphMetadata(skillRoot: string, skillId: string, edges: Record<string, unknown[]> = {}): void {
-  const skillDir = join(skillRoot, skillId);
-  mkdirSync(skillDir, { recursive: true });
-  writeFileSync(join(skillDir, 'graph-metadata.json'), JSON.stringify({
-    schema_version: 1,
-    skill_id: skillId,
-    family: 'system',
-    category: 'test',
-    domains: ['test'],
-    intent_signals: [skillId],
-    derived: {},
-    edges,
-  }), 'utf8');
-}
+import { writeGraphMetadata } from '../../tests/fixtures/skill-graph-db.js';
 
 describe('skill graph database indexing', () => {
   afterEach(() => {

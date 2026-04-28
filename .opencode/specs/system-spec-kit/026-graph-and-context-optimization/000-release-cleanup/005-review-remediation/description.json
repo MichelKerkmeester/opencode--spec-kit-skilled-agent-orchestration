@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "description": "Phase parent for closing P1/P2 findings surfaced by the 026 release-readiness deep-review program. Each synthesized review report becomes a sub-phase that owns its concrete fix work.",
+  "keywords": [
+    "review",
+    "remediation",
+    "release",
+    "cleanup",
+    "deep-review",
+    "findings",
+    "P1",
+    "P2"
+  ],
+  "lastUpdated": "2026-04-28T15:15:00.000Z",
+  "specId": "005",
+  "folderSlug": "review-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup"
+  ],
+  "memorySequence": 1
+}

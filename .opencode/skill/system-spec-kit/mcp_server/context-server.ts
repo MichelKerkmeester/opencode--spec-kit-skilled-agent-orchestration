@@ -419,6 +419,10 @@ function resolveCallerPid(metadata: Record<string, unknown>): number | undefined
     : undefined;
 }
 
+function resolveTrustedCaller(metadata: Record<string, unknown>): boolean {
+  return metadata.trusted === true || metadata.callerAuthority === 'trusted';
+}
+
 function buildCallerContext(extra: unknown): MCPCallerContext {
   const metadata = isRecord(extra) ? { ...extra } : {};
   return {
@@ -431,6 +435,7 @@ function buildCallerContext(extra: unknown): MCPCallerContext {
     transport: 'stdio',
     connectedAt: transportConnectedAt ?? new Date().toISOString(),
     callerPid: resolveCallerPid(metadata),
+    trusted: resolveTrustedCaller(metadata),
     metadata,
   };
 }
@@ -1009,7 +1014,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // T303: Dispatch to tool modules
     const result = await runWithCallerContext(
       callerContext,
-      async () => dispatchTool(name, args),
+      async () => dispatchTool(name, args, callerContext),
     ) as ToolCallResponse | null;
     if (!result) {
       throw new Error(`Unknown tool: ${name}`);

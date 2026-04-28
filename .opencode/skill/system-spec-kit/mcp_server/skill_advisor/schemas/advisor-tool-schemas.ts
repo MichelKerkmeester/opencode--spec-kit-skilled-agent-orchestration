@@ -3,15 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 
 import { z } from 'zod';
+import { SCORER_LANE_IDS } from '../lib/scorer/lane-registry.js';
 
 export const AdvisorFreshnessSchema = z.enum(['live', 'stale', 'absent', 'unavailable']);
-export const AdvisorLaneSchema = z.enum([
-  'explicit_author',
-  'lexical',
-  'graph_causal',
-  'derived_generated',
-  'semantic_shadow',
-]);
+export const AdvisorLaneSchema = z.enum(SCORER_LANE_IDS);
 
 const laneBreakdownSchema = z.object({
   lane: AdvisorLaneSchema,

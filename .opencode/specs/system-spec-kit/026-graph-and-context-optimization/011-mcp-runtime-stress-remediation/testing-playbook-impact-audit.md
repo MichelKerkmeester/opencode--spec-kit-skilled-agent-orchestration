@@ -20,7 +20,21 @@ scope:
 
 ## 1. EXECUTIVE SUMMARY
 
-Phase 011 ratified ten behavior changes across the four MCP surfaces (`memory_context`, `memory_search`, `code_graph_*`, `memory_causal_stats`), introduced a canonical daemon rebuild + live-probe protocol, and added four NEW packets (012-015) that change cli-copilot Gate-3 enforcement, code-graph degraded fallback, code-graph readiness observability, and cocoindex seed telemetry passthrough. The manual testing playbooks are **substantially out of date**: of 14 distinct behavior surfaces touched by phase 011, **0 are fully covered**, **5 existing entries are stale (NEEDS-UPDATE)**, and **9 entries are missing entirely (NEW-ENTRY-NEEDED)**. The cli-copilot skill playbook is the most impacted (zero coverage of packet 012's `targetAuthority` Gate-3 enforcement, which is the v1.0.2 P0 catastrophic-mutation fix). The system-spec-kit playbook needs token-budget envelope, fallbackDecision, causal window metrics, IntentTelemetry, responsePolicy, readiness.action, and cocoindex telemetry passthrough updates. sk-deep-research / sk-deep-review playbooks need cli-copilot dispatch coverage tied to the new helper. The .gemini mirror auto-inherits via hardlinks (verified inode equality).
+This audit began as a 2026-04-27 snapshot and is preserved below as historical evidence. Current-state reconciliation on 2026-04-28 shows the manual testing playbooks have since absorbed the high-impact phase-011 surfaces: token-budget envelope, `responsePolicy` / `citationPolicy`, `fallbackDecision`, `readiness.action`, CocoIndex telemetry, IntentTelemetry, cli-copilot target-authority entries, and sk-deep-research / sk-deep-review dispatch coverage now appear in the live playbook roots. The old "0 are fully covered" statement is therefore historical only, not current guidance.
+
+The live system-spec-kit roots are `.opencode/skill/system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/manual_testing_playbook/`. The `.opencode/skill/sk-doc/...` path named by one cleanup prompt does not exist in this checkout.
+
+## 1A. CURRENT-STATE RECONCILIATION (2026-04-28)
+
+| Area | Live-state result | Evidence |
+|------|-------------------|----------|
+| Retrieval playbooks | Confirmed current | `01--retrieval/001-unified-context-retrieval-memory-context.md` covers `preEnforcementTokens`, `returnedTokens`, and `droppedAllResultsReason`; `002-semantic-and-lexical-search-memory-search.md` covers `responsePolicy`, `safeResponse`, and `citationPolicy`. |
+| Code-graph playbooks | Confirmed current | `22--context-preservation-and-code-graph/254-code-graph-scan-query.md`, `255-cocoindex-code-graph-routing.md`, `264-query-intent-routing.md`, `275-code-graph-readiness-contract.md`, and `277-code-graph-fast-fail.md` cover `readiness.action`, CocoIndex telemetry passthrough, IntentTelemetry, status side-effect freedom, and `fallbackDecision`. |
+| cli-copilot authority playbooks | Confirmed current | `cli-copilot/manual_testing_playbook/01--cli-invocation/005-*`, `006-*`, and `05--session-continuity/003-*` cover missing authority, large prompt preamble preservation, and I1 zero-mutation replay. |
+| Deep-loop dispatch playbooks | Confirmed current | `sk-deep-research/.../030-cli-copilot-target-authority-dispatch.md` and the matching sk-deep-review entry cover `buildCopilotPromptArg` dispatch routing. |
+| Remaining alignment | Still tracked | Packet `018-catalog-playbook-degraded-alignment/` remains in progress and owns remaining degraded-envelope / rankingSignals wording alignment. |
+
+Historical sections below are retained for provenance; use this reconciliation block for current-state guidance.
 
 ---
 
@@ -355,13 +369,11 @@ The closest-to-contradiction case is `255-cocoindex-code-graph-routing.md` line 
 
 | Status | Count | Notes |
 |--------|-------|-------|
-| UP-TO-DATE | 4 | research-only packets (001/002/010/011) — no playbook impact by definition |
-| NEEDS-UPDATE | 5 | EX-001, EX-002, EX-020, 264, 254+275, 255 (255 has TWO gaps: 004 + 015) |
-| NEW-ENTRY-NEEDED | 9 | system-spec-kit 277/278/279 (3) + cli-copilot CP-022/023/024/025 (4) + sk-deep-research dispatch entry (1) + sk-deep-review dispatch entry (1) |
-| Cross-reference notes (LOW) | 4 | cli-codex / cli-claude-code / cli-gemini / cli-opencode each get a 1-paragraph note that deep-loop dispatch via these CLIs does NOT route through `buildCopilotPromptArg` (packet 012 is cli-copilot-only) |
-| **TOTAL ACTION ITEMS** | **18** | (excluding the 4 LOW cross-reference notes: **14 action items**) |
+| CONFIRMED-CURRENT | 14+ | Live playbooks now contain the high-impact entries named in §1A. |
+| TRACKED-DOWNSTREAM | 1 | Packet 018 owns remaining catalog/playbook degraded-alignment cleanup. |
+| HISTORICAL-ONLY | 18 | The older NEEDS-UPDATE / NEW-ENTRY rows below remain useful as a provenance snapshot, but no longer describe the live playbook state. |
 
-**Coverage delta:** 14 behavior surfaces ratified across phase 011 → **0 currently fully covered**. After applying the recommendations above, all 14 surfaces would have direct playbook coverage. The .gemini mirror auto-inherits via hardlinks (zero additional action).
+**Coverage delta:** Historical snapshot: 14 behavior surfaces ratified across phase 011 had 0 fully covered at audit time. Current reconciliation: the live playbooks now cover the high-impact surfaces; packet 018 remains the owner for final degraded-alignment polish. The .gemini mirror auto-inherits via hardlinks (zero additional action).
 
 ---
 

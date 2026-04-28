@@ -7,9 +7,10 @@
 
 import Database from 'better-sqlite3';
 import { createHash } from 'node:crypto';
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync } from 'node:fs';
 import { basename, dirname, join, relative } from 'node:path';
 import { DATABASE_DIR } from '../../core/config.js';
+import { checkSqliteIntegrity } from '../../skill_advisor/lib/freshness/sqlite-integrity.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -165,6 +166,20 @@ const SCHEMA_SQL = `
 let db: Database.Database | null = null;
 let dbPath: string | null = null;
 
+function recoverMalformedDatabase(databasePath: string, reason: string): void {
+  if (!existsSync(databasePath)) {
+    return;
+  }
+
+  const backupPath = join(dirname(databasePath), `${DB_FILENAME}.${Date.now()}.corrupt`);
+  try {
+    renameSync(databasePath, backupPath);
+  } catch {
+    rmSync(databasePath, { force: true });
+  }
+  console.warn(`[skill-graph] Recovered malformed SQLite database via initDb quick_check (${reason})`);
+}
+
 function ensureSchemaMigrations(database: Database.Database): void {
   database.exec(`
     CREATE TABLE IF NOT EXISTS skill_graph_metadata (
@@ -185,6 +200,10 @@ export function initDb(dbDir: string): Database.Database {
   try {
     mkdirSync(dbDir, { recursive: true });
     dbPath = join(dbDir, DB_FILENAME);
+    const integrity = checkSqliteIntegrity(dbPath);
+    if (!integrity.ok && integrity.reason !== 'SQLITE_ABSENT') {
+      recoverMalformedDatabase(dbPath, integrity.reason);
+    }
     db = new Database(dbPath);
     db.pragma('journal_mode = WAL');
     db.pragma('foreign_keys = ON');

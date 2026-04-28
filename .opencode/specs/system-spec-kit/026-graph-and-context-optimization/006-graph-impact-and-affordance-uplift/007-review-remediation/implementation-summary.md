@@ -1,14 +1,14 @@
 ---
-title: "Implementation Summary: Review Remediation (010/007)"
+title: "Implementation Summary: Review Remediation (006/007)"
 description: "Placeholder. Populated after the 6-theme remediation pass completes."
 trigger_phrases:
-  - "010/007 implementation summary"
-  - "010 remediation summary"
+  - "006/007 implementation summary"
+  - "006 remediation summary"
 importance_tier: "important"
 contextType: "implementation"
 _memory:
   continuity:
-    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/007-review-remediation"
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift/007-review-remediation"
     last_updated_at: "2026-04-25T19:00:00Z"
     last_updated_by: "claude-opus-4-7-orchestrator-wave-1-integration"
     recent_action: "Wave 1 fully integrated. All 6 batches (T-A through T-F) cherry-picked onto main. T-F closes 11 cleanup findings (R-007-12/16/17/18/P2-2/4/5/6/7/9/12) via cache-key generation counter, INSTALL_GUIDE Python path fix, tool-count canonicalization (51), query.ts micro-fixes (true overflow detection via full-traversal-then-slice; semantically equivalent to `limit + 1`, multi-subject seed preservation, failureFallback.code, shared edge-mapper dedup), affordance debug counters, phase alias note."
@@ -33,7 +33,7 @@ _memory:
       - "../../mcp_server/tests/memory/trust-badges.test.ts"
       - "implementation-summary.md"
 ---
-# Implementation Summary: Review Remediation (010/007)
+# Implementation Summary: Review Remediation (006/007)
 
 <!-- SPECKIT_LEVEL: 2 -->
 
@@ -41,11 +41,11 @@ _memory:
 **Wave 1 fully integrated.** T-A, T-B, T-C, T-D, T-E, T-F all complete and on main.
 
 - **T-A (detect_changes MCP wiring):** detect_changes registered as MCP tool across dispatcher, JSON schema, Zod validator, allowed-parameter ledger, and 6 umbrella docs. Closes R-007-2, R-007-14.
-- **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 010/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
+- **T-B (verification evidence sync):** Wave-3 canonical evidence (`tsc --noEmit` exit 0; `vitest run` 9 passed | 1 skipped (10), 90 passed | 3 skipped (93), 1.34s; per-sub-phase `validate.sh --strict` results) synced across 006/001/002/003/005/006 sub-phase implementation-summary.md + checklist.md files. Premature `[x]` PASS marks unchecked and rewritten with the 3-state convention (`[x]` real evidence captured | `[ ] OPERATOR-PENDING` command can't run from this context | `[ ] BLOCKED` blocked with reason). Closes R-007-1, R-007-5, R-007-7, R-007-15, R-007-19, R-007-20, R-007-21.
 - **T-C (public API surface gaps):** `minConfidence` exposed end-to-end on `code_graph_query` (Zod schema, JSON schema, allowed-parameter ledger, accept/reject tests). `affordances` DEFER decision: stays compile-time-only scorer seam (prompt-injection surface concern). Closes R-007-6, R-007-10.
 - **T-D (sanitization hardening):** 7 files hardened (`detect-changes.ts` canonical-root path containment, `diff-parser.ts` per-side hunk counters, `skill_graph_compiler.py` validate-reject `conflicts_with` + broadened denylist, `affordance-normalizer.ts` broadened denylist, `formatters/search-results.ts` merge-per-field trustBadges + allowlisted age strings + trace flag, `phase-runner.ts` duplicate-output rejection, `code-graph-db.ts`/`query.ts:614-615`/`code-graph-context.ts` `reason`/`step` allowlist on read path). New shared adversarial fixture `affordance-injection-fixtures.json` consumed by both TS and Python tests. Closes R-007-3, 4, 8, 9, 11, P2-1, P2-3, P2-8, P2-10, P2-11. Verify: tsc clean; vitest 37/37 PASS; pytest 57/57 PASS.
 - **T-E (test rig fix — DI strategy):** `fetchTrustBadgeSnapshots` exposes optional `dbGetter` parameter (defaults to `requireDb`). Three previously-skipped trust-badges tests unskipped (3/3 pass). **Precision correction (008/D15):** of those 3, two exercise the SQL-derivation pipeline directly via the DI getter and one is the explicit-pass-through test (formatter-only, DB-independent). Latent production bug fixed: `resultIds.map(String)` at bind time so `CAST(rid.memory_id AS TEXT)` matches TEXT-typed `causal_edges.{source_id,target_id}` columns (better-sqlite3 was binding JS numbers as REAL → `'11.0'` instead of `'11'`). Formatter return type harmonized to T-D's `TrustBadgeFetchResult` shape during integration; tests now dereference `fetchResult.snapshots.get(...)`. Closes R-007-13.
-- **T-F (doc cleanup + query.ts micro-fixes + cache invalidation):** memory_search cache key includes causal-edge generation counter (folded only when `enableCausalBoost=true`); INSTALL_GUIDE Python smoke-test path fixed; tool count canonicalized to 51 (`TOOL_DEFINITIONS.length`) across all umbrella docs with explicit deferred-handlers-do-not-count note; broken `FEATURE_CATALOG_IN_SIMPLE_TERMS` link removed; `structural-indexer.ts` `runPhases` wrapped in try/catch/finally so error outcome metric emits; `query.ts` detects true overflow by comparing full-BFS-traversal size against `limit` BEFORE slicing (semantically equivalent to `limit + 1` — the BFS frontier is already over-collected, so no extra SQL request is needed; 008/D8 doc-fix correction), preserves seed nodes on multi-subject sibling failures, adds stable `failureFallback.code` + new `spec_kit.graph.blast_radius_failure_total` metric, and dedupes 4 switch branches via shared edge mapper; affordance debug counters (received/accepted/dropped_unsafe/dropped_empty/dropped_unknown_skill) added to TS + Python; 010/006 alias note for renumber. Closes R-007-12, 16, 17, 18, P2-2, P2-4, P2-5, P2-6, P2-7, P2-9, P2-12.
+- **T-F (doc cleanup + query.ts micro-fixes + cache invalidation):** memory_search cache key includes causal-edge generation counter (folded only when `enableCausalBoost=true`); INSTALL_GUIDE Python smoke-test path fixed; tool count canonicalized to 51 (`TOOL_DEFINITIONS.length`) across all umbrella docs with explicit deferred-handlers-do-not-count note; broken `FEATURE_CATALOG_IN_SIMPLE_TERMS` link removed; `structural-indexer.ts` `runPhases` wrapped in try/catch/finally so error outcome metric emits; `query.ts` detects true overflow by comparing full-BFS-traversal size against `limit` BEFORE slicing (semantically equivalent to `limit + 1` — the BFS frontier is already over-collected, so no extra SQL request is needed; 008/D8 doc-fix correction), preserves seed nodes on multi-subject sibling failures, adds stable `failureFallback.code` + new `spec_kit.graph.blast_radius_failure_total` metric, and dedupes 4 switch branches via shared edge mapper; affordance debug counters (received/accepted/dropped_unsafe/dropped_empty/dropped_unknown_skill) added to TS + Python; 006/006 alias note for renumber. Closes R-007-12, 16, 17, 18, P2-2, P2-4, P2-5, P2-6, P2-7, P2-9, P2-12.
 
 ## Findings Closed
 
@@ -54,11 +54,11 @@ _memory:
 **Decision:** WIRE — register `detect_changes` as a callable MCP tool.
 
 **Rationale:**
-- Handler at `mcp_server/code_graph/handlers/detect-changes.ts` is fully implemented (canonical-root sanitization, readiness probe, diff parser, line-range overlap attribution) and unit-tested (`code_graph/tests/detect-changes.test.ts`) since 010/002.
+- Handler at `mcp_server/code_graph/handlers/detect-changes.ts` is fully implemented (canonical-root sanitization, readiness probe, diff parser, line-range overlap attribution) and unit-tested (`code_graph/tests/detect-changes.test.ts`) since 006/002.
 - Docs already describe it as an operator-callable surface: feature catalog `03--discovery/04-detect-changes-preflight.md`, manual testing playbook `03--discovery/014-detect-changes-preflight.md`, and `INSTALL_GUIDE.md §4a` smoke test all demonstrate calling the tool with `{ diff, rootDir? }`.
 - ADR-012-003 (deferred route/tool/shape contract safety) governs the **new** graph-entity surfaces (`route_map`, `tool_map`, `shape_check`, `api_impact`), not the routine MCP exposure of an existing read-only preflight handler. The 002 implementation summary's appeal to ADR-012-003 to defer registration was a misapplication — re-reading the ADR confirms its scope is route/tool/consumer extraction, not handler-to-MCP wiring.
 - Wiring is a mechanical 4-touchpoint addition, parallel to existing patterns (`codeGraphScan`, `codeGraphContext`, `cccStatus`): no new schema infrastructure, no new validation primitives, no new dispatcher patterns.
-- Marking the handler INTERNAL would require rewriting 8 doc surfaces to disclaim a capability that is otherwise complete and tested — strictly more work than wiring it, and contrary to the operator-facing experience already published in 010/006.
+- Marking the handler INTERNAL would require rewriting 8 doc surfaces to disclaim a capability that is otherwise complete and tested — strictly more work than wiring it, and contrary to the operator-facing experience already published in 006/006.
 
 **Evidence — files modified (WIRE path):**
 
@@ -89,7 +89,7 @@ The `detect_changes` story now reads consistently as a callable MCP tool across:
 $ cd mcp_server && npx --no-install tsc --noEmit
 exit 0 (clean after the type-widening fix in commit c6e766dc5)
 
-# vitest run (Phase 010 specific files)
+# vitest run (Phase 006 specific files)
 $ cd mcp_server && npx --no-install vitest run \
   code_graph/tests/phase-runner.test.ts \
   code_graph/tests/detect-changes.test.ts \
@@ -122,13 +122,13 @@ $ cd mcp_server && npx --no-install vitest run \
 
 | Finding | Sub-phase | Doc edits applied |
 |---------|-----------|-------------------|
-| R-007-1 | 010/001 | `implementation-summary.md` Status: added "Complete (with caveat)" + post-scrub note (no LICENSE quote needed; P0 RESOLVED by scrub, not by quote); §Verification table updated; §Verification — validate.sh now contains Wave-3 canonical FAILED-COSMETIC evidence; §Known Limitations §4 reflects new state. `checklist.md` `validate.sh --strict` row left UNCHECKED with "OPERATOR-PENDING — cosmetic template-section warnings" + canonical evidence. |
-| R-007-5 | 010/002 | `implementation-summary.md` Status: "Complete & verified (010/007/T-B, 2026-04-25)" + Wave-3 canonical line; §Verification Evidence §Test execution rewritten with verbatim canonical block (10 test files, 9 passed | 1 skipped, 90 passed | 3 skipped, 1.34s); §`validate.sh --strict` rewritten with FAILED-COSMETIC canonical; §Known Limitations §1 updated. |
-| R-007-7 | 010/003 | `implementation-summary.md` Status: "Complete & verified" line; §Verification Evidence rewritten with Wave-3 canonical block + 003-specific result mapping (every 003 surface PASS, validate.sh FAILED-COSMETIC). |
-| R-007-15 | 010/006 | `implementation-summary.md` §DQI Scores rewritten — explicit "estimated PASS ≠ validated PASS" framing; §Verification Evidence split into "Validated PASS" (script-backed/runnable) and "Estimated PASS" (structural pre-flight only) sections; new §`validate.sh --strict` Wave-3 canonical block; Status updated; §Known Limitations §1 rewritten. `checklist.md`: 5 DQI rows + 1 smoke-test row + 1 validate.sh row unchecked with OPERATOR-PENDING + R-007-15 reason. |
-| R-007-19 | 010/002 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI score ≥85" → OPERATOR-PENDING (R-007-19); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC (Wave-3 canonical FAILED on template-section conformance only). "Existing code-graph vitest suite passes unchanged" stays `[x]` with new Wave-3 canonical evidence (002 surfaces inside the 9 PASSED files). |
-| R-007-20 | 010/003 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI ≥85" → OPERATOR-PENDING (R-007-20); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC. "code-graph vitest suite passes unchanged" stays `[x]` with new Wave-3 canonical evidence (003 surfaces inside the 9 PASSED files). |
-| R-007-21 | 010/005 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI ≥85" → OPERATOR-PENDING (R-007-21); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC; "Memory vitest suite passes" → PARTIAL with reason pointing at T-E remediation (R-007-13: trust-badges SQL-mock describe block 3 SKIPPED tests pending DI-fixture rewrite). Hard Rules + Output contract items checked `[x]` with verified-from-code evidence. |
+| R-007-1 | 006/001 | `implementation-summary.md` Status: added "Complete (with caveat)" + post-scrub note (no LICENSE quote needed; P0 RESOLVED by scrub, not by quote); §Verification table updated; §Verification — validate.sh now contains Wave-3 canonical FAILED-COSMETIC evidence; §Known Limitations §4 reflects new state. `checklist.md` `validate.sh --strict` row left UNCHECKED with "OPERATOR-PENDING — cosmetic template-section warnings" + canonical evidence. |
+| R-007-5 | 006/002 | `implementation-summary.md` Status: "Complete & verified (006/007/T-B, 2026-04-25)" + Wave-3 canonical line; §Verification Evidence §Test execution rewritten with verbatim canonical block (10 test files, 9 passed | 1 skipped, 90 passed | 3 skipped, 1.34s); §`validate.sh --strict` rewritten with FAILED-COSMETIC canonical; §Known Limitations §1 updated. |
+| R-007-7 | 006/003 | `implementation-summary.md` Status: "Complete & verified" line; §Verification Evidence rewritten with Wave-3 canonical block + 003-specific result mapping (every 003 surface PASS, validate.sh FAILED-COSMETIC). |
+| R-007-15 | 006/006 | `implementation-summary.md` §DQI Scores rewritten — explicit "estimated PASS ≠ validated PASS" framing; §Verification Evidence split into "Validated PASS" (script-backed/runnable) and "Estimated PASS" (structural pre-flight only) sections; new §`validate.sh --strict` Wave-3 canonical block; Status updated; §Known Limitations §1 rewritten. `checklist.md`: 5 DQI rows + 1 smoke-test row + 1 validate.sh row unchecked with OPERATOR-PENDING + R-007-15 reason. |
+| R-007-19 | 006/002 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI score ≥85" → OPERATOR-PENDING (R-007-19); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC (Wave-3 canonical FAILED on template-section conformance only). "Existing code-graph vitest suite passes unchanged" stays `[x]` with new Wave-3 canonical evidence (002 surfaces inside the 9 PASSED files). |
+| R-007-20 | 006/003 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI ≥85" → OPERATOR-PENDING (R-007-20); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC. "code-graph vitest suite passes unchanged" stays `[x]` with new Wave-3 canonical evidence (003 surfaces inside the 9 PASSED files). |
+| R-007-21 | 006/005 | `checklist.md` premature PASS marks unchecked: "sk-doc DQI ≥85" → OPERATOR-PENDING (R-007-21); `validate.sh --strict` → OPERATOR-PENDING-COSMETIC; "Memory vitest suite passes" → PARTIAL with reason pointing at T-E remediation (R-007-13: trust-badges SQL-mock describe block 3 SKIPPED tests pending DI-fixture rewrite). Hard Rules + Output contract items checked `[x]` with verified-from-code evidence. |
 
 **3-state checklist convention applied across all 10 doc edits (5 sub-phase implementation-summary.md + 5 sub-phase checklist.md):**
 
@@ -140,19 +140,19 @@ $ cd mcp_server && npx --no-install vitest run \
 
 | File | Sub-phase | Findings touched |
 |------|-----------|------------------|
-| `001-clean-room-license-audit/implementation-summary.md` | 010/001 | R-007-1 |
-| `001-clean-room-license-audit/checklist.md` | 010/001 | R-007-1 |
-| `002-code-graph-phase-runner-and-detect-changes/implementation-summary.md` | 010/002 | R-007-5 |
-| `002-code-graph-phase-runner-and-detect-changes/checklist.md` | 010/002 | R-007-19 |
-| `003-code-graph-edge-explanation-and-impact-uplift/implementation-summary.md` | 010/003 | R-007-7 |
-| `003-code-graph-edge-explanation-and-impact-uplift/checklist.md` | 010/003 | R-007-20 |
-| `005-memory-causal-trust-display/implementation-summary.md` | 010/005 | R-007-21 (impl-summary) |
-| `005-memory-causal-trust-display/checklist.md` | 010/005 | R-007-21 |
-| `006-docs-and-catalogs-rollup/implementation-summary.md` | 010/006 | R-007-15 |
-| `006-docs-and-catalogs-rollup/checklist.md` | 010/006 | R-007-15 |
-| `007-review-remediation/implementation-summary.md` (this file) | 010/007 | T-B closure record |
+| `001-clean-room-license-audit/implementation-summary.md` | 006/001 | R-007-1 |
+| `001-clean-room-license-audit/checklist.md` | 006/001 | R-007-1 |
+| `002-code-graph-phase-runner-and-detect-changes/implementation-summary.md` | 006/002 | R-007-5 |
+| `002-code-graph-phase-runner-and-detect-changes/checklist.md` | 006/002 | R-007-19 |
+| `003-code-graph-edge-explanation-and-impact-uplift/implementation-summary.md` | 006/003 | R-007-7 |
+| `003-code-graph-edge-explanation-and-impact-uplift/checklist.md` | 006/003 | R-007-20 |
+| `005-memory-causal-trust-display/implementation-summary.md` | 006/005 | R-007-21 (impl-summary) |
+| `005-memory-causal-trust-display/checklist.md` | 006/005 | R-007-21 |
+| `006-docs-and-catalogs-rollup/implementation-summary.md` | 006/006 | R-007-15 |
+| `006-docs-and-catalogs-rollup/checklist.md` | 006/006 | R-007-15 |
+| `007-review-remediation/implementation-summary.md` (this file) | 006/007 | T-B closure record |
 
-**Total: 11 files modified (10 sub-phase docs + this implementation-summary).** Zero code files modified (T-B is doc-only; per brief Hard Rule 4). Sub-phase 004 docs untouched (already verified PASS per Wave-3 canonical; no T-B changes needed). Out-of-territory paths (010/007 prompts, other batch territories T-A/C/D/E/F) untouched.
+**Total: 11 files modified (10 sub-phase docs + this implementation-summary).** Zero code files modified (T-B is doc-only; per brief Hard Rule 4). Sub-phase 004 docs untouched (already verified PASS per Wave-3 canonical; no T-B changes needed). Out-of-territory paths (006/007 prompts, other batch territories T-A/C/D/E/F) untouched.
 
 ### R-007-6 — Expose `minConfidence` on `code_graph_query` MCP surface (T-C)
 
@@ -160,7 +160,7 @@ $ cd mcp_server && npx --no-install vitest run \
 
 **Rationale:**
 - Handler at `mcp_server/code_graph/handlers/query.ts:1024` already accepts `args.minConfidence` (clamped via `clampNumericConfidence`) and threads it through `computeBlastRadius` (line 1122) and `queryImportDependentsForBlastRadius` (line 731). The only public-API gap is schema rejection: requests with `minConfidence` were dropped at validation as an unknown property (`additionalProperties: false`).
-- 010/003 implementation summary already documents `minConfidence` as a published field of the `blast_radius` response (line 34) and as a tested code path (line 58, `code-graph-query-handler.vitest.ts` covers `minConfidence` cases). So callers are documented to expect the input lever; only the schema needed to catch up.
+- 006/003 implementation summary already documents `minConfidence` as a published field of the `blast_radius` response (line 34) and as a tested code path (line 58, `code-graph-query-handler.vitest.ts` covers `minConfidence` cases). So callers are documented to expect the input lever; only the schema needed to catch up.
 - Mechanical wiring follows the existing `positiveIntMax` / `boundedNumber` pattern. Validation keeps the contract tight: `z.number().min(0).max(1).optional()` matches the handler's clamp and the spec's `[0, 1]` range.
 
 **Evidence — files modified:**
@@ -177,7 +177,7 @@ $ cd mcp_server && npx --no-install vitest run \
 **Decision:** DEFER — keep `affordances` as a compile-time-only internal scorer seam; do NOT expose via the public `advisor_recommend` input schema.
 
 **Rationale:**
-- The 010/004 implementation specifically routes affordance evidence through compiled skill graph metadata (via `skill_graph_compiler.py` emitting sanitized `derived.affordances[]` from skill files), not through request input. This is the design intent of the packet, not an oversight.
+- The 006/004 implementation specifically routes affordance evidence through compiled skill graph metadata (via `skill_graph_compiler.py` emitting sanitized `derived.affordances[]` from skill files), not through request input. This is the design intent of the packet, not an oversight.
 - `affordance-normalizer.ts` was hardened against prompt-stuffing (URL/email/token strip, instruction-pattern denylist, control-character strip, trigger length cap). Exposing `affordances` as a public request field would re-introduce exactly the surface the normalizer defends against — caller-supplied free-form strings flowing into the scorer.
 - The 004 implementation summary (Key Decisions) explicitly states: "Ignore free-form `description` as a trigger source — descriptions are the highest-risk prompt-stuffing input. Structured fields are safer and easier to test." A public `affordances` array would be a strict superset of that risk.
 - No existing public consumer passes `affordances` to `scoreAdvisorPrompt`. The TS callers (`advisor-validate.ts`, `advisor-recommend.ts`, the bench scripts) all rely on compile-time projections. The seam is reachable only by direct in-process calls (e.g., bench harnesses, alternate scorer wrappers), where the caller is trusted.
@@ -250,7 +250,7 @@ Created `mcp_server/skill_advisor/tests/__shared__/affordance-injection-fixtures
 
 **Strategy:** **DI** (dependency injection on `fetchTrustBadgeSnapshots`).
 
-**Rationale:** The Wave 3 follow-up note attributed the test failures to vitest mock-resolution. After re-running with all three mock layers active, the mocks intercepted correctly but two of three cases still returned `confidence: null`. Tracing the SQL pipeline directly against an in-memory better-sqlite3 revealed the actual blocker: `better-sqlite3` binds JavaScript numbers as REAL, so `VALUES (?)` with the integer `11` stores `11.0`, and `CAST(11.0 AS TEXT)` yields `'11.0'`, which never matches the TEXT-typed `target_id='11'` column. The mock theory was a red herring — the SQL itself was latently broken since 010/005 and only invisible because the tests were skipped. The DI seam (additive optional `dbGetter` parameter) plus a one-line bind-side coercion (`resultIds.map(String)`) jointly close R-007-13: tests exercise the SQL path against an in-memory DB with no mock plumbing, and production callers using JS-number IDs correctly resolve causal-edge metadata against TEXT-typed source/target columns. DI was preferred over real-DB integration fixture because it leaves the production caller signature unchanged, avoids cross-suite global mocks, and surfaces the bind-type bug as a localized fix.
+**Rationale:** The Wave 3 follow-up note attributed the test failures to vitest mock-resolution. After re-running with all three mock layers active, the mocks intercepted correctly but two of three cases still returned `confidence: null`. Tracing the SQL pipeline directly against an in-memory better-sqlite3 revealed the actual blocker: `better-sqlite3` binds JavaScript numbers as REAL, so `VALUES (?)` with the integer `11` stores `11.0`, and `CAST(11.0 AS TEXT)` yields `'11.0'`, which never matches the TEXT-typed `target_id='11'` column. The mock theory was a red herring — the SQL itself was latently broken since 006/005 and only invisible because the tests were skipped. The DI seam (additive optional `dbGetter` parameter) plus a one-line bind-side coercion (`resultIds.map(String)`) jointly close R-007-13: tests exercise the SQL path against an in-memory DB with no mock plumbing, and production callers using JS-number IDs correctly resolve causal-edge metadata against TEXT-typed source/target columns. DI was preferred over real-DB integration fixture because it leaves the production caller signature unchanged, avoids cross-suite global mocks, and surfaces the bind-type bug as a localized fix.
 
 **Evidence — files modified:**
 
@@ -347,26 +347,33 @@ imports_* omit it).
   scrub at the phrase level rather than rejecting whole inputs.
 
 #### R-007-P2-12 — Phase-naming alias note (012 → 010)
-Added an explicit alias block at the top of `010/006-docs-and-catalogs-rollup/`
+Added an explicit alias block at the top of `006/006-docs-and-catalogs-rollup/`
 `spec.md`, `checklist.md`, and `implementation-summary.md` documenting that
 phase 012 was renumbered to wrapper 010 and both labels refer to the same
 packet.
 
 ## Findings Deferred (with Defer-To pointers)
-[TBD per task ID]
+
+Tier 2 state-hygiene update (2026-04-28): no 006/007 batch item is left in ambiguous `[TBD per task ID]` state. Lower-priority follow-ups are carried by the completed 008 deep-research review matrix:
+
+| Class | Defer-To |
+|-------|----------|
+| Future hardening | 008 deep-research review D2, D3, D6, D11 |
+| Polish backlog | 008 deep-research review D18 |
+| Adopted closure follow-up | Recommended 006/008 and 006/009 packets listed in 008 `spec.md` §6 |
 
 ## Verification Evidence (real command output)
 
 **T-A scope (`detect_changes` wiring):**
 
-- `tsc --noEmit` clean: VALIDATED PASS via Wave-3 canonical (010/007/T-B, 2026-04-25) — `npx --no-install tsc --noEmit` exit 0 (clean after the type-widening fix in commit c6e766dc5). The four T-A edits are confirmed type-clean.
+- `tsc --noEmit` clean: VALIDATED PASS via Wave-3 canonical (006/007/T-B, 2026-04-25) — `npx --no-install tsc --noEmit` exit 0 (clean after the type-widening fix in commit c6e766dc5). The four T-A edits are confirmed type-clean.
 - Existing test `code_graph/tests/detect-changes.test.ts` unchanged; the wiring does not alter handler behaviour. Wave-3 canonical `vitest run` shows `code_graph/tests/detect-changes.test.ts` is inside the 9 PASSED test files (90 passed | 3 skipped (93) tests, 1.34s).
 
 **T-B scope (verification evidence sync):**
 
 - `tsc --noEmit`: VALIDATED PASS via Wave-3 canonical (exit 0).
-- `vitest run` (Phase 010 specific files, 10 files): VALIDATED PASS-WITH-SKIP — 9 passed | 1 skipped, 90 passed | 3 skipped tests, 1.34s. The 1 skipped file (`tests/memory/trust-badges.test.ts` SQL-mock describe block) is the documented Wave-3 follow-up tracked under R-007-13 (T-E remediation).
-- `validate.sh --strict` per sub-phase: 001/002/003/005/006 FAILED-COSMETIC (template-section conformance, NOT contract violations); 004 PASSED. Cosmetic debt tracked as deferred P2 in 010/007.
+- `vitest run` (Phase 006 specific files, 10 files): VALIDATED PASS-WITH-SKIP — 9 passed | 1 skipped, 90 passed | 3 skipped tests, 1.34s. The 1 skipped file (`tests/memory/trust-badges.test.ts` SQL-mock describe block) is the documented Wave-3 follow-up tracked under R-007-13 (T-E remediation).
+- `validate.sh --strict` per sub-phase: 001/002/003/005/006 FAILED-COSMETIC (template-section conformance, NOT contract violations); 004 PASSED. Cosmetic debt tracked as deferred P2 in 006/007.
 
 **Sync, not aspiration (per brief Hard Rule 1):** Every Wave-3 canonical evidence block reproduced in the 10 sub-phase doc files is verbatim from the orchestrator's recorded session — no fabricated test counts, no estimated durations, no "operator-pending" placeholders standing in for real output. Operator-pending markers in the post-T-B docs reflect commands that *cannot* run from a doc-edit context (sk-doc DQI script invocations, live MCP smoke tests against running tools), NOT commands that are merely inconvenient.
 
@@ -385,6 +392,6 @@ packet.
 
 ## References
 - spec.md, plan.md, tasks.md, checklist.md (this folder)
-- 010/review/phase-review-summary.md
-- 010/{001..006}/review/review-report.md
-- 010/decision-record.md ADR-012-003 (re-read for scope clarification — governs NEW route/tool/shape entities only)
+- 006/review/phase-review-summary.md
+- 006/{001..006}/review/review-report.md
+- 006/decision-record.md ADR-012-003 (re-read for scope clarification — governs NEW route/tool/shape entities only)

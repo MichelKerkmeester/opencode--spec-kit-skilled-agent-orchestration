@@ -12,7 +12,20 @@ mirror_status: "All four runtime mirrors (.opencode, .gemini, .claude, .codex) a
 
 ## 1. EXECUTIVE SUMMARY
 
-Phase 011 ratified 9 behavior/contract changes across `code_graph_query`, `code_graph_status`, `code_graph_context`, `memory_search`, `memory_context`, `memory_causal_stats`, the cli-copilot deep-loop dispatch helper, and the vendored cocoindex_code fork. The feature_catalog has not been updated for any of them: every affected entry still reflects post-018 / post-017 baselines (stamped `audited_post_018: true`) and is silent on the new fields and helpers. None of the existing entries actively *contradicts* the new behavior — they are stale by omission, not by misstatement, with one borderline case in `15-code-graph-auto-trigger.md` whose phrasing "*Packet 013 made this visible*" refers to a different spec's packet 013 (024-compact-code-graph) and could be misread now that 011-tree's own packet 013 is the more recent "graph degraded stress cell" landmark. Four packets are pure evidence/research/operational documentation (001, 002, 008, 010, 011) and produce no catalog impact. Net result: 9 NEEDS-UPDATE entries, 1 MISSING entry candidate, and ~5 packets that legitimately do not require catalog work.
+This audit began as a 2026-04-27 snapshot and is preserved below as historical evidence. Current-state reconciliation on 2026-04-28 shows the live feature catalog has since absorbed the high-impact phase-011 fields and helpers: `fallbackDecision`, `getGraphReadinessSnapshot`, `readiness.action`, `rawScore`, `pathClass`, `rankingSignals`, `buildCopilotPromptArg`, `CopilotTargetAuthority`, `responsePolicy`, `citationPolicy`, `preEnforcementTokens`, `returnedTokens`, `deltaByRelation`, `balanceStatus`, `classificationKind`, `paraphraseGroup`, and `backendRouting` now appear in the relevant live catalog/playbook surfaces. The old "catalog has not been updated for any of them" statement is therefore historical only, not current guidance.
+
+The source-of-truth roots are `.opencode/skill/system-spec-kit/feature_catalog/` and `.opencode/skill/system-spec-kit/manual_testing_playbook/`. The originally cited `.opencode/skill/sk-doc/...` root does not exist in this checkout.
+
+## 1A. CURRENT-STATE RECONCILIATION (2026-04-28)
+
+| Area | Live-state result | Evidence |
+|------|-------------------|----------|
+| Code graph readiness / fast-fail | Confirmed current | `22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md` documents `fallbackDecision`, `getGraphReadinessSnapshot()`, `readiness.action`, `SELECTIVE_REINDEX_THRESHOLD`, and the packet-013 disambiguation. |
+| Readiness contract | Confirmed current | `22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md` documents handler-local degraded payload shapes and the non-mutating status snapshot. |
+| CocoIndex bridge | Confirmed current | `22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md` documents `rawScore`, `pathClass`, `rankingSignals`, fork telemetry, and the passthrough test. |
+| Catalog/playbook downstream alignment | Still tracked | Packet `018-catalog-playbook-degraded-alignment/` remains in progress and owns remaining degraded-envelope / rankingSignals wording alignment. |
+
+Historical sections below are retained for provenance; use this reconciliation block for current-state guidance.
 
 ---
 
@@ -167,9 +180,9 @@ No entries make claims that the new behavior breaks.
 
 | Status | Count | Packets |
 |---|---|---|
-| **UP-TO-DATE** | 4 | 001 (rubric only), 002 (research only), 010 (evidence only), 011 (research only) |
-| **NEEDS-UPDATE** | 9 | 003, 004 (cocoindex bridge edit), 005, 006, 007, 008, 009, 014, 015 (and 013 as a small additive update on the same file as 014) |
-| **MISSING** | 2 | 012 (entirely new entry needed); 004 (vendored fork entry candidate, optional but recommended) |
+| **CONFIRMED-CURRENT** | 10+ | Live catalog now contains the high-impact post-011 fields/helpers named in §1A. |
+| **TRACKED-DOWNSTREAM** | 1 | Packet 018 owns remaining catalog/playbook degraded-alignment cleanup. |
+| **HISTORICAL-ONLY** | 11 | The older NEEDS-UPDATE/MISSING rows below remain useful as a provenance snapshot, but no longer describe the live catalog state. |
 
 **Top 5 highest-impact NEEDS-UPDATE items** (by reader risk if left stale):
 
@@ -187,5 +200,5 @@ No entries make claims that the new behavior breaks.
 
 - **Audit timestamp:** 2026-04-27
 - **Catalog version audited:** `feature_catalog.md` last-modified 2026-04-26 16:12 (size 404606 bytes, inode 26087506)
-- **Search strategy:** ripgrep against catalog for the 9 ratified field/helper tokens (`readiness.action`, `getGraphReadinessSnapshot`, `selective_reindex`, `SELECTIVE_REINDEX_THRESHOLD`, `rawScore`, `pathClass`, `rankingSignals`, `path_class`, `raw_score`, `source_realpath`, `dedupedAliases`, `uniqueResultCount`, `buildCopilotPromptArg`, `CopilotTargetAuthority`, `targetAuthority`, `validateSpecFolder`, `responsePolicy`, `noCanonicalPathClaims`, `safeResponse`, `citationPolicy`, `preEnforcementTokens`, `returnedTokens`, `droppedAllResultsReason`, `fallbackDecision`, `nextTool`, `retryAfter`, `deltaByRelation`, `balanceStatus`, `classificationKind`, `paraphraseGroup`, `backendRouting`, `IntentTelemetry`); zero hits for any of them inside the 011-tree-relevant catalog scope. Spot-reads of the 8 highest-impact catalog entries confirmed stale-by-omission (no contradictions).
+- **Original search strategy:** ripgrep against catalog for the 9 ratified field/helper token families. That 2026-04-27 result is superseded by the 2026-04-28 reconciliation in §1A, which found the live catalog/playbook surfaces now contain the high-impact tokens.
 - **Out of scope:** Per-CLI feature_catalog folders do not exist (`.opencode/skill/cli-{copilot,codex,claude-code,gemini,opencode}/feature_catalog/`); these CLI skills carry only `references/` and `manual_testing_playbook/` — so no per-CLI catalog edits are needed. Runtime-mirror equivalents (`.gemini/`, `.claude/`, `.codex/`) are hardlinks to the .opencode source.

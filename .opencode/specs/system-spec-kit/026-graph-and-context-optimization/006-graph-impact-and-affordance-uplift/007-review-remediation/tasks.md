@@ -1,38 +1,40 @@
 ---
-title: "Tasks: Review Remediation (010/007)"
+title: "Tasks: Review Remediation (006/007)"
 description: "Themed task list — 21 P1 + 12 actionable P2 findings"
 importance_tier: "important"
 contextType: "implementation"
 ---
-# Tasks: Review Remediation (010/007)
+# Tasks: Review Remediation (006/007)
 
 <!-- SPECKIT_LEVEL: 2 -->
 
 ## T-A — `detect_changes` MCP Wiring Decision (P1)
 
+> Tier 2 state-hygiene note (2026-04-28): rows previously marked `pending` were stale. `implementation-summary.md` records T-A through T-F as integrated; this ledger is backfilled to match that authoritative closeout.
+
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-2 | Decide: wire `detect_changes` as MCP tool OR mark internal-only across all docs | pending | Branch decision; affects T-B |
-| R-007-14 | Sync chosen path across `code_graph/tools/code-graph-tools.ts`, `tool-schemas.ts`, `schemas/tool-input-schemas.ts`, `handlers/index.ts`, 6 umbrella docs | pending | After R-007-2 |
+| R-007-2 | Decide: wire `detect_changes` as MCP tool OR mark internal-only across all docs | done | Branch decision; affects T-B |
+| R-007-14 | Sync chosen path across `code_graph/tools/code-graph-tools.ts`, `tool-schemas.ts`, `schemas/tool-input-schemas.ts`, `handlers/index.ts`, 6 umbrella docs | done | After R-007-2 |
 
 ## T-B — Verification Evidence Sync (P1, after T-A)
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-1 | Update 001 implementation-summary status to reflect post-scrub state (no LICENSE quote needed) | pending | Trivial — minutes |
-| R-007-5 | Run vitest + tsc + validate.sh for 002; capture real output in implementation-summary | pending | |
-| R-007-7 | Run vitest + tsc + validate.sh for 003; capture real output | pending | |
-| R-007-15 | Run sk-doc DQI scoring + validate.sh for 006; capture real output | pending | |
-| R-007-19 | Update 002 checklist to remove premature PASS marks | pending | |
-| R-007-20 | Update 003 checklist to remove premature PASS marks | pending | |
-| R-007-21 | Update 005 checklist to remove premature PASS marks | pending | |
+| R-007-1 | Update 001 implementation-summary status to reflect post-scrub state (no LICENSE quote needed) | done | Trivial — minutes |
+| R-007-5 | Run vitest + tsc + validate.sh for 002; capture real output in implementation-summary | done | |
+| R-007-7 | Run vitest + tsc + validate.sh for 003; capture real output | done | |
+| R-007-15 | Run sk-doc DQI scoring + validate.sh for 006; capture real output | done | |
+| R-007-19 | Update 002 checklist to remove premature PASS marks | done | |
+| R-007-20 | Update 003 checklist to remove premature PASS marks | done | |
+| R-007-21 | Update 005 checklist to remove premature PASS marks | done | |
 
 ## T-C — Public API Surface Gaps (P1, parallel with T-D/E/F)
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-6 | Add `minConfidence` to `tool-input-schemas.ts` strict Zod, `tool-schemas.ts` JSON, allowed-parameter ledger; extend `tool-input-schema.vitest.ts` | pending | |
-| R-007-10 | Decide: expose `affordances` via advisor-recommend input schema OR document compile-time-only; sync `advisor-tool-schemas.ts` + `advisor-recommend.ts` | pending | |
+| R-007-6 | Add `minConfidence` to `tool-input-schemas.ts` strict Zod, `tool-schemas.ts` JSON, allowed-parameter ledger; extend `tool-input-schema.vitest.ts` | done | |
+| R-007-10 | Decide: expose `affordances` via advisor-recommend input schema OR document compile-time-only; sync `advisor-tool-schemas.ts` + `advisor-recommend.ts` | done | |
 
 ## T-D — Sanitization Hardening (P1+P2)
 
@@ -53,31 +55,31 @@ contextType: "implementation"
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-13 | Trust-badges: rewrite mock-resolution via DI override or real-DB fixture; unskip describe block (`tests/memory/trust-badges.test.ts:77`) | pending | P1 — addresses Wave-3 known follow-up |
+| R-007-13 | Trust-badges: rewrite mock-resolution via DI override or real-DB fixture; unskip describe block (`tests/memory/trust-badges.test.ts:77`) | done | P1 — addresses Wave-3 known follow-up |
 
 ## T-F — Doc + Label Cleanup (P1+P2)
 
 | ID | Task | Status | Notes |
 |----|------|--------|-------|
-| R-007-12 | Memory_search cache: include causal-edge generation in cache key (`handlers/memory-search.ts:880-1190`, `lib/cache/tool-cache.ts:56-58`) | pending | P1 — staleness fix |
-| R-007-16 | INSTALL_GUIDE: fix Python smoke-test path (after `cd .../mcp_server`, use `skill_advisor/tests/python/test_skill_advisor.py`) (`INSTALL_GUIDE.md:521`) | pending | P1 |
-| R-007-17 | Tool-count canonicalization across umbrella docs (root README, system-spec-kit/README.md) | pending | P1 |
-| R-007-18 | Restore or remove `FEATURE_CATALOG_IN_SIMPLE_TERMS.md` link in root README | pending | P1 |
-| R-007-P2-2 | Wrap `runPhases` in try/finally so error metrics emit (`code_graph/lib/structural-indexer.ts:1407-1516`) | pending | P2 |
-| R-007-P2-4 | `computeBlastRadius`: request `limit + 1` to detect true overflow (`query.ts:859, 897`) | pending | P2 |
-| R-007-P2-5 | `computeBlastRadius`: multi-subject seed preservation when sibling fails (`query.ts:1048-1058`) | pending | P2 |
-| R-007-P2-6 | Failure-fallback: stable `code` + warning log/metric (`query.ts:1121-1135`) | pending | P2 |
-| R-007-P2-7 | Extract shared relationship-edge mapper from 4 switch branches (`query.ts:1229, 1258, 1287, 1315`) | pending | P2 |
-| R-007-P2-9 | Affordance debug counters for received/accepted/dropped-unsafe/dropped-empty/dropped-unknown (`affordance-normalizer.ts:153-157`, `skill_graph_compiler.py:407`) | pending | P2 |
-| R-007-P2-12 | Add phase-naming alias note (012 → 010) in 6 sub-phase doc headers OR normalize labels | pending | P2 |
+| R-007-12 | Memory_search cache: include causal-edge generation in cache key (`handlers/memory-search.ts:880-1190`, `lib/cache/tool-cache.ts:56-58`) | done | P1 — staleness fix |
+| R-007-16 | INSTALL_GUIDE: fix Python smoke-test path (after `cd .../mcp_server`, use `skill_advisor/tests/python/test_skill_advisor.py`) (`INSTALL_GUIDE.md:521`) | done | P1 |
+| R-007-17 | Tool-count canonicalization across umbrella docs (root README, system-spec-kit/README.md) | done | P1 |
+| R-007-18 | Restore or remove `FEATURE_CATALOG_IN_SIMPLE_TERMS.md` link in root README | done | P1 |
+| R-007-P2-2 | Wrap `runPhases` in try/finally so error metrics emit (`code_graph/lib/structural-indexer.ts:1407-1516`) | done | P2 |
+| R-007-P2-4 | `computeBlastRadius`: request `limit + 1` to detect true overflow (`query.ts:859, 897`) | done | P2 |
+| R-007-P2-5 | `computeBlastRadius`: multi-subject seed preservation when sibling fails (`query.ts:1048-1058`) | done | P2 |
+| R-007-P2-6 | Failure-fallback: stable `code` + warning log/metric (`query.ts:1121-1135`) | done | P2 |
+| R-007-P2-7 | Extract shared relationship-edge mapper from 4 switch branches (`query.ts:1229, 1258, 1287, 1315`) | done | P2 |
+| R-007-P2-9 | Affordance debug counters for received/accepted/dropped-unsafe/dropped-empty/dropped-unknown (`affordance-normalizer.ts:153-157`, `skill_graph_compiler.py:407`) | done | P2 |
+| R-007-P2-12 | Add phase-naming alias note (012 → 010) in 6 sub-phase doc headers OR normalize labels | done | P2 |
 
 ## Cross-cutting tasks
 
 | ID | Task | Status |
 |----|------|--------|
-| R-007-X1 | Re-run /spec_kit:deep-review:auto over 010 (3 iters, verify pass): P0=0, P1≤2 | pending |
-| R-007-X2 | Update phase-review-summary.md with post-remediation severity counts | pending |
-| R-007-X3 | Push all 010/007 changes to main with conventional commits | pending |
+| R-007-X1 | Re-run /spec_kit:deep-review:auto over 006 (3 iters, verify pass): P0=0, P1≤2 | done |
+| R-007-X2 | Update phase-review-summary.md with post-remediation severity counts | done |
+| R-007-X3 | Push all 006/007 changes to main with conventional commits | done |
 
 ## Dependencies
 
@@ -97,4 +99,4 @@ T-A (R-007-2) → T-A (R-007-14) → T-B (all 7 tasks)
 ## References
 
 - spec.md, plan.md, checklist.md (this folder)
-- 010/review/phase-review-summary.md (cross-sub-phase findings)
+- 006/review/phase-review-summary.md (cross-sub-phase findings)
