@@ -45,7 +45,10 @@ All TypeScript files MUST begin with a module header block identifying the modul
 - No `'use strict'` directive required (TypeScript `strict` mode in tsconfig replaces it)
 - Immediately followed by imports
 
-**Rationale**: TypeScript's `"strict": true` in `tsconfig.json` enables strict mode at compilation. The `'use strict'` directive is automatically emitted in compiled CommonJS output by the TypeScript compiler.
+**Rationale**: TypeScript's `"strict": true` in `tsconfig.json` enables strict
+type checking at compilation. Current system-spec-kit workspaces are
+package-aware: `shared/` and `mcp_server/` use NodeNext ESM, `scripts/` uses
+ES2022 ESM, and the root CommonJS setting is only a fallback default.
 
 ### Full Header Example
 
@@ -70,7 +73,10 @@ import type { SearchOptions } from '../types';
 
 ### tsconfig.json Replaces 'use strict'
 
-In JavaScript, every file requires `'use strict';` at the top. In TypeScript, the `tsconfig.json` setting `"strict": true` enforces strict mode at the compiler level, which is stronger than the runtime directive.
+In JavaScript `.js/.cjs`, files require `'use strict';` at the top. In
+TypeScript, the `tsconfig.json` setting `"strict": true` enforces type-system
+strictness at the compiler level, while ESM workspaces are strict by runtime
+semantics.
 
 ```jsonc
 // tsconfig.json
@@ -88,9 +94,11 @@ In JavaScript, every file requires `'use strict';` at the top. In TypeScript, th
 - `strictPropertyInitialization` - class properties must be initialized
 - `noImplicitAny` - parameters and variables must have types
 - `noImplicitThis` - `this` must have explicit type
-- `alwaysStrict` - emits `'use strict'` in compiled output
+- `alwaysStrict` - parses source in strict mode and emits strict markers where the selected module target requires them
 
-**Rule**: Do NOT add `'use strict';` to TypeScript source files. The compiler handles it.
+**Rule**: Do NOT add `'use strict';` to TypeScript source files. Use the module
+format selected by the owning package (`nodenext`, `es2022`, or inherited
+fallback).
 
 ---
 

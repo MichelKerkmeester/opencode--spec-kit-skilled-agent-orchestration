@@ -29,6 +29,8 @@ Defines consistent styling rules for JavaScript files to ensure readability, mai
 ## 2. FILE HEADER FORMAT
 
 All JavaScript files MUST begin with a boxed header identifying the module.
+For `.mjs` files and OpenCode plugin loader paths, keep the same header style
+but follow ESM module syntax instead of CommonJS.
 
 ### Template
 
@@ -42,9 +44,11 @@ All JavaScript files MUST begin with a boxed header identifying the module.
 
 - Box width: 78 characters total
 - Module name: Centered or left-aligned within box
-- Immediately followed by `'use strict';` directive
+- Immediately followed by `'use strict';` directive for `.js/.cjs` files
+- `.mjs` and plugin ESM files do not require `'use strict'`
 
-**Evidence**: `scripts/utils/logger.ts:1-3`, `mcp_server/lib/errors/core.ts:1-3`
+**Evidence**: `.opencode/skill/system-spec-kit/scripts/utils/logger.ts:1-3`,
+`.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts:1-3`
 
 ---
 
@@ -52,7 +56,9 @@ All JavaScript files MUST begin with a boxed header identifying the module.
 <!-- ANCHOR:use-strict-directive -->
 ## 3. USE STRICT DIRECTIVE
 
-Every JavaScript file MUST include the strict mode directive.
+Every `.js` and `.cjs` JavaScript file MUST include the strict mode directive.
+Do not add it to `.mjs` files; ES modules are strict by definition and the
+alignment verifier intentionally skips `.mjs` strict-mode enforcement.
 
 ```javascript
 'use strict';
@@ -60,7 +66,8 @@ Every JavaScript file MUST include the strict mode directive.
 
 **Placement**: Immediately after file header, before any other code.
 
-**Evidence**: `scripts/core/config.ts:4`, `mcp_server/context-server.ts:4`
+**Evidence**: `verify_alignment_drift.py` skips `.mjs`; CommonJS-style JS
+helpers still use `'use strict'`.
 
 ---
 
@@ -88,7 +95,7 @@ Large files are organized using numbered section dividers.
 | 4     | CORE LOGIC       | Main implementation               |
 | 5     | EXPORTS          | Module public interface           |
 
-**Evidence**: `scripts/core/config.ts:9-11,24-26`
+**Evidence**: `.opencode/skill/system-spec-kit/scripts/core/config.ts`
 
 ---
 
@@ -129,7 +136,7 @@ const maxRetries = 3;       // camelCase
 const max_retries = 3;      // snake_case (reserved for variables)
 ```
 
-**Evidence**: `mcp_server/core/config.ts:28-30`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/core/config.ts`
 
 ### Class Names
 
@@ -146,7 +153,7 @@ class memoryError { }       // camelCase
 class memory_error { }      // snake_case
 ```
 
-**Evidence**: `mcp_server/lib/errors/core.ts:76-95`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts`
 
 ### Variable Names
 

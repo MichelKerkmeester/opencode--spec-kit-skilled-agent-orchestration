@@ -307,7 +307,7 @@ STEP 4: Apply Standards
 
 | Category         | What It Covers                                              |
 | ---------------- | ----------------------------------------------------------- |
-| File Headers     | Box-drawing format, shebang, 'use strict', strict mode      |
+| File Headers     | Language-specific header format, shebang, and `'use strict'` where applicable |
 | Section Dividers | Numbered sections with consistent divider style             |
 | Naming           | Functions, constants, classes, interfaces, types per lang   |
 | Commenting       | Purposeful comments only (explain WHY, not WHAT), max 3/10 LOC |
@@ -319,11 +319,27 @@ STEP 4: Apply Standards
 
 | Language   | Key Evidence Files                                             |
 | ---------- | -------------------------------------------------------------- |
-| JavaScript | `validation_patterns.js`, `wait_patterns.js`, `performance_patterns.js` |
-| TypeScript | ~341 `.ts` files post-migration; patterns from `context-server.ts`, `config.ts`, `memory-search.ts` |
-| Python     | `skill_advisor.py`, `validate_document.py`, `package_skill.py` |
+| JavaScript | Legacy `.js/.cjs` runtime helpers plus plugin ESM entrypoints; apply module rules by file extension and path |
+| TypeScript | Current system-spec-kit packages: root `tsconfig.json`, `shared/tsconfig.json`, `mcp_server/tsconfig.json`, `scripts/tsconfig.json`; source examples in `mcp_server/context-server.ts`, `scripts/core/config.ts`, `mcp_server/handlers/memory-search.ts` |
+| Python     | `mcp_server/skill_advisor/scripts/skill_advisor.py`, verifier scripts in this skill |
 | Shell      | `lib/common.sh`, `spec/create.sh`, `validate.sh`               |
 | Config     | `config.jsonc`, `opencode.json`, `complexity-config.jsonc`     |
+
+### Module-System Boundaries
+
+Do not apply one module format globally. Current system-spec-kit TypeScript is
+package-aware:
+
+- `shared/` and `mcp_server/` are ESM packages (`"type": "module"`) with
+  `module: "nodenext"` and `moduleResolution: "nodenext"`.
+- `scripts/` is an ESM package (`"type": "module"`) with `module: "es2022"`
+  and `moduleResolution: "node"`.
+- The root `tsconfig.json` still provides a CommonJS default inherited by
+  workspaces that do not override it.
+- Plain JavaScript `.js/.cjs` utility files use CommonJS unless their package
+  boundary or loader contract says otherwise.
+- OpenCode plugin entrypoints and plugin bridge helpers use ESM default export;
+  do not force `module.exports` onto those paths.
 
 ### 139 Carry-Forward Patterns
 
@@ -366,7 +382,8 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 ### ✅ ALWAYS
 
 1. **Follow file header format for the language**
-   - JavaScript: Box-drawing `// ─── MODULE_TYPE: NAME ───` + `'use strict'`
+   - JavaScript `.js/.cjs`: Box-drawing `// ─── MODULE_TYPE: NAME ───` + `'use strict'`
+   - JavaScript `.mjs` and OpenCode plugin ESM paths: Box-drawing header without `'use strict'`
    - TypeScript: Module header block `// ─── MODULE: NAME ───` (no `'use strict'`; tsconfig handles it)
    - Python: Shebang `#!/usr/bin/env python3` + box-drawing header
    - Shell: Shebang `#!/usr/bin/env bash` + header + `set -euo pipefail`
@@ -410,6 +427,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 8. **Run alignment verifier before completion claims**
    - Command: `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root <changed-scope-root>`
    - Default mode fails on `ERROR` findings. Use `--fail-on-warn` when strict mode is required.
+   - The verifier scans code/config extensions only and enforces marker-level checks; header styling, comment density, naming, and KISS/DRY/SOLID remain manual checklist gates.
 
 ### ❌ NEVER
 
@@ -443,6 +461,7 @@ The recurring verifier at `scripts/verify_alignment_drift.py` applies severity-a
 | Alignment Verifier | `verify_alignment_drift.py` returns no `ERROR` on changed scope | P0 |
 | Filesystem Safety  | Canonical path containment checks on create/move/delete flows | P0 |
 | Spec Folder Safety | `NNN-name` validation + approved roots for spec operations | P0 |
+| Module Boundary    | NodeNext/ESM, CommonJS, and plugin ESM rules applied by package/path | P0 |
 | Error Handling     | All error paths handled                  | P1       |
 | Comment Policy     | Max 3/10 + purposeful WHY comments only (manual checklist gate) | P1 |
 | KISS/DRY/SOLID     | SRP/OCP/LSP/ISP/DIP violations identified | P1      |
@@ -468,6 +487,7 @@ P0 Items (MUST pass):
 □ Alignment verifier reports no ERROR findings for changed scope
 □ Filesystem mutation paths use canonical containment checks
 □ Spec folder operations enforce `NNN-name` and approved roots
+□ Module system matches package/path boundary
 
 P1 Items (Required):
 □ Comment policy enforced via manual checklist review (max 3/10, purposeful WHY comments only)
@@ -534,8 +554,8 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 ---
 
 <!-- /ANCHOR:external-resources -->
-<!-- ANCHOR:related-resources -->
-## 8. RELATED RESOURCES
+<!-- ANCHOR:references-and-related-resources -->
+## 8. REFERENCES AND RELATED RESOURCES
 
 ### Reference Files
 
@@ -570,7 +590,7 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 
 ---
 
-<!-- /ANCHOR:related-resources -->
+<!-- /ANCHOR:references-and-related-resources -->
 <!-- ANCHOR:where-am-i-language-detection -->
 ## 9. WHERE AM I? (Language Detection)
 

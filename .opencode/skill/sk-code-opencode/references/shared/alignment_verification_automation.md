@@ -9,6 +9,7 @@ Defines the operational contract for `verify_alignment_drift.py`, including:
 - what rule categories are enforced;
 - how severities (`ERROR`/`WARN`) are assigned;
 - default vs strict CI failure behavior.
+- which standards remain manual checklist gates.
 
 Use this reference when tuning recurring checks or interpreting verifier output in automation.
 
@@ -31,6 +32,19 @@ Use this reference when tuning recurring checks or interpreting verifier output 
 - **Shell (`.sh`)**: requires `#!/usr/bin/env bash` and `set -euo pipefail` near file top.
 - **JSON (`.json`)**: strict parser validation via Python `json` module, with comment-aware fallback for `tsconfig*.json`.
 - **JSONC (`.jsonc`)**: comment stripping followed by strict JSON parse.
+
+### What it does not check
+
+The verifier is intentionally lightweight. It does not replace the standards
+checklists and does not scan markdown prose. These remain manual review gates:
+
+- exact visual header shape beyond the marker-level checks above;
+- naming conventions;
+- comment density and WHY-vs-WHAT comment quality;
+- KISS/DRY/SOLID judgment;
+- JavaScript `module.exports` versus plugin ESM default-export decisions;
+- TypeScript package-boundary decisions such as NodeNext ESM versus root
+  CommonJS defaults.
 
 ### Severity model
 

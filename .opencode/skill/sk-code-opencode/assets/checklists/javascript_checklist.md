@@ -53,10 +53,13 @@ These items MUST be fixed before any commit.
 [ ] 'use strict' directive present at top of file
 ```
 
-**Required** (immediately after header):
+**Required** for `.js/.cjs` files (immediately after header):
 ```javascript
 'use strict';
 ```
+
+**Exception**: `.mjs` files and OpenCode plugin ESM paths are strict by module
+semantics; the verifier intentionally skips `.mjs` strict-mode enforcement.
 
 ### Function Naming
 
@@ -118,21 +121,31 @@ function ProcessFile(path) { }       // PascalCase
 
 These must be addressed or receive approval to defer.
 
-### CommonJS Exports
+### Module Exports by Path
 
 ```markdown
-[ ] Uses CommonJS module.exports (not ES modules)
+[ ] Module export style matches the file path and package boundary
 ```
 
-**Correct**:
+**Correct for non-plugin `.js/.cjs` utilities**:
 ```javascript
 module.exports = { functionName, CONSTANT };
 module.exports = functionName;
 ```
 
-**Exception**: Files in `.opencode/plugins/` and `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` MUST use ESM (`export default`) — see `quality_standards.md` §10 OpenCode Plugin Exemption Tier.
+**Correct for OpenCode plugin loader paths**:
+```javascript
+export default async function ExamplePlugin(ctx, options = {}) {
+  return {};
+}
+```
 
-**Wrong** (for Node.js in this codebase):
+**Plugin paths**: Files in `.opencode/plugins/` and
+`.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` MUST use ESM
+(`export default`) — see `quality_standards.md` §10 OpenCode Plugin Exemption
+Tier.
+
+**Wrong for non-plugin CommonJS utilities**:
 ```javascript
 export { function_name };
 export default function_name;
@@ -317,9 +330,9 @@ node --check file.js
 # ESLint (if configured)
 npx eslint file.js
 
-# Check for common issues
+# Check for common issues in non-plugin CommonJS utilities
 grep -n "function [a-z]*_[a-z]" file.js  # Find snake_case functions
-grep -n "^export " file.js              # Find ES module exports
+grep -n "^export " file.js              # Review: allowed only for ESM/plugin paths
 ```
 
 ---

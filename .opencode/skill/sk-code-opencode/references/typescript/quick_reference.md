@@ -18,6 +18,10 @@ Quick-access reference card for TypeScript patterns. For detailed explanations, 
 - [style_guide.md](./style_guide.md) - Full style documentation
 - [quality_standards.md](./quality_standards.md) - Quality requirements
 
+Current system-spec-kit TypeScript is package-aware: `shared/` and
+`mcp_server/` use NodeNext ESM, `scripts/` uses ES2022 ESM, and root CommonJS
+settings are only fallback defaults for workspaces that do not override them.
+
 ---
 
 <!-- /ANCHOR:overview -->
@@ -445,7 +449,10 @@ async function safeFetch(id: string): Promise<Result<MemoryRecord>> {
 <!-- ANCHOR:tsconfig-quick-reference -->
 ## 10. TSCONFIG QUICK REFERENCE
 
-### Minimum Settings for OpenCode
+### Root Fallback Settings for OpenCode
+
+The root config provides defaults. Current system-spec-kit workspaces override
+module settings where their package boundary requires ESM.
 
 ```jsonc
 {
@@ -466,6 +473,27 @@ async function safeFetch(id: string): Promise<Result<MemoryRecord>> {
     "rootDir": "."
   },
   "exclude": ["node_modules"]
+}
+```
+
+### Current system-spec-kit Workspace Overrides
+
+```jsonc
+// shared/tsconfig.json and mcp_server/tsconfig.json
+{
+  "compilerOptions": {
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "verbatimModuleSyntax": true
+  }
+}
+
+// scripts/tsconfig.json
+{
+  "compilerOptions": {
+    "module": "es2022",
+    "moduleResolution": "node"
+  }
 }
 ```
 

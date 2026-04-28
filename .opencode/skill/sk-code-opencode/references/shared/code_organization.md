@@ -31,9 +31,9 @@ This reference defines how to organize files, structure modules, and order impor
 
 | Pattern | Source File | Line Reference |
 |---------|-------------|----------------|
-| JS module structure | `mcp_server/context-server.ts` | Lines 1-70 |
-| JS exports with aliases | `scripts/core/config.ts` | Lines 167-183 |
-| Python imports | `scripts/skill_advisor.py` | Lines 17-24 |
+| TypeScript module structure | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Lines 1-70 |
+| TypeScript exports | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Export block near file end |
+| Python imports | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Import block near file top |
 | Shell structure | `lib/common.sh` | Lines 1-40 |
 
 ---
@@ -46,11 +46,19 @@ This reference defines how to organize files, structure modules, and order impor
 
 Every file starts with a header block identifying its purpose:
 
-**JavaScript** (3-line box):
+**TypeScript / current ESM packages** (3-line module header):
 ```javascript
 // ───────────────────────────────────────────────────────────────
-// SERVER: CONTEXT SERVER
+// MODULE: Context Server
 // ───────────────────────────────────────────────────────────────
+```
+
+**JavaScript `.js/.cjs` utilities** (boxed header plus strict mode):
+```javascript
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║ COMPONENT: Example Utility                                              ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+'use strict';
 ```
 
 **Python** (shebang + 3-line box):
@@ -303,7 +311,7 @@ source "${SCRIPT_DIR}/lib/output.sh"
 
 ### JavaScript CommonJS Exports
 
-Use object literal at end of file:
+Use object literal at end of file for non-plugin `.js/.cjs` utilities:
 
 ```javascript
 /* ─────────────────────────────────────────────────────────────
@@ -323,11 +331,16 @@ module.exports = {
 };
 ```
 
-Evidence: `scripts/core/config.ts:167-183`
+Do not use this pattern for `.mjs`, `.opencode/plugins/`, or
+`.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`; those are ESM
+surfaces.
 
 ### TypeScript ES Module Exports
 
-TypeScript source uses ES module syntax. The compiler outputs CommonJS.
+TypeScript source uses ES module syntax. The compiler output follows the owning
+workspace package settings: NodeNext ESM for `shared/` and `mcp_server/`,
+ES2022 ESM for `scripts/`, and CommonJS only for workspaces that inherit the
+root fallback.
 
 ```typescript
 // Named exports (preferred)

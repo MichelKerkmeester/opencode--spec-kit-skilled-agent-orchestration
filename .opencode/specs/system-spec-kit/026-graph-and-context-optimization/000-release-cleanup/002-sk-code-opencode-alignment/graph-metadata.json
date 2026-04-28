@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "002-sk-code-opencode-alignment",
+      "sk-code-opencode alignment",
+      "opencode standards cleanup",
+      "verify alignment drift docs",
+      "nodenext opencode standards",
+      "sk-code-opencode alignment plan",
+      "002-sk-code-opencode-alignment plan",
+      "sk-code-opencode alignment tasks",
+      "002-sk-code-opencode-alignment tasks",
+      "sk-code-opencode alignment checklist",
+      "002-sk-code-opencode-alignment checklist",
+      "sk-code-opencode alignment implementation summary"
+    ],
+    "key_topics": [
+      "002-sk-code-opencode-alignment",
+      "sk-code-opencode",
+      "alignment",
+      "opencode",
+      "standards",
+      "cleanup",
+      "verify",
+      "drift",
+      "docs",
+      "nodenext",
+      "plan",
+      "tasks"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "resource-map.md",
+      ".opencode/skill/sk-code-opencode/README.md",
+      ".opencode/skill/sk-code-opencode/SKILL.md",
+      ".opencode/skill/sk-code-opencode/references/shared/alignment_verification_automation.md",
+      ".opencode/skill/sk-code-opencode/references/javascript/quality_standards.md",
+      ".opencode/skill/sk-code-opencode/references/typescript/quality_standards.md",
+      ".opencode/skill/sk-code-opencode/assets/checklists/javascript_checklist.md",
+      ".opencode/skill/sk-code-opencode/assets/checklists/typescript_checklist.md",
+      ".opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py",
+      ".opencode/skill/sk-code-opencode/scripts/test_verify_alignment_drift.py",
+      ".opencode/skill/sk-code-opencode/graph-metadata.json",
+      "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/spec.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/resource-map.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/graph-metadata.json",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code-opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "verify_alignment_drift.py",
+        "kind": "file",
+        "path": ".opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py",
+        "source": "derived"
+      },
+      {
+        "name": "test_verify_alignment_drift.py",
+        "kind": "file",
+        "path": ".opencode/skill/sk-code-opencode/scripts/test_verify_alignment_drift.py",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-code-opencode/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Handoff Criteria",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Plan",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Standards",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Begin Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Implemented a focused release-cleanup pass that aligns `sk-code-opencode` guidance, checklists, verifier documentation, and metadata with the real system-spec-kit codebase before later cleanup packets rely on those standards.",
+    "created_at": "2026-04-28T08:38:18.120Z",
+    "last_save_at": "2026-04-28T11:20:00.000Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "resource-map.md"
+    ]
+  }
+}

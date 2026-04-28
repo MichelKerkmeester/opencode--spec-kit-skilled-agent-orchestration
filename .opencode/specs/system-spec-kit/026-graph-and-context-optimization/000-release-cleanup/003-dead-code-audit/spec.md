@@ -49,7 +49,7 @@ _memory:
 | **Branch** | `main` |
 | **Parent Spec** | `../spec.md` |
 | **Parent Packet** | `000-release-cleanup` |
-| **Predecessor** | `../002-feature-catalog/` |
+| **Predecessor** | `../002-sk-code-opencode-alignment/` |
 | **Successor** | None (current tail) |
 | **Handoff Criteria** | `dead-code-audit-report.md` lists every dead-code candidate with file:line evidence + classification (dead / disconnected / dynamic-only-reference / false-positive) + recommended action (delete / wire-in / keep-with-rationale). Zero false-deletes (evidence required for every recommendation). |
 <!-- /ANCHOR:metadata -->

@@ -43,7 +43,7 @@ Every Python script must have the standard header:
 # ───────────────────────────────────────────────────────────────
 ```
 
-**Evidence**: `skill_advisor.py:1-4`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:1-4`
 
 ### Module Docstring
 
@@ -57,7 +57,7 @@ Usage: python script_name.py [arguments]
 """
 ```
 
-**Evidence**: `skill_advisor.py:6-16`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:6-16`
 
 ### snake_case Functions
 
@@ -76,7 +76,7 @@ def ValidateFrontmatter(content: str) -> bool:  # PascalCase
     pass
 ```
 
-**Evidence**: `skill_advisor.py:379`, `package_skill.py:87`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`, `.opencode/skill/sk-doc/scripts/package_skill.py:87`
 
 ### UPPER_SNAKE_CASE Constants
 
@@ -92,7 +92,7 @@ maxFileSize = 5000  # camelCase
 required_fields = ['name', 'description']  # snake_case (looks like variable)
 ```
 
-**Evidence**: `skill_advisor.py:31-49`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:31-49`
 
 ### No Commented-Out Code
 
@@ -142,7 +142,7 @@ def process_data(
     pass
 ```
 
-**Evidence**: `package_skill.py:87`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:87`
 
 ### Google-Style Docstrings
 
@@ -165,7 +165,7 @@ def validate_config(config_path: Path) -> Tuple[bool, str]:
     pass
 ```
 
-**Evidence**: `package_skill.py:87-93`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:87-93`
 
 ### Specific Exception Handling
 
@@ -210,7 +210,7 @@ def process(data):
     return None
 ```
 
-**Evidence**: `package_skill.py:98-104`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:98-104`
 
 ### TODO Format
 
@@ -321,7 +321,7 @@ def validate_something(input_data: Any) -> Tuple[bool, str, List[str]]:
     return True, "", warnings
 ```
 
-**Evidence**: `package_skill.py:87-145`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:87-145`
 
 ### Return Value Pattern
 
@@ -364,7 +364,7 @@ return False, "Missing field"
 return False, "File error"
 ```
 
-**Evidence**: `package_skill.py:117-121`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:117-121`
 
 ### Actionable Guidance
 
@@ -378,7 +378,7 @@ return False, "Description cannot contain angle brackets (< or >) - breaks OpenC
 return False, f"Name '{name}' cannot start or end with hyphen. Use: '{name.strip('-')}'"
 ```
 
-**Evidence**: `package_skill.py:134`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:134`
 
 ---
 

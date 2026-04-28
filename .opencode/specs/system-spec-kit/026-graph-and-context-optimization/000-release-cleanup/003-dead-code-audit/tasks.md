@@ -156,7 +156,7 @@ Downstream packet `004-dead-code-pruning/` (future, NOT in scope here) handles a
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- Predecessor: `../001-memory-terminology/`, `../002-feature-catalog/`
+- Predecessor: `../001-memory-terminology/`, `../002-sk-code-opencode-alignment/`
 - Audit target: `.opencode/skill/system-spec-kit/` (focus `mcp_server/`)
 - Audit-report sibling pattern: `../../011-mcp-runtime-stress-remediation/feature-catalog-impact-audit.md` + `../../011-mcp-runtime-stress-remediation/testing-playbook-impact-audit.md` (similar audit-report format)
 - Future remediation: `004-dead-code-pruning/` (not yet scoped)

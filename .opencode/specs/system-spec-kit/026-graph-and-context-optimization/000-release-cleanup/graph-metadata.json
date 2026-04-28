@@ -5,7 +5,7 @@
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-feature-catalog",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/003-dead-code-audit",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/004-dead-code-pruning"
   ],
@@ -19,7 +19,7 @@
       "000-release-cleanup",
       "000 release cleanup",
       "001-memory-terminology",
-      "002-feature-catalog",
+      "002-sk-code-opencode-alignment",
       "003-dead-code-audit",
       "004-dead-code-pruning"
     ],
@@ -28,7 +28,7 @@
       "release",
       "cleanup",
       "001-memory-terminology",
-      "002-feature-catalog",
+      "002-sk-code-opencode-alignment",
       "003-dead-code-audit",
       "004-dead-code-pruning"
     ],

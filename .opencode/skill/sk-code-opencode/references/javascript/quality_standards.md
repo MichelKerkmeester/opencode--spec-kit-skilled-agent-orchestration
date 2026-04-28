@@ -28,9 +28,22 @@ Establishes module organization, error handling, documentation, and security pat
 <!-- ANCHOR:module-organization -->
 ## 2. MODULE ORGANIZATION
 
+### Module-System Boundary
+
+Use the module format required by the file's package boundary and loader
+contract. Do not force one JavaScript module style across all paths.
+
+| Surface | Module Pattern | Notes |
+|---------|----------------|-------|
+| `.js/.cjs` Node utilities outside plugin loader paths | CommonJS with `'use strict'` | Default for legacy runtime helpers and standalone scripts |
+| `.mjs` files | ESM | The verifier skips `'use strict'` enforcement for `.mjs` |
+| `.opencode/plugins/*.{js,mjs,ts}` | ESM default export | Required by the OpenCode plugin loader |
+| `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/*.{js,mjs,ts}` | ESM default export | Bridge helpers follow the plugin-loader contract |
+
 ### CommonJS Pattern
 
-All modules use CommonJS format with `'use strict'` directive.
+Non-plugin `.js/.cjs` modules use CommonJS format with `'use strict'`
+directive.
 
 ```javascript
 'use strict';
@@ -42,11 +55,15 @@ module.exports = {
 };
 ```
 
-**Evidence**: `scripts/core/config.ts:1-183`
+**Evidence**: Current TypeScript packages are ESM/NodeNext; this CommonJS
+pattern applies to legacy `.js/.cjs` utility surfaces and test runners that use
+`require`.
 
 ### Export Pattern
 
-Export functions using `camelCase` names. For MCP handlers, include `snake_case` aliases for backward compatibility.
+Export functions using `camelCase` names. For MCP handlers, include
+`snake_case` aliases for backward compatibility. Do not apply this export shape
+to OpenCode plugin paths; those use `export default`.
 
 ```javascript
 // ─────────────────────────────────────────────────────────────────────────────
@@ -66,7 +83,9 @@ module.exports = {
 };
 ```
 
-**Evidence**: `scripts/core/config.ts:167-183`
+**Evidence**: Legacy CommonJS export examples are historical; current
+system-spec-kit TypeScript source uses ESM `export` statements and compiles per
+workspace package settings.
 
 ### Barrel Exports
 
@@ -110,7 +129,7 @@ function processData(input, options) {
 }
 ```
 
-**Evidence**: `mcp_server/handlers/memory-search.ts:377-407`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
 
 ### Try-Catch Pattern
 
@@ -128,7 +147,7 @@ async function fetchData(query) {
 }
 ```
 
-**Evidence**: `mcp_server/handlers/memory-search.ts:382-396`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
 
 ### Custom Error Classes
 
@@ -157,7 +176,7 @@ class MemoryError extends Error {
 module.exports = { MemoryError };
 ```
 
-**Evidence**: `mcp_server/lib/errors/core.ts:76-95`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/lib/errors/core.ts`
 
 ### Error Response Pattern
 
@@ -188,7 +207,7 @@ console.error(`[memory-search] Search failed: ${error.message}`);
 console.warn(`[config] Using default value for missing key: ${key}`);
 ```
 
-**Evidence**: `mcp_server/context-server.ts:647`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/context-server.ts`
 
 ### Log Levels
 
@@ -232,7 +251,7 @@ async function memorySearch(query, options = {}) {
 }
 ```
 
-**Evidence**: `mcp_server/handlers/memory-search.ts:346-375`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts`
 
 ### Type Annotations
 
@@ -520,7 +539,6 @@ This exemption applies to:
 ### What Still Applies
 
 All other quality standards remain in effect for OpenCode plugin files, including:
-- `'use strict'` directive
 - JSDoc on exports
 - Guard clauses
 - Security patterns
@@ -538,7 +556,6 @@ All other quality standards remain in effect for OpenCode plugin files, includin
 // ╠══════════════════════════════════════════════════════════════════════════╣
 // ║ PURPOSE: Show the allowed ESM default export with required structure.    ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
-'use strict';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // 1. IMPORTS

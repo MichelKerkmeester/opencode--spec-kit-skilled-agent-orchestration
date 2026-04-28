@@ -45,6 +45,10 @@ These items MUST be fixed before any commit.
 
 **Evidence**: All style guides require headers
 
+**Verifier boundary**: `verify_alignment_drift.py` checks marker-level headers
+for supported code/config files. Exact visual style remains a manual checklist
+gate.
+
 ### No Commented-Out Code
 
 ```markdown
@@ -53,6 +57,9 @@ These items MUST be fixed before any commit.
     - Explanatory comments are OK
     - TODO comments with context are OK
 ```
+
+**Verifier boundary**: Commented-out code and WHY-vs-WHAT comment quality are
+manual review gates; the alignment verifier does not parse intent from comments.
 
 **What to remove**:
 ```javascript

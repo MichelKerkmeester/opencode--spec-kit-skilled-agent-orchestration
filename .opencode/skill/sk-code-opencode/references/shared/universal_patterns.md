@@ -31,10 +31,10 @@ This reference defines patterns that apply universally across JavaScript, TypeSc
 
 | Pattern | Source File | Line Reference |
 |---------|-------------|----------------|
-| Reference comments | `mcp_server/context-server.ts` | Lines 34, 42, 62, 65 |
-| Section organization | `scripts/core/config.ts` | Lines 9-11, 24-26 |
-| Naming conventions | `mcp_server/handlers/memory-search.ts` | Throughout |
-| Python docstrings | `scripts/skill_advisor.py` | Lines 6-16, 439-486 |
+| Reference comments | `.opencode/skill/system-spec-kit/mcp_server/context-server.ts` | Near file top and import blocks |
+| Section organization | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Numbered divider blocks |
+| Naming conventions | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Throughout |
+| Python docstrings | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Module and function docstrings |
 
 ---
 

@@ -130,6 +130,6 @@ This packet is complete when:
 
 - Predecessor: `../003-dead-code-audit/`
 - Source of truth: `../003-dead-code-audit/dead-code-audit-report.md` Category: `dead` table
-- Sibling phases under same parent: `../001-memory-terminology/`, `../002-feature-catalog/`
+- Sibling phases under same parent: `../001-memory-terminology/`, `../002-sk-code-opencode-alignment/`
 - Parent: `../spec.md`
 <!-- /ANCHOR:cross-refs -->

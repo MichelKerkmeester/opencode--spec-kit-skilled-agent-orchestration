@@ -104,7 +104,7 @@ Mechanically apply the 13 audit-identified deletes, verify cleanup is safe by ru
 - Architectural change. This is a mechanical deletion sweep, not a refactor.
 - Touching cross-runtime mirrors directly. `.opencode/skill/system-spec-kit/` is the single source of truth (hardlinked to `.gemini/`, `.claude/`, `.codex/`).
 - New tests, new docs, new types. The packet only deletes.
-- Modifications to sibling packets (`001-memory-terminology/`, `002-feature-catalog/`, `003-dead-code-audit/`).
+- Modifications to sibling packets (`001-memory-terminology/`, `002-sk-code-opencode-alignment/`, `003-dead-code-audit/`).
 <!-- /ANCHOR:scope -->
 
 ---

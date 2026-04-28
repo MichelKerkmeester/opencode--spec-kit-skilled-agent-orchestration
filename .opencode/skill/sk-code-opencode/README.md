@@ -42,7 +42,9 @@ trigger_phrases:
 
 The standards in this skill are evidence-based. Every pattern is extracted from actual OpenCode codebase files with file:line citations. File headers use box-drawing character formats. Section dividers follow a numbered ALL-CAPS convention. Naming conventions are strict and language-specific. Comment policy limits comments to 3 per 10 lines and requires WHY comments, not WHAT comments. These are not arbitrary preferences. They exist because consistent, purposeful formatting reduces cognitive load when reading system code across multiple languages in the same session.
 
-The skill also owns the alignment verifier contract. The script `scripts/verify_alignment_drift.py` runs on any changed scope and reports rule violations by severity. ERROR findings are blockers. WARN findings are advisory by default and become blockers with `--fail-on-warn`. Running this verifier is a P0 requirement before claiming completion on any OpenCode system code change.
+The skill also owns the alignment verifier contract. The script `scripts/verify_alignment_drift.py` runs on any changed scope and reports rule violations by severity. ERROR findings are blockers. WARN findings are advisory by default and become blockers with `--fail-on-warn`. Running this verifier is a P0 requirement before claiming completion on any OpenCode system code change. It is a lightweight code/config verifier, not a full style reviewer: exact header styling, comment quality, naming, and module-boundary decisions still come from the checklists.
+
+Module-system guidance is package-aware. Current system-spec-kit TypeScript uses ESM packages for `shared/`, `mcp_server/`, and `scripts/`; `shared/` and `mcp_server/` use NodeNext settings, while `scripts/` uses ES2022 module output. CommonJS still applies to non-plugin `.js/.cjs` utility surfaces. OpenCode plugin entrypoints and plugin bridge helpers use ESM default export and must not be forced into `module.exports`.
 
 When OpenCode system work resumes inside a Spec Kit packet, `/spec_kit:resume` remains the canonical recovery surface. Continuity still rebuilds from `handover.md`, then `_memory.continuity`, then the remaining spec docs, with generated memory artifacts used only as support.
 
@@ -53,7 +55,7 @@ When OpenCode system work resumes inside a Spec Kit packet, `/spec_kit:resume` r
 | Version | 1.2.0.0 |
 | Supported languages | 5 (JavaScript, TypeScript, Python, Shell, JSON/JSONC) |
 | Quality gate priority levels | 3 (P0 blocker, P1 required, P2 deferrable) |
-| P0 quality gates | 7 (file header, naming, no commented code, section headers, alignment verifier, filesystem safety, spec folder safety) |
+| P0 quality gates | 8 (file header, naming, no commented code, section headers, alignment verifier, filesystem safety, spec folder safety, module boundary) |
 | Language detection signals | File extension (primary), keyword scoring (fallback) |
 | Reference directories | 6 (shared, javascript, typescript, python, shell, config) |
 | Checklist files | 6 (universal + one per language) |
@@ -80,7 +82,8 @@ When OpenCode system work resumes inside a Spec Kit packet, `/spec_kit:resume` r
 | Strict naming matrix | Per-language naming rules covering functions, constants, classes, interfaces, booleans, and privates |
 | Comment policy | Max 3 per 10 lines, WHY not WHAT, reference comment format (T###/BUG-###/REQ-###/SEC-###) |
 | KISS/DRY + SOLID checks | SRP/OCP/LSP/ISP/DIP violation detection required before merge |
-| Alignment verifier | `verify_alignment_drift.py` checks rule compliance on changed scope, severity-aware output |
+| Alignment verifier | `verify_alignment_drift.py` checks marker-level code/config compliance on changed scope, severity-aware output |
+| Module boundary guidance | Distinguishes NodeNext/ESM TypeScript packages, legacy CommonJS utilities, and OpenCode plugin ESM |
 | P0/P1/P2 quality gates | Tiered gate system with hard blockers, required items, and deferrable items |
 | 139 carry-forward patterns | Four normative implementation patterns from the hybrid-rag work, applied to new standards |
 
@@ -93,9 +96,9 @@ When OpenCode system work resumes inside a Spec Kit packet, `/spec_kit:resume` r
 
 **Step 1: Confirm skill activation.** Gate 2 routing loads this skill when OpenCode system code keywords appear (opencode, mcp, commonjs, typescript, python, bash, json). Verify the routing decision shows `sk-code-opencode` before proceeding.
 
-**Step 2: Detect the language.** Check the file extension first: `.js/.mjs/.cjs` is JavaScript, `.ts/.tsx` is TypeScript, `.py` is Python, `.sh/.bash` is Shell, `.json/.jsonc` is Config. If no extension is available, read the task keywords against the detection table in SKILL.md §9.
+**Step 2: Detect the language and package boundary.** Check the file extension first: `.js/.mjs/.cjs` is JavaScript, `.ts/.tsx/.mts/.d.ts` is TypeScript, `.py` is Python, `.sh/.bash` is Shell, `.json/.jsonc` is Config. Then check whether the file lives in a NodeNext ESM package, a legacy CommonJS utility surface, or an OpenCode plugin ESM path.
 
-**Step 3: Add the file header.** Every file must have the language-specific box-drawing header before any other content. JavaScript uses `// ╔══ ... ╗` followed by `'use strict'`. Python uses the shebang line first, then the box header. Shell uses `#!/usr/bin/env bash` then the box header then `set -euo pipefail`. TypeScript uses the module header block without `'use strict'`. See SKILL.md §10 or Section 6 of this README for exact templates.
+**Step 3: Add the file header.** Every file must have the language-specific header before any other content. JavaScript uses `// ╔══ ... ╗` followed by `'use strict'` for `.js/.cjs`. Python uses the shebang line first, then the box header. Shell uses `#!/usr/bin/env bash` then the box header then `set -euo pipefail`. TypeScript uses the module header block without `'use strict'`. See SKILL.md §10 or Section 6 of this README for exact templates.
 
 **Step 4: Run the alignment verifier before claiming done.** After changes are complete, run: `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root <changed-scope-root>`. Exit with no ERROR findings. Fix any blockers before stating completion.
 
@@ -156,13 +159,14 @@ The alignment verifier output contract governs how rule violations are reported 
 
 | Gate | Criteria | Priority |
 | --- | --- | --- |
-| File Header | Matches language-specific box-drawing format | P0 |
+| File Header | Matches language-specific header format | P0 |
 | Naming Convention | Consistent throughout the file | P0 |
 | No Commented Code | Zero commented-out code blocks | P0 |
 | Header Invariant | Numbered ALL-CAPS section headers preserved | P0 |
 | Alignment Verifier | No ERROR findings on changed scope | P0 |
 | Filesystem Safety | Canonical path containment on create/move/delete | P0 |
 | Spec Folder Safety | `NNN-name` validation and approved roots | P0 |
+| Module Boundary | NodeNext/ESM, CommonJS, and plugin ESM rules applied by package/path | P0 |
 | Error Handling | All error paths handled | P1 |
 | Comment Policy | Max 3/10, WHY-only (manual checklist gate) | P1 |
 | KISS/DRY/SOLID | SRP/OCP/LSP/ISP/DIP violations identified | P1 |
@@ -231,8 +235,17 @@ This skill has no runtime configuration file. Behavior is controlled by the rout
 
 | Flag | Default | Effect |
 | --- | --- | --- |
-| `--root <path>` | Required | Scope of the alignment check |
+| `--root <path>` | Current directory | Scope of the alignment check; repeatable |
 | `--fail-on-warn` | Off | Treat WARN findings as ERROR (strict mode) |
+
+**Current system-spec-kit TypeScript module boundaries:**
+
+| Scope | Package/Compiler Baseline |
+| --- | --- |
+| `.opencode/skill/system-spec-kit/shared/` | `"type": "module"`, `module: "nodenext"`, `moduleResolution: "nodenext"` |
+| `.opencode/skill/system-spec-kit/mcp_server/` | `"type": "module"`, `module: "nodenext"`, `moduleResolution: "nodenext"` |
+| `.opencode/skill/system-spec-kit/scripts/` | `"type": "module"`, `module: "es2022"`, `moduleResolution: "node"` |
+| `.opencode/skill/system-spec-kit/tsconfig.json` | CommonJS root fallback inherited only by workspaces that do not override it |
 
 **Context-aware advisory downgrade paths (verifier applies reduced severity here):**
 

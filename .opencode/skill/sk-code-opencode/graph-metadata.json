@@ -49,6 +49,8 @@
       "skill code",
       "opencode code standards",
       "verify alignment drift",
+      "nodenext opencode standards",
+      "opencode plugin esm",
       "python shell json standards",
       "system code style guidance",
       "sk-code-opencode",
@@ -63,6 +65,8 @@
       "python",
       "shell",
       "mcp-server",
+      "nodenext",
+      "plugin-esm",
       "opencode standards",
       "alignment drift",
       "multi-language conventions",
@@ -73,6 +77,9 @@
       ".opencode/skill/sk-code-opencode/README.md",
       ".opencode/skill/sk-code-opencode/references/shared/universal_patterns.md",
       ".opencode/skill/sk-code-opencode/references/shared/code_organization.md",
+      ".opencode/skill/sk-code-opencode/references/shared/alignment_verification_automation.md",
+      ".opencode/skill/sk-code-opencode/references/javascript/quality_standards.md",
+      ".opencode/skill/sk-code-opencode/references/typescript/quality_standards.md",
       ".opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py",
       ".opencode/skill/sk-code-opencode/scripts/test_verify_alignment_drift.py"
     ],
@@ -114,7 +121,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists. It matters because it keeps OpenCode system code consistent across languages and provides the alignment verifier used before completion claims.",
+    "causal_summary": "Multi-language code standards for OpenCode system code (JavaScript, TypeScript, Python, Shell, JSON/JSONC) with language detection routing, universal patterns, and quality checklists. It matters because it keeps OpenCode system code consistent across languages, distinguishes NodeNext/ESM TypeScript from legacy CommonJS and plugin ESM paths, and provides the alignment verifier used before completion claims.",
     "source_docs": [
       "SKILL.md",
       "README.md",
@@ -123,6 +130,6 @@
       "references/shared/alignment_verification_automation.md"
     ],
     "created_at": "2026-04-13T00:00:00Z",
-    "last_updated_at": "2026-04-13T23:00:00Z"
+    "last_updated_at": "2026-04-28T11:20:00Z"
   }
 }

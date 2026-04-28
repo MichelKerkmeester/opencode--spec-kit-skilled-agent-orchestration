@@ -35,7 +35,7 @@ These items MUST be fixed before any commit.
 ### File Header
 
 ```markdown
-[ ] File has box header identifying the module
+[ ] File has TypeScript module header identifying the module
 ```
 
 **Required format**:
@@ -169,6 +169,21 @@ function search(query: string, options: { limit: number; offset: number }): void
 ```
 
 No partial strict mode. All strict flags must be enabled.
+
+### Module System Matches Package Boundary
+
+```markdown
+[ ] TypeScript module settings match the owning workspace/package
+```
+
+**Current system-spec-kit baseline**:
+- `shared/` and `mcp_server/`: package `"type": "module"` plus
+  `module: "nodenext"` and `moduleResolution: "nodenext"`.
+- `scripts/`: package `"type": "module"` plus `module: "es2022"` and
+  `moduleResolution: "node"`.
+- Root `tsconfig.json`: CommonJS fallback for workspaces that do not override it.
+
+Do not describe CommonJS output as the universal TypeScript baseline.
 
 ### No Non-Null Assertions Without Justification
 

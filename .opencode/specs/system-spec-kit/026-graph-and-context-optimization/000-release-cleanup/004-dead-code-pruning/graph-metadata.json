@@ -18,9 +18,9 @@
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology"
       },
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-feature-catalog",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment",
         "reason": "Sibling phase under release-cleanup parent",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-feature-catalog"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment"
       }
     ]
   },

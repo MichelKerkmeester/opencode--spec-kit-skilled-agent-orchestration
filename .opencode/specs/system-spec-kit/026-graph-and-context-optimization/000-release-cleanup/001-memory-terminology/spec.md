@@ -61,7 +61,7 @@ _memory:
 | **Branch** | `026-graph-and-context-optimization` |
 | **Parent Spec** | `../../spec.md` |
 | **Predecessor** | `../001-release-cleanup-playbooks/spec.md` |
-| **Successor** | TBD |
+| **Successor** | `../002-sk-code-opencode-alignment/` |
 <!-- /ANCHOR:metadata -->
 
 ---

@@ -6,7 +6,7 @@ trigger_phrases:
   - "000-release-cleanup"
   - "000 release cleanup"
   - "001-memory-terminology"
-  - "002-feature-catalog"
+  - "002-sk-code-opencode-alignment"
   - "003-dead-code-audit"
   - "004-dead-code-pruning"
 importance_tier: "important"
@@ -51,7 +51,7 @@ contextType: "implementation"
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-This parent packet coordinates the phased work under `000 Release Cleanup` so the child packets stay discoverable and the root purpose remains clear while implementation details live below the parent level. The current child surface includes 001-memory-terminology, 002-feature-catalog, 003-dead-code-audit, 004-dead-code-pruning.
+This parent packet coordinates the phased work under `000 Release Cleanup` so the child packets stay discoverable and the root purpose remains clear while implementation details live below the parent level. The current child surface includes 001-memory-terminology, 002-sk-code-opencode-alignment, 003-dead-code-audit, 004-dead-code-pruning.
 
 ### Purpose
 Keep this phase-parent packet validator-compliant as a lean manifest that preserves the original purpose, lists the child phases, and leaves detailed planning, execution, and verification in the child folders.
@@ -88,7 +88,7 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 | Phase | Folder | Focus | Status |
 |-------|--------|-------|--------|
 | 1 | `001-memory-terminology/` | Memory→Behavioral Phrasing Audit | planned |
-| 2 | `002-feature-catalog/` | 002 Feature Catalog | unknown |
+| 2 | `002-sk-code-opencode-alignment/` | Align `sk-code-opencode` standards, checklists, verifier guidance, and metadata with current system-spec-kit runtime behavior. | draft |
 | 3 | `003-dead-code-audit/` | Dead-code & disconnected-code audit across `system-spec-kit` + `mcp_server/`. Inventory findings; deletions deferred to a downstream remediation packet. | complete |
 | 4 | `004-dead-code-pruning/` | Apply 13 high-confidence dead-code deletes from 003-audit; cascade-orphan cleanup; verify by tsc + vitest. | complete |
 
@@ -103,9 +103,9 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 
 | From | To | Criteria | Verification |
 |------|-----|----------|--------------|
-| `001-memory-terminology` | `002-feature-catalog` | `001-memory-terminology` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `002-feature-catalog` |
-| `002-feature-catalog` | `003-dead-code-audit` | `002-feature-catalog` remains discoverable and its successor relationship stays explicit in the parent manifest | Parent `spec.md` phase map and `graph-metadata.json` child list both include `003-dead-code-audit` |
-| `003-dead-code-audit` | `004-dead-code-pruning` | `003-dead-code-audit` ships `dead-code-audit-report.md` with 13 high-confidence deletes; pruning packet applies them | Parent `spec.md` phase map and `graph-metadata.json` child list both include `004-dead-code-pruning` |
+| `001-memory-terminology` | `002-sk-code-opencode-alignment` | `001-memory-terminology` remains discoverable and the standards-alignment successor is explicit in the parent manifest | Parent phase map and graph metadata child list both include `002-sk-code-opencode-alignment` |
+| `002-sk-code-opencode-alignment` | `003-dead-code-audit` | `sk-code-opencode` standards alignment is planned before later cleanup packets rely on those standards | Parent phase map and graph metadata child list both include `003-dead-code-audit` |
+| `003-dead-code-audit` | `004-dead-code-pruning` | `003-dead-code-audit` ships the audit report with 13 high-confidence deletes; pruning packet applies them | Parent phase map and graph metadata child list both include `004-dead-code-pruning` |
 <!-- /ANCHOR:phase-map -->
 
 ---
@@ -120,5 +120,5 @@ Keep this phase-parent packet validator-compliant as a lean manifest that preser
 
 ## RELATED DOCUMENTS
 
-- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase `spec.md`, `plan.md`, `tasks.md`, and verification docs.
+- **Phase children**: See sub-folders `[0-9][0-9][0-9]-*/` for per-phase spec, plan, task, and verification docs.
 - **Graph metadata**: See `graph-metadata.json` for the current child rollup and derived status.

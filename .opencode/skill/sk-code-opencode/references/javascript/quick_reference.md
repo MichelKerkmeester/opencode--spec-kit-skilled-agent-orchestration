@@ -156,6 +156,11 @@ module.exports = {
 <!-- ANCHOR:export-pattern-template -->
 ## 6. EXPORT PATTERN TEMPLATE
 
+Use this template for non-plugin `.js/.cjs` utility modules. For
+`.opencode/plugins/` and
+`.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/`, use ESM default
+export instead.
+
 ```javascript
 module.exports = {
   // Primary (camelCase)

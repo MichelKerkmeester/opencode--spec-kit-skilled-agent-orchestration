@@ -19,7 +19,7 @@ Defines consistent styling rules for Python code to ensure readability, maintain
 ### Scope
 
 Applies to all Python files in:
-- `.opencode/skill/scripts/` - Skill routing scripts (skill_advisor.py)
+- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/` - Skill routing scripts
 - `.opencode/skill/*/scripts/` - Skill-specific scripts
 - `scripts/` - Project-level automation
 
@@ -27,8 +27,8 @@ Applies to all Python files in:
 
 | File | Evidence |
 |------|----------|
-| `skill_advisor.py` | Header format, naming conventions, docstrings |
-| `package_skill.py` | Function structure, early returns, type hints |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Header format, naming conventions, docstrings |
+| `.opencode/skill/sk-doc/scripts/package_skill.py` | Function structure, early returns, type hints |
 
 ---
 
@@ -44,7 +44,7 @@ Applies to all Python files in:
 #!/usr/bin/env python3
 ```
 
-**Evidence**: `skill_advisor.py:1`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:1`
 
 ### File Header
 
@@ -66,7 +66,7 @@ Use the box-style header for component identification:
 # ╚══════════════════════════════════════════════════════════════════════════╝
 ```
 
-**Evidence**: `skill_advisor.py:1-4`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:1-4`
 
 ### Module Docstring
 
@@ -85,7 +85,7 @@ Options:
 """
 ```
 
-**Evidence**: `skill_advisor.py:6-16`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:6-16`
 
 ### Import Order
 
@@ -107,7 +107,7 @@ import yaml
 from .utils import helper_function
 ```
 
-**Evidence**: `skill_advisor.py:17-22`, `package_skill.py:25-30`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:17-22`, `.opencode/skill/sk-doc/scripts/package_skill.py:25-30`
 
 ### Section Comments
 
@@ -128,7 +128,7 @@ def validate_something():
     pass
 ```
 
-**Evidence**: `skill_advisor.py:25-27`, `package_skill.py:32-34`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:25-27`, `.opencode/skill/sk-doc/scripts/package_skill.py:32-34`
 
 ---
 
@@ -154,7 +154,7 @@ file_path = Path("/some/path")
 is_valid = True
 ```
 
-**Evidence**: `skill_advisor.py:379`, `package_skill.py:87`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`, `.opencode/skill/sk-doc/scripts/package_skill.py:87`
 
 ### Classes
 
@@ -178,7 +178,7 @@ REQUIRED_FRONTMATTER_FIELDS = ['name', 'description']
 MAX_SKILL_MD_WORDS = 5000
 ```
 
-**Evidence**: `skill_advisor.py:31-49`, `package_skill.py:37-81`
+**Evidence**: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:31-49`, `.opencode/skill/sk-doc/scripts/package_skill.py:37-81`
 
 ### Private Functions
 
@@ -210,7 +210,7 @@ def process_data(data: Dict[str, Any], strict: bool = True) -> Optional[str]:
     pass
 ```
 
-**Evidence**: `package_skill.py:87-93`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:87-93`
 
 ### Common Type Patterns
 
@@ -258,7 +258,7 @@ def validate_frontmatter(content: str) -> Tuple[bool, str, List[str], Dict]:
     pass
 ```
 
-**Evidence**: `package_skill.py:87-93`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:87-93`
 
 ### Class Docstrings
 
@@ -296,7 +296,7 @@ Example:
 """
 ```
 
-**Evidence**: `package_skill.py:6-23`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:6-23`
 
 ### Inline Comments
 
@@ -366,7 +366,7 @@ def validate(data):
     return True, None
 ```
 
-**Evidence**: `package_skill.py:98-104`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:98-104`
 
 ### Guard Clauses
 
@@ -436,7 +436,7 @@ return False, f"Name '{name}' must be hyphen-case (lowercase letters, digits, an
 return False, "Invalid name format"
 ```
 
-**Evidence**: `package_skill.py:117`
+**Evidence**: `.opencode/skill/sk-doc/scripts/package_skill.py:117`
 
 ---
 
