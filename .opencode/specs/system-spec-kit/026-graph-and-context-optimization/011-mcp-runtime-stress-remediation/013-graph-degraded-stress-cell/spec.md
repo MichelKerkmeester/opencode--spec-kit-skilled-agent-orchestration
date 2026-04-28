@@ -31,6 +31,7 @@ _memory:
 # Feature Specification: Code Graph Degraded Stress Cell
 
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 012-copilot-target-authority-helper; SUCCESSOR: 014-graph-status-readiness-snapshot -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
@@ -123,6 +124,12 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 - **SC-002**: The new cell is deterministic — no flakes from timing, file-watcher races, or filesystem-scan cooldowns.
 - **SC-003**: The live code-graph DB is provably untouched — captured hash equality is asserted in the suite itself, not by ambient inspection.
 - **SC-004**: The cell runs in under 1 second locally, fitting cleanly into the existing `npm run test:core` budget.
+
+
+### Acceptance Scenarios
+
+1. **Given** the completed graph degraded stress cell packet, **When** strict validation checks documentation traceability, **Then** the existing completed outcome remains mapped to the packet's spec, plan, tasks, checklist, and implementation summary.
+2. **Given** the packet's recorded verification evidence, **When** this retrospective hygiene pass runs, **Then** no implementation verdict, completion status, or test result is changed.
 <!-- /ANCHOR:success-criteria -->
 
 ---

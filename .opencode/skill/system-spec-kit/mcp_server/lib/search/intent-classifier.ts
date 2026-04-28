@@ -2,6 +2,12 @@
 // MODULE: Intent Classifier
 // ───────────────────────────────────────────────────────────────
 // Feature catalog: Query complexity router
+
+import {
+  buildIntentQueryPlan,
+  type QueryPlan,
+} from '../query/query-plan.js';
+
 /* --- 1. TYPES & CONSTANTS --- */
 
 type IntentType = 'add_feature' | 'fix_bug' | 'refactor' | 'security_audit' | 'understand' | 'find_spec' | 'find_decision';
@@ -18,6 +24,7 @@ interface IntentResult {
   scores: Record<IntentType, number>;
   keywords: string[];
   rankedIntents: RankedIntent[];
+  queryPlan: QueryPlan;
 }
 
 type IntentTelemetry = {
@@ -483,6 +490,12 @@ function classifyIntent(query: string): IntentResult {
       scores: { add_feature: 0, fix_bug: 0, refactor: 0, security_audit: 0, understand: 0, find_spec: 0, find_decision: 0 },
       keywords: [],
       rankedIntents: [],
+      queryPlan: buildIntentQueryPlan({
+        intent: 'understand',
+        confidence: 0,
+        keywords: [],
+        query: typeof query === 'string' ? query : '',
+      }),
     };
   }
 
@@ -561,6 +574,12 @@ function classifyIntent(query: string): IntentResult {
       scores,
       keywords: [...new Set(allKeywords)],
       rankedIntents,
+      queryPlan: buildIntentQueryPlan({
+        intent: 'understand',
+        confidence: topScore,
+        keywords: [...new Set(allKeywords)],
+        query,
+      }),
     };
   }
 
@@ -584,6 +603,12 @@ function classifyIntent(query: string): IntentResult {
       scores,
       keywords: [...new Set(allKeywords)],
       rankedIntents,
+      queryPlan: buildIntentQueryPlan({
+        intent: 'understand',
+        confidence: topScore,
+        keywords: [...new Set(allKeywords)],
+        query,
+      }),
     };
   }
 
@@ -593,6 +618,12 @@ function classifyIntent(query: string): IntentResult {
     scores,
     keywords: [...new Set(allKeywords)],
     rankedIntents,
+    queryPlan: buildIntentQueryPlan({
+      intent: topIntent,
+      confidence: Math.min(1, topScore),
+      keywords: [...new Set(allKeywords)],
+      query,
+    }),
   };
 }
 

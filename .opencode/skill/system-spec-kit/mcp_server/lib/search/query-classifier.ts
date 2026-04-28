@@ -5,6 +5,11 @@
 
 // Feature catalog: Query complexity router
 
+import {
+  buildComplexityQueryPlan,
+  type QueryPlan,
+} from '../query/query-plan.js';
+
 type QueryComplexityTier = 'simple' | 'moderate' | 'complex';
 
 interface ClassificationResult {
@@ -16,6 +21,7 @@ interface ClassificationResult {
     stopWordRatio: number;
   };
   confidence: 'high' | 'medium' | 'low' | 'fallback';
+  queryPlan: QueryPlan;
 }
 
 /** Config-driven thresholds */
@@ -149,6 +155,12 @@ function classifyQueryComplexity(
     tier: 'complex',
     features: { termCount: 0, charCount: 0, hasTriggerMatch: false, stopWordRatio: 0 },
     confidence: 'fallback',
+    queryPlan: buildComplexityQueryPlan({
+      complexity: 'complex',
+      confidence: 'fallback',
+      termCount: 0,
+      hasTriggerMatch: false,
+    }),
   };
 
   try {
@@ -193,6 +205,12 @@ function classifyQueryComplexity(
         stopWordRatio: Math.round(stopWordRatio * 1000) / 1000,
       },
       confidence,
+      queryPlan: buildComplexityQueryPlan({
+        complexity: tier,
+        confidence,
+        termCount,
+        hasTriggerMatch: triggerMatch,
+      }),
     };
   } catch (_err: unknown) {
     // Classification failure — return moderate default

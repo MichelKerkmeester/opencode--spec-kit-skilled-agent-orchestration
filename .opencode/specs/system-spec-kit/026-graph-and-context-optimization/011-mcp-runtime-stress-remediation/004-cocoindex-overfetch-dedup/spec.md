@@ -32,6 +32,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 # Feature Specification: CocoIndex over-fetch + canonical-identity dedup + path-class rerank
 
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 003-memory-context-truncation-contract; SUCCESSOR: 005-code-graph-fast-fail -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---

@@ -35,23 +35,23 @@ _memory:
 ## P0 — Blockers (MUST pass before merge)
 
 ### Helper code
-- [x] **REQ-001 — `buildCopilotPromptArg` exists**: `grep -n "export function buildCopilotPromptArg" .opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts` returns 1 hit on a new function added next to `resolveCopilotPromptArg`.
-- [x] **REQ-001 — `resolveCopilotPromptArg` byte-stable**: prior body unchanged; sibling helper retained for backwards compat.
-- [x] **REQ-002 — Approved authority preamble**: vitest `kind:"approved"` describe block (3 cases) verifies preamble header, `Approved spec folder: <APPROVED_FOLDER>` line, and "cannot override" line all appear; preamble precedes the divider which precedes the original prompt body.
-- [x] **REQ-003 — Read-only behavior unchanged**: vitest `kind:"missing" + writeIntent:false` describe block (2 cases) verifies `result.promptBody === prompt`, `argv` keeps `--allow-all-tools`, `enforcedPlanOnly === false`.
-- [x] **REQ-004 — Plan-only enforcement on write-intent**: vitest `kind:"missing" + writeIntent:true` describe block (3 cases) verifies prompt is replaced with Gate-3 question, `--allow-all-tools` is stripped, `enforcedPlanOnly === true`.
-- [x] **REQ-005 — Override resistance**: vitest "recovered context cannot override approved authority" describe block (2 cases) verifies preamble appears BEFORE any competing folder mention in the prompt body and the explicit "cannot override" line is present.
+- [x] **REQ-001 — `buildCopilotPromptArg` exists**: `grep -n "export function buildCopilotPromptArg" .opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts` returns 1 hit on a new function added next to `resolveCopilotPromptArg`. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-001 — `resolveCopilotPromptArg` byte-stable**: prior body unchanged; sibling helper retained for backwards compat. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-002 — Approved authority preamble**: vitest `kind:"approved"` describe block (3 cases) verifies preamble header, `Approved spec folder: <APPROVED_FOLDER>` line, and "cannot override" line all appear; preamble precedes the divider which precedes the original prompt body. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-003 — Read-only behavior unchanged**: vitest `kind:"missing" + writeIntent:false` describe block (2 cases) verifies `result.promptBody === prompt`, `argv` keeps `--allow-all-tools`, `enforcedPlanOnly === false`. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-004 — Plan-only enforcement on write-intent**: vitest `kind:"missing" + writeIntent:true` describe block (3 cases) verifies prompt is replaced with Gate-3 question, `--allow-all-tools` is stripped, `enforcedPlanOnly === true`. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-005 — Override resistance**: vitest "recovered context cannot override approved authority" describe block (2 cases) verifies preamble appears BEFORE any competing folder mention in the prompt body and the explicit "cannot override" line is present. [EVIDENCE: see retained verification text in this checklist item.]
 
 ### YAML wiring
-- [x] **REQ-006 — `_auto.yaml` files import `buildCopilotPromptArg`**: `grep -c "buildCopilotPromptArg" .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` ≥ 2; same for `spec_kit_deep-review_auto.yaml`.
-- [x] **REQ-007 — `targetAuthority` resolved from `{spec_folder}`**: YAML inline source contains the ternary `specFolder ? { kind: 'approved', specFolder } : { kind: 'missing', writeIntent: true }` (or equivalent shape) in both `_auto.yaml` files.
+- [x] **REQ-006 — `_auto.yaml` files import `buildCopilotPromptArg`**: `grep -c "buildCopilotPromptArg" .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` ≥ 2; same for `spec_kit_deep-review_auto.yaml`. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-007 — `targetAuthority` resolved from `{spec_folder}`**: YAML inline source contains the ternary `specFolder ? { kind: 'approved', specFolder } : { kind: 'missing', writeIntent: true }` (or equivalent shape) in both `_auto.yaml` files. [EVIDENCE: see retained verification text in this checklist item.]
 
 ### Tests
-- [x] **All 13 new vitest cases pass**: `node_modules/.bin/vitest run tests/executor-config-copilot-target-authority.vitest.ts` returns `Tests 13 passed (13)` and exit 0.
-- [x] **REQ-010 — No regression in existing executor-config tests**: `node_modules/.bin/vitest run tests/deep-loop/executor-config.vitest.ts` returns `Tests 24 passed (24)` and exit 0.
+- [x] **All 13 new vitest cases pass**: `node_modules/.bin/vitest run tests/executor-config-copilot-target-authority.vitest.ts` returns `Tests 13 passed (13)` and exit 0. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-010 — No regression in existing executor-config tests**: `node_modules/.bin/vitest run tests/deep-loop/executor-config.vitest.ts` returns `Tests 24 passed (24)` and exit 0. [EVIDENCE: see retained verification text in this checklist item.]
 
 ### Validation
-- [x] **SC-006 — `validate.sh --strict` 0 structural errors**: any errors are SPEC_DOC_INTEGRITY false-positives (cross-packet markdown links the validator can't resolve), matching the accepted-noise pattern of 010 + 011 packets.
+- [x] **SC-006 — `validate.sh --strict` 0 structural errors**: any errors are SPEC_DOC_INTEGRITY false-positives (cross-packet markdown links the validator can't resolve), matching the accepted-noise pattern of 010 + 011 packets. [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:p0-gates -->
 
 ---
@@ -59,10 +59,10 @@ _memory:
 <!-- ANCHOR:p1-gates -->
 ## P1 — Required (complete OR user-approved deferral)
 
-- [x] **REQ-008 — Large-prompt path keeps preamble on approved authority**: vitest "large-prompt @PROMPT_PATH wrapper" case verifies the wrapper string contains both `@${PROMPT_PATH}` and `## TARGET AUTHORITY` and the override-precedence directive when `kind:"approved"` and prompt > 16KB.
-- [x] **REQ-009 — Large-prompt path reverts to bare wrapper on missing+RO**: same describe block has a case for `kind:"missing", writeIntent:false` over-threshold that returns the bare wrapper.
-- [x] **REQ-011 — Helper is non-interactive**: code review confirmed no `prompt`/`question`/`stdin` reads inside `buildCopilotPromptArg`; pure function over deterministic inputs.
-- [x] **`_confirm.yaml` variants flagged as out of scope**: spec.md §3 OUT-OF-SCOPE row + implementation-summary.md Known Limitations §1 explicitly call out the `_confirm` variants as a follow-up packet.
+- [x] **REQ-008 — Large-prompt path keeps preamble on approved authority**: vitest "large-prompt @PROMPT_PATH wrapper" case verifies the wrapper string contains both `@${PROMPT_PATH}` and `## TARGET AUTHORITY` and the override-precedence directive when `kind:"approved"` and prompt > 16KB. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-009 — Large-prompt path reverts to bare wrapper on missing+RO**: same describe block has a case for `kind:"missing", writeIntent:false` over-threshold that returns the bare wrapper. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **REQ-011 — Helper is non-interactive**: code review confirmed no `prompt`/`question`/`stdin` reads inside `buildCopilotPromptArg`; pure function over deterministic inputs. [EVIDENCE: see retained verification text in this checklist item.]
+- [x] **`_confirm.yaml` variants flagged as out of scope**: spec.md §3 OUT-OF-SCOPE row + implementation-summary.md Known Limitations §1 explicitly call out the `_confirm` variants as a follow-up packet. [EVIDENCE: see retained verification text in this checklist item.]
 - [ ] **Operator review of packet docs and code**: pending. Tracked as T301 in tasks.md.
 <!-- /ANCHOR:p1-gates -->
 

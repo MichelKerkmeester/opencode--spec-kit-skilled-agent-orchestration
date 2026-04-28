@@ -75,6 +75,7 @@ Provide a single phase-parent home where each synthesized review report drives a
 | `002-mcp-stress-cycle-cleanup/` | `011-mcp-runtime-stress-remediation/review/.../review-report.md` | PASS (hasAdvisories) | 6 | P2=6 |
 | `003-skill-advisor-fail-open/` | `008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/review/...` | CONDITIONAL | 18 | P1=3, P2=15 |
 | `004-tier2-remediation/` | Tier 2 D/E/F/G review reports (H deferred) | 4 × CONDITIONAL | 15 | P1=8, P2=7 |
+| `006-search-query-rag-optimization/` | `011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md` | PROCEED | 20 | P1=3, P2=17 |
 
 Sub-phase 003 is scaffolded as a placeholder while the 008/008 deep-review loop is still in flight. It will be populated when the synthesis writes its `review-report.md`.
 
@@ -85,6 +86,7 @@ Sub-phase 003 is scaffolded as a placeholder while the 008/008 deep-review loop 
 - **Sub-phase 001 first** (`P1-001` constitutional README storage-boundary): introduce a shared `isIndexableConstitutionalMemoryPath()` predicate, wire it into checkpoint restore + SQL update + post-insert metadata + cleanup CLI + parser/discovery, add regression test for poisoned-checkpoint replay. The 13 P2 advisories from the same review batch into the same sub-phase as a doc/observability cleanup.
 - **Sub-phase 002** (parallelizable with 001): doc cleanup batch — refresh parent resource-map, soften "monotonic decay" wording, update HANDOVER-deferred, reconcile catalog/playbook impact audits with live state, group 18 children logically, extract verdict rubric inputs as JSON sidecar.
 - **Sub-phase 003** (after 1C synthesis): if the `advisor_recommend` fail-open gap is confirmed P1 in synthesis, add the `unavailableOutput()` branch + regression. Other 1C findings batch in.
+- **Sub-phase 006** (Phase D search optimization): add search-quality harness and telemetry-only query-plan contract first; leave trust-tree, rerank, learned weights, CocoIndex calibration, and degraded-readiness stress cells planned until the harness can measure them.
 
 ---
 

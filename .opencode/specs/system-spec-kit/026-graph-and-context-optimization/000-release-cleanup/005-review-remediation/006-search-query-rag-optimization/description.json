@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/006-search-query-rag-optimization",
+  "description": "Measurement-first Phase D remediation for search-query RAG optimization: search-quality harness, corpus, metrics, and telemetry-only query-plan contract before any ranking, rerank, or trust-tree behavior changes.",
+  "keywords": [
+    "search-quality-harness",
+    "query-plan-telemetry",
+    "rag-optimization",
+    "measurement-first",
+    "phase-d"
+  ],
+  "lastUpdated": "2026-04-28T21:10:07Z",
+  "specId": "006",
+  "folderSlug": "search-query-rag-optimization",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1
+}

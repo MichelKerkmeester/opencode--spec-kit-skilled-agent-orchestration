@@ -31,6 +31,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 # Feature Specification: intent classifier stability + paraphrase corpus + normalized telemetry
 
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 006-causal-graph-window-metrics; SUCCESSOR: 008-mcp-daemon-rebuild-protocol -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---

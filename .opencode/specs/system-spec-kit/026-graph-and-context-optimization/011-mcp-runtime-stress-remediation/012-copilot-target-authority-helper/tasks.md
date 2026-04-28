@@ -46,11 +46,11 @@ _memory:
 ## Phase 1: Setup
 
 - [x] **T001** Read research.md §3 in full and verify file:line targets exist on disk.
-  - **Files**: `../011-post-stress-followup-research/research/research.md`, `mcp_server/lib/deep-loop/executor-config.ts:66-70`, `spec_kit_deep-research_auto.yaml:601-625`, `spec_kit_deep-review_auto.yaml:669-683`, `runs/I1/cli-copilot-1/score.md`
+  - **Files**: `../011-post-stress-followup-research/research/research.md`, `mcp_server/lib/deep-loop/executor-config.ts:66-70`, `spec_kit_deep-research_auto.yaml:601-625`, `spec_kit_deep-review_auto.yaml:669-683`, runs/I1/cli-copilot-1/score.md
   - **Acceptance**: All cited paths resolve; line numbers match the recommended insertion points.
 - [x] **T002** [P] Read existing `resolveCopilotPromptArg` and the YAML cli-copilot dispatch shapes; understand prior 16KB threshold + `@PROMPT_PATH` wrapper behavior.
   - **Acceptance**: Behavior matrix documented in plan.md §3 reflects the prior contract.
-- [x] **T003** [P] Read `004-memory-save-rewrite/spec.md` to confirm the planner-first contract this layer enforces upstream.
+- [x] **T003** [P] Read 004-memory-save-rewrite/spec.md to confirm the planner-first contract this layer enforces upstream.
   - **Acceptance**: Cross-reference line cited in spec.md §2 Problem.
 <!-- /ANCHOR:phase-1 -->
 

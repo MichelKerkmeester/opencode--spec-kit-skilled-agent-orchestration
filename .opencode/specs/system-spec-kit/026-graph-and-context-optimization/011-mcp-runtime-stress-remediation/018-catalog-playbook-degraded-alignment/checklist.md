@@ -96,12 +96,10 @@ _memory:
 
 ---
 
-<!-- ANCHOR:scope-discipline -->
-## Scope Discipline
+### Scope Discipline
 - [x] CHK-050 [P0] No code change — pure docs (REQ-004). [EVIDENCE: diff only contains `.md` and `.json` files.]
 - [x] CHK-051 [P0] No edit to packet 016 / 017 docs or code (REQ-005). [EVIDENCE: those folders are untouched.]
 - [x] CHK-052 [P0] No edit to packets 003-015 (frozen). [EVIDENCE: those folders are untouched.]
 - [x] CHK-053 [P0] No new feature catalog page added — only existing pages edited. [EVIDENCE: only the three named files were modified under feature_catalog/manual_testing_playbook.]
 - [x] CHK-054 [P1] `git diff --name-only` shows only `.md` + `.json` files in scope. [EVIDENCE: post-edit diff inspection.]
 - [x] CHK-055 [P1] No per-runtime copies created (only `.opencode/skill/system-spec-kit/` hosts these files). [EVIDENCE: `find .gemini .claude .codex` returned no feature_catalog or manual_testing_playbook trees.]
-<!-- /ANCHOR:scope-discipline -->

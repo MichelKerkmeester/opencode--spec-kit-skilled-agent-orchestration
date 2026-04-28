@@ -36,6 +36,7 @@ _memory:
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 010-stress-test-rerun-v1-0-2; SUCCESSOR: 012-copilot-target-authority-helper -->
 
 # Feature Specification: Post-Stress Follow-Up Research — refine v1.0.2 P0/P1/P2 fix proposals
 
@@ -67,7 +68,7 @@ The v1.0.2 stress-test rerun closed with four follow-ups tagged in `../010-stres
 
 ### Purpose
 
-Run a single 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.5, high reasoning, fast service tier) that converts each of the four follow-ups from "tagged" to "actionable" — and, in light secondary scope, surfaces 1-2 architectural seams in the broader intelligence-system stack that current evidence suggests would pay off in a focused refinement packet. The loop's `research.md` is the deliverable; per-follow-up remediation packets are downstream work the user authors after reviewing.
+Run a single 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.5, high reasoning, fast service tier) that converts each of the four follow-ups from "tagged" to "actionable" — and, in light secondary scope, surfaces 1-2 architectural seams in the broader intelligence-system stack that current evidence suggests would pay off in a focused refinement packet. The loop's research.md is the deliverable; per-follow-up remediation packets are downstream work the user authors after reviewing.
 <!-- /ANCHOR:problem -->
 
 ---
@@ -112,13 +113,13 @@ Light secondary scope (≤20% of iterations):
 | **REQ-001** | P0 | Loop MUST be invoked via `/spec_kit:deep-research:auto` (canonical command surface per Gate 4). Direct dispatch via Task tool or @deep-research agent is forbidden. |
 | **REQ-002** | P0 | Executor MUST be `cli-codex` with `--model=gpt-5.5 --reasoning-effort=high --service-tier=fast --executor-timeout=900`. `service_tier=fast` MUST be explicit (not config default) per memory rule `feedback_codex_cli_fast_mode`. |
 | **REQ-003** | P0 | Loop MUST run with `--max-iterations=10` (hard cap). Convergence may stop earlier if quality guards pass (source diversity ≥2, focus alignment, no single-weak-source). |
-| **REQ-004** | P0 | `research.md` synthesis MUST cover all 4 v1.0.2 follow-ups (P0 cli-copilot, P1 code-graph fast-fail, P2 file-watcher, opportunity CocoIndex telemetry). Each follow-up gets evidence, root-cause hypothesis, 2-3 fix candidates with trade-offs, recommended approach, falsifiable success criteria, scope estimate, suggested next-packet shape. |
-| **REQ-005** | P1 | `research.md` MUST surface 1-2 architectural seams in the light-secondary "intelligence-system" scope, each with one-line "why now" rationale. Full scoping not required. |
-| **REQ-006** | P0 | All file paths cited in `research.md` MUST exist on disk (no fabrication). Citations include line numbers where specific behavior is referenced. |
+| **REQ-004** | P0 | research.md synthesis MUST cover all 4 v1.0.2 follow-ups (P0 cli-copilot, P1 code-graph fast-fail, P2 file-watcher, opportunity CocoIndex telemetry). Each follow-up gets evidence, root-cause hypothesis, 2-3 fix candidates with trade-offs, recommended approach, falsifiable success criteria, scope estimate, suggested next-packet shape. |
+| **REQ-005** | P1 | research.md MUST surface 1-2 architectural seams in the light-secondary "intelligence-system" scope, each with one-line "why now" rationale. Full scoping not required. |
+| **REQ-006** | P0 | All file paths cited in research.md MUST exist on disk (no fabrication). Citations include line numbers where specific behavior is referenced. |
 | **REQ-007** | P1 | Each iteration delta JSONL record MUST include the required fields: `iteration`, `newInfoRatio`, `status`, `focus`, plus optional `graphEvents` if causal links are written. |
 | **REQ-008** | P1 | Topic prompt fed to the loop MUST cite the source-of-evidence paths (`../010-stress-test-rerun-v1-0-2/findings.md` Recommendations §1-5; per-cell scores at `runs/*/score.md`; preflight log) so iteration prompts can ground reads in real artifacts. |
-| **REQ-009** | P2 | At convergence, the workflow MUST emit `resource-map.md` (default behavior; not suppressed via `--no-resource-map`). |
-| **REQ-010** | P2 | Parent metadata (011 phase parent's `spec.md`, `description.json`, `graph-metadata.json`, `resource-map.md`) MUST be updated to include this new child packet at scaffold time. |
+| **REQ-009** | P2 | At convergence, the workflow MUST emit resource-map.md (default behavior; not suppressed via `--no-resource-map`). |
+| **REQ-010** | P2 | Parent metadata (011 phase parent's `spec.md`, `description.json`, `graph-metadata.json`, resource-map.md) MUST be updated to include this new child packet at scaffold time. |
 <!-- /ANCHOR:requirements -->
 
 ---
@@ -129,12 +130,18 @@ Light secondary scope (≤20% of iterations):
 | ID | Criterion |
 |----|-----------|
 | **SC-001** | Loop completes (stop reason ∈ {`converged`, `maxIterationsReached`}) without `error` or `blockedStop`. |
-| **SC-002** | `research.md` exists at `research/research.md` and is non-empty. |
-| **SC-003** | Each of the 4 P0/P1/P2 follow-ups has a labeled section in `research.md` with at least: evidence cited, fix candidates, recommended approach, falsifiable success criteria. |
+| **SC-002** | research.md exists at `research/research.md` and is non-empty. |
+| **SC-003** | Each of the 4 P0/P1/P2 follow-ups has a labeled section in research.md with at least: evidence cited, fix candidates, recommended approach, falsifiable success criteria. |
 | **SC-004** | Light architectural touch surfaces ≥1 named seam (≤2) with one-line "why now". |
-| **SC-005** | Cross-reference table in `research.md` maps recommendations back to `010` Recommendations §1-5 + relevant `003-009` remediation packets. |
-| **SC-006** | All file paths cited in `research.md` resolve on disk (sample-verified for ≥10 distinct paths; 0 fabrications detected). |
+| **SC-005** | Cross-reference table in research.md maps recommendations back to `010` Recommendations §1-5 + relevant `003-009` remediation packets. |
+| **SC-006** | All file paths cited in research.md resolve on disk (sample-verified for ≥10 distinct paths; 0 fabrications detected). |
 | **SC-007** | Parent metadata updated: `011-mcp-runtime-stress-remediation/{spec.md,description.json,graph-metadata.json,resource-map.md}` all reference the new child. |
+
+
+### Acceptance Scenarios
+
+1. **Given** the completed post stress followup research packet, **When** strict validation checks documentation traceability, **Then** the existing completed outcome remains mapped to the packet's spec, plan, tasks, checklist, and implementation summary.
+2. **Given** the packet's recorded verification evidence, **When** this retrospective hygiene pass runs, **Then** no implementation verdict, completion status, or test result is changed.
 <!-- /ANCHOR:success-criteria -->
 
 ---
@@ -159,7 +166,7 @@ Light secondary scope (≤20% of iterations):
 
 | ID | Question | Resolution |
 |----|----------|-----------|
-| **Q-001** | Should the loop's `research.md` recommend specific commit-level fixes, or stop at "design proposal + scope estimate"? | Resolved at scaffold: stop at design proposal — implementation is downstream packet work per Gate 4. |
+| **Q-001** | Should the loop's research.md recommend specific commit-level fixes, or stop at "design proposal + scope estimate"? | Resolved at scaffold: stop at design proposal — implementation is downstream packet work per Gate 4. |
 | **Q-002** | If the P1 (graph degradation harness) recommendation lands at a substantial scope (e.g., ≥200 LOC across multiple files), should the research.md author the next packet's scaffold inline, or just describe it? | Resolved at scaffold: describe only. New packet authoring = downstream work. |
-| **Q-003** | If iteration deltas show the "intelligence-system seam" sub-topic is starved of attention (consistent <10% per-iter focus), should we extend `--max-iterations` or accept partial coverage? | Defer to user: stop at 10, surface coverage gap in `research.md` Limitations section. |
+| **Q-003** | If iteration deltas show the "intelligence-system seam" sub-topic is starved of attention (consistent <10% per-iter focus), should we extend `--max-iterations` or accept partial coverage? | Defer to user: stop at 10, surface coverage gap in research.md Limitations section. |
 <!-- /ANCHOR:questions -->

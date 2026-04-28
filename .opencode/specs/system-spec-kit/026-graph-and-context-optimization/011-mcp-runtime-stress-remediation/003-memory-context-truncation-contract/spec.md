@@ -34,6 +34,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 # Feature Specification: memory_context truncation contract + token telemetry
 
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 002-mcp-runtime-improvement-research; SUCCESSOR: 004-cocoindex-overfetch-dedup -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---

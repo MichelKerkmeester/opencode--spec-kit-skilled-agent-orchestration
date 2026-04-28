@@ -32,6 +32,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 # Feature Specification: memory_search hard response policy + citation policy
 
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 008-mcp-daemon-rebuild-protocol; SUCCESSOR: 010-stress-test-rerun-v1-0-2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---

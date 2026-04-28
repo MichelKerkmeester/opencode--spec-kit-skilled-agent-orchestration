@@ -40,6 +40,7 @@ _memory:
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 016-degraded-readiness-envelope-parity; SUCCESSOR: 018-catalog-playbook-degraded-alignment -->
 
 # Feature Specification: cli-copilot Dispatch Test Parity — close F-004 P2 from 011 deep-review
 
@@ -162,6 +163,12 @@ Test-only change. Production code in `executor-config.ts` and the two YAML files
 | **SC-003** | The YAML write-then-dispatch ordering on both `_auto.yaml` files is pinned by static grep. A future refactor that drops or moves the `writeFileSync(promptPath, built.promptFileBody)` call would fail this test. |
 | **SC-004** | Sibling tests stay green: full `tests/deep-loop/` suite (73/73) + `tests/executor-config-copilot-target-authority.vitest.ts` (29/29) — no regression introduced by the rewrite. |
 | **SC-005** | `validate.sh --strict` on this packet returns 0 structural errors (SPEC_DOC_INTEGRITY false-positives accepted as known noise, matching the 010-012 baseline pattern). |
+
+
+### Acceptance Scenarios
+
+1. **Given** the completed cli copilot dispatch test parity packet, **When** strict validation checks documentation traceability, **Then** the existing completed outcome remains mapped to the packet's spec, plan, tasks, checklist, and implementation summary.
+2. **Given** the packet's recorded verification evidence, **When** this retrospective hygiene pass runs, **Then** no implementation verdict, completion status, or test result is changed.
 <!-- /ANCHOR:success-criteria -->
 
 ---

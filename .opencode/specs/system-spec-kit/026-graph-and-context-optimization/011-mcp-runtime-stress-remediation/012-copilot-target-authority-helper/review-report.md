@@ -20,7 +20,7 @@ The core helper (`buildCopilotPromptArg`, `buildTargetAuthorityPreamble`, `build
 
 | Check | Status | Severity | Finding |
 |-------|--------|----------|---------|
-| 1 Plan adherence | PARTIAL | P1 | Core helper matches research §3.3–§3.4, but wrapper-mode authority is not written into `prompts/iteration-NNN.md`, conflicting with §3.5's file-level criterion. |
+| 1 Plan adherence | PARTIAL | P1 | Core helper matches research §3.3–§3.4, but wrapper-mode authority is not written into prompts/iteration-NNN.md, conflicting with §3.5's file-level criterion. |
 | 2 Behavior matrix | PASS | none | All three helper branches (`approved`, `missing`+no-write, `missing`+write) match the required matrix. |
 | 3 Override resistance | PASS | none | No code path lets recovered context (memory, bootstrap, prompt-body, graph `last_active_child_id`) override an approved `targetAuthority.specFolder`; authority comes only from YAML `{spec_folder}`. |
 | 4 @PROMPT_PATH wrapper | PARTIAL | P1 | Preamble survives the inline wrapper arg, but the referenced prompt file remains unmodified. Recovered folder mentions inside the `@path` file can still dominate if Copilot prioritizes that content. |
@@ -50,7 +50,7 @@ The core helper (`buildCopilotPromptArg`, `buildTargetAuthorityPreamble`, `build
   - `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:604-605`
   - `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:675-676`
 - **What's wrong:** The helper documents that the referenced `@PROMPT_PATH` prompt file contains the unmodified prompt body, and only the inline arg carries the `## TARGET AUTHORITY` preamble.
-- **Why it matters:** research.md §3.5 (line ~95) requires the approved folder to be regex-matchable inside `prompts/iteration-NNN.md`. If Copilot loads / prioritizes the `@path` file, recovered or bootstrap folder mentions inside that file can still dominate the agent's anchoring decision — exactly the failure mode the packet aims to fix.
+- **Why it matters:** research.md §3.5 (line ~95) requires the approved folder to be regex-matchable inside prompts/iteration-NNN.md. If Copilot loads / prioritizes the `@path` file, recovered or bootstrap folder mentions inside that file can still dominate the agent's anchoring decision — exactly the failure mode the packet aims to fix.
 - **Recommended fix:** For approved large prompts, write the authority-prefixed body to the prompt file (preamble + original body), or expose a separate `promptFileBody` from the helper so callers can persist the prefixed version before dispatch. Add a test on the file contents (not only the inline wrapper string).
 
 ### P1 — No test covers the I1-style zero-mutation success criterion
@@ -104,4 +104,4 @@ No P0 blockers.
 
 ## Approval Conditions
 
-This packet ships once the four P1 items above are resolved (or explicitly accepted with risk sign-off in `decision-record.md`). The core helper logic, behavior matrix, override resistance, byte-stability for legacy callers, and `_confirm` deferral judgment are all sound — the residual risk is concentrated in (a) untrusted folder-string handling, (b) wrapper-mode parity, (c) test coverage of the actual mutation outcome, and (d) PR scope hygiene.
+This packet ships once the four P1 items above are resolved (or explicitly accepted with risk sign-off in decision-record.md). The core helper logic, behavior matrix, override resistance, byte-stability for legacy callers, and `_confirm` deferral judgment are all sound — the residual risk is concentrated in (a) untrusted folder-string handling, (b) wrapper-mode parity, (c) test coverage of the actual mutation outcome, and (d) PR scope hygiene.

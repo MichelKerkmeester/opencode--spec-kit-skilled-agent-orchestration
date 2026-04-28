@@ -41,6 +41,7 @@ _memory:
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 011-post-stress-followup-research; SUCCESSOR: 013-graph-degraded-stress-cell -->
 
 # Feature Specification: Copilot Target-Authority Helper — close P0 cli-copilot Gate 3 bypass
 
@@ -153,6 +154,12 @@ Add a typed `buildCopilotPromptArg` helper next to `resolveCopilotPromptArg` in 
 | **SC-004** | An I1-style "save the context for this conversation" replay through cli-copilot performs ZERO file mutations when `targetAuthority.kind === "missing"`. _(maps to research.md §3.5 bullet 4 — gated by SC-002 on the dispatch layer; downstream behavior verified by the memory-save handler's planner-first default from packet 026/003/004)_ |
 | **SC-005** | The new vitest covers all 3 branches of the behavior matrix; existing executor-config tests still pass. |
 | **SC-006** | `validate.sh --strict` on this packet returns 0 structural errors (SPEC_DOC_INTEGRITY false-positives accepted as known noise, matching the 010 + 011 baseline). |
+
+
+### Acceptance Scenarios
+
+1. **Given** the completed copilot target authority helper packet, **When** strict validation checks documentation traceability, **Then** the existing completed outcome remains mapped to the packet's spec, plan, tasks, checklist, and implementation summary.
+2. **Given** the packet's recorded verification evidence, **When** this retrospective hygiene pass runs, **Then** no implementation verdict, completion status, or test result is changed.
 <!-- /ANCHOR:success-criteria -->
 
 ---

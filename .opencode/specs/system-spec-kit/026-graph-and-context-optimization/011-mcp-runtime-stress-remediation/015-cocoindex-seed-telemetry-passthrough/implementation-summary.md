@@ -145,8 +145,7 @@ The change crosses three layers (schema → types → handler) but is purely add
 
 ---
 
-<!-- ANCHOR:post-review-fixes -->
-## Post-Review Fixes
+### Post-Review Fixes
 
 Single P1 finding from `review-report.md` (Check 10) — **resolved via documentation reconciliation**, no code change.
 
@@ -168,4 +167,3 @@ The §6.5 wording was idealized at research time before implementation locked th
 **Cost trade-off considered:** authoring a fixed-corpus rank-order regression test would require curating 5-10 representative queries, snapshotting their pre-patch rank order to a fixture file, asserting post-patch matches, and maintaining the fixture across unrelated `lib/search/` changes (Phase 13 search performance work touches this regularly). Given the diff-empty proof already in place, the maintenance cost is unjustified.
 
 **Files updated:** this section only. `research.md §6.5` is left as-is (the canonical research record for the loop; this packet's reconciliation note is the binding artifact for the implementation contract).
-<!-- /ANCHOR:post-review-fixes -->

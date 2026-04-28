@@ -9,6 +9,19 @@ trigger_phrases:
   - "stress-test rerun architecture"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2"
+    last_updated_at: "2026-04-28T20:00:00Z"
+    last_updated_by: "codex-gpt-5.5"
+    recent_action: "Strict validator hygiene update"
+    next_safe_action: "Run recursive strict validator"
+    blockers: []
+    key_files:
+      - "plan.md"
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 
 <!-- SPECKIT_TEMPLATE_SOURCE: plan-core + level2-verify | v2.2 -->
@@ -22,6 +35,11 @@ contextType: "implementation"
 This packet runs a single-iteration sweep with a pre-flight gate, three dispatch loops (one per CLI), one ablation loop (cli-opencode-pure on S1/S2/S3), per-cell scoring under the frozen v1.0.1 rubric, fork-telemetry assertions per REQ-008..013, and a synthesis pass that aggregates per-cell deltas into per-packet verdicts. The technical context is identical to v1.0.1 (same Bash + Markdown + JSON; same per-cell `{prompt.md, output.txt, meta.json, score.md}` output schema; same concurrency guards). The architectural delta is the v1.0.1 baseline → v1.0.2 delta classification step plus the per-packet verdict aggregation, both authored at synthesis time in `findings.md`.
 
 The MCP advantage signal that v1.0.1 surfaced (cli-opencode topping the rank order via memory_search + cocoindex MCP routing) is the primary thing the v1.0.2 fork-telemetry assertions are designed to make observable rather than just inferable from score deltas. After v1.0.2 ships, every score.md will carry both the rubric-derived score AND the assertion record showing whether the fork-specific contract fields fired.
+
+
+### Technical Context
+
+This retrospective plan uses the existing packet stack and artifacts already named in the summary. No new implementation surface is introduced by this validator-hygiene update.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -39,13 +57,13 @@ The MCP advantage signal that v1.0.1 surfaced (cli-opencode topping the rank ord
 ### Definition of Done — packet root
 - All 6 packet files authored: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `description.json`, `graph-metadata.json`
 - `validate.sh --strict` passes on this packet (zero blocking errors, same profile as the other leaf packets in 011)
-- 011 parent metadata updated: `spec.md` PHASE DOCUMENTATION MAP row, `description.json` `migration.child_phase_folders`, `graph-metadata.json` `derived.children_ids`, `resource-map.md` Specs section, `HANDOVER-deferred.md` §2.1 status
+- 011 parent metadata updated: `spec.md` PHASE DOCUMENTATION MAP row, `description.json` `migration.child_phase_folders`, `graph-metadata.json` `derived.children_ids`, resource-map.md Specs section, HANDOVER-deferred.md §2.1 status
 - v1.0.1 baseline preserved with one-line forward pointer at file end
 
 ### Definition of Done — sweep execution (downstream of this scaffold)
 - Pre-flight (T001-T003) PASSED with all four daemon-attestation probes captured to `./runs/preflight.log`
 - All 30 cells produce `{prompt.md, output.txt, meta.json, score.md}` quartets with `meta.json.exit_code = 0`
-- Each `score.md` carries the v1.0.1 4-dim table + Fork-Telemetry Assertions sub-section + Delta-vs-v1.0.1 classification
+- Each score.md carries the v1.0.1 4-dim table + Fork-Telemetry Assertions sub-section + Delta-vs-v1.0.1 classification
 - Per-packet verdict table populated for packets 003-009 in `findings.md`
 - Zero unresolved REGRESSION cells; if any REGRESSION exists, an explanation or escalation accompanies it
 <!-- /ANCHOR:quality-gates -->
@@ -159,10 +177,10 @@ This packet executes in 4 sequenced phases; the scaffold pass authors the docs t
 - Honor cli-copilot concurrency cap 3 + cli-codex `service_tier="fast"` REQUIRED constants
 
 ### Phase 3: Score (T201-T209)
-- For each cell, populate `score.md` with:
+- For each cell, populate score.md with:
   - v1.0.1 4-dim rubric table (Correctness 0-2, Tool Selection 0-2, Latency 0-2, Hallucination 0-2; total /8)
   - Fork-Telemetry Assertions sub-section per REQ-008..013 (PASS / FAIL / N-A based on `output.txt` evidence)
-  - Delta-vs-v1.0.1 line: cite the v1.0.1 score from `../001/.../findings.md` Per-Scenario Comparison + classify WIN / NEUTRAL / REGRESSION
+  - Delta-vs-v1.0.1 line: cite the v1.0.1 score from ../001/.../findings.md Per-Scenario Comparison + classify WIN / NEUTRAL / REGRESSION
   - Narrative paragraph (free-text observable behavior)
 
 ### Phase 4: Synthesize (T301-T305)
@@ -190,10 +208,10 @@ This packet executes in 4 sequenced phases; the scaffold pass authors the docs t
 | Pre-flight probe smoke | Live MCP | Phase 1 (T001-T003) | All four probes return live values matching post-fix contract |
 | Dispatch script smoke | Bash | Phase 2 entry | Each `dispatch-cli-*.sh` runs against a 1-token "hello" prompt and returns exit_code=0 |
 | Concurrency guard test | Bash | Phase 2 entry | Trigger 4 simulated cli-copilot invocations; confirm 4th waits until pgrep count drops below 3 |
-| Per-cell artifact integrity | Static | Phase 2 exit | All 30 cells have all 4 artifact files (`prompt.md`, `output.txt`, `meta.json`, `score.md`-skeleton); no zero-byte outputs |
-| Per-cell rubric scoring | Manual | Phase 3 | Each `score.md` has 4-dim table summing 0-8; no missing dim |
-| Fork-telemetry assertion record | Manual | Phase 3 | Each `score.md` Fork-Telemetry Assertions sub-section has PASS/FAIL/N-A for every applicable REQ-008..013 |
-| Delta classification | Manual | Phase 3 | Each `score.md` cites v1.0.1 baseline + delta + classification (WIN/NEUTRAL/REGRESSION) |
+| Per-cell artifact integrity | Static | Phase 2 exit | All 30 cells have all 4 artifact files (prompt.md, `output.txt`, `meta.json`, score.md-skeleton); no zero-byte outputs |
+| Per-cell rubric scoring | Manual | Phase 3 | Each score.md has 4-dim table summing 0-8; no missing dim |
+| Fork-telemetry assertion record | Manual | Phase 3 | Each score.md Fork-Telemetry Assertions sub-section has PASS/FAIL/N-A for every applicable REQ-008..013 |
+| Delta classification | Manual | Phase 3 | Each score.md cites v1.0.1 baseline + delta + classification (WIN/NEUTRAL/REGRESSION) |
 | Per-packet verdict aggregation | Manual | Phase 4 | findings.md per-packet verdict table has 7 rows (003-009) with verdict per row |
 | Frozen-baseline invariant | Static | Phase 4 exit | `git diff ../001/.../findings.md` shows insertions only; zero deletions or modifications above the trailing forward-pointer line |
 <!-- /ANCHOR:testing -->
@@ -241,7 +259,7 @@ This packet executes in 4 sequenced phases; the scaffold pass authors the docs t
    - Daemon issue → re-run `bash .opencode/skill/mcp-coco-index/scripts/install.sh`, restart MCP-owning client, retry T001-T003
    - CLI installation issue → reinstall the offending binary; retry the failing cells only
    - Scoring drift → second-reviewer pass on the affected cells; if ≥2 reviewers disagree, escalate to user with the disagreement evidence
-4. **Resume from last green cell**: dispatch only the cells whose `score.md` is missing or marked `partial`. Do NOT re-dispatch already-scored cells (single-scorer variance would be confounded).
+4. **Resume from last green cell**: dispatch only the cells whose score.md is missing or marked `partial`. Do NOT re-dispatch already-scored cells (single-scorer variance would be confounded).
 5. **Document the rollback** in `findings.md` Methodology section: which cells were re-dispatched, why, and whether the partial run is included or excluded from the final aggregation.
 
 ### Non-rollback escape (graceful failure)

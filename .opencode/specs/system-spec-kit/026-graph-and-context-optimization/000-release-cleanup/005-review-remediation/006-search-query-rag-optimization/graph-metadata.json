@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/006-search-query-rag-optimization",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/006-search-query-rag-optimization",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006-search-query-rag-optimization",
+      "search quality harness",
+      "query plan telemetry",
+      "rag optimization measurement"
+    ],
+    "key_topics": [
+      "search-quality-harness",
+      "query-plan",
+      "telemetry-only",
+      "rag-fusion-planning"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "mcp_server/tests/search-quality/",
+      "mcp_server/lib/query/query-plan.ts",
+      "implementation-summary.md"
+    ],
+    "entities": [],
+    "causal_summary": "Phase D remediation packet closing P1 measurement and query-plan telemetry gaps from the search-query RAG optimization research, while deferring trust-tree, rerank, learned weights, CocoIndex calibration, and degraded-readiness stress cells.",
+    "created_at": "2026-04-28T21:02:24Z",
+    "last_save_at": "2026-04-28T21:10:07Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

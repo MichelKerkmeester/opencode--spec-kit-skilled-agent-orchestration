@@ -139,17 +139,16 @@ Tested and shipped under the helper's own vitest suite. The 13 new cases cover t
 
 ---
 
-## Next Steps
+### Next Steps
 
 1. **Operator review** of helper signature, behavior matrix, YAML wiring, vitest coverage, and packet docs. Tracked as T301 in `tasks.md`.
 2. **Commit packet + code changes** as a single atomic change. Parent session handles git per the user's directive.
-3. **Live cli-copilot dispatch verification** on the next deep-research or deep-review run that exercises cli-copilot. Confirm the `## TARGET AUTHORITY` preamble appears in `state_paths.prompt_dir/iteration-NNN.md` (or in the rendered argv if the YAML logs it) and that ZERO unauthorized folder mutations occur. Tracked as T303 in `tasks.md` and as a P2 item in `checklist.md`.
+3. **Live cli-copilot dispatch verification** on the next deep-research or deep-review run that exercises cli-copilot. Confirm the `## TARGET AUTHORITY` preamble appears in state_paths.prompt_dir/iteration-NNN.md (or in the rendered argv if the YAML logs it) and that ZERO unauthorized folder mutations occur. Tracked as T303 in `tasks.md` and as a P2 item in `checklist.md`.
 4. **Optional follow-up packet** to port `buildCopilotPromptArg` into `spec_kit_deep-research_confirm.yaml` and `spec_kit_deep-review_confirm.yaml` for symmetry. Out of scope here; flagged in Known Limitations §1 above.
 
 ---
 
-<!-- ANCHOR:post-review-fixes -->
-## Post-Review Fixes (2026-04-27)
+### Post-Review Fixes (2026-04-27)
 
 The packet's review-report.md (Copilot CLI gpt-5.5 high) flagged 4 P1 items. The out-of-scope working-tree finding is a known false-positive — the user runs multiple parallel tracks as baseline state. The other three were addressed in this fix-up pass.
 
@@ -189,5 +188,4 @@ The packet's review-report.md (Copilot CLI gpt-5.5 high) flagged 4 P1 items. The
 
 ### Out-of-scope finding (false positive)
 
-The reviewer's #4 P1 (working-tree carries packet 013–015 + code-graph edits) is a known false-positive per project memory `feedback_worktree_cleanliness_not_a_blocker.md`. The user runs multiple parallel tracks as baseline state; worktree cleanliness is never a blocker. Not addressed in this fix-up.
-<!-- /ANCHOR:post-review-fixes -->
+The reviewer's #4 P1 (working-tree carries packet 013–015 + code-graph edits) is a known false-positive per project memory feedback_worktree_cleanliness_not_a_blocker.md. The user runs multiple parallel tracks as baseline state; worktree cleanliness is never a blocker. Not addressed in this fix-up.

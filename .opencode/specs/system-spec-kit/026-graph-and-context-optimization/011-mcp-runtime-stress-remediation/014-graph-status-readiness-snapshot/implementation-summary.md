@@ -136,7 +136,7 @@ The change is additive metadata on a read-only MCP tool response. The new helper
 
 ---
 
-## Post-Review Fixes
+### Post-Review Fixes
 
 | Date | Finding | Severity | Approach | Resolution |
 |------|---------|----------|----------|------------|

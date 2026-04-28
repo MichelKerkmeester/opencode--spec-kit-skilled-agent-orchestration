@@ -20,6 +20,19 @@ trigger_phrases:
   - "011 post stress followup research"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation"
+    last_updated_at: "2026-04-28T20:00:00Z"
+    last_updated_by: "codex-gpt-5.5"
+    recent_action: "Strict validator hygiene update"
+    next_safe_action: "Run recursive strict validator"
+    blockers: []
+    key_files:
+      - "spec.md"
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
@@ -89,6 +102,19 @@ Harden the MCP runtime end-to-end against the regressions surfaced by the v1.0.1
 ### Files to Change
 [See per-phase scope tables inside each child folder. Parent-level scope is the sub-phase manifest below; per-file detail at this level is covered by the optional resource-map aggregator at this folder root.]
 <!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+This phase-parent section is retrospective. It does not add new requirements; it records that child packet requirements remain the source of truth for the 011 MCP runtime stress-remediation phase parent, and the parent must keep those child links, status rollups, and handoff references discoverable.
+
+- Child packet requirements stay in each child `spec.md`.
+- Parent-level validation must resolve the child manifest and sibling phase references.
+- Deferred or follow-up work remains in the existing handover and child packet surfaces.
+<!-- /ANCHOR:requirements -->
+
 
 ---
 

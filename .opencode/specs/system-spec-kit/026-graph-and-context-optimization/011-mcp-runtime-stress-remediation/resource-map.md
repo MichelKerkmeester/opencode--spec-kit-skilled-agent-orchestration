@@ -7,6 +7,19 @@ trigger_phrases:
   - "carve-out renumber paths"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation"
+    last_updated_at: "2026-04-28T20:00:00Z"
+    last_updated_by: "codex-gpt-5.5"
+    recent_action: "Strict validator hygiene update"
+    next_safe_action: "Run recursive strict validator"
+    blockers: []
+    key_files:
+      - "resource-map.md"
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 
 # Resource Map
@@ -61,7 +74,7 @@ contextType: "general"
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol/` | Moved + Renamed | OK | From `003-…/013-mcp-daemon-rebuild-protocol/`. Daemon rebuild + restart contract. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/` | Moved + Renamed | OK | From `003-…/014-memory-search-response-policy/`. Refusal contract for low-quality searches. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/` | Created | OK | v1.0.2 re-run of the 30-cell stress-test against the post-fix dist; per-cell delta classification + per-packet verdict. **Complete 2026-04-27** — sweep done, findings shipped, HANDOVER §2.1 CLOSED. |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research/` | Created + Updated | OK | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams. Complete 2026-04-27; synthesis at `research/research.md`. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research/` | Created + Updated | OK | 10-iteration `/spec_kit:deep-research:auto` loop refining v1.0.2 P0/P1/P2 follow-ups + light architectural touch on intelligence-system seams. Complete 2026-04-27; synthesis at research/research.md. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/` | Created + Updated | OK | P0 cli-copilot target-authority helper; complete. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell/` | Created + Updated | OK | P1 deterministic degraded-graph stress cell; complete. |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot/` | Created + Updated | OK | P2 read-only graph readiness snapshot for `code_graph_status`; complete. |

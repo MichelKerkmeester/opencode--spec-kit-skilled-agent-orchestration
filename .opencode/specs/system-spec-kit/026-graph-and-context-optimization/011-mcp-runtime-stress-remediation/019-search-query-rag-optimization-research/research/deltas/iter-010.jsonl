@@ -1,0 +1,2 @@
+{"type":"research_finding","id":"F-020","iteration":10,"severity":"P1","title":"Phase D should start with measurement before behavior changes","evidence":["research/iterations/iteration-001.md","research/iterations/iteration-009.md"],"impact":"The search-quality harness is prerequisite to safely changing query routing, learned weights, rerank, or trust trees."}
+

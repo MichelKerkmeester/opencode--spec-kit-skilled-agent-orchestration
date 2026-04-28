@@ -155,7 +155,7 @@ The static-grep ordering test required one design fix during implementation. The
 
 ---
 
-## Next Steps
+### Next Steps
 
 1. **Operator review** of test rewrite + packet docs. Tracked as T301 in `tasks.md`.
 2. **Commit packet + test changes** as a single atomic change. Parent session handles git per the user's directive ("Do NOT commit").

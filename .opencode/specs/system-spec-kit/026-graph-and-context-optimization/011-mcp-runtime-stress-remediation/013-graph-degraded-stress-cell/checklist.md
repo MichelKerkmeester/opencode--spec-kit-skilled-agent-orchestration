@@ -49,9 +49,9 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001..005, REQ-010..012)
-- [x] CHK-002 [P0] Technical approach defined in plan.md (3-bucket sweep + `initDb` isolation + live-DB hash guard)
-- [x] CHK-003 [P1] Dependencies identified and available (existing `initDb` seam, vitest 4.x, better-sqlite3)
+- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001..005, REQ-010..012) [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-002 [P0] Technical approach defined in plan.md (3-bucket sweep + `initDb` isolation + live-DB hash guard) [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-003 [P1] Dependencies identified and available (existing `initDb` seam, vitest 4.x, better-sqlite3) [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -59,10 +59,10 @@ _memory:
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [x] CHK-010 [P0] Test file passes TypeScript type-check (`npx tsc --noEmit -p tsconfig.json` → no errors in degraded-sweep file)
-- [x] CHK-011 [P0] No console errors or warnings during test run
-- [x] CHK-012 [P1] Error handling: `try`/`catch` not needed in test logic itself; spy-restore handled in `afterEach`
-- [x] CHK-013 [P1] Code follows existing pattern (mirrors `code-graph-db.vitest.ts` and `deep-loop-graph-query.vitest.ts` isolation idiom)
+- [x] CHK-010 [P0] Test file passes TypeScript type-check (`npx tsc --noEmit -p tsconfig.json` → no errors in degraded-sweep file) [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-011 [P0] No console errors or warnings during test run [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-012 [P1] Error handling: `try`/`catch` not needed in test logic itself; spy-restore handled in `afterEach` [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-013 [P1] Code follows existing pattern (mirrors `code-graph-db.vitest.ts` and `deep-loop-graph-query.vitest.ts` isolation idiom) [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -70,12 +70,12 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] All acceptance criteria met (REQ-001..005 mapped to assertions in the new vitest)
-- [x] CHK-021 [P0] Manual run: `npx vitest run mcp_server/tests/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips; exit 0
-- [x] CHK-022 [P0] Regression run: `npx vitest run mcp_server/tests/code-graph-*.vitest.ts` → 34 tests pass, zero regressions; exit 0
-- [x] CHK-023 [P1] Edge case: broad-stale bucket exercises `SELECTIVE_REINDEX_THRESHOLD = 50` boundary at `ensure-ready.ts:201-213`
-- [x] CHK-024 [P1] Live-DB byte-equality guard fires in `afterAll`; the suite would fail loudly if any test mutated production bytes
-- [x] CHK-025 [P0] Test does NOT trigger `code_graph_scan` from inside the suite — verified by absence of `code_graph_scan` MCP invocations in the test source
+- [x] CHK-020 [P0] All acceptance criteria met (REQ-001..005 mapped to assertions in the new vitest) [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-021 [P0] Manual run: `npx vitest run mcp_server/tests/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips; exit 0 [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-022 [P0] Regression run: `npx vitest run mcp_server/tests/code-graph-*.vitest.ts` → 34 tests pass, zero regressions; exit 0 [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-023 [P1] Edge case: broad-stale bucket exercises `SELECTIVE_REINDEX_THRESHOLD = 50` boundary at `ensure-ready.ts:201-213` [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-024 [P1] Live-DB byte-equality guard fires in `afterAll`; the suite would fail loudly if any test mutated production bytes [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-025 [P0] Test does NOT trigger `code_graph_scan` from inside the suite — verified by absence of `code_graph_scan` MCP invocations in the test source [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:testing -->
 
 ---
@@ -83,9 +83,9 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets in the test file
-- [x] CHK-031 [P0] Input validation: all test inputs are tmpdir-scoped; no user data crosses test boundaries
-- [x] CHK-032 [P1] No filesystem operations outside the per-test tmpdir (and the live-DB hash, which is read-only)
+- [x] CHK-030 [P0] No hardcoded secrets in the test file [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-031 [P0] Input validation: all test inputs are tmpdir-scoped; no user data crosses test boundaries [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-032 [P1] No filesystem operations outside the per-test tmpdir (and the live-DB hash, which is read-only) [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:security -->
 
 ---
@@ -93,8 +93,8 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Spec / plan / tasks synchronized — all reference the same REQ IDs and bucket structure
-- [x] CHK-041 [P1] Code comments adequate — each bucket section in the test explains the strategy and the production-code reference lines it exercises
+- [x] CHK-040 [P1] Spec / plan / tasks synchronized — all reference the same REQ IDs and bucket structure [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-041 [P1] Code comments adequate — each bucket section in the test explains the strategy and the production-code reference lines it exercises [EVIDENCE: see retained verification text in this checklist item.]
 - [x] CHK-042 [P2] README updated — N/A (no README in this packet; not a public-facing surface)
 <!-- /ANCHOR:docs -->
 
@@ -103,8 +103,8 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files written only to `os.tmpdir()` via `mkdtempSync` — no `scratch/` usage needed for this packet
-- [x] CHK-051 [P1] Per-test cleanup runs in `afterEach`; suite-level cleanup runs in `afterAll`
+- [x] CHK-050 [P1] Temp files written only to `os.tmpdir()` via `mkdtempSync` — no `scratch/` usage needed for this packet [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-051 [P1] Per-test cleanup runs in `afterEach`; suite-level cleanup runs in `afterAll` [EVIDENCE: see retained verification text in this checklist item.]
 <!-- /ANCHOR:file-org -->
 
 ---

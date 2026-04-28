@@ -1,0 +1,2 @@
+{"type":"research_finding","id":"F-015","iteration":7,"severity":"P2","title":"Rerank should be conditional, not default","evidence":[".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:35",".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts:161",".opencode/skill/system-spec-kit/mcp_server/lib/search/local-reranker.ts:206"],"impact":"Use rerank for ambiguity, weak retrieval, or multi-channel disagreement to protect latency and refusal contracts."}
+

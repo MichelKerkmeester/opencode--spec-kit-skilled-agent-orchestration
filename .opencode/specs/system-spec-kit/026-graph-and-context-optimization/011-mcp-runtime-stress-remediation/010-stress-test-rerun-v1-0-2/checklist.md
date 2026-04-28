@@ -7,6 +7,19 @@ trigger_phrases:
   - "v1.0.2 quality gates"
 importance_tier: "important"
 contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2"
+    last_updated_at: "2026-04-28T20:00:00Z"
+    last_updated_by: "codex-gpt-5.5"
+    recent_action: "Strict validator hygiene update"
+    next_safe_action: "Run recursive strict validator"
+    blockers: []
+    key_files:
+      - "checklist.md"
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
 ---
 
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist-core | v2.2 -->
@@ -28,12 +41,12 @@ contextType: "implementation"
 - [ ] **REQ-001 — memory_causal_stats**: all 6 `by_relation` keys present; `data.health` agrees with `data.meetsTarget`; `data.deltaByRelation` populated; `data.balanceStatus` populated — captured verbatim
 
 ### Dispatch
-- [ ] **REQ-002 — all 30 cells dispatched**: 27 base (cli-codex × 9 + cli-copilot × 9 + cli-opencode × 9) + 3 ablation (cli-opencode-pure on S1/S2/S3); each cell has all 4 artifacts (`prompt.md`, `output.txt`, `meta.json`, `score.md`)
+- [ ] **REQ-002 — all 30 cells dispatched**: 27 base (cli-codex × 9 + cli-copilot × 9 + cli-opencode × 9) + 3 ablation (cli-opencode-pure on S1/S2/S3); each cell has all 4 artifacts (prompt.md, `output.txt`, `meta.json`, score.md)
 - [ ] **REQ-002 — exit_code = 0 across 30 cells**: enumerate `./runs/{cell}/{cli-N}/meta.json` and confirm all 30 are clean; no failed dispatches
 - [ ] **REQ-014 — I2 weak-quality preamble applied**: `./scripts/prompts/I2.md` opens with the deterministic preamble guaranteeing `memory_search` returns `quality:weak`
 
 ### Scoring
-- [ ] **REQ-003 — v1.0.1 4-dim rubric scoring**: each `score.md` has the 4-dim table summing 0-8 (no missing dim)
+- [ ] **REQ-003 — v1.0.1 4-dim rubric scoring**: each score.md has the 4-dim table summing 0-8 (no missing dim)
 - [ ] **REQ-008..013 — Fork-Telemetry Assertions per applicable cell**:
   - [ ] S1, S2, S3 cells (REQ-008): `dedupedAliases`, `uniqueResultCount`, `rankingSignals` checked
   - [ ] Q1 cells (REQ-009): `fallbackDecision` checked (presence on blocked path; absence on fresh path)
@@ -41,7 +54,7 @@ contextType: "implementation"
   - [ ] I2 cells (REQ-011): `responsePolicy.noCanonicalPathClaims` + `safeResponse` checked **— gates SC-003**
   - [ ] All I-cells (REQ-012): `meta.intent.taskIntent.classificationKind` + `paraphraseGroup` checked
   - [ ] Token-budget envelope (REQ-013): `preEnforcementTokens` + `returnedTokens` + `actualTokens === returnedTokens` invariant verified
-- [ ] **REQ-004 — Delta classification per cell**: each `score.md` cites v1.0.1 baseline + delta + classification (WIN / NEUTRAL / REGRESSION)
+- [ ] **REQ-004 — Delta classification per cell**: each score.md cites v1.0.1 baseline + delta + classification (WIN / NEUTRAL / REGRESSION)
 - [ ] **REQ-006 — Zero unresolved REGRESSION cells**: every REGRESSION explained as measurement artifact, mapped to known regression, or escalated as P0 follow-up
 
 ### Synthesis

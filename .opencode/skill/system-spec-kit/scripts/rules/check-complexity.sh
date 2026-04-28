@@ -99,7 +99,7 @@ _complexity_count_tasks() {
     local tasks_file="$folder/tasks.md"
     if [[ -f "$tasks_file" ]]; then
         local count
-        count=$(grep -cE "^- \[[ xX]\][[:space:]]+" "$tasks_file" 2>/dev/null || true)
+        count=$(grep -cE "^- \[[ xX]\][[:space:]]+|^###[[:space:]]+T[0-9]{3}\\b" "$tasks_file" 2>/dev/null || true)
         echo "${count:-0}"
     else
         echo "0"
@@ -121,6 +121,15 @@ run_check() {
     RULE_REMEDIATION=""
 
     local warnings=()
+
+    # Phase parents intentionally keep planning/task detail in child folders.
+    # Applying leaf packet phase/task-count heuristics to the lean parent surface
+    # creates strict-mode false positives.
+    if is_phase_parent "$folder"; then
+        RULE_STATUS="info"
+        RULE_MESSAGE="Phase parent: complexity-count enforcement skipped (lean trio policy)"
+        return 0
+    fi
 
     # Get declared level from spec.md
     local declared_level

@@ -860,6 +860,7 @@ run_recursive_validation() {
     local phase_results=""
 
     # Discover child phase folders (NNN-* pattern)
+    local phase_dir
     local phase_dirs=()
     for phase_dir in "$parent_folder"/[0-9][0-9][0-9]-*/; do
         [[ -d "$phase_dir" ]] && phase_dirs+=("${phase_dir%/}")

@@ -32,6 +32,11 @@ _memory:
 A single 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.5, high reasoning, fast service tier) refines actionable fix proposals for four v1.0.2 stress-test follow-ups (P0 cli-copilot Gate 3 bypass, P1 graph fast-fail testability, P2 file-watcher debounce, opportunity CocoIndex telemetry leverage) plus a light architectural touch on intelligence-system seams. Deliverable: `research/research.md` synthesis. Per-follow-up remediation packets are downstream user-authored work.
 
 **Technical context**: stack is `/spec_kit:deep-research:auto` workflow + cli-codex executor; model gpt-5.5 with `reasoning_effort=high`, `service_tier=fast`; iteration cap 10 (hard); state root is `research/` subdirectory under this packet; source of evidence is `../010-stress-test-rerun-v1-0-2/findings.md` Recommendations §1-5 + per-cell scores; workflow YAML at `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml`; convergence math is rolling-avg + MAD-noise + question-entropy weighted stop-score (default threshold 0.60).
+
+
+### Technical Context
+
+This retrospective plan uses the existing packet stack and artifacts already named in the summary. No new implementation surface is introduced by this validator-hygiene update.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -41,7 +46,7 @@ A single 10-iteration `/spec_kit:deep-research:auto` loop with cli-codex (gpt-5.
 
 Per `checklist.md`:
 
-- **P0** (hard-blocking): canonical command surface used; executor config records cli-codex/gpt-5.5/high/fast; loop stops with `converged` or `maxIterationsReached`; `research.md` covers all 4 follow-ups; no fabricated paths.
+- **P0** (hard-blocking): canonical command surface used; executor config records cli-codex/gpt-5.5/high/fast; loop stops with `converged` or `maxIterationsReached`; research.md covers all 4 follow-ups; no fabricated paths.
 - **P1** (strong quality): light architectural touch surfaces ≥1 named seam; cross-reference table maps to 010 + 003-009; iteration deltas have required fields; topic prompt cites source-of-evidence paths; parent metadata updated; convergence stop-score logged.
 - **P2** (recommended): resource-map.md emitted; ≥80% opening questions resolved; per-follow-up `newInfoRatio` balanced; iteration count 6-10; validator passes; HANDOVER §3 items 4-6 status updated.
 <!-- /ANCHOR:quality-gates -->
@@ -104,7 +109,7 @@ The 4 follow-ups are threaded through a single state machine; convergence alloca
 
 - T001: Author `011-post-stress-followup-research/{spec.md, plan.md, tasks.md, checklist.md, description.json, graph-metadata.json, implementation-summary.md}`
 - T002: Update parent `011-mcp-runtime-stress-remediation/{spec.md, description.json, graph-metadata.json, resource-map.md}`
-- T003: Update parent `HANDOVER-deferred.md` §3 items 4-7 (point to this packet for research follow-up)
+- T003: Update parent HANDOVER-deferred.md §3 items 4-7 (point to this packet for research follow-up)
 - T004: Run `validate.sh --strict` on new packet; expect 0 errors at scaffold time
 - T005: Commit scaffold
 
@@ -116,13 +121,13 @@ The 4 follow-ups are threaded through a single state machine; convergence alloca
 
 ### Phase 3 — Iteration loop (autonomous, ~25-50 min wall-clock)
 
-- T104-T113: 10 iterations dispatch via cli-codex, each writing `iteration-NNN.md` + `iter-NNN.jsonl` + state.jsonl events. Convergence detection runs after each iteration.
+- T104-T113: 10 iterations dispatch via cli-codex, each writing iteration-NNN.md + `iter-NNN.jsonl` + state.jsonl events. Convergence detection runs after each iteration.
 
 ### Phase 4 — Synthesis + closure (autonomous + user review)
 
-- T201: Workflow writes `research.md` at convergence
-- T202: Workflow emits `resource-map.md`
-- T203: User reviews `research.md`; per-follow-up next-packet authoring is downstream work
+- T201: Workflow writes research.md at convergence
+- T202: Workflow emits resource-map.md
+- T203: User reviews research.md; per-follow-up next-packet authoring is downstream work
 - T204: Update HANDOVER §3 items 4-7 status from "Refinement target → research" to "Research converged → packet authoring next"
 
 ### Phase 5 — Verification
@@ -142,7 +147,7 @@ The canonical topic prompt fed to the loop at T101:
 
 > **Refine actionable fix proposals for four v1.0.2 stress-test follow-ups, plus a light architectural touch on the broader intelligence-system stack.**
 >
-> **Source of evidence**: read `.../011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md` Recommendations §1-5; per-cell scores at `010-stress-test-rerun-v1-0-2/runs/*/score.md`; preflight log at `runs/preflight.log`.
+> **Source of evidence**: read .../011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md Recommendations §1-5; per-cell scores at `010-stress-test-rerun-v1-0-2/runs/*/score.md`; preflight log at `runs/preflight.log`.
 >
 > **(P0) cli-copilot `/memory:save` Gate 3 bypass.** I1/cli-copilot scored 2/8 (was 1/8 in v1.0.1). It still auto-selects a spec folder from session-bootstrap context (e.g., `004-retroactive-phase-parent-migration`) and writes `last_save_at` + runs `memory_index_scan` without asking the operator. Codex and opencode honor planner-first. Investigate: where in `mcp_server/hooks/copilot/` or the `/memory:save` planner-first contract (`004-memory-save-rewrite/`) does the bypass originate? Recommend the minimal sufficient fix — tighter planner default, explicit Gate 3 prompt at CLI entry, model-side preamble, or copilot-specific intent classifier hook.
 >
@@ -163,14 +168,14 @@ The canonical topic prompt fed to the loop at T101:
 **Blocking (must be live before T101):**
 - `cli-codex` available with gpt-5.5, high reasoning, fast service tier
 - MCP daemon at fork v0.2.3+spec-kit-fork.0.2.0 reachable
-- `010-stress-test-rerun-v1-0-2/findings.md` exists on disk (it does — committed in 3568eb1a5)
+- 010-stress-test-rerun-v1-0-2/findings.md exists on disk (it does — committed in 3568eb1a5)
 - `003-009` remediation packets exist on disk (they do — committed earlier)
 
 **Read targets (per-iteration):**
-- `010-stress-test-rerun-v1-0-2/findings.md` — Recommendations + Cross-Reference table
+- 010-stress-test-rerun-v1-0-2/findings.md — Recommendations + Cross-Reference table
 - `010-stress-test-rerun-v1-0-2/runs/{cell}/{cli}-N/score.md` — per-cell evidence
-- `004-memory-save-rewrite/spec.md` — planner-first contract
-- `005-code-graph-fast-fail/spec.md` — fallbackDecision matrix
+- 004-memory-save-rewrite/spec.md — planner-first contract
+- 005-code-graph-fast-fail/spec.md — fallbackDecision matrix
 - `mcp_server/hooks/copilot/session-prime.ts` — copilot session bootstrap
 - `mcp_server/lib/ops/file-watcher.ts` — chokidar watcher
 - `mcp_server/cocoindex_code/` fork (7 new fields)

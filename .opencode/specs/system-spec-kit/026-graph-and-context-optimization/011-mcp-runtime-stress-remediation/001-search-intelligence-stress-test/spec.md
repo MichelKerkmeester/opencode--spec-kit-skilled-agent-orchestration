@@ -14,9 +14,9 @@ contextType: "research"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test"
-    last_updated_at: "2026-04-26T14:50:00Z"
+    last_updated_at: "2026-04-27T13:33:57.271Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Created root packet"
+    recent_action: "Strict validator hygiene update"
     next_safe_action: "Author 001"
     blockers: []
     key_files:
@@ -35,6 +35,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 <!-- SPECKIT_LEVEL: 1 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: none; SUCCESSOR: 002-mcp-runtime-improvement-research -->
 <!-- CONTENT DISCIPLINE: PHASE PARENT
   FORBIDDEN content (do NOT author at phase-parent level):
     - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
@@ -105,6 +106,19 @@ Build a playbook that dispatches a fixed prompt corpus (9 scenarios × 3 prompt 
 
 ---
 
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+This phase-parent section is retrospective. It does not add new requirements; it records that child packet requirements remain the source of truth for the 001 search-intelligence stress-test phase parent, and the parent must keep those child links, status rollups, and handoff references discoverable.
+
+- Child packet requirements stay in each child `spec.md`.
+- Parent-level validation must resolve the child manifest and sibling phase references.
+- Deferred or follow-up work remains in the existing handover and child packet surfaces.
+<!-- /ANCHOR:requirements -->
+
+
+---
+
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
@@ -139,7 +153,7 @@ Build a playbook that dispatches a fixed prompt corpus (9 scenarios × 3 prompt 
 
 ---
 
-## RELATED DOCUMENTS
+### RELATED DOCUMENTS
 
 - **Phase children**: See direct sub-folders matching `[0-9][0-9][0-9]-*/`
 - **Graph Metadata**: See `graph-metadata.json` for child pointers and save metadata

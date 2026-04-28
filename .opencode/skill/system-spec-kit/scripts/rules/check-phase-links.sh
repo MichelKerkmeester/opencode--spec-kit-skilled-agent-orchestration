@@ -35,6 +35,7 @@ run_check() {
     # TODO: Parse Predecessor/Successor metadata table rows instead of grepping for phase name presence. Current approach may pass with swapped, stale, or duplicated adjacency metadata. See review finding F-035.
 
     # Check if this folder has phase children
+    local phase_dir
     local phase_dirs=()
     for phase_dir in "$folder"/[0-9][0-9][0-9]-*/; do
         [[ -d "$phase_dir" ]] && phase_dirs+=("${phase_dir%/}")

@@ -63,7 +63,7 @@ _memory:
   - **File**: `graph-metadata.json`
   - **Acceptance**: schema_version=1; `derived.status="draft"`; `last_save_at` and `last_active_at` set.
 
-- [ ] **T007** Update parent `011-mcp-runtime-stress-remediation/spec.md` PHASE DOCUMENTATION MAP with row 11.
+- [ ] **T007** Update parent 011-mcp-runtime-stress-remediation/spec.md PHASE DOCUMENTATION MAP with row 11.
   - **File**: `../spec.md`
   - **Acceptance**: row references `011-post-stress-followup-research/`.
 
@@ -75,13 +75,13 @@ _memory:
   - **File**: `../graph-metadata.json`
   - **Acceptance**: child packet appears in children_ids; last_active_child_id points at it.
 
-- [ ] **T010** Update parent `resource-map.md` Specs section + bump counts.
+- [ ] **T010** Update parent resource-map.md Specs section + bump counts.
   - **File**: `../resource-map.md`
   - **Acceptance**: ≥1 row references new packet; total counts incremented.
 
-- [ ] **T011** Update parent `HANDOVER-deferred.md` §3 items 4-6 (newly-surfaced from v1.0.2): point to this packet for research follow-up.
+- [ ] **T011** Update parent HANDOVER-deferred.md §3 items 4-6 (newly-surfaced from v1.0.2): point to this packet for research follow-up.
   - **File**: `../HANDOVER-deferred.md`
-  - **Acceptance**: §3 items 4-6 reference `011-post-stress-followup-research/research/research.md` as the convergence target.
+  - **Acceptance**: §3 items 4-6 reference 011-post-stress-followup-research/research/research.md as the convergence target.
 
 - [ ] **T012** Run `validate.sh --strict` on new packet; expect 0 errors at scaffold time.
   - **Acceptance**: Errors=0 at scaffold time; warnings allowed.
@@ -111,7 +111,7 @@ _memory:
   - **Acceptance**: All four fields populated.
 
 - [ ] **T104..T113** 10 iterations dispatch (autonomous; one per loop step).
-  - **Per-iteration acceptance**: `iterations/iteration-NNN.md` non-empty; `deltas/iter-NNN.jsonl` contains one record with required fields (`iteration`, `newInfoRatio`, `status`, `focus`).
+  - **Per-iteration acceptance**: iterations/iteration-NNN.md non-empty; `deltas/iter-NNN.jsonl` contains one record with required fields (`iteration`, `newInfoRatio`, `status`, `focus`).
   - **Loop-level acceptance**: state.jsonl contains lifecycle events; strategy.md regenerated per iteration; dashboard.md current.
 
 - [ ] **T199** Convergence check after each iteration; loop stops when 10 hit OR weighted stop-score > 0.60 with quality guards passing.
@@ -124,16 +124,16 @@ _memory:
   - **File**: `research/research.md`
   - **Acceptance**: Non-empty; covers all 4 P0/P1/P2 follow-ups + ≥1 architectural seam.
 
-- [ ] **T202** Workflow emits `research/resource-map.md`.
-  - **File**: `research/resource-map.md`
+- [ ] **T202** Workflow emits research/resource-map.md.
+  - **File**: research/resource-map.md
   - **Acceptance**: Lists all read targets cited during the loop.
 
-- [ ] **T203** User reviews `research.md`. Per-follow-up next-packet authoring is downstream work (out of scope for this packet).
+- [ ] **T203** User reviews research.md. Per-follow-up next-packet authoring is downstream work (out of scope for this packet).
 
 - [ ] **T204** Update parent HANDOVER-deferred §3 items 4-6 from "Pending → research" to "Research converged → packet authoring next".
   - **File**: `../HANDOVER-deferred.md`
 
-- [ ] **T301** Sample-verify ≥10 cited file paths in `research.md` exist on disk.
+- [ ] **T301** Sample-verify ≥10 cited file paths in research.md exist on disk.
   - **Acceptance**: 0 fabrications detected.
 
 - [ ] **T302** Verify parent metadata updates landed (grep for `011-post-stress-followup-research` in 4 parent files).

@@ -12,6 +12,12 @@ import {
 } from './query-classifier.js';
 import { getStrategyForQuery } from './artifact-routing.js';
 import { classifyIntent } from './intent-classifier.js';
+import {
+  buildRoutingQueryPlan,
+  inferAuthorityNeed,
+  mergeQueryPlans,
+  type QueryPlan,
+} from '../query/query-plan.js';
 
 // Feature catalog: Query complexity router
 
@@ -35,6 +41,7 @@ interface RouteResult {
   tier: QueryComplexityTier;
   channels: ChannelName[];
   classification: ClassificationResult;
+  queryPlan: QueryPlan;
 }
 
 /** All available channels in execution order. */
@@ -144,22 +151,54 @@ function routeQuery(
   // When feature flag is disabled, classifier returns 'complex' with 'fallback' confidence.
   // In that case, always return all channels (full pipeline — safe default).
   if (!isComplexityRouterEnabled()) {
+    const artifactClass = getStrategyForQuery(query).detectedClass;
+    const intent = classifyIntent(query).intent;
+    const routingPlan = buildRoutingQueryPlan({
+      query,
+      complexity: classification.tier,
+      artifactClass,
+      selectedChannels: ALL_CHANNELS,
+      allChannels: ALL_CHANNELS,
+      intent,
+      authorityNeed: inferAuthorityNeed({ intent, artifactClass, query }),
+      routingReasons: ['complexity-router-disabled'],
+      fallbackPolicy: {
+        mode: 'full_pipeline',
+        reason: 'Complexity router disabled, preserving full pipeline behavior',
+      },
+    });
     return {
       tier: classification.tier,
       channels: [...ALL_CHANNELS],
       classification,
+      queryPlan: mergeQueryPlans(classification.queryPlan, routingPlan),
     };
   }
 
   const channels = getChannelSubset(classification.tier);
+  const artifactClass = getStrategyForQuery(query).detectedClass;
+  const intent = classifyIntent(query).intent;
   const adjustedChannels = classification.tier === 'simple' && shouldPreserveBm25(query)
     ? enforceMinimumChannels([...channels, 'bm25'])
     : channels;
+  const routingPlan = buildRoutingQueryPlan({
+    query,
+    complexity: classification.tier,
+    artifactClass,
+    selectedChannels: adjustedChannels,
+    allChannels: ALL_CHANNELS,
+    intent,
+    authorityNeed: inferAuthorityNeed({ intent, artifactClass, query }),
+    routingReasons: classification.tier === 'simple' && adjustedChannels.includes('bm25') && !channels.includes('bm25')
+      ? ['bm25-preserved-for-authority-artifact']
+      : [],
+  });
 
   return {
     tier: classification.tier,
     channels: adjustedChannels,
     classification,
+    queryPlan: mergeQueryPlans(classification.queryPlan, routingPlan),
   };
 }
 

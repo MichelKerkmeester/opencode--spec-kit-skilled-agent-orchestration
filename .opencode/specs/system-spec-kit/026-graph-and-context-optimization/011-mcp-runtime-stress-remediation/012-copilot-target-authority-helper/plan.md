@@ -111,7 +111,7 @@ runAuditedExecutorCommand / spawnSync('copilot', built.argv, ...)
 ### Phase 1: Setup
 - [x] Read research.md §3 in full; verify file:line targets exist on disk
 - [x] Read existing `resolveCopilotPromptArg` and YAML call sites; confirm prior behavior
-- [x] Read `004-memory-save-rewrite/spec.md` for the planner-first contract this layer enforces
+- [x] Read 004-memory-save-rewrite/spec.md for the planner-first contract this layer enforces
 
 ### Phase 2: Core Implementation
 - [x] Append `CopilotTargetAuthority` type + `buildCopilotPromptArg` + 2 helper builders to `executor-config.ts`

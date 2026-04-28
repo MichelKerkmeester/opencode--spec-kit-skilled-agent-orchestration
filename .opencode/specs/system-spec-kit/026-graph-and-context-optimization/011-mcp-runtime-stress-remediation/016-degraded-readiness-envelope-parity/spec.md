@@ -41,6 +41,7 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->"
 # Feature Specification: Degraded-readiness envelope parity
 
 <!-- SPECKIT_LEVEL: 2 -->
+<!-- PHASE_LINKS_PARENT: ../spec.md; PREDECESSOR: 015-cocoindex-seed-telemetry-passthrough; SUCCESSOR: 017-cli-copilot-dispatch-test-parity -->
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 ---
