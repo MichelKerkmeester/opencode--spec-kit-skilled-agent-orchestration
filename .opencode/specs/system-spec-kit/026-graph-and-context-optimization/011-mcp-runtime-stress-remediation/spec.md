@@ -113,7 +113,10 @@ Harden the MCP runtime end-to-end against the regressions surfaced by the v1.0.1
 | 12 | `012-copilot-target-authority-helper/` | (P0) Shared `buildCopilotPromptArg` helper in `executor-config.ts` — typed `targetAuthority` token wrapping cli-copilot deep-loop dispatch; closes the I1/cli-copilot Gate 3 bypass | draft (scaffold + agent implementation pending) |
 | 13 | `013-graph-degraded-stress-cell/` | (P1) Deterministic isolated-`SPEC_KIT_DB_DIR` integration sweep exercising all 4 `fallbackDecision` matrix branches; closes packet 005 NEUTRAL verdict | draft (scaffold + agent implementation pending) |
 | 14 | `014-graph-status-readiness-snapshot/` | (P2) Read-only `getGraphReadinessSnapshot()` helper used by `code_graph_status` to surface action-level readiness; observability for staleness drift | draft (scaffold + agent implementation pending) |
-| 15 | `015-cocoindex-seed-telemetry-passthrough/` | (P2) Per-seed telemetry passthrough (`rawScore`, `pathClass`, `rankingSignals`) through `code_graph_context` anchors; preserves CocoIndex fork signals as audit/explanation data | draft (scaffold + agent implementation pending) |
+| 15 | `015-cocoindex-seed-telemetry-passthrough/` | (P2) Per-seed telemetry passthrough (`rawScore`, `pathClass`, `rankingSignals`) through `code_graph_context` anchors; preserves CocoIndex fork signals as audit/explanation data | complete (committed `bbf869331`; reviewed; P1/P2 fixes folded back) |
+| 16 | `016-degraded-readiness-envelope-parity/` | (P1, required from deep-review CONDITIONAL verdict) Degraded-readiness envelope parity for `code_graph_context` + `code_graph_status` + shared readiness contract. Closes F-001/F-003 + supporting F-002/F-006/F-008/F-009 | draft (scaffold + agent implementation pending) |
+| 17 | `017-cli-copilot-dispatch-test-parity/` | (P2 from deep-review) cli-copilot dispatch test parity in `cli-matrix.vitest.ts`. Closes F-004 | draft (scaffold + agent implementation pending) |
+| 18 | `018-catalog-playbook-degraded-alignment/` | (P2 from deep-review) Catalog + playbook alignment with shipped degraded envelope + `rankingSignals` array shape. Closes F-005/F-007 + doc parts of F-008 | draft (scaffold + agent implementation pending) |
 
 ### Phase Transition Rules
 

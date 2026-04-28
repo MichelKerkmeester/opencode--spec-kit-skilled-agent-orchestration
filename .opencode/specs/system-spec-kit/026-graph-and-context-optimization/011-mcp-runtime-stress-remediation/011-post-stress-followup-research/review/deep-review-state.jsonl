@@ -1,0 +1,24 @@
+{"type":"config","topic":"012-015 integrated cross-packet review","maxIterations":10,"convergenceThreshold":0.05,"createdAt":"2026-04-27T20:31:06Z","specFolder":"system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research","executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900},"reviewTargetType":"files","reviewDimensions":["correctness","security","traceability","maintainability"]}
+{"type":"event","event":"session_started","sessionId":"dr-rev-20260427T203106Z-012-015-integrated","timestamp":"2026-04-27T20:31:06Z"}
+{"type":"event","event":"executor_audit","executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast"},"timestamp":"2026-04-27T20:31:06Z"}
+{"type":"event","event":"iteration_started","iteration":1,"timestamp":"2026-04-27T20:34:00Z"}
+{"type":"event","event":"iteration_completed","iteration":1,"timestamp":"2026-04-27T20:37:52Z"}
+{"type":"event","event":"iteration_started","iteration":2,"timestamp":"2026-04-27T20:37:52Z"}
+{"type":"event","event":"iteration_completed","iteration":2,"timestamp":"2026-04-27T20:41:24Z"}
+{"type":"event","event":"iteration_started","iteration":3,"timestamp":"2026-04-27T20:41:24Z"}
+{"type":"event","event":"iteration_completed","iteration":3,"timestamp":"2026-04-27T20:43:55Z"}
+{"type":"event","event":"iteration_started","iteration":4,"timestamp":"2026-04-27T20:43:55Z"}
+{"type":"event","event":"iteration_completed","iteration":4,"timestamp":"2026-04-27T20:47:19Z"}
+{"type":"event","event":"iteration_started","iteration":5,"timestamp":"2026-04-27T20:47:19Z"}
+{"type":"event","event":"iteration_completed","iteration":5,"timestamp":"2026-04-27T20:50:53Z"}
+{"type":"event","event":"iteration_started","iteration":6,"timestamp":"2026-04-27T20:50:53Z"}
+{"type":"event","event":"iteration_completed","iteration":6,"timestamp":"2026-04-27T20:53:34Z"}
+{"type":"event","event":"iteration_started","iteration":7,"timestamp":"2026-04-27T20:53:34Z"}
+{"type":"event","event":"iteration_completed","iteration":7,"timestamp":"2026-04-27T20:56:39Z"}
+{"type":"event","event":"iteration_started","iteration":8,"timestamp":"2026-04-27T20:56:39Z"}
+{"type":"event","event":"iteration_completed","iteration":8,"timestamp":"2026-04-27T20:59:39Z"}
+{"type":"event","event":"iteration_started","iteration":9,"timestamp":"2026-04-27T20:59:39Z"}
+{"type":"event","event":"iteration_completed","iteration":9,"timestamp":"2026-04-27T21:02:41Z"}
+{"type":"event","event":"iteration_started","iteration":10,"timestamp":"2026-04-27T21:02:41Z"}
+{"type":"event","event":"iteration_completed","iteration":10,"timestamp":"2026-04-27T21:05:25Z"}
+{"type":"event","event":"loop_complete","completed":10,"failed":0,"timestamp":"2026-04-27T21:05:25Z"}

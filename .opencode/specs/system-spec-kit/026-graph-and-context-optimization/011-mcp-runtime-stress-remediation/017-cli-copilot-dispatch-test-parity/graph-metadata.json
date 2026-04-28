@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/017-cli-copilot-dispatch-test-parity",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/017-cli-copilot-dispatch-test-parity",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research",
+        "reason": "F-004 evidence + §7 Packet B PASS gate come from the 011 deep-review report",
+        "source": "017-impl-2026-04-27",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/011-post-stress-followup-research"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper",
+        "reason": "buildCopilotPromptArg helper + both _auto.yaml wire-ins are the production contract this test pins; if 012 is reverted, this test will not compile",
+        "source": "017-impl-2026-04-27",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity",
+        "reason": "Sibling Packet A from the 011 deep-review remediation set; both packets land independently and gate the CONDITIONAL → PASS conversion together",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "017-cli-copilot-dispatch-test-parity",
+      "cli-copilot dispatch test parity",
+      "F-004 cli-matrix test fix",
+      "cli-matrix.vitest.ts buildCopilotPromptArg parity",
+      "Packet B cli-copilot test hardening",
+      "promptFileBody dispatch test"
+    ],
+    "key_topics": [
+      "cli-copilot",
+      "buildCopilotPromptArg",
+      "promptFileBody",
+      "target-authority",
+      "deep-loop",
+      "executor-config",
+      "test-only",
+      "F-004",
+      "Packet-B",
+      "v1.0.2-remediation"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli-matrix.vitest.ts",
+        "kind": "test",
+        "path": "../../../../../../.opencode/skill/system-spec-kit/mcp_server/tests/deep-loop/cli-matrix.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "buildCopilotPromptArg",
+        "kind": "function",
+        "path": "../../../../../../.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-research_auto.yaml",
+        "kind": "workflow",
+        "path": "../../../../../../.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "spec_kit_deep-review_auto.yaml",
+        "kind": "workflow",
+        "path": "../../../../../../.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Rewrites the cli-copilot section of mcp_server/tests/deep-loop/cli-matrix.vitest.ts so the assertions model buildCopilotPromptArg's built.argv + promptFileBody shape directly (the contract packet 012 ships) instead of the legacy resolveCopilotPromptArg / -p \"$(cat ...)\" command-string form. Adds a dedicated describe block with 5 cases covering all 3 targetAuthority branches plus a static-grep ordering check on both _auto.yaml dispatch sites. Updates the smoke test to model the approved-large-prompt happy path with promptFileBody written to disk before subprocess invocation. buildDispatchCommand's cli-copilot branch now throws (anti-regression). 13/13 cli-matrix tests pass; 73/73 deep-loop suite pass; 29/29 executor-config helper tests pass. Production code (executor-config.ts + both _auto.yaml files) is byte-stable. Closes F-004 P2 from the 011 deep-review.",
+    "created_at": "2026-04-27T18:30:00Z",
+    "last_save_at": "2026-04-27T18:30:00Z",
+    "save_lineage": "implementation-completion-2026-04-27",
+    "last_active_child_id": null,
+    "last_active_at": "2026-04-27T18:30:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

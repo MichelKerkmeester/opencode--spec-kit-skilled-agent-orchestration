@@ -131,7 +131,7 @@ Check `code-graph-context.ts`, `handlers/context.ts`, `handlers/query.ts`, and `
 ### Prompt
 
 ```
-As a context-and-code-graph validation operator, validate cocoindex_code fork telemetry presence on search responses against mcp__cocoindex_code__search({ query:"memory search pipeline", limit:5 }). Verify each result carries dedupedAliases (int), uniqueResultCount (int, response-level), path_class (string ∈ documented enum), rankingSignals (object), source_realpath (string), content_hash (string), raw_score (number). Return a concise pass/fail verdict with the main reason and cited evidence.
+As a context-and-code-graph validation operator, validate cocoindex_code fork telemetry presence on search responses against mcp__cocoindex_code__search({ query:"memory search pipeline", limit:5 }). Verify each result carries dedupedAliases (int), uniqueResultCount (int, response-level), path_class (string ∈ documented enum), rankingSignals (array of strings), source_realpath (string), content_hash (string), raw_score (number). Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -141,7 +141,7 @@ As a context-and-code-graph validation operator, validate cocoindex_code fork te
 
 ### Expected
 
-All 7 fork telemetry fields present per result (`rankingSignals` object non-empty); `dedupedAliases` reflects symlink alias collapsing; `uniqueResultCount` reflects post-dedup count; `path_class` value is from the documented enum; `source_realpath` is a canonical path; `content_hash` is a stable digest; `raw_score` is a finite number.
+All 7 fork telemetry fields present per result (`rankingSignals` is a non-empty array of strings — see `mcp_server/schemas/tool-input-schemas.ts:482-492` for the canonical Zod shape `z.array(z.string()).optional()`); `dedupedAliases` reflects symlink alias collapsing; `uniqueResultCount` reflects post-dedup count; `path_class` value is from the documented enum; `source_realpath` is a canonical path; `content_hash` is a stable digest; `raw_score` is a finite number.
 
 ### Evidence
 
@@ -149,8 +149,8 @@ cocoindex_code search response with telemetry fields highlighted
 
 ### Pass / Fail
 
-- **Pass**: every telemetry field present and well-formed across all results
-- **Fail**: any field missing, rankingSignals empty, path_class outside documented enum, or aliases not deduped
+- **Pass**: every telemetry field present and well-formed across all results; `rankingSignals` validates as `Array<string>`
+- **Fail**: any field missing, `rankingSignals` empty or not an array of strings, path_class outside documented enum, or aliases not deduped
 
 ### Failure Triage
 

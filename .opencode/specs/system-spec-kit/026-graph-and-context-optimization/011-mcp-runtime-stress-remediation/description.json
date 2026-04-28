@@ -17,7 +17,10 @@
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper",
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell",
       "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot",
-      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough"
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/017-cli-copilot-dispatch-test-parity",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment"
     ],
     "layout": "phase-root-children",
     "rationale": "Structural metadata only. See ./context-index.md for the carve-out + renumber narrative."
@@ -34,7 +37,7 @@
     "v1.0.1",
     "rubric"
   ],
-  "lastUpdated": "2026-04-27T17:35:00Z",
+  "lastUpdated": "2026-04-28T08:05:00Z",
   "specId": "011",
   "folderSlug": "mcp-runtime-stress-remediation",
   "parentChain": [

@@ -54,8 +54,46 @@ interface NormalizedSeedSource {
 
 type ContextReadiness = ReadyResult & { error?: string };
 
+interface ContextFallbackDecision {
+  nextTool: 'rg' | 'code_graph_scan';
+  reason: string;
+}
+
 function shouldBlockReadPath(readiness: ReadyResult): boolean {
+  // Packet 016 / F-001: a crashed readiness probe (`freshness: 'error'`) MUST
+  // also block before `buildContext()` so the degraded envelope preserves
+  // canonical readiness/trustState and emits an `rg` recovery signal — the
+  // same shape that `code_graph_query` already ships via `fallbackDecision`.
+  // Falling through to `buildContext()` on a crashed probe loses the
+  // structured envelope and downgrades the response to a generic 'error'.
+  if (readiness.freshness === 'error') {
+    return true;
+  }
   return readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true;
+}
+
+function buildContextFallbackDecision(readiness: ContextReadiness): ContextFallbackDecision | null {
+  // Packet 016 / F-001: mirror `code_graph_query.buildFallbackDecision` shape
+  // so callers see ONE shared recovery vocabulary across all three handlers.
+  // - readiness crash (`freshness: 'error'`) → fall back to `rg`
+  // - full_scan required (no inline performed) → run `code_graph_scan`
+  if (readiness.freshness === 'error') {
+    return {
+      nextTool: 'rg',
+      reason: typeof readiness.error === 'string' && readiness.error.length > 0
+        ? `readiness_check_crashed: ${readiness.error}`
+        : 'readiness_check_crashed',
+    };
+  }
+
+  if (readiness.action === 'full_scan' && readiness.inlineIndexPerformed !== true) {
+    return {
+      nextTool: 'code_graph_scan',
+      reason: 'full_scan_required',
+    };
+  }
+
+  return null;
 }
 
 function resolveDeadlineMs(profile: ContextArgs['profile']): number {
@@ -145,23 +183,46 @@ export async function handleCodeGraphContext(args: ContextHandlerArgs): Promise<
 
     if (shouldBlockReadPath(readiness)) {
       const readinessBlock = buildReadinessBlock(readiness);
+      const fallbackDecision = buildContextFallbackDecision(readiness);
+      // Packet 016 / F-001: differentiate the crash-on-probe envelope from
+      // the standard full_scan-required envelope so operators see WHY graph
+      // answers were omitted. The `rg` fallback is the same recovery the
+      // query handler already ships; this aligns the three handlers on one
+      // shared degraded-readiness vocabulary (see decision-record.md ADR-001).
+      const isCrash = readiness.freshness === 'error';
+      const message = isCrash
+        ? `code_graph_not_ready: ${readiness.reason}`
+        : `code_graph_full_scan_required: ${readiness.reason}`;
+      const requiredAction = isCrash ? 'rg' : 'code_graph_scan';
+      const blockReason = isCrash ? 'readiness_check_crashed' : 'full_scan_required';
+
+      // graphDb.getStats() can throw if the DB itself is unavailable. Isolate
+      // the call so the degraded envelope still ships even when stats fail.
+      let lastPersistedAt: string | null = null;
+      try {
+        lastPersistedAt = graphDb.getStats().lastScanTimestamp;
+      } catch {
+        lastPersistedAt = null;
+      }
+
       return {
         content: [{
           type: 'text',
           text: JSON.stringify({
             status: 'blocked',
-            message: `code_graph_full_scan_required: ${readiness.reason}`,
+            message,
             data: {
               queryMode: args.queryMode ?? 'neighborhood',
               blocked: true,
               degraded: true,
               graphAnswersOmitted: true,
-              requiredAction: 'code_graph_scan',
-              blockReason: 'full_scan_required',
+              requiredAction,
+              blockReason,
               readiness: readinessBlock,
               canonicalReadiness: readinessBlock.canonicalReadiness,
               trustState: readinessBlock.trustState,
-              lastPersistedAt: graphDb.getStats().lastScanTimestamp,
+              ...(fallbackDecision ? { fallbackDecision } : {}),
+              lastPersistedAt,
             },
           }, null, 2),
         }],

@@ -1,0 +1,13 @@
+{
+  "openFindings": [],
+  "resolvedFindings": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openFindings": 0,
+    "resolvedFindings": 0,
+    "findingsBySeverity": {"P0": 0, "P1": 0, "P2": 0},
+    "dimensionsCovered": {"correctness": 0, "security": 0, "traceability": 0, "maintainability": 0},
+    "convergenceScore": 0
+  },
+  "verdict": "pending"
+}

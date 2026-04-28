@@ -157,17 +157,62 @@ function getGoldVerificationTrust(
 
 /** Handle code_graph_status tool call */
 export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: string; text: string }> }> {
+  // Packet 016 / F-003: read the readiness snapshot FIRST so the degraded
+  // envelope still surfaces even when `graphDb.getStats()` throws (e.g. DB
+  // file corrupted or locked). Previously stats was called first; on crash
+  // the catch path returned a generic "Code graph not initialized" error
+  // and packet 014's whole point — surfacing action-level readiness — was
+  // defeated. The snapshot helper is read-only (packet 014, REQ-001) so
+  // calling it earlier never causes side effects.
+  const snapshot = getGraphReadinessSnapshot(process.cwd());
+  const freshness = snapshot.freshness;
+
+  // Stats is isolated so an unavailable DB never suppresses the readiness
+  // snapshot. On failure we ship the snapshot + degraded envelope and
+  // surface stats-derived fields as null/empty fallbacks.
+  let stats: ReturnType<typeof graphDb.getStats> | null = null;
+  let statsError: string | null = null;
   try {
-    const stats = graphDb.getStats();
+    stats = graphDb.getStats();
+  } catch (err: unknown) {
+    statsError = err instanceof Error ? err.message : String(err);
+  }
+
+  if (!stats) {
+    // DB unavailable: surface the readiness snapshot + clear recovery signal
+    // (`rg` fallback per shared degraded-readiness vocabulary; see decision-
+    // record.md ADR-001) instead of returning a generic init error string.
+    const readinessReason = snapshot.reason && snapshot.reason.length > 0
+      ? snapshot.reason
+      : (statsError ? `code-graph stats unavailable: ${statsError}` : 'code-graph stats unavailable');
+    const readinessBlock = buildReadinessBlock({
+      freshness,
+      action: snapshot.action,
+      inlineIndexPerformed: false,
+      reason: readinessReason,
+    });
+    return {
+      content: [{
+        type: 'text',
+        text: JSON.stringify({
+          status: 'error',
+          message: `code_graph_not_initialized: ${statsError ?? 'stats unavailable'}`,
+          data: {
+            degraded: true,
+            graphAnswersOmitted: true,
+            blockReason: 'stats_unavailable',
+            readiness: readinessBlock,
+            canonicalReadiness: readinessBlock.canonicalReadiness,
+            trustState: readinessBlock.trustState,
+            fallbackDecision: { nextTool: 'rg', reason: 'stats_unavailable' },
+          },
+        }, null, 2),
+      }],
+    };
+  }
+
+  try {
     const edgeDriftSummary = buildEdgeDriftSummary(stats.edgesByType);
-    // Packet 014 / Q-P2: read-only readiness snapshot. Surfaces the action
-    // (`full_scan` | `selective_reindex` | `none`) that `ensureCodeGraphReady`
-    // would emit, without mutating the DB or running an inline scan. Replaces
-    // the previous behavior where readiness.action was hard-coded to "none"
-    // even when the graph was empty/stale, which forced operators to invoke
-    // `code_graph_scan` (mutating) just to find out the next step.
-    const snapshot = getGraphReadinessSnapshot(process.cwd());
-    const freshness = snapshot.freshness;
     const lastGoldVerification = graphDb.getLastGoldVerification();
     const goldVerificationTrust = getGoldVerificationTrust(
       lastGoldVerification,
@@ -237,13 +282,38 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
       }],
     };
   } catch (err: unknown) {
+    // Packet 016 / F-003: preserve the readiness snapshot when the post-stats
+    // path fails (e.g. drift summary / verification trust calculation throws).
+    // Operators must still see action-level readiness instead of a generic
+    // init error. Falls back to the snapshot we computed at the top of the
+    // handler, which is read-only and never throws (returns 'error'
+    // freshness if the underlying probe crashes).
+    const message = err instanceof Error ? err.message : String(err);
+    const readinessReason = snapshot.reason && snapshot.reason.length > 0
+      ? snapshot.reason
+      : `status path failed: ${message}`;
+    const readinessBlock = buildReadinessBlock({
+      freshness,
+      action: snapshot.action,
+      inlineIndexPerformed: false,
+      reason: readinessReason,
+    });
     return {
       content: [{
         type: 'text',
         text: JSON.stringify({
           status: 'error',
-          error: `Code graph not initialized: ${err instanceof Error ? err.message : String(err)}`,
-        }),
+          message: `code_graph_not_initialized: ${message}`,
+          data: {
+            degraded: true,
+            graphAnswersOmitted: true,
+            blockReason: 'status_path_failed',
+            readiness: readinessBlock,
+            canonicalReadiness: readinessBlock.canonicalReadiness,
+            trustState: readinessBlock.trustState,
+            fallbackDecision: { nextTool: 'rg', reason: 'status_path_failed' },
+          },
+        }, null, 2),
       }],
     };
   }
