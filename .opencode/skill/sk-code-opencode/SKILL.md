@@ -68,13 +68,13 @@ Multi-language code standards for OpenCode system code across JavaScript, TypeSc
 
 The router discovers markdown resources recursively from `references/` and `assets/` and then applies intent scoring from `RESOURCE_MAP`. Keep this section domain-focused rather than static file inventories.
 
-- `references/shared/` for universal cross-language patterns, structure conventions, and organization guidance.
+- `references/shared/` for universal cross-language patterns (`universal_patterns.md`), code organization (`code_organization.md`), runtime hook reference (`hooks.md`), and alignment verification automation (`alignment_verification_automation.md`).
 - `references/javascript/` for JavaScript style, quality standards, and quick-reference guidance.
 - `references/typescript/` for TypeScript style, quality standards, and quick-reference guidance.
 - `references/python/` for Python style, quality standards, and quick-reference guidance.
 - `references/shell/` for shell scripting style, quality standards, and quick-reference guidance.
 - `references/config/` for JSON/JSONC style rules and configuration guidance.
-- `assets/checklists/` for language-specific quality gates and completion checklists.
+- `assets/checklists/` for language-specific quality gates plus a `universal_checklist.md` that applies regardless of detected language.
 
 ### Resource Loading Levels
 
@@ -125,6 +125,17 @@ UNKNOWN_FALLBACK_CHECKLIST = [
 ]
 
 ON_DEMAND_KEYWORDS = ["gate-3-classifier", "skill_advisor.py", "vitest", "jsonl", "json schema", "commonjs helper", "mcp.json", "typescript"]
+
+SHARED_TOPIC_KEYWORDS = {
+    "references/shared/hooks.md": [
+        "hook", "session-prime", "user-prompt-submit", "compact-cache",
+        "pre-tool-use", "post-tool-use", "stop hook", "settings.json hook",
+    ],
+    "references/shared/alignment_verification_automation.md": [
+        "alignment verifier", "verification automation", "alignment automation",
+        "align workflow", "verify alignment",
+    ],
+}
 
 def _task_text(task) -> str:
     return " ".join([
@@ -178,6 +189,7 @@ def detect_languages(task):
 
 def route_opencode_resources(task):
     inventory = discover_markdown_resources()
+    text = _task_text(task)
 
     selected = ["references/shared/universal_patterns.md", "references/shared/code_organization.md"]
 
@@ -229,6 +241,15 @@ def route_opencode_resources(task):
             ])
             if task.needs_checklist:
                 selected.append("assets/checklists/config_checklist.md")
+
+    for shared_path, signals in SHARED_TOPIC_KEYWORDS.items():
+        if any(term in text for term in signals):
+            selected.append(shared_path)
+
+    if getattr(task, "needs_checklist", False) and (
+        languages == ["UNKNOWN"] or len(languages) > 1
+    ):
+        selected.append("assets/checklists/universal_checklist.md")
 
     if languages == ["UNKNOWN"]:
         return {
