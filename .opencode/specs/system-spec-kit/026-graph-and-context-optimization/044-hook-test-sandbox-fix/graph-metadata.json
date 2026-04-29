@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/044-hook-test-sandbox-fix",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/044-hook-test-sandbox-fix",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/043-hook-plugin-per-runtime-testing"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "044-hook-test-sandbox-fix",
+      "hook test methodology",
+      "sandbox detection",
+      "BLOCKED_BY_TEST_SANDBOX",
+      "operator-run-outside-sandbox"
+    ],
+    "key_topics": [
+      "hooks",
+      "plugins",
+      "runtime",
+      "sandbox",
+      "cli",
+      "methodology",
+      "jsonl",
+      "operator validation"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "methodology-correction.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      {
+        "name": "detectSandbox",
+        "kind": "function",
+        "path": "specs/system-spec-kit/026-graph-and-context-optimization/043-hook-plugin-per-runtime-testing/runners/common.ts",
+        "source": "manual"
+      },
+      {
+        "name": "SKIPPED_SANDBOX",
+        "kind": "status",
+        "path": "specs/system-spec-kit/026-graph-and-context-optimization/043-hook-plugin-per-runtime-testing/runners/common.ts",
+        "source": "manual"
+      },
+      {
+        "name": "methodology-correction.md",
+        "kind": "doc",
+        "path": "methodology-correction.md",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Fixes the test methodology that 043 used. Adds sandbox detection to runners; introduces SKIPPED_SANDBOX status for live-CLI cells when running inside a sandbox; documents operator-run-outside-sandbox as the canonical live-test mode. Amends 043 findings.md to reclassify the FAIL verdicts as BLOCKED_BY_TEST_SANDBOX with the real cause and operator remediation. Hook+plugin code itself is unchanged; only test methodology + verdict classification.",
+    "created_at": "2026-04-29T21:45:00.000Z",
+    "last_save_at": "2026-04-29T21:45:00.000Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "methodology-correction.md"
+    ]
+  }
+}
+

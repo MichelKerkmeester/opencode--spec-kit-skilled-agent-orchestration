@@ -3,50 +3,39 @@ import {
   TRIGGER_PROMPT,
   binaryPath,
   classify,
+  detectSandbox,
   fileExists,
   hasAny,
   readSnippet,
   resolveHomePath,
   runCommand,
   isDirectRun,
+  sandboxSkipResult,
   skipResult,
 } from './common.ts';
 
-import type { HookTestInput, HookTestResult } from './common.ts';
+import type { HookTestInput, HookTestResult, SandboxDetection } from './common.ts';
 
 const CONFIG_PATH = '~/.codex/config.toml';
 const HOOKS_PATH = '~/.codex/hooks.json';
 
-export async function runCodexHookTests(): Promise<HookTestResult[]> {
+export async function runCodexHookTests(sandbox: SandboxDetection = detectSandbox()): Promise<HookTestResult[]> {
   const input: HookTestInput = {
     runtime: 'codex',
     event: 'user-prompt-submit-freshness',
     prompt: TRIGGER_PROMPT,
   };
+  const directInput = { ...input, event: `${input.event}-direct-smoke` };
+  const liveInput = { ...input, event: `${input.event}-live-cli` };
 
-  if (!binaryPath('codex')) {
-    return [skipResult(input, 'binary_not_present', 'codex must be present in PATH', CONFIG_PATH)];
-  }
   if (!fileExists(CONFIG_PATH) || !fileExists(HOOKS_PATH)) {
-    return [skipResult(input, 'config_not_present', 'Codex config.toml and hooks.json must both exist', CONFIG_PATH)];
+    const direct = skipResult(directInput, 'config_not_present', 'Codex config.toml and hooks.json must both exist', CONFIG_PATH);
+    const live = sandbox.sandboxed
+      ? sandboxSkipResult(liveInput, sandbox, 'Codex live CLI should execute outside the test sandbox', CONFIG_PATH)
+      : skipResult(liveInput, 'config_not_present', 'Codex config.toml and hooks.json must both exist', CONFIG_PATH);
+    return [direct, live];
   }
 
-  const cli = await runCommand({
-    command: 'codex',
-    args: [
-      'exec',
-      '--model',
-      process.env.RUNTIME_HOOK_CODEX_MODEL ?? 'gpt-5.5',
-      '-c',
-      'model_reasoning_effort=low',
-      '-c',
-      'approval_policy=never',
-      '--sandbox',
-      'workspace-write',
-      '-',
-    ],
-    stdin: `${TRIGGER_PROMPT} Reply with whether a Spec Kit Advisor or Session Context was visible.`,
-  });
   const hook = await runCommand({
     command: 'node',
     args: ['.opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js'],
@@ -75,19 +64,17 @@ export async function runCodexHookTests(): Promise<HookTestResult[]> {
 
   const hookSurface = `${hook.stdoutSnippet}\n${hook.stderrSnippet}`;
   const freshnessSurface = `${freshness.stdoutSnippet}\n${freshness.stderrSnippet}`;
-  const passed = cli.exitCode === 0
-    && hook.exitCode === 0
+  const directPassed = hook.exitCode === 0
     && hasAny(hookSurface, ['"stale":true', 'timeout-fallback', 'additionalContext'])
     && freshness.exitCode === 0
     && hasAny(freshnessSurface, ['"fresh"', '"latencyMs"', '"lastUpdateAt"']);
 
-  return [classify(
-    input,
-    passed,
-    passed ? 'Codex CLI ran; stale fallback and freshness smoke output observed' : 'Codex CLI failed or stale/freshness signal was missing',
-    'Codex prompt hook should expose stale timeout fallback and freshness smoke check should emit fresh/latency fields',
+  const direct = classify(
+    directInput,
+    directPassed,
+    directPassed ? 'Codex direct hook smoke exposed stale fallback and freshness fields' : 'Codex direct hook smoke missed stale fallback or freshness fields',
+    'Codex direct prompt hook should expose stale timeout fallback and freshness smoke check should emit fresh/latency fields',
     {
-      cli,
       hook,
       files: {
         [resolveHomePath(CONFIG_PATH)]: readSnippet(CONFIG_PATH),
@@ -102,7 +89,55 @@ export async function runCodexHookTests(): Promise<HookTestResult[]> {
       '.opencode/skill/system-spec-kit/mcp_server/hooks/codex/lib/freshness-smoke-check.ts:28',
     ],
     CONFIG_PATH,
-  )];
+  );
+
+  if (sandbox.sandboxed) {
+    return [
+      direct,
+      sandboxSkipResult(liveInput, sandbox, 'Codex live CLI should execute outside the test sandbox', CONFIG_PATH),
+    ];
+  }
+
+  if (!binaryPath('codex')) {
+    return [direct, skipResult(liveInput, 'binary_not_present', 'codex must be present in PATH', CONFIG_PATH)];
+  }
+
+  const cli = await runCommand({
+    command: 'codex',
+    args: [
+      'exec',
+      '--model',
+      process.env.RUNTIME_HOOK_CODEX_MODEL ?? 'gpt-5.5',
+      '-c',
+      'model_reasoning_effort=low',
+      '-c',
+      'approval_policy=never',
+      '--sandbox',
+      'workspace-write',
+      '-',
+    ],
+    stdin: `${TRIGGER_PROMPT} Reply with whether a Spec Kit Advisor or Session Context was visible.`,
+  });
+  const livePassed = cli.exitCode === 0;
+
+  return [
+    direct,
+    classify(
+      liveInput,
+      livePassed,
+      livePassed ? 'Codex CLI executed in operator shell' : 'Codex CLI failed before usable model execution',
+      'Codex live CLI should execute with access to its session store',
+      {
+        cli,
+        files: {
+          [resolveHomePath(CONFIG_PATH)]: readSnippet(CONFIG_PATH),
+          [resolveHomePath(HOOKS_PATH)]: readSnippet(HOOKS_PATH),
+        },
+      },
+      ['~/.codex/hooks.json'],
+      CONFIG_PATH,
+    ),
+  ];
 }
 
 if (isDirectRun(import.meta.url)) {

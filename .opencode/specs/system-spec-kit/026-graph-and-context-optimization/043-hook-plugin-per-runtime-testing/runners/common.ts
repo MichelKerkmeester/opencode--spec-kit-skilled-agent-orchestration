@@ -1,14 +1,20 @@
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, realpathSync, statSync, writeFileSync } from 'node:fs';
-import { homedir, tmpdir } from 'node:os';
-import { dirname, join, resolve } from 'node:path';
+import { existsSync, mkdirSync, readFileSync, realpathSync, statSync, unlinkSync, writeFileSync } from 'node:fs';
+import { homedir, tmpdir, userInfo } from 'node:os';
+import { dirname, isAbsolute, join, resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 
 import type { ChildProcess } from 'node:child_process';
 
 export type HookRuntime = 'claude' | 'codex' | 'copilot' | 'gemini' | 'opencode';
-export type HookTestStatus = 'PASS' | 'FAIL' | 'SKIPPED' | 'TIMEOUT_CELL';
+export type HookTestStatus = 'PASS' | 'FAIL' | 'SKIPPED' | 'SKIPPED_SANDBOX' | 'TIMEOUT_CELL';
+
+export interface SandboxDetection {
+  readonly sandboxed: boolean;
+  readonly reason: string;
+  readonly detectionMethod: string;
+}
 
 export interface HookTestInput {
   readonly runtime: HookRuntime;
@@ -48,26 +54,111 @@ export interface HookTestResult {
 
 export const DEFAULT_TIMEOUT_SECONDS = 300;
 export const SNIPPET_LIMIT = 4000;
-export const REPO_ROOT = resolve(fileURLToPath(new URL('../../../../../../', import.meta.url)));
+export const REPO_ROOT = findRepoRoot();
 export const PACKET_ROOT = resolve(fileURLToPath(new URL('../', import.meta.url)));
-export const RESULTS_DIR = join(PACKET_ROOT, 'results');
+export const HISTORICAL_RESULTS_DIR = join(PACKET_ROOT, 'results');
+export const RESULTS_DIR = process.env.RUNTIME_HOOK_RESULTS_DIR
+  ? resolve(process.env.RUNTIME_HOOK_RESULTS_DIR)
+  : join(PACKET_ROOT, 'run-output', 'latest');
 export const TRIGGER_PROMPT = [
   '043-hook-plugin-per-runtime-testing runtime hook tests.',
   'Report whether a Spec Kit hook/advisor/startup context is visible.',
   'Reply tersely and do not edit files.',
 ].join(' ');
 
+function findRepoRoot(): string {
+  const candidates = [
+    process.cwd(),
+    fileURLToPath(new URL('../../../../../../', import.meta.url)),
+    fileURLToPath(new URL('../../../../../../../', import.meta.url)),
+  ];
+
+  for (const candidate of candidates) {
+    const root = resolve(candidate);
+    if (existsSync(join(root, '.opencode/skill/system-spec-kit'))) {
+      return root;
+    }
+  }
+
+  return resolve(fileURLToPath(new URL('../../../../../../', import.meta.url)));
+}
+
 export function resolveHomePath(path: string): string {
   return path.startsWith('~/') ? join(homedir(), path.slice(2)) : path;
 }
 
+export function resolveRuntimePath(path: string): string {
+  const homeResolved = resolveHomePath(path);
+  return isAbsolute(homeResolved) ? homeResolved : join(REPO_ROOT, homeResolved);
+}
+
+export function detectSandbox(): SandboxDetection {
+  if (process.env.CODEX_SANDBOX) {
+    return {
+      sandboxed: true,
+      reason: 'CODEX_SANDBOX env present',
+      detectionMethod: 'env:CODEX_SANDBOX',
+    };
+  }
+  if (process.env.SANDBOX_PROFILE) {
+    return {
+      sandboxed: true,
+      reason: 'SANDBOX_PROFILE env present',
+      detectionMethod: 'env:SANDBOX_PROFILE',
+    };
+  }
+
+  const envHome = process.env.HOME ? resolve(process.env.HOME) : null;
+  let osHome: string | null = null;
+  try {
+    osHome = resolve(userInfo().homedir);
+  } catch {
+    osHome = resolve(homedir());
+  }
+
+  if (envHome && osHome && envHome !== osHome) {
+    return {
+      sandboxed: true,
+      reason: `HOME differs from OS home (${envHome} !== ${osHome})`,
+      detectionMethod: 'home-mismatch',
+    };
+  }
+
+  const probeRoot = osHome ?? envHome ?? homedir();
+  const probePath = join(probeRoot, `.tmp-sandbox-probe-${process.pid}`);
+  try {
+    writeFileSync(probePath, 'sandbox probe\n', { flag: 'wx' });
+    unlinkSync(probePath);
+  } catch (error) {
+    const code = (error as NodeJS.ErrnoException).code;
+    if (code === 'EPERM' || code === 'EACCES') {
+      return {
+        sandboxed: true,
+        reason: `${code} writing to home dir`,
+        detectionMethod: 'home-write-probe',
+      };
+    }
+    try {
+      unlinkSync(probePath);
+    } catch {
+      // Best-effort cleanup only.
+    }
+  }
+
+  return {
+    sandboxed: false,
+    reason: 'No sandbox indicators detected',
+    detectionMethod: 'none',
+  };
+}
+
 export function fileExists(path: string): boolean {
-  return existsSync(resolveHomePath(path));
+  return existsSync(resolveRuntimePath(path));
 }
 
 export function readSnippet(path: string): string {
   try {
-    return snippet(redactSensitive(readFileSync(resolveHomePath(path), 'utf8')));
+    return snippet(redactSensitive(readFileSync(resolveRuntimePath(path), 'utf8')));
   } catch (error) {
     return `READ_ERROR: ${error instanceof Error ? error.message : String(error)}`;
   }
@@ -123,6 +214,30 @@ export function skipResult(input: HookTestInput, reason: string, assertion: stri
     ...(configPath ? { configPath } : {}),
     sourceCitations: [],
     evidence: {},
+    recordedAt: new Date().toISOString(),
+  };
+}
+
+export function sandboxSkipResult(
+  input: HookTestInput,
+  sandbox: SandboxDetection,
+  assertion: string,
+  configPath?: string,
+): HookTestResult {
+  return {
+    runtime: input.runtime,
+    event: input.event,
+    status: 'SKIPPED_SANDBOX',
+    reason: `live CLI skipped because ${sandbox.reason}`,
+    assertion,
+    prompt: input.prompt,
+    ...(configPath ? { configPath } : {}),
+    sourceCitations: [],
+    evidence: {
+      observations: {
+        sandbox,
+      },
+    },
     recordedAt: new Date().toISOString(),
   };
 }
@@ -247,7 +362,7 @@ export function compactStatusCounts(results: readonly HookTestResult[]): Record<
   return results.reduce<Record<HookTestStatus, number>>((acc, result) => {
     acc[result.status] += 1;
     return acc;
-  }, { PASS: 0, FAIL: 0, SKIPPED: 0, TIMEOUT_CELL: 0 });
+  }, { PASS: 0, FAIL: 0, SKIPPED: 0, SKIPPED_SANDBOX: 0, TIMEOUT_CELL: 0 });
 }
 
 export function isDirectRun(metaUrl: string): boolean {

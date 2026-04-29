@@ -1,15 +1,15 @@
 import { mkdirSync } from 'node:fs';
 
-import { RESULTS_DIR, compactStatusCounts, isDirectRun, writeResults } from './common.ts';
+import { RESULTS_DIR, compactStatusCounts, detectSandbox, isDirectRun, writeResults } from './common.ts';
 import { runClaudeHookTests } from './test-claude-hooks.ts';
 import { runCodexHookTests } from './test-codex-hooks.ts';
 import { runCopilotHookTests } from './test-copilot-hooks.ts';
 import { runGeminiHookTests } from './test-gemini-hooks.ts';
 import { runOpenCodePluginTests } from './test-opencode-plugins.ts';
 
-import type { HookTestResult } from './common.ts';
+import type { HookTestResult, SandboxDetection } from './common.ts';
 
-type RuntimeRunner = () => Promise<readonly HookTestResult[]>;
+type RuntimeRunner = (sandbox: SandboxDetection) => Promise<readonly HookTestResult[]>;
 
 const CONCURRENCY_LIMIT = 3;
 
@@ -44,7 +44,14 @@ async function runWithConcurrency<T, R>(
 
 export async function runAllRuntimeHooks(): Promise<readonly HookTestResult[]> {
   mkdirSync(RESULTS_DIR, { recursive: true });
-  const batches = await runWithConcurrency(RUNNERS, CONCURRENCY_LIMIT, async (runner) => runner());
+  const sandbox = detectSandbox();
+  if (sandbox.sandboxed) {
+    process.stderr.write(
+      `Sandbox detected (reason: ${sandbox.reason}). Live CLI invocations will be SKIPPED. Direct hook smokes will still run.\n`,
+    );
+  }
+
+  const batches = await runWithConcurrency(RUNNERS, CONCURRENCY_LIMIT, async (runner) => runner(sandbox));
   const results = batches.flat();
   writeResults(results);
   return results;
@@ -57,6 +64,7 @@ if (isDirectRun(import.meta.url)) {
       resultsDir: RESULTS_DIR,
       total: results.length,
       counts,
+      verdict: counts.FAIL === 0 && counts.TIMEOUT_CELL === 0 ? 'PASS' : 'FAIL',
     }, null, 2));
     process.stdout.write('\n');
     for (const result of results) {
