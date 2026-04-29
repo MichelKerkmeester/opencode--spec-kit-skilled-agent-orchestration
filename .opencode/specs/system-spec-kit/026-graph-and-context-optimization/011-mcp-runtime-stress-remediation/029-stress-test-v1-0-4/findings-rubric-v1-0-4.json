@@ -1,0 +1,255 @@
+{
+  "version": "1.0.0",
+  "cycle": "v1.0.4",
+  "corpus": {
+    "name": "007-search-rag-measurement-driven-implementation-v1",
+    "frozenAt": "2026-04-29T12:55:00.000Z",
+    "cells": 12,
+    "channelCaptures": 16,
+    "layout": "v1.0.3 12-case search-quality corpus with original expected channel fan-out"
+  },
+  "rubric": {
+    "dimensions": [
+      "correctness",
+      "robustness",
+      "telemetry",
+      "regression-safety"
+    ],
+    "scale": {
+      "min": 0,
+      "max": 2
+    },
+    "weights": {
+      "correctness": 1,
+      "robustness": 1,
+      "telemetry": 1,
+      "regression-safety": 1
+    },
+    "maxCellScore": 8
+  },
+  "cells": [
+    {
+      "id": "v101-weak-retrieval-refusal",
+      "packet": "base",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.5,
+      "currentMetricTotal": 0.5,
+      "verdict": "PROVEN",
+      "rationale": "Refusal/citation policy survived and telemetry was complete for the live handler seam."
+    },
+    {
+      "id": "v102-code-graph-fallback",
+      "packet": "base",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "verdict": "NEUTRAL",
+      "rationale": "Fallback behavior stayed equal to v1.0.3; telemetry is complete, but relevance/citation remain partial in this fixture."
+    },
+    {
+      "id": "ambiguous-advisor-routing",
+      "packet": "base",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "verdict": "NEUTRAL",
+      "rationale": "Ambiguous advisor routing stayed equal to v1.0.3; the live handler telemetry path is proven."
+    },
+    {
+      "id": "paraphrase-query-plan",
+      "packet": "base",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "verdict": "NEUTRAL",
+      "rationale": "Paraphrase fixture stayed equal to v1.0.3 with complete telemetry."
+    },
+    {
+      "id": "w3-trust-tree-contradiction",
+      "packet": "W3",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.917,
+      "currentMetricTotal": 0.917,
+      "verdict": "PROVEN",
+      "rationale": "Trust-tree contradiction cell retained v1.0.3 quality while moving envelope/audit capture through the live handler seam."
+    },
+    {
+      "id": "w4-ambiguous-rerank-disagreement",
+      "packet": "W4",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "W4 retained perfect case quality and emitted non-placeholder rerank triggers."
+    },
+    {
+      "id": "w5-advisor-shadow-ambiguous",
+      "packet": "W5",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.875,
+      "currentMetricTotal": 0.875,
+      "verdict": "PROVEN",
+      "rationale": "Shadow diagnostic fixture retained v1.0.3 quality and was exported through PP-2 harness telemetry."
+    },
+    {
+      "id": "w6-cocoindex-duplicate-heavy",
+      "packet": "W6",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "CocoIndex calibration fixture retained perfect quality and envelope calibration telemetry."
+    },
+    {
+      "id": "w7-code-graph-stale",
+      "packet": "W7",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "Stale graph readiness retained perfect quality and populated degradedReadiness."
+    },
+    {
+      "id": "w7-code-graph-empty",
+      "packet": "W7",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "Empty graph readiness retained perfect quality and populated degradedReadiness."
+    },
+    {
+      "id": "w7-code-graph-full-scan-required",
+      "packet": "W7",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "Full-scan-required graph readiness retained perfect quality and populated degradedReadiness."
+    },
+    {
+      "id": "w7-code-graph-unavailable",
+      "packet": "W7",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regression-safety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "verdict": "PROVEN",
+      "rationale": "Unavailable graph readiness retained perfect quality and populated degradedReadiness."
+    }
+  ],
+  "aggregate": {
+    "scoreSum": 93,
+    "maxPossible": 96,
+    "percent": 96.875,
+    "percentRounded": 96.9
+  },
+  "dimensionScoreSums": {
+    "correctness": 21,
+    "robustness": 24,
+    "telemetry": 24,
+    "regression-safety": 24
+  },
+  "verdictSummary": {
+    "proven": 9,
+    "neutral": 3,
+    "regression": 0,
+    "notProven": 0
+  },
+  "comparison": {
+    "priorVersion": "v1.0.3",
+    "deltaPercent": 0,
+    "currentHarnessPercent": 75.4,
+    "priorHarnessPercent": 75.4,
+    "v102BaselinePercent": 83.8,
+    "v102Comparable": false,
+    "v102ComparisonNote": "v1.0.2 used a 30-cell CLI-model matrix; v1.0.4 follows the v1.0.3 12-case telemetry corpus for like-for-like wiring comparison."
+  },
+  "regressionReview": {
+    "required": false,
+    "reason": "No current case metric total dropped versus the v1.0.3 same-case telemetry layout, and no exact same-cell v1.0.2 mapping exists for the 12-case telemetry corpus."
+  }
+}
