@@ -212,14 +212,13 @@ specs/system-spec-kit/026-graph-and-context-optimization/
     └── review/
 ```
 
-**Naming:** `{ownerSlug}-pt-{NN}/`
+**Naming (when a packet subfolder is allocated):** `{ownerSlug}-pt-{NN}/`
 - `ownerSlug` = the owning spec folder name by default (for example `019-system-hardening` or `003-gate-c-writer-ready`)
-- Existing packet directories are reused when the resolver finds one for the same target spec
 - `NN` = two-digit zero-padded sequential counter per owner folder when a new packet must be allocated
 
-**Flat spec (no child phases):** artifacts go directly under `{spec_folder}/research/` or `{spec_folder}/review/` with no `-pt-NN` subfolder.
+**Flat-first convention (post-028):** child-phase first runs go directly under `{spec_folder}/research/` or `{spec_folder}/review/` with no `-pt-NN` subfolder. A packet subfolder is allocated only when prior content already exists for a non-matching target. Continuation runs reuse the existing flat artifact (or matching `pt-NN` packet). Root specs always use the flat path.
 
-**Required resolver:** always use `resolveArtifactRoot(specFolder, 'research' | 'review')` from [`.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`](../../shared/review-research-paths.cjs). It resolves the local owner folder, reuses an existing packet for the same target when present, and allocates a local packet directory only when needed. Never hand-pick the path.
+**Required resolver:** always use `resolveArtifactRoot(specFolder, 'research' | 'review')` from [`.opencode/skill/system-spec-kit/shared/review-research-paths.cjs`](../../shared/review-research-paths.cjs). It resolves the local owner folder, returns flat for first runs and matching continuations, reuses an existing packet for the same target when present, and allocates a `pt-NN` packet only when prior content for a non-matching target exists. Never hand-pick the path.
 
 **Forbidden:** creating or continuing child-phase research/review packets under an ancestor/root spec's `research/` or `review/` folder.
 

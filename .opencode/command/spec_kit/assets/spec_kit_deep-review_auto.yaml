@@ -1059,6 +1059,12 @@ workflow:
         edit: "{state_paths.config}"
         set_field: { status: "complete" }
 
+      step_stage_artifact_dir:
+        action: "Stage all skill-owned artifacts under artifact_dir for the operator's next git commit"
+        command: "git add {state_paths.artifact_dir}"
+        note: "Skill-owned contract fix (028): without this stage step, operators who do `git add review-report.md` lose the iteration trail (iterations/, deltas/, state.jsonl, strategy, findings-registry, etc.). Staging the whole artifact_dir keeps the audit trail intact. Operators retain commit authority and can `git restore --staged {path}` to unstage anything before commit. Failure is non-fatal — log warning and continue."
+        on_fail: "Log warning. Do not block synthesis. The artifact_dir may be outside a git repo (e.g., temp test fixture) which is a valid case."
+
   # ═══════════════════════════════════════════════════════════════
   # PHASE 4: SAVE
   # ═══════════════════════════════════════════════════════════════

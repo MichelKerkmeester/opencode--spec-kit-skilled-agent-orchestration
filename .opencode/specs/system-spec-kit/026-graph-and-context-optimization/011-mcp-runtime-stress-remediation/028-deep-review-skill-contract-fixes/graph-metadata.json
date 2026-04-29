@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": ["028-deep-review-skill-contract-fixes", "deep-review iteration commit", "deep-review pt-01 branching", "resolveArtifactRoot flat first"],
+    "key_topics": ["deep-review", "deep-research", "skill-contract", "resolveArtifactRoot", "iteration-commit", "flat-first"],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md"],
+    "entities": [],
+    "causal_summary": "Level 1 fix for two skill-contract violations: (1) iteration audit trail auto-staged at synthesis end so operator git commit doesn't drop intermediates; (2) resolveArtifactRoot returns flat on first-run child phases instead of always wrapping in pt-01. Surfaced by user inspection of 005-post-program-cleanup review folder and 011 review folder structure.",
+    "created_at": "2026-04-29T09:50:00.000Z",
+    "last_save_at": "2026-04-29T09:50:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}

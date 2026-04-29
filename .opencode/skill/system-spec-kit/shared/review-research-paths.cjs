@@ -165,11 +165,16 @@ function findExistingPacket(rootDir, specFolder, mode) {
 
 /**
  * Resolve the canonical artifact directory for review or research output.
- * Root specs keep research/ and review/ directly under the root spec folder.
- * Child phases and sub-phases keep local research/ and review/ folders, and
- * packet directories live under those local owner folders.
  *
- * Subfolder naming convention: {phaseSlug}-pt-{NN}
+ * Conventions (post-028 contract fix):
+ *   - Root specs ALWAYS use flat: {spec_folder}/{mode}/
+ *   - Child phases use FLAT-FIRST:
+ *       (a) First run with empty {mode}/ directory → flat (subfolder=null)
+ *       (b) Continuation when flat artifact's config matches current target → reuse flat
+ *       (c) Existing pt-NN packet matches current target → reuse pt-NN
+ *       (d) Prior content exists for non-matching target → allocate pt-NN
+ *
+ * Subfolder naming convention (when pt-NN allocation kicks in): {phaseSlug}-pt-{NN}
  *   - phaseSlug: the FULL immediate child phase segment under the spec tree
  *     root (e.g. "019-system-hardening")
  *   - NN: sequential two-digit counter scoped to that phase within the
@@ -178,16 +183,12 @@ function findExistingPacket(rootDir, specFolder, mode) {
  *
  * Example:
  *   - root spec run → {spec_folder}/research/
- *   - child phase run → {spec_folder}/research/{packet-name}
- *   - sub-phase run → {spec_folder}/review/{packet-name}
+ *   - child phase first run → {spec_folder}/research/   (flat, no pt-NN wrapper)
+ *   - child phase second run with prior content for different target → {spec_folder}/research/{phaseSlug}-pt-NN/
+ *   - child phase same-target continuation → reuses prior flat or pt-NN
  *
  * @param {string} specFolder - Absolute or relative path to the target spec folder
  * @param {'review'|'research'} [mode='review'] - Which artifact type to resolve
- *
- * For child phases, all workflow-owned artifacts for a single run must share
- * the same packet directory under the local owner folder:
- *   - review:   {specFolder}/review/{packet-name}/
- *   - research: {specFolder}/research/{packet-name}/
  *
  * @returns {{
  *   rootDir: string,
@@ -202,6 +203,7 @@ function resolveArtifactRoot(specFolder, mode = 'review') {
   const artifactArchiveRoot = path.join(resolved, `${mode}_archive`);
   const ancestorSpecFolder = findAncestorSpecFolder(resolved);
 
+  // ROOT spec: always flat
   if (!ancestorSpecFolder) {
     return {
       rootDir,
@@ -211,14 +213,57 @@ function resolveArtifactRoot(specFolder, mode = 'review') {
     };
   }
 
+  // CHILD phase: prefer existing pt-NN packet for current target if any
   const existingPacket = findExistingPacket(rootDir, resolved, mode);
-  const subfolder = existingPacket || allocateShortSubfolder(rootDir, path.basename(resolved));
-  const artifactDir = path.join(rootDir, subfolder);
+  if (existingPacket) {
+    return {
+      rootDir,
+      subfolder: existingPacket,
+      artifactDir: path.join(rootDir, existingPacket),
+      artifactArchiveRoot: path.join(artifactArchiveRoot, existingPacket),
+    };
+  }
 
+  // CHILD phase: check for flat artifact at rootDir
+  const targetSpecFolder = normalizeSpecFolderReference(resolved);
+  const flatConfigPath = path.join(rootDir, MODE_CONFIG_FILE[mode]);
+  const flatStateLogPath = path.join(rootDir, MODE_STATE_FILE[mode]);
+  const hasFlatArtifact = fs.existsSync(flatConfigPath) || fs.existsSync(flatStateLogPath);
+
+  if (hasFlatArtifact) {
+    const flatSpecFolder = readPacketSpecFolder(rootDir, mode);
+    if (flatSpecFolder === null || flatSpecFolder === targetSpecFolder) {
+      // Flat artifact matches current target (or its config is unreadable but rootDir is owned by this target's path) → reuse flat
+      return {
+        rootDir,
+        subfolder: null,
+        artifactDir: rootDir,
+        artifactArchiveRoot,
+      };
+    }
+    // Flat artifact is for a different target — fall through to allocate pt-NN
+  }
+
+  const ptFolders = listPacketDirectories(rootDir);
+  const hasPtFolders = ptFolders.length > 0;
+
+  // CHILD phase first run: empty rootDir → flat
+  if (!hasFlatArtifact && !hasPtFolders) {
+    return {
+      rootDir,
+      subfolder: null,
+      artifactDir: rootDir,
+      artifactArchiveRoot,
+    };
+  }
+
+  // CHILD phase: prior content exists (flat for different target, or pt-NN folders)
+  // and no matching packet for current target → allocate next pt-NN
+  const subfolder = allocateShortSubfolder(rootDir, path.basename(resolved));
   return {
     rootDir,
     subfolder,
-    artifactDir,
+    artifactDir: path.join(rootDir, subfolder),
     artifactArchiveRoot: path.join(artifactArchiveRoot, subfolder),
   };
 }

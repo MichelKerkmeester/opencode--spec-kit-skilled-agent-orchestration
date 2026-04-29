@@ -84,35 +84,44 @@ describe('review-research path resolution', () => {
     expect(resolved.artifactArchiveRoot).toBe(path.join(rootSpec, 'research_archive'));
   });
 
-  it('allocates child-phase review packets inside the child phase local folder', () => {
+  it('returns flat for child-phase first run when rootDir is empty', () => {
     const { childSpec } = makeWorkspaceFixture();
 
     const resolved = pathsModule.resolveArtifactRoot(childSpec, 'review');
 
     expect(resolved.rootDir).toBe(path.join(childSpec, 'review'));
-    expect(resolved.subfolder).toBe('013-sk-deep-refinement-pt-01');
-    expect(resolved.artifactDir).toBe(path.join(childSpec, 'review', '013-sk-deep-refinement-pt-01'));
-    expect(resolved.artifactArchiveRoot).toBe(
-      path.join(childSpec, 'review_archive', '013-sk-deep-refinement-pt-01'),
-    );
+    expect(resolved.subfolder).toBeNull();
+    expect(resolved.artifactDir).toBe(path.join(childSpec, 'review'));
+    expect(resolved.artifactArchiveRoot).toBe(path.join(childSpec, 'review_archive'));
   });
 
-  it('allocates nested research packets inside the exact nested owner folder', () => {
+  it('returns flat for nested first run when rootDir is empty', () => {
     const { nestedSpec } = makeWorkspaceFixture();
 
     const resolved = pathsModule.resolveArtifactRoot(nestedSpec, 'research');
 
     expect(resolved.rootDir).toBe(path.join(nestedSpec, 'research'));
-    expect(resolved.subfolder).toBe('002-resource-map-deep-loop-integration-pt-01');
-    expect(resolved.artifactDir).toBe(
-      path.join(nestedSpec, 'research', '002-resource-map-deep-loop-integration-pt-01'),
-    );
-    expect(resolved.artifactArchiveRoot).toBe(
-      path.join(nestedSpec, 'research_archive', '002-resource-map-deep-loop-integration-pt-01'),
-    );
+    expect(resolved.subfolder).toBeNull();
+    expect(resolved.artifactDir).toBe(path.join(nestedSpec, 'research'));
+    expect(resolved.artifactArchiveRoot).toBe(path.join(nestedSpec, 'research_archive'));
   });
 
-  it('reuses an existing packet for the same child target instead of allocating a sibling', () => {
+  it('reuses flat artifact when its config matches the current child target', () => {
+    const { childSpec } = makeWorkspaceFixture();
+
+    // Simulate a prior run that wrote a flat config at rootDir
+    writeFile(
+      path.join(childSpec, 'research', 'deep-research-config.json'),
+      `${JSON.stringify({ specFolder: childSpec }, null, 2)}\n`,
+    );
+
+    const resolved = pathsModule.resolveArtifactRoot(childSpec, 'research');
+
+    expect(resolved.subfolder).toBeNull();
+    expect(resolved.artifactDir).toBe(path.join(childSpec, 'research'));
+  });
+
+  it('reuses an existing pt-NN packet for the same child target instead of allocating a sibling', () => {
     const { childSpec } = makeWorkspaceFixture();
 
     createPacket(
@@ -120,6 +129,42 @@ describe('review-research path resolution', () => {
       'research',
       '013-sk-deep-refinement-pt-01',
       childSpec,
+    );
+
+    const resolved = pathsModule.resolveArtifactRoot(childSpec, 'research');
+
+    expect(resolved.subfolder).toBe('013-sk-deep-refinement-pt-01');
+    expect(resolved.artifactDir).toBe(
+      path.join(childSpec, 'research', '013-sk-deep-refinement-pt-01'),
+    );
+  });
+
+  it('allocates pt-NN when prior pt-NN folders exist for non-matching targets', () => {
+    const { childSpec } = makeWorkspaceFixture();
+
+    // A pt-NN packet exists but for a DIFFERENT target — the current run must branch
+    createPacket(
+      childSpec,
+      'research',
+      '013-sk-deep-refinement-pt-01',
+      '/some/other/spec/folder',
+    );
+
+    const resolved = pathsModule.resolveArtifactRoot(childSpec, 'research');
+
+    expect(resolved.subfolder).toBe('013-sk-deep-refinement-pt-02');
+    expect(resolved.artifactDir).toBe(
+      path.join(childSpec, 'research', '013-sk-deep-refinement-pt-02'),
+    );
+  });
+
+  it('allocates pt-NN when a flat artifact exists for a different target', () => {
+    const { childSpec } = makeWorkspaceFixture();
+
+    // Flat config is for a different target — current run must branch into pt-NN
+    writeFile(
+      path.join(childSpec, 'research', 'deep-research-config.json'),
+      `${JSON.stringify({ specFolder: '/some/other/spec/folder' }, null, 2)}\n`,
     );
 
     const resolved = pathsModule.resolveArtifactRoot(childSpec, 'research');

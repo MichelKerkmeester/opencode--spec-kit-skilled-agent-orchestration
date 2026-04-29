@@ -291,9 +291,11 @@ User invokes: /spec_kit:deep-research "topic"
 
 ### State Packet Location
 
-The research state packet always lives under the target spec's local `research/` folder. Root-spec targets use `{spec_folder}/research/` directly. Child-phase and sub-phase targets use `{spec_folder}/research/{packet}/`, where `{packet}` is the resolved local packet directory. Existing packet directories are reused when the resolver finds one for the same target spec; new packet directories default to `{basename(spec_folder)}-pt-{NN}`.
+The research state packet always lives under the target spec's local `research/` folder. Root-spec targets use `{spec_folder}/research/` directly. Child-phase and sub-phase targets use **flat-first**: a first run with an empty `research/` directory writes flat at `{spec_folder}/research/`. A `pt-NN` subfolder (`{basename(spec_folder)}-pt-{NN}`) is allocated only when prior content already exists in `research/` for a non-matching target (continuation runs reuse the existing flat artifact or matching `pt-NN` packet). This avoids the unnecessary `pt-01` wrapper on first runs.
 
-Example: `.../026-graph.../019-system-hardening/001-initial-research/004-desc-regen/` → `004-desc-regen/research/004-desc-regen-pt-01/`
+Example (first run on a child phase): `.../026-graph.../019-system-hardening/001-initial-research/004-desc-regen/` → `004-desc-regen/research/` (flat, no subfolder).
+
+Example (subsequent run with prior content for a different target): `004-desc-regen/research/004-desc-regen-pt-02/` (pt-NN allocated as a sibling to the prior content).
 
 ```text
 {spec_folder}/research/

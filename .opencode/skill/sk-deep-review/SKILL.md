@@ -300,9 +300,11 @@ User invokes: /spec_kit:deep-review "target"
 
 ### State Packet Location
 
-The review state packet always lives under the target spec's local `review/` folder. Root-spec targets use `{spec_folder}/review/` directly. Child-phase and sub-phase targets use `{spec_folder}/review/{packet}/`, where `{packet}` is the resolved local packet directory. Existing packet directories are reused when the resolver finds one for the same target spec; new packet directories default to `{basename(spec_folder)}-pt-{NN}`.
+The review state packet always lives under the target spec's local `review/` folder. Root-spec targets use `{spec_folder}/review/` directly. Child-phase and sub-phase targets use **flat-first**: a first run with an empty `review/` directory writes flat at `{spec_folder}/review/`. A `pt-NN` subfolder (`{basename(spec_folder)}-pt-{NN}`) is allocated only when prior content already exists in `review/` for a non-matching target (continuation runs reuse the existing flat artifact or matching `pt-NN` packet). This avoids the unnecessary `pt-01` wrapper on first runs.
 
-Example: `.../026-graph.../006-continuity-refactor-gates/003-gate-c-writer-ready/` → `003-gate-c-writer-ready/review/003-gate-c-writer-ready-pt-01/`
+Example (first run on a child phase): `.../026-graph.../006-continuity-refactor-gates/003-gate-c-writer-ready/` → `003-gate-c-writer-ready/review/` (flat, no subfolder).
+
+Example (subsequent run with prior content for a different target): `003-gate-c-writer-ready/review/003-gate-c-writer-ready-pt-02/` (pt-NN allocated as a sibling to the prior content).
 
 ```text
 {spec_folder}/review/
