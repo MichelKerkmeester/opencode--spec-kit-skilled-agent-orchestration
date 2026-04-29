@@ -20,7 +20,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/graph-readiness-mapper.vitest.ts"
     session_dedup:
       fingerprint: "sha256:025-memory-search-degraded-readiness-wiring-tasks"
@@ -70,7 +70,7 @@ _memory:
 - [x] T006 Create shared mapper helper (`mcp_server/lib/search/graph-readiness-mapper.ts`)
 - [x] T007 Wire snapshot + mapper into memory_search envelope construction (`mcp_server/handlers/memory-search.ts`)
 - [x] T008 Flip PP-1 TC-3 and assert deterministic degraded readiness (`mcp_server/tests/handler-memory-search-live-envelope.vitest.ts`)
-- [x] T009 Refactor W10 inline mapping to the shared helper where supported (`mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts`)
+- [x] T009 Refactor W10 inline mapping to the shared helper where supported (`mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts`)
 - [x] T010 Add focused mapper unit coverage (`mcp_server/tests/graph-readiness-mapper.vitest.ts`)
 <!-- /ANCHOR:phase-2 -->
 
@@ -80,7 +80,7 @@ _memory:
 ## Phase 3: Verification
 
 - [x] T011 Run `npx tsc --noEmit` (final batch state typechecks cleanly)
-- [x] T012 Run `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts tests/search-quality/ tests/graph-readiness-mapper.vitest.ts`
+- [x] T012 Run `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts stress_test/search-quality/ tests/graph-readiness-mapper.vitest.ts`
 - [x] T013 Run strict validator on packet
 - [x] T014 Author implementation summary (`implementation-summary.md`)
 - [x] T015 Update `spec.md` continuity to reflect completion state

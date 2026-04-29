@@ -9,8 +9,8 @@
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/decision-audit.ts:43`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:1`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:207`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts:229`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness-telemetry-export.vitest.ts:91`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts:229`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness-telemetry-export.vitest.ts:91`
 
 ## Findings
 No new security finding.

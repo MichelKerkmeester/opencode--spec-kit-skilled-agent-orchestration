@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/039-code-graph-catalog-and-playbook",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/039-code-graph-catalog-and-playbook",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research",
+      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "039-code-graph-catalog-and-playbook",
+      "code_graph feature catalog",
+      "code_graph manual testing playbook",
+      "code_graph runtime catalog"
+    ],
+    "key_topics": [
+      "code-graph",
+      "feature-catalog",
+      "manual-testing-playbook",
+      "readiness",
+      "ccc",
+      "coverage-graph",
+      "doctor-code-graph"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [],
+    "causal_summary": "Adds feature_catalog/ and manual_testing_playbook/ to mcp_server/code_graph/ -- mirroring the skill_advisor pattern. 8 feature groups + 15 playbook entries. Cross-linked from runtime + root skill catalogs/playbooks.",
+    "created_at": "2026-04-29T17:26:00.000Z",
+    "last_save_at": "2026-04-29T17:26:00.000Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}
+

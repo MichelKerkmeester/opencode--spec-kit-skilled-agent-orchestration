@@ -20,7 +20,7 @@ Map the structural fusion paths onto `SearchDecisionEnvelope`, `QueryPlan`, trus
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1737-1797`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:1161-1223`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/query-plan-emission.vitest.ts:23-34`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w8-search-decision-envelope.vitest.ts:13-89`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w8-search-decision-envelope.vitest.ts:13-89`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:169-176`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:230-310`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/context/shared-payload.ts:29-40`

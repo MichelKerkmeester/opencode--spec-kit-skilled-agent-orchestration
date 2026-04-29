@@ -49,7 +49,7 @@ _memory:
 
 `SearchDecisionEnvelope.degradedReadiness` (defined in `mcp_server/lib/search/search-decision-envelope.ts:31-42`) is currently always undefined when emitted by `memory_search`. The handler's envelope construction at `mcp_server/handlers/memory-search.ts:1161-1182` passes `queryPlan`, `trustTreeInput`, `rerankGateDecision`, `cocoindexCalibration`, `pipelineTiming`, but no `degradedReadiness`.
 
-PP-1's behavioral test TC-3 is encoded as `expected_fail` to document this gap (`mcp_server/tests/handler-memory-search-live-envelope.vitest.ts`). The W10 integration test already demonstrates the canonical mapping from a graph readiness payload to `DegradedReadinessTelemetry` (`mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts:46-66`).
+PP-1's behavioral test TC-3 is encoded as `expected_fail` to document this gap (`mcp_server/tests/handler-memory-search-live-envelope.vitest.ts`). The W10 integration test already demonstrates the canonical mapping from a graph readiness payload to `DegradedReadinessTelemetry` (`mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts:46-66`).
 
 ### Architectural correction (vs initial gpt-5.5 xhigh recommendation)
 
@@ -75,7 +75,7 @@ Add a shared `mapGraphReadinessToTelemetry()` helper that consumes a `GraphReadi
 - Mapper input: `GraphReadinessSnapshot` (`code_graph/lib/ensure-ready.ts:489-493`, fields: `freshness`, `action`, `reason`).
 - Mapper output: `DegradedReadinessTelemetry` (`mcp_server/lib/search/search-decision-envelope.ts:31-42`, populated fields: `freshness`, `action`, `reason`, plus `degraded` derived from non-`fresh` freshness; other fields left undefined since they require richer producer-side context not available from a snapshot).
 - Handler wiring: `mcp_server/handlers/memory-search.ts` calls `getGraphReadinessSnapshot(rootDir)` before building the envelope; passes mapped telemetry into `buildSearchDecisionEnvelope({ degradedReadiness })`.
-- Refactor: W10 (`tests/search-quality/w10-degraded-readiness-integration.vitest.ts`) inline mapping is replaced by a call to the shared helper for the snapshot path. The `handleCodeGraphQuery`-derived path stays as-is since it produces the richer payload.
+- Refactor: W10 (`stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts`) inline mapping is replaced by a call to the shared helper for the snapshot path. The `handleCodeGraphQuery`-derived path stays as-is since it produces the richer payload.
 - Refactor: PP-1 TC-3 (`tests/handler-memory-search-live-envelope.vitest.ts`) flips from `expected_fail` to `expected_pass` and asserts envelope's `degradedReadiness` matches the snapshot.
 - New focused vitest for the mapper.
 - Strict validator green on this packet.
@@ -95,7 +95,7 @@ Add a shared `mapGraphReadinessToTelemetry()` helper that consumes a `GraphReadi
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts` (or equivalent) | Create | Shared mapper helper |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Edit | Wire snapshot + mapper into envelope build |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts` | Edit | Flip TC-3 from expected_fail to expected_pass |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts` | Edit (minor) | Use shared helper where the inputs are a snapshot |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts` | Edit (minor) | Use shared helper where the inputs are a snapshot |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-readiness-mapper.vitest.ts` (or equivalent) | Create | Focused mapper unit test |
 <!-- /ANCHOR:scope -->
 

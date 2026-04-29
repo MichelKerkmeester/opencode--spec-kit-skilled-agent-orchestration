@@ -106,7 +106,7 @@ Remove the entire vestigial readiness scaffolding mechanically. No new behavior.
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-context.resume-gate-d.vitest.ts` | Edit | -4 lines (2 mock blocks) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/memory-save-ux-regressions.vitest.ts` | Edit | -4 lines (2 mock blocks) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/shadow-evaluation-runtime.vitest.ts` | Edit | -2 lines (mocks) |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-memory-search.vitest.ts` | Edit | -2 lines (mocks) |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts` | Edit | -2 lines (mocks) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-first-routing-nudge.vitest.ts` | Edit | -2 lines (mocks) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-constitutional-memory.vitest.ts` | Edit | remove readiness mocks discovered by pre-flight grep |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-embedding-semantic-search.vitest.ts` | Edit | remove readiness mocks discovered by pre-flight grep |

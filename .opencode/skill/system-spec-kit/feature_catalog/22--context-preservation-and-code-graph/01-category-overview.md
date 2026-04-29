@@ -19,6 +19,8 @@ This category documents the hybrid context injection system that preserves criti
 
 Implemented across spec 024-compact-code-graph with phase 018 canonical continuity layered on top. The shipped surface now includes hook scripts, code graph modules, MCP tools, budget allocator, tree-sitter parser with regex fallback, query-intent routing, auto-trigger, session health/resume/bootstrap tools, the structural ready/stale/missing contract, Gemini hooks, and startup-brief follow-ons. Recovery now treats `/spec_kit:resume` as the canonical surface and follows `handover.md -> _memory.continuity -> spec docs` before widening to broader memory artifacts.
 
+For runtime-package code_graph details, see `mcp_server/code_graph/feature_catalog/feature_catalog.md`.
+
 ---
 
 ## 3. SOURCE FILES

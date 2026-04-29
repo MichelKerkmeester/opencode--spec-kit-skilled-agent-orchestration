@@ -82,7 +82,7 @@ Read the gate. Confirmed via grep that the error string had no consumers, and th
 | Check | Result |
 |-------|--------|
 | `npx tsc` (TypeScript compile) | PASS, clean |
-| `npx vitest run tests/handler-memory-search.vitest.ts tests/memory-search-integration.vitest.ts tests/search-quality/` | PASS, 16 files / 97 passed / 5 todo / 0 failed |
+| `npx vitest run tests/handler-memory-search.vitest.ts tests/memory-search-integration.vitest.ts stress_test/search-quality/` | PASS, 16 files / 97 passed / 5 todo / 0 failed |
 | `npx vitest run` on the 6 readiness-mock parity suites | PASS, 6 files / 57 passed / 0 failed |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <packet> --strict` | PASS, exit 0 |
 <!-- /ANCHOR:verification -->

@@ -41,7 +41,7 @@ v1.0.3 stress test results post W3-W13 wiring: live-handler gap, harness telemet
 - `mcp_server/lib/rag/trust-tree.ts`
 - `mcp_server/lib/query/query-plan.ts`
 - `mcp_server/skill_advisor/lib/shadow/shadow-sink.ts`
-- `mcp_server/tests/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`
+- `mcp_server/stress_test/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`
 
 ## Constraints
 - READ ONLY for runtime code, harness, prior packets.

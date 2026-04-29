@@ -78,7 +78,7 @@ Re-run the stress test against the now-clean infrastructure to:
 
 ### In Scope
 
-- Re-use the existing `mcp_server/tests/search-quality/` corpus (frozen at v1.0.3) as the stress fixture
+- Re-use the existing `mcp_server/stress_test/search-quality/` corpus (frozen at v1.0.3) as the stress fixture
 - Run the search-quality harness with `telemetryExportPath` set to capture envelopes + audit + shadow rows natively (PP-2 path)
 - Use PP-1's behavioral test pattern: `executePipeline` mocked at the retrieval boundary; `handleMemorySearch` runs as real production code; envelope + `recordSearchDecision` emit naturally
 - Capture per-cell scores on the canonical rubric: correctness / robustness / telemetry / regression-safety, 0-2 scale
@@ -119,7 +119,7 @@ Re-run the stress test against the now-clean infrastructure to:
 - Manual playbook: `../../../../../skill/system-spec-kit/manual_testing_playbook/14--stress-testing/01-run-stress-cycle.md`
 - Templates: `../../../../../skill/system-spec-kit/templates/stress-test/findings-rubric.template.json` + `../../../../../skill/system-spec-kit/templates/stress-test/findings-rubric.schema.md` + `../../../../../skill/system-spec-kit/templates/stress-test/findings.template.md`
 - PP-1 test pattern: `mcp_server/tests/handler-memory-search-live-envelope.vitest.ts`
-- PP-2 harness export: `mcp_server/tests/search-quality/{harness.ts, harness-telemetry-export.vitest.ts}`
+- PP-2 harness export: `mcp_server/stress_test/search-quality/{harness.ts, harness-telemetry-export.vitest.ts}`
 <!-- /ANCHOR:scope -->
 
 ---

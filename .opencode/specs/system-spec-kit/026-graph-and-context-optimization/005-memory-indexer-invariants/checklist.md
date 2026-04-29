@@ -124,7 +124,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - [x] **CHK-S04** [P0] Cleanup CLI is idempotent across repeat runs. [EVIDENCE: second `--apply` reported zero planned + zero applied changes.]
 - [x] **CHK-S05** [P1] Duplicate constitutional gate-enforcement rule rows handled safely: keep the newer row (`id=9868`), rewrite references. [EVIDENCE: first apply reported `rewritten_feedback_rows=2`, `rewritten_lineage_rows=3`, then `gate_enforcement_rows=1`.]
 - [x] **CHK-S06** [P1] Symlinks cannot bypass invariant enforcement. [EVIDENCE: `resolveCanonicalPath()` uses `fs.realpathSync` with fail-open fallback; `tests/symlink-realpath-hardening.vitest.ts` passes.]
-- [x] **CHK-S07** [P1] Walker DoS caps prevent pathological repos from stalling scans. [EVIDENCE: `.gitignore` ≤ 1MB, depth ≤ 20, ≤ 50,000 nodes; `tests/walker-dos-caps.vitest.ts` passes.]
+- [x] **CHK-S07** [P1] Walker DoS caps prevent pathological repos from stalling scans. [EVIDENCE: `.gitignore` ≤ 1MB, depth ≤ 20, ≤ 50,000 nodes; `stress_test/code-graph/walker-dos-caps.vitest.ts` passes.]
 <!-- /ANCHOR:security -->
 
 ---

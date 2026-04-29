@@ -101,8 +101,8 @@ After: cache miss → pipeline build directly. The lazy-loaded embedding model s
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Unit | `tests/handler-memory-search.vitest.ts` | vitest |
-| Integration | `tests/memory-search-integration.vitest.ts`, `tests/search-quality/*.vitest.ts` | vitest |
-| Mock-bypass parity | `tests/adaptive-ranking-e2e.vitest.ts`, `tests/memory-context.resume-gate-d.vitest.ts`, `tests/shadow-evaluation-runtime.vitest.ts`, `tests/gate-d-benchmark-memory-search.vitest.ts`, `tests/graph-first-routing-nudge.vitest.ts`, `tests/handler-memory-crud.vitest.ts` | vitest |
+| Integration | `tests/memory-search-integration.vitest.ts`, `stress_test/search-quality/*.vitest.ts` | vitest |
+| Mock-bypass parity | `tests/adaptive-ranking-e2e.vitest.ts`, `tests/memory-context.resume-gate-d.vitest.ts`, `tests/shadow-evaluation-runtime.vitest.ts`, `stress_test/memory/gate-d-benchmark-memory-search.vitest.ts`, `tests/graph-first-routing-nudge.vitest.ts`, `tests/handler-memory-crud.vitest.ts` | vitest |
 <!-- /ANCHOR:testing -->
 
 ---

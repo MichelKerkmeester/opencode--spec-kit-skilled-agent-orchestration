@@ -159,7 +159,7 @@ Enforce four permanent invariants in code, clean the existing pollution transact
 | `mcp_server/tests/cleanup-script-audit-emission.vitest.ts` | B | Add | Cleanup-audit durability |
 | `mcp_server/tests/exclusion-ssot-unification.vitest.ts` | B | Add | SSOT unification proof |
 | `mcp_server/tests/symlink-realpath-hardening.vitest.ts` | B | Add | Realpath enforcement |
-| `mcp_server/tests/walker-dos-caps.vitest.ts` | B | Add | Walker DoS caps |
+| `mcp_server/stress_test/code-graph/walker-dos-caps.vitest.ts` | B | Add | Walker DoS caps |
 | `mcp_server/tests/memory-governance.vitest.ts` | B | Modify | Shared audit action coverage |
 | `scripts/memory/cleanup-index-scope-violations.ts` | B | Create | Dry-run / apply / verify cleanup CLI with transactional plan rebuild |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | B | Modify | Document the invariants, helper location, and stable audit action strings |

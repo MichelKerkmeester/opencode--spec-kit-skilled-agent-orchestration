@@ -16,12 +16,12 @@ Expansion candidate ranking + Planning Packet synthesis. This follows strategy i
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:927`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:1169`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:1410`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts:29`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts:29`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/decision-audit.ts:23`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/decision-audit.ts:62`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts:57`
 - `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/shadow/shadow-sink.ts:39`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w13-decision-audit.vitest.ts:47`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w13-decision-audit.vitest.ts:47`
 
 ## Findings
 

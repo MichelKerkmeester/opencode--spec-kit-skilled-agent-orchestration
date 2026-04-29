@@ -74,4 +74,4 @@ _memory:
 | `mcp_server/handlers/memory-search.ts` | Cited | OK | RQ2 live-handler embed-readiness gate trace (file:line evidence) |
 | `mcp_server/lib/search/search-decision-envelope.ts` | Cited | OK | Envelope contract, RQ3 envelope coverage |
 | `mcp_server/lib/search/rerank-gate.ts` | Cited | OK | RQ4 W4 trigger distribution analysis |
-| `mcp_server/tests/search-quality/harness.ts` | Cited | OK | RQ3 harness telemetry export gap |
+| `mcp_server/stress_test/search-quality/harness.ts` | Cited | OK | RQ3 harness telemetry export gap |

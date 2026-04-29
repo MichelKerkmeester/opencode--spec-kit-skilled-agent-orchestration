@@ -107,7 +107,7 @@ Run 5 focused deep-research iterations on the v1.0.3 stress test results, extern
 - Phase E measurement baselines: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/007-search-rag-measurement-driven-implementation/measurements/`
 - Phase F research output: `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/020-w3-w7-verification-and-expansion-research/research/research-report.md`
 - Runtime code (READ ONLY): `mcp_server/handlers/memory-search.ts`, `mcp_server/lib/search/{search-decision-envelope.ts, decision-audit.ts, rerank-gate.ts}`, `mcp_server/lib/rag/trust-tree.ts`, `mcp_server/lib/query/query-plan.ts`, `mcp_server/skill_advisor/lib/shadow/shadow-sink.ts`
-- Harness: `mcp_server/tests/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`, `mcp_server/tests/search-quality/w*.vitest.ts`
+- Harness: `mcp_server/stress_test/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`, `mcp_server/stress_test/search-quality/w*.vitest.ts`
 <!-- /ANCHOR:scope -->
 
 ---

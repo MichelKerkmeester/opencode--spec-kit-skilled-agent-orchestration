@@ -9,7 +9,7 @@
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts:45`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts:54`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:280`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts:47`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts:47`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/implementation-summary.md:64`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/tasks.md:83`
 

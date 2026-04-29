@@ -133,7 +133,7 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core + level3-arch 
 - [x] **T-51** Replace the old B1 scan serialization test with B2 coverage for `fromScan` propagation and the non-scan control path. [EVIDENCE: `tests/handler-memory-index.vitest.ts`.]
 - [x] **T-52** [P] Add focused exclusion and constitutional-tier Vitest coverage. [EVIDENCE: `tests/index-scope.vitest.ts`, `tests/memory-save-index-scope.vitest.ts`.]
 - [x] **T-53** [P] Add SQL-layer update + checkpoint-restore invariant coverage. [EVIDENCE: `tests/memory-crud-update-constitutional-guard.vitest.ts`, `tests/checkpoint-restore-invariant-enforcement.vitest.ts`.]
-- [x] **T-54** [P] Add Wave-2 coverage for cleanup audits, SSOT unification, realpath, walker DoS caps, and governance helpers. [EVIDENCE: `tests/cleanup-script-audit-emission.vitest.ts`, `tests/exclusion-ssot-unification.vitest.ts`, `tests/symlink-realpath-hardening.vitest.ts`, `tests/walker-dos-caps.vitest.ts`, `tests/memory-governance.vitest.ts`.]
+- [x] **T-54** [P] Add Wave-2 coverage for cleanup audits, SSOT unification, realpath, walker DoS caps, and governance helpers. [EVIDENCE: `tests/cleanup-script-audit-emission.vitest.ts`, `tests/exclusion-ssot-unification.vitest.ts`, `tests/symlink-realpath-hardening.vitest.ts`, `stress_test/code-graph/walker-dos-caps.vitest.ts`, `tests/memory-governance.vitest.ts`.]
 
 ### Build and Suite
 

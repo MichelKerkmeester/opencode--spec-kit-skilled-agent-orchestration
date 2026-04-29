@@ -28,7 +28,7 @@
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:1160-1188` - handler snapshot to envelope path.
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts:1-88` - snapshot/richer payload mapper.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:280-310` - TC-3 passing degradedReadiness assertion.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts` - W10 path preservation sample.
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts` - W10 path preservation sample.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts` - sampled stale structural failures after 026.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/modularization.vitest.ts` - sampled broad-suite line-limit failures.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-crud.vitest.ts` - sampled readiness mock cleanup surface.

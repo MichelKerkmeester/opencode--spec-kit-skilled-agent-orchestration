@@ -56,18 +56,18 @@ The MCP server now has a dedicated `stress_test/` folder for explicit stress, lo
 
 ### Stress Folder
 
-Two confirmed stress suites moved out of `tests/`: `session-manager-stress.vitest.ts` and `code-graph-degraded-sweep.vitest.ts`. Fixture-only W7 cells stayed in `tests/search-quality/` because they assert static measurement fixtures rather than running stress harness logic.
+Two confirmed stress suites moved out of `tests/`: `session-manager-stress.vitest.ts` and `code-graph-degraded-sweep.vitest.ts`. Fixture-only W7 cells stayed in `stress_test/search-quality/` because they assert static measurement fixtures rather than running stress harness logic.
 
 ### Runner Wiring
 
-`vitest.config.ts` now includes stress tests only when `SPECKIT_RUN_STRESS=true`. `package.json` exposes that through `npm run stress`, and `tsconfig.json` excludes moved `.vitest.ts` files from production build.
+`vitest.config.ts` excludes stress tests from default runs. `vitest.stress.config.ts` and `package.json` expose stress coverage through `npm run stress`, and `tsconfig.json` excludes moved `.vitest.ts` files from production build.
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/stress_test/session-manager-stress.vitest.ts` | Moved | Place session capacity stress coverage in the dedicated folder |
-| `.opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` | Moved | Place packet-013 degraded stress cell in the dedicated folder |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/session/session-manager-stress.vitest.ts` | Moved | Place session capacity stress coverage in the dedicated folder |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts` | Moved | Place packet-013 degraded stress cell in the dedicated folder |
 | `.opencode/skill/system-spec-kit/mcp_server/stress_test/README` | Created | Document purpose, run commands, and boundary with default tests |
 | `.opencode/skill/system-spec-kit/mcp_server/vitest.config.ts` | Modified | Add opt-in stress include/exclude behavior |
 | `.opencode/skill/system-spec-kit/mcp_server/package.json` | Modified | Add `stress` script |
@@ -95,8 +95,8 @@ Discovery used filename search, TypeScript content search, and docs reference se
 |----------|-----|
 | Use `stress_test/` instead of `tests/stress/` | The operator explicitly asked for a dedicated folder outside `tests/`. |
 | Move `code-graph-degraded-sweep.vitest.ts` | Packet 013 names it a degraded stress cell and its docs define it as a stress-run remediation sweep. |
-| Leave W7 fixture-only cells in `tests/search-quality/` | They mention stress cells, but they do not execute load, capacity, or live degraded-state stress logic. |
-| Gate stress tests behind `SPECKIT_RUN_STRESS=true` | Default `npm test` remains the fast normal verification path. |
+| Leave W7 fixture-only cells in `stress_test/search-quality/` | They mention stress cells, but they do not execute load, capacity, or live degraded-state stress logic. |
+| Gate stress tests behind `vitest.stress.config.ts` | Default `npm test` remains the fast normal verification path. |
 | Use filesystem `mv` instead of `git mv` | Sandbox denied `.git/index.lock`; the file move still appears as a rename in Git status/diff. |
 <!-- /ANCHOR:decisions -->
 

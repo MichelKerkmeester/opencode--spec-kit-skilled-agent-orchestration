@@ -118,7 +118,7 @@ Stop reason: maxIterationsReached. The early-stop rule did not trigger because n
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts:29-48`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/search-decision-envelope.ts:44-104`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:25-123`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.ts:41-198`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts:41-198`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-search-decision-gold-battery/measurements/v1-0-3-summary.json:1-203`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-search-decision-gold-battery/findings-v1-0-3.md:20-103`
 

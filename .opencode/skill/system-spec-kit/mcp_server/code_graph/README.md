@@ -259,6 +259,8 @@ The DB file size does not shrink automatically. Run `VACUUM` on the SQLite file 
 |---|---|
 | [lib/README.md](./lib/README.md) | Core library overview |
 | [handlers/README.md](./handlers/README.md) | MCP tool handler overview |
+| [feature_catalog/feature_catalog.md](./feature_catalog/feature_catalog.md) | Runtime feature catalog for code_graph read paths, operator tools, CCC bridges, and doctor integration |
+| [manual_testing_playbook/manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) | Runtime manual testing playbook for code_graph readiness, scans, coverage graph, CCC, and doctor scenarios |
 | [Spec Kit Memory MCP Server README](../README.md) | Parent MCP server documentation |
 
 ### External Resources

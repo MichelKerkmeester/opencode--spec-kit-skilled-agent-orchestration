@@ -72,10 +72,10 @@ Exact-path resolution confirmed 60 concrete runtime surfaces in scope. One short
 | `.opencode/command/memory/save.md` | 004 | CLI | M | Operator-facing `/memory:save` command surface for planner-first behavior. |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/claude/session-prime.ts` | 001 | hook | L | Packet `001` keeps this read-only as a boundary check, not an active implementation seam. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/hook-session-start.vitest.ts` | 001 | script | L | SessionStart stays out of scope in packet `001`; this is mostly a guardrail check. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-session-resume.vitest.ts` | 003 | script | L | Benchmark surface for Gate D, lower risk than correctness regressions. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-resume-perf.vitest.ts` | 003 | script | L | Performance probe, useful for orientation but not a primary correctness owner. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-trigger-fast-path.vitest.ts` | 003 | script | L | Benchmark-only trigger fast-path coverage. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-memory-search.vitest.ts` | 003 | script | L | Benchmark-only memory-search harness for Gate D. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/session/gate-d-benchmark-session-resume.vitest.ts` | 003 | script | L | Benchmark surface for Gate D, lower risk than correctness regressions. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/session/gate-d-resume-perf.vitest.ts` | 003 | script | L | Performance probe, useful for orientation but not a primary correctness owner. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-trigger-fast-path.vitest.ts` | 003 | script | L | Benchmark-only trigger fast-path coverage. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts` | 003 | script | L | Benchmark-only memory-search harness for Gate D. |
 
 ## Questions Answered
 

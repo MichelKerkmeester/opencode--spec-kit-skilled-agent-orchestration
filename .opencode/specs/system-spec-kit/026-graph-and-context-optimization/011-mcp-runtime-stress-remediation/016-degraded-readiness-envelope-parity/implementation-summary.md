@@ -123,7 +123,7 @@ No new abstraction layer was introduced. The shared vocabulary primitives (`cano
 | `npx vitest run tests/code-graph-status-readiness-snapshot.vitest.ts` | PASS — 1 file, 10 tests passed (packet 014 invariant) |
 | `npx vitest run tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts` | PASS (packet 015 invariant) |
 | `npx vitest run tests/code-graph-query-fallback-decision.vitest.ts` | PASS — query handler vocabulary unchanged |
-| Combined regression: `SPECKIT_RUN_STRESS=true npx vitest run tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts tests/code-graph-db.vitest.ts tests/code-graph-degraded-readiness-envelope-parity.vitest.ts stress_test/code-graph-degraded-sweep.vitest.ts tests/code-graph-query-fallback-decision.vitest.ts tests/code-graph-status-readiness-snapshot.vitest.ts tests/readiness-contract.vitest.ts` | PASS — 7 files, 60 tests passed |
+| Combined regression: `npx vitest run --config vitest.stress.config.ts tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts tests/code-graph-db.vitest.ts tests/code-graph-degraded-readiness-envelope-parity.vitest.ts stress_test/code-graph/code-graph-degraded-sweep.vitest.ts tests/code-graph-query-fallback-decision.vitest.ts tests/code-graph-status-readiness-snapshot.vitest.ts tests/readiness-contract.vitest.ts` | PASS — 7 files, 60 tests passed |
 | `npx vitest run tests/file-watcher.vitest.ts` | PASS — 21/21 (`DEFAULT_DEBOUNCE_MS=2000` unchanged) |
 | F-001 #1 (context readiness-crash → blocked envelope) | PASS: `status: 'blocked'`, full envelope shape verified |
 | F-001 #2 (full_scan_required backward-compat) | PASS: `fallbackDecision.nextTool === 'code_graph_scan'` |

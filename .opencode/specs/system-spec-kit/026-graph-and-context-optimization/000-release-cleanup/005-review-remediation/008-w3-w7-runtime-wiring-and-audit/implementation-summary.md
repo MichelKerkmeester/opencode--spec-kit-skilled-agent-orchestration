@@ -66,7 +66,7 @@ Phase G turned W3-W7 from isolated measured artifacts into a telemetry-first run
 | F-W4-001 | Closed | Stage 3 receives `config.queryPlan` at `mcp_server/lib/search/pipeline/stage3-rerank.ts:151` and gates with it at `:335`. |
 | F-W5-001 | Closed | Advisor shadow sink writes JSONL at `mcp_server/skill_advisor/lib/shadow/shadow-sink.ts:39`; handler records `_shadow` at `mcp_server/skill_advisor/handlers/advisor-recommend.ts:282`; Python passthrough preserves `_shadow` at `mcp_server/skill_advisor/scripts/skill_advisor.py:365`. |
 | F-W6-001 | Closed | Runtime memory search calls `calibrateCocoIndexOverfetch` at `mcp_server/handlers/memory-search.ts:1151`; calibration carries scope at `mcp_server/lib/search/cocoindex-calibration.ts:17` and `:59`. |
-| F-W7-001 | Closed | W10 drives real isolated `code_graph_query` degraded state at `mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts:23`; W7 files are marked fixture-only supplements. |
+| F-W7-001 | Closed | W10 drives real isolated `code_graph_query` degraded state at `mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts:23`; W7 files are marked fixture-only supplements. |
 | F-EMPTY-001 | Closed | Removed `.opencode/skill/system-spec-kit/mcp_server/tmp-test-fixtures/specs/` and duplicate empty `.opencode/skill/system-spec-kit/specs/.../007-search-rag-measurement-driven-implementation/measurements/`; follow-up `find` returned no paths. |
 | F-XW-001 | Closed | W8 envelope composes QueryPlan, trust tree, rerank decision, shadow deltas, calibration, degraded readiness, and latency at `mcp_server/lib/search/search-decision-envelope.ts:44`. |
 | F-ENT-001 | Closed | Envelope carries `tenantId`, `userId`, `agentId` at `mcp_server/lib/search/search-decision-envelope.ts:47`; Stage 3 threads scope into W4 at `mcp_server/lib/search/pipeline/stage3-rerank.ts:337`; W6 accepts scope at `mcp_server/lib/search/cocoindex-calibration.ts:17`. |
@@ -84,7 +84,7 @@ Phase G turned W3-W7 from isolated measured artifacts into a telemetry-first run
 | `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-context.ts` | Modified | Build and record SearchDecisionEnvelope. |
 | `mcp_server/lib/search/pipeline/types.ts`, `stage3-rerank.ts`, `rerank-gate.ts`, `cocoindex-calibration.ts` | Modified | Thread QueryPlan, scope, gate decision, and calibration telemetry. |
 | `mcp_server/skill_advisor/handlers/advisor-recommend.ts`, `skill_advisor.py`, Python compatibility test | Modified | Persist and preserve `_shadow`. |
-| `mcp_server/tests/search-quality/*.vitest.ts`, `skill_advisor/tests/shadow-sink.vitest.ts` | Created/Modified | W8-W13 focused coverage and W7 fixture-only labels. |
+| `mcp_server/stress_test/search-quality/*.vitest.ts`, `skill_advisor/tests/shadow-sink.vitest.ts` | Created/Modified | W8-W13 focused coverage and W7 fixture-only labels. |
 | Two empty directories | Deleted | Closed F-EMPTY-001 cleanup. |
 
 Created 15 files, modified 14 files, and removed 2 empty directories.
@@ -118,8 +118,8 @@ The implementation kept the behavior boundary narrow. W8 landed first as a pure 
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run tests/search-quality/w8-search-decision-envelope.vitest.ts tests/search-quality/w4-conditional-rerank.vitest.ts tests/search-quality/w11-cocoindex-calibration-telemetry.vitest.ts tests/search-quality/w10-degraded-readiness-integration.vitest.ts tests/search-quality/w13-decision-audit.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` | PASS, exit 0, 7 files and 14 tests. |
-| `npx vitest run tests/search-quality/*.vitest.ts tests/query-plan-emission.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` | PASS, exit 0, 17 files and 32 tests. |
+| `npx vitest run stress_test/search-quality/w8-search-decision-envelope.vitest.ts stress_test/search-quality/w4-conditional-rerank.vitest.ts stress_test/search-quality/w11-cocoindex-calibration-telemetry.vitest.ts stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts stress_test/search-quality/w13-decision-audit.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` | PASS, exit 0, 7 files and 14 tests. |
+| `npx vitest run stress_test/search-quality/*.vitest.ts tests/query-plan-emission.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` | PASS, exit 0, 17 files and 32 tests. |
 | `npm run typecheck` | PASS, exit 0. |
 | `npm run build` | PASS, exit 0. |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/008-w3-w7-runtime-wiring-and-audit --strict` | PASS, exit 0. |

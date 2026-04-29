@@ -169,7 +169,7 @@ Validate that the memory-indexer-invariants packet is RELEASE-READY despite its 
 - `tests/cleanup-script-audit-emission.vitest.ts`
 - `tests/exclusion-ssot-unification.vitest.ts`
 - `tests/symlink-realpath-hardening.vitest.ts`
-- `tests/walker-dos-caps.vitest.ts`
+- `stress_test/code-graph/walker-dos-caps.vitest.ts`
 - `tests/memory-governance.vitest.ts`
 - `tests/memory-parser-extended.vitest.ts`
 - `tests/gate-d-regression-constitutional-memory.vitest.ts`
@@ -240,7 +240,7 @@ Validate that the memory-indexer-invariants packet is RELEASE-READY despite its 
 | tests/memory-crud-update-constitutional-guard.vitest.ts | - | - | - | pending |
 | tests/checkpoint-restore-invariant-enforcement.vitest.ts | - | - | - | pending |
 | tests/symlink-realpath-hardening.vitest.ts | - | - | - | pending |
-| tests/walker-dos-caps.vitest.ts | - | - | - | pending |
+| stress_test/code-graph/walker-dos-caps.vitest.ts | - | - | - | pending |
 | tests/cleanup-script-audit-emission.vitest.ts | - | - | - | pending |
 | tests/exclusion-ssot-unification.vitest.ts | - | - | - | pending |
 | tests/memory-governance.vitest.ts | - | - | - | pending |

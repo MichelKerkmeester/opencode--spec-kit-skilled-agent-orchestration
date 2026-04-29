@@ -75,7 +75,7 @@ The dead embedding-readiness scaffold is gone from non-dist TypeScript. The embe
 | `.opencode/skill/system-spec-kit/mcp_server/lib/feedback/shadow-evaluation-runtime.ts` | Modified | Remove scheduler readiness wait |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-ranking-e2e.vitest.ts` | Modified | Remove readiness mocks |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts` | Modified | Remove readiness mocks and source assertion |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-memory-search.vitest.ts` | Modified | Remove readiness mocks |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts` | Modified | Remove readiness mocks |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-4-stage-search-pipeline.vitest.ts` | Modified | Remove readiness mocks |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-constitutional-memory.vitest.ts` | Modified | Remove readiness mocks |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-embedding-semantic-search.vitest.ts` | Modified | Remove readiness mocks |
@@ -130,7 +130,7 @@ Pre-flight grep expanded scope to every non-dist TypeScript reference, then the 
 | Final `dist/` grep | PASS: exit 1 with no matches after `npx tsc` |
 | `npx tsc --noEmit` | PASS: exited 0 |
 | `npx tsc` | PASS: exited 0 |
-| Targeted readiness Vitest subset | PASS: `npx vitest run --reporter=default --test-timeout=60000 tests/handler-memory-search-live-envelope.vitest.ts tests/search-quality/ tests/graph-readiness-mapper.vitest.ts tests/handler-memory-crud.vitest.ts tests/memory-search-integration.vitest.ts` exited 0; 19 files / 109 passed / 5 todo / 0 failed |
+| Targeted readiness Vitest subset | PASS: `npx vitest run --reporter=default --test-timeout=60000 tests/handler-memory-search-live-envelope.vitest.ts stress_test/search-quality/ tests/graph-readiness-mapper.vitest.ts tests/handler-memory-crud.vitest.ts tests/memory-search-integration.vitest.ts` exited 0; 19 files / 109 passed / 5 todo / 0 failed |
 | Broad `npx vitest run` | FAIL/STUCK: timed out at 600s. Non-026-induced failures surfaced in handler-save, graph, skill-advisor, checkpoint/docs/modularization/structural suites, and file-level hangs were confirmed in both progressive-validation suites. |
 | Impacted-file Vitest subset | FAIL: stale structural/modularization assertions remained, including `context-server.vitest.ts` source-shape expectations and module line-limit checks; these are not evidence of an embedding-readiness regression |
 | Strict spec validator | PASS: exited 0 with zero warnings |

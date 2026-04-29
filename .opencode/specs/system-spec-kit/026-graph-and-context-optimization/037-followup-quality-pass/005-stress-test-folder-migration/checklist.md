@@ -63,7 +63,7 @@ _memory:
 ## Code Quality
 
 - [x] CHK-010 [P0] Confirmed stress suites live in `mcp_server/stress_test/`. [EVIDENCE: `session-manager-stress.vitest.ts` and `code-graph-degraded-sweep.vitest.ts` moved.]
-- [x] CHK-011 [P0] Default suite excludes stress tests. [EVIDENCE: `vitest.config.ts` includes stress only when `SPECKIT_RUN_STRESS=true`.]
+- [x] CHK-011 [P0] Default suite excludes stress tests. [EVIDENCE: `vitest.config.ts` excludes `mcp_server/stress_test/**`; stress runs through `vitest.stress.config.ts`.]
 - [x] CHK-012 [P0] TypeScript build excludes stress `.vitest.ts` files. [EVIDENCE: `tsconfig.json` excludes `stress_test/**/*.vitest.ts` and `stress_test/**/*.test.ts`.]
 - [x] CHK-013 [P1] Stress runner script present. [EVIDENCE: `package.json` has `stress` script.]
 <!-- /ANCHOR:code-quality -->

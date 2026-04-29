@@ -71,7 +71,7 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-020 [P0] Focused W8/W9/W10/W11/W13 tests exit 0. [EVIDENCE: `npx vitest run tests/search-quality/*.vitest.ts tests/query-plan-emission.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` exit 0]
+- [x] CHK-020 [P0] Focused W8/W9/W10/W11/W13 tests exit 0. [EVIDENCE: `npx vitest run stress_test/search-quality/*.vitest.ts tests/query-plan-emission.vitest.ts skill_advisor/tests/shadow-sink.vitest.ts skill_advisor/tests/compat/python-compat.vitest.ts` exit 0]
 - [x] CHK-021 [P0] Existing search-quality tests including W3-W7 exit 0. [EVIDENCE: same Vitest command, 17 files and 32 tests passed]
 - [x] CHK-022 [P0] `npm run typecheck` exits 0. [EVIDENCE: command exit 0]
 - [x] CHK-023 [P0] `npm run build` exits 0. [EVIDENCE: command exit 0]

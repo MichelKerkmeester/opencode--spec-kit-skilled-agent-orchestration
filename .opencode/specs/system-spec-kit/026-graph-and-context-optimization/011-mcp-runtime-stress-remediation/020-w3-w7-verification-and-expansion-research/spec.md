@@ -70,7 +70,7 @@ Run a 10-iteration deep research loop covering these four threads, externalize s
 
 ### In Scope
 
-- **W3-W7 wiring audit**: read `lib/rag/trust-tree.ts`, `lib/search/rerank-gate.ts`, `lib/search/pipeline/stage3-rerank.ts`, `skill_advisor/lib/scorer/lane-registry.ts`, `lib/search/cocoindex-calibration.ts`, `mcp_server/tests/search-quality/w*.vitest.ts`. Trace upstream callers and downstream consumers. Identify call-path gaps.
+- **W3-W7 wiring audit**: read `lib/rag/trust-tree.ts`, `lib/search/rerank-gate.ts`, `lib/search/pipeline/stage3-rerank.ts`, `skill_advisor/lib/scorer/lane-registry.ts`, `lib/search/cocoindex-calibration.ts`, `mcp_server/stress_test/search-quality/w*.vitest.ts`. Trace upstream callers and downstream consumers. Identify call-path gaps.
 - **Adjacent/connecting opportunity surfacing**: cross-feature integration (W3+W4, W5+W4, W6+W7), connection to memory pipeline, advisor pipeline, code-graph pipeline.
 - **Expansion candidate brainstorming**: new feature ideas in the W3-W7 family that target enterprise readiness gaps.
 - **Empty-folder audit**: scan `.opencode/skill/system-spec-kit/` and `.opencode/skill/system-spec-kit/mcp_server/` recursively; identify directories with no code/docs (excluding canonical empty placeholders like `dist/`, `node_modules/`).
@@ -90,8 +90,8 @@ Run a 10-iteration deep research loop covering these four threads, externalize s
 - `mcp_server/lib/search/rerank-gate.ts`, `mcp_server/lib/search/pipeline/stage3-rerank.ts`, `mcp_server/lib/search/cocoindex-calibration.ts`
 - `mcp_server/skill_advisor/lib/scorer/{lane-registry,fusion,weights-config}.ts`
 - `mcp_server/lib/query/query-plan.ts`
-- `mcp_server/tests/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`
-- `mcp_server/tests/search-quality/w*.vitest.ts`
+- `mcp_server/stress_test/search-quality/{harness,corpus,metrics,baseline.vitest}.ts`
+- `mcp_server/stress_test/search-quality/w*.vitest.ts`
 - `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/{006-search-query-rag-optimization,007-search-rag-measurement-driven-implementation}/{spec,plan,tasks,checklist,implementation-summary}.md`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md`
 - Whole `.opencode/skill/system-spec-kit/` tree for empty-folder audit

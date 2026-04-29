@@ -80,7 +80,7 @@ Add a single behavioral vitest at `mcp_server/tests/handler-memory-search-live-e
 
 - Changing `handleMemorySearch` itself.
 - Changing `recordSearchDecision`, `buildSearchDecisionEnvelope`, or any production module.
-- Changing the harness (`mcp_server/tests/search-quality/`) — that's PP-2 (`024-harness-telemetry-export-mode`).
+- Changing the harness (`mcp_server/stress_test/search-quality/`) — that's PP-2 (`024-harness-telemetry-export-mode`).
 - Multi-tenant or multi-corpus sweeps — those belong in v1.0.4 stress cycle.
 
 ### Files to Change/Create

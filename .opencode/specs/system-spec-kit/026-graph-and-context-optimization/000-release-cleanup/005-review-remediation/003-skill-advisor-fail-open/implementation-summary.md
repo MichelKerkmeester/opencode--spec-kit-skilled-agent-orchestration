@@ -88,7 +88,7 @@ The 008/008 packet now uses the runtime `skill_advisor` path spelling, carries f
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/sqlite-integrity.ts` | Created | Share SQLite integrity checking. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/rebuild-from-source.ts` | Modified | Serialize rebuild recovery with lease and busy retry. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-corruption-recovery.vitest.ts` | Created | Cover malformed DB recovery on the live path. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-rebuild-concurrency.vitest.ts` | Created | Cover concurrent rebuild serialization. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts` | Created | Cover concurrent rebuild serialization. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/skill-graph-diagnostic-redaction.vitest.ts` | Created | Cover path redaction across public diagnostics. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/response-envelope.ts` | Created | Share response envelopes and redaction helpers. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/skill-graph/query.ts` | Modified | Use shared response envelope. |
@@ -158,9 +158,9 @@ Phase 4 reduced drift risk in repeated patterns. Lane metadata, compatibility de
 | `npx vitest run skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts` after fix | PASS, exit 0. |
 | `npx vitest run tests/handlers/skill-graph-scan-auth.vitest.ts` before fix | FAIL, exit 1 as expected; untrusted scan could mutate. |
 | `npx vitest run tests/handlers/skill-graph-scan-auth.vitest.ts` after fix | PASS, exit 0. |
-| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts tests/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts` before fixes | FAIL, exit 1 as expected; malformed DB, concurrent rebuild, and path leakage paths were exposed. |
-| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts tests/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts tests/handlers/skill-graph-scan-auth.vitest.ts skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts` | PASS, exit 0. |
-| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts tests/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts tests/handlers/skill-graph-scan-auth.vitest.ts skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts tests/skill-graph-handlers.vitest.ts tests/skill-graph-schema.vitest.ts skill_advisor/tests/skill-graph-db.vitest.ts skill_advisor/tests/scorer/native-scorer.vitest.ts tests/spec-kit-skill-advisor-plugin.vitest.ts skill_advisor/tests/daemon-freshness-foundation.vitest.ts` | PASS, exit 0; 11 files, 87 tests. |
+| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts` before fixes | FAIL, exit 1 as expected; malformed DB, concurrent rebuild, and path leakage paths were exposed. |
+| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts tests/handlers/skill-graph-scan-auth.vitest.ts skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts` | PASS, exit 0. |
+| `npx vitest run tests/skill-graph-corruption-recovery.vitest.ts stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts tests/skill-graph-diagnostic-redaction.vitest.ts tests/handlers/skill-graph-scan-auth.vitest.ts skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts tests/skill-graph-handlers.vitest.ts tests/skill-graph-schema.vitest.ts skill_advisor/tests/skill-graph-db.vitest.ts skill_advisor/tests/scorer/native-scorer.vitest.ts tests/spec-kit-skill-advisor-plugin.vitest.ts skill_advisor/tests/daemon-freshness-foundation.vitest.ts` | PASS, exit 0; 11 files, 87 tests. |
 | `python3 -m pytest skill_advisor/tests/python/test_skill_advisor.py` | PASS, exit 0; 4 tests. |
 | `npm run typecheck` | PASS, exit 0. |
 | `npm run build` | PASS, exit 0. |

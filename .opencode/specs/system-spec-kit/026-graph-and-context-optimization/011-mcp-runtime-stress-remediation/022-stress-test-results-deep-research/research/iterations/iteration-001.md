@@ -25,8 +25,8 @@ v1.0.3 evidence audit + sample-size implications + harness-runner vs live-handle
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/measurements/phase-h-stress.test.ts:137`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/decision-audit.ts:43`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/decision-audit.ts:51`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:155`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:186`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:155`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:186`
 
 ## Findings
 

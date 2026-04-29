@@ -88,7 +88,7 @@ Use the Phase D search-quality harness to make evidence-backed W3-W7 implementat
 | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` | Create/Modify | Phase E packet docs and continuity. |
 | `description.json`, `graph-metadata.json` | Create/Modify | Discovery and graph metadata. |
 | `measurements/*.json` | Create | Baseline and variant measurement snapshots. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/` | Modify/Create | Corpus extensions, measurement runner, W3-W7 tests. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/` | Modify/Create | Corpus extensions, measurement runner, W3-W7 tests. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts` | Create | W3 trust-tree composer. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts` | Create | W4 opt-in rerank gate. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts` | Create | W6 duplicate-density telemetry. |

@@ -59,7 +59,7 @@ Resource Map Coverage: resource-map.md not present; skipping coverage gate.
 - `.opencode/skill/system-spec-kit/mcp_server/tests/memory-crud-update-constitutional-guard.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/checkpoint-restore-invariant-enforcement.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/symlink-realpath-hardening.vitest.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/walker-dos-caps.vitest.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/walker-dos-caps.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/cleanup-script-audit-emission.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/exclusion-ssot-unification.vitest.ts`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/memory-governance.vitest.ts`

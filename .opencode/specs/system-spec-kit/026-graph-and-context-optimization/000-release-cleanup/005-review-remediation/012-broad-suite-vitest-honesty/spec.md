@@ -47,7 +47,7 @@ _memory:
 
 Packet 026's `implementation-summary.md:58, 133` claims "all Vitest green" / "full Vitest pass." The 011 deep-review reproduced broad-suite failures or hangs and flagged this as F-005 P1 traceability. An earlier in-session attempt to run `npx vitest run` from this conversation also hung past 10 minutes with 0 bytes of output, requiring a forced kill.
 
-Targeted vitest suites (`tests/handler-memory-search-live-envelope`, `tests/search-quality/`, `tests/graph-readiness-mapper`, `tests/handler-memory-crud`, `tests/memory-search-integration`, `scripts/tests/review-research-paths`) ARE green. So the regression is in some non-targeted slice of the broad suite — but its identity is unknown.
+Targeted vitest suites (`tests/handler-memory-search-live-envelope`, `stress_test/search-quality/`, `tests/graph-readiness-mapper`, `tests/handler-memory-crud`, `tests/memory-search-integration`, `scripts/tests/review-research-paths`) ARE green. So the regression is in some non-targeted slice of the broad suite — but its identity is unknown.
 
 ### Purpose
 

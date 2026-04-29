@@ -12,11 +12,11 @@ The high-confidence shape is one request-scoped search decision envelope that re
 
 Top actionable findings:
 
-1. **P1: W3 trust tree has zero production consumers.** `buildTrustTree` is exported and tested, but caller search found only the module itself and the W3 test (`.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:65`, `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:3`).
+1. **P1: W3 trust tree has zero production consumers.** `buildTrustTree` is exported and tested, but caller search found only the module itself and the W3 test (`.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:65`, `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:3`).
 2. **P1: W4 is wired but underfed.** Stage 3 invokes `decideConditionalRerank`, but with an empty plan set to `complexity: 'unknown'`, so rich QueryPlan triggers cannot fire (`.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:327`, `:328`).
 3. **P1: W5 shadow diagnostics have no durable learning sink.** `_shadow` is emitted from advisor output, but the legacy CLI translation drops it and no advisor-specific sink was found (`.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts:270`, `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py:373`).
-4. **P1: W6 calibration is test-only.** The helper computes duplicate-density telemetry, but no production consumer imports it (`.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:36`, `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w6-cocoindex-calibration.vitest.ts:3`).
-5. **P1: W7 stress cells are static harness fixtures.** The W7 tests call static measurement runners, not real degraded graph states (`.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:155`, `:172`).
+4. **P1: W6 calibration is test-only.** The helper computes duplicate-density telemetry, but no production consumer imports it (`.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:36`, `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w6-cocoindex-calibration.vitest.ts:3`).
+5. **P1: W7 stress cells are static harness fixtures.** The W7 tests call static measurement runners, not real degraded graph states (`.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:155`, `:172`).
 
 ## 2. Research Questions Answered
 
@@ -272,8 +272,8 @@ Stop reason: max iteration 10 reached. Convergence threshold was `<= 0.10` for t
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:65`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:205`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:253`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:3`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:3`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:7`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts:15`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts:26`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts:57`
@@ -308,8 +308,8 @@ Stop reason: max iteration 10 reached. Convergence threshold was `<= 0.10` for t
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:39`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:41`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:76`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w6-cocoindex-calibration.vitest.ts:3`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w6-cocoindex-calibration.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w6-cocoindex-calibration.vitest.ts:3`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w6-cocoindex-calibration.vitest.ts:7`
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/seed-resolver.ts:27`
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/seed-resolver.ts:131`
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:62`
@@ -320,13 +320,13 @@ Stop reason: max iteration 10 reached. Convergence threshold was `<= 0.10` for t
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:166`
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:329`
 - `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:787`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w7-degraded-stale.vitest.ts:7`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w7-degraded-empty.vitest.ts:7`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w7-degraded-full-scan.vitest.ts:7`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w7-degraded-unavailable.vitest.ts:7`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:139`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:155`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:172`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w7-degraded-stale.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w7-degraded-empty.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w7-degraded-full-scan.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w7-degraded-unavailable.vitest.ts:7`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:139`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:155`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:172`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-degraded-readiness-envelope-parity.vitest.ts:127`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1414`
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-context.ts:1439`

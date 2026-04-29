@@ -21,7 +21,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/graph-readiness-mapper.vitest.ts"
     session_dedup:
       fingerprint: "sha256:025-memory-search-degraded-readiness-wiring-implementation"
@@ -74,7 +74,7 @@ The new `mapGraphReadinessToTelemetry()` helper lives in `mcp_server/lib/search/
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts` | Created | Shared mapper for snapshot and richer code graph readiness payloads |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts` | Modified | Calls readiness snapshot and threads mapped telemetry into `SearchDecisionEnvelope` |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts` | Modified | Removes TC-3 expected failure and asserts deterministic snapshot-derived readiness |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts` | Modified | Replaces inline richer-payload mapping with the shared helper |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts` | Modified | Replaces inline richer-payload mapping with the shared helper |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-readiness-mapper.vitest.ts` | Created | Covers fresh, stale, empty, and error snapshot mapping |
 | `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/plan.md` | Created | Records architecture, phases, verification plan, and mapper location decision |
 | `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/tasks.md` | Created | Tracks setup, implementation, verification, and completion criteria |
@@ -109,7 +109,7 @@ The change was delivered through a handler-local snapshot call and a pure mapper
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts tests/search-quality/ tests/graph-readiness-mapper.vitest.ts` | PASS: 17 test files, 34 tests |
+| `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts stress_test/search-quality/ tests/graph-readiness-mapper.vitest.ts` | PASS: 17 test files, 34 tests |
 | `npx tsc --noEmit` | FAIL: existing out-of-scope missing exports from `../core/index.js` and `../../core/index.js` for `isEmbeddingModelReady`, `setEmbeddingModelReady`, and `waitForEmbeddingModel` |
 | Strict validator on packet | PASS: strict validator exited 0 after adding acceptance scenarios and fixing `Spec Folder` metadata |
 

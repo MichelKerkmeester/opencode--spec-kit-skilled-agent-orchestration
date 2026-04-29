@@ -28,9 +28,9 @@ Headline numbers:
 
 ## Methodology
 
-- **Corpus**: `SEARCH_QUALITY_EXTENDED_CORPUS`, version `007-search-rag-measurement-driven-implementation-v1`, 12 cases (`mcp_server/tests/search-quality/corpus.ts:192`).
+- **Corpus**: `SEARCH_QUALITY_EXTENDED_CORPUS`, version `007-search-rag-measurement-driven-implementation-v1`, 12 cases (`mcp_server/stress_test/search-quality/corpus.ts:192`).
 - **Rubric**: correctness / robustness / telemetry / regression-safety, scale `0-2`, equal weights. This follows the generalized stress-cycle dimensions (`feature_catalog/14--stress-testing/01-stress-test-cycle.md:40`).
-- **Measurement method**: PP-1 + PP-2 combined. The runner mocks `executePipeline` at the retrieval boundary while `handleMemorySearch` runs as production code, mirroring the PP-1 disclosure (`mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:1`). Harness telemetry export is the PP-2 path (`mcp_server/tests/search-quality/harness.ts:103`, `mcp_server/tests/search-quality/harness.ts:199`).
+- **Measurement method**: PP-1 + PP-2 combined. The runner mocks `executePipeline` at the retrieval boundary while `handleMemorySearch` runs as production code, mirroring the PP-1 disclosure (`mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:1`). Harness telemetry export is the PP-2 path (`mcp_server/stress_test/search-quality/harness.ts:103`, `mcp_server/stress_test/search-quality/harness.ts:199`).
 - **Comparison method**: same 12-case layout as v1.0.3 for telemetry comparability. v1.0.2 remains a directional baseline only because its sidecar is a 30-cell CLI-model rubric (`010-stress-test-rerun-v1-0-2/findings.md:28`, `010-stress-test-rerun-v1-0-2/findings-rubric.json:65`).
 - **Known scorer limits**: single packet-local Vitest runner; retrieval is deterministic at the mocked pipeline boundary, so this validates handler/harness telemetry wiring more than live database ranking.
 
@@ -88,7 +88,7 @@ The trigger logic is the runtime helper, not a string fixture: `decideConditiona
 |---|----------------|-----------|---------------------|----------|
 | W3 trust tree | PROVEN | Metric total held at 0.917. | precision +0.334, recall +0.500, citation +1.000 inherited from v1.0.3 baseline delta. | Current score at `measurements/v1-0-4-summary.json:162`; envelope contract at `mcp_server/lib/search/search-decision-envelope.ts:44`. |
 | W4 conditional rerank | PROVEN | Metric total held at 1.000. | precision +0.667 inherited from v1.0.3 delta. | Current score at `measurements/v1-0-4-summary.json:176`; trigger distribution at `measurements/v1-0-4-summary.json:566`. |
-| W5 shadow weights | PROVEN | Metric total held at 0.875. | citation +1.000 inherited from v1.0.3 delta. | Current score at `measurements/v1-0-4-summary.json:190`; harness shadow export at `mcp_server/tests/search-quality/harness.ts:229`. |
+| W5 shadow weights | PROVEN | Metric total held at 0.875. | citation +1.000 inherited from v1.0.3 delta. | Current score at `measurements/v1-0-4-summary.json:190`; harness shadow export at `mcp_server/stress_test/search-quality/harness.ts:229`. |
 | W6 CocoIndex calibration | PROVEN | Metric total held at 1.000. | precision +0.667 inherited from v1.0.3 delta. | Current score at `measurements/v1-0-4-summary.json:204`; handler passes calibration into envelope at `mcp_server/handlers/memory-search.ts:1145`. |
 | W7 degraded readiness | PROVEN | Four W7 cells held at 1.000 and every envelope has freshness populated. | Phase E ceiling held on recall/refusal/citation. | Current W7 scores at `measurements/v1-0-4-summary.json:218`; mapper emits snapshot freshness at `mcp_server/lib/search/graph-readiness-mapper.ts:45`. |
 | W8 SearchDecisionEnvelope | PROVEN | Closes v1.0.3 live-handler gap. | Newer telemetry layer; no Phase E equivalent. | Contract fields at `mcp_server/lib/search/search-decision-envelope.ts:44`; builder attaches optional telemetry at `search-decision-envelope.ts:78`. |
@@ -108,7 +108,7 @@ The trigger logic is the runtime helper, not a string fixture: `decideConditiona
 | `cocoindexCalibration` | Y | `mcp_server/handlers/memory-search.ts:1145`, `mcp_server/lib/search/search-decision-envelope.ts:137` | 16/16 field completeness true (`measurements/v1-0-4-summary.json:302`). |
 | `degradedReadiness` | Y | `mcp_server/handlers/memory-search.ts:1163`, `mcp_server/lib/search/graph-readiness-mapper.ts:75` | Freshness values: `fresh`, `empty`, `stale`, `error` (`measurements/v1-0-4-summary.json:592`). |
 | `recordSearchDecision` | Y | `mcp_server/handlers/memory-search.ts:1407`, `mcp_server/lib/search/decision-audit.ts:43` | 16 audit rows (`measurements/v1-0-4-summary.json:302`). |
-| Harness telemetry export | Y | `mcp_server/tests/search-quality/harness.ts:199`, `mcp_server/tests/search-quality/harness.ts:229` | Export path and audit mirror count (`measurements/v1-0-4-summary.json:7`, `measurements/v1-0-4-summary.json:302`). |
+| Harness telemetry export | Y | `mcp_server/stress_test/search-quality/harness.ts:199`, `mcp_server/stress_test/search-quality/harness.ts:229` | Export path and audit mirror count (`measurements/v1-0-4-summary.json:7`, `measurements/v1-0-4-summary.json:302`). |
 
 ## Caveat Resolution
 

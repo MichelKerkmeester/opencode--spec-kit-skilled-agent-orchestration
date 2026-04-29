@@ -92,7 +92,7 @@ Create a dedicated `.opencode/skill/system-spec-kit/mcp_server/stress_test/` fol
 |-----------|-------------|-------------|
 | `.opencode/skill/system-spec-kit/mcp_server/stress_test/` | Create | Dedicated stress-test folder and README |
 | `.opencode/skill/system-spec-kit/mcp_server/stress_test/*.vitest.ts` | Move | Confirmed stress suites moved from `tests/` |
-| `.opencode/skill/system-spec-kit/mcp_server/vitest.config.ts` | Modify | Opt-in stress include via `SPECKIT_RUN_STRESS` |
+| `.opencode/skill/system-spec-kit/mcp_server/vitest.config.ts` | Modify | Exclude the dedicated stress folder from default tests |
 | `.opencode/skill/system-spec-kit/mcp_server/package.json` | Modify | Add `npm run stress` |
 | `.opencode/skill/system-spec-kit/mcp_server/tsconfig.json` | Modify | Exclude stress test files from build |
 | `.opencode/skill/system-spec-kit/mcp_server/README` | Modify | Document new folder in structure map |
@@ -152,7 +152,7 @@ Create a dedicated `.opencode/skill/system-spec-kit/mcp_server/stress_test/` fol
 |------|------|--------|------------|
 | Dependency | Packet 037/001 audit | Establishes follow-up ordering | Recorded in `graph-metadata.json` |
 | Risk | Build includes moved `.vitest.ts` files | `npm run build` could compile test-only code | Add `stress_test/**/*.vitest.ts` and `stress_test/**/*.test.ts` to `tsconfig.json` excludes |
-| Risk | Direct file runs miss Vitest include globs | Stress tests may not be discovered | Gate stress include behind `SPECKIT_RUN_STRESS=true` and use `npm run stress` |
+| Risk | Direct file runs miss Vitest include globs | Stress tests may not be discovered | Gate stress include behind `vitest.stress.config.ts` and use `npm run stress` |
 | Risk | Historical docs drift | Old packet docs could point to moved paths | Refresh direct path references in current stress-remediation docs |
 <!-- /ANCHOR:risks -->
 
@@ -185,7 +185,7 @@ None.
 ## L2: EDGE CASES
 
 ### Data Boundaries
-- Fixture-only W7 degraded-readiness cells mention "stress cell" but only assert static measurement fixtures, so they remain in `tests/search-quality/`.
+- Fixture-only W7 degraded-readiness cells mention "stress cell" but only assert static measurement fixtures, so they remain in `stress_test/search-quality/`.
 
 ### Error Scenarios
 - If `git mv` cannot write `.git/index.lock` under sandboxing, a filesystem move is acceptable and Git can still detect the rename.

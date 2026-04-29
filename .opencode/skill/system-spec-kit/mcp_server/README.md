@@ -1794,6 +1794,8 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
 | [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md) | Complete feature inventory: 22 categories, 294 features with code references |
+| [code_graph/feature_catalog/feature_catalog.md](./code_graph/feature_catalog/feature_catalog.md) | Package-local code_graph runtime feature catalog |
+| [code_graph/manual_testing_playbook/manual_testing_playbook.md](./code_graph/manual_testing_playbook/manual_testing_playbook.md) | Package-local code_graph runtime manual testing playbook |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
 | [../../../../DEPLOYMENT.md](../../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |

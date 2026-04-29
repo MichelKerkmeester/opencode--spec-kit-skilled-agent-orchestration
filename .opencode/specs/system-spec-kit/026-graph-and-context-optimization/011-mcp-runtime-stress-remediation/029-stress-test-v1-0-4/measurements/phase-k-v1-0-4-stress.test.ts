@@ -15,20 +15,20 @@ import {
   type SearchQualityChannel,
   type SearchQualityCorpus,
   type SearchQualityWorkstream,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.js';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.js';
 import {
   createMeasurementRunners,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.js';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.js';
 import {
   runSearchQualityHarness,
   type SearchQualityCandidate,
   type SearchQualityCaseResult,
   type SearchQualityChannelOutput,
   type SearchQualityRunners,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.js';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.js';
 import {
   summarizeSearchQualityRun,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/metrics.js';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.js';
 import { routeQuery } from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.js';
 import { createEmptyQueryPlan, type QueryPlan } from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.js';
 import { decideConditionalRerank } from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.js';

@@ -18,7 +18,7 @@ Rank W8/W9/W10+ feature candidates by leverage and feasibility, then prepare the
 - W4 is production-wired but underfed at `.opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage3-rerank.ts:327`.
 - W5 emits `_shadow` at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts:270` without a durable advisor-learning sink.
 - W6 computes duplicate density at `.opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts:36` but has no production consumer.
-- W7 static runners sit at `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts:155`.
+- W7 static runners sit at `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts:155`.
 
 ## Ranked Expansion Candidates
 

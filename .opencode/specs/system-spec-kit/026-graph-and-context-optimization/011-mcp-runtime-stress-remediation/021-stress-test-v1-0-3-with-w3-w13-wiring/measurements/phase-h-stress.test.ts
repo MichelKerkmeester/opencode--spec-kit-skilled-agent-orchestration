@@ -5,11 +5,11 @@ import { describe, expect, it } from 'vitest';
 import {
   SEARCH_QUALITY_EXTENDED_CORPUS,
   type SearchQualityCase,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.ts';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts';
 import {
   runMeasurement,
   type MeasurementRecord,
-} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/measurement-fixtures.ts';
+} from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts';
 import { routeQuery } from '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts';
 import {
   createEmptyQueryPlan,

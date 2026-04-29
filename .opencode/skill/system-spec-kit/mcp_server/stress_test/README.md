@@ -14,8 +14,9 @@ trigger_phrases:
 
 - [1. OVERVIEW](#1-overview)
 - [2. QUICK START](#2-quick-start)
-- [3. ADDING STRESS TESTS](#3-adding-stress-tests)
-- [4. BOUNDARY WITH TESTS](#4-boundary-with-tests)
+- [3. STRUCTURE](#3-structure)
+- [4. ADDING STRESS TESTS](#4-adding-stress-tests)
+- [5. BOUNDARY WITH TESTS](#5-boundary-with-tests)
 
 <!-- /ANCHOR:table-of-contents -->
 <!-- ANCHOR:overview -->
@@ -25,8 +26,12 @@ The `stress_test/` directory holds MCP server stress coverage that is intentiona
 
 Current stress suites:
 
-- `session-manager-stress.vitest.ts` - interleaved working-memory entry-limit and cleanup stress regressions.
-- `code-graph-degraded-sweep.vitest.ts` - packet-013 degraded code-graph stress cell that exercises end-to-end fallback decisions against isolated graph states.
+- `search-quality/` - full W3-W13 search-quality harness, corpus, metrics, baseline, telemetry export, and degraded-readiness cells.
+- `memory/` - memory search and trigger fast-path latency/throughput benchmarks.
+- `skill-advisor/` - skill graph rebuild concurrency stress coverage.
+- `code-graph/` - degraded-readiness sweep and large-input/DoS-cap coverage.
+- `session/` - session-manager entry-limit stress and Gate D resume benchmarks.
+- `matrix/` - synthetic matrix and routing latency comparison coverage.
 <!-- /ANCHOR:overview -->
 
 ---
@@ -41,19 +46,40 @@ cd .opencode/skill/system-spec-kit/mcp_server
 npm run stress
 
 # Single stress file
-SPECKIT_RUN_STRESS=true npx vitest run mcp_server/stress_test/session-manager-stress.vitest.ts
+npx vitest run --config vitest.stress.config.ts mcp_server/stress_test/session/session-manager-stress.vitest.ts
+
+# Search-quality harness only
+npm run stress:harness
+
+# Matrix-only stress slice
+npm run stress:matrix
 
 # Direct Vitest folder run
-SPECKIT_RUN_STRESS=true npx vitest run mcp_server/stress_test
+npx vitest run --config vitest.stress.config.ts mcp_server/stress_test
 ```
 
-`SPECKIT_RUN_STRESS=true` enables `mcp_server/stress_test/**/*.{vitest,test}.ts` in `vitest.config.ts`. Default `npm test` remains scoped to the fast unit, integration, handler, and regression suites under `mcp_server/tests/`.
+`vitest.stress.config.ts` includes only `mcp_server/stress_test/**/*.{vitest,test}.ts`. Default `npm test` uses `vitest.config.ts`, which excludes `mcp_server/stress_test/**`.
 <!-- /ANCHOR:quick-start -->
 
 ---
 
+<!-- ANCHOR:structure -->
+## 3. STRUCTURE
+
+| Directory | Owns |
+|-----------|------|
+| `search-quality/` | Search-quality harness machinery, W3-W13 workstream cells, corpus, metrics, baseline, telemetry export. |
+| `memory/` | Memory search and trigger fast-path benchmark suites. |
+| `skill-advisor/` | Skill Advisor and skill graph concurrency stress suites. |
+| `code-graph/` | Degraded graph fallback sweeps and large-input code-graph caps. |
+| `session/` | Session-manager capacity and session-resume latency benchmarks. |
+| `matrix/` | Matrix-style synthetic search routing and latency comparison suites. |
+<!-- /ANCHOR:structure -->
+
+---
+
 <!-- ANCHOR:adding-stress-tests -->
-## 3. ADDING STRESS TESTS
+## 4. ADDING STRESS TESTS
 
 Add a test here when it intentionally stresses capacity, concurrency, degraded-state envelopes, large matrices, high-volume fixtures, or runtime performance. Keep each suite self-contained: use temp directories or in-memory databases, avoid mutating live DB files, and document any expected runtime cost near the top of the file.
 
@@ -63,7 +89,7 @@ If a regression is small, deterministic, and part of normal unit or integration 
 ---
 
 <!-- ANCHOR:boundary-with-tests -->
-## 4. BOUNDARY WITH TESTS
+## 5. BOUNDARY WITH TESTS
 
 | Directory | Purpose | Default Command |
 |-----------|---------|-----------------|

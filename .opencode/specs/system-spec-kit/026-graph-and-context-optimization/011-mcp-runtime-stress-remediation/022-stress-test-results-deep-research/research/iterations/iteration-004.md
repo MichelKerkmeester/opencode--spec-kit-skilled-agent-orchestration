@@ -28,7 +28,7 @@ Through-line v1.0.1 -> v1.0.2 -> v1.0.3 cross-cycle synthesis. This follows stra
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/measurements/phase-h-stress.test.ts:190`
 - `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/measurements/v1-0-3-envelopes.jsonl:5`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:46`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:29`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:29`
 
 ## Findings
 

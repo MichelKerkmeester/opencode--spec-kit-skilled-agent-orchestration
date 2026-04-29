@@ -50,7 +50,7 @@ _memory:
 | **Testing** | `npm run build`, `npm test`, `npm run stress`, strict spec validator |
 
 ### Overview
-The migration creates a sibling `stress_test/` folder next to `tests/`, moves confirmed stress suites, adds opt-in Vitest include wiring through `SPECKIT_RUN_STRESS`, and documents the operational boundary between default verification and explicit stress validation.
+The migration creates a sibling `stress_test/` folder next to `tests/`, moves confirmed stress suites, adds dedicated Vitest stress-runner wiring, and documents the operational boundary between default verification and explicit stress validation.
 <!-- /ANCHOR:summary -->
 
 ---
@@ -82,7 +82,7 @@ Opt-in stress-suite segregation.
 
 ### Key Components
 - **Stress folder**: `mcp_server/stress_test/` owns explicit stress and matrix-cell tests.
-- **Vitest config**: `SPECKIT_RUN_STRESS=true` includes stress files; default config excludes them.
+- **Vitest config**: `vitest.stress.config.ts` includes stress files; default config excludes them.
 - **Package scripts**: `npm run stress` is the operator entrypoint for stress validation.
 - **Build config**: `tsconfig.json` excludes moved `.vitest.ts` files from production build.
 - **Docs**: README files and direct spec-doc path references point at the new folder.
@@ -151,7 +151,7 @@ Candidate discovery -> classification -> file moves -> config update -> doc refe
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Build or default tests fail because of the migration.
-- **Procedure**: Move stress suites back to `mcp_server/tests/`, remove `SPECKIT_RUN_STRESS` config and `npm run stress`, then rerun build and tests.
+- **Procedure**: Move stress suites back to `mcp_server/tests/`, remove the dedicated stress config and `npm run stress`, then rerun build and tests.
 <!-- /ANCHOR:rollback -->
 
 ---

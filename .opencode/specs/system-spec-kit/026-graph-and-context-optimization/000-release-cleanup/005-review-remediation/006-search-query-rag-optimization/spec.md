@@ -22,7 +22,7 @@ _memory:
       - "plan.md"
       - "tasks.md"
       - "checklist.md"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.ts"
     session_dedup:
       fingerprint: "sha256:006-search-query-rag-optimization-20260428"
@@ -100,10 +100,10 @@ Create measurement infrastructure and telemetry-only query planning so future RA
 | `description.json` | Create/Modify | Packet metadata for graph and memory discovery. |
 | `graph-metadata.json` | Create/Modify | Parent/dependency metadata for graph traversal. |
 | `../spec.md` | Modify | Add this child to the PHASE MANIFEST. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.ts` | Create | Fixture corpus for harness baseline. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts` | Create | Channel-runner harness and capture model. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/metrics.ts` | Create | Precision, recall, latency, refusal, and citation metrics. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/baseline.vitest.ts` | Create | Baseline harness assertions over the small corpus. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts` | Create | Fixture corpus for harness baseline. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts` | Create | Channel-runner harness and capture model. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts` | Create | Precision, recall, latency, refusal, and citation metrics. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/baseline.vitest.ts` | Create | Baseline harness assertions over the small corpus. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.ts` | Create | Typed query-plan contract and builder helpers. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts` | Modify | Emit complexity query-plan telemetry. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts` | Modify | Emit selected/skipped channel and routing-reason query-plan telemetry. |
@@ -127,7 +127,7 @@ Create measurement infrastructure and telemetry-only query planning so future RA
 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
-| REQ-003 | Build search-quality harness infrastructure. | Corpus, harness, metrics, and baseline Vitest exist under `mcp_server/tests/search-quality/`. |
+| REQ-003 | Build search-quality harness infrastructure. | Corpus, harness, metrics, and baseline Vitest exist under `mcp_server/stress_test/search-quality/`. |
 | REQ-004 | Capture required harness dimensions. | Harness captures per-channel candidates, final relevance, citation policy, refusal policy, and latency. |
 | REQ-005 | Add explicit query-plan contract. | `QueryPlan` includes `intent`, `complexity`, `artifactClass`, `authorityNeed`, `selectedChannels`, `skippedChannels`, `routingReasons`, and `fallbackPolicy`. |
 | REQ-006 | Keep query-plan emission telemetry-only. | Existing classifier/router return shapes are only extended with `queryPlan`; selected channels and intent outcomes remain unchanged. |

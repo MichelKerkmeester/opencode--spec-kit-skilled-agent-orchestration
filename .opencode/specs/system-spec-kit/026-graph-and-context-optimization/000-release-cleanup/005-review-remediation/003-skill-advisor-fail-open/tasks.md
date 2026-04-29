@@ -41,7 +41,7 @@ Tasks are grouped by plan phase. Each lists `REQ | Status | Exit gate`. P1 tasks
 - [x] **T6** [REQ-003] Author `mcp_server/tests/handlers/skill-graph-scan-auth.vitest.ts` covering trusted/untrusted paths. Exit: both paths assert correct behavior; test fails before T5, passes after. Evidence: pre-fix vitest exit 1, post-fix vitest exit 0.
 - [x] **T7** [REQ-003] Author scaffolds for the 3 remaining regression tests:
    - `mcp_server/tests/skill-graph-corruption-recovery.vitest.ts` (Phase 2 wire-up)
-   - `mcp_server/tests/skill-graph-rebuild-concurrency.vitest.ts` (Phase 2)
+   - `mcp_server/stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts` (Phase 2)
    - `mcp_server/tests/skill-graph-diagnostic-redaction.vitest.ts` (Phase 3)
    Exit: scaffolds in place asserting current (broken) behavior so Phase 2/3 fixes flip them green. Evidence: `skill-graph-corruption-recovery.vitest.ts:17`, `skill-graph-rebuild-concurrency.vitest.ts:13`, `skill-graph-diagnostic-redaction.vitest.ts:29`; pre-fix vitest exit 1, final exit 0.
 - [x] **T8** [REQ-001, REQ-002, REQ-003] Run focused vitest set: `npx vitest run mcp_server/tests/handlers/advisor-recommend-unavailable.vitest.ts mcp_server/tests/handlers/skill-graph-scan-auth.vitest.ts`. Exit: both green. Evidence: `npx vitest run tests/handlers/skill-graph-scan-auth.vitest.ts skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts` exit 0.

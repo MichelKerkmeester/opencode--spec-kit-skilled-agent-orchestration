@@ -17,8 +17,8 @@ _memory:
     next_safe_action: "Extend harness types and add opt-in JSONL export"
     blockers: []
     key_files:
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness-telemetry-export.vitest.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness-telemetry-export.vitest.ts"
     completion_pct: 20
     open_questions: []
     answered_questions:
@@ -42,7 +42,7 @@ _memory:
 | **Language/Stack** | TypeScript, Node.js ESM |
 | **Framework** | Vitest test harness |
 | **Storage** | Optional JSONL files under caller-provided temp/export path |
-| **Testing** | `npx vitest run tests/search-quality/`, `npx tsc --noEmit` |
+| **Testing** | `npx vitest run stress_test/search-quality/`, `npx tsc --noEmit` |
 
 ### Overview
 Add an optional telemetry object to the search-quality runner output, preserve it through channel captures and per-case results, and export it only when `telemetryExportPath` is provided. The harness remains fixture-only and back-compatible: existing runners need no changes, and no runtime code or corpus fixtures are modified.
@@ -116,7 +116,7 @@ A runner returns candidates plus optional telemetry. The harness normalizes cand
 | Test Type | Scope | Tools |
 |-----------|-------|-------|
 | Unit | Telemetry preservation and export behavior | Vitest |
-| Regression | Existing search-quality harness consumers | `npx vitest run tests/search-quality/` |
+| Regression | Existing search-quality harness consumers | `npx vitest run stress_test/search-quality/` |
 | Typecheck | Harness/test TypeScript contracts | `npx tsc --noEmit` |
 | Spec validation | Packet documentation hygiene | `validate.sh --strict` |
 <!-- /ANCHOR:testing -->

@@ -74,7 +74,7 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [x] CHK-030 [P0] `npx vitest run mcp_server/tests/search-quality/ mcp_server/tests/query-plan-emission.vitest.ts` exits 0 [Evidence: PATH-prefixed npx command exited 0 with 11 files and 20 tests.]
+- [x] CHK-030 [P0] `npx vitest run mcp_server/stress_test/search-quality/ mcp_server/tests/query-plan-emission.vitest.ts` exits 0 [Evidence: PATH-prefixed npx command exited 0 with 11 files and 20 tests.]
 - [x] CHK-031 [P0] New W3-W7 focused tests exit 0 [Evidence: included in focused Vitest run.]
 - [x] CHK-032 [P0] `npm run typecheck` exits 0 [Evidence: command exited 0.]
 - [x] CHK-033 [P0] `npm run build` exits 0 [Evidence: command exited 0.]

@@ -169,7 +169,7 @@ The cleanest mechanism is **isolated `SPEC_KIT_DB_DIR`** — point the test at a
 
 ### 4.6 Scope estimate
 
-- **LOC**: ~150–250 (test-only). One new test file in `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` (~150 LOC) + helper for DB-dir setup/teardown (~50 LOC) + fixture data (~30 LOC).
+- **LOC**: ~150–250 (test-only). One new test file in `mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts` (~150 LOC) + helper for DB-dir setup/teardown (~50 LOC) + fixture data (~30 LOC).
 - **Complexity**: Level 1 packet (single test file + small helper).
 - **Risk**: very low — no production code change. Test isolation pattern already exists in the codebase.
 

@@ -88,7 +88,7 @@ Close all three P1s with concrete fixes + regression tests, and absorb the 15 P2
 | `mcp_server/skill_advisor/tests/handlers/advisor-recommend-unavailable.vitest.ts` | Create | DR-008-D3-P1-001 |
 | `mcp_server/tests/handlers/skill-graph-scan-auth.vitest.ts` | Create | DR-008-D3-P1-001 |
 | `mcp_server/tests/skill-graph-corruption-recovery.vitest.ts` | Create | DR-008-D3-P1-001, DR-008-D2-P2-001 |
-| `mcp_server/tests/skill-graph-rebuild-concurrency.vitest.ts` | Create | DR-008-D3-P1-001, DR-008-D2-P2-002 |
+| `mcp_server/stress_test/skill-advisor/skill-graph-rebuild-concurrency.vitest.ts` | Create | DR-008-D3-P1-001, DR-008-D2-P2-002 |
 | `mcp_server/tests/skill-graph-diagnostic-redaction.vitest.ts` | Create | DR-008-D3-P1-001, DR-008-D2-P2-003 |
 | `mcp_server/lib/skill-graph/skill-graph-db.ts` | Modify | DR-008-D2-P2-001 (integrity quick_check at initDb) |
 | `mcp_server/skill_advisor/lib/freshness/rebuild-from-source.ts` | Modify | DR-008-D2-P2-002 (busy-retry/lease boundary) |

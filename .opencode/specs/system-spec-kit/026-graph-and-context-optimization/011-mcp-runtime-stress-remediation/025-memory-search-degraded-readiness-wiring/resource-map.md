@@ -46,7 +46,7 @@ _memory:
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/mcp_server/tests/graph-readiness-mapper.vitest.ts` | Created | OK | Unit tests: 4 freshness states (fresh/stale/empty/error) → `degraded` derivation |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts` | Updated | OK | TC-3 expected_fail removed; mocks `getGraphReadinessSnapshot`, asserts envelope's `degradedReadiness.freshness` |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts` | Updated | OK | Snapshot path uses shared helper; richer `handleCodeGraphQuery` payload path stays inline |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts` | Updated | OK | Snapshot path uses shared helper; richer `handleCodeGraphQuery` payload path stays inline |
 
 ---
 

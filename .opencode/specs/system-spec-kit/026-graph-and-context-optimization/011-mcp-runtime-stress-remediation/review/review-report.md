@@ -104,7 +104,7 @@ Validation note: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh 
 - `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts:1160-1188`
 - `.opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts:1-88`
 - `.opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts:280-310`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts`
 - `.opencode/skill/system-spec-kit/shared/review-research-paths.cjs:1-180`
 - `.opencode/skill/system-spec-kit/scripts/tests/review-research-paths.vitest.ts:1-177`
 - `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml`

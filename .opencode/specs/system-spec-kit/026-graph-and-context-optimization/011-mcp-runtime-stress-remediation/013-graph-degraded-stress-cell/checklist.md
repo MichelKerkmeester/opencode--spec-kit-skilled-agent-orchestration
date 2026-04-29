@@ -19,7 +19,7 @@ _memory:
     next_safe_action: "Promote checklist to commit gate"
     blockers: []
     key_files:
-      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -72,7 +72,7 @@ _memory:
 ## Testing
 
 - [x] CHK-020 [P0] All acceptance criteria met (REQ-001..005 mapped to assertions in the new vitest) [EVIDENCE: see retained verification text in this checklist item.]
-- [x] CHK-021 [P0] Manual run: `SPECKIT_RUN_STRESS=true npx vitest run mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips; exit 0 [EVIDENCE: see retained verification text in this checklist item.]
+- [x] CHK-021 [P0] Manual run: `npx vitest run --config vitest.stress.config.ts mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips; exit 0 [EVIDENCE: see retained verification text in this checklist item.]
 - [x] CHK-022 [P0] Regression run: `npx vitest run mcp_server/tests/code-graph-*.vitest.ts` → 34 tests pass, zero regressions; exit 0 [EVIDENCE: see retained verification text in this checklist item.]
 - [x] CHK-023 [P1] Edge case: broad-stale bucket exercises `SELECTIVE_REINDEX_THRESHOLD = 50` boundary at `ensure-ready.ts:201-213` [EVIDENCE: see retained verification text in this checklist item.]
 - [x] CHK-024 [P1] Live-DB byte-equality guard fires in `afterAll`; the suite would fail loudly if any test mutated production bytes [EVIDENCE: see retained verification text in this checklist item.]

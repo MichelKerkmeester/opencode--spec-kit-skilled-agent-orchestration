@@ -10,6 +10,8 @@ audited_post_018: true
 
 This scenario validates Code graph storage and query.
 
+For package-local code_graph runtime scenarios, see `mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md`.
+
 ---
 
 ## 2. SCENARIO CONTRACT

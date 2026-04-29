@@ -100,7 +100,7 @@ Add telemetry-first runtime wiring so W3-W7 decisions are observable, durable, a
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/shadow/shadow-sink.ts` | Create | W9 append-only shadow delta sink with rotation. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts` | Modify | Persist emitted `_shadow` deltas. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Modify | Preserve `_shadow` in the compatibility output. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/` | Create/Modify | W8/W10/W11/W13 tests plus W4 update. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/` | Create/Modify | W8/W10/W11/W13 tests plus W4 update. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/` | Create/Modify | W9 sink and Python passthrough tests. |
 | `.opencode/skill/system-spec-kit/mcp_server/tmp-test-fixtures/specs/` | Delete | Empty-folder cleanup if still empty. |
 | `.opencode/skill/system-spec-kit/specs/.../007-search-rag-measurement-driven-implementation/measurements/` | Delete | Duplicate empty stub cleanup if still empty. |

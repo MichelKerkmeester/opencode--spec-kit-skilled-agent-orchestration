@@ -19,7 +19,7 @@ _memory:
     key_files:
       - "spec.md"
       - "tasks.md"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.ts"
     session_dedup:
       fingerprint: "sha256:006-search-query-rag-optimization-plan-20260428"
@@ -94,10 +94,10 @@ A corpus query enters the harness, each configured channel runner returns candid
 ## 4. IMPLEMENTATION PHASES
 
 ### Phase 1: Harness
-- [x] Create `tests/search-quality/corpus.ts` fixture corpus.
-- [x] Create `tests/search-quality/harness.ts` injectable runner and capture model.
-- [x] Create `tests/search-quality/metrics.ts` pure metric functions.
-- [x] Create `tests/search-quality/baseline.vitest.ts` deterministic baseline assertions.
+- [x] Create `stress_test/search-quality/corpus.ts` fixture corpus.
+- [x] Create `stress_test/search-quality/harness.ts` injectable runner and capture model.
+- [x] Create `stress_test/search-quality/metrics.ts` pure metric functions.
+- [x] Create `stress_test/search-quality/baseline.vitest.ts` deterministic baseline assertions.
 
 ### Phase 2: Query-Plan Telemetry
 - [x] Create `lib/query/query-plan.ts` typed contract and builders.

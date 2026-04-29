@@ -55,7 +55,7 @@ _memory:
 
 - [x] T001 Create typed envelope and pure builder/attach helpers (`mcp_server/lib/search/search-decision-envelope.ts`, new).
 - [x] T002 Consume W3 trust tree through the envelope composer (`mcp_server/lib/rag/trust-tree.ts:65`).
-- [x] T003 [P] Add W8 coverage for empty, full, and partial envelope composition (`mcp_server/tests/search-quality/w8-search-decision-envelope.vitest.ts`, new).
+- [x] T003 [P] Add W8 coverage for empty, full, and partial envelope composition (`mcp_server/stress_test/search-quality/w8-search-decision-envelope.vitest.ts`, new).
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -68,7 +68,7 @@ _memory:
 - [x] T004 Add `queryPlan?: QueryPlan` and decision telemetry slots to pipeline types (`mcp_server/lib/search/pipeline/types.ts:129`, `:248`).
 - [x] T005 Build actual QueryPlan in memory search from query routing/intelligence (`mcp_server/handlers/memory-search.ts:774`, `:912`).
 - [x] T006 Replace Stage 3 unknown empty QueryPlan fallback with pipeline QueryPlan (`mcp_server/lib/search/pipeline/stage3-rerank.ts:327`, `:328`).
-- [x] T007 Update W4 tests to assert complex-query and high-authority real-plan triggers (`mcp_server/tests/search-quality/w4-conditional-rerank.vitest.ts:7`).
+- [x] T007 Update W4 tests to assert complex-query and high-authority real-plan triggers (`mcp_server/stress_test/search-quality/w4-conditional-rerank.vitest.ts:7`).
 **W9 Advisor Shadow Sink**
 
 - [x] T008 Create append-only shadow sink with rotation (`mcp_server/skill_advisor/lib/shadow/shadow-sink.ts`, new).
@@ -79,13 +79,13 @@ _memory:
 
 - [x] T012 Add production consumer for `calibrateCocoIndexOverfetch` (`mcp_server/lib/search/cocoindex-calibration.ts:36`).
 - [x] T013 Emit recommended multiplier into SearchDecisionEnvelope telemetry without changing overfetch behavior.
-- [x] T014 [P] Add W11 telemetry test (`mcp_server/tests/search-quality/`, create/modify).
+- [x] T014 [P] Add W11 telemetry test (`mcp_server/stress_test/search-quality/`, create/modify).
 **W13 Decision Audit and SLA Metrics**
 
 - [x] T015 Create decision-audit module with JSONL sink and pure SLA metrics (`mcp_server/lib/search/decision-audit.ts`, new).
 - [x] T016 Wire `recordSearchDecision` into `memory_search` response completion (`mcp_server/handlers/memory-search.ts:1506`).
 - [x] T017 Wire `recordSearchDecision` into `memory_context` response completion (`mcp_server/handlers/memory-context.ts:1859`).
-- [x] T018 [P] Add audit row and SLA metric tests (`mcp_server/tests/search-quality/`, create/modify).
+- [x] T018 [P] Add audit row and SLA metric tests (`mcp_server/stress_test/search-quality/`, create/modify).
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -95,8 +95,8 @@ _memory:
 
 **W10 Real Degraded-Readiness Integration**
 
-- [x] T019 Add real degraded-readiness test with isolated code graph DB (`mcp_server/tests/search-quality/w10-degraded-readiness-integration.vitest.ts`, new).
-- [x] T020 Assert W7 fixture files remain fixture-only supplements (`mcp_server/tests/search-quality/w7-degraded-*.vitest.ts:7`).
+- [x] T019 Add real degraded-readiness test with isolated code graph DB (`mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts`, new).
+- [x] T020 Assert W7 fixture files remain fixture-only supplements (`mcp_server/stress_test/search-quality/w7-degraded-*.vitest.ts:7`).
 **Cleanup, Tenant Scope, Verification**
 
 - [x] T021 Thread `tenantId`, `userId`, and `agentId` through envelope/audit metadata only (`mcp_server/lib/search/pipeline/types.ts:129`, `mcp_server/handlers/memory-search.ts:921`).

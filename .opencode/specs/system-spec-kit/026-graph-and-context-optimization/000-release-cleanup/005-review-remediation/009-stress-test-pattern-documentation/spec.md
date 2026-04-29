@@ -94,7 +94,7 @@ Make the stress test cycle format discoverable and reproducible by authoring thr
 
 - Changing existing v1.0.1 / v1.0.2 / v1.0.3 packet content — those stay as historical evidence.
 - Building a runtime test harness (the search-quality harness already exists for that).
-- Documenting the automated harness pattern (Phase D's `mcp_server/tests/search-quality/`) — that's a different abstraction; keep this packet focused on the structured manual evaluation flavor. A future packet can document the harness separately.
+- Documenting the automated harness pattern (Phase D's `mcp_server/stress_test/search-quality/`) — that's a different abstraction; keep this packet focused on the structured manual evaluation flavor. A future packet can document the harness separately.
 - Touching `006/001 license audit packet`.
 
 ### Files to Change/Create

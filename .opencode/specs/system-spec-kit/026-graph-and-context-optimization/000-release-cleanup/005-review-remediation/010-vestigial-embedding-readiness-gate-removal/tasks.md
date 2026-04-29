@@ -63,8 +63,8 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T008 Run focused vitest: `tests/handler-memory-search.vitest.ts`, `tests/memory-search-integration.vitest.ts`, `tests/search-quality/*.vitest.ts` -> 16 files / 97 passed / 5 todo
-- [x] T009 Run readiness-mock parity vitest: `tests/handler-memory-crud.vitest.ts`, `tests/adaptive-ranking-e2e.vitest.ts`, `tests/memory-context.resume-gate-d.vitest.ts`, `tests/shadow-evaluation-runtime.vitest.ts`, `tests/gate-d-benchmark-memory-search.vitest.ts`, `tests/graph-first-routing-nudge.vitest.ts` -> 6 files / 57 passed
+- [x] T008 Run focused vitest: `tests/handler-memory-search.vitest.ts`, `tests/memory-search-integration.vitest.ts`, `stress_test/search-quality/*.vitest.ts` -> 16 files / 97 passed / 5 todo
+- [x] T009 Run readiness-mock parity vitest: `tests/handler-memory-crud.vitest.ts`, `tests/adaptive-ranking-e2e.vitest.ts`, `tests/memory-context.resume-gate-d.vitest.ts`, `tests/shadow-evaluation-runtime.vitest.ts`, `stress_test/memory/gate-d-benchmark-memory-search.vitest.ts`, `tests/graph-first-routing-nudge.vitest.ts` -> 6 files / 57 passed
 - [x] T010 Strict validator on this packet -> exit 0
 <!-- /ANCHOR:phase-3 -->
 

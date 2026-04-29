@@ -78,7 +78,7 @@ Remove the dead gate so in-process probes work without test-only bypass scaffold
 
 - Delete `memory-search.ts:927-932` readiness check.
 - Reduce import at `memory-search.ts:61` to remove `isEmbeddingModelReady` and `waitForEmbeddingModel` (only `checkDatabaseUpdated` remains used in this file).
-- Run focused vitest suites: `mcp_server/tests/handler-memory-search.vitest.ts`, `mcp_server/tests/memory-search-integration.vitest.ts`, `mcp_server/tests/search-quality/*.vitest.ts`, plus any test that imports the gate.
+- Run focused vitest suites: `mcp_server/tests/handler-memory-search.vitest.ts`, `mcp_server/tests/memory-search-integration.vitest.ts`, `mcp_server/stress_test/search-quality/*.vitest.ts`, plus any test that imports the gate.
 - Strict validator green on this packet.
 
 ### Out of Scope

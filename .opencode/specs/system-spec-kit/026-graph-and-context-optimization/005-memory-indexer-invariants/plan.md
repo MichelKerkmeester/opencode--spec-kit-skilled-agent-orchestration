@@ -209,7 +209,7 @@ Mutation (INSERT/UPDATE/RESTORE) — only runs when all guards pass
 | Integration | `tests/cleanup-script-audit-emission.vitest.ts` | Cleanup preserves historical `governance_audit` rows and emits the cleanup-specific action per downgraded row |
 | Integration | `tests/exclusion-ssot-unification.vitest.ts` | Spec-doc classification and discovery inherit `EXCLUDED_FOR_MEMORY` through helper calls, not duplicated arrays |
 | Integration | `tests/symlink-realpath-hardening.vitest.ts` | `fs.realpathSync` routes save-time + `specificFiles` checks to the real path |
-| Integration | `tests/walker-dos-caps.vitest.ts` | `.gitignore` > 1MB truncates with warning; depth > 20 stops; > 50,000 nodes aborts with warning |
+| Integration | `stress_test/code-graph/walker-dos-caps.vitest.ts` | `.gitignore` > 1MB truncates with warning; depth > 20 stops; > 50,000 nodes aborts with warning |
 | Regression | `tests/handler-memory-index`, `tests/memory-parser-extended`, `tests/full-spec-doc-indexing`, `tests/gate-d-regression-constitutional-memory` | Constitutional README stays excluded; gate-D indexing gates still work |
 | Build | `npm run typecheck`, `npm run build` | mcp_server and scripts both exit `0` |
 | Suite | `npm run test:core` | Outcome recorded with explicit carryover failure isolation |

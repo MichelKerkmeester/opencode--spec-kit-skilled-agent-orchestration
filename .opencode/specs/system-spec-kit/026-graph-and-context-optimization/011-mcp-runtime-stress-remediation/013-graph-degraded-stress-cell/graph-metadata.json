@@ -41,7 +41,7 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts",
+      "mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts",
       "mcp_server/code_graph/handlers/query.ts",
       "mcp_server/code_graph/lib/ensure-ready.ts",
       "mcp_server/code_graph/lib/code-graph-db.ts",
@@ -55,7 +55,7 @@
       {
         "name": "code-graph-degraded-sweep.vitest.ts",
         "kind": "code",
-        "path": "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts",
+        "path": "mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts",
         "source": "manual"
       },
       {

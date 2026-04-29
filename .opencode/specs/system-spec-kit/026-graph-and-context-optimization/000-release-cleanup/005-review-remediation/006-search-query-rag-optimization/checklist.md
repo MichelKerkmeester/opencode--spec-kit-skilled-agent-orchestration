@@ -80,7 +80,7 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets or network-dependent tests. [EVIDENCE: tests/search-quality static fixture runners]
+- [x] CHK-030 [P0] No hardcoded secrets or network-dependent tests. [EVIDENCE: stress_test/search-quality static fixture runners]
 - [x] CHK-031 [P0] Production memory databases are not mutated by the harness baseline. [EVIDENCE: harness uses injectable runners only]
 - [x] CHK-032 [P1] License audit packet remains untouched. [EVIDENCE: git diff excludes `006/001` license audit packet]
 <!-- /ANCHOR:security -->
@@ -100,7 +100,7 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] New harness files live under `mcp_server/tests/search-quality/`. [EVIDENCE: tests/search-quality/corpus.ts, harness.ts, metrics.ts, baseline.vitest.ts]
+- [x] CHK-050 [P1] New harness files live under `mcp_server/stress_test/search-quality/`. [EVIDENCE: stress_test/search-quality/corpus.ts, harness.ts, metrics.ts, baseline.vitest.ts]
 - [x] CHK-051 [P1] Runtime query-plan contract lives under `mcp_server/lib/query/`. [EVIDENCE: lib/query/query-plan.ts]
 <!-- /ANCHOR:file-org -->
 

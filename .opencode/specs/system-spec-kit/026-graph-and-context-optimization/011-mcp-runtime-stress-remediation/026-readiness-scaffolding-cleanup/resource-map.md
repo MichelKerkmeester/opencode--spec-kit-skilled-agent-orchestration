@@ -54,7 +54,7 @@ _memory:
 |------|--------|--------|------|
 | `.opencode/skill/system-spec-kit/mcp_server/tests/adaptive-ranking-e2e.vitest.ts` | Updated | OK | Removed mock vi.fn |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/context-server.vitest.ts` | Updated | OK | Removed mock list entries |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-benchmark-memory-search.vitest.ts` | Updated | OK | Removed mock vi.fn |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts` | Updated | OK | Removed mock vi.fn |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-4-stage-search-pipeline.vitest.ts` | Updated | OK | Removed mock (preflight grep find) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-constitutional-memory.vitest.ts` | Updated | OK | Removed mock (preflight grep find) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/gate-d-regression-embedding-semantic-search.vitest.ts` | Updated | OK | Removed mock (preflight grep find) |

@@ -17,10 +17,10 @@ _memory:
     next_safe_action: "Use baseline harness before ranking changes"
     blockers: []
     key_files:
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/metrics.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/tests/search-quality/baseline.vitest.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/baseline.vitest.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/query-plan-emission.vitest.ts"
     session_dedup:
@@ -60,7 +60,7 @@ This packet adds the measurement layer Phase C asked for before any search-ranki
 
 ### Search-Quality Harness
 
-The harness lives under `mcp_server/tests/search-quality/` and runs fixture queries through injectable `memory_search`, `code_graph_query`, and `skill_graph_query` channel runners. It captures per-channel candidates, final relevance, citation policy, refusal policy, and latency, then summarizes precision@k, recall@k, p50/p95/p99 latency, refusal survival, and citation quality.
+The harness lives under `mcp_server/stress_test/search-quality/` and runs fixture queries through injectable `memory_search`, `code_graph_query`, and `skill_graph_query` channel runners. It captures per-channel candidates, final relevance, citation policy, refusal policy, and latency, then summarizes precision@k, recall@k, p50/p95/p99 latency, refusal survival, and citation quality.
 
 The baseline test uses static runners by design. It proves the harness and metric contracts without mutating production memory databases or claiming runtime regression measurements.
 
@@ -77,10 +77,10 @@ The change is telemetry-only. Existing channel selection, classifier tiering, in
 | `spec.md`, `plan.md`, `tasks.md`, `checklist.md` | Created/Modified | L2 packet and verification ledger. |
 | `description.json`, `graph-metadata.json` | Created/Modified | Packet discovery and graph metadata. |
 | `../spec.md` | Modified | Added phase 006 to parent PHASE MANIFEST. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/corpus.ts` | Created | Baseline corpus from v1.0.1/v1.0.2 stress themes plus ambiguous/paraphrase fixtures. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts` | Created | Injectable channel-runner harness and capture model. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/metrics.ts` | Created | Precision, recall, latency, refusal, and citation metrics. |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/baseline.vitest.ts` | Created | Deterministic harness baseline assertions. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts` | Created | Baseline corpus from v1.0.1/v1.0.2 stress themes plus ambiguous/paraphrase fixtures. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts` | Created | Injectable channel-runner harness and capture model. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts` | Created | Precision, recall, latency, refusal, and citation metrics. |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/baseline.vitest.ts` | Created | Deterministic harness baseline assertions. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/query/query-plan.ts` | Created | Typed query-plan contract and builder helpers. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-classifier.ts` | Modified | Adds complexity query-plan telemetry. |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/query-router.ts` | Modified | Adds selected/skipped channel and routing-reason query-plan telemetry. |
@@ -116,7 +116,7 @@ The work followed the Phase C measurement-first directive. I built the harness a
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run mcp_server/tests/search-quality/baseline.vitest.ts mcp_server/tests/query-plan-emission.vitest.ts` | PASS: 2 files, 6 tests. |
+| `npx vitest run mcp_server/stress_test/search-quality/baseline.vitest.ts mcp_server/tests/query-plan-emission.vitest.ts` | PASS: 2 files, 6 tests. |
 | `npx vitest run mcp_server/tests/query-classifier.vitest.ts mcp_server/tests/query-router.vitest.ts mcp_server/tests/intent-classifier.vitest.ts` | PASS: 3 files, 167 tests. |
 | `npm run typecheck` | PASS. |
 | `npm run build` | PASS. |

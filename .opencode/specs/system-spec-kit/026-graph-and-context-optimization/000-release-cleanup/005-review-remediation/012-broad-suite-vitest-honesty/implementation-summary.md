@@ -69,7 +69,7 @@ The broad-suite claim is now scoped to evidence. The readiness-relevant targeted
 | Scope | Result | Files / Tests | Failed or Hanging Files |
 |-------|--------|---------------|--------------------------|
 | `tests/handler-*.vitest.ts` | FAIL, exit 1, 7.4s | 1 failed / 18 passed; 1 failed / 448 passed / 3 skipped | FAIL: `mcp_server/tests/handler-memory-save.vitest.ts` |
-| `tests/search-quality/` | PASS, exit 0, 2.7s | 15 passed; 27 passed | None |
+| `stress_test/search-quality/` | PASS, exit 0, 2.7s | 15 passed; 27 passed | None |
 | `tests/memory-*.vitest.ts` | PASS, exit 0, 36.1s | 29 passed; 560 passed / 5 todo | None |
 | `tests/code_graph/ tests/graph-*.vitest.ts` | FAIL, exit 1, 4.4s | 2 failed / 13 passed; 2 failed / 325 passed | FAIL: `mcp_server/tests/graph-metadata-integration.vitest.ts`, `mcp_server/tests/graph-payload-validator.vitest.ts` |
 | `skill_advisor/tests/` | FAIL, exit 1, 64.8s | 2 failed / 32 passed; 3 failed / 233 passed | FAIL: `mcp_server/skill_advisor/tests/compat/plugin-bridge.vitest.ts`, `mcp_server/skill_advisor/tests/legacy/advisor-graph-health.vitest.ts` |

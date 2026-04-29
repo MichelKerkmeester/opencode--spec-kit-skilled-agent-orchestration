@@ -20,7 +20,7 @@ _memory:
     next_safe_action: "Commit packet"
     blockers: []
     key_files:
-      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -67,7 +67,7 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 ## 3. SCOPE
 
 ### In Scope
-- One new vitest test file at `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts`
+- One new vitest test file at `mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts`
 - Three coverage buckets: empty graph (+ broad-stale variant) → `code_graph_scan`; readiness exception → `rg`; fresh state → no `fallbackDecision`
 - Live DB byte-equality assertion (sha256 hash before/after) so the test cannot mutate the production graph
 - Packet docs (Level 1: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) + manifest (description.json, graph-metadata.json)
@@ -82,7 +82,7 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` | Create | Integration sweep with three buckets + live-DB protection |
+| `mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts` | Create | Integration sweep with three buckets + live-DB protection |
 | `spec.md` (this packet) | Create | This file |
 | `plan.md` (this packet) | Create | Technical plan |
 | `tasks.md` (this packet) | Create | Three-phase task breakdown |

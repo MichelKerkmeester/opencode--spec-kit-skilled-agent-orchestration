@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration"
+    ],
+    "supersedes": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration"
+    ],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+      "system-spec-kit/026-graph-and-context-optimization/030-v1-0-4-full-matrix-stress-test-design",
+      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "038-stress-test-folder-completion",
+      "stress test full migration",
+      "search-quality harness move",
+      "content-based stress migration",
+      "stress folder reorganization"
+    ],
+    "key_topics": [
+      "stress-test",
+      "content-based-migration",
+      "search-quality-harness",
+      "vitest-stress-config",
+      "matrix-cells"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "migration-plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/vitest.stress.config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts"
+    ],
+    "entities": [
+      {
+        "name": "MCP stress test folder",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test",
+        "source": "manual"
+      },
+      {
+        "name": "stress migration plan",
+        "kind": "doc",
+        "path": "specs/system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion/migration-plan.md",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Completes the stress-test folder migration that 037/005 only partially executed. Moves the search-quality harness directory, harness consumers, stress patterns, and matrix-cell tests into mcp_server/stress_test/ organized by subsystem (search-quality, memory, skill-advisor, code-graph, session, matrix). Content-based discovery (not name-based). Updates imports, vitest config, package.json, all doc references.",
+    "created_at": "2026-04-29T18:45:00Z",
+    "last_save_at": "2026-04-29T18:45:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "migration-plan.md"
+    ]
+  }
+}

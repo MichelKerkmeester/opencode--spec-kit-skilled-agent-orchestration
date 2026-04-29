@@ -77,14 +77,14 @@ Phase D kept its original four-case corpus. Phase E adds eight extended cases: o
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `mcp_server/tests/search-quality/corpus.ts` | Modified | Added extended corpus. |
-| `mcp_server/tests/search-quality/measurement-fixtures.ts` | Created | Baseline/variant runners. |
-| `mcp_server/tests/search-quality/measurement-output.vitest.ts` | Created | JSON measurement writer. |
+| `mcp_server/stress_test/search-quality/corpus.ts` | Modified | Added extended corpus. |
+| `mcp_server/stress_test/search-quality/measurement-fixtures.ts` | Created | Baseline/variant runners. |
+| `mcp_server/stress_test/search-quality/measurement-output.vitest.ts` | Created | JSON measurement writer. |
 | `mcp_server/lib/rag/trust-tree.ts` | Created | W3 trust tree. |
 | `mcp_server/lib/search/rerank-gate.ts` | Created | W4 rerank gate. |
 | `mcp_server/lib/search/cocoindex-calibration.ts` | Created | W6 telemetry. |
 | `mcp_server/skill_advisor/*` | Modified | W5 shadow weights and schema. |
-| `mcp_server/tests/search-quality/w*.vitest.ts` | Created | W3-W7 focused tests. |
+| `mcp_server/stress_test/search-quality/w*.vitest.ts` | Created | W3-W7 focused tests. |
 <!-- /ANCHOR:what-built -->
 
 ---
@@ -118,7 +118,7 @@ Each workstream ran baseline, additive variant, re-measurement, and disposition.
 |-------|--------|
 | Phase D baseline JSON | PASS, wrote `baseline-20260429T032525Z.json` |
 | W3-W7 measurement writer runs | PASS, wrote 10 JSON files |
-| `npx vitest run mcp_server/tests/search-quality/ mcp_server/tests/query-plan-emission.vitest.ts` | PASS, 11 files and 20 tests |
+| `npx vitest run mcp_server/stress_test/search-quality/ mcp_server/tests/query-plan-emission.vitest.ts` | PASS, 11 files and 20 tests |
 | `npm run typecheck` | PASS |
 | `npm run build` | PASS |
 | Strict validator | PASS |

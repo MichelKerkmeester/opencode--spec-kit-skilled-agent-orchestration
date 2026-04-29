@@ -35,7 +35,7 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "mcp_server/tests/search-quality/",
+      "mcp_server/stress_test/search-quality/",
       "mcp_server/lib/query/query-plan.ts",
       "implementation-summary.md"
     ],

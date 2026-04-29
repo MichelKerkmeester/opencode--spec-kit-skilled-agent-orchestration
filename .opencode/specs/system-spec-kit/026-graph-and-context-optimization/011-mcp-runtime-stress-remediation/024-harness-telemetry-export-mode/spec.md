@@ -46,7 +46,7 @@ _memory:
 
 ### Problem Statement
 
-The search-quality harness at `mcp_server/tests/search-quality/` is intentionally database-agnostic and result-oriented:
+The search-quality harness at `mcp_server/stress_test/search-quality/` is intentionally database-agnostic and result-oriented:
 
 - `SearchQualityChannelOutput` (harness.ts:29) holds candidates, refusal, citations, final answer, latency.
 - `SearchQualityCaseResult` (harness.ts:46) records candidate maps, captures, relevance, citation/refusal policy, latency.
@@ -83,8 +83,8 @@ Extend the harness so a runner can return optional telemetry fields, the result 
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness.ts` | Edit | Extend types + add export-path option |
-| `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/harness-telemetry-export.vitest.ts` | Create | New telemetry-mode test |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts` | Edit | Extend types + add export-path option |
+| `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness-telemetry-export.vitest.ts` | Create | New telemetry-mode test |
 <!-- /ANCHOR:scope -->
 
 ---
@@ -100,7 +100,7 @@ Extend the harness so a runner can return optional telemetry fields, the result 
 |----|-------------|---------------------|
 | REQ-001 | Telemetry fields added to harness types. | `SearchQualityChannelOutput.telemetry?` exists and propagates through `SearchQualityChannelCapture` and `SearchQualityCaseResult`. |
 | REQ-002 | Optional `telemetryExportPath` option. | Setting the option writes JSONL appendable rows for envelope + audit + shadow per case. |
-| REQ-003 | Baseline back-compat. | All existing `tests/search-quality/*.vitest.ts` pass unchanged. |
+| REQ-003 | Baseline back-compat. | All existing `stress_test/search-quality/*.vitest.ts` pass unchanged. |
 | REQ-004 | New telemetry-mode test green. | `harness-telemetry-export.vitest.ts` exits 0 with assertions on result-type preservation and JSONL export shape. |
 | REQ-005 | Strict validator on this packet exits 0. | `validate.sh <packet> --strict` passes. |
 <!-- /ANCHOR:requirements -->
@@ -128,7 +128,7 @@ Extend the harness so a runner can return optional telemetry fields, the result 
 
 | Type | Item | Mitigation |
 |------|------|------------|
-| Risk | Type changes break consumers outside tests/search-quality | Telemetry field is optional; baseline back-compat REQ-003 enforces this |
+| Risk | Type changes break consumers outside stress_test/search-quality | Telemetry field is optional; baseline back-compat REQ-003 enforces this |
 | Risk | JSONL export collides between concurrent test runs | Use unique tmp file paths per test (e.g., includes pid + iso timestamp + random) |
 | Dependency | None (independent of 023) | This packet does NOT block PP-1; both can ship in parallel |
 <!-- /ANCHOR:risks -->

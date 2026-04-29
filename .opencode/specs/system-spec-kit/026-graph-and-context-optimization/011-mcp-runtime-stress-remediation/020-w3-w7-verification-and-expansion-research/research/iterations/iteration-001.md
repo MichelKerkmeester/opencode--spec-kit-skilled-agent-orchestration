@@ -17,9 +17,9 @@ Verify whether the W3 composed RAG trust tree is wired into production MCP runti
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:65` builds the composed trust tree from those signals.
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:205` decides `unavailable`, `mixed`, `degraded`, or `trusted`.
 - `.opencode/skill/system-spec-kit/mcp_server/lib/rag/trust-tree.ts:253` exports `buildTrustTree`.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:3` imports `buildTrustTree`.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/search-quality/w3-trust-tree.vitest.ts:7` exercises composed signals and causal contradiction handling.
-- `rg "import .*trust-tree|from .*trust-tree|buildTrustTree" .opencode/skill/system-spec-kit/mcp_server` returned only the trust-tree module export/function and `tests/search-quality/w3-trust-tree.vitest.ts`.
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:3` imports `buildTrustTree`.
+- `.opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w3-trust-tree.vitest.ts:7` exercises composed signals and causal contradiction handling.
+- `rg "import .*trust-tree|from .*trust-tree|buildTrustTree" .opencode/skill/system-spec-kit/mcp_server` returned only the trust-tree module export/function and `stress_test/search-quality/w3-trust-tree.vitest.ts`.
 
 ## Findings
 

@@ -192,7 +192,7 @@ The stress-test feature catalog defines a cycle as a frozen corpus, executed cel
 
 ### Current Harness Evidence
 
-The search-quality corpus is deterministic and fixture-based: cases encode expected outcomes and do not call production memory stores (`mcp_server/tests/search-quality/corpus.ts:4`, `:5`). The extended corpus has 12 cases after adding W3-W7 workstream cases (`corpus.ts:192`, `:198`). The harness now preserves optional envelope, audit, and shadow telemetry and can write sibling JSONL files through `telemetryExportPath` (`harness.ts:33`, `:45`, `:90`, `:103`, `:199`, `:239`). PP-1's live handler test describes the real and mocked layers explicitly (`handler-memory-search-live-envelope.vitest.ts:3`, `:15`).
+The search-quality corpus is deterministic and fixture-based: cases encode expected outcomes and do not call production memory stores (`mcp_server/stress_test/search-quality/corpus.ts:4`, `:5`). The extended corpus has 12 cases after adding W3-W7 workstream cases (`corpus.ts:192`, `:198`). The harness now preserves optional envelope, audit, and shadow telemetry and can write sibling JSONL files through `telemetryExportPath` (`harness.ts:33`, `:45`, `:90`, `:103`, `:199`, `:239`). PP-1's live handler test describes the real and mocked layers explicitly (`handler-memory-search-live-envelope.vitest.ts:3`, `:15`).
 
 ### Recent Refinement Evidence
 
