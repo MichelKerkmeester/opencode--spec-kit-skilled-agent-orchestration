@@ -1,0 +1,79 @@
+=== Baseline grep counts (pre-edit) — captured 2026-04-29 ===
+
+--- cli-claude-code ---
+  effort high: 3
+  json-schema: 6
+  max-budget-usd: 7
+  permission-mode: 13
+  Edit tool: 1
+--- cli-codex ---
+  \-\-search: 9
+  read-only: 8
+  workspace-write: 11
+  danger-full-access: 3
+  ask-for-approval: 3
+  \-\-image: 3
+  session fork: 1
+  /review: 5
+  hooks support\|codex_hooks: 0
+--- cli-copilot ---
+  allow-all-tools: 8
+  /delegate: 3
+  /model: 3
+  repo memory: 4
+  explore\|task: 0
+  concurrent\|max 3: 0
+  SPEC-KIT-COPILOT-CONTEXT: 1
+--- cli-gemini ---
+  google_web_search: 2
+  codebase_investigator: 3
+  save_memory: 2
+  1M\+\|1 million: 0
+  free tier: 1
+  \.geminiignore: 1
+  \-\-yolo: 5
+--- cli-opencode ---
+  \-\-share.*\-\-port: 3
+  \-\-dir: 18
+  \-\-attach: 2
+  ADR-001: 5
+  \-\-variant: 26
+  \-\-pure: 4
+  Provider Auth Pre-Flight: 3
+
+=== Structural counts (pre-edit) ===
+--- cli-claude-code ---
+  ## sections: 8
+  Default Invocation: 0
+  Error Handling table: 1
+  Provider Auth Pre-Flight: 0
+  UNKNOWN_FALLBACK: 2
+  ALWAYS/NEVER/ESCALATE: 3
+--- cli-codex ---
+  ## sections: 8
+  Default Invocation: 1
+  Error Handling table: 1
+  Provider Auth Pre-Flight: 0
+  UNKNOWN_FALLBACK: 2
+  ALWAYS/NEVER/ESCALATE: 3
+--- cli-copilot ---
+  ## sections: 8
+  Default Invocation: 0
+  Error Handling table: 0
+  Provider Auth Pre-Flight: 0
+  UNKNOWN_FALLBACK: 1
+  ALWAYS/NEVER/ESCALATE: 3
+--- cli-gemini ---
+  ## sections: 8
+  Default Invocation: 0
+  Error Handling table: 1
+  Provider Auth Pre-Flight: 0
+  UNKNOWN_FALLBACK: 2
+  ALWAYS/NEVER/ESCALATE: 3
+--- cli-opencode ---
+  ## sections: 8
+  Default Invocation: 1
+  Error Handling table: 1
+  Provider Auth Pre-Flight: 3
+  UNKNOWN_FALLBACK: 3
+  ALWAYS/NEVER/ESCALATE: 3

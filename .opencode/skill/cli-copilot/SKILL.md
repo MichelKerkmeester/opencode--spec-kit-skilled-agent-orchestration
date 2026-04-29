@@ -2,7 +2,7 @@
 name: cli-copilot
 description: "GitHub Copilot CLI orchestrator enabling external AI assistants to invoke the standalone 'copilot' binary for supplementary tasks including collaborative planning, cloud delegation, versatile code generation, and autonomous task execution."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.3.6.0
+version: 1.3.7.0
 ---
 
 <!-- Keywords: copilot, copilot-cli, github, cross-ai, planning, cloud-delegation, autopilot, multi-model, gpt-5, claude-4.6, gemini-3 -->
@@ -162,6 +162,67 @@ copilot login
 export GH_TOKEN=your-github-pat   # for CI/CD or automation
 ```
 
+### Provider Auth Pre-Flight (Smart Fallback)
+
+**MANDATORY before any first dispatch in a session.** The default GitHub Copilot OAuth or `GH_TOKEN` may not be configured on this machine — silently failing with `401 Unauthorized` or `not authenticated` mid-dispatch wastes a round-trip. Run this check once per session, cache the result, and re-run it only if a dispatch fails with an auth error.
+
+```bash
+# One-shot pre-flight: capture auth status for routing
+GH_AUTH=$(gh auth status 2>&1)
+echo "$GH_AUTH" | grep -q "Logged in to github.com" && GH_OAUTH_OK=1 || GH_OAUTH_OK=0
+[ -n "$GH_TOKEN" ] && GH_TOKEN_OK=1 || GH_TOKEN_OK=0
+```
+
+**Decision tree** (apply in order — first match wins):
+
+| State | GH_OAUTH_OK | GH_TOKEN_OK | Action |
+|-------|-------------|-------------|--------|
+| Default available | 1 | * | Proceed with `copilot -p "<prompt>" --model gpt-5.4 --allow-all-tools` |
+| OAuth missing, PAT ready | 0 | 1 | **ASK user** before substituting — never auto-fall-back silently. Surface options A/B/C below. |
+| Both missing | 0 | 0 | **ASK user** to configure GitHub auth — surface the login commands, do NOT dispatch. |
+
+**User prompt template — OAuth missing, PAT configured:**
+
+```
+GitHub Copilot OAuth is not configured on this machine, but `$GH_TOKEN` is set.
+Pick one:
+  A) Use the existing `$GH_TOKEN` PAT (works for non-interactive `copilot -p` calls)
+  B) Run `gh auth login` first to set up OAuth, then retry the original dispatch
+  C) Name a different model — paste the `--model <id>` you want to use
+```
+
+**User prompt template — both missing:**
+
+```
+No GitHub auth is configured on this machine. Run one:
+  - `gh auth login`              (recommended — interactive OAuth flow)
+  - `export GH_TOKEN=ghp_...`    (non-interactive PAT for CI/CD)
+Which would you like to set up? Confirm when login finishes; the skill will retry the original dispatch.
+```
+
+**Error-recovery contract.** If a dispatch returns an auth error after pre-flight passed (token expired or revoked), invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve.
+
+### Default Invocation (Skill Default)
+
+**Default model + flags + agent**: `gpt-5.4` · `--allow-all-tools` · `--agent task` (default; for read-only exploration, switch to `--agent explore`). Reasoning effort `xhigh` (model default). The pinned shape:
+
+```bash
+copilot -p "<prompt>" \
+  --model gpt-5.4 \
+  --allow-all-tools \
+  2>&1
+```
+
+**User override** (honor explicit user phrasing verbatim):
+
+| User says | Resolve to |
+|-----------|------------|
+| (nothing specified) | `--model gpt-5.4 --allow-all-tools` |
+| "Use copilot claude sonnet" | `--model claude-sonnet-4.6 --allow-all-tools` |
+| "Use gpt-5.5" | `--model gpt-5.5 --allow-all-tools` |
+| "Read-only exploration" | `--agent explore` (no `--allow-all-tools`) |
+| "Cloud delegation" | Append `/delegate` to the prompt body |
+
 ### Core Invocation Pattern
 
 All non-interactive Copilot CLI calls use the `-p` (prompt) flag:
@@ -257,6 +318,20 @@ Internally, Copilot reads `reasoning_effort` from `~/.copilot/config.json`, vali
 | Cloud Delegation | Offloads tasks to GitHub's high-performance coding agents |
 | Multi-Model | Toggle between Anthropic, OpenAI, and Google models mid-session |
 | MCP Support | Connect to Model Context Protocol servers for external data |
+
+### Error Handling
+
+| Issue | Solution |
+|-------|----------|
+| `command not found: copilot` | Install via `npm install -g @github/copilot`. Verify with `command -v copilot`. |
+| Self-invocation refused | Use a sibling cli-* skill OR open a fresh shell session. Copilot self-dispatch is refused per the layered detection guard in §2. |
+| `not authenticated` / `401 Unauthorized` | Run the Provider Auth Pre-Flight (§3); GitHub OAuth or `GH_TOKEN` is missing. Ask the user before falling back. |
+| `401 Unauthorized` mid-dispatch | Token expired or revoked. Invalidate the pre-flight cache, rerun `gh auth status`, ask the user before retrying. |
+| `model not found` for `--model X` | Run `copilot /model` interactively to enumerate available models per Section §3 Model Selection. The 6 documented models may differ on older `copilot` releases. |
+| Reasoning effort flag rejected | Older `copilot` (< 1.0.36) does not accept `--effort` / `--reasoning-effort`. Set `reasoning_effort` in `~/.copilot/config.json` instead. |
+| Cloud delegation hangs | `/delegate` requires GitHub cloud agent quota; surface a one-line check: `gh api /copilot/billing` confirms the subscription. Fall back to local `--allow-all-tools` if the cloud agent is unavailable. |
+| Concurrency throttling | GitHub Copilot API throttles above 3 concurrent dispatches per account. The skill's hard ceiling is 3 (see [`references/concurrency.md`](./references/concurrency.md)). |
+| Spec Kit context missing | Verify `$HOME/.copilot/copilot-instructions.md` contains the `SPEC-KIT-COPILOT-CONTEXT` markers. The repo `userPromptSubmitted` hook refreshes them; for scripted `copilot -p` calls, use [`assets/shell_wrapper.md`](./assets/shell_wrapper.md). |
 
 ---
 

@@ -2,7 +2,7 @@
 name: cli-codex
 description: "Codex CLI orchestrator enabling any AI assistant to invoke OpenAI's Codex CLI for supplementary AI tasks including code generation, code review, web research, codebase analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.4.0.0
+version: 1.4.2.0
 ---
 
 <!-- Keywords: codex, codex-cli, openai, cross-ai, web-search, code-generation, code-review, second-opinion, agent-delegation, gpt-5, session-management -->
@@ -164,6 +164,46 @@ codex login
 ```
 
 **Authentication options**: `OPENAI_API_KEY` env var (direct API), or ChatGPT OAuth via `codex login` (uses ChatGPT account credentials).
+
+### Provider Auth Pre-Flight (Smart Fallback)
+
+**MANDATORY before any first dispatch in a session.** The default OpenAI auth (API key OR ChatGPT OAuth) may not be configured on this machine — silently failing with `401 Unauthorized` or `not authenticated` mid-dispatch wastes a round-trip. Run this check once per session, cache the result, and re-run it only if a dispatch fails with an auth error.
+
+```bash
+# One-shot pre-flight: capture auth status for routing
+[ -n "$OPENAI_API_KEY" ] && OPENAI_KEY_OK=1 || OPENAI_KEY_OK=0
+CODEX_AUTH=$(codex auth status 2>&1)
+echo "$CODEX_AUTH" | grep -qi "logged in\|chatgpt-oauth" && CODEX_OAUTH_OK=1 || CODEX_OAUTH_OK=0
+```
+
+**Decision tree** (apply in order — first match wins):
+
+| State | OPENAI_KEY_OK | CODEX_OAUTH_OK | Action |
+|-------|---------------|----------------|--------|
+| Default available | 1 | * | Proceed with `codex exec --model gpt-5.5 -c model_reasoning_effort="medium" -c service_tier="fast"` |
+| API key missing, OAuth ready | 0 | 1 | **ASK user** before substituting — never auto-fall-back silently. Surface options A/B/C below. |
+| Both missing | 0 | 0 | **ASK user** to configure auth — surface the login commands, do NOT dispatch. |
+
+**User prompt template — API key missing, OAuth configured:**
+
+```
+`$OPENAI_API_KEY` is not set, but ChatGPT OAuth via `codex login` is configured.
+Pick one:
+  A) Use the existing ChatGPT OAuth session (works for `codex exec` if your ChatGPT plan covers the model)
+  B) Run `export OPENAI_API_KEY=sk-...` first, then retry the original dispatch
+  C) Name a different model — paste the `--model <id>` you want to use
+```
+
+**User prompt template — both missing:**
+
+```
+No OpenAI auth is configured on this machine. Run one:
+  - `export OPENAI_API_KEY=sk-...`  (recommended for direct API calls)
+  - `codex login`                    (interactive ChatGPT OAuth flow; requires ChatGPT Plus/Pro/Business)
+Which would you like to set up? Confirm when login finishes; the skill will retry the original dispatch.
+```
+
+**Error-recovery contract.** If a dispatch returns an auth error after pre-flight passed (key revoked or OAuth expired), invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve.
 
 ### Default Invocation (Skill Default)
 

@@ -2,7 +2,7 @@
 name: cli-gemini
 description: "Gemini CLI orchestrator enabling any AI assistant to invoke Google's Gemini CLI for supplementary AI tasks including code generation, web research via Google Search, codebase architecture analysis, cross-AI validation, and parallel task processing."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.2.3
+version: 1.2.5.0
 ---
 
 <!-- Keywords: gemini, gemini-cli, google, cross-ai, web-search, codebase-investigator, code-generation, code-review, second-opinion, agent-delegation -->
@@ -161,6 +161,67 @@ gemini
 ```
 
 **Authentication options**: Google OAuth (free tier: 60 req/min, 1000 req/day), API key (`export GEMINI_API_KEY=key`), or Vertex AI (enterprise).
+
+### Provider Auth Pre-Flight (Smart Fallback)
+
+**MANDATORY before any first dispatch in a session.** The default Google auth (OAuth free-tier OR `GEMINI_API_KEY` OR Vertex AI) may not be configured on this machine — silently failing with `401 Unauthorized` or `not authenticated` mid-dispatch wastes a round-trip. Run this check once per session, cache the result, and re-run it only if a dispatch fails with an auth error.
+
+```bash
+# One-shot pre-flight: capture auth status for routing
+[ -n "$GEMINI_API_KEY" ] && GEMINI_KEY_OK=1 || GEMINI_KEY_OK=0
+GEMINI_AUTH=$(gemini config list 2>&1 || echo "")
+echo "$GEMINI_AUTH" | grep -qi "oauth\|logged in" && GOOGLE_OAUTH_OK=1 || GOOGLE_OAUTH_OK=0
+[ -n "$GOOGLE_GENAI_USE_VERTEXAI" ] && VERTEX_OK=1 || VERTEX_OK=0
+```
+
+**Decision tree** (apply in order — first match wins):
+
+| State | GOOGLE_OAUTH_OK | GEMINI_KEY_OK | VERTEX_OK | Action |
+|-------|-----------------|---------------|-----------|--------|
+| Default available | 1 | * | * | Proceed with `gemini "<prompt>" -o text` (free-tier OAuth) |
+| OAuth missing, API key ready | 0 | 1 | * | **ASK user** before substituting — never auto-fall-back silently. Surface options A/B/C below. |
+| Only Vertex configured | 0 | 0 | 1 | **ASK user** to confirm enterprise Vertex AI dispatch (different billing surface) |
+| All missing | 0 | 0 | 0 | **ASK user** to configure auth — surface the login commands, do NOT dispatch. |
+
+**User prompt template — OAuth missing, API key configured:**
+
+```
+Google OAuth (free tier) is not configured on this machine, but `$GEMINI_API_KEY` is set.
+Pick one:
+  A) Use the existing `$GEMINI_API_KEY` (paid API plan; bypasses free-tier rate limits)
+  B) Run `gemini` interactively first to set up OAuth (free 60 req/min, 1000 req/day), then retry
+  C) Name a different model — paste the `--model <id>` you want to use
+```
+
+**User prompt template — all missing:**
+
+```
+No Google auth is configured on this machine. Run one:
+  - Run `gemini` interactively      (recommended — sets up free-tier OAuth)
+  - `export GEMINI_API_KEY=AIza...`  (paid API plan; for non-interactive CI/CD)
+  - Vertex AI                        (enterprise; requires `gcloud auth` + `GOOGLE_GENAI_USE_VERTEXAI=true`)
+Which would you like to set up? Confirm when login finishes; the skill will retry the original dispatch.
+```
+
+**Error-recovery contract.** If a dispatch returns an auth error after pre-flight passed (token expired or quota exhausted), invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve. Note: free-tier rate-limit errors (429) are *not* auth errors — surface them as quota guidance instead of triggering fallback.
+
+### Default Invocation (Skill Default)
+
+**Default model + flags + agent**: `gemini-3.1-pro-preview` (only model surfaced) · `-o text` · agent via prompt prefix (e.g. `@review`, `@context`). The pinned shape:
+
+```bash
+gemini "<prompt>" -o text 2>&1
+```
+
+**User override** (honor explicit user phrasing verbatim):
+
+| User says | Resolve to |
+|-----------|------------|
+| (nothing specified) | `-o text` |
+| "JSON output" | `-o json` |
+| "Auto-approve all tools" | Append `--yolo` (or `-y`) |
+| "Use Google Search" | Add `google_web_search` tool invocation in prompt content |
+| "Investigate codebase" | Add `codebase_investigator` tool invocation in prompt content |
 
 ### Core Invocation Pattern
 

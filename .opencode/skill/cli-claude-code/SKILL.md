@@ -2,7 +2,7 @@
 name: cli-claude-code
 description: "Claude Code CLI orchestrator enabling external AI assistants (Gemini, Codex, Copilot) to invoke Anthropic's Claude Code CLI for supplementary tasks including deep reasoning, code editing, structured output, code review, agent delegation, and extended thinking."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.1.3
+version: 1.1.5.0
 ---
 
 <!-- Keywords: claude-code, claude-cli, anthropic, cross-ai, deep-reasoning, extended-thinking, code-editing, structured-output, agent-delegation, opus, sonnet, haiku -->
@@ -167,6 +167,68 @@ claude setup-token
 ```
 
 **Authentication options**: `ANTHROPIC_API_KEY` env var (direct API), `claude auth login` (interactive OAuth), or `claude setup-token` (non-interactive CI/CD).
+
+### Provider Auth Pre-Flight (Smart Fallback)
+
+**MANDATORY before any first dispatch in a session.** The default Anthropic auth (API key OR OAuth OR setup-token) may not be configured on this machine — silently failing with `401 Unauthorized` mid-dispatch wastes a round-trip. Run this check once per session, cache the result, and re-run it only if a dispatch fails with an auth error.
+
+```bash
+# One-shot pre-flight: capture auth status for routing
+[ -n "$ANTHROPIC_API_KEY" ] && ANTHROPIC_KEY_OK=1 || ANTHROPIC_KEY_OK=0
+CLAUDE_AUTH=$(claude config list 2>&1)
+echo "$CLAUDE_AUTH" | grep -qi "oauth\|setup-token" && CLAUDE_OAUTH_OK=1 || CLAUDE_OAUTH_OK=0
+```
+
+**Decision tree** (apply in order — first match wins):
+
+| State | ANTHROPIC_KEY_OK | CLAUDE_OAUTH_OK | Action |
+|-------|------------------|-----------------|--------|
+| Default available | 1 | * | Proceed with `claude -p "<prompt>" --model claude-sonnet-4-6 --output-format text` |
+| API key missing, OAuth ready | 0 | 1 | **ASK user** before substituting — never auto-fall-back silently. Surface options A/B/C below. |
+| Both missing | 0 | 0 | **ASK user** to configure auth — surface the login commands, do NOT dispatch. |
+
+**User prompt template — API key missing, OAuth configured:**
+
+```
+`$ANTHROPIC_API_KEY` is not set, but `claude auth login` OAuth is configured.
+Pick one:
+  A) Use the existing OAuth session (works for interactive `claude` calls; non-interactive `-p` may need an env var)
+  B) Run `export ANTHROPIC_API_KEY=sk-ant-...` first, then retry the original dispatch
+  C) Name a different model — paste the `--model <id>` you want to use
+```
+
+**User prompt template — both missing:**
+
+```
+No Anthropic auth is configured on this machine. Run one:
+  - `export ANTHROPIC_API_KEY=sk-ant-...`  (recommended for direct API calls)
+  - `claude auth login`                     (interactive OAuth flow)
+  - `claude setup-token`                    (non-interactive CI/CD)
+Which would you like to set up? Confirm when login finishes; the skill will retry the original dispatch.
+```
+
+**Error-recovery contract.** If a dispatch returns an auth error after pre-flight passed (key revoked or OAuth expired), invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve.
+
+### Default Invocation (Skill Default)
+
+**Default model + flags + agent**: `claude-sonnet-4-6` · `--output-format text` · no `--agent` (general-purpose). For deep-reasoning work, override with `--model claude-opus-4-6 --effort high`. The pinned shape:
+
+```bash
+claude -p "<prompt>" \
+  --model claude-sonnet-4-6 \
+  --output-format text \
+  2>&1
+```
+
+**User override** (honor explicit user phrasing verbatim):
+
+| User says | Resolve to |
+|-----------|------------|
+| (nothing specified) | `--model claude-sonnet-4-6 --output-format text` |
+| "Use Opus extended thinking" | `--model claude-opus-4-6 --effort high` |
+| "JSON schema output" | Append `--json-schema '<schema>' --output-format json` |
+| "Cost-capped" | Append `--max-budget-usd 1.00` |
+| "Plan mode" | Append `--permission-mode plan` (read-only) |
 
 ### Core Invocation Pattern
 
