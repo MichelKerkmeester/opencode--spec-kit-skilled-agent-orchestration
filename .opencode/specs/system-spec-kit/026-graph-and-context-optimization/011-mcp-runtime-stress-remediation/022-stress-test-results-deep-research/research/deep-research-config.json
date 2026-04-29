@@ -1,0 +1,33 @@
+{
+  "topic": "v1.0.3 stress test results deep research: live-handler gap + harness telemetry export gap + W4 trigger distribution + through-line v1.0.1→v1.0.2→v1.0.3 + expansion candidates",
+  "sessionId": "2026-04-29T07:15:00.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research",
+  "createdAt": "2026-04-29T07:15:00.000Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "xhigh",
+    "serviceTier": null,
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "mode": "research",
+  "researchQuestions": [
+    "RQ1: What does v1.0.3 telemetry actually prove vs leave unproven? (12-row sample size implications, packet-local runner vs live handler distinction)",
+    "RQ2: Live handler embed-readiness gate analysis — origin, smallest fix, deterministic test seam recommendation",
+    "RQ3: Harness-vs-handler envelope parity gap — smallest change so harness natively emits SearchDecisionEnvelope/audit/shadow",
+    "RQ4: W4 trigger distribution analysis — query-population skew, 100% trigger rate implications, gating-policy tuning candidates",
+    "RQ5: Through-line v1.0.1 → v1.0.2 → v1.0.3 — what each cycle proved/disproved/leaves-open",
+    "RQ6: Expansion candidates ranked by leverage × feasibility revealed by v1.0.3 telemetry"
+  ]
+}
