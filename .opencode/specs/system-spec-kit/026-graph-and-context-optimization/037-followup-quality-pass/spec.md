@@ -45,7 +45,9 @@ _memory:
 ---
 
 <!-- ANCHOR:problem -->
-## 2. PURPOSE
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
 
 Packets 031-036 shipped a wave of remediation work (5 packets implementing 013's research findings + 035's CONDITIONAL verdict + 036's CLI matrix adapters). That work touched ~30+ docs, added ~10 new code files, and implemented multiple new MCP tools and runtime behaviors.
 
@@ -84,8 +86,21 @@ Before declaring the 026-wrapper packet truly release-ready, this phase parent r
 
 ---
 
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+The phase parent inherits requirements from each child packet's spec.md. Aggregate requirements:
+
+- All 6 children ship with strict validator green
+- All children's deps are honored (001 gates 002-005; 006 depends on 002-005)
+- No regression in packets 031-036's validators
+- Build green; new tests pass; no broken cross-references after stress-test folder migration
+<!-- /ANCHOR:requirements -->
+
+---
+
 <!-- ANCHOR:dependencies -->
-## 4. DEPENDENCIES
+## 5. DEPENDENCIES
 
 | Source | Type | Status |
 |--------|------|--------|
@@ -116,13 +131,28 @@ Before declaring the 026-wrapper packet truly release-ready, this phase parent r
 
 - **SCN-001**: **Given** sub-task 037/001 completes, **when** a reviewer reads the audit report, **then** every new file from 033/034/036 is checked against sk-code-opencode + at least one finding (PASS or fix-applied) is recorded.
 - **SCN-002**: **Given** sub-task 037/005 completes, **when** an operator runs the stress test from `mcp_server/stress_test/`, **then** the test runs successfully without any reference to `mcp_server/tests/stress*` paths.
-- **SCN-003**: **Given** sub-task 037/006 completes, **when** a reviewer reads `mcp_server/README.md`, **then** the tool count, capability matrix, and file structure references are all current as of 036's completion.
+- **SCN-003**: **Given** sub-task 037/006 completes, **when** a reviewer reads the mcp_server README at `.opencode/skill/system-spec-kit/mcp_server/README.md`, **then** the tool count, capability matrix, and file structure references are all current as of 036's completion.
 <!-- /ANCHOR:success-criteria -->
 
 ---
 
+<!-- ANCHOR:phase-doc-map -->
+## 6. PHASE DOCUMENTATION MAP
+
+| Child | spec.md | plan.md | tasks.md | checklist.md | implementation-summary.md |
+|-------|---------|---------|----------|--------------|---------------------------|
+| 001-sk-code-opencode-audit | [001/spec.md](001-sk-code-opencode-audit/spec.md) | [plan](001-sk-code-opencode-audit/plan.md) | [tasks](001-sk-code-opencode-audit/tasks.md) | [checklist](001-sk-code-opencode-audit/checklist.md) | [impl](001-sk-code-opencode-audit/implementation-summary.md) |
+| 002-feature-catalog-trio | [002/spec.md](002-feature-catalog-trio/spec.md) | [plan](002-feature-catalog-trio/plan.md) | [tasks](002-feature-catalog-trio/tasks.md) | [checklist](002-feature-catalog-trio/checklist.md) | [impl](002-feature-catalog-trio/implementation-summary.md) |
+| 003-testing-playbook-trio | [003/spec.md](003-testing-playbook-trio/spec.md) | [plan](003-testing-playbook-trio/plan.md) | [tasks](003-testing-playbook-trio/tasks.md) | [checklist](003-testing-playbook-trio/checklist.md) | [impl](003-testing-playbook-trio/implementation-summary.md) |
+| 004-sk-doc-template-alignment | [004/spec.md](004-sk-doc-template-alignment/spec.md) | [plan](004-sk-doc-template-alignment/plan.md) | [tasks](004-sk-doc-template-alignment/tasks.md) | [checklist](004-sk-doc-template-alignment/checklist.md) | [impl](004-sk-doc-template-alignment/implementation-summary.md) |
+| 005-stress-test-folder-migration | [005/spec.md](005-stress-test-folder-migration/spec.md) | [plan](005-stress-test-folder-migration/plan.md) | [tasks](005-stress-test-folder-migration/tasks.md) | [checklist](005-stress-test-folder-migration/checklist.md) | [impl](005-stress-test-folder-migration/implementation-summary.md) |
+| 006-readme-cascade-refresh | [006/spec.md](006-readme-cascade-refresh/spec.md) | [plan](006-readme-cascade-refresh/plan.md) | [tasks](006-readme-cascade-refresh/tasks.md) | [checklist](006-readme-cascade-refresh/checklist.md) | [impl](006-readme-cascade-refresh/implementation-summary.md) |
+<!-- /ANCHOR:phase-doc-map -->
+
+---
+
 <!-- ANCHOR:children -->
-## 6. CHILDREN STATUS
+## 7. CHILDREN STATUS
 
 | Child | Status | Last update |
 |-------|--------|-------------|

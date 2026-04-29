@@ -41,13 +41,13 @@ Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the oper
 
 | Category | Count | Details |
 |----------|-------|---------|
-| Module Categories | 28 | architecture, cache, chunking, code-graph, cognitive, config, contracts, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, ops, parsing, providers, response, scoring, search, session, spec, storage, telemetry, utils, validation |
+| Module Categories | 40 | analytics, architecture, cache, chunking, cognitive, config, context, continuity, contracts, coverage-graph, deep-loop, description, enrichment, errors, eval, extraction, feedback, governance, graph, interfaces, learning, manage, merge, ops, parsing, providers, query, rag, response, resume, routing, scoring, search, session, skill-graph, spec, storage, telemetry, utils, validation |
 | Cognitive Features | 9+ | FSRS scheduler, attention decay, PE gating, working memory, tier classification, co-activation, temporal contiguity, causal graph, corrections |
 | Search Intents | 7 | add_feature, fix_bug, refactor, security_audit, understand, find_spec, find_decision |
 | Index Sources | 3 | spec memories, constitutional files, spec documents (`includeSpecDocs`) |
 | Schema Milestones | v13+ | v13 introduced `document_type` and `spec_level` for spec-doc indexing and scoring |
-| Total Modules | 179 | Recursive `.ts` files under `lib/`, spanning 29 top-level directories plus top-level `errors.ts` |
-| Last Verified | 2026-03-28 | Module category and TypeScript file counts revalidated against the live source tree |
+| Total Modules | 219 | Recursive `.ts` files under `lib/`, spanning 40 top-level directories plus top-level modules |
+| Last Verified | 2026-04-29 | Module category and TypeScript file counts revalidated against the live source tree |
 
 ### Key Features
 
@@ -286,7 +286,8 @@ lib/                            # TypeScript source files
 │   ├── rank-metrics.ts         # Rank comparison metrics
 │   └── shadow-scoring.ts       # Shadow evaluation and promotion gating
 │
-├── governance/                 # Scope governance (1 module)
+├── governance/                 # Scope governance and retention lifecycle
+│   ├── memory-retention-sweep.ts # Expired delete_after enforcement for governed rows
 │   └── scope-governance.ts     # Hierarchical scope enforcement and governed ingest
 │
 ├── graph/                      # Graph scoring helpers (2 modules)

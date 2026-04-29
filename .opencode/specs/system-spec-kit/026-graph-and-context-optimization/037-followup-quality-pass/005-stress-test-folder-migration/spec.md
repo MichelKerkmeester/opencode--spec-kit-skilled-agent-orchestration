@@ -46,6 +46,11 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Blocked on default test suite |
 | **Created** | 2026-04-29 |
+| **Parent Spec** | ../spec.md |
+| **Successor** | ../006-readme-cascade-refresh/spec.md |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../004-sk-doc-template-alignment/spec.md |
+| **Parent Spec** | ../spec.md |
 | **Branch** | `main` |
 | **Parent** | `037-followup-quality-pass` |
 <!-- /ANCHOR:metadata -->

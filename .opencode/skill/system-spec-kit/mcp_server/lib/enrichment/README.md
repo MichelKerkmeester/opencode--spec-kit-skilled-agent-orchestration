@@ -16,5 +16,5 @@ The enrichment path can attach nearby code-graph symbols and degraded-continuity
 
 ## 2. RELATED
 
-- `../code-graph/README.md`
+- `../../code_graph/README.md`
 - `../response/README.md`

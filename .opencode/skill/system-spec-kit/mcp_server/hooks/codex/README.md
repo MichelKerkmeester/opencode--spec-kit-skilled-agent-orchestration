@@ -30,6 +30,7 @@ the Phase 026/007/008 native hook-parity remediation.
 - `user-prompt-submit.ts` parses Codex prompt JSON from stdin first and argv second, then emits `hookSpecificOutput.additionalContext` when a rendered advisor brief exists.
 - `pre-tool-use.ts` applies a narrow Bash-only deny policy from `.codex/policy.json`.
 - `prompt-wrapper.ts` adds an in-memory advisor preamble only when native hook detection reports `unavailable`.
+- `lib/freshness-smoke-check.ts` runs the Codex cold-start freshness probe used by the packet-034 regression suite.
 
 The adapter code, tests, and registration files are live. User-level `~/.codex/hooks.json`
 registers `SessionStart` and `UserPromptSubmit` alongside Superset's `notify.sh`;

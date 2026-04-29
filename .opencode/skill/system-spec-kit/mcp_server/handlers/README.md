@@ -33,18 +33,21 @@ Primary MCP handler modules:
 - `memory-ingest.ts` - Async ingestion job start, status, and cancel handlers.
 - `memory-crud.ts` - Stable CRUD facade backed by focused CRUD submodules.
 - `memory-bulk-delete.ts` - Bulk deletion by importance tier with checkpoint guardrails.
+- `memory-retention-sweep.ts` - Manual and startup-triggered retention enforcement for governed rows whose `delete_after` has expired.
 - `memory-index.ts` - Scan, re-index, alias discovery, and spec-doc indexing entry point.
 - `checkpoints.ts` - Checkpoint lifecycle plus `memory_validate`.
 - `session-learning.ts` - Task preflight, postflight, and learning history handlers.
 - `causal-graph.ts` - Causal link, unlink, stats, and drift-why handlers.
 - `eval-reporting.ts` - Ablation, k-sensitivity, and dashboard handlers.
 
-Code graph handlers (`code-graph/` subdirectory):
+Code graph handlers (`code_graph/` subdirectory):
 
-- `code-graph/scan.ts` - `code_graph_scan`: index workspace files, build structural graph.
-- `code-graph/query.ts` - `code_graph_query`: query structural relationships (outline, calls, imports).
-- `code-graph/status.ts` - `code_graph_status`: report graph health and statistics.
-- `code-graph/context.ts` - `code_graph_context`: LLM-oriented compact graph neighborhoods.
+- `code_graph/scan.ts` - `code_graph_scan`: index workspace files, build structural graph.
+- `code_graph/query.ts` - `code_graph_query`: query structural relationships (outline, calls, imports).
+- `code_graph/status.ts` - `code_graph_status`: report graph health and statistics.
+- `code_graph/context.ts` - `code_graph_context`: LLM-oriented compact graph neighborhoods.
+- `code_graph/verify.ts` - `code_graph_verify`: run graph verification checks.
+- `code_graph/detect-changes.ts` - `detect_changes`: stale-safe unified-diff preflight.
 
 Internal helpers in this folder:
 

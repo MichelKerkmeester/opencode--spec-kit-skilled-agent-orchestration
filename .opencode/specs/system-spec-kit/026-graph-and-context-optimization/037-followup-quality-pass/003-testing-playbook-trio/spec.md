@@ -36,6 +36,11 @@ _memory:
 | **Priority** | P1 |
 | **Status** | In Progress |
 | **Created** | 2026-04-29 |
+| **Parent Spec** | ../spec.md |
+| **Successor** | ../004-sk-doc-template-alignment/spec.md |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../002-feature-catalog-trio/spec.md |
+| **Parent Spec** | ../spec.md |
 | **Branch** | `main` |
 | **Parent** | `026-graph-and-context-optimization/037-followup-quality-pass` |
 | **Depends On** | `system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit` |

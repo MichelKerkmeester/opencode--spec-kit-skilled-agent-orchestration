@@ -2,7 +2,7 @@
 
 > MCP Server v1.7.2 | 2026-03-15 (verification steps refreshed for Phase 012 on 2026-04-25)
 
-Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 51 tools (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`) covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, session learning, evaluation, validation, and bounded structural code-graph indexing.
+Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 54 tools (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`) covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, session learning, evaluation, validation, advisor rebuilds, retention sweeps, and bounded structural code-graph indexing.
 
 > **Part of OpenCode Installation.** See the [Master Installation Guide](../README.md) for complete setup.
 
@@ -446,7 +446,7 @@ For a fresh native Skill Advisor install, also verify these public tools are pre
 - `advisor_status` (daemon freshness and trust-state health)
 - `advisor_validate` (measured corpus, parity, safety, and latency slices)
 
-Use [skill-advisor/INSTALL_GUIDE.md](./skill-advisor/INSTALL_GUIDE.md) for the native bootstrap checklist and [skill-advisor/README.md](./skill-advisor/README.md) for the API/tool contract while validating a new install.
+Use [skill_advisor/INSTALL_GUIDE.md](./skill_advisor/INSTALL_GUIDE.md) for the native bootstrap checklist and [skill_advisor/README.md](./skill_advisor/README.md) for the API/tool contract while validating a new install.
 
 Then verify the structural side too. Ask your AI assistant:
 

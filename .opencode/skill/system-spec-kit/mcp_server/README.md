@@ -57,7 +57,7 @@ Code-graph handlers share one readiness contract, session-resume auth binds to t
 
 | What | Count | Details |
 |------|-------|---------|
-| **MCP tools** | Live registry | Core memory layers plus dedicated code graph, CocoIndex dispatch, and Skill Advisor groups |
+| **MCP tools** | 54 | Canonical live registry from `TOOL_DEFINITIONS.length` in `tool-schemas.ts` |
 | **Search channels** | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree (+ CocoIndex semantic code search as external bridge) |
 | **Pipeline stages** | 4 | Gather (graph-first routing), Score, Rerank, Filter |
 | **Importance tiers** | 6 | constitutional, critical, important, normal, temporary, deprecated |
@@ -572,7 +572,7 @@ Research-grade infrastructure for measuring and improving search quality over ti
 
 The code graph system provides structural code analysis via tree-sitter AST parsing and SQLite storage. It maps what connects to what in the codebase: function calls, imports, class hierarchy and containment.
 
-**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. Code-graph source is self-contained under `code-graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
+**Architecture:** CocoIndex (semantic, external MCP) finds code by concept. Code Graph (structural, this server) maps imports, calls and hierarchy. Memory (session, this server) preserves decisions. The compact-merger combines all three under a 4000-token budget for compaction injection. Code-graph source is self-contained under `code_graph/` with `handlers/`, `lib/`, `tools/`, and `tests/`.
 
 **Phase-DAG runner:** `indexFiles()` runs through a typed phase-DAG runner at `code_graph/lib/phase-runner.ts`. The scan flow decomposes into four declared phases: `find-candidates` -> `parse-candidates` -> `finalize` -> `emit-metrics`. The runner validates duplicate names, missing dependencies, and cycles before any phase body runs and attaches `phaseName` to any `PhaseRunnerError`. `IndexFilesResult` shape, public exports, and the SQLite schema are unchanged — the runner is purely orchestrational.
 
@@ -588,7 +588,7 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 **Read-path readiness:** `ensureCodeGraphReady()` runs automatically inside `code_graph_query` and `code_graph_context`. It checks graph freshness, returns a `readiness` block, and performs bounded inline selective reindex only when the stale set is small enough to repair safely on the read path. Empty graphs, large stale sets, and other full-scan cases remain explicit `code_graph_scan` work.
 
-**Shared readiness contract:** `lib/code-graph/readiness-contract.ts` owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
+**Shared readiness contract:** `code_graph/lib/readiness-contract.ts` owns the shared readiness helpers used by query, scan, status, context, and CCC handlers. Read-path trust labels project onto the canonical `SharedPayloadTrustState` vocabulary instead of a new local enum.
 
 **Startup/recovery surfaces:** `session_resume`, `session_bootstrap`, and the startup brief report freshness-aware graph status instead of count-only health. Startup surfaces are intentionally non-mutating snapshots, so later structural reads may still differ if repo state changes.
 
@@ -604,11 +604,12 @@ The code graph system provides structural code analysis via tree-sitter AST pars
 
 #### 3.1.14 SKILL ADVISOR
 
-The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It lives as a self-contained package under `skill-advisor/` inside this MCP server and exposes three MCP tools:
+The Skill Advisor is the native Gate 2 routing surface for matching prompts to skills. It lives as a self-contained package under `skill_advisor/` inside this MCP server and exposes four MCP tools:
 
 | Tool | Purpose |
 |------|---------|
 | `advisor_recommend` | Route a prompt through native 5-lane fusion and return prompt-safe recommendations. |
+| `advisor_rebuild` | Explicitly rebuild the advisor index, with `force` support and before/after freshness diagnostics. |
 | `advisor_status` | Report freshness, generation, trust state, `skillCount`, `lastScanAt`, lane weights, and daemon availability. |
 | `advisor_validate` | Return measured corpus, holdout, parity, safety, and latency slices. |
 
@@ -620,9 +621,9 @@ The Skill Advisor is the native Gate 2 routing surface for matching prompts to s
 
 **Current baseline:** 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10, and zero regressions on Python-correct prompts.
 
-**Public API:** plugin and shim consumers should use `skill-advisor/compat/index.ts` or its compiled `dist/skill_advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
+**Public API:** plugin and shim consumers should use `skill_advisor/compat/index.ts` or its compiled `dist/skill_advisor/compat/index.js` equivalent. Do not pin external consumers to private compiled handler paths.
 
-For package-local details, see [Skill Advisor Native Package README](skill-advisor/README.md) and [Skill Advisor Native Bootstrap](skill-advisor/INSTALL_GUIDE.md).
+For package-local details, see [Skill Advisor Native Package README](skill_advisor/README.md) and [Skill Advisor Native Bootstrap](skill_advisor/INSTALL_GUIDE.md).
 
 **Tuning the scoring tables:** `/doctor:skill-advisor` is the user-facing surface for proposing and applying optimizations to `TOKEN_BOOSTS`, `PHRASE_BOOSTS`, `CATEGORY_HINTS`, and per-skill `graph-metadata.json` derived fields (`derived.trigger_phrases`, `derived.key_topics`). The command runs a 5-phase pipeline (Discovery → Analysis → Proposal → Apply → Verify) with auto and confirm modes; mutation boundaries are validated by a Phase 3 canonical-path validator (realpath + repo-relative + allowlist exact-match) before any write, and a per-run rollback script is generated under packet-local scratch for safe recovery. End-user setup guide: [`.opencode/install_guides/SET-UP - Skill Advisor.md`](../../../install_guides/SET-UP%20-%20Skill%20Advisor.md).
 
@@ -953,7 +954,7 @@ Example dry-run:
 
 ---
 
-#### L5: Lifecycle (8 tools)
+#### L5: Lifecycle (4 tools)
 
 ##### `checkpoint_create`
 
@@ -1329,7 +1330,7 @@ mcp_server/
 
 | Module | What It Does |
 |--------|--------------|
-| `lib/code-graph/readiness-contract.ts` | Shared readiness helpers for code-graph handlers, including canonical readiness and trust-state projections |
+| `code_graph/lib/readiness-contract.ts` | Shared readiness helpers for code-graph handlers, including canonical readiness and trust-state projections |
 | `lib/context/caller-context.ts` | AsyncLocalStorage-based caller identity for transport-bound handler auth and audit metadata |
 | `hooks/shared-provenance.ts` | Shared recovered-payload sanitization and provenance wrapping for Claude, Gemini, and Copilot |
 | `hooks/copilot/compact-cache.ts` | Copilot compact-cache producer so Copilot matches Claude/Gemini recovery behavior |
@@ -1345,13 +1346,13 @@ Tools are organized into layers based on what they do. Lower layers handle every
 | L1 | Orchestration | 3 | 2,000 | Smart entry point that figures out what you need |
 | L2 | Core | 4 | 1,500 | The main search and save operations |
 | L3 | Discovery | 4 | 800 | Browse what is stored, check system health |
-| L4 | Mutation | 4 | 500 | Update, delete, validate and bulk cleanup |
+| L4 | Mutation | 5 | 500 | Update, delete, validate, bulk cleanup, and retention sweep |
 | L5 | Lifecycle | 4 | 600 | Checkpoints and lifecycle snapshot management |
 | L6 | Analysis | 8 | 1,200 | Trace decisions, measure learning, run evaluations |
 | L7 | Maintenance | 5 | 1,000 | Re-index files, review history, run bulk imports |
-| L8 | Code Graph + Skill Graph + CocoIndex bridge + Skill Advisor | 15 | 1,400 | Code graph scan/query/status/context, `detect_changes`, skill graph + advisor (`advisor_recommend`/`advisor_status`/`advisor_validate`), CocoIndex bridge (`ccc_status`/`ccc_reindex`/`ccc_feedback`) |
+| L8 | Code Graph + Skill Graph + CocoIndex bridge + Skill Advisor | 17 | 1,400 | Code graph scan/query/status/context/verify plus `detect_changes`, skill graph + advisor (`advisor_recommend`/`advisor_rebuild`/`advisor_status`/`advisor_validate`), CocoIndex bridge (`ccc_status`/`ccc_reindex`/`ccc_feedback`) |
 | L9 | Coverage / Deep Loop Graph | 4 | 600 | `deep_loop_graph_upsert` / `_query` / `_status` / `_convergence` |
-| | **Total** | **51** | **9,600** | Canonical: `TOOL_DEFINITIONS.length` in `tool-schemas.ts`; deferred / not-yet-wired handlers do NOT count |
+| | **Total** | **54** | **9,600** | Canonical: `TOOL_DEFINITIONS.length` in `tool-schemas.ts`; deferred / not-yet-wired handlers do NOT count |
 
 Token budgets control how much content each tool can return per call. The budget prevents any single tool from flooding the AI's context window. When a response exceeds its budget, results are truncated from the bottom up until they fit.
 
@@ -1792,11 +1793,11 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 | [../references/hooks/skill-advisor-hook-validation.md](../references/hooks/skill-advisor-hook-validation.md) | Manual validation playbook for hook setup, smoke tests, and troubleshooting |
 | [../README.md](../README.md) | Parent skill README: system-spec-kit overview |
 | [../SKILL.md](../SKILL.md) | AI agent workflow instructions for this skill |
-| [../feature_catalog/FEATURE_CATALOG.md](../feature_catalog/FEATURE_CATALOG.md) | Complete feature inventory: 22 categories, 291 features with code references |
+| [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md) | Complete feature inventory: 22 categories, 294 features with code references |
 | [../references/config/environment_variables.md](../references/config/environment_variables.md) | All environment variables with types, defaults and examples |
 | [../references/workflows/rollback_runbook.md](../references/workflows/rollback_runbook.md) | Feature flag rollback procedure |
-| [../../../DEPLOYMENT.md](../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |
-| [../../../changelog/01--system-spec-kit/v3.4.0.2.md](../../../changelog/01--system-spec-kit/v3.4.0.2.md) | Most recent shipped release notes |
+| [../../../../DEPLOYMENT.md](../../../../DEPLOYMENT.md) | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout guidance |
+| [../../../changelog/system-spec-kit/v3.4.0.2.md](../../../changelog/system-spec-kit/v3.4.0.2.md) | Most recent shipped release notes |
 
 ### External Resources
 
@@ -1811,4 +1812,4 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 
 ---
 
-*Documentation version: 3.0 | Last updated: 2026-04-17 | Server version: @spec-kit/mcp-server*
+*Documentation version: 3.1 | Last updated: 2026-04-29 | Server version: @spec-kit/mcp-server v1.8.0 | MCP SDK: @modelcontextprotocol/sdk ^1.24.3 | README cascade includes packets 031-036 and 037/001-006*

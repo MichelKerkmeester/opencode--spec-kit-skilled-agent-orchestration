@@ -26,7 +26,7 @@ For continuity recovery, `/spec_kit:resume` remains the canonical operator surfa
 Files in this directory:
 
 - `context-tools.ts` - dispatch for `memory_context`.
-- `memory-tools.ts` - dispatch for search, quick search, triggers, save, CRUD, stats, health, validate, and bulk delete.
+- `memory-tools.ts` - dispatch for search, quick search, triggers, save, CRUD, stats, health, validate, bulk delete, and retention sweep.
 - `causal-tools.ts` - dispatch for causal graph operations.
 - `checkpoint-tools.ts` - dispatch for checkpoints and learning-history style lifecycle helpers.
 - `lifecycle-tools.ts` - dispatch for ingestion jobs and lifecycle tools.

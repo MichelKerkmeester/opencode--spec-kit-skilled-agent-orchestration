@@ -65,6 +65,7 @@ Expected:
 
 - `advisor_status` returns `freshness`, `generation`, `trustState`, `lastGenerationBump`, `lastScanAt`, `skillCount`, and `laneWeights`.
 - `advisor_recommend` returns prompt-safe `recommendations[]`, cache state, lifecycle redirect metadata, and freshness trust.
+- `advisor_rebuild` rebuilds stale, absent, or unavailable advisor state and returns before/after freshness diagnostics.
 - `advisor_validate` returns real corpus, holdout, parity, safety, and latency measurements.
 
 ---
@@ -76,7 +77,7 @@ Run before declaring bootstrap complete:
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/ code-graph/tests/ --reporter=default)
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill_advisor/tests/ code_graph/tests/ --reporter=default)
 ```
 
 Current Phase 027 baseline:

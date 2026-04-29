@@ -15,7 +15,7 @@ importance_tier: "important"
 
 # Architecture: system-spec-kit
 
-> Current-reality architecture for the `system-spec-kit` package: authored code lives in `scripts/`, `mcp_server/`, and `shared/`; the `mcp_server/` tree now hosts two self-contained consumed subsystems (`skill-advisor/`, `code-graph/`); packet continuity is rebuilt through `/spec_kit:resume` and canonical spec documents.
+> Current-reality architecture for the `system-spec-kit` package: authored code lives in `scripts/`, `mcp_server/`, and `shared/`; the `mcp_server/` tree now hosts two self-contained consumed subsystems (`skill_advisor/`, `code_graph/`), matrix runners, and opt-in stress tests; packet continuity is rebuilt through `/spec_kit:resume` and canonical spec documents.
 
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
@@ -45,10 +45,12 @@ importance_tier: "important"
 | `shared/` | Neutral modules imported by both scripts and runtime | TypeScript under `shared/` |
 | `dist/` | Built JavaScript entrypoints | Generated output only |
 
-Two consumed subsystems live as first-class self-contained packages under `mcp_server/`:
+Two consumed subsystems live as first-class self-contained packages under `mcp_server/`, with adjacent operator-runner folders for the quality matrix and opt-in stress validation:
 
 - `mcp_server/skill_advisor/` — Native skill routing advisor (Phase 027). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
 - `mcp_server/code_graph/` — Structural code graph + coco-index facade (Phase 028). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
+- `mcp_server/matrix-runners/` — Packet-036 F1-F14 x CLI adapter manifest, five per-CLI adapters, and meta-runner for external executor cells.
+- `mcp_server/stress_test/` — Packet-037/005 opt-in stress/load/degraded-state suites, excluded from default `npm test` and run through `npm run stress`.
 
 Neither subsystem ships a `SKILL.md`. They are consumed subsystems of `system-spec-kit`, not standalone skills. All operator-facing routing goes through `system-spec-kit` entry points.
 
@@ -84,7 +86,9 @@ system-spec-kit/
 │   ├── api/                        # Stable import boundary for non-runtime callers
 │   ├── tests/                      # Runtime Vitest suites and fixtures
 │   ├── scripts/                    # Compatibility wrappers only
-│   ├── skill-advisor/              # Self-contained advisor package (see §5)
+│   ├── matrix-runners/             # F1-F14 x CLI adapter runners
+│   ├── stress_test/                # Opt-in stress/load/degraded-state suites
+│   ├── skill_advisor/              # Self-contained advisor package (see §5)
 │   │   ├── lib/                    # scorer (fusion + lanes), daemon, freshness, lifecycle, compat, ...
 │   │   ├── handlers/               # advisor-recommend | advisor-status | advisor-validate
 │   │   ├── tools/                  # MCP tool registrations
@@ -97,7 +101,7 @@ system-spec-kit/
 │   │   ├── manual_testing_playbook/ # Manual testing playbook package
 │   │   ├── README.md / INSTALL_GUIDE.md / SET-UP_GUIDE.md
 │   │   └── graph-metadata.json
-│   └── code-graph/                 # Self-contained code-graph package (see §6)
+│   └── code_graph/                 # Self-contained code-graph package (see §6)
 │       ├── lib/                    # indexer, readiness contract, seed resolver, coco-index integration
 │       ├── handlers/               # code_graph_* + ccc_* (coco-index facade)
 │       ├── tools/                  # MCP tool registrations
@@ -249,11 +253,12 @@ Defined in `mcp_server/skill_advisor/lib/scorer/weights-config.ts:8-19` and exer
 
 ### MCP tools
 
-Three tools, registered under `mcp_server/skill_advisor/tools/`:
+Four tools, registered under `mcp_server/skill_advisor/tools/`:
 
 | Tool | Handler | Purpose |
 |---|---|---|
 | `advisor_recommend` | `handlers/advisor-recommend.ts` | Produce ranked skill brief for a prompt |
+| `advisor_rebuild` | `handlers/advisor-rebuild.ts` | Explicitly rebuild advisor state, optionally forced |
 | `advisor_status` | `handlers/advisor-status.ts` | Daemon / freshness / trust-state readout |
 | `advisor_validate` | `handlers/advisor-validate.ts` | Validate skill manifest + derived metadata |
 
@@ -290,13 +295,13 @@ Migrated into a self-contained package by Phase 028 — previously scattered acr
 | Subfolder | Purpose |
 |---|---|
 | `lib/` | Indexer, readiness contract, seed resolver, budget allocator, runtime detection, tree-sitter parser, coco-index integration |
-| `handlers/` | MCP tool handlers (7 tools total; see below) |
+| `handlers/` | MCP tool handlers (9 tools total; see below) |
 | `tools/` | MCP tool registrations (`code-graph-tools.ts`, `index.ts`) |
 | `tests/` | 7 files / 52 tests |
 
 ### MCP tools
 
-Seven tools, unchanged across the Phase 028 migration:
+Nine tools are registered from the code-graph package:
 
 | Tool | Kind | Handler |
 |---|---|---|
@@ -304,6 +309,8 @@ Seven tools, unchanged across the Phase 028 migration:
 | `code_graph_query` | Structural graph | `handlers/query.ts` |
 | `code_graph_context` | Structural graph | `handlers/context.ts` |
 | `code_graph_status` | Structural graph | `handlers/status.ts` |
+| `code_graph_verify` | Structural graph | `handlers/verify.ts` |
+| `detect_changes` | Structural graph preflight | `handlers/detect-changes.ts` |
 | `ccc_reindex` | coco-index facade | `mcp_server/code_graph/handlers/ccc-reindex.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
 | `ccc_status` | coco-index facade | `mcp_server/code_graph/handlers/ccc-status.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
 | `ccc_feedback` | coco-index facade | `mcp_server/code_graph/handlers/ccc-feedback.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
@@ -422,6 +429,8 @@ Cross-ADR flow: ADR-001 → ADR-004 (lease needs a long-running writer); ADR-002
 - `mcp_server/skill_advisor/README.md`
 - `mcp_server/skill_advisor/INSTALL_GUIDE.md`
 - `mcp_server/skill_advisor/SET-UP_GUIDE.md`
+- `mcp_server/matrix-runners/README.md`
+- `mcp_server/stress_test/README.md`
 - `mcp_server/code_graph/lib/README.md`
 - `mcp_server/code_graph/handlers/README.md`
 - `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/decision-record.md`

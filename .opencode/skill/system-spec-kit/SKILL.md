@@ -568,7 +568,7 @@ _memory:
 
 Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS5, BM25, graph, and degree) with Reciprocal Rank Fusion, intent-aware routing, and post-fusion reranking/filtering.
 
-**Server:** `@spec-kit/mcp-server` v1.7.2 - `context-server.ts` with 54 MCP tools across 7 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
+**Server:** `@spec-kit/mcp-server` v1.8.0 - `context-server.ts` with 54 MCP tools across 9 layers. The tool surface is defined in `mcp_server/tool-schemas.ts`.
 
 **Memory Commands:** 4 memory slash commands (`/memory:save`, `/memory:manage`, `/memory:learn`, `/memory:search`) cover the spec-doc record command surface, while `/spec_kit:resume` owns session recovery through the broader memory/session recovery stack. The `spec_kit` surface now uses `/spec_kit:plan --intake-only` as the standalone intake workflow; `/spec_kit:plan` and `/spec_kit:complete` execute the shared intake contract (`.opencode/skill/system-spec-kit/references/intake-contract.md`) inline when the Step 0 local `folder_state` shows repair or creation is needed, and downstream callers should consume the contract's canonical `start_state` rather than reusing the local classifier name. `/spec_kit:deep-research` follows `../sk-deep-research/references/spec_check_protocol.md` for bounded `spec.md` anchoring. The `/memory:search` command covers all analysis and retrieval workflows. See `.opencode/command/memory/`, `.opencode/command/spec_kit/plan.md`, `.opencode/command/spec_kit/complete.md`, `.opencode/skill/system-spec-kit/references/intake-contract.md`, and `.opencode/command/spec_kit/resume.md` for command documentation.
 
@@ -640,7 +640,7 @@ Context preservation across sessions via 5-channel hybrid retrieval (vector, FTS
 - **Retrieval trace** - Typed ContextEnvelope wraps every retrieval response with pipeline stages and a DegradedModeContract describing fallback behavior
 - **Mutation ledger** - Append-only audit trail for all spec-doc-record mutations (create, update, delete, reinforce); implemented via SQLite triggers; queryable for compliance and rollback
 - **Retrieval telemetry** - 4-dimension metrics (latency, retrieval mode, fallback activation, quality score). Enabled only when `SPECKIT_EXTENDED_TELEMETRY=true` (default: off)
-- **Feature catalog** - 291 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
+- **Feature catalog** - 294 documented features across 22 categories (`feature_catalog/01--retrieval/` through `22--context-preservation-and-code-graph/`) document every MCP server feature with current-reality status, source files, and catalog references. Use for audit, alignment checks, and understanding what exists. See [feature_catalog/](./feature_catalog/)
 - **Manual testing playbook** - Operator-facing validation matrix covering existing (`EX-*`) and new (`NEW-*`) features with deterministic prompts, execution sequences, and pass/fail triage. Includes review protocol and subagent utilization ledger. See [manual_testing_playbook/](./manual_testing_playbook/)
 - **Validation scoring** - `wasUseful=false` applies a demotion penalty to spec-doc-record scores; 5+ positive validations may promote a record's importance tier
 - **Tree-thinning threshold** - 150 tokens with merge group cap of 3 for improved file visibility in memory context
@@ -803,7 +803,7 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 **Startup payload parity:** all four runtimes (Claude, Gemini, Copilot, Codex) transport the same compact startup shared-payload through their runtime-specific startup hooks, including the `graphQualitySummary` summary. `session_bootstrap()` remains available as a manual recovery surface when native hooks are disabled.
 
-`lib/code-graph/readiness-contract.ts` is now the shared readiness source for query, scan, status, context, and CCC handlers. Its readiness blocks project onto the canonical `SharedPayloadTrustState` type instead of introducing a new local trust-state enum.
+`code_graph/lib/readiness-contract.ts` is now the shared readiness source for query, scan, status, context, and CCC handlers. Its readiness blocks project onto the canonical `SharedPayloadTrustState` type instead of introducing a new local trust-state enum.
 
 **Query routing:** Structural queries (callers, imports, deps) -> `code_graph_query`. Semantic/concept queries -> CocoIndex (`mcp__cocoindex_code__search`). Session/memory queries -> `memory_context`.
 
@@ -997,8 +997,8 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
 | Database          | `mcp_server/database/context-index.sqlite`                                 | Default repo-local memory index path used by checked-in configs |
 | Constitutional    | `constitutional/`                                                          | Always-surface rules              |
-| Feature Catalog   | `feature_catalog/` (22 categories, 291 documented features)                | Per-feature current-reality docs  |
-| Testing Playbook  | `manual_testing_playbook/` (22 categories, 311 scenario files)             | Manual validation matrix          |
+| Feature Catalog   | `feature_catalog/` (22 categories, 294 documented features)                | Per-feature current-reality docs  |
+| Testing Playbook  | `manual_testing_playbook/` (22 categories, 316 scenario files)             | Manual validation matrix          |
 
 ---
 

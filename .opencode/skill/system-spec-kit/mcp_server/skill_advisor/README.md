@@ -224,7 +224,7 @@ Native package checks:
 ```bash
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run typecheck
 npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
-(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill-advisor/tests/ code-graph/tests/ --reporter=default)
+(cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill_advisor/tests/ code_graph/tests/ --reporter=default)
 ```
 
 Manual validation surface: the [playbook](./manual_testing_playbook/manual_testing_playbook.md) ships 47 deterministic scenarios across 10 groups. Automated counterparts include 23 advisor test files / 167 vitest tests and the 52-case Python regression suite.
@@ -241,7 +241,7 @@ Directory ownership:
 | `compat/` | Stable package entrypoint for plugin bridge and Python shim consumers. |
 | `docs/` | Alignment notes and operational blockers. |
 | `feature_catalog/` | Operator-facing feature inventory for daemon freshness, auto-indexing, lifecycle, scorer, MCP surface, hooks/plugin, and Python compat. |
-| `handlers/` | MCP handler implementations (`advisor-recommend.ts`, `advisor-status.ts`, `advisor-validate.ts`). |
+| `handlers/` | MCP handler implementations (`advisor-recommend.ts`, `advisor-rebuild.ts`, `advisor-status.ts`, `advisor-validate.ts`). |
 | `lib/corpus/` | DF/IDF corpus statistics. |
 | `lib/compat/` | Daemon probe and redirect metadata adapters. |
 | `lib/daemon/` | Watcher, lease, lifecycle. |
@@ -259,6 +259,7 @@ Public API entrypoints for external consumers:
 
 ```ts
 export { handleAdvisorRecommend } from '../handlers/advisor-recommend.js';
+export { rebuildAdvisorIndex } from '../handlers/advisor-rebuild.js';
 export { readAdvisorStatus } from '../handlers/advisor-status.js';
 export { probeAdvisorDaemon } from '../lib/compat/daemon-probe.js';
 export { buildSkillAdvisorBrief } from '../lib/skill-advisor-brief.js';

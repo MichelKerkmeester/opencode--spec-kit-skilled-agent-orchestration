@@ -44,6 +44,11 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-04-29 |
+| **Parent Spec** | ../spec.md |
+| **Successor** | ../005-stress-test-folder-migration/spec.md |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../003-testing-playbook-trio/spec.md |
+| **Parent Spec** | ../spec.md |
 | **Branch** | `main` |
 | **Parent** | `037-followup-quality-pass` |
 <!-- /ANCHOR:metadata -->

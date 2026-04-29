@@ -32,7 +32,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter or the shipped regex fallback, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs the `code_graph_scan`, `code_graph_query`, `code_graph_status`, and `code_graph_context` MCP tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
+This folder contains the structural code graph subsystem. It walks a workspace, parses source files via tree-sitter or the shipped regex fallback, and persists nodes (functions, classes, modules) and edges (calls, imports, contains, type_of) into a SQLite database. The graph backs `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`, `code_graph_verify`, `detect_changes`, and the `ccc_*` MCP bridge tools, and feeds the structural-context payload consumed by both MCP `session_bootstrap` and the OpenCode `compact-code-graph` plugin.
 
 ### Subsystem Statistics (current schema)
 
@@ -69,7 +69,7 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 ## 2. STRUCTURE
 
 ```
-code-graph/
+code_graph/
 ├── README.md                       # This file
 ├── lib/                            # Core implementation
 │   ├── README.md                   # Library overview
@@ -95,6 +95,8 @@ code-graph/
 │   ├── query.ts                    # code_graph_query
 │   ├── status.ts                   # code_graph_status
 │   ├── context.ts                  # code_graph_context
+│   ├── verify.ts                   # code_graph_verify
+│   ├── detect-changes.ts           # detect_changes
 │   ├── ccc-status.ts               # CocoIndex status bridge
 │   ├── ccc-reindex.ts              # CocoIndex reindex bridge
 │   ├── ccc-feedback.ts             # CocoIndex feedback bridge
@@ -124,6 +126,8 @@ code-graph/
 | `handlers/status.ts` | `code_graph_status` MCP handler — totals, freshness, parseHealth |
 | `handlers/context.ts` | `code_graph_context` MCP handler — context-window-bounded retrieval |
 | `handlers/query.ts` | `code_graph_query` MCP handler — graph traversal queries |
+| `handlers/verify.ts` | `code_graph_verify` MCP handler — graph verification checks |
+| `handlers/detect-changes.ts` | `detect_changes` MCP handler — stale-safe unified-diff preflight |
 
 Shared regression coverage for the migrated runtime also lives in the parent `mcp_server/tests/` suite. Current examples include `tests/tree-sitter-parser.vitest.ts`, `tests/structural-contract.vitest.ts`, and `tests/ensure-ready.vitest.ts`.
 

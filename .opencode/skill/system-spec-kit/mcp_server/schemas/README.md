@@ -24,13 +24,13 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. All 29+ tool schemas are declared here, exported through a `TOOL_SCHEMAS` registry and consumed by tool modules via the `validateToolArgs()` function.
+`schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. The live registry currently declares 57 schema keys for 54 public MCP tools plus compatibility aliases/internal schema entries, exported through `TOOL_SCHEMAS` and consumed by tool modules via the `validateToolArgs()` function.
 
 Those handlers now sit behind the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, and packet continuity comes from `handover.md` -> `_memory.continuity` -> canonical spec docs. Generated memory artifacts are supporting only.
 
 Strict mode is on by default (`SPECKIT_STRICT_SCHEMAS !== 'false'`). When enabled, unknown parameters cause validation to fail instead of passing through silently.
 
-Compatibility and aliased tools may reuse the same validator path instead of getting a duplicated schema entry, so this README uses `29+` rather than treating the file as a fixed one-schema-per-runtime-name list.
+Compatibility and aliased tools may reuse the same validator path or add an extra schema key, so treat `TOOL_DEFINITIONS.length` in `tool-schemas.ts` as the public tool count and `TOOL_SCHEMAS` as the validation registry.
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:structure -->
@@ -38,7 +38,7 @@ Compatibility and aliased tools may reuse the same validator path instead of get
 
 | File | Purpose |
 |---|---|
-| `tool-input-schemas.ts` | Defines Zod schemas for all 29+ MCP tools, exports `TOOL_SCHEMAS` registry, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and the `ToolSchemaValidationError` class |
+| `tool-input-schemas.ts` | Defines Zod schemas for the 54-tool public MCP surface plus compatibility/internal entries, exports `TOOL_SCHEMAS` registry, `validateToolArgs()`, `getToolSchema()`, `formatZodError()`, `getSchema()` and the `ToolSchemaValidationError` class |
 
 No subfolders exist in this directory.
 

@@ -48,6 +48,11 @@ _memory:
 | **Priority** | P1 |
 | **Status** | Complete |
 | **Created** | 2026-04-29 |
+| **Parent Spec** | ../spec.md |
+| **Successor** | ../003-testing-playbook-trio/spec.md |
+| **Parent Spec** | ../spec.md |
+| **Predecessor** | ../001-sk-code-opencode-audit/spec.md |
+| **Parent Spec** | ../spec.md |
 | **Branch** | `main` |
 | **Parent** | `037-followup-quality-pass` |
 <!-- /ANCHOR:metadata -->

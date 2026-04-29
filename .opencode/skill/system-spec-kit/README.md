@@ -61,10 +61,10 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 
 | Category                    | Count                | Details                                                                                         |
 | --------------------------- | -------------------- | ----------------------------------------------------------------------------------------------- |
-| **MCP Tools**               | 51                   | Canonical count from `TOOL_DEFINITIONS` in `mcp_server/tool-schemas.ts`. Spans L1-L7 plus L8 (code graph + skill graph/advisor + CocoIndex bridge) and L9 (deep loop graph). Internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded. |
+| **MCP Tools**               | 54                   | Canonical count from `TOOL_DEFINITIONS` in `mcp_server/tool-schemas.ts`. Spans L1-L7 plus L8 (code graph + skill graph/advisor + CocoIndex bridge) and L9 (deep loop graph). Internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded. |
 | **Commands**                | 13                   | 9 spec_kit + 4 memory                                                                           |
 | **Documentation Levels**    | 4                    | Levels 1, 2, 3, 3+                                                                              |
-| **Feature Catalog Entries** | 291                  | Across 22 categories                                                                            |
+| **Feature Catalog Entries** | 294                  | Across 22 categories                                                                            |
 | **Search Channels**         | 5 core + CocoIndex bridge | Vector, FTS5, BM25, Causal Graph, Degree, plus CocoIndex for semantic code discovery       |
 | **Pipeline Stages**         | 4                    | Gather, Score, Rerank, Filter                                                                   |
 | **Importance Tiers**        | 6                    | constitutional through deprecated                                                               |
@@ -91,7 +91,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
 | **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
-| **Spec Kit Memory MCP**       | 51-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
+| **Spec Kit Memory MCP**       | 54-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
 | **Skill Advisor**             | Native Phase 027 routing package with `advisor_recommend`, `advisor_status`, `advisor_validate`, 5-lane fusion, Python compatibility shim, runtime hooks, and OpenCode plugin bridge                    |
@@ -349,7 +349,7 @@ The indexed-continuity store lives in an MCP server that gives AI assistants per
 
 Think of it like a personal librarian that keeps notes on every conversation, files them by topic and hands you the right ones when you start a new task. Switch from Claude to GPT to Gemini and back -- the spec-doc record stays the same because it lives on your machine, not inside any AI's context window.
 
-For full architecture details, the 51-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
+For full architecture details, the 54-tool API reference, search pipeline internals and configuration, see [`mcp_server/README.md`](./mcp_server/README.md).
 
 #### Hybrid Search
 
@@ -642,6 +642,8 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── context-server.ts       # MCP server entry point and tool registration
 │   ├── handlers/               # Tool handlers, save pipeline, and response assembly
 │   ├── lib/                    # Search pipeline, cognitive engine, graph, governance
+│   ├── matrix-runners/         # F1-F14 x CLI adapter manifest and runner
+│   ├── stress_test/            # Opt-in stress, load, matrix-cell, and degraded-state suites
 │   ├── tests/                  # MCP test suite
 │   ├── INSTALL_GUIDE.md        # Full installation walkthrough
 │   └── README.md               # MCP server reference (tool API, pipeline, configuration)
@@ -653,8 +655,8 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 ├── references/                 # Reference documentation (27 files)
 ├── assets/                     # Decision matrices, YAML configs
 ├── constitutional/             # Always-surface rules (never decay)
-├── feature_catalog/            # Feature documentation (22 categories, 291 features)
-└── manual_testing_playbook/    # Manual validation scenarios (22 categories, 311 scenario files)
+├── feature_catalog/            # Feature documentation (22 categories, 294 features)
+└── manual_testing_playbook/    # Manual validation scenarios (22 categories, 316 scenario files)
 ```
 
 ### Key Files
@@ -664,13 +666,13 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`SKILL.md`](./SKILL.md)                                                     | AI agent instructions: routing rules, gates, validation procedures, template application             |
 | [`README.md`](./README.md)                                                   | This file -- what Spec Kit does, how to use it, where to find things                                 |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                       | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 51-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 54-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)               | Step-by-step installation with embedding providers and environment                                   |
 | [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh)                         | Create spec folders with level-appropriate template files                                            |
 | [`scripts/spec/validate.sh`](./scripts/spec/validate.sh)                     | Run 20-rule validation on any spec folder                                                            |
 | `scripts/dist/memory/generate-context.js`                                    | Primary workflow for updating packet continuity state from structured JSON                            |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md) | Complete catalog of 291 implemented features across 22 categories                                    |
+| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md) | Complete catalog of 294 implemented features across 22 categories                                    |
 
 ### How the Pieces Connect
 
@@ -1060,7 +1062,7 @@ A: The indexed-continuity store can index any markdown file, beyond spec folder 
 
 **Q: What is the difference between this README and the MCP server README?**
 
-A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the indexed-continuity store. The MCP server README (`mcp_server/README.md`) goes deep on the indexed-continuity store: the 51-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
+A: This README covers the whole skill: spec folders, documentation levels, commands, templates, scripts and a high-level summary of the indexed-continuity store. The MCP server README (`mcp_server/README.md`) goes deep on the indexed-continuity store: the 54-tool API reference, 5 core retrieval channels plus the CocoIndex bridge, code graph and session lifecycle tooling, canonical resume/bootstrap behavior, save pipeline, causal graph, query intelligence and evaluation infrastructure. When you need to understand how a specific MCP tool works or how the search pipeline makes decisions, go to the MCP server README.
 
 ---
 
@@ -1101,7 +1103,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | ------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------- |
 | [`SKILL.md`](./SKILL.md)                                                                         | AI agent instructions: routing, gates, validation, template application                              |
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                                           | API boundary contract between `scripts/` and `mcp_server/`                                           |
-| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 51-tool API reference, search pipeline, graph intelligence, and configuration |
+| [`mcp_server/README.md`](./mcp_server/README.md)                                                 | Full MCP architecture: 54-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)                                   | Step-by-step installation with embedding providers and environment variables                         |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md)                     | Detailed memory system reference                                                                     |
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md)       | All 20 validation rules with fixes                                                                   |
@@ -1109,9 +1111,9 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | [`references/templates/template_guide.md`](./references/templates/template_guide.md)             | Template usage and composition rules                                                                 |
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md)     | Full environment variable reference                                                                  |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md)         | Feature-flag rollback and smoke-test procedures                                                      |
-| [`feature_catalog/FEATURE_CATALOG.md`](./feature_catalog/FEATURE_CATALOG.md)                     | Complete catalog of 291 features across 22 categories                                                |
+| [`feature_catalog/feature_catalog.md`](./feature_catalog/feature_catalog.md)                     | Complete catalog of 294 features across 22 categories                                                |
 | [`../../../DEPLOYMENT.md`](../../../DEPLOYMENT.md)                                               | Deployment notes, Docker anti-patterns, Copilot runtime notes, and session-resume auth rollout flag |
-| [`../../changelog/01--system-spec-kit/v3.4.0.2.md`](../../changelog/01--system-spec-kit/v3.4.0.2.md) | Phase 017 release changelog for the H-56-1 fix and runtime-parity follow-ups                         |
+| [`../../changelog/system-spec-kit/v3.4.0.2.md`](../../changelog/system-spec-kit/v3.4.0.2.md) | Phase 017 release changelog for the H-56-1 fix and runtime-parity follow-ups                         |
 
 ### Cross-Skill Alignment
 
@@ -1142,4 +1144,4 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 
 ---
 
-_Documentation version: 3.2 | Last updated: 2026-04-25 | Skill version: 3.3.1.0 | Phase 012 adds the read-only `detect_changes` MCP tool, the typed phase-DAG runner, edge `reason`/`step` plus `blast_radius` enrichment, Skill Advisor affordance evidence, and Memory causal trust display badges. Phase 010/007 T-A wired `detect_changes` into the MCP catalog (dispatcher + JSON schema + Zod validator)._
+_Documentation version: 3.3 | Last updated: 2026-04-29 | Skill version: 3.3.1.0 | Packets 031-036 and 037/001-006 refresh retention sweep, advisor rebuild, Codex freshness checks, matrix runners, stress-test folder migration, feature catalogs, playbooks, and README cross-references._
