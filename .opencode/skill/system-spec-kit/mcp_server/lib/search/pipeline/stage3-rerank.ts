@@ -35,7 +35,7 @@ import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP } from '../intent-classifier.js';
 import { createEmptyQueryPlan } from '../../query/query-plan.js';
-import { decideConditionalRerank, isConditionalRerankEnabled } from '../rerank-gate.js';
+import { decideConditionalRerank } from '../rerank-gate.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/index.js';
 import { toErrorMessage } from '../../../utils/index.js';
@@ -324,21 +324,19 @@ async function applyCrossEncoderReranking(
     return { rows: results, applied: false, provider: 'none' };
   }
 
-  if (isConditionalRerankEnabled()) {
-    const gate = decideConditionalRerank({
-      queryPlan: createEmptyQueryPlan({
-        complexity: 'unknown',
-        selectedChannels: inferResultChannels(results),
-      }),
-      signals: {
-        candidateCount: results.length,
-        channelCount: inferResultChannels(results).length,
-        topScoreMargin: topScoreMargin(results),
-      },
-    });
-    if (!gate.shouldRerank) {
-      return { rows: results, applied: false, provider: 'none' };
-    }
+  const gate = decideConditionalRerank({
+    queryPlan: createEmptyQueryPlan({
+      complexity: 'unknown',
+      selectedChannels: inferResultChannels(results),
+    }),
+    signals: {
+      candidateCount: results.length,
+      channelCount: inferResultChannels(results).length,
+      topScoreMargin: topScoreMargin(results),
+    },
+  });
+  if (!gate.shouldRerank) {
+    return { rows: results, applied: false, provider: 'none' };
   }
 
   // Build a lookup map so we can restore all original PipelineRow fields

@@ -54,7 +54,7 @@ Phase E turned deferred W3-W7 ideas into measured decisions. Additive/shadow con
 | Workstream | Decision | Runtime posture |
 |------------|----------|-----------------|
 | W3 - Composed RAG trust tree | SHIP | Additive helper in `lib/rag/trust-tree.ts` |
-| W4 - Conditional rerank | KEEP-AS-OPT-IN | `SPECKIT_CONDITIONAL_RERANK` |
+| W4 - Conditional rerank | SHIP (default-on; flag removed) | Gate evaluated on every rerank call; skips when no ambiguity triggers fire |
 | W5 - Advisor shadow learned weights | SHIP | `_shadow` diagnostics; live weights unchanged |
 | W6 - CocoIndex calibration | KEEP-AS-OPT-IN | `SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH` |
 | W7 - Degraded-readiness stress cells | SHIP | Tests and corpus cells only |
@@ -64,7 +64,7 @@ Phase E turned deferred W3-W7 ideas into measured decisions. Additive/shadow con
 | Workstream | Baseline | Variant | Delta | Decision |
 |------------|----------|---------|-------|----------|
 | W3 | precision 0.333; recall 0.5; p95 0.146ms; refusal 1; citation 0 | precision 0.667; recall 1; p95 0.144ms; refusal 1; citation 1 | +0.334 precision; +0.5 recall; +1 citation | SHIP |
-| W4 | precision 0.333; recall 1; p95 0.135ms; refusal 1; citation 1 | precision 1; recall 1; p95 0.13ms; refusal 1; citation 1 | +0.667 precision | KEEP-AS-OPT-IN |
+| W4 | precision 0.333; recall 1; p95 0.135ms; refusal 1; citation 1 | precision 1; recall 1; p95 0.13ms; refusal 1; citation 1 | +0.667 precision | SHIP (default-on; flag removed) |
 | W5 | precision 0.5; recall 1; p95 0.13ms; refusal 1; citation 0 | precision 0.5; recall 1; p95 0.129ms; refusal 1; citation 1 | +1 citation | SHIP |
 | W6 | precision 0.333; recall 1; p95 0.128ms; refusal 1; citation 1 | precision 1; recall 1; p95 0.115ms; refusal 1; citation 1 | +0.667 precision | KEEP-AS-OPT-IN |
 | W7 | precision 1; recall 1; p95 0.185ms; refusal 1; citation 1 | precision 1; recall 1; p95 0.117ms; refusal 1; citation 1 | flat quality; degraded coverage survives | SHIP |
@@ -103,7 +103,7 @@ Each workstream ran baseline, additive variant, re-measurement, and disposition.
 | Decision | Why |
 |----------|-----|
 | Ship W3 | It improves provenance fixture metrics and only composes existing signals. |
-| Keep W4 opt-in | Precision improves, but rerank changes ordering. |
+| Ship W4 default-on | Precision +0.667 in measurement; gate's internal triggers (complex-query, high-authority, multi-channel-weak-margin, weak-evidence) skip rerank on simple queries, preserving latency budget. Flag removed per operator request. |
 | Ship W5 | `_shadow` is output-only and live weights remain fixed. |
 | Keep W6 opt-in | Duplicate-heavy precision improves, but overfetch changes query cost. |
 | Ship W7 | Degraded-readiness metrics stay green across all four cells. |
@@ -130,6 +130,6 @@ Each workstream ran baseline, additive variant, re-measurement, and disposition.
 ## Known Limitations
 
 1. **Synthetic benchmark scope.** Measurements prove fixture behavior, not production retrieval quality.
-2. **W4 is not default-on.** Enable with `SPECKIT_CONDITIONAL_RERANK=1`.
+2. **W4 is default-on.** The `SPECKIT_CONDITIONAL_RERANK` flag was removed; the gate's internal triggers still skip rerank when no ambiguity exists, so simple queries pay no rerank cost.
 3. **W6 is not default-on.** Enable with `SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH=1`.
 <!-- /ANCHOR:limitations -->

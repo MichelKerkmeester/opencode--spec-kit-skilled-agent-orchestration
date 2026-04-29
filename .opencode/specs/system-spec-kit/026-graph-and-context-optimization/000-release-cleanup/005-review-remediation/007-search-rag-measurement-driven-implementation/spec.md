@@ -105,7 +105,7 @@ Use the Phase D search-quality harness to make evidence-backed W3-W7 implementat
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-001 | W3 composed RAG trust tree must be measurement-gated. | Baseline and variant metrics exist; trust-tree code is additive. |
-| REQ-002 | W4 conditional rerank must be measurement-gated. | Baseline and variant metrics exist; behavior is gated by `SPECKIT_CONDITIONAL_RERANK`. |
+| REQ-002 | W4 conditional rerank must be measurement-gated. | Baseline and variant metrics exist; gate is enabled by default and skips rerank when no ambiguity/disagreement triggers fire. |
 | REQ-003 | W5 advisor shadow learned weights must be measurement-gated. | Live weights remain fixed; shadow scores emit under `_shadow`. |
 | REQ-004 | W6 CocoIndex calibration must be measurement-gated. | Duplicate-density telemetry exists; adaptive overfetch is gated by `SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH`. |
 | REQ-005 | W7 degraded-readiness stress cells must be measurement-gated. | Stale, empty, full-scan-required, and unavailable cells preserve harness metrics. |

@@ -5,7 +5,7 @@ import { decideConditionalRerank } from '../../lib/search/rerank-gate.js';
 import { runMeasurement } from './measurement-fixtures.js';
 
 describe('W4 conditional rerank gate', () => {
-  it('requires the opt-in flag before allowing rerank', () => {
+  it('reranks ambiguous multi-channel queries when triggers are present', () => {
     const queryPlan = createEmptyQueryPlan({
       complexity: 'complex',
       authorityNeed: 'high',
@@ -15,18 +15,24 @@ describe('W4 conditional rerank gate', () => {
     expect(decideConditionalRerank({
       queryPlan,
       signals: { channelCount: 2, topScoreMargin: 0.01, candidateCount: 5 },
-      env: {},
     })).toMatchObject({
-      shouldRerank: false,
-      reason: 'flag_disabled',
+      shouldRerank: true,
+    });
+  });
+
+  it('skips rerank when no ambiguity or disagreement triggers fire', () => {
+    const queryPlan = createEmptyQueryPlan({
+      complexity: 'simple',
+      authorityNeed: 'low',
+      selectedChannels: ['memory_search'],
     });
 
     expect(decideConditionalRerank({
       queryPlan,
-      signals: { channelCount: 2, topScoreMargin: 0.01, candidateCount: 5 },
-      env: { SPECKIT_CONDITIONAL_RERANK: '1' },
+      signals: { channelCount: 1, topScoreMargin: 0.5, candidateCount: 5 },
     })).toMatchObject({
-      shouldRerank: true,
+      shouldRerank: false,
+      reason: 'no_eligible_ambiguity_or_disagreement',
     });
   });
 

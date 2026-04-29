@@ -15,7 +15,6 @@ interface ChannelAgreementSignals {
 interface RerankGateInput {
   queryPlan: QueryPlan;
   signals?: ChannelAgreementSignals;
-  env?: NodeJS.ProcessEnv;
 }
 
 interface RerankGateDecision {
@@ -24,19 +23,7 @@ interface RerankGateDecision {
   triggers: string[];
 }
 
-function isConditionalRerankEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
-  return env.SPECKIT_CONDITIONAL_RERANK === '1' || env.SPECKIT_CONDITIONAL_RERANK === 'true';
-}
-
 function decideConditionalRerank(input: RerankGateInput): RerankGateDecision {
-  if (!isConditionalRerankEnabled(input.env)) {
-    return {
-      shouldRerank: false,
-      reason: 'flag_disabled',
-      triggers: [],
-    };
-  }
-
   const signals = input.signals ?? {};
   const triggers = collectTriggers(input.queryPlan, signals);
   if (triggers.length === 0) {
@@ -96,5 +83,4 @@ export {
   type RerankGateDecision,
   type RerankGateInput,
   decideConditionalRerank,
-  isConditionalRerankEnabled,
 };
