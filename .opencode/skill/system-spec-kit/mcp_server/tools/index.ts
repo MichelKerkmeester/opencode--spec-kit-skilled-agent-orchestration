@@ -20,8 +20,9 @@ import { handleCoverageGraphConvergence } from '../handlers/coverage-graph/conve
 import { handleCoverageGraphQuery } from '../handlers/coverage-graph/query.js';
 import { handleCoverageGraphStatus } from '../handlers/coverage-graph/status.js';
 import { handleCoverageGraphUpsert } from '../handlers/coverage-graph/upsert.js';
-import { parseArgs, type MCPResponse } from './types.js';
+import { parseArgs } from './types.js';
 import type { MCPCallerContext } from '../lib/context/caller-context.js';
+import type { MCPResponse } from './types.js';
 
 function toMCP(result: { content: Array<{ type: string; text: string }> }): MCPResponse {
   return {

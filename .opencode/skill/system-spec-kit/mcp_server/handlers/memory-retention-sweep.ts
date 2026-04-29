@@ -3,15 +3,14 @@
 // ────────────────────────────────────────────────────────────────
 import { checkDatabaseUpdated } from '../core/index.js';
 import * as vectorIndex from '../lib/search/vector-index.js';
-import {
-  runMemoryRetentionSweep,
-  type MemoryRetentionSweepArgs,
-} from '../lib/governance/memory-retention-sweep.js';
+import { runMemoryRetentionSweep } from '../lib/governance/memory-retention-sweep.js';
 import { createMCPErrorResponse, createMCPSuccessResponse } from '../lib/response/envelope.js';
 import { toErrorMessage } from '../utils/index.js';
 
 import type { MCPResponse } from './types.js';
+import type { MemoryRetentionSweepArgs } from '../lib/governance/memory-retention-sweep.js';
 
+/** Handle the memory_retention_sweep MCP tool request. */
 async function handleMemoryRetentionSweep(args: MemoryRetentionSweepArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
 

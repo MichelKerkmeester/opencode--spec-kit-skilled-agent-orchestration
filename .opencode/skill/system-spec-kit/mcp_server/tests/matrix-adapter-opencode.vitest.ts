@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Matrix Adapter OpenCode Tests
+// ───────────────────────────────────────────────────────────────────
+
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({ spawn: vi.fn() }));
@@ -46,4 +50,3 @@ describe('adapterCliOpencode', () => {
     expect(spawnMock()).toHaveBeenCalledOnce();
   });
 });
-

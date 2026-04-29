@@ -2,17 +2,19 @@
 // MODULE: Memory Retention Sweep
 // ───────────────────────────────────────────────────────────────
 // Enforces governed memory_index.delete_after metadata.
-import type Database from 'better-sqlite3';
-
 import * as vectorIndex from '../search/vector-index.js';
 import * as mutationLedger from '../storage/mutation-ledger.js';
 import { init as initHistory, recordHistory } from '../storage/history.js';
 import { recordGovernanceAudit } from './scope-governance.js';
 
+import type Database from 'better-sqlite3';
+
+/** Options for a governed memory retention sweep. */
 export interface MemoryRetentionSweepArgs {
   dryRun?: boolean;
 }
 
+/** Expired memory_index row selected for retention deletion. */
 export interface RetentionExpiredRow {
   id: number;
   specFolder: string | null;
@@ -25,6 +27,7 @@ export interface RetentionExpiredRow {
   deleteAfter: string;
 }
 
+/** Aggregate sweep counts returned to callers and audit logs. */
 export interface MemoryRetentionSweepSummary {
   swept: number;
   retained: number;
@@ -32,6 +35,7 @@ export interface MemoryRetentionSweepSummary {
   durationMs: number;
 }
 
+/** Full sweep result including candidates, deletions, and ledger state. */
 export interface MemoryRetentionSweepResult extends MemoryRetentionSweepSummary {
   candidates: RetentionExpiredRow[];
   deletedIds: number[];
@@ -130,7 +134,7 @@ export function runMemoryRetentionSweep(
   if (dryRun || candidates.length === 0) {
     const totalRows = countRows(database);
     return {
-      swept: dryRun ? 0 : 0,
+      swept: 0,
       retained: totalRows,
       dryRun,
       durationMs: Date.now() - startTime,

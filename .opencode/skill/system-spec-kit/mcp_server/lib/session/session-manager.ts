@@ -5,11 +5,12 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
-import type BetterSqlite from 'better-sqlite3';
-import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 // Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cognitive/working-memory.js';
 import { runMemoryRetentionSweep } from '../governance/memory-retention-sweep.js';
+
+import type BetterSqlite from 'better-sqlite3';
+import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 
 // Feature catalog: Session-manager transaction gap fixes
 

@@ -11,8 +11,10 @@ import type { ChildProcess } from 'node:child_process';
 // 1. TYPE DEFINITIONS
 // ───────────────────────────────────────────────────────────────────
 
+/** Matrix cell outcome emitted by CLI adapters. */
 export type AdapterStatus = 'PASS' | 'FAIL' | 'TIMEOUT_CELL' | 'NA' | 'BLOCKED';
 
+/** Input contract shared by all CLI matrix adapters. */
 export interface AdapterInput {
   readonly featureId: string;
   readonly promptTemplate: string;
@@ -21,6 +23,7 @@ export interface AdapterInput {
   readonly workingDir: string;
 }
 
+/** Normalized result returned by all CLI matrix adapters. */
 export interface AdapterResult {
   readonly status: AdapterStatus;
   readonly durationMs: number;
@@ -32,12 +35,14 @@ export interface AdapterResult {
   readonly reason?: string;
 }
 
+/** Concrete CLI invocation produced by an adapter. */
 export interface CliInvocation {
   readonly command: string;
   readonly args: readonly string[];
   readonly stdin?: string;
 }
 
+/** Inputs required by the shared CLI adapter runner. */
 export interface RunCliAdapterInput {
   readonly adapterName: string;
   readonly input: AdapterInput;
@@ -82,6 +87,7 @@ function isExpectedSignal(stdout: string, expectedSignal: string): boolean {
       : new RegExp(slashMatch[1], slashMatch[2]);
     return pattern.test(stdout);
   } catch {
+    // Treat invalid operator-supplied regexes as non-matches, not runner crashes.
     return false;
   }
 }
@@ -94,6 +100,7 @@ function normalizeChunk(chunk: string | Buffer): string {
 // 4. CORE LOGIC
 // ───────────────────────────────────────────────────────────────────
 
+/** Run a CLI command and normalize stdout/stderr evidence into an adapter result. */
 export async function runCliAdapter(args: RunCliAdapterInput): Promise<AdapterResult> {
   const startedAt = performance.now();
   const timeout = timeoutMs(args.input.timeoutSeconds);
@@ -176,4 +183,3 @@ export async function runCliAdapter(args: RunCliAdapterInput): Promise<AdapterRe
     child.stdin?.end();
   });
 }
-

@@ -4,18 +4,22 @@
 
 import { resolve } from 'node:path';
 
-import { indexSkillMetadata, type SkillGraphIndexResult } from '../../lib/skill-graph/skill-graph-db.js';
+import { indexSkillMetadata } from '../../lib/skill-graph/skill-graph-db.js';
 import { computeAdvisorSourceSignature } from '../lib/freshness.js';
 import { publishSkillGraphGeneration } from '../lib/freshness/generation.js';
 import {
   AdvisorRebuildInputSchema,
   AdvisorRebuildOutputSchema,
-  type AdvisorFreshness,
-  type AdvisorRebuildInput,
-  type AdvisorRebuildOutput,
-  type AdvisorStatusOutput,
 } from '../schemas/advisor-tool-schemas.js';
 import { readAdvisorStatus } from './advisor-status.js';
+
+import type { SkillGraphIndexResult } from '../../lib/skill-graph/skill-graph-db.js';
+import type {
+  AdvisorFreshness,
+  AdvisorRebuildInput,
+  AdvisorRebuildOutput,
+  AdvisorStatusOutput,
+} from '../schemas/advisor-tool-schemas.js';
 
 type HandlerResponse = { content: Array<{ type: string; text: string }> };
 
@@ -96,6 +100,7 @@ export function rebuildAdvisorIndex(
   });
 }
 
+/** Handle the advisor_rebuild MCP tool request. */
 export async function handleAdvisorRebuild(args: unknown): Promise<HandlerResponse> {
   const data = rebuildAdvisorIndex(AdvisorRebuildInputSchema.parse(args));
   return {
@@ -106,4 +111,5 @@ export async function handleAdvisorRebuild(args: unknown): Promise<HandlerRespon
   };
 }
 
+/** Backward-compatible snake_case MCP handler alias. */
 export const handle_advisor_rebuild = handleAdvisorRebuild;

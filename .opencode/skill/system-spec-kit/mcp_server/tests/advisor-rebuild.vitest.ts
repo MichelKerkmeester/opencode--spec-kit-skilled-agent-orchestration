@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Advisor Rebuild Tests
+// ───────────────────────────────────────────────────────────────────
+
 import { describe, expect, it, vi } from 'vitest';
 import { rebuildAdvisorIndex } from '../skill_advisor/handlers/advisor-rebuild.js';
 import type { AdvisorStatusOutput } from '../skill_advisor/schemas/advisor-tool-schemas.js';

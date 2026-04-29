@@ -8,8 +8,10 @@
    1. IMPORTS
 ──────────────────────────────────────────────────────────────── */
 
-import { z, ZodError, type ZodType } from 'zod';
+import { z, ZodError } from 'zod';
 import { AdvisorToolInputSchemas } from '../skill_advisor/schemas/advisor-tool-schemas.js';
+
+import type { ZodType } from 'zod';
 
 // Feature catalog: Strict Zod schema validation
 

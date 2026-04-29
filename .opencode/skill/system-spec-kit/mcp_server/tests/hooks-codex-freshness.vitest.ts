@@ -1,11 +1,15 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Codex Freshness Hook Tests
+// ───────────────────────────────────────────────────────────────────
+
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import {
   handleCodexUserPromptSubmit,
-  type CodexUserPromptSubmitInput,
 } from '../hooks/codex/user-prompt-submit.js';
 import { smokeCheckCodexColdStartContext } from '../hooks/codex/lib/freshness-smoke-check.js';
+import type { CodexUserPromptSubmitInput } from '../hooks/codex/user-prompt-submit.js';
 import type { AdvisorHookResult } from '../skill_advisor/lib/skill-advisor-brief.js';
 
 const fixturesDir = join(import.meta.dirname, 'advisor-fixtures');

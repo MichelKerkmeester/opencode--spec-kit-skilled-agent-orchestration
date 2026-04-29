@@ -14,9 +14,12 @@ import { redactDiagnosticText } from '../../handlers/skill-graph/response-envelo
 import {
   AdvisorStatusInputSchema,
   AdvisorStatusOutputSchema,
-  type AdvisorFreshness,
-  type AdvisorStatusInput,
-  type AdvisorStatusOutput,
+} from '../schemas/advisor-tool-schemas.js';
+
+import type {
+  AdvisorFreshness,
+  AdvisorStatusInput,
+  AdvisorStatusOutput,
 } from '../schemas/advisor-tool-schemas.js';
 
 type HandlerResponse = { content: Array<{ type: string; text: string }> };
@@ -179,6 +182,7 @@ export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutpu
   }
 }
 
+/** Handle the advisor_status MCP tool request. */
 export async function handleAdvisorStatus(args: unknown): Promise<HandlerResponse> {
   const data = readAdvisorStatus(AdvisorStatusInputSchema.parse(args));
   return {
@@ -189,4 +193,5 @@ export async function handleAdvisorStatus(args: unknown): Promise<HandlerRespons
   };
 }
 
+/** Backward-compatible snake_case MCP handler alias. */
 export const handle_advisor_status = handleAdvisorStatus;

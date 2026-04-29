@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Matrix Adapter Copilot Tests
+// ───────────────────────────────────────────────────────────────────
+
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({ spawn: vi.fn() }));
@@ -39,4 +43,3 @@ describe('adapterCliCopilot', () => {
     expect(spawnMock()).toHaveBeenCalledOnce();
   });
 });
-

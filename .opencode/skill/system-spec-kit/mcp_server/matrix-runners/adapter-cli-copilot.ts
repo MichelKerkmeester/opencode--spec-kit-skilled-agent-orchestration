@@ -2,10 +2,13 @@
 // MODULE: Matrix Runner Copilot Adapter
 // ───────────────────────────────────────────────────────────────────
 
-import { runCliAdapter, type AdapterInput, type AdapterResult } from './adapter-common.js';
+import { runCliAdapter } from './adapter-common.js';
+
+import type { AdapterInput, AdapterResult } from './adapter-common.js';
 
 const DEFAULT_MODEL = process.env.MATRIX_COPILOT_MODEL ?? 'gpt-5.4';
 
+/** Run a matrix cell through the Copilot CLI adapter. */
 export async function adapterCliCopilot(input: AdapterInput): Promise<AdapterResult> {
   return runCliAdapter({
     adapterName: 'cli-copilot',
@@ -23,4 +26,3 @@ export async function adapterCliCopilot(input: AdapterInput): Promise<AdapterRes
     },
   });
 }
-

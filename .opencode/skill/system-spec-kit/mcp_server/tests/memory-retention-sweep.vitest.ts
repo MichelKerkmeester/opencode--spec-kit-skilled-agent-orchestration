@@ -1,3 +1,7 @@
+// ───────────────────────────────────────────────────────────────────
+// MODULE: Memory Retention Sweep Tests
+// ───────────────────────────────────────────────────────────────────
+
 import { describe, expect, it } from 'vitest';
 
 import { runMemoryRetentionSweep } from '../lib/governance/memory-retention-sweep';

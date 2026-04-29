@@ -3,9 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Hierarchical scope filtering, governed ingest validation,
 // provenance normalization, and governance audit persistence.
-import type Database from 'better-sqlite3';
-
 import { ensureGovernanceTables } from '../search/vector-index-schema.js';
+
+import type Database from 'better-sqlite3';
 
 // Feature catalog: Hierarchical scope governance, governed ingest, retention, and audit
 

@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit",
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio",
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment",
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration",
+    "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/006-readme-cascade-refresh"
+  ],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
+      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
+      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation",
+      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "037-followup-quality-pass",
+      "follow-up quality pass",
+      "post-031-036 quality alignment",
+      "stress-test folder migration",
+      "feature catalog trio",
+      "testing playbook trio",
+      "sk-doc template alignment",
+      "sk-code-opencode audit",
+      "readme cascade refresh"
+    ],
+    "key_topics": [
+      "phase-parent",
+      "quality-pass",
+      "sk-code-opencode",
+      "feature-catalog",
+      "testing-playbook",
+      "sk-doc-alignment",
+      "stress-test-folder",
+      "readme-cascade"
+    ],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": [
+      "spec.md"
+    ],
+    "entities": [],
+    "causal_summary": "6-child phase parent that closes the 026-wrapper packet after 031-036. Audits sk-code-opencode alignment, updates 3 feature catalogs + 3 testing playbooks, applies sk-doc template alignment to all touched docs, migrates stress-test out of mcp_server/tests/ into dedicated mcp_server/stress_test/, and cascades README refreshes. Sequential 001 first; 002-006 after 001; 006 last (picks up 002-005 changes).",
+    "created_at": "2026-04-29T16:30:00.000Z",
+    "last_save_at": "2026-04-29T16:30:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}

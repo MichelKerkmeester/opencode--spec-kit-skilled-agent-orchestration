@@ -235,6 +235,7 @@ async function runWithConcurrency<T, R>(
 // 4. CORE LOGIC
 // ───────────────────────────────────────────────────────────────────
 
+/** Execute applicable matrix cells and write per-cell plus aggregate evidence. */
 export async function runMatrix(options: CliOptions): Promise<readonly MatrixCellRecord[]> {
   const manifest = readManifest();
   const cells = manifest.cells.filter((cell) => {
@@ -282,4 +283,3 @@ if (process.argv[1] !== undefined && resolve(process.argv[1]) === CURRENT_FILE) 
     process.exitCode = 1;
   });
 }
-

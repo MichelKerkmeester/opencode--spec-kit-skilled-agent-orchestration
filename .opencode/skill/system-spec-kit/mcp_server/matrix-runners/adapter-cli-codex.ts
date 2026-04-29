@@ -2,12 +2,15 @@
 // MODULE: Matrix Runner Codex Adapter
 // ───────────────────────────────────────────────────────────────────
 
-import { runCliAdapter, type AdapterInput, type AdapterResult } from './adapter-common.js';
+import { runCliAdapter } from './adapter-common.js';
+
+import type { AdapterInput, AdapterResult } from './adapter-common.js';
 
 const DEFAULT_MODEL = process.env.MATRIX_CODEX_MODEL ?? 'gpt-5.5';
 const DEFAULT_REASONING_EFFORT = process.env.MATRIX_CODEX_REASONING_EFFORT ?? 'high';
 const DEFAULT_SERVICE_TIER = process.env.MATRIX_CODEX_SERVICE_TIER ?? 'fast';
 
+/** Run a matrix cell through the Codex CLI adapter. */
 export async function adapterCliCodex(input: AdapterInput): Promise<AdapterResult> {
   return runCliAdapter({
     adapterName: 'cli-codex',
@@ -32,4 +35,3 @@ export async function adapterCliCodex(input: AdapterInput): Promise<AdapterResul
     },
   });
 }
-
