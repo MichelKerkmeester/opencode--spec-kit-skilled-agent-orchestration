@@ -1298,6 +1298,7 @@ mcp_server/
 ├── handlers/                  # MCP tool handlers plus save/index helper modules
 ├── hooks/                     # Session-start/compaction surfacing, mutation feedback, token-count sync
 ├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
+├── matrix-runners/            # F1-F14 x CLI adapter manifest, per-CLI runners, and meta-runner
 ├── schemas/                   # Zod tool-input schemas
 ├── tests/                     # Vitest suites (329 root `.vitest.ts` files at audit time)
 ├── tools/                     # Tool dispatch layer
@@ -1318,6 +1319,7 @@ mcp_server/
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
 | `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
+| `matrix-runners/` | Packet-030 matrix adapters for cli-codex, cli-copilot, cli-gemini, cli-claude-code and cli-opencode, plus the manifest and meta-runner. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
 ### Notable Modules
