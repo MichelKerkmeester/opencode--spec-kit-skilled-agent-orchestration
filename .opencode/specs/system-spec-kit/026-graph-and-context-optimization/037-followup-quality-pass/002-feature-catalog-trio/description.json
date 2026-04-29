@@ -9,7 +9,7 @@
     "skill_advisor catalog",
     "code_graph catalog"
   ],
-  "lastUpdated": "2026-04-29T15:38:44.000Z",
+  "lastUpdated": "2026-04-29T18:38:43.277Z",
   "specId": "002",
   "folderSlug": "feature-catalog-trio",
   "parentChain": [
@@ -17,5 +17,8 @@
     "026-graph-and-context-optimization",
     "037-followup-quality-pass"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-38__resource-map-authored-and-memory-finalization.md"
+  ]
 }

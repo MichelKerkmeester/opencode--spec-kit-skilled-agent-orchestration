@@ -4,21 +4,12 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
   "children_ids": [],
-  "migrated": false,
-  "migration_source": null,
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/031-code-graph-readiness",
-      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
-      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
-      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/035-matrix-execution-status",
-      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -27,17 +18,23 @@
       "catalog refresh 031-036",
       "system-spec-kit catalog",
       "skill_advisor catalog",
-      "code_graph catalog"
+      "code_graph catalog",
+      "037/002-feature-catalog-trio resource map",
+      "feature catalog trio file ledger"
     ],
     "key_topics": [
-      "feature-catalog",
+      "037-002-feature-catalog-trio",
+      "feature",
+      "catalog",
+      "updates",
+      "refresh",
+      "031-036",
       "system-spec-kit",
-      "skill-advisor",
-      "code-graph",
-      "memory-retention-sweep",
-      "advisor-rebuild",
-      "matrix-runners",
-      "codex-freshness"
+      "037",
+      "002-feature-catalog-trio",
+      "resource",
+      "map",
+      "trio"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -46,21 +43,181 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "discovery-notes.md"
+      ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/12-memory-retention-sweep.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/37-cli-matrix-adapter-runners.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/38-codex-hook-freshness-smoke-check.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/02-advisor-status.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/05-advisor-rebuild.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/description.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/discovery-notes.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/research/prompts/iteration-001.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/spec.md"
     ],
-    "entities": [],
-    "causal_summary": "Updates 3 feature catalogs (system-spec-kit, skill_advisor, code_graph) with new tools/handlers from packets 031-036. Doc-only; sk-doc template-aligned.",
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "12-memory-retention-sweep.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/12-memory-retention-sweep.md",
+        "source": "derived"
+      },
+      {
+        "name": "37-cli-matrix-adapter-runners.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/37-cli-matrix-adapter-runners.md",
+        "source": "derived"
+      },
+      {
+        "name": "38-codex-hook-freshness-smoke-check.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/38-codex-hook-freshness-smoke-check.md",
+        "source": "derived"
+      },
+      {
+        "name": "24-code-graph-readiness-contract.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-advisor-status.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/02-advisor-status.md",
+        "source": "derived"
+      },
+      {
+        "name": "05-advisor-rebuild.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/05-advisor-rebuild.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "discovery-notes.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/discovery-notes.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio/research/prompts/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packets",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Refresh",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packets 031-036 added MCP tools, hook diagnostics, CLI matrix runners, and changed freshness contracts. The feature catalogs lagged those shipped surfaces, which makes operator-facing docs undercount tools and miss the current repair/freshness behavior.",
     "created_at": "2026-04-29T15:38:44.000Z",
-    "last_save_at": "2026-04-29T15:38:44.000Z",
-    "save_lineage": "new",
+    "last_save_at": "2026-04-29T18:38:43.277Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "discovery-notes.md"
+      "resource-map.md"
     ]
   }
 }

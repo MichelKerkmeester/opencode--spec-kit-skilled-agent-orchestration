@@ -9,12 +9,15 @@
     "advisor rebuild",
     "half-auto upgrades"
   ],
-  "lastUpdated": "2026-04-29T14:15:00Z",
+  "lastUpdated": "2026-04-29T18:36:42.259Z",
   "specId": "034",
   "folderSlug": "half-auto-upgrades",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-36__resource-map-authored-and-memory-finalization.md"
+  ]
 }

@@ -5,19 +5,11 @@
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "migrated": true,
-  "migration_source": "manual",
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
-      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
-      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
-      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/030-v1-0-4-full-matrix-stress-test-design"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -26,44 +18,197 @@
       "v1-0-4 stress",
       "matrix execution validation",
       "feature x executor matrix",
-      "feature × executor matrix"
+      "feature × executor matrix",
+      "035-full-matrix-execution-validation resource map",
+      "full matrix execution validation file ledger"
     ],
     "key_topics": [
-      "full-matrix",
-      "stress-validation",
-      "runner-missing",
-      "executor-matrix",
-      "new-baseline"
+      "035-full-matrix-execution-validation",
+      "full",
+      "matrix",
+      "execution",
+      "v1-0-4",
+      "stress",
+      "validation",
+      "feature",
+      "executor",
+      "resource",
+      "map",
+      "file"
     ],
     "importance_tier": "important",
-    "status": "conditional",
+    "status": "complete",
     "key_files": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "findings.md",
       "research/iterations/iteration-001.md",
-      "results/*.jsonl"
+      "logs/feature-runs/F1-gate3-classifier.log",
+      "logs/feature-runs/F11-hooks.log",
+      "logs/feature-runs/F12-validators.log",
+      "logs/feature-runs/F12-normalizer-lint.log",
+      "logs/feature-runs/summary.tsv",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/description.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/findings.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/summary-rerun.tsv",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/summary.tsv",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/plan.md"
     ],
     "entities": [
       {
-        "name": "packet 030 full matrix design",
-        "kind": "spec",
-        "path": "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/030-v1-0-4-full-matrix-stress-test-design",
-        "source": "manual"
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
       },
       {
-        "name": "full matrix findings",
+        "name": "plan.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/findings.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "iteration-001.md",
+        "kind": "doc",
+        "path": "research/iterations/iteration-001.md",
+        "source": "derived"
+      },
+      {
+        "name": "F1-gate3-classifier.log",
+        "kind": "file",
+        "path": "logs/feature-runs/F1-gate3-classifier.log",
+        "source": "derived"
+      },
+      {
+        "name": "F11-hooks.log",
+        "kind": "file",
+        "path": "logs/feature-runs/F11-hooks.log",
+        "source": "derived"
+      },
+      {
+        "name": "F12-validators.log",
+        "kind": "file",
+        "path": "logs/feature-runs/F12-validators.log",
+        "source": "derived"
+      },
+      {
+        "name": "F12-normalizer-lint.log",
+        "kind": "file",
+        "path": "logs/feature-runs/F12-normalizer-lint.log",
+        "source": "derived"
+      },
+      {
+        "name": "summary.tsv",
+        "kind": "file",
+        "path": "logs/feature-runs/summary.tsv",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "findings.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/findings.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "summary-rerun.tsv",
+        "kind": "file",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/summary-rerun.tsv",
+        "source": "derived"
+      },
+      {
+        "name": "Matrix Execution Validation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Depends On",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Create",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Files Changed",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Tier D: execute 030's full-matrix design across feature x executor cells. Capture per-cell pass/fail/blocked. Produce signed-off matrix + remediation tickets for cells that failed or had runner_missing. New baseline; not comparable to v1.0.2/v1.0.3/029.",
+    "causal_summary": "Packet 030 designed a full v1.0.4 matrix but intentionally did not execute it. It chose per-feature runners plus a meta-aggregator, and it required non-applicable cells to be first-class results. This packet executes the available runner surface, freezes the feature x executor matrix, and records honest blockers where packet 030's design is not yet backed by runner code.",
     "created_at": "2026-04-29T14:45:00Z",
-    "last_save_at": "2026-04-29T14:45:00Z",
+    "last_save_at": "2026-04-29T18:36:51.671Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -72,7 +217,7 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "findings.md"
+      "resource-map.md"
     ]
   }
 }

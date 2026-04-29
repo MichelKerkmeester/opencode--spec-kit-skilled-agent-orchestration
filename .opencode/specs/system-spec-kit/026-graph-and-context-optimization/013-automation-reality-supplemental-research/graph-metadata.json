@@ -58,7 +58,11 @@
       ".codex/settings.json",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
       ".opencode/skill/system-spec-kit/references/config/hook_system.md",
-      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md"
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/description.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/implementation-summary.md"
     ],
     "entities": [
       {
@@ -94,13 +98,13 @@
       {
         "name": "checklist.md",
         "kind": "doc",
-        "path": "checklist.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/checklist.md",
         "source": "derived"
       },
       {
         "name": "implementation-summary.md",
         "kind": "doc",
-        "path": "implementation-summary.md",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/implementation-summary.md",
         "source": "derived"
       },
       {
@@ -152,6 +156,18 @@
         "source": "derived"
       },
       {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/graph-metadata.json",
+        "source": "derived"
+      },
+      {
         "name": "Research Charter",
         "kind": "proper_noun",
         "path": "spec.md",
@@ -192,23 +208,11 @@
         "kind": "proper_noun",
         "path": "plan.md",
         "source": "derived"
-      },
-      {
-        "name": "Automation Reality Supplemental Research",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
-      },
-      {
-        "name": "Technical Context",
-        "kind": "proper_noun",
-        "path": "plan.md",
-        "source": "derived"
       }
     ],
     "causal_summary": "Run a 5-iteration supplemental loop that:",
     "created_at": "2026-04-29T14:35:00.000Z",
-    "last_save_at": "2026-04-29T13:20:03.256Z",
+    "last_save_at": "2026-04-29T18:35:50.099Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -216,7 +220,8 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "resource-map.md"
     ]
   }
 }

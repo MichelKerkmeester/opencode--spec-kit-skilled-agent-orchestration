@@ -8,7 +8,7 @@
     "mcp_server README update",
     "parent skill README"
   ],
-  "lastUpdated": "2026-04-29T16:19:08.000Z",
+  "lastUpdated": "2026-04-29T18:39:49.385Z",
   "specId": "006",
   "folderSlug": "readme-cascade-refresh",
   "parentChain": [
@@ -16,5 +16,8 @@
     "026-graph-and-context-optimization",
     "037-followup-quality-pass"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-39__resource-map-authored-and-memory-finalization.md"
+  ]
 }

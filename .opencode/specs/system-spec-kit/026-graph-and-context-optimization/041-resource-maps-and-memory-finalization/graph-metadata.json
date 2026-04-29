@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "041-resource-maps-and-memory-finalization",
+      "resource maps cycle",
+      "memory finalization",
+      "session packet indexing"
+    ],
+    "key_topics": [
+      "041-resource-maps-and-memory-finalization",
+      "resource",
+      "maps",
+      "cycle",
+      "memory",
+      "finalization",
+      "session",
+      "packet",
+      "indexing",
+      "seventeen",
+      "session-touched",
+      "spec"
+    ],
+    "importance_tier": "normal",
+    "status": "complete",
+    "key_files": [
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/039-code-graph-catalog-and-playbook/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/040-evergreen-doc-packet-id-removal/resource-map.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/finalization-log.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/spec.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/plan.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/tasks.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/implementation-summary.md",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      ".opencode/skill/sk-doc/references/global/evergreen_packet_id_rule.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/resource-map.md",
+      "spec.md"
+    ],
+    "entities": [
+      {
+        "name": "finalization-log.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/finalization-log.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "evergreen_packet_id_rule.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/evergreen_packet_id_rule.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Maps",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Memory Finalization",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Seventeen",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Create",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Generate",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase 1: Setup",
+        "kind": "heading",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Checklist",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Verification Protocol",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Impact",
+        "kind": "proper_noun",
+        "path": "checklist.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Seventeen session-touched spec folders lacked final resource maps and fresh memory indexing. Without a path ledger and canonical save pass, downstream reviewers have to reconstruct touched files from git history and memory search may miss the latest packet state.",
+    "created_at": "2026-04-29T18:41:25.655Z",
+    "last_save_at": "2026-04-29T18:43:30.879Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

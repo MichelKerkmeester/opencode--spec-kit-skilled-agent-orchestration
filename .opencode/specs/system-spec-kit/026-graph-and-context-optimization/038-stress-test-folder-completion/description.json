@@ -1,6 +1,5 @@
 {
   "title": "Stress Test Folder Completion",
-  "description": "Completes the stress-test folder migration that 037/005 only partially executed. Moves the search-quality harness directory, harness consumers, stress patterns, and matrix-cell tests into mcp_server/stress_test/ organized by subsystem.",
   "trigger_phrases": [
     "038-stress-test-folder-completion",
     "stress test full migration",
@@ -14,5 +13,26 @@
     "depends_on": [
       "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration"
     ]
-  }
+  },
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion",
+  "description": "Feature Specification: Stress Test Folder Completion",
+  "keywords": [
+    "feature",
+    "specification",
+    "stress",
+    "test",
+    "folder",
+    "completion"
+  ],
+  "lastUpdated": "2026-04-29T18:40:06.116Z",
+  "specId": "038",
+  "folderSlug": "stress-test-folder-completion",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "29-04-26_19-40__resource-map-authored-and-memory-finalization.md"
+  ]
 }

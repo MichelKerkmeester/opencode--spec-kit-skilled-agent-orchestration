@@ -7,12 +7,15 @@
     "structural watcher doc fix",
     "read-path graph freshness"
   ],
-  "lastUpdated": "2026-04-29T13:58:12Z",
+  "lastUpdated": "2026-04-29T18:36:23.421Z",
   "specId": "032",
   "folderSlug": "code-graph-watcher-retraction",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-36__resource-map-authored-and-memory-finalization.md"
+  ]
 }

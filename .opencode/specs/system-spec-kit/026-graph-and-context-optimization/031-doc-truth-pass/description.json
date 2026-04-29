@@ -11,12 +11,16 @@
     "validation wording",
     "trigger column"
   ],
-  "lastUpdated": "2026-04-29T13:50:55Z",
+  "lastUpdated": "2026-04-29T18:36:06.895Z",
   "specId": "031",
   "folderSlug": "doc-truth-pass",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 1
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "29-04-26_19-33__resource-map-authored-packet-finalized.md",
+    "29-04-26_19-36__resource-map-authored-and-memory-finalization.md"
+  ]
 }

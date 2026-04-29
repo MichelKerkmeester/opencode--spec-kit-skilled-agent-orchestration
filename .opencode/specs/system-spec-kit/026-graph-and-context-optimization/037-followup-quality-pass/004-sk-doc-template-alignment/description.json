@@ -7,7 +7,7 @@
     "template alignment 031-036",
     "DQI compliance"
   ],
-  "lastUpdated": "2026-04-29T15:41:50.000Z",
+  "lastUpdated": "2026-04-29T18:39:16.384Z",
   "specId": "004",
   "folderSlug": "sk-doc-template-alignment",
   "parentChain": [
@@ -15,5 +15,8 @@
     "026-graph-and-context-optimization",
     "037-followup-quality-pass"
   ],
-  "memorySequence": 4
+  "memorySequence": 5,
+  "memoryNameHistory": [
+    "29-04-26_19-39__resource-map-authored-and-memory-finalization.md"
+  ]
 }

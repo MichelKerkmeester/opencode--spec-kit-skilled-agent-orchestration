@@ -4,36 +4,35 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
   "children_ids": [],
-  "migrated": false,
-  "migration_source": null,
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
-      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
-      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
-      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation",
-      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
       "037-004-sk-doc-template-alignment",
       "sk-doc audit",
       "template alignment 031-036",
-      "DQI compliance"
+      "DQI compliance",
+      "037/004-sk-doc-template-alignment resource map",
+      "sk-doc template alignment file ledger"
     ],
     "key_topics": [
+      "037-004-sk-doc-template-alignment",
       "sk-doc",
-      "documentation audit",
-      "template alignment",
-      "readme validation",
-      "anchor markers",
-      "DQI"
+      "audit",
+      "template",
+      "alignment",
+      "031-036",
+      "dqi",
+      "compliance",
+      "037",
+      "004-sk-doc-template-alignment",
+      "resource",
+      "map"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -42,23 +41,181 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md",
-      "audit-target-list.md",
-      "audit-findings.md"
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+      ".opencode/skill/sk-doc/SKILL.md",
+      "logs/iter-001.log",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/audit-findings.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/audit-target-list.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/checklist.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/description.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/implementation-summary.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/plan.md"
     ],
-    "entities": [],
-    "causal_summary": "Audits ~30 docs touched by packets 031-036 against sk-doc templates. Fixes frontmatter, anchor markers, section headers, DQI compliance. Out-of-scope: pre-existing drift.",
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "hook_system.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+        "source": "derived"
+      },
+      {
+        "name": "skill-advisor-hook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "iter-001.log",
+        "kind": "file",
+        "path": "logs/iter-001.log",
+        "source": "derived"
+      },
+      {
+        "name": "audit-findings.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/audit-findings.md",
+        "source": "derived"
+      },
+      {
+        "name": "audit-target-list.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/audit-target-list.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment/implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Template Alignment",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packets",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Produce",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packets 031 through 036 changed operator documentation, runtime references, matrix-runner README files, matrix prompt templates and packet-local spec docs. Those documents needed a sk-doc template pass so README anchors, reference frontmatter, section anchors and DQI-sensitive structure stayed aligned before later quality packets built on them.",
     "created_at": "2026-04-29T15:41:50.000Z",
-    "last_save_at": "2026-04-29T15:41:50.000Z",
-    "save_lineage": "new",
+    "last_save_at": "2026-04-29T18:39:16.384Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "audit-target-list.md",
-      "audit-findings.md"
+      "resource-map.md"
     ]
   }
 }

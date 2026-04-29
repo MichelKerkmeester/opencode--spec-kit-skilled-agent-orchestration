@@ -12,10 +12,10 @@ contextType: "implementation"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction"
-    last_updated_at: "2026-04-29T13:58:12Z"
+    last_updated_at: "2026-04-29T20:35:30+02:00"
     last_updated_by: "cli-codex"
-    recent_action: "Watcher claim retracted"
-    next_safe_action: "Plan packet 033 next"
+    recent_action: "Resource map indexed"
+    next_safe_action: "Use packet for downstream work"
     blockers: []
     completion_pct: 100
 ---

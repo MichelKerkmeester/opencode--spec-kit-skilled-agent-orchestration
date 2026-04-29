@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization",
+  "description": "Feature Specification: 041 Resource Maps and Memory Finalization",
+  "keywords": [
+    "feature",
+    "specification",
+    "041",
+    "resource",
+    "maps",
+    "memory",
+    "finalization"
+  ],
+  "lastUpdated": "2026-04-29T18:43:30.879Z",
+  "specId": "041",
+  "folderSlug": "resource-maps-and-memory-finalization",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-41__resource-maps-authored-17-target-packets-indexed.md",
+    "29-04-26_19-43__resource-maps-authored-17-target-packets-indexed.md"
+  ]
+}

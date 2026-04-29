@@ -5,19 +5,11 @@
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "migrated": true,
-  "migration_source": "manual",
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration"
-    ],
-    "supersedes": [
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration"
-    ],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
-      "system-spec-kit/026-graph-and-context-optimization/030-v1-0-4-full-matrix-stress-test-design",
-      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
-    ]
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -25,44 +17,197 @@
       "stress test full migration",
       "search-quality harness move",
       "content-based stress migration",
-      "stress folder reorganization"
+      "stress folder reorganization",
+      "038-stress-test-folder-completion resource map",
+      "stress test folder completion file ledger"
     ],
     "key_topics": [
-      "stress-test",
-      "content-based-migration",
-      "search-quality-harness",
-      "vitest-stress-config",
-      "matrix-cells"
+      "038-stress-test-folder-completion",
+      "stress",
+      "test",
+      "full",
+      "migration",
+      "search-quality",
+      "harness",
+      "move",
+      "content-based",
+      "folder",
+      "reorganization",
+      "resource"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/vitest.stress.config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json",
       "spec.md",
       "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "implementation-summary.md",
-      "migration-plan.md",
-      ".opencode/skill/system-spec-kit/mcp_server/vitest.stress.config.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts"
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/walker-dos-caps.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/matrix/shadow-comparison.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-trigger-fast-path.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-trigger-perf-benchmark.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/baseline.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness-telemetry-export.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-output.vitest.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts"
     ],
     "entities": [
       {
-        "name": "MCP stress test folder",
+        "name": "vitest.config.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test",
-        "source": "manual"
+        "path": ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts",
+        "source": "derived"
       },
       {
-        "name": "stress migration plan",
+        "name": "vitest.stress.config.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/vitest.stress.config.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
         "kind": "doc",
-        "path": "specs/system-spec-kit/026-graph-and-context-optimization/038-stress-test-folder-completion/migration-plan.md",
-        "source": "manual"
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-degraded-sweep.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/code-graph-degraded-sweep.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "walker-dos-caps.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph/walker-dos-caps.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shadow-comparison.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/matrix/shadow-comparison.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-benchmark-memory-search.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-memory-search.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-benchmark-trigger-fast-path.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-benchmark-trigger-fast-path.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-trigger-perf-benchmark.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/memory/gate-d-trigger-perf-benchmark.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "baseline.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/baseline.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "corpus.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/corpus.ts",
+        "source": "derived"
+      },
+      {
+        "name": "harness-telemetry-export.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness-telemetry-export.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "harness.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/harness.ts",
+        "source": "derived"
+      },
+      {
+        "name": "measurement-fixtures.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-fixtures.ts",
+        "source": "derived"
+      },
+      {
+        "name": "measurement-output.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/measurement-output.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "metrics.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts",
+        "source": "derived"
+      },
+      {
+        "name": "w10-degraded-readiness-integration.vitest.ts",
+        "kind": "test",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/w10-degraded-readiness-integration.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Stress Test Folder Completion",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Depends On",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
       }
     ],
-    "causal_summary": "Completes the stress-test folder migration that 037/005 only partially executed. Moves the search-quality harness directory, harness consumers, stress patterns, and matrix-cell tests into mcp_server/stress_test/ organized by subsystem (search-quality, memory, skill-advisor, code-graph, session, matrix). Content-based discovery (not name-based). Updates imports, vitest config, package.json, all doc references.",
+    "causal_summary": "Packet 037/005 migrated only two filename-matching stress files into the dedicated stress folder. That missed the real stress-test surface, especially the search-quality harness, W-cell matrix cases, memory benchmarks, session benchmarks, skill-advisor concurrency coverage, and code-graph degraded sweeps.",
     "created_at": "2026-04-29T18:45:00Z",
-    "last_save_at": "2026-04-29T18:45:00Z",
+    "last_save_at": "2026-04-29T18:40:06.116Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -71,7 +216,7 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "migration-plan.md"
+      "resource-map.md"
     ]
   }
 }

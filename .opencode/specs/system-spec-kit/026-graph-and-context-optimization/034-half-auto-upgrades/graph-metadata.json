@@ -5,18 +5,11 @@
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
   "migrated": true,
-  "migration_source": "manual",
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
-      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
-      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/012-automation-self-management-deep-research",
-      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -25,14 +18,27 @@
       "Codex cold-start",
       "feature-flag table",
       "advisor rebuild",
-      "half-auto upgrades"
+      "half-auto upgrades",
+      "half-auto upgrade plan",
+      "half-auto upgrade tasks",
+      "half-auto upgrade checklist",
+      "half-auto upgrade summary",
+      "034-half-auto-upgrades resource map",
+      "half auto upgrades file ledger"
     ],
     "key_topics": [
+      "034-half-auto-upgrades",
+      "copilot",
+      "freshness",
+      "codex",
+      "cold-start",
+      "feature-flag",
+      "table",
+      "advisor",
+      "rebuild",
       "half-auto",
-      "runtime-hooks",
-      "feature-flags",
-      "advisor-status",
-      "advisor-rebuild"
+      "upgrades",
+      "upgrade"
     ],
     "importance_tier": "important",
     "status": "complete",
@@ -42,48 +48,171 @@
       "tasks.md",
       "checklist.md",
       "implementation-summary.md",
-      "description.json",
-      "graph-metadata.json",
-      "CLAUDE.md",
-      "AGENTS.md",
-      ".opencode/skill/system-spec-kit/SKILL.md",
-      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
-      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      "hooks/codex/lib/freshness-smoke-check.ts",
+      "tests/hooks-codex-freshness.vitest.ts",
+      "tests/advisor-rebuild.vitest.ts",
+      "skill_advisor/tests/legacy/advisor-runtime-parity.vitest.ts",
       ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
-      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/lib/freshness-smoke-check.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts"
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/index.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts"
     ],
     "entities": [
       {
-        "name": "Codex UserPromptSubmit hook",
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "freshness-smoke-check.ts",
+        "kind": "code",
+        "path": "hooks/codex/lib/freshness-smoke-check.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hooks-codex-freshness.vitest.ts",
+        "kind": "test",
+        "path": "tests/hooks-codex-freshness.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-rebuild.vitest.ts",
+        "kind": "test",
+        "path": "tests/advisor-rebuild.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-runtime-parity.vitest.ts",
+        "kind": "test",
+        "path": "skill_advisor/tests/legacy/advisor-runtime-parity.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ENV_REFERENCE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "user-prompt-submit.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
         "source": "derived"
       },
       {
-        "name": "Copilot custom instructions",
+        "name": "custom-instructions.ts",
         "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts",
         "source": "derived"
       },
       {
-        "name": "advisor_rebuild",
-        "kind": "tool",
+        "name": "tool-input-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-rebuild.ts",
+        "kind": "code",
         "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts",
         "source": "derived"
       },
       {
-        "name": "Feature flags reference table",
-        "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+        "name": "advisor-status.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts",
+        "source": "derived"
+      },
+      {
+        "name": "index.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/index.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-tool-schemas.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Auto Upgrades",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Depends On",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Upgrade",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Changing Copilot",
+        "kind": "proper_noun",
+        "path": "spec.md",
         "source": "derived"
       }
     ],
-    "causal_summary": "Tier C: 4 sub-tasks. (1) Copilot next-prompt freshness wording + visible header. (2) Codex cold-start fallback marker + smoke check. (3) Feature-flag default-state table. (4) advisor_status diagnostic-only + new advisor_rebuild tool.",
+    "causal_summary": "Packet 013 identified four Tier C surfaces where automation was easy to overstate:",
     "created_at": "2026-04-29T14:15:00Z",
-    "last_save_at": "2026-04-29T14:15:00Z",
+    "last_save_at": "2026-04-29T18:36:42.259Z",
     "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
@@ -91,7 +220,8 @@
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "resource-map.md"
     ]
   }
 }

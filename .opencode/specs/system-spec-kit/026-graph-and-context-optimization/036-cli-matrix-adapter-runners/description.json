@@ -9,12 +9,15 @@
     "cli-copilot adapter",
     "cli-gemini adapter"
   ],
-  "lastUpdated": "2026-04-29T17:16:00Z",
+  "lastUpdated": "2026-04-29T18:37:01.129Z",
   "specId": "036",
   "folderSlug": "cli-matrix-adapter-runners",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-37__resource-map-authored-and-memory-finalization.md"
+  ]
 }

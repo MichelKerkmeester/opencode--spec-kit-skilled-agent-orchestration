@@ -11,21 +11,12 @@
     "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration",
     "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/006-readme-cascade-refresh"
   ],
-  "migrated": false,
-  "migration_source": null,
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
-      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
-      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
-      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
-      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation",
-      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
@@ -35,30 +26,163 @@
       "stress-test folder migration",
       "feature catalog trio",
       "testing playbook trio",
-      "sk-doc template alignment",
-      "sk-code-opencode audit",
-      "readme cascade refresh"
+      "037-followup-quality-pass resource map",
+      "followup quality pass file ledger"
     ],
     "key_topics": [
-      "phase-parent",
-      "quality-pass",
-      "sk-code-opencode",
-      "feature-catalog",
-      "testing-playbook",
-      "sk-doc-alignment",
-      "stress-test-folder",
-      "readme-cascade"
+      "037-followup-quality-pass",
+      "follow-up",
+      "quality",
+      "pass",
+      "post-031-036",
+      "alignment",
+      "stress-test",
+      "folder",
+      "migration",
+      "feature",
+      "catalog",
+      "trio"
     ],
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "spec.md"
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/README.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/description.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/graph-metadata.json",
+      ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/spec.md",
+      ".opencode/skill/system-spec-kit/templates/resource-map.md",
+      "spec.md",
+      "resource-map.md"
     ],
-    "entities": [],
-    "causal_summary": "6-child phase parent that closes the 026-wrapper packet after 031-036. Audits sk-code-opencode alignment, updates 3 feature catalogs + 3 testing playbooks, applies sk-doc template alignment to all touched docs, migrates stress-test out of mcp_server/tests/ into dedicated mcp_server/stress_test/, and cascades README refreshes. Sequential 001 first; 002-006 after 001; 006 last (picks up 002-005 changes).",
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Quality Pass",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packets",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Children Manifest",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Acceptance Scenarios",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "sk-code-opencode",
+        "kind": "key_phrase",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Map",
+        "kind": "proper_noun",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Author Instructions",
+        "kind": "proper_noun",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "shared",
+        "kind": "key_phrase",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Summary",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "5. Skills",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "6. Specs",
+        "kind": "heading",
+        "path": "resource-map.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packets 031-036 shipped a wave of remediation work (5 packets implementing 013's research findings + 035's CONDITIONAL verdict + 036's CLI matrix adapters). That work touched ~30+ docs, added ~10 new code files, and implemented multiple new MCP tools and runtime behaviors.",
     "created_at": "2026-04-29T16:30:00.000Z",
-    "last_save_at": "2026-04-29T16:30:00.000Z",
-    "save_lineage": "new",
-    "source_docs": ["spec.md"]
+    "last_save_at": "2026-04-29T18:37:17.937Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "resource-map.md"
+    ],
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/006-readme-cascade-refresh",
+    "last_active_at": "2026-04-29T18:39:56.726Z"
   }
 }

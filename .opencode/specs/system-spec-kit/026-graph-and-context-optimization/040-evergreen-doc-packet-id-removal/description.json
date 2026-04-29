@@ -8,12 +8,15 @@
     "sk-doc evergreen rule",
     "packet id audit"
   ],
-  "lastUpdated": "2026-04-29T20:05:00.000Z",
+  "lastUpdated": "2026-04-29T18:40:39.132Z",
   "specId": "040",
   "folderSlug": "evergreen-doc-packet-id-removal",
   "parentChain": [
     "system-spec-kit",
     "026-graph-and-context-optimization"
   ],
-  "memorySequence": 1
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-40__resource-map-authored-and-memory-finalization.md"
+  ]
 }

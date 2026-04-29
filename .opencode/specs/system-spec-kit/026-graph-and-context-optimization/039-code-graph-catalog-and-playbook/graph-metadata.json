@@ -4,56 +4,218 @@
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/039-code-graph-catalog-and-playbook",
   "parent_id": "system-spec-kit/026-graph-and-context-optimization",
   "children_ids": [],
-  "migrated": false,
-  "migration_source": null,
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
-      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio"
-    ],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research",
-      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
       "039-code-graph-catalog-and-playbook",
       "code_graph feature catalog",
       "code_graph manual testing playbook",
-      "code_graph runtime catalog"
+      "code_graph runtime catalog",
+      "039-code-graph-catalog-and-playbook resource map",
+      "code graph catalog playbook file ledger"
     ],
     "key_topics": [
-      "code-graph",
-      "feature-catalog",
-      "manual-testing-playbook",
-      "readiness",
-      "ccc",
-      "coverage-graph",
-      "doctor-code-graph"
+      "039-code-graph-catalog-and-playbook",
+      "feature",
+      "catalog",
+      "manual",
+      "testing",
+      "playbook",
+      "runtime",
+      "resource",
+      "map",
+      "code",
+      "graph",
+      "file"
     ],
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md",
       "spec.md",
       "plan.md",
-      "tasks.md",
-      "checklist.md",
-      "implementation-summary.md"
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/01--read-path-freshness/01-ensure-code-graph-ready.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/01--read-path-freshness/02-query-self-heal.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/01-code-graph-scan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/02-code-graph-verify.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/03-code-graph-status.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/03--detect-changes/01-detect-changes-preflight.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/04--context-retrieval/01-code-graph-context.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/04--context-retrieval/02-context-handler.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/01-deep-loop-graph-query.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/02-deep-loop-graph-status.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/03-deep-loop-graph-upsert.md",
+      ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/04-deep-loop-graph-convergence.md"
     ],
-    "entities": [],
-    "causal_summary": "Adds feature_catalog/ and manual_testing_playbook/ to mcp_server/code_graph/ -- mirroring the skill_advisor pattern. 8 feature groups + 15 playbook entries. Cross-linked from runtime + root skill catalogs/playbooks.",
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-category-overview.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md",
+        "source": "derived"
+      },
+      {
+        "name": "254-code-graph-scan-query.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph/254-code-graph-scan-query.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-ensure-code-graph-ready.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/01--read-path-freshness/01-ensure-code-graph-ready.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-query-self-heal.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/01--read-path-freshness/02-query-self-heal.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-code-graph-scan.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/01-code-graph-scan.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-code-graph-verify.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/02-code-graph-verify.md",
+        "source": "derived"
+      },
+      {
+        "name": "03-code-graph-status.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/02--manual-scan-verify-status/03-code-graph-status.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-detect-changes-preflight.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/03--detect-changes/01-detect-changes-preflight.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-code-graph-context.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/04--context-retrieval/01-code-graph-context.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-context-handler.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/04--context-retrieval/02-context-handler.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-deep-loop-graph-query.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/01-deep-loop-graph-query.md",
+        "source": "derived"
+      },
+      {
+        "name": "02-deep-loop-graph-status.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/02-deep-loop-graph-status.md",
+        "source": "derived"
+      },
+      {
+        "name": "03-deep-loop-graph-upsert.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/03-deep-loop-graph-upsert.md",
+        "source": "derived"
+      },
+      {
+        "name": "04-deep-loop-graph-convergence.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/05--coverage-graph/04-deep-loop-graph-convergence.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Add",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The code_graph runtime package had README coverage and root skill catalog/playbook entries, but it lacked package-local `feature_catalog/` and `manual_testing_playbook/` directories at the source-of-truth runtime path. That left runtime details scattered and made code_graph weaker than the already documented skill_advisor package.",
     "created_at": "2026-04-29T17:26:00.000Z",
-    "last_save_at": "2026-04-29T17:26:00.000Z",
-    "save_lineage": "new",
+    "last_save_at": "2026-04-29T18:40:22.647Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md",
       "checklist.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "resource-map.md"
     ]
   }
 }
-

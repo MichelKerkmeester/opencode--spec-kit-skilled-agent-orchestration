@@ -7,7 +7,7 @@
     "dedicated stress folder",
     "mcp_server/stress_test"
   ],
-  "lastUpdated": "2026-04-29T16:09:55.000Z",
+  "lastUpdated": "2026-04-29T18:39:32.877Z",
   "specId": "005",
   "folderSlug": "stress-test-folder-migration",
   "parentChain": [
@@ -15,5 +15,8 @@
     "026-graph-and-context-optimization",
     "037-followup-quality-pass"
   ],
-  "memorySequence": 5
+  "memorySequence": 6,
+  "memoryNameHistory": [
+    "29-04-26_19-39__resource-map-authored-and-memory-finalization.md"
+  ]
 }

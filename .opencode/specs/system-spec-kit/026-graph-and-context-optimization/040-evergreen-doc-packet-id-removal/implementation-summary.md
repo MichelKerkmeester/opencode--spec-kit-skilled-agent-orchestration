@@ -13,10 +13,10 @@ template_source_marker: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/040-evergreen-doc-packet-id-removal"
-    last_updated_at: "2026-04-29T20:05:00Z"
+    last_updated_at: "2026-04-29T20:35:30+02:00"
     last_updated_by: "cli-codex"
-    recent_action: "Implemented rule and audit fixes"
-    next_safe_action: "Review deferred legacy grep hits"
+    recent_action: "Resource map indexed"
+    next_safe_action: "Use packet for downstream work"
     blockers: []
     key_files:
       - ".opencode/skill/sk-doc/references/global/evergreen packet ID rule"
