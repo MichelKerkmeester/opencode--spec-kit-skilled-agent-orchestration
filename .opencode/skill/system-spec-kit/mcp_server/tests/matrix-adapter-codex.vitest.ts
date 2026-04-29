@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({ spawn: vi.fn() }));
 
-import { adapterCliCodex } from '../matrix-runners/adapter-cli-codex';
+import { adapterCliCodex } from '../matrix_runners/adapter-cli-codex';
 import { baseInput, expectSpawned, mockSpawnNeverCloses, mockSpawnSuccess, spawnMock } from './matrix-adapter-test-utils';
 
 describe('adapterCliCodex', () => {

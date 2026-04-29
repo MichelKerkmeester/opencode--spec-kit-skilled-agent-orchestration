@@ -71,7 +71,7 @@ Action taken: no standalone code_graph catalog was fabricated. The existing syst
 
 ## 5. Packet 036 Status
 
-Packet 036 is present. The adapter runner files exist under `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/`, including:
+Packet 036 is present. The adapter runner files exist under `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/`, including:
 
 - `adapter-cli-codex.ts`
 - `adapter-cli-copilot.ts`

@@ -1052,7 +1052,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
 
-The MCP server also ships explicit stress and matrix execution surfaces. Run `npm run stress` from [mcp_server/](.opencode/skill/system-spec-kit/mcp_server/) for the dedicated [stress_test/](.opencode/skill/system-spec-kit/mcp_server/stress_test/) suite, which covers search-quality, memory, skill-advisor, code-graph, session, and matrix subsystems; [matrix-runners/](.opencode/skill/system-spec-kit/mcp_server/matrix-runners/) provides five per-CLI adapters plus a manifest and meta-runner for the F1-F14 feature matrix across `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
+The MCP server also ships explicit stress and matrix execution surfaces. Run `npm run stress` from [mcp_server/](.opencode/skill/system-spec-kit/mcp_server/) for the dedicated [stress_test/](.opencode/skill/system-spec-kit/mcp_server/stress_test/) suite, which covers search-quality, memory, skill-advisor, code-graph, session, and matrix subsystems; [matrix_runners/](.opencode/skill/system-spec-kit/mcp_server/matrix_runners/) provides five per-CLI adapters plus a manifest and meta-runner for the F1-F14 feature matrix across `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
 &nbsp;
 #### IMPROVE

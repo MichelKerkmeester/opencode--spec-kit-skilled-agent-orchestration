@@ -50,7 +50,7 @@ The current README does not surface these recently-added runtime capabilities. A
 - **Memory retention sweep**: hourly automatic sweep of expired memory_index rows; `memory_retention_sweep` MCP tool for manual/dry-run; controlled by `SPECKIT_RETENTION_SWEEP` and `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` env vars; defined at `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-retention-sweep.ts`
 - **Advisor rebuild**: explicit `advisor_rebuild` MCP tool (vs `advisor_status` diagnostic); use when status reports stale; defined at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts`
 - **Codex hook freshness smoke check**: cold-start fallback with `stale: true, reason: "timeout-fallback"` marker; helper at `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/lib/freshness-smoke-check.ts`
-- **CLI matrix runners**: 5 per-CLI adapter runners (codex/copilot/gemini/claude-code/opencode) + manifest + meta-runner at `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/`; supports running F1-F14 features × CLI executors as a stress matrix
+- **CLI matrix runners**: 5 per-CLI adapter runners (codex/copilot/gemini/claude-code/opencode) + manifest + meta-runner at `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/`; supports running F1-F14 features × CLI executors as a stress matrix
 - **Dedicated stress folder**: `npm run stress` from `mcp_server/` runs the full stress suite at `.opencode/skill/system-spec-kit/mcp_server/stress_test/`; subsystems: search-quality (the harness), memory, skill-advisor, code-graph, session, matrix
 - **Code graph runtime feature catalog + manual testing playbook**: at `.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/` and `.../manual_testing_playbook/`
 
@@ -109,7 +109,7 @@ PLUS: `verification-notes.md` and `audit-findings.md` at packet root.
 
 **Trigger phrases**: `["042-root-readme-refresh","root readme update","framework readme refresh","tool count refresh"]`.
 
-**Causal summary**: `"Refreshes root README.md after this session's 18+ commits. Verifies tool/agent/skill/command counts against canonical sources. Adds brief mentions of memory_retention_sweep, advisor_rebuild, freshness-smoke-check, matrix-runners, stress_test/, code_graph runtime catalog/playbook. Fixes one evergreen-rule violation (packet-folder hardlink at L514)."`.
+**Causal summary**: `"Refreshes root README.md after this session's 18+ commits. Verifies tool/agent/skill/command counts against canonical sources. Adds brief mentions of memory_retention_sweep, advisor_rebuild, freshness-smoke-check, matrix_runners, stress_test/, code_graph runtime catalog/playbook. Fixes one evergreen-rule violation (packet-folder hardlink at L514)."`.
 
 **Frontmatter**: compact `recent_action` / `next_safe_action` rules. < 80 chars.
 

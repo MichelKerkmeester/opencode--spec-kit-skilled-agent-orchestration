@@ -14,7 +14,7 @@ READ-ONLY deep-review audit. Output: `review-report.md` with severity-classified
 - `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md`
 - `.opencode/command/doctor/assets/doctor_mcp_install_*.yaml`
 - `.opencode/command/doctor/assets/doctor_mcp_debug_*.yaml`
-- Recent file relocations: `mcp_server/stress_test/` (from 037/005 + 038), `mcp_server/matrix-runners/` (from 036), `mcp_server/code_graph/feature_catalog/` (from 039)
+- Recent file relocations: `mcp_server/stress_test/` (from 037/005 + 038), `mcp_server/matrix_runners/` (from 036), `mcp_server/code_graph/feature_catalog/` (from 039)
 - Configuration sanity: `opencode.json`, runtime hook configs
 
 ### Audit dimensions + operability-specific questions
@@ -30,7 +30,7 @@ For maintainability: package.json scripts are documented; env vars have defaults
 ### Specific questions
 
 - After 038's stress-test folder migration, are there any orphan imports from `tests/search-quality/` or `tests/code-graph-degraded-sweep` that still reference the old paths?
-- After 036's matrix-runners addition, is `npm run hook-tests` reachable from the post-044 npm scripts?
+- After 036's matrix_runners addition, is `npm run hook-tests` reachable from the post-044 npm scripts?
 - DB migrations: can a fresh install reach the current schema? Can an old DB (e.g., 026/005 era) upgrade cleanly?
 - doctor:mcp_install workflow: does it install the 4 native MCP servers cleanly, in correct order, with verification?
 - doctor:mcp_debug: what diagnostic signals does it surface? Are there gaps?
@@ -40,7 +40,7 @@ For maintainability: package.json scripts are documented; env vars have defaults
 ### Read also
 
 - 037/005 + 038 stress-test folder migration plans
-- 036 matrix-runners README
+- 036 matrix_runners README
 - 042 README refresh (cites tool counts + scripts)
 - 034 env-flag default-state table
 

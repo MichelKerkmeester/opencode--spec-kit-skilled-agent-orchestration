@@ -70,7 +70,7 @@ _memory:
 - [x] T008 Run migration/checkpoint hydra test slice.
 - [x] T009 Search for orphan imports from old stress-test paths.
 - [x] T010 Inspect current stress-test config and README scripts.
-- [x] T011 Inspect matrix-runners README and hook-test package script.
+- [x] T011 Inspect matrix_runners README and hook-test package script.
 - [x] T012 Cross-check environment defaults against source code.
 - [x] T013 Run strict validator against `026/005-memory-indexer-invariants`.
 - [x] T014 Inspect checked-in runtime configuration security posture.

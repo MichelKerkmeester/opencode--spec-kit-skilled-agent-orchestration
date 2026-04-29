@@ -19,7 +19,7 @@ Closes the highest-leverage gap surfaced by packet 035's CONDITIONAL verdict: **
 
 #### Phase 1: Discovery
 
-1. Determine adapter target location. Recommended: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/` (parallel to existing `mcp_server/handlers/`, `mcp_server/lib/`).
+1. Determine adapter target location. Recommended: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/` (parallel to existing `mcp_server/handlers/`, `mcp_server/lib/`).
 2. Read 030's design completely. Confirm:
    - 14 features F1-F14
    - 5 CLI executors: cli-codex, cli-copilot, cli-gemini, cli-claude-code, cli-opencode
@@ -28,7 +28,7 @@ Closes the highest-leverage gap surfaced by packet 035's CONDITIONAL verdict: **
 
 #### Phase 2: Adapter implementation
 
-For each of the 5 CLI executors, create an adapter at `mcp_server/matrix-runners/adapter-cli-<name>.ts`:
+For each of the 5 CLI executors, create an adapter at `mcp_server/matrix_runners/adapter-cli-<name>.ts`:
 
 **Adapter contract:**
 
@@ -67,7 +67,7 @@ Each adapter:
 
 #### Phase 3: Manifest
 
-Create `mcp_server/matrix-runners/matrix-manifest.json` enumerating all 70 cells:
+Create `mcp_server/matrix_runners/matrix-manifest.json` enumerating all 70 cells:
 
 ```json
 {
@@ -100,7 +100,7 @@ Add ONE smoke test per adapter at `mcp_server/tests/matrix-adapter-<name>.vitest
 
 #### Phase 5: Meta-runner
 
-Add `mcp_server/matrix-runners/run-matrix.ts`:
+Add `mcp_server/matrix_runners/run-matrix.ts`:
 - Loads manifest
 - Iterates cells (with concurrency limit = 3 to avoid hammering CLI APIs; respect feedback memory: cli-copilot caps at 3 concurrent dispatches)
 - Routes to correct adapter
@@ -108,7 +108,7 @@ Add `mcp_server/matrix-runners/run-matrix.ts`:
 - Writes summary to `<output-dir>/summary.tsv`
 - Emits aggregate matrix with pass rates by feature + by executor
 
-CLI entry: `npx tsx mcp_server/matrix-runners/run-matrix.ts --output <dir> [--filter F1,F3,...] [--executors cli-codex,cli-copilot,...]`
+CLI entry: `npx tsx mcp_server/matrix_runners/run-matrix.ts --output <dir> [--filter F1,F3,...] [--executors cli-codex,cli-copilot,...]`
 
 #### Phase 6: TS build + test verification
 
@@ -118,8 +118,8 @@ CLI entry: `npx tsx mcp_server/matrix-runners/run-matrix.ts --output <dir> [--fi
 
 #### Phase 7: Docs
 
-- `mcp_server/matrix-runners/README.md` — quickstart, manifest format, adding new cells, running the matrix
-- Update `mcp_server/README.md` with a brief reference to matrix-runners/
+- `mcp_server/matrix_runners/README.md` — quickstart, manifest format, adding new cells, running the matrix
+- Update `mcp_server/README.md` with a brief reference to matrix_runners/
 - DO NOT update 035's findings.md (that's a separate verification packet's job)
 
 ### Packet structure to create (Level 2)

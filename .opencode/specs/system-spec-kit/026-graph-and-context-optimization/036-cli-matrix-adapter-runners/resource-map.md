@@ -49,29 +49,29 @@ _memory:
 
 | Path | Action | Status | Note |
 |------|--------|--------|------|
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F10-deep-loop.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F11-hooks.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F12-validators.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F13-stress-cycle.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F2-skill-advisor.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F3-memory-search.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F4-memory-context.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F5-code-graph-query.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F6-code-graph-scan.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F7-causal-graph.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F8-cocoindex.md` | Created | OK | CLI matrix runner surface touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F9-continuity.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F10-deep-loop.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F11-hooks.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F12-validators.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F13-stress-cycle.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F2-skill-advisor.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F3-memory-search.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F4-memory-context.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F5-code-graph-query.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F6-code-graph-scan.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F7-causal-graph.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F8-cocoindex.md` | Created | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F9-continuity.md` | Created | OK | CLI matrix runner surface touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-claude-code.vitest.ts` | Created | OK | Automated test coverage touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-codex.vitest.ts` | Created | OK | Automated test coverage touched by the packet. |

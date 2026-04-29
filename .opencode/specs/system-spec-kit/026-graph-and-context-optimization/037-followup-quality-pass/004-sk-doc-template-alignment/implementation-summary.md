@@ -69,7 +69,7 @@ The packet fixed README TOC anchors, added missing README TOCs, balanced new REA
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modified | README TOC and metadata alignment |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` | Modified | README TOC, anchors and metadata |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md` | Modified | README TOC, anchors and metadata |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Modified | README structure and anchors |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Modified | README structure and anchors |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Modified | Reference frontmatter, section numbering and anchors |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Modified | Reference importance tier metadata |
 <!-- /ANCHOR:what-built -->

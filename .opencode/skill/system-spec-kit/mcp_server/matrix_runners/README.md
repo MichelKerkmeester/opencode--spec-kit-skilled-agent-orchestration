@@ -27,7 +27,7 @@ importance_tier: "normal"
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`matrix-runners/` turns the F1-F14 x CLI-executor matrix into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
+`matrix_runners/` turns the F1-F14 x CLI-executor matrix into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
 It does not run native or inline cells. Those surfaces are covered by focused local runners.
 <!-- /ANCHOR:overview -->
@@ -37,7 +37,7 @@ It does not run native or inline cells. Those surfaces are covered by focused lo
 
 ```bash
 cd .opencode/skill/system-spec-kit
-npx tsx mcp_server/matrix-runners/run-matrix.ts \
+npx tsx mcp_server/matrix_runners/run-matrix.ts \
   --output /tmp/spec-kit-matrix \
   --filter F1,F3 \
   --executors cli-gemini,cli-claude-code
@@ -64,7 +64,7 @@ The runner writes one JSONL file per cell plus `summary.tsv`:
 | `featureName` | Human-readable feature surface |
 | `executor` | One of the five CLI executors |
 | `applicable` | `false` produces `NA` without invoking a CLI |
-| `promptTemplate` | Relative template path under `matrix-runners/` or inline prompt text |
+| `promptTemplate` | Relative template path under `matrix_runners/` or inline prompt text |
 | `expectedSignal` | Substring or JavaScript regex used to mark stdout as `PASS` |
 | `timeoutSeconds` | Per-cell timeout, defaulting operationally to 300 seconds |
 

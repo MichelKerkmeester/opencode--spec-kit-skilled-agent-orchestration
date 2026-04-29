@@ -79,7 +79,7 @@ Read-only release-readiness audit with packet-local synthesis.
 - **Install and package surface**: MCP server install guide, root and MCP package manifests, install script.
 - **Doctor surface**: `doctor_mcp_install.yaml`, `doctor_mcp_debug.yaml`, `mcp-doctor.sh`, `mcp-doctor-lib.sh`, runtime configs.
 - **DB migration surface**: vector-index schema migrations, checkpoint/restore scripts, migration tests.
-- **Relocation surface**: `mcp_server/stress_test/`, `mcp_server/matrix-runners/`, and package stress scripts.
+- **Relocation surface**: `mcp_server/stress_test/`, `mcp_server/matrix_runners/`, and package stress scripts.
 - **Validation surface**: strict validator against this packet and an older spec folder.
 
 ### Data Flow

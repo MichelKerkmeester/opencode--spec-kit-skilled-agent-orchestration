@@ -20,11 +20,11 @@ _memory:
     next_safe_action: "Use packet for downstream work"
     blockers: []
     key_files:
-      - ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json"
+      - ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts"
+      - ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-codex.vitest.ts"
-      - ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md"
+      - ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md"
     completion_pct: 100
 ---
 # Implementation Summary: CLI Matrix Adapter Runners
@@ -65,18 +65,18 @@ You can now route packet 030's external CLI cells through typed adapter function
 | Matrix manifest | `matrix-manifest.json` enumerates 70 cells; sanity check output: `70`, `14`, `5`, `F11-cli-gemini` |
 | Meta-runner | `run-matrix.ts` loads manifest, filters cells, routes adapters, writes JSONL, writes `summary.tsv`, and emits aggregates (`run-matrix.ts:125`, `:240`, `:248`, `:263`) |
 | Smoke tests | Five adapter test files mock `spawn`, assert PASS parsing, and assert timeout behavior (`matrix-adapter-codex.vitest.ts:3`, `:14`, `:37`; `matrix-adapter-opencode.vitest.ts:14`, `:37`) |
-| Docs | Runner README and MCP README structure reference (`.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:12`, `:31`, `:64`; `.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`) |
+| Docs | Runner README and MCP README structure reference (`.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:12`, `:31`, `:64`; `.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`) |
 
 ### Files Changed
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts` | Created | Shared adapter contract and process handling |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-*.ts` | Created | Five CLI adapter entrypoints |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json` | Created | 70-cell external CLI manifest |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts` | Created | Manifest-driven meta-runner |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts` | Created | Shared adapter contract and process handling |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-*.ts` | Created | Five CLI adapter entrypoints |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json` | Created | 70-cell external CLI manifest |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts` | Created | Manifest-driven meta-runner |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-*.vitest.ts` | Created | Mocked smoke tests |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Created | Runner usage docs |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Created | Runner usage docs |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Updated | Structure reference |
 <!-- /ANCHOR:what-built -->
 

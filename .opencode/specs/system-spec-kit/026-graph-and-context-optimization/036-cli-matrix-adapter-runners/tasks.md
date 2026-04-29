@@ -48,7 +48,7 @@ _memory:
 
 - [x] T001 [P0] Read packet 030 spec and plan. [EVIDENCE: `spec.md` cites `030.../spec.md:48` and `030.../plan.md:54`]
 - [x] T002 [P0] Read packet 035 findings/results/log examples. [EVIDENCE: `spec.md` cites `035.../findings.md:15` and `:75`]
-- [x] T003 [P0] Determine adapter target location. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/` created]
+- [x] T003 [P0] Determine adapter target location. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/` created]
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -66,7 +66,7 @@ _memory:
 - [x] T011 [P0] Implement spawn-error `BLOCKED` behavior. [EVIDENCE: `adapter-common.ts:124`, `:151`]
 - [x] T012 [P1] Implement expected-signal PASS detection. [EVIDENCE: `adapter-common.ts:70`, `:163`]
 - [x] T013 [P0] Create 70-cell manifest. [EVIDENCE: JSON sanity check output `70`, `14`, `5`, `F11-cli-gemini`]
-- [x] T014 [P1] Create prompt templates. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder.md` through `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13.md`]
+- [x] T014 [P1] Create prompt templates. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder.md` through `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13.md`]
 - [x] T015 [P0] Implement meta-runner. [EVIDENCE: `run-matrix.ts:238`]
 - [x] T016 [P1] Implement filter and executor CLI flags. [EVIDENCE: `run-matrix.ts:90`, `:240`]
 - [x] T017 [P1] Implement per-cell JSONL and `summary.tsv` outputs. [EVIDENCE: `run-matrix.ts:172`, `:180`, `:263`]
@@ -79,7 +79,7 @@ _memory:
 ## Phase 3: Verification
 
 - [x] T019 [P0] Add five adapter smoke test files. [EVIDENCE: `mcp_server/tests/matrix-adapter-*.vitest.ts`]
-- [x] T020 [P1] Add runner README. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:12`, `:31`, `:64`]
+- [x] T020 [P1] Add runner README. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:12`, `:31`, `:64`]
 - [x] T021 [P1] Update MCP server README. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`]
 - [x] T022 [P0] Run required verification. [EVIDENCE: `npm run build` exit 0; `npx vitest run matrix-adapter` 5 files, 10 tests passed; strict validator exit 0]
 <!-- /ANCHOR:phase-3 -->

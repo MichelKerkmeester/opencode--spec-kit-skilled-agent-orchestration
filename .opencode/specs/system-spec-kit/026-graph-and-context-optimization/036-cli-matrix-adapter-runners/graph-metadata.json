@@ -39,50 +39,50 @@
     "importance_tier": "important",
     "status": "complete",
     "key_files": [
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-test-utils.ts",
       "spec.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13.md",
       "plan.md",
       "implementation-summary.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F10-deep-loop.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F11-hooks.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F12-validators.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F13-stress-cycle.md"
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F10-deep-loop.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F11-hooks.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F12-validators.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F13-stress-cycle.md"
     ],
     "entities": [
       {
         "name": "adapter-common.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts",
         "source": "derived"
       },
       {
         "name": "matrix-manifest.json",
         "kind": "config",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json",
         "source": "derived"
       },
       {
         "name": "run-matrix.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts",
         "source": "derived"
       },
       {
         "name": "README.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md",
         "source": "derived"
       },
       {
@@ -100,13 +100,13 @@
       {
         "name": "F1-spec-folder.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder.md",
         "source": "derived"
       },
       {
         "name": "F14-search-w3-w13.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13.md",
         "source": "derived"
       },
       {
@@ -124,55 +124,55 @@
       {
         "name": "adapter-cli-claude-code.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-codex.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-copilot.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-gemini.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-opencode.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts",
         "source": "derived"
       },
       {
         "name": "F10-deep-loop.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F10-deep-loop.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F10-deep-loop.md",
         "source": "derived"
       },
       {
         "name": "F11-hooks.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F11-hooks.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F11-hooks.md",
         "source": "derived"
       },
       {
         "name": "F12-validators.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F12-validators.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F12-validators.md",
         "source": "derived"
       },
       {
         "name": "F13-stress-cycle.md",
         "kind": "doc",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F13-stress-cycle.md",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F13-stress-cycle.md",
         "source": "derived"
       },
       {

@@ -52,7 +52,7 @@ _memory:
 | `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Updated | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Updated | OK | CLI matrix runner surface touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |

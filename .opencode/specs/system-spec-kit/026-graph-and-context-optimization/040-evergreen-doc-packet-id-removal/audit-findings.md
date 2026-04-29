@@ -30,7 +30,7 @@ Spec-local docs outside this packet were excluded.
 | `.opencode/skill/system-spec-kit/mcp_server/README` | Packet-history freshness and footer references | Replaced with current code-graph contracts |
 | `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE` | Phase-numbered smoke-test section | Reworded as current smoke tests |
 | `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE` | Historical P1 labels and phase wording | Reworded as graduated or opt-in current flags |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README` | Packet-numbered matrix provenance | Reworded as current matrix runner contract |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README` | Packet-numbered matrix provenance | Reworded as current matrix runner contract |
 | `.opencode/skill/system-spec-kit/feature_catalog/02--mutation/12-memory-retention-sweep.md` | "packet 033 catalog refresh" | Removed history, kept current tool count |
 | `.opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/37-cli-matrix-adapter-runners.md` | Packet 035/036 provenance | Reworded as local-runner and external-adapter surfaces |
 | `.opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md` | Spec/phase provenance | Reworded as current code-graph runtime surface |

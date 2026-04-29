@@ -78,7 +78,7 @@ The Spec Kit Memory MCP server exposes **54 tools** overall across the 7-layer M
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
 
-Current catalog entries include three surfaced capabilities: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix-runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
+Current catalog entries include three surfaced capabilities: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix_runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
 
 ---
 
@@ -3896,7 +3896,7 @@ The CLI matrix adapter runners turn the F1-F14 executor matrix into runnable cel
 
 #### Current Reality
 
-`mcp_server/matrix-runners/` ships a manifest-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
+`mcp_server/matrix_runners/` ships a manifest-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
 
 Local/native matrix status is covered separately. This entry covers the external CLI adapter surface now present in the repo.
 

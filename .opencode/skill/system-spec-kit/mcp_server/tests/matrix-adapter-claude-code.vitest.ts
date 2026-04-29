@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({ spawn: vi.fn() }));
 
-import { adapterCliClaudeCode } from '../matrix-runners/adapter-cli-claude-code';
+import { adapterCliClaudeCode } from '../matrix_runners/adapter-cli-claude-code';
 import { baseInput, expectSpawned, mockSpawnNeverCloses, mockSpawnSuccess, spawnMock } from './matrix-adapter-test-utils';
 
 describe('adapterCliClaudeCode', () => {

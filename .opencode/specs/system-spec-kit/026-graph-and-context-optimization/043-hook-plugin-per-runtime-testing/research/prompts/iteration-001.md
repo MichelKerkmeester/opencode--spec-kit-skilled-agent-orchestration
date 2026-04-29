@@ -27,7 +27,7 @@ The 5 supported runtimes:
   - `.opencode/skill/cli-gemini/SKILL.md` (how to invoke gemini)
   - `.opencode/skill/cli-claude-code/SKILL.md` (how to invoke claude)
   - `.opencode/skill/cli-opencode/SKILL.md` (how to invoke opencode)
-- `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-*.ts` — the per-CLI dispatch helpers (build-on-top reference)
+- `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-*.ts` — the per-CLI dispatch helpers (build-on-top reference)
 - 035 findings.md (which already showed F11 hooks failing for copilot/native/inline)
 
 ### Implementation
@@ -50,7 +50,7 @@ Create `043-hook-plugin-per-runtime-testing/runners/` with a per-runtime test ha
 
 Each runner should:
 - Compose a minimal trigger prompt that should activate the hook (e.g., a UserPromptSubmit-style request mentioning a known trigger phrase)
-- Invoke the runtime CLI with that prompt (via the existing matrix-runners adapter, OR directly)
+- Invoke the runtime CLI with that prompt (via the existing matrix_runners adapter, OR directly)
 - Capture the output
 - Assert presence/absence of expected hook artifacts:
   - Claude: `additionalContext` block should contain a skill-advisor brief
@@ -101,7 +101,7 @@ PLUS: `findings.md`, `runners/`, `results/` at packet root.
 
 **Trigger phrases**: `["043-hook-plugin-per-runtime-testing","runtime hook tests","per-runtime hook validation","cli skill hook tests","hook live testing"]`.
 
-**Causal summary**: `"Live tests hook + plugin wiring for each of 5 supported runtimes (Claude/Codex/Copilot/Gemini/OpenCode-plugin). Uses existing per-CLI skills (cli-codex/cli-copilot/cli-gemini/cli-claude-code/cli-opencode) plus the matrix-runners adapter helpers. Captures per-cell PASS/FAIL/SKIPPED with evidence; produces signed-off matrix + remediation tickets for any cells that fail."`.
+**Causal summary**: `"Live tests hook + plugin wiring for each of 5 supported runtimes (Claude/Codex/Copilot/Gemini/OpenCode-plugin). Uses existing per-CLI skills (cli-codex/cli-copilot/cli-gemini/cli-claude-code/cli-opencode) plus the matrix_runners adapter helpers. Captures per-cell PASS/FAIL/SKIPPED with evidence; produces signed-off matrix + remediation tickets for any cells that fail."`.
 
 **Frontmatter**: compact `recent_action` / `next_safe_action` rules. < 80 chars.
 

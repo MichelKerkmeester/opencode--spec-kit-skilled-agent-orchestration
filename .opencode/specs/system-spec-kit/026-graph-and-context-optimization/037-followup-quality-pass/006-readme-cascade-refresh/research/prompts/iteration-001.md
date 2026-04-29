@@ -36,7 +36,7 @@ Build a target list. Write `target-list.md` at packet root.
 
 For each README, verify:
 - **Tool count** — total MCP tool count is current (54 after 033 + 034 additions; check after 036 if it added tools)
-- **File structure** — directory listings reflect actual file system (NEW: `matrix-runners/`, `stress_test/`; UPDATED locations from 037/005 migration)
+- **File structure** — directory listings reflect actual file system (NEW: `matrix_runners/`, `stress_test/`; UPDATED locations from 037/005 migration)
 - **Capability matrix** — feature × executor / behavior tables reflect current state
 - **Cross-references** — links to other docs are accurate (no broken paths after 037/005's migration)
 - **Operator commands** — example invocations work as documented
@@ -48,7 +48,7 @@ For each README, verify:
 #### `.opencode/skill/system-spec-kit/mcp_server/README.md`
 
 - Tool count: confirm 54 (or N after 036)
-- Add reference to `mcp_server/matrix-runners/` (from 036 if shipped)
+- Add reference to `mcp_server/matrix_runners/` (from 036 if shipped)
 - Add reference to `mcp_server/stress_test/` (from 037/005)
 - Update file structure tree
 - Update capability matrix if it has one
@@ -60,12 +60,12 @@ For each README, verify:
 
 #### Sub-folder READMEs (`mcp_server/handlers/`, `mcp_server/lib/`, etc. if they exist)
 
-- Add new entries for: memory-retention-sweep handler, advisor-rebuild handler, freshness-smoke-check helper, matrix-runners adapters
+- Add new entries for: memory-retention-sweep handler, advisor-rebuild handler, freshness-smoke-check helper, matrix_runners adapters
 
 #### `.opencode/skill/system-spec-kit/ARCHITECTURE.md`
 
 - Update CCC handler paths (already done by 031; verify still accurate)
-- Add architecture notes for matrix-runners + stress_test/ if they're architecturally significant
+- Add architecture notes for matrix_runners + stress_test/ if they're architecturally significant
 
 ### Implementation phases
 

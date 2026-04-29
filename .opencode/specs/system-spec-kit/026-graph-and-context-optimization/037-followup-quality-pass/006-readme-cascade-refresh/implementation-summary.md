@@ -54,7 +54,7 @@ _memory:
 <!-- ANCHOR:what-built -->
 ## What Was Built
 
-The README cascade now matches the live post-031-037 state. The parent docs and MCP server README cite the 54-tool registry, name the new `matrix-runners/` and `stress_test/` folders, expose `advisor_rebuild`, and stop pointing readers at stale hyphenated subsystem paths.
+The README cascade now matches the live post-031-037 state. The parent docs and MCP server README cite the 54-tool registry, name the new `matrix_runners/` and `stress_test/` folders, expose `advisor_rebuild`, and stop pointing readers at stale hyphenated subsystem paths.
 
 ### README Cascade
 

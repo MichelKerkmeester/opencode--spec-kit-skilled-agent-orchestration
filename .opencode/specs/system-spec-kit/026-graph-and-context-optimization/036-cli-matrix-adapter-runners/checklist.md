@@ -80,7 +80,7 @@ _memory:
 
 - [x] CHK-030 [P0] No provider secrets logged. [EVIDENCE: tests use mocks; real matrix not executed]
 - [x] CHK-031 [P0] No real external CLIs invoked during verification. [EVIDENCE: targeted Vitest mock suite only]
-- [x] CHK-032 [P1] Real matrix execution remains explicit CLI command. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:14`]
+- [x] CHK-032 [P1] Real matrix execution remains explicit CLI command. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:14`]
 <!-- /ANCHOR:security -->
 
 ---
@@ -88,7 +88,7 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [x] CHK-040 [P1] Runner README created. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md`]
+- [x] CHK-040 [P1] Runner README created. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md`]
 - [x] CHK-041 [P1] MCP README references new runner directory. [EVIDENCE: `.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`]
 - [x] CHK-042 [P1] Packet docs cite design, findings, and implementation evidence. [EVIDENCE: `spec.md`, `plan.md`, `implementation-summary.md`]
 <!-- /ANCHOR:docs -->
@@ -99,7 +99,7 @@ _memory:
 ## File Organization
 
 - [x] CHK-050 [P0] Required seven packet files exist. [EVIDENCE: strict validator exit 0]
-- [x] CHK-051 [P1] Runtime files are under `mcp_server/matrix-runners/`. [EVIDENCE: target directory created]
+- [x] CHK-051 [P1] Runtime files are under `mcp_server/matrix_runners/`. [EVIDENCE: target directory created]
 - [x] CHK-052 [P1] Tests are under `mcp_server/tests/`. [EVIDENCE: `matrix-adapter-*.vitest.ts`]
 <!-- /ANCHOR:file-org -->
 

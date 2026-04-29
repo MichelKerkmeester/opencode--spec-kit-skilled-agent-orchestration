@@ -51,7 +51,7 @@ The readiness module also now exposes a non-mutating `getGraphReadinessSnapshot(
 
 Code graph freshness is a read-path/manual contract: callers use `code_graph_status` for diagnostics, `code_graph_scan` for explicit refresh, and `code_graph_query` / `code_graph_context` for reads that may perform bounded selective self-heal through `ensure-ready.ts` when inline indexing is allowed. There is no background watcher. `code_graph_verify` uses the same readiness helper with `allowInlineFullScan: false` and blocks when the graph is not fresh.
 
-Matrix status treats the code-graph cells as native/local validation surfaces rather than external CLI adapter cells. External CLI matrix adapters live separately under `mcp_server/matrix-runners/`; the code-graph readiness contract here remains manual/read-path driven.
+Matrix status treats the code-graph cells as native/local validation surfaces rather than external CLI adapter cells. External CLI matrix adapters live separately under `mcp_server/matrix_runners/`; the code-graph readiness contract here remains manual/read-path driven.
 
 ---
 

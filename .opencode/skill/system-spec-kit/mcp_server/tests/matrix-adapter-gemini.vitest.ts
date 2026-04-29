@@ -6,7 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('node:child_process', () => ({ spawn: vi.fn() }));
 
-import { adapterCliGemini } from '../matrix-runners/adapter-cli-gemini';
+import { adapterCliGemini } from '../matrix_runners/adapter-cli-gemini';
 import { baseInput, expectSpawned, mockSpawnNeverCloses, mockSpawnSuccess, spawnMock } from './matrix-adapter-test-utils';
 
 describe('adapterCliGemini', () => {

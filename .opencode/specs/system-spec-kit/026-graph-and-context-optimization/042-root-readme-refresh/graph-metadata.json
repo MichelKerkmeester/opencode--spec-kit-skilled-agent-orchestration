@@ -60,7 +60,7 @@
         "source": "manual"
       }
     ],
-    "causal_summary": "Refreshes root README.md after this session's 18+ commits. Verifies tool/agent/skill/command counts against canonical sources. Adds brief mentions of memory_retention_sweep, advisor_rebuild, freshness-smoke-check, matrix-runners, stress_test/, code_graph runtime catalog/playbook. Fixes one evergreen-rule violation (packet-folder hardlink at L514).",
+    "causal_summary": "Refreshes root README.md after this session's 18+ commits. Verifies tool/agent/skill/command counts against canonical sources. Adds brief mentions of memory_retention_sweep, advisor_rebuild, freshness-smoke-check, matrix_runners, stress_test/, code_graph runtime catalog/playbook. Fixes one evergreen-rule violation (packet-folder hardlink at L514).",
     "created_at": "2026-04-29T18:48:57.000Z",
     "last_save_at": "2026-04-29T18:52:18.000Z",
     "save_lineage": "initial",

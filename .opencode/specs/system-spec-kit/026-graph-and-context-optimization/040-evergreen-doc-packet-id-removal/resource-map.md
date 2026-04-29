@@ -95,7 +95,7 @@ _memory:
 | `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Updated | OK | CLI matrix runner surface touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Updated | OK | CLI matrix runner surface touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/02-advisor-status.md` | Updated | OK | Feature catalog surface touched by the packet. |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/feature_catalog/06--mcp-surface/05-advisor-rebuild.md` | Updated | OK | Feature catalog surface touched by the packet. |

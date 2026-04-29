@@ -149,7 +149,7 @@ Refresh the existing catalogs with line-cited current-reality entries while keep
 
 | Type | Item | Impact | Mitigation |
 |------|------|--------|------------|
-| Dependency | Packet 036 matrix runners | Catalog entry needs real adapter files | Discovery found `mcp_server/matrix-runners/`, so entry uses real refs |
+| Dependency | Packet 036 matrix runners | Catalog entry needs real adapter files | Discovery found `mcp_server/matrix_runners/`, so entry uses real refs |
 | Risk | Missing standalone code_graph catalog | Could tempt invented docs | Document the gap and update only existing system-spec-kit code-graph entry |
 | Risk | Catalog count drift | Tool count may be wrong if dist/source differ | Verified `TOOL_DEFINITIONS.length` from dist as 54 |
 <!-- /ANCHOR:risks -->

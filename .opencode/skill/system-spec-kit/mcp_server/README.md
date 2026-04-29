@@ -1300,7 +1300,7 @@ mcp_server/
 ├── handlers/                  # MCP tool handlers plus save/index helper modules
 ├── hooks/                     # Session-start/compaction surfacing, mutation feedback, token-count sync
 ├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
-├── matrix-runners/            # F1-F14 x CLI adapter manifest, per-CLI runners, and meta-runner
+├── matrix_runners/            # F1-F14 x CLI adapter manifest, per-CLI runners, and meta-runner
 ├── schemas/                   # Zod tool-input schemas
 ├── stress_test/               # Explicit stress, load, matrix-cell, and degraded-state suites
 ├── tests/                     # Default Vitest unit, integration, handler, and regression suites
@@ -1322,7 +1322,7 @@ mcp_server/
 | `handlers/memory-save.ts` | Runs the save pipeline: validates structure, checks dedup/quality gates, generates embeddings, and stores the result. |
 | `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
-| `matrix-runners/` | Packet-030 matrix adapters for cli-codex, cli-copilot, cli-gemini, cli-claude-code and cli-opencode, plus the manifest and meta-runner. |
+| `matrix_runners/` | Packet-030 matrix adapters for cli-codex, cli-copilot, cli-gemini, cli-claude-code and cli-opencode, plus the manifest and meta-runner. |
 | `stress_test/` | Dedicated stress-test suites run by `npm run stress`; excluded from default `npm test`. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 

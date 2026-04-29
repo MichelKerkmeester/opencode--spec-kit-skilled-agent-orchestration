@@ -49,7 +49,7 @@ Two consumed subsystems live as first-class self-contained packages under `mcp_s
 
 - `mcp_server/skill_advisor/` — Native skill routing advisor. Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
 - `mcp_server/code_graph/` — Structural code graph + coco-index facade. Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
-- `mcp_server/matrix-runners/` — Packet-036 F1-F14 x CLI adapter manifest, five per-CLI adapters, and meta-runner for external executor cells.
+- `mcp_server/matrix_runners/` — Packet-036 F1-F14 x CLI adapter manifest, five per-CLI adapters, and meta-runner for external executor cells.
 - `mcp_server/stress_test/` — Opt-in stress/load/degraded-state suites, excluded from default `npm test` and run through `npm run stress`.
 
 Neither subsystem ships a `SKILL.md`. They are consumed subsystems of `system-spec-kit`, not standalone skills. All operator-facing routing goes through `system-spec-kit` entry points.
@@ -86,7 +86,7 @@ system-spec-kit/
 │   ├── api/                        # Stable import boundary for non-runtime callers
 │   ├── tests/                      # Runtime Vitest suites and fixtures
 │   ├── scripts/                    # Compatibility wrappers only
-│   ├── matrix-runners/             # F1-F14 x CLI adapter runners
+│   ├── matrix_runners/             # F1-F14 x CLI adapter runners
 │   ├── stress_test/                # Opt-in stress/load/degraded-state suites
 │   ├── skill_advisor/              # Self-contained advisor package (see §5)
 │   │   ├── lib/                    # scorer (fusion + lanes), daemon, freshness, lifecycle, compat, ...
@@ -429,7 +429,7 @@ Cross-ADR flow: ADR-001 → ADR-004 (lease needs a long-running writer); ADR-002
 - `mcp_server/skill_advisor/README.md`
 - `mcp_server/skill_advisor/INSTALL_GUIDE.md`
 - `mcp_server/skill_advisor/SET-UP_GUIDE.md`
-- `mcp_server/matrix-runners/README.md`
+- `mcp_server/matrix_runners/README.md`
 - `mcp_server/stress_test/README.md`
 - `mcp_server/code_graph/lib/README.md`
 - `mcp_server/code_graph/handlers/README.md`

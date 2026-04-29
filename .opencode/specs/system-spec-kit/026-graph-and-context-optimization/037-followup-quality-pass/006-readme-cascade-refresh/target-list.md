@@ -115,7 +115,7 @@ Discovery facts:
 | `.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/README.md` | PASS | No stale cascade surface claims found |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/utils/README.md` | PASS | No stale cascade surface claims found |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/validation/README.md` | PASS | No stale cascade surface claims found |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | PASS | Current matrix adapter README already documents F1-F14 and five CLI executors |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | PASS | Current matrix adapter README already documents F1-F14 and five CLI executors |
 | `.opencode/skill/system-spec-kit/mcp_server/schemas/README.md` | UPDATED | Replaced stale 29+ wording with 54-tool/57-schema registry distinction |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/README.md` | PASS | No stale cascade surface claims found |
 | `.opencode/skill/system-spec-kit/mcp_server/scripts/migrations/README.md` | PASS | No stale cascade surface claims found |
@@ -140,7 +140,7 @@ Discovery facts:
 |--------|--------|------------------|
 | `.opencode/skill/system-spec-kit/README.md` | UPDATED | 54-tool count, catalog/playbook counts, MCP tree, related links, version footer |
 | `.opencode/skill/system-spec-kit/SKILL.md` | UPDATED | `@spec-kit/mcp-server` v1.8.0, 9 layers, catalog/playbook counts, code_graph path |
-| `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | UPDATED | matrix-runners/stress_test notes, four Skill Advisor tools, nine Code Graph/CCC tools |
+| `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | UPDATED | matrix_runners/stress_test notes, four Skill Advisor tools, nine Code Graph/CCC tools |
 | `.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md` | UPDATED | 54-tool claim and `skill_advisor/` links |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/INSTALL_GUIDE.md` | UPDATED | `advisor_rebuild` expectation and `skill_advisor` / `code_graph` test paths |
 <!-- /ANCHOR:parent-related -->

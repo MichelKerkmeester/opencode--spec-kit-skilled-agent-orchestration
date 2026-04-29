@@ -642,7 +642,7 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 │   ├── context-server.ts       # MCP server entry point and tool registration
 │   ├── handlers/               # Tool handlers, save pipeline, and response assembly
 │   ├── lib/                    # Search pipeline, cognitive engine, graph, governance
-│   ├── matrix-runners/         # F1-F14 x CLI adapter manifest and runner
+│   ├── matrix_runners/         # F1-F14 x CLI adapter manifest and runner
 │   ├── stress_test/            # Opt-in stress, load, matrix-cell, and degraded-state suites
 │   ├── tests/                  # MCP test suite
 │   ├── INSTALL_GUIDE.md        # Full installation walkthrough

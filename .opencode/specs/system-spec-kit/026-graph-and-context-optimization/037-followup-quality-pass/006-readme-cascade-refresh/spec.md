@@ -59,7 +59,7 @@ _memory:
 
 ### Problem Statement
 
-Packets 031-036 and 037/001-005 changed the current documentation surface: the MCP registry is now 54 tools, `matrix-runners/` and `stress_test/` are live folders, `advisor_rebuild` is a public Skill Advisor tool, and the stress suites moved out of `tests/`. Several parent and subfolder READMEs still carried stale counts, hyphenated paths, or missing entries.
+Packets 031-036 and 037/001-005 changed the current documentation surface: the MCP registry is now 54 tools, `matrix_runners/` and `stress_test/` are live folders, `advisor_rebuild` is a public Skill Advisor tool, and the stress suites moved out of `tests/`. Several parent and subfolder READMEs still carried stale counts, hyphenated paths, or missing entries.
 
 ### Purpose
 
@@ -107,7 +107,7 @@ Refresh the first-party README cascade so operators can trust tool counts, folde
 |----|-------------|---------------------|
 | REQ-001 | Target list exists | `target-list.md` lists README discovery, exclusions, and PASS / UPDATED findings |
 | REQ-002 | Tool count current | Parent and MCP docs cite 54 public MCP tools from `TOOL_DEFINITIONS.length` |
-| REQ-003 | Folder structure current | README/architecture trees include `matrix-runners/` and `stress_test/` where relevant |
+| REQ-003 | Folder structure current | README/architecture trees include `matrix_runners/` and `stress_test/` where relevant |
 | REQ-004 | Cross-references resolve | Authored markdown links checked for modified docs |
 
 ### P1 - Required (complete OR user-approved deferral)
@@ -131,7 +131,7 @@ Refresh the first-party README cascade so operators can trust tool counts, folde
 ### Acceptance Scenarios
 
 - **SCN-001**: **Given** an operator reads the MCP server README, when they check the tool architecture table, then the total is 54 and includes `advisor_rebuild`, `memory_retention_sweep`, `code_graph_verify`, and `detect_changes`.
-- **SCN-002**: **Given** an operator reads folder structure docs, when they look for matrix and stress coverage, then `matrix-runners/` and `stress_test/` are listed in the relevant parent surfaces.
+- **SCN-002**: **Given** an operator reads folder structure docs, when they look for matrix and stress coverage, then `matrix_runners/` and `stress_test/` are listed in the relevant parent surfaces.
 - **SCN-003**: **Given** an operator follows local links in modified docs, when the link verifier runs, then every local target resolves.
 - **SCN-004**: **Given** the packet docs are complete, when the strict validator runs, then it exits 0.
 <!-- /ANCHOR:success-criteria -->

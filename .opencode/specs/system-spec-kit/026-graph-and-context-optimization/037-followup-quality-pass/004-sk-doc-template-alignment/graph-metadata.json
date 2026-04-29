@@ -45,7 +45,7 @@
       ".opencode/skill/system-spec-kit/mcp_server/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md",
       ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md",
       ".opencode/skill/system-spec-kit/references/config/hook_system.md",
       ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
       ".opencode/skill/sk-doc/SKILL.md",

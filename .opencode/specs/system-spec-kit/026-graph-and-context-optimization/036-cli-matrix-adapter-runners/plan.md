@@ -121,7 +121,7 @@ Manifest-driven adapters with shared process/result normalization.
 
 - Added five `matrix-adapter-*.vitest.ts` files.
 - Added `matrix-adapter-test-utils.ts` to mock child processes.
-- Added `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` and updated `.opencode/skill/system-spec-kit/mcp_server/README.md`.
+- Added `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` and updated `.opencode/skill/system-spec-kit/mcp_server/README.md`.
 
 ### Phase 5: Verification
 
@@ -170,7 +170,7 @@ Manifest-driven adapters with shared process/result normalization.
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: Build failure, adapter smoke failure, or strict validator failure that cannot be fixed surgically.
-- **Procedure**: Remove the new `matrix-runners/` files, remove the `matrix-adapter-*` tests, revert the `.opencode/skill/system-spec-kit/mcp_server/README.md` reference, and preserve packet docs with failure evidence.
+- **Procedure**: Remove the new `matrix_runners/` files, remove the `matrix-adapter-*` tests, revert the `.opencode/skill/system-spec-kit/mcp_server/README.md` reference, and preserve packet docs with failure evidence.
 - **Data reversal**: No database or runtime state migrations were introduced.
 <!-- /ANCHOR:rollback -->
 

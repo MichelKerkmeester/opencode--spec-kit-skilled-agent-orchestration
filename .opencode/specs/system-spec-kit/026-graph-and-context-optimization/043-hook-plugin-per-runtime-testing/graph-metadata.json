@@ -76,7 +76,7 @@
         "source": "manual"
       }
     ],
-    "causal_summary": "Live tests hook + plugin wiring for each of 5 supported runtimes (Claude/Codex/Copilot/Gemini/OpenCode-plugin). Uses existing per-CLI skills (cli-codex/cli-copilot/cli-gemini/cli-claude-code/cli-opencode) plus the matrix-runners adapter helpers. Captures per-cell PASS/FAIL/SKIPPED with evidence; produces signed-off matrix + remediation tickets for any cells that fail.",
+    "causal_summary": "Live tests hook + plugin wiring for each of 5 supported runtimes (Claude/Codex/Copilot/Gemini/OpenCode-plugin). Uses existing per-CLI skills (cli-codex/cli-copilot/cli-gemini/cli-claude-code/cli-opencode) plus the matrix_runners adapter helpers. Captures per-cell PASS/FAIL/SKIPPED with evidence; produces signed-off matrix + remediation tickets for any cells that fail.",
     "created_at": "2026-04-29T19:12:00.000Z",
     "last_save_at": "2026-04-29T19:12:00.000Z",
     "save_lineage": "same_pass",

@@ -139,7 +139,7 @@ The install, diagnostic, and validation surfaces have small but operator-visible
 |---------|----------|
 | Stress config | `.opencode/skill/system-spec-kit/mcp_server/vitest.stress.config.ts:13-15` includes only `mcp_server/stress_test/**/*.{vitest,test}.ts`. |
 | Stress README | `.opencode/skill/system-spec-kit/mcp_server/stress_test/README.md:29-34` lists current stress subfolders; `.opencode/skill/system-spec-kit/mcp_server/stress_test/README.md:42-59` documents current commands. |
-| Matrix runners | `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:30-42` documents the current matrix runner path and quickstart. |
+| Matrix runners | `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:30-42` documents the current matrix runner path and quickstart. |
 | Package scripts | `.opencode/skill/system-spec-kit/mcp_server/package.json:27-30` exposes `hook-tests`, `stress`, `stress:harness`, and `stress:matrix`. |
 
 ### Verdict

@@ -115,7 +115,7 @@ The work followed sk-doc's feature-catalog shape: root catalog summaries stay co
 | Check | Result |
 |-------|--------|
 | Discovery commands | PASS: catalog and template paths recorded in `discovery-notes.md` |
-| Packet 036 presence | PASS: `mcp_server/matrix-runners/adapter-cli-*.ts` files found |
+| Packet 036 presence | PASS: `mcp_server/matrix_runners/adapter-cli-*.ts` files found |
 | Tool count | PASS: `TOOL_DEFINITIONS.length` resolved to 54 from built MCP server module |
 | sk-doc validation | PASS: modified root catalogs and per-feature entries passed `validate_document.py --blocking-only` |
 | Strict packet validation | PASS: `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio --strict` exited 0 |

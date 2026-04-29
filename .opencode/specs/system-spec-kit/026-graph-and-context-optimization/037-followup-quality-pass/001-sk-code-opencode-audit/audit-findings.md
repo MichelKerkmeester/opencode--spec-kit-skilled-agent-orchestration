@@ -70,127 +70,127 @@
 - FIX APPLIED: Moved type-only imports after local value imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts:10` and `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts:13`.
 - PASS: Packet-added retention sweep integration is a value import, not a dynamic untyped boundary. Evidence: `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts:11`.
 
-### matrix-runners/README.md
+### matrix_runners/README.md
 
 - PASS: Documentation asset, TypeScript checklist N/A.
-- PASS: Matrix runner usage and output contract are documented. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:1`.
+- PASS: Matrix runner usage and output contract are documented. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:1`.
 
-### matrix-runners/adapter-cli-claude-code.ts
+### matrix_runners/adapter-cli-claude-code.ts
 
-- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts:7`.
-- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts:11`.
-- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts:1`.
+- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts:7`.
+- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts:11`.
+- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts:1`.
 
-### matrix-runners/adapter-cli-codex.ts
+### matrix_runners/adapter-cli-codex.ts
 
-- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts:7`.
-- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts:13`.
-- PASS: Constants are named in UPPER_SNAKE_CASE. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts:9`.
+- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts:7`.
+- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts:13`.
+- PASS: Constants are named in UPPER_SNAKE_CASE. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts:9`.
 
-### matrix-runners/adapter-cli-copilot.ts
+### matrix_runners/adapter-cli-copilot.ts
 
-- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts:7`.
-- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts:11`.
-- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts:1`.
+- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts:7`.
+- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts:11`.
+- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts:1`.
 
-### matrix-runners/adapter-cli-gemini.ts
+### matrix_runners/adapter-cli-gemini.ts
 
-- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts:7`.
-- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts:11`.
-- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts:1`.
+- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts:7`.
+- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts:11`.
+- PASS: Filename is kebab-case and module header is present. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts:1`.
 
-### matrix-runners/adapter-cli-opencode.ts
+### matrix_runners/adapter-cli-opencode.ts
 
-- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts:7`.
-- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts:13`.
-- PASS: Constants are named in UPPER_SNAKE_CASE. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts:9`.
+- FIX APPLIED: Split mixed value/type import into value and type-only imports. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts:5` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts:7`.
+- FIX APPLIED: Added TSDoc to exported adapter function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts:13`.
+- PASS: Constants are named in UPPER_SNAKE_CASE. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts:9`.
 
-### matrix-runners/adapter-common.ts
+### matrix_runners/adapter-common.ts
 
-- FIX APPLIED: Added TSDoc to exported types, interfaces, and function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:14`, `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:17`, `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:26`, `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:38`, `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:45`, `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:103`.
-- FIX APPLIED: Added rationale for invalid regex catch. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:89`.
-- PASS: No `any` leak in the CLI process boundary; stdout/stderr evidence has named interfaces. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts:27`.
+- FIX APPLIED: Added TSDoc to exported types, interfaces, and function. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:14`, `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:17`, `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:26`, `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:38`, `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:45`, `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:103`.
+- FIX APPLIED: Added rationale for invalid regex catch. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:89`.
+- PASS: No `any` leak in the CLI process boundary; stdout/stderr evidence has named interfaces. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts:27`.
 
-### matrix-runners/matrix-manifest.json
+### matrix_runners/matrix-manifest.json
 
-- PASS: Valid JSON manifest read as data by the runner. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json:1`.
+- PASS: Valid JSON manifest read as data by the runner. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json:1`.
 - SKILL GAP: JSON cannot use the JSONC header pattern without becoming invalid JSON. Proposed skill update recorded below.
 
-### matrix-runners/run-matrix.ts
+### matrix_runners/run-matrix.ts
 
-- FIX APPLIED: Added TSDoc to exported `runMatrix`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:238`.
-- PASS: CLI output uses `process.stdout.write` and `process.stderr.write`, not `console.log`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:273` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:281`.
-- PASS: Dynamic manifest parsing is constrained by `MatrixManifest` and `MatrixCell` interfaces. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:23` and `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:34`.
+- FIX APPLIED: Added TSDoc to exported `runMatrix`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:238`.
+- PASS: CLI output uses `process.stdout.write` and `process.stderr.write`, not `console.log`. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:273` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:281`.
+- PASS: Dynamic manifest parsing is constrained by `MatrixManifest` and `MatrixCell` interfaces. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:23` and `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:34`.
 
-### matrix-runners/templates/F1-spec-folder
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Feature-ID filename is intentional manifest addressing, but sk-code-opencode does not document an exception to kebab-case. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder`, line 1.
-
-### matrix-runners/templates/F2-skill-advisor
+### matrix_runners/templates/F1-spec-folder
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F2-skill-advisor`, line 1.
+- SKILL GAP: Feature-ID filename is intentional manifest addressing, but sk-code-opencode does not document an exception to kebab-case. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder`, line 1.
 
-### matrix-runners/templates/F3-memory-search
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F3-memory-search`, line 1.
-
-### matrix-runners/templates/F4-memory-context
+### matrix_runners/templates/F2-skill-advisor
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F4-memory-context`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F2-skill-advisor`, line 1.
 
-### matrix-runners/templates/F5-code-graph-query
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F5-code-graph-query`, line 1.
-
-### matrix-runners/templates/F6-code-graph-scan
+### matrix_runners/templates/F3-memory-search
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F6-code-graph-scan`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F3-memory-search`, line 1.
 
-### matrix-runners/templates/F7-causal-graph
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F7-causal-graph`, line 1.
-
-### matrix-runners/templates/F8-cocoindex
+### matrix_runners/templates/F4-memory-context
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F8-cocoindex`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F4-memory-context`, line 1.
 
-### matrix-runners/templates/F9-continuity
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F9-continuity`, line 1.
-
-### matrix-runners/templates/F10-deep-loop
+### matrix_runners/templates/F5-code-graph-query
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F10-deep-loop`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F5-code-graph-query`, line 1.
 
-### matrix-runners/templates/F11-hooks
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F11-hooks`, line 1.
-
-### matrix-runners/templates/F12-validators
+### matrix_runners/templates/F6-code-graph-scan
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F12-validators`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F6-code-graph-scan`, line 1.
 
-### matrix-runners/templates/F13-stress-cycle
-
-- PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F13-stress-cycle`, line 1.
-
-### matrix-runners/templates/F14-search-w3-w13
+### matrix_runners/templates/F7-causal-graph
 
 - PASS: Prompt template asset, TypeScript checklist N/A.
-- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13`, line 1.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F7-causal-graph`, line 1.
+
+### matrix_runners/templates/F8-cocoindex
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F8-cocoindex`, line 1.
+
+### matrix_runners/templates/F9-continuity
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F9-continuity`, line 1.
+
+### matrix_runners/templates/F10-deep-loop
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F10-deep-loop`, line 1.
+
+### matrix_runners/templates/F11-hooks
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F11-hooks`, line 1.
+
+### matrix_runners/templates/F12-validators
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F12-validators`, line 1.
+
+### matrix_runners/templates/F13-stress-cycle
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F13-stress-cycle`, line 1.
+
+### matrix_runners/templates/F14-search-w3-w13
+
+- PASS: Prompt template asset, TypeScript checklist N/A.
+- SKILL GAP: Same feature-ID filename exception as F1. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13`, line 1.
 
 ### schemas/tool-input-schemas.ts
 
@@ -302,9 +302,9 @@
 
 ## Skill-gap Findings (proposed sk-code-opencode updates)
 
-- JSON manifest headers: `matrix-manifest.json` must remain valid JSON, so it cannot carry JSONC-style header comments. Suggested addition: document a pure-JSON exception where manifests use sibling README/module docs for purpose metadata. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json:1`.
-- Matrix prompt-template filenames: `F1-spec-folder` through `F14-search-w3-w13` use feature IDs for manifest addressing, which intentionally violates pure kebab-case. Suggested addition: allow feature-ID-prefixed prompt templates when IDs are declared in a manifest. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder`, line 1.
-- TypeScript CLI output: `run-matrix.ts` correctly avoids `console.log` and writes TSV/status output through stdout/stderr, but sk-code-opencode has clearer JavaScript console guidance than TypeScript CLI guidance. Suggested addition: document `process.stdout.write`/`process.stderr.write` as the preferred TypeScript CLI reporting pattern. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts:273`.
+- JSON manifest headers: `matrix-manifest.json` must remain valid JSON, so it cannot carry JSONC-style header comments. Suggested addition: document a pure-JSON exception where manifests use sibling README/module docs for purpose metadata. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json:1`.
+- Matrix prompt-template filenames: `F1-spec-folder` through `F14-search-w3-w13` use feature IDs for manifest addressing, which intentionally violates pure kebab-case. Suggested addition: allow feature-ID-prefixed prompt templates when IDs are declared in a manifest. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder`, line 1.
+- TypeScript CLI output: `run-matrix.ts` correctly avoids `console.log` and writes TSV/status output through stdout/stderr, but sk-code-opencode has clearer JavaScript console guidance than TypeScript CLI guidance. Suggested addition: document `process.stdout.write`/`process.stderr.write` as the preferred TypeScript CLI reporting pattern. Evidence: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts:273`.
 
 ## Verification Evidence
 

@@ -36,7 +36,7 @@ Read at least one existing feature catalog (e.g., system-spec-kit's) before edit
 New tools/surfaces from 031-036:
 - `memory_retention_sweep` MCP tool (from 033) — closes delete_after rows
 - `advisor_rebuild` MCP tool (from 034) — explicit advisor cache rebuild
-- CLI matrix adapter runners (from 036) — `mcp_server/matrix-runners/`
+- CLI matrix adapter runners (from 036) — `mcp_server/matrix_runners/`
 - `freshness-smoke-check` library (from 034) — codex hook freshness probe
 - Updated tool count: 51 → 54 (correct count after 033, 034, 036 additions)
 
@@ -57,7 +57,7 @@ For each entry, cite source file:line:
 - 033 retention sweep: `mcp_server/handlers/memory-retention-sweep.ts:1-NN`, `mcp_server/lib/governance/memory-retention-sweep.ts:1-NN`
 - 034 advisor_rebuild: `mcp_server/skill_advisor/handlers/advisor-rebuild.ts:1-NN`
 - 034 freshness-smoke-check: `mcp_server/hooks/codex/lib/freshness-smoke-check.ts:1-NN`
-- 036 CLI adapters: `mcp_server/matrix-runners/adapter-cli-*.ts:1-NN` (if 036 has merged)
+- 036 CLI adapters: `mcp_server/matrix_runners/adapter-cli-*.ts:1-NN` (if 036 has merged)
 
 If 036 has NOT merged at the time of this packet's execution, note CLI adapters as "shipping in packet 036; entry deferred to next catalog refresh" rather than fabricating refs.
 

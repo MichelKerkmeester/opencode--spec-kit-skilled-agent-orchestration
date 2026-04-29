@@ -12,7 +12,7 @@ READ-ONLY deep-review audit. Output: `review-report.md` with severity-classified
 - `AGENTS.md`, `CLAUDE.md`
 - `.opencode/skill/system-spec-kit/SKILL.md`, `ARCHITECTURE.md`, `README.md`
 - `.opencode/skill/system-spec-kit/mcp_server/{README,INSTALL_GUIDE,ENV_REFERENCE}.md`
-- `.opencode/skill/system-spec-kit/mcp_server/{handlers,lib,hooks/codex,hooks/copilot,skill_advisor,code_graph,matrix-runners,stress_test,schemas,tools}/README.md` (sub-folder READMEs)
+- `.opencode/skill/system-spec-kit/mcp_server/{handlers,lib,hooks/codex,hooks/copilot,skill_advisor,code_graph,matrix_runners,stress_test,schemas,tools}/README.md` (sub-folder READMEs)
 - `.opencode/skill/system-spec-kit/feature_catalog/` and per-skill catalogs
 - `.opencode/skill/system-spec-kit/manual_testing_playbook/` and per-skill playbooks
 - `.opencode/skill/system-spec-kit/references/{config,hooks,templates}/`

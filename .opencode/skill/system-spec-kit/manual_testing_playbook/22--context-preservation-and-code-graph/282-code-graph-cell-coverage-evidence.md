@@ -104,7 +104,7 @@ No cleanup. This scenario is read-only.
 
 - Compare `logs/feature-runs/summary.tsv` and `summary-rerun.tsv` to check rerun drift.
 - Inspect one blocked external CLI record and verify `manual_fallback` names the next operator action.
-- Rerun F5-F8 through `matrix-runners/run-matrix.ts` and compare the new JSONL shape with stored records.
+- Rerun F5-F8 through `matrix_runners/run-matrix.ts` and compare the new JSONL shape with stored records.
 
 ---
 

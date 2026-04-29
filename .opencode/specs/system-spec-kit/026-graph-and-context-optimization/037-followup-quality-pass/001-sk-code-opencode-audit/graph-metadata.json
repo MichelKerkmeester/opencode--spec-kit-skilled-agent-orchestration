@@ -47,13 +47,13 @@
       ".opencode/skill/system-spec-kit/mcp_server/lib/governance/memory-retention-sweep.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/governance/scope-governance.ts",
       ".opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts",
-      ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts",
       ".opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts",
       ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts",
       ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts"
@@ -116,43 +116,43 @@
       {
         "name": "adapter-cli-claude-code.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-claude-code.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-claude-code.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-codex.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-codex.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-codex.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-copilot.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-copilot.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-copilot.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-gemini.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-gemini.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-gemini.ts",
         "source": "derived"
       },
       {
         "name": "adapter-cli-opencode.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-opencode.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-opencode.ts",
         "source": "derived"
       },
       {
         "name": "adapter-common.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts",
         "source": "derived"
       },
       {
         "name": "run-matrix.ts",
         "kind": "code",
-        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts",
         "source": "derived"
       },
       {

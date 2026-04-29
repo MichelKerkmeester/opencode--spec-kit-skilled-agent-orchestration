@@ -58,7 +58,7 @@ Other playbook directories found included `cli-codex`, `cli-copilot`, `cli-gemin
 | 033 | `../../033-memory-retention-sweep/spec.md` and MCP README document `memory_retention_sweep`. |
 | 034 | `../../034-half-auto-upgrades/spec.md` and Skill Advisor handlers document diagnostic `advisor_status` plus explicit `advisor_rebuild`. |
 | 035 | `035-full-matrix-execution-validation/logs/feature-runs/F5-code-graph-query.log`, `F6-code-graph-verify.log`, `F7-causal-graph.log`, `F8-cocoindex-calibration.log`, plus F5-F8 JSONL result files. |
-| 036 | `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md`, `matrix-manifest.json`, adapters, and matrix adapter tests. |
+| 036 | `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md`, `matrix-manifest.json`, adapters, and matrix adapter tests. |
 
 ---
 

@@ -54,7 +54,7 @@ _memory:
 | `.opencode/skill/system-spec-kit/feature_catalog/` | Updated | OK | Aggregate directory touched by child packet work. |
 | `.opencode/skill/system-spec-kit/manual_testing_playbook/` | Updated | OK | Aggregate directory touched by child packet work. |
 | `.opencode/skill/system-spec-kit/mcp_server/**/*.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/` | Updated | OK | Aggregate directory touched by child packet work. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/` | Updated | OK | Aggregate directory touched by child packet work. |
 | `.opencode/skill/system-spec-kit/mcp_server/stress_test/` | Updated | OK | Aggregate directory touched by child packet work. |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/` | Updated | OK | Aggregate directory touched by child packet work. |
 | `.opencode/skill/system-spec-kit/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |

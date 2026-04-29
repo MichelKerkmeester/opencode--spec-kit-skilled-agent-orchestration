@@ -91,7 +91,7 @@ Produce an auditable target list, fix confirmed sk-doc violations in packet scop
 | `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Modify | README TOC anchor and metadata alignment |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Modify | README TOC anchor and metadata alignment |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/*/README.md` | Modify | README TOC, anchors and metadata alignment |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Modify | README structure, TOC and anchors |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Modify | README structure, TOC and anchors |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Modify | Reference frontmatter, section numbering and anchors |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Modify | Reference importance tier metadata |
 <!-- /ANCHOR:scope -->

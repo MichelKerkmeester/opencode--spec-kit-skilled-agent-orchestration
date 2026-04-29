@@ -28,7 +28,7 @@ Additional integrity checks covered balanced `<!-- ANCHOR:slug -->` markers and 
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Fixed README TOC anchors and added `importance_tier` metadata |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` | Added README TOC, balanced section anchors and `importance_tier` metadata |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md` | Added README TOC, balanced section anchors and `importance_tier` metadata |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Added README TOC, numbered sections, anchors, trigger phrases and `importance_tier` metadata |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Added README TOC, numbered sections, anchors, trigger phrases and `importance_tier` metadata |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Added reference frontmatter, numbered H2 sections and balanced anchors |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | Added `importance_tier` metadata |
 
@@ -36,7 +36,7 @@ Additional integrity checks covered balanced `<!-- ANCHOR:slug -->` markers and 
 
 | File Pattern | Reason |
 |--------------|--------|
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F*.md` | These are raw prompt payloads. Adding README or asset overview sections would change the text sent to external CLI runners. |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F*.md` | These are raw prompt payloads. Adding README or asset overview sections would change the text sent to external CLI runners. |
 | `AGENTS.md` | This is a governance template, not a README. Emoji and heading style existed before packets 031 through 036, so rewriting it would be out-of-scope drift cleanup. |
 
 ## Per-file Results
@@ -50,21 +50,21 @@ Additional integrity checks covered balanced `<!-- ANCHOR:slug -->` markers and 
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | FIX_APPLIED | TOC anchor and frontmatter metadata aligned |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/codex/README.md` | FIX_APPLIED | README TOC, anchors and frontmatter metadata added |
 | `.opencode/skill/system-spec-kit/mcp_server/hooks/copilot/README.md` | FIX_APPLIED | README TOC, anchors and frontmatter metadata added |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | FIX_APPLIED | README structure, TOC, anchors and metadata aligned |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F1-spec-folder.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F10-deep-loop.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F11-hooks.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F12-validators.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F13-stress-cycle.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F14-search-w3-w13.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F2-skill-advisor.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F3-memory-search.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F4-memory-context.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F5-code-graph-query.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F6-code-graph-scan.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F7-causal-graph.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F8-cocoindex.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/F9-continuity.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | FIX_APPLIED | README structure, TOC, anchors and metadata aligned |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F1-spec-folder.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F10-deep-loop.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F11-hooks.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F12-validators.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F13-stress-cycle.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F14-search-w3-w13.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F2-skill-advisor.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F3-memory-search.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F4-memory-context.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F5-code-graph-query.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F6-code-graph-scan.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F7-causal-graph.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F8-cocoindex.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/F9-continuity.md` | DEFERRED | Raw prompt-template asset. Adding README sections would alter matrix prompt payloads |
 | `.opencode/skill/system-spec-kit/references/config/hook_system.md` | FIX_APPLIED | Reference frontmatter, numbered sections and anchors added |
 | `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md` | FIX_APPLIED | `importance_tier` metadata added |
 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass/checklist.md` | PASS | No blocking sk-doc issue in applicable spec checks |

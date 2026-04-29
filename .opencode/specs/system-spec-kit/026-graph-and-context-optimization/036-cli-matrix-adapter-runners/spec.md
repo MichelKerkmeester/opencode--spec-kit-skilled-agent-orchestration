@@ -63,7 +63,7 @@ Build the external CLI adapter layer for `cli-codex`, `cli-copilot`, `cli-gemini
 
 ### In Scope
 
-- Add `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/` with shared adapter process handling.
+- Add `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/` with shared adapter process handling.
 - Add five per-CLI adapter entrypoints with the requested argv/stdin contracts.
 - Add a 70-cell `F1-F14 x five CLI executors` manifest and prompt templates.
 - Add a meta-runner that loads the manifest, respects concurrency 3, writes per-cell JSONL, writes `summary.tsv`, and prints pass-rate aggregates.
@@ -83,14 +83,14 @@ Build the external CLI adapter layer for `cli-codex`, `cli-copilot`, `cli-gemini
 
 | Path | Change Type | Purpose |
 |------|-------------|---------|
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts` | Create | Shared timeout, spawn, stdout/stderr capture, expected-signal parsing, result normalization |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-cli-*.ts` | Create | Five CLI-specific adapters |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json` | Create | 70-cell external CLI matrix with F11 Gemini `NA` |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/run-matrix.ts` | Create | Manifest-driven meta-runner |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/templates/*.md` | Create | Feature prompt templates |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts` | Create | Shared timeout, spawn, stdout/stderr capture, expected-signal parsing, result normalization |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-cli-*.ts` | Create | Five CLI-specific adapters |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json` | Create | 70-cell external CLI matrix with F11 Gemini `NA` |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/run-matrix.ts` | Create | Manifest-driven meta-runner |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/templates/*.md` | Create | Feature prompt templates |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-*.vitest.ts` | Create | Five mocked adapter smoke tests |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/matrix-adapter-test-utils.ts` | Create | Test spawn mock helper |
-| `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md` | Create | Quickstart and manifest docs |
+| `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md` | Create | Quickstart and manifest docs |
 | `.opencode/skill/system-spec-kit/mcp_server/README.md` | Update | Structure reference for matrix runners |
 | `specs/system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners/*` | Create | Packet documentation and metadata |
 <!-- /ANCHOR:scope -->
@@ -109,7 +109,7 @@ Build the external CLI adapter layer for `cli-codex`, `cli-copilot`, `cli-gemini
 | REQ-005 | Freeze the external CLI matrix. | Manifest contains 70 cells, 14 features, 5 executors, and F11 cli-gemini as `NA` per manifest check output. |
 | REQ-006 | Add meta-runner. | `run-matrix.ts` loads the manifest, routes adapters, writes per-cell JSONL and `summary.tsv`, and aggregates pass rates (`run-matrix.ts:125`, `:134`, `:172`, `:180`, `:238`, `:263`). |
 | REQ-007 | Add one smoke test per adapter. | `npx vitest run matrix-adapter` reports 5 files and 10 tests passed. |
-| REQ-008 | Update docs. | Runner README documents quickstart, manifest fields, outcomes, and verification (`.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md:12`, `:31`, `:54`, `:64`); MCP README lists the new directory (`.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`). |
+| REQ-008 | Update docs. | Runner README documents quickstart, manifest fields, outcomes, and verification (`.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md:12`, `:31`, `:54`, `:64`); MCP README lists the new directory (`.opencode/skill/system-spec-kit/mcp_server/README.md:1301`, `:1322`). |
 | REQ-009 | Build succeeds. | `npm run build` in `mcp_server` exits 0. |
 | REQ-010 | Strict validator passes. | Final validator command exits 0 for this packet. |
 <!-- /ANCHOR:requirements -->

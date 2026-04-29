@@ -8,7 +8,7 @@ import { spawn } from 'node:child_process';
 import { expect, vi } from 'vitest';
 
 import type { Mock, MockedFunction } from 'vitest';
-import type { AdapterInput } from '../matrix-runners/adapter-common.js';
+import type { AdapterInput } from '../matrix_runners/adapter-common.js';
 
 class MockStream extends EventEmitter {
   readonly setEncoding: Mock<(encoding: BufferEncoding) => void> = vi.fn();
