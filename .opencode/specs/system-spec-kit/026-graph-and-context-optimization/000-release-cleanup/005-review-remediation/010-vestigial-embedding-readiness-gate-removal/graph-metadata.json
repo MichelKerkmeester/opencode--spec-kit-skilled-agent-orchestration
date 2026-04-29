@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": ["010-vestigial-embedding-readiness-gate-removal", "embedding readiness gate removal", "memory-search readiness gate", "vestigial embedding gate"],
+    "key_topics": ["embedding-readiness", "vestigial-gate", "memory-search", "lazy-loading", "T016-T019"],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md"],
+    "entities": [],
+    "causal_summary": "Level 1 remediation deleting vestigial isEmbeddingModelReady/waitForEmbeddingModel gate from memory-search.ts:927-932 that became dead code after T016-T019 lazy-loading migration. Surfaced as v1.0.3 stress test live-handler probe failure (Phase J research RQ2).",
+    "created_at": "2026-04-29T08:30:00.000Z",
+    "last_save_at": "2026-04-29T08:30:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}

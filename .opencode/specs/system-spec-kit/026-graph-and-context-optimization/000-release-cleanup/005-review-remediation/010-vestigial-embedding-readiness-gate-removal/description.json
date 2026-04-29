@@ -1,0 +1,15 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal",
+  "description": "Level 1 remediation: delete vestigial isEmbeddingModelReady/waitForEmbeddingModel gate from memory-search.ts (dead code post T016-T019 lazy-loading migration). Surfaced by v1.0.3 stress test live-handler probe failure.",
+  "keywords": ["embedding-readiness", "vestigial-gate", "memory-search", "lazy-loading", "T016-T019", "v1.0.3-stress-test", "live-handler-probe"],
+  "lastUpdated": "2026-04-29T08:30:00.000Z",
+  "specId": "010",
+  "folderSlug": "vestigial-embedding-readiness-gate-removal",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1
+}

@@ -58,7 +58,7 @@ import type { FeedbackEvent } from '../lib/feedback/feedback-ledger.js';
 import { trackQueryAndDetect, logResultCited } from '../lib/feedback/query-flow-tracker.js';
 
 // Core utilities
-import { checkDatabaseUpdated, isEmbeddingModelReady, waitForEmbeddingModel } from '../core/index.js';
+import { checkDatabaseUpdated } from '../core/index.js';
 import { validateQuery, requireDb, toErrorMessage } from '../utils/index.js';
 
 // Response envelope + formatters
@@ -923,14 +923,6 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   if (cachedPayload) {
     responseToReturn = buildSearchResponseFromPayload(cachedPayload, _searchStartTime, true);
   } else {
-    // Wait for embedding model only on cache miss
-    if (!isEmbeddingModelReady()) {
-      const modelReady = await waitForEmbeddingModel(30000);
-      if (!modelReady) {
-        throw new Error('Embedding model not ready after 30s timeout. Try again later.');
-      }
-    }
-
     // V2 pipeline is the only path (legacy V1 removed from the runtime pipeline)
     const pipelineConfig: PipelineConfig = {
       query: effectiveQuery,
