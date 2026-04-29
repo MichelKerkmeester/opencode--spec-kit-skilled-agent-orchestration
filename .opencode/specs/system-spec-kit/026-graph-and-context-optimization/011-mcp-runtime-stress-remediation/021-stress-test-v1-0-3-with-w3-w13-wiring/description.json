@@ -1,0 +1,32 @@
+{
+  "trigger_phrases": [
+    "021-stress-test-v1-0-3-with-w3-w13-wiring",
+    "v1.0.3 stress test",
+    "W3-W13 wiring active",
+    "SearchDecisionEnvelope stress run",
+    "decision audit stress run",
+    "shadow sink stress run"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring",
+  "description": "Measurement-only v1.0.3 stress test for search/query/RAG W3-W13 wiring after Phase G.",
+  "keywords": [
+    "stress-test",
+    "v1.0.3",
+    "W3-W13",
+    "search-quality",
+    "SearchDecisionEnvelope",
+    "decision-audit",
+    "shadow-sink",
+    "rerank-gate"
+  ],
+  "lastUpdated": "2026-04-29T05:25:00.000Z",
+  "specId": "021",
+  "folderSlug": "stress-test-v1-0-3-with-w3-w13-wiring",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -1,0 +1,4278 @@
+{
+  "runId": "phase-h-v1.0.3",
+  "generatedAt": "2026-04-29T05:10:00.000Z",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1",
+  "caseCount": 12,
+  "allBaseline": {
+    "runId": "v1.0.3-all-baseline",
+    "workstream": "all",
+    "variant": "baseline",
+    "hypothesis": "Global baseline should preserve Phase D harness pass/fail dimensions across all current fixtures.",
+    "corpusVersion": "007-search-rag-measurement-driven-implementation-v1",
+    "summary": {
+      "precisionAt3": 0.458,
+      "recallAt3": 0.625,
+      "latency": {
+        "p50": 0.01,
+        "p95": 0.109,
+        "p99": 0.109
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 0.5833333333333334
+    },
+    "cases": [
+      {
+        "caseId": "v101-weak-retrieval-refusal",
+        "query": "weak memory search should not cite unsupported paths",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [],
+            "refused": true,
+            "citationIds": [],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "weak-refusal-policy"
+          ],
+          "observedIds": [],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": true,
+          "refused": true,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.10929100000001313,
+          "byChannel": {
+            "memory_search": 1
+          }
+        }
+      },
+      {
+        "caseId": "v102-code-graph-fallback",
+        "query": "code graph full scan required fallback decision",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-full-scan-fallback"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.013791999999995141,
+          "byChannel": {
+            "code_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "ambiguous-advisor-routing",
+        "query": "review this routing prompt and tell me which skill applies",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "skill_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "advisor-ambiguity-lane-breakdown"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.009874999999993861,
+          "byChannel": {
+            "skill_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "paraphrase-query-plan",
+        "query": "show the plan for search evaluation using different wording",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 1
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "query-plan-telemetry-contract"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.007542000000000826,
+          "byChannel": {
+            "memory_search": 1,
+            "skill_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w3-trust-tree-contradiction",
+        "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "trust-tree-response-policy",
+              "title": "Response policy provenance",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-response-policy"
+              ]
+            },
+            {
+              "id": "unsupported-trust-claim",
+              "title": "Unsupported trust claim",
+              "channel": "memory_search",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "unsupported-trust-claim"
+              ]
+            }
+          ],
+          "code_graph_query": [
+            {
+              "id": "code-graph-readiness-signal",
+              "title": "Code graph readiness signal",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-readiness-signal"
+              ]
+            }
+          ],
+          "skill_graph_query": [
+            {
+              "id": "advisor-trust-state-signal",
+              "title": "Advisor trust state signal",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "advisor-trust-state-signal"
+              ]
+            }
+          ]
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "trust-tree-response-policy",
+                "title": "Response policy provenance",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-response-policy"
+                ]
+              },
+              {
+                "id": "unsupported-trust-claim",
+                "title": "Unsupported trust claim",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "unsupported-trust-claim"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "trust-tree-response-policy",
+              "unsupported-trust-claim"
+            ],
+            "latencyMs": 1
+          },
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-readiness-signal",
+                "title": "Code graph readiness signal",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-readiness-signal"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-readiness-signal"
+            ],
+            "latencyMs": 1
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [
+              {
+                "id": "advisor-trust-state-signal",
+                "title": "Advisor trust state signal",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "trust-tree-response-policy",
+            "title": "Response policy provenance",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-response-policy"
+            ]
+          },
+          {
+            "id": "code-graph-readiness-signal",
+            "title": "Code graph readiness signal",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-readiness-signal"
+            ]
+          },
+          {
+            "id": "advisor-trust-state-signal",
+            "title": "Advisor trust state signal",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ]
+          },
+          {
+            "id": "unsupported-trust-claim",
+            "title": "Unsupported trust claim",
+            "channel": "memory_search",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "unsupported-trust-claim"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 2,
+          "precisionAt3": 0.3333333333333333,
+          "recallAt3": 0.5
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "trust-tree-response-policy",
+            "trust-tree-contradiction-edge"
+          ],
+          "observedIds": [
+            "trust-tree-response-policy",
+            "unsupported-trust-claim",
+            "code-graph-readiness-signal",
+            "advisor-trust-state-signal"
+          ],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.0463749999999834,
+          "byChannel": {
+            "memory_search": 1,
+            "code_graph_query": 1,
+            "skill_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w4-ambiguous-rerank-disagreement",
+        "query": "ambiguous review routing prompt with weak channel agreement",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "rerank-adjacent-noise",
+              "title": "Adjacent ambiguous noise",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-adjacent-noise"
+              ]
+            },
+            {
+              "id": "rerank-canonical-ambiguous",
+              "title": "Canonical ambiguous rerank case",
+              "channel": "memory_search",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "rerank-canonical-ambiguous"
+              ]
+            }
+          ],
+          "code_graph_query": [],
+          "skill_graph_query": [
+            {
+              "id": "rerank-skill-neighbor",
+              "title": "Skill neighbor disagreement",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-skill-neighbor"
+              ]
+            }
+          ]
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "rerank-adjacent-noise",
+                "title": "Adjacent ambiguous noise",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-adjacent-noise"
+                ]
+              },
+              {
+                "id": "rerank-canonical-ambiguous",
+                "title": "Canonical ambiguous rerank case",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "rerank-canonical-ambiguous"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "rerank-adjacent-noise",
+              "rerank-canonical-ambiguous"
+            ],
+            "latencyMs": 1
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [
+              {
+                "id": "rerank-skill-neighbor",
+                "title": "Skill neighbor disagreement",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-skill-neighbor"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "rerank-skill-neighbor"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "rerank-adjacent-noise",
+            "title": "Adjacent ambiguous noise",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-adjacent-noise"
+            ]
+          },
+          {
+            "id": "rerank-skill-neighbor",
+            "title": "Skill neighbor disagreement",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-skill-neighbor"
+            ]
+          },
+          {
+            "id": "rerank-canonical-ambiguous",
+            "title": "Canonical ambiguous rerank case",
+            "channel": "memory_search",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "rerank-canonical-ambiguous"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 0.3333333333333333,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "rerank-canonical-ambiguous"
+          ],
+          "observedIds": [
+            "rerank-adjacent-noise",
+            "rerank-canonical-ambiguous",
+            "rerank-skill-neighbor"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.015416000000016084,
+          "byChannel": {
+            "memory_search": 1,
+            "skill_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w5-advisor-shadow-ambiguous",
+        "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": [
+            {
+              "id": "advisor-live-routing-only",
+              "title": "Live routing without shadow diagnostic",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "advisor-live-routing-only"
+              ]
+            },
+            {
+              "id": "advisor-shadow-weight-diagnostic",
+              "title": "Shadow learned weight diagnostic",
+              "channel": "skill_graph_query",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": []
+            }
+          ]
+        },
+        "channelCaptures": [
+          {
+            "channel": "skill_graph_query",
+            "candidates": [
+              {
+                "id": "advisor-live-routing-only",
+                "title": "Live routing without shadow diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-live-routing-only"
+                ]
+              },
+              {
+                "id": "advisor-shadow-weight-diagnostic",
+                "title": "Shadow learned weight diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": []
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "advisor-live-routing-only"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "advisor-live-routing-only",
+            "title": "Live routing without shadow diagnostic",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "advisor-live-routing-only"
+            ]
+          },
+          {
+            "id": "advisor-shadow-weight-diagnostic",
+            "title": "Shadow learned weight diagnostic",
+            "channel": "skill_graph_query",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": []
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 0.5,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "advisor-shadow-weight-diagnostic"
+          ],
+          "observedIds": [
+            "advisor-live-routing-only"
+          ],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.019583000000011452,
+          "byChannel": {
+            "skill_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w6-cocoindex-duplicate-heavy",
+        "query": "semantic code search duplicate-heavy path-class calibration",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "cocoindex-duplicate-spec-a",
+              "title": "Duplicate spec path A",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "cocoindex-duplicate-spec-a"
+              ]
+            },
+            {
+              "id": "cocoindex-duplicate-spec-b",
+              "title": "Duplicate spec path B",
+              "channel": "memory_search",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "cocoindex-duplicate-spec-b"
+              ]
+            },
+            {
+              "id": "cocoindex-canonical-spec",
+              "title": "Canonical CocoIndex spec path",
+              "channel": "memory_search",
+              "rank": 3,
+              "score": 0.3333333333333333,
+              "citationIds": [
+                "cocoindex-canonical-spec"
+              ]
+            }
+          ],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "cocoindex-duplicate-spec-a",
+                "title": "Duplicate spec path A",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "cocoindex-duplicate-spec-a"
+                ]
+              },
+              {
+                "id": "cocoindex-duplicate-spec-b",
+                "title": "Duplicate spec path B",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "cocoindex-duplicate-spec-b"
+                ]
+              },
+              {
+                "id": "cocoindex-canonical-spec",
+                "title": "Canonical CocoIndex spec path",
+                "channel": "memory_search",
+                "rank": 3,
+                "score": 0.3333333333333333,
+                "citationIds": [
+                  "cocoindex-canonical-spec"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "cocoindex-duplicate-spec-a",
+              "cocoindex-duplicate-spec-b",
+              "cocoindex-canonical-spec"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "cocoindex-duplicate-spec-a",
+            "title": "Duplicate spec path A",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "cocoindex-duplicate-spec-a"
+            ]
+          },
+          {
+            "id": "cocoindex-duplicate-spec-b",
+            "title": "Duplicate spec path B",
+            "channel": "memory_search",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "cocoindex-duplicate-spec-b"
+            ]
+          },
+          {
+            "id": "cocoindex-canonical-spec",
+            "title": "Canonical CocoIndex spec path",
+            "channel": "memory_search",
+            "rank": 3,
+            "score": 0.3333333333333333,
+            "citationIds": [
+              "cocoindex-canonical-spec"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 0.3333333333333333,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "cocoindex-canonical-spec"
+          ],
+          "observedIds": [
+            "cocoindex-duplicate-spec-a",
+            "cocoindex-duplicate-spec-b",
+            "cocoindex-canonical-spec"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.013374999999996362,
+          "byChannel": {
+            "memory_search": 1
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-stale",
+        "query": "code graph stale readiness should preserve fallback metrics",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-stale-fallback",
+              "title": "Stale graph fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-stale-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-stale-fallback",
+                "title": "Stale graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-stale-fallback"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-stale-fallback",
+            "title": "Stale graph fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-stale-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-stale-fallback"
+          ],
+          "observedIds": [
+            "code-graph-stale-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.006708000000003267,
+          "byChannel": {
+            "code_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-empty",
+        "query": "code graph empty readiness full scan fallback",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-empty-fallback",
+              "title": "Empty graph fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-empty-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-empty-fallback",
+                "title": "Empty graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-empty-fallback"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-empty-fallback",
+            "title": "Empty graph fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-empty-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-empty-fallback"
+          ],
+          "observedIds": [
+            "code-graph-empty-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.006666999999993095,
+          "byChannel": {
+            "code_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-full-scan-required",
+        "query": "code graph full scan required fallback envelope survives harness",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-full-scan-required-fallback",
+              "title": "Full scan required fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-full-scan-required-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-full-scan-required-fallback",
+                "title": "Full scan required fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-full-scan-required-fallback"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-full-scan-required-fallback",
+            "title": "Full scan required fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-full-scan-required-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-full-scan-required-fallback"
+          ],
+          "observedIds": [
+            "code-graph-full-scan-required-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.004041999999998325,
+          "byChannel": {
+            "code_graph_query": 1
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-unavailable",
+        "query": "code graph unavailable readiness routes to rg fallback",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-unavailable-rg-fallback",
+              "title": "Unavailable graph rg fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-unavailable-rg-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-unavailable-rg-fallback",
+                "title": "Unavailable graph rg fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-unavailable-rg-fallback"
+            ],
+            "latencyMs": 1
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-unavailable-rg-fallback",
+            "title": "Unavailable graph rg fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-unavailable-rg-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-unavailable-rg-fallback"
+          ],
+          "observedIds": [
+            "code-graph-unavailable-rg-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.0026670000000024174,
+          "byChannel": {
+            "code_graph_query": 1
+          }
+        }
+      }
+    ]
+  },
+  "allVariant": {
+    "runId": "v1.0.3-all-variant",
+    "workstream": "all",
+    "variant": "variant",
+    "hypothesis": "Global baseline should preserve Phase D harness pass/fail dimensions across all current fixtures.",
+    "corpusVersion": "007-search-rag-measurement-driven-implementation-v1",
+    "summary": {
+      "precisionAt3": 0.597,
+      "recallAt3": 0.667,
+      "latency": {
+        "p50": 0.003,
+        "p95": 0.009,
+        "p99": 0.009
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 0.75
+    },
+    "cases": [
+      {
+        "caseId": "v101-weak-retrieval-refusal",
+        "query": "weak memory search should not cite unsupported paths",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [],
+            "refused": true,
+            "citationIds": [],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "weak-refusal-policy"
+          ],
+          "observedIds": [],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": true,
+          "refused": true,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.00866600000000517,
+          "byChannel": {
+            "memory_search": 2
+          }
+        }
+      },
+      {
+        "caseId": "v102-code-graph-fallback",
+        "query": "code graph full scan required fallback decision",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-full-scan-fallback"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.005375000000015007,
+          "byChannel": {
+            "code_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "ambiguous-advisor-routing",
+        "query": "review this routing prompt and tell me which skill applies",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "skill_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "advisor-ambiguity-lane-breakdown"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.002583000000015545,
+          "byChannel": {
+            "skill_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "paraphrase-query-plan",
+        "query": "show the plan for search evaluation using different wording",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 2
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [],
+        "finalRelevance": {
+          "relevantRetrieved": 0,
+          "totalRelevant": 1,
+          "precisionAt3": 0,
+          "recallAt3": 0
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "query-plan-telemetry-contract"
+          ],
+          "observedIds": [],
+          "passed": false
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.0026670000000024174,
+          "byChannel": {
+            "memory_search": 2,
+            "skill_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w3-trust-tree-contradiction",
+        "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "trust-tree-response-policy",
+              "title": "Response policy provenance",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-response-policy"
+              ]
+            }
+          ],
+          "code_graph_query": [
+            {
+              "id": "trust-tree-contradiction-edge",
+              "title": "Contradiction edge provenance",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-contradiction-edge"
+              ]
+            }
+          ],
+          "skill_graph_query": [
+            {
+              "id": "advisor-trust-state-signal",
+              "title": "Advisor trust state signal",
+              "channel": "skill_graph_query",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "advisor-trust-state-signal"
+              ]
+            }
+          ]
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "trust-tree-response-policy",
+                "title": "Response policy provenance",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-response-policy"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "trust-tree-response-policy"
+            ],
+            "latencyMs": 2
+          },
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "trust-tree-contradiction-edge",
+                "title": "Contradiction edge provenance",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-contradiction-edge"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "trust-tree-contradiction-edge"
+            ],
+            "latencyMs": 2
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [
+              {
+                "id": "advisor-trust-state-signal",
+                "title": "Advisor trust state signal",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "trust-tree-response-policy",
+            "title": "Response policy provenance",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-response-policy"
+            ]
+          },
+          {
+            "id": "trust-tree-contradiction-edge",
+            "title": "Contradiction edge provenance",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-contradiction-edge"
+            ]
+          },
+          {
+            "id": "advisor-trust-state-signal",
+            "title": "Advisor trust state signal",
+            "channel": "skill_graph_query",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 2,
+          "totalRelevant": 2,
+          "precisionAt3": 0.6666666666666666,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "trust-tree-response-policy",
+            "trust-tree-contradiction-edge"
+          ],
+          "observedIds": [
+            "trust-tree-response-policy",
+            "trust-tree-contradiction-edge",
+            "advisor-trust-state-signal"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.0072499999999990905,
+          "byChannel": {
+            "memory_search": 2,
+            "code_graph_query": 2,
+            "skill_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w4-ambiguous-rerank-disagreement",
+        "query": "ambiguous review routing prompt with weak channel agreement",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "rerank-canonical-ambiguous",
+              "title": "Canonical ambiguous rerank case",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-canonical-ambiguous"
+              ]
+            }
+          ],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "rerank-canonical-ambiguous",
+                "title": "Canonical ambiguous rerank case",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-canonical-ambiguous"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "rerank-canonical-ambiguous"
+            ],
+            "latencyMs": 2
+          },
+          {
+            "channel": "skill_graph_query",
+            "candidates": [],
+            "refused": false,
+            "citationIds": [],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "rerank-canonical-ambiguous",
+            "title": "Canonical ambiguous rerank case",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-canonical-ambiguous"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "rerank-canonical-ambiguous"
+          ],
+          "observedIds": [
+            "rerank-canonical-ambiguous"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.004166999999995369,
+          "byChannel": {
+            "memory_search": 2,
+            "skill_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w5-advisor-shadow-ambiguous",
+        "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [],
+          "skill_graph_query": [
+            {
+              "id": "advisor-shadow-weight-diagnostic",
+              "title": "Shadow learned weight diagnostic",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "advisor-shadow-weight-diagnostic"
+              ]
+            },
+            {
+              "id": "advisor-live-routing-only",
+              "title": "Live routing unchanged",
+              "channel": "skill_graph_query",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "advisor-live-routing-only"
+              ]
+            }
+          ]
+        },
+        "channelCaptures": [
+          {
+            "channel": "skill_graph_query",
+            "candidates": [
+              {
+                "id": "advisor-shadow-weight-diagnostic",
+                "title": "Shadow learned weight diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-shadow-weight-diagnostic"
+                ]
+              },
+              {
+                "id": "advisor-live-routing-only",
+                "title": "Live routing unchanged",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "advisor-live-routing-only"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "advisor-shadow-weight-diagnostic",
+              "advisor-live-routing-only"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "advisor-shadow-weight-diagnostic",
+            "title": "Shadow learned weight diagnostic",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "advisor-shadow-weight-diagnostic"
+            ]
+          },
+          {
+            "id": "advisor-live-routing-only",
+            "title": "Live routing unchanged",
+            "channel": "skill_graph_query",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "advisor-live-routing-only"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 0.5,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "advisor-shadow-weight-diagnostic"
+          ],
+          "observedIds": [
+            "advisor-shadow-weight-diagnostic",
+            "advisor-live-routing-only"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.002999999999985903,
+          "byChannel": {
+            "skill_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w6-cocoindex-duplicate-heavy",
+        "query": "semantic code search duplicate-heavy path-class calibration",
+        "perChannelCandidates": {
+          "memory_search": [
+            {
+              "id": "cocoindex-canonical-spec",
+              "title": "Canonical CocoIndex spec path",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "cocoindex-canonical-spec"
+              ]
+            }
+          ],
+          "code_graph_query": [],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "memory_search",
+            "candidates": [
+              {
+                "id": "cocoindex-canonical-spec",
+                "title": "Canonical CocoIndex spec path",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "cocoindex-canonical-spec"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "cocoindex-canonical-spec"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "cocoindex-canonical-spec",
+            "title": "Canonical CocoIndex spec path",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "cocoindex-canonical-spec"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "cocoindex-canonical-spec"
+          ],
+          "observedIds": [
+            "cocoindex-canonical-spec"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.002250000000003638,
+          "byChannel": {
+            "memory_search": 2
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-stale",
+        "query": "code graph stale readiness should preserve fallback metrics",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-stale-fallback",
+              "title": "Stale graph fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-stale-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-stale-fallback",
+                "title": "Stale graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-stale-fallback"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-stale-fallback",
+            "title": "Stale graph fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-stale-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-stale-fallback"
+          ],
+          "observedIds": [
+            "code-graph-stale-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.008207999999996218,
+          "byChannel": {
+            "code_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-empty",
+        "query": "code graph empty readiness full scan fallback",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-empty-fallback",
+              "title": "Empty graph fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-empty-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-empty-fallback",
+                "title": "Empty graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-empty-fallback"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-empty-fallback",
+            "title": "Empty graph fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-empty-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-empty-fallback"
+          ],
+          "observedIds": [
+            "code-graph-empty-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.00462500000000432,
+          "byChannel": {
+            "code_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-full-scan-required",
+        "query": "code graph full scan required fallback envelope survives harness",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-full-scan-required-fallback",
+              "title": "Full scan required fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-full-scan-required-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-full-scan-required-fallback",
+                "title": "Full scan required fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-full-scan-required-fallback"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-full-scan-required-fallback",
+            "title": "Full scan required fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-full-scan-required-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-full-scan-required-fallback"
+          ],
+          "observedIds": [
+            "code-graph-full-scan-required-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.002375000000000682,
+          "byChannel": {
+            "code_graph_query": 2
+          }
+        }
+      },
+      {
+        "caseId": "w7-code-graph-unavailable",
+        "query": "code graph unavailable readiness routes to rg fallback",
+        "perChannelCandidates": {
+          "memory_search": [],
+          "code_graph_query": [
+            {
+              "id": "code-graph-unavailable-rg-fallback",
+              "title": "Unavailable graph rg fallback envelope",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-unavailable-rg-fallback"
+              ]
+            }
+          ],
+          "skill_graph_query": []
+        },
+        "channelCaptures": [
+          {
+            "channel": "code_graph_query",
+            "candidates": [
+              {
+                "id": "code-graph-unavailable-rg-fallback",
+                "title": "Unavailable graph rg fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ]
+              }
+            ],
+            "refused": false,
+            "citationIds": [
+              "code-graph-unavailable-rg-fallback"
+            ],
+            "latencyMs": 2
+          }
+        ],
+        "finalCandidates": [
+          {
+            "id": "code-graph-unavailable-rg-fallback",
+            "title": "Unavailable graph rg fallback envelope",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-unavailable-rg-fallback"
+            ]
+          }
+        ],
+        "finalRelevance": {
+          "relevantRetrieved": 1,
+          "totalRelevant": 1,
+          "precisionAt3": 1,
+          "recallAt3": 1
+        },
+        "citationPolicy": {
+          "expectedIds": [
+            "code-graph-unavailable-rg-fallback"
+          ],
+          "observedIds": [
+            "code-graph-unavailable-rg-fallback"
+          ],
+          "passed": true
+        },
+        "refusalPolicy": {
+          "expectedRefusal": false,
+          "refused": false,
+          "passed": true
+        },
+        "latency": {
+          "totalMs": 0.0017909999999972115,
+          "byChannel": {
+            "code_graph_query": 2
+          }
+        }
+      }
+    ]
+  },
+  "workstreams": {
+    "W3": {
+      "baseline": {
+        "runId": "v1.0.3-W3-baseline",
+        "workstream": "W3",
+        "variant": "baseline",
+        "hypothesis": "W3 trust-tree composition should improve citation-quality on multi-source contradiction cells without reducing precision, recall, or refusal-survival.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W3",
+        "summary": {
+          "precisionAt3": 0.333,
+          "recallAt3": 0.5,
+          "latency": {
+            "p50": 0.006,
+            "p95": 0.006,
+            "p99": 0.006
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 0
+        },
+        "cases": [
+          {
+            "caseId": "w3-trust-tree-contradiction",
+            "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "trust-tree-response-policy",
+                  "title": "Response policy provenance",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "trust-tree-response-policy"
+                  ]
+                },
+                {
+                  "id": "unsupported-trust-claim",
+                  "title": "Unsupported trust claim",
+                  "channel": "memory_search",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": [
+                    "unsupported-trust-claim"
+                  ]
+                }
+              ],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-readiness-signal",
+                  "title": "Code graph readiness signal",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-readiness-signal"
+                  ]
+                }
+              ],
+              "skill_graph_query": [
+                {
+                  "id": "advisor-trust-state-signal",
+                  "title": "Advisor trust state signal",
+                  "channel": "skill_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "advisor-trust-state-signal"
+                  ]
+                }
+              ]
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "trust-tree-response-policy",
+                    "title": "Response policy provenance",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "trust-tree-response-policy"
+                    ]
+                  },
+                  {
+                    "id": "unsupported-trust-claim",
+                    "title": "Unsupported trust claim",
+                    "channel": "memory_search",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": [
+                      "unsupported-trust-claim"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "trust-tree-response-policy",
+                  "unsupported-trust-claim"
+                ],
+                "latencyMs": 1
+              },
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-readiness-signal",
+                    "title": "Code graph readiness signal",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-readiness-signal"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-readiness-signal"
+                ],
+                "latencyMs": 1
+              },
+              {
+                "channel": "skill_graph_query",
+                "candidates": [
+                  {
+                    "id": "advisor-trust-state-signal",
+                    "title": "Advisor trust state signal",
+                    "channel": "skill_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "advisor-trust-state-signal"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "trust-tree-response-policy",
+                "title": "Response policy provenance",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-response-policy"
+                ]
+              },
+              {
+                "id": "code-graph-readiness-signal",
+                "title": "Code graph readiness signal",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-readiness-signal"
+                ]
+              },
+              {
+                "id": "advisor-trust-state-signal",
+                "title": "Advisor trust state signal",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ]
+              },
+              {
+                "id": "unsupported-trust-claim",
+                "title": "Unsupported trust claim",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "unsupported-trust-claim"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 2,
+              "precisionAt3": 0.3333333333333333,
+              "recallAt3": 0.5
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "trust-tree-response-policy",
+                "trust-tree-contradiction-edge"
+              ],
+              "observedIds": [
+                "trust-tree-response-policy",
+                "unsupported-trust-claim",
+                "code-graph-readiness-signal",
+                "advisor-trust-state-signal"
+              ],
+              "passed": false
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0058749999999747615,
+              "byChannel": {
+                "memory_search": 1,
+                "code_graph_query": 1,
+                "skill_graph_query": 1
+              }
+            }
+          }
+        ]
+      },
+      "variant": {
+        "runId": "v1.0.3-W3-variant",
+        "workstream": "W3",
+        "variant": "variant",
+        "hypothesis": "W3 trust-tree composition should improve citation-quality on multi-source contradiction cells without reducing precision, recall, or refusal-survival.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W3",
+        "summary": {
+          "precisionAt3": 0.667,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.004,
+            "p95": 0.004,
+            "p99": 0.004
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w3-trust-tree-contradiction",
+            "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "trust-tree-response-policy",
+                  "title": "Response policy provenance",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "trust-tree-response-policy"
+                  ]
+                }
+              ],
+              "code_graph_query": [
+                {
+                  "id": "trust-tree-contradiction-edge",
+                  "title": "Contradiction edge provenance",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "trust-tree-contradiction-edge"
+                  ]
+                }
+              ],
+              "skill_graph_query": [
+                {
+                  "id": "advisor-trust-state-signal",
+                  "title": "Advisor trust state signal",
+                  "channel": "skill_graph_query",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": [
+                    "advisor-trust-state-signal"
+                  ]
+                }
+              ]
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "trust-tree-response-policy",
+                    "title": "Response policy provenance",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "trust-tree-response-policy"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "trust-tree-response-policy"
+                ],
+                "latencyMs": 2
+              },
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "trust-tree-contradiction-edge",
+                    "title": "Contradiction edge provenance",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "trust-tree-contradiction-edge"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "trust-tree-contradiction-edge"
+                ],
+                "latencyMs": 2
+              },
+              {
+                "channel": "skill_graph_query",
+                "candidates": [
+                  {
+                    "id": "advisor-trust-state-signal",
+                    "title": "Advisor trust state signal",
+                    "channel": "skill_graph_query",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": [
+                      "advisor-trust-state-signal"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "trust-tree-response-policy",
+                "title": "Response policy provenance",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-response-policy"
+                ]
+              },
+              {
+                "id": "trust-tree-contradiction-edge",
+                "title": "Contradiction edge provenance",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "trust-tree-contradiction-edge"
+                ]
+              },
+              {
+                "id": "advisor-trust-state-signal",
+                "title": "Advisor trust state signal",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "advisor-trust-state-signal"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 2,
+              "totalRelevant": 2,
+              "precisionAt3": 0.6666666666666666,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "trust-tree-response-policy",
+                "trust-tree-contradiction-edge"
+              ],
+              "observedIds": [
+                "trust-tree-response-policy",
+                "trust-tree-contradiction-edge",
+                "advisor-trust-state-signal"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.00408399999997755,
+              "byChannel": {
+                "memory_search": 2,
+                "code_graph_query": 2,
+                "skill_graph_query": 2
+              }
+            }
+          }
+        ]
+      },
+      "delta": {
+        "precisionAt3": 0.334,
+        "recallAt3": 0.5,
+        "p50Latency": -0.002,
+        "p95Latency": -0.002,
+        "p99Latency": -0.002,
+        "refusalSurvival": 0,
+        "citationQuality": 1
+      }
+    },
+    "W4": {
+      "baseline": {
+        "runId": "v1.0.3-W4-baseline",
+        "workstream": "W4",
+        "variant": "baseline",
+        "hypothesis": "W4 conditional rerank should improve precision@3 on ambiguous weak-agreement cells while keeping synthetic p95 latency under 5ms.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W4",
+        "summary": {
+          "precisionAt3": 0.333,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.004,
+            "p95": 0.004,
+            "p99": 0.004
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w4-ambiguous-rerank-disagreement",
+            "query": "ambiguous review routing prompt with weak channel agreement",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "rerank-adjacent-noise",
+                  "title": "Adjacent ambiguous noise",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "rerank-adjacent-noise"
+                  ]
+                },
+                {
+                  "id": "rerank-canonical-ambiguous",
+                  "title": "Canonical ambiguous rerank case",
+                  "channel": "memory_search",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": [
+                    "rerank-canonical-ambiguous"
+                  ]
+                }
+              ],
+              "code_graph_query": [],
+              "skill_graph_query": [
+                {
+                  "id": "rerank-skill-neighbor",
+                  "title": "Skill neighbor disagreement",
+                  "channel": "skill_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "rerank-skill-neighbor"
+                  ]
+                }
+              ]
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "rerank-adjacent-noise",
+                    "title": "Adjacent ambiguous noise",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "rerank-adjacent-noise"
+                    ]
+                  },
+                  {
+                    "id": "rerank-canonical-ambiguous",
+                    "title": "Canonical ambiguous rerank case",
+                    "channel": "memory_search",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": [
+                      "rerank-canonical-ambiguous"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "rerank-adjacent-noise",
+                  "rerank-canonical-ambiguous"
+                ],
+                "latencyMs": 1
+              },
+              {
+                "channel": "skill_graph_query",
+                "candidates": [
+                  {
+                    "id": "rerank-skill-neighbor",
+                    "title": "Skill neighbor disagreement",
+                    "channel": "skill_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "rerank-skill-neighbor"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "rerank-skill-neighbor"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "rerank-adjacent-noise",
+                "title": "Adjacent ambiguous noise",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-adjacent-noise"
+                ]
+              },
+              {
+                "id": "rerank-skill-neighbor",
+                "title": "Skill neighbor disagreement",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-skill-neighbor"
+                ]
+              },
+              {
+                "id": "rerank-canonical-ambiguous",
+                "title": "Canonical ambiguous rerank case",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "rerank-canonical-ambiguous"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 0.3333333333333333,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "rerank-canonical-ambiguous"
+              ],
+              "observedIds": [
+                "rerank-adjacent-noise",
+                "rerank-canonical-ambiguous",
+                "rerank-skill-neighbor"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0037079999999889424,
+              "byChannel": {
+                "memory_search": 1,
+                "skill_graph_query": 1
+              }
+            }
+          }
+        ]
+      },
+      "variant": {
+        "runId": "v1.0.3-W4-variant",
+        "workstream": "W4",
+        "variant": "variant",
+        "hypothesis": "W4 conditional rerank should improve precision@3 on ambiguous weak-agreement cells while keeping synthetic p95 latency under 5ms.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W4",
+        "summary": {
+          "precisionAt3": 1,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.003,
+            "p95": 0.003,
+            "p99": 0.003
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w4-ambiguous-rerank-disagreement",
+            "query": "ambiguous review routing prompt with weak channel agreement",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "rerank-canonical-ambiguous",
+                  "title": "Canonical ambiguous rerank case",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "rerank-canonical-ambiguous"
+                  ]
+                }
+              ],
+              "code_graph_query": [],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "rerank-canonical-ambiguous",
+                    "title": "Canonical ambiguous rerank case",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "rerank-canonical-ambiguous"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "rerank-canonical-ambiguous"
+                ],
+                "latencyMs": 2
+              },
+              {
+                "channel": "skill_graph_query",
+                "candidates": [],
+                "refused": false,
+                "citationIds": [],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "rerank-canonical-ambiguous",
+                "title": "Canonical ambiguous rerank case",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "rerank-canonical-ambiguous"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "rerank-canonical-ambiguous"
+              ],
+              "observedIds": [
+                "rerank-canonical-ambiguous"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0027919999999994616,
+              "byChannel": {
+                "memory_search": 2,
+                "skill_graph_query": 2
+              }
+            }
+          }
+        ]
+      },
+      "delta": {
+        "precisionAt3": 0.667,
+        "recallAt3": 0,
+        "p50Latency": -0.001,
+        "p95Latency": -0.001,
+        "p99Latency": -0.001,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    },
+    "W5": {
+      "baseline": {
+        "runId": "v1.0.3-W5-baseline",
+        "workstream": "W5",
+        "variant": "baseline",
+        "hypothesis": "W5 shadow learned weights should improve advisor diagnostic citation-quality while leaving live recommendation behavior unchanged.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W5",
+        "summary": {
+          "precisionAt3": 0.5,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.002,
+            "p95": 0.002,
+            "p99": 0.002
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 0
+        },
+        "cases": [
+          {
+            "caseId": "w5-advisor-shadow-ambiguous",
+            "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [],
+              "skill_graph_query": [
+                {
+                  "id": "advisor-live-routing-only",
+                  "title": "Live routing without shadow diagnostic",
+                  "channel": "skill_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "advisor-live-routing-only"
+                  ]
+                },
+                {
+                  "id": "advisor-shadow-weight-diagnostic",
+                  "title": "Shadow learned weight diagnostic",
+                  "channel": "skill_graph_query",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": []
+                }
+              ]
+            },
+            "channelCaptures": [
+              {
+                "channel": "skill_graph_query",
+                "candidates": [
+                  {
+                    "id": "advisor-live-routing-only",
+                    "title": "Live routing without shadow diagnostic",
+                    "channel": "skill_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "advisor-live-routing-only"
+                    ]
+                  },
+                  {
+                    "id": "advisor-shadow-weight-diagnostic",
+                    "title": "Shadow learned weight diagnostic",
+                    "channel": "skill_graph_query",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": []
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "advisor-live-routing-only"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "advisor-live-routing-only",
+                "title": "Live routing without shadow diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-live-routing-only"
+                ]
+              },
+              {
+                "id": "advisor-shadow-weight-diagnostic",
+                "title": "Shadow learned weight diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": []
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 0.5,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "advisor-shadow-weight-diagnostic"
+              ],
+              "observedIds": [
+                "advisor-live-routing-only"
+              ],
+              "passed": false
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.002417000000008329,
+              "byChannel": {
+                "skill_graph_query": 1
+              }
+            }
+          }
+        ]
+      },
+      "variant": {
+        "runId": "v1.0.3-W5-variant",
+        "workstream": "W5",
+        "variant": "variant",
+        "hypothesis": "W5 shadow learned weights should improve advisor diagnostic citation-quality while leaving live recommendation behavior unchanged.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W5",
+        "summary": {
+          "precisionAt3": 0.5,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.002,
+            "p95": 0.002,
+            "p99": 0.002
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w5-advisor-shadow-ambiguous",
+            "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [],
+              "skill_graph_query": [
+                {
+                  "id": "advisor-shadow-weight-diagnostic",
+                  "title": "Shadow learned weight diagnostic",
+                  "channel": "skill_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "advisor-shadow-weight-diagnostic"
+                  ]
+                },
+                {
+                  "id": "advisor-live-routing-only",
+                  "title": "Live routing unchanged",
+                  "channel": "skill_graph_query",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": [
+                    "advisor-live-routing-only"
+                  ]
+                }
+              ]
+            },
+            "channelCaptures": [
+              {
+                "channel": "skill_graph_query",
+                "candidates": [
+                  {
+                    "id": "advisor-shadow-weight-diagnostic",
+                    "title": "Shadow learned weight diagnostic",
+                    "channel": "skill_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "advisor-shadow-weight-diagnostic"
+                    ]
+                  },
+                  {
+                    "id": "advisor-live-routing-only",
+                    "title": "Live routing unchanged",
+                    "channel": "skill_graph_query",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": [
+                      "advisor-live-routing-only"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "advisor-shadow-weight-diagnostic",
+                  "advisor-live-routing-only"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "advisor-shadow-weight-diagnostic",
+                "title": "Shadow learned weight diagnostic",
+                "channel": "skill_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "advisor-shadow-weight-diagnostic"
+                ]
+              },
+              {
+                "id": "advisor-live-routing-only",
+                "title": "Live routing unchanged",
+                "channel": "skill_graph_query",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "advisor-live-routing-only"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 0.5,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "advisor-shadow-weight-diagnostic"
+              ],
+              "observedIds": [
+                "advisor-shadow-weight-diagnostic",
+                "advisor-live-routing-only"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.002124999999978172,
+              "byChannel": {
+                "skill_graph_query": 2
+              }
+            }
+          }
+        ]
+      },
+      "delta": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "p50Latency": 0,
+        "p95Latency": 0,
+        "p99Latency": 0,
+        "refusalSurvival": 0,
+        "citationQuality": 1
+      }
+    },
+    "W6": {
+      "baseline": {
+        "runId": "v1.0.3-W6-baseline",
+        "workstream": "W6",
+        "variant": "baseline",
+        "hypothesis": "W6 CocoIndex duplicate-density calibration should improve duplicate-heavy precision@3 and preserve recall through canonical path selection.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W6",
+        "summary": {
+          "precisionAt3": 0.333,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.003,
+            "p95": 0.003,
+            "p99": 0.003
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w6-cocoindex-duplicate-heavy",
+            "query": "semantic code search duplicate-heavy path-class calibration",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "cocoindex-duplicate-spec-a",
+                  "title": "Duplicate spec path A",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "cocoindex-duplicate-spec-a"
+                  ]
+                },
+                {
+                  "id": "cocoindex-duplicate-spec-b",
+                  "title": "Duplicate spec path B",
+                  "channel": "memory_search",
+                  "rank": 2,
+                  "score": 0.5,
+                  "citationIds": [
+                    "cocoindex-duplicate-spec-b"
+                  ]
+                },
+                {
+                  "id": "cocoindex-canonical-spec",
+                  "title": "Canonical CocoIndex spec path",
+                  "channel": "memory_search",
+                  "rank": 3,
+                  "score": 0.3333333333333333,
+                  "citationIds": [
+                    "cocoindex-canonical-spec"
+                  ]
+                }
+              ],
+              "code_graph_query": [],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "cocoindex-duplicate-spec-a",
+                    "title": "Duplicate spec path A",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "cocoindex-duplicate-spec-a"
+                    ]
+                  },
+                  {
+                    "id": "cocoindex-duplicate-spec-b",
+                    "title": "Duplicate spec path B",
+                    "channel": "memory_search",
+                    "rank": 2,
+                    "score": 0.5,
+                    "citationIds": [
+                      "cocoindex-duplicate-spec-b"
+                    ]
+                  },
+                  {
+                    "id": "cocoindex-canonical-spec",
+                    "title": "Canonical CocoIndex spec path",
+                    "channel": "memory_search",
+                    "rank": 3,
+                    "score": 0.3333333333333333,
+                    "citationIds": [
+                      "cocoindex-canonical-spec"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "cocoindex-duplicate-spec-a",
+                  "cocoindex-duplicate-spec-b",
+                  "cocoindex-canonical-spec"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "cocoindex-duplicate-spec-a",
+                "title": "Duplicate spec path A",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "cocoindex-duplicate-spec-a"
+                ]
+              },
+              {
+                "id": "cocoindex-duplicate-spec-b",
+                "title": "Duplicate spec path B",
+                "channel": "memory_search",
+                "rank": 2,
+                "score": 0.5,
+                "citationIds": [
+                  "cocoindex-duplicate-spec-b"
+                ]
+              },
+              {
+                "id": "cocoindex-canonical-spec",
+                "title": "Canonical CocoIndex spec path",
+                "channel": "memory_search",
+                "rank": 3,
+                "score": 0.3333333333333333,
+                "citationIds": [
+                  "cocoindex-canonical-spec"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 0.3333333333333333,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "cocoindex-canonical-spec"
+              ],
+              "observedIds": [
+                "cocoindex-duplicate-spec-a",
+                "cocoindex-duplicate-spec-b",
+                "cocoindex-canonical-spec"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0025840000000130203,
+              "byChannel": {
+                "memory_search": 1
+              }
+            }
+          }
+        ]
+      },
+      "variant": {
+        "runId": "v1.0.3-W6-variant",
+        "workstream": "W6",
+        "variant": "variant",
+        "hypothesis": "W6 CocoIndex duplicate-density calibration should improve duplicate-heavy precision@3 and preserve recall through canonical path selection.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W6",
+        "summary": {
+          "precisionAt3": 1,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.002,
+            "p95": 0.002,
+            "p99": 0.002
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w6-cocoindex-duplicate-heavy",
+            "query": "semantic code search duplicate-heavy path-class calibration",
+            "perChannelCandidates": {
+              "memory_search": [
+                {
+                  "id": "cocoindex-canonical-spec",
+                  "title": "Canonical CocoIndex spec path",
+                  "channel": "memory_search",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "cocoindex-canonical-spec"
+                  ]
+                }
+              ],
+              "code_graph_query": [],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "memory_search",
+                "candidates": [
+                  {
+                    "id": "cocoindex-canonical-spec",
+                    "title": "Canonical CocoIndex spec path",
+                    "channel": "memory_search",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "cocoindex-canonical-spec"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "cocoindex-canonical-spec"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "cocoindex-canonical-spec",
+                "title": "Canonical CocoIndex spec path",
+                "channel": "memory_search",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "cocoindex-canonical-spec"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "cocoindex-canonical-spec"
+              ],
+              "observedIds": [
+                "cocoindex-canonical-spec"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0019580000000019027,
+              "byChannel": {
+                "memory_search": 2
+              }
+            }
+          }
+        ]
+      },
+      "delta": {
+        "precisionAt3": 0.667,
+        "recallAt3": 0,
+        "p50Latency": -0.001,
+        "p95Latency": -0.001,
+        "p99Latency": -0.001,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    },
+    "W7": {
+      "baseline": {
+        "runId": "v1.0.3-W7-baseline",
+        "workstream": "W7",
+        "variant": "baseline",
+        "hypothesis": "W7 degraded-readiness stress cells should preserve recall, citation-quality, and refusal-survival across stale, empty, full-scan-required, and unavailable graph states.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W7",
+        "summary": {
+          "precisionAt3": 1,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.001,
+            "p95": 0.002,
+            "p99": 0.002
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w7-code-graph-stale",
+            "query": "code graph stale readiness should preserve fallback metrics",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-stale-fallback",
+                  "title": "Stale graph fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-stale-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-stale-fallback",
+                    "title": "Stale graph fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-stale-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-stale-fallback",
+                "title": "Stale graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-stale-fallback"
+              ],
+              "observedIds": [
+                "code-graph-stale-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0018330000000048585,
+              "byChannel": {
+                "code_graph_query": 1
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-empty",
+            "query": "code graph empty readiness full scan fallback",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-empty-fallback",
+                  "title": "Empty graph fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-empty-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-empty-fallback",
+                    "title": "Empty graph fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-empty-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-empty-fallback",
+                "title": "Empty graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-empty-fallback"
+              ],
+              "observedIds": [
+                "code-graph-empty-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0015839999999798238,
+              "byChannel": {
+                "code_graph_query": 1
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-full-scan-required",
+            "query": "code graph full scan required fallback envelope survives harness",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-full-scan-required-fallback",
+                  "title": "Full scan required fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-full-scan-required-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-full-scan-required-fallback",
+                    "title": "Full scan required fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-full-scan-required-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-full-scan-required-fallback",
+                "title": "Full scan required fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-full-scan-required-fallback"
+              ],
+              "observedIds": [
+                "code-graph-full-scan-required-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0014590000000112013,
+              "byChannel": {
+                "code_graph_query": 1
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-unavailable",
+            "query": "code graph unavailable readiness routes to rg fallback",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-unavailable-rg-fallback",
+                  "title": "Unavailable graph rg fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-unavailable-rg-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-unavailable-rg-fallback",
+                    "title": "Unavailable graph rg fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-unavailable-rg-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ],
+                "latencyMs": 1
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-unavailable-rg-fallback",
+                "title": "Unavailable graph rg fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-unavailable-rg-fallback"
+              ],
+              "observedIds": [
+                "code-graph-unavailable-rg-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0014169999999751326,
+              "byChannel": {
+                "code_graph_query": 1
+              }
+            }
+          }
+        ]
+      },
+      "variant": {
+        "runId": "v1.0.3-W7-variant",
+        "workstream": "W7",
+        "variant": "variant",
+        "hypothesis": "W7 degraded-readiness stress cells should preserve recall, citation-quality, and refusal-survival across stale, empty, full-scan-required, and unavailable graph states.",
+        "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W7",
+        "summary": {
+          "precisionAt3": 1,
+          "recallAt3": 1,
+          "latency": {
+            "p50": 0.001,
+            "p95": 0.002,
+            "p99": 0.002
+          },
+          "refusalSurvival": 1,
+          "citationQuality": 1
+        },
+        "cases": [
+          {
+            "caseId": "w7-code-graph-stale",
+            "query": "code graph stale readiness should preserve fallback metrics",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-stale-fallback",
+                  "title": "Stale graph fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-stale-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-stale-fallback",
+                    "title": "Stale graph fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-stale-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-stale-fallback",
+                "title": "Stale graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-stale-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-stale-fallback"
+              ],
+              "observedIds": [
+                "code-graph-stale-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0018749999999840838,
+              "byChannel": {
+                "code_graph_query": 2
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-empty",
+            "query": "code graph empty readiness full scan fallback",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-empty-fallback",
+                  "title": "Empty graph fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-empty-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-empty-fallback",
+                    "title": "Empty graph fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-empty-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-empty-fallback",
+                "title": "Empty graph fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-empty-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-empty-fallback"
+              ],
+              "observedIds": [
+                "code-graph-empty-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0014589999999827796,
+              "byChannel": {
+                "code_graph_query": 2
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-full-scan-required",
+            "query": "code graph full scan required fallback envelope survives harness",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-full-scan-required-fallback",
+                  "title": "Full scan required fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-full-scan-required-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-full-scan-required-fallback",
+                    "title": "Full scan required fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-full-scan-required-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-full-scan-required-fallback",
+                "title": "Full scan required fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-full-scan-required-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-full-scan-required-fallback"
+              ],
+              "observedIds": [
+                "code-graph-full-scan-required-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0016249999999899956,
+              "byChannel": {
+                "code_graph_query": 2
+              }
+            }
+          },
+          {
+            "caseId": "w7-code-graph-unavailable",
+            "query": "code graph unavailable readiness routes to rg fallback",
+            "perChannelCandidates": {
+              "memory_search": [],
+              "code_graph_query": [
+                {
+                  "id": "code-graph-unavailable-rg-fallback",
+                  "title": "Unavailable graph rg fallback envelope",
+                  "channel": "code_graph_query",
+                  "rank": 1,
+                  "score": 1,
+                  "citationIds": [
+                    "code-graph-unavailable-rg-fallback"
+                  ]
+                }
+              ],
+              "skill_graph_query": []
+            },
+            "channelCaptures": [
+              {
+                "channel": "code_graph_query",
+                "candidates": [
+                  {
+                    "id": "code-graph-unavailable-rg-fallback",
+                    "title": "Unavailable graph rg fallback envelope",
+                    "channel": "code_graph_query",
+                    "rank": 1,
+                    "score": 1,
+                    "citationIds": [
+                      "code-graph-unavailable-rg-fallback"
+                    ]
+                  }
+                ],
+                "refused": false,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ],
+                "latencyMs": 2
+              }
+            ],
+            "finalCandidates": [
+              {
+                "id": "code-graph-unavailable-rg-fallback",
+                "title": "Unavailable graph rg fallback envelope",
+                "channel": "code_graph_query",
+                "rank": 1,
+                "score": 1,
+                "citationIds": [
+                  "code-graph-unavailable-rg-fallback"
+                ]
+              }
+            ],
+            "finalRelevance": {
+              "relevantRetrieved": 1,
+              "totalRelevant": 1,
+              "precisionAt3": 1,
+              "recallAt3": 1
+            },
+            "citationPolicy": {
+              "expectedIds": [
+                "code-graph-unavailable-rg-fallback"
+              ],
+              "observedIds": [
+                "code-graph-unavailable-rg-fallback"
+              ],
+              "passed": true
+            },
+            "refusalPolicy": {
+              "expectedRefusal": false,
+              "refused": false,
+              "passed": true
+            },
+            "latency": {
+              "totalMs": 0.0014170000000035543,
+              "byChannel": {
+                "code_graph_query": 2
+              }
+            }
+          }
+        ]
+      },
+      "delta": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "p50Latency": 0,
+        "p95Latency": 0,
+        "p99Latency": 0,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    }
+  },
+  "aggregate": {
+    "precisionAt3": 0.597,
+    "recallAt3": 0.667,
+    "latency": {
+      "p50": 0.003,
+      "p95": 0.009,
+      "p99": 0.009
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 0.75
+  },
+  "deltaVsPhaseEBaseline": {
+    "precisionAt3": 0.139,
+    "recallAt3": 0.042,
+    "p50Latency": -0.007,
+    "p95Latency": -0.1,
+    "p99Latency": -0.1,
+    "refusalSurvival": 0,
+    "citationQuality": 0.167
+  },
+  "samples": {
+    "envelopeCount": 12,
+    "auditRowCount": 12,
+    "shadowRowCount": 12,
+    "fieldCompleteness": [
+      {
+        "requestId": "phase-h-01-v101-weak-retrieval-refusal",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-02-v102-code-graph-fallback",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-03-ambiguous-advisor-routing",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-04-paraphrase-query-plan",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-05-w3-trust-tree-contradiction",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-06-w4-ambiguous-rerank-disagreement",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-07-w5-advisor-shadow-ambiguous",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-08-w6-cocoindex-duplicate-heavy",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-09-w7-code-graph-stale",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-10-w7-code-graph-empty",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-11-w7-code-graph-full-scan-required",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-12-w7-code-graph-unavailable",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      }
+    ]
+  },
+  "sla": {
+    "count": 12,
+    "averageLatencyMs": 58.5,
+    "p95LatencyMs": 97,
+    "decisionClassDistribution": {
+      "degraded": 5,
+      "trusted": 7
+    },
+    "refusalRate": 0.083,
+    "rerankTriggerRate": 1,
+    "latencyByStage": {
+      "stage1": {
+        "averageMs": 6.5,
+        "p95Ms": 12
+      },
+      "stage2": {
+        "averageMs": 7.5,
+        "p95Ms": 13
+      },
+      "stage3": {
+        "averageMs": 8.5,
+        "p95Ms": 14
+      },
+      "stage4": {
+        "averageMs": 1,
+        "p95Ms": 1
+      },
+      "total": {
+        "averageMs": 23.5,
+        "p95Ms": 40
+      }
+    }
+  },
+  "w4": {
+    "triggerCounts": {
+      "multi-channel-weak-margin": 4,
+      "weak-evidence": 6,
+      "high-authority": 5,
+      "complex-query": 6,
+      "disagreement:advisor-memory-divergence": 1
+    },
+    "realTriggerFireRate": 1,
+    "nonPlaceholderTriggersObserved": [
+      "multi-channel-weak-margin",
+      "weak-evidence",
+      "high-authority",
+      "complex-query",
+      "disagreement:advisor-memory-divergence"
+    ]
+  },
+  "verdictInputs": {
+    "v102OverallPercent": 83.8,
+    "v103HarnessPercent": 75.4
+  }
+}

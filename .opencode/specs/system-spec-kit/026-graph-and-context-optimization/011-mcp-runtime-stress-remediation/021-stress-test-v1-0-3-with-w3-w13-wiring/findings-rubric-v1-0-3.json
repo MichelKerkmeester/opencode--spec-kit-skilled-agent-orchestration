@@ -1,0 +1,601 @@
+{
+  "version": "v1.0.3",
+  "source": {
+    "findings": "findings-v1-0-3.md",
+    "summary": "measurements/v1-0-3-summary.json",
+    "envelopes": "measurements/v1-0-3-envelopes.jsonl",
+    "audit": "measurements/v1-0-3-audit-log-sample.jsonl",
+    "shadow": "measurements/v1-0-3-shadow-sink-sample.jsonl",
+    "comparison": {
+      "v102": "../010-stress-test-rerun-v1-0-2/findings-rubric.json",
+      "phaseE": "../../../000-release-cleanup/005-review-remediation/007-search-rag-measurement-driven-implementation/measurements/baseline-20260429T032525Z.json"
+    }
+  },
+  "rubric": {
+    "name": "v1.0.3 harness telemetry rubric",
+    "dimensions": [
+      "precisionAt3",
+      "recallAt3",
+      "refusalPolicy",
+      "citationPolicy"
+    ],
+    "scale": {
+      "min": 0,
+      "max": 1
+    },
+    "maxCellScore": 1,
+    "note": "This sidecar scores the deterministic harness corpus, not the v1.0.2 30-cell CLI model rubric. Cross-version comparison is directional only."
+  },
+  "cells": [
+    {
+      "id": "v101-weak-retrieval-refusal",
+      "query": "weak memory search should not cite unsupported paths",
+      "scores": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 0.5,
+      "classification": "PARTIAL"
+    },
+    {
+      "id": "v102-code-graph-fallback",
+      "query": "code graph full scan required fallback decision",
+      "scores": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "refusalPolicy": 1,
+        "citationPolicy": 0
+      },
+      "total": 0.25,
+      "classification": "PARTIAL"
+    },
+    {
+      "id": "ambiguous-advisor-routing",
+      "query": "review this routing prompt and tell me which skill applies",
+      "scores": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "refusalPolicy": 1,
+        "citationPolicy": 0
+      },
+      "total": 0.25,
+      "classification": "PARTIAL"
+    },
+    {
+      "id": "paraphrase-query-plan",
+      "query": "show the plan for search evaluation using different wording",
+      "scores": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "refusalPolicy": 1,
+        "citationPolicy": 0
+      },
+      "total": 0.25,
+      "classification": "PARTIAL"
+    },
+    {
+      "id": "w3-trust-tree-contradiction",
+      "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+      "scores": {
+        "precisionAt3": 0.6666666666666666,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 0.917,
+      "classification": "PASS"
+    },
+    {
+      "id": "w4-ambiguous-rerank-disagreement",
+      "query": "ambiguous review routing prompt with weak channel agreement",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    },
+    {
+      "id": "w5-advisor-shadow-ambiguous",
+      "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+      "scores": {
+        "precisionAt3": 0.5,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 0.875,
+      "classification": "PASS"
+    },
+    {
+      "id": "w6-cocoindex-duplicate-heavy",
+      "query": "semantic code search duplicate-heavy path-class calibration",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    },
+    {
+      "id": "w7-code-graph-stale",
+      "query": "code graph stale readiness should preserve fallback metrics",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    },
+    {
+      "id": "w7-code-graph-empty",
+      "query": "code graph empty readiness full scan fallback",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    },
+    {
+      "id": "w7-code-graph-full-scan-required",
+      "query": "code graph full scan required fallback envelope survives harness",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    },
+    {
+      "id": "w7-code-graph-unavailable",
+      "query": "code graph unavailable readiness routes to rg fallback",
+      "scores": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "refusalPolicy": 1,
+        "citationPolicy": 1
+      },
+      "total": 1,
+      "classification": "PASS"
+    }
+  ],
+  "perW": {
+    "W3": {
+      "verdict": "PROVEN",
+      "baselineSummary": {
+        "precisionAt3": 0.333,
+        "recallAt3": 0.5,
+        "latency": {
+          "p50": 0.006,
+          "p95": 0.006,
+          "p99": 0.006
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 0
+      },
+      "variantSummary": {
+        "precisionAt3": 0.667,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.004,
+          "p95": 0.004,
+          "p99": 0.004
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "delta": {
+        "precisionAt3": 0.334,
+        "recallAt3": 0.5,
+        "p50Latency": -0.002,
+        "p95Latency": -0.002,
+        "p99Latency": -0.002,
+        "refusalSurvival": 0,
+        "citationQuality": 1
+      }
+    },
+    "W4": {
+      "verdict": "PROVEN",
+      "baselineSummary": {
+        "precisionAt3": 0.333,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.004,
+          "p95": 0.004,
+          "p99": 0.004
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "variantSummary": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.003,
+          "p95": 0.003,
+          "p99": 0.003
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "delta": {
+        "precisionAt3": 0.667,
+        "recallAt3": 0,
+        "p50Latency": -0.001,
+        "p95Latency": -0.001,
+        "p99Latency": -0.001,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    },
+    "W5": {
+      "verdict": "PROVEN",
+      "baselineSummary": {
+        "precisionAt3": 0.5,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.002,
+          "p95": 0.002,
+          "p99": 0.002
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 0
+      },
+      "variantSummary": {
+        "precisionAt3": 0.5,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.002,
+          "p95": 0.002,
+          "p99": 0.002
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "delta": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "p50Latency": 0,
+        "p95Latency": 0,
+        "p99Latency": 0,
+        "refusalSurvival": 0,
+        "citationQuality": 1
+      }
+    },
+    "W6": {
+      "verdict": "PROVEN",
+      "baselineSummary": {
+        "precisionAt3": 0.333,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.003,
+          "p95": 0.003,
+          "p99": 0.003
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "variantSummary": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.002,
+          "p95": 0.002,
+          "p99": 0.002
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "delta": {
+        "precisionAt3": 0.667,
+        "recallAt3": 0,
+        "p50Latency": -0.001,
+        "p95Latency": -0.001,
+        "p99Latency": -0.001,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    },
+    "W7": {
+      "verdict": "NEUTRAL",
+      "baselineSummary": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.001,
+          "p95": 0.002,
+          "p99": 0.002
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "variantSummary": {
+        "precisionAt3": 1,
+        "recallAt3": 1,
+        "latency": {
+          "p50": 0.001,
+          "p95": 0.002,
+          "p99": 0.002
+        },
+        "refusalSurvival": 1,
+        "citationQuality": 1
+      },
+      "delta": {
+        "precisionAt3": 0,
+        "recallAt3": 0,
+        "p50Latency": 0,
+        "p95Latency": 0,
+        "p99Latency": 0,
+        "refusalSurvival": 0,
+        "citationQuality": 0
+      }
+    },
+    "W8": {
+      "verdict": "PROVEN",
+      "evidence": "Confirmed through packet-local telemetry samples and focused tests."
+    },
+    "W9": {
+      "verdict": "PROVEN_WITH_HANDLER_GAP",
+      "evidence": "Shadow sink produced 12 packet-local JSONL rows; live advisor handler path is source-confirmed but not separately invoked by the search-quality harness."
+    },
+    "W10": {
+      "verdict": "PROVEN",
+      "evidence": "Confirmed through packet-local telemetry samples and focused tests."
+    },
+    "W11": {
+      "verdict": "PROVEN",
+      "evidence": "Confirmed through packet-local telemetry samples and focused tests."
+    },
+    "W12": {
+      "verdict": "PROVEN",
+      "evidence": "Confirmed through packet-local telemetry samples and focused tests."
+    },
+    "W13": {
+      "verdict": "PROVEN",
+      "evidence": "Confirmed through packet-local telemetry samples and focused tests."
+    }
+  },
+  "aggregate": {
+    "precisionAt3": 0.597,
+    "recallAt3": 0.667,
+    "latency": {
+      "p50": 0.003,
+      "p95": 0.009,
+      "p99": 0.009
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 0.75
+  },
+  "sla": {
+    "count": 12,
+    "averageLatencyMs": 58.5,
+    "p95LatencyMs": 97,
+    "decisionClassDistribution": {
+      "degraded": 5,
+      "trusted": 7
+    },
+    "refusalRate": 0.083,
+    "rerankTriggerRate": 1,
+    "latencyByStage": {
+      "stage1": {
+        "averageMs": 6.5,
+        "p95Ms": 12
+      },
+      "stage2": {
+        "averageMs": 7.5,
+        "p95Ms": 13
+      },
+      "stage3": {
+        "averageMs": 8.5,
+        "p95Ms": 14
+      },
+      "stage4": {
+        "averageMs": 1,
+        "p95Ms": 1
+      },
+      "total": {
+        "averageMs": 23.5,
+        "p95Ms": 40
+      }
+    }
+  },
+  "w4": {
+    "triggerCounts": {
+      "multi-channel-weak-margin": 4,
+      "weak-evidence": 6,
+      "high-authority": 5,
+      "complex-query": 6,
+      "disagreement:advisor-memory-divergence": 1
+    },
+    "realTriggerFireRate": 1,
+    "nonPlaceholderTriggersObserved": [
+      "multi-channel-weak-margin",
+      "weak-evidence",
+      "high-authority",
+      "complex-query",
+      "disagreement:advisor-memory-divergence"
+    ]
+  },
+  "telemetrySamples": {
+    "envelopeCount": 12,
+    "auditRowCount": 12,
+    "shadowRowCount": 12,
+    "fieldCompleteness": [
+      {
+        "requestId": "phase-h-01-v101-weak-retrieval-refusal",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-02-v102-code-graph-fallback",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-03-ambiguous-advisor-routing",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-04-paraphrase-query-plan",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-05-w3-trust-tree-contradiction",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-06-w4-ambiguous-rerank-disagreement",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-07-w5-advisor-shadow-ambiguous",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-08-w6-cocoindex-duplicate-heavy",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-09-w7-code-graph-stale",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-10-w7-code-graph-empty",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-11-w7-code-graph-full-scan-required",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      },
+      {
+        "requestId": "phase-h-12-w7-code-graph-unavailable",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "shadowDeltas": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "tenantId": true,
+          "latencyMs": true
+        }
+      }
+    ]
+  },
+  "finalVerdict": "CONDITIONAL",
+  "limitations": [
+    "MCP tool calls returned user-cancelled in this session, so MCP-server live tool telemetry could not be captured through the connector surface.",
+    "Direct handleMemorySearch probe timed out at the embedding-model readiness gate after 30 seconds, before emitting a live handler envelope.",
+    "The search-quality harness remains fixture-driven; packet-local telemetry samples use production builders and sinks with controlled corpus inputs."
+  ]
+}
