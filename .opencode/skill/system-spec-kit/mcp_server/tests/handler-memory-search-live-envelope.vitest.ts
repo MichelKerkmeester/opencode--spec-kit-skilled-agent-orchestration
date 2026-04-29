@@ -5,13 +5,14 @@
 //   and recordSearchDecision with SPECKIT_SEARCH_DECISION_AUDIT_PATH.
 // - Mocked: executePipeline returns deterministic candidate rows and stage
 //   metadata; core database-readiness checks are no-op stubs.
+// - Mocked: getGraphReadinessSnapshot returns deterministic readiness
+//   snapshots so TC-3 validates handler wiring without depending on repo
+//   graph state.
 // - Deterministic fields: tenantId, queryPlan presence, rerankGateDecision,
-//   cocoindexCalibration shape, pipelineTiming, and audit JSONL emission.
+//   cocoindexCalibration shape, degradedReadiness, pipelineTiming, and audit
+//   JSONL emission.
 // - Derived fields: requestId, timestamp, latencyMs, trustTree decision, and
 //   token/response metadata are produced by the live handler path.
-// - Known gap: memory_search currently does not pass degradedReadiness into
-//   buildSearchDecisionEnvelope, so TC-3 is an expected-failure marker rather
-//   than a mocked success.
 
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -27,8 +28,6 @@ vi.mock('../core/index.js', async (importOriginal) => {
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 
@@ -37,8 +36,6 @@ vi.mock('../core/db-state.js', async (importOriginal) => {
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 
@@ -46,7 +43,12 @@ vi.mock('../lib/search/pipeline/index.js', () => ({
   executePipeline: vi.fn(),
 }));
 
+vi.mock('../code_graph/lib/ensure-ready.js', () => ({
+  getGraphReadinessSnapshot: vi.fn(),
+}));
+
 import { handleMemorySearch } from '../handlers/memory-search.js';
+import { getGraphReadinessSnapshot } from '../code_graph/lib/ensure-ready.js';
 import { executePipeline } from '../lib/search/pipeline/index.js';
 
 interface ParsedResponse {
@@ -208,10 +210,16 @@ describe('handleMemorySearch live SearchDecisionEnvelope seam', () => {
     auditPath = join(tempDir, 'search-decisions.jsonl');
     vi.stubEnv('SPECKIT_SEARCH_DECISION_AUDIT_PATH', auditPath);
     vi.mocked(executePipeline).mockResolvedValue(pipelineFixture());
+    vi.mocked(getGraphReadinessSnapshot).mockReturnValue({
+      freshness: 'fresh',
+      action: 'none',
+      reason: 'all tracked files are up-to-date',
+    });
   });
 
   afterEach(() => {
     vi.mocked(executePipeline).mockReset();
+    vi.mocked(getGraphReadinessSnapshot).mockReset();
     vi.unstubAllEnvs();
     while (tempDirs.length > 0) {
       const tempDir = tempDirs.pop();
@@ -269,7 +277,12 @@ describe('handleMemorySearch live SearchDecisionEnvelope seam', () => {
     expect(row?.trustTree?.decision).toEqual(expect.any(String));
   });
 
-  it.fails('TC-3 documents the current memory_search degradedReadiness wiring gap', async () => {
+  it('TC-3 emits snapshot-derived degradedReadiness from memory_search', async () => {
+    vi.mocked(getGraphReadinessSnapshot).mockReturnValueOnce({
+      freshness: 'empty',
+      action: 'full_scan',
+      reason: 'graph is empty (0 nodes)',
+    });
     vi.mocked(executePipeline).mockResolvedValueOnce(pipelineFixture({
       metadata: {
         degraded: true,
@@ -287,10 +300,12 @@ describe('handleMemorySearch live SearchDecisionEnvelope seam', () => {
     const envelope = responseEnvelope(response);
 
     expect(envelope.degradedReadiness).toMatchObject({
+      freshness: 'empty',
+      action: 'full_scan',
+      reason: 'graph is empty (0 nodes)',
       degraded: true,
-      blocked: true,
-      graphAnswersOmitted: true,
-      trustState: 'absent',
     });
+    expect(envelope.degradedReadiness?.freshness).toBeDefined();
+    expect(getGraphReadinessSnapshot).toHaveBeenCalledWith(process.cwd());
   });
 });

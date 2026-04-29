@@ -6,6 +6,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { closeDb, initDb } from '../../code_graph/lib/code-graph-db.js';
 import { handleCodeGraphQuery } from '../../code_graph/handlers/query.js';
 import { createEmptyQueryPlan } from '../../lib/query/query-plan.js';
+import { mapGraphReadinessToTelemetry } from '../../lib/search/graph-readiness-mapper.js';
 import { buildSearchDecisionEnvelope } from '../../lib/search/search-decision-envelope.js';
 
 describe('W10 degraded-readiness integration', () => {
@@ -43,25 +44,10 @@ describe('W10 degraded-readiness integration', () => {
       retryAfter: 'scan_complete',
     });
 
-    const readiness = parsed.data?.readiness as Record<string, unknown> | undefined;
     const envelope = buildSearchDecisionEnvelope({
       requestId: 'w10-empty',
       queryPlan: createEmptyQueryPlan({ selectedChannels: ['code_graph_query'] }),
-      degradedReadiness: {
-        freshness: typeof readiness?.freshness === 'string' ? readiness.freshness : undefined,
-        action: typeof readiness?.action === 'string' ? readiness.action : undefined,
-        canonicalReadiness: typeof parsed.data?.canonicalReadiness === 'string'
-          ? parsed.data.canonicalReadiness
-          : (typeof readiness?.canonicalReadiness === 'string' ? readiness.canonicalReadiness : undefined),
-        trustState: typeof parsed.data?.trustState === 'string'
-          ? parsed.data.trustState
-          : (typeof readiness?.trustState === 'string' ? readiness.trustState : undefined),
-        blocked: parsed.data?.blocked === true,
-        degraded: parsed.data?.degraded === true,
-        graphAnswersOmitted: parsed.data?.graphAnswersOmitted === true,
-        requiredAction: typeof parsed.data?.requiredAction === 'string' ? parsed.data.requiredAction : undefined,
-        fallbackDecision: parsed.data?.fallbackDecision as Record<string, unknown> | undefined,
-      },
+      degradedReadiness: mapGraphReadinessToTelemetry(parsed.data ?? {}),
       timestamp: '2026-04-29T00:00:00.000Z',
     });
 

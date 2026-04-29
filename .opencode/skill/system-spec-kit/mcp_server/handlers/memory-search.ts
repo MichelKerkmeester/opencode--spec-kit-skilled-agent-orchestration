@@ -23,6 +23,8 @@ import { getStrategyForQuery } from '../lib/search/artifact-routing.js';
 import { routeQuery } from '../lib/search/query-router.js';
 import { createEmptyQueryPlan, type QueryPlan } from '../lib/query/query-plan.js';
 import { calibrateCocoIndexOverfetch } from '../lib/search/cocoindex-calibration.js';
+import { getGraphReadinessSnapshot } from '../code_graph/lib/ensure-ready.js';
+import { mapGraphReadinessToTelemetry } from '../lib/search/graph-readiness-mapper.js';
 import {
   buildSearchDecisionEnvelope,
   type SearchDecisionEnvelope,
@@ -1158,6 +1160,9 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
         };
       }),
     });
+    const degradedReadiness = mapGraphReadinessToTelemetry(
+      getGraphReadinessSnapshot(process.cwd()),
+    );
     searchDecisionEnvelope = buildSearchDecisionEnvelope({
       requestId: searchDecisionRequestId,
       tenantId: normalizedScope.tenantId,
@@ -1176,6 +1181,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       },
       rerankGateDecision: pipelineResult.metadata.stage3.rerankGateDecision,
       cocoindexCalibration,
+      degradedReadiness,
       pipelineTiming: pipelineResult.metadata.timing,
       timestamp: new Date(_searchStartTime).toISOString(),
       latencyMs: Date.now() - _searchStartTime,
