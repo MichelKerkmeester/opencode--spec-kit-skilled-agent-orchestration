@@ -21,11 +21,11 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Direct MCP call only. Packet 013 found session/bootstrap surfaces probe CocoIndex availability through helpers instead of invoking this tool.
+Direct MCP call only. Session/bootstrap surfaces probe CocoIndex availability through helpers instead of invoking this tool.
 
 ## 4. CLASS
 
-manual, copied from packet 013's reality map.
+manual, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -35,5 +35,4 @@ Requires the local `ccc` binary. Use `mcp__cocoindex_code__search` for actual se
 
 - [02-ccc-feedback.md](./02-ccc-feedback.md)
 - [03-ccc-status.md](./03-ccc-status.md)
-
 

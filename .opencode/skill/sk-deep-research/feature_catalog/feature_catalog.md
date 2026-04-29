@@ -34,7 +34,7 @@ Use this catalog as the canonical inventory for the live `sk-deep-research` feat
 
 ## 2. LOOP LIFECYCLE
 
-These entries cover the command-managed loop from packet setup through final continuity save.
+These entries cover the command-managed loop from spec-folder setup through final continuity save.
 
 ### Initialization
 

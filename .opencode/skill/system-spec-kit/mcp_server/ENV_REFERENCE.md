@@ -65,9 +65,9 @@ Generated from `lib/search/search-flags.ts`. "Default state" is the shipped beha
 | Auto entities | ON | `SPECKIT_AUTO_ENTITIES` | Rule-based entity extraction at save time | R10 |
 | Entity linking | ON | `SPECKIT_ENTITY_LINKING` | Cross-document entity edges | S5 |
 | Degree boost | ON | `SPECKIT_DEGREE_BOOST` | Causal-edge degree-based reranking | current |
-| Context headers | ON | `SPECKIT_CONTEXT_HEADERS` | Stage 4 contextual tree headers | P1-4 |
-| Markdown file watcher | OFF | `SPECKIT_FILE_WATCHER` | Real-time markdown reindexing watcher | P1-7 |
-| Local reranker | OFF | `RERANKER_LOCAL` | Local GGUF reranker gate | P1-5 |
+| Context headers | ON | `SPECKIT_CONTEXT_HEADERS` | Stage 4 contextual tree headers | graduated |
+| Markdown file watcher | OFF | `SPECKIT_FILE_WATCHER` | Real-time markdown reindexing watcher | opt-in |
+| Local reranker | OFF | `RERANKER_LOCAL` | Local GGUF reranker gate | opt-in |
 | Quality loop | ON | `SPECKIT_QUALITY_LOOP` | Verify-fix-verify memory quality loop | T008 |
 | Query decomposition | ON | `SPECKIT_QUERY_DECOMPOSITION` | Deep-mode facet splitting | D2 REQ-D2-001 |
 | Graph concept routing | ON | `SPECKIT_GRAPH_CONCEPT_ROUTING` | Query-time alias matching into graph channel | D2 REQ-D2-002 |
@@ -174,7 +174,7 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_ROLLOUT_PERCENT` | `100` | number | Global rollout percentage (0-100) for feature flag gating. Controls what fraction of feature checks pass. | `lib/cognitive/rollout-policy.ts` |
 | `SPECKIT_PARSER` | `treesitter` | string | Structural parser backend: `treesitter` (AST-accurate via WASM) or `regex` (lightweight fallback). Detector provenance is surfaced separately on code-graph metadata; when a parser-provenance carrier is required, the shared trust mapper translates persisted detector provenance (for example, `structured -> regex`) instead of assuming AST. | `lib/code-graph/structural-indexer.ts`, `lib/context/shared-payload.ts`, `code-graph/lib/readiness-contract.ts` |
 | `SPECKIT_VRULE_OPTIONAL` | `false` | boolean | When `true`, V-rule validation bypasses if the module fails to load. Opt-in. | `handlers/v-rule-bridge.ts` |
-| `SPECKIT_SAVE_PLANNER_MODE` | `plan-only` | string | Canonical save planner mode: `plan-only` (default), `full-auto`, or `hybrid`. Since the Phase 017 H-56-1 fix, all modes still refresh packet metadata on `/memory:save`; `plan-only` no longer leaves `description.json.lastUpdated` or `graph-metadata.json` untouched. `full-auto` keeps the legacy atomic apply path; `hybrid` is reserved for future mixed flows and currently behaves the same as `plan-only`. | `lib/search/search-flags.ts` |
+| `SPECKIT_SAVE_PLANNER_MODE` | `plan-only` | string | Canonical save planner mode: `plan-only` (default), `full-auto`, or `hybrid`. All modes refresh packet metadata on `/memory:save`; `plan-only` no longer leaves `description.json.lastUpdated` or `graph-metadata.json` untouched. `full-auto` keeps the legacy atomic apply path; `hybrid` is reserved for future mixed flows and currently behaves the same as `plan-only`. | `lib/search/search-flags.ts` |
 | `MCP_SESSION_RESUME_AUTH_MODE` | `strict` | string | Session-resume auth binding mode. `strict` (default) rejects `args.sessionId` mismatches against the transport caller context from `getCallerContext()`. `permissive` logs the mismatch and continues for canary rollout. | `handlers/session-resume.ts` |
 | `SPECKIT_RECONSOLIDATION_ENABLED` | `false` | boolean | Opt-in save-time reconsolidation for planner-first flows. Disabled by default on saves. | `lib/search/search-flags.ts` |
 | `SPECKIT_POST_INSERT_ENRICHMENT_ENABLED` | `false` | boolean | Opt-in save-time post-insert enrichment bundle for planner-first flows. Disabled by default on saves. | `lib/search/search-flags.ts` |
@@ -363,7 +363,7 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 
 | Variable | Default | Type | Description | Source |
 |----------|---------|------|-------------|--------|
-| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | Contextual tree headers for Stage 4 result enrichment (P1-4). Graduated ON. | `lib/search/search-flags.ts` |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | Contextual tree headers for Stage 4 result enrichment. Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_PROGRESSIVE_DISCLOSURE_V1` | `true` | boolean | Progressive disclosure: summary layer + snippet + cursor pagination (REQ-D5-005). Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_SESSION_RETRIEVAL_STATE_V1` | `true` | boolean | Cross-turn retrieval session state for dedup and goal-aware refinement (REQ-D5-006). Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | `true` | boolean | Empty/weak result recovery UX with diagnostic payload (REQ-D5-001). Graduated ON. | `lib/search/search-flags.ts` |
@@ -408,7 +408,7 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_ONTOLOGY_HOOKS` | `true` | boolean | Ontology-guided extraction validation hooks (Phase D T036). Graduated ON. | `lib/search/search-flags.ts` |
 | `SPECKIT_ONTOLOGY_SCHEMA` | (built-in) | string | Custom JSON ontology schema for extraction validation. | `lib/extraction/ontology-hooks.ts` |
 | `SPECKIT_EXTRACTION` | `true` | boolean | Entity/relation extraction pipeline. Graduated ON. | `lib/search/search-flags.ts` (via tests) |
-| `SPECKIT_FILE_WATCHER` | `false` | boolean | Real-time file watcher for markdown reindexing (P1-7). **Default OFF**: opt-in. Honors ROLLOUT_PERCENT. | `lib/search/search-flags.ts` |
+| `SPECKIT_FILE_WATCHER` | `false` | boolean | Real-time file watcher for markdown reindexing. **Default OFF**: opt-in. Honors ROLLOUT_PERCENT. | `lib/search/search-flags.ts` |
 <!-- /ANCHOR:indexing -->
 
 ---

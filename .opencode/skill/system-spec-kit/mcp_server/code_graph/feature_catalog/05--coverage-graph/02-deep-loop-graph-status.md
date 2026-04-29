@@ -21,11 +21,11 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Direct MCP call only; packet 013 found no command YAML auto-fire for status.
+Direct MCP call only; there is no command YAML auto-fire for status.
 
 ## 4. CLASS
 
-manual, copied from packet 013's reality map.
+manual, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -35,5 +35,4 @@ Empty graphs return zero counts and null signals. Use upsert-enabled deep loops 
 
 - [01-deep-loop-graph-query.md](./01-deep-loop-graph-query.md)
 - [04-deep-loop-graph-convergence.md](./04-deep-loop-graph-convergence.md)
-
 

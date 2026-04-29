@@ -21,11 +21,11 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Direct MCP call only. Packet 013 found no YAML, bootstrap, watcher, or after-tool auto-fire path.
+Direct MCP call only. There is no YAML, bootstrap, watcher, or after-tool auto-fire path.
 
 ## 4. CLASS
 
-manual, copied from packet 013's reality map.
+manual, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -35,5 +35,4 @@ Requires `specFolder`, `loopType`, and `sessionId`; reads are session-scoped.
 
 - [02-deep-loop-graph-status.md](./02-deep-loop-graph-status.md)
 - [03-deep-loop-graph-upsert.md](./03-deep-loop-graph-upsert.md)
-
 

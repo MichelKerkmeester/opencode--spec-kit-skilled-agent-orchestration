@@ -20,6 +20,7 @@ Templates for creating feature catalogs that combine top-level capability invent
 - **Current-reality focused**: The root and per-feature files describe shipped behavior, not speculative roadmaps unless clearly marked.
 - **Reference-rich**: Per-feature files carry source-file tables, implementation anchors, and metadata.
 - **Stable naming**: Category directory names and feature file slugs should remain stable after publication.
+- **Packet-history free**: Catalogs cite current source files and validation anchors, not spec or phase packet numbers.
 
 **Location Convention**: `{SKILL_PATH}/feature_catalog/`
 
@@ -223,6 +224,7 @@ description: "{OVERVIEW_ONE_LINE}"
 - Put implementation and test anchor detail in the per-feature files.
 - Preserve stable file paths once other docs start linking to them.
 - Use numbered all-caps H2 section headers in the root catalog, with `TABLE OF CONTENTS` as the one intentional unnumbered H2.
+- Do not write packet-history references such as "added in packet 033" or "Phase 017 update". Rewrite them as current behavior plus a source file, test, or reference-doc link.
 
 ---
 

@@ -26,7 +26,7 @@ Manual MCP maintenance call. Read paths may recommend it, but they do not run a 
 
 ## 4. CLASS
 
-manual. Packet 013 states manual `code_graph_scan`, verify, status, and doctor commands remain the control plane.
+manual. `code_graph_scan`, verify, status, and doctor commands remain the manual control plane.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ Run full scans in a disposable workspace for destructive exclude/prune checks. `
 - [02-code-graph-verify.md](./02-code-graph-verify.md)
 - [03-code-graph-status.md](./03-code-graph-status.md)
 - [../../manual_testing_playbook/02--manual-scan-verify-status/003-code-graph-scan-incremental.md](../../manual_testing_playbook/02--manual-scan-verify-status/003-code-graph-scan-incremental.md)
-
 

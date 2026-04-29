@@ -1,20 +1,17 @@
 ---
 title: "Spec Kit Memory: Feature Catalog"
-description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
+description: "Unified reference combining the complete current system feature inventory for the Spec Kit Memory MCP server."
 last_updated: "2026-04-29"
 ---
 
 # Spec Kit Memory: Feature Catalog
 
-This document combines two complementary views of the Spec Kit Memory system into a single reference. The **System Reference** sections describe what the runtime and adjacent Spec Kit workflows are today: live MCP tools, pipeline stages, verification surfaces, and the supporting phase-workflow scripts that ship with the same skill package. The **Refinement Program** section describes what was changed and why: every improvement delivered across the refinement program, with ticket IDs and implementation details.
+This document is the current feature inventory for the Spec Kit Memory system. It describes live MCP tools, pipeline stages, verification surfaces, and the supporting workflow scripts that ship with the same skill package.
 
 ---
 
 ## TABLE OF CONTENTS
 
-- [PHASE 012 AUDIT](#phase-012-audit)
-- [PHASE 017 AUDIT](#phase-017-audit)
-- [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
 - [2. RETRIEVAL](#2--retrieval)
 - [3. MUTATION](#3--mutation)
@@ -40,105 +37,6 @@ This document combines two complementary views of the Spec Kit Memory system int
 
 ---
 
-## Phase 012 audit
-
-Audit date: `2026-04-25`
-
-Phase 012 (`026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/`) shipped the converged External Project pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor under strict ownership boundaries (pt-02 §13). Code sub-phases 002-005 each authored their own per-packet feature-catalog entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet entries are listed below with their relative paths.
-
-| Sub-phase | Category | Entry |
-|-----------|----------|-------|
-| 012/002 | `03--discovery` | [`03--discovery/04-detect-changes-preflight.md`](03--discovery/04-detect-changes-preflight.md) — read-only `detect_changes` preflight MCP tool with hard refuse on stale graph (010/007 T-A wired the dispatcher, JSON schema, and Zod validator) |
-| 012/002 | `14--pipeline-architecture` | [`14--pipeline-architecture/25-code-graph-phase-dag-runner.md`](14--pipeline-architecture/25-code-graph-phase-dag-runner.md) — typed phase-DAG runner wrapping `indexFiles()` |
-| 012/003 | `06--analysis` | [`06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md) — edge `reason`/`step` display + enriched `blast_radius` (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
-| 012/004 | `11--scoring-and-calibration` | [`11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md) — sanitized affordance evidence routing through existing `derived_generated` and `graph_causal` lanes |
-| 012/005 | `13--memory-quality-and-indexing` | [`13--memory-quality-and-indexing/28-memory-causal-trust-display.md`](13--memory-quality-and-indexing/28-memory-causal-trust-display.md) — display-only `trustBadges` derived from existing causal-edge columns |
-
-Phase 012 ships zero schema changes. Code Graph adds the read-only `detect_changes` MCP tool — fully wired in 010/007 T-A (dispatcher in `code_graph/tools/code-graph-tools.ts`, JSON schema in `tool-schemas.ts`, Zod validator in `schemas/tool-input-schemas.ts`, allowed-parameter ledger). ADR-012-003's deferral covers the new route/tool/shape graph entities (`route_map`, `tool_map`, `shape_check`, `api_impact`), not the routine MCP exposure of this read-only handler. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
-
----
-
-## Phase 017 audit
-
-Audit date: `2026-04-17`
-
-Phase 017 audited the split feature catalog against the review-findings remediation packet. The catalog now records the canonical-save metadata fix, the shared code-graph readiness contract, Copilot compact-cache parity, caller-bound session-resume auth, the Unicode hardening pass, the strict evidence and normalizer lint surfaces, and the Wave D maintainability extracts.
-
-Active category entries: `286`
-Deprecated archival entries: `0`
-Total category entries: `286`
-
-| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
-|---|---:|---:|---:|---:|---:|
-| `01--retrieval` | 0 | 0 | 0 | 0 | 0 |
-| `02--mutation` | 0 | 1 | 0 | 0 | 1 |
-| `03--discovery` | 0 | 0 | 0 | 0 | 0 |
-| `04--maintenance` | 0 | 0 | 0 | 0 | 0 |
-| `05--lifecycle` | 0 | 0 | 0 | 0 | 1 |
-| `06--analysis` | 0 | 0 | 0 | 0 | 0 |
-| `07--evaluation` | 0 | 0 | 0 | 0 | 0 |
-| `08--bug-fixes-and-data-integrity` | 0 | 0 | 0 | 0 | 1 |
-| `09--evaluation-and-measurement` | 0 | 0 | 0 | 0 | 0 |
-| `10--graph-signal-activation` | 0 | 0 | 0 | 0 | 0 |
-| `11--scoring-and-calibration` | 0 | 0 | 0 | 0 | 0 |
-| `12--query-intelligence` | 0 | 0 | 0 | 0 | 0 |
-| `13--memory-quality-and-indexing` | 0 | 1 | 0 | 0 | 0 |
-| `14--pipeline-architecture` | 0 | 0 | 0 | 0 | 1 |
-| `15--retrieval-enhancements` | 0 | 0 | 0 | 0 | 0 |
-| `16--tooling-and-scripts` | 0 | 1 | 0 | 0 | 2 |
-| `17--governance` | 0 | 0 | 0 | 0 | 1 |
-| `18--ux-hooks` | 0 | 0 | 0 | 0 | 1 |
-| `19--feature-flag-reference` | 0 | 0 | 0 | 0 | 0 |
-| `20--remediation-revalidation` | 0 | 0 | 0 | 0 | 0 |
-| `21--implement-and-remove-deprecated-features` | 0 | 0 | 0 | 0 | 0 |
-| `22--context-preservation-and-code-graph` | 0 | 1 | 0 | 0 | 1 |
-| **TOTAL** | 0 | 4 | 0 | 0 | 9 |
-
-- New phase-017 coverage now lives in [`02--mutation/11-reconsolidation-conflict-transaction-helper.md`](02--mutation/11-reconsolidation-conflict-transaction-helper.md), [`05--lifecycle/09-post-insert-retry-budget.md`](05--lifecycle/09-post-insert-retry-budget.md), [`08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md`](08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md), [`14--pipeline-architecture/24-phase-017-maintainability-extracts.md`](14--pipeline-architecture/24-phase-017-maintainability-extracts.md), [`16--tooling-and-scripts/34-research-metadata-backfill.md`](16--tooling-and-scripts/34-research-metadata-backfill.md), [`16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md`](16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md), [`17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md`](17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md), [`18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md), and [`22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md).
-
----
-
-## Phase 018 audit
-
-Audit date: `2026-04-12`
-
-Phase 018 audited the split feature catalog against the canonical continuity refactor. The catalog now treats spec-doc anchored continuity as the live substrate, keeps retired concepts under category-local `_deprecated/` folders, and adds dedicated entries for the new validator and save-path surfaces.
-
-Active category entries: `286`
-Deprecated archival entries: `8`
-Total category entries: `294`
-
-| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
-|---|---:|---:|---:|---:|---:|
-| `01--retrieval` | 23 | 4 | 1 | 0 | 0 |
-| `02--mutation` | 6 | 13 | 3 | 0 | 0 |
-| `03--discovery` | 5 | 1 | 0 | 0 | 0 |
-| `04--maintenance` | 0 | 4 | 0 | 0 | 0 |
-| `05--lifecycle` | 18 | 0 | 0 | 0 | 0 |
-| `06--analysis` | 14 | 0 | 0 | 0 | 0 |
-| `07--evaluation` | 0 | 4 | 0 | 0 | 0 |
-| `08--bug-fixes-and-data-integrity` | 24 | 0 | 0 | 0 | 0 |
-| `09--evaluation-and-measurement` | 28 | 2 | 0 | 0 | 0 |
-| `10--graph-signal-activation` | 35 | 0 | 0 | 2 | 0 |
-| `11--scoring-and-calibration` | 45 | 0 | 0 | 2 | 0 |
-| `12--query-intelligence` | 0 | 20 | 0 | 2 | 0 |
-| `13--memory-quality-and-indexing` | 46 | 2 | 2 | 4 | 4 |
-| `14--pipeline-architecture` | 43 | 2 | 0 | 4 | 0 |
-| `15--retrieval-enhancements` | 26 | 0 | 0 | 0 | 0 |
-| `16--tooling-and-scripts` | 83 | 1 | 0 | 0 | 0 |
-| `17--governance` | 13 | 0 | 0 | 2 | 0 |
-| `18--ux-hooks` | 37 | 2 | 0 | 0 | 0 |
-| `19--feature-flag-reference` | 18 | 1 | 1 | 0 | 1 |
-| `20--remediation-revalidation` | 0 | 6 | 0 | 0 | 0 |
-| `21--implement-and-remove-deprecated-features` | 0 | 10 | 0 | 0 | 0 |
-| `22--context-preservation-and-code-graph` | 36 | 6 | 1 | 0 | 0 |
-| **TOTAL** | 500 | 78 | 8 | 16 | 5 |
-
-- Deprecated entries now live under `feature_catalog/10--graph-signal-activation/_deprecated/`, `feature_catalog/11--scoring-and-calibration/_deprecated/`, `feature_catalog/12--query-intelligence/_deprecated/`, `feature_catalog/13--memory-quality-and-indexing/_deprecated/`, `feature_catalog/14--pipeline-architecture/_deprecated/`, and `feature_catalog/17--governance/_deprecated/`.
-- New phase-018 coverage now lives in [`13--memory-quality-and-indexing/26-spec-doc-structure-validator.md`](13--memory-quality-and-indexing/26-spec-doc-structure-validator.md), [`13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md`](13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md), and [`19--feature-flag-reference/11-memory-roadmap-capability-flags.md`](19--feature-flag-reference/11-memory-roadmap-capability-flags.md).
-
----
-
 ## 1. OVERVIEW
 
 Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
@@ -151,7 +49,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 | `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)). See [`20--remediation-revalidation/01-category-stub.md`](20--remediation-revalidation/01-category-stub.md). |
 | `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/_deprecated/02](17--governance/_deprecated/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
 
-### Packet 013 & 014 coverage map
+### Hook contract coverage map
 
 Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-package/` ship contract-level changes surfaced in the following catalog entries and references:
 
@@ -180,7 +78,7 @@ The Spec Kit Memory MCP server exposes **54 tools** overall across the 7-layer M
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
 
-Packet 031-036 catalog refresh adds three surfaced capabilities to this catalog: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix-runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
+Current catalog entries include three surfaced capabilities: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix-runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
 
 ---
 
@@ -284,7 +182,7 @@ When you search for something, the system looks in several places at once, like 
 
 #### Current Reality
 
-The engine under the hood. `hybrid-search.ts` orchestrates multi-channel retrieval with five search channels, adaptive fusion, diversity reranking and a multi-tier fallback chain. This pipeline provides the candidate generation and fusion components used by Stage 1 of the 4-stage pipeline (the sole runtime path since the legacy V1 path was removed in Phase 017).
+The engine under the hood. `hybrid-search.ts` orchestrates multi-channel retrieval with five search channels, adaptive fusion, diversity reranking and a multi-tier fallback chain. This pipeline provides the candidate generation and fusion components used by Stage 1 of the 4-stage pipeline; the legacy V1 path is no longer present in runtime routing.
 
 Five channels feed the pipeline. Vector search (cosine similarity via sqlite-vec, base weight 1.0) is the primary semantic signal. FTS5 (SQLite full-text search with weighted BM25, base weight 0.3) captures keyword matches the embedding might miss. In-memory BM25 (base weight 0.6, gated by `ENABLE_BM25`, default ON) provides broader coverage with a different tokenization approach. Graph search (causal edge traversal, base weight 0.5) finds structurally related memories through the causal graph. Degree search (connectivity scoring, base weight 0.4, gated by `SPECKIT_DEGREE_BOOST`, default ON) re-ranks by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50.
 
@@ -320,7 +218,7 @@ Stage 3 (Rerank and Aggregate) handles cross-encoder reranking (optional, gated 
 
 Stage 4 (Filter and Annotate) enforces a "no score changes" invariant through dual enforcement. At compile time, `Stage4ReadonlyRow` declares all six score fields as `Readonly`, making assignment a TypeScript error. At runtime, `captureScoreSnapshot()` records all scores before operations and `verifyScoreInvariant()` checks them afterward, throwing a `[Stage4Invariant]` error on any mismatch. Within this invariant, Stage 4 applies memory state filtering (removing rows below `config.minState` with optional per-tier hard limits), evidence gap detection via TRM Z-score analysis and annotation metadata for feature flags and state statistics. Session deduplication is explicitly excluded from Stage 4 and runs post-cache in the handler to avoid double-counting.
 
-The pipeline is the sole runtime path. The legacy `postSearchPipeline` was removed in Phase 017, and `SPECKIT_PIPELINE_V2` is no longer consumed by runtime code.
+The pipeline is the sole runtime path. The legacy `postSearchPipeline` is no longer present in runtime routing, and `SPECKIT_PIPELINE_V2` is no longer consumed by runtime code.
 
 #### Source Files
 
@@ -442,7 +340,7 @@ This is how you add new knowledge to the system. You point it at a file and it r
 
 `memory_save` is the save entry point for the canonical packet continuity path. You point it at a packet document or other supported markdown input, and it routes the content through `contentRouter`, applies the selected merge behavior via `anchorMergeOperation`, and writes the result through `atomicIndexMemory` inside the existing spec-folder lock. `_memory.continuity` now lives as supporting frontmatter state inside the spec doc, and `/spec_kit:resume` remains the canonical recovery surface.
 
-Phase 017 hardened the canonical save follow-up behavior. Successful canonical saves now refresh packet metadata on every invocation instead of treating repeat saves as a structural no-op, and research packets can trigger metadata backfill for missing iteration metadata under the same workflow.
+hardened the canonical save follow-up behavior. Successful canonical saves now refresh current metadata on every invocation instead of treating repeat saves as a structural no-op, and research spec folders can trigger metadata backfill for missing iteration metadata under the same workflow.
 
 The canonical router now classifies save chunks across 8 categories: `narrative_progress`, `narrative_delivery`, `decision`, `handover_state`, `research_finding`, `task_update`, `metadata_only`, and `drop`. Tier 1 handles structured and heuristic routes, Tier 2 compares against the routing prototype library, and Tier 3 is now wired into the live save handler by default and the configured LLM endpoint is available. Delivery cues now favor sequencing, gating, rollout, and verification language over generic implementation verbs, while the handover/drop boundary keeps hard transcript or telemetry wrappers on the refuse-to-route side and lets softer operational phrases survive when the chunk is clearly a stop-state note.
 
@@ -516,7 +414,7 @@ You can remove one memory at a time or clear out an entire folder at once. Befor
 
 Two deletion modes in one tool. Pass a numeric `id` for single delete or a `specFolder` string (with `confirm: true`) for bulk folder delete.
 
-Single deletes run inside a database transaction: remove the spec-doc record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
+Single deletes run inside a database transaction: remove the spec-doc record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in  to prevent partial deletes from leaving orphaned data.
 
 Bulk deletes by spec folder are more involved. The system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching spec-doc records inside a database transaction with per-record causal edge cleanup and per-record mutation ledger entries. The entire operation is atomic: either all spec-doc records in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint.
 
@@ -1538,13 +1436,13 @@ Three different AI reviewers independently checked the codebase and found 14 iss
 Independent reviews by Gemini 3.1 Pro and Codex gpt-5.3-codex identified 14 issues missed by the original audit. Key fixes:
 
 - **CR-P0-1:** Test suite false-pass patterns. 21 silent-return guards converted to `it.skipIf()`, fail-fast imports with throw on required handler/vectorIndex missing.
-- **CR-P1-1:** Deletion exception propagation. Causal edge cleanup errors in single-delete now propagate (previously swallowed).
-- **CR-P1-2:** Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
-- **CR-P1-3:** Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
-- **CR-P1-4:** Session dedup `id != null` guards against undefined collapse.
-- **CR-P1-5:** Cache lookup moved before embedding readiness gate in search handler.
-- **CR-P1-6:** Partial-update DB mutations wrapped inside transaction.
-- **CR-P1-8:** Config env var fallback chain (`SPEC_KIT_DB_DIR || SPECKIT_DB_DIR`).
+- **Deletion exception propagation. Causal edge cleanup errors in single-delete now propagate (previously swallowed).
+- **Re-sort after feedback mutations before top-K slice in Stage 2 fusion.
+- **Dedup queries gained `AND parent_id IS NULL` to exclude chunk rows.
+- **Session dedup `id != null` guards against undefined collapse.
+- **Cache lookup moved before embedding readiness gate in search handler.
+- **Partial-update DB mutations wrapped inside transaction.
+- **Config env var fallback chain (`SPEC_KIT_DB_DIR || SPECKIT_DB_DIR`).
 - **CR-P2-3:** Dashboard row limit configurable via `SPECKIT_DASHBOARD_LIMIT` (default 10000) with NaN guard.
 - **CR-P2-5:** `Number.isFinite` guards on evidence gap detector scores.
 
@@ -3038,17 +2936,17 @@ The retrieval pipeline was restructured into four bounded stages with clear resp
 
 Stage 1 (Candidate Generation) executes search channels based on query type: multi-concept, deep mode with query expansion, embedding expansion with R15 mutual exclusion, or standard hybrid search. The R8 memory summary channel runs in parallel when the scale gate is met (>5K memories), merging and deduplicating results by memory ID. Summary candidates now pass through the same `minQualityScore` filter as other candidates (Sprint 8 fix). Constitutional memory injection and quality/tier filtering run at the end of Stage 1.
 
-**Phase 017 update:** The query embedding is now cached at function scope for reuse in the constitutional injection path, saving one API call per search. The constitutional injection count is tracked and passed through the orchestrator to Stage 4 output metadata (previously hardcoded to 0).
+**Current update:** The query embedding is now cached at function scope for reuse in the constitutional injection path, saving one API call per search. The constitutional injection count is tracked and passed through the orchestrator to Stage 4 output metadata (previously hardcoded to 0).
 
 Stage 2 (Fusion and Signal Integration) applies scoring/enrichment in a fixed order: session boost, causal boost, co-activation spreading, community co-retrieval (N2c from precomputed `community_assignments`), graph signals (N2a+N2b: additive momentum/depth bonuses), FSRS testing effect (when `trackAccess=true`), intent weights (non-hybrid only, G2 prevention), artifact routing, feedback signals (learned trigger boosts and negative feedback demotions), artifact result limiting, anchor metadata annotation (S2) and validation metadata enrichment with a bounded multiplier clamped to 0.8-1.2 (S3). Community injection (N2c) runs before graph signals (N2a+N2b) so injected rows also receive momentum/depth adjustments. The G2 prevention is structural: an `isHybrid` boolean gates the intent weight step so the code path is absent for hybrid search.
 
-**Phase 017 update:** Stage 2 now uses the shared `resolveEffectiveScore()` function from `pipeline/types.ts` (aliased as `resolveBaseScore`) for consistent score resolution. The five-factor composite weights auto-normalize to sum 1.0 after partial overrides. Cross-variant RRF fusion no longer double-counts convergence bonuses (per-variant bonus subtracted before cross-variant bonus). Adaptive fusion core weights (semantic + keyword + recency) normalize after doc-type adjustments.
+**Current update:** Stage 2 now uses the shared `resolveEffectiveScore()` function from `pipeline/types.ts` (aliased as `resolveBaseScore`) for consistent score resolution. The five-factor composite weights auto-normalize to sum 1.0 after partial overrides. Cross-variant RRF fusion no longer double-counts convergence bonuses (per-variant bonus subtracted before cross-variant bonus). Adaptive fusion core weights (semantic + keyword + recency) normalize after doc-type adjustments.
 
 Stage 3 (Rerank and Aggregate) handles optional cross-encoder reranking (gated by `SPECKIT_CROSS_ENCODER`) and MPAB chunk collapse with parent reassembly preserving document order.
 
 Stage 4 (Filter and Annotate) enforces the "no score changes" invariant via dual enforcement: compile-time `Stage4ReadonlyRow` readonly fields plus runtime `verifyScoreInvariant()` assertion checking all six score fields. Within this invariant, it applies memory state filtering, TRM evidence gap detection and annotation metadata.
 
-**Phase 017 update:** The legacy `postSearchPipeline` path was removed entirely, leaving the 4-stage pipeline as the only code path. A shared `resolveEffectiveScore()` function in `pipeline/types.ts` replaced both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`, ensuring a consistent fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1]) across all stages.
+**Current update:** The legacy `postSearchPipeline` path was removed entirely, leaving the 4-stage pipeline as the only code path. A shared `resolveEffectiveScore()` function in `pipeline/types.ts` replaced both Stage 2's `resolveBaseScore()` and Stage 3's local `effectiveScore()`, ensuring a consistent fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`, all clamped [0,1]) across all stages.
 
 #### Source Files
 
@@ -3846,7 +3744,7 @@ See [`16--tooling-and-scripts/15-module-boundary-map.md`](16--tooling-and-script
 
 #### Description
 
-Phase 016 added structured JSON summary support to `generate-context.js`, including `toolCalls` and `exchanges` fields, file-backed JSON authority preservation, and Wave 2 hardening for decision confidence, truncated titles, `git_changed_file_count` stability, and template count preservation.
+added structured JSON summary support to `generate-context.js`, including `toolCalls` and `exchanges` fields, file-backed JSON authority preservation, and Wave 2 hardening for decision confidence, truncated titles, `git_changed_file_count` stability, and template count preservation.
 
 #### Current Reality
 
@@ -3864,7 +3762,7 @@ See [`16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`](16--tooling-an
 
 #### Description
 
-Phase 017 established the JSON-only save contract for `generate-context.js`. Dynamic session capture proved unreliable and has been removed. `--json` and `--stdin` are now the sole save paths.
+established the JSON-only save contract for `generate-context.js`. Dynamic session capture proved unreliable and has been removed. `--json` and `--stdin` are now the sole save paths.
 
 #### Current Reality
 
@@ -4000,7 +3898,7 @@ The CLI matrix adapter runners turn the F1-F14 executor matrix into runnable cel
 
 `mcp_server/matrix-runners/` ships a manifest-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
 
-Packet 035 covered the local/native matrix status. This entry covers packet 036's external CLI adapter surface now present in the repo.
+Local/native matrix status is covered separately. This entry covers the external CLI adapter surface now present in the repo.
 
 #### Source Files
 
@@ -4060,7 +3958,7 @@ A comprehensive audit at Sprint 7 exit found 79 unique `SPECKIT_` flags across t
 
 The current active flag-helper inventory in `search-flags.ts` is 24 exported `is*` functions (including the deprecated `isPipelineV2Enabled()` compatibility shim and the newly added `isQualityLoopEnabled()`). Sprint 0 core flags remain default ON, sprint-graduated flags from Sprints 3-6 remain default ON and deferred-feature flags (including GRAPH_SIGNALS, COMMUNITY_DETECTION, MEMORY_SUMMARIES, AUTO_ENTITIES and ENTITY_LINKING) are now default ON. `SPECKIT_ABLATION` remains default OFF as an opt-in evaluation tool.
 
-**Phase 017 update:** The legacy V1 pipeline code was removed, leaving the 4-stage pipeline as the only supported path. `SPECKIT_PIPELINE_V2` remains part of historical audit context but is no longer consumed by runtime code.
+**Current update:** The legacy V1 pipeline code was removed, leaving the 4-stage pipeline as the only supported path. `SPECKIT_PIPELINE_V2` remains part of historical audit context but is no longer consumed by runtime code.
 
 **Sprint 8 update:** Flag graduation and dead code removal have been completed. The Sprint 8 comprehensive remediation removed a large dead-code slice including: dead feature flag branches in `hybrid-search.ts` (RSF and shadow-scoring), dead feature flag functions (`isShadowScoringEnabled`, `isRsfEnabled`), dead module-level state (`stmtCache`, `lastComputedAt`, `activeProvider`, `flushCount`, 3 dead config fields in `working-memory.ts`) and dead functions/exports (`computeCausalDepth` single-node variant, `getSubgraphWeights`, `RECOVERY_HALF_LIFE_DAYS`, `logCoActivationEvent`). `isInShadowPeriod` in learned feedback remains active as Safeguard #6. See Comprehensive remediation (Sprint 8) for the full accounting.
 
@@ -4112,7 +4010,7 @@ After the system saves or changes any piece of knowledge, it runs a standard set
 
 #### Current Reality
 
-Phase 014 introduced a shared post-mutation hook path across mutation handlers. The same hook automation now runs after save, update, delete and bulk-delete flows, including atomic save paths, so cache invalidation and follow-up behavior no longer drift by handler.
+introduced a shared post-mutation hook path across mutation handlers. The same hook automation now runs after save, update, delete and bulk-delete flows, including atomic save paths, so cache invalidation and follow-up behavior no longer drift by handler.
 
 #### Source Files
 
@@ -4167,7 +4065,7 @@ This feature makes sure every layer of the system agrees on the shape of data be
 
 #### Current Reality
 
-Phase 014 aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
+aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
 
 #### Source Files
 
@@ -4183,7 +4081,7 @@ The logic for generating user-facing feedback after a save or change used to be 
 
 #### Current Reality
 
-Phase 014 introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
+introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
 
 #### Source Files
 
@@ -4279,7 +4177,7 @@ After the system adds hints and adjusts a response, it recalculates the size cou
 
 #### Current Reality
 
-Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`, where auto-resume `systemPromptContext` injection happens before `enforceTokenBudget()`. This keeps `meta.tokenCount` and the delivered payload aligned with the exact serialized envelope returned to callers.
+recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`, where auto-resume `systemPromptContext` injection happens before `enforceTokenBudget()`. This keeps `meta.tokenCount` and the delivered payload aligned with the exact serialized envelope returned to callers.
 
 #### Source Files
 
@@ -4311,7 +4209,7 @@ This is a set of automated tests that checks the entire response from start to f
 
 #### Current Reality
 
-Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
+verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
 
 #### Source Files
 
@@ -4517,13 +4415,13 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_CONFIDENCE_TRUNCATION` | `true` | boolean | `lib/search/confidence-truncation.ts` | Sprint 3 Stage D: trims the low-confidence tail from fused results. A consecutive score gap exceeding 2× the median gap triggers truncation. Always returns at least 3 results. |
 | `SPECKIT_CONSOLIDATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables the N3-lite consolidation engine which runs after every successful save. Scans for contradictions (>0.85 cosine similarity with negation conflicts), applies Hebbian strengthening (+0.05/cycle, 30-day decay), detects stale edges (>90 days unfetched) and enforces 20 edges per node. Runs weekly. |
 | `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | **Default ON (graduated via rollout policy).** Agent consumption instrumentation remains live. `isConsumptionLogEnabled()` delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`, so the logger stays active unless explicitly disabled or rollout policy gates it off. Logging stays fail-safe (updated 2026-03-25 per deep review). |
-| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for calibrated header overhead (~26 tokens/result) before truncation (CHK-060). |
+| `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for calibrated header overhead (~26 tokens/result) before truncation (CHK-060). |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model, but only when at least 4 candidates reach the Stage 3 gate. Disabling falls back to vector-only ranking from fusion. |
-| `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
+| `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in (CR-P2-3). |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
-| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** P1-6: Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a spec-doc record-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
+| `SPECKIT_DYNAMIC_INIT` | `true` | boolean | `context-server.ts` | **IMPLEMENTED (Sprint 019).** Dynamic server instructions at MCP initialization. `buildServerInstructions()` generates a spec-doc record-system overview (total memories, spec folder count, channels, stale count) and injects via `server.setInstructions()`. Instructions are computed once at startup and not refreshed during session (CHK-076). Reuses existing `memory_stats` handler data. |
 | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | `true` | boolean | `lib/search/dynamic-token-budget.ts` | Sprint 3 Stage E: computes a tier-aware token limit (simple 1,500 / moderate 2,500 / complex 4,000 tokens). Advisory only; callers are responsible for respecting the budget. When disabled, defaults to 4,000 tokens for all queries. |
 | `SPECKIT_EAGER_WARMUP` | inert | boolean | `shared/embeddings.ts` | Deprecated inert alias for the removed eager-warmup toggle. The embedding provider always initializes lazily now, so setting this flag does not restore startup warmup. |
 | `SPECKIT_EMBEDDING_EXPANSION` | `true` | boolean | `lib/search/search-flags.ts` | R12 query expansion for embedding-based retrieval. Generates an expanded query variant and runs it in parallel with the baseline. Suppressed when the complexity classifier marks a query as `'simple'` (mutual exclusion with R15). |
@@ -4535,7 +4433,7 @@ These flags are the main control panel for how search works. They turn major ret
 | `SPECKIT_EVENT_DECAY` | `true` | boolean | `lib/cognitive/working-memory.ts` | Enables FSRS-based attention decay in the working memory system. Scores decay each turn via exponential degradation. When disabled, attention scores do not degrade over the session. |
 | `SPECKIT_EXTENDED_TELEMETRY` | `false` | boolean | `lib/telemetry/retrieval-telemetry.ts` | Opt-in extended retrieval telemetry. When `'true'`, the runtime records latency, mode, fallback, quality, trace-payload validation, and the default memory roadmap architecture snapshot; when unset or `'false'`, the telemetry shell still exists but detailed metrics remain zero/empty. |
 | `SPECKIT_EXTRACTION` | `true` | boolean | `lib/extraction/extraction-adapter.ts` | Gates the extraction adapter which parses entities and structured data from memory files. Uses `isFeatureEnabled()` with session identity for rollout-based gating. |
-| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** P1-7: Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, exponential backoff for `SQLITE_BUSY` (1s/2s/4s, 3 attempts). Exports `getWatcherMetrics()` with reindex counters and timing (CHK-087). |
+| `SPECKIT_FILE_WATCHER` | `false` | boolean | `lib/ops/file-watcher.ts` | **IMPLEMENTED (Sprint 019).** Real-time filesystem watching with chokidar. Push-based indexing of spec directories with 2s debounce, TM-02 SHA-256 content-hash deduplication, exponential backoff for `SQLITE_BUSY` (1s/2s/4s, 3 attempts). Exports `getWatcherMetrics()` with reindex counters and timing (CHK-087). |
 | `SPECKIT_FOLDER_DISCOVERY` | `true` | boolean | `lib/search/search-flags.ts` | PI-B3: automatic spec folder discovery. Matches the query against cached one-sentence folder descriptions to identify the most relevant spec folder without triggering full-corpus search. Discovery failure is non-fatal. |
 | `SPECKIT_FOLDER_SCORING` | `true` | boolean | `lib/search/folder-relevance.ts` | Sprint 1 two-phase folder-relevance scoring. When enabled, re-ranks results by spec folder relevance using a two-phase retrieval strategy. Disabled by setting to `'false'`. |
 | `SPECKIT_FOLDER_TOP_K` | `5` | number | `lib/search/hybrid-search.ts` | Number of top folders used in two-phase folder retrieval when `SPECKIT_FOLDER_SCORING` is active. Parsed as integer; invalid or missing values fall back to 5. |
@@ -4674,7 +4572,7 @@ These variables define where memory files and databases live and how indexing ba
 | `MEMORY_BASE_PATH` | _(cwd)_ | string | `core/config.ts` | Base path prepended to relative file paths when resolving memory file locations. Defaults to `process.cwd()` when not set. Determines the root of the allowed path tree. |
 | `MEMORY_DB_DIR` | _(legacy fallback)_ | string | `lib/search/vector-index-store.ts` | Compatibility fallback for the database directory. Superseded by `SPEC_KIT_DB_DIR`. Precedence order: `SPEC_KIT_DB_DIR` > `MEMORY_DB_DIR` > default `database/` directory adjacent to the server root. |
 | `MEMORY_DB_PATH` | _(derived)_ | string | `lib/search/vector-index-store.ts` | Full path to the SQLite database file. When set, it overrides the derived path from `SPEC_KIT_DB_DIR` or `MEMORY_DB_DIR`. Use it for provider-specific or non-default database locations. |
-| `SPECKIT_DB_DIR` | _(fallback)_ | string | `shared/config.ts` | Fallback env var for the database directory, checked after `SPEC_KIT_DB_DIR`. Added in Phase 018 (CR-P1-8) to support the underscore-less naming convention. Precedence: `SPEC_KIT_DB_DIR` > `SPECKIT_DB_DIR` > default path. |
+| `SPECKIT_DB_DIR` | _(fallback)_ | string | `shared/config.ts` | Fallback env var for the database directory, checked after `SPEC_KIT_DB_DIR`. Added in  to support the underscore-less naming convention. Precedence: `SPEC_KIT_DB_DIR` > `SPECKIT_DB_DIR` > default path. |
 | `SPEC_KIT_BATCH_DELAY_MS` | `100` | number | `core/config.ts` | Delay in milliseconds between processing batches during `memory_index_scan`. Prevents exhausting I/O resources on large workspaces by introducing a small pause between embedding generation batches. |
 | `SPEC_KIT_BATCH_SIZE` | `5` | number | `core/config.ts` | Number of files processed per batch during `memory_index_scan`. Lower values reduce peak memory usage and API concurrency at the cost of longer scan times. |
 | `SPEC_KIT_DB_DIR` | _(server root)_ | string | `core/config.ts` | Directory where the SQLite database file is stored. Takes precedence over `MEMORY_DB_DIR`. Resolved relative to `process.cwd()` when set. Defaults to a `database/` directory adjacent to the server root. |
@@ -4771,7 +4669,7 @@ This category tracks the compact-code-graph rollout: hook lifecycle capture, hoo
 
 ### Current Reality
 
-The active package includes a dedicated category folder with 24 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, tool-routing guidance, and the shared Phase 017 readiness contract.
+The active package includes a dedicated category folder with 24 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, tool-routing guidance, and the shared readiness contract.
 
 ### Source Files
 

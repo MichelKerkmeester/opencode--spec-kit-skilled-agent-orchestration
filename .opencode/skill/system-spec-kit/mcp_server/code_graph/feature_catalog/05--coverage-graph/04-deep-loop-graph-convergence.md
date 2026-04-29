@@ -26,7 +26,7 @@ Command-owned deep-research/deep-review YAML plus direct MCP call.
 
 ## 4. CLASS
 
-auto, copied from packet 013's reality map for the deep-loop workflows.
+auto, copied from the current reality map for the deep-loop workflows.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -36,5 +36,4 @@ Auto means "inside the command YAML workflow," not globally scheduled. Empty gra
 
 - [03-deep-loop-graph-upsert.md](./03-deep-loop-graph-upsert.md)
 - [../../manual_testing_playbook/05--coverage-graph/009-deep-loop-graph-convergence-yaml-fire.md](../../manual_testing_playbook/05--coverage-graph/009-deep-loop-graph-convergence-yaml-fire.md)
-
 

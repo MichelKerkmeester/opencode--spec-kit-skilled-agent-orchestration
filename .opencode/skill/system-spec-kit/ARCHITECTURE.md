@@ -47,10 +47,10 @@ importance_tier: "important"
 
 Two consumed subsystems live as first-class self-contained packages under `mcp_server/`, with adjacent operator-runner folders for the quality matrix and opt-in stress validation:
 
-- `mcp_server/skill_advisor/` — Native skill routing advisor (Phase 027). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
-- `mcp_server/code_graph/` — Structural code graph + coco-index facade (Phase 028). Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
+- `mcp_server/skill_advisor/` — Native skill routing advisor. Houses its own `lib/`, `handlers/`, `tools/`, `tests/`, `scripts/`, `bench/`, `compat/`, `schemas/`, operator docs (`README.md`, `INSTALL_GUIDE.md`, `SET-UP_GUIDE.md`), plus `feature_catalog/` and `manual_testing_playbook/` packages.
+- `mcp_server/code_graph/` — Structural code graph + coco-index facade. Houses its own `lib/`, `handlers/`, `tools/`, `tests/`.
 - `mcp_server/matrix-runners/` — Packet-036 F1-F14 x CLI adapter manifest, five per-CLI adapters, and meta-runner for external executor cells.
-- `mcp_server/stress_test/` — Packet-037/005 opt-in stress/load/degraded-state suites, excluded from default `npm test` and run through `npm run stress`.
+- `mcp_server/stress_test/` — Opt-in stress/load/degraded-state suites, excluded from default `npm test` and run through `npm run stress`.
 
 Neither subsystem ships a `SKILL.md`. They are consumed subsystems of `system-spec-kit`, not standalone skills. All operator-facing routing goes through `system-spec-kit` entry points.
 
@@ -214,7 +214,7 @@ The skill advisor is a self-contained subsystem at `mcp_server/skill_advisor/`; 
 <!-- ANCHOR:skill-advisor -->
 ## 5. SKILL-ADVISOR SUBSYSTEM
 
-Introduced in its current self-contained form by Phase 027. Produces the compact skill recommendation brief that Gate 2 (skill routing) consumes.
+The current self-contained package produces the compact skill recommendation brief that Gate 2 (skill routing) consumes.
 
 ### Package layout
 
@@ -288,7 +288,7 @@ Regression suite: `mcp_server/skill_advisor/scripts/skill_advisor_regression.py`
 <!-- ANCHOR:code-graph -->
 ## 6. CODE-GRAPH SUBSYSTEM
 
-Migrated into a self-contained package by Phase 028 — previously scattered across four separate locations in the runtime tree (lib, handlers, tools, and test suites), now consolidated under `mcp_server/code_graph/`.
+The code-graph subsystem is now a self-contained package under `mcp_server/code_graph/` rather than scattered across runtime `lib`, `handlers`, `tools`, and test suites.
 
 ### Package layout
 
@@ -401,7 +401,7 @@ Key checks:
 <!-- ANCHOR:decision-records -->
 ## 9. DECISION RECORDS
 
-Architectural decisions for the skill-advisor + code-graph subsystems are captured in the Phase 027 decision record:
+Architectural decisions for the skill-advisor + code-graph subsystems are captured in the subsystem unification decision record:
 
 `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/decision-record.md`
 

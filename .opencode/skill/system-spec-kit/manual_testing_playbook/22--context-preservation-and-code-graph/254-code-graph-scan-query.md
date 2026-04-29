@@ -31,7 +31,7 @@ For package-local code_graph runtime scenarios, see `mcp_server/code_graph/manua
   - `code_graph_query` for outline mode returns symbol list for a given file
   - `code_graph_query` for calls mode returns callers/callees of a symbol
   - `code_graph_query` for imports mode returns import relationships
-  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper (per packet 014). Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).
+  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper. Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).
   - Database uses WAL journal mode and has foreign keys enabled
 - **Pass/fail criteria**:
   - PASS: All tables populated correctly, query tools return expected results, WAL mode confirmed
@@ -215,7 +215,7 @@ code_graph_status responses for the four states + sha256 hash pair (before/after
 
 ### Failure Triage
 
-Inspect `mcp_server/code_graph/handlers/status.ts` and `lib/get-graph-readiness-snapshot.ts`; ensure no call to `ensureCodeGraphReady`; confirm packet 014 dist marker
+Inspect `mcp_server/code_graph/handlers/status.ts` and `lib/get-graph-readiness-snapshot.ts`; ensure no call to `ensureCodeGraphReady` and confirm the built distribution marker matches the source implementation.
 
 ## 4. REFERENCES
 

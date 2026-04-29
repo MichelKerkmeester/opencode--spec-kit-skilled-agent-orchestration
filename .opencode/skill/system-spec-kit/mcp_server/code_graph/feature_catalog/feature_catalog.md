@@ -43,7 +43,7 @@ The catalog covers 17 runtime features across 8 groups. Per-feature files carry 
 | [07--ccc-integration](./07--ccc-integration/) | 3 | CCC integration |
 | [08--doctor-code-graph](./08--doctor-code-graph/) | 1 | Doctor code graph |
 
-Reality classification source: packet 013's supplemental map classifies code graph freshness as half-auto, CCC as manual, deep-loop convergence as auto, deep-loop upsert as half, and deep-loop query/status as manual. Packet 035 treats code graph query and scan/verify as conditional local/native validation surfaces, not fully covered external-executor cells.
+Reality classification source: the current automation map classifies code graph freshness as half-auto, CCC as manual, deep-loop convergence as auto, deep-loop upsert as half, and deep-loop query/status as manual. Matrix coverage treats code graph query and scan/verify as conditional local/native validation surfaces, not fully covered external-executor cells.
 
 
 ---
@@ -118,4 +118,3 @@ Reality classification source: packet 013's supplemental map classifies code gra
 | Feature | File |
 | --- | --- |
 | Doctor apply mode | [08--doctor-code-graph/01-doctor-apply-mode.md](./08--doctor-code-graph/01-doctor-apply-mode.md) |
-

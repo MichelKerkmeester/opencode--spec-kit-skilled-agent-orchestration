@@ -231,8 +231,8 @@ Pick the agent that matches the task type. Default to `general` when no speciali
 | Documentation generation | `write` | `opencode run --agent write --variant high --format json --dir /repo "Generate README for the cli-opencode skill"` |
 | Code review | `review` | `opencode run --agent review --variant high --format json --dir /repo "Review @src/auth.ts for security issues"` |
 | Root cause debugging | `debug` | `opencode run --agent debug --variant high --format json --dir /repo "Debug this error: <error>"` |
-| Iterative research loop | `deep-research` | `opencode run --agent deep-research --variant high --format json --dir /repo "Run iteration 3 of the deep-research loop on packet 047. State at scratch/iteration-3.jsonl."` |
-| Iterative code review loop | `deep-review` | `opencode run --agent deep-review --variant high --format json --dir /repo "Run iteration 5 of the deep-review loop on packet 047. State at review/deep-review-state.jsonl."` |
+| Iterative research loop | `deep-research` | `opencode run --agent deep-research --variant high --format json --dir /repo "Run iteration 3 of the deep-research loop for the approved spec folder. State at scratch/iteration-3.jsonl."` |
+| Iterative code review loop | `deep-review` | `opencode run --agent deep-review --variant high --format json --dir /repo "Run iteration 5 of the deep-review loop for the approved spec folder. State at review/deep-review-state.jsonl."` |
 | Multi-strategy planning | `ultra-think` | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan the authentication redesign — compare three strategies."` |
 | Agent improvement | `improve-agent` | `opencode run --agent improve-agent --variant high --format json --dir /repo "Evaluate the @debug agent on 5 dimensions. Propose improvements."` |
 | Default / unspecified | `general` | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
@@ -282,7 +282,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /repo \
-  "Coordinate a code review and a doc update on packet 047. Dispatch @review for the code, @write for the docs. Aggregate findings."
+  "Coordinate a code review and a doc update for the approved spec folder. Dispatch @review for the code, @write for the docs. Aggregate findings."
 ```
 
 ### Avoiding double orchestration

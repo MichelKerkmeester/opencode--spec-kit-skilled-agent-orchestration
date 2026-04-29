@@ -34,7 +34,7 @@ Use this catalog as the canonical inventory for the live `sk-deep-review` featur
 
 ## 2. LOOP LIFECYCLE
 
-These entries cover the end-to-end review loop from packet initialization through dispatch, stop evaluation, synthesis, and continuity save.
+These entries cover the end-to-end review loop from spec-folder initialization through dispatch, stop evaluation, synthesis, and continuity save.
 
 ### Initialization
 
@@ -349,4 +349,3 @@ The legal-stop bundle combines evidence, scope, coverage, P0 resolution, evidenc
 #### Source Files
 
 See [`04--severity-system/05-quality-gates.md`](04--severity-system/05-quality-gates.md) for full implementation and validation file listings.
-

@@ -351,7 +351,7 @@ Internally, Copilot reads `reasoning_effort` from `~/.copilot/config.json`, vali
 
 ### CONCURRENCY LIMIT
 
-Copilot CLI tolerates up to 5 concurrent `copilot` processes; the repo's Phase 018 convention caps routine automation at 3 parallel calls. Check `pgrep -f "copilot" | wc -l` before launching. Treat 5 as the hard ceiling.
+Copilot CLI tolerates up to 5 concurrent `copilot` processes; the repo convention caps routine automation at 3 parallel calls. Check `pgrep -f "copilot" | wc -l` before launching. Treat 5 as the hard ceiling.
 
 ### NEVER
 

@@ -23,6 +23,7 @@ Templates for creating manual testing playbooks with deterministic scenarios, st
 - **Feature-catalog shaped files**: Per-feature playbook files should mirror feature-catalog snippet structure by leading with prose, then current reality, then structured source references.
 - **Evidence-driven**: Every scenario requires captured evidence with explicit verdicts.
 - **Validator-limited**: The current validator checks the root playbook for markdown structure, but it does not recurse into category folders or verify cross-file references yet.
+- **Evergreen**: Playbooks validate current behavior. Scenario IDs are allowed; spec or phase packet-history references are not.
 
 **Location Convention**: `{SKILL_PATH}/manual_testing_playbook/`
 
@@ -91,6 +92,7 @@ ID format:
 - `NNN`: zero-padded 3-digit sequence number starting at 001.
 - IDs are unique across the entire playbook.
 - Gaps are allowed; do not renumber published IDs.
+- IDs should identify current validation scenarios, not the packet that created them. Replace packet-history notes with source anchors or feature references.
 
 Per-feature file path:
 

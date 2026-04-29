@@ -1,13 +1,13 @@
 ---
 title: "279 -- Advisor status and rebuild separation"
-description: "Operator validation for packet 034 advisor_status diagnostic-only behavior and explicit advisor_rebuild repair."
+description: "Operator validation for advisor_status diagnostic-only behavior and explicit advisor_rebuild repair."
 ---
 
 # 279 -- Advisor status and rebuild separation
 
 ## 1. OVERVIEW
 
-This scenario validates packet 034's Skill Advisor repair contract from the system-spec-kit operator surface. `advisor_status` reports stale state and never rebuilds; `advisor_rebuild` is the explicit repair path and skips live state unless `force:true` is supplied.
+This scenario validates the Skill Advisor repair contract from the system-spec-kit operator surface. `advisor_status` reports stale state and never rebuilds; `advisor_rebuild` is the explicit repair path and skips live state unless `force:true` is supplied.
 
 ---
 
@@ -98,7 +98,6 @@ rm -rf "$WORK"
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Packet 034 spec: [034-half-auto-upgrades/spec.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades/spec.md)
 - Skill Advisor playbook scenario: [006-advisor-status-rebuild-separation.md](../../mcp_server/skill_advisor/manual_testing_playbook/01--native-mcp-tools/006-advisor-status-rebuild-separation.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts`
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts`
@@ -109,6 +108,6 @@ rm -rf "$WORK"
 
 - Group: Tooling and Scripts
 - Playbook ID: 279
-- Packet: 034-half-auto-upgrades
+- Current behavior: `advisor_status` is diagnostic-only; `advisor_rebuild` is explicit repair.
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/279-advisor-status-rebuild-separation.md`

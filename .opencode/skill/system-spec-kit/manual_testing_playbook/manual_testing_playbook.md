@@ -43,9 +43,6 @@ Canonical source artifacts:
 
 ## TABLE OF CONTENTS
 
-- [PHASE 012 AUDIT](#phase-012-audit)
-- [PHASE 017 AUDIT](#phase-017-audit)
-- [PHASE 018 AUDIT](#phase-018-audit)
 - [1. OVERVIEW](#1--overview)
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
 - [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
@@ -58,123 +55,6 @@ Canonical source artifacts:
 - [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
 - [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
 - [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
-
----
-
-## Phase 012 audit
-
-Audit date: `2026-04-25`
-
-Phase 012 (`026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/`) shipped the converged External Project pt-01 + pt-02 recommendations across Code Graph, Memory, and Skill Advisor. Code sub-phases 002-005 each authored their own per-packet manual-testing-playbook entries inline as part of their work. Sub-phase 006 (this rollup, ADR-012-007) syncs the umbrella docs and the top-level indexes — sync, not aspiration. The five new per-packet scenarios are listed below with their relative paths.
-
-| Sub-phase | Category | Playbook ID | Entry |
-|-----------|----------|-------------|-------|
-| 012/002 | `03--discovery` | EX-014 | [`03--discovery/014-detect-changes-preflight.md`](03--discovery/014-detect-changes-preflight.md) — stale vs fresh `detect_changes` walkthrough with explicit pass/fail (false-safe RISK-03 mitigation); MCP-tool wired in 010/007 T-A |
-| 012/002 | `14--pipeline-architecture` | 271 | [`14--pipeline-architecture/271-code-graph-phase-dag-runner.md`](14--pipeline-architecture/271-code-graph-phase-dag-runner.md) — runner rejection paths plus regression check that scan output matches the pre-wrap baseline |
-| 012/003 | `06--analysis` | EX-026 | [`06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md`](06--analysis/026-code-graph-edge-explanation-blast-radius-uplift.md) — relationship `reason`/`step` display + `blast_radius` enrichment (depthGroups, riskLevel, minConfidence, ambiguityCandidates, failureFallback) |
-| 012/004 | `11--scoring-and-calibration` | 199 | [`11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md`](11--scoring-and-calibration/199-skill-advisor-affordance-evidence.md) — affordance routing through existing `derived_generated`/`graph_causal` lanes with privacy assertions |
-| 012/005 | `13--memory-quality-and-indexing` | 203 | [`13--memory-quality-and-indexing/203-memory-causal-trust-display.md`](13--memory-quality-and-indexing/203-memory-causal-trust-display.md) — additive `trustBadges` per result envelope + response-profile preservation, with protected-file diff guard |
-
-Phase 012 ships zero schema changes. The `detect_changes` handler is registered alongside the other Code Graph handlers AND wired as a top-level MCP tool — 010/007 T-A added the dispatcher case (`code_graph/tools/code-graph-tools.ts`), JSON schema (`tool-schemas.ts`), and Zod validator (`schemas/tool-input-schemas.ts`). The playbook scenario reaches `detect_changes` as a callable MCP tool. License posture stays clean-room per ADR-012-001 (012/001 sign-off).
-
----
-
-## Phase 017 audit
-
-Audit date: `2026-04-17`
-
-Phase 017 re-audited the playbook against the review-findings remediation packet. Scenario coverage now includes canonical-save metadata refresh checks, the shared code-graph readiness contract, Copilot compact-cache parity, caller-bound session-resume auth, Unicode hardening, the strict evidence and normalizer lint paths, and the Wave D maintainability extracts.
-
-Active scenario entries: `300`
-Deprecated archival scenario entries: `0`
-Total scenario entries: `300`
-
-| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
-|---|---:|---:|---:|---:|---:|
-| `01--retrieval` | 0 | 0 | 0 | 0 | 0 |
-| `02--mutation` | 0 | 1 | 0 | 0 | 1 |
-| `03--discovery` | 0 | 0 | 0 | 0 | 0 |
-| `04--maintenance` | 0 | 0 | 0 | 0 | 0 |
-| `05--lifecycle` | 0 | 0 | 0 | 0 | 1 |
-| `06--analysis` | 0 | 0 | 0 | 0 | 0 |
-| `07--evaluation` | 0 | 0 | 0 | 0 | 0 |
-| `08--bug-fixes-and-data-integrity` | 0 | 0 | 0 | 0 | 1 |
-| `09--evaluation-and-measurement` | 0 | 0 | 0 | 0 | 0 |
-| `10--graph-signal-activation` | 0 | 0 | 0 | 0 | 0 |
-| `11--scoring-and-calibration` | 0 | 0 | 0 | 0 | 0 |
-| `12--query-intelligence` | 0 | 0 | 0 | 0 | 0 |
-| `13--memory-quality-and-indexing` | 0 | 1 | 0 | 0 | 0 |
-| `14--pipeline-architecture` | 0 | 0 | 0 | 0 | 1 |
-| `15--retrieval-enhancements` | 0 | 0 | 0 | 0 | 0 |
-| `16--tooling-and-scripts` | 0 | 1 | 0 | 0 | 2 |
-| `17--governance` | 0 | 0 | 0 | 0 | 1 |
-| `18--ux-hooks` | 0 | 0 | 0 | 0 | 1 |
-| `19--feature-flag-reference` | 0 | 0 | 0 | 0 | 0 |
-| `20--remediation-revalidation` | 0 | 0 | 0 | 0 | 0 |
-| `21--implement-and-remove-deprecated-features` | 0 | 0 | 0 | 0 | 0 |
-| `22--context-preservation-and-code-graph` | 0 | 1 | 0 | 0 | 1 |
-| **TOTAL** | 0 | 4 | 0 | 0 | 9 |
-
-- New phase-017 playbook coverage now lives in [`05--lifecycle/268-post-insert-retry-budget.md`](05--lifecycle/268-post-insert-retry-budget.md), [`08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md`](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md), [`14--pipeline-architecture/270-phase-017-maintainability-extracts.md`](14--pipeline-architecture/270-phase-017-maintainability-extracts.md), [`16--tooling-and-scripts/271-research-metadata-backfill.md`](16--tooling-and-scripts/271-research-metadata-backfill.md), [`16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md`](16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md), [`17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md`](17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md), [`18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md), [`22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md), and [`02--mutation/276-reconsolidation-conflict-transaction-helper.md`](02--mutation/276-reconsolidation-conflict-transaction-helper.md).
-
-### Packet 013 & 014 playbook coverage (not a separate audit phase)
-
-Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improvements) under `026/009-hook-package/` extended the scenario coverage the Phase 017 summary above described. Additional shipped-surface scenarios:
-
-- **Packet 013 — blocked/degraded `full_scan` contract** on both `code_graph_query` and `code_graph_context`: [`22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md`](22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md) covers the context side; the query side is verified through the tool-contract playbook in `22--context-preservation-and-code-graph/254-code-graph-scan-query.md` (CALLS ambiguity, `deadlineMs`, null-summary clearing) when that scenario is extended alongside remediation.
-- **Packet 013 — shared startup payload parity across Claude/Gemini/Copilot/Codex**: [`18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) covers Claude/Gemini/Copilot; the Codex slice of the 4-runtime parity is the remaining gap for that scenario.
-- **Packet 014 — advisor public MCP contract** (`workspaceRoot`, `effectiveThresholds`, `thresholdSemantics`, prompt-safe `telemetry.outcomes.totals`, durable JSONL diagnostics): validated by `references/hooks/skill-advisor-hook-validation.md` (Steps 1-4, 7); a dedicated playbook entry can be added under `22--context-preservation-and-code-graph/` when the remediation packet covers scenario authoring.
-
-### Packet 037/003 playbook coverage
-
-Packet 037/003 adds operator-level entries for surfaces shipped in packets 031-036:
-
-- **Packet 033 — retention sweep**: [`04--maintenance/278-memory-retention-sweep-basic-flow.md`](04--maintenance/278-memory-retention-sweep-basic-flow.md) covers expired `delete_after` rows, dry-run preview, deletion verification, and scheduled interval behavior.
-- **Packet 034 — advisor status/rebuild separation**: [`16--tooling-and-scripts/279-advisor-status-rebuild-separation.md`](16--tooling-and-scripts/279-advisor-status-rebuild-separation.md) covers stale-state reproduction, diagnostic-only `advisor_status`, explicit `advisor_rebuild`, live skip, and force rebuild.
-- **Packet 036 — CLI matrix adapters**: [`16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md`](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) covers one F5 cell per adapter, JSONL output shape, and timeout normalization.
-- **Packet 032 — code graph watcher retraction**: [`22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md`](22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md) covers bounded read-path repair and explicit full-scan handoff.
-- **Packet 035 — code graph matrix evidence**: [`22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md`](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) links the F5, F6, F7, and F8 per-cell evidence files.
-
----
-
-## Phase 018 audit
-
-Audit date: `2026-04-12`
-
-Phase 018 re-audited the playbook against the canonical continuity refactor. Scenario coverage now treats spec-doc anchored continuity as the live path, keeps retired validations under category-local `_deprecated/` folders, and adds dedicated scenarios for the new validator and canonical save substrate.
-
-Active scenario entries: `305`
-Deprecated archival scenario entries: `8`
-Total scenario entries: `313`
-
-| Category | KEEP | PATCH | REWORK | DEPRECATE | NEW |
-|---|---:|---:|---:|---:|---:|
-| `01--retrieval` | 23 | 4 | 1 | 0 | 0 |
-| `02--mutation` | 6 | 13 | 3 | 0 | 0 |
-| `03--discovery` | 5 | 1 | 0 | 0 | 0 |
-| `04--maintenance` | 0 | 4 | 0 | 0 | 0 |
-| `05--lifecycle` | 18 | 0 | 0 | 0 | 0 |
-| `06--analysis` | 14 | 0 | 0 | 0 | 0 |
-| `07--evaluation` | 0 | 4 | 0 | 0 | 0 |
-| `08--bug-fixes-and-data-integrity` | 24 | 0 | 0 | 0 | 0 |
-| `09--evaluation-and-measurement` | 28 | 2 | 0 | 0 | 0 |
-| `10--graph-signal-activation` | 35 | 0 | 0 | 2 | 0 |
-| `11--scoring-and-calibration` | 45 | 0 | 0 | 2 | 0 |
-| `12--query-intelligence` | 0 | 20 | 0 | 2 | 0 |
-| `13--memory-quality-and-indexing` | 46 | 2 | 2 | 4 | 4 |
-| `14--pipeline-architecture` | 43 | 2 | 0 | 4 | 0 |
-| `15--retrieval-enhancements` | 26 | 0 | 0 | 0 | 0 |
-| `16--tooling-and-scripts` | 83 | 1 | 0 | 0 | 0 |
-| `17--governance` | 13 | 0 | 0 | 2 | 0 |
-| `18--ux-hooks` | 37 | 2 | 0 | 0 | 0 |
-| `19--feature-flag-reference` | 18 | 1 | 1 | 0 | 1 |
-| `20--remediation-revalidation` | 0 | 6 | 0 | 0 | 0 |
-| `21--implement-and-remove-deprecated-features` | 0 | 10 | 0 | 0 | 0 |
-| `22--context-preservation-and-code-graph` | 36 | 6 | 1 | 0 | 0 |
-| **TOTAL** | 500 | 78 | 8 | 16 | 5 |
-
-- Deprecated scenarios now live under `manual_testing_playbook/10--graph-signal-activation/_deprecated/`, `manual_testing_playbook/11--scoring-and-calibration/_deprecated/`, `manual_testing_playbook/12--query-intelligence/_deprecated/`, `manual_testing_playbook/13--memory-quality-and-indexing/_deprecated/`, `manual_testing_playbook/14--pipeline-architecture/_deprecated/`, and `manual_testing_playbook/17--governance/_deprecated/`.
-- New phase-018 playbook coverage now lives in [`13--memory-quality-and-indexing/201-spec-doc-structure-validator-and-continuity-frontmatter.md`](13--memory-quality-and-indexing/201-spec-doc-structure-validator-and-continuity-frontmatter.md) and [`13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md`](13--memory-quality-and-indexing/202-canonical-continuity-save-substrate.md).
 
 ---
 
@@ -306,7 +186,7 @@ fi
 ```
 
 Final verdict report must include `COVERED_SCENARIOS/TOTAL_SCENARIOS` and should call out any remaining feature-catalog entries that are automated-only, indirect, or intentionally operator-only.
-As of 2026-04-17, the root index links all 300 scenario files, including the new Phase 017 additions (0 orphan scenario files).
+As of 2026-04-17, the root index links all 300 scenario files, including the new additions (0 orphan scenario files).
 
 ### Destructive Scenario Rules
 
@@ -2090,7 +1970,7 @@ All scripts/tools resolve to the same DB path for identical env vars; precedence
 Confirm tier-4 fix pack behavior.
 
 #### Scenario Contract
-Prompt: `Validate Phase 018 Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate Tier-4 cross-AI fixes. Capture the evidence needed to prove Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Each tier-4 fix location shows corrected behavior; representative flows produce expected outputs; no regressions in adjacent functionality
 
@@ -2224,7 +2104,7 @@ Job state transitions through queued→parsing→embedding→indexing→complete
 > **Feature File:** [097](05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md)
 > **Catalog:** [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
 
-### 098 | Local GGUF reranker via node-llama-cpp (P1-5)
+### 098 | Local GGUF reranker via node-llama-cpp 
 
 #### Description
 Confirm reranker gating and graceful fallback.
@@ -2238,7 +2118,7 @@ Reranker not activated for truthy-but-not-'true' values; silent fallback when mo
 > **Feature File:** [098](11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md)
 > **Catalog:** [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md)
 
-### 099 | Real-time filesystem watching (P1-7)
+### 099 | Real-time filesystem watching 
 
 #### Description
 Confirm file watcher debounce, hash seeding, and ENOENT grace.
@@ -2779,9 +2659,9 @@ verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
 Canonical coverage sourced from M-007 session-capturing closure verification.
 
 #### Scenario Contract
-Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Run the canonical M-007 session-capturing closure verification scenario. Capture the evidence needed to prove Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, output-quality hardening, insufficiency rejection, and indexing readiness. Return a concise user-facing pass/fail verdict with the main reason.`
 
-Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, Phase 018 output-quality hardening, insufficiency rejection, and indexing readiness.
+Coverage is sourced from the M-007 closure suite, including JSON authority, shipped structured-summary fields (`toolCalls`, `exchanges`), file-backed JSON authority, output-quality hardening, insufficiency rejection, and indexing readiness.
 
 Current claim boundary:
 - Automated parity proves the shared runtime contract.
@@ -2833,7 +2713,7 @@ Status payloads always include a `forecast` object; sparse progress yields null 
 > **Feature File:** [144](05--lifecycle/144-advisory-ingest-lifecycle-forecast.md)
 > **Catalog:** [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
 
-### 145 | Contextual tree injection (P1-4)
+### 145 | Contextual tree injection 
 
 #### Description
 Verify hierarchical spec-folder headers are injected into search results when `SPECKIT_CONTEXT_HEADERS=true` and suppressed when disabled.
@@ -2847,7 +2727,7 @@ Enabled: results with spec-folder paths have `[parent > child — description]` 
 > **Feature File:** [145](15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md)
 > **Catalog:** [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md)
 
-### 146 | Dynamic server instructions (P1-6)
+### 146 | Dynamic server instructions 
 
 #### Description
 Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning.
@@ -3353,13 +3233,13 @@ Canonical imports visible at the documented call sites; parity matrix still pass
 > **Feature File:** [269](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md)
 > **Catalog:** [08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md](../feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md)
 
-### 270 | Phase 017 maintainability extracts
+### 270 | maintainability extracts
 
 #### Description
 Verify the shared helper extracts replaced the old inline variants without changing the live pipeline contracts.
 
 #### Scenario Contract
-Prompt: `As a pipeline validation operator, validate Phase 017 maintainability extracts against the documented helper surfaces. Verify assertNever() handles the documented union exhaustiveness cases, runEnrichmentStep() still preserves lane-specific failure mapping, reconsolidation conflict handling routes through one shared transaction helper, and memory-context now reports advisoryPreset instead of readiness in the structural nudge metadata. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `As a pipeline validation operator, validate maintainability extracts against the documented helper surfaces. Verify assertNever() handles the documented union exhaustiveness cases, runEnrichmentStep() still preserves lane-specific failure mapping, reconsolidation conflict handling routes through one shared transaction helper, and memory-context now reports advisoryPreset instead of readiness in the structural nudge metadata. Return a concise user-facing pass/fail verdict with the main reason.`
 
 Helper-based code paths are active; tests for the extracted helpers pass; routing metadata uses advisoryPreset
 
@@ -3818,8 +3698,8 @@ This split playbook keeps automated coverage references in three places:
 | 095 | Features | Strict Zod schema validation (P0-1) | [095](14--pipeline-architecture/095-strict-zod-schema-validation-p0-1.md) | [14--pipeline-architecture/13-strict-zod-schema-validation.md](../feature_catalog/14--pipeline-architecture/13-strict-zod-schema-validation.md) |
 | 096 | Features | Provenance-rich response envelopes (P0-2) | [096](15--retrieval-enhancements/096-provenance-rich-response-envelopes-p0-2.md) | [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md) |
 | 097 | Features | Async ingestion job lifecycle (P0-3) | [097](05--lifecycle/097-async-ingestion-job-lifecycle-p0-3.md) | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
-| 098 | Features | Local GGUF reranker via node-llama-cpp (P1-5) | [098](11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md) | [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) |
-| 099 | Features | Real-time filesystem watching (P1-7) | [099](16--tooling-and-scripts/099-real-time-filesystem-watching-p1-7.md) | [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) |
+| 098 | Features | Local GGUF reranker via node-llama-cpp  | [098](11--scoring-and-calibration/098-local-gguf-reranker-via-node-llama-cpp-p1-5.md) | [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md) |
+| 099 | Features | Real-time filesystem watching  | [099](16--tooling-and-scripts/099-real-time-filesystem-watching-p1-7.md) | [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md) |
 | 100 | Features | Async shutdown with deadline (server lifecycle) | [100](05--lifecycle/100-async-shutdown-with-deadline-server-lifecycle.md) | *(server lifecycle — no dedicated catalog entry)* |
 | 101 | Features | memory_delete confirm schema tightening | [101](02--mutation/101-memory-delete-confirm-schema-tightening.md) | *(memory_delete confirm schema — covered by `02--mutation/03`)* |
 | 102 | Features | node-llama-cpp optionalDependencies | [102](11--scoring-and-calibration/102-node-llama-cpp-optionaldependencies.md) | *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)* |
@@ -3862,8 +3742,8 @@ This split playbook keeps automated coverage references in three places:
 | 142 | Features | Session transition trace contract | [142](01--retrieval/142-session-transition-trace-contract.md) | [01--retrieval/01-unified-context-retrieval-memorycontext.md](../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md) |
 | 143 | Features | Bounded graph-walk rollout and diagnostics | [143](01--retrieval/143-bounded-graph-walk-rollout-and-diagnostics.md) | [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md) |
 | 144 | Features | Advisory ingest lifecycle forecast | [144](05--lifecycle/144-advisory-ingest-lifecycle-forecast.md) | [05--lifecycle/05-async-ingestion-job-lifecycle.md](../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md) |
-| 145 | Features | Contextual tree injection (P1-4) | [145](15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md) | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
-| 146 | Features | Dynamic server instructions (P1-6) | [146](14--pipeline-architecture/146-dynamic-server-instructions-p1-6.md) | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
+| 145 | Features | Contextual tree injection  | [145](15--retrieval-enhancements/145-contextual-tree-injection-p1-4.md) | [15--retrieval-enhancements/09-contextual-tree-injection.md](../feature_catalog/15--retrieval-enhancements/09-contextual-tree-injection.md) |
+| 146 | Features | Dynamic server instructions  | [146](14--pipeline-architecture/146-dynamic-server-instructions-p1-6.md) | [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md) |
 | 147 | Features | Constitutional memory manager command | [147](16--tooling-and-scripts/147-constitutional-memory-manager-command.md) | [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md) |
 | 149 | Features | Rendered spec-doc record template contract | [149](16--tooling-and-scripts/149-rendered-memory-template-contract.md) | [16--tooling-and-scripts/12-session-capturing-pipeline-quality.md](../feature_catalog/16--tooling-and-scripts/12-session-capturing-pipeline-quality.md) |
 | 150 | Features | Source-dist alignment validation | [150](16--tooling-and-scripts/150-source-dist-alignment-validation.md) | [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md) |
@@ -3969,17 +3849,17 @@ This split playbook keeps automated coverage references in three places:
 | 267 | Context Preservation | Tool routing enforcement | [267](22--context-preservation-and-code-graph/267-tool-routing-enforcement.md) | [22--context-preservation-and-code-graph/23-tool-routing-enforcement.md](../feature_catalog/22--context-preservation-and-code-graph/23-tool-routing-enforcement.md) |
 | 268 | Features | Post-insert retry budget | [268](05--lifecycle/268-post-insert-retry-budget.md) | [05--lifecycle/09-post-insert-retry-budget.md](../feature_catalog/05--lifecycle/09-post-insert-retry-budget.md) |
 | 269 | Features | Scope normalizer canonicalization and lint | [269](08--bug-fixes-and-data-integrity/269-scope-normalizer-canonicalization-and-lint.md) | [08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md](../feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md) |
-| 270 | Features | Phase 017 maintainability extracts | [270](14--pipeline-architecture/270-phase-017-maintainability-extracts.md) | [14--pipeline-architecture/24-phase-017-maintainability-extracts.md](../feature_catalog/14--pipeline-architecture/24-phase-017-maintainability-extracts.md) |
+| 270 | Features | maintainability extracts | [270](14--pipeline-architecture/270-phase-017-maintainability-extracts.md) | [14--pipeline-architecture/24-phase-017-maintainability-extracts.md](../feature_catalog/14--pipeline-architecture/24-phase-017-maintainability-extracts.md) |
 | 271 | Features | Research metadata backfill | [271](16--tooling-and-scripts/271-research-metadata-backfill.md) | [16--tooling-and-scripts/34-research-metadata-backfill.md](../feature_catalog/16--tooling-and-scripts/34-research-metadata-backfill.md) |
 | 272 | Features | Strict validation add-ons: continuity freshness and evidence markers | [272](16--tooling-and-scripts/272-strict-validation-addons-continuity-freshness-and-evidence-markers.md) | [16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md](../feature_catalog/16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md) |
 | 273 | Features | Session-resume caller binding and Unicode sanitization | [273](17--governance/273-session-resume-caller-binding-and-unicode-sanitization.md) | [17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md](../feature_catalog/17--governance/06-session-resume-caller-binding-and-unicode-sanitization.md) |
 | 274 | Features | Shared provenance and Copilot compact-cache parity | [274](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) | [18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md](../feature_catalog/18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md) |
 | 275 | Context Preservation | Code-graph readiness contract | [275](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md) | [22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md](../feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md) |
 | 276 | Features | Reconsolidation conflict transaction helper | [276](02--mutation/276-reconsolidation-conflict-transaction-helper.md) | [02--mutation/11-reconsolidation-conflict-transaction-helper.md](../feature_catalog/02--mutation/11-reconsolidation-conflict-transaction-helper.md) |
-| 278 | Features | Memory retention sweep basic flow | [278](04--maintenance/278-memory-retention-sweep-basic-flow.md) | *(packet 033 manual retention entry; no dedicated catalog entry yet)* |
-| 279 | Features | Advisor status and rebuild separation | [279](16--tooling-and-scripts/279-advisor-status-rebuild-separation.md) | *(packet 034 Skill Advisor repair entry; nested advisor playbook has NC-006)* |
-| 280 | Features | CLI matrix adapter runner smoke | [280](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) | *(packet 036 matrix-runner entry; no dedicated catalog entry yet)* |
+| 278 | Features | Memory retention sweep basic flow | [278](04--maintenance/278-memory-retention-sweep-basic-flow.md) | [04--maintenance/278-memory-retention-sweep-basic-flow.md](04--maintenance/278-memory-retention-sweep-basic-flow.md) |
+| 279 | Features | Advisor status and rebuild separation | [279](16--tooling-and-scripts/279-advisor-status-rebuild-separation.md) | [mcp_server/skill_advisor/manual_testing_playbook/01--native-mcp-tools/006-advisor-status-rebuild-separation.md](../mcp_server/skill_advisor/manual_testing_playbook/01--native-mcp-tools/006-advisor-status-rebuild-separation.md) |
+| 280 | Features | CLI matrix adapter runner smoke | [280](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) | [16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) |
 | 281 | Context Preservation | Code graph read-path selective self-heal | [281](22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md) | [22--context-preservation-and-code-graph/08-code-graph-storage-query.md](../feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md) |
-| 282 | Context Preservation | Code graph matrix cell coverage evidence | [282](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) | *(packet 035 evidence reference; no dedicated catalog entry yet)* |
+| 282 | Context Preservation | Code graph matrix cell coverage evidence | [282](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) | [22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) |
 
 ---

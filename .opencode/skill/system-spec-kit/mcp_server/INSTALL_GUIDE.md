@@ -1,6 +1,6 @@
 # Spec Kit Memory MCP Server: Installation Guide
 
-> MCP Server v1.7.2 | 2026-03-15 (verification steps refreshed for Phase 012 on 2026-04-25)
+> MCP Server v1.7.2 | 2026-03-15 (verification steps refreshed on 2026-04-25)
 
 Complete installation and configuration guide for the Spec Kit Memory MCP server. This guide enables AI-powered context retrieval and conversation memory across your project. The system indexes markdown documentation from spec folders and constitutional rules to surface relevant information during AI interactions. It provides 54 tools (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`) covering semantic search, trigger-based memory surfacing, intent-aware context loading, causal relationship tracking, session learning, evaluation, validation, advisor rebuilds, retention sweeps, and bounded structural code-graph indexing.
 
@@ -471,9 +471,9 @@ Search memory for documentation about Gate 3
 
 You should get relevant memories about Gate 3 (the spec folder question) from AGENTS.md or related documentation.
 
-### Step 4: Phase 012 Smoke Tests (one per shipped capability)
+### Step 4: Smoke Tests (one per shipped capability)
 
-Run one smoke test per capability shipped in Phase 012 to confirm the new behaviors are wired correctly. Each test is short and end-to-end runnable; they expand the regular structural-query verification above with new-feature-specific signals.
+Run one smoke test per shipped capability to confirm the new behaviors are wired correctly. Each test is short and end-to-end runnable; they expand the regular structural-query verification above with new-feature-specific signals.
 
 #### 4a. `detect_changes` preflight (012/002, MCP-tool wired in 010/007 T-A)
 

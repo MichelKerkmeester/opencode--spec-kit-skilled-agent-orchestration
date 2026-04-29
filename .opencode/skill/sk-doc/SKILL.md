@@ -197,7 +197,7 @@ INTENT_SIGNALS = {
 }
 
 RESOURCE_MAP = {
-    "DOC_QUALITY": ["references/global/validation.md", "references/global/workflows.md", "references/global/core_standards.md"],
+    "DOC_QUALITY": ["references/global/validation.md", "references/global/workflows.md", "references/global/core_standards.md", "references/global/evergreen_packet_id_rule.md"],
     "OPTIMIZATION": ["references/global/optimization.md", "assets/documentation/llmstxt_templates.md"],
     "SKILL_CREATION": ["references/specific/skill_creation.md", "assets/skill/skill_md_template.md", "assets/skill/skill_reference_template.md"],
     "AGENT_COMMAND": ["references/specific/agent_creation.md", "assets/agents/agent_template.md", "assets/agents/command_template.md"],
@@ -293,6 +293,8 @@ def route_documentation_resources(task):
 ## 3. HOW IT WORKS
 
 ### Mode 1: Document Quality
+
+**Evergreen packet-ID rule**: Runtime-state docs such as README, INSTALL_GUIDE, ARCHITECTURE, SKILL, AGENTS, CLAUDE, references, feature catalogs, manual testing playbooks, and ENV_REFERENCE must not cite mutable spec or phase packet numbers. Use current feature names, file paths, commands, and source anchors instead. See [evergreen_packet_id_rule.md](./references/global/evergreen_packet_id_rule.md).
 
 **Script-Assisted AI Analysis**:
 

@@ -126,7 +126,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Use memory_search to find context on packet 047." 2>&1
+  "Use memory_search to find context for the approved spec folder." 2>&1
 ```
 
 ### 4. Spawn a Parallel Detached Session
@@ -138,7 +138,7 @@ opencode run --share --port 4096 \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run iteration 3 of the deep-research loop on packet 047." 2>&1
+  "Run iteration 3 of the deep-research loop for the approved spec folder." 2>&1
 ```
 
 <!-- /ANCHOR:quick-start -->
@@ -311,7 +311,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Search Spec Kit Memory for context on packet 047. Return top 5 hits as JSON." 2>&1
+  "Search Spec Kit Memory for context on the approved spec folder. Return top 5 hits as JSON." 2>&1
 ```
 
 ### Parallel Detached Session (Use Case 2)
@@ -323,7 +323,7 @@ opencode run --share --port 4096 \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run iteration 3 of the deep-research loop on packet 047. Externalize state to scratch/iteration-3.jsonl." 2>&1
+  "Run iteration 3 of the deep-research loop for the approved spec folder. Externalize state to scratch/iteration-3.jsonl." 2>&1
 ```
 
 ### Cross-AI Handback (Use Case 3)
@@ -336,7 +336,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Use system-spec-kit to validate packet 047. Return strict-mode validation report as JSON." 2>&1
+  "Use system-spec-kit to validate the approved spec folder. Return strict-mode validation report as JSON." 2>&1
 ```
 
 ### Code Review with the Review Agent

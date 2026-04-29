@@ -21,11 +21,11 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Direct MCP call only. Packet 013 found session/bootstrap surfaces probe availability directly, not through this MCP tool.
+Direct MCP call only. Session/bootstrap surfaces probe availability directly, not through this MCP tool.
 
 ## 4. CLASS
 
-manual, copied from packet 013's reality map.
+manual, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -35,5 +35,4 @@ Availability does not prove search quality. Pair with an actual CocoIndex search
 
 - [01-ccc-reindex.md](./01-ccc-reindex.md)
 - [../../manual_testing_playbook/07--ccc-integration/014-ccc-status-availability-probe.md](../../manual_testing_playbook/07--ccc-integration/014-ccc-status-availability-probe.md)
-
 

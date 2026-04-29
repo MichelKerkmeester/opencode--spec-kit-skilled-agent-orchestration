@@ -28,7 +28,7 @@ Give operators an explicit repair path for stale, absent, or unavailable advisor
 
 ## 2. CURRENT REALITY
 
-`advisor_rebuild` is the packet 034 MCP tool that moved rebuild behavior out of `advisor_status`. The handler reads the current status first. If status is `live` and `force` is not true, it skips the rebuild and returns a diagnostic telling the caller to pass `force:true` when a live rebuild is intentional.
+`advisor_rebuild` is the explicit MCP repair tool that keeps rebuild behavior out of `advisor_status`. The handler reads the current status first. If status is `live` and `force` is not true, it skips the rebuild and returns a diagnostic telling the caller to pass `force:true` when a live rebuild is intentional.
 
 When rebuild proceeds, it indexes `.opencode/skill`, publishes a fresh skill-graph generation with `reason: "advisor_rebuild"`, rereads status, and returns freshness before/after, generation before/after, skill count, indexing summary, and warnings. `advisor_status` remains diagnostic-only and never repairs stale state.
 

@@ -1,13 +1,13 @@
 ---
 title: "278 -- Memory retention sweep basic flow"
-description: "Operator validation for packet 033 memory_retention_sweep: expired delete_after rows, dry-run preview, deletion audit, and scheduled cleanup interval."
+description: "Operator validation for memory_retention_sweep: expired delete_after rows, dry-run preview, deletion audit, and scheduled cleanup interval."
 ---
 
 # 278 -- Memory retention sweep basic flow
 
 ## 1. OVERVIEW
 
-This scenario validates the operator-visible retention sweep shipped in packet 033. It proves that an expired governed memory can be previewed with `dryRun`, deleted by `memory_retention_sweep`, and removed by the scheduled interval when `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` is reduced in a disposable runtime.
+This scenario validates the operator-visible retention sweep. It proves that an expired governed memory can be previewed with `dryRun`, deleted by `memory_retention_sweep`, and removed by the scheduled interval when `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` is reduced in a disposable runtime.
 
 ---
 
@@ -106,7 +106,6 @@ If the interval server is still running, stop it with `Ctrl-C`.
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Packet 033 spec: [033-memory-retention-sweep/spec.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep/spec.md)
 - MCP docs: [mcp_server/README.md](../../mcp_server/README.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/lib/governance/memory-retention-sweep.ts`
 - Source: `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts`
@@ -117,6 +116,6 @@ If the interval server is still running, stop it with `Ctrl-C`.
 
 - Group: Maintenance
 - Playbook ID: 278
-- Packet: 033-memory-retention-sweep
+- Current behavior: `memory_retention_sweep` previews and deletes expired `delete_after` rows.
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--maintenance/278-memory-retention-sweep-basic-flow.md`

@@ -27,7 +27,7 @@ Manual slash command: `/doctor:code-graph:auto|confirm|apply|apply-confirm`.
 
 ## 4. CLASS
 
-manual. Packet 012 classifies code-graph doctor repair claims as manual/diagnostic; apply mode remains explicitly operator-triggered rather than ambient automation.
+manual. Code-graph doctor repair claims are manual/diagnostic; apply mode remains explicitly operator-triggered rather than ambient automation.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ Apply mode writes config, not source code. The YAML itself notes scanner-config 
 
 - [../02--manual-scan-verify-status/02-code-graph-verify.md](../02--manual-scan-verify-status/02-code-graph-verify.md)
 - [../../manual_testing_playbook/08--doctor-code-graph/015-doctor-apply-mode-policy.md](../../manual_testing_playbook/08--doctor-code-graph/015-doctor-apply-mode-policy.md)
-
 

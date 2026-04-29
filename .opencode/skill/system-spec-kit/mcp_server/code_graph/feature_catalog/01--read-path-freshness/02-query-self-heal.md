@@ -26,7 +26,7 @@ Manual tool call only. The self-heal happens inside that requested read path.
 
 ## 4. CLASS
 
-half. Packet 013's row NEW-013-002 says code graph freshness checks are half-auto; packet 035 marks F5 `code_graph_query` as conditional with local/native pass evidence only.
+half. Code graph freshness checks are half-auto; `code_graph_query` has conditional local/native pass evidence only.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ When stale files exceed the selective threshold or Git HEAD changed, query block
 - [01-ensure-code-graph-ready.md](./01-ensure-code-graph-ready.md)
 - [../06--mcp-tool-surface/01-tool-registrations.md](../06--mcp-tool-surface/01-tool-registrations.md)
 - [../../manual_testing_playbook/01--read-path-freshness/002-query-self-heal-stale-file.md](../../manual_testing_playbook/01--read-path-freshness/002-query-self-heal-stale-file.md)
-
 

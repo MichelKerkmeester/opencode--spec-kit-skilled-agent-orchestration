@@ -1,6 +1,6 @@
 ---
 title: "Skill Advisor: Feature Catalog"
-description: "Post-Phase-027 feature inventory for the native-first skill advisor, covering daemon freshness, auto-indexing, lifecycle routing, 5-lane scorer fusion, MCP surface, runtime hooks, plugin bridge, and Python compatibility."
+description: "Current feature inventory for the native-first skill advisor, covering daemon freshness, auto-indexing, lifecycle routing, 5-lane scorer fusion, MCP surface, runtime hooks, plugin bridge, and Python compatibility."
 trigger_phrases:
   - "skill advisor catalog"
   - "advisor feature catalog"
@@ -10,7 +10,7 @@ trigger_phrases:
 
 # Skill Advisor: Feature Catalog
 
-This catalog is the post-Phase-027 inventory for the skill advisor. The package source of truth is `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. Each group links to per-feature files that cite the real implementation and test anchors.
+This catalog is the current inventory for the skill advisor. The package source of truth is `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. Each group links to per-feature files that cite the real implementation and test anchors.
 
 ---
 
@@ -41,7 +41,7 @@ The catalog covers 37 features across 7 groups. Group 1 owns daemon correctness;
 | [07--hooks-and-plugin](./07--hooks-and-plugin/) | 5 | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge |
 | [08--python-compat](./08--python-compat/) | 3 | Python CLI shim, regression suite, bench runner |
 
-Baseline numbers (Phase 027 remediation SHA `97a318d83`):
+Baseline numbers (remediation SHA `97a318d83`):
 
 | Metric | Value |
 | --- | --- |

@@ -1,6 +1,6 @@
 ---
 title: "Skill Advisor Native-First Manual Testing Playbook"
-description: "Operator-facing validation package for the Phase 027 native skill advisor, covering native MCP tools, runtime hooks, compatibility shim, operator recovery, daemon auto-update, auto-indexing, lifecycle routing, 5-lane scorer fusion, and Python compatibility."
+description: "Operator-facing validation package for the native skill advisor, covering native MCP tools, runtime hooks, compatibility shim, operator recovery, daemon auto-update, auto-indexing, lifecycle routing, 5-lane scorer fusion, and Python compatibility."
 trigger_phrases:
   - "skill advisor playbook"
   - "native first manual testing"
@@ -38,7 +38,7 @@ This playbook validates the post-Phase-027 Skill Advisor surface as shipped at r
 
 ## 1. OVERVIEW
 
-The playbook contains 43 deterministic manual scenarios across nine groups. The first four groups carry the original Phase 027 release-gate surface; the five remaining groups extend coverage to every shipped sub-feature.
+The playbook contains 43 deterministic manual scenarios across nine groups. The first four groups carry the native advisor release-gate surface; the five remaining groups extend coverage to every shipped sub-feature.
 
 | Group | Scope | Scenario Files |
 | --- | --- | --- |
@@ -52,7 +52,7 @@ The playbook contains 43 deterministic manual scenarios across nine groups. The 
 | Scorer fusion | 5-lane fusion, projection, ambiguity, attribution, ablation | [08--scorer-fusion](08--scorer-fusion/) |
 | Python compat | stdin mode, force toggles, threshold flag, regression suite, bench | [10--python-compat](10--python-compat/) |
 
-Coverage note (2026-04-20): scenarios target the current native-first runtime with 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, the OpenCode plugin bridge, the auto-update daemon, and the lifecycle routing surface. They intentionally do not test the separate Phase 028 `mcp_server/code_graph/` package.
+Coverage note (2026-04-20): scenarios target the current native-first runtime with 5-lane fusion, prompt-safe attribution, fail-open freshness states, the stable `compat/index.ts` entrypoint, the OpenCode plugin bridge, the auto-update daemon, and the lifecycle routing surface. They intentionally do not test the separate `mcp_server/code_graph/` package.
 
 ---
 

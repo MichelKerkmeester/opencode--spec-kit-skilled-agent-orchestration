@@ -1,13 +1,13 @@
 ---
 title: "281 -- Code graph read-path selective self-heal"
-description: "Operator validation for packet 032 watcher retraction: no structural watcher, bounded read-path self-heal, and explicit full-scan handoff."
+description: "Operator validation for no structural watcher, bounded read-path self-heal, and explicit full-scan handoff."
 ---
 
 # 281 -- Code graph read-path selective self-heal
 
 ## 1. OVERVIEW
 
-This scenario validates the read-path contract documented by packet 032. Structural code graph freshness is repaired by bounded query/context reads or by explicit `code_graph_scan`; no structural source watcher should run a full scan automatically.
+This scenario validates the read-path contract. Structural code graph freshness is repaired by bounded query/context reads or by explicit `code_graph_scan`; no structural source watcher should run a full scan automatically.
 
 ---
 
@@ -94,7 +94,6 @@ rm -rf "$WORK"
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Existing scan/query scenario: [254-code-graph-scan-query.md](254-code-graph-scan-query.md)
-- Packet 032 spec: [032-code-graph-watcher-retraction/spec.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction/spec.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts`
 - Source: `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts`
 - Source: `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts`
@@ -105,6 +104,6 @@ rm -rf "$WORK"
 
 - Group: Context Preservation and Code Graph
 - Playbook ID: 281
-- Packet: 032-code-graph-watcher-retraction
+- Current behavior: code graph freshness is read-path/manual with no structural source watcher.
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md`

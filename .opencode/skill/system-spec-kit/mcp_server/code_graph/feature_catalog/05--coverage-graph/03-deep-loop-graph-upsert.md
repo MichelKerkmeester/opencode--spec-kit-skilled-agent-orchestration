@@ -26,7 +26,7 @@ Command-owned deep-research/deep-review YAML, conditional on `graphEvents`; dire
 
 ## 4. CLASS
 
-half, copied from packet 013's reality map.
+half, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -36,5 +36,4 @@ No `graphEvents` means no upsert. The workflow skip is intentional and should no
 
 - [04-deep-loop-graph-convergence.md](./04-deep-loop-graph-convergence.md)
 - [../../manual_testing_playbook/05--coverage-graph/010-deep-loop-graph-upsert-conditional.md](../../manual_testing_playbook/05--coverage-graph/010-deep-loop-graph-upsert-conditional.md)
-
 

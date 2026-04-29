@@ -337,13 +337,13 @@ opencode run \
 opencode run --share --port 4096 \
   --model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run iteration 3 of the deep-research loop on packet 047."
+  "Run iteration 3 of the deep-research loop for the approved spec folder."
 
 # 3. Cross-AI handback (use case 3 — Codex / Copilot CLI / Gemini calling)
 opencode run \
   --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Use system-spec-kit to validate packet 047. Return JSON validation report."
+  "Use system-spec-kit to validate the approved spec folder. Return JSON validation report."
 
 # 4. Code review with the review agent
 opencode run \
@@ -355,7 +355,7 @@ opencode run \
 opencode run \
   --model deepseek/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Walk through the migration sequence for packet 047."
+  "Walk through the migration sequence for the approved spec folder."
 
 # 6. Cross-repo dispatch (Barter sibling)
 opencode run \

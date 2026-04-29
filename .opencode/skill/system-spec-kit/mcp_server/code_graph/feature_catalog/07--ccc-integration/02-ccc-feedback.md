@@ -21,11 +21,11 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Direct MCP call only. Packet 013 found no hook, CI, session bootstrap, or memory command path that invokes feedback automatically.
+Direct MCP call only. No hook, CI, session bootstrap, or memory command path invokes feedback automatically.
 
 ## 4. CLASS
 
-manual, copied from packet 013's reality map.
+manual, copied from the current reality map.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -35,5 +35,4 @@ Feedback writes under `.opencode/skill/mcp-coco-index/feedback/search-feedback.j
 
 - [01-ccc-reindex.md](./01-ccc-reindex.md)
 - [03-ccc-status.md](./03-ccc-status.md)
-
 

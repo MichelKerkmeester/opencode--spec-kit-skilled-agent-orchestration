@@ -19,6 +19,12 @@ scripts/validate_document.py document.md
 # Checks: TOC, H2 format, anchors, required sections
 ```
 
+**Evergreen Packet-ID Audit** (runtime docs only):
+```bash
+grep -nE '\b\d{3}-[a-z-]+\b|\b03[0-9]/00[0-9]\b|\bF-013-[0-9]+|\bP1-[0-9]+|\bpacket [0-9]{3}|\bphase [0-9]{3}|\bfrom packet|\bin packet|\bvia packet' <FILE>
+# Replace packet history with current feature names, commands, or file:line anchors.
+```
+
 **Extract Structure** (for AI analysis):
 ```bash
 scripts/extract_structure.py document.md

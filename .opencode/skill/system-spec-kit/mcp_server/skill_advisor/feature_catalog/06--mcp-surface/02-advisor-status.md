@@ -30,7 +30,7 @@ Give operators and runtimes a single diagnostic read that summarizes whether adv
 
 `handlers/advisor-status.ts` returns `freshness`, `generation`, `trustState` (with `state` and optional `reason`), `skillCount`, `lastScanAt`, and `laneWeights` (the canonical 5-lane configuration). Freshness vocabulary is `live / stale / absent / unavailable`. The call is fail-open: even when the daemon is absent, status returns a well-formed envelope describing the shortfall.
 
-Packet 034 made this surface strictly diagnostic. `readAdvisorStatus()` reports stale, absent, or unavailable advisor state and does not repair it. Operators should call `advisor_rebuild` when status reports stale state or when a forced rebuild is needed.
+`readAdvisorStatus()` is strictly diagnostic. It reports stale, absent, or unavailable advisor state and does not repair it. Operators should call `advisor_rebuild` when status reports stale state or when a forced rebuild is needed.
 
 ---
 

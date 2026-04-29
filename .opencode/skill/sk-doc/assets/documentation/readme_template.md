@@ -20,6 +20,7 @@ Templates for creating README files with scannable structure and progressive dis
 - **Progressive disclosure**: Quick Start first, details later
 - **Self-contained**: Can be understood without reading other docs
 - **Multi-audience**: Serves evaluators, users and troubleshooters
+- **Evergreen**: Describes current runtime state by feature, command, and file path. Do not reference spec or phase packet numbers.
 
 **Location**: Project root (`README.md`) or component/feature directories
 
@@ -144,6 +145,7 @@ Every README follows a 9-section structure. Use what's needed, remove what's not
 - Show expected output for verification
 - Use tables for scannable data
 - Order content by frequency (most common first)
+- Keep READMEs packet-history free. Replace "added in packet 033" or "per 037/005" with current feature names, source files, or links to the relevant runtime reference.
 
 ### Overview Section (1)
 

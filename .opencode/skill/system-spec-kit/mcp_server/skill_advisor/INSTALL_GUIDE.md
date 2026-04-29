@@ -5,7 +5,7 @@ description: "Bootstrap, verification, compatibility, rollback, and operator not
 
 # Skill Advisor Native Bootstrap
 
-This is the canonical bootstrap guide for the Phase 027 native Skill Advisor. The advisor lives inside the existing system-spec-kit MCP server; do not register a second MCP server for it.
+This is the canonical bootstrap guide for the native Skill Advisor. The advisor lives inside the existing system-spec-kit MCP server; do not register a second MCP server for it.
 
 ---
 
@@ -25,7 +25,7 @@ This is the canonical bootstrap guide for the Phase 027 native Skill Advisor. Th
 
 ## 1. OVERVIEW
 
-The native advisor is a TypeScript package under `mcp_server/skill_advisor/` with the public MCP tools `advisor_recommend`, `advisor_status`, and `advisor_validate`. Phase 027 made this path primary, while the Python `skill_advisor.py` shim remains as the compatibility surface for scripts and prompt hooks.
+The native advisor is a TypeScript package under `mcp_server/skill_advisor/` with the public MCP tools `advisor_recommend`, `advisor_status`, and `advisor_validate`. This TypeScript path is primary, while the Python `skill_advisor.py` shim remains as the compatibility surface for scripts and prompt hooks.
 
 ---
 
@@ -80,7 +80,7 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 (cd .opencode/skill/system-spec-kit/mcp_server && ../scripts/node_modules/.bin/vitest run skill_advisor/tests/ code_graph/tests/ --reporter=default)
 ```
 
-Current Phase 027 baseline:
+Current native advisor baseline:
 
 | Metric | Expected |
 | --- | --- |

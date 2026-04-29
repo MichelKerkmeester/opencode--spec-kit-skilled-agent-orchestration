@@ -26,7 +26,7 @@ Called by read handlers after the operator invokes a code graph tool. It is not 
 
 ## 4. CLASS
 
-half. Packet 013 classifies code graph freshness checks as half because selective repair happens after a read invocation, while full scans remain explicit.
+half. Code graph freshness checks are half-auto because selective repair happens after a read invocation, while full scans remain explicit.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ Full-scan states are refused by query/context when inline full scans are disable
 - [02-query-self-heal.md](./02-query-self-heal.md)
 - [../02--manual-scan-verify-status/01-code-graph-scan.md](../02--manual-scan-verify-status/01-code-graph-scan.md)
 - [../../manual_testing_playbook/01--read-path-freshness/001-ensure-ready-selective-reindex.md](../../manual_testing_playbook/01--read-path-freshness/001-ensure-ready-selective-reindex.md)
-
 

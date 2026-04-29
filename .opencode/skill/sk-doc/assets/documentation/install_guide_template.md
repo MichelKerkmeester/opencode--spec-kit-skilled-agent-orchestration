@@ -433,6 +433,7 @@ A guide to installing the MCP server.
 - **Direct instructions**: "Run this command" not "You might want to run"
 - **Specific over vague**: "Python 3.9+" not "recent Python version"
 - **Test everything**: Every command you write should be copy-pasteable and work
+- **Evergreen references**: Do not mention spec or phase packet numbers. Point to current commands, config keys, files, or reference docs.
 - **Human Voice Rules (HVR)**: Follow the full HVR ruleset in [hvr_rules.md](../../references/global/hvr_rules.md). Key points: no em dashes (use commas or periods), no semicolons, no banned words (leverage, robust, seamless, utilize, holistic), active voice throughout
 
 ### Placeholder Format

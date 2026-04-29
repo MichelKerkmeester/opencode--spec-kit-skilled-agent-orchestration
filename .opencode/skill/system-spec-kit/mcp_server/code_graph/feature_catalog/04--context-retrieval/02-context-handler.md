@@ -26,7 +26,7 @@ Only through `code_graph_context` dispatch.
 
 ## 4. CLASS
 
-half. The handler performs readiness checks after a manual/requested tool call, matching packet 013's `code_graph_context` classification.
+half. The handler performs readiness checks after a manual/requested tool call, matching the `code_graph_context` classification.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -36,5 +36,4 @@ The handler can return partial output under deadline or budget pressure. Check `
 
 - [01-code-graph-context.md](./01-code-graph-context.md)
 - [../06--mcp-tool-surface/01-tool-registrations.md](../06--mcp-tool-surface/01-tool-registrations.md)
-
 

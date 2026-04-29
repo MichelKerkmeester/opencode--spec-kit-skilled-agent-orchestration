@@ -1,6 +1,6 @@
 ---
 title: "Code-graph readiness contract"
-description: "Phase 017 extracted a shared readiness contract so code-graph handlers emit the same canonicalReadiness and trustState fields through one module, while downstream handlers layer richer blocked-read payloads on top of it."
+description: "Shared readiness contract for code-graph handlers that emits canonicalReadiness and trustState through one module while downstream handlers layer richer blocked-read payloads on top."
 ---
 
 # Code-graph readiness contract
@@ -16,7 +16,7 @@ description: "Phase 017 extracted a shared readiness contract so code-graph hand
 
 ## 1. OVERVIEW
 
-Phase 017 extracted a shared readiness contract so code-graph handlers emit the same `canonicalReadiness` and `trustState` fields through one module.
+Code-graph handlers emit the same `canonicalReadiness` and `trustState` fields through one shared readiness-contract module.
 
 This is the shared structural context contract for the code-graph family. It replaced inline readiness helpers in `query.ts` and propagated the same vocabulary to the other read and maintenance handlers that previously exposed inconsistent or missing readiness blocks.
 
@@ -42,16 +42,16 @@ The result is **shared vocabulary, handler-local payload shape**: callers can re
 Concrete shape per handler:
 
 - **`code_graph_query`** — blocked-read path returns `status: "blocked"`, `operation`, `subject`, `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, `blockReason`, `fallbackDecision: { nextTool, reason, retryAfter? }`, and `lastPersistedAt`, embedding the shared readiness block under `data.readiness` and echoing `canonicalReadiness` and `trustState` at the top level.
-- **`code_graph_context`** — blocked-read path mirrors the query shape but preserves `queryMode` instead of `operation`/`subject`. Packet 016 (`016-degraded-readiness-envelope-parity`) makes context also preserve the same structured envelope on a readiness-crash (`freshness === 'error'`) — `readiness`, `canonicalReadiness`, `trustState`, `graphAnswersOmitted: true`, plus an `rg` recovery signal — before attempting any `buildContext()` call, so a downstream `buildContext()` failure cannot strip the degraded metadata.
-- **`code_graph_status`** — diagnostic-only handler. Does NOT return blocked-read fields; reports `readiness.action`, `freshness`, `graphQualitySummary`, and the canonical readiness block via `getGraphReadinessSnapshot()` (the non-mutating sibling of `ensureCodeGraphReady`). Packet 014 added the snapshot; packet 016 pins that the snapshot is preserved even when `graphDb.getStats()` throws (e.g., DB locked or corrupt) so the action-level surface survives DB-unavailable states.
+- **`code_graph_context`** — blocked-read path mirrors the query shape but preserves `queryMode` instead of `operation`/`subject`. On a readiness-crash (`freshness === 'error'`), context preserves the same structured envelope, `readiness`, `canonicalReadiness`, `trustState`, `graphAnswersOmitted: true`, plus an `rg` recovery signal, before attempting any `buildContext()` call, so a downstream `buildContext()` failure cannot strip the degraded metadata.
+- **`code_graph_status`** — diagnostic-only handler. Does NOT return blocked-read fields; reports `readiness.action`, `freshness`, `graphQualitySummary`, and the canonical readiness block via `getGraphReadinessSnapshot()` (the non-mutating sibling of `ensureCodeGraphReady`). The snapshot is preserved even when `graphDb.getStats()` throws (e.g., DB locked or corrupt) so the action-level surface survives DB-unavailable states.
 
-Operator-facing rule of thumb: every code-graph handler exposes the same `readiness` / `canonicalReadiness` / `trustState` keys (the **vocabulary**), but the surrounding **payload fields** are read in the handler's own contract page. Do not infer the shape of one handler's degraded response from another's. Where the recovery routing field name for `code_graph_context` readiness-crash diverges from `code_graph_query`'s `fallbackDecision`, packet 016's `implementation-summary.md` is the binding source.
+Operator-facing rule of thumb: every code-graph handler exposes the same `readiness` / `canonicalReadiness` / `trustState` keys (the **vocabulary**), but the surrounding **payload fields** are read in the handler's own contract page. Do not infer the shape of one handler's degraded response from another's. Where the recovery routing field name for `code_graph_context` readiness-crash diverges from `code_graph_query`'s `fallbackDecision`, treat this page and `mcp_server/code_graph/handlers/context.ts` as the current contract.
 
 The readiness module also now exposes a non-mutating `getGraphReadinessSnapshot()` for status reporting. It returns the same `{action, freshness, reason}` triplet as `ensureCodeGraphReady` but never triggers cache mutation, deleted-file cleanup, or inline indexing — used by `code_graph_status` for diagnostic reads where the caller wants observability without side effects.
 
-Packet 032 retracted the watcher model. Code graph freshness is a read-path/manual contract: callers use `code_graph_status` for diagnostics, `code_graph_scan` for explicit refresh, and `code_graph_query` / `code_graph_context` for reads that may perform bounded selective self-heal through `ensure-ready.ts` when inline indexing is allowed. There is no background watcher. `code_graph_verify` uses the same readiness helper with `allowInlineFullScan: false` and blocks when the graph is not fresh.
+Code graph freshness is a read-path/manual contract: callers use `code_graph_status` for diagnostics, `code_graph_scan` for explicit refresh, and `code_graph_query` / `code_graph_context` for reads that may perform bounded selective self-heal through `ensure-ready.ts` when inline indexing is allowed. There is no background watcher. `code_graph_verify` uses the same readiness helper with `allowInlineFullScan: false` and blocks when the graph is not fresh.
 
-Packet 035 matrix status treats the code-graph cells as native/local validation surfaces rather than external CLI adapter cells. Packet 036 adds the external CLI matrix adapters separately under `mcp_server/matrix-runners/`; the code-graph readiness contract here remains manual/read-path driven.
+Matrix status treats the code-graph cells as native/local validation surfaces rather than external CLI adapter cells. External CLI matrix adapters live separately under `mcp_server/matrix-runners/`; the code-graph readiness contract here remains manual/read-path driven.
 
 ---
 
@@ -91,5 +91,5 @@ Packet 035 matrix status treats the code-graph cells as native/local validation 
 
 - Group: Context Preservation and Code Graph
 - Source feature title: Code-graph readiness contract
-- Phase 017 commits: `4a154c555`, `f253194bf`
+- Current implementation commits: `4a154c555`, `f253194bf`
 - Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`

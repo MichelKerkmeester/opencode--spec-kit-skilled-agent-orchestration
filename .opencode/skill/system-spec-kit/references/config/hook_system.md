@@ -44,7 +44,7 @@ Codex registration is owned by the user/workspace Codex runtime config, not by t
 | --- | --- | --- | --- | --- |
 | Legacy repo template | Retained for repo examples and local policy shape | `.codex/settings.json` | None by itself; copy/adapt into live Codex hook registration | Example only |
 | Current native hook contract | Active runtime contract as of 2026-04-29 | `~/.codex/config.toml` with `[features].codex_hooks = true` plus `~/.codex/hooks.json` or workspace `hooks.json` | Codex `SessionStart`, `UserPromptSubmit`, and optional `PreToolUse` native hooks | Authoritative live registration |
-| Fallback prompt wrapper | Phase 020 compatibility behavior | `hooks/codex/prompt-wrapper.ts` when native hook readiness reports unavailable | Explicit wrapper invocation | Fallback, not native hook registration |
+| Fallback prompt wrapper | Compatibility behavior | `hooks/codex/prompt-wrapper.ts` when native hook readiness reports unavailable | Explicit wrapper invocation | Fallback, not native hook registration |
 <!-- /ANCHOR:hook-registration -->
 
 <!-- ANCHOR:canonical-runtime-hook-vocabulary -->
@@ -147,7 +147,7 @@ OpenCode delivers prompt-time advisor context through a plugin-helper bridge rat
 
 The bridge routes through the shared `renderAdvisorBrief(...)` invariants used by the Codex prompt-submit hook and prompt-wrapper fallback. The default OpenCode prompt-time threshold contract is **`0.8` confidence / `0.35` uncertainty**.
 
-Packet 014 unified the public MCP contract:
+The public MCP contract is unified across runtime hook surfaces:
 
 - `advisor_recommend` and `advisor_validate` accept an explicit `workspaceRoot` argument; both responses surface the resolved `workspaceRoot` and `effectiveThresholds` used for routing.
 - `advisor_status` is diagnostic-only and does not rebuild. Use `advisor_rebuild({})` when status reports stale/absent/unavailable, or `advisor_rebuild({"force":true})` for an explicit live-state rebuild.

@@ -88,7 +88,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Run iteration N of the deep-research loop on packet 047. State file at scratch/iteration-N.jsonl."
+  "Run iteration N of the deep-research loop for the approved spec folder. State file at scratch/iteration-N.jsonl."
 ```
 
 The skill's smart router gates this use case behind ADR-001's self-invocation signal. When the signal trips AND the prompt explicitly names a parallel detached session, the router permits the dispatch. Otherwise it refuses (see `./integration_patterns.md` for the full decision tree).
@@ -147,7 +147,7 @@ opencode run \
   --variant high \
   --format json \
   --dir /repo \
-  "Run iteration 3 of the deep-review loop on packet 047. State file: review/deep-review-state.jsonl."
+  "Run iteration 3 of the deep-review loop for the approved spec folder. State file: review/deep-review-state.jsonl."
 ```
 
 See `./agent_delegation.md` for the full routing matrix.

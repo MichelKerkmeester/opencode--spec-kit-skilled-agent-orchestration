@@ -27,9 +27,9 @@ importance_tier: "normal"
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`matrix-runners/` turns packet 030's F1-F14 x CLI-executor design into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
+`matrix-runners/` turns the F1-F14 x CLI-executor matrix into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
-It does not run native or inline cells. Packet 035 already covered those surfaces with focused local runners.
+It does not run native or inline cells. Those surfaces are covered by focused local runners.
 <!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:quick-start -->

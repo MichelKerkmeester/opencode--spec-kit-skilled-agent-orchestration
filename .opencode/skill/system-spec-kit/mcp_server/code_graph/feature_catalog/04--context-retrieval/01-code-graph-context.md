@@ -22,7 +22,7 @@ importance_tier: "important"
 
 ## 3. TRIGGER / AUTO-FIRE PATH
 
-Manual tool call only. Packet 013 classifies `code_graph_context` auto-fire as half because readiness work happens only after requested dispatch.
+Manual tool call only. `code_graph_context` auto-fire is half because readiness work happens only after requested dispatch.
 
 ## 4. CLASS
 
@@ -37,5 +37,4 @@ Blocked responses omit graph answers. Follow `requiredAction:"code_graph_scan"` 
 - [02-context-handler.md](./02-context-handler.md)
 - [../01--read-path-freshness/01-ensure-code-graph-ready.md](../01--read-path-freshness/01-ensure-code-graph-ready.md)
 - [../../manual_testing_playbook/04--context-retrieval/008-code-graph-context-readiness-block.md](../../manual_testing_playbook/04--context-retrieval/008-code-graph-context-readiness-block.md)
-
 

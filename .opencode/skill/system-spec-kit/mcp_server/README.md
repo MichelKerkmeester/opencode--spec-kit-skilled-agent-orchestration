@@ -517,7 +517,7 @@ The system keeps the index accurate and performant as your project evolves.
 
 ##### Code-graph freshness model
 
-The structural code graph does not have a real-time source-code watcher. Packet 013's supplemental research matrix validated that the watcher paths are markdown/spec-doc or skill-graph scoped, while structural graph freshness is read-path/manual. See `specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/research/research-report.md:39` and `:84`.
+The structural code graph does not have a real-time source-code watcher. The current watcher paths are markdown/spec-doc or skill-graph scoped, while structural graph freshness is read-path/manual. See `mcp_server/code_graph/lib/ensure-ready.ts` and `mcp_server/code_graph/handlers/scan.ts` for the read-path and explicit scan contracts.
 
 **Read-path self-heal** -- `code_graph/lib/ensure-ready.ts:329-442` runs from graph read handlers and can selectively reindex changed tracked files when stale sets are safe to repair inline. This is invoked by query/context reads; it is not a file-save watcher.
 
@@ -704,7 +704,7 @@ Resume session with combined memory, code graph and CocoIndex status in a single
 
 ##### `session_bootstrap`
 
-Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state. In packet workflows, `/spec_kit:resume` sits above this tool as the operator-facing recovery surface.
+Complete session bootstrap in one call. This is the canonical first-call recovery step on session start or after `/clear`. It wraps the full `session_resume` payload plus `session_health` and returns context, health, structural readiness and recommended next actions. Startup/bootstrap surfaces are freshness-aware but non-mutating; use `code_graph_scan` when readiness shows an empty or broad full-scan state. For documented spec-folder workflows, `/spec_kit:resume` sits above this tool as the operator-facing recovery surface.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1814,4 +1814,4 @@ Set the flag to `false` or `0` in your environment, restart the server and the p
 
 ---
 
-*Documentation version: 3.1 | Last updated: 2026-04-29 | Server version: @spec-kit/mcp-server v1.8.0 | MCP SDK: @modelcontextprotocol/sdk ^1.24.3 | README cascade includes packets 031-036 and 037/001-006*
+*Documentation version: 3.1 | Last updated: 2026-04-29 | Server version: @spec-kit/mcp-server v1.8.0 | MCP SDK: @modelcontextprotocol/sdk ^1.24.3 | README covers the current retention, advisor rebuild, Codex freshness, matrix runner, stress-test, catalog, and playbook surfaces*

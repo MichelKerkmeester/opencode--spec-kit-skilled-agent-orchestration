@@ -23,7 +23,7 @@ trigger_phrases:
 
 `mcp_server/matrix-runners/` turns the F1-F14 x CLI executor matrix into executable external-CLI cells.
 
-The package is intentionally separate from native/local matrix checks. Packet 035 covered local status; packet 036 added the external adapter layer documented here.
+The package is intentionally separate from native/local matrix checks. Local status uses focused local runners; the external adapter layer documented here covers CLI executor cells.
 
 ---
 
@@ -41,7 +41,7 @@ Each adapter maps a normalized `AdapterInput` into the target CLI's argv/stdin c
 
 | File | Layer | Role |
 |---|---|---|
-| `mcp_server/matrix-runners/README.md:8-10` | Docs | Defines the package as CLI-only matrix adapter runners and distinguishes packet 035 local coverage |
+| `mcp_server/matrix-runners/README.md:8-10` | Docs | Defines the package as CLI-only matrix adapter runners and distinguishes local-runner coverage |
 | `mcp_server/matrix-runners/README.md:31-45` | Docs | Documents manifest fields and applicability rules |
 | `mcp_server/matrix-runners/README.md:54-71` | Docs | Documents adapter status vocabulary and smoke verification command |
 | `mcp_server/matrix-runners/run-matrix.ts:21-45` | Meta-runner | Defines executor, manifest, and CLI option contracts |

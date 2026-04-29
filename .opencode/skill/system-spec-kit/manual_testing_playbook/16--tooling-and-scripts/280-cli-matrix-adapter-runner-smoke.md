@@ -1,13 +1,13 @@
 ---
 title: "280 -- CLI matrix adapter runner smoke"
-description: "Operator validation for packet 036 CLI matrix adapters: one cell per adapter, JSONL output shape, and timeout handling."
+description: "Operator validation for CLI matrix adapters: one cell per adapter, JSONL output shape, and timeout handling."
 ---
 
 # 280 -- CLI matrix adapter runner smoke
 
 ## 1. OVERVIEW
 
-This scenario validates the packet 036 matrix runner surface. It exercises one cell through each shipped external CLI adapter, verifies the JSONL record shape, and uses the mocked adapter suites to prove timeout normalization returns `TIMEOUT_CELL`.
+This scenario validates the matrix runner surface. It exercises one cell through each shipped external CLI adapter, verifies the JSONL record shape, and uses the mocked adapter suites to prove timeout normalization returns `TIMEOUT_CELL`.
 
 ---
 
@@ -16,7 +16,7 @@ This scenario validates the packet 036 matrix runner surface. It exercises one c
 - **Goal**: Run a single matrix cell through `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`, then verify per-cell JSONL and timeout behavior.
 - **Prerequisites**:
   - Working directory is the repository root.
-  - Packet 036 shipped `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/`.
+  - `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/` exists.
   - External CLIs are installed and authenticated for live adapter execution, or blocked cells are recorded with explicit `BLOCKED` reasons.
   - `jq` is available for JSONL checks.
 - **Prompt**: `As a matrix-runner operator, run the F5 cell through all five shipped CLI adapters, verify every JSONL record has the normalized cell fields and status enum, then run the mocked matrix-adapter timeout tests and confirm TIMEOUT_CELL handling. Return PASS/FAIL with output directory and timeout-test evidence.`
@@ -101,7 +101,6 @@ rm -rf "$OUT"
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Packet 036 spec: [036-cli-matrix-adapter-runners/spec.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners/spec.md)
 - Runner docs: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md`
 - Manifest: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json`
 - Adapter common: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts`
@@ -112,6 +111,6 @@ rm -rf "$OUT"
 
 - Group: Tooling and Scripts
 - Playbook ID: 280
-- Packet: 036-cli-matrix-adapter-runners
+- Current behavior: matrix runners execute external CLI adapter cells and write normalized JSONL.
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md`

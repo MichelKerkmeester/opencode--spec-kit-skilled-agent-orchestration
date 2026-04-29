@@ -10,7 +10,7 @@ importance_tier: "important"
 
 # Skill Advisor Hook Reference
 
-This reference describes the current prompt-time Skill Advisor integrations after Phase 027. The primary routing implementation is the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`; Python remains as a compatibility fallback through `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`.
+This reference describes the current prompt-time Skill Advisor integrations. The primary routing implementation is the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`; Python remains as a compatibility fallback through `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`.
 
 ---
 

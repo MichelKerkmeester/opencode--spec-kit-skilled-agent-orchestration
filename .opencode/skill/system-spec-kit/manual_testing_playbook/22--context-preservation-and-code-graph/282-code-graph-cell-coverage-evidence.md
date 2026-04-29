@@ -1,24 +1,24 @@
 ---
 title: "282 -- Code graph matrix cell coverage evidence"
-description: "Operator reference for packet 035 code-graph-related matrix evidence files F5, F6, F7, and F8."
+description: "Operator reference for code-graph-related matrix evidence files F5, F6, F7, and F8."
 ---
 
 # 282 -- Code graph matrix cell coverage evidence
 
 ## 1. OVERVIEW
 
-This scenario is an evidence-led manual check for packet 035's code-graph-adjacent matrix cells. Operators verify the per-cell JSONL records and logs for F5, F6, F7, and F8 rather than rerunning the full matrix by default.
+This scenario is an evidence-led manual check for code-graph-adjacent matrix cells. Operators verify the per-cell JSONL records and logs for F5, F6, F7, and F8 rather than rerunning the full matrix by default.
 
 ---
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Reference and inspect packet 035 evidence for code-graph cells F5, F6, F7, and F8.
+- **Goal**: Reference and inspect stored evidence for code-graph cells F5, F6, F7, and F8.
 - **Prerequisites**:
   - Working directory is the repository root.
-  - Packet 035 evidence files exist under `specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/`.
+  - Matrix evidence files exist under `specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/`.
   - `jq` is available.
-- **Prompt**: `As a matrix evidence operator, inspect packet 035 evidence for F5 code_graph_query, F6 code_graph_scan/verify, F7 causal graph, and F8 CocoIndex search. Verify each feature has native and inline PASS records where applicable, external CLI records are explicit PASS/BLOCKED/RUNNER_MISSING, and every referenced evidence file exists. Return PASS/FAIL with the decisive file paths.`
+- **Prompt**: `As a matrix evidence operator, inspect stored evidence for F5 code_graph_query, F6 code_graph_scan/verify, F7 causal graph, and F8 CocoIndex search. Verify each feature has native and inline PASS records where applicable, external CLI records are explicit PASS/BLOCKED/RUNNER_MISSING, and every referenced evidence file exists. Return PASS/FAIL with the decisive file paths.`
 
 ---
 
@@ -26,7 +26,7 @@ This scenario is an evidence-led manual check for packet 035's code-graph-adjace
 
 ### Commands
 
-1. Set the packet 035 evidence root:
+1. Set the matrix evidence root:
 
 ```bash
 EVIDENCE="specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
@@ -92,9 +92,9 @@ done
 - F6 references `logs/feature-runs/F6-code-graph-verify.log`.
 - F7 references `logs/feature-runs/F7-causal-graph.log`.
 - F8 references `logs/feature-runs/F8-cocoindex-calibration.log`.
-- Native and inline F5-F8 records are `PASS` where packet 035 executed local focused runners.
+- Native and inline F5-F8 records are `PASS` where local focused runners executed.
 - External CLI records are explicit and non-silent: `PASS`, `BLOCKED`, `RUNNER_MISSING`, or another normalized status with a concrete `output_summary`.
-- Every `evidence_files` path resolves under the packet 035 evidence root.
+- Every `evidence_files` path resolves under the matrix evidence root.
 
 ### Cleanup
 
@@ -104,14 +104,13 @@ No cleanup. This scenario is read-only.
 
 - Compare `logs/feature-runs/summary.tsv` and `summary-rerun.tsv` to check rerun drift.
 - Inspect one blocked external CLI record and verify `manual_fallback` names the next operator action.
-- After packet 036, rerun F5-F8 through `matrix-runners/run-matrix.ts` and compare the new JSONL shape with packet 035 records.
+- Rerun F5-F8 through `matrix-runners/run-matrix.ts` and compare the new JSONL shape with stored records.
 
 ---
 
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Packet 035 implementation summary: [035-full-matrix-execution-validation/implementation-summary.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/implementation-summary.md)
 - Evidence root: `specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/`
 
 ---
@@ -120,6 +119,6 @@ No cleanup. This scenario is read-only.
 
 - Group: Context Preservation and Code Graph
 - Playbook ID: 282
-- Packet: 035-full-matrix-execution-validation
+- Current behavior: stored matrix evidence records F5-F8 local/native and external CLI outcomes.
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md`

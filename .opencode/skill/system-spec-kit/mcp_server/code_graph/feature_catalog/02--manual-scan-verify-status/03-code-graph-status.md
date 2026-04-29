@@ -26,7 +26,7 @@ Manual diagnostic MCP call. Startup/resume surfaces may include status-like stru
 
 ## 4. CLASS
 
-manual diagnostic. Packet 013 uses the same language for diagnostic freshness tools: status detects, explicit repair paths rebuild or scan.
+manual diagnostic. Diagnostic freshness tools detect state; explicit repair paths rebuild or scan.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ Status can recommend `rg` or `code_graph_scan`; it does not perform either. Trea
 - [01-code-graph-scan.md](./01-code-graph-scan.md)
 - [../01--read-path-freshness/01-ensure-code-graph-ready.md](../01--read-path-freshness/01-ensure-code-graph-ready.md)
 - [../../manual_testing_playbook/02--manual-scan-verify-status/006-code-graph-status-readonly.md](../../manual_testing_playbook/02--manual-scan-verify-status/006-code-graph-status-readonly.md)
-
 

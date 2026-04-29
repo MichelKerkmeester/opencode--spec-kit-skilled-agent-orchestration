@@ -23,8 +23,7 @@ importance_tier: "normal"
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`hooks/codex/` contains the Codex runtime adapter slice from Phase 020 plus
-the Phase 026/007/008 native hook-parity remediation.
+`hooks/codex/` contains the Codex runtime adapter slice plus the native hook-parity remediation.
 
 - `session-start.ts` emits startup, resume, and clear context via Codex's native `SessionStart` `hookSpecificOutput.additionalContext` surface.
 - `user-prompt-submit.ts` parses Codex prompt JSON from stdin first and argv second, then emits `hookSpecificOutput.additionalContext` when a rendered advisor brief exists.

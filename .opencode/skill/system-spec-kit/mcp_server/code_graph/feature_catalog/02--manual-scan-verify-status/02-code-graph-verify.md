@@ -26,7 +26,7 @@ Manual MCP maintenance call, or optional verification inside an explicit full `c
 
 ## 4. CLASS
 
-manual. Packet 035 signs F6 `code_graph_scan / verify` as conditional local/native coverage, not ambient automation.
+manual. `code_graph_scan / verify` has conditional local/native coverage, not ambient automation.
 
 ## 5. CAVEATS / FALLBACK
 
@@ -37,5 +37,4 @@ The handler refuses stale graphs. Run `code_graph_scan({ incremental:false })` b
 - [01-code-graph-scan.md](./01-code-graph-scan.md)
 - [../08--doctor-code-graph/01-doctor-apply-mode.md](../08--doctor-code-graph/01-doctor-apply-mode.md)
 - [../../manual_testing_playbook/02--manual-scan-verify-status/005-code-graph-verify-blocked-on-stale.md](../../manual_testing_playbook/02--manual-scan-verify-status/005-code-graph-verify-blocked-on-stale.md)
-
 
