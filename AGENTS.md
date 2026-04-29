@@ -93,11 +93,13 @@ Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) m
 
 | Automation claim | Trigger | Caveat / fallback |
 | --- | --- | --- |
-| Prompt-time skill advisor | Runtime prompt hook where configured (`UserPromptSubmit`, `BeforeAgent`, OpenCode transform); Copilot refreshes next-prompt instructions | Use `skill_advisor.py` when no hook brief is present |
+| Prompt-time skill advisor | Runtime prompt hook where configured (`UserPromptSubmit`, `BeforeAgent`, OpenCode transform); Copilot advisor is NEXT-PROMPT freshness: current prompt sees PRIOR turn's brief | Use `skill_advisor.py` when no hook brief is present |
 | Startup context | Runtime startup hook (`SessionStart` or runtime event) | Use `/spec_kit:resume` or `session_bootstrap()` when unavailable |
 | Codex native hooks | `[features].codex_hooks = true` plus user/workspace `hooks.json` | Repo `.codex/settings.json` is an example template, not live registration |
-| Copilot context refresh | Copilot-supported writer scripts refresh managed custom instructions | Next-prompt freshness only; no Claude settings wrapper |
+| Copilot context refresh | Copilot-supported writer scripts refresh managed custom instructions | NEXT-PROMPT freshness; current prompt sees PRIOR turn's brief; no Claude settings wrapper |
 | Spec validation | Operator runs `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` | Workflow-required gate; no universal runtime auto-fire hook |
+
+Automation defaults that depend on feature flags are enumerated in `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` under "Feature flags reference table".
 
 **Fallback** — when hooks are unavailable or fail in any runtime:
 

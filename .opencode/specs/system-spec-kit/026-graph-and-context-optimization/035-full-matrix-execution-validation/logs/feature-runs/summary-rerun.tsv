@@ -1,0 +1,4 @@
+feature	runner	exit_code	log
+F1	gate3-classifier	0	specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/F1-gate3-classifier.log
+F9	generate-context	0	specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/F9-generate-context.log
+F12	validators	124	specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/logs/feature-runs/F12-validators.log
