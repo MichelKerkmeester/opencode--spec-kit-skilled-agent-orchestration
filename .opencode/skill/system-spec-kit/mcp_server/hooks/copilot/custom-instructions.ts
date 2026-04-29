@@ -127,6 +127,7 @@ export function renderSpecKitCopilotContextBlock(
     `Refreshed: ${generatedAt}`,
     `Source: ${context.source ?? DEFAULT_SOURCE}`,
     `Workspace: ${workspaceRoot}`,
+    'nextPromptFreshness: true',
     '',
     '## Startup Context',
     startupSurface,

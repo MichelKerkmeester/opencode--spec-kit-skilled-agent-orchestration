@@ -195,7 +195,12 @@ describe('advisor runtime parity', () => {
         claude: { additionalContext: null },
         gemini: { additionalContext: null },
         copilot: { additionalContext: null },
-        codex: { additionalContext: 'Advisor: stale (cold-start timeout)' },
+        codex: {
+          additionalContext: [
+            'Advisor: stale (cold-start timeout)',
+            'Fallback marker: {"stale":true,"reason":"timeout-fallback"}',
+          ].join('\n'),
+        },
         'copilot-wrapper': { additionalContext: null },
       });
       return;

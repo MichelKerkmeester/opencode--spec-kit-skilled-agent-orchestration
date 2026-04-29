@@ -112,6 +112,23 @@ export const AdvisorStatusOutputSchema = z.object({
   errors: z.array(z.string()).optional(),
 }).strict();
 
+export const AdvisorRebuildInputSchema = z.object({
+  force: z.boolean().optional(),
+}).strict();
+
+export const AdvisorRebuildOutputSchema = z.object({
+  rebuilt: z.boolean(),
+  skipped: z.boolean(),
+  reason: z.enum(['status-live', 'stale', 'absent', 'unavailable', 'force']),
+  freshnessBefore: AdvisorFreshnessSchema,
+  freshnessAfter: AdvisorFreshnessSchema,
+  generationBefore: z.number().int().nonnegative(),
+  generationAfter: z.number().int().nonnegative(),
+  skillCount: z.number().int().nonnegative(),
+  summary: z.record(z.string(), z.unknown()).nullable(),
+  diagnostics: z.array(z.string()),
+}).strict();
+
 export const AdvisorValidateInputSchema = z.object({
   confirmHeavyRun: z.literal(true),
   workspaceRoot: z.string().min(1).optional(),
@@ -241,6 +258,8 @@ export const AdvisorValidateOutputSchema = z.object({
 export type AdvisorFreshness = z.infer<typeof AdvisorFreshnessSchema>;
 export type AdvisorRecommendInput = z.infer<typeof AdvisorRecommendInputSchema>;
 export type AdvisorRecommendOutput = z.infer<typeof AdvisorRecommendOutputSchema>;
+export type AdvisorRebuildInput = z.infer<typeof AdvisorRebuildInputSchema>;
+export type AdvisorRebuildOutput = z.infer<typeof AdvisorRebuildOutputSchema>;
 export type AdvisorStatusInput = z.infer<typeof AdvisorStatusInputSchema>;
 export type AdvisorStatusOutput = z.infer<typeof AdvisorStatusOutputSchema>;
 export type AdvisorValidateInput = z.infer<typeof AdvisorValidateInputSchema>;
@@ -248,6 +267,7 @@ export type AdvisorValidateOutput = z.infer<typeof AdvisorValidateOutputSchema>;
 
 export const AdvisorToolInputSchemas = {
   advisor_recommend: AdvisorRecommendInputSchema,
+  advisor_rebuild: AdvisorRebuildInputSchema,
   advisor_status: AdvisorStatusInputSchema,
   advisor_validate: AdvisorValidateInputSchema,
 } as const;

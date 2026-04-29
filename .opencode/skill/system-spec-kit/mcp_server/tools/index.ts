@@ -12,6 +12,7 @@ import * as skillGraphTools from './skill-graph-tools.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 import {
   handleAdvisorRecommend,
+  handleAdvisorRebuild,
   handleAdvisorStatus,
   handleAdvisorValidate,
 } from '../skill_advisor/handlers/index.js';
@@ -54,6 +55,7 @@ export const coverageGraphTools = {
 export const advisorTools = {
   TOOL_NAMES: new Set([
     'advisor_recommend',
+    'advisor_rebuild',
     'advisor_status',
     'advisor_validate',
   ]),
@@ -61,6 +63,8 @@ export const advisorTools = {
     switch (name) {
       case 'advisor_recommend':
         return toMCP(await handleAdvisorRecommend(parseArgs<Parameters<typeof handleAdvisorRecommend>[0]>(args)));
+      case 'advisor_rebuild':
+        return toMCP(await handleAdvisorRebuild(parseArgs<Parameters<typeof handleAdvisorRebuild>[0]>(args)));
       case 'advisor_status':
         return toMCP(await handleAdvisorStatus(parseArgs<Parameters<typeof handleAdvisorStatus>[0]>(args)));
       case 'advisor_validate':

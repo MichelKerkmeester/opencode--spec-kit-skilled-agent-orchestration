@@ -41,7 +41,7 @@ printf '%s\n' '{"prompt":"implement TypeScript hook","cwd":"'"$PWD"'"}' \
   | node .opencode/skill/system-spec-kit/mcp_server/dist/hooks/codex/user-prompt-submit.js
 ```
 
-Expected stdout contains non-empty `hookSpecificOutput.additionalContext`. Cold-start timeouts return the prompt-safe `Advisor: stale (cold-start timeout)` advisory with a `status:"stale"` stderr diagnostic.
+Expected stdout contains non-empty `hookSpecificOutput.additionalContext`. Cold-start timeouts return the prompt-safe `Advisor: stale (cold-start timeout)` advisory plus `{"stale":true,"reason":"timeout-fallback"}` marker, and stderr receives a structured `codex_user_prompt_timeout_fallback` warning before the normal `status:"stale"` diagnostic.
 
 ## 2. REGISTRATION
 

@@ -9,6 +9,7 @@ import {
 } from './schemas/tool-input-schemas.js';
 import {
   advisorRecommendTool,
+  advisorRebuildTool,
   advisorStatusTool,
   advisorValidateTool,
 } from './skill_advisor/tools/index.js';
@@ -956,6 +957,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   skillGraphStatus,
   skillGraphValidate,
   advisorRecommendTool,
+  advisorRebuildTool,
   advisorStatusTool,
   advisorValidateTool,
   // L8: CocoIndex

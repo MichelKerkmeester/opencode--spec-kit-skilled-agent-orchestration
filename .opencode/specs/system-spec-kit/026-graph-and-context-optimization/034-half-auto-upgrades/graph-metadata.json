@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
+      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/012-automation-self-management-deep-research",
+      "system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "034-half-auto-upgrades",
+      "Copilot freshness",
+      "Codex cold-start",
+      "feature-flag table",
+      "advisor rebuild",
+      "half-auto upgrades"
+    ],
+    "key_topics": [
+      "half-auto",
+      "runtime-hooks",
+      "feature-flags",
+      "advisor-status",
+      "advisor-rebuild"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "description.json",
+      "graph-metadata.json",
+      "CLAUDE.md",
+      "AGENTS.md",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md",
+      ".opencode/skill/system-spec-kit/references/config/hook_system.md",
+      ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/lib/freshness-smoke-check.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts"
+    ],
+    "entities": [
+      {
+        "name": "Codex UserPromptSubmit hook",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Copilot custom instructions",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/copilot/custom-instructions.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor_rebuild",
+        "kind": "tool",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-rebuild.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature flags reference table",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Tier C: 4 sub-tasks. (1) Copilot next-prompt freshness wording + visible header. (2) Codex cold-start fallback marker + smoke check. (3) Feature-flag default-state table. (4) advisor_status diagnostic-only + new advisor_rebuild tool.",
+    "created_at": "2026-04-29T14:15:00Z",
+    "last_save_at": "2026-04-29T14:15:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

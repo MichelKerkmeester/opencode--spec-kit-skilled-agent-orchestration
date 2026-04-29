@@ -11,13 +11,13 @@ trigger_phrases:
 
 ## 1. OVERVIEW
 
-`hooks/copilot/` contains Copilot CLI hook helpers for the file-based Spec Kit context workaround.
+Copilot advisor freshness is NEXT-PROMPT: the current prompt sees the PRIOR turn's brief from the managed custom-instructions block.
 
-GitHub's Copilot CLI hook contract currently ignores `sessionStart` output and ignores `userPromptSubmitted` output for prompt modification. Because of that, these hooks do not try to return model-visible `additionalContext`. They refresh Copilot's supported custom-instructions surface instead.
+`hooks/copilot/` contains Copilot CLI hook helpers for the file-based Spec Kit context workaround. GitHub's Copilot CLI hook contract currently ignores `sessionStart` output and ignores `userPromptSubmitted` output for prompt modification. Because of that, these hooks do not try to return model-visible `additionalContext`. They refresh Copilot's supported custom-instructions surface instead.
 
 - `custom-instructions.ts` owns the managed block in `$HOME/.copilot/copilot-instructions.md`.
 - `session-prime.ts` builds the startup context and refreshes the managed block during `sessionStart`.
-- `user-prompt-submit.ts` builds the advisor brief during `userPromptSubmitted`, refreshes the same managed block, and returns `{}`.
+- `user-prompt-submit.ts` builds the advisor brief during `userPromptSubmitted`, refreshes the same managed block for the next prompt, and returns `{}`.
 - `compact-cache.ts` keeps compact recovery state available for wrapper surfaces.
 
 The managed block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers so human instructions outside the block are preserved.

@@ -47,7 +47,8 @@ Native tool baseline:
 | Tool | Purpose |
 | --- | --- |
 | `advisor_recommend` | Prompt-safe skill recommendations with explicit `workspaceRoot`, lane attribution, lifecycle metadata, and effective thresholds. |
-| `advisor_status` | Freshness, generation, trust state, `skillCount`, `lastScanAt`, and lane weights. |
+| `advisor_status` | Diagnostic-only freshness, generation, trust state, `skillCount`, `lastScanAt`, and lane weights. It does not rebuild. |
+| `advisor_rebuild` | Explicit repair command for stale, absent, or unavailable advisor state; pass `force:true` to rebuild even when status is live. |
 | `advisor_validate` | Corpus, holdout, parity, safety, latency, threshold semantics, and prompt-safe telemetry rollups. |
 
 ---
@@ -57,7 +58,7 @@ Native tool baseline:
 | Runtime | Source Hook | Output Shape | Notes |
 | --- | --- | --- | --- |
 | Claude Code | `mcp_server/hooks/claude/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt` and `cwd`. |
-| Copilot CLI | `mcp_server/hooks/copilot/user-prompt-submit.ts` | managed block in `$HOME/.copilot/copilot-instructions.md`; hook stdout remains `{}` | Copilot customer hook output is not prompt-mutating, so the advisor brief is refreshed through local custom instructions. |
+| Copilot CLI | `mcp_server/hooks/copilot/user-prompt-submit.ts` | managed block in `$HOME/.copilot/copilot-instructions.md`; hook stdout remains `{}` | Copilot advisor is NEXT-PROMPT freshness: current prompt sees PRIOR turn's brief. |
 | Gemini CLI | `mcp_server/hooks/gemini/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Reads `prompt`, `userPrompt`, or `request.prompt`. |
 | Codex CLI | `mcp_server/hooks/codex/user-prompt-submit.ts` | `hookSpecificOutput.additionalContext` | Stdin JSON is canonical and wins over argv JSON. |
 | Codex fallback | `mcp_server/hooks/codex/prompt-wrapper.ts` | `promptWrapper` and `wrappedPrompt` | Runs only when Codex hook policy reports hooks unavailable. |
@@ -179,9 +180,9 @@ advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
 | State | Meaning | Operator Action |
 | --- | --- | --- |
 | `live` | Current graph generation is trusted. | No action. |
-| `stale` | Sources are newer than graph state. | Run `skill_graph_scan` or restart the watcher, then recheck. |
-| `absent` | Required graph state is missing. | Rebuild from source. `advisor_recommend` should fail open with empty recommendations. |
-| `unavailable` | Status cannot be read. | Inspect daemon logs, SQLite state, and rebuild path. |
+| `stale` | Sources are newer than graph state. | Run `advisor_rebuild({})`, then recheck with `advisor_status`. |
+| `absent` | Required graph state is missing. | Run `advisor_rebuild({})`. `advisor_recommend` should fail open with empty recommendations until repaired. |
+| `unavailable` | Status cannot be read. | Inspect daemon logs and SQLite state, then run `advisor_rebuild({"force":true})` when source metadata is intact. |
 | `degraded` | Hook or daemon can only provide limited trust. | Follow OP-001 in the playbook. |
 | `quarantined` | Watcher isolated malformed skill metadata. | Follow OP-002 in the playbook. |
 

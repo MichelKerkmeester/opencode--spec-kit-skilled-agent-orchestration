@@ -25,6 +25,85 @@ All variables are optional. The server runs with sensible defaults when none are
 | `parseFloat(... \|\| 'N')` | Numeric with fallback default N |
 | `?.trim()` | String, empty = use default |
 
+### Feature Flags Reference Table
+
+Generated from `lib/search/search-flags.ts`. "Default state" is the shipped behavior when the governing env var is unset; opt-in rows are OFF even when similarly named graduated features exist elsewhere.
+
+| flag name | default state (ON/OFF) | governing env var | which automation it gates | added in version |
+| --- | --- | --- | --- | --- |
+| Session attention boost | ON | `SPECKIT_SESSION_BOOST` | Search result re-ranking from session attention signals | graduated |
+| Causal graph boost | ON | `SPECKIT_CAUSAL_BOOST` | Causal graph traversal boost for search ranking | graduated |
+| Dynamic init | ON | `SPECKIT_DYNAMIC_INIT` | Startup instruction injection for the MCP server | graduated |
+| Pressure policy | ON | `SPECKIT_PRESSURE_POLICY` | Token-pressure policy for `memory_context` | graduated |
+| Auto resume | ON | `SPECKIT_AUTO_RESUME` | Automatic resume context injection for `memory_context` | graduated |
+| MMR reranking | ON | `SPECKIT_MMR` | Graph-guided MMR diversity reranking | current |
+| TRM evidence gap detection | ON | `SPECKIT_TRM` | Transparent Reasoning Module evidence-gap detection | current |
+| Multi-query expansion | ON | `SPECKIT_MULTI_QUERY` | Deep-mode multi-query expansion | current |
+| Cross-encoder reranking | ON | `SPECKIT_CROSS_ENCODER` | Cross-encoder reranking gate | current |
+| Search fallback | ON | `SPECKIT_SEARCH_FALLBACK` | Quality-aware 3-tier search fallback chain | PI-A2 |
+| Folder discovery | ON | `SPECKIT_FOLDER_DISCOVERY` | Automatic spec folder discovery via description cache | PI-B3 |
+| Save planner mode | OFF | `SPECKIT_SAVE_PLANNER_MODE` | Mutation-first canonical save behavior; default is `plan-only` | planner-first save |
+| Save reconsolidation | OFF | `SPECKIT_RECONSOLIDATION_ENABLED` | Save-time reconsolidation in planner-first flows | planner-first save |
+| Post-insert enrichment | OFF | `SPECKIT_POST_INSERT_ENRICHMENT_ENABLED` | Save-time enrichment bundle in planner-first flows | planner-first save |
+| Quality auto-fix retries | OFF | `SPECKIT_QUALITY_AUTO_FIX` | Save-time quality auto-fix retry loop | planner-first save |
+| Docscore aggregation | ON | `SPECKIT_DOCSCORE_AGGREGATION` | Document-level chunk-to-memory score aggregation | R1 MPAB |
+| Save quality gate | ON | `SPECKIT_SAVE_QUALITY_GATE` | Pre-storage quality gate for memory saves | graduated |
+| Dynamic token budget | ON | `SPECKIT_DYNAMIC_TOKEN_BUDGET` | Query-complexity token budget allocation | graduated |
+| Confidence truncation | ON | `SPECKIT_CONFIDENCE_TRUNCATION` | Low-confidence tail truncation | graduated |
+| Channel minimum representation | ON | `SPECKIT_CHANNEL_MIN_REP` | Minimum channel representation after fusion | graduated |
+| Reconsolidation on save | ON | `SPECKIT_RECONSOLIDATION` | Memory deduplication reconsolidation path | TM-06 |
+| Negative feedback | ON | `SPECKIT_NEGATIVE_FEEDBACK` | Negative-feedback confidence demotion | T002b/A4 |
+| Embedding expansion | ON | `SPECKIT_EMBEDDING_EXPANSION` | Embedding-based query expansion | R12 |
+| Consolidation engine | ON | `SPECKIT_CONSOLIDATION` | Contradiction scan, strengthening, staleness, edge bounds | N3-lite |
+| Encoding intent | ON | `SPECKIT_ENCODING_INTENT` | Index-time intent metadata capture | R16 |
+| Graph walk rollout | ON | `SPECKIT_GRAPH_WALK_ROLLOUT`, `SPECKIT_GRAPH_SIGNALS` | Graph walk mode; defaults to `bounded_runtime` when graph signals are ON | N2a/N2b |
+| Graph signals | ON | `SPECKIT_GRAPH_SIGNALS` | Graph momentum and causal depth signals | N2a/N2b |
+| Community detection | ON | `SPECKIT_COMMUNITY_DETECTION` | BFS components with Louvain escalation | N2c |
+| Community summaries | ON | `SPECKIT_COMMUNITY_SUMMARIES` | Community summary generation and search channel | graph summaries |
+| Memory summaries | ON | `SPECKIT_MEMORY_SUMMARIES` | TF-IDF memory summary channel | R8 |
+| Temporal contiguity | ON | `SPECKIT_TEMPORAL_CONTIGUITY` | Temporal contiguity boost on Stage 1 vector results | graduated |
+| Auto entities | ON | `SPECKIT_AUTO_ENTITIES` | Rule-based entity extraction at save time | R10 |
+| Entity linking | ON | `SPECKIT_ENTITY_LINKING` | Cross-document entity edges | S5 |
+| Degree boost | ON | `SPECKIT_DEGREE_BOOST` | Causal-edge degree-based reranking | current |
+| Context headers | ON | `SPECKIT_CONTEXT_HEADERS` | Stage 4 contextual tree headers | P1-4 |
+| Markdown file watcher | OFF | `SPECKIT_FILE_WATCHER` | Real-time markdown reindexing watcher | P1-7 |
+| Local reranker | OFF | `RERANKER_LOCAL` | Local GGUF reranker gate | P1-5 |
+| Quality loop | ON | `SPECKIT_QUALITY_LOOP` | Verify-fix-verify memory quality loop | T008 |
+| Query decomposition | ON | `SPECKIT_QUERY_DECOMPOSITION` | Deep-mode facet splitting | D2 REQ-D2-001 |
+| Graph concept routing | ON | `SPECKIT_GRAPH_CONCEPT_ROUTING` | Query-time alias matching into graph channel | D2 REQ-D2-002 |
+| Query surrogates | ON | `SPECKIT_QUERY_SURROGATES` | Index-time aliases, headings, summaries, questions | D2 REQ-D2-005 |
+| Implicit feedback log | ON | `SPECKIT_IMPLICIT_FEEDBACK_LOG` | Shadow-only feedback event ledger | D4 REQ-D4-001 |
+| Hybrid decay policy | ON | `SPECKIT_HYBRID_DECAY_POLICY` | Type-aware no-decay for permanent artifacts | D4 REQ-D4-002 |
+| Save quality gate exceptions | ON | `SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS` | Short critical decision quality-gate bypass | D4 REQ-D4-003 |
+| LLM reformulation | ON | `SPECKIT_LLM_REFORMULATION` | Corpus-grounded LLM query reformulation | D2 REQ-D2-003 |
+| HyDE | ON | `SPECKIT_HYDE` | Hypothetical document embeddings for low-confidence deep queries | D2 REQ-D2-004 |
+| Graph refresh mode | ON | `SPECKIT_GRAPH_REFRESH_MODE` | Dirty-node recomputation after writes; default `write_local` | D3 REQ-D3-003 |
+| LLM graph backfill | ON | `SPECKIT_LLM_GRAPH_BACKFILL` | Async probabilistic graph edge backfill | D3 REQ-D3-004 |
+| Graph calibration profile | ON | `SPECKIT_GRAPH_CALIBRATION_PROFILE` | Community thresholds and graph score caps | D3 REQ-D3-005/006 |
+| Learned Stage 2 combiner | ON | `SPECKIT_LEARNED_STAGE2_COMBINER` | Shadow-only learned linear ranker | D1 REQ-D1-006 |
+| Shadow feedback | ON | `SPECKIT_SHADOW_FEEDBACK` | Holdout comparison of would-have-changed rankings | D4 REQ-D4-006 |
+| Progressive disclosure | ON | `SPECKIT_PROGRESSIVE_DISCLOSURE_V1` | Summary layer and cursor pagination for results | D5 REQ-D5-005 |
+| Session retrieval state | ON | `SPECKIT_SESSION_RETRIEVAL_STATE_V1` | Cross-turn dedup and goal-aware refinement | D5 REQ-D5-006 |
+| Calibrated overlap bonus | ON | `SPECKIT_CALIBRATED_OVERLAP_BONUS` | Multi-channel overlap bonus | D1 REQ-D1-001 |
+| RRF K experimental | ON | `SPECKIT_RRF_K_EXPERIMENTAL` | Per-intent RRF K selection | D1 REQ-D1-003 |
+| Typed traversal | ON | `SPECKIT_TYPED_TRAVERSAL` | Sparse-first intent-aware graph traversal | D3 Phase A |
+| Empty result recovery | ON | `SPECKIT_EMPTY_RESULT_RECOVERY_V1` | Empty and weak result recovery payloads | D5 REQ-D5-001 |
+| Result confidence | ON | `SPECKIT_RESULT_CONFIDENCE_V1` | Per-result calibrated confidence scoring | D5 REQ-D5-004 |
+| Batch learned feedback | ON | `SPECKIT_BATCH_LEARNED_FEEDBACK` | Weekly batch feedback learning pipeline | D4 REQ-D4-004 |
+| Assistive reconsolidation | ON | `SPECKIT_ASSISTIVE_RECONSOLIDATION` | Near-duplicate detection and review routing | D4 REQ-D4-005 |
+| Result explainability | ON | `SPECKIT_RESULT_EXPLAIN_V1` | Two-tier result explainability | D5 REQ-D5-002 |
+| Response profile formatting | ON | `SPECKIT_RESPONSE_PROFILE_V1` | Mode-aware response profiles | D5 REQ-D5-003 |
+| Query concept expansion | ON | `SPECKIT_QUERY_CONCEPT_EXPANSION` | Alias-based query expansion for hybrid search | Phase B T016 |
+| Graph fallback | ON | `SPECKIT_GRAPH_FALLBACK` | Graph-expanded fallback on zero or weak results | Phase B T017 |
+| Graph context injection | ON | `SPECKIT_GRAPH_CONTEXT_INJECTION` | Graph neighbor lookup even without seed results | Phase B T020 |
+| Result provenance | ON | `SPECKIT_RESULT_PROVENANCE` | Graph evidence metadata in search results | Phase C T027 |
+| Temporal edges | ON | `SPECKIT_TEMPORAL_EDGES` | Temporal validity tracking for causal edges | Phase D T036 |
+| Usage ranking | ON | `SPECKIT_USAGE_RANKING` | Usage-weighted ranking signal | Phase D T036 |
+| Ontology hooks | ON | `SPECKIT_ONTOLOGY_HOOKS` | Ontology-guided extraction validation hooks | Phase D T036 |
+| Community search fallback | ON | `SPECKIT_COMMUNITY_SEARCH_FALLBACK` | Community-level fallback channel | Phase B T018 |
+| Dual retrieval | ON | `SPECKIT_DUAL_RETRIEVAL` | Local/global/auto retrieval level control | Phase B T019 |
+| Intent auto profile | ON | `SPECKIT_INTENT_AUTO_PROFILE` | Intent-to-response-profile auto-routing | Phase C |
+
 Total unique variables documented: 129 (legacy HYDRA aliases removed in commit 6f2c2c939).
 
 ### Provisional Measurement Contract

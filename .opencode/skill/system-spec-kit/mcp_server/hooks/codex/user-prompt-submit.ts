@@ -171,11 +171,34 @@ function emitDiagnostic(
   }
 }
 
+function emitTimeoutFallbackWarning(
+  workspaceRoot: string,
+  durationMs: number,
+  writeDiagnostic: (line: string) => void = (line) => process.stderr.write(`${line}\n`),
+): void {
+  try {
+    writeDiagnostic(JSON.stringify({
+      level: 'warn',
+      runtime: 'codex',
+      event: 'codex_user_prompt_timeout_fallback',
+      stale: true,
+      reason: 'timeout-fallback',
+      workspaceRoot,
+      durationMs,
+    }));
+  } catch {
+    // Warning emission must never affect hook behavior.
+  }
+}
+
 function timeoutFallbackOutput(): CodexHookSpecificOutput {
   return {
     hookSpecificOutput: {
       hookEventName: 'UserPromptSubmit',
-      additionalContext: 'Advisor: stale (cold-start timeout)',
+      additionalContext: [
+        'Advisor: stale (cold-start timeout)',
+        'Fallback marker: {"stale":true,"reason":"timeout-fallback"}',
+      ].join('\n'),
     },
   };
 }
@@ -308,6 +331,7 @@ export async function handleCodexUserPromptSubmit(
       },
     });
     if (result.status === 'fail_open' && result.diagnostics?.errorCode === 'TIMEOUT') {
+      emitTimeoutFallbackWarning(workspaceRoot, result.metrics.durationMs, writeDiagnostic);
       emitDiagnostic({
         workspaceRoot,
         status: 'stale',

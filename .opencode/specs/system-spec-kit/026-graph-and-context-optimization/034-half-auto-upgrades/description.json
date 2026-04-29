@@ -1,0 +1,20 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+  "description": "Tier C remediation for four half-automated surfaces: Copilot next-prompt freshness wording and visible header, Codex timeout fallback marker and smoke check, feature-flag default-state table, and diagnostic advisor_status plus explicit advisor_rebuild repair tool.",
+  "keywords": [
+    "034-half-auto-upgrades",
+    "Copilot freshness",
+    "Codex cold-start",
+    "feature-flag table",
+    "advisor rebuild",
+    "half-auto upgrades"
+  ],
+  "lastUpdated": "2026-04-29T14:15:00Z",
+  "specId": "034",
+  "folderSlug": "half-auto-upgrades",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1
+}

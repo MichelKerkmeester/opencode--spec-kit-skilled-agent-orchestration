@@ -83,6 +83,11 @@ function scanSkillMetadataFiles(
   return { count, maxMtimeMs: newest, truncated };
 }
 
+/** Read advisor freshness state.
+ *
+ * Diagnostic-only: this function reports stale, absent, or unavailable advisor
+ * state and does not rebuild it. Use `advisor_rebuild` to repair stale state.
+ */
 export function readAdvisorStatus(input: AdvisorStatusInput): AdvisorStatusOutput {
   const args = AdvisorStatusInputSchema.parse(input);
   const workspaceRoot = resolve(args.workspaceRoot);
