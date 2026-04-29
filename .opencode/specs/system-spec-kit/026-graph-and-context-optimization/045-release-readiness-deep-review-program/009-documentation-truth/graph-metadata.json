@@ -1,0 +1,65 @@
+{
+  "schema_version": 1,
+  "packet_id": "045-009-documentation-truth",
+  "spec_folder": "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth",
+  "parent_id": "045-release-readiness-deep-review-program",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "045-009-documentation-truth",
+      "docs truth audit",
+      "stale claims review",
+      "evergreen rule self-check"
+    ],
+    "key_topics": [
+      "documentation truth",
+      "tool count",
+      "feature catalog",
+      "manual testing playbook",
+      "evergreen references",
+      "release readiness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/review-report.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/spec.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/plan.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/tasks.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/checklist.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "review-report.md",
+        "type": "review-report",
+        "path": "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/review-report.md"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "type": "canonical-source",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts"
+      }
+    ],
+    "causal_summary": "Deep-review angle 9: documentation truth — every claim verified against runtime; tool counts canonical; feature catalogs complete; evergreen-doc rule self-check; trigger columns populated.",
+    "created_at": "2026-04-29T22:34:00+02:00",
+    "last_save_at": "2026-04-29T22:34:00+02:00",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/spec.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/plan.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/tasks.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/checklist.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/implementation-summary.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/009-documentation-truth/review-report.md"
+    ]
+  }
+}

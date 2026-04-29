@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/008-validator-spec-doc-integrity",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/008-validator-spec-doc-integrity",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "new",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "045-008-validator-spec-doc-integrity",
+      "validator audit",
+      "spec doc integrity review",
+      "phase-parent detection consistency"
+    ],
+    "key_topics": [
+      "validator",
+      "spec-doc-integrity",
+      "phase-parent",
+      "strict-mode",
+      "template-headers",
+      "frontmatter-memory",
+      "links-valid"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-template-headers.sh",
+      ".opencode/skill/system-spec-kit/scripts/rules/check-links.sh",
+      ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
+      ".opencode/skill/system-spec-kit/scripts/lib/shell-common.sh",
+      ".opencode/skill/system-spec-kit/mcp_server/lib/spec/is-phase-parent.ts",
+      ".opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js"
+    ],
+    "entities": [
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "review"
+      },
+      {
+        "name": "check-spec-doc-integrity.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh",
+        "source": "review"
+      },
+      {
+        "name": "template-structure.js",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/utils/template-structure.js",
+        "source": "review"
+      },
+      {
+        "name": "is_phase_parent",
+        "kind": "function",
+        "path": ".opencode/skill/system-spec-kit/scripts/lib/shell-common.sh",
+        "source": "review"
+      },
+      {
+        "name": "isPhaseParent",
+        "kind": "function",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/lib/spec/is-phase-parent.ts",
+        "source": "review"
+      }
+    ],
+    "causal_summary": "Deep-review angle 8: validator + spec-doc structural integrity, including strict mode coverage, Level 1/2/3 boundaries, phase-parent detection agreement, evidence markers and template enforcement.",
+    "created_at": "2026-04-29T19:47:00.000Z",
+    "last_save_at": "2026-04-29T19:47:00.000Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md"
+    ]
+  }
+}
