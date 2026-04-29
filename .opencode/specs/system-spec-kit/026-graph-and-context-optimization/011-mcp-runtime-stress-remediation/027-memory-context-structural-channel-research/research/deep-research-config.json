@@ -1,0 +1,30 @@
+{
+  "topic": "memory_context structural channel routing — intent reliability, merged response shape, envelope coverage",
+  "sessionId": "2026-04-29T09:30:00.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 5,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 120,
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research",
+  "createdAt": "2026-04-29T09:30:00.000Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "xhigh",
+    "serviceTier": null,
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "mode": "research",
+  "researchQuestions": [
+    "RQ1: What signals reliably distinguish structural queries from semantic queries? Quantify false-positive/false-negative against v1.0.3 corpus + Phase E gold battery.",
+    "RQ2: What's the right merged response shape — flatten, discriminated union, or split-payload? Evaluate against existing consumers and v1.0.3 corpus.",
+    "RQ3: Does SearchDecisionEnvelope already cover routing trace via selectedChannels/skippedChannels/routingReasons? What new fields are needed, if any?"
+  ]
+}
