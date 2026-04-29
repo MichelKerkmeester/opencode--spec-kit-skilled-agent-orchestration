@@ -14,6 +14,7 @@ import {
   handleMemoryUpdate,
   handleMemoryValidate,
   handleMemoryBulkDelete,
+  handleMemoryRetentionSweep,
 } from '../handlers/index.js';
 import { validateToolArgs } from '../schemas/tool-input-schemas.js';
 
@@ -30,6 +31,7 @@ import type {
   UpdateArgs,
   MemoryValidateArgs,
   BulkDeleteArgs,
+  RetentionSweepArgs,
 } from './types.js';
 
 function relabelResponseTool(response: MCPResponse, toolName: string): MCPResponse {
@@ -70,6 +72,7 @@ export const TOOL_NAMES = new Set([
   'memory_update',
   'memory_validate',
   'memory_bulk_delete',
+  'memory_retention_sweep',
 ]);
 
 /** Dispatch a tool call. Returns null if tool name not handled. */
@@ -104,6 +107,7 @@ export async function handleTool(name: string, args: Record<string, unknown>): P
     case 'memory_update':         return handleMemoryUpdate(parseArgs<UpdateArgs>(validateToolArgs('memory_update', args)));
     case 'memory_validate':       return handleMemoryValidate(parseArgs<MemoryValidateArgs>(validateToolArgs('memory_validate', args)));
     case 'memory_bulk_delete':    return handleMemoryBulkDelete(parseArgs<BulkDeleteArgs>(validateToolArgs('memory_bulk_delete', args)));
+    case 'memory_retention_sweep': return handleMemoryRetentionSweep(parseArgs<RetentionSweepArgs>(validateToolArgs('memory_retention_sweep', args)));
     default: return null;
   }
 }

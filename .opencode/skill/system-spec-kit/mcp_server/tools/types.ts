@@ -144,6 +144,11 @@ export interface MemoryValidateArgs {
   notes?: string;
 }
 
+/** Arguments for manual memory retention sweep requests. */
+export interface RetentionSweepArgs {
+  dryRun?: boolean;
+}
+
 /** Arguments for memory save requests. */
 export interface SaveArgs {
   filePath: string;

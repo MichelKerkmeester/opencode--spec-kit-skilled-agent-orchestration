@@ -514,6 +514,18 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 The system keeps the index accurate and performant as your project evolves.
 
+##### Code-graph freshness model
+
+The structural code graph does not have a real-time source-code watcher. Packet 013's supplemental research matrix validated that the watcher paths are markdown/spec-doc or skill-graph scoped, while structural graph freshness is read-path/manual. See `specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research/research/research-report.md:39` and `:84`.
+
+**Read-path self-heal** -- `code_graph/lib/ensure-ready.ts:329-442` runs from graph read handlers and can selectively reindex changed tracked files when stale sets are safe to repair inline. This is invoked by query/context reads; it is not a file-save watcher.
+
+**Manual full repair** -- `code_graph_scan` is operator-triggered. The handler at `code_graph/handlers/scan.ts:177-356` performs incremental or full indexing and persists the refreshed graph state when a broad repair is needed.
+
+**Status surface** -- `code_graph_status` is diagnostic/read-only. The status handler reads the readiness snapshot at `code_graph/handlers/status.ts:158-167` and reports freshness/trust metadata without repairing the graph.
+
+**Required-action behavior** -- when a graph read requires a full scan that cannot run inline, `code_graph_query` blocks the answer and emits `requiredAction: "code_graph_scan"` with `blockReason: "full_scan_required"` from `code_graph/handlers/query.ts:787-828`.
+
 **Optional markdown filesystem watching** (chokidar) -- when `SPECKIT_FILE_WATCHER=true`, watches configured markdown/spec-doc paths and re-indexes changed docs. This is not a structural code-graph source watcher; run `code_graph_scan` when structural graph freshness requires a full scan.
 
 **Incremental indexing with content hashing** -- tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
@@ -862,7 +874,7 @@ Check session readiness: priming status, code graph freshness and time since las
 
 ---
 
-#### L4: Mutation (4 tools)
+#### L4: Mutation (5 tools)
 
 ##### `memory_delete`
 
@@ -916,6 +928,27 @@ The cleanup tool for large-scale housekeeping. Delete all outdated or temporary 
 | `specFolder` | string | Scope deletion to a folder |
 | `olderThanDays` | number | Only delete memories older than N days |
 | `skipCheckpoint` | boolean | Skip automatic checkpoint (not recommended) |
+
+---
+
+##### `memory_retention_sweep`
+
+Sweep governed memories whose `delete_after` timestamp has expired. This is the retention-enforcement path for rows saved with `retentionPolicy: "ephemeral"` and a concrete `deleteAfter`. The sweep deletes expired `memory_index` rows through the standard memory deletion path, which keeps FTS/vector/ancillary indexes in sync, and records a governance audit entry with `reason: "retention_expired"` plus the original `delete_after` value.
+
+The server runs the same sweep on startup and then every hour by default. Set `SPECKIT_RETENTION_SWEEP=false` to disable the background interval, or set `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` to change the interval. Manual invocation remains available even when the background interval is disabled.
+
+| Parameter | Type | Notes |
+|-----------|------|-------|
+| `dryRun` | boolean | Return expired candidates without deleting them |
+
+Example dry-run:
+
+```json
+{
+  "tool": "memory_retention_sweep",
+  "arguments": { "dryRun": true }
+}
+```
 
 ---
 

@@ -70,6 +70,7 @@ type MemoryIngestModule = typeof import('./memory-ingest.js');
 type MemoryCrudModule = typeof import('./memory-crud.js');
 type MemoryIndexModule = typeof import('./memory-index.js');
 type MemoryBulkDeleteModule = typeof import('./memory-bulk-delete.js');
+type MemoryRetentionSweepModule = typeof import('./memory-retention-sweep.js');
 type CheckpointsModule = typeof import('./checkpoints.js');
 type SessionLearningModule = typeof import('./session-learning.js');
 type EvalReportingModule = typeof import('./eval-reporting.js');
@@ -87,6 +88,7 @@ let memoryIngestModule: Promise<MemoryIngestModule> | null = null;
 let memoryCrudModule: Promise<MemoryCrudModule> | null = null;
 let memoryIndexModule: Promise<MemoryIndexModule> | null = null;
 let memoryBulkDeleteModule: Promise<MemoryBulkDeleteModule> | null = null;
+let memoryRetentionSweepModule: Promise<MemoryRetentionSweepModule> | null = null;
 let checkpointsModule: Promise<CheckpointsModule> | null = null;
 let sessionLearningModule: Promise<SessionLearningModule> | null = null;
 let evalReportingModule: Promise<EvalReportingModule> | null = null;
@@ -150,6 +152,13 @@ function getMemoryBulkDeleteModule(): Promise<MemoryBulkDeleteModule> {
     memoryBulkDeleteModule = loadHandlerModule<MemoryBulkDeleteModule>('memory-bulk-delete');
   }
   return memoryBulkDeleteModule;
+}
+
+function getMemoryRetentionSweepModule(): Promise<MemoryRetentionSweepModule> {
+  if (!memoryRetentionSweepModule) {
+    memoryRetentionSweepModule = loadHandlerModule<MemoryRetentionSweepModule>('memory-retention-sweep');
+  }
+  return memoryRetentionSweepModule;
 }
 
 function getCheckpointsModule(): Promise<CheckpointsModule> {
@@ -265,6 +274,7 @@ export const find_constitutional_files = lazyFunction(getMemoryIndexModule, 'fin
 
 // Memory bulk delete handler
 export const handleMemoryBulkDelete = lazyFunction(getMemoryBulkDeleteModule, 'handleMemoryBulkDelete');
+export const handleMemoryRetentionSweep = lazyFunction(getMemoryRetentionSweepModule, 'handleMemoryRetentionSweep');
 
 // Checkpoint handlers
 export const handleCheckpointCreate = lazyFunction(getCheckpointsModule, 'handleCheckpointCreate');
@@ -319,4 +329,5 @@ export const handleSessionBootstrap = lazyFunction(getSessionBootstrapModule, 'h
 export const memorySave = lazyModule(getMemorySaveModule);
 export const memoryIndex = lazyModule(getMemoryIndexModule);
 export const memoryBulkDelete = lazyModule(getMemoryBulkDeleteModule);
+export const memoryRetentionSweep = lazyModule(getMemoryRetentionSweepModule);
 export const checkpoints = lazyModule(getCheckpointsModule);

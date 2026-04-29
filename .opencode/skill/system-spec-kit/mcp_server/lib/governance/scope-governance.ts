@@ -278,7 +278,8 @@ export function validateGovernedIngest(input: GovernedIngestInput): GovernanceDe
     issues.push('deleteAfter must be later than governedAt');
   }
   // H21 FIX: Require valid future deleteAfter for ephemeral retention policy
-  // Without this, ephemeral rows are never swept since sweeps key off delete_after
+  // The memory retention sweep enforces this field via memory_index.delete_after;
+  // keep ephemeral rows paired with a concrete timestamp for auditability.
   if (retentionPolicy === 'ephemeral' && !deleteAfter) {
     issues.push('deleteAfter is required for ephemeral retention policy');
   }
@@ -317,6 +318,7 @@ export function buildGovernancePostInsertFields(decision: GovernanceDecision): R
     provenance_actor: decision.normalized.provenanceActor || null,
     governed_at: decision.normalized.governedAt,
     retention_policy: decision.normalized.retentionPolicy,
+    // Consumed by memory_retention_sweep and the scheduled retention interval.
     delete_after: decision.normalized.deleteAfter,
     governance_metadata: JSON.stringify({
       tenantId: decision.normalized.tenantId || null,

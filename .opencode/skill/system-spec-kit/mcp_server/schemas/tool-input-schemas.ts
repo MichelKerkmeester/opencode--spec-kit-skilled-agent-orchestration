@@ -295,6 +295,10 @@ export const memoryBulkDeleteSchema = getSchema({
   skipCheckpoint: z.boolean().optional(),
 });
 
+export const memoryRetentionSweepSchema = getSchema({
+  dryRun: z.boolean().optional(),
+});
+
 const memoryListSchema = getSchema({
   limit: positiveIntMax(100).optional(),
   offset: safeNumericPreprocess.pipe(z.number().int().min(0)).optional(),
@@ -606,6 +610,7 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   memory_update: memoryUpdateSchema as unknown as ToolInputSchema,
   memory_validate: memoryValidateSchema as unknown as ToolInputSchema,
   memory_bulk_delete: memoryBulkDeleteSchema as unknown as ToolInputSchema,
+  memory_retention_sweep: memoryRetentionSweepSchema as unknown as ToolInputSchema,
   checkpoint_create: checkpointCreateSchema as unknown as ToolInputSchema,
   checkpoint_list: checkpointListSchema as unknown as ToolInputSchema,
   checkpoint_restore: checkpointRestoreSchema as unknown as ToolInputSchema,
@@ -666,6 +671,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_update: ['id', 'title', 'triggerPhrases', 'importanceWeight', 'importanceTier', 'allowPartialUpdate'],
   memory_validate: ['id', 'wasUseful', 'queryId', 'queryTerms', 'resultRank', 'totalResultsShown', 'searchMode', 'intent', 'sessionId', 'notes'],
   memory_bulk_delete: ['tier', 'specFolder', 'confirm', 'olderThanDays', 'skipCheckpoint'],
+  memory_retention_sweep: ['dryRun'],
   checkpoint_create: ['name', 'specFolder', 'tenantId', 'userId', 'agentId', 'metadata'],
   checkpoint_list: ['specFolder', 'tenantId', 'userId', 'agentId', 'limit'],
   checkpoint_restore: ['name', 'tenantId', 'userId', 'agentId', 'clearExisting'],

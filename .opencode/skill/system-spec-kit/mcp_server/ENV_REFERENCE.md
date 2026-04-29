@@ -25,7 +25,7 @@ All variables are optional. The server runs with sensible defaults when none are
 | `parseFloat(... \|\| 'N')` | Numeric with fallback default N |
 | `?.trim()` | String, empty = use default |
 
-Total unique variables documented: 127 (legacy HYDRA aliases removed in commit 6f2c2c939).
+Total unique variables documented: 129 (legacy HYDRA aliases removed in commit 6f2c2c939).
 
 ### Provisional Measurement Contract
 
@@ -273,6 +273,8 @@ Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate 
 | `SPECKIT_MEMORY_LINEAGE_STATE` | `true` | boolean | Lineage state tracking capability. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_GRAPH_UNIFIED` | `true` | boolean | Graph unified capability for roadmap tracking. Graduated ON. | `lib/config/capability-flags.ts` |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | `false` | boolean | Adaptive ranking capability. **Default OFF**: opt-in. | `lib/config/capability-flags.ts` |
+| `SPECKIT_RETENTION_SWEEP` | `true` | boolean | Governed memory retention sweep. Graduated ON; set `false` to disable the background interval. Manual `memory_retention_sweep` remains available. | `lib/session/session-manager.ts` |
+| `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` | `3600000` | number | Background retention sweep interval in milliseconds. Values must be positive integers; invalid values fall back to one hour. | `lib/session/session-manager.ts` |
 <!-- /ANCHOR:governance-scope -->
 
 ---

@@ -1,0 +1,18 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
+  "description": "Tier B-alpha implementation: adds retention sweep over memory_index.delete_after; new MCP tool memory_retention_sweep, env flags, audit logging, and tests. Closes 013 P1-2.",
+  "keywords": [
+    "033-memory-retention-sweep",
+    "memory retention sweep",
+    "delete_after sweep",
+    "retention enforcement"
+  ],
+  "lastUpdated": "2026-04-29T14:03:15Z",
+  "specId": "033",
+  "folderSlug": "memory-retention-sweep",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1
+}

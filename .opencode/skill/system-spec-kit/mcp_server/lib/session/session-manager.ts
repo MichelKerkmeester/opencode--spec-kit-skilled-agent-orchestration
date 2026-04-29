@@ -5,9 +5,11 @@ import crypto from 'crypto';
 import fs from 'fs';
 import path from 'path';
 
+import type BetterSqlite from 'better-sqlite3';
 import type { DatabaseExtended as Database } from '@spec-kit/shared/types';
 // Import working-memory for immediate cleanup on session end (GAP 2).
 import * as workingMemory from '../cognitive/working-memory.js';
+import { runMemoryRetentionSweep } from '../governance/memory-retention-sweep.js';
 
 // Feature catalog: Session-manager transaction gap fixes
 
@@ -199,6 +201,14 @@ let staleCleanupInterval: ReturnType<typeof setInterval> | null = null;
 const STALE_CLEANUP_INTERVAL_MS = parseInt(process.env.STALE_CLEANUP_INTERVAL_MS as string, 10) || 60 * 60 * 1000; // 1 hour
 const STALE_SESSION_THRESHOLD_MS = parseInt(process.env.STALE_SESSION_THRESHOLD_MS as string, 10) || 24 * 60 * 60 * 1000; // 24 hours
 
+// Track governed memory retention cleanup interval (runs hourly by default).
+let retentionSweepInterval: ReturnType<typeof setInterval> | null = null;
+const RETENTION_SWEEP_ENABLED = process.env.SPECKIT_RETENTION_SWEEP !== 'false';
+const RETENTION_SWEEP_INTERVAL_MS = (() => {
+  const parsed = parseInt(process.env.SPECKIT_RETENTION_SWEEP_INTERVAL_MS as string, 10);
+  return Number.isInteger(parsed) && parsed > 0 ? parsed : 60 * 60 * 1000;
+})();
+
 function init(database: Database): InitResult {
   if (!database) {
     console.error('[session-manager] WARNING: init() called with null database');
@@ -252,6 +262,31 @@ function init(database: Database): InitResult {
   }, STALE_CLEANUP_INTERVAL_MS);
   if (staleCleanupInterval && typeof staleCleanupInterval === 'object' && 'unref' in staleCleanupInterval) {
     staleCleanupInterval.unref();
+  }
+
+  if (retentionSweepInterval) {
+    clearInterval(retentionSweepInterval);
+    retentionSweepInterval = null;
+  }
+  if (RETENTION_SWEEP_ENABLED) {
+    try {
+      runMemoryRetentionSweep(database as unknown as BetterSqlite.Database, { dryRun: false });
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : String(err);
+      console.warn(`[session-manager] Initial memory retention sweep failed: ${message}`);
+    }
+
+    retentionSweepInterval = setInterval(() => {
+      try {
+        runMemoryRetentionSweep(database as unknown as BetterSqlite.Database, { dryRun: false });
+      } catch (err: unknown) {
+        const message = err instanceof Error ? err.message : String(err);
+        console.warn(`[session-manager] Periodic memory retention sweep failed: ${message}`);
+      }
+    }, RETENTION_SWEEP_INTERVAL_MS);
+    if (retentionSweepInterval && typeof retentionSweepInterval === 'object' && 'unref' in retentionSweepInterval) {
+      retentionSweepInterval.unref();
+    }
   }
 
   return { success: true };
@@ -1382,6 +1417,10 @@ function shutdown(): void {
   if (staleCleanupInterval) {
     clearInterval(staleCleanupInterval);
     staleCleanupInterval = null;
+  }
+  if (retentionSweepInterval) {
+    clearInterval(retentionSweepInterval);
+    retentionSweepInterval = null;
   }
 }
 

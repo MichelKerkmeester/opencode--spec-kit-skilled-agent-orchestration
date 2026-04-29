@@ -1,0 +1,18 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+  "description": "Tier B-beta doc retraction: removes README claim of real-time structural code-graph watcher; documents actual read-path/manual contract via ensure-ready.ts + code_graph_scan.",
+  "keywords": [
+    "032-code-graph-watcher-retraction",
+    "code-graph watcher retraction",
+    "structural watcher doc fix",
+    "read-path graph freshness"
+  ],
+  "lastUpdated": "2026-04-29T13:58:12Z",
+  "specId": "032",
+  "folderSlug": "code-graph-watcher-retraction",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1
+}

@@ -325,6 +325,12 @@ const memoryBulkDelete: ToolDefinition = {
   inputSchema: { type: 'object', additionalProperties: false, properties: { tier: { type: 'string', enum: ['constitutional', 'critical', 'important', 'normal', 'temporary', 'deprecated'], description: 'Importance tier to delete (required)' }, specFolder: { type: 'string', description: 'Optional: scope deletion to a specific spec folder' }, confirm: { type: 'boolean', const: true, description: 'Required safety gate: must be true to proceed' }, olderThanDays: { type: 'number', minimum: MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS, description: 'Optional: only delete spec-doc records older than this many days' }, skipCheckpoint: { type: 'boolean', default: false, description: 'Optional speed optimization for non-critical tiers. When true, skips auto-checkpoint creation before delete. Rejected for constitutional/critical tiers.' } }, required: ['tier', 'confirm'] },
 };
 
+const memoryRetentionSweep: ToolDefinition = {
+  name: 'memory_retention_sweep',
+  description: '[L4:Mutation] Sweep expired governed spec-doc records where memory_index.delete_after is in the past. Supports dry-run mode for audit previews and records retention_expired audit metadata on deletion. Token Budget: 500.',
+  inputSchema: { type: 'object', additionalProperties: false, properties: { dryRun: { type: 'boolean', default: false, description: 'When true, return expired candidates without mutating memory_index or related indexes.' } } },
+};
+
 // L5: Lifecycle - Checkpoints and versioning (Token Budget: 600)
 const checkpointCreate: ToolDefinition = {
   name: 'checkpoint_create',
@@ -916,6 +922,7 @@ export const TOOL_DEFINITIONS: ToolDefinition[] = [
   memoryUpdate,
   memoryValidate,
   memoryBulkDelete,
+  memoryRetentionSweep,
   // L5: Lifecycle
   checkpointCreate,
   checkpointList,
