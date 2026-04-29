@@ -1,0 +1,10 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/011-stale-doc-and-readme-fixes",
+  "description": "Level 1 remediation: 12 stale doc/README fixes surfaced by 011 deep-review + README staleness audit (Tier 1+2). Pure docs; no runtime change.",
+  "keywords": ["stale-docs", "readme-fixes", "tier-1", "tier-2", "remediation", "deep-review-followup"],
+  "lastUpdated": "2026-04-29T11:05:00.000Z",
+  "specId": "011",
+  "folderSlug": "stale-doc-and-readme-fixes",
+  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "000-release-cleanup", "005-review-remediation"],
+  "memorySequence": 1
+}

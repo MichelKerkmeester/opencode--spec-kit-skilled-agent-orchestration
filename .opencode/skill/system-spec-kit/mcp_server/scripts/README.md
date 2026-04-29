@@ -76,7 +76,7 @@ Build outputs are split across packages:
 - Reindex implementation lives in `scripts/memory/reindex-embeddings.ts` and runs through current handlers.
 - Indexed scope follows current scan behavior, including memory, constitutional and spec-doc discovery defaults.
 - Script prints a concise progress summary on stdout and exits non-zero on fatal startup failures.
-- Module initialization order: `vectorIndex` -> `embeddings` -> `checkpointsLib` -> `accessTracker` -> `hybridSearch` -> `initDbState` -> `setEmbeddingModelReady`.
+- Startup initializes DB state through `initDbState`; embedding/provider dependencies are loaded lazily by the current handler and search-provider path instead of a public readiness setter.
 - Wrapper TypeScript in this directory compiles into `mcp_server/dist/scripts/`, then delegates to the canonical built JavaScript in `scripts/dist/`.
 
 <!-- /ANCHOR:implemented-state -->

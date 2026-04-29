@@ -1,7 +1,7 @@
 ---
 title: "Implementation Summary: Live Handler Envelope Capture Seam"
 template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
-description: "Created the live handleMemorySearch envelope/audit behavioral test that closes the deterministic capture seam for v1.0.4 stress work, with an executable expected-failure for degraded-readiness wiring that is not present in the current handler."
+description: "Created the live handleMemorySearch envelope/audit behavioral test that closes the deterministic capture seam for v1.0.4 stress work. Follow-up packet 025 later closed TC-3 by wiring degraded-readiness telemetry into memory_search."
 trigger_phrases:
   - "023-live-handler-envelope-capture-seam"
   - "live handler envelope capture summary"
@@ -16,8 +16,7 @@ _memory:
     last_updated_by: "codex-gpt-5.5"
     recent_action: "Completed live handler envelope/audit seam with focused checks and strict validation"
     next_safe_action: "Phase K stress"
-    blockers:
-      - "memory_search does not currently pass degradedReadiness into buildSearchDecisionEnvelope"
+    blockers: []
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/tests/handler-memory-search-live-envelope.vitest.ts"
       - "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/plan.md"
@@ -27,8 +26,7 @@ _memory:
       session_id: "phase-k-pp-1"
       parent_session_id: null
     completion_pct: 100
-    open_questions:
-      - "Should a follow-up runtime packet add degradedReadiness mapping to memory_search?"
+    open_questions: []
     answered_questions:
       - "The live seam should keep handleMemorySearch, buildSearchDecisionEnvelope, response formatting, and recordSearchDecision real"
 ---
@@ -61,7 +59,7 @@ The live handler seam now exists as a focused Vitest file. You can call `handleM
 
 The test keeps the handler path real and mocks only the retrieval boundary. `executePipeline` returns deterministic candidates and stage metadata; `handleMemorySearch`, `formatSearchResults`, `buildSearchDecisionEnvelope`, and `recordSearchDecision` all run as production code. TC-1 asserts response envelope fields including `queryPlan`, `trustTree`, `rerankGateDecision`, `cocoindexCalibration`, `tenantId`, and `latencyMs`. TC-2 reads the temp audit JSONL file and verifies a SearchDecisionEnvelope-compatible row with latency, trust-tree decision class, and pipeline timing.
 
-TC-3 is an executable expected-failure marker. The current `memory_search` handler does not pass `degradedReadiness` into `buildSearchDecisionEnvelope`, so a truthful test cannot make the degraded-readiness assertion pass without changing runtime code or mocking the envelope builder.
+TC-3 now passes as a normal live handler assertion. Follow-up packet 025 wired `memory_search` to pass snapshot-derived `degradedReadiness` into `buildSearchDecisionEnvelope`, so the assertion no longer needs a failure marker or envelope-builder mock.
 
 ### Files Changed
 
@@ -90,7 +88,7 @@ The delivery stayed test-only. Runtime code, decision-audit code, envelope build
 |----------|-----|
 | Mock `executePipeline`, not `buildSearchDecisionEnvelope` | The packet needs a live handler seam for envelope/audit emission, not retrieval-quality coverage. Mocking the builder would invalidate the evidence. |
 | Use a temp `SPECKIT_SEARCH_DECISION_AUDIT_PATH` | This proves the handler reaches the real audit sink without touching default runtime data files. |
-| Encode TC-3 as `it.fails` | The source path currently has no degraded-readiness handoff. Expected-failure keeps the gap visible and will flip when runtime wiring is added. |
+| Encode TC-3 as a live assertion after packet 025 | Packet 025 added the degraded-readiness handoff, so the former marker now serves as passing regression coverage. |
 <!-- /ANCHOR:decisions -->
 
 ---
@@ -100,7 +98,7 @@ The delivery stayed test-only. Runtime code, decision-audit code, envelope build
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts` | PASS: 1 file passed; 2 tests passed; 1 expected fail |
+| `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts` | PASS after packet 025: TC-3 is a normal passing assertion |
 | `npx tsc --noEmit` | PASS |
 | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam --strict` | PASS |
 <!-- /ANCHOR:verification -->
@@ -110,7 +108,7 @@ The delivery stayed test-only. Runtime code, decision-audit code, envelope build
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Degraded readiness is not emitted by `memory_search`.** `memory-search.ts` builds the envelope without passing `degradedReadiness`, so TC-3 is an expected-failure marker rather than a passing assertion.
+1. **Historical note on TC-3.** This packet originally shipped TC-3 as a visible gap marker; packet 025 later wired degraded-readiness telemetry and converted the check into passing coverage.
 2. **Shadow JSONL is not exercised here.** The advisor handler owns the shadow sink path; this test documents that limitation and focuses on the live memory_search envelope/audit seam.
 <!-- /ANCHOR:limitations -->
 

@@ -115,7 +115,7 @@ Single authoritative point for ALL scoring signals. Signal application order is 
 10. Validation signals — quality scoring multiplier (clamped 0.8-1.2)
 
 **Stage 3 — Rerank + Aggregate** (`stage3-rerank.ts`):
-Cross-encoder reranking (optional, min 2 results) followed by MPAB chunk-to-memory aggregation. Aggregation formula: `parentScore = sMax + 0.3 * Sum(rest) / sqrt(N)` where `sMax` is the best chunk score and N is the remaining chunk count. Chunk ordering preserves `chunk_index` document order (B2 guarantee). `contentSource` metadata marks provenance (`reassembled_chunks` or `file_read_fallback`).
+Cross-encoder reranking is conditional default-on through `rerankGateDecision`: it runs only when ambiguity or disagreement signals are eligible and at least 4 candidates are present. Gate metadata records skipped cases such as `candidate_count_below_rerank_floor` or `no_eligible_ambiguity_or_disagreement`. MPAB chunk-to-memory aggregation then uses `parentScore = sMax + 0.3 * Sum(rest) / sqrt(N)` where `sMax` is the best chunk score and N is the remaining chunk count. Chunk ordering preserves `chunk_index` document order (B2 guarantee). `contentSource` metadata marks provenance (`reassembled_chunks` or `file_read_fallback`).
 
 **Stage 4 — Filter + Annotate** (`stage4-filter.ts`):
 **Score immutability invariant**: Stage 4 MUST NOT modify scores. Enforced via compile-time `Stage4ReadonlyRow` readonly fields and runtime `captureScoreSnapshot` / `verifyScoreInvariant` defence-in-depth. Applies memory-state filtering, per-tier limits, evidence gap detection (Z-score confidence check), quality floor (`QUALITY_FLOOR=0.005`), and token budget truncation. Lowest-priority retained-history rows remain fallback evidence only when filters allow them.

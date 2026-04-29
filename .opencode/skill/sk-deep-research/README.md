@@ -60,7 +60,7 @@ For iterative code review, use `sk-deep-review`.
 /spec_kit:deep-research:auto "API backpressure patterns" --max-iterations 6 --convergence 0.03
 ```
 
-What the workflow creates under the resolved root-level research packet:
+What the workflow creates under the resolved `{artifact_dir}`:
 
 - `deep-research-config.json`
 - `deep-research-state.jsonl`
@@ -70,7 +70,7 @@ What the workflow creates under the resolved root-level research packet:
 - `iterations/iteration-NNN.md`
 - `research.md`
 
-The packet always lives under the target spec's local `research/` folder. Root-spec targets use `{spec_folder}/research/` directly. Child-phase and sub-phase targets use `{spec_folder}/research/{packet}/`, where `{packet}` is the resolved local packet directory for that target. Pause a running loop by creating `.deep-research-pause` inside that resolved packet, then delete it to let the workflow continue from the next lifecycle check.
+The artifact directory always lives under the target spec's local `research/` folder. First runs with an empty local folder use `{spec_folder}/research/` directly, including child-phase and sub-phase targets. A `{spec_folder}/research/{ownerSlug}-pt-NN/` packet is allocated only when prior local content already exists for a different target. Pause a running loop by creating `.deep-research-pause` inside the resolved `{artifact_dir}`, then delete it to let the workflow continue from the next lifecycle check.
 <!-- /ANCHOR:quick-start -->
 
 ---
@@ -132,19 +132,19 @@ Runtime packet layout:
 
 ```text
 {spec_folder}/research/
-  [packet-dir/]                      # Present only for nested child-phase targets
-    deep-research-config.json
-    deep-research-state.jsonl
-    deep-research-strategy.md
-    findings-registry.json
-    deep-research-dashboard.md
-    .deep-research-pause
-    research.md
-    archive/
-      {sessionId}/
-    iterations/
-      iteration-001.md
-      iteration-002.md
+  deep-research-config.json
+  deep-research-state.jsonl
+  deep-research-strategy.md
+  findings-registry.json
+  deep-research-dashboard.md
+  .deep-research-pause
+  research.md
+  archive/
+    {sessionId}/
+  iterations/
+    iteration-001.md
+    iteration-002.md
+  {ownerSlug}-pt-NN/                 # Conditional: prior non-matching content exists
 ```
 
 Ownership model:

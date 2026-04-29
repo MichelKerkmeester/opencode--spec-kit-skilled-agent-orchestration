@@ -213,20 +213,20 @@ sk-deep-review/
 
 ### Review Runtime State
 
-Created under the target spec's local `review/` folder during initialization. Root-spec targets write directly to `{spec_folder}/review/`. Child-phase and sub-phase targets write to `{spec_folder}/review/{packet}/`, where `{packet}` is the resolved local packet directory for that target. All files are scoped to this packet; the review target is never written to.
+Created under the resolved `{artifact_dir}` during initialization. First runs with an empty target-local `review/` folder write flat at `{spec_folder}/review/`, including child-phase and sub-phase targets. A `{spec_folder}/review/{ownerSlug}-pt-NN/` packet is allocated only when prior local content already exists for a different target; continuations reuse the existing flat artifact or matching packet. All files are scoped to this artifact directory; the review target is never written to.
 
 ```text
 {spec_folder}/review/
-└── [packet-dir/]                       # Present only for nested child-phase targets
-    ├── deep-review-config.json         # Immutable after init: loop parameters + lineage metadata
-    ├── deep-review-state.jsonl         # Append-only structured log of all iterations
-    ├── deep-review-findings-registry.json  # Reducer-owned canonical findings state
-    ├── deep-review-strategy.md         # Mutable: dimensions, findings, next focus
-    ├── deep-review-dashboard.md        # Auto-generated after each iteration
-    ├── .deep-review-pause              # Pause sentinel: create to halt, delete to resume
-    ├── review-report.md                # 9-section findings-first synthesis with verdict
-    └── iterations/
-        └── iteration-NNN.md            # Write-once per-iteration detailed findings
+├── deep-review-config.json             # Immutable after init: loop parameters + lineage metadata
+├── deep-review-state.jsonl             # Append-only structured log of all iterations
+├── deep-review-findings-registry.json  # Reducer-owned canonical findings state
+├── deep-review-strategy.md             # Mutable: dimensions, findings, next focus
+├── deep-review-dashboard.md            # Auto-generated after each iteration
+├── .deep-review-pause                  # Pause sentinel: create to halt, delete to resume
+├── review-report.md                    # 9-section findings-first synthesis with verdict
+├── iterations/
+│   └── iteration-NNN.md                # Write-once per-iteration detailed findings
+└── {ownerSlug}-pt-NN/                  # Conditional: prior non-matching content exists
 ```
 
 ### Agent Definitions

@@ -77,7 +77,7 @@ For Spec Kit packet recovery, this skill treats `/spec_kit:resume` as the canoni
 | Feature | Description |
 | --- | --- |
 | DQI scoring | 0-100 score across Structure (40), Content (30), Style (30) |
-| Document type detection | Auto-detects README, SKILL, Knowledge, Command, Spec, Generic |
+| Document type detection | Auto-detects README, SKILL, Knowledge, Command, Spec, playbook_feature, Generic |
 | HVR enforcement | Human Voice Rules applied to all output, with score deduction for violations |
 | Component scaffolding | `init_skill.py` creates properly structured skill directories |
 | Packaging and validation | `package_skill.py` runs full validation before distribution |
@@ -146,11 +146,13 @@ Feature Catalog and Manual Testing Playbook creation handle package-level docume
 | --- | --- |
 | DQI scoring | Structure 40 pts, Content 30 pts, Style 30 pts |
 | Quality bands | Excellent (90-100), Good (75-89), Acceptable (60-74), Needs Work (<60) |
-| Document types | README, SKILL, Knowledge, Command, Spec, Generic |
+| Document types | README, SKILL, Knowledge, Command, Spec, playbook_feature, Generic |
 | Enforcement levels | Strict (SKILL/Command), Flexible (README), Moderate (Knowledge), Loose (Spec) |
 | Safe auto-fixes | H2 case, section separators, filename convention |
 | Critical violations | Missing frontmatter, wrong section order (escalate, do not auto-fix) |
 | HVR compliance | Style score deduction for banned words, em dashes, semicolons |
+
+`playbook_feature` applies to per-feature scenario files under `manual_testing_playbook/NN--category/`; root playbook documents keep their package-level document contract.
 
 **Component Creation (Mode 2)**
 

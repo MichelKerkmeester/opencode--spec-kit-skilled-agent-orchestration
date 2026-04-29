@@ -180,11 +180,11 @@ triggers:
 
 ### research/ and review/ (local owner folders)
 
-Deep-research and deep-review artifacts (iterations, deltas, prompts, state logs, synthesis) live under the **target spec folder's local** `research/` or `review/` folder. Root specs keep those artifacts directly at `{spec_folder}/research/` or `{spec_folder}/review/`. Child phases and sub-phases keep packet directories inside their own local owner folder.
+Deep-research and deep-review artifacts (iterations, deltas, prompts, state logs, synthesis) live under the **target spec folder's local** `research/` or `review/` folder. Root specs, child phases, and sub-phases all use a flat-first layout at `{spec_folder}/research/` or `{spec_folder}/review/` for first runs. A `pt-NN` packet directory is allocated only when prior local content already exists for a different target.
 
 **Why:** the owning phase keeps its own deep-loop artifacts local, nested runs do not spill into ancestor roots, and resume/restart logic can stay bound to the exact target spec instead of re-resolving through a coordination parent.
 
-**Layout (root spec plus child phases):**
+**Layout (root spec plus flat-first child phases):**
 
 ```text
 specs/system-spec-kit/026-graph-and-context-optimization/
@@ -193,22 +193,21 @@ specs/system-spec-kit/026-graph-and-context-optimization/
 ├── review/                                 <- root-spec deep-review artifacts
 ├── 019-system-hardening/
 │   ├── spec.md
-│   ├── research/
-│   │   └── 019-system-hardening-pt-01/
-│   │       ├── deep-research-config.json
-│   │       ├── deep-research-state.jsonl
-│   │       ├── deep-research-strategy.md
-│   │       ├── deep-research-dashboard.md
-│   │       ├── findings-registry.json
-│   │       ├── research.md
-│   │       ├── iterations/iteration-NNN.md
-│   │       ├── deltas/iter-NNN.jsonl
-│   │       └── prompts/iteration-N.md
-│   └── review/
-│       └── 019-system-hardening-pt-01/
+│   ├── research/                               <- first run is flat
+│   │   ├── deep-research-config.json
+│   │   ├── deep-research-state.jsonl
+│   │   ├── deep-research-strategy.md
+│   │   ├── deep-research-dashboard.md
+│   │   ├── findings-registry.json
+│   │   ├── research.md
+│   │   ├── iterations/iteration-NNN.md
+│   │   ├── deltas/iter-NNN.jsonl
+│   │   └── prompts/iteration-N.md
+│   └── review/                                 <- first run is flat
 └── 020-skill-advisor-hook-surface/
     ├── spec.md
     ├── research/
+    │   └── 020-skill-advisor-hook-surface-pt-01/ <- conditional: prior non-matching content already existed
     └── review/
 ```
 

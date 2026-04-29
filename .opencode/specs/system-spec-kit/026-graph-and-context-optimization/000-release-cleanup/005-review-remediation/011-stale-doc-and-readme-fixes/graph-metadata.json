@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/011-stale-doc-and-readme-fixes",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/011-stale-doc-and-readme-fixes",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/012-broad-suite-vitest-honesty",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/013-skdoc-legacy-template-debt-cleanup"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": ["011-stale-doc-and-readme-fixes", "tier 1 stale doc fixes", "readme staleness remediation"],
+    "key_topics": ["stale-docs", "readme-fixes", "tier-1", "remediation"],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md"],
+    "entities": [],
+    "causal_summary": "Level 1 remediation closing 12 stale doc/README findings from 011 deep-review (F-001/002/004/006) + README audit (5 HIGH + 3 MEDIUM). Scope is documentation only.",
+    "created_at": "2026-04-29T11:05:00.000Z",
+    "last_save_at": "2026-04-29T11:05:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}

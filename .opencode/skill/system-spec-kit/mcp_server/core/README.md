@@ -37,7 +37,7 @@ Files in this directory:
 - `config.ts` exports `resolveDatabasePaths()` and the canonical `DATABASE_DIR`, `DATABASE_PATH`, and `DB_UPDATED_FILE` values.
 - Database-directory resolution honors runtime overrides through `SPEC_KIT_DB_DIR` and `SPECKIT_DB_DIR`, then falls back to the shared-path default.
 - `config.ts` also exposes the lazily parsed `COGNITIVE_CONFIG` and `getCognitiveConfig()` bridge for `configs/cognitive.ts`.
-- `db-state.ts` owns `init()`, `checkDatabaseUpdated()`, `reinitializeDatabase()`, embedding-readiness state, constitutional cache accessors, and `registerDatabaseRebindListener()`.
+- `db-state.ts` owns `init()`, `checkDatabaseUpdated()`, `reinitializeDatabase()`, constitutional cache accessors, current DB dependency rebinding, and `registerDatabaseRebindListener()`.
 - Reconnect flows are mutex-protected so handlers and search modules can safely rebind their DB-backed dependencies after external updates.
 
 <!-- /ANCHOR:implemented-state -->

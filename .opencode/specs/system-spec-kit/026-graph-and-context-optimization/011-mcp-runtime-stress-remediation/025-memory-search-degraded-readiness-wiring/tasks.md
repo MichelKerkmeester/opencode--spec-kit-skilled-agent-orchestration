@@ -14,9 +14,8 @@ _memory:
     last_updated_at: "2026-04-29T09:45:00Z"
     last_updated_by: "codex-gpt-5.5"
     recent_action: "Implemented mapper, handler wiring, and focused tests"
-    next_safe_action: "Resolve out-of-scope core/index typecheck export errors"
-    blockers:
-      - "npx tsc --noEmit fails on missing core/index exports outside the 025 target authority"
+    next_safe_action: "Closed; final batch state typechecks cleanly"
+    blockers: []
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/lib/search/graph-readiness-mapper.ts"
       - ".opencode/skill/system-spec-kit/mcp_server/handlers/memory-search.ts"
@@ -27,7 +26,7 @@ _memory:
       fingerprint: "sha256:025-memory-search-degraded-readiness-wiring-tasks"
       session_id: "025-memory-search-degraded-readiness-wiring"
       parent_session_id: null
-    completion_pct: 90
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -80,12 +79,12 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T011 Run `npx tsc --noEmit` (failed on out-of-scope `core/index` export drift)
+- [x] T011 Run `npx tsc --noEmit` (final batch state typechecks cleanly)
 - [x] T012 Run `npx vitest run tests/handler-memory-search-live-envelope.vitest.ts tests/search-quality/ tests/graph-readiness-mapper.vitest.ts`
 - [x] T013 Run strict validator on packet
 - [x] T014 Author implementation summary (`implementation-summary.md`)
 - [x] T015 Update `spec.md` continuity to reflect completion state
-- [B] T016 Resolve out-of-scope `core/index` typecheck export drift before claiming full verification
+- [x] T016 Confirm final batch typecheck blocker is retired
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -93,9 +92,9 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All tasks marked `[x]`
-- [ ] No `[B]` blocked tasks remaining
-- [ ] `npx tsc --noEmit` exits 0
+- [x] All tasks marked `[x]`
+- [x] No `[B]` blocked tasks remaining
+- [x] `npx tsc --noEmit` exits 0 in final batch state
 - [x] Focused Vitest command exits 0
 - [x] Strict validator exits 0
 - [x] REQ-001 through REQ-005 disposition recorded in `implementation-summary.md`

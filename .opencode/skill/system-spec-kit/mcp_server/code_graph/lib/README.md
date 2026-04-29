@@ -9,14 +9,17 @@ For Gate E continuity, this library supports retrieval after `/spec_kit:resume` 
 | File | Purpose |
 |------|---------|
 | `indexer-types.ts` | Type definitions: CodeNode, CodeEdge, ParseResult, SymbolKind, EdgeType |
-| `structural-indexer.ts` | Regex-based parser for JS/TS/Python/Bash (tree-sitter planned) |
+| `structural-indexer.ts` | Structural parser orchestration with Tree-sitter WASM as the default backend and regex fallback when needed |
 | `code-graph-db.ts` | SQLite schema and CRUD for code_files, code_nodes, code_edges |
+| `ensure-ready.ts` | Shared readiness guard and scan trigger helper for code graph handlers |
 | `seed-resolver.ts` | Resolves CocoIndex file:line results to graph nodes |
 | `code-graph-context.ts` | LLM-oriented graph neighborhoods (neighborhood/outline/impact modes) |
+| `query-result-adapter.ts` | Converts query results into stable handler payload shapes |
 | `budget-allocator.ts` | Token budget distribution with floor allocations + overflow pool |
 | `working-set-tracker.ts` | Recency-weighted file/symbol access tracking |
 | `compact-merger.ts` | 3-source merge (Memory + Code Graph + CocoIndex) for compaction |
 | `runtime-detection.ts` | Runtime identification and hook policy classification |
+| `utils/workspace-path.ts` | Workspace path normalization helpers shared by code graph modules |
 | `index.ts` | Barrel re-export of all modules |
 
 ## Architecture
