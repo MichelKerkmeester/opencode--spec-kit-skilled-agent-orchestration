@@ -55,7 +55,7 @@ The dead embedding-readiness scaffold is gone from non-dist TypeScript. The embe
 |-------------|--------|----------|
 | REQ-001 | Met | Zero non-dist matches for `isEmbeddingModelReady`, `setEmbeddingModelReady`, `waitForEmbeddingModel`, and `embeddingModelReady` |
 | REQ-002 | Met | `npx tsc --noEmit` exited 0 |
-| REQ-003 | Not met by full suite | `npx vitest run` reported unrelated failures and then did not terminate within the observed window |
+| REQ-003 | Partially met by targeted suites only | Targeted readiness-relevant suites pass: `handler-memory-search-live-envelope`, `search-quality/`, `graph-readiness-mapper`, `handler-memory-crud`, and `memory-search-integration` produced 19 files / 109 passed / 5 todo / 0 failed. Full broad suite is not green: `npx vitest run --reporter=default --test-timeout=60000` timed out at 600s after unrelated failures, with confirmed hangs in `scripts/tests/progressive-validation.vitest.ts` and `mcp_server/tests/progressive-validation.vitest.ts`. |
 | REQ-004 | Met | `npx tsc` exited 0; post-build `dist/` grep found zero readiness references |
 | REQ-005 | Met | Strict validator exited 0 with zero warnings |
 
@@ -130,8 +130,9 @@ Pre-flight grep expanded scope to every non-dist TypeScript reference, then the 
 | Final `dist/` grep | PASS: exit 1 with no matches after `npx tsc` |
 | `npx tsc --noEmit` | PASS: exited 0 |
 | `npx tsc` | PASS: exited 0 |
-| `npx vitest run` | FAIL/STUCK: reported unrelated failures across save/checkpoints/graph/docs/modularization suites, then did not terminate within the observed window |
-| Impacted-file Vitest subset | FAIL: 7 stale structural/modularization assertions remained, including `context-server.vitest.ts` source-shape expectations and module line-limit checks |
+| Targeted readiness Vitest subset | PASS: `npx vitest run --reporter=default --test-timeout=60000 tests/handler-memory-search-live-envelope.vitest.ts tests/search-quality/ tests/graph-readiness-mapper.vitest.ts tests/handler-memory-crud.vitest.ts tests/memory-search-integration.vitest.ts` exited 0; 19 files / 109 passed / 5 todo / 0 failed |
+| Broad `npx vitest run` | FAIL/STUCK: timed out at 600s. Non-026-induced failures surfaced in handler-save, graph, skill-advisor, checkpoint/docs/modularization/structural suites, and file-level hangs were confirmed in both progressive-validation suites. |
+| Impacted-file Vitest subset | FAIL: stale structural/modularization assertions remained, including `context-server.vitest.ts` source-shape expectations and module line-limit checks; these are not evidence of an embedding-readiness regression |
 | Strict spec validator | PASS: exited 0 with zero warnings |
 <!-- /ANCHOR:verification -->
 
@@ -140,6 +141,6 @@ Pre-flight grep expanded scope to every non-dist TypeScript reference, then the 
 <!-- ANCHOR:limitations -->
 ## Known Limitations
 
-1. **Full Vitest is not green.** The run reported unrelated failures before it stopped producing output; the impacted subset still fails stale structural assertions and line-limit checks unrelated to embedding readiness removal.
+1. **Full Vitest is not green.** The honest supported claim is targeted readiness-relevant Vitest green: 19 files / 109 passed / 5 todo / 0 failed. The broad suite timed out at 600s, with confirmed hangs in `scripts/tests/progressive-validation.vitest.ts` and `mcp_server/tests/progressive-validation.vitest.ts` plus unrelated stale assertion and environment/path-dependent failures.
 2. **Dist references were checked, but no tracked dist diff was produced.** `npx tsc` exited 0 and `dist/` contains no stale readiness references.
 <!-- /ANCHOR:limitations -->

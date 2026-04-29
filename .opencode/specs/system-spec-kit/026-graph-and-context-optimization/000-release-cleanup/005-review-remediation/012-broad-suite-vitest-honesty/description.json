@@ -1,0 +1,10 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/012-broad-suite-vitest-honesty",
+  "description": "Level 2 investigation closing 011 deep-review F-005: broad-suite vitest hangs/failures vs 026's overstated 'all green' claim.",
+  "keywords": ["vitest-honesty", "F-005", "broad-suite-failures", "026-followup", "tier-3"],
+  "lastUpdated": "2026-04-29T11:05:00.000Z",
+  "specId": "012",
+  "folderSlug": "broad-suite-vitest-honesty",
+  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "000-release-cleanup", "005-review-remediation"],
+  "memorySequence": 1
+}
