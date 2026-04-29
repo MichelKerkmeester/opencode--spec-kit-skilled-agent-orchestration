@@ -60,7 +60,7 @@ Status: ✅ This requirement applies immediately once file edits are requested.
 
 ### Distributed Governance Rule
 
-Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
+Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable. This is a workflow-required gate, not a runtime hook: run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` after authored spec-doc writes and before completion claims, then route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
 
 - `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `.opencode/skill/system-spec-kit/templates/handover.md` for initial creation.
 - `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
@@ -343,7 +343,7 @@ When file modification detected, AI MUST ask:
 | **C) Update**   | Add to existing documentation      | Extending existing docs         |
 | **D) Skip**     | No spec folder (creates tech debt) | Trivial changes only            |
 
-**Enforcement:** Constitutional-tier memory surfaces automatically via `memory_match_triggers()`.
+**Enforcement:** Constitutional-tier memory surfaces through the workflow-required `memory_match_triggers(prompt)` turn-start call or runtime hook surfaces that invoke the same trigger matcher. If no hook fires, the operator/agent must call it directly.
 
 **Coordination Roots**: For large multi-phase efforts, the root `spec.md` serves as a coordination document with point-in-time snapshots of directory counts and phase status.
 Current tree truth takes precedence over historical synthesis (ref: ADR-001 pattern).
@@ -711,7 +711,7 @@ Flags below describe live runtime behavior. Several retrieval and scoring contro
 
 ### Validation Workflow
 
-Automated validation of spec folder contents via `validate.sh`.
+Spec folder validation is a workflow-required gate via `validate.sh`; no runtime hook was found that auto-fires validation after every authored spec-doc write.
 
 **Usage:** `.opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder>`
 
@@ -724,7 +724,7 @@ Automated validation of spec folder contents via `validate.sh`.
 | 2    | Failed (errors found)           | MUST fix before completion   |
 
 **Completion Verification:**
-1. Run validation: `./scripts/spec/validate.sh <spec-folder>`
+1. Run validation: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict`
 2. Exit 2 → FIX errors
 3. Exit 1 → ADDRESS warnings or document reason
 4. For code changes, run alignment verifier: `python3 .opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py --root .opencode/skill/system-spec-kit`
@@ -738,7 +738,7 @@ Automated validation of spec folder contents via `validate.sh`.
 
 ### Startup Injection and Recovery Surfaces
 
-Automated context preservation starts with runtime-specific startup and prompt-hook surfaces. Claude still has the richest project-local lifecycle surface. Codex now supports native `SessionStart` and `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` registers the compiled Spec Kit hooks; `/spec_kit:resume` and `session_bootstrap()` remain the fallback when native hooks are unavailable. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge, while Copilot refreshes managed custom instructions through shared wrapper wiring instead of mutating the active prompt.
+Context preservation starts with runtime-specific startup and prompt-hook surfaces where those hooks are wired. Claude still has the richest project-local lifecycle surface. Codex supports native `SessionStart` and `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` or equivalent launch flags and user/workspace `hooks.json` registers the compiled Spec Kit hooks; repo `.codex/settings.json` is an example template, not the live readiness predicate. `/spec_kit:resume` and `session_bootstrap()` remain the fallback when native hooks are unavailable. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge, while Copilot refreshes managed custom instructions through Copilot-supported writer scripts instead of mutating the active prompt.
 
 **Claude hooks registered in `.claude/settings.local.json`:**
 
@@ -753,7 +753,15 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 **Claude lifecycle flow:** `UserPromptSubmit` covers prompt-time advisor delivery. `PreCompact -> SessionStart(compact)` handles cached context reinjection. On startup, the shared snapshot covers memory continuity, code-graph state, CocoIndex availability, and an explicit note that later structural reads may differ if the repo state changed. On resume, the runtime loads prior session state.
 
-**Cross-runtime handling:** Claude and Gemini use runtime hook configuration for prompt-time advice and startup injection. Codex supports native `SessionStart` + `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` and `~/.codex/hooks.json` is wired; when native Codex hooks are unavailable, recover with `/spec_kit:resume` or `session_bootstrap()` rather than assuming lifecycle parity. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge and should still be treated as bootstrap-first when startup surfacing is unavailable. Copilot uses the shared `.claude/settings.local.json` wrapper contract to run writer commands that refresh the managed block in `$HOME/.copilot/copilot-instructions.md`; this is file-based, next-prompt fresh, and not true in-turn prompt mutation. See `references/config/hook_system.md` for the current cross-runtime matrix and wrapper contract. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
+**Cross-runtime handling:** Claude and Gemini use runtime hook configuration for prompt-time advice and startup injection. Codex supports native `SessionStart` + `UserPromptSubmit` when `[features].codex_hooks = true` in `~/.codex/config.toml` or equivalent launch flags and user/workspace `hooks.json` is wired; when native Codex hooks are unavailable, recover with `/spec_kit:resume` or `session_bootstrap()` rather than assuming lifecycle parity. OpenCode exposes prompt-time advisor delivery through the skill-advisor plugin bridge and should still be treated as bootstrap-first when startup surfacing is unavailable. Copilot uses Copilot-supported writer commands that refresh the managed block in `$HOME/.copilot/copilot-instructions.md`; this is file-based, next-prompt fresh, and not true in-turn prompt mutation. Do not use the stale `.claude/settings.local.json` wrapper shape for Copilot; see `mcp_server/hooks/copilot/README.md` for the Copilot-local contract. Use `session_bootstrap()` for fresh start or after `/clear`, `session_resume()` for reconnect-style recovery when bootstrap is unnecessary, and `session_health()` only to re-check drift or readiness mid-session.
+
+| Automation claim | Trigger | Default / caveat | Manual fallback |
+| ---------------- | ------- | ---------------- | --------------- |
+| Prompt-time skill advisor | Runtime prompt hook (`UserPromptSubmit`, `BeforeAgent`, OpenCode transform); Copilot refreshes next-prompt instructions | Runtime-specific; Copilot is next-prompt, not in-turn | `skill_advisor.py`, `advisor_recommend`, or Gate 2 fallback |
+| Startup context preservation | Runtime `SessionStart` or startup event | Codex requires `codex_hooks` plus user/workspace `hooks.json`; repo settings are examples | `/spec_kit:resume`, `session_bootstrap()` |
+| Spec validation | Operator workflow invokes `validate.sh --strict` | Workflow-required; no universal PostToolUse validator hook | Direct `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` |
+| Touched spec-doc indexing | `/memory:save` Step 11.5 with `SPECKIT_AUTO_INDEX_TOUCHED=on` | Half-automated; save workflow only | `memory_index_scan({ specFolder })` |
+| CCC lifecycle | `/memory:manage ccc ...` or direct `ccc_*` MCP tools | Manual; no background `ccc_*` trigger found | Direct `ccc_status`, `ccc_reindex`, `ccc_feedback` calls |
 
 **Advisor public contract:** `advisor_recommend` and `advisor_validate` accept an explicit `workspaceRoot` argument; both responses surface the resolved `workspaceRoot` and `effectiveThresholds` used for routing. `advisor_validate` additionally publishes `thresholdSemantics` (aggregate-vs-runtime) plus a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`). Hook diagnostics persist to bounded JSONL sinks under the temp metrics root, and validator analysis reads those sinks back across processes. The default OpenCode prompt-time threshold contract is `0.8` (confidence) / `0.35` (uncertainty). Codex and OpenCode share the same `renderAdvisorBrief(...)` invariants and the same builder/timeout/threshold contract; custom formatters and branch-specific threshold behavior have been removed.
 
@@ -803,11 +811,11 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 **CCC tools** (CocoIndex lifecycle):
 
-| Tool | Purpose |
-|------|---------|
-| `ccc_status` | Check CocoIndex availability and index status |
-| `ccc_reindex` | Trigger incremental or full CocoIndex re-indexing |
-| `ccc_feedback` | Submit quality feedback on search results |
+| Tool | Purpose | Trigger |
+|------|---------|---------|
+| `ccc_status` | Check CocoIndex availability and index status | `/memory:manage ccc status` or direct MCP call |
+| `ccc_reindex` | Trigger incremental or full CocoIndex re-indexing | `/memory:manage ccc reindex [--full]` or direct MCP call |
+| `ccc_feedback` | Submit quality feedback on search results | `/memory:manage ccc feedback ...` or direct MCP call |
 
 **Session tools** (lifecycle orchestration):
 
@@ -983,7 +991,7 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 | Resource          | Location                                                                   | Purpose                           |
 | ----------------- | -------------------------------------------------------------------------- | --------------------------------- |
 | Templates         | `templates/level_1/` through `level_3+/` (see Resource Inventory above)    | Pre-merged level templates        |
-| Validation        | `scripts/spec/validate.sh`                                                 | Automated validation              |
+| Validation        | `scripts/spec/validate.sh`                                                 | Workflow-required validation gate |
 | Gates             | `AGENTS.md` Section 2                                                      | Gate definitions                  |
 | Memory gen        | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Canonical continuity save entrypoint |
 | MCP Server        | `mcp_server/context-server.ts`                                             | Spec Kit Memory MCP (~1073 lines) |
@@ -994,5 +1002,5 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 
 ---
 
-**Remember**: This skill is the foundational documentation orchestrator. It enforces structure, template usage, context preservation, and validation for all file modifications. Every conversation that modifies files MUST have a spec folder.
+**Remember**: This skill is the foundational documentation orchestrator. It enforces structure, template usage, context preservation, and workflow-required validation for all file modifications. Every conversation that modifies files MUST have a spec folder.
 <!-- /ANCHOR:related-resources -->

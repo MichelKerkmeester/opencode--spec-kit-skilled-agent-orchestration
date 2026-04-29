@@ -52,7 +52,7 @@
 - **Spec Kit Memory MCP** - research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
   - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
   - Quick continuity: directly edit `_memory.continuity` YAML in `implementation-summary.md` frontmatter (no script round-trip needed).
-- **Skill Advisor Hook** - primary advisor invocation path. Hook-capable runtimes surface a compact skill recommendation automatically on prompt entry; explicit `skill_advisor.py` invocation remains the fallback for scripted checks, unsupported runtimes and hook diagnostics. Reference: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
+- **Skill Advisor Hook** - primary advisor invocation path. Hook-capable runtimes surface a compact skill recommendation on prompt entry when wired; explicit `skill_advisor.py` invocation remains the fallback for scripted checks, unsupported runtimes and hook diagnostics. Reference: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
 - **CocoIndex Code MCP** - semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** - worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
 
@@ -89,7 +89,15 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) may auto-inject startup context when wired. Per-runtime details live in `.opencode/skill/system-spec-kit/references/config/hook_system.md`.
+Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) may inject startup context when wired. Per-runtime trigger details live in `.opencode/skill/system-spec-kit/references/config/hook_system.md`.
+
+| Automation claim | Trigger | Caveat / fallback |
+| --- | --- | --- |
+| Prompt-time skill advisor | Runtime prompt hook where configured (`UserPromptSubmit`, `BeforeAgent`, OpenCode transform); Copilot refreshes next-prompt instructions | Use `skill_advisor.py` when no hook brief is present |
+| Startup context | Runtime startup hook (`SessionStart` or runtime event) | Use `/spec_kit:resume` or `session_bootstrap()` when unavailable |
+| Codex native hooks | `[features].codex_hooks = true` plus user/workspace `hooks.json` | Repo `.codex/settings.json` is an example template, not live registration |
+| Copilot context refresh | Copilot-supported writer scripts refresh managed custom instructions | Next-prompt freshness only; no Claude settings wrapper |
+| Spec validation | Operator runs `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` | Workflow-required gate; no universal runtime auto-fire hook |
 
 **Fallback** — when hooks are unavailable or fail in any runtime:
 
@@ -143,7 +151,7 @@ Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) m
 | **Code search**           | CocoIndex for semantic/intent → Grep for exact text → Glob for file paths → Read for contents                                       |
 | **Resume prior work**     | `/spec_kit:resume` → Rebuild context from `handover.md` → `_memory.continuity` → canonical spec docs → Review → Continue    |
 | **Save context**          | `/memory:save` OR compose JSON → `generate-context.js --json '<data>' [spec-folder]` → Auto-indexed                                 |
-| **Claim completion**      | Validation runs automatically → Load `checklist.md` → Verify ALL items → Mark with evidence                                        |
+| **Claim completion**      | Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` → Load `checklist.md` → Verify ALL items → Mark with evidence |
 | **End session**           | `/memory:save` → `handover_state` routing updates `handover.md` → Provide continuation prompt                                      |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
@@ -236,8 +244,9 @@ Trigger: "save context", "save memory", `/memory:save`
 
 #### COMPLETION VERIFICATION RULE [HARD] BLOCK
 Trigger: Claiming "done", "complete", "finished", "works"
-1. Validation runs automatically on spec folder (if exists)
-2. Load `checklist.md` → Verify ALL items → Mark `[x]` with evidence
+1. Completion claim triggers a validation requirement for the spec folder (if exists)
+2. Operator must run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict`
+3. Load `checklist.md` → Verify ALL items → Mark `[x]` with evidence
 - Skip: Level 1 tasks (no checklist.md required) | Exit 0 = pass, Exit 1 = warnings, Exit 2 = errors (must fix)
 
 #### VIOLATION RECOVERY [SELF-CORRECTION]
@@ -331,7 +340,7 @@ Use the agent directory that matches the active runtime/provider profile:
 
 #### Distributed Governance Rule
 
-- Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md`) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable, run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh [spec_folder] --strict` after each file write, and route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`. `resource-map.md` is optional at any level — copy it from `.opencode/skill/system-spec-kit/templates/resource-map.md` when a packet wants a lean path ledger alongside `implementation-summary.md`.
+- Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md`) MUST use templates from .opencode/skill/system-spec-kit/templates/level_N/ for level-owned docs and the root cross-cutting templates where applicable. This is a workflow-required gate, not a runtime hook: run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` after authored spec-doc writes and before completion claims, then route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`. `resource-map.md` is optional at any level — copy it from `.opencode/skill/system-spec-kit/templates/resource-map.md` when a packet wants a lean path ledger alongside `implementation-summary.md`.
 
 ---
 

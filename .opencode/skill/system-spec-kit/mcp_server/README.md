@@ -88,13 +88,13 @@ Code-graph handlers share one readiness contract, session-resume auth binds to t
 
 The indexed-continuity store exposes its MCP tools through 4 memory slash commands plus the borrowed recovery workflow in `/spec_kit:resume`. Dedicated code-graph, CocoIndex, and Skill Advisor tools live in the same server. Think of commands as doors into the system. Each door opens access only to the tools it needs.
 
-| Command | What It Does | Tool Count |
-|---------|-------------|------------|
-| `/memory:search` | Search, retrieve and analyze knowledge | 13 tools |
-| `/memory:learn` | Create always-surface rules (constitutional memories) | 6 tools |
-| `/memory:manage` | Database maintenance, checkpoints, and bulk ingestion | 19 primary tools + 1 helper |
-| `/memory:save` | Update packet continuity, refresh packet metadata on every invocation, and emit supporting generated context artifacts | 4 tools |
-| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Broad helper surface for packet recovery |
+| Command | What It Does | Trigger | Tool Count |
+|---------|-------------|---------|------------|
+| `/memory:search` | Search, retrieve and analyze knowledge | Explicit operator command | 13 tools |
+| `/memory:learn` | Create always-surface rules (constitutional memories) | Explicit operator command | 6 tools |
+| `/memory:manage` | Database maintenance, checkpoints, bulk ingestion, and CCC lifecycle routing | Explicit operator command | 22 primary tools + 1 helper |
+| `/memory:save` | Update packet continuity, refresh packet metadata on every invocation, and emit supporting generated context artifacts | Explicit save command/keyword; Step 11.5 indexes touched docs when enabled | 4 tools |
+| `/spec_kit:resume` | Canonical operator-facing recovery surface for an interrupted spec-folder session; rebuilds active context from `handover.md`, then `_memory.continuity`, then packet docs | Explicit operator recovery command or runtime fallback | Broad helper surface for packet recovery |
 
 ### Requirements
 
@@ -438,7 +438,7 @@ This is session-scoped to prevent cross-session interference.
 
 **Semantic sufficiency gating** -- rejects memories too thin or lacking real evidence. Short documents with strong structural signals (clear title, proper labels) get an exception.
 
-**Verify-fix-verify loop** -- runs quality checks before saving. If the spec-doc record falls short, the system tries to fix problems automatically and checks again before storing.
+**Verify-fix-verify loop** -- runs quality checks inside the save workflow when `SPECKIT_QUALITY_LOOP` is enabled. If the spec-doc record falls short, the save path can try to fix problems and check again before storing.
 
 **Content normalization** -- strips formatting clutter (bullet markers, code fences, header symbols) before generating embeddings. Cleaner fingerprints match your questions more accurately.
 
@@ -514,7 +514,7 @@ Beyond the core search pipeline, several enhancements make retrieval smarter at 
 
 The system keeps the index accurate and performant as your project evolves.
 
-**Real-time filesystem watching** (chokidar) -- monitors your project folder continuously. When you save, rename or delete a file, the index updates automatically.
+**Optional markdown filesystem watching** (chokidar) -- when `SPECKIT_FILE_WATCHER=true`, watches configured markdown/spec-doc paths and re-indexes changed docs. This is not a structural code-graph source watcher; run `code_graph_scan` when structural graph freshness requires a full scan.
 
 **Incremental indexing with content hashing** -- tracks SHA-256 hashes of every indexed file. Unchanged files get skipped instantly during scans.
 
@@ -526,7 +526,14 @@ The system keeps the index accurate and performant as your project evolves.
 
 **Chunked-save finalization** -- chunked saves track the created parent and child IDs so finalization stays transactional. Prediction-error supersede finalization records cross-path `supersedes` edges and marks predecessors superseded inside one transaction. Safe-swap updates null old-child `parent_id` values before bulk delete inside that same finalization step, and any finalize failure triggers compensating cleanup that removes the staged replacement chunk tree. Parent BM25 mutation is delayed until at least one chunk succeeds and, for safe-swap updates, until finalization completes, which preserves the old parent BM25 state when all chunks fail.
 
-**Dynamic server instructions** -- at startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
+**Dynamic server instructions** -- at MCP startup, tells the calling AI how many memories are stored, how many folders exist and which search methods are available.
+
+| Automation claim | Trigger | Default / caveat | Manual fallback |
+| --- | --- | --- | --- |
+| Markdown/spec-doc watcher indexing | `SPECKIT_FILE_WATCHER=true` starts the watcher | Default off; re-indexes markdown/spec docs, not structural code graph | `memory_index_scan` |
+| Touched packet doc indexing | `/memory:save` Step 11.5 with `SPECKIT_AUTO_INDEX_TOUCHED=on` | Save workflow only | `memory_index_scan({ specFolder })` |
+| Spec validation | Operator workflow invokes `validate.sh --strict` | No universal PostToolUse validator hook found | `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` |
+| CCC lifecycle | `/memory:manage ccc ...` or direct `ccc_*` MCP call | Manual; no background CCC trigger found | `ccc_status`, `ccc_reindex`, `ccc_feedback` |
 
 ---
 
@@ -606,7 +613,14 @@ For package-local details, see [Skill Advisor Native Package README](skill-advis
 
 **Tuning the scoring tables:** `/doctor:skill-advisor` is the user-facing surface for proposing and applying optimizations to `TOKEN_BOOSTS`, `PHRASE_BOOSTS`, `CATEGORY_HINTS`, and per-skill `graph-metadata.json` derived fields (`derived.trigger_phrases`, `derived.key_topics`). The command runs a 5-phase pipeline (Discovery → Analysis → Proposal → Apply → Verify) with auto and confirm modes; mutation boundaries are validated by a Phase 3 canonical-path validator (realpath + repo-relative + allowlist exact-match) before any write, and a per-run rollback script is generated under packet-local scratch for safe recovery. End-user setup guide: [`.opencode/install_guides/SET-UP - Skill Advisor.md`](../../../install_guides/SET-UP%20-%20Skill%20Advisor.md).
 
-**Runtime hook surface:** prompt-time Skill Advisor adapters ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output; Copilot refreshes its managed local custom-instructions block and keeps hook stdout as `{}`. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
+**Runtime hook surface:** prompt-time Skill Advisor adapters ship for Claude, Gemini, Copilot, and Codex. Claude, Gemini, and Codex inject the brief through runtime hook output when their hooks are wired; Copilot refreshes its managed local custom-instructions block for next-prompt freshness and keeps hook stdout as `{}`. Codex native hooks require `codex_hooks` plus user/workspace `hooks.json`; repo `.codex/settings.json` is an example template. When native routing is unavailable, use the documented runtime fallback paths rather than treating the Python shim as the primary operator surface.
+
+| Runtime automation | Trigger | Default / caveat | Fallback |
+| --- | --- | --- | --- |
+| Claude advisor/startup | `.claude/settings.local.json` hook events | Richest project-local lifecycle surface | `/spec_kit:resume`, direct MCP tools |
+| Codex advisor/startup | `[features].codex_hooks = true` plus user/workspace `hooks.json` | No Spec Kit Stop hook; `.codex/settings.json` is template-only | `/spec_kit:resume`, `session_bootstrap()` |
+| Copilot advisor/startup | Copilot-supported writer scripts | Next-prompt custom-instructions freshness only | Managed instructions file, `/spec_kit:resume` |
+| OpenCode advisor | Plugin transform/event handlers | Plugin transport, not shell hooks | Direct MCP tools |
 
 - [hooks/README.md](./hooks/README.md) - runtime hook overview for the MCP server package
 - [hooks/claude/README.md](./hooks/claude/README.md) - Claude registration and `UserPromptSubmit` behavior
@@ -1200,7 +1214,7 @@ Response shape: `{ status, affectedSymbols[], affectedFiles[], blockedReason?, t
 
 ##### `ccc_status`
 
-Check CocoIndex availability, binary path and index status.
+Check CocoIndex availability, binary path and index status. Trigger: `/memory:manage ccc status` or direct `ccc_status` MCP call.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1210,7 +1224,7 @@ Check CocoIndex availability, binary path and index status.
 
 ##### `ccc_reindex`
 
-Trigger CocoIndex incremental or full re-indexing of the workspace.
+Trigger CocoIndex incremental or full re-indexing of the workspace. Trigger: `/memory:manage ccc reindex [--full]` or direct `ccc_reindex` MCP call.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|
@@ -1220,7 +1234,7 @@ Trigger CocoIndex incremental or full re-indexing of the workspace.
 
 ##### `ccc_feedback`
 
-Submit quality feedback on CocoIndex search results to improve future searches.
+Submit quality feedback on CocoIndex search results to improve future searches. Trigger: `/memory:manage ccc feedback ...` or direct `ccc_feedback` MCP call.
 
 | Parameter | Type | Notes |
 |-----------|------|-------|

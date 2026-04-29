@@ -303,9 +303,9 @@ Seven tools, unchanged across the Phase 028 migration:
 | `code_graph_query` | Structural graph | `handlers/query.ts` |
 | `code_graph_context` | Structural graph | `handlers/context.ts` |
 | `code_graph_status` | Structural graph | `handlers/status.ts` |
-| `ccc_reindex` | coco-index facade | `handlers/ccc-reindex.ts` |
-| `ccc_status` | coco-index facade | `handlers/ccc-status.ts` |
-| `ccc_feedback` | coco-index facade | `handlers/ccc-feedback.ts` |
+| `ccc_reindex` | coco-index facade | `mcp_server/code_graph/handlers/ccc-reindex.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
+| `ccc_status` | coco-index facade | `mcp_server/code_graph/handlers/ccc-status.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
+| `ccc_feedback` | coco-index facade | `mcp_server/code_graph/handlers/ccc-feedback.ts` (exported from `mcp_server/code_graph/handlers/index.ts`) |
 
 ### coco-index facade pattern
 

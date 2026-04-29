@@ -1,7 +1,7 @@
 ---
-description: Manage indexed-continuity database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, and ingest operations
-argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>]"
-allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel
+description: Manage indexed-continuity database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, and CocoIndex CCC operations
+argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>] | [ccc <status|reindex|feedback>]"
+allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel, spec_kit_memory_ccc_status, spec_kit_memory_ccc_reindex, spec_kit_memory_ccc_feedback
 ---
 
 # 🚨 MANDATORY FIRST ACTION - DO NOT SKIP
@@ -16,13 +16,13 @@ allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, 
 BEFORE executing ANY workflow:
 
 1. PARSE $ARGUMENTS to determine mode
-2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest)
+2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc)
    - IF $ARGUMENTS is empty → mode = "stats" (default)
 3. For modes requiring <id>: VERIFY id is provided and numeric
 4. For modes requiring <name>: VERIFY name is provided
 
 IF mode unrecognized:
-  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest"
+  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc"
 
 IF required parameter missing:
   → STATUS=FAIL ERROR="Missing required parameter for <mode>"
@@ -32,12 +32,12 @@ IF required parameter missing:
 
 # Memory Management Command
 
-Unified management interface for the indexed-continuity database: scan for new files, cleanup old spec-doc records, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, and run async ingest jobs.
+Unified management interface for the indexed-continuity database: scan for new files, cleanup old spec-doc records, bulk-delete by tier, change tiers, edit triggers, validate usefulness, delete entries, check health, manage checkpoints, run async ingest jobs, and route CocoIndex CCC lifecycle calls.
 
 ```yaml
 role: Memory Database Administrator
 purpose: Unified management interface for indexed-continuity database maintenance, checkpoint operations, and async ingest management
-action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, or ingest based on arguments
+action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, or ccc based on arguments
 operating_mode:
   workflow: interactive_management
   approvals: cleanup_delete_restore_require_confirmation
@@ -47,7 +47,7 @@ operating_mode:
 
 ## 0. INSTRUCTIONS
 
-Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `spec-doc/*.md` surface is no longer accepted by the runtime.
+Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `spec-doc/*.md` surface is no longer accepted by the runtime. CCC routing is explicit operator-triggered management, not background CocoIndex automation.
 
 ---
 
@@ -60,6 +60,7 @@ Provide a unified interface for the indexed-continuity database **management** o
 - Validation feedback and deletion
 - Health checks and diagnostics
 - Checkpoint creation, restoration, listing, and deletion
+- CocoIndex CCC status, feedback, and re-index routing
 
 **Separation from `/memory:search`:**
 - `/memory:search` = RETRIEVAL + ANALYSIS (intent-aware search, epistemic baselines, causal graph, evaluation)
@@ -96,6 +97,9 @@ Provide a unified interface for the indexed-continuity database **management** o
 | `ingest start <path1> [path2 ...]`       | Start Ingest      | `/memory:manage ingest start /path/file.md`            |
 | `ingest status <jobId>`                  | Ingest Status     | `/memory:manage ingest status abc-123`                 |
 | `ingest cancel <jobId>`                  | Cancel Ingest     | `/memory:manage ingest cancel abc-123`                 |
+| `ccc status`                             | CCC Status        | `/memory:manage ccc status`                            |
+| `ccc reindex [--full]`                   | CCC Reindex       | `/memory:manage ccc reindex --full`                    |
+| `ccc feedback <query> <rating>`          | CCC Feedback      | `/memory:manage ccc feedback "query" helpful`          |
 
 ### Importance Tiers
 
@@ -133,6 +137,9 @@ Provide a unified interface for the indexed-continuity database **management** o
 | `/memory:manage ingest start /path/file.md`            | Start async ingest job    |
 | `/memory:manage ingest status abc-123`                 | Check ingest progress     |
 | `/memory:manage ingest cancel abc-123`                 | Cancel ingest job         |
+| `/memory:manage ccc status`                            | Check CocoIndex availability |
+| `/memory:manage ccc reindex --full`                    | Run CocoIndex re-indexing |
+| `/memory:manage ccc feedback "query" helpful`          | Submit CocoIndex result feedback |
 
 ---
 
@@ -159,6 +166,10 @@ $ARGUMENTS
     │   ├─ "start <paths>"   → Start async job
     │   ├─ "status <jobId>"  → Check progress
     │   └─ "cancel <jobId>"  → Cancel running job
+    ├─ "ccc <sub>"          → CCC MODE (Section 16)
+        ├─ "status"         → Check CocoIndex availability
+        ├─ "reindex [--full]" → Re-index CocoIndex
+        └─ "feedback <query> <rating>" → Submit result feedback
 ```
 
 ---
@@ -868,7 +879,49 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 
 ---
 
-## 16. ERROR HANDLING
+## 16. CCC MODE
+
+**Trigger:** `/memory:manage ccc status|reindex|feedback`
+
+CocoIndex CCC operations are explicit operator-triggered MCP calls. No startup, watcher, or background path invokes `ccc_status`, `ccc_reindex`, or `ccc_feedback` automatically; lifecycle code may check CocoIndex availability through separate helpers.
+
+### CCC Status
+
+**Trigger:** `/memory:manage ccc status`
+
+```javascript
+spec_kit_memory_ccc_status({})
+```
+
+Reports CocoIndex binary availability and index status.
+
+### CCC Reindex
+
+**Trigger:** `/memory:manage ccc reindex [--full]`
+
+```javascript
+spec_kit_memory_ccc_reindex({ full: <true|false> })
+```
+
+Runs CocoIndex incremental re-indexing by default. Use `--full` only when the semantic index is missing, stale, or explicitly requested by an operator.
+
+### CCC Feedback
+
+**Trigger:** `/memory:manage ccc feedback <query> <rating> [--comment <text>]`
+
+```javascript
+spec_kit_memory_ccc_feedback({
+  query: "<query>",
+  rating: "helpful",
+  comment: "<optional comment>"
+})
+```
+
+`rating` must match the MCP handler contract (`helpful`, `not_helpful`, or `partial`).
+
+---
+
+## 17. ERROR HANDLING
 
 | Condition                | Response                                                                                                                         |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -884,10 +937,11 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 | Database not initialized | `STATUS=FAIL ERROR="Database not initialized. Run memory_index_scan() to create schema, or restart the MCP server."`             |
 | Ingest job not found     | `STATUS=FAIL ERROR="Job '<jobId>' not found"`                                                                                    |
 | Too many ingest paths    | `STATUS=FAIL ERROR="Maximum 50 paths per job"`                                                                                   |
+| CCC subcommand invalid   | `STATUS=FAIL ERROR="Unknown ccc subcommand. Valid: status, reindex, feedback"`                                                   |
 
 ---
 
-## 17. RELATED COMMANDS
+## 18. RELATED COMMANDS
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context
