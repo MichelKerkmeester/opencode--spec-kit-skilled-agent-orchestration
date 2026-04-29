@@ -11,6 +11,7 @@ import {
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { DEFAULT_SHADOW_SCORER_LANE_WEIGHTS } from '../lib/scorer/lane-registry.js';
 import { sanitizeSkillLabel } from '../lib/render.js';
+import { recordShadowDelta } from '../lib/shadow/shadow-sink.js';
 import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 import {
   AdvisorRecommendInputSchema,
@@ -278,6 +279,17 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
       : {}),
   };
   const parsed = AdvisorRecommendOutputSchema.parse(output);
+  for (const shadow of parsed._shadow?.recommendations ?? []) {
+    recordShadowDelta({
+      prompt: input.prompt,
+      recommendation: shadow.skillId,
+      liveScore: shadow.liveScore,
+      shadowScore: shadow.shadowScore,
+      delta: shadow.delta,
+      dominantLane: shadow.dominantShadowLane,
+      timestamp: parsed.generatedAt,
+    });
+  }
   advisorPromptCache.set({
     key,
     sourceSignature,

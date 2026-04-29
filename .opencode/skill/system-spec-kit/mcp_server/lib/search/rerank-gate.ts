@@ -14,6 +14,11 @@ interface ChannelAgreementSignals {
 
 interface RerankGateInput {
   queryPlan: QueryPlan;
+  scope?: {
+    tenantId?: string;
+    userId?: string;
+    agentId?: string;
+  };
   signals?: ChannelAgreementSignals;
 }
 

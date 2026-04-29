@@ -59,6 +59,10 @@ import {
   isIntentAutoProfileEnabled,
 } from '../lib/search/search-flags.js';
 import { buildResumeLadder, type ResumeLadderResult } from '../lib/resume/resume-ladder.js';
+import { routeQuery } from '../lib/search/query-router.js';
+import { createEmptyQueryPlan } from '../lib/query/query-plan.js';
+import { buildSearchDecisionEnvelope } from '../lib/search/search-decision-envelope.js';
+import { recordSearchDecision } from '../lib/search/decision-audit.js';
 
 // Feature catalog: Unified context retrieval (memory_context)
 // Feature catalog: Dual-scope memory auto-surface
@@ -1754,6 +1758,43 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   if (structuralRoutingNudge) {
     responseData.structuralRoutingNudge = structuralRoutingNudge;
   }
+  const contextQueryPlan = (() => {
+    try {
+      return routeQuery(normalizedInput).queryPlan;
+    } catch {
+      return createEmptyQueryPlan({
+        complexity: 'unknown',
+        selectedChannels: [queryIntentMetadata?.routedBackend ?? 'semantic'],
+        fallbackPolicy: {
+          mode: 'telemetry_only',
+          reason: 'QueryPlan telemetry fallback after routeQuery failure',
+        },
+      });
+    }
+  })();
+  const searchDecisionEnvelope = buildSearchDecisionEnvelope({
+    requestId,
+    tenantId: args.tenantId,
+    userId: args.userId,
+    agentId: args.agentId,
+    queryPlan: contextQueryPlan,
+    trustTreeInput: {
+      responsePolicy: {
+        state: 'live',
+        decision: 'memory_context_response',
+      },
+      codeGraph: queryIntentMetadata
+        ? {
+          trustState: graphContextResult ? 'live' : 'absent',
+          canonicalReadiness: graphContextResult ? 'ready' : 'missing',
+        }
+        : undefined,
+    },
+    timestamp: new Date(_contextStartTime).toISOString(),
+    latencyMs: Date.now() - _contextStartTime,
+  });
+  responseData.searchDecisionEnvelope = searchDecisionEnvelope;
+  responseData.search_decision_envelope = searchDecisionEnvelope;
 
   // Build response with layer metadata
   const _contextResponse = createMCPResponse({
@@ -1866,6 +1907,11 @@ async function handleMemoryContext(args: ContextArgs): Promise<MCPResponse> {
   } catch {
     // Intentional no-op — error deliberately discarded
   }
+
+  recordSearchDecision({
+    ...searchDecisionEnvelope,
+    latencyMs: Date.now() - _contextStartTime,
+  });
 
   return _contextResponse;
   } catch (error: unknown) {

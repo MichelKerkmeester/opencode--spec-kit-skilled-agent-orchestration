@@ -847,6 +847,17 @@ description: Fixture helper for routing tests
                 "redirectFrom": ["old-git"],
                 "redirectTo": "new-git",
             }],
+            "_shadow": {
+                "model": "advisor-shadow-learned-weights-v1",
+                "liveWeightsFrozen": True,
+                "recommendations": [{
+                    "skillId": "sk-git",
+                    "liveScore": 1.2,
+                    "shadowScore": 1.4,
+                    "delta": 0.2,
+                    "dominantShadowLane": "semantic_shadow",
+                }],
+            },
         }
         legacy = advisor._legacy_recommendations_from_native(native_output)
         first = legacy[0] if legacy else {}
@@ -856,6 +867,7 @@ description: Fixture helper for routing tests
             and first.get("dominant_lane") == "explicit_author"
             and first.get("redirect_from") == ["old-git"]
             and first.get("redirect_to") == "new-git"
+            and first.get("_shadow", {}).get("dominantShadowLane") == "semantic_shadow"
         ):
             ok("T243-SA-020: native bridge preserves legacy parity fields")
         else:

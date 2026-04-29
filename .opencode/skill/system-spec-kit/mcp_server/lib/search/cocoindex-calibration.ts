@@ -14,6 +14,9 @@ interface CocoIndexCandidateLike {
 interface CocoIndexCalibrationInput {
   requestedLimit: number;
   candidates: readonly CocoIndexCandidateLike[];
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
   env?: NodeJS.ProcessEnv;
 }
 
@@ -26,6 +29,11 @@ interface CocoIndexCalibrationTelemetry {
   adaptiveOverfetchApplied: boolean;
   overfetchMultiplier: number;
   pathClassCounts: Record<string, number>;
+  scope?: {
+    tenantId?: string;
+    userId?: string;
+    agentId?: string;
+  };
 }
 
 function isAdaptiveCocoIndexOverfetchEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
@@ -48,6 +56,13 @@ function calibrateCocoIndexOverfetch(input: CocoIndexCalibrationInput): CocoInde
     adaptiveOverfetchApplied,
     overfetchMultiplier,
     pathClassCounts: countPathClasses(input.candidates),
+    ...(input.tenantId || input.userId || input.agentId ? {
+      scope: {
+        ...(input.tenantId ? { tenantId: input.tenantId } : {}),
+        ...(input.userId ? { userId: input.userId } : {}),
+        ...(input.agentId ? { agentId: input.agentId } : {}),
+      },
+    } : {}),
   };
 }
 

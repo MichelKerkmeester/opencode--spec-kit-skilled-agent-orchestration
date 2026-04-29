@@ -35,7 +35,9 @@ import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP } from '../intent-classifier.js';
 import { createEmptyQueryPlan } from '../../query/query-plan.js';
+import type { QueryPlan } from '../../query/query-plan.js';
 import { decideConditionalRerank } from '../rerank-gate.js';
+import type { RerankGateDecision } from '../rerank-gate.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/index.js';
 import { toErrorMessage } from '../../../utils/index.js';
@@ -138,6 +140,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   let results = scored;
   let rerankApplied = false;
   let rerankProvider: RerankProvider = 'none';
+  let rerankGateDecision: RerankGateDecision | undefined;
 
   // -- Step 1: Cross-encoder reranking ---------------------------
   const rerankStart = Date.now();
@@ -149,10 +152,15 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
     rerank: config.rerank,
     applyLengthPenalty: config.applyLengthPenalty,
     limit: config.limit,
+    queryPlan: config.queryPlan,
+    tenantId: config.tenantId,
+    userId: config.userId,
+    agentId: config.agentId,
   });
   results = rerankResult.rows;
   rerankApplied = rerankResult.applied;
   rerankProvider = rerankResult.provider;
+  rerankGateDecision = rerankResult.gateDecision;
 
   if (config.trace) {
     addTraceEntry(
@@ -276,6 +284,7 @@ export async function executeStage3(input: Stage3Input): Promise<Stage3Output> {
   const metadata = {
     rerankApplied,
     rerankProvider,
+    ...(rerankGateDecision ? { rerankGateDecision } : {}),
     chunkReassemblyStats: chunkStats,
     durationMs: Date.now() - stageStart,
   };
@@ -312,31 +321,43 @@ async function applyCrossEncoderReranking(
     rerank: boolean;
     applyLengthPenalty: boolean;
     limit: number;
+    queryPlan?: QueryPlan;
+    tenantId?: string;
+    userId?: string;
+    agentId?: string;
   }
-): Promise<{ rows: PipelineRow[]; applied: boolean; provider: RerankProvider }> {
+): Promise<{ rows: PipelineRow[]; applied: boolean; provider: RerankProvider; gateDecision?: RerankGateDecision }> {
+  const inferredChannels = inferResultChannels(results);
+  const queryPlan = options.queryPlan ?? createEmptyQueryPlan({
+    complexity: 'unknown',
+    selectedChannels: inferredChannels,
+  });
+  const gate = decideConditionalRerank({
+    queryPlan,
+    scope: {
+      tenantId: options.tenantId,
+      userId: options.userId,
+      agentId: options.agentId,
+    },
+    signals: {
+      candidateCount: results.length,
+      channelCount: inferredChannels.length,
+      topScoreMargin: topScoreMargin(results),
+    },
+  });
+
   // Feature-flag guard
   if (!options.rerank || !isCrossEncoderEnabled()) {
-    return { rows: results, applied: false, provider: 'none' };
+    return { rows: results, applied: false, provider: 'none', gateDecision: gate };
   }
 
   // Minimum-document guard
   if (results.length < MIN_RESULTS_FOR_RERANK) {
-    return { rows: results, applied: false, provider: 'none' };
+    return { rows: results, applied: false, provider: 'none', gateDecision: gate };
   }
 
-  const gate = decideConditionalRerank({
-    queryPlan: createEmptyQueryPlan({
-      complexity: 'unknown',
-      selectedChannels: inferResultChannels(results),
-    }),
-    signals: {
-      candidateCount: results.length,
-      channelCount: inferResultChannels(results).length,
-      topScoreMargin: topScoreMargin(results),
-    },
-  });
   if (!gate.shouldRerank) {
-    return { rows: results, applied: false, provider: 'none' };
+    return { rows: results, applied: false, provider: 'none', gateDecision: gate };
   }
 
   // Build a lookup map so we can restore all original PipelineRow fields
@@ -352,7 +373,7 @@ async function applyCrossEncoderReranking(
     try {
       const localReranked = await rerankLocal(query, results, options.limit);
       if (localReranked === results) {
-        return { rows: results, applied: false, provider: 'local-gguf' };
+        return { rows: results, applied: false, provider: 'local-gguf', gateDecision: gate };
       }
 
       const localRows: PipelineRow[] = localReranked.map((row) => {
@@ -377,12 +398,12 @@ async function applyCrossEncoderReranking(
         };
       });
 
-      return { rows: localRows, applied: true, provider: 'local-gguf' };
+      return { rows: localRows, applied: true, provider: 'local-gguf', gateDecision: gate };
     } catch (err: unknown) {
       console.warn(
         `[stage3-rerank] Local reranking failed: ${toErrorMessage(err)} — returning original results`
       );
-      return { rows: results, applied: false, provider: 'local-gguf' };
+      return { rows: results, applied: false, provider: 'local-gguf', gateDecision: gate };
     }
   }
 
@@ -441,13 +462,13 @@ async function applyCrossEncoderReranking(
       });
     }
 
-    return { rows: rerankedRows, applied: true, provider: rerankProvider };
+    return { rows: rerankedRows, applied: true, provider: rerankProvider, gateDecision: gate };
   } catch (err: unknown) {
     // Graceful degradation — return original results on any reranker failure
     console.warn(
       `[stage3-rerank] Cross-encoder reranking failed: ${toErrorMessage(err)} — returning original results`
     );
-    return { rows: results, applied: false, provider: 'cross-encoder' };
+    return { rows: results, applied: false, provider: 'cross-encoder', gateDecision: gate };
   }
 }
 

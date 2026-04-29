@@ -362,6 +362,17 @@ def _legacy_recommendations_from_native(output: Dict[str, Any]) -> List[Dict[str
     recommendations = output.get("recommendations")
     if not isinstance(recommendations, list):
         return []
+    shadow_by_skill: Dict[str, Dict[str, Any]] = {}
+    shadow = output.get("_shadow")
+    if isinstance(shadow, dict):
+        shadow_recommendations = shadow.get("recommendations")
+        if isinstance(shadow_recommendations, list):
+            for shadow_item in shadow_recommendations:
+                if not isinstance(shadow_item, dict):
+                    continue
+                shadow_skill_id = _sanitize_native_label(shadow_item.get("skillId"))
+                if shadow_skill_id:
+                    shadow_by_skill[shadow_skill_id] = shadow_item
 
     legacy: List[Dict[str, Any]] = []
     for recommendation in recommendations:
@@ -393,6 +404,8 @@ def _legacy_recommendations_from_native(output: Dict[str, Any]) -> List[Dict[str
             redirect_to = _sanitize_native_label(recommendation["redirectTo"])
             if redirect_to:
                 item["redirect_to"] = redirect_to
+        if skill_id in shadow_by_skill:
+            item["_shadow"] = shadow_by_skill[skill_id]
         legacy.append(item)
     return legacy
 

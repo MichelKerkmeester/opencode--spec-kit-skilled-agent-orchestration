@@ -20,6 +20,14 @@ import { initConsumptionLog, logConsumptionEvent } from '../lib/telemetry/consum
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry.js';
 // Artifact-class routing (spec/plan/tasks/checklist/memory)
 import { getStrategyForQuery } from '../lib/search/artifact-routing.js';
+import { routeQuery } from '../lib/search/query-router.js';
+import { createEmptyQueryPlan, type QueryPlan } from '../lib/query/query-plan.js';
+import { calibrateCocoIndexOverfetch } from '../lib/search/cocoindex-calibration.js';
+import {
+  buildSearchDecisionEnvelope,
+  type SearchDecisionEnvelope,
+} from '../lib/search/search-decision-envelope.js';
+import { recordSearchDecision } from '../lib/search/decision-audit.js';
 // Chunk reassembly (extracted from this file)
 import { collapseAndReassembleChunkResults } from '../lib/search/chunk-reassembly.js';
 // Search utilities (extracted from this file)
@@ -733,6 +741,8 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
   const hasValidQuery = normalizedQuery !== null;
   const hasValidConcepts = Array.isArray(concepts) && concepts.length >= 2;
   const effectiveQuery = normalizedQuery ?? (hasValidConcepts ? concepts.join(', ') : '');
+  const searchDecisionRequestId = `memory_search-${_searchStartTime}`;
+  let searchDecisionEnvelope: SearchDecisionEnvelope | null = null;
 
   if (!hasValidQuery && !hasValidConcepts) {
     return createMCPErrorResponse({
@@ -776,6 +786,19 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     hasValidConcepts ? concepts : undefined
   );
   let artifactRouting = getStrategyForQuery(artifactRoutingQuery, specFolder);
+  let queryPlan: QueryPlan;
+  try {
+    queryPlan = routeQuery(effectiveQuery).queryPlan;
+  } catch (_error: unknown) {
+    queryPlan = createEmptyQueryPlan({
+      complexity: 'unknown',
+      selectedChannels: ['vector', 'fts', 'bm25', 'graph', 'degree'],
+      fallbackPolicy: {
+        mode: 'telemetry_only',
+        reason: 'QueryPlan telemetry fallback after routeQuery failure',
+      },
+    });
+  }
 
   // Intent-aware retrieval
   let detectedIntent: string | null = null;
@@ -943,6 +966,7 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       intentConfidence,
       intentWeights: toIntentWeightsConfig(intentWeights),
       artifactRouting: artifactRouting as unknown as PipelineConfig['artifactRouting'],
+      queryPlan,
       trace,
     };
 
@@ -1124,6 +1148,48 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
     if (pipelineResult.trace) {
       extraData.retrievalTrace = pipelineResult.trace;
     }
+    const cocoindexCalibration = calibrateCocoIndexOverfetch({
+      requestedLimit: limit,
+      tenantId: normalizedScope.tenantId,
+      userId: normalizedScope.userId,
+      agentId: normalizedScope.agentId,
+      candidates: pipelineResult.results.map((result) => {
+        const raw = result as unknown as Record<string, unknown>;
+        return {
+          id: result.id,
+          filePath: typeof raw.file_path === 'string'
+            ? raw.file_path
+            : (typeof raw.filePath === 'string' ? raw.filePath : undefined),
+          pathClass: typeof raw.contextType === 'string'
+            ? raw.contextType
+            : (typeof raw.context_type === 'string' ? raw.context_type : undefined),
+        };
+      }),
+    });
+    searchDecisionEnvelope = buildSearchDecisionEnvelope({
+      requestId: searchDecisionRequestId,
+      tenantId: normalizedScope.tenantId,
+      userId: normalizedScope.userId,
+      agentId: normalizedScope.agentId,
+      queryPlan,
+      trustTreeInput: {
+        responsePolicy: {
+          state: 'live',
+          decision: 'memory_search_response',
+        },
+        cocoIndex: {
+          available: true,
+          pathClass: Object.keys(cocoindexCalibration.pathClassCounts)[0],
+        },
+      },
+      rerankGateDecision: pipelineResult.metadata.stage3.rerankGateDecision,
+      cocoindexCalibration,
+      pipelineTiming: pipelineResult.metadata.timing,
+      timestamp: new Date(_searchStartTime).toISOString(),
+      latencyMs: Date.now() - _searchStartTime,
+    });
+    extraData.searchDecisionEnvelope = searchDecisionEnvelope;
+    extraData.search_decision_envelope = searchDecisionEnvelope;
     try {
       const adaptiveShadow = buildAdaptiveShadowProposal(
         requireDb(),
@@ -1338,6 +1404,13 @@ async function handleMemorySearch(args: SearchArgs): Promise<MCPResponse> {
       summarizeGraphWalkDiagnostics(extractResponseResults(responseToReturn)),
     );
     responseToReturn = attachTelemetryMeta(responseToReturn, retrievalTelemetry.toJSON(telemetry));
+  }
+
+  if (searchDecisionEnvelope) {
+    recordSearchDecision({
+      ...searchDecisionEnvelope,
+      latencyMs: Date.now() - _searchStartTime,
+    });
   }
 
   // Consumption instrumentation — log search event (fail-safe, never throws)

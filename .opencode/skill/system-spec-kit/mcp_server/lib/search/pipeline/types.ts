@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 // Stage interfaces with the Stage 4 immutability invariant
 import type { RetrievalTrace } from '@spec-kit/shared/contracts/retrieval-trace';
+import type { QueryPlan } from '../../query/query-plan.js';
+import type { RerankGateDecision } from '../rerank-gate.js';
+import type { CocoIndexCalibrationTelemetry } from '../cocoindex-calibration.js';
 
 // Feature catalog: 4-stage pipeline architecture
 
@@ -160,6 +163,7 @@ export interface PipelineConfig {
 
   // Routing
   artifactRouting?: ArtifactRoutingConfig;
+  queryPlan?: QueryPlan;
 
   // Trace
   trace?: RetrievalTrace;
@@ -275,6 +279,9 @@ export interface Stage3Output {
   reranked: PipelineRow[];
   metadata: {
     rerankApplied: boolean;
+    rerankProvider?: string;
+    rerankGateDecision?: RerankGateDecision;
+    cocoindexCalibration?: CocoIndexCalibrationTelemetry;
     chunkReassemblyStats: {
       collapsedChunkHits: number;
       chunkParents: number;
