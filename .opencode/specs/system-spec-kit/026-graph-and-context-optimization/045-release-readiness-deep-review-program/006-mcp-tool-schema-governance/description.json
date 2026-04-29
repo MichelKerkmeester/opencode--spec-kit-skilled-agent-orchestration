@@ -1,0 +1,20 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program/006-mcp-tool-schema-governance",
+  "description": "Deep-review angle 6: MCP tool schema strictness, governed-ingest enforcement, scope-governance, canonical tool count alignment across tool-schemas.ts / opencode.json / README / docs.",
+  "keywords": [
+    "045-006-mcp-tool-schema-governance",
+    "schema audit",
+    "governance enforcement review",
+    "tool count canonical"
+  ],
+  "lastUpdated": "2026-04-29T21:20:00.000Z",
+  "specId": "006",
+  "folderSlug": "mcp-tool-schema-governance",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "045-release-readiness-deep-review-program"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}
