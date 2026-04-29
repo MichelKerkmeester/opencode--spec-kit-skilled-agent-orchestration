@@ -1,0 +1,14 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/024-harness-telemetry-export-mode",
+  "description": "Extend search-quality harness to natively carry SearchDecisionEnvelope + decision-audit + shadow telemetry on result types. Retires packet-local wrapper pattern.",
+  "keywords": ["harness", "telemetry-export", "search-decision-envelope", "decision-audit", "shadow", "phase-k"],
+  "lastUpdated": "2026-04-29T08:45:00.000Z",
+  "specId": "024",
+  "folderSlug": "harness-telemetry-export-mode",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 1
+}

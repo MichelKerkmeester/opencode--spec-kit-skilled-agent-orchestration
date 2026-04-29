@@ -4,6 +4,8 @@
 // Runs corpus cases through injectable channel runners and captures outcome
 // telemetry. The harness is intentionally database-agnostic.
 
+import { appendFileSync, mkdirSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { performance } from 'node:perf_hooks';
 
 import {
@@ -15,6 +17,8 @@ import {
   precisionAtK,
   recallAtK,
 } from './metrics.js';
+import type { SearchDecisionEnvelope } from '../../lib/search/search-decision-envelope.js';
+import type { ShadowDeltaRecord } from '../../skill_advisor/lib/shadow/shadow-sink.js';
 
 interface SearchQualityCandidate {
   id: string;
@@ -26,12 +30,19 @@ interface SearchQualityCandidate {
   metadata?: Record<string, unknown>;
 }
 
+interface SearchQualityTelemetry {
+  envelope?: SearchDecisionEnvelope;
+  auditRows?: SearchDecisionEnvelope[];
+  shadowRows?: ShadowDeltaRecord[];
+}
+
 interface SearchQualityChannelOutput {
   candidates: SearchQualityCandidate[];
   refused?: boolean;
   citationIds?: string[];
   finalAnswer?: string;
   latencyMs?: number;
+  telemetry?: SearchQualityTelemetry;
 }
 
 interface SearchQualityChannelCapture {
@@ -41,6 +52,13 @@ interface SearchQualityChannelCapture {
   citationIds: string[];
   latencyMs: number;
   error?: string;
+  telemetry?: SearchQualityTelemetry;
+}
+
+interface SearchQualityCaseTelemetry {
+  envelopes: SearchDecisionEnvelope[];
+  auditRows: SearchDecisionEnvelope[];
+  shadowRows: ShadowDeltaRecord[];
 }
 
 interface SearchQualityCaseResult {
@@ -69,6 +87,7 @@ interface SearchQualityCaseResult {
     totalMs: number;
     byChannel: Partial<Record<SearchQualityChannel, number>>;
   };
+  telemetry?: SearchQualityCaseTelemetry;
 }
 
 interface SearchQualityRun {
@@ -81,10 +100,16 @@ type SearchQualityRunner = (testCase: SearchQualityCase) => Promise<SearchQualit
 
 type SearchQualityRunners = Partial<Record<SearchQualityChannel, SearchQualityRunner>>;
 
+interface SearchQualityHarnessOptions {
+  runId?: string;
+  k?: number;
+  telemetryExportPath?: string;
+}
+
 async function runSearchQualityHarness(
   corpus: SearchQualityCorpus,
   runners: SearchQualityRunners,
-  options: { runId?: string; k?: number } = {},
+  options: SearchQualityHarnessOptions = {},
 ): Promise<SearchQualityRun> {
   const k = options.k ?? 3;
   const runId = options.runId ?? `search-quality-${Date.now()}`;
@@ -117,6 +142,7 @@ async function runSearchQualityHarness(
           refused: output.refused === true,
           citationIds: output.citationIds ?? collectCitationIds(output.candidates),
           latencyMs: output.latencyMs ?? Math.max(0, performance.now() - channelStart),
+          ...(output.telemetry ? { telemetry: output.telemetry } : {}),
         });
       } catch (error: unknown) {
         captures.push({
@@ -136,11 +162,12 @@ async function runSearchQualityHarness(
     const observedCitationIds = uniqueStrings(captures.flatMap((capture) => capture.citationIds));
     const expectedCitationIds = testCase.citationExpectation?.requiredIds ?? [];
     const refused = captures.some((capture) => capture.refused);
+    const telemetry = collectTelemetry(captures);
     const citationPassed = expectedCitationIds.length === 0
       || expectedCitationIds.every((id) => observedCitationIds.includes(id))
       || (testCase.citationExpectation?.allowRefusalInstead === true && refused);
 
-    cases.push({
+    const result: SearchQualityCaseResult = {
       caseId: testCase.id,
       query: testCase.query,
       perChannelCandidates: buildCandidateMap(captures),
@@ -166,7 +193,14 @@ async function runSearchQualityHarness(
         totalMs: Math.max(0, performance.now() - caseStart),
         byChannel: Object.fromEntries(captures.map((capture) => [capture.channel, capture.latencyMs])),
       },
-    });
+      ...(hasTelemetry(telemetry) ? { telemetry } : {}),
+    };
+
+    if (options.telemetryExportPath) {
+      appendTelemetryRows(options.telemetryExportPath, telemetry);
+    }
+
+    cases.push(result);
   }
 
   return {
@@ -174,6 +208,34 @@ async function runSearchQualityHarness(
     corpusVersion: corpus.version,
     cases,
   };
+}
+
+function collectTelemetry(
+  captures: SearchQualityChannelCapture[],
+): SearchQualityCaseTelemetry {
+  return {
+    envelopes: captures.flatMap((capture) => capture.telemetry?.envelope ? [capture.telemetry.envelope] : []),
+    auditRows: captures.flatMap((capture) => capture.telemetry?.auditRows ?? []),
+    shadowRows: captures.flatMap((capture) => capture.telemetry?.shadowRows ?? []),
+  };
+}
+
+function hasTelemetry(telemetry: SearchQualityCaseTelemetry): boolean {
+  return telemetry.envelopes.length > 0
+    || telemetry.auditRows.length > 0
+    || telemetry.shadowRows.length > 0;
+}
+
+function appendTelemetryRows(basePath: string, telemetry: SearchQualityCaseTelemetry): void {
+  appendJsonlRows(`${basePath}.envelopes.jsonl`, telemetry.envelopes);
+  appendJsonlRows(`${basePath}.audit.jsonl`, telemetry.auditRows);
+  appendJsonlRows(`${basePath}.shadow.jsonl`, telemetry.shadowRows);
+}
+
+function appendJsonlRows(path: string, rows: unknown[]): void {
+  if (rows.length === 0) return;
+  mkdirSync(dirname(path), { recursive: true });
+  appendFileSync(path, rows.map((row) => JSON.stringify(row)).join('\n') + '\n', 'utf8');
 }
 
 function normalizeCandidates(
@@ -213,10 +275,13 @@ function uniqueStrings(values: string[]): string[] {
 export {
   runSearchQualityHarness,
   type SearchQualityCandidate,
+  type SearchQualityCaseTelemetry,
   type SearchQualityCaseResult,
   type SearchQualityChannelCapture,
   type SearchQualityChannelOutput,
+  type SearchQualityHarnessOptions,
   type SearchQualityRun,
   type SearchQualityRunner,
   type SearchQualityRunners,
+  type SearchQualityTelemetry,
 };
