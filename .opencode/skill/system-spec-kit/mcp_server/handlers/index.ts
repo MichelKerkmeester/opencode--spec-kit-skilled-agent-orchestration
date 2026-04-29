@@ -249,15 +249,11 @@ export const handleMemoryUpdate = lazyFunction(getMemoryCrudModule, 'handleMemor
 export const handleMemoryList = lazyFunction(getMemoryCrudModule, 'handleMemoryList');
 export const handleMemoryStats = lazyFunction(getMemoryCrudModule, 'handleMemoryStats');
 export const handleMemoryHealth = lazyFunction(getMemoryCrudModule, 'handleMemoryHealth');
-export const setEmbeddingModelReady = lazyFunction(getMemoryCrudModule, 'setEmbeddingModelReady');
-export const isEmbeddingModelReady = lazyFunction(getMemoryCrudModule, 'isEmbeddingModelReady');
 export const handle_memory_delete = lazyFunction(getMemoryCrudModule, 'handle_memory_delete');
 export const handle_memory_update = lazyFunction(getMemoryCrudModule, 'handle_memory_update');
 export const handle_memory_list = lazyFunction(getMemoryCrudModule, 'handle_memory_list');
 export const handle_memory_stats = lazyFunction(getMemoryCrudModule, 'handle_memory_stats');
 export const handle_memory_health = lazyFunction(getMemoryCrudModule, 'handle_memory_health');
-export const set_embedding_model_ready = lazyFunction(getMemoryCrudModule, 'set_embedding_model_ready');
-export const is_embedding_model_ready = lazyFunction(getMemoryCrudModule, 'is_embedding_model_ready');
 
 // Memory index handlers
 export const handleMemoryIndexScan = lazyFunction(getMemoryIndexModule, 'handleMemoryIndexScan');

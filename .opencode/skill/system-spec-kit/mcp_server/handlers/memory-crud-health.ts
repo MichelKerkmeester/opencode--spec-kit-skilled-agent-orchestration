@@ -17,7 +17,6 @@ import * as triggerMatcher from '../lib/parsing/trigger-matcher.js';
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
 import { toErrorMessage } from '../utils/index.js';
 
-import { isEmbeddingModelReady } from '../core/index.js';
 import { summarizeAliasConflicts } from './memory-index.js';
 import * as causalEdges from '../lib/storage/causal-edges.js';
 import { getEmbeddingRetryStats } from '../lib/providers/retry-manager.js';
@@ -360,7 +359,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       summary: `Divergent alias report: ${divergentAliasGroups.length} of ${aliasConflicts.divergentHashGroups} group(s)`,
       data: {
         reportMode,
-        status: isEmbeddingModelReady() && database ? 'healthy' : 'degraded',
+        status: database ? 'healthy' : 'degraded',
         databaseConnected: !!database,
         embeddingRetry,
         specFolder: specFolder ?? null,
@@ -377,7 +376,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
   let providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
   let profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
-  const status = isEmbeddingModelReady() && database ? 'healthy' : 'degraded';
+  const status = database ? 'healthy' : 'degraded';
 
   const summary = `Memory system ${status}: ${memoryCount} memories indexed`;
   const hints: string[] = [];
@@ -442,9 +441,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     });
   }
 
-  if (!isEmbeddingModelReady()) {
-    hints.push('Embedding model not ready - some operations may fail');
-  }
   if (!database) {
     hints.push('Database not connected - restart MCP server');
   }
@@ -571,7 +567,6 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     summary,
     data: {
       status,
-      embeddingModelReady: isEmbeddingModelReady(),
       databaseConnected: !!database,
       vectorSearchAvailable: vectorIndex.isVectorSearchAvailable(),
       memoryCount,

@@ -81,7 +81,6 @@ type DatabaseRebindListener = (database: DatabaseLike) => void;
 let lastDbCheck: number = 0;
 let reinitializeMutex: Promise<void> | null = null;
 let lastReinitializeSucceeded: boolean = true;
-let embeddingModelReady: boolean = false;
 let constitutionalCache: unknown = null;
 let constitutionalCacheTime: number = 0;
 let configTableCreated: boolean = false;
@@ -548,36 +547,6 @@ export async function getLastScanTime(): Promise<number> {
 /** Persist the timestamp of the last index scan to the config table. */
 export async function setLastScanTime(time: number): Promise<void> {
   await completeIndexScanLease(time);
-}
-
-// ────────────────────────────────────────────────────────────────
-// 6. EMBEDDING MODEL READINESS 
-
-// ────────────────────────────────────────────────────────────────
-
-/** Return whether the embedding model has been marked as ready. */
-export function isEmbeddingModelReady(): boolean {
-  return embeddingModelReady;
-}
-
-/** Set the embedding model readiness flag. */
-export function setEmbeddingModelReady(ready: boolean): void {
-  embeddingModelReady = ready;
-}
-
-/** Poll until the embedding model is ready, returning false on timeout. */
-export async function waitForEmbeddingModel(timeoutMs: number = 30000): Promise<boolean> {
-  const startTime = Date.now();
-  const checkInterval = 500;
-
-  while (!embeddingModelReady) {
-    if (Date.now() - startTime > timeoutMs) {
-      console.error('[db-state] Embedding model warmup timeout');
-      return false;
-    }
-    await new Promise<void>(resolve => setTimeout(resolve, checkInterval));
-  }
-  return true;
 }
 
 // ────────────────────────────────────────────────────────────────

@@ -13,8 +13,6 @@ const handlerMocks = vi.hoisted(() => ({
 
 vi.mock('../core', () => ({
   checkDatabaseUpdated: vi.fn(async () => false),
-  isEmbeddingModelReady: vi.fn(() => true),
-  waitForEmbeddingModel: vi.fn(async () => true),
 }));
 
 vi.mock('../lib/cache/tool-cache', () => ({

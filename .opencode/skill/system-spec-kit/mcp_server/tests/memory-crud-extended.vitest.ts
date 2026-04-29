@@ -6,7 +6,7 @@ import { describe, it, expect, beforeAll, afterAll, afterEach, vi } from 'vitest
 // TEST: HANDLER - MEMORY CRUD (EXTENDED) (Vitest)
 // Happy-path execution, bulk delete transactions, causal edge
 // Cleanup, folder scoring integration, embedding regeneration,
-// AllowPartialUpdate, setEmbeddingModelReady.
+// AllowPartialUpdate.
 // Mock modules at the vi.mock level so handler's internal imports are intercepted.
 // Vi.mock is hoisted to the top of the file by vitest.
 vi.mock('../core/db-state', async (importOriginal) => {
@@ -1118,7 +1118,6 @@ describe('handleMemoryStats - Folder Scoring', () => {
 describe('handleMemoryHealth - Happy Path', () => {
   it('EXT-H1: Healthy system returns status=healthy', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: true, memoryCount: 42, vectorSearchAvailable: true });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
@@ -1127,17 +1126,7 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H2: No DB returns status=degraded', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: false });
-    const result = await handler.handleMemoryHealth({});
-    const parsed = parseResponse(result);
-    expect(parsed?.data?.status).toBe('degraded');
-  });
-
-  it('EXT-H3: Model not ready returns degraded', async () => {
-    if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(false);
-    installHealthMocks({ dbAvailable: true, memoryCount: 10 });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
     expect(parsed?.data?.status).toBe('degraded');
@@ -1147,7 +1136,6 @@ describe('handleMemoryHealth - Happy Path', () => {
     // Optional module — test skipped at runtime when embeddingsSourceMod unavailable
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       providerMetadata: { provider: 'huggingface', model: 'gte-small', healthy: true },
@@ -1162,7 +1150,6 @@ describe('handleMemoryHealth - Happy Path', () => {
   it('EXT-H4b: Health resolves lazy profile before reporting provider dimensions', async (ctx) => {
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       providerMetadata: { provider: 'voyage' },
@@ -1187,7 +1174,6 @@ describe('handleMemoryHealth - Happy Path', () => {
   it('EXT-H4c: Health falls back to configured model and dimension when lazy profile stays unavailable', async (ctx) => {
     if (!embeddingsSourceMod) { ctx.skip(); return; }
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       providerMetadata: { provider: 'voyage', healthy: true },
@@ -1209,7 +1195,6 @@ describe('handleMemoryHealth - Happy Path', () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) {
       throw new Error('Test setup incomplete');
     }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       providerMetadata: { provider: 'voyage', healthy: true },
@@ -1238,7 +1223,6 @@ describe('handleMemoryHealth - Happy Path', () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) {
       throw new Error('Test setup incomplete');
     }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       providerMetadata: { provider: 'voyage', healthy: true },
@@ -1265,7 +1249,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H5: Health includes version', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: true });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
@@ -1274,7 +1257,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H6: Health includes uptime', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: true });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
@@ -1284,23 +1266,18 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H7: Health completes without vector search', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: true, vectorSearchAvailable: false });
     const result = await handler.handleMemoryHealth({});
     const parsed = parseResponse(result);
     expect(parsed).not.toBeNull();
     expect(parsed?.data).toEqual(expect.objectContaining({
-      embeddingModelReady: expect.any(Boolean),
       databaseConnected: expect.any(Boolean),
       vectorSearchAvailable: false,
     }));
-    // Reset
-    handler.setEmbeddingModelReady(false);
   });
 
   it('EXT-H8: Health includes alias conflict summary', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1317,7 +1294,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H9: Health hints include divergent alias warning', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1333,7 +1309,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H10: divergent_aliases mode returns compact divergent-only payload', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1356,7 +1331,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H10b: divergent_aliases mode normalizes Windows alias paths without leaking absolute prefixes', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1377,7 +1351,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H10c: divergent_aliases mode detects relative specs aliases and groups them correctly', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1398,7 +1371,6 @@ describe('handleMemoryHealth - Happy Path', () => {
 
   it('EXT-H11: divergent_aliases mode respects limit', async () => {
     if (!handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({
       dbAvailable: true,
       aliasRows: [
@@ -1421,8 +1393,6 @@ describe('handleMemoryHealth - Happy Path', () => {
       ctx.skip();
       return;
     }
-
-    handler.setEmbeddingModelReady(true);
 
     let ftsCount = 2;
     const execMock = vi.fn(() => {
@@ -1495,8 +1465,6 @@ describe('handleMemoryHealth - Happy Path', () => {
       ctx.skip();
       return;
     }
-
-    handler.setEmbeddingModelReady(true);
 
     let ftsCount = 2;
     const execMock = vi.fn(() => {
@@ -1572,8 +1540,6 @@ describe('handleMemoryHealth - Happy Path', () => {
       return;
     }
 
-    handler.setEmbeddingModelReady(true);
-
     // Make the FTS consistency check throw before any repair attempt
     const fakeDb = {
       prepare: (_sql: string) => ({
@@ -1632,8 +1598,6 @@ describe('handleMemoryHealth - Happy Path', () => {
       ctx.skip();
       return;
     }
-
-    handler.setEmbeddingModelReady(true);
     installHealthMocks({ dbAvailable: true, memoryCount: 42 });
 
     vi.mocked(embeddingsSourceMod.getProviderMetadata).mockImplementation(() => ({
@@ -1696,44 +1660,6 @@ describe('handleMemoryHealth - Happy Path', () => {
     expect(parsed?.data?.repair?.warnings).toEqual(
       expect.arrayContaining([expect.stringContaining('orphanedFiles=2')])
     );
-  });
-});
-
-/* ───────────────────────────────────────────────────────────────
-   SUITE: setEmbeddingModelReady
-──────────────────────────────────────────────────────────────── */
-
-describe('setEmbeddingModelReady', () => {
-  it('EXT-EMR1: setEmbeddingModelReady(true) reflected in health', async () => {
-    if (!handler?.setEmbeddingModelReady || !handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
-    installHealthMocks({ dbAvailable: true });
-    const result = await handler.handleMemoryHealth({});
-    const parsed = parseResponse(result);
-    expect(parsed?.data?.embeddingModelReady).toBe(true);
-  });
-
-  it('EXT-EMR2: setEmbeddingModelReady(false) -> degraded', async () => {
-    if (!handler?.setEmbeddingModelReady || !handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(false);
-    installHealthMocks({ dbAvailable: true });
-    const result = await handler.handleMemoryHealth({});
-    const parsed = parseResponse(result);
-    expect(parsed?.data?.embeddingModelReady).toBe(false);
-    expect(parsed?.data?.status).toBe('degraded');
-  });
-
-  it('EXT-EMR3: Toggle sequence ends healthy', async () => {
-    if (!handler?.setEmbeddingModelReady || !handler?.handleMemoryHealth || !vectorIndex) { throw new Error('Test setup incomplete: memory-crud handler or vector-index unavailable'); }
-    handler.setEmbeddingModelReady(true);
-    handler.setEmbeddingModelReady(false);
-    handler.setEmbeddingModelReady(true);
-    installHealthMocks({ dbAvailable: true });
-    const result = await handler.handleMemoryHealth({});
-    const parsed = parseResponse(result);
-    expect(parsed?.data?.status).toBe('healthy');
-    // Cleanup
-    handler.setEmbeddingModelReady(false);
   });
 });
 

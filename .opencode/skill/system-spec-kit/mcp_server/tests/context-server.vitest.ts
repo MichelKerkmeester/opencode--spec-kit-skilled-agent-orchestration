@@ -654,9 +654,6 @@ describe('Context Server', () => {
         DEFAULT_BASE_PATH: '/tmp',
         checkDatabaseUpdated: checkDatabaseUpdatedMock,
         reinitializeDatabase: vi.fn(),
-        setEmbeddingModelReady: vi.fn(),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
         init: vi.fn(),
       }))
       vi.doMock('../core/index.js', () => ({
@@ -666,9 +663,6 @@ describe('Context Server', () => {
         ALLOWED_BASE_PATHS: ['/tmp'],
         checkDatabaseUpdated: checkDatabaseUpdatedMock,
         reinitializeDatabase: vi.fn(),
-        setEmbeddingModelReady: vi.fn(),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
         init: vi.fn(),
       }))
 
@@ -681,13 +675,11 @@ describe('Context Server', () => {
         indexSingleFile: vi.fn(async () => ({ status: 'unchanged' })),
         indexMemoryFile: vi.fn(async () => ({ status: 'unchanged' })),
         handleMemoryStats: handleMemoryStatsMock,
-        setEmbeddingModelReady: vi.fn(),
       }))
       vi.doMock('../handlers/index.js', () => ({
         indexSingleFile: vi.fn(async () => ({ status: 'unchanged' })),
         indexMemoryFile: vi.fn(async () => ({ status: 'unchanged' })),
         handleMemoryStats: handleMemoryStatsMock,
-        setEmbeddingModelReady: vi.fn(),
       }))
 
       vi.doMock('../utils', () => ({
@@ -2554,11 +2546,6 @@ describe('Context Server', () => {
     // T53: detectNodeVersionMismatch called
     it('T53: detectNodeVersionMismatch() called at startup', () => {
       expect(sourceCode).toMatch(/detectNodeVersionMismatch\(\)/)
-    })
-
-    // T54: Embedding model readiness
-    it('T54: Embedding model marked ready', () => {
-      expect(sourceCode).toMatch(/setEmbeddingModelReady\(true\)/)
     })
 
     // T55: API key validation (with skip env var)

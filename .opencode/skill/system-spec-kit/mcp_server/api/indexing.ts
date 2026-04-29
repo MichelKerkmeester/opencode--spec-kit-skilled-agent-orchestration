@@ -9,7 +9,7 @@ import type { EmbeddingProfile, MCPResponse } from '@spec-kit/shared/types';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { init as initDbState, setEmbeddingModelReady } from '../core/index.js';
+import { init as initDbState } from '../core/index.js';
 import { handleMemoryIndexScan } from '../handlers/index.js';
 import { findSpecDocuments } from '../handlers/memory-index-discovery.js';
 import {
@@ -52,10 +52,9 @@ export function initializeIndexingRuntime(): void {
   initHybridSearch(database, vectorIndex.vectorSearch);
 }
 
-/** Warms the embedding model and marks it as ready. */
+/** Warms the embedding model and returns its active profile. */
 export async function warmEmbeddingModel(input: string = 'warmup test'): Promise<EmbeddingProfile | null> {
   await generateEmbedding(input);
-  setEmbeddingModelReady(true);
   return getEmbeddingProfile() as EmbeddingProfile | null;
 }
 

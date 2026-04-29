@@ -10,8 +10,6 @@ vi.mock('../core/db-state', async (importOriginal) => {
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 
@@ -20,8 +18,6 @@ vi.mock('../core', async (importOriginal) => {
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 

@@ -202,14 +202,13 @@ describe('Core Module Exports', () => {
     'getLastScanTime',
     'setLastScanTime',
     'init',
-    'isEmbeddingModelReady',
   ]);
   const required = [
     'DATABASE_PATH', 'LIB_DIR', 'SHARED_DIR',
     'BATCH_SIZE', 'BATCH_DELAY_MS', 'INDEX_SCAN_COOLDOWN',
     'checkDatabaseUpdated', 'reinitializeDatabase',
     'getLastScanTime', 'setLastScanTime',
-    'init', 'isEmbeddingModelReady',
+    'init',
   ];
 
   for (const fn of required) {

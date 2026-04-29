@@ -59,7 +59,6 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
       'handleMemoryList',
       'handleMemoryStats',
       'handleMemoryHealth',
-      'setEmbeddingModelReady',
     ] as const satisfies readonly (keyof typeof handler)[];
 
     for (const name of expectedExports) {
@@ -75,7 +74,6 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
         'handle_memory_list',
         'handle_memory_stats',
         'handle_memory_health',
-        'set_embedding_model_ready',
       ] as const satisfies readonly (keyof typeof handler)[];
 
       for (const alias of aliases) {
@@ -237,14 +235,6 @@ describe('Handler Memory CRUD (T519) [deferred - requires DB test fixtures]', ()
       const parsed = parseResponse(result);
       expect(result.isError).toBe(false);
       expect(typeof parsed.data?.status).toBe('string');
-    });
-
-    it('T519-H2: setEmbeddingModelReady(true) succeeds', () => {
-      expect(() => handler.setEmbeddingModelReady(true)).not.toThrow();
-    });
-
-    it('T519-H2b: setEmbeddingModelReady(false) succeeds', () => {
-      expect(() => handler.setEmbeddingModelReady(false)).not.toThrow();
     });
 
     it('T519-H3: Invalid reportMode returns error response', async () => {

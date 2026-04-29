@@ -9,8 +9,6 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('../core/index.js', () => ({
   checkDatabaseUpdated: vi.fn(async () => false),
-  isEmbeddingModelReady: vi.fn(() => true),
-  waitForEmbeddingModel: vi.fn(async () => true),
 }));
 
 vi.mock('../lib/cache/tool-cache.js', () => ({

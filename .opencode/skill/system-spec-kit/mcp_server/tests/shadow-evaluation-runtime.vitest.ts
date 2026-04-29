@@ -25,8 +25,6 @@ import {
 } from '../lib/cognitive/adaptive-ranking.js';
 
 vi.mock('../core/index.js', () => ({
-  isEmbeddingModelReady: vi.fn(() => true),
-  waitForEmbeddingModel: vi.fn(async () => true),
   checkDatabaseUpdated: vi.fn(async () => undefined),
 }));
 

@@ -103,8 +103,6 @@ describe('memory_context advisory metadata', () => {
       return {
         ...actual,
         checkDatabaseUpdated: vi.fn(async () => false),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
       };
     });
 
@@ -113,8 +111,6 @@ describe('memory_context advisory metadata', () => {
       return {
         ...actual,
         checkDatabaseUpdated: vi.fn(async () => false),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
       };
     });
 
@@ -162,8 +158,6 @@ describe('memory_context advisory metadata', () => {
       return {
         ...actual,
         checkDatabaseUpdated: vi.fn(async () => false),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
       };
     });
 
@@ -172,8 +166,6 @@ describe('memory_context advisory metadata', () => {
       return {
         ...actual,
         checkDatabaseUpdated: vi.fn(async () => false),
-        waitForEmbeddingModel: vi.fn(async () => true),
-        isEmbeddingModelReady: vi.fn(() => true),
       };
     });
 

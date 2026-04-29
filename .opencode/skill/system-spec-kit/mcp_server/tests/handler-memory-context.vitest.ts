@@ -12,16 +12,13 @@ import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry';
 
 // Mock core/db-state to prevent real DB operations that cause timeouts.
 // This must be hoisted before any handler imports.
-// The handlers (memory-context, memory-search, memory-triggers) all import
-// { checkDatabaseUpdated, waitForEmbeddingModel } from '../core' which
-// Re-exports from './db-state'.
+// The handlers (memory-context, memory-search, memory-triggers) import
+// { checkDatabaseUpdated } from '../core', which re-exports from './db-state'.
 vi.mock('../core/db-state', async (importOriginal) => {
   const actual = await importOriginal() as Record<string, unknown>;
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 
@@ -30,8 +27,6 @@ vi.mock('../core', async (importOriginal) => {
   return {
     ...actual,
     checkDatabaseUpdated: vi.fn(async () => false),
-    waitForEmbeddingModel: vi.fn(async () => true),
-    isEmbeddingModelReady: vi.fn(() => true),
   };
 });
 

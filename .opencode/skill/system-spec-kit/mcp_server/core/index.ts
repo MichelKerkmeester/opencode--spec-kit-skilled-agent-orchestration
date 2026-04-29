@@ -54,11 +54,6 @@ export {
   getLastScanTime,
   setLastScanTime,
 
-  // Embedding model readiness
-  isEmbeddingModelReady,
-  setEmbeddingModelReady,
-  waitForEmbeddingModel,
-
   // Constitutional cache
   getConstitutionalCache,
   setConstitutionalCache,

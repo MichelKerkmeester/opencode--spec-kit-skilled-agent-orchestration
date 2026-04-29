@@ -23,7 +23,6 @@ import {
   DATABASE_DIR,
   DATABASE_PATH,
   checkDatabaseUpdated,
-  setEmbeddingModelReady, waitForEmbeddingModel,
   init as initDbState
 } from './core/index.js';
 
@@ -209,9 +208,6 @@ interface ChokidarModule {
     watch: (paths: string | string[], options: Record<string, unknown>) => FSWatcher;
   };
 }
-
-/** Timeout (ms) for waiting on embedding model readiness during startup scan. */
-const EMBEDDING_MODEL_TIMEOUT_MS = 30_000;
 
 /** Timeout (ms) for API key validation during startup. */
 const API_KEY_VALIDATION_TIMEOUT_MS = 5_000;
@@ -1303,15 +1299,6 @@ async function startupScan(basePath: string): Promise<void> {
 
   startupScanInProgress = true;
   try {
-    console.error('[context-server] Waiting for embedding model to be ready...');
-    const modelReady: boolean = await waitForEmbeddingModel(EMBEDDING_MODEL_TIMEOUT_MS);
-
-    if (!modelReady) {
-      console.error('[context-server] Startup scan skipped: embedding model not ready');
-      console.error('[context-server] Run memory_index_scan manually after model loads');
-      return;
-    }
-
     // T107: Recover any pending files from previous failed index operations
     await recoverPendingFiles(basePath);
 
@@ -1827,12 +1814,8 @@ async function main(): Promise<void> {
     ],
   });
 
-  // T016-T019: Lazy loading only. The eager warmup gate remains hard-disabled
-  // in shared embeddings, so startup no longer branches on shouldEagerWarmup().
   console.error('[context-server] Lazy loading enabled - embedding model will initialize on first use');
   console.error('[context-server] SPECKIT_EAGER_WARMUP and SPECKIT_LAZY_LOADING are deprecated compatibility flags');
-  // Mark embedding as "ready" since it will self-initialize on first use
-  setEmbeddingModelReady(true);
 
   // Integrity check and module initialization
   try {

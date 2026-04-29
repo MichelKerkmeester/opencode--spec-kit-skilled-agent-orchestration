@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": ["026-readiness-scaffolding-cleanup", "readiness scaffolding cleanup", "embedding readiness deprecation", "isEmbeddingModelReady removal"],
+    "key_topics": ["readiness-scaffolding", "cleanup", "embedding-readiness", "vestigial-code"],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md"],
+    "entities": [],
+    "causal_summary": "Level 1 mechanical cleanup of vestigial embedding-readiness scaffolding remaining after 010 gate removal. db-state.ts exports + context-server.ts callers + 8 test mock files. Pure dead-code removal; no behavior change.",
+    "created_at": "2026-04-29T09:30:00.000Z",
+    "last_save_at": "2026-04-29T09:30:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}

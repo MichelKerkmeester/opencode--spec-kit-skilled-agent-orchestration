@@ -4,8 +4,6 @@ const QUERY = 'how do I regain context after reopening the packet in a fresh ses
 
 vi.mock('../core', () => ({
   checkDatabaseUpdated: vi.fn(async () => false),
-  isEmbeddingModelReady: vi.fn(() => true),
-  waitForEmbeddingModel: vi.fn(async () => true),
 }));
 
 vi.mock('../lib/cache/tool-cache', () => ({

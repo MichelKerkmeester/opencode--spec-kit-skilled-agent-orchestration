@@ -4,8 +4,6 @@
 
 import type Database from 'better-sqlite3';
 import {
-  isEmbeddingModelReady,
-  waitForEmbeddingModel,
   checkDatabaseUpdated,
 } from '../../core/index.js';
 import {
@@ -410,14 +408,6 @@ async function runScheduledShadowEvaluationCycle(
   evaluationInFlight = true;
   try {
     await checkDatabaseUpdated();
-
-    if (!isEmbeddingModelReady()) {
-      const modelReady = await waitForEmbeddingModel(30_000);
-      if (!modelReady) {
-        console.warn('[shadow-evaluation-runtime] skipped cycle: embedding model not ready');
-        return null;
-      }
-    }
 
     const queryRows = loadRecentSearchQueries(db, now, queryLookbackMs, maxQueryPoolSize);
     if (queryRows.length === 0) {
