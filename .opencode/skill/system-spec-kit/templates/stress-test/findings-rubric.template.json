@@ -1,0 +1,53 @@
+{
+  "version": "1.0.0",
+  "cycle": "<vX.Y.Z>",
+  "corpus": {
+    "name": "<corpus identifier>",
+    "frozenAt": "<ISO timestamp>",
+    "cells": 0
+  },
+  "rubric": {
+    "dimensions": [
+      "correctness",
+      "robustness",
+      "telemetry",
+      "regression-safety"
+    ],
+    "scale": {
+      "min": 0,
+      "max": 2
+    },
+    "weights": {
+      "correctness": 1,
+      "robustness": 1,
+      "telemetry": 1,
+      "regression-safety": 1
+    }
+  },
+  "cells": [
+    {
+      "id": "<packet-id>::<dimension>",
+      "packet": "<packet>",
+      "dimension": "<dim>",
+      "score": 0,
+      "rationale": "<short>"
+    }
+  ],
+  "aggregate": {
+    "scoreSum": 0,
+    "maxPossible": 0,
+    "percent": 0,
+    "percentRounded": 0
+  },
+  "verdictSummary": {
+    "proven": 0,
+    "neutral": 0,
+    "regression": 0,
+    "notProven": 0
+  },
+  "comparison": {
+    "priorVersion": null,
+    "deltaPercent": 0
+  }
+}
+
