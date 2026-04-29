@@ -1,0 +1,10 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/030-v1-0-4-full-matrix-stress-test-design",
+  "description": "Design-only Level 3 packet for a proper v1.0.4 full-matrix stress test across system-spec-kit feature surfaces, CLI executors, scenarios, rubric scoring, harness-extension architecture, and future execution tasks.",
+  "keywords": ["stress-test", "v1.0.4", "full-matrix", "cli-executors", "feature-surfaces", "rubric", "harness-aggregator", "design-only"],
+  "lastUpdated": "2026-04-29T11:40:34.000Z",
+  "specId": "030",
+  "folderSlug": "v1-0-4-full-matrix-stress-test-design",
+  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "011-mcp-runtime-stress-remediation"],
+  "memorySequence": 1
+}
