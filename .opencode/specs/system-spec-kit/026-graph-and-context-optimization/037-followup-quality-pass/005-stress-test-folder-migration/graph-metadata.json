@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/030-v1-0-4-full-matrix-stress-test-design"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "037-005-stress-test-folder-migration",
+      "stress test folder",
+      "dedicated stress folder",
+      "mcp_server/stress_test"
+    ],
+    "key_topics": [
+      "stress-test",
+      "vitest",
+      "mcp-server",
+      "test-organization",
+      "package-scripts"
+    ],
+    "importance_tier": "important",
+    "status": "blocked",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "migration-plan.md",
+      ".opencode/skill/system-spec-kit/mcp_server/stress_test/README.md",
+      ".opencode/skill/system-spec-kit/mcp_server/vitest.config.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/package.json"
+    ],
+    "entities": [],
+    "causal_summary": "Migrates stress-test logic from mcp_server/tests/ to dedicated mcp_server/stress_test/ folder. Updates imports, vitest config, package.json scripts, and all doc references. Build + tests verified post-migration.",
+    "created_at": "2026-04-29T15:55:02.000Z",
+    "last_save_at": "2026-04-29T16:09:55.000Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "migration-plan.md"
+    ]
+  }
+}

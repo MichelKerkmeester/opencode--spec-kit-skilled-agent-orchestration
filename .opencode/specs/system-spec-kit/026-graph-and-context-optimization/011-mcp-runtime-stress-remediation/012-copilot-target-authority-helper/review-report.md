@@ -69,7 +69,7 @@ The core helper (`buildCopilotPromptArg`, `buildTargetAuthorityPreamble`, `build
   - `.opencode/specs/.../011-mcp-runtime-stress-remediation/spec.md:114-116` (parent references 013–015)
   - `.opencode/specs/.../011-mcp-runtime-stress-remediation/description.json` and `graph-metadata.json`
   - `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:31-40`
-  - `.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-degraded-sweep.vitest.ts:1-3`
+  - `.opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts:1-3`
   - `.opencode/specs/.../013-graph-degraded-stress-cell/spec.md:1-4` (and 014/015 packet docs)
 - **What's wrong:** The working tree includes code-graph handler changes, a new code-graph degraded-sweep vitest, and packet 013–015 docs beyond the allowed packet 012 files (`executor-config.ts`, the 2 `_auto.yaml` files, the new vitest, and the 7 packet 012 docs). Reviewer did not see direct edits inside 003–009 or 010/011 child packet folders, but the parent phase 011 metadata was modified to reference the new sub-packets.
 - **Why it matters:** Packet 012 should land as a focused, isolated change. Co-merging unrelated remediation packets and code-graph behavior changes makes review/rollback harder and violates the packet's stated scope.

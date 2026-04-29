@@ -30,7 +30,7 @@ You are iteration 1/10 of a deep-review loop auditing the integrated 012-015 imp
    - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts` — `getGraphReadinessSnapshot` (Q-CROSS w/ 013)
    - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts` — readiness.action surface
    - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts` — seed telemetry passthrough (Q-CROSS w/ 012)
-   - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/tests/code-graph-degraded-sweep.vitest.ts` — degraded test setup
+   - `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` — degraded test setup
 
 ## Output requirement 1: write `review/iterations/iteration-001.md` (ABSOLUTE PATH)
 

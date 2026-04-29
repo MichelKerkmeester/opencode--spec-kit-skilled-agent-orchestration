@@ -153,7 +153,7 @@ code_graph_status (stats crash)
 - [x] `npx vitest run tests/code-graph-degraded-readiness-envelope-parity.vitest.ts` PASS (7/7).
 - [x] `npx vitest run tests/code-graph-status-readiness-snapshot.vitest.ts` PASS (10/10) — packet 014 regression.
 - [x] `npx vitest run tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts` PASS — packet 015 regression.
-- [x] Code-graph regression: `npx vitest run tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts tests/code-graph-db.vitest.ts tests/code-graph-degraded-readiness-envelope-parity.vitest.ts tests/code-graph-degraded-sweep.vitest.ts tests/code-graph-query-fallback-decision.vitest.ts tests/code-graph-status-readiness-snapshot.vitest.ts tests/readiness-contract.vitest.ts` PASS (60/60).
+- [x] Code-graph regression: `SPECKIT_RUN_STRESS=true npx vitest run tests/code-graph-context-cocoindex-telemetry-passthrough.vitest.ts tests/code-graph-db.vitest.ts tests/code-graph-degraded-readiness-envelope-parity.vitest.ts stress_test/code-graph-degraded-sweep.vitest.ts tests/code-graph-query-fallback-decision.vitest.ts tests/code-graph-status-readiness-snapshot.vitest.ts tests/readiness-contract.vitest.ts` PASS (60/60).
 - [x] `npx vitest run tests/file-watcher.vitest.ts` PASS (21/21) — `DEFAULT_DEBOUNCE_MS=2000` unchanged.
 - [x] Typecheck PASS.
 - [x] Author `implementation-summary.md` (filled in, not placeholder).

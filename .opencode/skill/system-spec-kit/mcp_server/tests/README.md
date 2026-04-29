@@ -24,7 +24,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-The `tests/` directory is the Vitest suite for the MCP server. As of this audit, the root inventory contains 329 `.vitest.ts` files plus the `fixtures/` support directory.
+The `tests/` directory is the default Vitest suite for the MCP server. It covers unit, integration, handler, fixture, regression, public API, and docs-parity behavior expected in normal verification. Dedicated stress, load, matrix-cell, degraded-state sweep, and performance validation lives in sibling `../stress_test/` and runs through `npm run stress`.
 
 The suite now verifies the Gate E continuity contract as well: `/spec_kit:resume` is the recovery surface, packet context rebuilds from `handover.md` -> `_memory.continuity` -> spec docs, and generated memory artifacts remain supporting only.
 

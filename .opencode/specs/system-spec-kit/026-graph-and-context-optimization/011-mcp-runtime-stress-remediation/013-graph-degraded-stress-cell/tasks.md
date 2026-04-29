@@ -19,7 +19,7 @@ _memory:
     next_safe_action: "Hand off to commit"
     blockers: []
     key_files:
-      - "mcp_server/tests/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -66,7 +66,7 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-- [x] T010 Create `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` skeleton (suite + helpers + lifecycle hooks)
+- [x] T010 Create `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` skeleton (suite + helpers + lifecycle hooks)
 - [x] T011 Add live-DB sha256 hash capture in `beforeAll`; byte-equality assertion in `afterAll`
 - [x] T012 Add `pinCwd(tempDir)` helper using `vi.spyOn(process, 'cwd')` so per-test readiness-debounce cache keys are unique
 - [x] T013 Bucket A: empty graph → assert `fallbackDecision.nextTool === 'code_graph_scan'`
@@ -82,9 +82,9 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [x] T020 Run `npx vitest run mcp_server/tests/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips
+- [x] T020 Run `SPECKIT_RUN_STRESS=true npx vitest run mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` -> 5 tests pass, zero skips
 - [x] T021 Run `npx vitest run mcp_server/tests/code-graph-*.vitest.ts` → 34 tests pass, zero regressions
-- [x] T022 `git status` shows changes only in `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` and `013-graph-degraded-stress-cell/`
+- [x] T022 `git status` shows changes only in `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` and `013-graph-degraded-stress-cell/`
 - [x] T023 Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <packet> --strict` → structural errors = 0
 <!-- /ANCHOR:phase-3 -->
 

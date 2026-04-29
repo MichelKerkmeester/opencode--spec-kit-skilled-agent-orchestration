@@ -6,13 +6,13 @@ Scope:     packet 013-graph-degraded-stress-cell (test-only, closes packet 005 v
 
 Pre-dispatch scope verification (orchestrator-side, before reviewer ran):
   $ git status --short -- .opencode/skill/system-spec-kit/mcp_server/tests/
-    ?? .opencode/skill/system-spec-kit/mcp_server/tests/code-graph-degraded-sweep.vitest.ts
+    ?? .opencode/skill/system-spec-kit/mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts
     (other untracked test files belong to sibling packets 012/014/015)
 
   $ git diff --stat HEAD -- .opencode/skill/system-spec-kit/mcp_server/
     Modified files all attributable to sibling packets (012 / 014 / 015), NOT 013.
     Confirmed packet 013's footprint is exactly:
-      * mcp_server/tests/code-graph-degraded-sweep.vitest.ts  (untracked, new)
+      * mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts  (untracked, new)
       * 013-graph-degraded-stress-cell/{spec,plan,tasks,checklist,implementation-summary}.md
       * 013-graph-degraded-stress-cell/{description,graph-metadata}.json
 
@@ -102,7 +102,7 @@ Cleanup order is correct: `closeDb()` releases better-sqlite3 handles before `vi
 **Evidence:** git status / untracked listing; `spec.md:67-90`; `implementation-summary.md:67-80`.  
 **Findings:** none
 
-The dirty workspace includes sibling packet production changes in `code_graph/`, plus sibling packet tests and folders. Packet 013's scoped untracked artifacts are only `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` and the 7 files under `013-graph-degraded-stress-cell/`. No skill/template changes or docs outside the packet folder are attributable to packet 013.
+The dirty workspace includes sibling packet production changes in `code_graph/`, plus sibling packet tests and folders. Packet 013's scoped untracked artifacts are only `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` and the 7 files under `013-graph-degraded-stress-cell/`. No skill/template changes or docs outside the packet folder are attributable to packet 013.
 
 ## Top 3 Findings (most impactful)
 1. **[P1] Hard-coded stale threshold assumption** — `STALE_FILE_COUNT = 60` duplicates the non-exported `SELECTIVE_REINDEX_THRESHOLD = 50`; export the constant or document the maintenance contract inline. `code-graph-degraded-sweep.vitest.ts:221-236`, `ensure-ready.ts:55-56`.

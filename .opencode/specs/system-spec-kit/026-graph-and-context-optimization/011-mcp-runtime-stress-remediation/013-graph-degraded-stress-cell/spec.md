@@ -20,7 +20,7 @@ _memory:
     next_safe_action: "Commit packet"
     blockers: []
     key_files:
-      - "mcp_server/tests/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -67,7 +67,7 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 ## 3. SCOPE
 
 ### In Scope
-- One new vitest test file at `mcp_server/tests/code-graph-degraded-sweep.vitest.ts`
+- One new vitest test file at `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts`
 - Three coverage buckets: empty graph (+ broad-stale variant) → `code_graph_scan`; readiness exception → `rg`; fresh state → no `fallbackDecision`
 - Live DB byte-equality assertion (sha256 hash before/after) so the test cannot mutate the production graph
 - Packet docs (Level 1: spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) + manifest (description.json, graph-metadata.json)
@@ -82,7 +82,7 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 
 | File Path | Change Type | Description |
 |-----------|-------------|-------------|
-| `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` | Create | Integration sweep with three buckets + live-DB protection |
+| `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` | Create | Integration sweep with three buckets + live-DB protection |
 | `spec.md` (this packet) | Create | This file |
 | `plan.md` (this packet) | Create | Technical plan |
 | `tasks.md` (this packet) | Create | Three-phase task breakdown |
@@ -105,7 +105,7 @@ Add one deterministic integration sweep that forces the graph into degraded stat
 | REQ-002 | Readiness exception (e.g. simulated DB-locked / I/O fault) returns `fallbackDecision.nextTool === 'rg'` end-to-end | New vitest passes Bucket B; readiness throw is triggered without writing garbage to disk |
 | REQ-003 | Fresh state returns no `fallbackDecision` end-to-end | New vitest passes Bucket C; payload omits the `fallbackDecision` key entirely |
 | REQ-004 | Live `code-graph.sqlite` is byte-equal before and after the suite runs | sha256 hash captured in `beforeAll`, asserted in `afterAll`; suite fails loudly if any byte differs |
-| REQ-005 | Zero production code modified | `git diff` shows changes only under `mcp_server/tests/` and the `013-graph-degraded-stress-cell/` packet folder |
+| REQ-005 | Zero production code modified | `git diff` shows changes only under `mcp_server/stress_test/` and the `013-graph-degraded-stress-cell/` packet folder |
 
 ### P1 - Required (complete OR user-approved deferral)
 

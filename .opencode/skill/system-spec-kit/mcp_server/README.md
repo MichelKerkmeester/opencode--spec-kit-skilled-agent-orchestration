@@ -1301,7 +1301,8 @@ mcp_server/
 ├── lib/                       # Retrieval, storage, eval, governance, scoring, and parsing internals
 ├── matrix-runners/            # F1-F14 x CLI adapter manifest, per-CLI runners, and meta-runner
 ├── schemas/                   # Zod tool-input schemas
-├── tests/                     # Vitest suites (329 root `.vitest.ts` files at audit time)
+├── stress_test/               # Explicit stress, load, matrix-cell, and degraded-state suites
+├── tests/                     # Default Vitest unit, integration, handler, and regression suites
 ├── tools/                     # Tool dispatch layer
 ├── package.json               # Package metadata and scripts
 ├── tsconfig.json              # TypeScript build config
@@ -1321,6 +1322,7 @@ mcp_server/
 | `handlers/chunking-orchestrator.ts` | Handles chunked-save staging, safe-swap finalization, rollback cleanup, and delayed parent BM25 updates. |
 | `api/index.ts` | Stable external import surface for eval, indexing, search, provider, and discovery helpers. |
 | `matrix-runners/` | Packet-030 matrix adapters for cli-codex, cli-copilot, cli-gemini, cli-claude-code and cli-opencode, plus the manifest and meta-runner. |
+| `stress_test/` | Dedicated stress-test suites run by `npm run stress`; excluded from default `npm test`. |
 | `INSTALL_GUIDE.md` | Step-by-step installation with embedding providers and environment variables. |
 
 ### Notable Modules

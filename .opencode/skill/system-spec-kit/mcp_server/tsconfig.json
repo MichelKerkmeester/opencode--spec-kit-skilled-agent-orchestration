@@ -24,6 +24,8 @@
     "tests/**/*.vitest.ts",
     "tests/**/*.test.ts",
     "tests/**/*.vitest.js",
+    "stress_test/**/*.vitest.ts",
+    "stress_test/**/*.test.ts",
     "tests/chunk-thinning.vitest.ts",
     "tests/layer-definitions.vitest.ts",
     "tests/dead-code-regression.vitest.ts"

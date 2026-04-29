@@ -19,7 +19,7 @@ _memory:
     next_safe_action: "Hand off for commit"
     blockers: []
     key_files:
-      - "mcp_server/tests/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -69,7 +69,7 @@ You can now trust that this test cannot mutate production bytes. The suite captu
 
 | File | Action | Purpose |
 |------|--------|---------|
-| `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` | Created | Integration sweep with 3 buckets + live-DB protection |
+| `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` | Created | Integration sweep with 3 buckets + live-DB protection |
 | `spec.md` (this packet) | Created | Level 1 spec; REQ-001..005, REQ-010..012 |
 | `plan.md` (this packet) | Created | Architecture + 3-phase plan |
 | `tasks.md` (this packet) | Created | T001..T023, all complete |
@@ -110,7 +110,7 @@ Built in one pass following research.md §4 (Q-P1) Approach #1. The first attemp
 
 | Check | Result |
 |-------|--------|
-| `npx vitest run mcp_server/tests/code-graph-degraded-sweep.vitest.ts` | PASS - 5 tests pass, zero skips, exit code 0 |
+| `SPECKIT_RUN_STRESS=true npx vitest run mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` | PASS - 5 tests pass, zero skips, exit code 0 |
 | `npx vitest run mcp_server/tests/code-graph-*.vitest.ts` | PASS - 34 tests pass across 5 files, zero regressions, exit code 0 |
 | Live-DB hash before/after | PASS — sha256 byte-equal, asserted in `afterAll` |
 | `npx tsc --noEmit -p tsconfig.json` (filtered to packet) | PASS — zero TypeScript errors in the new file |
@@ -131,7 +131,7 @@ Built in one pass following research.md §4 (Q-P1) Approach #1. The first attemp
    + /** Maximum stale files before we switch from selective to full reindex */
    + export const SELECTIVE_REINDEX_THRESHOLD = 50;
 
-   # mcp_server/tests/code-graph-degraded-sweep.vitest.ts (imports + Bucket A')
+   # mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts (imports + Bucket A')
    + import { SELECTIVE_REINDEX_THRESHOLD } from '../code_graph/lib/ensure-ready.js';
    ...
    -    // Seed 60 tracked files with stale mtimes (disk mtime != stored mtime).
@@ -143,7 +143,7 @@ Built in one pass following research.md §4 (Q-P1) Approach #1. The first attemp
    +    const STALE_FILE_COUNT = SELECTIVE_REINDEX_THRESHOLD + 10;
    ```
 
-   The `export` addition is purely a visibility change — no behavior, no other consumers (audit confirmed via repo-wide grep before the edit). Re-verified with `vitest run mcp_server/tests/code-graph-degraded-sweep.vitest.ts` (5 pass) and the full `code-graph-*.vitest.ts` surface (34 pass, 0 regressions).
+   The `export` addition is purely a visibility change — no behavior, no other consumers (audit confirmed via repo-wide grep before the edit). Re-verified with `SPECKIT_RUN_STRESS=true vitest run mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts` (5 pass) and the full `code-graph-*.vitest.ts` surface (34 pass, 0 regressions).
 2. **Bucket B uses a synthetic readiness throw, not a real DB-locked condition.** Real-world DB-locked situations (multi-process contention, FS-level corruption, OOM during `prepare()`) may surface different error shapes. The spy emulates the contract surface, not the failure-mode taxonomy. If new readiness-failure modes emerge in production, add them as additional buckets.
 3. **The corrupt-SQLite strategy is documented in the Bucket B comment block but not exercised.** Future readers wanting that approach should recognize the disk-tainting risk and either rebuild from the comment notes or use a libsqlite3 build that fails before any write.
 <!-- /ANCHOR:limitations -->

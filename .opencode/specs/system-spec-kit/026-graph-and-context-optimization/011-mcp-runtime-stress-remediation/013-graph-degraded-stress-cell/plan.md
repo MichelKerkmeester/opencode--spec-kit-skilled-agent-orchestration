@@ -20,7 +20,7 @@ _memory:
     next_safe_action: "Reference plan during commit message authoring"
     blockers: []
     key_files:
-      - "mcp_server/tests/code-graph-degraded-sweep.vitest.ts"
+      - "mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts"
     session_dedup:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "013-graph-degraded-stress-cell"
@@ -79,7 +79,7 @@ Build one vitest file that calls `handleCodeGraphQuery` end-to-end against three
 Test-only integration sweep. No new module boundaries introduced; the existing seams (`initDb(dbDir)`, `closeDb()`, `vi.spyOn`) are sufficient.
 
 ### Key Components
-- **`mcp_server/tests/code-graph-degraded-sweep.vitest.ts`**: New test file; the entire deliverable.
+- **`mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts`**: New test file; the entire deliverable.
 - **`mcp_server/code_graph/lib/code-graph-db.ts`** (read-only seam): exports `initDb(dbDir)`, `closeDb()`, `getDb()`. The singleton DB swap lets us isolate per-test state without touching production code.
 - **`mcp_server/code_graph/lib/ensure-ready.ts`** (read-only seam): `detectState()` reads from whichever DB the singleton points at; once we initDb the tmpdir, `detectState` reads tmp state.
 - **`mcp_server/code_graph/handlers/query.ts`** (read-only seam): the handler under test — invoked end-to-end via `handleCodeGraphQuery({ operation, subject, ... })`.
@@ -122,7 +122,7 @@ afterAll → assert hash(LIVE_DB) byte-equal
 ### Phase 3: Verification
 - [x] Run the new file in isolation: 5 tests pass, zero skips
 - [x] Run the entire `code-graph-*.vitest.ts` surface: 34 tests pass, zero regressions
-- [x] Confirm `git diff` shows zero changes outside `tests/` + `013-graph-degraded-stress-cell/`
+- [x] Confirm `git diff` shows zero changes outside `stress_test/` + `013-graph-degraded-stress-cell/`
 - [x] Run strict spec-folder validator
 <!-- /ANCHOR:phases -->
 
@@ -156,7 +156,7 @@ afterAll → assert hash(LIVE_DB) byte-equal
 ## 7. ROLLBACK PLAN
 
 - **Trigger**: New cell flakes intermittently OR mutates the live DB hash unexpectedly
-- **Procedure**: Delete `mcp_server/tests/code-graph-degraded-sweep.vitest.ts`. The existing mocked unit tests in `code-graph-query-fallback-decision.vitest.ts` remain in place; packet 005 returns to its v1.0.2 NEUTRAL verdict pending a redesigned harness.
+- **Procedure**: Delete `mcp_server/stress_test/code-graph-degraded-sweep.vitest.ts`. The existing mocked unit tests in `code-graph-query-fallback-decision.vitest.ts` remain in place; packet 005 returns to its v1.0.2 NEUTRAL verdict pending a redesigned harness.
 <!-- /ANCHOR:rollback -->
 
 ---

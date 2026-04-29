@@ -11,6 +11,7 @@ import path from 'path';
 const TEST_TIMEOUT_MS = 30_000; // 30s default, increase for CI if needed
 const TEARDOWN_TIMEOUT_MS = 1_000;
 const INCLUDE_BENCHES = process.env.SPECKIT_RUN_BENCHES === 'true';
+const INCLUDE_STRESS = process.env.SPECKIT_RUN_STRESS === 'true';
 
 export default defineConfig({
   root: path.resolve(import.meta.dirname, '..'),
@@ -21,11 +22,13 @@ export default defineConfig({
       'mcp_server/skill_advisor/tests/**/*.{vitest,test}.ts',
       'scripts/tests/**/*.{vitest,test}.ts',
       ...(INCLUDE_BENCHES ? ['mcp_server/skill_advisor/bench/**/*.bench.ts'] : []),
+      ...(INCLUDE_STRESS ? ['mcp_server/stress_test/**/*.{vitest,test}.ts'] : []),
     ],
     exclude: [
       'mcp_server/tests/memory-save.vitest.ts',
       'mcp_server/tests/archive/**',
       ...(INCLUDE_BENCHES ? [] : ['mcp_server/skill_advisor/bench/**/*.bench.ts']),
+      ...(INCLUDE_STRESS ? [] : ['mcp_server/stress_test/**']),
     ],
     setupFiles: [
       path.resolve(import.meta.dirname, 'tests', '_support', 'vitest-setup.ts'),

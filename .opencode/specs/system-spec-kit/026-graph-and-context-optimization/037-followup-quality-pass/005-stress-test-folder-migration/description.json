@@ -1,0 +1,19 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/005-stress-test-folder-migration",
+  "description": "Migrates confirmed MCP server stress-test suites from mcp_server/tests to dedicated mcp_server/stress_test. Adds opt-in Vitest stress discovery, npm run stress, README documentation, and direct path reference updates.",
+  "keywords": [
+    "037-005-stress-test-folder-migration",
+    "stress test folder",
+    "dedicated stress folder",
+    "mcp_server/stress_test"
+  ],
+  "lastUpdated": "2026-04-29T16:09:55.000Z",
+  "specId": "005",
+  "folderSlug": "stress-test-folder-migration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "037-followup-quality-pass"
+  ],
+  "memorySequence": 5
+}
