@@ -1,0 +1,23 @@
+{
+  "openQuestions": [
+    "Q1: Deep-loop graph MCP tools — where do they auto-fire vs require manual call?",
+    "Q2: CCC reindex/feedback/status — is it called by any background path or only on operator trigger?",
+    "Q3: eval_run_ablation and eval_reporting_dashboard — wired into CI? On-demand only? Test-fixture-only?",
+    "Q4: validate.sh — does any hook config fire it on PostToolUse? Or operator-only?",
+    "Q5: generate-context.js — auto-fires after spec edits? Or only when /memory:save invoked?",
+    "Q6: 012's 4 P1 — do any survive adversarial retest with NEW corroborating evidence?",
+    "Q7: New gaps in session-manager cleanup intervals, freshness checks, skill_graph_validate auto-fire?",
+    "Q8: Sequenced remediation backlog — what's the operator-actionable Tier A → B → C → D plan?"
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 8,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}

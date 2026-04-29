@@ -1,0 +1,8 @@
+{"type":"config","topic":"Automation reality supplemental research extending 012","maxIterations":5,"convergenceThreshold":0.10,"resource_map_present":false,"resource_map":{"emit":true},"createdAt":"2026-04-29T14:35:00.000Z","specFolder":"specs/system-spec-kit/026-graph-and-context-optimization/013-automation-reality-supplemental-research"}
+{"type":"event","event":"init","at":"2026-04-29T14:35:00.000Z","sessionId":"2026-04-29T14:35:00.000Z","parentSessionId":"2026-04-29T13:15:00.000Z","lineageMode":"continuation","continuedFromRun":"012-automation-self-management-deep-research","maxIterations":5,"convergenceThreshold":0.10,"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"xhigh","serviceTier":"fast"}}
+{"event":"iteration_complete","at":"2026-04-29T12:47:09Z","iter":1,"focus":"Deep-loop graph automation reality","newInfoRatio":0.82,"status":"insight"}
+{"event":"iteration_complete","at":"2026-04-29T12:53:07Z","iter":2,"focus":"CCC + eval + ablation reality","newInfoRatio":0.78,"status":"insight"}
+{"event":"iteration_complete","at":"2026-04-29T13:00:25Z","iter":3,"focus":"Validator auto-fire surface","newInfoRatio":0.86,"status":"insight"}
+{"event":"iteration_complete","at":"2026-04-29T13:07:30Z","iter":4,"focus":"Adversarial 4-P1 retest + NEW gap hunt","newInfoRatio":0.74,"status":"insight"}
+{"event":"iteration_complete","at":"2026-04-29T13:10:40Z","iter":5,"focus":"Synthesis + remediation backlog","newInfoRatio":0.12,"status":"converged"}
+{"event":"synthesis_complete","at":"2026-04-29T13:10:40Z","totalIters":5,"stopReason":"converged"}
