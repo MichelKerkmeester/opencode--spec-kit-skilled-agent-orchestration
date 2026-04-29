@@ -8,6 +8,7 @@ const mocks = vi.hoisted(() => ({
   getDbMock: vi.fn(),
   getStatsMock: vi.fn(),
   getLastGitHeadMock: vi.fn(),
+  getLastGoldVerificationMock: vi.fn(),
   setLastDetectorProvenanceMock: vi.fn(),
   setLastGitHeadMock: vi.fn(),
   upsertFileMock: vi.fn(),
@@ -27,6 +28,7 @@ vi.mock('../code_graph/lib/code-graph-db.js', () => ({
   getDb: mocks.getDbMock,
   getStats: mocks.getStatsMock,
   getLastGitHead: mocks.getLastGitHeadMock,
+  getLastGoldVerification: mocks.getLastGoldVerificationMock,
   setLastDetectorProvenance: mocks.setLastDetectorProvenanceMock,
   setLastGitHead: mocks.setLastGitHeadMock,
   upsertFile: mocks.upsertFileMock,
@@ -72,6 +74,7 @@ describe('ensure-ready', () => {
       nodesByKind: {}, edgesByType: {}, parseHealthSummary: {},
     });
     mocks.getLastGitHeadMock.mockReturnValue(null);
+    mocks.getLastGoldVerificationMock.mockReturnValue(null);
     mocks.upsertFileMock.mockReturnValue(1);
     mocks.ensureFreshFilesMock.mockReturnValue({ fresh: [], stale: [] });
     mocks.isFileStaleMock.mockReturnValue(false);
@@ -196,6 +199,36 @@ describe('ensure-ready', () => {
       expect(result.reason).toBe('all tracked files are up-to-date');
       expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
       expect(mocks.setLastDetectorProvenanceMock).toHaveBeenCalledWith('structured');
+    });
+
+    it('rechecks tracked files on immediate fresh-to-stale transitions', async () => {
+      mocks.getDbMock.mockReturnValue(createDbWithNodeCount(1));
+      mocks.getTrackedFilesMock.mockReturnValue(['/tmp/test-root/stale.ts']);
+      mocks.ensureFreshFilesMock
+        .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] })
+        .mockReturnValueOnce({ fresh: [], stale: ['/tmp/test-root/stale.ts'] })
+        .mockReturnValueOnce({ fresh: ['/tmp/test-root/stale.ts'], stale: [] });
+
+      const { ensureCodeGraphReady } = await import('../code_graph/lib/ensure-ready.js');
+      const first = await ensureCodeGraphReady('/tmp/test-root', {
+        allowInlineIndex: true,
+        allowInlineFullScan: false,
+      });
+      const second = await ensureCodeGraphReady('/tmp/test-root', {
+        allowInlineIndex: true,
+        allowInlineFullScan: false,
+      });
+
+      expect(first.freshness).toBe('fresh');
+      expect(first.inlineIndexPerformed).toBe(false);
+      expect(second.freshness).toBe('fresh');
+      expect(second.inlineIndexPerformed).toBe(true);
+      expect(mocks.ensureFreshFilesMock).toHaveBeenCalledTimes(3);
+      expect(mocks.indexFilesMock).toHaveBeenCalledTimes(1);
+      expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+        expect.objectContaining({ rootDir: '/tmp/test-root' }),
+        { specificFiles: ['/tmp/test-root/stale.ts'] },
+      );
     });
 
     it('allows selective inline reindex after git HEAD changes when the stale set is small', async () => {

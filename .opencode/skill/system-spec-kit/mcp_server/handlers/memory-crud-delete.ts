@@ -71,7 +71,7 @@ async function handleMemoryDelete(args: DeleteArgs): Promise<MCPResponse> {
   const { id, specFolder, confirm } = args;
   if (!id && !specFolder) throw new Error('Either id or specFolder is required');
   if (specFolder !== undefined && typeof specFolder !== 'string') throw new Error('specFolder must be a string');
-  if (specFolder && !id && !confirm) throw new Error('Bulk delete requires confirm: true');
+  if (confirm !== true) throw new Error('memory_delete requires confirm: true');
 
   let numericId: number | null = null;
   if (id !== undefined && id !== null) {

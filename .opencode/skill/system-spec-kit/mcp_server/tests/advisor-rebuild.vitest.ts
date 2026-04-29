@@ -94,4 +94,37 @@ describe('advisor_rebuild handler', () => {
     });
     expect(indexSkills).not.toHaveBeenCalled();
   });
+
+  it('uses workspaceRoot from the public rebuild input when provided', () => {
+    const readStatus = vi.fn()
+      .mockReturnValueOnce(status('absent', 0))
+      .mockReturnValueOnce(status('live', 1));
+    const indexSkills = vi.fn(() => ({
+      scannedFiles: 1,
+      indexedFiles: 1,
+      skippedFiles: 0,
+      indexedNodes: 1,
+      indexedEdges: 0,
+      rejectedEdges: 0,
+      deletedNodes: 0,
+      warnings: [],
+    }));
+    const publishGeneration = vi.fn();
+
+    const result = rebuildAdvisorIndex({ workspaceRoot: '/workspace/alternate', force: true }, {
+      workspaceRoot: '/workspace/default',
+      readStatus,
+      indexSkills,
+      publishGeneration,
+      sourceSignature: vi.fn(() => 'alt-source-signature'),
+    });
+
+    expect(result.rebuilt).toBe(true);
+    expect(readStatus).toHaveBeenNthCalledWith(1, { workspaceRoot: '/workspace/alternate' });
+    expect(indexSkills).toHaveBeenCalledWith('/workspace/alternate/.opencode/skill');
+    expect(publishGeneration).toHaveBeenCalledWith(expect.objectContaining({
+      workspaceRoot: '/workspace/alternate',
+      changedPaths: ['/workspace/alternate/.opencode/skill'],
+    }));
+  });
 });

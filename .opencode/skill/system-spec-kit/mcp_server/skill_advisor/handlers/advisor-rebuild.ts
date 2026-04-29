@@ -55,7 +55,7 @@ export function rebuildAdvisorIndex(
   dependencies: AdvisorRebuildDependencies = {},
 ): AdvisorRebuildOutput {
   const args = AdvisorRebuildInputSchema.parse(input);
-  const workspaceRoot = resolve(dependencies.workspaceRoot ?? process.cwd());
+  const workspaceRoot = resolve(args.workspaceRoot ?? dependencies.workspaceRoot ?? process.cwd());
   const readStatus = dependencies.readStatus ?? readAdvisorStatus;
   const before = readStatus({ workspaceRoot });
   const reason = reasonFor(before.freshness, args.force === true);

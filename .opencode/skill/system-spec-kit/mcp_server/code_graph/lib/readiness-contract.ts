@@ -10,19 +10,19 @@
 // handlers.
 //
 // Scope: 4 helpers that map ensure-ready `GraphFreshness`
-// ('fresh'|'stale'|'empty') onto:
+// ('fresh'|'stale'|'empty'|'error') onto:
 //   1. the canonical ops-hardening `StructuralReadiness`
 //      vocabulary ('ready'|'stale'|'missing') used by
 //      session_bootstrap / session_resume, and
 //   2. the shared-payload `SharedPayloadTrustState` axis
-//      ('live'|'stale'|'absent' subset of the 8-state canonical).
+//      ('live'|'stale'|'absent'|'unavailable' subset of the 8-state canonical).
 //
 // IMPORTANT: this module does NOT introduce a new trust-state
 // enum. It consumes the canonical `SharedPayloadTrustState` from
 // lib/context/shared-payload.ts (see M8 / T-SHP-01, R9-001). The
-// handler-level helpers below only emit a 3-value subset
-// (live|stale|absent) because ensure-ready only knows about
-// three freshness states — that subset is a safe, forward-
+// handler-level helpers below only emit a 4-value subset
+// (live|stale|absent|unavailable) because ensure-ready knows about
+// four freshness states — that subset is a safe, forward-
 // compatible projection over the canonical type.
 
 import * as graphDb from './code-graph-db.js';

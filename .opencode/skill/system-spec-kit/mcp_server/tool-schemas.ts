@@ -279,15 +279,15 @@ const memoryHealth: ToolDefinition = {
 // L4: Mutation - Modify existing memories (Token Budget: 500)
 const memoryDelete: ToolDefinition = {
   name: 'memory_delete',
-  description: '[L4:Mutation] Delete a spec-doc record by ID or all spec-doc records in a spec folder. Use to remove incorrect or outdated information. Requires EITHER id (single delete) OR specFolder + confirm:true (bulk delete). Token Budget: 500.',
+  description: '[L4:Mutation] Delete a spec-doc record by ID or all spec-doc records in a spec folder. Use to remove incorrect or outdated information. Requires confirm:true for every mutation plus EITHER id (single delete) OR specFolder (bulk delete). Token Budget: 500.',
   inputSchema: {
     type: 'object',
     additionalProperties: false,
-    'x-requiredAnyOf': [['id'], ['specFolder', 'confirm']],
+    'x-requiredAnyOf': [['id', 'confirm'], ['specFolder', 'confirm']],
     properties: {
-      id: { type: 'number', minimum: 1, description: 'Spec-doc record ID to delete (single delete mode)' },
+      id: { type: 'number', minimum: 1, description: 'Spec-doc record ID to delete (single delete mode, requires confirm: true)' },
       specFolder: { type: 'string', minLength: 1, description: 'Delete all spec-doc records in this spec folder (bulk delete mode, requires confirm: true)' },
-      confirm: { type: 'boolean', const: true, description: 'Safety gate. When provided, confirm must be true.' }
+      confirm: { type: 'boolean', const: true, description: 'Required safety gate for single-record and bulk delete. Must be true.' }
     }
   },
 };

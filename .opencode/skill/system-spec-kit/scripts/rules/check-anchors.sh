@@ -39,6 +39,14 @@ run_check() {
 
     local -a all_files=()
 
+    strip_fenced_blocks() {
+        awk '
+            /^[[:space:]]*(```|~~~)/ { in_fence = !in_fence; print ""; next }
+            in_fence { print ""; next }
+            { print }
+        ' "$1"
+    }
+
 # ───────────────────────────────────────────────────────────────
 # 2. COLLECT FILES TO VALIDATE
 # ───────────────────────────────────────────────────────────────
@@ -86,7 +94,7 @@ run_check() {
         local doc_path="$folder/$doc_name"
         if [[ -f "$doc_path" ]]; then
             local anchor_count
-            anchor_count=$(grep -c '<!-- ANCHOR:' "$doc_path" 2>/dev/null || echo "0")
+            anchor_count=$(strip_fenced_blocks "$doc_path" | grep -c '<!-- ANCHOR:' 2>/dev/null || echo "0")
             # Fix: grep -c might return multiple lines if there are errors, take first line only
             anchor_count=$(echo "$anchor_count" | head -1)
             if [[ "$anchor_count" -eq 0 ]]; then
@@ -114,7 +122,7 @@ run_check() {
             if ! printf '%s\n' "$line_text" | grep -Eq '<!--[[:space:]]*ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->'; then
                 errors+=("$display_name:$line_num: Malformed opening anchor syntax")
             fi
-        done < <(grep -n '<!--[[:space:]]*ANCHOR:' "$file" 2>/dev/null || true)
+        done < <(strip_fenced_blocks "$file" | grep -n '<!--[[:space:]]*ANCHOR:' 2>/dev/null || true)
 
         # Detect malformed closing anchor syntax.
         while IFS=: read -r line_num line_text; do
@@ -122,14 +130,14 @@ run_check() {
             if ! printf '%s\n' "$line_text" | grep -Eq '<!--[[:space:]]*/ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->'; then
                 errors+=("$display_name:$line_num: Malformed closing anchor syntax")
             fi
-        done < <(grep -n '<!--[[:space:]]*/ANCHOR:' "$file" 2>/dev/null || true)
+        done < <(strip_fenced_blocks "$file" | grep -n '<!--[[:space:]]*/ANCHOR:' 2>/dev/null || true)
 
         # Extract opening anchors: <!-- ANCHOR:id --> format: "linenum id"
-        { grep -nE '<!--[[:space:]]*ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->' "$file" 2>/dev/null || true; } | \
+        { strip_fenced_blocks "$file" | grep -nE '<!--[[:space:]]*ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->' 2>/dev/null || true; } | \
             sed -nE 's/^([0-9]+):.*ANCHOR:[[:space:]]*([A-Za-z0-9][A-Za-z0-9_-]*).*/\1 \2/p' > "$tmp_opens"
 
         # Extract closing anchors: <!-- /ANCHOR:id -->
-        { grep -nE '<!--[[:space:]]*/ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->' "$file" 2>/dev/null || true; } | \
+        { strip_fenced_blocks "$file" | grep -nE '<!--[[:space:]]*/ANCHOR:[[:space:]]*[A-Za-z0-9][A-Za-z0-9_-]*[[:space:]]*-->' 2>/dev/null || true; } | \
             sed -nE 's/^([0-9]+):.*\/ANCHOR:[[:space:]]*([A-Za-z0-9][A-Za-z0-9_-]*).*/\1 \2/p' > "$tmp_closes"
 
         local all_ids

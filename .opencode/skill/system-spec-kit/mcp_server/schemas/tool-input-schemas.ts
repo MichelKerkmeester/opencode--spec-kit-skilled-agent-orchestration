@@ -255,14 +255,29 @@ const memorySaveSchema = getSchema({
   deleteAfter: z.string().optional(),
 });
 
-// Discriminated delete: branch 1 requires `id` (single-record delete).
-// Branch 2 requires `specFolder` + `confirm: true` (bulk folder delete).
-// Codex fix: `confirm` accepts only `true` (not `false`) in both branches
-// To prevent semantically meaningless `confirm: false` from passing validation.
+// Destructive delete: every mutation path requires `confirm: true`.
+// Branch 1 requires `id` + `confirm` (single-record delete).
+// Branch 2 requires `specFolder` + `confirm` (bulk folder delete).
 const memoryDeleteSchema = getSchema({
   id: positiveInt.optional().describe('Memory ID to delete (required unless specFolder + confirm provided for bulk)'),
   specFolder: optionalPathString().describe('Spec folder scope for bulk delete (requires confirm: true)'),
-  confirm: z.boolean().optional().describe('Must be true for spec-folder bulk delete'),
+  confirm: z.literal(true).optional().describe('Must be true for every delete mutation'),
+}).superRefine((value, ctx) => {
+  if (value.confirm !== true) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['confirm'],
+      message: 'confirm:true is required for every memory_delete mutation',
+    });
+  }
+
+  if (value.id === undefined && value.specFolder === undefined) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['id'],
+      message: 'Either id or specFolder is required',
+    });
+  }
 });
 
 const memoryUpdateSchema = getSchema({
@@ -508,6 +523,16 @@ const codeGraphContextSchema = getSchema({
   includeTrace: z.boolean().optional(),
 });
 
+const codeGraphVerifySchema = getSchema({
+  rootDir: optionalPathString(),
+  batteryPath: optionalPathString(),
+  category: z.enum(['mcp-tool', 'cross-module', 'exported-type', 'regression-detection']).optional(),
+  failFast: z.boolean().optional(),
+  includeDetails: z.boolean().optional(),
+  persistBaseline: z.boolean().optional(),
+  allowInlineIndex: z.boolean().optional(),
+});
+
 const detectChangesSchema = getSchema({
   diff: z.string().min(1),
   rootDir: optionalPathString(),
@@ -634,6 +659,7 @@ export const TOOL_SCHEMAS: Record<string, ToolInputSchema> = {
   code_graph_query: codeGraphQuerySchema as unknown as ToolInputSchema,
   code_graph_status: getSchema({}) as unknown as ToolInputSchema,
   code_graph_context: codeGraphContextSchema as unknown as ToolInputSchema,
+  code_graph_verify: codeGraphVerifySchema as unknown as ToolInputSchema,
   detect_changes: detectChangesSchema as unknown as ToolInputSchema,
   skill_graph_scan: skillGraphScanSchema as unknown as ToolInputSchema,
   skill_graph_query: skillGraphQuerySchema as unknown as ToolInputSchema,
@@ -696,6 +722,7 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   code_graph_query: ['operation', 'subject', 'subjects', 'unionMode', 'edgeType', 'limit', 'includeTransitive', 'maxDepth', 'minConfidence'],
   code_graph_status: [],
   code_graph_context: ['input', 'queryMode', 'subject', 'seeds', 'budgetTokens', 'profile', 'includeTrace'],
+  code_graph_verify: ['rootDir', 'batteryPath', 'category', 'failFast', 'includeDetails', 'persistBaseline', 'allowInlineIndex'],
   detect_changes: ['diff', 'rootDir'],
   skill_graph_scan: ['skillsRoot'],
   skill_graph_query: ['queryType', 'skillId', 'sourceSkillId', 'targetSkillId', 'family', 'minInbound', 'depth', 'limit'],

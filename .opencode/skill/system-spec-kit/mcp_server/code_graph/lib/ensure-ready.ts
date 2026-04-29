@@ -7,7 +7,6 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
 import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-graph-db.js';
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
@@ -297,63 +296,26 @@ export function persistIndexedFileResult(result: ParseResult): void {
  * Has a 10-second timeout guard so auto-indexing never blocks
  * queries forever.
  */
-/** Debounce: skip re-check if last check was within this window */
-const DEBOUNCE_MS = 5_000;
-interface ReadyDebounceEntry {
-  checkedAt: number;
-  result: ReadyResult;
-}
-
-const readinessDebounce = new Map<string, ReadyDebounceEntry>();
-
-function buildReadinessDebounceKey(
-  rootDir: string,
-  allowInlineIndex: boolean,
-  allowInlineFullScan: boolean,
-): string {
-  return JSON.stringify({
-    rootDir: resolve(rootDir),
-    allowInlineIndex,
-    allowInlineFullScan,
-  });
-}
-
-function cacheReadyResult(cacheKey: string, result: ReadyResult): ReadyResult {
-  readinessDebounce.set(cacheKey, {
-    checkedAt: Date.now(),
-    result,
-  });
-  return result;
-}
-
 export async function ensureCodeGraphReady(rootDir: string, options: EnsureReadyOptions = {}): Promise<ReadyResult> {
   const allowInlineIndex = options.allowInlineIndex ?? true;
   const allowInlineFullScan = options.allowInlineFullScan ?? allowInlineIndex;
-  const cacheKey = buildReadinessDebounceKey(rootDir, allowInlineIndex, allowInlineFullScan);
-
-  // Debounce: skip if the same workspace + option shape was checked recently.
-  const now = Date.now();
-  const cachedEntry = readinessDebounce.get(cacheKey);
-  if (cachedEntry && (now - cachedEntry.checkedAt) < DEBOUNCE_MS) {
-    return cachedEntry.result;
-  }
 
   const state = detectState(rootDir);
   const removedDeletedCount = cleanupDeletedTrackedFiles(state.deletedFiles);
   const verificationGate = getVerificationGate(graphDb.getLastGoldVerification());
 
   if (state.action === 'none') {
-    return cacheReadyResult(cacheKey, {
+    return {
       freshness: state.freshness,
       action: 'none',
       inlineIndexPerformed: false,
       reason: appendCleanupReason(state.reason, removedDeletedCount),
       verificationGate,
-    });
+    };
   }
 
   if (state.action === 'selective_reindex' && !allowInlineIndex) {
-    return cacheReadyResult(cacheKey, {
+    return {
       freshness: state.freshness,
       action: state.action,
       ...(state.action === 'selective_reindex' ? { files: state.staleFiles } : {}),
@@ -362,17 +324,17 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       selfHealAttempted: true,
       selfHealResult: 'skipped',
       verificationGate,
-    });
+    };
   }
 
   if (state.action === 'full_scan' && !allowInlineFullScan) {
-    return cacheReadyResult(cacheKey, {
+    return {
       freshness: state.freshness,
       action: state.action,
       inlineIndexPerformed: false,
       reason: appendCleanupReason(`${state.reason}; inline full scan skipped for read path`, removedDeletedCount),
       verificationGate,
-    });
+    };
   }
 
   try {
@@ -385,14 +347,14 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       if (head) setLastGitHead(head);
 
       const refreshedState = detectState(rootDir);
-      return cacheReadyResult(cacheKey, {
+      return {
         freshness: refreshedState.freshness,
         action: refreshedState.action,
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
         inlineIndexPerformed: true,
         reason: appendCleanupReason(refreshedState.reason, removedDeletedCount),
         verificationGate,
-      });
+      };
     }
 
     // selective_reindex: only re-parse stale files
@@ -408,7 +370,7 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       const selfHealResult = refreshedState.freshness === 'fresh' && refreshedState.action === 'none'
         ? 'ok'
         : 'failed';
-      return cacheReadyResult(cacheKey, {
+      return {
         freshness: refreshedState.freshness,
         action: refreshedState.action,
         ...(refreshedState.action === 'selective_reindex' ? { files: refreshedState.staleFiles } : {}),
@@ -418,12 +380,12 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
         selfHealResult,
         verificationGate,
         lastSelfHealAt,
-      });
+      };
     }
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[ensure-ready] Auto-index failed: ${msg}`);
-    return cacheReadyResult(cacheKey, {
+    return {
       freshness: state.freshness,
       action: state.action,
       files: state.staleFiles,
@@ -437,16 +399,16 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
             lastSelfHealAt: new Date().toISOString(),
           }
         : {}),
-    });
+    };
   }
 
-  return cacheReadyResult(cacheKey, {
+  return {
     freshness: state.freshness,
     action: 'none',
     inlineIndexPerformed: false,
     reason: appendCleanupReason(state.reason, removedDeletedCount),
     verificationGate,
-  });
+  };
 }
 
 /**

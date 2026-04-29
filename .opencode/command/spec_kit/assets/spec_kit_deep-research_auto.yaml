@@ -410,7 +410,7 @@ workflow:
       step_check_convergence:
         action: "Evaluate stop conditions and combine the inline 3-signal vote with graph convergence"
         algorithm: |
-          1. if iteration_count >= max_iterations: STOP (max_iterations_reached)
+          1. if iteration_count >= max_iterations: STOP (maxIterationsReached). This terminal cap bypasses quality-guard overrides; record failed guards/blockers as synthesis evidence instead of continuing.
           2. if remaining_questions == 0: STOP (all_questions_answered)
           3. if stuck_count >= config.stuckThreshold: STUCK_RECOVERY
           4. GRAPH-ASSISTED COMPOSITE CONVERGENCE:
@@ -448,7 +448,7 @@ workflow:
                  reason = "composite_converged"
                  stop_blocked = false
           5. else: CONTINUE
-          6. if decision == "STOP":
+          6. if decision == "STOP" and reason != "maxIterationsReached":
                guardResult = checkQualityGuards(state, strategy)
                if not guardResult.passed:
                  log: "Quality guard failed: {guardResult.violations}. Overriding STOP to CONTINUE."

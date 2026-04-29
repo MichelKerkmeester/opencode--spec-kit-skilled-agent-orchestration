@@ -55,6 +55,15 @@ resolve_markdown_reference_path() {
     return 1
 }
 
+extract_markdown_link_targets() {
+    awk '
+        /^[[:space:]]*(```|~~~)/ { in_fence = !in_fence; next }
+        in_fence { next }
+        { print }
+    ' "$1" | grep -oE '\[[^]]+\]\([^)]+\.md([^)]*)?\)' 2>/dev/null \
+        | sed -E 's/^[^)]*\(([^)#?]+\.md)([#?][^)]*)?\)$/\1/' || true
+}
+
 run_check() {
     local folder="$1"
     local _level="$2"
@@ -80,12 +89,12 @@ run_check() {
         markdown_dir=$(dirname "$markdown_file")
 
         local refs=""
-        refs=$(grep -oE '\`[A-Za-z0-9._/-]+\.md\`' "$markdown_file" 2>/dev/null || true)
+        refs=$(extract_markdown_link_targets "$markdown_file")
         if [[ -n "$refs" ]]; then
             local ref=""
             while IFS= read -r ref; do
                 [[ -z "$ref" ]] && continue
-                local target=${ref//\`/}
+                local target="$ref"
                 if ! resolve_markdown_reference_path "$ref" "$markdown_dir" "$folder" "$repo_root" >/dev/null; then
                     issues+=("$filename references missing markdown file: $target")
                 fi

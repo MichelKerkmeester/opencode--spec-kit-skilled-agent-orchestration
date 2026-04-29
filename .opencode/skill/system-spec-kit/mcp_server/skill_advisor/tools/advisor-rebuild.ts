@@ -13,6 +13,7 @@ export const advisorRebuildTool: ToolDefinition = {
     additionalProperties: false,
     properties: {
       force: { type: 'boolean', default: false, description: 'Rebuild even when advisor_status reports live.' },
+      workspaceRoot: { type: 'string', description: 'Optional workspace root to rebuild. Use the same workspaceRoot inspected by advisor_status.' },
     },
   },
 };

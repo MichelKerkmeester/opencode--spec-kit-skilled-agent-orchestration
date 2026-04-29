@@ -1,0 +1,19 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/046-release-readiness-synthesis-and-remediation",
+  "description": "Synthesizes the 10 review-reports from 045 into aggregate verdict + sequenced remediation backlog. Implements P0 fixes + Tier beta P1 quick wins. Documents open questions for operator decision on Tier gamma items.",
+  "keywords": [
+    "046-release-readiness-synthesis-and-remediation",
+    "release-readiness aggregate",
+    "P0 fixes implementation",
+    "release blocker remediation"
+  ],
+  "lastUpdated": "2026-04-29T22:45:00.000+02:00",
+  "specId": "046",
+  "folderSlug": "release-readiness-synthesis-and-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 46,
+  "memoryNameHistory": []
+}

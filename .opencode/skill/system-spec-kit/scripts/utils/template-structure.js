@@ -188,6 +188,7 @@ function resolveTemplatePath(level, basename, templatesRoot = getTemplatesRoot()
 }
 
 function extractH2Headers(content) {
+  content = stripFencedCodeBlocks(content);
   H2_RE.lastIndex = 0;
   const headers = [];
   let match;
@@ -201,6 +202,20 @@ function extractH2Headers(content) {
   }
 
   return headers;
+}
+
+function stripFencedCodeBlocks(content) {
+  const lines = content.split(/\r?\n/);
+  let inFence = false;
+
+  return lines.map((line) => {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence;
+      return '';
+    }
+
+    return inFence ? '' : line;
+  }).join('\n');
 }
 
 function parseAnchoredSections(content) {
@@ -547,6 +562,7 @@ function loadTemplateContractForDocument(level, basename, documentPath, template
 }
 
 function loadDocumentStructure(content) {
+  content = stripFencedCodeBlocks(content);
   ANCHOR_OPEN_RE.lastIndex = 0;
   const headers = extractH2Headers(content);
   const anchors = [];

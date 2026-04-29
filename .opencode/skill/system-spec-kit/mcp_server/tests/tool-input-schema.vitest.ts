@@ -97,10 +97,10 @@ describe('Tool Input Schema Validation', () => {
     }).toThrow(/Missing required arguments/);
   });
 
-  it('supports numeric strings for number fields (compatibility)', () => {
+  it('requires confirm for numeric string id delete', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', { id: '42' }, TOOL_DEFINITIONS);
-    }).not.toThrow();
+    }).toThrow(/required schema constraints/);
   });
 
   it('strict mode rejects unknown properties when SPECKIT_STRICT_SCHEMAS is enabled', () => {
@@ -125,6 +125,32 @@ describe('Tool Input Schema Validation', () => {
 
     const parsed = schema.parse({ query: 'valid query', unexpected: true });
     expect(parsed).toEqual({ query: 'valid query', unexpected: true });
+  });
+
+  it('runtime session_health schema rejects unknown parameters in strict mode', () => {
+    process.env.SPECKIT_STRICT_SCHEMAS = 'true';
+
+    expect(() => {
+      validateToolArgs('session_health', { unexpected: true });
+    }).toThrow(/Unknown parameter/);
+  });
+
+  it('runtime code_graph_verify schema accepts public fields and rejects unknown fields', () => {
+    expect(() => {
+      validateToolArgs('code_graph_verify', {
+        rootDir: '.',
+        batteryPath: '.opencode/skill/system-spec-kit/mcp_server/code_graph/gold/code-graph-gold-queries.json',
+        category: 'mcp-tool',
+        failFast: true,
+        includeDetails: true,
+        persistBaseline: false,
+        allowInlineIndex: false,
+      });
+    }).not.toThrow();
+
+    expect(() => {
+      validateToolArgs('code_graph_verify', { surprise: true });
+    }).toThrow(/Unknown parameter/);
   });
 
   it('enforces enum validation for provided fields', () => {
@@ -207,15 +233,21 @@ describe('Tool Input Schema Validation', () => {
 ──────────────────────────────────────────────────────────────── */
 
 describe('memory_delete schema (oneOf removed, handler-validated)', () => {
-  it('accepts single-delete with id', () => {
+  it('accepts single-delete with id and confirm', () => {
     expect(() => {
-      validateToolInputSchema('memory_delete', { id: 42 }, TOOL_DEFINITIONS);
+      validateToolInputSchema('memory_delete', { id: 42, confirm: true }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(() => {
+      validateToolArgs('memory_delete', { id: 42, confirm: true });
     }).not.toThrow();
   });
 
-  it('accepts single-delete with numeric string id (compatibility)', () => {
+  it('accepts single-delete with numeric string id and confirm (compatibility)', () => {
     expect(() => {
-      validateToolInputSchema('memory_delete', { id: '42' }, TOOL_DEFINITIONS);
+      validateToolInputSchema('memory_delete', { id: '42', confirm: true }, TOOL_DEFINITIONS);
+    }).not.toThrow();
+    expect(() => {
+      validateToolArgs('memory_delete', { id: '42', confirm: true });
     }).not.toThrow();
   });
 
@@ -227,8 +259,17 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
 
   it('accepts combined id + specFolder (handler resolves to single-delete)', () => {
     expect(() => {
-      validateToolInputSchema('memory_delete', { id: 1, specFolder: 'specs/001-test' }, TOOL_DEFINITIONS);
+      validateToolInputSchema('memory_delete', { id: 1, specFolder: 'specs/001-test', confirm: true }, TOOL_DEFINITIONS);
     }).not.toThrow();
+  });
+
+  it('rejects single-delete without confirm', () => {
+    expect(() => {
+      validateToolInputSchema('memory_delete', { id: 42 }, TOOL_DEFINITIONS);
+    }).toThrow(/required schema constraints/);
+    expect(() => {
+      validateToolArgs('memory_delete', { id: 42 });
+    }).toThrow(/confirm:true is required/);
   });
 
   it('rejects empty args when neither delete branch is satisfied', () => {
@@ -241,6 +282,9 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', { specFolder: 'specs/001', confirm: false }, TOOL_DEFINITIONS);
     }).toThrow(/expected constant true/);
+    expect(() => {
+      validateToolArgs('memory_delete', { specFolder: 'specs/001', confirm: false });
+    }).toThrow();
   });
 
   it('rejects non-boolean confirm field via type check before const matching', () => {
@@ -252,7 +296,7 @@ describe('memory_delete schema (oneOf removed, handler-validated)', () => {
   it('rejects non-number id field via type check', () => {
     expect(() => {
       validateToolInputSchema('memory_delete', { id: true }, TOOL_DEFINITIONS);
-    }).toThrow(/expected number/);
+    }).toThrow(/required schema constraints|expected number/);
   });
 });
 

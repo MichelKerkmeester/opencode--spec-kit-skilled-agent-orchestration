@@ -114,6 +114,7 @@ export const AdvisorStatusOutputSchema = z.object({
 
 export const AdvisorRebuildInputSchema = z.object({
   force: z.boolean().optional(),
+  workspaceRoot: z.string().min(1).optional(),
 }).strict();
 
 export const AdvisorRebuildOutputSchema = z.object({

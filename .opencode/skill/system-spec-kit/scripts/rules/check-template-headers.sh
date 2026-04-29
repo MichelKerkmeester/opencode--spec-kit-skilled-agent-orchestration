@@ -71,7 +71,8 @@ run_check() {
                     errors+=("$display_name: Required section header out of order '$value'")
                     ;;
                 extra_header)
-                    warnings+=("$display_name: Extra custom section header '## $value' does not exist in the active template")
+                    # Custom sections after required structure are valid packet extensions.
+                    # Missing or reordered required headers remain errors.
                     ;;
             esac
         done <<< "$compare_output"

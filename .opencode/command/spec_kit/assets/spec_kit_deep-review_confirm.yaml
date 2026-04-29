@@ -455,10 +455,10 @@ workflow:
                blocked_gates = ["claimAdjudicationGate"]
                recovery_strategy = "Reviewer must add typed claim-adjudication packets (claim, evidenceRefs, counterevidenceSought, alternativeExplanation, finalSeverity, confidence, downgradeTrigger) for every active P0/P1 finding before STOP is allowed."
                Skip hard stops (1) and composite convergence (4); proceed directly to step 5 legal-stop decision-tree assembly so blocked_by_json, gate outputs, and the blocked_stop event still populate consistently.
-          1. HARD STOPS (each still subject to step 5 legal-stop gates, including claimAdjudicationGate):
-             a) if iteration_count >= max_iterations: mark hard_stop_reason = "max_iterations_reached" and promote to STOP candidate
+          1. HARD STOPS:
+             a) if iteration_count >= max_iterations: set decision = "STOP", stopReason = "maxIterationsReached", hard_stop_reason = "max_iterations_reached", preserve any failed legal-stop gates as terminal evidence, and proceed to synthesis without legal-stop veto
              b) if all dimensions clean AND required traceability protocols are covered AND p0_count == 0 AND p1_count == 0 AND coverage_age >= 1 AND all quality gates pass (evidence: every P0/P1 has file:line; scope: all findings within target; coverage: all dimensions reviewed): mark hard_stop_reason = "all_dimensions_clean" and promote to STOP candidate
-             A hard stop does NOT bypass the legal-stop decision tree; it must still pass step 5 including the claim-adjudication gate.
+             Operator stop reasons (`maxIterationsReached`, `manualStop`, `userPaused`, unrecoverable `error`) are terminal ceilings. They do not hide failed gates; they record them in synthesis and stop dispatch.
           2. STUCK DETECTION (threshold 2):
              if stuck_count >= 2: STUCK_RECOVERY
           3. GRAPH CONVERGENCE PREREQUISITE:
@@ -479,7 +479,7 @@ workflow:
                Redistribute weights for unavailable signals.
                if latest ratio <= 0.05: mark no_progress_threshold_reached
                if weighted_stop_score >= 0.60: inline STOP becomes a candidate and binary gates must run
-          5. LEGAL-STOP DECISION TREE (review-specific gates; runs whenever step 0 or a hard stop or the composite vote promotes STOP to a candidate):
+          5. LEGAL-STOP DECISION TREE (review-specific gates; runs whenever step 0, all-dimensions-clean, or the composite vote promotes STOP to a candidate; terminal max-iteration/manual/error stops bypass veto and record failed gates as evidence):
                a) convergenceGate: pass when a hard-stop condition is met OR weighted_stop_score >= 0.60; record score
                b) dimensionCoverageGate: pass when configured dimensions and required traceability coverage are complete and coverage_age >= 1; record covered and missing dimensions
                c) p0ResolutionGate: pass when activeP0 == 0; record activeP0

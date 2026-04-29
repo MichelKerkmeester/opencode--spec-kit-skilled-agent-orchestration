@@ -55,7 +55,7 @@ This folder contains the structural code graph subsystem. It walks a workspace, 
 | **Stale-graph highlights** | Structural snapshots compute top-called function highlights even when graph status is `stale` |
 | **Working set tracking** | Recently-touched file tracking for fresh-context retrieval (`lib/working-set-tracker.ts`) |
 | **Budget allocation** | Token budget enforcement on context payloads (`lib/budget-allocator.ts`) |
-| **Readiness contract** | Trust state probing (`live` / `stale` / `missing`) via `lib/readiness-contract.ts` |
+| **Readiness contract** | `canonicalReadiness` probing (`ready` / `stale` / `missing`) and `trustState` probing (`live` / `stale` / `absent` / `unavailable`) via `lib/readiness-contract.ts` |
 | **Status diagnostics** | `code_graph_status` returns readiness, parse-health, and `graphQualitySummary` for operator-visible health checks |
 | **Blocked read contract** | `code_graph_context` returns a structured `status:"blocked"` payload when a broader full scan is required before graph answers can be trusted |
 | **Startup transport metadata** | `buildStartupBrief()` carries `graphQualitySummary` plus shared-payload provenance for hook/runtime startup surfaces |
