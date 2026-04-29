@@ -1,0 +1,219 @@
+{
+  "runId": "W3-baseline",
+  "workstream": "W3",
+  "variant": "baseline",
+  "hypothesis": "W3 trust-tree composition should improve citation-quality on multi-source contradiction cells without reducing precision, recall, or refusal-survival.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W3",
+  "summary": {
+    "precisionAt3": 0.333,
+    "recallAt3": 0.5,
+    "latency": {
+      "p50": 0.14,
+      "p95": 0.14,
+      "p99": 0.14
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 0
+  },
+  "cases": [
+    {
+      "caseId": "w3-trust-tree-contradiction",
+      "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+      "perChannelCandidates": {
+        "memory_search": [
+          {
+            "id": "trust-tree-response-policy",
+            "title": "Response policy provenance",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-response-policy"
+            ]
+          },
+          {
+            "id": "unsupported-trust-claim",
+            "title": "Unsupported trust claim",
+            "channel": "memory_search",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "unsupported-trust-claim"
+            ]
+          }
+        ],
+        "code_graph_query": [
+          {
+            "id": "code-graph-readiness-signal",
+            "title": "Code graph readiness signal",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "code-graph-readiness-signal"
+            ]
+          }
+        ],
+        "skill_graph_query": [
+          {
+            "id": "advisor-trust-state-signal",
+            "title": "Advisor trust state signal",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ]
+          }
+        ]
+      },
+      "channelCaptures": [
+        {
+          "channel": "memory_search",
+          "candidates": [
+            {
+              "id": "trust-tree-response-policy",
+              "title": "Response policy provenance",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-response-policy"
+              ]
+            },
+            {
+              "id": "unsupported-trust-claim",
+              "title": "Unsupported trust claim",
+              "channel": "memory_search",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "unsupported-trust-claim"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "trust-tree-response-policy",
+            "unsupported-trust-claim"
+          ],
+          "latencyMs": 1
+        },
+        {
+          "channel": "code_graph_query",
+          "candidates": [
+            {
+              "id": "code-graph-readiness-signal",
+              "title": "Code graph readiness signal",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "code-graph-readiness-signal"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "code-graph-readiness-signal"
+          ],
+          "latencyMs": 1
+        },
+        {
+          "channel": "skill_graph_query",
+          "candidates": [
+            {
+              "id": "advisor-trust-state-signal",
+              "title": "Advisor trust state signal",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "advisor-trust-state-signal"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "advisor-trust-state-signal"
+          ],
+          "latencyMs": 1
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "trust-tree-response-policy",
+          "title": "Response policy provenance",
+          "channel": "memory_search",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "trust-tree-response-policy"
+          ]
+        },
+        {
+          "id": "code-graph-readiness-signal",
+          "title": "Code graph readiness signal",
+          "channel": "code_graph_query",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "code-graph-readiness-signal"
+          ]
+        },
+        {
+          "id": "advisor-trust-state-signal",
+          "title": "Advisor trust state signal",
+          "channel": "skill_graph_query",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "advisor-trust-state-signal"
+          ]
+        },
+        {
+          "id": "unsupported-trust-claim",
+          "title": "Unsupported trust claim",
+          "channel": "memory_search",
+          "rank": 2,
+          "score": 0.5,
+          "citationIds": [
+            "unsupported-trust-claim"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 1,
+        "totalRelevant": 2,
+        "precisionAt3": 0.3333333333333333,
+        "recallAt3": 0.5
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "trust-tree-response-policy",
+          "trust-tree-contradiction-edge"
+        ],
+        "observedIds": [
+          "trust-tree-response-policy",
+          "unsupported-trust-claim",
+          "code-graph-readiness-signal",
+          "advisor-trust-state-signal"
+        ],
+        "passed": false
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.13954200000000583,
+        "byChannel": {
+          "memory_search": 1,
+          "code_graph_query": 1,
+          "skill_graph_query": 1
+        }
+      }
+    }
+  ]
+}

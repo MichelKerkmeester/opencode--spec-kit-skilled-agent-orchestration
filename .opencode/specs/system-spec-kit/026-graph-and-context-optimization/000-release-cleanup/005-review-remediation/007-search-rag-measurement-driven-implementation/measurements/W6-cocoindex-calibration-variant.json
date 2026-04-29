@@ -1,0 +1,100 @@
+{
+  "runId": "W6-variant",
+  "workstream": "W6",
+  "variant": "variant",
+  "hypothesis": "W6 CocoIndex duplicate-density calibration should improve duplicate-heavy precision@3 and preserve recall through canonical path selection.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W6",
+  "summary": {
+    "precisionAt3": 1,
+    "recallAt3": 1,
+    "latency": {
+      "p50": 0.128,
+      "p95": 0.128,
+      "p99": 0.128
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 1
+  },
+  "cases": [
+    {
+      "caseId": "w6-cocoindex-duplicate-heavy",
+      "query": "semantic code search duplicate-heavy path-class calibration",
+      "perChannelCandidates": {
+        "memory_search": [
+          {
+            "id": "cocoindex-canonical-spec",
+            "title": "Canonical CocoIndex spec path",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "cocoindex-canonical-spec"
+            ]
+          }
+        ],
+        "code_graph_query": [],
+        "skill_graph_query": []
+      },
+      "channelCaptures": [
+        {
+          "channel": "memory_search",
+          "candidates": [
+            {
+              "id": "cocoindex-canonical-spec",
+              "title": "Canonical CocoIndex spec path",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "cocoindex-canonical-spec"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "cocoindex-canonical-spec"
+          ],
+          "latencyMs": 2
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "cocoindex-canonical-spec",
+          "title": "Canonical CocoIndex spec path",
+          "channel": "memory_search",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "cocoindex-canonical-spec"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 1,
+        "totalRelevant": 1,
+        "precisionAt3": 1,
+        "recallAt3": 1
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "cocoindex-canonical-spec"
+        ],
+        "observedIds": [
+          "cocoindex-canonical-spec"
+        ],
+        "passed": true
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.12833399999999529,
+        "byChannel": {
+          "memory_search": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,175 @@
+{
+  "runId": "W4-baseline",
+  "workstream": "W4",
+  "variant": "baseline",
+  "hypothesis": "W4 conditional rerank should improve precision@3 on ambiguous weak-agreement cells while keeping synthetic p95 latency under 5ms.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W4",
+  "summary": {
+    "precisionAt3": 0.333,
+    "recallAt3": 1,
+    "latency": {
+      "p50": 0.145,
+      "p95": 0.145,
+      "p99": 0.145
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 1
+  },
+  "cases": [
+    {
+      "caseId": "w4-ambiguous-rerank-disagreement",
+      "query": "ambiguous review routing prompt with weak channel agreement",
+      "perChannelCandidates": {
+        "memory_search": [
+          {
+            "id": "rerank-adjacent-noise",
+            "title": "Adjacent ambiguous noise",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-adjacent-noise"
+            ]
+          },
+          {
+            "id": "rerank-canonical-ambiguous",
+            "title": "Canonical ambiguous rerank case",
+            "channel": "memory_search",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "rerank-canonical-ambiguous"
+            ]
+          }
+        ],
+        "code_graph_query": [],
+        "skill_graph_query": [
+          {
+            "id": "rerank-skill-neighbor",
+            "title": "Skill neighbor disagreement",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-skill-neighbor"
+            ]
+          }
+        ]
+      },
+      "channelCaptures": [
+        {
+          "channel": "memory_search",
+          "candidates": [
+            {
+              "id": "rerank-adjacent-noise",
+              "title": "Adjacent ambiguous noise",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-adjacent-noise"
+              ]
+            },
+            {
+              "id": "rerank-canonical-ambiguous",
+              "title": "Canonical ambiguous rerank case",
+              "channel": "memory_search",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "rerank-canonical-ambiguous"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "rerank-adjacent-noise",
+            "rerank-canonical-ambiguous"
+          ],
+          "latencyMs": 1
+        },
+        {
+          "channel": "skill_graph_query",
+          "candidates": [
+            {
+              "id": "rerank-skill-neighbor",
+              "title": "Skill neighbor disagreement",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-skill-neighbor"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "rerank-skill-neighbor"
+          ],
+          "latencyMs": 1
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "rerank-adjacent-noise",
+          "title": "Adjacent ambiguous noise",
+          "channel": "memory_search",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "rerank-adjacent-noise"
+          ]
+        },
+        {
+          "id": "rerank-skill-neighbor",
+          "title": "Skill neighbor disagreement",
+          "channel": "skill_graph_query",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "rerank-skill-neighbor"
+          ]
+        },
+        {
+          "id": "rerank-canonical-ambiguous",
+          "title": "Canonical ambiguous rerank case",
+          "channel": "memory_search",
+          "rank": 2,
+          "score": 0.5,
+          "citationIds": [
+            "rerank-canonical-ambiguous"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 1,
+        "totalRelevant": 1,
+        "precisionAt3": 0.3333333333333333,
+        "recallAt3": 1
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "rerank-canonical-ambiguous"
+        ],
+        "observedIds": [
+          "rerank-adjacent-noise",
+          "rerank-canonical-ambiguous",
+          "rerank-skill-neighbor"
+        ],
+        "passed": true
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.14508400000001132,
+        "byChannel": {
+          "memory_search": 1,
+          "skill_graph_query": 1
+        }
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import {
   resolveAdvisorThresholdConfig,
 } from '../lib/skill-advisor-brief.js';
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
+import { DEFAULT_SHADOW_SCORER_LANE_WEIGHTS } from '../lib/scorer/lane-registry.js';
 import { sanitizeSkillLabel } from '../lib/render.js';
 import { findAdvisorWorkspaceRoot } from '../lib/utils/workspace-root.js';
 import {
@@ -24,6 +25,7 @@ type AdvisorStatus = ReturnType<typeof readAdvisorStatus>;
 type ScoredRecommendation = ReturnType<typeof scoreAdvisorPrompt>['recommendations'][number];
 type PublicRecommendationStatus = NonNullable<AdvisorRecommendOutput['recommendations'][number]['status']>;
 type PublicThresholds = AdvisorRecommendOutput['effectiveThresholds'];
+type ShadowRecommendation = NonNullable<AdvisorRecommendOutput['_shadow']>['recommendations'][number];
 
 function findWorkspaceRoot(start = process.cwd()): string {
   return findAdvisorWorkspaceRoot(start, { maxDepth: 12 });
@@ -171,6 +173,36 @@ function publicRecommendation(recommendation: ScoredRecommendation, includeAttri
   };
 }
 
+function publicShadowRecommendations(recommendations: readonly ScoredRecommendation[], topK: number): ShadowRecommendation[] {
+  const shadowRecommendations: ShadowRecommendation[] = [];
+  for (const recommendation of recommendations) {
+    const skillId = sanitizeSkillLabel(recommendation.skill);
+    if (!skillId) continue;
+    const shadowContributions = recommendation.laneContributions.map((lane) => ({
+      lane: lane.lane,
+      weightedScore: lane.rawScore * DEFAULT_SHADOW_SCORER_LANE_WEIGHTS[lane.lane],
+    }));
+    const shadowScore = roundScore(shadowContributions.reduce((total, lane) => total + lane.weightedScore, 0));
+    const dominant = shadowContributions
+      .filter((lane) => lane.weightedScore > 0)
+      .sort((left, right) => right.weightedScore - left.weightedScore)[0]?.lane ?? null;
+    shadowRecommendations.push({
+        skillId,
+        liveScore: recommendation.score,
+        shadowScore,
+        delta: roundScore(shadowScore - recommendation.score),
+        dominantShadowLane: dominant,
+    });
+  }
+  return shadowRecommendations
+    .sort((left, right) => right.shadowScore - left.shadowScore || left.skillId.localeCompare(right.skillId))
+    .slice(0, topK);
+}
+
+function roundScore(value: number): number {
+  return Math.round(value * 1_000_000) / 1_000_000;
+}
+
 function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecommendOutput {
   const workspaceRoot = input.workspaceRoot ? resolve(input.workspaceRoot) : findWorkspaceRoot();
   const effectiveThresholds = publicThresholds({
@@ -234,6 +266,11 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
     cache: {
       hit: false,
       sourceSignaturePresent: status.generation > 0 || status.lastGenerationBump !== null,
+    },
+    _shadow: {
+      model: 'advisor-shadow-learned-weights-v1',
+      liveWeightsFrozen: true,
+      recommendations: publicShadowRecommendations(result.recommendations, topK),
     },
     ...(status.freshness === 'stale' ? { warnings: [status.trustState.reason ?? 'STALE_ADVISOR_FRESHNESS'] } : {}),
     ...(input.options?.includeAbstainReasons && result.unknown

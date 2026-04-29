@@ -1,0 +1,132 @@
+{
+  "runId": "W5-variant",
+  "workstream": "W5",
+  "variant": "variant",
+  "hypothesis": "W5 shadow learned weights should improve advisor diagnostic citation-quality while leaving live recommendation behavior unchanged.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W5",
+  "summary": {
+    "precisionAt3": 0.5,
+    "recallAt3": 1,
+    "latency": {
+      "p50": 0.131,
+      "p95": 0.131,
+      "p99": 0.131
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 1
+  },
+  "cases": [
+    {
+      "caseId": "w5-advisor-shadow-ambiguous",
+      "query": "ambiguous advisor prompt where learned shadow weights should explain but not alter live recommendation",
+      "perChannelCandidates": {
+        "memory_search": [],
+        "code_graph_query": [],
+        "skill_graph_query": [
+          {
+            "id": "advisor-shadow-weight-diagnostic",
+            "title": "Shadow learned weight diagnostic",
+            "channel": "skill_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "advisor-shadow-weight-diagnostic"
+            ]
+          },
+          {
+            "id": "advisor-live-routing-only",
+            "title": "Live routing unchanged",
+            "channel": "skill_graph_query",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "advisor-live-routing-only"
+            ]
+          }
+        ]
+      },
+      "channelCaptures": [
+        {
+          "channel": "skill_graph_query",
+          "candidates": [
+            {
+              "id": "advisor-shadow-weight-diagnostic",
+              "title": "Shadow learned weight diagnostic",
+              "channel": "skill_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "advisor-shadow-weight-diagnostic"
+              ]
+            },
+            {
+              "id": "advisor-live-routing-only",
+              "title": "Live routing unchanged",
+              "channel": "skill_graph_query",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "advisor-live-routing-only"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "advisor-shadow-weight-diagnostic",
+            "advisor-live-routing-only"
+          ],
+          "latencyMs": 2
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "advisor-shadow-weight-diagnostic",
+          "title": "Shadow learned weight diagnostic",
+          "channel": "skill_graph_query",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "advisor-shadow-weight-diagnostic"
+          ]
+        },
+        {
+          "id": "advisor-live-routing-only",
+          "title": "Live routing unchanged",
+          "channel": "skill_graph_query",
+          "rank": 2,
+          "score": 0.5,
+          "citationIds": [
+            "advisor-live-routing-only"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 1,
+        "totalRelevant": 1,
+        "precisionAt3": 0.5,
+        "recallAt3": 1
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "advisor-shadow-weight-diagnostic"
+        ],
+        "observedIds": [
+          "advisor-shadow-weight-diagnostic",
+          "advisor-live-routing-only"
+        ],
+        "passed": true
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.13070899999999597,
+        "byChannel": {
+          "skill_graph_query": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/007-search-rag-measurement-driven-implementation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/007-search-rag-measurement-driven-implementation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/006-search-query-rag-optimization",
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "007-search-rag-measurement-driven-implementation",
+      "measurement driven implementation"
+    ],
+    "key_topics": [
+      "measurement-first",
+      "search-quality-harness",
+      "rag-provenance",
+      "rerank-gating",
+      "advisor-shadow-scoring",
+      "cocoindex-duplicates",
+      "code-graph-degraded-readiness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "measurements/"
+    ],
+    "entities": [],
+    "causal_summary": "Phase E completed measurement-driven decisions for deferred search/RAG workstreams W3-W7.",
+    "created_at": "2026-04-29T03:35:49Z",
+    "last_save_at": "2026-04-29T03:35:49Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

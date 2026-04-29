@@ -1,0 +1,187 @@
+{
+  "runId": "W3-variant",
+  "workstream": "W3",
+  "variant": "variant",
+  "hypothesis": "W3 trust-tree composition should improve citation-quality on multi-source contradiction cells without reducing precision, recall, or refusal-survival.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W3",
+  "summary": {
+    "precisionAt3": 0.667,
+    "recallAt3": 1,
+    "latency": {
+      "p50": 0.141,
+      "p95": 0.141,
+      "p99": 0.141
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 1
+  },
+  "cases": [
+    {
+      "caseId": "w3-trust-tree-contradiction",
+      "query": "compose response policy code graph advisor cocoindex contradiction provenance",
+      "perChannelCandidates": {
+        "memory_search": [
+          {
+            "id": "trust-tree-response-policy",
+            "title": "Response policy provenance",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-response-policy"
+            ]
+          }
+        ],
+        "code_graph_query": [
+          {
+            "id": "trust-tree-contradiction-edge",
+            "title": "Contradiction edge provenance",
+            "channel": "code_graph_query",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "trust-tree-contradiction-edge"
+            ]
+          }
+        ],
+        "skill_graph_query": [
+          {
+            "id": "advisor-trust-state-signal",
+            "title": "Advisor trust state signal",
+            "channel": "skill_graph_query",
+            "rank": 2,
+            "score": 0.5,
+            "citationIds": [
+              "advisor-trust-state-signal"
+            ]
+          }
+        ]
+      },
+      "channelCaptures": [
+        {
+          "channel": "memory_search",
+          "candidates": [
+            {
+              "id": "trust-tree-response-policy",
+              "title": "Response policy provenance",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-response-policy"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "trust-tree-response-policy"
+          ],
+          "latencyMs": 2
+        },
+        {
+          "channel": "code_graph_query",
+          "candidates": [
+            {
+              "id": "trust-tree-contradiction-edge",
+              "title": "Contradiction edge provenance",
+              "channel": "code_graph_query",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "trust-tree-contradiction-edge"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "trust-tree-contradiction-edge"
+          ],
+          "latencyMs": 2
+        },
+        {
+          "channel": "skill_graph_query",
+          "candidates": [
+            {
+              "id": "advisor-trust-state-signal",
+              "title": "Advisor trust state signal",
+              "channel": "skill_graph_query",
+              "rank": 2,
+              "score": 0.5,
+              "citationIds": [
+                "advisor-trust-state-signal"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "advisor-trust-state-signal"
+          ],
+          "latencyMs": 2
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "trust-tree-response-policy",
+          "title": "Response policy provenance",
+          "channel": "memory_search",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "trust-tree-response-policy"
+          ]
+        },
+        {
+          "id": "trust-tree-contradiction-edge",
+          "title": "Contradiction edge provenance",
+          "channel": "code_graph_query",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "trust-tree-contradiction-edge"
+          ]
+        },
+        {
+          "id": "advisor-trust-state-signal",
+          "title": "Advisor trust state signal",
+          "channel": "skill_graph_query",
+          "rank": 2,
+          "score": 0.5,
+          "citationIds": [
+            "advisor-trust-state-signal"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 2,
+        "totalRelevant": 2,
+        "precisionAt3": 0.6666666666666666,
+        "recallAt3": 1
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "trust-tree-response-policy",
+          "trust-tree-contradiction-edge"
+        ],
+        "observedIds": [
+          "trust-tree-response-policy",
+          "trust-tree-contradiction-edge",
+          "advisor-trust-state-signal"
+        ],
+        "passed": true
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.14116599999999835,
+        "byChannel": {
+          "memory_search": 2,
+          "code_graph_query": 2,
+          "skill_graph_query": 2
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/007-search-rag-measurement-driven-implementation",
+  "description": "Phase E measurement-driven implementation for search/RAG workstreams W3-W7.",
+  "keywords": [
+    "measurement-driven-implementation",
+    "rag-trust-tree",
+    "conditional-rerank",
+    "advisor-shadow-weights",
+    "cocoindex-calibration",
+    "degraded-readiness"
+  ],
+  "lastUpdated": "2026-04-29T03:35:49Z",
+  "specId": "007",
+  "folderSlug": "search-rag-measurement-driven-implementation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1
+}

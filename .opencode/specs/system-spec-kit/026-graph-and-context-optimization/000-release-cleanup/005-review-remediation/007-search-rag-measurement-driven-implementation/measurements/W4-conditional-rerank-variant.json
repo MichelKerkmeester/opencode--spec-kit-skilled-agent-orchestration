@@ -1,0 +1,108 @@
+{
+  "runId": "W4-variant",
+  "workstream": "W4",
+  "variant": "variant",
+  "hypothesis": "W4 conditional rerank should improve precision@3 on ambiguous weak-agreement cells while keeping synthetic p95 latency under 5ms.",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1-W4",
+  "summary": {
+    "precisionAt3": 1,
+    "recallAt3": 1,
+    "latency": {
+      "p50": 0.125,
+      "p95": 0.125,
+      "p99": 0.125
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 1
+  },
+  "cases": [
+    {
+      "caseId": "w4-ambiguous-rerank-disagreement",
+      "query": "ambiguous review routing prompt with weak channel agreement",
+      "perChannelCandidates": {
+        "memory_search": [
+          {
+            "id": "rerank-canonical-ambiguous",
+            "title": "Canonical ambiguous rerank case",
+            "channel": "memory_search",
+            "rank": 1,
+            "score": 1,
+            "citationIds": [
+              "rerank-canonical-ambiguous"
+            ]
+          }
+        ],
+        "code_graph_query": [],
+        "skill_graph_query": []
+      },
+      "channelCaptures": [
+        {
+          "channel": "memory_search",
+          "candidates": [
+            {
+              "id": "rerank-canonical-ambiguous",
+              "title": "Canonical ambiguous rerank case",
+              "channel": "memory_search",
+              "rank": 1,
+              "score": 1,
+              "citationIds": [
+                "rerank-canonical-ambiguous"
+              ]
+            }
+          ],
+          "refused": false,
+          "citationIds": [
+            "rerank-canonical-ambiguous"
+          ],
+          "latencyMs": 2
+        },
+        {
+          "channel": "skill_graph_query",
+          "candidates": [],
+          "refused": false,
+          "citationIds": [],
+          "latencyMs": 2
+        }
+      ],
+      "finalCandidates": [
+        {
+          "id": "rerank-canonical-ambiguous",
+          "title": "Canonical ambiguous rerank case",
+          "channel": "memory_search",
+          "rank": 1,
+          "score": 1,
+          "citationIds": [
+            "rerank-canonical-ambiguous"
+          ]
+        }
+      ],
+      "finalRelevance": {
+        "relevantRetrieved": 1,
+        "totalRelevant": 1,
+        "precisionAt3": 1,
+        "recallAt3": 1
+      },
+      "citationPolicy": {
+        "expectedIds": [
+          "rerank-canonical-ambiguous"
+        ],
+        "observedIds": [
+          "rerank-canonical-ambiguous"
+        ],
+        "passed": true
+      },
+      "refusalPolicy": {
+        "expectedRefusal": false,
+        "refused": false,
+        "passed": true
+      },
+      "latency": {
+        "totalMs": 0.12512500000001125,
+        "byChannel": {
+          "memory_search": 2,
+          "skill_graph_query": 2
+        }
+      }
+    }
+  ]
+}

@@ -34,6 +34,8 @@ import { computeMPAB } from '../../scoring/mpab-aggregation.js';
 import { applyMMR } from '@spec-kit/shared/algorithms/mmr-reranker';
 import type { MMRCandidate } from '@spec-kit/shared/algorithms/mmr-reranker';
 import { INTENT_LAMBDA_MAP } from '../intent-classifier.js';
+import { createEmptyQueryPlan } from '../../query/query-plan.js';
+import { decideConditionalRerank, isConditionalRerankEnabled } from '../rerank-gate.js';
 import { addTraceEntry } from '@spec-kit/shared/contracts/retrieval-trace';
 import { requireDb } from '../../../utils/index.js';
 import { toErrorMessage } from '../../../utils/index.js';
@@ -322,6 +324,23 @@ async function applyCrossEncoderReranking(
     return { rows: results, applied: false, provider: 'none' };
   }
 
+  if (isConditionalRerankEnabled()) {
+    const gate = decideConditionalRerank({
+      queryPlan: createEmptyQueryPlan({
+        complexity: 'unknown',
+        selectedChannels: inferResultChannels(results),
+      }),
+      signals: {
+        candidateCount: results.length,
+        channelCount: inferResultChannels(results).length,
+        topScoreMargin: topScoreMargin(results),
+      },
+    });
+    if (!gate.shouldRerank) {
+      return { rows: results, applied: false, provider: 'none' };
+    }
+  }
+
   // Build a lookup map so we can restore all original PipelineRow fields
   // After reranking (the cross-encoder only knows about id + text + score).
   const rowMap = new Map<string | number, PipelineRow>();
@@ -432,6 +451,24 @@ async function applyCrossEncoderReranking(
     );
     return { rows: results, applied: false, provider: 'cross-encoder' };
   }
+}
+
+function inferResultChannels(results: readonly PipelineRow[]): string[] {
+  const channels = results.flatMap((row) => {
+    const raw = row.channelAttribution ?? row.sources ?? row.source;
+    if (Array.isArray(raw)) return raw.map(String);
+    if (typeof raw === 'string') return [raw];
+    return [];
+  });
+  return [...new Set(channels.filter((channel) => channel.length > 0))];
+}
+
+function topScoreMargin(results: readonly PipelineRow[]): number {
+  const scores = results
+    .map((row) => resolveEffectiveScore(row))
+    .sort((left, right) => right - left);
+  if (scores.length < 2) return 1;
+  return Math.max(0, scores[0] - scores[1]);
 }
 
 /**

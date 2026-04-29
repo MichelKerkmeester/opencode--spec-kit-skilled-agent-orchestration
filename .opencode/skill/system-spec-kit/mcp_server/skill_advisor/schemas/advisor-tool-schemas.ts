@@ -76,6 +76,17 @@ export const AdvisorRecommendOutputSchema = z.object({
   }).strict(),
   warnings: z.array(z.string()).optional(),
   abstainReasons: z.array(z.string()).optional(),
+  _shadow: z.object({
+    model: z.literal('advisor-shadow-learned-weights-v1'),
+    liveWeightsFrozen: z.boolean(),
+    recommendations: z.array(z.object({
+      skillId: z.string().min(1),
+      liveScore: z.number().min(0),
+      shadowScore: z.number().min(0),
+      delta: z.number(),
+      dominantShadowLane: AdvisorLaneSchema.nullable(),
+    }).strict()),
+  }).strict().optional(),
 }).strict();
 
 export const AdvisorStatusInputSchema = z.object({
