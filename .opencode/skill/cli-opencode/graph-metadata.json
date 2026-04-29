@@ -136,7 +136,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "OpenCode CLI orchestrator enabling external AI runtimes (Claude Code, Codex, Copilot, Gemini, raw shell) and in-OpenCode operators to invoke opencode run for full plugin, skill, and MCP runtime dispatch, plus parallel detached sessions for ablation, worker farms, and cross-AI handback. It matters because it is the only one-shot dispatch path that loads every project plugin, skill, MCP server, and the Spec Kit Memory database; the four sibling cli-* skills only dispatch raw models without project context.",
+    "causal_summary": "OpenCode CLI orchestrator enabling external AI runtimes (Claude Code, Codex, Copilot, Gemini, raw shell) and in-OpenCode operators to invoke opencode run for full plugin, skill, and MCP runtime dispatch, plus parallel detached sessions for ablation, worker farms, and cross-AI handback. Defaults to provider opencode-go (model deepseek-v4-pro, variant high) and additionally surfaces the direct deepseek API. It matters because it is the only one-shot dispatch path that loads every project plugin, skill, MCP server, and the Spec Kit Memory database; the four sibling cli-* skills only dispatch raw models without project context.",
     "source_docs": [
       "SKILL.md",
       "README.md",

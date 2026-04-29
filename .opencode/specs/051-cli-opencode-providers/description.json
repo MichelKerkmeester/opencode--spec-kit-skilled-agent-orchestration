@@ -1,0 +1,16 @@
+{
+  "specFolder": "051-cli-opencode-providers",
+  "description": "cli-opencode-providers",
+  "keywords": [
+    "cli-opencode-providers"
+  ],
+  "lastUpdated": "2026-04-29T12:03:51.372Z",
+  "specId": "051",
+  "folderSlug": "cli-opencode-providers",
+  "parentChain": [],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_11-56__provider-realignment-for-cli-opencode-skill.md",
+    "29-04-26_13-03__051-complete-github-copilot-provider-removed-from.md"
+  ]
+}

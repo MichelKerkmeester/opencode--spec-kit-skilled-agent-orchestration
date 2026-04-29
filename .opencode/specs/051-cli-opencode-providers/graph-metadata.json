@@ -1,0 +1,218 @@
+{
+  "schema_version": 1,
+  "packet_id": "051-cli-opencode-providers",
+  "spec_folder": "051-cli-opencode-providers",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "cli-opencode providers",
+      "remove copilot provider",
+      "opencode-go default",
+      "deepseek direct api",
+      "provider realignment",
+      "cli-opencode plan",
+      "provider realignment plan",
+      "cli-opencode tasks",
+      "provider realignment tasks",
+      "cli-opencode 051",
+      "provider realignment summary",
+      "auth pre-flight"
+    ],
+    "key_topics": [
+      "cli-opencode",
+      "providers",
+      "remove",
+      "copilot",
+      "provider",
+      "opencode-go",
+      "default",
+      "deepseek",
+      "direct",
+      "api",
+      "realignment",
+      "plan"
+    ],
+    "importance_tier": "normal",
+    "status": "complete",
+    "key_files": [
+      ".opencode/skill/cli-opencode/SKILL.md",
+      ".opencode/skill/cli-opencode/README.md",
+      ".opencode/skill/cli-opencode/references/cli_reference.md",
+      ".opencode/skill/cli-opencode/references/integration_patterns.md",
+      ".opencode/skill/cli-opencode/references/opencode_tools.md",
+      ".opencode/skill/cli-opencode/references/agent_delegation.md",
+      ".opencode/skill/cli-opencode/assets/prompt_templates.md",
+      ".opencode/skill/cli-opencode/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/cli-opencode/manual_testing_playbook/03--multi-provider/003-deepseek-direct-api.md",
+      ".opencode/skill/cli-opencode/manual_testing_playbook/03--multi-provider/004-variant-levels-comparison.md",
+      ".opencode/skill/cli-opencode/graph-metadata.json",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/cli_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "integration_patterns.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/integration_patterns.md",
+        "source": "derived"
+      },
+      {
+        "name": "opencode_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/opencode_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "prompt_templates.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/assets/prompt_templates.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "003-deepseek-direct-api.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/manual_testing_playbook/03--multi-provider/003-deepseek-direct-api.md",
+        "source": "derived"
+      },
+      {
+        "name": "004-variant-levels-comparison.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/manual_testing_playbook/03--multi-provider/004-variant-levels-comparison.md",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/skill/cli-opencode/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Author Level",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Realign",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Default Invocation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Provider Auth Pre",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The cli-opencode skill currently treats `github-copilot` as the default provider with `gpt-5.4` and `claude-sonnet-4.6` surfaced by name across SKILL.md, README.md, references, prompt templates, and the manual testing playbook. The skill's own README FAQ already recommends `opencode-go/deepseek-v4-pro` as the default, creating documentation drift. The user wants a clean removal of the github-copilot provider surface while keeping the direct DeepSeek API references intact.",
+    "created_at": "2026-04-29T10:45:14Z",
+    "last_save_at": "2026-04-29T12:03:51.372Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

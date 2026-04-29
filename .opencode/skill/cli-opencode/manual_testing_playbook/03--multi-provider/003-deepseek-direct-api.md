@@ -11,11 +11,11 @@ This document captures the realistic user-testing contract, current behavior, ex
 
 ## 1. OVERVIEW
 
-This scenario validates the deepseek direct API for `CO-011`. It focuses on confirming `--model deepseek/deepseek-v4-pro --variant high` runs successfully through the direct DeepSeek provider — bypassing the opencode-go gateway — and produces a coherent response. The direct deepseek provider is the third surface alongside `github-copilot` and `opencode-go` in the cli-opencode skill model selection table.
+This scenario validates the deepseek direct API for `CO-011`. It focuses on confirming `--model deepseek/deepseek-v4-pro --variant high` runs successfully through the direct DeepSeek provider — bypassing the opencode-go gateway — and produces a coherent response. The direct deepseek provider is the second surface alongside `opencode-go` in the cli-opencode skill model selection table.
 
 ### Why This Matters
 
-The cli-opencode skill supports three providers: `github-copilot` (default), `opencode-go` (gateway routing for DeepSeek and other open models), and `deepseek` (direct DeepSeek API). The direct path matters when the operator wants the DeepSeek model without the opencode-go middleware (different latency, different rate limits, separate credentials). If `--model deepseek/deepseek-v4-pro` silently falls back to opencode-go's `opencode-go/deepseek-v4-pro` or fails resolution, the documented direct-API surface is broken and operators cannot bypass the gateway.
+The cli-opencode skill supports two providers: `opencode-go` (default, gateway routing for DeepSeek and other open models) and `deepseek` (direct DeepSeek API). The direct path matters when the operator wants the DeepSeek model without the opencode-go middleware (different latency, different rate limits, separate credentials). If `--model deepseek/deepseek-v4-pro` silently falls back to opencode-go's `opencode-go/deepseek-v4-pro` or fails resolution, the documented direct-API surface is broken and operators cannot bypass the gateway.
 
 ---
 
@@ -60,7 +60,7 @@ For provider-isolation validation, also dispatch the same prompt against `--mode
 | File | Role |
 |---|---|
 | `manual_testing_playbook.md` | Root directory page and scenario summary |
-| `../../references/cli_reference.md` (§5 MODEL SELECTION) | Provider table includes deepseek direct API alongside opencode-go and github-copilot |
+| `../../references/cli_reference.md` (§5 MODEL SELECTION) | Provider table includes deepseek direct API alongside opencode-go |
 
 ### Implementation And Test Anchors
 

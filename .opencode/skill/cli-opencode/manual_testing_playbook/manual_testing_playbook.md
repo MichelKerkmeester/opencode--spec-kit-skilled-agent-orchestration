@@ -55,7 +55,7 @@ Canonical package artifacts:
 
 This playbook provides 34 deterministic scenarios across 9 categories validating the `cli-opencode` skill surface. Each feature keeps its global `CO-NNN` ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-26): Covers the canonical default invocation (`github-copilot/gpt-5.4` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (github-copilot default, github-copilot Anthropic alternative, deepseek direct API, plus opencode-go gateway routing with full variant range), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / ultra-think), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
+Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-go/deepseek-v4-pro` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (opencode-go default with full variant range, deepseek direct API), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / ultra-think), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
 
 ### Realistic Test Model
 
@@ -79,7 +79,7 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`github-cop
 1. Working directory is project root and contains `.git/`.
 2. OpenCode CLI is installed and on PATH: `command -v opencode` returns a non-empty path. If absent, install via `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install | bash`.
 3. OpenCode CLI version is at or near the v1.3.17 baseline pinned in `references/cli_reference.md`. Drift handled per `references/cli_reference.md` §9.
-4. The GitHub Copilot subscription is active and registered in `opencode auth list` (the canonical default `github-copilot/gpt-5.4` resolves through it). The `github-copilot/claude-sonnet-4.6` Anthropic alternative also resolves through the same OAuth (no separate Anthropic credentials required). Multi-provider scenarios additionally need: opencode-go subscription registered when exercising `opencode-go/deepseek-v4-pro` and direct DeepSeek API credentials (`DEEPSEEK_API_KEY` / `auth login deepseek`) when exercising `deepseek/...`.
+4. The GitHub Copilot subscription is active and registered in `opencode auth list` (the canonical default `opencode-go/deepseek-v4-pro` resolves through it). The `opencode-go/deepseek-v4-pro` Anthropic alternative also resolves through the same OAuth (no separate Anthropic credentials required). Multi-provider scenarios additionally need: opencode-go subscription registered when exercising `opencode-go/deepseek-v4-pro` and direct DeepSeek API credentials (`DEEPSEEK_API_KEY` / `auth login deepseek`) when exercising `deepseek/...`.
 5. The active runtime for use case 1 and 3 scenarios is NOT OpenCode itself. Confirm by checking no `OPENCODE_*` env vars are set: `env | grep -q '^OPENCODE_' && echo IN-OPENCODE || echo OK`. Use case 2 scenarios (CO-026, CO-027, CO-028) explicitly include the parallel-session keywords required to permit the dispatch from inside OpenCode.
 6. The skill's reference and asset files exist at `.opencode/skill/cli-opencode/{references,assets}/` so prompt-quality, template and routing scenarios resolve.
 7. The project's MCP servers (Spec Kit Memory, CocoIndex Code) are registered in `opencode.json` so use case 1 (CO-006) and use case 3 (CO-021, CO-022) scenarios can call `memory_health`, CocoIndex search and `memory_search`.
@@ -208,7 +208,7 @@ This category covers 5 scenario summaries while the linked feature files remain 
 
 #### Description
 
-Verify the canonical `opencode run --model github-copilot/gpt-5.4 --agent general --variant high --format json --dir <repo-root> "<prompt>"` returns a parseable JSON event stream and exits 0 from a non-OpenCode runtime.
+Verify the canonical `opencode run --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir <repo-root> "<prompt>"` returns a parseable JSON event stream and exits 0 from a non-OpenCode runtime.
 
 #### Scenario Contract
 
@@ -340,41 +340,9 @@ Expected signals: Layer 1 (env var) detection trips. Refusal message in referenc
 
 ---
 
-## 9. MULTI-PROVIDER (`CO-009..CO-012`)
+## 9. MULTI-PROVIDER (`CO-011..CO-012`)
 
-This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract. The category exercises the documented provider matrix (github-copilot default, github-copilot Anthropic alternative, deepseek direct API) plus the variant-level reasoning effort range.
-
-### CO-009 | github-copilot provider default (gpt-5.4)
-
-#### Description
-
-Verify `--model github-copilot/gpt-5.4 --variant high` resolves correctly via the github-copilot provider, produces a deep-reasoning response and the JSON session.completed payload reports a model id containing `gpt-5.4`.
-
-#### Scenario Contract
-
-Prompt summary: As an external-AI conductor verifying the cli-opencode default model resolution, dispatch with --model github-copilot/gpt-5.4 --variant high and a multi-dimensional architecture trade-off prompt. Verify the response weighs at least 3 dimensions, the JSON session.completed event identifies the model as gpt-5.4 and the response is materially longer than a one-paragraph reply.
-
-Expected signals: Exit 0. Model id contains `gpt-5.4` referenced in session.completed. >=3 dimensions discussed. Response > 1000 bytes.
-
-#### Test Execution
-
-> **Feature File:** [CO-009](03--multi-provider/001-copilot-default-gpt-5-4.md)
-
-### CO-010 | github-copilot Anthropic alternative (claude-sonnet-4.6)
-
-#### Description
-
-Verify `--model github-copilot/claude-sonnet-4.6 --variant high` resolves successfully via the github-copilot provider, executes a small code-generation prompt and the JSON session.completed payload identifies the model as `claude-sonnet-4.6`.
-
-#### Scenario Contract
-
-Prompt summary: As an external-AI conductor exercising the github-copilot Anthropic alternative path documented in SKILL.md, dispatch --model github-copilot/claude-sonnet-4.6 --variant high with a small code-generation prompt (write a TypeScript helper). Verify the dispatch exits 0, the JSON event stream identifies the model as claude-sonnet-4.6 and the generated TypeScript code is syntactically valid.
-
-Expected signals: Exit 0. Model id `claude-sonnet-4.6` in session.completed. Helper file contains the requested function. Tsc --noEmit succeeds (when tsc available).
-
-#### Test Execution
-
-> **Feature File:** [CO-010](03--multi-provider/002-copilot-claude-sonnet-4-6.md)
+This category covers 2 scenario summaries while the linked feature files remain the canonical execution contract. The category exercises the documented provider matrix (opencode-go default routing, deepseek direct API) plus the variant-level reasoning effort range.
 
 ### CO-011 | deepseek direct API (deepseek-v4-pro)
 
@@ -832,8 +800,6 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 ### MULTI-PROVIDER
 
-- CO-009: [github-copilot provider default (gpt-5.4)](03--multi-provider/001-copilot-default-gpt-5-4.md)
-- CO-010: [github-copilot Anthropic alternative (claude-sonnet-4.6)](03--multi-provider/002-copilot-claude-sonnet-4-6.md)
 - CO-011: [deepseek direct API (deepseek-v4-pro)](03--multi-provider/003-deepseek-direct-api.md)
 - CO-012: [Variant levels (minimal/low/medium/high/max)](03--multi-provider/004-variant-levels-comparison.md)
 

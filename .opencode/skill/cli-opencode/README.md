@@ -53,8 +53,8 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 |----------|-------|---------|
 | **Use cases** | 3 | External runtime, in-OpenCode parallel detached, cross-AI handback |
 | **Self-invocation layers** | 3 | Env var, process ancestry, lock-file probe |
-| **Default invocation** | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` | Pinned shape for routine dispatches; GitHub Copilot is the default provider — `gpt-5.4` (default) and `claude-sonnet-4.6` are the only Copilot models surfaced by name |
-| **Supported providers** | 3 | `github-copilot` (DEFAULT), `opencode-go`, `deepseek` |
+| **Default invocation** | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` | Pinned shape for routine dispatches; OpenCode Go is the default provider — routes DeepSeek and other open models through one API gateway |
+| **Supported providers** | 2 | `opencode-go` (DEFAULT), `deepseek` |
 | **References** | 4 | cli_reference, integration_patterns, opencode_tools, agent_delegation |
 | **Assets** | 2 | prompt_quality_card, prompt_templates (13 templates) |
 | **Version baseline** | opencode v1.3.17 | Pinned in cli_reference §9 |
@@ -91,7 +91,7 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 | Requirement | Value | Notes |
 |-------------|-------|-------|
 | **CLI** | OpenCode v1.3.17+ | `brew install opencode` (macOS) or `curl -fsSL https://opencode.ai/install \| bash` |
-| **Auth** | Per-provider via `opencode providers login <provider>` | `github-copilot` (oauth), `opencode-go` (api), `deepseek` (api) |
+| **Auth** | Per-provider via `opencode providers login <provider>` | `opencode-go` (api), `deepseek` (api) |
 | **Node.js** | 18+ | Required for the npm install path |
 
 <!-- /ANCHOR:overview -->
@@ -121,7 +121,7 @@ ls ~/.opencode/state/*/lock 2>/dev/null | head -1 | grep -q lock && echo "live O
 
 ```bash
 opencode run \
-  --model github-copilot/gpt-5.4 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -133,7 +133,7 @@ opencode run \
 
 ```bash
 opencode run --share --port 4096 \
-  --model github-copilot/gpt-5.4 \
+  --model opencode-go/deepseek-v4-pro \
   --agent deep-research \
   --variant high \
   --format json \
@@ -172,13 +172,11 @@ The skill is built around a self-invocation guard that protects against circular
 
 #### Models
 
-The skill ships with three providers — `github-copilot` (DEFAULT), `opencode-go`, and `deepseek`. Run `opencode models [provider]` for the full live list per install.
+The skill ships with two providers — `opencode-go` (DEFAULT) and `deepseek`. Run `opencode models [provider]` for the full live list per install.
 
 | Provider | Model id | Variant range | Default for cli-opencode? |
 |----------|----------|---------------|---------------------------|
-| github-copilot | `github-copilot/gpt-5.4` | minimal / low / medium / high / xhigh | YES (DEFAULT) |
-| github-copilot | `github-copilot/claude-sonnet-4.6` | minimal / low / medium / high / max | No (Anthropic alternative for balanced reasoning, code review) |
-| opencode-go | `opencode-go/deepseek-v4-pro` | provider-specific (variant flag accepted) | No (DeepSeek via OpenCode Go gateway) |
+| opencode-go | `opencode-go/deepseek-v4-pro` | provider-specific (variant flag accepted) | YES (DEFAULT — DeepSeek via the OpenCode Go gateway) |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | No (lower-tier sibling for cost/latency) |
 | opencode-go | `opencode-go/glm-5.1`, `opencode-go/kimi-k2.6`, `opencode-go/qwen3.6-plus` | provider-specific | No (alternative open models) |
 | deepseek | `deepseek/deepseek-v4-pro` | reasoning effort accepted | No (direct DeepSeek API — bypasses opencode-go) |
@@ -248,31 +246,21 @@ cli-opencode/
 
 ### Authentication
 
-OpenCode resolves credentials through configured providers. Use `opencode providers list` (alias `auth list`) to enumerate. The skill supports `github-copilot` (oauth), `opencode-go` (api), and `deepseek` (api).
+OpenCode resolves credentials through configured providers. Use `opencode providers list` (alias `auth list`) to enumerate. The skill supports `opencode-go` (api) and `deepseek` (api).
 
 | Method | Setup | Best For |
 |--------|-------|----------|
-| **OAuth via providers** | `opencode providers login github-copilot` | GitHub Copilot — interactive browser flow |
 | **API key via providers** | `opencode providers login opencode-go` / `opencode providers login deepseek` | OpenCode Go gateway, DeepSeek direct API |
 | **Credential file** | Per-provider config under `~/.local/share/opencode/auth.json` | Persistent setups |
 
 ### Model Defaults
 
-cli-opencode defaults to `github-copilot/gpt-5.4 --variant high` for cross-AI dispatches. GitHub Copilot is the default provider — it ships pre-authenticated for active subscribers and `gpt-5.4` is the newest GPT for complex implementation work. Only two Copilot models are surfaced by name: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative for balanced reasoning, code review). Override per invocation:
+cli-opencode defaults to `opencode-go/deepseek-v4-pro --variant high` for cross-AI dispatches. OpenCode Go is the default provider — it routes DeepSeek and other open models through a single API key, and `deepseek-v4-pro` provides elevated reasoning at low cost for routine dispatches. Override per invocation:
 
 ```bash
-# Switch to the Anthropic alternative
+# Use a lower-tier opencode-go sibling
 opencode run \
-  --model github-copilot/claude-sonnet-4.6 \
-  --variant high \
-  --agent general \
-  --format json \
-  --dir /repo \
-  "<prompt>"
-
-# Use the OpenCode Go gateway with DeepSeek
-opencode run \
-  --model opencode-go/deepseek-v4-pro \
+  --model opencode-go/deepseek-v4-flash \
   --variant high \
   --agent general \
   --format json \
@@ -283,6 +271,14 @@ opencode run \
 opencode run \
   --model deepseek/deepseek-v4-pro \
   --variant high \
+  --agent general \
+  --format json \
+  --dir /repo \
+  "<prompt>"
+
+# Use the latency-optimized direct DeepSeek model
+opencode run \
+  --model deepseek/deepseek-v4-flash \
   --agent general \
   --format json \
   --dir /repo \
@@ -438,7 +434,10 @@ A: Three layers (per ADR-001). Layer 1 checks for any `OPENCODE_*` env var. Laye
 A: `opencode-go/deepseek-v4-pro` with `--variant high`. cli-opencode dispatches typically benefit from elevated reasoning because the dispatched session has full project context.
 
 **Q: Which providers does this skill support?**
-A: Three: `github-copilot` (default — `gpt-5.4` and `claude-sonnet-4.6`), `opencode-go` (DeepSeek and other open models via the OpenCode Go gateway), and `deepseek` (direct DeepSeek API). Run `opencode models <provider>` to enumerate the live model list per install.
+A: Two: `opencode-go` (default — DeepSeek and other open models via the OpenCode Go gateway) and `deepseek` (direct DeepSeek API). Run `opencode models <provider>` to enumerate the live model list per install.
+
+**Q: What if the default provider isn't logged in on this machine?**
+A: The skill runs a Provider Auth Pre-Flight (`opencode providers list`) once per session before the first dispatch. If `opencode-go` isn't configured, the AI asks you before falling back — three options: (A) use `deepseek/deepseek-v4-pro` if direct DeepSeek is configured, (B) run `opencode providers login opencode-go` first then retry, or (C) name a different `--model <provider/model>`. If neither provider is configured, the skill surfaces the login commands and waits — it never dispatches with a substituted model you didn't approve. See SKILL.md §3 "Provider Auth Pre-Flight (Smart Fallback)" and references/cli_reference.md §4 for the full decision tree.
 
 ### Sessions
 

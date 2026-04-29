@@ -2,10 +2,10 @@
 name: cli-opencode
 description: "OpenCode CLI orchestrator covering three use cases: external AI runtimes dispatching opencode run, in-OpenCode parallel detached sessions for ablation and worker farms, and cross-AI orchestration handback with full plugin, skill, and MCP runtime context."
 allowed-tools: [Bash, Read, Glob, Grep]
-version: 1.2.0.0
+version: 1.3.0.0
 ---
 
-<!-- Keywords: opencode, opencode-cli, opencode-run, cross-ai, spec-kit-runtime, plugin-runtime, parallel-sessions, share-url, detached-session, agent-delegation, github-copilot, copilot, deepseek, opencode-go -->
+<!-- Keywords: opencode, opencode-cli, opencode-run, cross-ai, spec-kit-runtime, plugin-runtime, parallel-sessions, share-url, detached-session, agent-delegation, opencode-go, deepseek -->
 
 # OpenCode CLI Orchestrator - Full-Runtime Cross-AI Dispatch
 
@@ -174,15 +174,55 @@ env | grep -q '^OPENCODE_' && echo "ERROR: Already inside OpenCode session"
 opencode providers
 ```
 
-**Authentication options**: `opencode providers login <provider>` for OAuth (GitHub Copilot, OpenCode Go) or `opencode providers login deepseek` for the DeepSeek API key flow. Configured providers on a typical install: `github-copilot` (oauth), `opencode-go` (api), `deepseek` (api).
+**Authentication options**: `opencode providers login <provider>` for OAuth and API key flows. Configured providers on a typical install: `opencode-go` (api), `deepseek` (api).
+
+### Provider Auth Pre-Flight (Smart Fallback)
+
+**MANDATORY before any first dispatch in a session.** The default provider may not be logged in on this machine — silently failing with `provider/model not found` or `401 Unauthorized` mid-dispatch wastes a round-trip. Run this check once per session, cache the result, and re-run it only if a dispatch fails with an auth error.
+
+```bash
+# One-shot pre-flight: list configured providers, capture for routing
+PROVIDERS=$(opencode providers list 2>&1)
+echo "$PROVIDERS" | grep -q "opencode-go" && OPENCODE_GO_OK=1 || OPENCODE_GO_OK=0
+echo "$PROVIDERS" | grep -q "deepseek"     && DEEPSEEK_OK=1   || DEEPSEEK_OK=0
+```
+
+**Decision tree** (apply in order — first match wins):
+
+| State | OPENCODE_GO_OK | DEEPSEEK_OK | Action |
+|-------|----------------|-------------|--------|
+| Default available | 1 | * | Proceed with `--model opencode-go/deepseek-v4-pro --variant high` |
+| Default missing, fallback ready | 0 | 1 | **ASK user** before substituting — never auto-fall-back silently. Surface options A/B/C below. |
+| Both missing | 0 | 0 | **ASK user** to configure a provider — surface the login commands, do NOT dispatch. |
+
+**User prompt template — default missing, fallback configured:**
+
+```
+The skill default `opencode-go/deepseek-v4-pro` is not configured on this machine.
+A configured fallback is available. Pick one:
+  A) Use `deepseek/deepseek-v4-pro --variant high` (direct DeepSeek API, configured now)
+  B) Run `opencode providers login opencode-go` first, then retry the original dispatch
+  C) Name a different model — paste the `--model <provider/model>` you want to use
+```
+
+**User prompt template — both providers missing:**
+
+```
+No supported providers are configured on this machine. Run one:
+  - `opencode providers login opencode-go`  (recommended — default for cli-opencode)
+  - `opencode providers login deepseek`     (direct DeepSeek API alternative)
+Which would you like to set up? Confirm when login finishes; the skill will retry the original dispatch.
+```
+
+**Error-recovery contract.** If a dispatch returns an auth error after pre-flight passed (credential expired or rotated), invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve.
 
 ### Default Invocation (Skill Default)
 
-**Default model + variant + agent + format + dir**: `github-copilot/gpt-5.4` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity. GitHub Copilot is the default provider — it ships pre-authenticated for users with an active Copilot subscription and exposes the broadest model surface under one OAuth token. The skill names two Copilot models: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative).
+**Default model + variant + agent + format + dir**: `opencode-go/deepseek-v4-pro` · `--variant high` · `--agent general` · `--format json` · `--dir <repo-root>`. The repo root pin avoids CWD ambiguity. OpenCode Go is the default provider — it routes DeepSeek and other open models through a single gateway and gives elevated reasoning at low cost for routine cli-opencode dispatches.
 
 ```bash
 opencode run \
-  --model github-copilot/gpt-5.4 \
+  --model opencode-go/deepseek-v4-pro \
   --agent general \
   --variant high \
   --format json \
@@ -194,17 +234,17 @@ opencode run \
 
 | User says | Resolve to |
 |-----------|------------|
-| (nothing specified) | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` |
-| "Use copilot gpt-5.4 high" | `--model github-copilot/gpt-5.4 --agent general --variant high --format json` |
+| (nothing specified) | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use opencode-go deepseek" | `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json` |
 | "Use deepseek v4 pro" | `--model deepseek/deepseek-v4-pro --agent general --variant high --format json` |
-| "Use the deep-research subagent loop" | `--model github-copilot/gpt-5.4 --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
+| "Use deepseek v4 flash" | `--model deepseek/deepseek-v4-flash --agent general --variant high --format json` |
+| "Use the deep-research subagent loop" | `--model opencode-go/deepseek-v4-pro --agent orchestrate --variant high --format json` (orchestrate dispatches the deep-research subagent via Task) |
 | "Spawn a parallel detached session on port 4096" | (use case 2) appends `--share --port 4096` |
 
 ### Core Invocation Pattern
 
 ```bash
-opencode run "prompt" --model github-copilot/gpt-5.4 --agent general --variant high --format json --dir /repo 2>&1
+opencode run "prompt" --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir /repo 2>&1
 ```
 
 | Flag / Option | Purpose |
@@ -229,19 +269,17 @@ opencode run "prompt" --model github-copilot/gpt-5.4 --agent general --variant h
 
 ### Model Selection
 
-The skill supports three providers. Run `opencode providers list` to confirm credentials, and `opencode models [provider]` to enumerate available models.
+The skill supports two providers. Run `opencode providers list` to confirm credentials, and `opencode models [provider]` to enumerate available models.
 
 | Provider | Example model id | Reasoning effort range | Use case |
 |----------|------------------|------------------------|----------|
-| github-copilot (DEFAULT) | `github-copilot/gpt-5.4` (default) | `minimal`, `low`, `medium`, `high`, `xhigh` | Default — newest GPT for complex implementation work; broad model surface under one OAuth token |
-| github-copilot | `github-copilot/claude-sonnet-4.6` | `minimal`, `low`, `medium`, `high`, `max` | Anthropic alternative — balanced reasoning, code review |
-| opencode-go | `opencode-go/deepseek-v4-pro` | `--variant` accepted; effect depends on opencode-go routing | Deep reasoning at low cost via the OpenCode Go gateway |
+| opencode-go (DEFAULT) | `opencode-go/deepseek-v4-pro` (default) | `--variant` accepted; effect depends on opencode-go routing | Default — deep reasoning at low cost via the OpenCode Go gateway |
 | opencode-go | `opencode-go/deepseek-v4-flash` | same | Lower-tier sibling for cost/latency |
 | opencode-go | `opencode-go/glm-5.1`, `opencode-go/kimi-k2.6`, `opencode-go/qwen3.6-plus` | provider-specific | Alternative open models routed through opencode-go |
 | deepseek (direct API) | `deepseek/deepseek-v4-pro` | `--variant` accepted | Direct DeepSeek API — bypasses opencode-go routing |
 | deepseek | `deepseek/deepseek-v4-flash` | non-reasoning (variant ignored) | Latency-optimized sibling |
 
-`opencode models <provider>` enumerates the live model list per provider. The skill defaults to `github-copilot/gpt-5.4 --variant high` because GitHub Copilot ships pre-authenticated for users with an active subscription and exposes the broadest model surface; routine cli-opencode tasks benefit from elevated reasoning. Only two Copilot models are surfaced by name: `gpt-5.4` (default) and `claude-sonnet-4.6` (Anthropic alternative).
+`opencode models <provider>` enumerates the live model list per provider. The skill defaults to `opencode-go/deepseek-v4-pro --variant high` because routine cli-opencode tasks benefit from elevated reasoning at low cost, and the OpenCode Go gateway routes DeepSeek and other open models through a single API key. The direct `deepseek/*` provider is available when the operator wants to bypass the opencode-go gateway and call DeepSeek's API directly.
 
 ### OpenCode Agent Delegation
 
@@ -251,10 +289,10 @@ The calling AI is the conductor. OpenCode distinguishes **primary agents** (dire
 
 | Task type | Agent | Source | Invocation pattern |
 |-----------|-------|--------|---------------------|
-| Default / unspecified | `general` | OpenCode built-in | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
-| Step-by-step planning | `plan` | OpenCode built-in | `opencode run --agent plan --variant high --format json --dir /repo "Plan auth redesign"` |
-| Multi-agent coordination | `orchestrate` | `.opencode/agent/orchestrate.md` (mode=primary) | `opencode run --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests via subagents"` |
-| Multi-strategy planning | `ultra-think` | `.opencode/agent/ultra-think.md` (mode=all) | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan auth redesign"` |
+| Default / unspecified | `general` | OpenCode built-in | `opencode run --model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir /repo "<prompt>"` |
+| Step-by-step planning | `plan` | OpenCode built-in | `opencode run --model opencode-go/deepseek-v4-pro --agent plan --variant high --format json --dir /repo "Plan auth redesign"` |
+| Multi-agent coordination | `orchestrate` | `.opencode/agent/orchestrate.md` (mode=primary) | `opencode run --model opencode-go/deepseek-v4-pro --agent orchestrate --variant high --format json --dir /repo "Coordinate review + tests via subagents"` |
+| Multi-strategy planning | `ultra-think` | `.opencode/agent/ultra-think.md` (mode=all) | `opencode run --model opencode-go/deepseek-v4-pro --agent ultra-think --variant high --format json --dir /repo "Plan auth redesign"` |
 
 #### Subagents — dispatched as Task subagents from a primary
 
@@ -289,45 +327,39 @@ See [agent_delegation.md](./references/agent_delegation.md) for the complete age
 ### Essential Commands
 
 ```bash
-# 1. External runtime to OpenCode (use case 1) — default Copilot dispatch
+# 1. External runtime to OpenCode (use case 1) — default opencode-go dispatch
 opencode run \
-  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run memory_search for 'spec kit memory health' and return top 5 results."
 
 # 2. Parallel detached session (use case 2 — only valid from inside OpenCode)
 opencode run --share --port 4096 \
-  --model github-copilot/gpt-5.4 --agent deep-research --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent deep-research --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Run iteration 3 of the deep-research loop on packet 047."
 
 # 3. Cross-AI handback (use case 3 — Codex / Copilot CLI / Gemini calling)
 opencode run \
-  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Use system-spec-kit to validate packet 047. Return JSON validation report."
 
-# 4. Code review with the review agent (Copilot Sonnet 4.6 for Anthropic-style audit)
+# 4. Code review with the review agent
 opencode run \
-  --model github-copilot/claude-sonnet-4.6 --agent review --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent review --variant high --format json \
   --dir /repo \
   "Review @src/auth.ts for security issues. Surface P0 / P1 with file:line evidence."
 
-# 5. opencode-go alternative — DeepSeek via the OpenCode Go gateway
-opencode run \
-  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
-  --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
-  "Plan the auth refresh feature with step-by-step reasoning."
-
-# 6. DeepSeek direct API — bypasses opencode-go routing
+# 5. DeepSeek direct API — bypasses opencode-go routing
 opencode run \
   --model deepseek/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public \
   "Walk through the migration sequence for packet 047."
 
-# 7. Cross-repo dispatch (Barter sibling)
+# 6. Cross-repo dispatch (Barter sibling)
 opencode run \
-  --model github-copilot/gpt-5.4 --agent general --variant high --format json \
+  --model opencode-go/deepseek-v4-pro --agent general --variant high --format json \
   --dir /Users/michelkerkmeester/MEGA/Development/Code_Environment/Barter \
   "Draft a Level 1 spec for the auth refresh feature."
 ```
@@ -338,7 +370,8 @@ opencode run \
 |-------|----------|
 | `command not found: opencode` | Install via `brew install opencode` (macOS) or the standalone installer |
 | Self-invocation refused | Use a sibling cli-* skill OR a fresh shell session OR add explicit "parallel detached" keywords to the prompt |
-| `provider/model not found` | Run `opencode providers` to enumerate; `auth login <provider>` if needed |
+| `provider/model not found` | Run the Provider Auth Pre-Flight (§3); the default provider is likely missing. Ask the user before falling back. |
+| `401 Unauthorized` mid-dispatch | Credentials expired or rotated. Invalidate the pre-flight cache, rerun `opencode providers list`, ask the user before falling back to a different provider. |
 | `unknown option --variant` | Version drift — see `references/cli_reference.md` §9 |
 | Empty event stream | Pass `--format json` and parse line-delimited events |
 | Background dispatch hangs | Add `</dev/null` to background invocations inside `while read` loops |
@@ -356,7 +389,7 @@ opencode run \
 
 1. Verify OpenCode CLI is installed before first invocation; confirm version baseline against v1.3.17 (drift handling per `references/cli_reference.md` §9).
 2. **Run the self-invocation guard before dispatch** (ADR-001): Layer 1 env-var lookup for any `OPENCODE_*`, Layer 2 process-ancestry probe for `opencode` parent, Layer 3 `~/.opencode/state/<id>/lock` probe. Trip on ANY positive — refuse unless prompt has explicit parallel-session keywords.
-3. Pin model + agent + variant + format + dir explicitly. Default: `--model github-copilot/gpt-5.4 --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `github-copilot/claude-sonnet-4.6`, `opencode-go/deepseek-v4-pro`, `deepseek/deepseek-v4-pro`).
+3. Pin model + agent + variant + format + dir explicitly. Default: `--model opencode-go/deepseek-v4-pro --agent general --variant high --format json --dir <repo-root>`. Honor user overrides verbatim (e.g. `opencode-go/deepseek-v4-flash`, `opencode-go/glm-5.1`, `deepseek/deepseek-v4-pro`).
 4. Pass `--format json` unless the calling AI explicitly wants formatted output — JSON event stream is what external runtimes parse incrementally.
 5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
 6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.
@@ -364,6 +397,7 @@ opencode run \
 8. Validate dispatched session output: parse JSON events incrementally (tool calls, partial messages, final summary), run syntax checks if code generated, cross-reference against project standards (sk-code-review, sk-code-opencode).
 9. Capture stderr (`2>&1`) to catch tool errors and warnings.
 10. Classify the use case (1 / 2 / 3) before dispatching — the smart router refuses dispatches that do not map to one of the three.
+11. **Run the Provider Auth Pre-Flight once per session** (see §3 Provider Auth Pre-Flight). Cache the configured-providers list. If the default `opencode-go` is missing, ASK the user — never silently substitute the model. If a later dispatch returns an auth error, invalidate the cache and rerun the pre-flight before retrying.
 
 ### NEVER
 
