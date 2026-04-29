@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 21 command entry points, 60 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 23 command entry points, 63 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -52,8 +52,8 @@ The framework adds three layers on top of the base platform:
 |---|---|
 | **🤖 10 Agents** | 10 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
-| **⌨️ 21 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 2 doctor + 1 agent_router |
-| **🔧 60 MCP Tools** | spec_kit_memory (51), code mode (7), CocoIndex (1), sequential thinking (1) — see canonical count in FAQ |
+| **⌨️ 23 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 4 doctor + 1 agent_router |
+| **🔧 63 MCP Tools** | spec_kit_memory (54), code mode (7), CocoIndex (1), sequential thinking (1) — see canonical count in FAQ |
 | **🔍 CocoIndex Code** | [Forked](.opencode/skill/mcp-coco-index/NOTICE) from [cocoindex-io/cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0) - semantic code search via vector embeddings and natural-language discovery across 28+ languages |
 | **🏗️ Code Graph** | Structural indexer + SQLite - call graphs, imports, hierarchy, LLM-oriented neighborhoods, graph-first routing |
 | **⚡ Runtime Coverage** | OpenCode, Codex CLI, Claude Code, Gemini CLI, plus Copilot MCP/startup support |
@@ -339,6 +339,8 @@ The Memory Engine is a local-first cognitive memory system built as an MCP serve
 
 The memory engine includes a compact code graph and session lifecycle surfaces alongside hybrid retrieval.
 
+Expired ephemeral rows are cleaned by a retention sweep on startup and hourly by default; use `memory_retention_sweep` for manual or dry-run cleanup. The handler is defined at [memory-retention-sweep.ts](.opencode/skill/system-spec-kit/mcp_server/handlers/memory-retention-sweep.ts), with `SPECKIT_RETENTION_SWEEP` and `SPECKIT_RETENTION_SWEEP_INTERVAL_MS` controlling the background interval.
+
 The full MCP API reference is in the [MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md).
 
 &nbsp;
@@ -355,7 +357,9 @@ The MCP tools are organized into a layered architecture. Each layer has a token 
 | **L5** | Lifecycle | 4 | 600 | Checkpoints and lifecycle state |
 | **L6** | Analysis | 10 | 1,200 | Causal graph, epistemic baselines, evaluations, and dashboards |
 | **L7** | Maintenance | 10 | 1,000 | Index scans, async ingest, learning history, and graph/CocoIndex maintenance |
-| | **Total** | **47** | **8,400** | |
+| **L8** | Graph + Advisor | 17 | 1,400 | Code graph, skill graph, advisor, and CocoIndex bridge |
+| **L9** | Coverage Graph | 4 | 700 | Deep-loop coverage graph operations |
+| | **Total** | **54** | **10,500** | |
 
 Lower layers load only when needed. L1 is always available. L2 loads for any search. L3-L7 load based on the specific command being used.
 
@@ -511,7 +515,7 @@ The framework uses two different code-understanding systems on purpose. **CocoIn
 
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
-> **🍴 We ship a forked CocoIndex, not the upstream one.** The `cocoindex-code` Python wrapper that powers semantic search lives inside this repo at [`.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/`](.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/) as a soft-fork at version `0.2.3+spec-kit-fork.0.2.0`. We forked it to add four things vanilla upstream does not give you: (1) duplicate suppression so mirror copies of the same file don't crowd your search results, (2) canonical path identity per chunk so dedup works across symlinks, (3) a path-class taxonomy (implementation / tests / docs / etc.) with a small score nudge so "find me the implementation of X" actually returns implementation files first, and (4) ranking telemetry so you can see *why* a result ranked where it did. The Rust-based `cocoindex` engine underneath is NOT forked — that still comes from PyPI. If you call the MCP tool or `ccc search` from the CLI, the response carries seven fork-specific fields (`source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals`) that you won't see in vanilla cocoindex output. Schema and reading guide: [`.opencode/skill/mcp-coco-index/references/tool_reference.md`](.opencode/skill/mcp-coco-index/references/tool_reference.md) §7. Fork attribution and per-release patch list: [`.opencode/skill/mcp-coco-index/NOTICE`](.opencode/skill/mcp-coco-index/NOTICE) + [`.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md`](.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md). The patches were authored in [`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/`](.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/).
+> **🍴 We ship a forked CocoIndex, not the upstream one.** The `cocoindex-code` Python wrapper that powers semantic search lives inside this repo at [`.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/`](.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/) as a soft-fork at version `0.2.3+spec-kit-fork.0.2.0`. We forked it to add four things vanilla upstream does not give you: (1) duplicate suppression so mirror copies of the same file don't crowd your search results, (2) canonical path identity per chunk so dedup works across symlinks, (3) a path-class taxonomy (implementation / tests / docs / etc.) with a small score nudge so "find me the implementation of X" actually returns implementation files first, and (4) ranking telemetry so you can see *why* a result ranked where it did. The Rust-based `cocoindex` engine underneath is NOT forked — that still comes from PyPI. If you call the MCP tool or `ccc search` from the CLI, the response carries seven fork-specific fields (`source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals`) that you won't see in vanilla cocoindex output. Schema and reading guide: [`.opencode/skill/mcp-coco-index/references/tool_reference.md`](.opencode/skill/mcp-coco-index/references/tool_reference.md) §7. Fork attribution and per-release patch list: [`.opencode/skill/mcp-coco-index/NOTICE`](.opencode/skill/mcp-coco-index/NOTICE) + [`.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md`](.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md).
 
 &nbsp;
 #### How the Code Graph Works
@@ -560,6 +564,8 @@ Safety is non-negotiable: the tool checks the graph is fresh before parsing the 
 
 Under the hood the scan runner is split into four declared phases (`find-candidates` → `parse-candidates` → `finalize` → `emit-metrics`) for clearer instrumentation, with no SQLite schema changes.
 
+The code graph runtime has its own feature catalog and operator playbook under [code_graph/feature_catalog/](.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/) and [code_graph/manual_testing_playbook/](.opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/). They document 17 runtime features and 15 manual scenarios for freshness, scan/verify/status, `detect_changes`, context retrieval, coverage graph, CCC, and doctor-code-graph behavior.
+
 &nbsp;
 #### What Each System Does
 
@@ -592,7 +598,7 @@ For the full tool and architecture reference, see [`mcp_server/README.md`](.open
 
 ### 🎯 Skill Advisor
 
-The Skill Advisor matches what you type to the right skill before any tool runs. It's the native gate-2 router, packaged as a TypeScript MCP module at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. Three tools cover the surface: `advisor_recommend` for routing, `advisor_status` for health, and `advisor_validate` for measurement. A small Python compatibility shim still works as a fallback when the native path is unavailable.
+The Skill Advisor matches what you type to the right skill before any tool runs. It's the native gate-2 router, packaged as a TypeScript MCP module at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. Four tools cover the surface: `advisor_recommend` for routing, `advisor_rebuild` for explicit stale-state repair, `advisor_status` for health, and `advisor_validate` for measurement. A small Python compatibility shim still works as a fallback when the native path is unavailable.
 
 Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accuracy**, **UNKNOWN ≤ 10**, **0 regressions on previously-correct prompts**.
 
@@ -646,7 +652,7 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/
 ├── bench/      benchmarks
 ├── compat/     stable compatibility entry for runtimes
-├── handlers/   the three MCP tool handlers
+├── handlers/   the four MCP tool handlers
 ├── lib/        scorer, normalizer, freshness, cache
 ├── schemas/    JSON + Zod schemas
 ├── tests/      test suite
@@ -656,6 +662,7 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
 | Tool | What it does |
 |------|--------------|
 | `advisor_recommend` | Recommends skills for a prompt with lane breakdown, lifecycle redirects, and a freshness trust signal. Returns the workspace root and the effective thresholds it used. |
+| `advisor_rebuild` | Rebuilds the advisor skill graph when `advisor_status` reports stale, absent, or unavailable state; `force:true` rebuilds even when live. |
 | `advisor_status` | Reports freshness, generation, trust state, lane weights, skill count, last scan time, and background daemon status. |
 | `advisor_validate` | Runs measurement slices: corpus accuracy, holdout, parity, safety, latency. Surfaces the workspace root, effective thresholds, threshold semantics (aggregate vs runtime), and prompt-safe outcome counts (accepted / corrected / ignored). |
 
@@ -664,6 +671,7 @@ Current shipped baseline: **80.5% full-corpus accuracy**, **77.5% holdout accura
 
 - **Claude Code, Copilot CLI, Gemini CLI, Codex CLI** — call prompt-time hook adapters under `.opencode/skill/system-spec-kit/mcp_server/hooks/`.
 - **OpenCode** — uses `.opencode/plugins/spec-kit-skill-advisor.js` with `spec-kit-skill-advisor-bridge.mjs`, which imports the stable compat entry at `skill-advisor/compat/index.ts`.
+- **Codex cold starts** — the Codex prompt hook emits a prompt-safe stale advisory plus `{"stale":true,"reason":"timeout-fallback"}` when startup context times out; the smoke helper lives at [freshness-smoke-check.ts](.opencode/skill/system-spec-kit/mcp_server/hooks/codex/lib/freshness-smoke-check.ts).
 - **Disable everywhere** — set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to turn off all prompt-time advisor surfaces.
 - **Threshold contract at the prompt** — confidence ≥ 0.8 and uncertainty ≤ 0.35 by default.
 
@@ -694,7 +702,7 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 **system-spec-kit**
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
 - Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
-- Integrates the 51-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
+- Integrates the 54-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
 - Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
 
 **sk-doc**
@@ -780,7 +788,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 
 **mcp-code-mode**
 - MCP orchestration engine providing access to 200+ external tools through a single TypeScript interface
-- Reduces context overhead by 98.7% (1.6k tokens vs 141k for 47 tools loaded individually)
+- Reduces context overhead by 98.7% by loading external tool schemas on demand
 - Progressive tool loading - zero upfront cost, tools load on first use. Type-safe with autocomplete.
 
 **mcp-coco-index**
@@ -815,7 +823,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Evaluator-first agent improvement with 5-dimension integration-aware scoring (structural, ruleCoherence, integration, outputQuality, systemFitness)
 - Integration scanner discovers all surfaces an agent touches (canonical, mirrors, commands, YAML, skills)
 - Dynamic profile generator derives scoring rubric from any agent's own rules, no hardcoded profiles needed
-- Proposal-first: candidates in packet-local runtime areas, canonical target untouched until guarded promotion
+- Proposal-first: candidates written to packet-local runtime areas, canonical target untouched until guarded promotion
 - Guarded promotion with scoring, benchmark, repeatability and operator approval gates. Rollback support.
 - Dimensional progress tracking with plateau detection (3+ identical scores triggers stop)
 - All scoring is deterministic (regex/string/file-existence), no LLM-as-judge, safe for promotion gates
@@ -825,7 +833,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 
 ### 🤖 Agent Network
 
-12 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for the `.agents/agents/`, Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
+10 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -912,7 +920,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 
 ### ⌨️ Commands
 
-21 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
+23 command entry points across 6 namespaces. Each command is a Markdown entry point under `.opencode/command/**/*.md` backed by a behavioral execution spec.
 
 &nbsp;
 #### SPEC KIT
@@ -1037,12 +1045,14 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 **Feature Catalog**
 - Creates or updates feature catalog packages with category routing
 - Generates both technical reference entries and simple-terms companion entries
-- Validates against the 291-entry catalog structure across 22 categories
+- Validates against the 294-entry catalog structure across 22 categories
 
 **Testing Playbook**
 - Creates or updates manual testing playbook packages
 - Generates scenario files with test steps, expected results and verification evidence fields
 - Validates against established playbook format
+
+The MCP server also ships explicit stress and matrix execution surfaces. Run `npm run stress` from [mcp_server/](.opencode/skill/system-spec-kit/mcp_server/) for the dedicated [stress_test/](.opencode/skill/system-spec-kit/mcp_server/stress_test/) suite, which covers search-quality, memory, skill-advisor, code-graph, session, and matrix subsystems; [matrix-runners/](.opencode/skill/system-spec-kit/mcp_server/matrix-runners/) provides five per-CLI adapters plus a manifest and meta-runner for the F1-F14 feature matrix across `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
 &nbsp;
 #### IMPROVE
@@ -1078,6 +1088,12 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Assesses current state (INSTALLED/STALE/MISSING), runs install scripts, configures runtime wiring, verifies health
 - Handles old-install-conflicting-with-new scenarios (clean reinstall with venv/node_modules removal)
 
+**Code Graph**
+- Diagnoses code graph readiness, stale state, and verification status; apply mode is documented in the code graph runtime playbook
+
+**Skill Advisor**
+- Checks advisor freshness, routing health, and stale-state repair paths, including when to use `advisor_rebuild`
+
 &nbsp;
 #### UTILITY
 
@@ -1090,7 +1106,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 
 ### 🔌 Code Mode MCP
 
-Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading 47 tool definitions into context (141k tokens), Code Mode loads them on demand through one interface (1.6k tokens) - a 98.7% reduction.
+Code Mode MCP gives the AI access to external tools (Figma, GitHub, Chrome DevTools, ClickUp, Webflow) through a single TypeScript execution interface. Instead of loading large external tool definitions into context, Code Mode loads them on demand through one interface (1.6k tokens) - a 98.7% reduction.
 
 #### Native MCP Servers
 
@@ -1098,11 +1114,11 @@ Defined in `opencode.json`:
 
 | Server | Tools | Purpose |
 |--------|-------|---------|
-| `spec_kit_memory` | 47 | Cognitive memory system - the memory engine + skill graph |
+| `spec_kit_memory` | 54 | Cognitive memory system - the memory engine + skill graph |
 | `code_mode` | 7 | External tool orchestration via TypeScript execution |
 | `cocoindex_code` | 1 | Semantic code search via vector embeddings |
 | `sequential_thinking` | 1 | Structured multi-step reasoning for complex problems |
-| **Total** | **56** | |
+| **Total** | **63** | |
 
 &nbsp;
 #### Code Mode Tools (7)
@@ -1130,7 +1146,7 @@ Defined in `opencode.json`:
 
 | Metric | Without Code Mode | With Code Mode |
 |--------|-------------------|----------------|
-| Context tokens | 120k (47 tools loaded) | 1.6k (on-demand) |
+| Context tokens | Large external tool schemas loaded upfront | 1.6k (on-demand) |
 | Round trips | 15+ for chained operations | 1 (TypeScript chain) |
 | Type safety | None | Full TypeScript |
 | Context reduction | -| 98.7% |
@@ -1270,12 +1286,12 @@ A: Define the agent in `.opencode/agent/` (the source of truth), then copy the a
 &nbsp;
 **Q: How many MCP tools are there and where are they defined?**
 
-A: 60 total across 4 native MCP servers, sourced from the registered MCP-dispatched tools only (internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded). The canonical count for the `spec_kit_memory` server is `TOOL_DEFINITIONS.length` in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` (currently 51). Breakdown: 51 `spec_kit_memory` tools (3 L1 orchestration + 4 L2 core + 4 L3 discovery + 4 L4 mutation + 4 L5 lifecycle + 8 L6 analysis + 5 L7 maintenance + 5 code graph + 7 skill graph/advisor + 3 CocoIndex bridge + 4 deep loop graph), 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`.
+A: 63 total across 4 native MCP servers, sourced from the registered MCP-dispatched tools only (internal helper handlers and any deferred / not-yet-wired handlers are intentionally excluded). The canonical count for the `spec_kit_memory` server is `TOOL_DEFINITIONS.length` in `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts` (currently 54). Breakdown: 54 `spec_kit_memory` tools (50 local descriptors in `tool-schemas.ts` plus 4 imported Skill Advisor descriptors: `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate`), 7 code mode tools, 1 semantic code search tool (`cocoindex_code`), and 1 sequential thinking tool. All server bindings are defined in `opencode.json`.
 &nbsp;
 
 **Q: What is the feature catalog?**
 
-A: The feature catalog is a 291-entry reference across 22 categories documenting every capability of the memory system. The technical reference lives at `.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md`. A plain-language companion (`FEATURE_CATALOG_IN_SIMPLE_TERMS.md`) is tracked as a future docs deliverable but has not been authored yet.
+A: The feature catalog is a 294-entry reference across 22 categories documenting every capability of the memory system. The technical reference lives at `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`; the code graph runtime adds a package-local catalog at `.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md`.
 
 <!-- /ANCHOR:faq -->
 
@@ -1290,13 +1306,15 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 
 - **[→ AGENTS.md](AGENTS.md)** - Agent routing, gate definitions, behavior rules
 - **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
-- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (51 tools, 7 layers + L8 graph/advisor + L9 coverage)
+- **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (54 tools, 7 memory layers + L8 graph/advisor + L9 coverage)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
 - **[→ Deployment Notes](DEPLOYMENT.md)** - Docker anti-patterns, Copilot notes, and session-resume auth flag
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
 - **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
-- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/FEATURE_CATALOG.md)** - 291-entry technical reference (a plain-language companion is tracked as a future docs item)
+- **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)** - 294-entry technical reference
+- **[→ Code Graph Runtime Catalog](.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md)** - Package-local code graph runtime inventory
+- **[→ Code Graph Manual Playbook](.opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md)** - Operator scenarios for code graph validation
 - **[→ Latest System Spec-Kit Release Notes](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Most recent shipped release notes
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
@@ -1309,4 +1327,4 @@ A: The feature catalog is a 291-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.4 | Last updated: 2026-04-25 | Framework: 12 agents, 21 skills, 23 commands, 60 MCP tools (51 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
+*Documentation version: 4.5 | Last updated: 2026-04-29 | Framework: 10 agents, 21 skills, 23 commands, 63 MCP tools (54 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
