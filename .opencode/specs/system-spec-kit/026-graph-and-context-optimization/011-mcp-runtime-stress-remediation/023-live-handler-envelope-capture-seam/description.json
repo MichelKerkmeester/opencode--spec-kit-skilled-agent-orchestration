@@ -1,0 +1,14 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam",
+  "description": "Behavioral test exercising handleMemorySearch end-to-end with seeded fixtures, proving SearchDecisionEnvelope + decision-audit JSONL emission from the live handler path. Closes v1.0.3 live-handler probe gap.",
+  "keywords": ["live-handler", "search-decision-envelope", "decision-audit", "behavioral-test", "phase-k", "handleMemorySearch"],
+  "lastUpdated": "2026-04-29T08:45:00.000Z",
+  "specId": "023",
+  "folderSlug": "live-handler-envelope-capture-seam",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "011-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 1
+}

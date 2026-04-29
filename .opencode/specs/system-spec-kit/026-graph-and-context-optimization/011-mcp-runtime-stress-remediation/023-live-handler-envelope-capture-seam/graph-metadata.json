@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": ["023-live-handler-envelope-capture-seam", "live handler envelope capture", "handleMemorySearch behavioral test", "search decision envelope test"],
+    "key_topics": ["live-handler", "search-decision-envelope", "decision-audit", "behavioral-test", "phase-k"],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md"],
+    "entities": [],
+    "causal_summary": "Level 1 implementation of behavioral test exercising handleMemorySearch end-to-end with seeded fixtures, proving SearchDecisionEnvelope + decision-audit JSONL emission from live handler path. PP-1 from Phase J Planning Packet. Unblocked by 010-vestigial-embedding-readiness-gate-removal.",
+    "created_at": "2026-04-29T08:45:00.000Z",
+    "last_save_at": "2026-04-29T08:45:00.000Z",
+    "save_lineage": "new",
+    "source_docs": ["spec.md"]
+  }
+}
