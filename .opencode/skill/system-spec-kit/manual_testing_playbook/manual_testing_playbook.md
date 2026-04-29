@@ -46,18 +46,18 @@ Canonical source artifacts:
 - [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
-- [1. OVERVIEW](#1-overview)
-- [2. GLOBAL PRECONDITIONS](#2-global-preconditions)
-- [3. GLOBAL EVIDENCE REQUIREMENTS](#3-global-evidence-requirements)
-- [4. DETERMINISTIC COMMAND NOTATION](#4-deterministic-command-notation)
-- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5-review-protocol-and-release-readiness)
-- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6-sub-agent-orchestration-and-wave-planning)
-- [7. EXISTING FEATURES](#7-existing-features)
-- [8. FEATURES](#8-features)
-- [9. PHASE SYSTEM FEATURES](#9-phase-system-features)
-- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10-dedicated-memoryspec-kit-scenarios-required)
-- [11. AUTOMATED TEST CROSS-REFERENCE](#11-automated-test-cross-reference)
-- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12-feature-catalog-cross-reference-index)
+- [1. OVERVIEW](#1--overview)
+- [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
+- [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
+- [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
+- [7. EXISTING FEATURES](#7--existing-features)
+- [8. FEATURES](#8--features)
+- [9. PHASE SYSTEM FEATURES](#9--phase-system-features)
+- [10. DEDICATED MEMORY/SPEC-KIT SCENARIOS](#10--dedicated-memoryspec-kit-scenarios-required)
+- [11. AUTOMATED TEST CROSS-REFERENCE](#11--automated-test-cross-reference)
+- [12. FEATURE CATALOG CROSS-REFERENCE INDEX](#12--feature-catalog-cross-reference-index)
 
 ---
 
@@ -124,6 +124,16 @@ Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improveme
 - **Packet 013 — blocked/degraded `full_scan` contract** on both `code_graph_query` and `code_graph_context`: [`22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md`](22--context-preservation-and-code-graph/260-code-graph-auto-trigger.md) covers the context side; the query side is verified through the tool-contract playbook in `22--context-preservation-and-code-graph/254-code-graph-scan-query.md` (CALLS ambiguity, `deadlineMs`, null-summary clearing) when that scenario is extended alongside remediation.
 - **Packet 013 — shared startup payload parity across Claude/Gemini/Copilot/Codex**: [`18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md`](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) covers Claude/Gemini/Copilot; the Codex slice of the 4-runtime parity is the remaining gap for that scenario.
 - **Packet 014 — advisor public MCP contract** (`workspaceRoot`, `effectiveThresholds`, `thresholdSemantics`, prompt-safe `telemetry.outcomes.totals`, durable JSONL diagnostics): validated by `references/hooks/skill-advisor-hook-validation.md` (Steps 1-4, 7); a dedicated playbook entry can be added under `22--context-preservation-and-code-graph/` when the remediation packet covers scenario authoring.
+
+### Packet 037/003 playbook coverage
+
+Packet 037/003 adds operator-level entries for surfaces shipped in packets 031-036:
+
+- **Packet 033 — retention sweep**: [`04--maintenance/278-memory-retention-sweep-basic-flow.md`](04--maintenance/278-memory-retention-sweep-basic-flow.md) covers expired `delete_after` rows, dry-run preview, deletion verification, and scheduled interval behavior.
+- **Packet 034 — advisor status/rebuild separation**: [`16--tooling-and-scripts/279-advisor-status-rebuild-separation.md`](16--tooling-and-scripts/279-advisor-status-rebuild-separation.md) covers stale-state reproduction, diagnostic-only `advisor_status`, explicit `advisor_rebuild`, live skip, and force rebuild.
+- **Packet 036 — CLI matrix adapters**: [`16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md`](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) covers one F5 cell per adapter, JSONL output shape, and timeout normalization.
+- **Packet 032 — code graph watcher retraction**: [`22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md`](22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md) covers bounded read-path repair and explicit full-scan handoff.
+- **Packet 035 — code graph matrix evidence**: [`22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md`](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) links the F5, F6, F7, and F8 per-cell evidence files.
 
 ---
 
@@ -3966,5 +3976,10 @@ This split playbook keeps automated coverage references in three places:
 | 274 | Features | Shared provenance and Copilot compact-cache parity | [274](18--ux-hooks/274-shared-provenance-and-copilot-compact-cache-parity.md) | [18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md](../feature_catalog/18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md) |
 | 275 | Context Preservation | Code-graph readiness contract | [275](22--context-preservation-and-code-graph/275-code-graph-readiness-contract.md) | [22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md](../feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md) |
 | 276 | Features | Reconsolidation conflict transaction helper | [276](02--mutation/276-reconsolidation-conflict-transaction-helper.md) | [02--mutation/11-reconsolidation-conflict-transaction-helper.md](../feature_catalog/02--mutation/11-reconsolidation-conflict-transaction-helper.md) |
+| 278 | Features | Memory retention sweep basic flow | [278](04--maintenance/278-memory-retention-sweep-basic-flow.md) | *(packet 033 manual retention entry; no dedicated catalog entry yet)* |
+| 279 | Features | Advisor status and rebuild separation | [279](16--tooling-and-scripts/279-advisor-status-rebuild-separation.md) | *(packet 034 Skill Advisor repair entry; nested advisor playbook has NC-006)* |
+| 280 | Features | CLI matrix adapter runner smoke | [280](16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md) | *(packet 036 matrix-runner entry; no dedicated catalog entry yet)* |
+| 281 | Context Preservation | Code graph read-path selective self-heal | [281](22--context-preservation-and-code-graph/281-code-graph-read-path-selective-self-heal.md) | [22--context-preservation-and-code-graph/08-code-graph-storage-query.md](../feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md) |
+| 282 | Context Preservation | Code graph matrix cell coverage evidence | [282](22--context-preservation-and-code-graph/282-code-graph-cell-coverage-evidence.md) | *(packet 035 evidence reference; no dedicated catalog entry yet)* |
 
 ---

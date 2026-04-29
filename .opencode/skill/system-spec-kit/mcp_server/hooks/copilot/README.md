@@ -5,10 +5,23 @@ trigger_phrases:
   - "copilot hooks"
   - "copilot session prime"
   - "copilot custom instructions"
+importance_tier: "normal"
 ---
 
 # Copilot Hooks
 
+<!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. HOOK REGISTRATION](#2--hook-registration)
+- [3. RELATED](#3--related)
+
+<!-- /ANCHOR:table-of-contents -->
+
+---
+
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Copilot advisor freshness is NEXT-PROMPT: the current prompt sees the PRIOR turn's brief from the managed custom-instructions block.
@@ -21,7 +34,9 @@ Copilot advisor freshness is NEXT-PROMPT: the current prompt sees the PRIOR turn
 - `compact-cache.ts` keeps compact recovery state available for wrapper surfaces.
 
 The managed block is bounded by `SPEC-KIT-COPILOT-CONTEXT` markers so human instructions outside the block are preserved.
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:hook-registration -->
 ## 2. HOOK REGISTRATION
 
 Copilot does not use the Claude Code `.claude/settings.local.json` nested hook block. Keep that file Claude-only, and wire Copilot through a Copilot-supported command surface that executes the compiled writer scripts from the project root:
@@ -34,10 +49,13 @@ printf '%s' '{"prompt":"<prompt>","cwd":"'"$PWD"'"}' | node .opencode/skill/syst
 Do not add top-level `type`, `bash`, or `timeoutSec` wrapper fields to `.claude/settings.local.json` for Copilot. That mixed wrapper shape is stale; Claude uses nested `hooks[]` command entries, while Copilot refreshes the managed custom-instructions file through its own writer scripts.
 
 Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip advisor generation for the current process. Set `SPECKIT_COPILOT_INSTRUCTIONS_DISABLED=1` to skip the custom-instructions writer. Set `SPECKIT_COPILOT_INSTRUCTIONS_PATH` when tests need an isolated target file.
+<!-- /ANCHOR:hook-registration -->
 
+<!-- ANCHOR:related -->
 ## 3. RELATED
 
 - `../README.md`
 - `../claude/README.md`
 - `../gemini/README.md`
 - `../../../references/hooks/skill-advisor-hook.md`
+<!-- /ANCHOR:related -->

@@ -5,6 +5,7 @@ trigger_phrases:
   - "skill advisor hook reference"
   - "advisor hook setup"
   - "speckit advisor hook"
+importance_tier: "important"
 ---
 
 # Skill Advisor Hook Reference

@@ -1,10 +1,25 @@
+---
+title: "Hook System Reference"
+description: "Current hook registration, runtime vocabulary, lifecycle behavior, and fallback contracts for Spec Kit prompt-time and session hooks."
+trigger_phrases:
+  - "hook system"
+  - "runtime hooks"
+  - "Codex hook contract"
+  - "prompt-time advisor"
+importance_tier: "important"
+contextType: "general"
+---
+
 # Hook System Reference
 
-## Overview
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 The hook system provides automated context preservation at hook-capable prompt-time and lifecycle boundaries. Prompt delivery, startup wiring, compaction, and shutdown handling differ by runtime, but they call the same retrieval primitives and fail open to the same operator recovery path.
+<!-- /ANCHOR:overview -->
 
-## Hook Registration
+<!-- ANCHOR:hook-registration -->
+## 2. HOOK REGISTRATION
 
 Claude Code hooks are registered in `.claude/settings.local.json`. Under the normalized Claude schema, `UserPromptSubmit` is the prompt hook, while `PreCompact`, `SessionStart`, and `Stop` are lifecycle hooks:
 
@@ -30,8 +45,10 @@ Codex registration is owned by the user/workspace Codex runtime config, not by t
 | Legacy repo template | Retained for repo examples and local policy shape | `.codex/settings.json` | None by itself; copy/adapt into live Codex hook registration | Example only |
 | Current native hook contract | Active runtime contract as of 2026-04-29 | `~/.codex/config.toml` with `[features].codex_hooks = true` plus `~/.codex/hooks.json` or workspace `hooks.json` | Codex `SessionStart`, `UserPromptSubmit`, and optional `PreToolUse` native hooks | Authoritative live registration |
 | Fallback prompt wrapper | Phase 020 compatibility behavior | `hooks/codex/prompt-wrapper.ts` when native hook readiness reports unavailable | Explicit wrapper invocation | Fallback, not native hook registration |
+<!-- /ANCHOR:hook-registration -->
 
-## Canonical Runtime Hook Vocabulary
+<!-- ANCHOR:canonical-runtime-hook-vocabulary -->
+## 3. CANONICAL RUNTIME HOOK VOCABULARY
 
 Use capability names first, then map to the runtime-local surface below when wiring or validating a specific runtime:
 
@@ -41,8 +58,10 @@ Use capability names first, then map to the runtime-local surface below when wir
 | Session priming | `SessionStart` | `SessionStart` | `event` startup handlers | Runtime startup hook; fallback is `/spec_kit:resume` or `session_bootstrap()` |
 | Compaction | `PreCompact` | `PreCompress` plus `BeforeAgent` injection | `event` compact handlers / compact plugin | Runtime compaction event; fallback is resume ladder |
 | Session cleanup | `Stop` | `SessionEnd` | `event` cleanup handlers | Runtime session-end event where supported; fallback is `/memory:save` |
+<!-- /ANCHOR:canonical-runtime-hook-vocabulary -->
 
-## Hook Lifecycle
+<!-- ANCHOR:hook-lifecycle -->
+## 4. HOOK LIFECYCLE
 
 1. **Prompt-time advisor** — `UserPromptSubmit` in Claude, Codex, and Copilot; `BeforeAgent` in Gemini; `experimental.chat.system.transform` in OpenCode. Claude, Gemini, Codex, and OpenCode can inject runtime-visible advisor context in-turn. Copilot uses the same logical surface to refresh managed custom instructions and returns `{}`; this is NEXT-PROMPT freshness, so the current prompt sees the PRIOR turn's brief.
 2. **Compaction** — `PreCompact` in Claude, `PreCompress` plus `BeforeAgent` reinjection in Gemini, compact `event` handlers in OpenCode, and limited wrapper-only parity in Copilot. Stdout is not injected on the precompute phase.
@@ -53,25 +72,33 @@ Use capability names first, then map to the runtime-local surface below when wir
    - `clear`: Minimal output
    Gemini and Copilot keep runtime-specific transport output, but both can forward the same session and spec-folder startup scope used by Claude when that input is available. Codex only reports live native-hook readiness when `[features].codex_hooks = true` is enabled in `~/.codex/config.toml` or equivalent launch flags and a user/workspace `hooks.json` is wired. Repo `.codex/settings.json` is a template/example, not the live readiness predicate.
 4. **Session cleanup** — `Stop` in Claude, `SessionEnd` in Gemini, and cleanup `event` handlers in OpenCode. Parses transcript JSONL for token usage, calculates cost estimates, and stores snapshots when the runtime supports it.
+<!-- /ANCHOR:hook-lifecycle -->
 
-## Hook State
+<!-- ANCHOR:hook-state -->
+## 5. HOOK STATE
 
 Per-session state stored at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json`.
 
 Fields: `claudeSessionId`, `speckitSessionId`, `lastSpecFolder`, `pendingCompactPrime`, `metrics` (prompt/completion tokens, transcript offset).
+<!-- /ANCHOR:hook-state -->
 
-## Script Locations
+<!-- ANCHOR:script-locations -->
+## 6. SCRIPT LOCATIONS
 
 Source: `mcp_server/hooks/claude/*.ts`
 Compiled: `mcp_server/dist/hooks/claude/*.js`
+<!-- /ANCHOR:script-locations -->
 
-## Token Budgets
+<!-- ANCHOR:token-budgets -->
+## 7. TOKEN BUDGETS
 
 - Compaction injection: 4000 tokens (`COMPACTION_TOKEN_BUDGET`)
 - Session priming: 2000 tokens (`SESSION_PRIME_TOKEN_BUDGET`)
 - Hook timeout: 1800ms (`HOOK_TIMEOUT_MS`, under 2s hard cap)
+<!-- /ANCHOR:token-budgets -->
 
-## Runtime Hook Matrix
+<!-- ANCHOR:runtime-hook-matrix -->
+## 8. RUNTIME HOOK MATRIX
 
 Prompt hooks and lifecycle hooks are separate capabilities. A runtime can support prompt-time advisor context without supporting startup/code-graph lifecycle injection, and Copilot's prompt-time parity is NEXT-PROMPT freshness rather than in-turn injection; the current prompt sees the PRIOR turn's brief.
 
@@ -86,12 +113,16 @@ Prompt hooks and lifecycle hooks are separate capabilities. A runtime can suppor
 ### Codex Timeout Fallback Semantics
 
 Codex `UserPromptSubmit` uses `SPECKIT_CODEX_HOOK_TIMEOUT_MS` (default `3000`) for the advisor builder. If the builder times out, the hook returns prompt-safe stale context with a machine-visible marker: `stale: true`, `reason: "timeout-fallback"`. The hook also writes one structured warning line (`event: "codex_user_prompt_timeout_fallback"`) before its normal prompt-safe diagnostic. Operators can run the smoke helper in `hooks/codex/lib/freshness-smoke-check.ts` to check cold-start freshness (`fresh`, `lastUpdateAt`, `latencyMs`) before adjusting timeout values.
+<!-- /ANCHOR:runtime-hook-matrix -->
 
-## Cross-Runtime Fallback
+<!-- ANCHOR:cross-runtime-fallback -->
+## 9. CROSS-RUNTIME FALLBACK
 
 Claude Code uses native `UserPromptSubmit`, `SessionStart`, `PreCompact`, and `Stop` hooks. Gemini CLI uses native `BeforeAgent`, `SessionStart`, `PreCompress`, and `SessionEnd` hooks. Copilot CLI uses Copilot-supported writer scripts that refresh the Spec Kit managed block in `$HOME/.copilot/copilot-instructions.md`; hook output remains `{}` with NEXT-PROMPT freshness semantics, so the current prompt sees the PRIOR turn's brief, and the registration contract is documented in `mcp_server/hooks/copilot/README.md`. Do not use the stale merged `.claude/settings.local.json` wrapper shape for Copilot. OpenCode uses plugin-based transport rather than shell wrappers: `.opencode/plugins/spec-kit-skill-advisor.js` delivers prompt-time advisor briefs through `experimental.chat.system.transform`, while `.opencode/plugins/spec-kit-compact-code-graph.js` and plugin `event` handlers cover startup, compaction, readiness, and session cleanup. Codex CLI only reports live native-hook readiness when `[features].codex_hooks = true` is enabled in `~/.codex/config.toml` or equivalent launch flags and user/workspace `hooks.json` is wired; on `UserPromptSubmit` timeout, Codex returns a stale fallback marker (`stale:true`, `reason:"timeout-fallback"`) and logs a structured warning instead of silently serving cold-start context. Use `/spec_kit:resume` when hooks are unavailable or disabled. If automatic hook delivery is unavailable in any runtime, or the advisor hook path is intentionally disabled (`SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`), fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
+<!-- /ANCHOR:cross-runtime-fallback -->
 
-## Shared Startup Payload Parity
+<!-- ANCHOR:shared-startup-payload-parity -->
+## 10. SHARED STARTUP PAYLOAD PARITY
 
 All four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks. The payload is produced by `buildStartupBrief()` in `mcp_server/lib/startup-brief.ts` and includes `graphQualitySummary` (detector provenance + edge-enrichment summary) alongside the `sharedPayloadTransport` envelope. Runtime-specific startup entrypoints:
 
@@ -103,8 +134,10 @@ All four supported runtimes transport the same compact startup shared-payload th
 | Codex | `hooks/codex/session-start.ts` | native `SessionStart` hook | `[features].codex_hooks = true` plus user/workspace `hooks.json` |
 
 `graphQualitySummary` is also surfaced on `code_graph_status` and `session_bootstrap()` / startup-brief responses, so operators can inspect the same quality envelope regardless of transport. `session_bootstrap()` remains a manual fallback when native startup hooks are disabled — it is no longer a Codex-only substitute.
+<!-- /ANCHOR:shared-startup-payload-parity -->
 
-## Advisor Bridge and Threshold Contract
+<!-- ANCHOR:advisor-bridge-and-threshold-contract -->
+## 11. ADVISOR BRIDGE AND THRESHOLD CONTRACT
 
 OpenCode delivers prompt-time advisor context through a plugin-helper bridge rather than a shell wrapper:
 
@@ -120,10 +153,13 @@ Packet 014 unified the public MCP contract:
 - `advisor_status` is diagnostic-only and does not rebuild. Use `advisor_rebuild({})` when status reports stale/absent/unavailable, or `advisor_rebuild({"force":true})` for an explicit live-state rebuild.
 - `advisor_validate` additionally publishes `thresholdSemantics` (aggregate vs runtime) plus a prompt-safe `telemetry.outcomes.totals` block (`accepted` / `corrected` / `ignored`).
 - Hook diagnostics persist to bounded JSONL sinks under the temp metrics root (`${TMPDIR}/speckit-advisor-metrics/`), so `advisor_validate` can read the sinks back across processes.
+<!-- /ANCHOR:advisor-bridge-and-threshold-contract -->
 
-## Retrieval Primitives
+<!-- ANCHOR:retrieval-primitives -->
+## 12. RETRIEVAL PRIMITIVES
 
 The same retrieval building blocks power both hook delivery and explicit recovery:
 1. `memory_match_triggers(prompt)` — Fast turn-start context
 2. `memory_context({ mode: "resume", profile: "resume" })` — Continuation and compaction recovery core
 3. `session_bootstrap()` / `session_resume()` — Session-oriented wrappers that layer health and structural context around resume retrieval
+<!-- /ANCHOR:retrieval-primitives -->

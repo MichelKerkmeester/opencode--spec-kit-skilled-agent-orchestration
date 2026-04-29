@@ -1,7 +1,7 @@
 ---
 title: "Spec Kit Memory: Feature Catalog"
 description: "Unified reference combining the complete system feature inventory and the refinement program changelog for the Spec Kit Memory MCP server."
-last_updated: "2026-04-25"
+last_updated: "2026-04-29"
 ---
 
 # Spec Kit Memory: Feature Catalog
@@ -15,28 +15,28 @@ This document combines two complementary views of the Spec Kit Memory system int
 - [PHASE 012 AUDIT](#phase-012-audit)
 - [PHASE 017 AUDIT](#phase-017-audit)
 - [PHASE 018 AUDIT](#phase-018-audit)
-- [1. OVERVIEW](#1-overview)
-- [2. RETRIEVAL](#2-retrieval)
-- [3. MUTATION](#3-mutation)
-- [4. DISCOVERY](#4-discovery)
-- [5. MAINTENANCE](#5-maintenance)
-- [6. LIFECYCLE](#6-lifecycle)
-- [7. ANALYSIS](#7-analysis)
-- [8. EVALUATION](#8-evaluation)
-- [9. BUG FIXES AND DATA INTEGRITY](#9-bug-fixes-and-data-integrity)
-- [10. EVALUATION AND MEASUREMENT](#10-evaluation-and-measurement)
-- [11. GRAPH SIGNAL ACTIVATION](#11-graph-signal-activation)
-- [12. SCORING AND CALIBRATION](#12-scoring-and-calibration)
-- [13. QUERY INTELLIGENCE](#13-query-intelligence)
-- [14. MEMORY QUALITY AND INDEXING](#14-memory-quality-and-indexing)
-- [15. PIPELINE ARCHITECTURE](#15-pipeline-architecture)
-- [16. RETRIEVAL ENHANCEMENTS](#16-retrieval-enhancements)
-- [17. TOOLING AND SCRIPTS](#17-tooling-and-scripts)
-- [18. GOVERNANCE](#18-governance)
-- [19. FEATURE FLAG REFERENCE](#19-feature-flag-reference)
-- [20. REMEDIATION REVALIDATION](#20-remediation-revalidation)
-- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21-implement-and-remove-deprecated-features)
-- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22-context-preservation-and-code-graph)
+- [1. OVERVIEW](#1--overview)
+- [2. RETRIEVAL](#2--retrieval)
+- [3. MUTATION](#3--mutation)
+- [4. DISCOVERY](#4--discovery)
+- [5. MAINTENANCE](#5--maintenance)
+- [6. LIFECYCLE](#6--lifecycle)
+- [7. ANALYSIS](#7--analysis)
+- [8. EVALUATION](#8--evaluation)
+- [9. BUG FIXES AND DATA INTEGRITY](#9--bug-fixes-and-data-integrity)
+- [10. EVALUATION AND MEASUREMENT](#10--evaluation-and-measurement)
+- [11. GRAPH SIGNAL ACTIVATION](#11--graph-signal-activation)
+- [12. SCORING AND CALIBRATION](#12--scoring-and-calibration)
+- [13. QUERY INTELLIGENCE](#13--query-intelligence)
+- [14. MEMORY QUALITY AND INDEXING](#14--memory-quality-and-indexing)
+- [15. PIPELINE ARCHITECTURE](#15--pipeline-architecture)
+- [16. RETRIEVAL ENHANCEMENTS](#16--retrieval-enhancements)
+- [17. TOOLING AND SCRIPTS](#17--tooling-and-scripts)
+- [18. GOVERNANCE](#18--governance)
+- [19. FEATURE FLAG REFERENCE](#19--feature-flag-reference)
+- [20. REMEDIATION REVALIDATION](#20--remediation-revalidation)
+- [21. IMPLEMENT AND REMOVE DEPRECATED FEATURES](#21--implement-and-remove-deprecated-features)
+- [22. CONTEXT PRESERVATION AND CODE GRAPH](#22--context-preservation-and-code-graph)
 
 ---
 
@@ -168,17 +168,19 @@ Packets 013 (code-graph hook improvements) and 014 (skill-advisor hook improveme
 
 ### Command-Surface Contract
 
-The Spec Kit Memory MCP server exposes **51 tools** overall across the 7-layer MCP surface (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`; deferred / internal-only handlers do NOT count). The command layer wraps the spec-doc record-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the spec-doc record/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
+The Spec Kit Memory MCP server exposes **54 tools** overall across the 7-layer MCP surface (canonical source: `TOOL_DEFINITIONS.length` in `mcp_server/tool-schemas.ts`; deferred / internal-only handlers do NOT count). The command layer wraps the spec-doc record-focused subset under **4 top-level memory slash commands**, with session recovery still owned by `/spec_kit:resume` as a spec-folder workflow using the spec-doc record/session recovery stack. Each command declares its allowed tools in frontmatter; tools not listed are inaccessible to that command. The canonical source for primary tool ownership is the coverage matrix in `.opencode/command/memory/README.txt`, while each command file's `allowed-tools` frontmatter shows the full operational surface. Recovery behavior is documented in `.opencode/command/spec_kit/resume.md`.
 
 | Command | Tools | Ownership | Tool Names |
 |---------|-------|-----------|------------|
 | `/memory:search` | 13 | owns | `memory_context`, `memory_quick_search`, `memory_search`, `memory_match_triggers`, `task_preflight`, `task_postflight`, `memory_drift_why`, `memory_causal_link`, `memory_causal_stats`, `memory_causal_unlink`, `eval_run_ablation`, `eval_reporting_dashboard`, `memory_get_learning_history` |
 | `/memory:learn` | 6 | shared | `memory_save`, `memory_search`, `memory_stats`, `memory_list`, `memory_delete`, `memory_index_scan` |
-| `/memory:manage` | 19 primary + 1 helper | owns + borrows | Primary home: `memory_stats`, `memory_list`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`; helper access: `memory_search` |
+| `/memory:manage` | 20 primary + 1 helper | owns + borrows | Primary home: `memory_stats`, `memory_list`, `memory_index_scan`, `memory_validate`, `memory_update`, `memory_delete`, `memory_bulk_delete`, `memory_retention_sweep`, `memory_health`, `checkpoint_create`, `checkpoint_restore`, `checkpoint_list`, `checkpoint_delete`, `memory_ingest_start`, `memory_ingest_status`, `memory_ingest_cancel`; helper access: `memory_search` |
 | `/memory:save` | 4 | shared | `memory_save`, `memory_index_scan`, `memory_stats`, `memory_update` |
 | `/spec_kit:resume` | broader helper surface | shared | Primary recovery chain: `memory_context`, `memory_search`, `memory_list`; wrapper also allows `memory_stats`, `memory_match_triggers`, `memory_delete`, `memory_update`, plus health, indexing, validation, checkpoint, and CocoIndex helpers |
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
+
+Packet 031-036 catalog refresh adds three surfaced capabilities to this catalog: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix-runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
 
 ---
 
@@ -428,7 +430,7 @@ See [`01--retrieval/11-session-recovery-spec-kit-resume.md`](01--retrieval/11-se
 
 ## 3. MUTATION
 
-This section documents 11 mutation features.
+This section documents 12 mutation features.
 
 ### Memory indexing (memory_save)
 
@@ -639,6 +641,24 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 See [`02--mutation/10-per-record-history-log.md`](02--mutation/10-per-record-history-log.md) for full implementation and test file listings.
 
 > **Playbook:** [110](../manual_testing_playbook/manual_testing_playbook.md)
+
+---
+
+### Memory retention sweep (memory_retention_sweep)
+
+#### Description
+
+`memory_retention_sweep` closes governed spec-doc records whose `memory_index.delete_after` timestamp has expired. It gives operators a dry-run preview and a real deletion mode for retention policy enforcement.
+
+#### Current Reality
+
+The MCP handler initializes the database, runs the governance sweep, and returns deleted IDs, candidate rows, retained counts, duration, and ledger state. Dry runs return expired candidates without mutating storage. Non-dry runs delete each expired row through the vector index path, record `DELETE` history rows, write governance audit entries with `retention_expired`, and append a mutation-ledger entry when rows were removed.
+
+The tool definition is registered in the L4 mutation surface and exposed through memory-tool dispatch. The canonical tool count now includes this tool.
+
+#### Source Files
+
+See [`02--mutation/12-memory-retention-sweep.md`](02--mutation/12-memory-retention-sweep.md) for full implementation and test file listings.
 
 ---
 
@@ -3967,6 +3987,40 @@ After any spec folder `.md` write, the workflow runs `validate.sh --strict` agai
 #### Source Files
 
 See [`16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`](16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) for full implementation and verification file listings.
+
+---
+
+### CLI matrix adapter runners
+
+#### Description
+
+The CLI matrix adapter runners turn the F1-F14 executor matrix into runnable cells for `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
+
+#### Current Reality
+
+`mcp_server/matrix-runners/` ships a manifest-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
+
+Packet 035 covered the local/native matrix status. This entry covers packet 036's external CLI adapter surface now present in the repo.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/37-cli-matrix-adapter-runners.md`](16--tooling-and-scripts/37-cli-matrix-adapter-runners.md) for full implementation and test file listings.
+
+---
+
+### Codex hook freshness smoke check
+
+#### Description
+
+The Codex hook freshness smoke check verifies that cold-start Codex context is populated from a ready code graph without blocking hook startup.
+
+#### Current Reality
+
+`smokeCheckCodexColdStartContext()` builds the startup brief, checks that the startup surface is non-empty and backed by `graphState: "ready"`, and returns `fresh`, `lastUpdateAt`, and `latencyMs`. Failures report `fresh: false` instead of throwing, so hooks can degrade cleanly while still exposing a freshness probe for runtime diagnostics.
+
+#### Source Files
+
+See [`16--tooling-and-scripts/38-codex-hook-freshness-smoke-check.md`](16--tooling-and-scripts/38-codex-hook-freshness-smoke-check.md) for full implementation and test file listings.
 
 ---
 

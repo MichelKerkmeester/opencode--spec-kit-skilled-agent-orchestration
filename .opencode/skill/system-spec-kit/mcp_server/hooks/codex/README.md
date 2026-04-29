@@ -4,10 +4,23 @@ description: "Codex user-prompt advisor and Bash-only PreToolUse policy hooks."
 trigger_phrases:
   - "codex hooks"
   - "codex advisor hook"
+importance_tier: "normal"
 ---
 
 # Codex Hooks
 
+<!-- ANCHOR:table-of-contents -->
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. REGISTRATION](#2--registration)
+- [3. RELATED](#3--related)
+
+<!-- /ANCHOR:table-of-contents -->
+
+---
+
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 `hooks/codex/` contains the Codex runtime adapter slice from Phase 020 plus
@@ -42,7 +55,9 @@ printf '%s\n' '{"prompt":"implement TypeScript hook","cwd":"'"$PWD"'"}' \
 ```
 
 Expected stdout contains non-empty `hookSpecificOutput.additionalContext`. Cold-start timeouts return the prompt-safe `Advisor: stale (cold-start timeout)` advisory plus `{"stale":true,"reason":"timeout-fallback"}` marker, and stderr receives a structured `codex_user_prompt_timeout_fallback` warning before the normal `status:"stale"` diagnostic.
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:registration -->
 ## 2. REGISTRATION
 
 Checked-in `.codex/settings.json` shape:
@@ -89,7 +104,9 @@ Documented `.codex/policy.json` snippet:
 ```
 
 Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip the prompt-time advisor path for the current process session. The flag does not empty `.codex/policy.json` or unregister `PreToolUse`.
+<!-- /ANCHOR:registration -->
 
+<!-- ANCHOR:related -->
 ## 3. RELATED
 
 - `../README.md`
@@ -97,3 +114,4 @@ Set `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` to skip the prompt-time advisor path
 - `../gemini/README.md`
 - `../copilot/README.md`
 - `../../../references/hooks/skill-advisor-hook.md`
+<!-- /ANCHOR:related -->

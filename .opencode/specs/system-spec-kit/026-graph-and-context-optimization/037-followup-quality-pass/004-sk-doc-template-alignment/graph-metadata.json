@@ -1,0 +1,64 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/004-sk-doc-template-alignment",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/031-doc-truth-pass",
+      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
+      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation",
+      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "037-004-sk-doc-template-alignment",
+      "sk-doc audit",
+      "template alignment 031-036",
+      "DQI compliance"
+    ],
+    "key_topics": [
+      "sk-doc",
+      "documentation audit",
+      "template alignment",
+      "readme validation",
+      "anchor markers",
+      "DQI"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "audit-target-list.md",
+      "audit-findings.md"
+    ],
+    "entities": [],
+    "causal_summary": "Audits ~30 docs touched by packets 031-036 against sk-doc templates. Fixes frontmatter, anchor markers, section headers, DQI compliance. Out-of-scope: pre-existing drift.",
+    "created_at": "2026-04-29T15:41:50.000Z",
+    "last_save_at": "2026-04-29T15:41:50.000Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "audit-target-list.md",
+      "audit-findings.md"
+    ]
+  }
+}

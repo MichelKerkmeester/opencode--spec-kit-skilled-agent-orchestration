@@ -1,0 +1,21 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio",
+  "description": "Updates 3 manual testing playbooks with reproducible operator entries for new tools from 031-036. Doc-only; sk-doc template-aligned.",
+  "keywords": [
+    "037-003-testing-playbook-trio",
+    "manual testing playbook",
+    "playbook updates 031-036",
+    "system-spec-kit playbook",
+    "skill_advisor playbook",
+    "code_graph playbook"
+  ],
+  "lastUpdated": "2026-04-29T15:41:05Z",
+  "specId": "003",
+  "folderSlug": "testing-playbook-trio",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "037-followup-quality-pass"
+  ],
+  "memorySequence": 1
+}

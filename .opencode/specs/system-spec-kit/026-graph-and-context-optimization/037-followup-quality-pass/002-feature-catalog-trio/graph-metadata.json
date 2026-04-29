@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/002-feature-catalog-trio",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/031-code-graph-readiness",
+      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
+      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/035-matrix-execution-status",
+      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "037-002-feature-catalog-trio",
+      "feature catalog updates",
+      "catalog refresh 031-036",
+      "system-spec-kit catalog",
+      "skill_advisor catalog",
+      "code_graph catalog"
+    ],
+    "key_topics": [
+      "feature-catalog",
+      "system-spec-kit",
+      "skill-advisor",
+      "code-graph",
+      "memory-retention-sweep",
+      "advisor-rebuild",
+      "matrix-runners",
+      "codex-freshness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "discovery-notes.md"
+    ],
+    "entities": [],
+    "causal_summary": "Updates 3 feature catalogs (system-spec-kit, skill_advisor, code_graph) with new tools/handlers from packets 031-036. Doc-only; sk-doc template-aligned.",
+    "created_at": "2026-04-29T15:38:44.000Z",
+    "last_save_at": "2026-04-29T15:38:44.000Z",
+    "save_lineage": "new",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "discovery-notes.md"
+    ]
+  }
+}

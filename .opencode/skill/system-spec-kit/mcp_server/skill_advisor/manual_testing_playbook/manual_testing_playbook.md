@@ -16,33 +16,33 @@ This playbook validates the post-Phase-027 Skill Advisor surface as shipped at r
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. GLOBAL PRECONDITIONS](#2-global-preconditions)
-- [3. GLOBAL EVIDENCE REQUIREMENTS](#3-global-evidence-requirements)
-- [4. COMMAND NOTATION](#4-command-notation)
-- [5. REVIEW AND RELEASE RULES](#5-review-and-release-rules)
-- [6. NATIVE MCP TOOL SCENARIOS (`NC-001..NC-005`)](#6-native-mcp-tool-scenarios-nc-001nc-005)
-- [7. CLI HOOK AND PLUGIN SCENARIOS (`CL-001..CL-005`)](#7-cli-hook-and-plugin-scenarios-cl-001cl-005)
-- [8. COMPAT AND DISABLE SCENARIOS (`CP-001..CP-004`)](#8-compat-and-disable-scenarios-cp-001cp-004)
-- [9. OPERATOR H5 SCENARIOS (`OP-001..OP-003`)](#9-operator-h5-scenarios-op-001op-003)
-- [10. AUTO-UPDATE DAEMON SCENARIOS (`AU-001..AU-005`)](#10-auto-update-daemon-scenarios-au-001au-005)
-- [11. AUTO-INDEXING SCENARIOS (`AI-001..AI-005`)](#11-auto-indexing-scenarios-ai-001ai-005)
-- [12. LIFECYCLE ROUTING SCENARIOS (`LC-001..LC-005`)](#12-lifecycle-routing-scenarios-lc-001lc-005)
-- [13. SCORER FUSION SCENARIOS (`SC-001..SC-005`)](#13-scorer-fusion-scenarios-sc-001sc-005)
-- [14. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#14-python-compat-scenarios-pc-001pc-005)
-- [15. AUTOMATED TEST CROSS-REFERENCE](#15-automated-test-cross-reference)
-- [16. SOURCE CROSS-REFERENCE](#16-source-cross-reference)
-- [17. SCENARIO RUN HISTORY](#17-scenario-run-history)
+- [1. OVERVIEW](#1--overview)
+- [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
+- [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
+- [4. COMMAND NOTATION](#4--command-notation)
+- [5. REVIEW AND RELEASE RULES](#5--review-and-release-rules)
+- [6. NATIVE MCP TOOL SCENARIOS (`NC-001..NC-006`)](#6--native-mcp-tool-scenarios-nc-001nc-006)
+- [7. CLI HOOK AND PLUGIN SCENARIOS (`CL-001..CL-005`)](#7--cli-hook-and-plugin-scenarios-cl-001cl-005)
+- [8. COMPAT AND DISABLE SCENARIOS (`CP-001..CP-004`)](#8--compat-and-disable-scenarios-cp-001cp-004)
+- [9. OPERATOR H5 SCENARIOS (`OP-001..OP-003`)](#9--operator-h5-scenarios-op-001op-003)
+- [10. AUTO-UPDATE DAEMON SCENARIOS (`AU-001..AU-005`)](#10--auto-update-daemon-scenarios-au-001au-005)
+- [11. AUTO-INDEXING SCENARIOS (`AI-001..AI-005`)](#11--auto-indexing-scenarios-ai-001ai-005)
+- [12. LIFECYCLE ROUTING SCENARIOS (`LC-001..LC-005`)](#12--lifecycle-routing-scenarios-lc-001lc-005)
+- [13. SCORER FUSION SCENARIOS (`SC-001..SC-005`)](#13--scorer-fusion-scenarios-sc-001sc-005)
+- [14. PYTHON COMPAT SCENARIOS (`PC-001..PC-005`)](#14--python-compat-scenarios-pc-001pc-005)
+- [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
+- [16. SOURCE CROSS-REFERENCE](#16--source-cross-reference)
+- [17. SCENARIO RUN HISTORY](#17--scenario-run-history)
 
 ---
 
 ## 1. OVERVIEW
 
-The playbook contains 42 deterministic manual scenarios across nine groups. The first four groups carry the original Phase 027 release-gate surface; the five remaining groups extend coverage to every shipped sub-feature.
+The playbook contains 43 deterministic manual scenarios across nine groups. The first four groups carry the original Phase 027 release-gate surface; the five remaining groups extend coverage to every shipped sub-feature.
 
 | Group | Scope | Scenario Files |
 | --- | --- | --- |
-| Native MCP tools | `advisor_recommend`, `advisor_status`, `advisor_validate`, ambiguity, lifecycle redirects | [01--native-mcp-tools](01--native-mcp-tools/) |
+| Native MCP tools | `advisor_recommend`, `advisor_status`, `advisor_validate`, `advisor_rebuild`, ambiguity, lifecycle redirects | [01--native-mcp-tools](01--native-mcp-tools/) |
 | CLI hooks and plugin | Claude Code, Copilot CLI, Gemini CLI, Codex CLI, OpenCode plugin bridge | [02--cli-hooks-and-plugin](02--cli-hooks-and-plugin/) |
 | Compat and disable | Python shim stdin, force toggles, disable flag, fallback behavior | [03--compat-and-disable](03--compat-and-disable/) |
 | Operator H5 | degraded, quarantined, unavailable recovery playbooks | [04--operator-h5](04--operator-h5/) |
@@ -98,7 +98,7 @@ Capture the following for every scenario:
 
 ## 5. REVIEW AND RELEASE RULES
 
-Release readiness is `READY` only when all 42 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, or operator recovery scenario makes the package `NOT READY`.
+Release readiness is `READY` only when all 43 scenarios are `PASS` or have an approved `SKIP` with a real sandbox or runtime blocker. A failed native MCP tool scenario, disable-control scenario, or operator recovery scenario makes the package `NOT READY`.
 
 Scenario acceptance:
 
@@ -110,7 +110,7 @@ Scenario acceptance:
 
 ---
 
-## 6. NATIVE MCP TOOL SCENARIOS (`NC-001..NC-005`)
+## 6. NATIVE MCP TOOL SCENARIOS (`NC-001..NC-006`)
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -119,6 +119,7 @@ Scenario acceptance:
 | NC-003 | `advisor_validate` slice bundle output | [003-native-validate-slices.md](01--native-mcp-tools/003-native-validate-slices.md) |
 | NC-004 | Ambiguous brief rendering | [004-ambiguous-brief-rendering.md](01--native-mcp-tools/004-ambiguous-brief-rendering.md) |
 | NC-005 | Lifecycle redirect metadata | [005-lifecycle-redirect-metadata.md](01--native-mcp-tools/005-lifecycle-redirect-metadata.md) |
+| NC-006 | `advisor_status` diagnostic-only plus explicit `advisor_rebuild` | [006-advisor-status-rebuild-separation.md](01--native-mcp-tools/006-advisor-status-rebuild-separation.md) |
 
 ---
 

@@ -1,0 +1,87 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/003-testing-playbook-trio",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/037-followup-quality-pass/001-sk-code-opencode-audit"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/032-code-graph-watcher-retraction",
+      "system-spec-kit/026-graph-and-context-optimization/033-memory-retention-sweep",
+      "system-spec-kit/026-graph-and-context-optimization/034-half-auto-upgrades",
+      "system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation",
+      "system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "037-003-testing-playbook-trio",
+      "manual testing playbook",
+      "playbook updates 031-036",
+      "system-spec-kit playbook",
+      "skill_advisor playbook",
+      "code_graph playbook"
+    ],
+    "key_topics": [
+      "manual-testing",
+      "playbook",
+      "retention-sweep",
+      "advisor-rebuild",
+      "code-graph",
+      "matrix-runners"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "discovery-notes.md",
+      "description.json",
+      "graph-metadata.json",
+      ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/manual_testing_playbook/manual_testing_playbook.md"
+    ],
+    "entities": [
+      {
+        "name": "system-spec-kit manual testing playbook",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "manual"
+      },
+      {
+        "name": "skill_advisor manual testing playbook",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "manual"
+      },
+      {
+        "name": "code_graph playbook category",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/manual_testing_playbook/22--context-preservation-and-code-graph",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Updates 3 manual testing playbooks with reproducible operator entries for new tools from 031-036. Doc-only; sk-doc template-aligned.",
+    "created_at": "2026-04-29T15:41:05Z",
+    "last_save_at": "2026-04-29T15:41:05Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "discovery-notes.md"
+    ]
+  }
+}

@@ -16,20 +16,20 @@ This catalog is the post-Phase-027 inventory for the skill advisor. The package 
 
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. DAEMON AND FRESHNESS](#2-daemon-and-freshness)
-- [3. AUTO-INDEXING](#3-auto-indexing)
-- [4. LIFECYCLE ROUTING](#4-lifecycle-routing)
-- [5. SCORER FUSION](#5-scorer-fusion)
-- [6. MCP SURFACE](#6-mcp-surface)
-- [7. HOOKS AND PLUGIN](#7-hooks-and-plugin)
-- [8. PYTHON COMPAT](#8-python-compat)
+- [1. OVERVIEW](#1--overview)
+- [2. DAEMON AND FRESHNESS](#2--daemon-and-freshness)
+- [3. AUTO-INDEXING](#3--auto-indexing)
+- [4. LIFECYCLE ROUTING](#4--lifecycle-routing)
+- [5. SCORER FUSION](#5--scorer-fusion)
+- [6. MCP SURFACE](#6--mcp-surface)
+- [7. HOOKS AND PLUGIN](#7--hooks-and-plugin)
+- [8. PYTHON COMPAT](#8--python-compat)
 
 ---
 
 ## 1. OVERVIEW
 
-The catalog covers 36 features across 7 groups. Group 1 owns daemon correctness; groups 2-3 own the index and lifecycle surface that feeds the scorer; group 4 owns scoring; group 5 exposes the MCP tools; groups 6-7 cover runtime integrations and Python compatibility.
+The catalog covers 37 features across 7 groups. Group 1 owns daemon correctness; groups 2-3 own the index and lifecycle surface that feeds the scorer; group 4 owns scoring; group 5 exposes the MCP tools; groups 6-7 cover runtime integrations and Python compatibility.
 
 | Group | Count | Scope |
 | --- | --- | --- |
@@ -37,7 +37,7 @@ The catalog covers 36 features across 7 groups. Group 1 owns daemon correctness;
 | [02--auto-indexing](./02--auto-indexing/) | 6 | Derived extraction, sanitizer, provenance, sync, anti-stuffing, DF/IDF corpus |
 | [03--lifecycle-routing](./03--lifecycle-routing/) | 5 | Age haircut, supersession, archive handling, schema migration, rollback |
 | [04--scorer-fusion](./04--scorer-fusion/) | 6 | 5-lane fusion, projection, ambiguity, attribution, ablation, weights config |
-| [06--mcp-surface](./06--mcp-surface/) | 4 | `advisor_recommend`, `advisor_status`, `advisor_validate`, stable compat entrypoint |
+| [06--mcp-surface](./06--mcp-surface/) | 5 | `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate`, stable compat entrypoint |
 | [07--hooks-and-plugin](./07--hooks-and-plugin/) | 5 | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge |
 | [08--python-compat](./08--python-compat/) | 3 | Python CLI shim, regression suite, bench runner |
 
@@ -113,6 +113,7 @@ Baseline numbers (Phase 027 remediation SHA `97a318d83`):
 | Feature | File |
 | --- | --- |
 | `advisor_recommend` MCP tool | [06--mcp-surface/01-advisor-recommend.md](./06--mcp-surface/01-advisor-recommend.md) |
+| `advisor_rebuild` MCP tool | [06--mcp-surface/05-advisor-rebuild.md](./06--mcp-surface/05-advisor-rebuild.md) |
 | `advisor_status` MCP tool | [06--mcp-surface/02-advisor-status.md](./06--mcp-surface/02-advisor-status.md) |
 | `advisor_validate` MCP tool | [06--mcp-surface/03-advisor-validate.md](./06--mcp-surface/03-advisor-validate.md) |
 | Stable `compat/index.ts` entrypoint | [06--mcp-surface/04-compat-entrypoint.md](./06--mcp-surface/04-compat-entrypoint.md) |

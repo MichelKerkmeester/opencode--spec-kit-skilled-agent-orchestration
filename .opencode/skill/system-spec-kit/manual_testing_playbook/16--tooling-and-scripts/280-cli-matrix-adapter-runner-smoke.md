@@ -1,0 +1,117 @@
+---
+title: "280 -- CLI matrix adapter runner smoke"
+description: "Operator validation for packet 036 CLI matrix adapters: one cell per adapter, JSONL output shape, and timeout handling."
+---
+
+# 280 -- CLI matrix adapter runner smoke
+
+## 1. OVERVIEW
+
+This scenario validates the packet 036 matrix runner surface. It exercises one cell through each shipped external CLI adapter, verifies the JSONL record shape, and uses the mocked adapter suites to prove timeout normalization returns `TIMEOUT_CELL`.
+
+---
+
+## 2. SCENARIO CONTRACT
+
+- **Goal**: Run a single matrix cell through `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`, then verify per-cell JSONL and timeout behavior.
+- **Prerequisites**:
+  - Working directory is the repository root.
+  - Packet 036 shipped `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/`.
+  - External CLIs are installed and authenticated for live adapter execution, or blocked cells are recorded with explicit `BLOCKED` reasons.
+  - `jq` is available for JSONL checks.
+- **Prompt**: `As a matrix-runner operator, run the F5 cell through all five shipped CLI adapters, verify every JSONL record has the normalized cell fields and status enum, then run the mocked matrix-adapter timeout tests and confirm TIMEOUT_CELL handling. Return PASS/FAIL with output directory and timeout-test evidence.`
+
+---
+
+## 3. TEST EXECUTION
+
+### Commands
+
+1. Run one F5 cell through every shipped adapter:
+
+```bash
+OUT="/tmp/spec-kit-matrix-smoke-$(date +%s)"
+cd .opencode/skill/system-spec-kit
+npx tsx mcp_server/matrix-runners/run-matrix.ts \
+  --output "$OUT" \
+  --filter F5 \
+  --executors cli-codex,cli-copilot,cli-gemini,cli-claude-code,cli-opencode \
+  --working-dir "$(pwd)/../../.."
+```
+
+2. Verify JSONL shape:
+
+```bash
+for file in "$OUT"/F5-*.jsonl; do
+  jq -e '
+    has("cell_id") and
+    has("featureId") and
+    has("featureName") and
+    has("executor") and
+    has("status") and
+    has("durationMs") and
+    has("evidence") and
+    (.featureId == "F5") and
+    (.status | IN("PASS","FAIL","TIMEOUT_CELL","NA","BLOCKED"))
+  ' "$file"
+done
+```
+
+3. Inspect aggregate summary:
+
+```bash
+cat "$OUT/summary.tsv"
+```
+
+4. Verify adapter timeout handling with mocked subprocesses:
+
+```bash
+cd .opencode/skill/system-spec-kit/mcp_server
+npx vitest run \
+  tests/matrix-adapter-codex.vitest.ts \
+  tests/matrix-adapter-copilot.vitest.ts \
+  tests/matrix-adapter-gemini.vitest.ts \
+  tests/matrix-adapter-claude-code.vitest.ts \
+  tests/matrix-adapter-opencode.vitest.ts \
+  --testNamePattern 'TIMEOUT_CELL'
+```
+
+### Expected Output / Verification
+
+- Step 1 writes five files under `$OUT`: one each for `F5-cli-codex`, `F5-cli-copilot`, `F5-cli-gemini`, `F5-cli-claude-code`, and `F5-cli-opencode`.
+- Live cells may be `PASS`, `FAIL`, or `BLOCKED` depending on local CLI auth; `NA` is not expected for F5.
+- Every JSONL record has `cell_id`, `featureId`, `featureName`, `executor`, `status`, `durationMs`, `evidence.stdout`, `evidence.stderr`, and `evidence.exitCode`.
+- `summary.tsv` contains per-feature and per-executor aggregate rows.
+- The timeout test command passes and includes `TIMEOUT_CELL` assertions for every adapter suite.
+
+### Cleanup
+
+```bash
+rm -rf "$OUT"
+```
+
+### Variant Scenarios
+
+- Run F11 with all executors and verify `F11-cli-gemini` records `NA` from the manifest applicability rule.
+- Run `--filter F5,F6` to prove multiple code-graph cells produce separate JSONL records.
+- Run with one missing CLI binary and verify the adapter records `BLOCKED` rather than crashing the meta-runner.
+
+---
+
+## 4. REFERENCES
+
+- Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
+- Packet 036 spec: [036-cli-matrix-adapter-runners/spec.md](../../../../../specs/system-spec-kit/026-graph-and-context-optimization/036-cli-matrix-adapter-runners/spec.md)
+- Runner docs: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/README.md`
+- Manifest: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/matrix-manifest.json`
+- Adapter common: `.opencode/skill/system-spec-kit/mcp_server/matrix-runners/adapter-common.ts`
+
+---
+
+## 5. SOURCE METADATA
+
+- Group: Tooling and Scripts
+- Playbook ID: 280
+- Packet: 036-cli-matrix-adapter-runners
+- Canonical root source: `manual_testing_playbook.md`
+- Feature file path: `16--tooling-and-scripts/280-cli-matrix-adapter-runner-smoke.md`

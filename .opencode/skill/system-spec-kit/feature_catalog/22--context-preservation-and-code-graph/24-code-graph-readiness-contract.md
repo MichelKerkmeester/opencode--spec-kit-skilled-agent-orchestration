@@ -5,6 +5,15 @@ description: "Phase 017 extracted a shared readiness contract so code-graph hand
 
 # Code-graph readiness contract
 
+## TABLE OF CONTENTS
+
+- [1. OVERVIEW](#1--overview)
+- [2. CURRENT REALITY](#2--current-reality)
+- [3. SOURCE FILES](#3--source-files)
+- [4. SOURCE METADATA](#4--source-metadata)
+
+---
+
 ## 1. OVERVIEW
 
 Phase 017 extracted a shared readiness contract so code-graph handlers emit the same `canonicalReadiness` and `trustState` fields through one module.
@@ -40,6 +49,10 @@ Operator-facing rule of thumb: every code-graph handler exposes the same `readin
 
 The readiness module also now exposes a non-mutating `getGraphReadinessSnapshot()` for status reporting. It returns the same `{action, freshness, reason}` triplet as `ensureCodeGraphReady` but never triggers cache mutation, deleted-file cleanup, or inline indexing — used by `code_graph_status` for diagnostic reads where the caller wants observability without side effects.
 
+Packet 032 retracted the watcher model. Code graph freshness is a read-path/manual contract: callers use `code_graph_status` for diagnostics, `code_graph_scan` for explicit refresh, and `code_graph_query` / `code_graph_context` for reads that may perform bounded selective self-heal through `ensure-ready.ts` when inline indexing is allowed. There is no background watcher. `code_graph_verify` uses the same readiness helper with `allowInlineFullScan: false` and blocks when the graph is not fresh.
+
+Packet 035 matrix status treats the code-graph cells as native/local validation surfaces rather than external CLI adapter cells. Packet 036 adds the external CLI matrix adapters separately under `mcp_server/matrix-runners/`; the code-graph readiness contract here remains manual/read-path driven.
+
 ---
 
 ## 3. SOURCE FILES
@@ -49,10 +62,16 @@ The readiness module also now exposes a non-mutating `getGraphReadinessSnapshot(
 | File | Layer | Role |
 |------|-------|------|
 | `mcp_server/code_graph/lib/readiness-contract.ts` | Lib | Canonical readiness helper surface for code-graph handlers |
+| `mcp_server/code_graph/lib/ensure-ready.ts:141-225` | Lib | Detects empty, stale, full-scan, and selective-reindex states without a watcher |
+| `mcp_server/code_graph/lib/ensure-ready.ts:329-360` | Lib | Applies read-path readiness debounce and selective self-heal gating |
 | `mcp_server/code_graph/handlers/query.ts` | Handler | Query-time readiness projection and graph metadata envelope |
 | `mcp_server/code_graph/handlers/scan.ts` | Handler | Scan result readiness block |
-| `mcp_server/code_graph/handlers/status.ts` | Handler | Status result readiness block |
+| `mcp_server/code_graph/handlers/scan.ts:177-180` | Handler | Manual `code_graph_scan` entry point for explicit refresh |
+| `mcp_server/code_graph/handlers/status.ts:158-180` | Handler | Diagnostic `code_graph_status` snapshot that does not mutate readiness state |
 | `mcp_server/code_graph/handlers/context.ts` | Handler | Context success and blocked-read payloads built on top of the shared readiness block |
+| `mcp_server/code_graph/handlers/verify.ts:141-188` | Handler | `code_graph_verify` runs the gold-query battery only after fresh readiness |
+| `mcp_server/code_graph/tools/code-graph-tools.ts:20-31` | Dispatcher | Registers `code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`, and `code_graph_verify` |
+| `mcp_server/code_graph/README.md:137-149` | Docs | Public status/readiness surface matrix for status, context, and query reads |
 | `mcp_server/code_graph/handlers/ccc-status.ts` | Handler | CCC status stub readiness block |
 | `mcp_server/code_graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
 | `mcp_server/code_graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |

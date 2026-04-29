@@ -10,6 +10,7 @@ trigger_phrases:
   - "code-graph architecture"
   - "5-lane fusion"
   - "advisor daemon"
+importance_tier: "important"
 ---
 
 # Architecture: system-spec-kit
@@ -19,16 +20,16 @@ trigger_phrases:
 <!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
-- [1. OVERVIEW](#1-overview)
-- [2. PACKAGE TOPOLOGY](#2-package-topology)
-- [3. CANONICAL CONTINUITY FLOWS](#3-canonical-continuity-flows)
-- [4. RUNTIME SUBSYSTEMS](#4-runtime-subsystems)
-- [5. SKILL-ADVISOR SUBSYSTEM](#5-skill-advisor-subsystem)
-- [6. CODE-GRAPH SUBSYSTEM](#6-code-graph-subsystem)
-- [7. HOOK AND PLUGIN INTEGRATION](#7-hook-and-plugin-integration)
-- [8. ENFORCEMENT AND VERIFICATION](#8-enforcement-and-verification)
-- [9. DECISION RECORDS](#9-decision-records)
-- [10. RELATED](#10-related)
+- [1. OVERVIEW](#1--overview)
+- [2. PACKAGE TOPOLOGY](#2--package-topology)
+- [3. CANONICAL CONTINUITY FLOWS](#3--canonical-continuity-flows)
+- [4. RUNTIME SUBSYSTEMS](#4--runtime-subsystems)
+- [5. SKILL-ADVISOR SUBSYSTEM](#5--skill-advisor-subsystem)
+- [6. CODE-GRAPH SUBSYSTEM](#6--code-graph-subsystem)
+- [7. HOOK AND PLUGIN INTEGRATION](#7--hook-and-plugin-integration)
+- [8. ENFORCEMENT AND VERIFICATION](#8--enforcement-and-verification)
+- [9. DECISION RECORDS](#9--decision-records)
+- [10. RELATED](#10--related)
 
 <!-- /ANCHOR:table-of-contents -->
 
