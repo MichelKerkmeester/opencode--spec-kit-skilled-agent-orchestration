@@ -2,6 +2,7 @@
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 title: "Verification Checklist: Catalog and playbook degraded-alignment [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment/checklist]"
 description: "Verification Date: 2026-04-27"
+template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 trigger_phrases:
   - "catalog playbook degraded checklist"
   - "018 checklist"

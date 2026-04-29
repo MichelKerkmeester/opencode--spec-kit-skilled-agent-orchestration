@@ -1,6 +1,7 @@
 ---
 title: "Feature Specification: Graph and Context Optimization [system-spec-kit/026-graph-and-context-optimization/spec]"
 description: "Root coordination packet for the consolidated ten-wrapper graph-and-context optimization surface, with historical phases preserved under child phase folders."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "026 graph and context optimization"
   - "026 phase consolidation"

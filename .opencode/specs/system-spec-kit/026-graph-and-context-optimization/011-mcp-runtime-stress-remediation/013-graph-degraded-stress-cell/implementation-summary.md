@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: Code Graph Degraded Stress Cell"
 description: "Test-only packet that closes the v1.0.2 NEUTRAL verdict on packet 005 fast-fail by adding one deterministic integration sweep over code_graph_query fallbackDecision routing using initDb-tmpdir isolation and a live-DB byte-equality guard."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "013-graph-degraded-stress-cell summary"
   - "code_graph degraded sweep results"

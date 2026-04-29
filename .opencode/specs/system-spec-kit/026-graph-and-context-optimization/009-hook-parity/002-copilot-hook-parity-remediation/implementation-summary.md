@@ -1,6 +1,7 @@
 ---
 title: "...026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation/implementation-summary]"
 description: "Final outcome B: Copilot CLI parity ships through a managed custom-instructions block because Copilot hook output cannot mutate prompts."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "copilot hook parity implementation"
   - "copilot custom instructions writer"

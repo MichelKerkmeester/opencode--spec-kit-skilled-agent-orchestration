@@ -2,6 +2,7 @@
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 title: "Decision Record: Degraded-readiness envelope parity [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity/decision-record]"
 description: "ADR-001 (shared vocabulary vs handler-local payload split) + ADR-002 (snapshot-first AND isolate-stats: defense in depth) for Packet 016. Closes review-report.md F-006 and F-008 doc parts."
+template_source: "SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2"
 trigger_phrases:
   - "degraded readiness envelope parity decisions"
   - "016 decision record"

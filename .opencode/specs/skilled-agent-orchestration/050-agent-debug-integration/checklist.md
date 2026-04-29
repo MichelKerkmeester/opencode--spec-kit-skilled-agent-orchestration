@@ -1,6 +1,7 @@
 ---
 title: "Verification Checklist: Debug Agent Integration"
 description: "Verification Date: TBD on completion"
+template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 trigger_phrases:
   - "debug integration verification"
   - "checklist debug-delegation"

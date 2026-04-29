@@ -137,3 +137,27 @@ Keep the completed runtime delivery intact as a clean, truthful Level 3 packet w
 
 - **Phase children**: See direct sub-folders matching `[0-9][0-9][0-9]-*/`
 - **Graph Metadata**: See `graph-metadata.json` for child pointers and save metadata
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:success-criteria -->

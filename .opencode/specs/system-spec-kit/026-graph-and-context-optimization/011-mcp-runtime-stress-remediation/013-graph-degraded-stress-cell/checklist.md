@@ -2,6 +2,7 @@
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 title: "Verification Checklist: Code Graph Degraded Stress Cell"
 description: "P0/P1/P2 verification items for the code_graph_query fallbackDecision integration sweep, with evidence-bound completion."
+template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 trigger_phrases:
   - "013-graph-degraded-stress-cell checklist"
   - "code_graph degraded sweep checklist"

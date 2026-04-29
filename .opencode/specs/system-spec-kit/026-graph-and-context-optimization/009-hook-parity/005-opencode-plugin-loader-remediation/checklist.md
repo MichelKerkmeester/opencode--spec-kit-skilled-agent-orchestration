@@ -143,3 +143,51 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 
 P0 + P1 are the gating set. P2 entries are nice-to-have for long-term maintenance.
 <!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:sign-off -->

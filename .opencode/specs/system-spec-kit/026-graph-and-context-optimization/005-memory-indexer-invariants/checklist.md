@@ -194,3 +194,35 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist-core + level2-v
 - [x] **CHK-R02** [P0] Cleanup `--verify` exits `0` after apply. [EVIDENCE: post-apply `--verify` exited `0` with `constitutional_total=2`, `constitutional_in_folder=2`, `z_future_rows=0`, `external_rows=0`, `invalid_constitutional_rows=0`.]
 - [x] **CHK-R03** [P1] Final constitutional-tier count recorded. [EVIDENCE: final constitutional total is `2` and matches only the two constitutional-folder rule files.]
 <!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:sign-off -->

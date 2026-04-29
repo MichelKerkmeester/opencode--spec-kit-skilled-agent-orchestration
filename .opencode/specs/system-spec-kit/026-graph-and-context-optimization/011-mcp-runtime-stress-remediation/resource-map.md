@@ -141,3 +141,51 @@ Maintenance notes for this map:
 - **Future updates** — when additional post-cycle work lands, append rows to the relevant section or add a `PLANNED` placeholder at the time the child is created; do not let the parent ledger lag the phase-parent manifest.
 - **Reference reading**: `.opencode/skill/system-spec-kit/templates/resource-map.md` (template), `.opencode/skill/system-spec-kit/SKILL.md` §3.
 <!-- /ANCHOR:author-instructions -->
+
+---
+
+<!-- ANCHOR:agents -->
+## 4. Agents
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:agents -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 3. Commands
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:readmes -->
+## 1. READMEs
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:readmes -->
+
+---
+
+<!-- ANCHOR:scripts -->
+## 7. Scripts
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:scripts -->
+
+---
+
+<!-- ANCHOR:tests -->
+## 8. Tests
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:tests -->
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## WHEN TO USE THIS TEMPLATE
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:when-to-use -->

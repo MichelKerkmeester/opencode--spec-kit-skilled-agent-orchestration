@@ -1,0 +1,10 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/013-skdoc-legacy-template-debt-cleanup",
+  "description": "Level 2 batched cleanup completed for eligible sk-doc audit findings. HIGH eligible refs are resolved; remaining MED refs are documented Tier 5 deferrals.",
+  "keywords": ["legacy-debt", "sk-doc-cleanup", "tier-4", "template-alignment", "bulk-remediation"],
+  "lastUpdated": "2026-04-29T11:10:00.000Z",
+  "specId": "013",
+  "folderSlug": "skdoc-legacy-template-debt-cleanup",
+  "parentChain": ["system-spec-kit", "026-graph-and-context-optimization", "000-release-cleanup", "005-review-remediation"],
+  "memorySequence": 1
+}

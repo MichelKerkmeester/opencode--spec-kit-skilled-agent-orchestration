@@ -18,6 +18,7 @@ _memory:
     blockers: []
     dispatch_policy: "cli-codex gpt-5.4 high fast primary; cli-copilot fallback"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: handover | v2.2 -->
 # Handover: Phase 020 Skill-Advisor Hook Surface
 
 ## Status Snapshot (2026-04-19T11:45:00Z)

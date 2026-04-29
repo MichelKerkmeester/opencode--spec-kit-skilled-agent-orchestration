@@ -29,12 +29,14 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record + level3-
 
 **Status**: Accepted (Phase 1 probe complete, 2026-04-22T15:12:00+02:00).
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
 OpenCode 1.3.17 ships as a single bun-bundled binary. The TUI worker auto-discovers plugins from `.opencode/plugins/` at startup. Empirical observation (drafting session, 2026-04-22T13:30Z): the worker crashes with `TypeError: null is not an object (evaluating 'plugin2.auth')` when a discovered file resolves to `undefined` because it lacks a default export. The crash occurs at `/$bunfs/root/src/cli/cmd/tui/worker.js:301126:25` — a bundled, non-source-readable location.
 
 The contract details (glob shape, extension filter, opt-out mechanism, undefined-handling, recommended helper-module location) were confirmed from official docs, the installed package type contract, the installed 1.3.17 binary strings, and empirical TUI probes.
-
+<!-- /ANCHOR:adr-001-context -->
+<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
 Treat `.opencode/plugins/` as a flat plugin-entrypoint directory. In OpenCode 1.3.17, the server-side local plugin scanner loads JavaScript/TypeScript files from `{plugin,plugins}/*.{ts,js}` under each config directory. The official documentation says files placed in `.opencode/plugins/` and `~/.config/opencode/plugins/` are automatically loaded at startup and that a plugin module exports plugin functions. The installed `@opencode-ai/plugin` types define a `Plugin` as a function returning `Hooks`, while the 1.3.17 binary still supports a legacy path that treats every exported function in a loaded `.js` module as a plugin function. That legacy behavior is the immediate null-hook source for `spec-kit-compact-code-graph.js`: its named `parseTransportPlan` export is invoked as a second plugin, returns `null` for a plugin input object, and later the auth loop crashes while reading `plugin2.auth`.
@@ -54,7 +56,7 @@ Treat `.opencode/plugins/` as a flat plugin-entrypoint directory. In OpenCode 1.
 | Opt-out: opencode.json `plugins.exclude` | No documented opt-out found | Official config docs expose `plugin` package list, not local-folder exclude rules |
 | Opt-out: manifest file            | No documented manifest opt-out for local plugin folders | Installed package type contract and official docs do not define a local manifest exclusion |
 | Recommended helper-module location | Any sibling folder outside `{plugin,plugins}/` is safe; use `.opencode/skill/system-spec-kit/mcp_server/plugin_bridges/` locally | Flat glob evidence plus the packet's Outcome A target layout |
-
+<!-- /ANCHOR:adr-001-decision -->
 ### Methodology
 
 1. Checked official OpenCode plugin docs: local files in `.opencode/plugins/` and `~/.config/opencode/plugins/` are startup-loaded, and plugin modules export plugin functions.
@@ -63,6 +65,7 @@ Treat `.opencode/plugins/` as a flat plugin-entrypoint directory. In OpenCode 1.
 4. Ran empirical probes with `XDG_STATE_HOME=/tmp/opencode-state XDG_DATA_HOME=/tmp/opencode-data XDG_CACHE_HOME=/tmp/opencode-cache` so the sandbox did not block OpenCode state writes. `opencode --version` returned `1.3.17`; `timeout 4 opencode` reproduced the `plugin2.auth` JSON envelope.
 5. Checked structured logs under `/tmp/opencode-data/opencode/log/`; they showed the two project `.js` plugins loaded, no `.mjs` helpers loaded, and a null `hook.config` failure before the TUI bootstrap error.
 
+<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 - **Positive**: ADR-002 can choose the remediation outcome with full confidence in the contract semantics.
@@ -72,7 +75,7 @@ Treat `.opencode/plugins/` as a flat plugin-entrypoint directory. In OpenCode 1.
 <!-- /ANCHOR:adr-001 -->
 
 ---
-
+<!-- /ANCHOR:adr-001-consequences -->
 ### ADR-002: Remediation outcome selection (A / B / C)
 
 **Status**: Accepted.
@@ -119,10 +122,11 @@ Choose **Outcome A: move helpers out of `.opencode/plugins/`**, with one compati
 
 ---
 
+<!-- ANCHOR:adr-001-impl -->
 ### ADR-003: Implementation outcome — Outcome A shipped
 
 **Status**: Accepted (implemented 2026-04-22T15:21Z).
-
+<!-- /ANCHOR:adr-001-impl -->
 ### Context
 
 Phase 2 implemented the ADR-002 selection after the empirical contract investigation. The helper files were removed from `.opencode/plugins/`, which is now documented as an entrypoint-only folder.
@@ -297,3 +301,19 @@ Address four scoped fixes in Phase 5 and explicitly defer the larger architectur
 - **Plan**: `plan.md` §2 quality gates, §4 phases (now 5 phases)
 - **Tasks**: `tasks.md` T-01..T-09 (Phase 1), T-10..T-19 (Phase 2), T-20..T-29 (Phase 3), T-30..T-35 (Phase 4 — hook remap), T-36..T-41 (Phase 5 — status accuracy + defensive guards)
 - **Sibling phases**: `../002-copilot-hook-parity-remediation/`, `../003-codex-hook-parity-remediation/`
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+## Alternatives Considered
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+## Five Checks Evaluation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-five-checks -->

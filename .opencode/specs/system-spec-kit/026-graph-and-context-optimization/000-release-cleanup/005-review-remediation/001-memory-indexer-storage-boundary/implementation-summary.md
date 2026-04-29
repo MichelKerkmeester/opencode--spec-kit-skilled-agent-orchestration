@@ -2,6 +2,7 @@
 title: "Implementation Summary: Memory-Indexer Storage-Boundary Remediation"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->"
 description: "Implemented the constitutional README storage-boundary fix plus the advisory observability, docs, and fixture cleanup from the 005 deep-review."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "001-memory-indexer-storage-boundary implementation"
   - "constitutional README storage-boundary fixed"

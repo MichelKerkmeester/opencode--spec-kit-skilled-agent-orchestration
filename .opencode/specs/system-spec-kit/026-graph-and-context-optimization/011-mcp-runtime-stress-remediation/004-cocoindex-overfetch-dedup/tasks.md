@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: CocoIndex over-fetch + dedup + rerank [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/tasks]"
 description: "Per-REQ work units for CocoIndex mirror exclusion, canonical identity, dedup, and path-class rerank."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "cocoindex dedup tasks"
 importance_tier: "important"

@@ -352,3 +352,43 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/external/plugins/claude-thinking/CHANGELOG.md | Cited | OK | phase child |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/001-research-and-baseline/005-claudest/external/plugins/claude-utilities/CHANGELOG.md | Cited | OK | phase child |
 <!-- /ANCHOR:meta -->
+
+---
+
+<!-- ANCHOR:agents -->
+## 4. Agents
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:agents -->
+
+---
+
+<!-- ANCHOR:author-instructions -->
+## Author Instructions
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:author-instructions -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 3. Commands
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:skills -->
+## 5. Skills
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:skills -->
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## WHEN TO USE THIS TEMPLATE
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:when-to-use -->

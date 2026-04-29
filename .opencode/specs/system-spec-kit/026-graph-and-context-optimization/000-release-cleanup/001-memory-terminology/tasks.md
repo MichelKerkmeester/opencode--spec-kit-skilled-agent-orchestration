@@ -1,6 +1,7 @@
 ---
 title: "Tasks: Memory→Behavioral Phrasing Audit [system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/001-memory-terminology/tasks]"
 description: "Task ledger for the 9-PR phrasing-audit landing sequence. All tasks complete; ledger captured retroactively after the work shipped."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "phrasing audit tasks"
   - "PR1 PR2 PR3 PR4 PR5 ledger"

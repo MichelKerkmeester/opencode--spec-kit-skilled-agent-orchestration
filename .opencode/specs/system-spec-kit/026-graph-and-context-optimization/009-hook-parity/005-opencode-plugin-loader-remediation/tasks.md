@@ -1,6 +1,7 @@
 ---
 title: "...stem-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation/tasks]"
 description: "Task breakdown for investigating the OpenCode 1.3.17 plugin loader contract, isolating non-plugin helpers, smoke-testing the TUI in two directories, and adding a regression guard."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "026/009/007 tasks"
   - "opencode plugin loader tasks"

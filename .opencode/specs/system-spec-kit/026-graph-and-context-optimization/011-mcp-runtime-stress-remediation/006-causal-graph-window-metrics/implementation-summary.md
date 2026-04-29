@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: causal-graph window metrics [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/006-causal-graph-window-metrics/implementation-summary]"
 description: "Implemented causal-stats relation-window balance metrics and per-relation per-window causal-edge caps; package build is blocked by an out-of-scope memory-context type error."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "causal graph window metrics summary"
 importance_tier: "important"

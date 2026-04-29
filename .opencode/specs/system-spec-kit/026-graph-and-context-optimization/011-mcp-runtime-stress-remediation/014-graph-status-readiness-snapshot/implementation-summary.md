@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: code_graph_status read-only readiness snapshot [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot/implementation-summary]"
 description: "Implemented Packet 014 — read-only getGraphReadinessSnapshot() helper + status handler wiring per research §5 / Q-P2."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "graph status readiness snapshot summary"
   - "014 implementation summary"

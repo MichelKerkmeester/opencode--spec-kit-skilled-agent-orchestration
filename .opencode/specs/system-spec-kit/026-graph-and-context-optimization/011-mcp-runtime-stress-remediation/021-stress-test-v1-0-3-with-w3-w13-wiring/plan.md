@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: Stress-Test v1.0.3 with W3-W13 Wiring"
 description: "Execution plan for a measurement-only stress run over search-quality, decision envelope, decision audit, shadow sink, and W4 trigger telemetry."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "v1.0.3 stress test plan"
   - "W3-W13 stress plan"

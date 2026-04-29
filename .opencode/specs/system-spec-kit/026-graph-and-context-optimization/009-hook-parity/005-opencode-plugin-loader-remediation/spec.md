@@ -1,6 +1,7 @@
 ---
 title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation/spec]"
 description: "OpenCode 1.3.17 TUI crash remediation plus Phase 4 skill-advisor hook remap: plugin helpers live outside .opencode/plugins/, parseTransportPlan() fail-opens for legacy loader invocation, and the skill-advisor plugin now uses OpenCode event + experimental.chat.system.transform hooks so advisor briefs reach model context."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "opencode plugin loader"
   - "opencode plugin crash"

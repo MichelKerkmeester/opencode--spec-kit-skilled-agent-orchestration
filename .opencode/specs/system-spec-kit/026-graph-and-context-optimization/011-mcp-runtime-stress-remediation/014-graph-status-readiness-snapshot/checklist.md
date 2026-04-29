@@ -2,6 +2,7 @@
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 title: "Verification Checklist: code_graph_status read-only readiness snapshot [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot/checklist]"
 description: "Verification Date: 2026-04-27"
+template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 trigger_phrases:
   - "graph status readiness snapshot checklist"
   - "014 checklist"

@@ -33,8 +33,9 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 --
 ---
 
 <!-- ANCHOR:adr-001 -->
+<!-- ANCHOR:adr-001-decision -->
 ## ADR-001: Track A Fix A — A2 (Post-Filter at PE Decision Time)
-
+<!-- /ANCHOR:adr-001-decision -->
 ### Metadata
 | Field | Value |
 |-------|-------|
@@ -42,10 +43,11 @@ template_source_marker: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 --
 | **Date** | 2026-04-23 |
 | **Deciders** | Codex + user request |
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
 Live scans on `026/009` surfaced `E_LINEAGE=68` errors caused by the prediction-error gate selecting a sibling spec doc (e.g. `checklist.md`) as the best `UPDATE` or `REINFORCE` candidate for `tasks.md`, then attempting to append the new row onto the sibling's lineage chain.
-
+<!-- /ANCHOR:adr-001-context -->
 ### Constraints
 - The fix must not change vector-search filtering semantics for other consumers.
 - The guard must be explicit at the exact point where a lineage-bearing decision would otherwise be applied.
@@ -53,17 +55,19 @@ Live scans on `026/009` surfaced `E_LINEAGE=68` errors caused by the prediction-
 ### Decision
 **We chose**: A2 — post-filter at decision time inside `handlers/save/pe-orchestration.ts`. Extend `SimilarMemory` to carry `canonical_file_path`, preserve it in `findSimilarMemories()`, and compare the chosen candidate's canonical path to the save target inside the PE orchestration step. If the paths differ, rewrite the decision to `CREATE`.
 
+<!-- ANCHOR:adr-001-alternatives -->
 ### Alternatives Considered
 
 | Option | Pros | Cons | Score |
 |--------|------|------|-------|
 | **A2 — Post-filter at decision time** | Preserves candidate-search surface; rule lives at the exact decision point | Touches PE orchestration + `SimilarMemory` shape | 9/10 |
 | A1 — Filter candidates at vector search | Single chokepoint | Changes search behavior for all consumers; opaque rule | 5/10 |
-
+<!-- /ANCHOR:adr-001-alternatives -->
+<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 - **Improves**: Lineage safety rule is explicit and testable at the decision site.
 - **Costs**: Slight `SimilarMemory` shape change; localized regressions required.
-
+<!-- /ANCHOR:adr-001-consequences -->
 ### Five Checks
 1. Necessary? PASS — `E_LINEAGE=68` confirms the bug. 2. Beyond local maxima? PASS — compared A1 vs A2 explicitly. 3. Sufficient? PASS — downgrade prevents the lineage-chain corruption. 4. Fits goal? PASS — matches the invariant. 5. Open horizons? PASS — the guard is easy to extend.
 <!-- /ANCHOR:adr-001 -->
@@ -436,3 +440,19 @@ Pass-2 found the same audit payload shape duplicated across save, update, checkp
 |-------------|--------------|
 | Keep local action-string literals near each caller | Makes spelling drift likely and weakens operator filtering. |
 | Centralize only the constants, not the insert helper | Still leaves payload shape and logical-key construction duplicated across mutation surfaces. |
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+## Five Checks Evaluation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+## Implementation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-impl -->

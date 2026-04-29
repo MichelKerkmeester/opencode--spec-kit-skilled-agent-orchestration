@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: Catalog and playbook degraded-alignment [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment/implementation-summary]"
 description: "Implemented Packet 018 — docs-only Packet C from 011-post-stress-followup-research review-report. Three Markdown edits aligning operator-facing documentation with the runtime contract for the code-graph degraded-readiness envelope and the Zod schema reality for rankingSignals."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "catalog playbook degraded summary"
   - "018 implementation summary"

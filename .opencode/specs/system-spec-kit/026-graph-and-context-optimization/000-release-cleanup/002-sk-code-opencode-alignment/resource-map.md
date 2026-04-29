@@ -104,3 +104,67 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment/resource-map.md | Updated | OK | child path catalog |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/resource-map.md | Updated | OK | parent aggregate linkage |
 <!-- /ANCHOR:specs -->
+
+---
+
+<!-- ANCHOR:agents -->
+## 4. Agents
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:agents -->
+
+---
+
+<!-- ANCHOR:author-instructions -->
+## Author Instructions
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:author-instructions -->
+
+---
+
+<!-- ANCHOR:config -->
+## 9. Config
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:config -->
+
+---
+
+<!-- ANCHOR:meta -->
+## 10. Meta
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:meta -->
+
+---
+
+<!-- ANCHOR:readmes -->
+## 1. READMEs
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:readmes -->
+
+---
+
+<!-- ANCHOR:scripts -->
+## 7. Scripts
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:scripts -->
+
+---
+
+<!-- ANCHOR:tests -->
+## 8. Tests
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:tests -->
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## WHEN TO USE THIS TEMPLATE
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:when-to-use -->

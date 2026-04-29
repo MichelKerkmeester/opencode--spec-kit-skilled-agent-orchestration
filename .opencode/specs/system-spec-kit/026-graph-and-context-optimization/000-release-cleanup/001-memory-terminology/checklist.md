@@ -34,6 +34,7 @@ _memory:
 
 <!-- ANCHOR:verification-protocol -->
 
+<!-- ANCHOR:protocol -->
 ## Verification Protocol
 
 P0 = blockers (must pass before ship). P1 = required. P2 = advisory (non-blocking). All P0/P1 items verified via the deep-review loop (5 iterations, cli-copilot/gpt-5.5/high) with claim adjudication, plus operator-surfaced fixes for follow-on gaps. P2-2 deferred per ADR-007.
@@ -41,7 +42,7 @@ P0 = blockers (must pass before ship). P1 = required. P2 = advisory (non-blockin
 <!-- /ANCHOR:verification-protocol -->
 
 <!-- ANCHOR:pre-implementation -->
-
+<!-- /ANCHOR:protocol -->
 ## Pre-Implementation
 
 Freeze list (REQ-001) — these identifiers must NOT be renamed:
@@ -131,6 +132,7 @@ No security-relevant changes (docs-only audit). REQ-001 freeze contract ensures 
 
 <!-- ANCHOR:documentation -->
 
+<!-- ANCHOR:docs -->
 ## Documentation
 
 P1 — Vocabulary modernization (REQ-002 / REQ-003 / REQ-004 / REQ-005 / REQ-007):
@@ -164,7 +166,7 @@ P1 — Vocabulary modernization (REQ-002 / REQ-003 / REQ-004 / REQ-005 / REQ-007
 <!-- /ANCHOR:documentation -->
 
 <!-- ANCHOR:file-organization -->
-
+<!-- /ANCHOR:docs -->
 ## File Organization
 
 - [x] Spec packet contains all required Level 3 docs: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, description.json, graph-metadata.json
@@ -176,6 +178,7 @@ P1 — Vocabulary modernization (REQ-002 / REQ-003 / REQ-004 / REQ-005 / REQ-007
 
 <!-- ANCHOR:verification-summary -->
 
+<!-- ANCHOR:summary -->
 ## Verification Summary
 
 P2 — Substitution polish drift (advisory, non-blocking):
@@ -202,3 +205,52 @@ P2 — Substitution polish drift (advisory, non-blocking):
 **Source-of-truth:** `review/review-report.md` (deep-review synthesis)
 
 <!-- /ANCHOR:verification-summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+<!-- /ANCHOR:summary -->
+## L3+: ARCHITECTURE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:sign-off -->

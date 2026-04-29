@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: CocoIndex seed telemetry passthrough [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough/tasks]"
 description: "Per-REQ work units for code_graph_context CocoIndex telemetry passthrough — schema, handler, types, tests, validation."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "cocoindex seed telemetry tasks"
 importance_tier: "important"

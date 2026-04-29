@@ -509,3 +509,67 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience/scratch/remediation-runner.log | Cited | OK | phase child |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/008-code-graph-backend-resilience/scratch/runner.log | Cited | OK | phase child |
 <!-- /ANCHOR:config -->
+
+---
+
+<!-- ANCHOR:agents -->
+## 4. Agents
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:agents -->
+
+---
+
+<!-- ANCHOR:author-instructions -->
+## Author Instructions
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:author-instructions -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 3. Commands
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:meta -->
+## 10. Meta
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:meta -->
+
+---
+
+<!-- ANCHOR:readmes -->
+## 1. READMEs
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:readmes -->
+
+---
+
+<!-- ANCHOR:skills -->
+## 5. Skills
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:skills -->
+
+---
+
+<!-- ANCHOR:tests -->
+## 8. Tests
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:tests -->
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## WHEN TO USE THIS TEMPLATE
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:when-to-use -->

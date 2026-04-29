@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/spec]"
 description: "Sub-phase 001: 9-scenario corpus (3 features × 3 prompt types), 5-dimension scoring rubric, per-CLI dispatch matrix, and dispatch script contracts for stress-testing system-spec-kit Search/Query/Intelligence."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "001-scenario-design"
   - "scenario corpus design"

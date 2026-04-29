@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: CocoIndex seed telemetry passthrough [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough/implementation-summary]"
 description: "Implemented Packet 015 — per-seed CocoIndex fork telemetry passthrough on code_graph_context anchors. Pure additive metadata; zero scoring/ordering/confidence change. Closes Q-OPP from research.md §6."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "cocoindex seed telemetry summary"
   - "015 implementation summary"

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: CocoIndex seed telemetry passthrough [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough/plan]"
 description: "Schema + handler + types patch enabling per-seed CocoIndex fork telemetry to survive code_graph_context expansion as additive anchor metadata. Zero scoring/ordering change."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "cocoindex seed telemetry plan"
 importance_tier: "important"

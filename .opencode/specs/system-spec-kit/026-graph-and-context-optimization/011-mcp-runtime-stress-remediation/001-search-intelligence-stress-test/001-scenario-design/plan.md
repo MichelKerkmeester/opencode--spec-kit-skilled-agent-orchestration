@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: Scenario Design [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/plan]"
 description: "Methodology for the 9-scenario corpus, 5-dim rubric, and 3-CLI dispatch matrix. Authoring + smoke-test plan for sub-phase 001."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "scenario design plan"
   - "rubric methodology"

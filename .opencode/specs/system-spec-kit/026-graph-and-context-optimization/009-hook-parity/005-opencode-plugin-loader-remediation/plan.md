@@ -1,6 +1,7 @@
 ---
 title: "...ystem-spec-kit/026-graph-and-context-optimization/009-hook-parity/005-opencode-plugin-loader-remediation/plan]"
 description: "Three-phase plan: confirm OpenCode 1.3.17 plugin discovery contract, isolate non-plugin helper modules out of .opencode/plugins/, then add a regression guard and documentation so the colocated-helper crash cannot return."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "026/009/007 plan"
   - "opencode plugin loader plan"

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: CocoIndex seed telemetry passthrough [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough/spec]"
 description: "Per-seed CocoIndex fork telemetry passthrough (rawScore, pathClass, rankingSignals) on code_graph_context anchors. Pure additive metadata for audit and explanation; zero scoring, ordering, or confidence change. Closes Q-OPP from research.md §6 and Novel Finding #5 from 010 stress test."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "015-cocoindex-seed-telemetry-passthrough"
   - "cocoindex seed telemetry passthrough"

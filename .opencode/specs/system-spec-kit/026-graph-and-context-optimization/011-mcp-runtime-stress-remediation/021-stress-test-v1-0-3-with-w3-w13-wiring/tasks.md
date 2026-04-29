@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: Stress-Test v1.0.3 with W3-W13 Wiring"
 description: "Task ledger for the measurement-only v1.0.3 stress run."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "v1.0.3 stress test tasks"
   - "W3-W13 stress test tasks"

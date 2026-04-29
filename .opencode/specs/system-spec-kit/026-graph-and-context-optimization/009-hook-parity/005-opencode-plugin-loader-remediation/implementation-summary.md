@@ -1,6 +1,7 @@
 ---
 title: "...-graph-and-context-optimization/009-hook-parity/007-opencode-plugin-loader-remediation/implementation-summary]"
 description: "Outcome A shipped for the loader crash; Phase 4 remapped the skill-advisor plugin to OpenCode hooks; Phase 5 corrected status readiness, cache accounting evidence, defensive output guards, and sessionID normalization with focused vitest and direct smokes."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "opencode plugin loader complete"
   - "026/009/007 implementation"

@@ -203,3 +203,27 @@ code_graph_status (stats crash)
   4. Tests in `tests/readiness-contract.vitest.ts` and `tests/code-graph-degraded-readiness-envelope-parity.vitest.ts` continue to compile but the new contract assertions fail — DELETE the new test file, REVERT the new assertions in `tests/readiness-contract.vitest.ts`.
 - **Risk window**: Low. The blocked envelope is a strict superset of the prior degraded payload — callers that read `data.readiness` continue to see it; callers that read the top-level `error` field still see a descriptive `message` string.
 <!-- /ANCHOR:rollback -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:phase-deps -->

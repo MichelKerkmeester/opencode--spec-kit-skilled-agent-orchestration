@@ -121,3 +121,75 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/.DS_Store | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/.DS_Store | Cited | OK | phase child root (nested phase parent) |
 <!-- /ANCHOR:config -->
+
+---
+
+<!-- ANCHOR:agents -->
+## 4. Agents
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:agents -->
+
+---
+
+<!-- ANCHOR:author-instructions -->
+## Author Instructions
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:author-instructions -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 3. Commands
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:meta -->
+## 10. Meta
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:meta -->
+
+---
+
+<!-- ANCHOR:readmes -->
+## 1. READMEs
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:readmes -->
+
+---
+
+<!-- ANCHOR:scripts -->
+## 7. Scripts
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:scripts -->
+
+---
+
+<!-- ANCHOR:skills -->
+## 5. Skills
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:skills -->
+
+---
+
+<!-- ANCHOR:tests -->
+## 8. Tests
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:tests -->
+
+---
+
+<!-- ANCHOR:when-to-use -->
+## WHEN TO USE THIS TEMPLATE
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:when-to-use -->

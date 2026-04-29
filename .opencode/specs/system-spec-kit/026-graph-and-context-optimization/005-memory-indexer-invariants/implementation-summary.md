@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: Memory Indexer Invariants [system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/implementation-summary]"
 description: "Unified implementation summary for both invariant tracks, Wave-1 SQL-layer remediation, Wave-2 hardening, live DB cleanup results, and the phase-merge restructure."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "026/010 implementation summary"
   - "memory indexer invariants implementation summary"

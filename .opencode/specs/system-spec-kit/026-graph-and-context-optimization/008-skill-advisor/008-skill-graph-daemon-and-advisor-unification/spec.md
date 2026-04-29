@@ -1,6 +1,7 @@
 ---
 title: "...ec-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/spec]"
 description: "Completed Phase 027 implementation for skill-graph freshness, derived metadata, native advisor scoring, MCP advisor tools, compatibility shims, and promotion gates."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "026/009/002 skill graph daemon"
   - "advisor unification"

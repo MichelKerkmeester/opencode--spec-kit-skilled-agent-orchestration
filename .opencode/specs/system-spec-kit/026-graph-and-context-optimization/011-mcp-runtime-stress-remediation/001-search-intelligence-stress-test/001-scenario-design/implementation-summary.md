@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/implementation-summary]"
 description: "Sub-phase 001 outcome: 9-scenario corpus + 5-dim rubric + 3-CLI dispatch matrix + output schema + scoring methodology shipped. Dispatch scripts pending."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "scenario design summary"
   - "corpus shipped"

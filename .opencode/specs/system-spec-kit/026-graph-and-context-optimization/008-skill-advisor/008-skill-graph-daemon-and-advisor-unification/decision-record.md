@@ -30,20 +30,26 @@ _memory:
 
 Accepted.
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
 The advisor needed automatic graph freshness, derived metadata, native scoring, MCP tools, compatibility shims, and promotion gates without splitting ownership across unrelated packages.
-
+<!-- /ANCHOR:adr-001-context -->
+<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
 Keep advisor ownership inside the system-spec-kit MCP server, with a self-contained `mcp_server/skill_advisor/` package and thin compatibility adapters for legacy Python and plugin callers.
 
+<!-- ANCHOR:adr-001-consequences -->
+<!-- /ANCHOR:adr-001-decision -->
 ### Consequences
 
 - Advisor internals share one package boundary.
 - Legacy callers remain supported through shims.
 - Future routing improvements can be promoted through MCP tools without changing runtime hook contracts.
 
+<!-- ANCHOR:adr-001-alternatives -->
+<!-- /ANCHOR:adr-001-consequences -->
 ### Alternatives Considered
 
 | Alternative | Rejected Because |
@@ -51,7 +57,8 @@ Keep advisor ownership inside the system-spec-kit MCP server, with a self-contai
 | Keep Python as primary advisor | Leaves graph freshness and MCP status split from the runtime owner. |
 | Create a new standalone MCP server | Adds install and registration complexity without a clear benefit. |
 | Enable semantic live scoring immediately | Latency and regression safety were not proven. |
-
+<!-- /ANCHOR:adr-001-alternatives -->
+<!-- ANCHOR:adr-001-impl -->
 ### Implementation Notes
 
 - Chokidar plus hash-aware SQLite indexer was selected for the daemon substrate.
@@ -62,6 +69,7 @@ Keep advisor ownership inside the system-spec-kit MCP server, with a self-contai
 <!-- /ANCHOR:adr-001 -->
 
 <!-- ANCHOR:adr-002 -->
+<!-- /ANCHOR:adr-001-impl -->
 ### ADR-002: Freshness and Recovery Boundary
 
 ### Status
@@ -162,3 +170,11 @@ Promotion evidence is represented by measured `advisor_validate` slices rather t
 - Promotion-gate references resolve to shipped runtime surfaces.
 - Semantic live influence remains locked until measured slices pass.
 <!-- /ANCHOR:adr-007 -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+## Five Checks Evaluation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-five-checks -->

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: Degraded-readiness envelope parity [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity/implementation-summary]"
 description: "Implemented Packet 016 (Packet A from review-report.md §7) — F-001 + F-003 production fixes plus F-002/F-008/F-009 supporting work. All three code-graph handlers now emit the shared degraded-readiness vocabulary on crash."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "degraded readiness envelope parity summary"
   - "016 implementation summary"

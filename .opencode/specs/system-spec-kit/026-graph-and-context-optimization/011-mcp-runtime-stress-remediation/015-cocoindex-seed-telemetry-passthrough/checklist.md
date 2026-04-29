@@ -2,6 +2,7 @@
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->"
 title: "Verification Checklist: CocoIndex seed telemetry passthrough [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/015-cocoindex-seed-telemetry-passthrough/checklist]"
 description: "Verification Date: 2026-04-27"
+template_source: "SPECKIT_TEMPLATE_SOURCE: checklist | v2.2"
 trigger_phrases:
   - "cocoindex seed telemetry checklist"
   - "015 checklist"

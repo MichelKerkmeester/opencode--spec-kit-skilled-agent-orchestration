@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: Scenario Design [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/tasks]"
 description: "Authoring tasks for corpus + rubric + matrix + scripts in sub-phase 001."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "scenario design tasks"
   - "corpus authoring"

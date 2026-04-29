@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: code_graph fail-fast routing [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail/tasks]"
 description: "Per-REQ work units for fallbackDecision routing on blocked code-graph reads."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "code graph fast fail tasks"
 importance_tier: "important"

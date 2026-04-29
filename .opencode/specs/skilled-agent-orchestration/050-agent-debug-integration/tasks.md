@@ -1,6 +1,7 @@
 ---
 title: "Tasks: Debug Agent Integration — Truth-Up & Discoverability"
 description: "Task Format: T### [P?] Description (file path)"
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "debug integration tasks"
   - "edit a edit b tasks"

@@ -1,6 +1,7 @@
 ---
 title: "...c-kit/026-graph-and-context-optimization/008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/tasks]"
 description: "Parent-level task tracker for the completed Phase 027 skill-graph daemon and advisor unification work."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "026/009/002 tasks"
   - "advisor daemon tasks"

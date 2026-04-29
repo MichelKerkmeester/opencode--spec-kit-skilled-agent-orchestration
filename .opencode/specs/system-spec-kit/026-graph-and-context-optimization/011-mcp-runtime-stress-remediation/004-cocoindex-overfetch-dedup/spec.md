@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: CocoIndex over-fetch + canonical-identity dedup + path-class rerank [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/spec]"
 description: "Remediation packet for 005/REQ-018 (mirror duplicates) + 005/REQ-019 (markdown outranks source). Excludes runtime spec mirrors from index, adds canonical identity (source_realpath + content_hash), over-fetches limit*4 candidates, dedups by canonical key, and reranks by path_class so implementation source surfaces above research markdown for code-intent queries."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "004-cocoindex-overfetch-dedup"
   - "cocoindex mirror duplicate dedup"

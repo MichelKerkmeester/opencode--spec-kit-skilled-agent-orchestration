@@ -33,6 +33,7 @@ _memory:
       - "../../mcp_server/tests/memory/trust-badges.test.ts"
       - "implementation-summary.md"
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
 # Implementation Summary: Review Remediation (006/007)
 
 <!-- SPECKIT_LEVEL: 2 -->

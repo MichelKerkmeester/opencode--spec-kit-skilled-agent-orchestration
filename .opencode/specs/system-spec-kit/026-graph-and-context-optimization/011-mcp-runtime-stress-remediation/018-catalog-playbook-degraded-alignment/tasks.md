@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: Catalog and playbook degraded-alignment [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment/tasks]"
 description: "Per-REQ work units for the docs-only Packet C alignment. Three Markdown edits plus 7 packet docs."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "catalog playbook degraded tasks"
   - "018 tasks"

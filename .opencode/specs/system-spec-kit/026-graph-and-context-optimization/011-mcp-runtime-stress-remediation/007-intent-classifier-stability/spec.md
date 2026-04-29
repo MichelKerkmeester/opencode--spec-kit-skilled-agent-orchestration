@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: intent classifier stability + paraphrase corpus + normalized telemetry [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability/spec]"
 description: "Remediation packet for 005/REQ-001 + REQ-004 + REQ-016 + 007/Q8. Adds normalized IntentTelemetry schema (taskIntent + backendRouting separation), paraphrase regression corpus across CLI styles, and stability metrics. Beyond Cluster 2's threshold floor — adds drift-tracking and cross-CLI parity."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "007-intent-classifier-stability"
   - "intent classifier paraphrase corpus"

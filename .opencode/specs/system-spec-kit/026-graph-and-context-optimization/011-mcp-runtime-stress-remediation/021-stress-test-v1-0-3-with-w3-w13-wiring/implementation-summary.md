@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: Stress-Test v1.0.3 with W3-W13 Wiring"
 description: "Completed measurement-only v1.0.3 stress run for W3-W13 search/query/RAG wiring. The run produced envelope, audit, shadow, and summary artifacts, with a CONDITIONAL verdict because the full live handler path timed out at embedding readiness."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "v1.0.3 stress test summary"
   - "W3-W13 wiring verdict"

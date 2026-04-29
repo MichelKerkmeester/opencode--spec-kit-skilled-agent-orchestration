@@ -7,6 +7,15 @@ trigger_phrases:
   - "path catalog 016-json-mode-hybrid-enrichment"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment"
+    last_updated_at: "2026-04-29T11:10:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Backfill _memory.continuity per Tier 4 sk-doc template alignment"
+    next_safe_action: "Refresh on next packet edit"
+    blockers: []
+    completion_pct: 100
 ---
 
 # Resource Map

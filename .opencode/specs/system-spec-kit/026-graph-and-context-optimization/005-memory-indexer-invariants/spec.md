@@ -1,6 +1,7 @@
 ---
 title: "Spec: Memory Indexer Invariants [system-spec-kit/026-graph-and-context-optimization/005-memory-indexer-invariants/spec]"
 description: "Unified Level 3 spec for the two memory-indexer invariant tracks: Track A closes the E_LINEAGE and candidate_changed save-path failures; Track B enforces permanent index-scope exclusions (z_future, external) and stops constitutional-tier pollution through a shared SSOT plus multi-layer defense."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "026/010 memory indexer invariants"
   - "026/005 memory indexer invariants"

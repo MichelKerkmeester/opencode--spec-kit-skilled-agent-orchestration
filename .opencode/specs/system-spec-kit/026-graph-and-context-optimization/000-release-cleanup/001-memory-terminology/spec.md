@@ -209,3 +209,27 @@ These are implementation-phase questions, not research questions. The phrasing d
 - **Archived prior research** (`research_archive/rename-pivot-2026-04-26-pt-01/`) — 10 iterations of `/spec_kit:deep-research` scoped for a code+command+key rename; substrate (6-layer concept model, 21-tool inventory, Anthropic + MCP-registry collision analysis) is still useful but the recommendations (rename, alias matrix, parser-fallback, glossary-lint, 4-PR plan) are out-of-scope per the user's pivot. Kept for reference only.
 - **Predecessor**: `../001-release-cleanup-playbooks/spec.md` (closed Phase 5).
 - **Companion artifacts** (deferred): plan.md / tasks.md / checklist.md / implementation-summary.md created post-review of phrasing-audit.md.
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:nfr -->

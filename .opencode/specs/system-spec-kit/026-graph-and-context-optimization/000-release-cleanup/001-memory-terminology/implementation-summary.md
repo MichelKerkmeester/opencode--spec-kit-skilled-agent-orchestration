@@ -235,6 +235,7 @@ All 8 spec.md REQs verified via the deep-review loop and operator-surfaced fixes
 
 <!-- ANCHOR:known-limitations -->
 
+<!-- ANCHOR:limitations -->
 ## Known Limitations
 
 - **P2-2 advisory open** — Local mixed-vocabulary polish in 2 catalog entries (deferred per ADR-007). Non-blocking; addresses style drift, not correctness.
@@ -243,3 +244,4 @@ All 8 spec.md REQs verified via the deep-review loop and operator-surfaced fixes
 - **Large parallel-track files swept into commits** — Some commits include 100+ unrelated parallel-track files via the pre-commit hook (cli-playbook-results scratch/, etc.). Per memory `feedback_worktree_cleanliness_not_a_blocker.md`, this is the user's normal worktree state.
 
 <!-- /ANCHOR:known-limitations -->
+<!-- /ANCHOR:limitations -->

@@ -141,3 +141,27 @@ None for this packet. Recommended follow-ups remain downstream:
 - 006/009-test-rig-adversarial-coverage for 4 P2 findings.
 - Deferred findings D2, D3, D6, D18 and adapted finding D11.
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:nfr -->

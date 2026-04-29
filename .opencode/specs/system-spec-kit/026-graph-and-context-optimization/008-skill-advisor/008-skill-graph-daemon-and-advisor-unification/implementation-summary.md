@@ -1,6 +1,7 @@
 ---
 title: "008-skill-graph-daemon-and-advisor-unification implementation summary"
 description: "Phase 027 shipped the skill-graph daemon, derived metadata, native advisor, MCP tools, compatibility shims, and promotion gates."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "026/008/008 implementation summary"
   - "advisor daemon shipped"

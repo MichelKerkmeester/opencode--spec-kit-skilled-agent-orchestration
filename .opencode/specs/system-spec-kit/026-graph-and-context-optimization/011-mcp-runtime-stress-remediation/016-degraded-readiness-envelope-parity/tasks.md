@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: Degraded-readiness envelope parity [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/016-degraded-readiness-envelope-parity/tasks]"
 description: "Per-REQ work units for Packet 016 — F-001 + F-003 production fixes plus F-002/F-008/F-009 supporting work."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "degraded readiness envelope parity tasks"
   - "016 tasks"

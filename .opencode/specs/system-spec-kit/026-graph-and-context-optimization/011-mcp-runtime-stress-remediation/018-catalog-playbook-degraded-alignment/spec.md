@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: Catalog and playbook degraded-alignment [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/018-catalog-playbook-degraded-alignment/spec]"
 description: "Docs-only Packet C from 011-post-stress-followup-research review-report. Aligns three catalog/playbook entries with the shipped (or expected, pending packet 016) degraded-readiness envelope vocabulary, and corrects rankingSignals shape from object to array of strings to match the Zod schema."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "018-catalog-playbook-degraded-alignment"
   - "catalog playbook degraded alignment"

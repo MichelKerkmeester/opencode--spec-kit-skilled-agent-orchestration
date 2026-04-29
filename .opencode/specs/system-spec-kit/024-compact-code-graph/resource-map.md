@@ -7,6 +7,15 @@ trigger_phrases:
   - "path catalog 024-compact-code-graph"
 importance_tier: "normal"
 contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/024-compact-code-graph"
+    last_updated_at: "2026-04-29T11:10:00Z"
+    last_updated_by: "claude-opus-4-7"
+    recent_action: "Backfill _memory.continuity per Tier 4 sk-doc template alignment"
+    next_safe_action: "Refresh on next packet edit"
+    blockers: []
+    completion_pct: 100
 ---
 
 # Resource Map

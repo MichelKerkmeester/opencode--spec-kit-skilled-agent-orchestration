@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: Scenario Execution [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution/plan]"
 description: "Execution flow + concurrency strategy + scoring workflow for the Search Intelligence Stress-Test playbook."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "execution plan"
   - "scoring workflow"

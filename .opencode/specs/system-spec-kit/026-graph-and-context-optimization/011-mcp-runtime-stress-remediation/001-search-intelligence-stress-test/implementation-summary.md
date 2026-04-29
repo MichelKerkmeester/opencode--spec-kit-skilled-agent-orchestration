@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/implementation-summary]"
 description: "Root packet for the Search Intelligence Stress-Test Playbook. Two sub-phases: 001 designs the corpus + rubric + dispatch matrix; 002 executes and scores."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "search intelligence stress test summary"
   - "playbook implementation summary"

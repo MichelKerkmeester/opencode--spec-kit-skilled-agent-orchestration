@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: memory_search response policy [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/tasks]"
 description: "Per-REQ work units for adding hard refusal-contract fields to memory_search responses."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "memory search response policy tasks"
 importance_tier: "important"

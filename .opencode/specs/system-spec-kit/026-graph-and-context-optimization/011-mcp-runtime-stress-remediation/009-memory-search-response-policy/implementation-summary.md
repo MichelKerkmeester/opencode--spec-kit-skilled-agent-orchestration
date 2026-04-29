@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: memory_search response policy [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/implementation-summary]"
 description: "Implemented responsePolicy and citationPolicy refusal contract for weak memory_search retrieval."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "memory search response policy summary"
 importance_tier: "important"

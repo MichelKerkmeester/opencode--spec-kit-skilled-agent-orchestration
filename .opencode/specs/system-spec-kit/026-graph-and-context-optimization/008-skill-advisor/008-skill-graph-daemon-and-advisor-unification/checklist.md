@@ -117,3 +117,51 @@ Every completed `[x]` P0/P1 item below must carry concrete evidence. Items left 
 | Phase 027 child parity | Passed | Child packets are flattened; parent strict validator reports non-phased spec. |
 | Continuity refresh | Fixed | Frontmatter continuity is at 100 percent shipped state. |
 <!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:sign-off -->

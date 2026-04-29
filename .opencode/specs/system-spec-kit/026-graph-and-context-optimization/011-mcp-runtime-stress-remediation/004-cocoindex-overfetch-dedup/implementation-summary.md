@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: CocoIndex over-fetch + dedup [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/implementation-summary]"
 description: "004 packet patches landed in the vendored cocoindex-code fork as 0.2.3+spec-kit-fork.0.2.0 (this packet was tracked as 009 during research and in commit history; renumbered to 004 with the 011 phase carve-out); live daemon probes were blocked by Codex sandbox AF_UNIX/log permissions."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "cocoindex dedup summary"
 importance_tier: "important"

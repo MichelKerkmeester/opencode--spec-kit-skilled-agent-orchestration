@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: Code Graph Degraded Stress Cell"
 description: "Add one vitest integration sweep that exercises code_graph_query fallbackDecision routing end-to-end against an isolated tmpdir code-graph.sqlite, covering empty/broad-stale/readiness-error/fresh buckets without touching production code or the live database."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "013-graph-degraded-stress-cell plan"
   - "code_graph_query degraded sweep plan"

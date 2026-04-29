@@ -2,6 +2,7 @@
 title: "Feature [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/spec]"
 template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->"
 description: "Research-first umbrella for proactive skill-advisor integration across all CLI runtimes (Claude, Codex, Copilot, Gemini). Goal: run advisor on every relevant prompt via hook infrastructure (not explicit AI invocation), surface minimal context (top-1 skill + confidence only), cache within session to avoid redundant calls. Follows the code-graph buildStartupBrief pattern."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "026/009/001 skill advisor hook"
   - "skill advisor hook surface"

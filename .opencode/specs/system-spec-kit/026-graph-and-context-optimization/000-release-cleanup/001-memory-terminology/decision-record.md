@@ -59,6 +59,7 @@ _memory:
 
 <!-- ANCHOR:adr-002 -->
 
+<!-- ANCHOR:adr-001-context -->
 ## ADR-002 — Vocabulary key: 5 modernized terms by local context
 
 **Status:** Accepted (codified in phrasing-audit.md)
@@ -83,7 +84,7 @@ _memory:
 <!-- /ANCHOR:adr-002 -->
 
 <!-- ANCHOR:adr-003 -->
-
+<!-- /ANCHOR:adr-001-context -->
 ## ADR-003 — Use cli-copilot for the deep-review, not cli-codex
 
 **Status:** Accepted (after mid-session correction)
@@ -203,3 +204,43 @@ _memory:
 - Future cleanup PR can target P2-002 + similar polish drift in one focused pass
 
 <!-- /ANCHOR:adr-007 -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+## Alternatives Considered
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+## Consequences
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-decision -->
+## Decision
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+## Five Checks Evaluation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+## Implementation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-impl -->

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution/spec]"
 description: "Sub-phase 002: execution harness for the stress-test playbook. Runs the dispatch matrix from 001 against cli-codex, cli-copilot, and cli-opencode, captures per-run artifacts, scores via the rubric, and synthesizes findings."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "002-scenario-execution"
   - "stress test execution"

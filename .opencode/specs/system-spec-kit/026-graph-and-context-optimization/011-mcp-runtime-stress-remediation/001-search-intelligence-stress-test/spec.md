@@ -158,3 +158,19 @@ This phase-parent section is retrospective. It does not add new requirements; it
 - **Phase children**: See direct sub-folders matching `[0-9][0-9][0-9]-*/`
 - **Graph Metadata**: See `graph-metadata.json` for child pointers and save metadata
 - **Stress test cycle pattern**: See `.opencode/skill/system-spec-kit/feature_catalog/14--stress-testing/01-stress-test-cycle.md` for the reusable documentation pattern derived from this baseline.
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:success-criteria -->

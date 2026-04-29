@@ -200,3 +200,27 @@ Research -> ADR outcome B -> writer + wrappers -> tests/smoke -> docs -> strict 
 #### Blocked Task Protocol
 - Stop after three validation iterations if errors remain.
 - Report remaining validator rule names and rationale in the temporary hygiene summary.
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:phase-deps -->

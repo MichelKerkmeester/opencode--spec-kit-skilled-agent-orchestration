@@ -1,6 +1,7 @@
 ---
 title: "...-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/implementation-summary]"
 description: "Phase 020 complete: cross-runtime advisor hook surface shipped across Claude/Gemini/Copilot/Codex with 4-runtime parity, 200/200 corpus parity, cache-hit p95 0.016ms, hit rate 66.7%, DQI 97 reference doc."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "026/009/001 implementation summary"
   - "skill advisor hook summary"

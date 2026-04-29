@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: code_graph_status read-only readiness snapshot [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot/spec]"
 description: "P2 follow-up to v1.0.2 stress test (research §5 / Q-P2). Adds a non-mutating getGraphReadinessSnapshot() helper and wires it into code_graph_status so readiness.action surfaces full_scan / selective_reindex / none instead of always emitting 'none'. Closes the 4-hour staleness drift observability gap from 010 findings §3 without lowering DEFAULT_DEBOUNCE_MS=2000."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "014-graph-status-readiness-snapshot"
   - "code_graph_status readiness action"

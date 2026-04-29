@@ -1,6 +1,7 @@
 ---
 title: "Fea [system-spec-kit/026-graph-and-context-optimization/009-hook-parity/002-copilot-hook-parity-remediation/spec]"
 description: "Claude Code's SessionStart:startup (code-graph context) and UserPromptSubmit (skill-advisor brief) hooks fire correctly, but the same hook payloads are absent under Copilot CLI — users get no startup context and no advisor brief in Copilot sessions. This phase investigates Copilot CLI's extension surface, determines whether hook parity is achievable, and either wires equivalent hooks or documents the gap with a workaround."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2"
 trigger_phrases:
   - "copilot hook parity"
   - "copilot cli hooks"

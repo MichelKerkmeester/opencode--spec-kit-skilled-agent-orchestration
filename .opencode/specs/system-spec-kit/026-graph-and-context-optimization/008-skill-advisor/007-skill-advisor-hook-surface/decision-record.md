@@ -25,8 +25,9 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 ---
 
 <!-- ANCHOR:adr-001 -->
+<!-- ANCHOR:adr-001-impl -->
 ## ADR-001: Research-first umbrella (not direct implementation)
-
+<!-- /ANCHOR:adr-001-impl -->
 ### Metadata
 
 | Field | Value |
@@ -36,20 +37,24 @@ template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->"
 | **Author** | claude-opus-4.7-1m |
 | **Severity** | P0 |
 
+<!-- ANCHOR:adr-001-context -->
 ### Context
 
 Phase 020 could land as a direct-implementation spec folder (research inline, ship all hook wiring at once) OR as a research-first umbrella (investigate architecture, then spawn cluster implementation children).
-
+<!-- /ANCHOR:adr-001-context -->
 ### Constraints
 
 - Cross-runtime hook trigger points vary — Codex may not expose a per-prompt hook at all (open research question Q1)
 - Cache TTL and freshness semantics are empirical questions that need measurement against real prompts, not static design
 - Context-budget tradeoffs (40/60/80/120 tokens) need measured routing-quality retention, not guessed constants
 
+<!-- ANCHOR:adr-001-decision -->
 ### Decision
 
 **Research-first umbrella.** Scaffold `020/001-initial-research` first. Dispatch deep-research on architecture + budget + runtime parity. Spawn implementation children per finding cluster.
 
+<!-- ANCHOR:adr-001-alternatives -->
+<!-- /ANCHOR:adr-001-decision -->
 ### Alternatives Considered
 
 | Alternative | Why rejected |
@@ -57,7 +62,8 @@ Phase 020 could land as a direct-implementation spec folder (research inline, sh
 | Direct implementation (ship hooks all at once) | Too many unknowns: Codex hook surface, optimal TTL, brief length — would force guesses that could regress accuracy |
 | Single-runtime MVP (ship Claude-only first) | Creates asymmetric user experience and requires revisiting hook shape once we adapt for other runtimes |
 | Research inline in implementation child | 019's research-first umbrella pattern proved effective; same shape reduces decision fatigue |
-
+<!-- /ANCHOR:adr-001-alternatives -->
+<!-- ANCHOR:adr-001-consequences -->
 ### Consequences
 
 **Positive**:
@@ -68,7 +74,7 @@ Phase 020 could land as a direct-implementation spec folder (research inline, sh
 **Negative**:
 - Adds 20-30h research wall-clock before any implementation ships
 - Potentially surfaces more children than user expected
-
+<!-- /ANCHOR:adr-001-consequences -->
 ### Five Checks
 
 | Check | Answer |
@@ -326,3 +332,11 @@ Scaffold 8 children (002-009) under `020/`, with the critical path:
 - See `plan.md §4 Phase 2` for the dependency chain
 - See `tasks.md` T007-T023 for the scaffolding + implementation tasks
 - See each child's `spec.md` for scope detail (wave-1 + wave-2 folded)
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+## Five Checks Evaluation
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:adr-001-five-checks -->

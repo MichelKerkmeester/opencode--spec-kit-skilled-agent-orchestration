@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: memory_search response policy [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy/plan]"
 description: "Add hard responsePolicy + citationPolicy fields and extend RecoveryAction vocabulary so weak retrieval is a binding refusal contract instead of advisory metadata."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "memory search response policy plan"
 importance_tier: "important"

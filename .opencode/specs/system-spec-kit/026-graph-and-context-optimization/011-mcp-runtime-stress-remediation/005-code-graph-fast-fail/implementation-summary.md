@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: code_graph fail-fast routing [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail/implementation-summary]"
 description: "Implemented fallbackDecision routing for blocked/degraded code_graph_query read payloads."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "code graph fast fail summary"
 importance_tier: "important"

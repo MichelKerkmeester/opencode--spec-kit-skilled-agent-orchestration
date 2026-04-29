@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: Code Graph Degraded Stress Cell"
 description: "Three-phase task breakdown for authoring the code_graph_query fallbackDecision integration sweep, packet docs, and verification."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "013-graph-degraded-stress-cell tasks"
   - "code_graph degraded sweep tasks"

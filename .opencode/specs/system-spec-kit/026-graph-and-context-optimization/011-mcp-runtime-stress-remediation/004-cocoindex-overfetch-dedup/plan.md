@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: CocoIndex over-fetch + canonical-identity dedup + path-class rerank [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/plan]"
 description: "Make CocoIndex code-first by default: exclude mirrors, add canonical identity, over-fetch+dedup+rerank, surface path_class telemetry."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "cocoindex dedup plan"
 importance_tier: "important"

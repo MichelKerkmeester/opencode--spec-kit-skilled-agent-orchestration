@@ -1,6 +1,7 @@
 ---
 title: "Implementation Summary: Debug Agent Integration"
 description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "debug integration summary"
   - "implementation summary 050"

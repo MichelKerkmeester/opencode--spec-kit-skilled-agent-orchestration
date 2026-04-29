@@ -1,6 +1,7 @@
 ---
 title: "Tasks [system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/007-skill-advisor-hook-surface/tasks]"
 description: "Task list for 020 umbrella — research wave + implementation cluster spawning."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "026/009/001 tasks"
 importance_tier: "critical"

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2
 title: "Implementation Summary: intent classifier stability [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability/implementation-summary]"
 description: "Implemented normalized IntentTelemetry, paraphrase grouping, memory_context embedding, and paired paraphrase stability corpus."
+template_source: "SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2"
 trigger_phrases:
   - "intent classifier stability summary"
 importance_tier: "important"

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: code_graph fail-fast routing [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail/plan]"
 description: "Add fallbackDecision routing field to blocked code-graph read payloads; preserve allowInlineFullScan:false."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "code graph fast fail plan"
 importance_tier: "important"

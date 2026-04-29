@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: Code Graph Degraded Stress Cell"
 description: "Add an integration-style stress cell that exercises code_graph_query fallbackDecision routing end-to-end against a degraded graph using SPEC_KIT_DB_DIR / initDb isolation, closing the v1.0.2 NEUTRAL verdict on packet 005 fast-fail."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "013-graph-degraded-stress-cell"
   - "code_graph_query degraded sweep"

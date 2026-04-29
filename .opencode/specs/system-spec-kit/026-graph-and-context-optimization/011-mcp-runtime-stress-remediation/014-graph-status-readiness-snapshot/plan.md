@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: code_graph_status read-only readiness snapshot [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot/plan]"
 description: "Add a read-only getGraphReadinessSnapshot() helper extracted from ensure-ready.ts detection logic; wire into code_graph_status so readiness.action surfaces the correct full_scan / selective_reindex / none state."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "graph status readiness snapshot plan"
   - "014 plan"

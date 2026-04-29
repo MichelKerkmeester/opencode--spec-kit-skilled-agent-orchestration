@@ -183,3 +183,27 @@ Ship the F-001 + F-003 production fixes plus F-002 / F-008 / F-009 supporting wo
 - ~~Q-ORDER: snapshot-first OR isolate-stats? Pick one.~~ — RESOLVED in ADR-002: BOTH (defense in depth). Snapshot moves above stats so even the synchronous fast-fail path benefits; stats remains in try/catch so post-stats throws still preserve the snapshot.
 - ~~Q-TEST: extend the existing context cocoindex test or create a new file?~~ — RESOLVED: new file (`code-graph-degraded-readiness-envelope-parity.vitest.ts`). The cocoindex file's mock surface and test theme are different; co-locating the F-001/F-003/F-008 evidence in one packet-named file makes the contract greppable from the spec folder.
 <!-- /ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:complexity -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:nfr -->

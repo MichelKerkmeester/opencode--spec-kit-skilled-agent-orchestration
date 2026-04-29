@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2
 title: "Implementation Plan: MCP Runtime Improvement Deep Research [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research/plan]"
 description: "10-iteration deep research workflow plan investigating MCP runtime defects from 005 and 006, dispatched via cli-codex gpt-5.5 high fast per iteration, owned by /spec_kit:deep-research:auto."
+template_source: "SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2"
 trigger_phrases:
   - "007 deep research plan"
   - "mcp runtime improvement plan"

@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2
 title: "Feature Specification: Stress-Test v1.0.3 with W3-W13 Wiring"
 description: "Measurement-only packet for running the search/query/RAG stress stack after Phase G wiring. Scope is evidence capture and verdict documentation, with no runtime behavior changes."
+template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify | v2.2"
 trigger_phrases:
   - "021-stress-test-v1-0-3-with-w3-w13-wiring"
   - "v1.0.3 stress test"

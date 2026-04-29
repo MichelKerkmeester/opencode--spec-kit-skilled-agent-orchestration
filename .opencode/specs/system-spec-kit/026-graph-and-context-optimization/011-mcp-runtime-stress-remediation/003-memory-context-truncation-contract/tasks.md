@@ -2,6 +2,7 @@
 # SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2
 title: "Tasks: memory_context truncation contract + token telemetry [system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/003-memory-context-truncation-contract/tasks]"
 description: "Per-REQ work units to land preEnforcementTokens / returnedTokens / droppedAllResultsReason and the payload/count invariant in tests."
+template_source: "SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2"
 trigger_phrases:
   - "memory context truncation tasks"
   - "token telemetry tasks"

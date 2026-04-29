@@ -223,3 +223,11 @@ Source of truth: `.opencode/agent/debug.md` lines 60-89.
 - **Commit:** `619de83c9 feat(050): user-invoked @debug — truth-up aspirational auto-dispatch claims + prompted-offer scaffold` on `origin/main`
 - **Manual test playbook:** `.opencode/skill/system-spec-kit/manual_testing_playbook/16--tooling-and-scripts/071-debug-delegation-scaffold-generator.md` (DBG-SCAF-001)
 <!-- /ANCHOR:related-artifacts -->
+
+---
+
+<!-- ANCHOR:template-instructions -->
+## TEMPLATE INSTRUCTIONS
+
+<!-- TODO: backfill with real content; stub added by Tier 4 alignment -->
+<!-- /ANCHOR:template-instructions -->
