@@ -98,7 +98,10 @@ Six-tier system for prioritizing memory relevance:
 
 > **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `checkpoint_create`.
 
-### Tool Reference (43 tools)
+### Tool Reference (54 `spec_kit_memory` tools)
+
+The public surface is 50 local descriptors from `mcp_server/tool-schemas.ts`
+plus 4 Skill Advisor descriptors imported into the same registry.
 
 | Layer | Tool | Purpose | Example Use |
 |-------|------|---------|-------------|

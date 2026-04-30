@@ -615,6 +615,8 @@ export default async function SpecKitSkillAdvisorPlugin(ctx, rawOptions) {
     }
 
     if (!prompt) {
+      state.lastBridgeStatus = 'skipped';
+      state.lastErrorCode = 'MISSING_PROMPT';
       return;
     }
 

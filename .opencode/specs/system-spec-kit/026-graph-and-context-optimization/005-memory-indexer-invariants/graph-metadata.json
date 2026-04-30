@@ -6,6 +6,7 @@
   "children_ids": [],
   "migrated": true,
   "migration_source": "legacy",
+  "legacy_grandfathered": true,
   "manual": {
     "depends_on": [],
     "supersedes": [],

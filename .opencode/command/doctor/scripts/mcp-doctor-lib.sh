@@ -182,11 +182,27 @@ get_node_major_version() {
   fi
 }
 
+node_version_at_least() {
+  local minimum="$1"
+  check_command_exists node || return 1
+  node -e "
+    const actual = process.versions.node.split('.').map(Number);
+    const min = '$minimum'.split('.').map(Number);
+    for (let i = 0; i < Math.max(actual.length, min.length); i += 1) {
+      const a = actual[i] || 0;
+      const b = min[i] || 0;
+      if (a > b) process.exit(0);
+      if (a < b) process.exit(1);
+    }
+    process.exit(0);
+  " 2>/dev/null
+}
+
 # ── 8. CONFIG FILE CHECKING ──────────────────────────────────
 
 # Check if a config file contains an MCP server entry
 # Args: $1=file path  $2=server key  $3=format
-# Formats: "json-mcp" (opencode.json), "json-mcpServers" (.claude, .gemini, .vscode), "toml" (.codex)
+# Formats: "json-mcp" (opencode.json), "json-mcpServers" (.claude, .gemini), "json-vscode-mcp" (.vscode), "toml" (.codex)
 # Returns: 0 if server found, 1 if not
 config_has_server() {
   local file="$1" server_key="$2" format="$3"
@@ -204,6 +220,13 @@ config_has_server() {
       node -e "
         const cfg = JSON.parse(require('fs').readFileSync('$file','utf8'));
         process.exit(cfg.mcpServers && cfg.mcpServers['$server_key'] ? 0 : 1);
+      " 2>/dev/null
+      ;;
+    json-vscode-mcp)
+      node -e "
+        const cfg = JSON.parse(require('fs').readFileSync('$file','utf8'));
+        const servers = cfg.servers || cfg.mcpServers || {};
+        process.exit(servers['$server_key'] ? 0 : 1);
       " 2>/dev/null
       ;;
     toml)

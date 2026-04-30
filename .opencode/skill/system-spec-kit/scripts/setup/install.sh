@@ -21,7 +21,7 @@ readonly SPEC_KIT_ROOT_DIR=".opencode/skill/system-spec-kit"
 readonly MCP_SERVER_DIR="${SPEC_KIT_ROOT_DIR}/mcp_server"
 readonly MCP_SERVER_SCRIPT="dist/context-server.js"
 readonly MCP_CANONICAL_DB_DIR="${MCP_SERVER_DIR}/database"
-readonly MIN_NODE_VERSION="18"
+readonly MIN_NODE_VERSION="20.11.0"
 SKIP_VERIFY="${SKIP_VERIFY:-false}"
 
 # ───────────────────────────────────────────────────────────────
@@ -194,7 +194,7 @@ configure_mcp() {
             "_NOTE_2_PROVIDERS": "Supports: Voyage (1024 dims), OpenAI (1536/3072 dims), HF Local (768 dims, no API needed)",
             "_NOTE_3_CLOUD_PROVIDERS": "In auto mode: VOYAGE_API_KEY selects Voyage embeddings + rerank-2.5, OPENAI_API_KEY selects OpenAI, otherwise HF local fallback stays active",
             "_NOTE_4_PORTABLE": "Uses relative paths and auto-derived DB names so provider switches do not require manual sqlite path edits",
-            "_NOTE_5_FEATURE_FLAGS": "Opt-out flags: SPECKIT_EXTENDED_TELEMETRY (default ON), SPECKIT_ADAPTIVE_FUSION (default OFF)"
+            "_NOTE_5_FEATURE_FLAGS": "Opt-out flags: SPECKIT_ADAPTIVE_FUSION default ON; SPECKIT_EXTENDED_TELEMETRY default OFF"
         }
     }'
     
@@ -291,7 +291,7 @@ Examples:
     $(basename "$0") --skip-verify # Skip verification
 
 Requirements:
-    - Node.js ${MIN_NODE_VERSION}+
+    - Node.js >=${MIN_NODE_VERSION}
     - npm
 
 Embedding Providers (auto-detected in order):

@@ -218,6 +218,10 @@ export function normalizeScopeContext(input: ScopeContext): ScopeContext {
 
 /**
  * Determine whether an ingest request must pass governed-ingest validation.
+ * All ingest mutation surfaces should call `validateGovernedIngest` with their
+ * available metadata before writes or job enqueue. When any scope,
+ * provenance, governed timestamp, or retention field is present,
+ * `provenanceActor` is mandatory so audit rows can identify the caller.
  *
  * @param input - Candidate ingest metadata.
  * @returns `true` when governance or scope metadata requires enforcement.

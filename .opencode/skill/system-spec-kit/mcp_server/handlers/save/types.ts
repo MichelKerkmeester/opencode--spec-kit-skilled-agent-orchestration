@@ -287,11 +287,21 @@ export interface SaveArgs {
   filePath: string;
   force?: boolean;
   dryRun?: boolean;
+  /**
+   * Internal planner-only control for command-owned save routing.
+   * This is intentionally not part of the public MCP schema; public callers
+   * use `dryRun` or the command workflow instead of hidden planner inputs.
+   */
   plannerMode?: SavePlannerMode;
   skipPreflight?: boolean;
   asyncEmbedding?: boolean; // When true, embedding generation is deferred (non-blocking)
   routeAs?: RouteCategory;
   mergeModeHint?: MergeModeHint;
+  /**
+   * Internal anchor target selected by the canonical save planner.
+   * Kept out of public schemas so strict MCP validation has one visible
+   * contract and command planners own route-specific edits.
+   */
   targetAnchorId?: string;
   tenantId?: string;
   userId?: string;

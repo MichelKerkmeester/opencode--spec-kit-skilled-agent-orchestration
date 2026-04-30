@@ -1,0 +1,13 @@
+{
+  "title": "048 Remaining P1/P2 Remediation",
+  "description": "Works through the 24 P1 and 15 P2 findings remaining after 046. Tier beta doc fixes are applied directly, Tier gamma defaults are documented, Tier delta engineering changes are applied surgically, and unsafe P2 work is deferred.",
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "trigger_phrases": [
+    "048-remaining-p1-p2-remediation",
+    "P1 P2 backlog",
+    "release polish",
+    "conservative defaults pass"
+  ]
+}
+

@@ -63,6 +63,25 @@ function isObjectRecord(value: unknown): value is Record<string, unknown> {
  * will surface as iteration-count drift in the reducer output.
  */
 const CANONICAL_ITERATION_TYPE = 'iteration' as const;
+const REVIEW_ITERATION_FIELDS = [
+  'type',
+  'iteration',
+  'mode',
+  'run',
+  'status',
+  'focus',
+  'dimensions',
+  'filesReviewed',
+  'findingsCount',
+  'findingsSummary',
+  'findingsNew',
+  'newFindingsRatio',
+  'sessionId',
+  'generation',
+  'lineageMode',
+  'timestamp',
+  'durationMs',
+] as const;
 
 function findLastIterationRecord(content: string): Record<string, unknown> | null {
   const lines = content.split(/\r?\n/);
@@ -132,13 +151,43 @@ export function validateIterationOutputs(input: PostDispatchValidateInput): Post
       };
     }
 
-    const missingFields = input.requiredJsonlFields.filter((field) => !(field in parsedRecord));
+    const requiredFields = new Set([
+      ...input.requiredJsonlFields,
+      ...(
+        input.requiredJsonlFields.includes('findingsSummary') || input.requiredJsonlFields.includes('filesReviewed')
+          ? REVIEW_ITERATION_FIELDS
+          : []
+      ),
+    ]);
+    const missingFields = [...requiredFields].filter((field) => !(field in parsedRecord));
 
     if (missingFields.length > 0) {
       return {
         ok: false,
         reason: 'jsonl_missing_fields',
         details: `missing: ${missingFields.join(',')}`,
+      };
+    }
+
+    if (requiredFields.has('filesReviewed') && !Array.isArray(parsedRecord.filesReviewed)) {
+      return {
+        ok: false,
+        reason: 'jsonl_missing_fields',
+        details: 'filesReviewed must be an array of reviewed file paths',
+      };
+    }
+    if (requiredFields.has('dimensions') && !Array.isArray(parsedRecord.dimensions)) {
+      return {
+        ok: false,
+        reason: 'jsonl_missing_fields',
+        details: 'dimensions must be an array',
+      };
+    }
+    if (requiredFields.has('newFindingsRatio') && typeof parsedRecord.newFindingsRatio !== 'number') {
+      return {
+        ok: false,
+        reason: 'jsonl_missing_fields',
+        details: 'newFindingsRatio must be a number',
       };
     }
 

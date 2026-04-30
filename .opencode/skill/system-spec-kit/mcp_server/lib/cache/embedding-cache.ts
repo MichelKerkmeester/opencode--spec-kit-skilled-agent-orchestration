@@ -226,6 +226,25 @@ function clearCache(db: Database.Database): void {
   db.exec('DELETE FROM embedding_cache');
 }
 
+/**
+ * Remove all cached embedding variants for a content hash.
+ *
+ * Retention sweeps use this to delete derived semantic cache data alongside
+ * the source memory row. The cache is content-addressed rather than row-bound,
+ * so this intentionally removes all model/dimension variants for the content.
+ *
+ * @param db - better-sqlite3 database instance
+ * @param contentHash - SHA-256 hex digest of the deleted content
+ * @returns Number of deleted cache rows
+ */
+function deleteByContentHash(db: Database.Database, contentHash: string): number {
+  const result = (db.prepare(
+    'DELETE FROM embedding_cache WHERE content_hash = ?',
+  ) as Database.Statement).run(contentHash);
+
+  return (result as { changes: number }).changes;
+}
+
 /* --- 8. CONTENT HASHING --- */
 
 /**
@@ -249,6 +268,7 @@ export {
   evictOldEntries,
   getCacheStats,
   clearCache,
+  deleteByContentHash,
   computeContentHash,
 };
 

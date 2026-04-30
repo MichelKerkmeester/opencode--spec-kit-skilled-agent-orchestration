@@ -16,7 +16,7 @@ Copy and paste this prompt to your AI assistant to get installation help:
 I want to install Spec Kit Memory MCP server from .opencode/skill/system-spec-kit/mcp_server
 
 Please help me:
-1. Verify I have Node.js >=18 and npm installed
+1. Verify I have Node.js >=20.11.0 and npm installed
 2. Install dependencies and build the MCP server
 3. Configure for my environment (I'm using: [OpenCode / Claude Code / Codex / Gemini / Copilot / Claude Desktop])
 4. Verify the installation with a test search query
@@ -152,10 +152,10 @@ Phase 1 verifies the required software on your machine.
 
 ### Required Software
 
-1. **Node.js** (version 18 or higher)
+1. **Node.js** (version 20.11.0 or higher)
    ```bash
    node --version
-   # Must show v18.0.0 or higher
+   # Must show v20.11.0 or higher
    ```
 
 2. **npm** (bundled with Node.js)
@@ -173,12 +173,12 @@ No additional system dependencies are required beyond Node.js and npm. The Code 
 ### Validation: `phase_1_complete`
 
 ```bash
-node --version    # v18.0.0 or higher
+node --version    # v20.11.0 or higher
 npm --version     # 9.0.0 or higher
 ```
 
 Checklist:
-- [ ] `node --version` returns v18 or higher
+- [ ] `node --version` returns v20.11.0 or higher
 - [ ] `npm --version` returns a version number
 
 ❌ **STOP if validation fails.** Install Node.js from https://nodejs.org/ before continuing.

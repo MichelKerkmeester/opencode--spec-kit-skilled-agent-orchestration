@@ -33,14 +33,14 @@ trigger_phrases:
 
 The Skill Advisor routes through the native TypeScript package at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/`. This package owns scoring, daemon freshness, lifecycle metadata, validation, MCP handlers, schemas, hook-compatible rendering, operator docs, manual playbooks, and Python compatibility scripts.
 
-Python remains available for runtimes or scripts that cannot call MCP tools directly. The shim at `scripts/skill_advisor.py` probes the native advisor first, translates native output back to the legacy JSON-array shape when possible, and falls back to the local Python scorer only when native routing is unavailable or explicitly bypassed.
+Python remains available for runtimes or scripts that cannot call MCP tools directly. The shim at `scripts/skill_advisor.py` probes the native advisor first, translates native output back to the legacy JSON-array shape when possible, and falls back to the local Python scorer only when native routing is unavailable or explicitly bypassed. Forced local Python scoring is a compatibility fallback with weaker parity guarantees than the native TypeScript scorer.
 
 Current shipped baseline:
 
 | Area | Shipped Reality |
 | --- | --- |
-| Native MCP tools | `advisor_recommend`, `advisor_status`, `advisor_validate` |
-| Fusion lanes | explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.10, semantic_shadow 0.00 |
+| Native MCP tools | `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate` |
+| Fusion lanes | explicit_author 0.45, lexical 0.30, graph_causal 0.15, derived_generated 0.15, semantic_shadow 0.00 |
 | Accuracy | 80.5% full corpus, 77.5% holdout, UNKNOWN <= 10 |
 | Regression parity | 0 regressions on Python-correct prompts |
 | Python compatibility | 52/52 Python regression suite passed |
@@ -64,6 +64,7 @@ Call the native advisor tools from the active MCP client:
 
 ```text
 advisor_status({"workspaceRoot":"/absolute/path/to/repo"})
+advisor_rebuild({"workspaceRoot":"/absolute/path/to/repo","force":true})
 advisor_recommend({"workspaceRoot":"/absolute/path/to/repo","prompt":"save this conversation context to memory","options":{"topK":1,"includeAttribution":true}})
 advisor_validate({"confirmHeavyRun":true,"workspaceRoot":"/absolute/path/to/repo","skillSlug":null})
 ```
@@ -182,7 +183,7 @@ The [feature catalog](./feature_catalog/feature_catalog.md) lists 36 features ac
 | [02--auto-indexing](./feature_catalog/02--auto-indexing/) | Derived extraction, sanitizer, provenance, sync, anti-stuffing, DF/IDF corpus. |
 | [03--lifecycle-routing](./feature_catalog/03--lifecycle-routing/) | Age haircut, supersession, archive handling, schema migration, rollback. |
 | [04--scorer-fusion](./feature_catalog/04--scorer-fusion/) | 5-lane fusion, projection, ambiguity, attribution, ablation, weights config. |
-| [06--mcp-surface](./feature_catalog/06--mcp-surface/) | `advisor_recommend`, `advisor_status`, `advisor_validate`, compat entrypoint. |
+| [06--mcp-surface](./feature_catalog/06--mcp-surface/) | `advisor_recommend`, `advisor_rebuild`, `advisor_status`, `advisor_validate`, compat entrypoint. |
 | [07--hooks-and-plugin](./feature_catalog/07--hooks-and-plugin/) | Claude, Copilot, Gemini, Codex hooks plus OpenCode plugin bridge. |
 | [08--python-compat](./feature_catalog/08--python-compat/) | Python CLI shim, regression suite, bench runner. |
 

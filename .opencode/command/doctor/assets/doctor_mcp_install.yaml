@@ -146,7 +146,7 @@ workflow:
     name: "Preflight"
     purpose: "Check system prerequisites before any install"
     activities:
-      - "Check Node.js version: node --version (must be 18+)"
+      - "Check Node.js version: node --version (must be >=20.11.0)"
       - "Check Python version: python3 --version (must be 3.11+ for CocoIndex)"
       - "Check npm: npm --version"
       - "Check npx: npx --version"
@@ -154,7 +154,7 @@ workflow:
       - "If --server flag provided, validate server name"
       - "If --runtime flag provided, validate runtime name"
     prerequisite_matrix:
-      node_18: { required_for: [spec_kit_memory, code_mode, sequential_thinking], check: "node --version" }
+      node_20_11: { required_for: [spec_kit_memory, code_mode, sequential_thinking], check: "node --version" }
       python_311: { required_for: [cocoindex_code], check: "python3 --version" }
       npm: { required_for: [spec_kit_memory, code_mode], check: "npm --version" }
       npx: { required_for: [sequential_thinking], check: "npx --version" }
@@ -290,7 +290,7 @@ workflow:
 # ─────────────────────────────────────────────────────────────────
 error_handling:
   node_too_old:
-    check: "node major version < 18"
+    check: "node version < 20.11.0"
     action: "FAIL for Node-based servers, suggest upgrade"
   python_too_old:
     check: "python3 minor version < 11"

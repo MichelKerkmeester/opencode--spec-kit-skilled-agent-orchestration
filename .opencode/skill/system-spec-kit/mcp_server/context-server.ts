@@ -29,6 +29,7 @@ import {
 // T303: Tool schemas and dispatch
 import { TOOL_DEFINITIONS } from './tool-schemas.js';
 import { dispatchTool } from './tools/index.js';
+import { validateToolArgs } from './schemas/tool-input-schemas.js';
 
 // Handler modules (only indexSingleFile needed directly for startup scan)
 import {
@@ -903,6 +904,7 @@ const server = new Server(
   { capabilities: { tools: {} } }
 );
 const serverWithInstructions = server as unknown as { setInstructions?: (instructions: string) => void };
+const KNOWN_TOOL_NAMES = new Set(TOOL_DEFINITIONS.map((tool) => tool.name));
 
 /* ───────────────────────────────────────────────────────────────
    4. TOOL DEFINITIONS (T303: from tool-schemas.ts)
@@ -929,8 +931,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
   try {
     // SEC-003: Validate input lengths before processing (CWE-400 mitigation)
     validateInputLengths(args);
-    // T304: Zod validation is applied per-tool inside each dispatch module
-    // (tools/*.ts) to avoid double-validation overhead at the server layer.
+    // Validate at the server boundary before metrics, session priming, and
+    // auto-surface logic can observe malformed raw tool arguments.
+    const validatedArgs: Record<string, unknown> = KNOWN_TOOL_NAMES.has(name)
+      ? validateToolArgs(name, args) as Record<string, unknown>
+      : args;
 
     // T018: Track last tool call timestamp for all tools except session_health.
     if (name !== 'session_health') {
@@ -940,14 +945,14 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       recordMetricEvent({ kind: 'tool_call', toolName: name });
     }
     // Classify specific tool calls for finer-grained metrics
-    if (name === 'memory_context' && args.mode === 'resume') {
+    if (name === 'memory_context' && validatedArgs.mode === 'resume') {
       recordMetricEvent({ kind: 'memory_recovery' });
     }
     if (name.startsWith('code_graph_')) {
       recordMetricEvent({ kind: 'code_graph_query' });
     }
-    if (typeof args.specFolder === 'string' && args.specFolder) {
-      recordMetricEvent({ kind: 'spec_folder_change', specFolder: args.specFolder as string });
+    if (typeof validatedArgs.specFolder === 'string' && validatedArgs.specFolder) {
+      recordMetricEvent({ kind: 'spec_folder_change', specFolder: validatedArgs.specFolder as string });
     }
 
     const dbReinitialized = await checkDatabaseUpdated();
@@ -959,7 +964,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     try {
       sessionPrimeContext = await primeSessionIfNeeded(
         name,
-        args,
+        validatedArgs,
         sessionTrackingId,
       );
     } catch (primeErr: unknown) {
@@ -970,11 +975,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // SK-004/TM-05: Auto-surface memories before dispatch (after validation)
     let autoSurfacedContext: AutoSurfaceResult | null = null;
     const isCompactionLifecycleCall =
-      name === 'memory_context' && args.mode === 'resume';
+      name === 'memory_context' && validatedArgs.mode === 'resume';
 
     const autoSurfaceStart = Date.now();
     if (MEMORY_AWARE_TOOLS.has(name)) {
-      const contextHint: string | null = extractContextHint(args);
+      const contextHint: string | null = extractContextHint(validatedArgs);
       if (contextHint) {
         try {
           if (isCompactionLifecycleCall) {
@@ -989,7 +994,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
       }
     } else {
       try {
-        autoSurfacedContext = await autoSurfaceAtToolDispatch(name, args);
+        autoSurfacedContext = await autoSurfaceAtToolDispatch(name, validatedArgs);
       } catch (surfaceErr: unknown) {
         const msg = surfaceErr instanceof Error ? surfaceErr.message : String(surfaceErr);
         console.error(`[context-server] Tool-dispatch auto-surface failed (non-fatal): ${msg}`);
@@ -1010,7 +1015,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
     // T303: Dispatch to tool modules
     const result = await runWithCallerContext(
       callerContext,
-      async () => dispatchTool(name, args, callerContext),
+      async () => dispatchTool(name, validatedArgs, callerContext),
     ) as ToolCallResponse | null;
     if (!result) {
       throw new Error(`Unknown tool: ${name}`);
@@ -1018,7 +1023,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request, _extra: unknown)
 
     let dispatchGraphContext: DispatchGraphContextMeta | null = null;
     if (!result.isError) {
-      dispatchGraphContext = await resolveDispatchGraphContext(name, args);
+      dispatchGraphContext = await resolveDispatchGraphContext(name, validatedArgs);
     }
 
     runAfterToolCallbacks(name, callId, structuredClone(result));

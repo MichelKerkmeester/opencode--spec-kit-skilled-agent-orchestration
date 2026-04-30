@@ -3,6 +3,7 @@ import Database from 'better-sqlite3';
 import { ensureGovernanceRuntime } from '../../lib/governance/scope-governance.js';
 
 export interface MemoryIndexTestDatabaseOptions {
+  filename?: string;
   includeCheckpoints?: boolean;
   includeWorkingMemory?: boolean;
   includeActiveProjection?: boolean;
@@ -11,12 +12,13 @@ export interface MemoryIndexTestDatabaseOptions {
 
 export function createMemoryIndexTestDatabase(options: MemoryIndexTestDatabaseOptions = {}): Database.Database {
   const {
+    filename = ':memory:',
     includeCheckpoints = false,
     includeWorkingMemory = false,
     includeActiveProjection = false,
     includeContentColumns = false,
   } = options;
-  const db = new Database(':memory:');
+  const db = new Database(filename);
   db.exec(`
     CREATE TABLE memory_index (
       id INTEGER PRIMARY KEY,

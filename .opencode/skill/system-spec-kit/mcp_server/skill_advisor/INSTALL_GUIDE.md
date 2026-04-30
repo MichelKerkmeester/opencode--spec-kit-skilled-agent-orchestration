@@ -25,7 +25,7 @@ This is the canonical bootstrap guide for the native Skill Advisor. The advisor 
 
 ## 1. OVERVIEW
 
-The native advisor is a TypeScript package under `mcp_server/skill_advisor/` with the public MCP tools `advisor_recommend`, `advisor_status`, and `advisor_validate`. This TypeScript path is primary, while the Python `skill_advisor.py` shim remains as the compatibility surface for scripts and prompt hooks.
+The native advisor is a TypeScript package under `mcp_server/skill_advisor/` with the public MCP tools `advisor_recommend`, `advisor_rebuild`, `advisor_status`, and `advisor_validate`. This TypeScript path is primary, while the Python `skill_advisor.py` shim remains as the compatibility surface for scripts and prompt hooks.
 
 ---
 

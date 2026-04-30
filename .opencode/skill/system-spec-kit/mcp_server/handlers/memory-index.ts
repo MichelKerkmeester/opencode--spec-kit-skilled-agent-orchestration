@@ -44,6 +44,7 @@ import {
 
 // REQ-019: Standardized Response Structure
 import { createMCPSuccessResponse, createMCPErrorResponse } from '../lib/response/envelope.js';
+import { validateGovernedIngest } from '../lib/governance/scope-governance.js';
 
 // Shared handler types
 import type { MCPResponse, EmbeddingProfile } from './types.js';
@@ -154,6 +155,15 @@ interface ScanArgs {
   includeConstitutional?: boolean;
   includeSpecDocs?: boolean;
   incremental?: boolean;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sessionId?: string;
+  provenanceSource?: string;
+  provenanceActor?: string;
+  governedAt?: string;
+  retentionPolicy?: 'keep' | 'ephemeral';
+  deleteAfter?: string;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -205,6 +215,10 @@ async function handleMemoryIndexScan(args: ScanArgs): Promise<MCPResponse> {
     includeSpecDocs: include_spec_docs = true,
     incremental = true
   } = args;
+  const governanceDecision = validateGovernedIngest(args);
+  if (!governanceDecision.allowed) {
+    throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
+  }
 
   // Pre-flight dimension check
   try {

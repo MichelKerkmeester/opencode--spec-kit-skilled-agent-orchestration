@@ -23,7 +23,7 @@ trigger_phrases:
 
 ## 1. SCENARIO
 
-Validate that `lib/scorer/fusion.ts` combines the five lanes with the canonical weights `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.10`, `semantic_shadow: 0.00`, and that the weight configuration is discoverable via `advisor_status.laneWeights`.
+Validate that `lib/scorer/fusion.ts` combines the five lanes with the canonical weights `explicit_author: 0.45`, `lexical: 0.30`, `graph_causal: 0.15`, `derived_generated: 0.15`, `semantic_shadow: 0.00`, and that the weight configuration is discoverable via `advisor_status.laneWeights`.
 
 ---
 

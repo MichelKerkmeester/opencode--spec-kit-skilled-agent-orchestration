@@ -401,9 +401,9 @@ Key checks:
 <!-- ANCHOR:decision-records -->
 ## 9. DECISION RECORDS
 
-Architectural decisions for the skill-advisor + code-graph subsystems are captured in the subsystem unification decision record:
-
-`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/027-skill-graph-daemon-and-advisor-unification/decision-record.md`
+Architectural decisions for the skill-advisor and code-graph subsystems are
+captured in the runtime source anchors under `mcp_server/skill_advisor/` and
+`mcp_server/code_graph/`, with package-level rationale in the subsystem docs.
 
 | ADR | Subject |
 |---|---|

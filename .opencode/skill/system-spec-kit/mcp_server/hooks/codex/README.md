@@ -60,7 +60,7 @@ Expected stdout contains non-empty `hookSpecificOutput.additionalContext`. Cold-
 <!-- ANCHOR:registration -->
 ## 2. REGISTRATION
 
-Checked-in `.codex/settings.json` shape:
+Checked-in `.codex/settings.json` template shape:
 
 ```json
 {
@@ -89,6 +89,10 @@ Checked-in `.codex/settings.json` shape:
   }
 }
 ```
+
+This repository file is a template example. Live native Codex hooks require
+`[features].codex_hooks = true` plus user or workspace `hooks.json`
+registration in the active Codex configuration.
 
 Documented `.codex/policy.json` snippet:
 

@@ -4669,10 +4669,10 @@ This category tracks the compact-code-graph rollout: hook lifecycle capture, hoo
 
 ### Current Reality
 
-The active package includes a dedicated category folder with 24 feature records that mirror phases 001-025 from the compact-code-graph packet, including precompact/session-start/stop hooks, non-hook MCP priming, session health/resume tools, metrics, tool-routing guidance, and the shared readiness contract.
+The active package includes a dedicated category folder with feature records for compact-code-graph context preservation, code graph readiness, Skill Graph tools, and deep-loop coverage-graph reads.
 
 ### Source Files
 
 - Category overview: [`22--context-preservation-and-code-graph/01-category-overview.md`](22--context-preservation-and-code-graph/01-category-overview.md)
-- Latest feature: [`22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`](22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md)
+- Latest feature: [`22--context-preservation-and-code-graph/30-coverage-graph-query.md`](22--context-preservation-and-code-graph/30-coverage-graph-query.md)
 - Playbook counterpart: [`../manual_testing_playbook/22--context-preservation-and-code-graph/`](../manual_testing_playbook/22--context-preservation-and-code-graph/)

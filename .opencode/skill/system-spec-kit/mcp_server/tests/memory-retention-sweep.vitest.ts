@@ -3,6 +3,10 @@
 // ───────────────────────────────────────────────────────────────────
 
 import { describe, expect, it } from 'vitest';
+import { mkdtempSync, rmSync } from 'node:fs';
+import { join } from 'node:path';
+import { tmpdir } from 'node:os';
+import Database from 'better-sqlite3';
 
 import { runMemoryRetentionSweep } from '../lib/governance/memory-retention-sweep';
 import { createMemoryIndexTestDatabase } from './fixtures/memory-index-db';
@@ -190,5 +194,29 @@ describe('memory retention sweep', () => {
     expect(memoryIds(db)).toEqual([2]);
     expect((db.prepare("SELECT COUNT(*) AS count FROM memory_fts WHERE memory_fts MATCH 'future'").get() as { count: number }).count).toBe(1);
     expect((db.prepare('SELECT COUNT(*) AS count FROM vec_memories WHERE rowid = 2').get() as { count: number }).count).toBe(1);
+  });
+
+  it('keeps future rows written through another file-backed connection', async () => {
+    const dir = mkdtempSync(join(tmpdir(), 'retention-sweep-'));
+    const dbPath = join(dir, 'memory.sqlite');
+    const sweepDb = createMemoryIndexTestDatabase({ filename: dbPath, includeContentColumns: true });
+    installSearchTables(sweepDb);
+    insertMemory(sweepDb, 1, isoOffset(-3_600_000), 'expired');
+    const writerDb = new Database(dbPath);
+
+    try {
+      await Promise.all([
+        Promise.resolve().then(() => runMemoryRetentionSweep(sweepDb)),
+        Promise.resolve().then(() => insertMemory(writerDb, 2, isoOffset(3_600_000), 'future')),
+      ]);
+
+      expect(memoryIds(sweepDb)).toEqual([2]);
+      expect((sweepDb.prepare("SELECT COUNT(*) AS count FROM memory_fts WHERE memory_fts MATCH 'future'").get() as { count: number }).count).toBe(1);
+      expect((sweepDb.prepare('SELECT COUNT(*) AS count FROM vec_memories WHERE rowid = 2').get() as { count: number }).count).toBe(1);
+    } finally {
+      writerDb.close();
+      sweepDb.close();
+      rmSync(dir, { recursive: true, force: true });
+    }
   });
 });

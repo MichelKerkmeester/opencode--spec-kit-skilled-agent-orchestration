@@ -1315,7 +1315,7 @@ A: The feature catalog is a 294-entry reference across 22 categories documenting
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)** - 294-entry technical reference
 - **[→ Code Graph Runtime Catalog](.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md)** - Package-local code graph runtime inventory
 - **[→ Code Graph Manual Playbook](.opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md)** - Operator scenarios for code graph validation
-- **[→ Latest System Spec-Kit Release Notes](.opencode/changelog/01--system-spec-kit/v3.4.0.2.md)** - Most recent shipped release notes
+- **[→ Latest System Spec-Kit Release Notes](.opencode/changelog/system-spec-kit/v3.4.0.3.md)** - Most recent shipped release notes
 - **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
 **External Resources:**

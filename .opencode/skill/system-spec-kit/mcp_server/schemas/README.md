@@ -24,7 +24,7 @@ trigger_phrases:
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-`schemas/` holds a single file that defines every Zod validation schema used by MCP tool handlers. The live registry currently declares 57 schema keys for 54 public MCP tools plus compatibility aliases/internal schema entries, exported through `TOOL_SCHEMAS` and consumed by tool modules via the `validateToolArgs()` function.
+`schemas/` holds the Zod validation registry used by MCP tool handlers. Treat `TOOL_DEFINITIONS.length` as the public tool-count source of truth and `TOOL_SCHEMAS` as the validation registry; compatibility aliases or internal helper schemas can change the registry-key count without changing the public surface.
 
 Those handlers now sit behind the Gate E continuity contract: `/spec_kit:resume` is the recovery surface, and packet continuity comes from `handover.md` -> `_memory.continuity` -> canonical spec docs. Generated memory artifacts are supporting only.
 

@@ -56,7 +56,7 @@ describe('Gemini UserPromptSubmit advisor hook', () => {
 
     expect(output).toEqual({
       hookSpecificOutput: {
-        hookEventName: 'UserPromptSubmit',
+        hookEventName: 'BeforeAgent',
         additionalContext: 'Advisor: live; use sk-code-opencode 0.91/0.23 pass.',
       },
     });

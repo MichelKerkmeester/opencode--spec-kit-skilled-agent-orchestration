@@ -615,12 +615,12 @@ workflow:
 
   step_7_handover_check:
     purpose: Final workflow closeout after planning
-    activities: [Confirm the planning pass is ready to end, Remind the operator to run /memory:save before pausing if another continuity refresh is needed]
+    activities: [Emit planning closeout status, Remind the operator to run /memory:save later if another continuity refresh is needed]
     mandatory_check: true
-    display_prompt: |
-      Planning complete. End the workflow now, or run /memory:save first if you want another indexed continuity refresh before pausing.
-    user_response_handling: { accept: "Run /memory:save", decline: "Proceed to termination", default: "Wait for user response" }
-    outputs: ["workflow closeout confirmed"]
+    display_status: |
+      Planning complete. Auto mode terminates without waiting; run /memory:save separately if you want another indexed continuity refresh before pausing.
+    user_response_handling: { default: "Proceed to termination" }
+    outputs: ["workflow closeout emitted"]
     validation: workflow_finish_confirmed
 
 # ─────────────────────────────────────────────────────────────────

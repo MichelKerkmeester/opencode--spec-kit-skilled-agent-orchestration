@@ -376,10 +376,14 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
 
   let providerMetadata = embeddings.getProviderMetadata() as PartialProviderMetadata;
   let profile = embeddings.getEmbeddingProfile() as EmbeddingProfile | null;
-  const status = database ? 'healthy' : 'degraded';
-
-  const summary = `Memory system ${status}: ${memoryCount} memories indexed`;
   const hints: string[] = [];
+  const consistency = {
+    status: database ? 'healthy' : 'unknown',
+    rowsTotal: memoryCount,
+    ftsRowsTotal: null as number | null,
+    vecRowsTotal: null as number | null,
+    mismatchedIds: [] as Array<string | number>,
+  };
   const repair = {
     requested: autoRepair,
     attempted: false,
@@ -421,6 +425,42 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
     'orphan_edges_cleanup',
     'orphan_vector_cleanup',
   ];
+
+  if (database) {
+    try {
+      const memoryCountRow = database.prepare('SELECT COUNT(*) as count FROM memory_index').get() as { count: number };
+      const ftsCountRow = database.prepare('SELECT COUNT(*) as count FROM memory_fts').get() as { count: number };
+      const integrityReport = vectorIndex.verifyIntegrity({ autoClean: false });
+      consistency.rowsTotal = memoryCountRow.count;
+      consistency.ftsRowsTotal = ftsCountRow.count;
+      consistency.vecRowsTotal = integrityReport.totalVectors;
+      if (memoryCountRow.count !== ftsCountRow.count) {
+        consistency.mismatchedIds.push('fts_count_mismatch');
+      }
+      if (integrityReport.missingVectors > 0) {
+        consistency.mismatchedIds.push(`missing_vectors:${integrityReport.missingVectors}`);
+      }
+      if (integrityReport.orphanedVectors > 0) {
+        consistency.mismatchedIds.push(`orphaned_vectors:${integrityReport.orphanedVectors}`);
+      }
+      if (integrityReport.orphanedChunks > 0) {
+        consistency.mismatchedIds.push(`orphaned_chunks:${integrityReport.orphanedChunks}`);
+      }
+      for (const file of integrityReport.orphanedFiles.slice(0, 50)) {
+        consistency.mismatchedIds.push(file.id);
+      }
+      consistency.status = consistency.mismatchedIds.length > 0 ? 'degraded' : 'healthy';
+    } catch (error: unknown) {
+      consistency.status = 'unknown';
+      hints.push(`Read-only consistency check failed: ${sanitizeErrorForHint(toErrorMessage(error))}`);
+    }
+  }
+
+  const status = database && consistency.status === 'healthy' ? 'healthy' : 'degraded';
+  const summary = `Memory system ${status}: ${memoryCount} memories indexed`;
+  if (consistency.status === 'degraded') {
+    hints.push('Memory consistency degraded; inspect data.consistency for FTS/vector mismatch details.');
+  }
 
   if (autoRepair && !confirmed) {
     return createMCPSuccessResponse({
@@ -574,6 +614,7 @@ async function handleMemoryHealth(args: HealthArgs): Promise<MCPResponse> {
       version: SERVER_VERSION,
       reportMode: 'full',
       aliasConflicts,
+      consistency,
       repair,
       embeddingProvider: {
         provider: providerName,

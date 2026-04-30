@@ -78,6 +78,9 @@ Save the current conversation context, including session summary, key decisions,
 - Canonical save requests now default to **planner-first** behavior: return the routed target, proposed edit summary, blockers, advisories, and follow-up actions before any mutation-first apply path is requested.
 - Explicit fallback remains available with `plannerMode: "full-auto"` or CLI `--full-auto` when an operator wants the legacy atomic writer behavior.
 - Standalone spec-doc markdown is not the primary operator-facing destination for this command.
+- `/memory:*` commands are markdown-owned contracts. They intentionally do not
+  have external YAML assets; validators and reviewers should check the inline
+  operating-mode blocks plus the markdown workflow steps.
 
 ### Handover Document Maintenance
 
@@ -338,11 +341,17 @@ Content...
 | `toolCalls`        | Optional   | AI-summarized tool calls (richer than DB extraction) |
 | `exchanges`        | Optional   | Key user-assistant exchanges during session          |
 
-### Step 5: Execute Processing Script
+### Step 5: Produce Plan or Execute Processing Script
+
+Default `/memory:save` behavior is plan-only. Stop after producing the routed
+target, proposed edits, blockers, advisories, and follow-up actions unless the
+caller explicitly selects an apply action, `plannerMode:"full-auto"`, or the CLI
+`--full-auto` path.
 
 | Mode                              | Command                                                           | Use When                                     |
 | --------------------------------- | ----------------------------------------------------------------- | -------------------------------------------- |
-| **JSON File** (standard)          | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ${TMPDIR:-/tmp}/save-context-data.json <spec-folder>` | Rich context with decisions, files, triggers |
+| **Plan-only** (default)           | Return routed target, proposed edits, blockers, advisories, and follow-up actions | Canonical save request without explicit apply approval |
+| **JSON File** (explicit apply)    | `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js ${TMPDIR:-/tmp}/save-context-data.json <spec-folder>` | Rich context with decisions, files, triggers after apply or full-auto selection |
 
 > **Why JSON mode:** The AI has strictly better information about its own session than any database query can reconstruct. JSON mode eliminates wrong-session capture, multi-session ambiguity, and exchange pairing bugs.
 

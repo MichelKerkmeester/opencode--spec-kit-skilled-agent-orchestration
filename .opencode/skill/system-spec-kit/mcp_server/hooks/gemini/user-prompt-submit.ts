@@ -43,7 +43,7 @@ export interface GeminiUserPromptSubmitInput {
 
 export interface GeminiHookSpecificOutput {
   readonly hookSpecificOutput: {
-    readonly hookEventName: 'UserPromptSubmit';
+    readonly hookEventName: 'BeforeAgent';
     readonly additionalContext: string;
   };
 }
@@ -199,7 +199,7 @@ export async function handleGeminiUserPromptSubmit(
 
     return {
       hookSpecificOutput: {
-        hookEventName: 'UserPromptSubmit',
+        hookEventName: 'BeforeAgent',
         additionalContext: brief,
       },
     };

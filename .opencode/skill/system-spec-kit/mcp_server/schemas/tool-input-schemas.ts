@@ -255,6 +255,18 @@ const memorySaveSchema = getSchema({
   deleteAfter: z.string().optional(),
 });
 
+const governanceSchemaFields = {
+  tenantId: z.string().optional(),
+  userId: z.string().optional(),
+  agentId: z.string().optional(),
+  sessionId: z.string().optional(),
+  provenanceSource: z.string().optional(),
+  provenanceActor: z.string().optional(),
+  governedAt: z.string().optional(),
+  retentionPolicy: z.enum(['keep', 'ephemeral']).optional(),
+  deleteAfter: z.string().optional(),
+};
+
 // Destructive delete: every mutation path requires `confirm: true`.
 // Branch 1 requires `id` + `confirm` (single-record delete).
 // Branch 2 requires `specFolder` + `confirm` (bulk folder delete).
@@ -440,6 +452,7 @@ const memoryIndexScanSchema = getSchema({
   includeConstitutional: z.boolean().optional(),
   includeSpecDocs: z.boolean().optional(),
   incremental: z.boolean().optional(),
+  ...governanceSchemaFields,
 });
 
 const memoryGetLearningHistorySchema = getSchema({
@@ -453,6 +466,7 @@ const memoryGetLearningHistorySchema = getSchema({
 const memoryIngestStartSchema = getSchema({
   paths: z.array(pathString(1)).min(1).max(MAX_INGEST_PATHS),
   specFolder: optionalPathString(),
+  ...governanceSchemaFields,
 });
 
 const memoryIngestStatusSchema = getSchema({
@@ -713,9 +727,9 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   memory_causal_unlink: ['edgeId'],
   eval_run_ablation: ['mode', 'channels', 'queries', 'groundTruthQueryIds', 'recallK', 'storeResults', 'includeFormattedReport'],
   eval_reporting_dashboard: ['sprintFilter', 'channelFilter', 'metricFilter', 'limit', 'format'],
-  memory_index_scan: ['specFolder', 'force', 'includeConstitutional', 'includeSpecDocs', 'incremental'],
+  memory_index_scan: ['specFolder', 'force', 'includeConstitutional', 'includeSpecDocs', 'incremental', 'tenantId', 'userId', 'agentId', 'sessionId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_get_learning_history: ['specFolder', 'sessionId', 'limit', 'onlyComplete', 'includeSummary'],
-  memory_ingest_start: ['paths', 'specFolder'],
+  memory_ingest_start: ['paths', 'specFolder', 'tenantId', 'userId', 'agentId', 'sessionId', 'provenanceSource', 'provenanceActor', 'governedAt', 'retentionPolicy', 'deleteAfter'],
   memory_ingest_status: ['jobId'],
   memory_ingest_cancel: ['jobId'],
   code_graph_scan: ['rootDir', 'includeGlobs', 'excludeGlobs', 'incremental'],

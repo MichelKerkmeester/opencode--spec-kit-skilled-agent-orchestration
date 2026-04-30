@@ -23,6 +23,7 @@ import {
   type IngestJob,
 } from '../lib/ops/job-queue.js';
 import * as retrievalTelemetry from '../lib/telemetry/retrieval-telemetry.js';
+import { validateGovernedIngest } from '../lib/governance/scope-governance.js';
 
 import type { MCPResponse } from './types.js';
 
@@ -36,6 +37,15 @@ import type { MCPResponse } from './types.js';
 interface MemoryIngestStartArgs {
   paths: string[];
   specFolder?: string;
+  tenantId?: string;
+  userId?: string;
+  agentId?: string;
+  sessionId?: string;
+  provenanceSource?: string;
+  provenanceActor?: string;
+  governedAt?: string;
+  retentionPolicy?: 'keep' | 'ephemeral';
+  deleteAfter?: string;
 }
 
 interface MemoryIngestStatusArgs {
@@ -131,6 +141,10 @@ function mapJobForResponse(job: IngestJob): Record<string, unknown> {
  */
 async function handleMemoryIngestStart(args: MemoryIngestStartArgs): Promise<MCPResponse> {
   await checkDatabaseUpdated();
+  const governanceDecision = validateGovernedIngest(args);
+  if (!governanceDecision.allowed) {
+    throw new Error(`Governed ingest rejected: ${governanceDecision.issues.join('; ')}`);
+  }
 
   let paths = Array.isArray(args.paths)
     ? args.paths.filter((entry): entry is string => typeof entry === 'string' && entry.trim().length > 0)

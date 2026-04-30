@@ -74,6 +74,10 @@ operating_mode:
   tracking: intent_classification
 ```
 
+This is a markdown-owned command contract. `/memory:*` commands intentionally do
+not have external YAML assets; validators and reviewers should check the inline
+operating-mode block and markdown workflow steps.
+
 ---
 
 ## 1. PURPOSE

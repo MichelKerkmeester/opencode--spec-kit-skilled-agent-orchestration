@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/048-remaining-p1-p2-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/048-remaining-p1-p2-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/046-release-readiness-synthesis-and-remediation"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/045-release-readiness-deep-review-program"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "048-remaining-p1-p2-remediation",
+      "P1 P2 backlog",
+      "release polish",
+      "conservative defaults pass"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "remediation-log.md",
+      "deferred-p2.md",
+      "implementation-summary.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "remediation-log.md",
+      "deferred-p2.md",
+      "implementation-summary.md"
+    ],
+    "entities": []
+  }
+}

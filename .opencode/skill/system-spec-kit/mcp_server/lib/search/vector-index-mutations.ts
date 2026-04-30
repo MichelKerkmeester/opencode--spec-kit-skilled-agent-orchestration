@@ -15,6 +15,7 @@ import { recordHistory } from '../storage/history.js';
 import { getCanonicalPathKey } from '../utils/canonical-path.js';
 import { isIndexableConstitutionalMemoryPath } from '../utils/index-scope.js';
 import { createLogger } from '../utils/logger.js';
+import { deleteByContentHash } from '../cache/embedding-cache.js';
 import { clearDegreeCacheForDb } from './graph-search-fn.js';
 import * as bm25Index from './bm25-index.js';
 import {
@@ -593,6 +594,9 @@ export function delete_memory_from_database(database: Database.Database, id: num
   const delete_memory_tx = database.transaction(() => {
     // Memory_history rows are intentionally preserved after deletion
     // So DELETE audit events recorded by handlers persist as audit trail.
+    const row = database.prepare('SELECT content_hash FROM memory_index WHERE id = ?').get(id) as
+      | { content_hash: string | null }
+      | undefined;
 
     if (sqlite_vec) {
       try {
@@ -609,6 +613,15 @@ export function delete_memory_from_database(database: Database.Database, id: num
 
     // BUG-020: Clean ancillary records so deletes do not leave graph residue behind.
     deleteAncillaryMemoryRows(database, id);
+
+    if (row?.content_hash) {
+      // Governed retention delete semantics include derived embedding-cache rows.
+      try {
+        deleteByContentHash(database, row.content_hash);
+      } catch (_error: unknown) {
+        // Legacy or test databases may not have embedding_cache yet.
+      }
+    }
 
     const result = database.prepare('DELETE FROM memory_index WHERE id = ?').run(id);
 

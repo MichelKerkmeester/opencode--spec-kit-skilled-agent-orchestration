@@ -108,8 +108,13 @@ _log log_header "Prerequisites"
 if check_command_exists node; then
   HAS_NODE=true
   NODE_MAJOR="$(get_node_major_version)"
-  _log log_pass "Node.js $(node --version)"
-  record_pass "prerequisites" "node" "$(node --version)"
+  if node_version_at_least "20.11.0"; then
+    _log log_pass "Node.js $(node --version)"
+    record_pass "prerequisites" "node" "$(node --version)"
+  else
+    _log log_fail "Node.js $(node --version) is below required >=20.11.0"
+    record_fail "prerequisites" "node" "$(node --version) < 20.11.0"
+  fi
 else
   _log log_fail "Node.js not found — 3 of 4 MCP servers require it"
   record_fail "prerequisites" "node" "not found"
@@ -483,7 +488,7 @@ detect_and_check_configs() {
     ".claude/mcp.json|json-mcpServers|Claude Code"
     ".codex/config.toml|toml|Codex CLI"
     ".gemini/settings.json|json-mcpServers|Gemini CLI"
-    ".vscode/mcp.json|json-mcpServers|VS Code / Copilot"
+    ".vscode/mcp.json|json-vscode-mcp|VS Code / Copilot"
   )
 
   local -a servers=("spec_kit_memory" "cocoindex_code" "code_mode" "sequential_thinking")

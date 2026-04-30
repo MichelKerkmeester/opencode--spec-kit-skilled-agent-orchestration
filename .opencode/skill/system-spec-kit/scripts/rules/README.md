@@ -139,6 +139,11 @@ The authoritative rule metadata lives in `scripts/lib/validator-registry.json`.
 
 These rules validate files authored by humans or agents in spec packets: `FILE_EXISTS`, `PLACEHOLDER_FILLED`, `SECTIONS_PRESENT`, `LEVEL_DECLARED`, `PRIORITY_TAGS`, `EVIDENCE_CITED`, `ANCHORS_VALID`, `FRONTMATTER_MEMORY_BLOCK`, `SPEC_DOC_SUFFICIENCY`, `TOC_POLICY`, `PHASE_LINKS`, `AI_PROTOCOLS`, `COMPLEXITY_MATCH`, `FOLDER_NAMING`, `FRONTMATTER_VALID`, `LEVEL_MATCH`, `SECTION_COUNTS`, `SPEC_DOC_INTEGRITY`, `TEMPLATE_SOURCE`, and `TEMPLATE_HEADERS`.
 
+Legacy packets can opt into explicit strict-warning grandfathering with
+`"legacy_grandfathered": true` in root `graph-metadata.json`. Errors still
+fail; strict-mode warnings remain visible but do not promote the packet to a
+failed exit while the legacy migration policy is active.
+
 #### Operational Runtime Rules
 
 These rules validate runtime, generated, opt-in, or save-time surfaces: `MERGE_LEGALITY`, `CROSS_ANCHOR_CONTAMINATION`, `POST_SAVE_FINGERPRINT`, `GRAPH_METADATA_PRESENT`, `NORMALIZER_LINT`, `LINKS_VALID`, `CANONICAL_SAVE_ROOT_SPEC_REQUIRED`, `CANONICAL_SAVE_SOURCE_DOCS_REQUIRED`, `CANONICAL_SAVE_LINEAGE_REQUIRED`, `CANONICAL_SAVE_PACKET_IDENTITY_NORMALIZED`, `CANONICAL_SAVE_DESCRIPTION_GRAPH_FRESHNESS`, `CONTINUITY_FRESHNESS`, and `EVIDENCE_MARKER_LINT`.

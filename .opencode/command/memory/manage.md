@@ -43,6 +43,10 @@ operating_mode:
   approvals: cleanup_delete_restore_require_confirmation
 ```
 
+This is a markdown-owned command contract. `/memory:*` commands intentionally do
+not have external YAML assets; validators and reviewers should check the inline
+operating-mode block and markdown workflow steps.
+
 ---
 
 ## 0. INSTRUCTIONS
@@ -969,7 +973,7 @@ spec_kit_memory_ccc_feedback({
 | CHECKPOINT CREATE  | `checkpoint_create()`                                                   | SINGLE   | Show error msg  |
 | CHECKPOINT RESTORE | `checkpoint_list()` → [confirm] → snapshot → `checkpoint_restore()`     | SEQUENCE | Rollback+abort  |
 | CHECKPOINT LIST    | `checkpoint_list()`                                                     | SINGLE   | Show empty msg  |
-| CHECKPOINT DELETE  | `checkpoint_delete()`                                                   | SINGLE   | Show error msg  |
+| CHECKPOINT DELETE  | `checkpoint_list()` → [confirmName] → `checkpoint_delete()`             | SEQUENCE | Abort operation |
 | INGEST START       | `memory_ingest_start()`                                                 | SINGLE   | Show error msg  |
 | INGEST STATUS      | `memory_ingest_status()`                                                | SINGLE   | Show error msg  |
 | INGEST CANCEL      | `memory_ingest_cancel()`                                                | SINGLE   | Show error msg  |

@@ -37,6 +37,7 @@ source "${SCRIPT_DIR}/../lib/shell-common.sh"
 # State
 FOLDER_PATH="" DETECTED_LEVEL=1 LEVEL_METHOD="inferred" CONFIG_FILE_PATH=""
 JSON_MODE=false STRICT_MODE=false VERBOSE=false QUIET_MODE=false RECURSIVE=false RECURSIVE_OPT_OUT=false
+LEGACY_GRANDFATHERED=false
 ERRORS=0 WARNINGS=0 INFOS=0 RESULTS=""
 PHASE_RESULTS="" PHASE_COUNT=0
 
@@ -170,6 +171,16 @@ apply_env_overrides() {
     return 0
 }
 
+detect_legacy_grandfathered() {
+    local folder="$1"
+    local graph_file="$folder/graph-metadata.json"
+    LEGACY_GRANDFATHERED=false
+    [[ -f "$graph_file" ]] || return 0
+    if node -e "const fs=require('fs'); const p=process.argv[1]; const data=JSON.parse(fs.readFileSync(p,'utf8')); process.exit(data.legacy_grandfathered === true ? 0 : 1)" "$graph_file" 2>/dev/null; then
+        LEGACY_GRANDFATHERED=true
+    fi
+}
+
 load_config() {
     local folder="${1:-.}"
     [[ -f "$folder/.speckit.yaml" ]] && { CONFIG_FILE_PATH="$folder/.speckit.yaml"; }
@@ -299,24 +310,44 @@ detect_level() {
 log_pass() {
     ! $JSON_MODE && ! $QUIET_MODE && printf "${GREEN}✓${NC} ${BOLD}%s${NC}: %s\n" "$1" "$2"
     [[ -n "$RESULTS" ]] && RESULTS+=","
-    RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"pass\",\"message\":\"$(_json_escape "$2")\"}"
+    RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"pass\",\"message\":\"$(_json_escape "$2")\"$(_json_rule_payload)}"
 }
 log_warn() {
     ((WARNINGS++)) || true
     ! $JSON_MODE && ! $QUIET_MODE && printf "${YELLOW}⚠${NC} ${BOLD}%s${NC}: %s\n" "$1" "$2"
-    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"warn\",\"message\":\"$(_json_escape "$2")\"}"
+    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"warn\",\"message\":\"$(_json_escape "$2")\"$(_json_rule_payload)}"
 }
 log_error() {
     ((ERRORS++)) || true
     ! $JSON_MODE && ! $QUIET_MODE && printf "${RED}✗${NC} ${BOLD}%s${NC}: %s\n" "$1" "$2"
-    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"error\",\"message\":\"$(_json_escape "$2")\"}"
+    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"error\",\"message\":\"$(_json_escape "$2")\"$(_json_rule_payload)}"
 }
 log_info() {
     ((INFOS++)) || true
     ! $JSON_MODE && ! $QUIET_MODE && $VERBOSE && printf "${BLUE}ℹ${NC} ${BOLD}%s${NC}: %s\n" "$1" "$2"
-    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"info\",\"message\":\"$(_json_escape "$2")\"}"
+    [[ -n "$RESULTS" ]] && RESULTS+=","; RESULTS+="{\"rule\":\"$(_json_escape "$1")\",\"status\":\"info\",\"message\":\"$(_json_escape "$2")\"$(_json_rule_payload)}"
 }
 log_detail() { ! $JSON_MODE && ! $QUIET_MODE && printf "    - %s\n" "$1"; true; }
+
+_json_rule_payload() {
+    local payload=""
+    if [[ -n "${RULE_DETAILS[*]-}" ]]; then
+        local details_json="" detail
+        for detail in "${RULE_DETAILS[@]}"; do
+            [[ -n "$details_json" ]] && details_json+=","
+            details_json+="\"$(_json_escape "$detail")\""
+        done
+        payload+=",\"details\":[${details_json}]"
+    else
+        payload+=",\"details\":[]"
+    fi
+    if [[ -n "${RULE_REMEDIATION:-}" ]]; then
+        payload+=",\"remediation\":\"$(_json_escape "$RULE_REMEDIATION")\""
+    else
+        payload+=",\"remediation\":null"
+    fi
+    printf '%s' "$payload"
+}
 
 # ───────────────────────────────────────────────────────────────
 # 8. RULE RESOLUTION
@@ -810,7 +841,7 @@ print_summary() {
         local status="PASSED"
         if [[ $ERRORS -gt 0 ]]; then
             status="FAILED"
-        elif [[ $WARNINGS -gt 0 ]] && $STRICT_MODE; then
+        elif [[ $WARNINGS -gt 0 ]] && $STRICT_MODE && ! $LEGACY_GRANDFATHERED; then
             status="FAILED_STRICT"
         elif [[ $WARNINGS -gt 0 ]]; then
             status="PASSED_WITH_WARNINGS"
@@ -825,7 +856,7 @@ ${NC}\n"
     echo ""
     if [[ $ERRORS -gt 0 ]]; then echo -e "  ${RED}${BOLD}RESULT: FAILED${NC}"
     elif [[ $WARNINGS -gt 0 ]]; then
-        if $STRICT_MODE; then echo -e "  ${RED}${BOLD}RESULT: FAILED${NC} (strict)"; else echo -e "  ${YELLOW}${BOLD}RESULT: PASSED WITH WARNINGS${NC}"; fi
+        if $STRICT_MODE && ! $LEGACY_GRANDFATHERED; then echo -e "  ${RED}${BOLD}RESULT: FAILED${NC} (strict)"; else echo -e "  ${YELLOW}${BOLD}RESULT: PASSED WITH WARNINGS${NC}"; fi
     else echo -e "  ${GREEN}${BOLD}RESULT: PASSED${NC}"; fi
     echo ""
 }
@@ -833,7 +864,7 @@ ${NC}\n"
 generate_json() {
     local passed="true"
     [[ $ERRORS -gt 0 ]] && passed="false"
-    [[ $WARNINGS -gt 0 ]] && $STRICT_MODE && passed="false"
+    [[ $WARNINGS -gt 0 ]] && $STRICT_MODE && ! $LEGACY_GRANDFATHERED && passed="false"
     local cfg="null"; [[ -n "$CONFIG_FILE_PATH" ]] && cfg="\"$(_json_escape "$CONFIG_FILE_PATH")\""
     local folder_escaped="$(_json_escape "$FOLDER_PATH")"
     # JSON-safe level: quote if non-numeric (e.g. "3+")
@@ -942,6 +973,7 @@ main() {
     fi
     load_config "$FOLDER_PATH"
     apply_env_overrides
+    detect_legacy_grandfathered "$FOLDER_PATH"
     detect_level "$FOLDER_PATH"
     validate_template_hashes "$FOLDER_PATH"
     print_header
@@ -956,7 +988,7 @@ main() {
 
     if $JSON_MODE; then generate_json; else print_summary; fi
     if [[ $ERRORS -gt 0 ]]; then exit 2; fi
-    if [[ $WARNINGS -gt 0 ]] && $STRICT_MODE; then exit 2; fi
+    if [[ $WARNINGS -gt 0 ]] && $STRICT_MODE && ! $LEGACY_GRANDFATHERED; then exit 2; fi
     if [[ $WARNINGS -gt 0 ]]; then exit 1; fi
     exit 0
 }

@@ -125,9 +125,11 @@ These flags can add evidence around future reporting surfaces, but they must sti
 | `SPECKIT_EVAL_LOGGING` | Persists evaluation events for later review, but does not authorize publication-grade multiplier claims. |
 | `SPECKIT_ABLATION` | Enables ablation studies, but any exported savings story still needs provider-counted authority plus methodology metadata. |
 
-### Auditable Savings Publication Contract (009)
+### Auditable Savings Publication Contract
 
-Packet `009-auditable-savings-publication-contract` adds a row-eligibility gate beside the packet `005` measurement contract.
+The reporting pipeline adds a row-eligibility gate beside the measurement
+contract implemented in `mcp_server/lib/telemetry/retrieval-telemetry.ts` and
+the publication guard helpers used by the evaluation dashboard.
 
 - Publishable reporting rows must include a supported `methodologyStatus`, a non-empty `schemaVersion`, and at least one provenance entry.
 - Rows that fail the publication contract must surface one exclusion reason: `missing_methodology`, `missing_schema_version`, `missing_provenance`, or `unsupported_certainty`.

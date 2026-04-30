@@ -1079,7 +1079,7 @@ termination:
 # ─────────────────────────────────────────────────────────────────
 checkpoint_protocol:
   display_format: "WORKFLOW CHECKPOINT - {checkpoint_title} | {checkpoint_content} | Progress: {progress_display}"
-  autonomous_behavior: { pause_for_confirmation: true, default_action_on_timeout: "continue", timeout_seconds: 300 }
+  autonomous_behavior: { pause_for_confirmation: false, default_action_on_timeout: "continue", timeout_seconds: 0 }
 
 # ─────────────────────────────────────────────────────────────────
 # QUALITY STANDARDS
