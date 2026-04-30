@@ -19,7 +19,6 @@ Stack detected: **GO**. The smart router at `SKILL.md` §2 routes to this branch
 
 ---
 
-
 ## TABLE OF CONTENTS
 
 - [OVERVIEW](#1--overview)

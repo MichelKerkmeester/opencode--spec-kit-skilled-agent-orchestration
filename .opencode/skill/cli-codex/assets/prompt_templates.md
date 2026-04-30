@@ -41,8 +41,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ---
 
-<!-- ANCHOR:code_generation -->
-
 ## 2. CODE GENERATION
 
 ### Single-File Application
@@ -119,9 +117,6 @@ codex exec "Implement a React TypeScript component to match the attached design.
 
 ---
 
-<!-- /ANCHOR:code_generation -->
-<!-- ANCHOR:code_review -->
-
 ## 3. CODE REVIEW
 
 ### Comprehensive Review
@@ -186,9 +181,6 @@ codex
 
 ---
 
-<!-- /ANCHOR:code_review -->
-<!-- ANCHOR:bug_fixing -->
-
 ## 4. BUG FIXING
 
 ### Fix Identified Bugs
@@ -225,9 +217,6 @@ codex exec "This screenshot shows a bug in the application. Analyze @./[file] an
 ```
 
 ---
-
-<!-- /ANCHOR:bug_fixing -->
-<!-- ANCHOR:test_generation -->
 
 ## 5. TEST GENERATION
 
@@ -273,8 +262,6 @@ codex exec "Analyze @./[test-file] against the implementation in @./[source-file
 
 ---
 
-<!-- /ANCHOR:test_generation -->
-
 ## 6. DOCUMENTATION
 
 ### JSDoc / TSDoc Generation
@@ -312,8 +299,6 @@ codex exec "Generate API documentation for @./[file]. For each endpoint: documen
 
 ---
 
-<!-- ANCHOR:code_transformation -->
-
 ## 7. CODE TRANSFORMATION
 
 ### Refactoring
@@ -350,9 +335,6 @@ codex exec "Migrate @./[file] from [framework] to [framework]. Requirements: 1) 
 ```
 
 ---
-
-<!-- /ANCHOR:code_transformation -->
-<!-- ANCHOR:web_research -->
 
 ## 8. WEB RESEARCH
 
@@ -402,9 +384,6 @@ codex exec "Search the web for security advisories and CVEs for [package]@[versi
 
 ---
 
-<!-- /ANCHOR:web_research -->
-<!-- ANCHOR:architecture_analysis -->
-
 ## 9. ARCHITECTURE ANALYSIS
 
 ### Project Analysis
@@ -441,9 +420,6 @@ codex exec "Analyze the impact of [description of planned change] on @./[file]. 
 ```
 
 ---
-
-<!-- /ANCHOR:architecture_analysis -->
-<!-- ANCHOR:specialized_tasks -->
 
 ## 10. SPECIALIZED TASKS
 
@@ -528,9 +504,6 @@ codex exec -p ultra-think "Plan the implementation of [feature]. Generate and ev
 
 ---
 
-<!-- /ANCHOR:specialized_tasks -->
-<!-- ANCHOR:template_variables -->
-
 ## 11. TEMPLATE VARIABLES
 
 All placeholders used across templates in this file:
@@ -566,9 +539,6 @@ All placeholders used across templates in this file:
 
 ---
 
-<!-- /ANCHOR:template_variables -->
-<!-- ANCHOR:related_resources -->
-
 ## 12. RELATED RESOURCES
 
 ### Parent
@@ -580,10 +550,6 @@ All placeholders used across templates in this file:
 - [cli_reference.md](../references/cli_reference.md) - Complete CLI subcommand and flag reference
 - [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
 - [codex_tools.md](../references/codex_tools.md) - Built-in capabilities (/review, --search, MCP, session management)
-
-<!-- /ANCHOR:related_resources -->
-
-<!-- ANCHOR:memory_epilogue -->
 
 ## 13. MEMORY EPILOGUE
 
@@ -704,10 +670,6 @@ Valid JSON can still be rejected after normalization. File-backed handbacks skip
 
 Minimum viable payload: include a specific `sessionSummary`, at least one meaningful `recent_context` entry or equivalent observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, and `_provenance` when known.
 
-<!-- /ANCHOR:memory_epilogue -->
-
-<!-- ANCHOR:model_selection -->
-
 ## 14. REASONING EFFORT SELECTION
 
 All templates dispatch `--model gpt-5.5`. Tune `model_reasoning_effort` to the task.
@@ -762,4 +724,3 @@ codex exec "Fix these security issues: $(cat /tmp/security-findings.txt)" \
   --model gpt-5.5 -c model_reasoning_effort="medium" --sandbox workspace-write
 ```
 
-<!-- /ANCHOR:model_selection -->

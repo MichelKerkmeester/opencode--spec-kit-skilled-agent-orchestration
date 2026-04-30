@@ -19,7 +19,6 @@ Stack detected: **NEXTJS**. The smart router at `SKILL.md` §2 routes to this br
 
 ---
 
-
 ## TABLE OF CONTENTS
 
 - [OVERVIEW](#1--overview)

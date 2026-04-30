@@ -1000,4 +1000,3 @@ You now have [TOOL_NAME] installed and configured. [BRIEF_USAGE_INSTRUCTION]
 ### Skill Reference
 - [sk-doc SKILL.md](../../SKILL.md) - Mode 4: Install Guide Creation
 
-<!-- /ANCHOR:complete-template -->

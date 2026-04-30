@@ -20,7 +20,6 @@ Evaluator-first workflow for testing whether a bounded agent surface can be impr
 
 ---
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -56,8 +55,6 @@ Do not use this skill for:
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Domains
@@ -183,8 +180,6 @@ def route_recursive_agent_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Mode 1: Runtime Initialization
@@ -227,8 +222,6 @@ Profiles are generated on the fly from any agent file via `scripts/generate-prof
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:success-criteria -->
 ## 4. SUCCESS CRITERIA
 
 - The loop stays proposal-first unless an explicit guarded promotion path is requested
@@ -238,8 +231,6 @@ Profiles are generated on the fly from any agent file via `scripts/generate-prof
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:runtime-truth -->
 ## 4B. RUNTIME TRUTH CONTRACTS (Phase 005)
 
 ### Stop-Reason Taxonomy
@@ -326,7 +317,6 @@ Reads historical session data and emits a weight-recommendation report. Recommen
 
 ---
 
-<!-- /ANCHOR:runtime-truth -->
 ## Journal Wiring Contract
 
 Journal emission is orchestrator-only. The target agent being evaluated never writes journal rows directly; only the visible YAML workflow or an operator-side wrapper invokes `scripts/improvement-journal.cjs`.
@@ -390,7 +380,6 @@ Graceful degradation is required: if any artifact is missing, unreadable, or not
 
 The dashboard now also includes a dedicated **Sample Quality** section. This separates replay/stability sample sufficiency from benchmark failures so operators can tell the difference between a true regression and an iteration that simply lacked enough data for trade-off or replay-stability trust.
 
-<!-- ANCHOR:rules -->
 ## 5. RULES
 
 ### ✅ ALWAYS
@@ -419,8 +408,6 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 6. REFERENCES
 
 | Resource | Purpose |
@@ -457,8 +444,6 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 - `/improve:improve-agent` initializes and runs the bounded workflow
@@ -468,8 +453,6 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - `references/quick_reference.md` for the shortest operator refresher
@@ -477,4 +460,3 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 - `references/target_onboarding.md` for adding future bounded targets safely
 - `references/rollback_runbook.md` for promotion and rollback proof
 
-<!-- /ANCHOR:related-resources -->

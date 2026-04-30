@@ -19,7 +19,6 @@ Runtime path resolution:
 - Claude runtime: `.claude/agents/*.md`
 - Codex runtime: `.codex/agents/*.toml`
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### When to Use This Skill
@@ -138,8 +137,6 @@ On this skill surface, the live code-graph readiness contract only reaches four 
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -231,8 +228,6 @@ Detect the current review phase from dispatch context to load appropriate resour
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Resource Map Coverage Gate
@@ -413,8 +408,6 @@ Reducer contract:
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ALWAYS
@@ -459,8 +452,6 @@ Reducer contract:
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core Documentation
@@ -500,8 +491,6 @@ Local review-specific protocol documents:
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Loop Completion
@@ -545,8 +534,6 @@ Every completed loop produces a convergence report (embedded in `review-report.m
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -596,8 +583,6 @@ After review:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Worked Example: Spec Folder Audit
@@ -644,4 +629,3 @@ After review:
 | `sk-code-review` | For simple single-pass code review without iteration |
 
 **For one-page cheat sheet**: See [quick_reference.md](references/quick_reference.md)
-<!-- /ANCHOR:related-resources -->

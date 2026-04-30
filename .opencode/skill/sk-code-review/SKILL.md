@@ -11,7 +11,6 @@ version: 1.2.0.0
 
 Universal `sk-code` review baseline for any codebase, implemented by `sk-code-review` and paired with one `sk-code-*` overlay skill for stack-specific rules.
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -37,11 +36,9 @@ Use this skill when:
 - Feature implementation without review intent.
 - Pure documentation editing where code behavior is not being assessed.
 - Git-only workflow tasks (branching, rebasing, commit hygiene) without code-quality evaluation intent.
-<!-- /ANCHOR:when-to-use -->
 
 ---
 
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Primary Detection Signal
@@ -156,7 +153,6 @@ UNKNOWN_FALLBACK_CHECKLIST = [
     "Confirm findings-only vs findings+fix follow-up",
 ]
 
-
 def _task_text(task) -> str:
     return " ".join([
         str(getattr(task, "text", "")),
@@ -165,7 +161,6 @@ def _task_text(task) -> str:
         " ".join(getattr(task, "keywords", []) or []),
     ]).lower()
 
-
 def _guard_in_skill(relative_path: str) -> str:
     resolved = (SKILL_ROOT / relative_path).resolve()
     resolved.relative_to(SKILL_ROOT)
@@ -173,14 +168,12 @@ def _guard_in_skill(relative_path: str) -> str:
         raise ValueError(f"Only markdown resources are routable: {relative_path}")
     return resolved.relative_to(SKILL_ROOT).as_posix()
 
-
 def discover_markdown_resources() -> set[str]:
     docs = []
     for base in RESOURCE_BASES:
         if base.exists():
             docs.extend(path for path in base.rglob("*.md") if path.is_file())
     return {doc.relative_to(SKILL_ROOT).as_posix() for doc in docs}
-
 
 def score_intents(task) -> dict[str, float]:
     text = _task_text(task)
@@ -191,7 +184,6 @@ def score_intents(task) -> dict[str, float]:
                 scores[intent] += cfg["weight"]
     return scores
 
-
 def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_intents: int = 2) -> list[str]:
     ranked = sorted(scores.items(), key=lambda item: item[1], reverse=True)
     if not ranked or ranked[0][1] <= 0:
@@ -200,7 +192,6 @@ def select_intents(scores: dict[str, float], ambiguity_delta: float = 1.0, max_i
     if len(ranked) > 1 and ranked[1][1] > 0 and (ranked[0][1] - ranked[1][1]) <= ambiguity_delta:
         selected.append(ranked[1][0])
     return selected[:max_intents]
-
 
 def detect_overlay_skill(task, workspace_files=None, changed_files=None) -> str:
     text = _task_text(task)
@@ -213,7 +204,6 @@ def detect_overlay_skill(task, workspace_files=None, changed_files=None) -> str:
     ):
         return "sk-code"
     return "sk-code"
-
 
 def route_review_resources(task, workspace_files=None, changed_files=None):
     inventory = discover_markdown_resources()
@@ -268,11 +258,9 @@ def route_review_resources(task, workspace_files=None, changed_files=None):
         "resources": loaded,
     }
 ```
-<!-- /ANCHOR:smart-routing -->
 
 ---
 
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Phase 1: Scope and Baseline
@@ -326,11 +314,9 @@ Required output contract:
 ```
 
 After reporting findings, request explicit next action before any implementation follow-up.
-<!-- /ANCHOR:how-it-works -->
 
 ---
 
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -354,11 +340,9 @@ After reporting findings, request explicit next action before any implementation
 - Baseline and overlay guidance conflict in a non-deterministic way.
 - Large diff size prevents reliable severity assignment without narrowed scope.
 - Requested remediation exceeds review scope and becomes architecture redesign.
-<!-- /ANCHOR:rules -->
 
 ---
 
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core References
@@ -376,22 +360,18 @@ After reporting findings, request explicit next action before any implementation
 
 - Load only the references needed for the selected intents.
 - Keep Section 2 (`SMART ROUTING`) as the authoritative routing source.
-<!-- /ANCHOR:references -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 - Review output is findings-first and severity-ordered.
 - `sk-code` baseline + `sk-code-*` overlay contract is explicit in report context.
 - Security/correctness minimums are always covered.
 - Recommended fixes are actionable and scope-proportional.
-<!-- /ANCHOR:success-criteria -->
 
 ---
 
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 - Primary review baseline for `@review` agents in `.opencode/agent/review.md`.
@@ -400,11 +380,9 @@ After reporting findings, request explicit next action before any implementation
   - `sk-code-opencode`
   - `sk-code`
   - `sk-code`
-<!-- /ANCHOR:integration-points -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - [sk-doc](../sk-doc/SKILL.md) - Skill authoring and packaging standards.
@@ -412,4 +390,3 @@ After reporting findings, request explicit next action before any implementation
 - [sk-code](../sk-code/SKILL.md) - Web/frontend overlay standards.
 - [sk-code](../sk-code/SKILL.md) - Default multi-stack overlay standards.
 - [.opencode/agent/review.md](../../agent/review.md) - Runtime review agent contract.
-<!-- /ANCHOR:related-resources -->

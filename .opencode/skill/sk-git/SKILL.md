@@ -12,7 +12,6 @@ version: 1.1.0.0
 
 Unified workflow guidance across workspace isolation, commit hygiene, and work completion.
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### When to Use This Orchestrator
@@ -34,8 +33,6 @@ Use this orchestrator when:
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -195,8 +192,6 @@ def route_git_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Workspace Choice Enforcement
@@ -276,8 +271,6 @@ git-finish (feature A) → git-finish (feature B)
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -350,8 +343,6 @@ Use this logic whenever the AI writes or rewrites commit messages.
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core Workflows
@@ -373,8 +364,6 @@ Use this logic whenever the AI writes or rewrites commit messages.
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Workspace Setup Complete
@@ -407,8 +396,6 @@ Use this logic whenever the AI writes or rewrites commit messages.
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -445,8 +432,6 @@ memory_search({ query: "branch strategy decisions", includeContent: true })
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Worked Examples
@@ -477,4 +462,3 @@ CLEANUP:   Remove worktrees after completion
 ```
 
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
-<!-- /ANCHOR:related-resources -->

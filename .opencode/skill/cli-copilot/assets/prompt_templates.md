@@ -35,8 +35,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ---
 
-<!-- ANCHOR:code_generation -->
-
 ## 2. CODE GENERATION
 
 ### Single-File Module
@@ -75,9 +73,6 @@ copilot -p "Implement a file upload service in Node.js. Create necessary files: 
   --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:code_generation -->
-<!-- ANCHOR:code_review -->
-
 ## 3. CODE REVIEW
 
 ### Security Audit
@@ -104,8 +99,6 @@ Framework: TIDD-EC
 copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complexity issues, and memory leaks. Suggest optimizations." \
   --agent review --model claude-opus-4.6 --allow-all-tools 2>&1
 ```
-
-<!-- /ANCHOR:code_review -->
 
 ## 4. ARCHITECTURE & PLANNING
 
@@ -134,8 +127,6 @@ copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [
  --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-<!-- ANCHOR:bug_fixing -->
-
 ## 5. BUG FIXING
 
 ### Root Cause & Fix
@@ -163,9 +154,6 @@ copilot -p "Investigate why [feature] stopped working after recent changes in @.
   --agent debug --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:bug_fixing -->
-<!-- ANCHOR:test_generation -->
-
 ## 6. TEST GENERATION
 
 ### Unit Test Suite
@@ -186,8 +174,6 @@ copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[re
   --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:test_generation -->
-
 ## 7. DOCUMENTATION
 
 ### Technical Spec
@@ -207,8 +193,6 @@ Framework: RCAF
 copilot -p "Update documentation in @./docs to match code changes in @./src. Ensure all examples are functional." \
   --model gpt-5.4 --allow-all-tools 2>&1
 ```
-
-<!-- ANCHOR:code_transformation -->
 
 ## 8. CODE TRANSFORMATION
 
@@ -237,9 +221,6 @@ copilot -p "Transform styles in @./[component] from CSS Modules to Tailwind clas
   --model gpt-5.3-codex --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:code_transformation -->
-<!-- ANCHOR:structured_analysis -->
-
 ## 9. STRUCTURED ANALYSIS
 
 ### Dependency Graph
@@ -259,9 +240,6 @@ Framework: CRAFT
 copilot -p "Extract all public API methods from @./[dir]. Include types, descriptions, and deprecation status." \
   --output-format json --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
-
-<!-- /ANCHOR:structured_analysis -->
-<!-- ANCHOR:cloud_delegation -->
 
 ## 10. CLOUD DELEGATION
 
@@ -290,9 +268,6 @@ copilot -p "Create a GitHub Action workflow for [project-type]. Include: linting
   --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:cloud_delegation -->
-<!-- ANCHOR:specialized_tasks -->
-
 ## 11. SPECIALIZED TASKS
 
 ### Multi-Agent Strategy
@@ -311,9 +286,6 @@ Framework: RCAF
 ```bash
 /memory:save specs/###-feature-name
 ```
-
-<!-- /ANCHOR:specialized_tasks -->
-<!-- ANCHOR:template_variables -->
 
 ## 12. TEMPLATE VARIABLES
 
@@ -348,9 +320,6 @@ All placeholders used across templates in this file:
 
 ---
 
-<!-- /ANCHOR:template_variables -->
-<!-- ANCHOR:related_resources -->
-
 ## 13. RELATED RESOURCES
 
 ### Parent
@@ -362,9 +331,6 @@ All placeholders used across templates in this file:
 - [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
 - [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
 - [copilot_tools.md](../references/copilot_tools.md) - Built-in tools, multi-model routing, and plan mode
-
-<!-- /ANCHOR:related_resources -->
-<!-- ANCHOR:memory_epilogue -->
 
 ## 14. MEMORY EPILOGUE
 
@@ -502,4 +468,3 @@ Valid JSON can still be rejected after normalization. Thin payloads fail with `I
 
 Minimum viable payload: include a specific summary, at least one meaningful `recent_context` entry, at least one useful observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, `_provenance`, and `toolCalls` when known.
 
-<!-- /ANCHOR:memory_epilogue -->

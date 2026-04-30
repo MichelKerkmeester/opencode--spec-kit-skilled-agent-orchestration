@@ -11,8 +11,6 @@ version: 1.0.0
 
 Natural language code search through two complementary approaches: CLI (ccc) for speed and one-off queries, MCP server (1 tool: `search`) for AI agent integration via stdio transport.
 
-
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 > **Forked From**: This skill bundles a soft-fork of [cocoindex-code](https://github.com/cocoindex-io/cocoindex-code) (Apache 2.0). Upstream version forked: 0.2.3. Current fork version: 0.2.3+spec-kit-fork.0.2.0. Patches: REQ-001..006 (mirror dedup + path-class reranking) from the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (currently numbered `004`; tracked as `009` during research and in commit history). See NOTICE and changelog/CHANGELOG.md for the full attribution and modification list.
@@ -54,8 +52,6 @@ Natural language code search through two complementary approaches: CLI (ccc) for
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -180,8 +176,6 @@ def route_cocoindex_code_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Two Approaches
@@ -322,8 +316,6 @@ Scores above 0.5 typically indicate strong semantic relevance. Always verify res
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -431,8 +423,6 @@ When sending multiple searches in sequence (e.g., exploring a codebase):
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Fork Attribution
@@ -511,11 +501,9 @@ Need to find code?
   +-- Searching by concept/intent?
         YES --> Use ccc search
 ```
-<!-- /ANCHOR:references -->
 
 ---
 
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Semantic Search Completion Checklist
@@ -538,8 +526,6 @@ Need to find code?
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -598,8 +584,6 @@ grep -rn "rateLimit" src/middleware/
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### scripts/
@@ -636,4 +620,3 @@ grep -rn "rateLimit" src/middleware/
 
 - **[mcp-code-mode](../mcp-code-mode/SKILL.md)** - MCP orchestration for external tools
 - **[system-spec-kit](../system-spec-kit/SKILL.md)** - Context preservation and memory
-<!-- /ANCHOR:related-resources -->

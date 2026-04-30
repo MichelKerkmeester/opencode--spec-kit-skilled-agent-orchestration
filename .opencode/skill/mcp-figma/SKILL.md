@@ -22,7 +22,6 @@ Programmatic access to Figma design files through 18 specialized tools covering 
 
 **Recommendation:** Start with **Option A** (Official) - zero installation, OAuth login, works immediately. See [Install Guide](./INSTALL_GUIDE.md) for setup details.
 
-
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -85,8 +84,6 @@ Programmatic access to Figma design files through 18 specialized tools covering 
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -201,8 +198,6 @@ def route_figma_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Code Mode Invocation
@@ -285,8 +280,6 @@ https://www.figma.com/file/ABC123xyz/My-Design
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -345,8 +338,6 @@ https://www.figma.com/file/ABC123xyz/My-Design
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 ### File Access Complete
@@ -388,8 +379,6 @@ https://www.figma.com/file/ABC123xyz/My-Design
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 6. INTEGRATION POINTS
 
 ### Prerequisites
@@ -496,8 +485,6 @@ const images = await figma.figma_get_image({ fileKey: "abc", ids: ["1:2"], forma
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:quick-reference -->
 ## 7. QUICK REFERENCE
 
 ### Essential Commands
@@ -561,8 +548,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### references/
@@ -592,4 +577,3 @@ call_tool_chain({
 
 - [Install Guide](./INSTALL_GUIDE.md) - Installation and configuration
 
-<!-- /ANCHOR:related-resources -->

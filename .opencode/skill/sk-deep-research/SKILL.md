@@ -24,7 +24,6 @@ Operator contract precedence for this skill surface:
 - Convergence math in `references/convergence.md` and the deep-research YAML workflow
 - Runtime agent inventories from the checked-in runtime directories above
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### When to Use This Skill
@@ -146,8 +145,6 @@ See `references/loop_protocol.md §Lifecycle Branches` for the canonical event c
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -222,8 +219,6 @@ Detect the current research phase from dispatch context to load appropriate reso
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Resource Map Integration
@@ -367,8 +362,6 @@ That contract is exact:
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ALWAYS
@@ -423,8 +416,6 @@ These concepts remain documented for future design work, but they are not part o
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core Documentation
@@ -447,8 +438,6 @@ These concepts remain documented for future design work, but they are not part o
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Loop Completion
@@ -478,8 +467,6 @@ Every completed loop produces a convergence report:
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -524,8 +511,6 @@ After research:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Worked Examples
@@ -582,4 +567,3 @@ After research:
 **For one-page cheat sheet**: See [quick_reference.md](./references/quick_reference.md)
 
 For code review capabilities, see `sk-deep-review`.
-<!-- /ANCHOR:related-resources -->

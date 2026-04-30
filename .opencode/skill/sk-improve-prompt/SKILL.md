@@ -15,7 +15,6 @@ Transforms vague or basic inputs into highly effective, structured AI prompts. P
 
 ---
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -48,8 +47,6 @@ Transform vague requests into structured prompts using RCAF, COSTAR, RACE, CIDI,
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 <!-- CRITICAL: Keep one authoritative Smart Router Pseudocode block in this section.
@@ -209,8 +206,6 @@ def route_prompt_improver_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Enhancement Pipeline
@@ -276,8 +271,6 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -332,8 +325,6 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core References
@@ -356,8 +347,6 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Enhancement Complete When
@@ -376,8 +365,6 @@ See [depth_framework.md](./references/depth_framework.md) for the DEPTH methodol
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:agent-invocation-contract -->
 ## 7. AGENT INVOCATION CONTRACT
 
 `@improve-prompt` is the fresh-context escalation surface for this skill. The agent loads the references in this skill, applies the same framework-selection and CLEAR rules, and returns a structured block that the caller can inject into a CLI dispatch without loading the full skill inline.
@@ -419,8 +406,6 @@ ESCALATION_NOTES: <remaining ambiguity, risk, or follow-up>
 
 ---
 
-<!-- /ANCHOR:agent-invocation-contract -->
-<!-- ANCHOR:fast-path-asset -->
 ## 8. FAST-PATH ASSET: `cli_prompt_quality_card.md`
 
 `assets/cli_prompt_quality_card.md` is the lightweight external-consumption surface for routine CLI prompt construction.
@@ -440,8 +425,6 @@ The card is intentionally compact and mirrors this skill's core routing heuristi
 
 ---
 
-<!-- /ANCHOR:fast-path-asset -->
-<!-- ANCHOR:integration-points -->
 ## 9. INTEGRATION POINTS
 
 ### Framework Integration
@@ -469,8 +452,6 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Reference Files
@@ -482,4 +463,3 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

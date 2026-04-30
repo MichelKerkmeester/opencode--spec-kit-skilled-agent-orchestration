@@ -15,7 +15,6 @@ Unified specialist providing: (1) Document quality pipeline with structure enfor
 
 **Architecture**: Scripts handle deterministic parsing/metrics. AI handles quality judgment and recommendations.
 
-
 ## 1. WHEN TO USE
 
 ### Use Case: Document Quality Management
@@ -149,8 +148,6 @@ Create feature catalogs with a rooted capability inventory, numbered category se
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing-references -->
 ## 2. SMART ROUTING
 
 ### Resource Domains
@@ -288,8 +285,6 @@ def route_documentation_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing-references -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Mode 1: Document Quality
@@ -438,8 +433,6 @@ Use the feature-catalog reference when the task is to inventory current behavior
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ Mode 1: Document Quality
@@ -630,8 +623,6 @@ Use the feature-catalog reference when the task is to inventory current behavior
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core References
@@ -671,8 +662,6 @@ Use the feature-catalog reference when the task is to inventory current behavior
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Document Quality Index (DQI)
@@ -775,8 +764,6 @@ The `extract_structure.py` script computes a **DQI** (0-100) based on measurable
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -828,8 +815,6 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:external-resources -->
 ## 8. EXTERNAL RESOURCES
 
 - **llms.txt specification**: https://llmstxt.org/
@@ -839,8 +824,6 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:external-resources -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### For Document Quality
@@ -867,4 +850,3 @@ Need fast navigation? See [quick_reference.md](./references/global/quick_referen
 ---
 
 **Remember**: This skill operates in five modes: Document Quality, Skill Creation, Flowchart Creation, Install Guide Creation and Playbook Creation. All modes integrate smoothly for creating and validating high-quality documentation and skills.
-<!-- /ANCHOR:related-resources -->

@@ -34,7 +34,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking G
 
 ---
 
-<!-- ANCHOR:code_generation -->
 ## 2. CODE GENERATION
 
 ### Single-File Application
@@ -87,8 +86,6 @@ gemini "Create a TypeScript module for rate-limiting middleware with sliding win
 
 ---
 
-<!-- /ANCHOR:code_generation -->
-<!-- ANCHOR:code_review -->
 ## 3. CODE REVIEW
 
 ### Comprehensive Review
@@ -123,8 +120,6 @@ gemini "Analyze @./[file] for performance issues. Check for: 1) Unnecessary re-r
 
 ---
 
-<!-- /ANCHOR:code_review -->
-<!-- ANCHOR:bug_fixing -->
 ## 4. BUG FIXING
 
 ### Fix Identified Bugs
@@ -149,8 +144,6 @@ gemini "Scan @./[file] for bugs. Look for: null/undefined access, off-by-one err
 
 ---
 
-<!-- /ANCHOR:bug_fixing -->
-<!-- ANCHOR:test_generation -->
 ## 5. TEST GENERATION
 
 ### Unit Tests
@@ -181,7 +174,6 @@ gemini "Generate [framework] integration tests for the [description] workflow. T
 
 ---
 
-<!-- /ANCHOR:test_generation -->
 ## 6. DOCUMENTATION
 
 ### JSDoc / TSDoc Generation
@@ -216,7 +208,6 @@ gemini "Generate API documentation for @./[file]. For each endpoint: document th
 
 ---
 
-<!-- ANCHOR:code_transformation -->
 ## 7. CODE TRANSFORMATION
 
 ### Refactoring
@@ -251,8 +242,6 @@ gemini "Migrate @./[file] from [framework] to [framework]. Requirements: 1) Pres
 
 ---
 
-<!-- /ANCHOR:code_transformation -->
-<!-- ANCHOR:web_research -->
 ## 8. WEB RESEARCH
 
 ### Current Information
@@ -287,8 +276,6 @@ gemini "Use Google Search to compare [topic] vs [topic] as of [date]. Compare on
 
 ---
 
-<!-- /ANCHOR:web_research -->
-<!-- ANCHOR:architecture_analysis -->
 ## 9. ARCHITECTURE ANALYSIS
 
 ### Project Analysis
@@ -313,8 +300,6 @@ gemini "Use codebase_investigator to analyze dependencies in [directory]. Identi
 
 ---
 
-<!-- /ANCHOR:architecture_analysis -->
-<!-- ANCHOR:specialized_tasks -->
 ## 10. SPECIALIZED TASKS
 
 ### Git Commit Message
@@ -349,8 +334,6 @@ gemini "Diagnose this error: [description]. It occurs when running [description]
 
 ---
 
-<!-- /ANCHOR:specialized_tasks -->
-<!-- ANCHOR:template_variables -->
 ## 11. TEMPLATE VARIABLES
 
 All placeholders used across templates in this file:
@@ -377,8 +360,6 @@ All placeholders used across templates in this file:
 
 ---
 
-<!-- /ANCHOR:template_variables -->
-<!-- ANCHOR:related_resources -->
 ## 12. RELATED RESOURCES
 
 ### Parent
@@ -390,10 +371,6 @@ All placeholders used across templates in this file:
 - [cli_reference.md](../references/cli_reference.md) - Complete CLI flag and command reference
 - [integration_patterns.md](../references/integration_patterns.md) - Cross-AI orchestration patterns
 - [gemini_tools.md](../references/gemini_tools.md) - Built-in tools (google_web_search, codebase_investigator)
-
-<!-- /ANCHOR:related_resources -->
-
-<!-- ANCHOR:memory_epilogue -->
 
 ## 13. MEMORY EPILOGUE
 
@@ -531,4 +508,3 @@ Valid JSON can still be rejected after normalization. Thin payloads fail with `I
 
 Minimum viable payload: include a specific summary, at least one meaningful `recent_context` entry, at least one useful observation, and `FILES` entries with a descriptive `DESCRIPTION`. Add `ACTION`, `MODIFICATION_MAGNITUDE`, `_provenance`, and `toolCalls` when known.
 
-<!-- /ANCHOR:memory_epilogue -->

@@ -11,7 +11,6 @@ version: 1.0.7.0
 
 Execute TypeScript code with direct access to 200+ MCP tools through progressive disclosure. Code Mode eliminates context overhead by loading tools on-demand, enabling complex multi-tool workflows in a single execution with state persistence and built-in error handling.
 
-
 ## 1. WHEN TO USE
 
 ### Use Code Mode When
@@ -54,8 +53,6 @@ Execute TypeScript code with direct access to 200+ MCP tools through progressive
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -186,8 +183,6 @@ def route_code_mode_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Critical Naming Pattern
@@ -214,7 +209,6 @@ await clickup.create_task({...});    // Error: Tool not found
 ```
 
 **See [references/naming_convention.md](references/naming_convention.md) for complete guide with troubleshooting.**
-
 
 ### Context Parameter
 
@@ -303,8 +297,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:project-configuration -->
 ## 4. PROJECT CONFIGURATION
 
 ### Two MCP Configuration Systems
@@ -490,8 +482,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:project-configuration -->
-<!-- ANCHOR:rules -->
 ## 5. RULES
 
 ### ✅ ALWAYS
@@ -526,8 +516,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 **Code Mode implementation complete when**:
@@ -545,8 +533,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -612,8 +598,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:quick-reference -->
 ## 8. QUICK REFERENCE
 
 ### Essential Commands
@@ -694,8 +678,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### scripts/
@@ -742,4 +724,3 @@ call_tool_chain({
 ### Install Guide
 
 - [INSTALL_GUIDE.md](INSTALL_GUIDE.md) - Installation and configuration
-<!-- /ANCHOR:related-resources -->

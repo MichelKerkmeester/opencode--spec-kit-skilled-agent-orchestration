@@ -11,8 +11,6 @@ version: 3.3.1.0
 
 Orchestrates mandatory spec folder creation for all conversations involving file modifications. Ensures proper documentation level selection (1-3+), template usage, and context preservation through AGENTS.md-enforced workflows.
 
-
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### What is a Spec Folder?
@@ -77,8 +75,6 @@ Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Resource Domains
@@ -322,8 +318,6 @@ def route_speckit_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Gate 3 Integration
@@ -827,8 +821,6 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -880,8 +872,6 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 ### Documentation Created
@@ -928,8 +918,6 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 6. INTEGRATION POINTS
 
 ### Priority System
@@ -972,8 +960,6 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 ### Related Skills
@@ -1003,4 +989,3 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 ---
 
 **Remember**: This skill is the foundational documentation orchestrator. It enforces structure, template usage, context preservation, and workflow-required validation for all file modifications. Every conversation that modifies files MUST have a spec folder.
-<!-- /ANCHOR:related-resources -->

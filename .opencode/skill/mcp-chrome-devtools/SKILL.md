@@ -11,7 +11,6 @@ version: 1.0.7.0
 
 Browser debugging and automation through two complementary approaches: CLI (bdg) for speed and token efficiency, MCP for multi-tool integration.
 
-
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -42,8 +41,6 @@ Browser debugging and automation through two complementary approaches: CLI (bdg)
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing-references -->
 ## 2. SMART ROUTING
 
 ### Resource Loading Levels
@@ -167,8 +164,6 @@ def route_chrome_devtools_resources(task):
 
 ---
 
-<!-- /ANCHOR:smart-routing-references -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Tool Comparison
@@ -378,8 +373,6 @@ await call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS Rules
@@ -462,8 +455,6 @@ await call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 ### Browser Debugging Completion Checklist
@@ -489,8 +480,6 @@ await call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 6. INTEGRATION POINTS
 
 ### Framework Integration
@@ -541,8 +530,6 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:quick-reference -->
 ## 7. QUICK REFERENCE
 
 ### Essential CLI Commands
@@ -592,4 +579,3 @@ command -v bdg || { echo "Install bdg first"; exit 1; }
 bdg "$URL" 2>&1 || exit 1
 # ... operations ...
 ```
-<!-- /ANCHOR:quick-reference -->

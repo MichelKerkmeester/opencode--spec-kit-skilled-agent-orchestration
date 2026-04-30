@@ -21,7 +21,6 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 
 ---
 
-<!-- ANCHOR:when-to-use -->
 ## 1. WHEN TO USE
 
 ### Activation Triggers
@@ -43,8 +42,6 @@ Orchestrate OpenCode's `opencode run` from external AI assistants (Claude Code, 
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 ### Prerequisite Detection
@@ -157,8 +154,6 @@ The `route_opencode_resources(task)` function body lives in [`shared_smart_route
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### Prerequisites
@@ -381,8 +376,6 @@ opencode run \
 
 ---
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ALWAYS
@@ -429,8 +422,6 @@ printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core References
@@ -462,8 +453,6 @@ printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### Task Completion
@@ -486,8 +475,6 @@ printf '%s' "$JSON_PAYLOAD" | node .opencode/skill/system-spec-kit/scripts/dist/
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### Framework Integration
@@ -519,12 +506,9 @@ Key integrations:
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 See Section 5 REFERENCES for the canonical reference, asset, shared, and external link list.
 
 ---
 
-<!-- /ANCHOR:related-resources -->

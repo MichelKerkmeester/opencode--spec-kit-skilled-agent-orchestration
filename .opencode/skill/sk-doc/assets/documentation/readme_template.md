@@ -712,9 +712,7 @@ Structured documents can use standardized **retrieval anchors** for fine-grained
 ### Memory Anchor Format
 
 ```markdown
-<!-- ANCHOR:summary -->
 Content for this section...
-<!-- /ANCHOR:summary -->
 ```
 
 ### Standard Memory Anchors
@@ -736,42 +734,28 @@ These anchor names are commonly used for targeted retrieval:
 Use this skeleton when creating structured documents:
 
 ```markdown
-<!-- ANCHOR:summary -->
 Brief overview of this document's purpose and key content.
-<!-- /ANCHOR:summary -->
 
-<!-- ANCHOR:state -->
 Current status and implementation state.
 - Completed: [what's done]
 - Remaining: [what's left]
-<!-- /ANCHOR:state -->
 
-<!-- ANCHOR:decisions -->
 Key decisions and their rationale.
 - Decision: [what was decided]
   - Reason: [why]
   - Alternatives considered: [what else was evaluated]
-<!-- /ANCHOR:decisions -->
 
-<!-- ANCHOR:context -->
 Background information needed to understand this work.
-<!-- /ANCHOR:context -->
 
-<!-- ANCHOR:artifacts -->
 Files created or modified:
 - `path/to/file.ts` - [purpose]
-<!-- /ANCHOR:artifacts -->
 
-<!-- ANCHOR:next-steps -->
 What to do next:
 1. [First priority]
 2. [Second priority]
-<!-- /ANCHOR:next-steps -->
 
-<!-- ANCHOR:blockers -->
 Issues preventing progress:
 - [Blocker description and any known workarounds]
-<!-- /ANCHOR:blockers -->
 ```
 
 ### Anchor Rules
@@ -820,7 +804,6 @@ description: "[Brief description]"
 
 ---
 
-<!-- ANCHOR:table-of-contents -->
 ## TABLE OF CONTENTS
 
 - [1. OVERVIEW](#1--overview)
@@ -833,10 +816,8 @@ description: "[Brief description]"
 - [8. FAQ](#8--faq)
 - [9. RELATED DOCUMENTS](#9--related-documents)
 
-<!-- /ANCHOR:table-of-contents -->
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What is [PROJECT_NAME]?
@@ -872,10 +853,8 @@ description: "[Brief description]"
 |-------------|---------|-------------|
 | [Runtime/Tool] | [Version] | [Version] |
 
-<!-- /ANCHOR:overview -->
 ---
 
-<!-- ANCHOR:quick-start -->
 ## 2. QUICK START
 
 ### 30-Second Setup
@@ -908,10 +887,8 @@ description: "[Brief description]"
 [minimal usage command or code]
 ```
 
-<!-- /ANCHOR:quick-start -->
 ---
 
-<!-- ANCHOR:features -->
 ## 3. FEATURES
 
 ### 3.1 [NARRATIVE SUBSECTION: HOW IT WORKS]
@@ -953,10 +930,8 @@ description: "[Brief description]"
 [code example]
 ```
 
-<!-- /ANCHOR:features -->
 ---
 
-<!-- ANCHOR:structure -->
 ## 4. STRUCTURE
 
 ```
@@ -975,10 +950,8 @@ description: "[Brief description]"
 | `[filename-1]` | [What it does] |
 | `[filename-2]` | [What it does] |
 
-<!-- /ANCHOR:structure -->
 ---
 
-<!-- ANCHOR:configuration -->
 ## 5. CONFIGURATION
 
 ### Configuration File
@@ -1003,10 +976,8 @@ description: "[Brief description]"
 |----------|----------|-------------|
 | `[VAR_NAME]` | [Yes/No] | [What it controls] |
 
-<!-- /ANCHOR:configuration -->
 ---
 
-<!-- ANCHOR:usage-examples -->
 ## 6. USAGE EXAMPLES
 
 ### Example 1: [Use Case Name]
@@ -1039,10 +1010,8 @@ description: "[Brief description]"
 | [Pattern 1] | `[code]` | [Scenario] |
 | [Pattern 2] | `[code]` | [Scenario] |
 
-<!-- /ANCHOR:usage-examples -->
 ---
 
-<!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
 
 ### Common Issues
@@ -1084,10 +1053,8 @@ description: "[Brief description]"
 [diagnostic command 2]
 ```
 
-<!-- /ANCHOR:troubleshooting -->
 ---
 
-<!-- ANCHOR:faq -->
 ## 8. FAQ
 
 ### General Questions
@@ -1114,10 +1081,8 @@ A: [Answer with code if applicable.]
 [example]
 ```
 
-<!-- /ANCHOR:faq -->
 ---
 
-<!-- ANCHOR:related-documents -->
 ## 9. RELATED DOCUMENTS
 
 ### Internal Documentation
@@ -1132,7 +1097,6 @@ A: [Answer with code if applicable.]
 |----------|-------------|
 | [Resource Name](https://url) | [What it provides] |
 
-<!-- /ANCHOR:related-documents -->
 ---
 
 *[Optional: Footer with version info or maintainer contact]*
