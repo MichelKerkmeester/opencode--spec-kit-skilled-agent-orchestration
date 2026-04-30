@@ -218,7 +218,7 @@ All template files follow this consistent structure:
 | Install guides                         | `sk-doc` | install_guide_template.md   |
 | feature_catalog package docs           | `sk-doc` | feature_catalog templates   |
 | manual_testing_playbook package docs   | `sk-doc` | testing_playbook templates  |
-| Agent files (.codex/agents/*.md)     | `sk-doc` | agent_template.md           |
+| Agent files (.codex/agents/*.toml)   | `sk-doc` | agent_template.md           |
 | Command files (.opencode/command/*.md) | `sk-doc` | command_template.md         |
 
 ---

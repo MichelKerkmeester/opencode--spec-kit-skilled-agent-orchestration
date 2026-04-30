@@ -155,12 +155,12 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 
 | Agent     | File                          | Notes                                                                                  |
 | --------- | ----------------------------- | -------------------------------------------------------------------------------------- |
-| @context  | `.codex/agents/context.md`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
-| @deep-research | `.codex/agents/deep-research.md` | LEAF agent; iterative autonomous research loop with externalized state          |
-| @ultra-think | `.codex/agents/ultra-think.md` | Planning-only multi-strategy architect (max 3 strategies)                              |
-| @review   | `.codex/agents/review.md`   | Codebase-agnostic quality scoring                                                      |
-| @write    | `.codex/agents/write.md`    | DQI standards enforcement                                                              |
-| @debug    | `.codex/agents/debug.md`    | Isolated by design (no conversation context)                                           |
+| @context  | `.codex/agents/context.toml`  | Sub-agent with direct retrieval only. Routes ALL exploration tasks                     |
+| @deep-research | `.codex/agents/deep-research.toml` | LEAF agent; iterative autonomous research loop with externalized state          |
+| @ultra-think | `.codex/agents/ultra-think.toml` | Planning-only multi-strategy architect (max 3 strategies)                              |
+| @review   | `.codex/agents/review.toml`   | Codebase-agnostic quality scoring                                                      |
+| @write    | `.codex/agents/write.toml`    | DQI standards enforcement                                                              |
+| @debug    | `.codex/agents/debug.toml`    | Isolated by design (no conversation context)                                           |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -180,7 +180,7 @@ TASK #N: [Descriptive Title]
 ├─ Boundary: [What this agent MUST NOT do]
 ├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
-├─ Agent Definition: [.codex/agents/<name>.md — MUST be read and included in prompt | "built-in" for @general]
+├─ Agent Definition: [.codex/agents/<name>.toml — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
 ├─ Output Format: [Structured format with example]
 ├─ Output Size: [full | summary-only (30 lines) | minimal (3 lines)] ← CWB §8
@@ -202,7 +202,7 @@ PRE-DELEGATION REASONING [Task #N]:
 ├─ Intent: [What does this task accomplish?]
 ├─ Complexity: [low/medium/high] → Because: [cite criteria below]
 ├─ Agent: @[agent] → Because: [cite §2 (Agent Routing)]
-├─ Agent Def: [loaded | built-in | prior-session] → [.codex/agents/<name>.md]
+├─ Agent Def: [loaded | built-in | prior-session] → [.codex/agents/<name>.toml]
 ├─ Depth: [N] → Tier: [ORCHESTRATOR|LEAF] (§2 NDP)
 ├─ Parallel: [Yes/No] → Because: [data dependency]
 ├─ Risk: [Low/Medium/High] → [If High: fallback agent]
@@ -788,9 +788,9 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 ### Context Recovery Priority
 
-If hook-injected context is present at the start of a session (injected by Claude Code SessionStart hook), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
+If hook-injected context is present at the start of a session (from the active runtime's startup hook — Claude `SessionStart`, Codex `SessionStart`, Gemini `SessionStart`/`BeforeAgent`, or OpenCode plugin transform; see `.opencode/skill/system-spec-kit/references/config/hook_system.md`), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
 
-If hook context is NOT present (hooks disabled, different runtime, or unavailable), fall back to standard tool-based recovery:
+If hook context is NOT present (hooks disabled, sandbox child, runtime without wired hooks, fail-open, or unavailable), fall back to standard tool-based recovery:
 1. Use `/spec_kit:resume` semantics: recover from `handover.md`, then `_memory.continuity`, then the packet's spec docs
 2. Use `memory_context({ mode: "resume", profile: "resume" })` only when packet location or continuity state is still unclear
 3. Use `memory_match_triggers()` for constitutional/triggered context

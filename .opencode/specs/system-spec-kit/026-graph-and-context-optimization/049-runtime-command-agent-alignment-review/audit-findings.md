@@ -31,8 +31,8 @@ Canonical sources used:
 | F-003 | P1 | MISSING | `.opencode/command/doctor/skill-advisor.md`, `doctor_skill-advisor_*.yaml` | Command used skill graph scan language but did not surface `advisor_rebuild` | Fixed |
 | F-004 | P1 | MISSING | `.opencode/command/memory/save.md`, `.opencode/command/memory/search.md`, `.opencode/command/memory/manage.md` | Memory commands did not mention `memory_retention_sweep` | Fixed |
 | F-005 | P1 | DRIFT | OpenCode, Claude, Gemini `context`, `deep-research`, `deep-review`, `orchestrate` agents | Hook guidance over-named Claude SessionStart instead of runtime matrix | Fixed where writable |
-| F-006 | P1 | DRIFT | `.codex/agents/context.toml`, `.codex/agents/deep-research.toml`, `.codex/agents/orchestrate.toml` | Codex TOML still names Claude SessionStart | Blocked: sandbox write denied |
-| F-007 | P1 | DRIFT | `.codex/agents/context.toml`, `.codex/agents/orchestrate.toml`, `.codex/agents/write.toml` | Codex TOML references `.codex/agents/*.md` but files are `.toml` | Blocked: sandbox write denied |
+| F-006 | P1 | DRIFT | `.codex/agents/context.toml`, `.codex/agents/deep-research.toml`, `.codex/agents/orchestrate.toml` | Codex TOML still names Claude SessionStart | Fixed (post-049 patch with full perms) |
+| F-007 | P1 | DRIFT | `.codex/agents/context.toml`, `.codex/agents/orchestrate.toml`, `.codex/agents/write.toml` | Codex TOML references `.codex/agents/*.md` but files are `.toml` | Fixed (post-049 patch with full perms) |
 | F-008 | P2 | MISSING | `.opencode/agent/orchestrate.md`, `.claude/agents/orchestrate.md`, `.gemini/agents/orchestrate.md` | Orchestrators lacked the runtime agent directory resolution rule | Fixed |
 | F-009 | P2 | MISSING | `.opencode/agent/write.md`, `.claude/agents/write.md`, `.gemini/agents/write.md` | Write agents did not explicitly cite the evergreen-doc rule | Fixed |
 | F-010 | P2 | DRIFT | `.opencode/agent/improve-agent.md`, runtime mirrors, `.opencode/command/improve/agent.md` | Narrative contained stale phase-number labels | Fixed |
