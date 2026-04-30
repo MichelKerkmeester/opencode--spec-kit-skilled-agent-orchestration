@@ -1,0 +1,211 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/042-stress-coverage-audit-and-run",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/042-stress-coverage-audit-and-run",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "042-stress-coverage-audit-and-run spec",
+      "stress test coverage audit",
+      "code_graph stress coverage",
+      "skill_advisor stress coverage",
+      "042-stress-coverage-audit-and-run plan",
+      "042-stress-coverage-audit-and-run tasks",
+      "042-stress-coverage-audit-and-run checklist",
+      "042-stress-coverage-audit-and-run summary",
+      "stress coverage audit summary"
+    ],
+    "key_topics": [
+      "042-stress-coverage-audit-and-run",
+      "spec",
+      "stress",
+      "test",
+      "coverage",
+      "audit",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "subsystems",
+      "maintain"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "logs/stress-run-20260430-181807Z.log",
+      "stress_test/README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "mcp_server/package.json",
+      "mcp_server/code_graph/feature_catalog/feature_catalog.md",
+      "mcp_server/skill_advisor/feature_catalog/feature_catalog.md"
+    ],
+    "entities": [
+      {
+        "name": "stress-run-20260430-181807Z.log",
+        "kind": "file",
+        "path": "logs/stress-run-20260430-181807Z.log",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "stress_test/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": "mcp_server/code_graph/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Coverage Audit",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Produce",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Two",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Documentation",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Format",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "rubric-aware",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "The `code_graph` and `skill_advisor` subsystems each maintain a feature catalog (17 + 37 = 54 features), but the stress-test directory currently holds only **3 directly-tagged code-graph tests** and **2 directly-tagged skill-advisor tests**. We don't have a written, auditable answer to: which catalog features have stress coverage, which require it, and which have a real gap. Release readiness work cannot proceed past 005-review-remediation without that answer.",
+    "created_at": "2026-04-30T18:03:19Z",
+    "last_save_at": "2026-04-30T18:28:40.757Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

@@ -51,6 +51,10 @@
     "created_at": "2026-04-28T15:15:00.000Z",
     "last_save_at": "2026-04-28T19:26:58Z",
     "save_lineage": "new",
-    "source_docs": ["spec.md"]
+    "source_docs": [
+      "spec.md"
+    ],
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/043-stress-test-gap-remediation",
+    "last_active_at": "2026-04-30T19:11:01.368Z"
   }
 }

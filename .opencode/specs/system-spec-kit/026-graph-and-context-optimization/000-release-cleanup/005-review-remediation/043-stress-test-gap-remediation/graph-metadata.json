@@ -1,0 +1,216 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/043-stress-test-gap-remediation",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/043-stress-test-gap-remediation",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "043-stress-test-gap-remediation spec",
+      "P0 stress remediation",
+      "close stress gaps",
+      "043-stress-test-gap-remediation plan",
+      "043-stress-test-gap-remediation tasks",
+      "043-stress-test-gap-remediation checklist",
+      "043-stress-test-gap-remediation summary",
+      "stress gap remediation summary"
+    ],
+    "key_topics": [
+      "043-stress-test-gap-remediation",
+      "spec",
+      "stress",
+      "remediation",
+      "close",
+      "gaps",
+      "plan",
+      "tasks",
+      "checklist",
+      "summary",
+      "gap",
+      "packet"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "logs/stress-run-20260430-190737Z.log",
+      "mcp_server/stress_test/code-graph/deep-loop-graph-convergence-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/chokidar-narrow-scope-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/single-writer-lease-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/daemon-lifecycle-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/generation-snapshot-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/trust-state-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/generation-cache-invalidation-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/anti-stuffing-cardinality-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/df-idf-corpus-stress.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/python-bench-runner-stress.vitest.ts",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "stress-run-20260430-190737Z.log",
+        "kind": "file",
+        "path": "logs/stress-run-20260430-190737Z.log",
+        "source": "derived"
+      },
+      {
+        "name": "deep-loop-graph-convergence-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/code-graph/deep-loop-graph-convergence-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "chokidar-narrow-scope-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/chokidar-narrow-scope-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "single-writer-lease-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/single-writer-lease-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "daemon-lifecycle-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/daemon-lifecycle-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generation-snapshot-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/generation-snapshot-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trust-state-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/trust-state-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generation-cache-invalidation-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/generation-cache-invalidation-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "anti-stuffing-cardinality-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/anti-stuffing-cardinality-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "df-idf-corpus-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/df-idf-corpus-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "python-bench-runner-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/python-bench-runner-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Gap Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Coverage Gaps",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Write",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Three",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 042's audit produced a 54-row coverage matrix and classified 10 features as P0 stress gaps — features with concurrency, lease, capacity, or perf-budget surfaces that have no direct stress coverage today. Without remediation, release readiness for `code_graph` and `skill_advisor` cannot proceed past 005-review-remediation. The all-green stress run from 042 (28/28 files, 69/69 tests) reflects coverage absence, not regression-free behavior.",
+    "created_at": "2026-04-30T18:46:30Z",
+    "last_save_at": "2026-04-30T19:10:56.472Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}
