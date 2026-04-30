@@ -4,6 +4,32 @@
 
 ---
 
+### Multi-Repository Architecture
+
+**Universal Framework:** This AGENTS.md is the public template for code work across stacks.
+Stack-specific behavior is handled automatically by the `sk-code` skill (sibling: `sk-code-opencode` for OpenCode harness code).
+
+**Supported Stacks:**
+
+| Stack             | Detection Marker                                                                          | Key Patterns                                                       |
+| ----------------- | ----------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| **Webflow**       | `src/2_javascript/`, `*.webflow.js`, motion.dev / GSAP / Lenis / HLS / Swiper / FilePond, `wrangler.toml` | snake_case JS, BEM CSS, IntersectionObserver gates, CDN versioning |
+| **OpenCode**      | `.opencode/skill/`, `.opencode/agent/`, MCP server folders                                | NodeNext ESM, CommonJS, Python advisors, shell automation          |
+| **Go**            | `go.mod`                                                                                  | Domain layers, repositories, table-driven tests                    |
+| **Swift**         | `Package.swift`, `*.xcodeproj`                                                            | MVVM, SwiftUI composition, async handling                          |
+| **React Native**  | `app.json` + expo / `package.json` + react-native                                         | Hooks, navigation, native modules                                  |
+| **React/Next.js** | `next.config.*` / `package.json` + react/next                                             | Component architecture, state boundaries                           |
+| **Node.js**       | `package.json` (fallback)                                                                 | Service layering, async flow, middleware                           |
+
+**How It Works:**
+1. `sk-code` detects stack via marker files at session start
+2. Stack-specific patterns load from `.opencode/skill/sk-code/references/{repo}/`
+3. Verification commands auto-adjust per stack (see Quick Reference below)
+
+**The Iron Law:** NO completion claims without running stack-appropriate verification.
+
+---
+
 ## 1. 🚨 CRITICAL RULES
 
 ### Safety Constraints
@@ -89,26 +115,14 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ### Session Start & Recovery
 
-Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode plugin bridge) may inject startup context when wired. Per-runtime trigger details live in `.opencode/skill/system-spec-kit/references/config/hook_system.md`.
+Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode) may inject startup context when wired. Per-runtime triggers: `.opencode/skill/system-spec-kit/references/config/hook_system.md`. Feature-flag defaults: `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` ("Feature flags reference table").
 
-| Automation claim | Trigger | Caveat / fallback |
-| --- | --- | --- |
-| Prompt-time skill advisor | Runtime prompt hook where configured (`UserPromptSubmit`, `BeforeAgent`, OpenCode transform); Copilot advisor is NEXT-PROMPT freshness: current prompt sees PRIOR turn's brief | Use `skill_advisor.py` when no hook brief is present |
-| Startup context | Runtime startup hook (`SessionStart` or runtime event) | Use `/spec_kit:resume` or `session_bootstrap()` when unavailable |
-| Codex native hooks | `[features].codex_hooks = true` plus user/workspace `hooks.json` | Repo `.codex/settings.json` is an example template, not live registration |
-| Copilot context refresh | Copilot-supported writer scripts refresh managed custom instructions | NEXT-PROMPT freshness; current prompt sees PRIOR turn's brief; no Claude settings wrapper |
-| Spec validation | Operator runs `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` | Workflow-required gate; no universal runtime auto-fire hook |
+**Recovery flow when hooks are unavailable or fail:**
 
-Automation defaults that depend on feature flags are enumerated in `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` under "Feature flags reference table".
-
-**Fallback** — when hooks are unavailable or fail in any runtime:
-
-1. Use `/spec_kit:resume` as the canonical recovery surface
-2. Rebuild prior work in this order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md`, `tasks.md`, `plan.md`, `spec.md`)
-3. **Phase parent branch:** if the resume target is a phase parent (folder has `[0-9]{3}-name/` children with their own spec.md/description.json), `/spec_kit:resume` first honors a fresh `graph-metadata.json` `derived.last_active_child_id` pointer, then falls back to listing children with statuses so you can pick which phase to continue. Do NOT read parent's `plan.md`/`tasks.md`/`implementation-summary.md` — those don't exist at a phase parent (per the lean trio policy: only `spec.md`, `description.json`, `graph-metadata.json` live at parent). Read the chosen child's continuity ladder instead.
-4. If structural context is stale or missing, run `session_bootstrap()` and then `code_graph_scan` when needed
-5. If the graph remains unavailable, use CocoIndex + direct file reads for code exploration, but keep the packet-local continuity ladder above as source-of-truth
-6. Re-anchor on the recovered spec folder, current task, blockers, and next steps before making changes
+1. `/spec_kit:resume` is the canonical surface; rebuild context in order: `handover.md` → `_memory.continuity` → canonical spec docs (`implementation-summary.md` → `tasks.md` → `plan.md` → `spec.md`).
+2. **Phase parent** (target has `[0-9]{3}-name/` children with their own spec/description): honor `graph-metadata.json.derived.last_active_child_id`, else list children with statuses. Lean trio policy — only `spec.md`, `description.json`, `graph-metadata.json` live at parent; read the chosen child's continuity ladder, NOT the parent's plan/tasks/implementation-summary.
+3. Stale or missing structural context: run `session_bootstrap()`, then `code_graph_scan` if needed. Graph unavailable: use CocoIndex + direct reads, but keep the packet-local continuity ladder as source-of-truth.
+4. Re-anchor on spec folder, current task, blockers, and next steps before making changes.
 
 ---
 
@@ -158,7 +172,7 @@ Automation defaults that depend on feature flags are enumerated in `.opencode/sk
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
-| **Web code**              | sk-code-web skill → Webflow/CDN standards, minification, browser testing                                                           |
+| **Application code**      | sk-code skill → smart router (detects stack: Webflow → live web content; React/Node/Go/Swift/RN → placeholder stub, canonical content retired); Phase 1-3 (Implement → Quality Gate → Debug → Verify) |
 | **OpenCode system code**  | sk-code-opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
 | **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
 | **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
@@ -280,7 +294,7 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 **Optional cross-cutting docs (any level)**: `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` - copy from `.opencode/skill/system-spec-kit/templates/` as needed. For phase parents that have undergone reorganization (renames, gap renumbering, consolidation), `context-index.md` provides a migration bridge — optional, no required template.
 
-> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate to that phase's actual work. Detection rule: `is_phase_parent()` (shell, in `lib/shell-common.sh`) and `isPhaseParent()` (TS/JS, in `mcp_server/lib/spec/is-phase-parent.ts` + `scripts/dist/spec/is-phase-parent.js`) are the single source of truth — both must agree. **Content discipline:** the phase-parent `spec.md` must NOT narrate consolidation, merge, or migration history — it documents root purpose, sub-phase manifest, and what needs done. Migration history goes in `context-index.md` if needed. Resume on a phase parent first follows a fresh `derived.last_active_child_id` pointer from `graph-metadata.json`; missing, null, stale, or `--no-redirect` cases list child phases with statuses (per `/spec_kit:resume` step 3b) so the user can pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate; soft-deprecation is a follow-on packet.
+> **Phase Parent Mode:** When a spec folder contains at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`, the validator treats the folder as a phase parent and ONLY requires `{spec.md, description.json, graph-metadata.json}` at the parent level. Heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate to that phase's actual work. Detection rule: `is_phase_parent()` (shell, in `scripts/lib/shell-common.sh`) and `isPhaseParent()` (TS/JS, in `mcp_server/lib/spec/is-phase-parent.ts` + `scripts/dist/spec/is-phase-parent.js`) are the single source of truth — both must agree. **Content discipline:** the phase-parent `spec.md` must NOT narrate consolidation, merge, or migration history — it documents root purpose, sub-phase manifest, and what needs done. Migration history goes in `context-index.md` if needed. Resume on a phase parent first follows a fresh `derived.last_active_child_id` pointer from `graph-metadata.json`; missing, null, stale, or `--no-redirect` cases list child phases with statuses (per `/spec_kit:resume` step 3b) so the user can pick which phase to continue. Tolerant policy: legacy phase parents that retain heavy docs continue to validate; soft-deprecation is a follow-on packet.
 
 > **Note:** `implementation-summary.md` is REQUIRED for all levels but created **after implementation completes**, not at spec folder creation time. See SKILL.md §4 Rule 13.
 
@@ -330,7 +344,6 @@ Use the agent directory that matches the active runtime/provider profile:
 
 ### Agent Definitions
 
-- **`@general`** - Implementation, complex tasks
 - **`@context`** - LEAF-only retrieval agent for codebase search, pattern discovery, and context loading. Uses memory triggers/context, memory search, CocoIndex, and direct code evidence. LEAF constraint: `@context` MUST NOT dispatch sub-agents, use the Task tool, or write files. All results are returned to the caller; never held in nested context
 - **`@orchestrate`** - Multi-agent coordination, complex workflows
 - **`@write`** - Creating READMEs, Skills, Guides
@@ -339,6 +352,8 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@deep-research`** - Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
 - **`@deep-review`** - Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 4 review dimensions. Dispatched by `/spec_kit:deep-review` command
 - **`@ultra-think`** - Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
+- **`@improve-agent`** - Evaluator-first proposal generator for bounded agent improvement with 5-dimension integration-aware scoring; integrates with `sk-improve-agent` skill. Dispatched by `/improve:agent` command
+- **`@improve-prompt`** - Prompt engineering specialist using DEPTH thinking and CLEAR scoring across 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT); integrates with `sk-improve-prompt` skill. Dispatched by `/improve:prompt` command
 
 #### Distributed Governance Rule
 
@@ -385,36 +400,3 @@ Task Received → Gate 2: Read hook brief, or run skill_advisor.py fallback
 3. Read bundled resources from `references/`, `scripts/`, `assets/` paths
 4. Follow skill instructions to completion
 5. Do NOT re-invoke a skill already in context
-
-### Primary Skill: sk-code-opencode
-
-For OpenCode system code (`.opencode/`, MCP servers, scripts), `sk-code-opencode` provides multi-language standards. Includes the `system-spec-kit` skill for spec folder workflows and the Spec Kit Memory system for context preservation across sessions. OpenCode plugins and plugin helpers still use this skill, but their JavaScript entrypoints follow the plugin-loader ESM exemption rather than the blanket CommonJS pattern.
-
-**Supported Languages:**
-
-| Language   | Target                        | Key Patterns                                |
-| ---------- | ----------------------------- | ------------------------------------------- |
-| JavaScript | MCP servers, CommonJS modules, non-plugin JS | `require`/`module.exports`, strict mode; OpenCode plugins/plugin helpers use ESM default export |
-| TypeScript | Type-safe modules, configs    | Interfaces, strict tsconfig, type guards    |
-| Python     | Validators, advisors, tests   | snake_case, argparse, pytest, docstrings    |
-| Shell      | Automation, deployment        | `set -euo pipefail`, shebang, quoting       |
-| JSON/JSONC | Manifests, schemas, configs   | Schema validation, commented config         |
-
-**Key Systems:**
-- **system-spec-kit**: Spec folder lifecycle (Levels 1-3+), validation, template architecture
-- **Spec Kit Memory**: Context preservation, semantic search, session continuity (`/memory:save`, `/spec_kit:resume`)
-
-**Invocation:** Automatic via Gate 2 routing when OpenCode system code tasks detected.
-
-### Git Workflow Skill: sk-git
-
-For ALL git workflows, `sk-git` orchestrates workspace setup, commit hygiene, and work completion.
-
-**Sub-workflows:**
-- **Worktree**: Branch creation via `git worktree`, workspace isolation, parallel development
-- **Commit**: Conventional commit format, staged change analysis, clean commit messages
-- **Finish**: PR creation, branch cleanup, integration workflows
-
-**Trigger Keywords:** worktree, branch, commit, merge, pr, pull request, git workflow, conventional commits, finish work, integrate changes
-
-**Invocation:** Automatic via Gate 2 routing when git tasks detected, or manually via `Read(".opencode/skill/sk-git/SKILL.md")`.

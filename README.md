@@ -713,15 +713,11 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 &nbsp;
 #### CODE WORKFLOW
 
-**sk-code-full-stack**
-- Stack-agnostic development orchestrator with automatic stack detection via marker files
-- Detects 7 stacks: Go, Swift, React Native/Expo, Next.js, React, Node.js, and default
+**sk-code**
+- Smart-routing umbrella for application code work — detects stack first (Webflow, React/Next, Node.js, Go, React Native, Swift) then classifies intent and loads stack-aware resources
+- Webflow stack runs full live content (browser testing, Lighthouse/TBT/INP targets, CDN deployment)
+- Non-Webflow stacks scaffold to placeholder skeletons (canonical content retired in packet 055; consult git history)
 - 3 mandatory phases: implementation → testing/debugging → verification
-
-**sk-code-web**
-- Frontend development orchestrator with 5-phase lifecycle
-- Enforces mandatory browser testing before any completion claims with DevTools integration
-- Targets PageSpeed, Lighthouse, TBT and INP metrics. Includes Webflow integration.
 
 **sk-code-review**
 - Stack-agnostic code review baseline implementing the baseline + overlay model

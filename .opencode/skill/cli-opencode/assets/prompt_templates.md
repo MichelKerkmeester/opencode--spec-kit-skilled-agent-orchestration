@@ -194,7 +194,7 @@ Instructions:
 
 Do's:
 - Apply the project's sk-code-review baseline.
-- Layer the appropriate stack-specific overlay (sk-code-opencode / sk-code-web / sk-code-full-stack).
+- Layer the appropriate stack-specific overlay (sk-code-opencode / sk-code).
 
 Don'ts:
 - Do not propose fixes — leave that for a follow-up dispatch.

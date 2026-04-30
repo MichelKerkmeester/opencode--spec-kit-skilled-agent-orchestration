@@ -40,6 +40,7 @@ But this misses a critical dimension: "How much don't I know?"
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:the-four-uncertainty-factors -->
 ## 2. THE FOUR UNCERTAINTY FACTORS
 
@@ -159,6 +160,7 @@ Even with domain knowledge, incomplete situational context can lead to incorrect
 ---
 
 <!-- /ANCHOR:the-four-uncertainty-factors -->
+
 <!-- ANCHOR:calculating-uncertainty -->
 ## 3. CALCULATING UNCERTAINTY
 
@@ -186,6 +188,7 @@ Result: Uncertainty = 0.36 (MEDIUM - just over threshold)
 ---
 
 <!-- /ANCHOR:calculating-uncertainty -->
+
 <!-- ANCHOR:threshold-interpretation -->
 ## 4. THRESHOLD INTERPRETATION
 
@@ -219,6 +222,7 @@ Result: Uncertainty = 0.36 (MEDIUM - just over threshold)
 ---
 
 <!-- /ANCHOR:threshold-interpretation -->
+
 <!-- ANCHOR:the-confident-ignorance-anti-pattern -->
 ## 5. THE "CONFIDENT IGNORANCE" ANTI-PATTERN
 
@@ -271,6 +275,7 @@ When detected, do NOT proceed. Instead:
 ---
 
 <!-- /ANCHOR:the-confident-ignorance-anti-pattern -->
+
 <!-- ANCHOR:practical-assessment-guide -->
 ## 6. PRACTICAL ASSESSMENT GUIDE
 
@@ -309,6 +314,7 @@ UNCERTAINTY ASSESSMENT:
 ---
 
 <!-- /ANCHOR:practical-assessment-guide -->
+
 <!-- ANCHOR:integration-with-gates -->
 ## 7. INTEGRATION WITH GATES
 
@@ -391,8 +397,9 @@ DUAL-THRESHOLD CHECK:
 ---
 
 <!-- /ANCHOR:integration-with-gates -->
+
 <!-- ANCHOR:learning-index-workflow -->
-## 7b. LEARNING INDEX WORKFLOW
+## 8. LEARNING INDEX WORKFLOW
 
 Three MCP tools measure knowledge gains across implementation tasks:
 
@@ -415,8 +422,9 @@ Three MCP tools measure knowledge gains across implementation tasks:
 ---
 
 <!-- /ANCHOR:learning-index-workflow -->
+
 <!-- ANCHOR:related-resources -->
-## 8. RELATED RESOURCES
+## 9. RELATED RESOURCES
 
 ### AGENTS.md Reference
 - **Section 4**: Confidence & Clarification Framework (includes uncertainty tracking)
@@ -424,5 +432,8 @@ Three MCP tools measure knowledge gains across implementation tasks:
 
 ### Related Skills
 - `system-spec-kit` - Parent skill using uncertainty tracking in gates
-- `sk-code-web` - Implementation skill with verification gates
+- `sk-code` - Implementation skill with verification gates
+
+---
+
 <!-- /ANCHOR:related-resources -->

@@ -51,12 +51,12 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 
 | Metric | Value | Notes |
 | --- | --- | --- |
-| Total skill folders | 20 | Top-level skills under `.opencode/skill/` |
-| Folders with graph metadata | 20 | Every top-level skill folder under `.opencode/skill/` currently ships with `graph-metadata.json` |
+| Total skill folders | 18 | Top-level skills under `.opencode/skill/` |
+| Folders with graph metadata | 18 | Every top-level skill folder under `.opencode/skill/` currently ships with `graph-metadata.json` |
 | Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
 | CLI orchestrator skills | 5 | cli-claude-code, cli-codex, cli-copilot, cli-gemini, cli-opencode |
 | MCP integration skills | 4 | mcp-chrome-devtools, mcp-coco-index, mcp-code-mode, mcp-figma |
-| Code quality overlays | 4 | sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web |
+| Code quality overlays | 3 | sk-code, sk-code-opencode, sk-code-review |
 | Documentation, research, review, and improvement skills | 5 | sk-improve-agent, sk-deep-research, sk-deep-review, sk-doc, sk-improve-prompt |
 | Git and system skills | 2 | sk-git, system-spec-kit |
 | Skills with local scripts/ | 12 | See Section 4 for the current script-bearing folders |
@@ -164,10 +164,9 @@ The skill system covers four distinct workflow domains.
 
 | Skill | Version | Description |
 | --- | --- | --- |
-| `sk-code-full-stack` | 1.1.0.0 | Stack-agnostic orchestrator with automatic stack detection via marker files |
+| `sk-code` | 1.0.1.0 | Smart-routing umbrella for application code (Webflow + React/Next/Node/Go/Swift/RN); Webflow runs full live content, non-Webflow stacks are placeholder stubs |
 | `sk-code-opencode` | 1.2.0.0 | Multi-language standards for OpenCode system code (JS, TS, Python, Shell, JSON) |
 | `sk-code-review` | 1.2.0.0 | Findings-first code review baseline with security and correctness minimums |
-| `sk-code-web` | 1.1.0.0 | Web implementation, debugging, and verification across specialized quality skills |
 
 **Documentation, Research, Prompt, and Improvement Skills**
 
@@ -212,10 +211,9 @@ The skill system covers four distinct workflow domains.
 │   ├── manual_testing_playbook/
 │   └── scripts/            # Python compat shim, graph export compiler, regression, fixtures, out
 ├── sk-improve-agent/       # Evaluator-first agent improvement loop
-├── sk-code-full-stack/     # Stack-agnostic implementation orchestrator
+├── sk-code/                # Smart-routing umbrella for application code (Webflow live; non-Webflow placeholders)
 ├── sk-code-opencode/       # OpenCode system code standards
 ├── sk-code-review/         # Findings-first code review baseline
-├── sk-code-web/            # Web implementation and verification
 ├── sk-deep-research/       # Autonomous deep research loop
 ├── sk-deep-review/         # Autonomous iterative code review
 ├── sk-doc/                 # Documentation quality and templates
@@ -260,10 +258,9 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 | `mcp-coco-index` | Yes | No | No |
 | `mcp-code-mode` | Yes | Yes | Yes |
 | `mcp-figma` | Yes | Yes | No |
-| `sk-code-full-stack` | Varies | Varies | Varies |
+| `sk-code` | Varies | Varies | Varies |
 | `sk-code-opencode` | Varies | Varies | Varies |
 | `sk-code-review` | Varies | Varies | Varies |
-| `sk-code-web` | Varies | Varies | Varies |
 | `sk-deep-research` | Yes | No | Yes |
 | `sk-deep-review` | Yes | No | Yes |
 | `sk-doc` | Yes | Yes | Yes |

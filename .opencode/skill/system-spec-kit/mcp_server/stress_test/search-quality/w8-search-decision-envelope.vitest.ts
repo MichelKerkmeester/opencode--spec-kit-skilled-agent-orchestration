@@ -58,7 +58,7 @@ describe('W8 SearchDecisionEnvelope', () => {
         triggers: ['complex-query', 'high-authority'],
       },
       shadowDeltas: [{
-        recommendation: 'sk-code-web',
+        recommendation: 'sk-code',
         liveScore: 0.7,
         shadowScore: 0.9,
         delta: 0.2,

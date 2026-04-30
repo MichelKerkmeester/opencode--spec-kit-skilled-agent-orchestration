@@ -543,7 +543,7 @@ A: Never hardcode method names in scripts. Use `bdg cdp --search <keyword>` to f
 | Skill | Relationship |
 | --- | --- |
 | `mcp-code-mode` | Required for the MCP fallback path and `call_tool_chain()` execution |
-| `sk-code-web` | Uses bdg for Phase 3 browser verification in web implementation workflows |
+| `sk-code` | Uses bdg for Phase 3 browser verification in web implementation workflows |
 | `sk-doc` | Used to create and maintain this skill's documentation |
 
 **External resources**

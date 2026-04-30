@@ -454,8 +454,8 @@ Key integrations:
 |-------|-------------|
 | **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Claude Code for deep reasoning |
 | **cli-codex** | Parallel cross-AI validation — Codex for sandbox execution, Claude Code for extended thinking |
-| **sk-code-web** | Use Claude Code for code review during web development |
-| **sk-code-full-stack** | Delegate architecture analysis or test generation to Claude Code |
+| **sk-code** | Use Claude Code for code review during web development |
+| **sk-code** | Delegate architecture analysis or test generation to Claude Code |
 | **mcp-code-mode** | Claude Code CLI is independent; does not require Code Mode |
 
 ---

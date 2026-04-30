@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/055-cli-skill-removal-sk-code-merger-deprecated",
+  "spec_folder": "skilled-agent-orchestration/055-cli-skill-removal-sk-code-merger-deprecated",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": ["skilled-agent-orchestration/054-sk-code-merger"],
+    "supersedes": [],
+    "related_to": ["skilled-agent-orchestration/053-cli-skill-removal-mcp-clickup"]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "remove sk-code-full-stack",
+      "remove sk-code-web",
+      "decommission sk-code-merger deprecated",
+      "055 skill removal",
+      "055 plan",
+      "055 tasks",
+      "055 checklist"
+    ],
+    "key_topics": [
+      "sk-code-full-stack",
+      "sk-code-web",
+      "skill",
+      "removal",
+      "decommission",
+      "advisor",
+      "skill-graph",
+      "cleanup",
+      "055"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/sk-code-full-stack",
+      ".opencode/skill/sk-code-web",
+      ".opencode/skill/sk-code/SKILL.md",
+      ".opencode/skill/sk-code/README.md",
+      ".opencode/skill/sk-code/graph-metadata.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill-graph.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/graph-metadata.json",
+      ".opencode/skill/system-spec-kit/mcp_server/database/skill-graph.sqlite",
+      ".opencode/skill/system-spec-kit/mcp_server/database/code-graph.sqlite",
+      ".opencode/skill/system-spec-kit/mcp_server/database/context-index__voyage__voyage-4__1024.sqlite",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
+      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
+      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
+      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
+      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" }
+    ],
+    "causal_summary": "Hard-removal cleanup of the sk-code-merger deprecated pair. Both skills (sk-code-full-stack, sk-code-web) were soft-deprecated by 054 with advisor-weight 0; this packet finishes the job by deleting the skill trees, neutralizing sk-code's placeholder pointers (accepting loss of ~36 markdown files of non-web stack canonical guidance per user decision), pruning advisor scoring tables and skill graphs, sweeping doc surfaces and cross-skill references, syncing the four runtime agent-definition files, and DELETE-ing the corresponding rows from skill-graph / code-graph / voyage context-index SQLite databases.",
+    "created_at": "2026-04-30T10:00:00Z",
+    "last_save_at": "2026-04-30T10:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

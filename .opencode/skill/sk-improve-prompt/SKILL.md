@@ -458,7 +458,7 @@ Key integrations:
 | Skill | Integration |
 |-------|-------------|
 | **sk-doc** | Documentation outputs from prompt engineering may use sk-doc for formatting |
-| **sk-code-web** | Prompts for web development contexts may co-invoke with sk-code-web |
+| **sk-code** | Prompts for web development contexts may co-invoke with sk-code |
 
 ### Tool Usage Guidelines
 

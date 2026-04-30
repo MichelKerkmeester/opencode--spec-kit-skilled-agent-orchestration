@@ -22,6 +22,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:planning-phase -->
 ## 2. PLANNING PHASE
 
@@ -50,6 +51,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 ---
 
 <!-- /ANCHOR:planning-phase -->
+
 <!-- ANCHOR:research-phase -->
 ## 3. RESEARCH PHASE
 
@@ -77,6 +79,7 @@ Priority-based checklists for each phase of the SpecKit workflow.
 ---
 
 <!-- /ANCHOR:research-phase -->
+
 <!-- ANCHOR:implementation-phase -->
 ## 4. IMPLEMENTATION PHASE
 
@@ -148,6 +151,7 @@ When debugging becomes prolonged or repetitive:
 ---
 
 <!-- /ANCHOR:implementation-phase -->
+
 <!-- ANCHOR:review-phase -->
 ## 5. REVIEW PHASE
 
@@ -175,6 +179,7 @@ When debugging becomes prolonged or repetitive:
 ---
 
 <!-- /ANCHOR:review-phase -->
+
 <!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
@@ -190,5 +195,8 @@ When debugging becomes prolonged or repetitive:
 ### Skills
 
 - Code quality standards for patterns and conventions
-- sk-code-web skill for implementation lifecycle
+- sk-code skill for implementation lifecycle
+
+---
+
 <!-- /ANCHOR:related-resources -->

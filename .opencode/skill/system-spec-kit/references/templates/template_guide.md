@@ -65,7 +65,7 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 - Level 1: Core only
 - Level 2: Core + level2-verify addendum
 - Level 3: Core + level2-verify + level3-arch addendums
-- Level 3+: Core + all addendums (level2-verify + level3-arch + level3plus-govern)
+- Level 3+: Core + all addendums (level2-verify + level3-arch + level3-plus-govern)
 - Nested packet changelog templates live in `templates/changelog/` and are consumed directly by the generator, not by the composition pipeline.
 
 > **Note:** Maintainers should run `compose.sh` after modifying `core/` or `addendum/` templates to regenerate the composed outputs.
@@ -73,8 +73,9 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:template-selection-by-level-progressive-enhancement -->
-## 2. TEMPLATE SELECTION BY LEVEL (Progressive Enhancement)
+## 2. TEMPLATE SELECTION BY LEVEL (PROGRESSIVE ENHANCEMENT)
 
 ### Level 1: Baseline Documentation (LOC guidance: <100)
 
@@ -243,6 +244,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 ---
 
 <!-- /ANCHOR:template-selection-by-level-progressive-enhancement -->
+
 <!-- ANCHOR:template-structure-standards -->
 ## 3. TEMPLATE STRUCTURE STANDARDS
 
@@ -336,6 +338,7 @@ submissions are duplicates.
 ---
 
 <!-- /ANCHOR:template-structure-standards -->
+
 <!-- ANCHOR:template-adaptation-process -->
 ## 4. TEMPLATE ADAPTATION PROCESS
 
@@ -393,6 +396,7 @@ cp .opencode/skill/system-spec-kit/templates/level_N/[template].md specs/###-nam
 ---
 
 <!-- /ANCHOR:template-adaptation-process -->
+
 <!-- ANCHOR:supporting-templates -->
 ## 5. SUPPORTING TEMPLATES
 
@@ -527,6 +531,7 @@ cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/##
 ---
 
 <!-- /ANCHOR:supporting-templates -->
+
 <!-- ANCHOR:session-management-templates -->
 ## 6. SESSION MANAGEMENT TEMPLATES
 
@@ -709,6 +714,7 @@ Task tool -> @debug for specs/007-feature/
 ---
 
 <!-- /ANCHOR:session-management-templates -->
+
 <!-- ANCHOR:quality-standards -->
 ## 7. QUALITY STANDARDS
 
@@ -773,6 +779,7 @@ For manual upgrades (fallback), copy the required templates from the target leve
 ---
 
 <!-- /ANCHOR:quality-standards -->
+
 <!-- ANCHOR:common-mistakes -->
 ## 8. COMMON MISTAKES
 
@@ -874,6 +881,7 @@ spec.md and plan.md exist but don't reference each other
 ---
 
 <!-- /ANCHOR:common-mistakes -->
+
 <!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
 
@@ -906,6 +914,7 @@ spec.md and plan.md exist but don't reference each other
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:using-sub-folders-for-organization -->
 ## 10. USING SUB-FOLDERS FOR ORGANIZATION
 
@@ -1096,6 +1105,7 @@ See each sub-folder's README.md for details.
 ---
 
 <!-- /ANCHOR:using-sub-folders-for-organization -->
+
 <!-- ANCHOR:phase-organization -->
 ## 11. PHASE ORGANIZATION
 
@@ -1143,6 +1153,7 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 ---
 
 <!-- /ANCHOR:phase-organization -->
+
 <!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
@@ -1187,7 +1198,10 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 - Canonical continuity lives inside packet docs, primarily `_memory.continuity` in `implementation-summary.md`
 
 ### Related Skills
-- `sk-code-web` - Implementation, debugging, and verification lifecycle
+- `sk-code` - Implementation, debugging, and verification lifecycle
 - `system-spec-kit` - Context preservation with semantic memory
 - `sk-git` - Git workspace setup and clean commits
+
+---
+
 <!-- /ANCHOR:related-resources -->

@@ -412,7 +412,7 @@ A: Run `git worktree list` to see all active worktrees. Remove the stale one wit
 |-------|-------------|
 | `system-spec-kit` | Spec folder creation pairs with git commit workflow. Reference spec folder in commit body. |
 | `sk-code-opencode` | OpenCode system code standards that define what should and should not be committed |
-| `sk-code-web` | Web implementation lifecycle that precedes git-finish in a web development session |
+| `sk-code` | Web implementation lifecycle that precedes git-finish in a web development session |
 
 ### Framework Reference
 

@@ -461,8 +461,8 @@ Key integrations:
 | Skill | Integration |
 |-------|-------------|
 | **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Codex for OpenAI perspective |
-| **sk-code-web** | Use Codex for code review during web development |
-| **sk-code-full-stack** | Delegate test generation or architecture analysis to Codex |
+| **sk-code** | Use Codex for code review during web development |
+| **sk-code** | Delegate test generation or architecture analysis to Codex |
 | **mcp-code-mode** | Codex CLI is independent; does not require Code Mode |
 
 ---

@@ -508,7 +508,7 @@ Key integrations:
 - When CLI unavailable, Code Mode provides alternative
 - Tool naming: `{manual_name}.{manual_name}_{tool_name}`
 
-**sk-code-web**: Phase 3 browser testing integration
+**sk-code**: Phase 3 browser testing integration
 - Use bdg for verification during implementation
 - Example integration pattern:
   ```bash

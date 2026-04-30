@@ -1,0 +1,22 @@
+{
+  "specFolder": "055-cli-skill-removal-sk-code-merger-deprecated",
+  "description": "Hard-remove sk-code-full-stack and sk-code-web skills (soft-deprecated by 054-sk-code-merger), neutralize sk-code's placeholder pointers (accept loss of canonical non-web stack content), and sweep all repo references the way 053 swept mcp-clickup.",
+  "keywords": [
+    "sk-code-full-stack",
+    "sk-code-web",
+    "sk-code-merger",
+    "skill",
+    "removal",
+    "decommission",
+    "advisor",
+    "skill-graph",
+    "cleanup",
+    "055"
+  ],
+  "lastUpdated": "2026-04-30T10:00:00Z",
+  "specId": "055",
+  "folderSlug": "cli-skill-removal-sk-code-merger-deprecated",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

@@ -255,7 +255,7 @@ newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
 | Skill | Purpose |
 |-------|---------|
 | `sk-code-review` | Baseline review rubric and severity contract |
-| `sk-code-opencode` / `sk-code-web` / `sk-code-full-stack` | Stack-specific overlay |
+| `sk-code-opencode` / `sk-code` | Stack-specific overlay |
 
 ### Tool Call Budget
 

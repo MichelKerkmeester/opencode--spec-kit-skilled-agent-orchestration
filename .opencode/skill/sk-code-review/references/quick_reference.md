@@ -7,6 +7,8 @@ description: Lightweight index for review core doctrine and single-pass review U
 
 Lightweight index for the split review references in this skill.
 
+---
+
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
@@ -24,6 +26,7 @@ Use this file as an entry index, not as the primary source of review rules. Load
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:reference-map -->
 ## 2. REFERENCE MAP
 
@@ -35,6 +38,7 @@ Use this file as an entry index, not as the primary source of review rules. Load
 ---
 
 <!-- /ANCHOR:reference-map -->
+
 <!-- ANCHOR:supporting-checklists -->
 ## 3. SUPPORTING CHECKLISTS
 
@@ -46,14 +50,18 @@ Use this file as an entry index, not as the primary source of review rules. Load
 | [removal_plan.md](./removal_plan.md) | Safe-now versus deferred deletion planning |
 | [test_quality_checklist.md](./test_quality_checklist.md) | Test quality, coverage, and anti-pattern detection |
 
-Overlay portability: apply this baseline with `sk-code-opencode`, `sk-code-web`, or `sk-code-full-stack`.
+Overlay portability: apply this baseline with `sk-code-opencode` or `sk-code`.
 
 ---
 
 <!-- /ANCHOR:supporting-checklists -->
+
 <!-- ANCHOR:related-resources -->
 ## 4. RELATED RESOURCES
 
 - [SKILL.md](../SKILL.md) - Parent skill definition with activation triggers and resource loading rules
 - [review_mode_contract.yaml](../../sk-deep-review/assets/review_mode_contract.yaml) - Canonical review-mode contract manifest (source of truth for deep review taxonomy)
+
+---
+
 <!-- /ANCHOR:related-resources -->

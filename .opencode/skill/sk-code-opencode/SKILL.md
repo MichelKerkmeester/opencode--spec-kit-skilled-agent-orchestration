@@ -40,7 +40,7 @@ Multi-language code standards for OpenCode system code across JavaScript, TypeSc
 ### When NOT to Use
 
 **Do NOT use this skill for:**
-- Web/frontend development (use `sk-code-web` instead)
+- Web/frontend development (use `sk-code` instead)
 - Browser-specific patterns (DOM, observers, animations)
 - CSS styling or responsive design
 - CDN deployment or minification workflows
@@ -48,7 +48,7 @@ Multi-language code standards for OpenCode system code across JavaScript, TypeSc
 
 ### Skill Overview
 
-| Aspect        | This Skill (opencode)        | sk-code-web        |
+| Aspect        | This Skill (opencode)        | sk-code        |
 | ------------- | ---------------------------- | --------------------- |
 | **Target**    | System/backend code          | Web/frontend code     |
 | **Languages** | JS, TS, Python, Shell, JSON  | HTML, CSS, JavaScript |
@@ -524,7 +524,7 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 
 ### Skill Differentiation
 
-| Task Type                 | This Skill | sk-code-web |
+| Task Type                 | This Skill | sk-code |
 | ------------------------- | ---------- | -------------- |
 | MCP server JavaScript     | ✅          | ❌              |
 | MCP server TypeScript     | ✅          | ❌              |
@@ -583,7 +583,7 @@ This skill operates within the behavioral framework defined in AGENTS.md.
 | Skill                       | Use For                                    |
 | --------------------------- | ------------------------------------------ |
 | **sk-code-review**       | Findings-first review baseline, severity model, risk reporting |
-| **sk-code-web**          | Web/frontend development, browser testing  |
+| **sk-code**          | Web/frontend development, browser testing  |
 | **sk-doc** | Markdown documentation, skill creation     |
 | **system-spec-kit**         | Spec folders, memory, context preservation |
 | **sk-git**           | Git workflows, commits, PR creation        |

@@ -22,7 +22,7 @@ describe('advisor shadow sink', () => {
 
     const result = recordShadowDelta({
       prompt: 'implement telemetry',
-      recommendation: 'sk-code-web',
+      recommendation: 'sk-code',
       liveScore: 0.7,
       shadowScore: 0.9,
       delta: 0.2,
@@ -33,7 +33,7 @@ describe('advisor shadow sink', () => {
     const line = readFileSync(logPath, 'utf8').trim();
     expect(result.written).toBe(true);
     expect(JSON.parse(line)).toMatchObject({
-      recommendation: 'sk-code-web',
+      recommendation: 'sk-code',
       dominantLane: 'semantic_shadow',
       delta: 0.2,
     });

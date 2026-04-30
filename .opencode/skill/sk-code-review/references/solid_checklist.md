@@ -110,5 +110,5 @@ When suggesting a refactor, include:
 - [code_quality_checklist.md](./code_quality_checklist.md) - Correctness and performance checklist.
 - [removal_plan.md](./removal_plan.md) - Safe deletion and deferred migration planning.
 
-Overlay portability: combine architecture findings with overlay-specific standards from `sk-code-opencode`, `sk-code-web`, or `sk-code-full-stack`.
+Overlay portability: combine architecture findings with overlay-specific standards from `sk-code-opencode` or `sk-code`.
 <!-- /ANCHOR:related-resources -->

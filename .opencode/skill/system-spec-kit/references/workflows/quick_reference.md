@@ -33,8 +33,9 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:level-decision-shortcuts-progressive-enhancement -->
-## 2. LEVEL DECISION SHORTCUTS (Progressive Enhancement)
+## 2. LEVEL DECISION SHORTCUTS (PROGRESSIVE ENHANCEMENT)
 
 | Situation | Level | Required Templates | Optional Templates |
 |-----------|-------|-------------------|-------------------|
@@ -52,8 +53,9 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 ---
 
 <!-- /ANCHOR:level-decision-shortcuts-progressive-enhancement -->
+
 <!-- ANCHOR:template-copy-commands-progressive -->
-## 3. TEMPLATE COPY COMMANDS (Progressive)
+## 3. TEMPLATE COPY COMMANDS (PROGRESSIVE)
 
 ### Level 1: Baseline (ALL features start here)
 
@@ -106,6 +108,7 @@ mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates
 ---
 
 <!-- /ANCHOR:template-copy-commands-progressive -->
+
 <!-- ANCHOR:essential-commands -->
 ## 4. ESSENTIAL COMMANDS
 
@@ -185,8 +188,9 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tm
 ---
 
 <!-- /ANCHOR:essential-commands -->
+
 <!-- ANCHOR:pre-implementation-checklist-progressive-enhancement -->
-## 5. PRE-IMPLEMENTATION CHECKLIST (Progressive Enhancement)
+## 5. PRE-IMPLEMENTATION CHECKLIST (PROGRESSIVE ENHANCEMENT)
 
 Before making ANY file changes, verify:
 
@@ -210,6 +214,7 @@ Before making ANY file changes, verify:
 ---
 
 <!-- /ANCHOR:pre-implementation-checklist-progressive-enhancement -->
+
 <!-- ANCHOR:folder-naming-examples -->
 ## 6. FOLDER NAMING EXAMPLES
 
@@ -232,6 +237,7 @@ Before making ANY file changes, verify:
 ---
 
 <!-- /ANCHOR:folder-naming-examples -->
+
 <!-- ANCHOR:status-field-values -->
 ## 7. STATUS FIELD VALUES
 
@@ -246,6 +252,7 @@ Before making ANY file changes, verify:
 ---
 
 <!-- /ANCHOR:status-field-values -->
+
 <!-- ANCHOR:update-vs-create-decision -->
 ## 8. UPDATE VS CREATE DECISION
 
@@ -273,6 +280,7 @@ and tree-truth verification.
 ---
 
 <!-- /ANCHOR:update-vs-create-decision -->
+
 <!-- ANCHOR:confirmation-options -->
 ## 9. CONFIRMATION OPTIONS
 
@@ -289,8 +297,9 @@ When workflow prompts at conversation start:
 ---
 
 <!-- /ANCHOR:confirmation-options -->
+
 <!-- ANCHOR:level-migration-progressive-enhancement -->
-## 10. LEVEL MIGRATION (Progressive Enhancement)
+## 10. LEVEL MIGRATION (PROGRESSIVE ENHANCEMENT)
 
 ### Script-Assisted Upgrade (Recommended)
 
@@ -333,6 +342,7 @@ Then verify placeholders are fully resolved:
 ---
 
 <!-- /ANCHOR:level-migration-progressive-enhancement -->
+
 <!-- ANCHOR:troubleshooting -->
 ## 11. TROUBLESHOOTING
 
@@ -407,6 +417,7 @@ Then verify placeholders are fully resolved:
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:what-requires-spec-folders -->
 ## 12. WHAT REQUIRES SPEC FOLDERS
 
@@ -428,6 +439,7 @@ Then verify placeholders are fully resolved:
 ---
 
 <!-- /ANCHOR:what-requires-spec-folders -->
+
 <!-- ANCHOR:skip-option-option-d-usage -->
 ## 13. SKIP OPTION (OPTION D) USAGE
 
@@ -460,8 +472,9 @@ Skipping documentation:
 ---
 
 <!-- /ANCHOR:skip-option-option-d-usage -->
+
 <!-- ANCHOR:template-adaptation-checklist-progressive-enhancement -->
-## 14. TEMPLATE ADAPTATION CHECKLIST (Progressive Enhancement)
+## 14. TEMPLATE ADAPTATION CHECKLIST (PROGRESSIVE ENHANCEMENT)
 
 Before presenting documentation to user:
 
@@ -486,7 +499,8 @@ Before presenting documentation to user:
 ---
 
 <!-- /ANCHOR:template-adaptation-checklist-progressive-enhancement -->
-<!-- ANCHOR:context-save-handover -->
+
+<!-- ANCHOR:context-save-and-handover -->
 ## 15. CONTEXT SAVE & HANDOVER
 
 ### Context Save
@@ -538,7 +552,8 @@ The pointer is maintained automatically by the generator: parent-level saves wri
 
 ---
 
-<!-- /ANCHOR:context-save-handover -->
+<!-- /ANCHOR:context-save-and-handover -->
+
 <!-- ANCHOR:phase-workflow-shortcuts -->
 ## 16. PHASE WORKFLOW SHORTCUTS
 
@@ -583,8 +598,9 @@ specs/###-parent/
 ---
 
 <!-- /ANCHOR:phase-workflow-shortcuts -->
+
 <!-- ANCHOR:agent-critical-rules-progressive-enhancement -->
-## 17. AGENT CRITICAL RULES (Progressive Enhancement)
+## 17. AGENT CRITICAL RULES (PROGRESSIVE ENHANCEMENT)
 
 ### Absolutely Required
 
@@ -619,8 +635,9 @@ specs/###-parent/
 ---
 
 <!-- /ANCHOR:agent-critical-rules-progressive-enhancement -->
+
 <!-- ANCHOR:checklist-verification-protocol-level-2 -->
-## 18. CHECKLIST VERIFICATION PROTOCOL (Level 2+)
+## 18. CHECKLIST VERIFICATION PROTOCOL (LEVEL 2+)
 
 ### When to Use
 
@@ -699,8 +716,9 @@ For each checklist item:
 ---
 
 <!-- /ANCHOR:checklist-verification-protocol-level-2 -->
+
 <!-- ANCHOR:core-principle -->
-## 19. Core Principle
+## 19. CORE PRINCIPLE
 
 **Every file change deserves documentation.**
 
@@ -717,6 +735,7 @@ When in doubt:
 ---
 
 <!-- /ANCHOR:core-principle -->
+
 <!-- ANCHOR:related-resources -->
 ## 20. RELATED RESOURCES
 
@@ -763,7 +782,10 @@ When in doubt:
 - [implementation-summary.md](../../templates/level_3+/implementation-summary.md) - Required completion summary (Level 3+)
 
 ### Related Skills
-- `sk-code-web` - Implementation, debugging, and verification lifecycle
+- `sk-code` - Implementation, debugging, and verification lifecycle
 - `system-spec-kit` - Context preservation with semantic memory
 - `sk-git` - Git workspace setup and clean commits
+
+---
+
 <!-- /ANCHOR:related-resources -->

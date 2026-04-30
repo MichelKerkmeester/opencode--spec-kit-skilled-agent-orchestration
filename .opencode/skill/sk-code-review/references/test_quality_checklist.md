@@ -142,5 +142,5 @@ Severity guidance:
 - [security_checklist.md](./security_checklist.md) - Security, authz, abuse, and privacy risk checks.
 - [solid_checklist.md](./solid_checklist.md) - SOLID (SRP/OCP/LSP/ISP/DIP) and architecture risk prompts.
 
-Overlay portability: pair this baseline with stack-specific test guidance from `sk-code-opencode`, `sk-code-web`, or `sk-code-full-stack`.
+Overlay portability: pair this baseline with stack-specific test guidance from `sk-code-opencode` or `sk-code`.
 <!-- /ANCHOR:related-resources -->

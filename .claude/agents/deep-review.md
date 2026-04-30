@@ -263,7 +263,7 @@ newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
 | Skill | Purpose |
 |-------|---------|
 | `sk-code-review` | Shared review doctrine via `references/review_core.md` |
-| `sk-code-opencode` / `sk-code-web` / `sk-code-full-stack` | Stack-specific overlay |
+| `sk-code-opencode` / `sk-code` | Stack-specific overlay |
 
 ---
 

@@ -404,7 +404,7 @@ Fix: Delete the commented-out code. Git history preserves every line ever commit
 
 **Q: This skill covers standards only. What about the full development lifecycle (debugging, verification phases)?**
 
-A: This skill is a standards overlay, not a lifecycle orchestrator. It answers "how should this code be written and formatted?" not "how do I implement, debug, and verify a feature end-to-end?" For the full three-phase lifecycle (Implementation, Testing and Debugging, Verification), use `sk-code-full-stack`. For OpenCode system code specifically, invoke `sk-code-opencode` alongside `sk-code-full-stack` to apply both the standards overlay and the lifecycle orchestration.
+A: This skill is a standards overlay, not a lifecycle orchestrator. It answers "how should this code be written and formatted?" not "how do I implement, debug, and verify a feature end-to-end?" For the full three-phase lifecycle (Implementation, Testing and Debugging, Verification), use `sk-code`. For OpenCode system code specifically, invoke `sk-code-opencode` alongside `sk-code` to apply both the standards overlay and the lifecycle orchestration.
 
 **Q: Why are the file headers mandatory? They add visual noise.**
 
@@ -416,7 +416,7 @@ A: A WHY comment records a decision that is not visible from the code. It answer
 
 **Q: Can I use this skill for web frontend code?**
 
-A: No. This skill covers OpenCode system code: MCP servers, validators, advisors, automation scripts, and configuration files. For web and frontend development (DOM APIs, CSS, browser-specific JavaScript, CDN workflows, responsive design), use `sk-code-web`. The boundary is clear: system code that runs in Node.js, Python, or Shell belongs here. Code that runs in a browser belongs in `sk-code-web`.
+A: No. This skill covers OpenCode system code: MCP servers, validators, advisors, automation scripts, and configuration files. For web and frontend development (DOM APIs, CSS, browser-specific JavaScript, CDN workflows, responsive design), use `sk-code`. The boundary is clear: system code that runs in Node.js, Python, or Shell belongs here. Code that runs in a browser belongs in `sk-code`.
 
 <!-- /ANCHOR:faq -->
 
@@ -434,9 +434,9 @@ A: No. This skill covers OpenCode system code: MCP servers, validators, advisors
 | Verifier contract | `.opencode/skill/sk-code-opencode/references/shared/alignment_verification_automation.md` | Verifier output contract and automation workflow |
 | Runtime hooks | `.opencode/skill/sk-code-opencode/references/shared/hooks.md` | Runtime hook entrypoints across Claude/Codex/Gemini/Copilot and wiring rules |
 | Universal checklist | `.opencode/skill/sk-code-opencode/assets/checklists/universal_checklist.md` | Cross-language P0 quality gates |
-| sk-code-full-stack | `.opencode/skill/sk-code-full-stack/SKILL.md` | Full development lifecycle orchestration across stacks |
+| sk-code | `.opencode/skill/sk-code/SKILL.md` | Full development lifecycle orchestration across stacks |
 | sk-code-review | `.opencode/skill/sk-code-review/SKILL.md` | Findings-first code review, severity model, merge decisions |
-| sk-code-web | `.opencode/skill/sk-code-web/SKILL.md` | Web and frontend development, browser testing |
+| sk-code | `.opencode/skill/sk-code/SKILL.md` | Web and frontend development, browser testing |
 | sk-doc | `.opencode/skill/sk-doc/SKILL.md` | Markdown documentation, skill creation, DQI scoring |
 | system-spec-kit | `.opencode/skill/system-spec-kit/SKILL.md` | Spec folder management, memory system, context preservation |
 | sk-git | `.opencode/skill/sk-git/SKILL.md` | Git workflows, commit hygiene, PR creation |

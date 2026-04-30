@@ -410,8 +410,8 @@ Key integrations:
 
 | Skill | Integration |
 |-------|-------------|
-| **sk-code-web** | Use Gemini for code review during web development |
-| **sk-code-full-stack** | Delegate test generation or architecture analysis to Gemini |
+| **sk-code** | Use Gemini for code review during web development |
+| **sk-code** | Delegate test generation or architecture analysis to Gemini |
 | **mcp-code-mode** | Gemini CLI is independent; does not require Code Mode |
 
 ---

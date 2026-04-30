@@ -1,6 +1,6 @@
 ---
 title: "sk-code-review: Code Review Baseline"
-description: "Stack-agnostic code review baseline with findings-first severity analysis, mandatory security and correctness minimums, and overlay compatibility with sk-code-opencode, sk-code-web, and sk-code-full-stack."
+description: "Stack-agnostic code review baseline with findings-first severity analysis, mandatory security and correctness minimums, and overlay compatibility with sk-code-opencode and sk-code."
 trigger_phrases:
   - code review
   - pr review
@@ -54,7 +54,7 @@ When a review resumes packet work, `/spec_kit:resume` stays the canonical recove
 | Version         | 1.2.0.0                                                                               |
 | Allowed tools   | Read, Write, Edit, Bash, Glob, Grep                                                   |
 | Reference files | 8 (review_core, review_ux_single_pass, security, code quality, SOLID, removal, test quality, quick reference) |
-| Overlay skills  | sk-code-opencode, sk-code-web, sk-code-full-stack                                  |
+| Overlay skills  | sk-code-opencode, sk-code                                  |
 | Severity levels | P0 (Critical), P1 (High), P2 (Advisory)                                               |
 
 ### How This Compares
@@ -63,8 +63,8 @@ When a review resumes packet work, `/spec_kit:resume` stays the canonical recove
 | ----------------------- | ----------------------------------------------------- |
 | `sk-code-review`       | Baseline security and correctness always applied      |
 | `sk-code-opencode`     | Overlay for OpenCode system code context              |
-| `sk-code-web`          | Overlay for frontend and web context                  |
-| `sk-code-full-stack`   | Overlay for general multi-stack context               |
+| `sk-code`          | Overlay for frontend and web context                  |
+| `sk-code`   | Overlay for general multi-stack context               |
 
 ### Key Features
 
@@ -86,7 +86,7 @@ When a review resumes packet work, `/spec_kit:resume` stays the canonical recove
 
 1. **Activate the skill.** Gate 2 routes to `sk-code-review` when the request contains review, audit, quality gate, security review, or merge readiness signals. You can also invoke it directly: `Read(".opencode/skill/sk-code-review/SKILL.md")`.
 
-2. **Identify the overlay.** The skill detects the stack from task text and workspace files. OpenCode system context loads `sk-code-opencode`. Frontend context loads `sk-code-web`. All other stacks default to `sk-code-full-stack`. Confirm the detected overlay before scoring.
+2. **Identify the overlay.** The skill detects the stack from task text and workspace files. OpenCode system context loads `sk-code-opencode`. Frontend context loads `sk-code`. All other stacks default to `sk-code`. Confirm the detected overlay before scoring.
 
 3. **Run the review.** The skill loads baseline references (review_core, review_ux_single_pass, security_checklist, code_quality_checklist) and any conditional references matched by intent scoring. Analysis runs in four phases: scope and baseline, overlay alignment, findings-first analysis, and output contract.
 
@@ -270,7 +270,7 @@ A: Security and correctness rules are universal. Style rules, process convention
 
 **Q: Can I use this skill without an overlay for a quick check?**
 
-A: Yes. If you request a review and stack detection produces no strong signal, the skill defaults to `sk-code-full-stack` as the overlay. You can also state "no stack-specific rules needed" and the skill will run baseline-only checks covering security, correctness, KISS, DRY, and test quality. The findings format and severity model remain the same.
+A: Yes. If you request a review and stack detection produces no strong signal, the skill defaults to `sk-code` as the overlay. You can also state "no stack-specific rules needed" and the skill will run baseline-only checks covering security, correctness, KISS, DRY, and test quality. The findings format and severity model remain the same.
 
 **Q: What happens if baseline and overlay guidance conflict?**
 
@@ -292,9 +292,9 @@ A: The precedence matrix resolves most conflicts automatically. Security and cor
 | [references/code_quality_checklist.md](./references/code_quality_checklist.md)           | Correctness, KISS, DRY checks                              |
 | [references/solid_checklist.md](./references/solid_checklist.md)                         | SOLID and architecture assessment                          |
 | [references/test_quality_checklist.md](./references/test_quality_checklist.md)           | Test quality and anti-pattern detection                    |
-| [sk-code-web SKILL.md](../sk-code-web/SKILL.md)                                        | Web and frontend overlay standards                         |
+| [sk-code SKILL.md](../sk-code/SKILL.md)                                        | Web and frontend overlay standards                         |
 | [sk-code-opencode SKILL.md](../sk-code-opencode/SKILL.md)                              | OpenCode system code overlay standards                     |
-| [sk-code-full-stack SKILL.md](../sk-code-full-stack/SKILL.md)                          | Default multi-stack overlay standards                      |
+| [sk-code SKILL.md](../sk-code/SKILL.md)                          | Default multi-stack overlay standards                      |
 | [.opencode/agent/review.md](../../agent/review.md)                                       | Runtime review agent contract                              |
 
 ---

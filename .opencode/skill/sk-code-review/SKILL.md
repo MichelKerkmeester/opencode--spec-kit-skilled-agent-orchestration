@@ -1,6 +1,6 @@
 ---
 name: sk-code-review
-description: "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code-opencode, sk-code-web, and sk-code-full-stack standards."
+description: "Stack-agnostic code review baseline skill with findings-first severity analysis, mandatory security/correctness minimums, and adaptive overlay compatibility with sk-code-opencode and sk-code standards."
 allowed-tools: [Read, Write, Edit, Bash, Glob, Grep]
 version: 1.2.0.0
 ---
@@ -51,8 +51,8 @@ Review behavior follows a baseline+overlay model:
 - Baseline (always): `sk-code` (implemented by this skill: `sk-code-review`)
 - Overlay (exactly one `sk-code-*`):
   - OpenCode system context -> `sk-code-opencode`
-  - Frontend/web context -> `sk-code-web`
-  - Default/other stacks -> `sk-code-full-stack`
+  - Frontend/web context -> `sk-code`
+  - Default/other stacks -> `sk-code`
 
 ### Phase Detection
 
@@ -211,8 +211,8 @@ def detect_overlay_skill(task, workspace_files=None, changed_files=None) -> str:
     if any(term in text for term in ["frontend", "web", "css", "dom", "browser", "webflow"]) or any(
         marker in files for marker in ["next.config", "vite.config", "package.json", "src/"]
     ):
-        return "sk-code-web"
-    return "sk-code-full-stack"
+        return "sk-code"
+    return "sk-code"
 
 
 def route_review_resources(task, workspace_files=None, changed_files=None):
@@ -307,7 +307,7 @@ Required output contract:
 **Files reviewed**: X files, Y lines changed
 **Overall assessment**: [APPROVE / REQUEST_CHANGES / COMMENT]
 **Baseline used**: [sk-code (`sk-code-review`)]
-**Overlay skill used**: [sk-code-opencode | sk-code-web | sk-code-full-stack]
+**Overlay skill used**: [sk-code-opencode | sk-code | sk-code]
 
 ## Findings
 
@@ -398,8 +398,8 @@ After reporting findings, request explicit next action before any implementation
 - Referenced by review-dispatch steps in `spec_kit` and `create` command YAML workflows.
 - Complements, but does not replace, stack-specific skills:
   - `sk-code-opencode`
-  - `sk-code-web`
-  - `sk-code-full-stack`
+  - `sk-code`
+  - `sk-code`
 <!-- /ANCHOR:integration-points -->
 
 ---
@@ -409,7 +409,7 @@ After reporting findings, request explicit next action before any implementation
 
 - [sk-doc](../sk-doc/SKILL.md) - Skill authoring and packaging standards.
 - [sk-code-opencode](../sk-code-opencode/SKILL.md) - OpenCode system code overlay standards.
-- [sk-code-web](../sk-code-web/SKILL.md) - Web/frontend overlay standards.
-- [sk-code-full-stack](../sk-code-full-stack/SKILL.md) - Default multi-stack overlay standards.
+- [sk-code](../sk-code/SKILL.md) - Web/frontend overlay standards.
+- [sk-code](../sk-code/SKILL.md) - Default multi-stack overlay standards.
 - [.opencode/agent/review.md](../../agent/review.md) - Runtime review agent contract.
 <!-- /ANCHOR:related-resources -->
