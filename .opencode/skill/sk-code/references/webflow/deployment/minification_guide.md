@@ -9,7 +9,6 @@ Safe minification workflow for Webflow projects with verification to prevent bre
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -48,8 +47,6 @@ Minification can break code when:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:terser-configuration -->
 ## 2. TERSER CONFIGURATION
 
 ### Basic Command
@@ -94,8 +91,6 @@ wc -c src/javascript/hero/hero_video.js src/javascript/z_minified/hero/hero_vide
 
 ---
 
-<!-- /ANCHOR:terser-configuration -->
-<!-- ANCHOR:critical-patterns-for-webflow -->
 ## 3. CRITICAL PATTERNS FOR WEBFLOW
 
 These patterns MUST be preserved during minification. The verification scripts check for them.
@@ -174,8 +169,6 @@ animate(element, { opacity: [0, 1], y: ['4rem', '0px'] });
 
 ---
 
-<!-- /ANCHOR:critical-patterns-for-webflow -->
-<!-- ANCHOR:safe-minification-workflow -->
 ## 4. SAFE MINIFICATION WORKFLOW
 
 ### Step 1: Minify with Terser
@@ -271,8 +264,6 @@ bdg stop
 
 ---
 
-<!-- /ANCHOR:safe-minification-workflow -->
-<!-- ANCHOR:verification-scripts-reference -->
 ## 5. VERIFICATION SCRIPTS REFERENCE
 
 ### verify-minification.mjs
@@ -353,8 +344,6 @@ Summary:
 
 ---
 
-<!-- /ANCHOR:verification-scripts-reference -->
-<!-- ANCHOR:debugging-minification-issues -->
 ## 6. DEBUGGING MINIFICATION ISSUES
 
 ### Common Error: "X is not defined"
@@ -442,8 +431,6 @@ window['initHero'] = function() { ... };  // Bracket notation preserves name
 
 ---
 
-<!-- /ANCHOR:debugging-minification-issues -->
-<!-- ANCHOR:batch-minification-workflow -->
 ## 7. BATCH MINIFICATION WORKFLOW
 
 ### For All Files
@@ -485,8 +472,6 @@ bdg stop
 
 ---
 
-<!-- /ANCHOR:batch-minification-workflow -->
-<!-- ANCHOR:rules -->
 ## 8. RULES
 
 ### ✅ ALWAYS
@@ -516,8 +501,6 @@ bdg stop
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -536,4 +519,3 @@ bdg stop
 
 - [Terser Documentation](https://terser.org/docs/api-reference)
 - [Terser CLI Options](https://terser.org/docs/cli-usage)
-<!-- /ANCHOR:related-resources -->

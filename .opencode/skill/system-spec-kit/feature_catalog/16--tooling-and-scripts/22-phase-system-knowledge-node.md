@@ -24,7 +24,7 @@ It explains when work should stay in a single spec folder and when it should spl
 
 The node currently summarizes a phase system that is implemented across documentation references, slash-command workflow contracts, shell scripts, and validation rules.
 
-At the knowledge-node level, `nodes/phase-system.md` captures the operator-facing model: phasing is suggested only when both thresholds are met, meaning a phase complexity score of at least 25 out of 50 and a recommended documentation level of at least 3. It documents the five scoring dimensions, suggested phase-count ranges, lifecycle stages, phase-status values, command/script entry points, and the expected parent/child folder topology.
+At the knowledge-node level, `references/structure/phase_system.md` captures the operator-facing model: phasing is suggested only when both thresholds are met, meaning a phase complexity score of at least 25 out of 50 and a recommended documentation level of at least 3. It documents the five scoring dimensions, suggested phase-count ranges, lifecycle stages, phase-status values, command/script entry points, and the expected parent/child folder topology.
 
 That summary is backed by a deeper reference and executable tooling. `references/structure/phase_definitions.md` expands the taxonomy, folder conventions, phase map/back-reference requirements, and recursive validation expectations. `/spec_kit:plan :with-phases` (or `/spec_kit:complete :with-phases`) is the user-facing entry point that drives phase decomposition workflows via optional pre-workflow steps in the plan and complete YAML assets. `create.sh` implements the actual parent-plus-child folder creation path via `--phase`, `--phases`, `--phase-names`, and `--parent`. `recommend-level.sh` calculates both documentation level and the separate default-on phase recommendation fields, while `validate.sh --recursive` and the `PHASE_LINKS` rule check whether a phased packet is structurally coherent.
 
@@ -38,7 +38,7 @@ The current system is therefore not just descriptive documentation. The node is 
 
 | File | Layer | Role |
 |------|-------|------|
-| `.opencode/skill/system-spec-kit/nodes/phase-system.md` | Knowledge node | Compact summary of phase applicability, scoring, lifecycle, folder structure, and command/script entry points |
+| `.opencode/skill/system-spec-kit/references/structure/phase_system.md` | Knowledge node | Compact summary of phase applicability, scoring, lifecycle, folder structure, and command/script entry points |
 | `.opencode/skill/system-spec-kit/references/structure/phase_definitions.md` | Reference | Full phase taxonomy, thresholds, parent/child conventions, and lifecycle rules |
 | `.opencode/command/spec_kit/phase.md` | Command | Operator workflow contract for phase decomposition and next-step routing |
 | `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Script | Creates phased parent/child spec structures and supports append mode for existing parents |

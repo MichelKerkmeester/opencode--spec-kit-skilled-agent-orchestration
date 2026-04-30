@@ -9,7 +9,6 @@ Copy-paste ready prompt templates for common Claude Code CLI tasks. Replace `[pl
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -42,7 +41,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ---
 
-<!-- /ANCHOR:overview -->
 <!-- ANCHOR:code_generation -->
 
 ## 2. CODE GENERATION
@@ -282,7 +280,6 @@ claude -p "Generate integration tests for the orders API endpoints in @./src/api
 ```
 
 <!-- /ANCHOR:test_generation -->
-<!-- ANCHOR:documentation -->
 
 ## 7. DOCUMENTATION
 
@@ -320,7 +317,6 @@ claude -p "Add JSDoc/TSDoc comments to all exported functions in @./[file]. Incl
   --output-format text 2>&1
 ```
 
-<!-- /ANCHOR:documentation -->
 <!-- ANCHOR:code_transformation -->
 
 ## 8. CODE TRANSFORMATION

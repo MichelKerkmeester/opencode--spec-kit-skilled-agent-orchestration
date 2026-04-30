@@ -9,7 +9,6 @@ Use this checklist when deferring non-critical scripts behind interaction, viewp
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -24,8 +23,6 @@ Provide a measurable verification pass for deferred-loading work so Lighthouse, 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:measurement-targets -->
 ## 2. MEASUREMENT TARGETS
 
 | Metric | Target | How to Measure |
@@ -38,8 +35,6 @@ Provide a measurable verification pass for deferred-loading work so Lighthouse, 
 
 ---
 
-<!-- /ANCHOR:measurement-targets -->
-<!-- ANCHOR:baseline -->
 ## 3. BASELINE AND AFTER DATA
 
 - [ ] Capture before/after Lighthouse mobile runs for each affected page.
@@ -49,8 +44,6 @@ Provide a measurable verification pass for deferred-loading work so Lighthouse, 
 
 ---
 
-<!-- /ANCHOR:baseline -->
-<!-- ANCHOR:gating-rules -->
 ## 4. GATING RULES
 
 - [ ] Deferred code is non-critical to first paint, first submit, or compliance.
@@ -61,8 +54,6 @@ Provide a measurable verification pass for deferred-loading work so Lighthouse, 
 
 ---
 
-<!-- /ANCHOR:gating-rules -->
-<!-- ANCHOR:non-deferrable -->
 ## 5. NON-DEFERRABLE EXCLUSIONS
 
 - [ ] Hero/LCP-critical media or reveal logic remains eager.
@@ -74,8 +65,6 @@ If any box cannot be checked, stop and remove the deferral.
 
 ---
 
-<!-- /ANCHOR:non-deferrable -->
-<!-- ANCHOR:verification -->
 ## 6. VERIFICATION
 
 - [ ] Lighthouse/PageSpeed shows the expected startup improvement.
@@ -87,8 +76,6 @@ If any box cannot be checked, stop and remove the deferral.
 
 ---
 
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:anti-patterns -->
 ## 7. RED FLAGS
 
 - [ ] Not chasing a Lighthouse win by delaying critical UX.
@@ -98,11 +85,8 @@ If any box cannot be checked, stop and remove the deferral.
 
 ---
 
-<!-- /ANCHOR:anti-patterns -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - [interaction_gated_loading.md](../../references/performance/interaction_gated_loading.md) - Gate selection and exclusions
 - [cwv_remediation.md](../../references/performance/cwv_remediation.md) - TBT and Lighthouse remediation patterns
 - [interaction_gate_patterns.js](../patterns/interaction_gate_patterns.js) - Reusable trigger helpers
-<!-- /ANCHOR:related-resources -->

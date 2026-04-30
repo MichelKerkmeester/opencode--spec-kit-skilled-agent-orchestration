@@ -48,7 +48,7 @@ This resource map is the quick-reference index for the live packet-006 implement
 | Surface | Key Files | Purpose |
 |---|---|---|
 | Package architecture | `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Current-reality architecture across scripts, runtime, and shared modules |
-| Runtime overview | `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/ARCHITECTURE.md`, `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/nodes/phase-system.md` | Human-readable orientation for the active runtime tree |
+| Runtime overview | `.opencode/skill/system-spec-kit/README.md`, `.opencode/skill/system-spec-kit/ARCHITECTURE.md`, `.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md`, `.opencode/skill/system-spec-kit/references/structure/phase_system.md` | Human-readable orientation for the active runtime tree |
 | Subdirectory READMEs | `mcp_server/**/README.md` | Directory-level ownership, purpose, and related-module pointers |
 | Packet docs | `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md` under packet 006 and phase subfolders | Packet-local execution truth |
 

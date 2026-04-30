@@ -9,7 +9,6 @@ Defines the exact heading hierarchy, required anchors, and content minimums for 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -29,8 +28,6 @@ Defines the exact heading hierarchy, required anchors, and content minimums for 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:enforcement -->
 ## 2. ENFORCEMENT
 
 After writing ANY spec folder `.md` file, immediately run:
@@ -43,8 +40,6 @@ Fix ALL errors before proceeding to the next file or workflow step.
 
 ---
 
-<!-- /ANCHOR:enforcement -->
-<!-- ANCHOR:level-1-contract -->
 ## 3. LEVEL 1 CONTRACT
 
 Level 1 covers 4 document types using the same core anchors as Level 2 but without L2 addenda sections.
@@ -97,8 +92,6 @@ Level 1 covers 4 document types using the same core anchors as Level 2 but witho
 
 ---
 
-<!-- /ANCHOR:level-1-contract -->
-<!-- ANCHOR:level-2-contract -->
 ## 4. LEVEL 2 CONTRACT
 
 MANDATORY: Every spec document MUST follow the exact anchor + header structure below.
@@ -176,8 +169,6 @@ L2 addenda (after core): `phase-deps` (## L2: PHASE DEPENDENCIES), `effort` (## 
 
 ---
 
-<!-- /ANCHOR:level-2-contract -->
-<!-- ANCHOR:level-3-contract -->
 ## 5. LEVEL 3 CONTRACT
 
 All Level 2 documents retain their contracts above. Level 3 adds:
@@ -200,8 +191,6 @@ All 6 sub-anchors are required per ADR, in the order shown above.
 
 ---
 
-<!-- /ANCHOR:level-3-contract -->
-<!-- ANCHOR:level-3-plus-contract -->
 ## 6. LEVEL 3+ CONTRACT
 
 Same structural contract as Level 3. Extended governance requirements
@@ -210,8 +199,6 @@ enforced by quality-audit.sh, not by structural template contracts.
 
 ---
 
-<!-- /ANCHOR:level-3-plus-contract -->
-<!-- ANCHOR:content-minimums -->
 ## 7. CONTENT MINIMUMS
 
 Beyond structural compliance, `validate.sh` enforces minimum content quantities.
@@ -229,8 +216,6 @@ Agents MUST meet these thresholds to avoid warnings:
 
 ---
 
-<!-- /ANCHOR:content-minimums -->
-<!-- ANCHOR:phase-folder-addenda -->
 ## 8. PHASE FOLDER ADDENDA
 
 Phase **children** (e.g., `specs/NNN-name/001-phase/`) inherit the base contract for their level plus phase-specific addenda. These are enforced automatically by `validate.sh` via `inferPhaseSpecAddenda()` in `template-structure.js`. No additional agent knowledge is needed for children — follow the base contract and validate after writing.
@@ -241,8 +226,6 @@ Phase-parent `spec.md` content discipline is enforced by the advisory `PHASE_PAR
 
 ---
 
-<!-- /ANCHOR:phase-folder-addenda -->
-<!-- ANCHOR:sync-protocol -->
 ## 9. SYNC PROTOCOL
 
 When templates in `templates/level_N/` change:
@@ -260,8 +243,6 @@ When templates in `templates/level_N/` change:
 
 ---
 
-<!-- /ANCHOR:sync-protocol -->
-<!-- ANCHOR:version-history -->
 ## 10. VERSION HISTORY
 
 | Version | Date | Change |
@@ -271,8 +252,6 @@ When templates in `templates/level_N/` change:
 
 ---
 
-<!-- /ANCHOR:version-history -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### References
@@ -288,4 +267,3 @@ When templates in `templates/level_N/` change:
 ### Templates
 - [template_guide.md](../templates/template_guide.md) — Template usage and composition rules
 
-<!-- /ANCHOR:related-resources -->

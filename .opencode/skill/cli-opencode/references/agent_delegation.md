@@ -9,7 +9,6 @@ How cli-opencode routes dispatches to specialized OpenCode agents via the `--age
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 OpenCode agents are markdown files under `.opencode/agent/<slug>.md`. Each file's frontmatter pins the model, tool permissions, system prompt, and behavioral constraints. When `opencode run --agent <slug>` is invoked, the dispatched session inherits all of that.
@@ -32,9 +31,6 @@ The calling AI decides WHAT to delegate. The agent's frontmatter shapes HOW the 
 
 This separation of concerns is load-bearing for the cli-opencode skill: the calling AI owns the task graph and the integration step, while the dispatched OpenCode session owns the per-task execution under the agent's tool permissions and system prompt.
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:orchestration-model -->
 ## 2. ORCHESTRATION MODEL
 
 ```text
@@ -107,9 +103,6 @@ The `--variant high` flag is the cli-opencode default for cross-AI dispatches. T
 | Result validation and integration | Calling AI |
 | Memory handback extraction | Calling AI |
 
-<!-- /ANCHOR:orchestration-model -->
-
-<!-- ANCHOR:agent-roster -->
 ## 3. AGENT ROSTER
 
 The repo ships these agents under `.opencode/agent/`. The cli-opencode skill can route to any of them. The summary table below is followed by per-agent property tables for the most-dispatched roles.
@@ -217,9 +210,6 @@ These two agents are dispatched only by their parent commands. The calling AI do
 
 Both are LEAF agents. Each iteration is fresh-context. The parent command owns convergence detection and state continuity.
 
-<!-- /ANCHOR:agent-roster -->
-
-<!-- ANCHOR:routing-matrix -->
 ## 4. AGENT ROUTING MATRIX
 
 Pick the agent that matches the task type. Default to `general` when no specialist fits.
@@ -237,9 +227,6 @@ Pick the agent that matches the task type. Default to `general` when no speciali
 | Agent improvement | `improve-agent` | `opencode run --agent improve-agent --variant high --format json --dir /repo "Evaluate the @debug agent on 5 dimensions. Propose improvements."` |
 | Default / unspecified | `general` | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
 
-<!-- /ANCHOR:routing-matrix -->
-
-<!-- ANCHOR:as-agent-pattern -->
 ## 5. THE `As @<agent>` PROMPT-TIME PATTERN
 
 Mirroring the sibling cli-* skills, cli-opencode supports an inline routing pattern where the calling AI prefixes the prompt with `As @<agent>:` instead of using the `--agent` flag. This is useful when the calling AI dispatches a single `opencode run` and shifts agent behavior mid-session.
@@ -262,9 +249,6 @@ The dispatched session parses the `As @review:` prefix and loads the review agen
 | `--agent <slug>` | Routine routing — the calling AI knows the right agent up front |
 | `As @<agent>:` | The calling AI wants the agent slug to be visible in the prompt for debugging or telemetry |
 
-<!-- /ANCHOR:as-agent-pattern -->
-
-<!-- ANCHOR:multi-agent -->
 ## 6. MULTI-AGENT WORKFLOWS
 
 cli-opencode dispatches that touch multiple agents follow this pattern:
@@ -294,9 +278,6 @@ If the calling AI is already decomposing tasks, delegate directly to leaf agents
 | Calling AI -> `@orchestrate` -> single leaf agent | Orchestrator overhead with no coordination benefit | Delegate directly to the leaf agent |
 | Calling AI -> `@orchestrate` -> `@orchestrate` -> leaf | Two orchestration layers with the same task graph | Pick one orchestrator, decompose once |
 
-<!-- /ANCHOR:multi-agent -->
-
-<!-- ANCHOR:leaf-agents -->
 ## 7. LEAF-AGENT CONSTRAINTS
 
 Some agents are LEAF agents by design. They MUST NOT dispatch sub-agents, use the Task tool, or write files (read-only). The cli-opencode skill MUST honor these constraints:
@@ -310,9 +291,6 @@ Some agents are LEAF agents by design. They MUST NOT dispatch sub-agents, use th
 
 The calling AI must NOT request a write or sub-dispatch from a LEAF agent. If the prompt would require either, route to `general` or `orchestrate` instead.
 
-<!-- /ANCHOR:leaf-agents -->
-
-<!-- ANCHOR:worked-examples -->
 ## 8. WORKED EXAMPLES
 
 Three end-to-end examples covering the most common dispatch patterns.
@@ -375,9 +353,6 @@ opencode run \
 
 **Calling AI follow-up:** Read `debug-delegation.md`. If a fix was applied, run the project's test suite. If `@debug` declined to fix, surface the rationale to the operator.
 
-<!-- /ANCHOR:worked-examples -->
-
-<!-- ANCHOR:output-handling -->
 ## 9. FAILURE MODES AND OUTPUT HANDLING
 
 ### Capturing output
@@ -431,9 +406,6 @@ When a dispatch produces low-quality output, the calling AI has three escalation
 
 The conductor (calling AI) decides which path. The agent has no visibility into the parent task graph.
 
-<!-- /ANCHOR:output-handling -->
-
-<!-- ANCHOR:related -->
 ## 10. RELATED RESOURCES
 
 - `./cli_reference.md` - The `--agent` flag and agent discovery commands
@@ -442,4 +414,3 @@ The conductor (calling AI) decides which path. The agent has no visibility into 
 - `../assets/prompt_templates.md` - Copy-paste templates per agent
 - `../SKILL.md` - Smart router pseudocode
 
-<!-- /ANCHOR:related -->

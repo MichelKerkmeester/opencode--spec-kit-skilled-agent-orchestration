@@ -9,7 +9,6 @@ Operational runbook for the controlled promotion and rollback path. Use it when 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Rollback is part of the promotion contract. If a promotion cannot be reversed qu
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:promotion-preconditions -->
 ## 2. PROMOTION PRECONDITIONS
 
 - candidate score file exists
@@ -41,8 +38,6 @@ Rollback is part of the promotion contract. If a promotion cannot be reversed qu
 
 ---
 
-<!-- /ANCHOR:promotion-preconditions -->
-<!-- ANCHOR:promotion-steps -->
 ## 3. PROMOTION STEPS
 
 1. Archive the current canonical target
@@ -52,8 +47,6 @@ Rollback is part of the promotion contract. If a promotion cannot be reversed qu
 
 ---
 
-<!-- /ANCHOR:promotion-steps -->
-<!-- ANCHOR:rollback-steps -->
 ## 4. ROLLBACK STEPS
 
 1. Restore the archived pre-promotion file to the canonical target
@@ -62,8 +55,6 @@ Rollback is part of the promotion contract. If a promotion cannot be reversed qu
 
 ---
 
-<!-- /ANCHOR:rollback-steps -->
-<!-- ANCHOR:post-verification -->
 ## 5. POST-PROMOTION VERIFICATION
 
 - `git diff -- <target>` shows only the intended canonical target edits when the worktree is otherwise clean
@@ -77,8 +68,6 @@ After rollback, re-run `score-candidate.cjs --dynamic` against the restored targ
 
 ---
 
-<!-- /ANCHOR:post-verification -->
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 - `promotion_rules.md`
@@ -86,4 +75,3 @@ After rollback, re-run `score-candidate.cjs --dynamic` against the restored targ
 - `../scripts/promote-candidate.cjs`
 - `../scripts/rollback-candidate.cjs`
 
-<!-- /ANCHOR:related-resources -->

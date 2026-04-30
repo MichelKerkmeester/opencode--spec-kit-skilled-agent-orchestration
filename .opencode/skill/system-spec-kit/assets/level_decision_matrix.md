@@ -9,7 +9,6 @@ Quick reference for selecting documentation levels (1-3+) based on LOC guidance 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -30,8 +29,6 @@ This matrix helps determine the appropriate documentation level for any task. Us
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:decision-matrix-table-progressive-enhancement -->
 ## 2. DECISION MATRIX TABLE (Progressive Enhancement)
 
 | Level               | LOC Guidance     | Required Files                                                      | Adds To Previous                   | Use When                             |
@@ -54,8 +51,6 @@ Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder t
 
 ---
 
-<!-- /ANCHOR:decision-matrix-table-progressive-enhancement -->
-<!-- ANCHOR:loc-as-soft-guidance-not-enforcement -->
 ## 3. LOC AS SOFT GUIDANCE (Not Enforcement)
 
 **How to count:**
@@ -77,8 +72,6 @@ Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder t
 
 ---
 
-<!-- /ANCHOR:loc-as-soft-guidance-not-enforcement -->
-<!-- ANCHOR:secondary-factors-can-override-loc -->
 ## 4. SECONDARY FACTORS (CAN OVERRIDE LOC)
 
 These factors can push you to a higher level even if LOC suggests lower:
@@ -105,8 +98,6 @@ These factors can push you to a higher level even if LOC suggests lower:
 
 ---
 
-<!-- /ANCHOR:secondary-factors-can-override-loc -->
-<!-- ANCHOR:edge-case-guidance -->
 ## 5. EDGE CASE GUIDANCE
 
 | Scenario                | LOC | Suggested Level | Required Files                  | Rationale                                |
@@ -123,8 +114,6 @@ These factors can push you to a higher level even if LOC suggests lower:
 
 ---
 
-<!-- /ANCHOR:edge-case-guidance -->
-<!-- ANCHOR:when-in-doubt -->
 ## 6. WHEN IN DOUBT
 
 **Choose the higher level.**
@@ -143,8 +132,6 @@ Templates are located at `templates/level_N/` (e.g., `templates/level_1/`, `temp
 
 ---
 
-<!-- /ANCHOR:when-in-doubt -->
-<!-- ANCHOR:checklist-quality-requirements -->
 ## 7. CHECKLIST QUALITY REQUIREMENTS
 
 Level 2+ documentation requires `checklist.md` with specific quality standards:
@@ -202,8 +189,6 @@ Completed checklist items MUST include verification evidence:
 
 ---
 
-<!-- /ANCHOR:checklist-quality-requirements -->
-<!-- ANCHOR:validation-rules-reference -->
 ## 8. VALIDATION RULES REFERENCE
 
 The spec validation system (`validate.sh`) checks documentation quality using these rules:
@@ -260,8 +245,6 @@ The spec validation system (`validate.sh`) checks documentation quality using th
 
 ---
 
-<!-- /ANCHOR:validation-rules-reference -->
-<!-- ANCHOR:level-migration-during-implementation -->
 ## 9. LEVEL MIGRATION DURING IMPLEMENTATION
 
 If scope grows during implementation, escalate by adding the required files:
@@ -284,8 +267,6 @@ If scope grows during implementation, escalate by adding the required files:
 
 ---
 
-<!-- /ANCHOR:level-migration-during-implementation -->
-<!-- ANCHOR:quick-decision-flowchart -->
 ## 10. QUICK DECISION FLOWCHART
 
 ```text
@@ -325,8 +306,6 @@ Architectural decision? ──YES──→ Level 3 (add decision-record.md)
 
 ---
 
-<!-- /ANCHOR:quick-decision-flowchart -->
-<!-- ANCHOR:spec-traceability -->
 ## 11. SPEC TRACEABILITY
 
 This decision matrix addresses the following spec requirements:
@@ -343,8 +322,6 @@ This decision matrix addresses the following spec requirements:
 
 ---
 
-<!-- /ANCHOR:spec-traceability -->
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 ### Asset Files
@@ -363,4 +340,3 @@ This decision matrix addresses the following spec requirements:
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator
 - `sk-code` - Implementation, debugging, and verification lifecycle<!-- /ANCHOR:related-resources -->
-<!-- /ANCHOR:related-resources -->

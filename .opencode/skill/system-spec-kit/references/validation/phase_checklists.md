@@ -9,7 +9,6 @@ Priority-based checklists for each phase of the SpecKit workflow.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 **Priority Levels**:
@@ -21,9 +20,6 @@ Priority-based checklists for each phase of the SpecKit workflow.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:planning-phase -->
 ## 2. PLANNING PHASE
 
 ### P0 - Hard Blockers
@@ -50,9 +46,6 @@ Priority-based checklists for each phase of the SpecKit workflow.
 
 ---
 
-<!-- /ANCHOR:planning-phase -->
-
-<!-- ANCHOR:research-phase -->
 ## 3. RESEARCH PHASE
 
 ### P0 - Hard Blockers
@@ -78,9 +71,6 @@ Priority-based checklists for each phase of the SpecKit workflow.
 
 ---
 
-<!-- /ANCHOR:research-phase -->
-
-<!-- ANCHOR:implementation-phase -->
 ## 4. IMPLEMENTATION PHASE
 
 ### P0 - Hard Blockers
@@ -150,9 +140,6 @@ When debugging becomes prolonged or repetitive:
 
 ---
 
-<!-- /ANCHOR:implementation-phase -->
-
-<!-- ANCHOR:review-phase -->
 ## 5. REVIEW PHASE
 
 ### P0 - Hard Blockers
@@ -178,9 +165,6 @@ When debugging becomes prolonged or repetitive:
 
 ---
 
-<!-- /ANCHOR:review-phase -->
-
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 ### Reference Files
@@ -199,4 +183,3 @@ When debugging becomes prolonged or repetitive:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

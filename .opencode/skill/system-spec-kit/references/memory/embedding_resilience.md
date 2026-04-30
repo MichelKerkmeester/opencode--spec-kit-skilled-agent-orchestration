@@ -9,7 +9,6 @@ Provider fallback chains, graceful degradation, and offline mode for reliable se
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -34,8 +33,6 @@ Governance boundaries still apply in every degradation mode. Fallback providers,
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:provider-fallback-chain -->
 ## 2. PROVIDER FALLBACK CHAIN
 
 The system attempts providers in order until one succeeds (REQ-029):
@@ -113,8 +110,6 @@ The system switches to the next provider when:
 
 ---
 
-<!-- /ANCHOR:provider-fallback-chain -->
-<!-- ANCHOR:graceful-degradation -->
 ## 3. GRACEFUL DEGRADATION
 
 When all embedding providers fail, the system degrades to keyword-based search (REQ-030):
@@ -168,8 +163,6 @@ When operating in degraded mode, search results include a warning:
 
 ---
 
-<!-- /ANCHOR:graceful-degradation -->
-<!-- ANCHOR:retry-with-backoff -->
 ## 4. RETRY WITH BACKOFF
 
 Transient failures trigger exponential backoff before provider switching (REQ-031):
@@ -245,8 +238,6 @@ function isPermanentError(error: unknown): boolean {
 
 ---
 
-<!-- /ANCHOR:retry-with-backoff -->
-<!-- ANCHOR:offline-mode -->
 ## 5. OFFLINE MODE
 
 Cached embeddings enable search without network connectivity (REQ-032):
@@ -328,8 +319,6 @@ Cache entries are evicted based on:
 
 ---
 
-<!-- /ANCHOR:offline-mode -->
-<!-- ANCHOR:provider-health-monitoring -->
 ## 6. PROVIDER HEALTH MONITORING
 
 Track provider reliability and preemptively switch when degraded (REQ-033):
@@ -454,8 +443,6 @@ async function healthCheckLoop(): Promise<void> {
 
 ---
 
-<!-- /ANCHOR:provider-health-monitoring -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 ### Reference Files
@@ -481,4 +468,3 @@ async function healthCheckLoop(): Promise<void> {
 | REQ-031: Retry with Backoff | Section 4 | Documented |
 | REQ-032: Offline Mode | Section 5 | Documented |
 | REQ-033: Health Monitoring | Section 6 | Documented |
-<!-- /ANCHOR:related-resources -->

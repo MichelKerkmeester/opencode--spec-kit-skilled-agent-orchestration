@@ -9,7 +9,6 @@ Quality validation checklist for Python code in the OpenCode development environ
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Specific quality checks for Python files. Use alongside the [universal_checklist
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:p0-hard-blockers -->
 ## 2. P0 - HARD BLOCKERS
 
 These items MUST be fixed before any commit.
@@ -135,8 +132,6 @@ DEFAULT_TIMEOUT = 30
 
 ---
 
-<!-- /ANCHOR:p0-hard-blockers -->
-<!-- ANCHOR:p1-required -->
 ## 3. P1 - REQUIRED
 
 These must be addressed or receive approval to defer.
@@ -244,8 +239,6 @@ def process(data):
 
 ---
 
-<!-- /ANCHOR:p1-required -->
-<!-- ANCHOR:p2-recommended -->
 ## 4. P2 - RECOMMENDED
 
 These improve quality but can be deferred.
@@ -307,8 +300,6 @@ class ValidationResult:
 
 ---
 
-<!-- /ANCHOR:p2-recommended -->
-<!-- ANCHOR:checklist-template -->
 ## 5. CHECKLIST TEMPLATE
 
 For formal findings-first review output, use `sk-code-review` as the baseline and treat this file as the Python standards overlay.
@@ -325,8 +316,6 @@ For formal findings-first review output, use `sk-code-review` as the baseline an
 
 ---
 
-<!-- /ANCHOR:checklist-template -->
-<!-- ANCHOR:validation-commands -->
 ## 6. VALIDATION COMMANDS
 
 ```bash
@@ -348,8 +337,6 @@ python -m flake8 file.py && python -m mypy file.py && python -m black --check fi
 
 ---
 
-<!-- /ANCHOR:validation-commands -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 ### Checklists
@@ -358,4 +345,3 @@ python -m flake8 file.py && python -m mypy file.py && python -m black --check fi
 ### Style Guide
 - [Python Style Guide](../../references/python/style_guide.md)
 - [Python Quality Standards](../../references/python/quality_standards.md)
-<!-- /ANCHOR:related-resources -->

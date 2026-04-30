@@ -9,15 +9,12 @@ One-page cheat sheet for git-worktrees, git-commit, and git-finish workflows.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This quick reference provides a one-page cheat sheet for the three git workflow phases: worktrees (workspace setup), commit (change tracking), and finish (integration).
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:skill-selection-flowchart -->
 ## 2. SKILL SELECTION FLOWCHART
 
 ```
@@ -37,8 +34,6 @@ git-worktrees   git-commit      git-finish
 
 ---
 
-<!-- /ANCHOR:skill-selection-flowchart -->
-<!-- ANCHOR:phase-1-worktree-setup-git-worktrees -->
 ## 3. PHASE 1: WORKTREE SETUP (GIT-WORKTREES)
 
 ### Quick Commands
@@ -80,8 +75,6 @@ git worktree remove .worktrees/<name>
 
 ---
 
-<!-- /ANCHOR:phase-1-worktree-setup-git-worktrees -->
-<!-- ANCHOR:phase-2-commit-work-git-commit -->
 ## 4. PHASE 2: COMMIT WORK (GIT-COMMIT)
 
 ### Quick Commands
@@ -140,8 +133,6 @@ Improves security and enables SSO integration.
 
 ---
 
-<!-- /ANCHOR:phase-2-commit-work-git-commit -->
-<!-- ANCHOR:phase-3-complete-work-git-finish -->
 ## 5. PHASE 3: COMPLETE WORK (GIT-FINISH)
 
 ### Quick Commands
@@ -186,8 +177,6 @@ git worktree remove .worktrees/<name>
 
 ---
 
-<!-- /ANCHOR:phase-3-complete-work-git-finish -->
-<!-- ANCHOR:common-workflows -->
 ## 6. COMMON WORKFLOWS
 
 ### Workflow A: Quick Fix (Main-Focused)
@@ -215,7 +204,6 @@ git branch -d temp/fix
 git worktree remove .worktrees/fix
 ```
 
-
 ### Workflow B: Feature with PR
 
 ```bash
@@ -241,7 +229,6 @@ gh pr create --title "feat: ..." --body "..."
 cd ../.. && git worktree remove .worktrees/feature
 ```
 
-
 ### Workflow C: Experiment
 
 ```bash
@@ -263,8 +250,6 @@ cd ../.. && git worktree remove .worktrees/exp
 
 ---
 
-<!-- /ANCHOR:common-workflows -->
-<!-- ANCHOR:decision-quick-reference -->
 ## 7. DECISION QUICK REFERENCE
 
 | Scenario | Worktree Strategy | Commit Strategy | Finish Option |
@@ -278,8 +263,6 @@ cd ../.. && git worktree remove .worktrees/exp
 
 ---
 
-<!-- /ANCHOR:decision-quick-reference -->
-<!-- ANCHOR:essential-git-commands -->
 ## 8. ESSENTIAL GIT COMMANDS
 
 ### Worktree
@@ -319,8 +302,6 @@ gh pr create                           # Create PR
 
 ---
 
-<!-- /ANCHOR:essential-git-commands -->
-<!-- ANCHOR:rules -->
 ## 9. RULES
 
 ### ✅ ALWAYS
@@ -341,8 +322,6 @@ gh pr create                           # Create PR
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:troubleshooting -->
 ## 10. TROUBLESHOOTING
 
 | Problem | Solution |
@@ -357,8 +336,6 @@ gh pr create                           # Create PR
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:file-structure-reference -->
 ## 11. FILE STRUCTURE REFERENCE
 
 ```
@@ -375,8 +352,6 @@ gh pr create                           # Create PR
 
 ---
 
-<!-- /ANCHOR:file-structure-reference -->
-<!-- ANCHOR:checklists -->
 ## 12. CHECKLISTS
 
 ### Pre-Worktree Creation
@@ -400,8 +375,6 @@ gh pr create                           # Create PR
 
 ---
 
-<!-- /ANCHOR:checklists -->
-<!-- ANCHOR:examples -->
 ## 13. EXAMPLES
 
 ### Good Commit Messages
@@ -433,8 +406,6 @@ refactor: restructure validation layer
 
 ---
 
-<!-- /ANCHOR:examples -->
-<!-- ANCHOR:github-mcp-quick-reference -->
 ## 14. GITHUB MCP QUICK REFERENCE
 
 ### Prerequisites
@@ -488,8 +459,6 @@ call_tool_chain(`github.github_get_job_logs({ owner: 'o', repo: 'r', job_id: 123
 
 ---
 
-<!-- /ANCHOR:github-mcp-quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 15. RELATED RESOURCES
 
 ### Reference Files
@@ -502,4 +471,3 @@ call_tool_chain(`github.github_get_job_logs({ owner: 'o', repo: 'r', job_id: 123
 - [Conventional Commits](https://www.conventionalcommits.org/) - Standard commit message format
 - [Git Worktree Docs](https://git-scm.com/docs/git-worktree) - Official git worktree documentation
 - [GitHub CLI Manual](https://cli.github.com/manual/) - Complete gh CLI reference
-<!-- /ANCHOR:related-resources -->

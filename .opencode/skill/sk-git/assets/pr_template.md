@@ -9,7 +9,6 @@ Templates for creating professional pull requests following best practices.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -25,8 +24,6 @@ This asset provides structured templates for pull request descriptions. Use it w
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:basic-structure -->
 ## 2. BASIC STRUCTURE
 
 ```markdown
@@ -44,8 +41,6 @@ This asset provides structured templates for pull request descriptions. Use it w
 
 ---
 
-<!-- /ANCHOR:basic-structure -->
-<!-- ANCHOR:complete-pr-template -->
 ## 3. COMPLETE PR TEMPLATE
 
 ```markdown
@@ -91,8 +86,6 @@ Related to #<issue-number>
 
 ---
 
-<!-- /ANCHOR:complete-pr-template -->
-<!-- ANCHOR:example-feature-pr -->
 ## 4. EXAMPLE: FEATURE PR
 
 ```markdown
@@ -148,8 +141,6 @@ Related to #235 (SSO integration - follow-up)
 
 ---
 
-<!-- /ANCHOR:example-feature-pr -->
-<!-- ANCHOR:example-bug-fix-pr -->
 ## 5. EXAMPLE: BUG FIX PR
 
 ```markdown
@@ -196,8 +187,6 @@ Fixes #346 (duplicate of same issue)
 
 ---
 
-<!-- /ANCHOR:example-bug-fix-pr -->
-<!-- ANCHOR:example-refactoring-pr -->
 ## 6. EXAMPLE: REFACTORING PR
 
 ```markdown
@@ -251,8 +240,6 @@ No external API changes. Internal developers should use
 
 ---
 
-<!-- /ANCHOR:example-refactoring-pr -->
-<!-- ANCHOR:example-documentation-pr -->
 ## 7. EXAMPLE: DOCUMENTATION PR
 
 ```markdown
@@ -289,8 +276,6 @@ Related to #234 (OAuth2 feature PR)
 
 ---
 
-<!-- /ANCHOR:example-documentation-pr -->
-<!-- ANCHOR:pr-title-guidelines -->
 ## 8. PR TITLE GUIDELINES
 
 **Format**: Follow Conventional Commits
@@ -310,8 +295,6 @@ chore(deps): update axios to v1.6.0
 
 ---
 
-<!-- /ANCHOR:pr-title-guidelines -->
-<!-- ANCHOR:summary-section-guidelines -->
 ## 9. SUMMARY SECTION GUIDELINES
 
 **DO**:
@@ -345,8 +328,6 @@ backend and frontend. Added WebSocket stuff.
 
 ---
 
-<!-- /ANCHOR:summary-section-guidelines -->
-<!-- ANCHOR:test-plan-guidelines -->
 ## 10. TEST PLAN GUIDELINES
 
 **Structure**:
@@ -386,8 +367,6 @@ backend and frontend. Added WebSocket stuff.
 
 ---
 
-<!-- /ANCHOR:test-plan-guidelines -->
-<!-- ANCHOR:screenshots-videos-guidelines -->
 ## 11. SCREENSHOTS/VIDEOS GUIDELINES
 
 **When to include**:
@@ -421,8 +400,6 @@ Shows complete user flow: login → notification → mark as read
 
 ---
 
-<!-- /ANCHOR:screenshots-videos-guidelines -->
-<!-- ANCHOR:breaking-changes-guidelines -->
 ## 12. BREAKING CHANGES GUIDELINES
 
 **When to document**:
@@ -454,8 +431,6 @@ See [migration guide](./docs/migration.md) for details.
 
 ---
 
-<!-- /ANCHOR:breaking-changes-guidelines -->
-<!-- ANCHOR:related-issues-guidelines -->
 ## 13. RELATED ISSUES GUIDELINES
 
 **Format**:
@@ -473,8 +448,6 @@ Part of #456       # Part of larger epic
 
 ---
 
-<!-- /ANCHOR:related-issues-guidelines -->
-<!-- ANCHOR:pr-checklist -->
 ## 14. PR CHECKLIST
 
 Before submitting PR, verify:
@@ -493,8 +466,6 @@ Before submitting PR, verify:
 
 ---
 
-<!-- /ANCHOR:pr-checklist -->
-<!-- ANCHOR:creating-prs-programmatically -->
 ## 15. CREATING PRS PROGRAMMATICALLY
 
 ### GitHub CLI (Preferred)
@@ -544,8 +515,6 @@ call_tool_chain(`github.github_create_pull_request({
 
 ---
 
-<!-- /ANCHOR:creating-prs-programmatically -->
-<!-- ANCHOR:tips -->
 ## 16. TIPS
 
 1. **Write PR description as you code** - Don't wait until end
@@ -558,11 +527,8 @@ call_tool_chain(`github.github_create_pull_request({
 
 ---
 
-<!-- /ANCHOR:tips -->
-<!-- ANCHOR:related-resources -->
 ## 17. RELATED RESOURCES
 
 - [GitHub PR Best Practices](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests) - Official GitHub documentation on pull request collaboration
 - [Conventional Commits](https://www.conventionalcommits.org/) - Specification for commit message formatting
 - [GitHub CLI Manual](https://cli.github.com/manual/gh_pr_create) - Command reference for creating PRs via CLI
-<!-- /ANCHOR:related-resources -->

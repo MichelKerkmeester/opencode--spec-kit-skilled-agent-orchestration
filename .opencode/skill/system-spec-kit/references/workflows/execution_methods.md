@@ -9,16 +9,12 @@ How to execute spec folder operations - validation, completion checking, context
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This document covers validation, completion checking, context saving, folder creation, and template composition operations.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:validation -->
 ## 2. VALIDATION
 
 ### validate.sh
@@ -46,9 +42,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --json specs/001-f
 
 ---
 
-<!-- /ANCHOR:validation -->
-
-<!-- ANCHOR:completion-checking -->
 ## 3. COMPLETION CHECKING
 
 ### check-completion.sh
@@ -72,9 +65,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh --json spe
 
 ---
 
-<!-- /ANCHOR:completion-checking -->
-
-<!-- ANCHOR:context-saving -->
 ## 4. CONTEXT SAVING
 
 ### generate-context.js runtime entrypoint
@@ -102,9 +92,6 @@ echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node .opencode/skil
 
 ---
 
-<!-- /ANCHOR:context-saving -->
-
-<!-- ANCHOR:spec-folder-creation -->
 ## 5. SPEC FOLDER CREATION
 
 ### spec/create.sh
@@ -139,9 +126,6 @@ under a coordination root.
 
 ---
 
-<!-- /ANCHOR:spec-folder-creation -->
-
-<!-- ANCHOR:level-recommendation -->
 ## 6. LEVEL RECOMMENDATION
 
 ### recommend-level.sh
@@ -167,9 +151,6 @@ bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --auth --ap
 
 ---
 
-<!-- /ANCHOR:level-recommendation -->
-
-<!-- ANCHOR:template-composition -->
 ## 7. TEMPLATE COMPOSITION
 
 ### compose.sh
@@ -219,9 +200,6 @@ bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh 2 3
 
 ---
 
-<!-- /ANCHOR:template-composition -->
-
-<!-- ANCHOR:memory-workflow-12-steps -->
 ## 8. MEMORY WORKFLOW (12 STEPS)
 
 The `generate-context.js` script orchestrates a 12-step workflow via `workflow.ts`:
@@ -289,9 +267,6 @@ After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This re
 
 ---
 
-<!-- /ANCHOR:memory-workflow-12-steps -->
-
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 - [Validation Rules](../validation/validation_rules.md)
@@ -301,4 +276,3 @@ After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This re
 
 ---
 
-<!-- /ANCHOR:related-resources -->

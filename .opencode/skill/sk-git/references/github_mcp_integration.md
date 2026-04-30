@@ -9,17 +9,14 @@ Programmatic access to GitHub's remote operations via Code Mode (`call_tool_chai
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 GitHub MCP Server provides full CRUD access to GitHub remote operations from within the sk-git workflow. All calls go through Code Mode's `call_tool_chain` interface using TypeScript.
 
 **Prerequisites**: PAT configured in `.utcp_config.json` with appropriate scopes (repo, issues, pull_requests).
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:tool-selection -->
 ## 2. TOOL SELECTION GUIDE
 
 | Operation                        | Tool                   | Rationale                               |
@@ -33,11 +30,9 @@ GitHub MCP Server provides full CRUD access to GitHub remote operations from wit
 | Search repos/code remotely       | GitHub MCP             | Cross-repo searches                     |
 
 **Best Practice**: Prefer local `git` commands for local operations (faster, offline-capable). Use GitHub MCP for remote state queries and collaboration features.
-<!-- /ANCHOR:tool-selection -->
 
 ---
 
-<!-- ANCHOR:available-tools -->
 ## 3. AVAILABLE TOOLS
 
 **Access Pattern:** `github.github_{tool_name}({...})`
@@ -52,11 +47,9 @@ GitHub MCP Server provides full CRUD access to GitHub remote operations from wit
 > - `gh run list` - List workflow runs
 > - `gh run view <id>` - View specific run
 > - `gh api repos/{owner}/{repo}/branches` - List branches
-<!-- /ANCHOR:available-tools -->
 
 ---
 
-<!-- ANCHOR:usage-examples -->
 ## 4. USAGE EXAMPLES
 
 ```typescript
@@ -108,11 +101,9 @@ call_tool_chain({
   })`
 })
 ```
-<!-- /ANCHOR:usage-examples -->
 
 ---
 
-<!-- ANCHOR:error-handling -->
 ## 5. ERROR HANDLING
 
 ### Failed PR Creation
@@ -169,11 +160,9 @@ call_tool_chain({
   `
 })
 ```
-<!-- /ANCHOR:error-handling -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 **Internal References**:
@@ -184,4 +173,3 @@ call_tool_chain({
 **External References**:
 - [GitHub REST API](https://docs.github.com/en/rest)
 - [GitHub CLI](https://cli.github.com/)
-<!-- /ANCHOR:related-resources -->

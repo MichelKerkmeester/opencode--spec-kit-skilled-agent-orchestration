@@ -2,7 +2,6 @@
 
 This document describes the repeatable verifier introduced for recurring alignment drift checks.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Defines the operational contract for `verify_alignment_drift.py`, including:
@@ -13,15 +12,11 @@ Defines the operational contract for `verify_alignment_drift.py`, including:
 
 Use this reference when tuning recurring checks or interpreting verifier output in automation.
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:script -->
 ## 2. SCRIPT
 
 - Path: `.opencode/skill/sk-code-opencode/scripts/verify_alignment_drift.py`
 - Purpose: run lightweight, deterministic, behavior-neutral checks across OpenCode system languages.
 
-<!-- /ANCHOR:script -->
-<!-- ANCHOR:what-it-checks -->
 ## 3. WHAT IT CHECKS
 
 - **Common (all scanned files)**: UTF-8 readability and LF line endings (flags CRLF).
@@ -53,8 +48,6 @@ checklists and does not scan markdown prose. These remain manual review gates:
 - **Context-aware advisory downgrade**: any finding under archival/contextual paths is downgraded to `WARN`:
   - `z_archive`, `scratch`, `memory`, `research`, `context`, `assets`, `examples`, `fixtures`, and test-heavy paths.
 
-<!-- /ANCHOR:what-it-checks -->
-<!-- ANCHOR:usage -->
 ## 4. USAGE
 
 ```bash
@@ -73,4 +66,3 @@ Notes:
 - Output includes both rule id and severity (`[RULE] [ERROR|WARN]`).
 - Exit code `0` means no blocking findings (warnings are non-blocking by default).
 - Exit code `1` means one or more errors were found, or warnings were found with `--fail-on-warn`.
-<!-- /ANCHOR:usage -->

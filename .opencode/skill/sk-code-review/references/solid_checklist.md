@@ -9,7 +9,6 @@ Review prompts and smell patterns for evaluating architecture cohesion, coupling
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -23,11 +22,9 @@ Favor cohesive modules and low-coupling boundaries so behavior can evolve withou
 ### Scope
 
 Use this checklist for new modules, refactors, and behavior-heavy changes where design quality can regress silently.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:solid-prompts -->
 ## 2. SOLID PROMPTS
 
 ### SRP - Single Responsibility
@@ -64,11 +61,9 @@ Use this checklist for new modules, refactors, and behavior-heavy changes where 
 - High-level code instantiates concrete adapters inline.
 - Testing requires heavy setup due to tight coupling.
 - **Question**: "Can the implementation be swapped without touching policy logic?"
-<!-- /ANCHOR:solid-prompts -->
 
 ---
 
-<!-- ANCHOR:architecture-smells -->
 ## 3. ARCHITECTURE SMELLS
 
 | Smell | Indicators | Typical Risk |
@@ -81,11 +76,9 @@ Use this checklist for new modules, refactors, and behavior-heavy changes where 
 
 Quick check: if naming the module's purpose requires "and", it likely violates SRP.
 KISS/DRY tie-in: if two modules differ only by literals or thin wrappers, consolidate before adding new abstraction layers.
-<!-- /ANCHOR:architecture-smells -->
 
 ---
 
-<!-- ANCHOR:refactor-guidance -->
 ## 4. REFACTOR GUIDANCE
 
 1. Split by responsibility, not line count.
@@ -98,11 +91,9 @@ When suggesting a refactor, include:
 - Current risk
 - Minimal safe split
 - Verification strategy
-<!-- /ANCHOR:refactor-guidance -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 5. RELATED RESOURCES
 
 - [quick_reference.md](./quick_reference.md) - Baseline review flow and severity mapping.
@@ -111,4 +102,3 @@ When suggesting a refactor, include:
 - [removal_plan.md](./removal_plan.md) - Safe deletion and deferred migration planning.
 
 Overlay portability: combine architecture findings with overlay-specific standards from `sk-code-opencode` or `sk-code`.
-<!-- /ANCHOR:related-resources -->

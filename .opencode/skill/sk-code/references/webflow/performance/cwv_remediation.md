@@ -9,7 +9,6 @@ Actionable remediation patterns for LCP, FCP, TBT, and CLS issues in Webflow sit
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -32,8 +31,6 @@ Measure first, optimize with evidence, verify improvement with before/after Page
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:lcp-largest-contentful-paint -->
 ## 2. LCP (Largest Contentful Paint)
 
 ### Problem Patterns
@@ -178,8 +175,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:lcp-largest-contentful-paint -->
-<!-- ANCHOR:fcp-first-contentful-paint -->
 ## 3. FCP (First Contentful Paint)
 
 ### Problem Patterns
@@ -238,8 +233,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:fcp-first-contentful-paint -->
-<!-- ANCHOR:tbt-total-blocking-time -->
 ## 4. TBT (Total Blocking Time)
 
 ### Problem Patterns
@@ -305,8 +298,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:tbt-total-blocking-time -->
-<!-- ANCHOR:cls-cumulative-layout-shift -->
 ## 5. CLS (Cumulative Layout Shift)
 
 ### Problem Patterns
@@ -372,8 +363,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:cls-cumulative-layout-shift -->
-<!-- ANCHOR:quick-reference -->
 ## 6. QUICK REFERENCE
 
 | Metric | Target | Common Causes | Quick Fix |
@@ -385,8 +374,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:measurement-tools -->
 ## 7. MEASUREMENT TOOLS
 
 **Lab Data (Development):**
@@ -406,8 +393,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:measurement-tools -->
-<!-- ANCHOR:implementation-checklist -->
 ## 8. IMPLEMENTATION CHECKLIST
 
 ### P0 - Critical (Immediate Impact)
@@ -434,8 +419,6 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 
 ---
 
-<!-- /ANCHOR:implementation-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### External Documentation
@@ -450,4 +433,3 @@ See `wait_patterns.js` → `wait_for_image_with_timeout()` for a reusable implem
 - [resource_loading.md](./resource_loading.md) - Preconnect, preload, async patterns
 - [third_party.md](./third_party.md) - GTM delay, analytics optimization
 - [webflow_constraints.md](./webflow_constraints.md) - Platform limitations
-<!-- /ANCHOR:related-resources -->

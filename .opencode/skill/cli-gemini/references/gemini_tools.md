@@ -9,7 +9,6 @@ Reference for all Gemini CLI tools, highlighting unique capabilities and Claude 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -27,11 +26,8 @@ Covers all built-in tools available in Gemini CLI, highlights what is unique com
 - Mapping Claude Code capabilities to Gemini CLI equivalents
 - Leveraging Gemini-exclusive tools (web search, codebase investigator, memory, browser agent)
 
-<!-- /ANCHOR:overview -->
-
 ---
 
-<!-- ANCHOR:unique-tools -->
 ## 2. UNIQUE TOOLS (NOT IN CLAUDE CODE)
 
 These tools are exclusive to Gemini CLI or provide significantly different capabilities.
@@ -190,11 +186,8 @@ These tools are exclusive to Gemini CLI or provide significantly different capab
 
 **Compared to Claude Code:** Claude Code does not have a built-in browser automation tool. Browser interaction requires external MCP servers (e.g., Chrome DevTools MCP). Gemini's `browser_agent` is built-in but experimental.
 
-<!-- /ANCHOR:unique-tools -->
-
 ---
 
-<!-- ANCHOR:standard-tools -->
 ## 3. STANDARD TOOLS (SIMILAR TO CLAUDE CODE)
 
 These tools provide functionality comparable to Claude Code's built-in tools, with Gemini-specific syntax variations.
@@ -227,11 +220,8 @@ These tools provide functionality comparable to Claude Code's built-in tools, wi
 | `web_fetch` | Fetch URL content | Automatic or explicit request |
 | `run_shell_command` | Execute shell commands | Automatic or `!command` prefix |
 
-<!-- /ANCHOR:standard-tools -->
-
 ---
 
-<!-- ANCHOR:comparison-table -->
 ## 4. CLAUDE CODE VS. GEMINI CLI TOOL COMPARISON
 
 | Capability | Claude Code Tool | Gemini CLI Tool | Notes |
@@ -251,11 +241,8 @@ These tools provide functionality comparable to Claude Code's built-in tools, wi
 | **Multi-file read** | Multiple `Read` calls | `read_many_files`, `@glob` | Gemini batches natively |
 | **Image analysis** | `Read` (multimodal) | Multimodal input | Both support image understanding |
 
-<!-- /ANCHOR:comparison-table -->
-
 ---
 
-<!-- ANCHOR:tool-invocation -->
 ## 5. TOOL INVOCATION
 
 ### Automatic Selection
@@ -290,11 +277,8 @@ You can explicitly request specific tools:
 | Allow-listed | `--approval-mode unless-allow-listed` | Approved tools run freely (default) |
 | Never ask (YOLO) | `--approval-mode never` or `-y` | All tools run without approval |
 
-<!-- /ANCHOR:tool-invocation -->
-
 ---
 
-<!-- ANCHOR:tool-statistics -->
 ## 6. TOOL STATISTICS IN JSON OUTPUT
 
 When using `-o json`, the response includes tool usage statistics:
@@ -339,11 +323,8 @@ When using `-o json`, the response includes tool usage statistics:
 | `toolCallCount` | number | Total number of tool invocations |
 | `duration` | string | Wall-clock time for the full interaction |
 
-<!-- /ANCHOR:tool-statistics -->
-
 ---
 
-<!-- ANCHOR:tool-restrictions -->
 ## 7. TOOL RESTRICTIONS
 
 ### Command-Line Restriction
@@ -390,11 +371,8 @@ In `settings.json`:
 | File editing only | read_file, write_file, replace, glob | Prevent external access |
 | Full access (YOLO) | All (default) | Development with auto-approve |
 
-<!-- /ANCHOR:tool-restrictions -->
-
 ---
 
-<!-- ANCHOR:best-practices -->
 ## 8. BEST PRACTICES
 
 ### When to Use google_web_search
@@ -455,4 +433,3 @@ echo "Review src/auth/ for security issues" | \
   gemini --allowed-tools read_file,search_file_content,glob,google_web_search -o json
 ```
 
-<!-- /ANCHOR:best-practices -->

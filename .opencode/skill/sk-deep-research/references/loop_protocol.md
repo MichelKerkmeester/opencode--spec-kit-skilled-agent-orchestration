@@ -9,7 +9,6 @@ Canonical specification for the deep research loop lifecycle.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The deep research loop has 4 phases: initialization, iteration (repeated), synthesis, and save. The YAML workflow manages the lifecycle; the @deep-research agent executes individual iterations; the reducer synchronizes packet state after each iteration and lifecycle transition.
@@ -34,8 +33,6 @@ Runtime capability matrix references for parity-sensitive loop behavior:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:phase-initialization -->
 ## 2. PHASE: INITIALIZATION
 
 ### Purpose
@@ -126,8 +123,6 @@ Every field in the contract MUST be present on every persisted lifecycle event. 
 
 ---
 
-<!-- /ANCHOR:phase-initialization -->
-<!-- ANCHOR:phase-iteration-loop -->
 ## 3. PHASE: ITERATION LOOP
 
 ### Loop Steps (repeated until convergence)
@@ -374,8 +369,6 @@ When agent dispatch fails after the earlier recovery tiers are exhausted:
 
 ---
 
-<!-- /ANCHOR:phase-iteration-loop -->
-<!-- ANCHOR:wave-orchestration-protocol -->
 ## 3.1. WAVE ORCHESTRATION PROTOCOL (REFERENCE-ONLY)
 
 An optional parallel execution concept for research topics with multiple independent questions. Treat this as reference guidance only; the live workflow remains sequential and does **not** emit wave-specific JSONL events or routing today.
@@ -435,8 +428,6 @@ Wave-specific fields and events are **not part of the current persisted contract
 
 ---
 
-<!-- /ANCHOR:wave-orchestration-protocol -->
-<!-- ANCHOR:context-isolation-dispatch -->
 ## 3.2. CONTEXT ISOLATION DISPATCH (EXPERIMENTAL, REFERENCE-ONLY)
 
 An alternative dispatch mechanism that guarantees fresh context per iteration by launching a new OS process. Treat this as reference-only unless the runtime explicitly implements alternate CLI dispatch.
@@ -481,8 +472,6 @@ Replace Task tool dispatch with shell-level `claude -p` invocation:
 
 ---
 
-<!-- /ANCHOR:context-isolation-dispatch -->
-<!-- ANCHOR:phase-synthesis -->
 ## 4. PHASE: SYNTHESIS
 
 ### Purpose
@@ -516,8 +505,6 @@ Compile all iteration findings into final research/research.md. The synthesis wo
 
 ---
 
-<!-- /ANCHOR:phase-synthesis -->
-<!-- ANCHOR:phase-save -->
 ## 5. PHASE: SAVE
 
 ### Purpose
@@ -531,8 +518,6 @@ Preserve research context to memory system.
 
 ---
 
-<!-- /ANCHOR:phase-save -->
-<!-- ANCHOR:state-transitions -->
 ## 6. STATE TRANSITIONS
 
 ```text
@@ -562,8 +547,6 @@ Hook-capable and non-hook runtimes must follow the same state machine. Hooks may
 
 ---
 
-<!-- /ANCHOR:state-transitions -->
-<!-- ANCHOR:error-handling -->
 ## 7. ERROR HANDLING
 
 | Error | Phase | Action |
@@ -592,8 +575,6 @@ Each priority level is attempted in order. If a level fails, fall through to the
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-<!-- ANCHOR:confirm-mode-additions -->
 ## 8. CONFIRM MODE ADDITIONS
 
 In confirm mode, the YAML workflow adds approval gates:
@@ -605,11 +586,8 @@ In confirm mode, the YAML workflow adds approval gates:
 | Before synthesis | Show summary of all iterations. Wait for approval to synthesize |
 | After synthesis | Show final research/research.md summary. Approve or request revisions |
 
-<!-- /ANCHOR:confirm-mode-additions -->
-
 ---
 
-<!-- ANCHOR:review-mode-loop -->
 ## 9. REVIEW MODE LOOP
 
 When `config.mode == "review"`, the loop protocol adapts from research to code/spec review. The 4-phase structure (init, loop, synthesis, save) is preserved, but review mode uses the simplified four-dimension taxonomy, three binary gates, and machine-verifiable traceability state.
@@ -804,4 +782,3 @@ Same as research mode — context preservation via `generate-context.js`:
 1. **Generate context**: `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js {spec_folder}`
 2. **Verify**: Confirm memory/*.md file created with proper anchors
 
-<!-- /ANCHOR:review-mode-loop -->

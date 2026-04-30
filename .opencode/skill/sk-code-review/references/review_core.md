@@ -9,16 +9,12 @@ Shared doctrine consumed by both `@review` and `@deep-review`.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Shared findings-first review doctrine for both single-pass and deep-review workflows.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:severity-definitions -->
 ## 2. SEVERITY DEFINITIONS
 
 | Level | Meaning | Handling |
@@ -31,9 +27,6 @@ Escalation rule: if confidence is low but impact is high, classify toward the hi
 
 ---
 
-<!-- /ANCHOR:severity-definitions -->
-
-<!-- ANCHOR:evidence-requirements -->
 ## 3. EVIDENCE REQUIREMENTS
 
 - Every `P0` and `P1` finding must include a concrete `file:line` citation.
@@ -43,9 +36,6 @@ Escalation rule: if confidence is low but impact is high, classify toward the hi
 
 ---
 
-<!-- /ANCHOR:evidence-requirements -->
-
-<!-- ANCHOR:findings-output-ordering -->
 ## 4. FINDINGS OUTPUT ORDERING
 
 - Present findings before summary or praise sections.
@@ -55,9 +45,6 @@ Escalation rule: if confidence is low but impact is high, classify toward the hi
 
 ---
 
-<!-- /ANCHOR:findings-output-ordering -->
-
-<!-- ANCHOR:baseline-overlay-precedence -->
 ## 5. BASELINE + OVERLAY PRECEDENCE
 
 Apply this skill as the baseline first, then pair it with exactly one overlay:
@@ -74,9 +61,6 @@ Precedence rules:
 
 ---
 
-<!-- /ANCHOR:baseline-overlay-precedence -->
-
-<!-- ANCHOR:baseline-check-families -->
 ## 6. BASELINE CHECK FAMILIES
 
 Mandatory baseline families:
@@ -88,9 +72,6 @@ These minimums cannot be relaxed by an overlay.
 
 ---
 
-<!-- /ANCHOR:baseline-check-families -->
-
-<!-- ANCHOR:finding-schema -->
 ## 7. FINDING SCHEMA
 
 Each finding should provide:
@@ -115,9 +96,6 @@ Suggested shape:
 
 ---
 
-<!-- /ANCHOR:finding-schema -->
-
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - [review_ux_single_pass.md](./review_ux_single_pass.md) - Interactive single-pass report flow and next-step prompts.
@@ -127,4 +105,3 @@ Suggested shape:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

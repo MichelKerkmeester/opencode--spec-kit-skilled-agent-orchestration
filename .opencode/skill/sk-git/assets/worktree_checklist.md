@@ -9,7 +9,6 @@ Step-by-step checklist for safe and reliable git worktree creation.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -27,8 +26,6 @@ Any new branch must be created by `git worktree add -b ...`, never by `git branc
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:pre-creation-checklist -->
 ## 2. PRE-CREATION CHECKLIST
 
 ### Step 1: Gather Information
@@ -41,7 +38,6 @@ Any new branch must be created by `git worktree add -b ...`, never by `git branc
 - **temp/***: 80% of work (merge back to main immediately)
 - **feature/***: Long-running work needing PR review
 - **Detached HEAD**: Experiments, throwaway work
-
 
 ### Step 2: Directory Selection
 
@@ -62,7 +58,6 @@ Any new branch must be created by `git worktree add -b ...`, never by `git branc
   - Global: `~/.config/superpowers/worktrees/<project>/`
 
 **Priority**: Existing directory > AGENTS.md preference > Ask user
-
 
 ### Step 3: Safety Verification
 
@@ -94,8 +89,6 @@ Any new branch must be created by `git worktree add -b ...`, never by `git branc
 
 ---
 
-<!-- /ANCHOR:pre-creation-checklist -->
-<!-- ANCHOR:creation-checklist -->
 ## 3. CREATION CHECKLIST
 
 ### Step 4: Create Worktree
@@ -130,7 +123,6 @@ Choose one based on branch strategy:
   git worktree list
   git status
   ```
-
 
 ### Step 5: Project Setup
 
@@ -184,7 +176,6 @@ Auto-detect project type and install dependencies:
 - [ ] Ask user for setup command
 - [ ] Document in AGENTS.md for future use
 
-
 ### Step 6: Baseline Verification
 
 Run tests to ensure worktree starts in known-good state:
@@ -228,8 +219,6 @@ Run tests to ensure worktree starts in known-good state:
 
 ---
 
-<!-- /ANCHOR:creation-checklist -->
-<!-- ANCHOR:post-creation-checklist -->
 ## 4. POST-CREATION CHECKLIST
 
 ### Step 7: Final Verification
@@ -254,8 +243,6 @@ Run tests to ensure worktree starts in known-good state:
 
 ---
 
-<!-- /ANCHOR:post-creation-checklist -->
-<!-- ANCHOR:status-report-template -->
 ## 5. STATUS REPORT TEMPLATE
 
 Provide this information to user:
@@ -277,8 +264,6 @@ Example:
 
 ---
 
-<!-- /ANCHOR:status-report-template -->
-<!-- ANCHOR:common-issues-checklist -->
 ## 6. COMMON ISSUES CHECKLIST
 
 ### Issue: Worktree Creation Fails
@@ -315,7 +300,6 @@ git worktree prune
 git worktree add .worktrees/<name> -b <branch>
 ```
 
-
 ### Issue: Tests Fail in New Worktree
 
 - [ ] Review test output for specific failures
@@ -327,7 +311,6 @@ git worktree add .worktrees/<name> -b <branch>
 - [ ] Report failures to user
 - [ ] Provide options: Investigate / Proceed anyway / Abort
 - [ ] Document baseline if proceeding with failures
-
 
 ### Issue: Cannot Determine Project Type
 
@@ -341,7 +324,6 @@ git worktree add .worktrees/<name> -b <branch>
   ## Worktree Setup
   Run: <user-provided-command>
   ```
-
 
 ### Issue: Directory Not in .gitignore
 
@@ -366,8 +348,6 @@ git worktree add .worktrees/<name> -b <branch>
 
 ---
 
-<!-- /ANCHOR:common-issues-checklist -->
-<!-- ANCHOR:quick-reference-commands -->
 ## 7. QUICK REFERENCE COMMANDS
 
 **List all worktrees**:
@@ -403,8 +383,6 @@ git check-ignore -n .worktrees
 
 ---
 
-<!-- /ANCHOR:quick-reference-commands -->
-<!-- ANCHOR:success-criteria -->
 ## 8. SUCCESS CRITERIA
 
 Worktree creation is successful when:
@@ -423,11 +401,8 @@ Worktree creation is successful when:
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 - [worktree_workflows.md](../references/worktree_workflows.md) - Complete workflow details
 - [shared_patterns.md](../references/shared_patterns.md) - Common git patterns
 - [quick_reference.md](../references/quick_reference.md) - Command cheat sheet
-<!-- /ANCHOR:related-resources -->

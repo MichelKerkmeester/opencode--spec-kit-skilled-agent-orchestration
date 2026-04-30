@@ -9,7 +9,6 @@ Formatting standards and conventions for JSON and JSONC configuration files in t
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -31,8 +30,6 @@ Applies to all configuration files:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-structure -->
 ## 2. FILE STRUCTURE
 
 ### JSONC Header
@@ -76,8 +73,6 @@ Organize configuration into numbered sections:
 
 ---
 
-<!-- /ANCHOR:file-structure -->
-<!-- ANCHOR:naming-conventions -->
 ## 3. NAMING CONVENTIONS
 
 ### Property Keys
@@ -140,8 +135,6 @@ Use descriptive names for nested configuration sections:
 
 ---
 
-<!-- /ANCHOR:naming-conventions -->
-<!-- ANCHOR:comments-jsonc -->
 ## 4. COMMENTS (JSONC)
 
 ### Section Headers
@@ -197,8 +190,6 @@ Add documentation comments for complex settings:
 
 ---
 
-<!-- /ANCHOR:comments-jsonc -->
-<!-- ANCHOR:value-formatting -->
 ## 5. VALUE FORMATTING
 
 ### Strings
@@ -251,8 +242,6 @@ Use `null` for explicitly unset values:
 
 ---
 
-<!-- /ANCHOR:value-formatting -->
-<!-- ANCHOR:structure-patterns -->
 ## 6. STRUCTURE PATTERNS
 
 ### Feature Flags
@@ -305,8 +294,6 @@ Use `null` for explicitly unset values:
 
 ---
 
-<!-- /ANCHOR:structure-patterns -->
-<!-- ANCHOR:schema-reference -->
 ## 7. SCHEMA REFERENCE
 
 ### Including Schema
@@ -334,8 +321,6 @@ Reference JSON Schema when available:
 
 ---
 
-<!-- /ANCHOR:schema-reference -->
-<!-- ANCHOR:indentation-and-spacing -->
 ## 8. INDENTATION AND SPACING
 
 ### Indentation
@@ -371,8 +356,6 @@ Use 2 spaces for indentation (consistent with JSON convention):
 
 ---
 
-<!-- /ANCHOR:indentation-and-spacing -->
-<!-- ANCHOR:file-naming -->
 ## 9. FILE NAMING
 
 ### Conventions
@@ -399,8 +382,6 @@ Use 2 spaces for indentation (consistent with JSON convention):
 
 ---
 
-<!-- /ANCHOR:file-naming -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Internal References
@@ -409,4 +390,3 @@ Use 2 spaces for indentation (consistent with JSON convention):
 ### External Standards
 - [JSON Specification](https://www.json.org/)
 - [JSONC (JSON with Comments)](https://code.visualstudio.com/docs/languages/json#_json-with-comments)
-<!-- /ANCHOR:related-resources -->

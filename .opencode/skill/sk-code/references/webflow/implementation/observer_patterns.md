@@ -9,7 +9,6 @@ Browser observer APIs for reactive DOM watching, visibility detection, and scrol
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -28,8 +27,6 @@ Production-tested patterns for MutationObserver, IntersectionObserver, and Resiz
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:mutationobserver -->
 ## 2. MUTATIONOBSERVER
 
 ### When to Use
@@ -140,8 +137,6 @@ function destroy() {
 
 ---
 
-<!-- /ANCHOR:mutationobserver -->
-<!-- ANCHOR:intersectionobserver -->
 ## 3. INTERSECTIONOBSERVER
 
 ### When to Use
@@ -374,8 +369,6 @@ function unobserve_element(element) {
 
 ---
 
-<!-- /ANCHOR:intersectionobserver -->
-<!-- ANCHOR:resizeobserver -->
 ## 4. RESIZEOBSERVER
 
 > **Note:** Not currently used in this codebase. Documented for reference.
@@ -416,8 +409,6 @@ const cleanup = observe_resize(container, debouncedResize);
 
 ---
 
-<!-- /ANCHOR:resizeobserver -->
-<!-- ANCHOR:best-practices -->
 ## 5. BEST PRACTICES
 
 ### Always Disconnect
@@ -541,8 +532,6 @@ function setup_combined_observers(container) {
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-<!-- ANCHOR:quick-reference -->
 ## 6. QUICK REFERENCE
 
 | Observer | Events | Common Options |
@@ -561,8 +550,6 @@ function setup_combined_observers(container) {
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:sharedobservers-consolidation-pattern -->
 ## 7. SHAREDOBSERVERS CONSOLIDATION PATTERN
 
 ### Overview
@@ -681,8 +668,6 @@ function create_observer() {
 
 ---
 
-<!-- /ANCHOR:sharedobservers-consolidation-pattern -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -691,4 +676,3 @@ function create_observer() {
 - [animation_workflows.md](./animation_workflows.md) - IntersectionObserver for scroll-triggered animations
 - [performance_patterns.md](./performance_patterns.md) - Lazy loading with IntersectionObserver
 - `shared_observers.js` (global) - SharedObservers registry implementation
-<!-- /ANCHOR:related-resources -->

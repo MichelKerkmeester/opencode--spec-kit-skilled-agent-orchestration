@@ -9,7 +9,6 @@ Operational guide for running improve-agent benchmarks against packet-local outp
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -31,8 +30,6 @@ The copied runtime templates use the `improvement_*` asset names, but the packet
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:runner-command -->
 ## 2. RUNNER COMMAND
 
 ```text
@@ -60,8 +57,6 @@ The integration report adds `integrationScore` and `integrationDetails` to the b
 
 ---
 
-<!-- /ANCHOR:runner-command -->
-<!-- ANCHOR:required-layout -->
 ## 3. REQUIRED LAYOUT
 
 ```text
@@ -74,8 +69,6 @@ The integration report adds `integrationScore` and `integrationDetails` to the b
 
 ---
 
-<!-- /ANCHOR:required-layout -->
-<!-- ANCHOR:repeatability -->
 ## 4. REPEATABILITY RULE
 
 - Run the same fixture or output set at least twice
@@ -84,8 +77,6 @@ The integration report adds `integrationScore` and `integrationDetails` to the b
 
 ---
 
-<!-- /ANCHOR:repeatability -->
-<!-- ANCHOR:success-criteria -->
 ## 5. SUCCESS CRITERIA
 
 Benchmark success means:
@@ -101,12 +92,9 @@ Benchmark success does not mean:
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 - `evaluator_contract.md`
 - `loop_protocol.md`
 - `promotion_rules.md`
 
-<!-- /ANCHOR:related-resources -->

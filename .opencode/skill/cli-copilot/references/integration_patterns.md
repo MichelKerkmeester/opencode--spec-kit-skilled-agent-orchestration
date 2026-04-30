@@ -9,7 +9,6 @@ Proven patterns for orchestrating GitHub Copilot CLI from external AI sessions (
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -27,10 +26,6 @@ Each pattern documented here includes the rationale, implementation template, an
 - You require surgical code editing with automatic tool execution via `--allow-all-tools`
 - You need to enrich context using Copilot's repository-wide symbol indexing
 - Cross-AI validation is required to ensure high-stakes code quality
-
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:generate-review-fix -->
 
 ## 2. GENERATE-REVIEW-FIX CYCLE
 
@@ -60,10 +55,6 @@ copilot -p "Review the code in /tmp/generated.ts for bugs, security issues, and 
 - Enforcing project-specific style guides across generated code
 - Architecture-heavy tasks that benefit from adversarial review
 
-<!-- /ANCHOR:generate-review-fix -->
-
-<!-- ANCHOR:cloud-delegation -->
-
 ## 3. CLOUD DELEGATION
 
 **Offload heavy lifting to GitHub's cloud infrastructure.** Use delegation to handle tasks that would otherwise consume local context or compute.
@@ -87,10 +78,6 @@ copilot -p "/delegate Refactor the entire @src/legacy/ module to use the new @sr
 - Massive refactors spanning dozens of files
 - Complex migrations (e.g., JS to TS conversion)
 - Generating exhaustive test suites for large modules
-
-<!-- /ANCHOR:cloud-delegation -->
-
-<!-- ANCHOR:plan-then-execute -->
 
 ## 4. PLAN-THEN-EXECUTE
 
@@ -120,10 +107,6 @@ copilot -p "Execute the plan described in /tmp/plan.md" \
 - Changes involving sensitive configurations or database schemas
 - Collaborative workflows where the calling AI needs to verify intent
 
-<!-- /ANCHOR:plan-then-execute -->
-
-<!-- ANCHOR:multi-model-strategy -->
-
 ## 5. MULTI-MODEL STRATEGY
 
 **Pick the best model for the task.** Copilot CLI supports 5 recommended models across 3 providers.
@@ -150,10 +133,6 @@ copilot -p "Review @src/utils/ for idiomatic TypeScript usage" \
   --model claude-sonnet-4.6 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:multi-model-strategy -->
-
-<!-- ANCHOR:structured-output -->
-
 ## 6. STRUCTURED OUTPUT PROCESSING
 
 **Extract machine-readable data for programmatic pipelines.**
@@ -175,10 +154,6 @@ copilot -p "Audit @src/auth/ and return a JSON array of findings with keys: seve
 - Generating documentation or OpenAPI specs automatically
 - Feeding analysis results into other CLI tools (e.g., `jq`)
 - Automated security scanning in CI/CD pipelines
-
-<!-- /ANCHOR:structured-output -->
-
-<!-- ANCHOR:background-execution -->
 
 ## 7. BACKGROUND EXECUTION
 
@@ -204,10 +179,6 @@ wait $COPILOT_PID
 - Running deep repository audits while the user/AI focuses on a specific file
 - Parallelizing independent feature implementations
 
-<!-- /ANCHOR:background-execution -->
-
-<!-- ANCHOR:context-enrichment -->
-
 ## 8. CONTEXT ENRICHMENT
 
 **Leverage repository-wide knowledge.** Use Copilot's ability to reference symbols and files to provide the "full picture."
@@ -229,10 +200,6 @@ copilot -p "Find all instances where we use the legacy 'Logger' class and propos
 - Ensuring consistency with existing patterns
 - Discovering dependencies before making a change
 - Debugging errors that involve multiple service layers
-
-<!-- /ANCHOR:context-enrichment -->
-
-<!-- ANCHOR:validation-pipeline -->
 
 ## 9. VALIDATION PIPELINE
 
@@ -259,10 +226,6 @@ copilot -p "Generate unit tests for the edge cases identified in /tmp/logic_chec
 - Verifying complex logic that unit tests might miss
 - Automating the "Trust but Verify" workflow for AI-generated code
 
-<!-- /ANCHOR:validation-pipeline -->
-
-<!-- ANCHOR:cross-validation -->
-
 ## 10. CROSS-VALIDATION
 
 **Use multiple AIs to reach consensus on critical code.**
@@ -288,10 +251,6 @@ copilot -p "Critique @/tmp/solution.ts for performance" --model claude-opus-4.6 
 - Core architectural components
 - Performance-critical hot paths
 
-<!-- /ANCHOR:cross-validation -->
-
-<!-- ANCHOR:anti-patterns -->
-
 ## 11. ANTI-PATTERNS
 
 ### Don't Do These
@@ -306,4 +265,3 @@ copilot -p "Critique @/tmp/solution.ts for performance" --model claude-opus-4.6 
 | **Context Overload** | Passing too many files at once | Focus on the minimal set of files required for the task |
 | **Skipping Local Checks** | Trusting AI over compiler errors | Always run local build/lint/test alongside AI checks |
 
-<!-- /ANCHOR:anti-patterns -->

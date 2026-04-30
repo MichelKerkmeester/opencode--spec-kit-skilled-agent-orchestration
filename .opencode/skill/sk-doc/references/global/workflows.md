@@ -9,7 +9,6 @@ Execution modes, validation patterns, and phase interactions for Mode 1 (Documen
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Are Workflows?
@@ -41,8 +40,6 @@ The playbook workflow assumes a root directory playbook plus required per-featur
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:four-execution-modes -->
 ## 2. FOUR EXECUTION MODES
 
 | Workflow | Phases | Command | Use When | Output |
@@ -60,8 +57,6 @@ The playbook workflow assumes a root directory playbook plus required per-featur
 
 ---
 
-<!-- /ANCHOR:four-execution-modes -->
-<!-- ANCHOR:validation-integration -->
 ## 3. VALIDATION INTEGRATION
 
 > **Note**: These validation patterns are conceptual workflows describing when and how validation should occur. They are not implemented as automated hooks - apply these checks manually using the available scripts.
@@ -104,8 +99,6 @@ Run: python scripts/extract_structure.py <file>
 
 ---
 
-<!-- /ANCHOR:validation-integration -->
-<!-- ANCHOR:enforcement-workflows -->
 ## 4. ENFORCEMENT WORKFLOWS
 
 > **Note**: These are manual workflow patterns for the AI agent to follow when violations are detected. They are not automated scripts.
@@ -183,8 +176,6 @@ C) Skip this section
 
 ---
 
-<!-- /ANCHOR:enforcement-workflows -->
-<!-- ANCHOR:phase-interactions -->
 ## 5. PHASE INTERACTIONS
 
 **Independent execution**:
@@ -214,8 +205,6 @@ Phase 3: AI provides recommendations
 
 ---
 
-<!-- /ANCHOR:phase-interactions -->
-<!-- ANCHOR:common-workflow-examples -->
 ## 6. COMMON WORKFLOW EXAMPLES
 
 **Example 1: New SKILL Creation**
@@ -261,8 +250,6 @@ scripts/extract_structure.py specs/042/spec.md
 
 ---
 
-<!-- /ANCHOR:common-workflow-examples -->
-<!-- ANCHOR:batch-processing -->
 ## 7. BATCH PROCESSING
 
 **Multi-file extraction**:
@@ -284,8 +271,6 @@ done
 
 ---
 
-<!-- /ANCHOR:batch-processing -->
-<!-- ANCHOR:quick-troubleshooting -->
 ## 8. QUICK TROUBLESHOOTING
 
 | Issue | Cause | Solution |
@@ -299,8 +284,6 @@ done
 
 ---
 
-<!-- /ANCHOR:quick-troubleshooting -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -314,4 +297,3 @@ done
 ### Templates
 - [skill_md_template.md](../../assets/skill/skill_md_template.md) - SKILL.md file templates
 - [command_template.md](../../assets/agents/command_template.md) - Command file templates
-<!-- /ANCHOR:related-resources -->

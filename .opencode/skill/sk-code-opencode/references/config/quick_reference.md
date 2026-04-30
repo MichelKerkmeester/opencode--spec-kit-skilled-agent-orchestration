@@ -9,7 +9,6 @@ Fast lookup for JSON/JSONC configuration patterns and common structures in OpenC
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -20,8 +19,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-template -->
 ## 2. FILE TEMPLATE
 
 ```jsonc
@@ -56,8 +53,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:file-template -->
-<!-- ANCHOR:naming-conventions -->
 ## 3. NAMING CONVENTIONS
 
 | Element | Convention | Example |
@@ -69,8 +64,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:naming-conventions -->
-<!-- ANCHOR:section-headers -->
 ## 4. SECTION HEADERS
 
 ### Standard Format
@@ -93,8 +86,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:section-headers -->
-<!-- ANCHOR:common-patterns -->
 ## 5. COMMON PATTERNS
 
 ### Feature Toggle
@@ -160,8 +151,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:common-patterns -->
-<!-- ANCHOR:value-types -->
 ## 6. VALUE TYPES
 
 ### Strings
@@ -214,8 +203,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:value-types -->
-<!-- ANCHOR:comments-jsonc-only -->
 ## 7. COMMENTS (JSONC ONLY)
 
 ### Inline Comments
@@ -249,8 +236,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:comments-jsonc-only -->
-<!-- ANCHOR:validation-rules -->
 ## 8. VALIDATION RULES
 
 ### P0 - Required
@@ -280,8 +265,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:validation-rules -->
-<!-- ANCHOR:schema-reference -->
 ## 9. SCHEMA REFERENCE
 
 ### Adding Schema
@@ -303,8 +286,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:schema-reference -->
-<!-- ANCHOR:file-locations -->
 ## 10. FILE LOCATIONS
 
 ```
@@ -321,8 +302,6 @@ Quick-access reference card for configuration file patterns. For detailed explan
 
 ---
 
-<!-- /ANCHOR:file-locations -->
-<!-- ANCHOR:quality-checklist -->
 ## 11. QUALITY CHECKLIST
 
 ```markdown
@@ -347,11 +326,8 @@ P2 - Nice to Have:
 
 ---
 
-<!-- /ANCHOR:quality-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 - [style_guide.md](./style_guide.md) - Detailed style documentation
 - [quality_standards.md](./quality_standards.md) - Config quality gates
 - [JSON Specification](https://www.json.org/)
-<!-- /ANCHOR:related-resources -->

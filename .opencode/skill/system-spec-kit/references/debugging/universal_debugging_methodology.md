@@ -9,7 +9,6 @@ Stack-agnostic debugging framework that applies to any technology: frontend, bac
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Provides a universal debugging methodology that works across all technology stac
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:the-four-phases -->
 ## 2. THE FOUR PHASES
 
 Complete each phase before proceeding to the next.
@@ -104,8 +101,6 @@ Complete each phase before proceeding to the next.
 
 ---
 
-<!-- /ANCHOR:the-four-phases -->
-<!-- ANCHOR:verification-checklist -->
 ## 3. VERIFICATION CHECKLIST
 
 After any debugging session:
@@ -121,8 +116,6 @@ After any debugging session:
 
 ---
 
-<!-- /ANCHOR:verification-checklist -->
-<!-- ANCHOR:common-pitfalls -->
 ## 4. COMMON PITFALLS
 
 | Pitfall | Solution |
@@ -136,8 +129,6 @@ After any debugging session:
 
 ---
 
-<!-- /ANCHOR:common-pitfalls -->
-<!-- ANCHOR:when-to-escalate -->
 ## 5. WHEN TO ESCALATE
 
 Escalate (dispatch `@debug` via the Task tool) when:
@@ -148,8 +139,6 @@ Escalate (dispatch `@debug` via the Task tool) when:
 
 ---
 
-<!-- /ANCHOR:when-to-escalate -->
-<!-- ANCHOR:stack-specific-notes -->
 ## 6. STACK-SPECIFIC NOTES
 
 The 4-phase methodology is universal. Tools vary by stack:
@@ -168,8 +157,6 @@ The methodology stays the same: **Observe → Analyze → Hypothesize → Fix**.
 
 ---
 
-<!-- /ANCHOR:stack-specific-notes -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 ### Commands
@@ -183,4 +170,3 @@ The methodology stays the same: **Observe → Analyze → Hypothesize → Fix**.
 | Template | Purpose |
 |----------|---------|
 | `debug-delegation.md` | Debug report template for sub-agent handoff |
-<!-- /ANCHOR:related-resources -->

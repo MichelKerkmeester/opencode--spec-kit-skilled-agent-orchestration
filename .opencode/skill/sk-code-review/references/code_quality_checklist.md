@@ -9,7 +9,6 @@ Correctness, performance, and boundary-condition checklist for identifying produ
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -19,11 +18,9 @@ Provide a systematic pass for non-security defects that still cause outages, reg
 ### Core Principle
 
 Prioritize silent-failure and data-corruption risks above stylistic concerns.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:error-handling -->
 ## 2. ERROR HANDLING
 
 Flag:
@@ -36,11 +33,9 @@ Flag:
 Review prompts:
 - "Will callers know this failed?"
 - "Is there enough context to debug without exposing internals?"
-<!-- /ANCHOR:error-handling -->
 
 ---
 
-<!-- ANCHOR:performance -->
 ## 3. PERFORMANCE AND SCALING
 
 Flag:
@@ -53,11 +48,9 @@ Flag:
 Review prompts:
 - "How does this behave with 10x data volume?"
 - "Can this call path be batched or cached safely?"
-<!-- /ANCHOR:performance -->
 
 ---
 
-<!-- ANCHOR:boundaries -->
 ## 4. BOUNDARY CONDITIONS
 
 Check:
@@ -74,11 +67,9 @@ const first = items[0]              // no empty check
 const avg = total / count           // count may be zero
 if (value) { /* skips valid 0 */ }  // truthy trap
 ```
-<!-- /ANCHOR:boundaries -->
 
 ---
 
-<!-- ANCHOR:contract-safety -->
 ## 5. DATA FLOW AND CONTRACT SAFETY
 
 Flag:
@@ -98,11 +89,9 @@ Severity guidance:
 - P0 for breaking changes to public APIs or shared interfaces with no migration path.
 - P1 for new null returns or type changes that existing callers do not handle.
 - P2 for implicit contract changes with low blast radius.
-<!-- /ANCHOR:contract-safety -->
 
 ---
 
-<!-- ANCHOR:maintainability -->
 ## 6. MAINTAINABILITY SIGNALS
 
 Watch for:
@@ -119,11 +108,9 @@ Watch for:
 - Hardcoded environment-specific values (URLs, ports, timeout thresholds) that should be externalized for deployment flexibility.
 
 Decision cue: if reviewers cannot explain intent quickly, maintenance risk is likely at least P2.
-<!-- /ANCHOR:maintainability -->
 
 ---
 
-<!-- ANCHOR:kiss-dry -->
 ## 7. KISS / DRY ENFORCEMENT
 
 ### KISS Checks
@@ -145,11 +132,9 @@ Flag:
 Severity guidance:
 - P2 default for stylistic duplication/complexity.
 - Escalate to P1 if duplication or complexity introduces behavior/regression risk.
-<!-- /ANCHOR:kiss-dry -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - [quick_reference.md](./quick_reference.md) - Baseline review flow and severity output contract.
@@ -159,4 +144,3 @@ Severity guidance:
 - [test_quality_checklist.md](./test_quality_checklist.md) - Test quality, coverage, and anti-pattern checks.
 
 Overlay portability: pair this baseline with stack-specific quality guidance from `sk-code-opencode` or `sk-code`.
-<!-- /ANCHOR:related-resources -->

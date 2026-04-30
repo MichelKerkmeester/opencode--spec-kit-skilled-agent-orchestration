@@ -9,7 +9,6 @@ Before/after verification protocol for performance optimization work using PageS
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Performance optimization requires measurable verification. This checklist ensures consistent baseline capture, incremental testing, and post-implementation comparison to validate improvements and catch regressions.
@@ -27,8 +26,6 @@ Performance optimization requires measurable verification. This checklist ensure
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:pre-implementation-baseline -->
 ## 2. PRE-IMPLEMENTATION BASELINE
 
 ### PageSpeed Insights Capture
@@ -58,8 +55,6 @@ Performance optimization requires measurable verification. This checklist ensure
 
 ---
 
-<!-- /ANCHOR:pre-implementation-baseline -->
-<!-- ANCHOR:during-implementation -->
 ## 3. DURING IMPLEMENTATION
 
 ### Incremental Testing
@@ -77,8 +72,6 @@ Expected messages:
 
 ---
 
-<!-- /ANCHOR:during-implementation -->
-<!-- ANCHOR:post-implementation-verification -->
 ## 4. POST-IMPLEMENTATION VERIFICATION
 
 ### PageSpeed Re-run
@@ -99,8 +92,6 @@ Expected messages:
 
 ---
 
-<!-- /ANCHOR:post-implementation-verification -->
-<!-- ANCHOR:functionality-regression-check -->
 ## 5. FUNCTIONALITY REGRESSION CHECK
 
 - [ ] Homepage loads correctly
@@ -114,8 +105,6 @@ Expected messages:
 
 ---
 
-<!-- /ANCHOR:functionality-regression-check -->
-<!-- ANCHOR:browser-testing -->
 ## 6. BROWSER TESTING
 
 - [ ] Chrome (latest)
@@ -126,8 +115,6 @@ Expected messages:
 
 ---
 
-<!-- /ANCHOR:browser-testing -->
-<!-- ANCHOR:maintenance -->
 ## 7. MAINTENANCE
 
 ### Periodic Re-testing
@@ -145,8 +132,6 @@ Consider setting up:
 
 ---
 
-<!-- /ANCHOR:maintenance -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Internal References
@@ -159,4 +144,3 @@ Consider setting up:
 - [PageSpeed Insights](https://pagespeed.web.dev/) - Google's performance testing tool
 - [WebPageTest](https://www.webpagetest.org/) - Detailed waterfall analysis
 - [Chrome DevTools](https://developer.chrome.com/docs/devtools/) - Local performance profiling
-<!-- /ANCHOR:related-resources -->

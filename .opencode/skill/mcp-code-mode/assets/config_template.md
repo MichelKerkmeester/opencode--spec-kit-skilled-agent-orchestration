@@ -9,7 +9,6 @@ Copy-ready `.utcp_config.json` template for Code Mode UTCP with pre-configured M
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:template -->
 ## 2. TEMPLATE
 
 ```json
@@ -138,8 +135,6 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 
 ---
 
-<!-- /ANCHOR:template -->
-<!-- ANCHOR:configuration-sections -->
 ## 3. CONFIGURATION SECTIONS
 
 ### load_variables_from
@@ -209,8 +204,6 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 
 ---
 
-<!-- /ANCHOR:configuration-sections -->
-<!-- ANCHOR:mcp-server-configurations -->
 ## 4. MCP SERVER CONFIGURATIONS
 
 ### Webflow (Remote MCP)
@@ -338,8 +331,6 @@ Copy this template to `.utcp_config.json` in your project root, then customize t
 
 ---
 
-<!-- /ANCHOR:mcp-server-configurations -->
-<!-- ANCHOR:environment-variables -->
 ## 5. ENVIRONMENT VARIABLES
 
 **Required .env file**: Create `.env` in project root with:
@@ -367,8 +358,6 @@ notion_NOTION_TOKEN=ntn_your_token_here
 
 ---
 
-<!-- /ANCHOR:environment-variables -->
-<!-- ANCHOR:customization-guide -->
 ## 6. CUSTOMIZATION GUIDE
 
 ### Adding a New MCP Server
@@ -429,8 +418,6 @@ GITHUB_TOKEN=ghp_your_token_here
 
 ---
 
-<!-- /ANCHOR:customization-guide -->
-<!-- ANCHOR:validation -->
 ## 7. VALIDATION
 
 **Validate configuration:**
@@ -447,8 +434,6 @@ GITHUB_TOKEN=ghp_your_token_here
 
 ---
 
-<!-- /ANCHOR:validation -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Templates
@@ -462,4 +447,3 @@ GITHUB_TOKEN=ghp_your_token_here
 **Template Version**: 1.0.0
 **Last Updated**: 2025-01-23
 **Compatibility**: Code Mode UTCP v1.x
-<!-- /ANCHOR:related-resources -->

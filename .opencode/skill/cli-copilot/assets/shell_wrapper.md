@@ -44,3 +44,15 @@ Notes:
 - This wrapper is for programmatic mode only; it is not a replacement for interactive `copilot`.
 - The repository hook path still returns `{}` because Copilot CLI currently ignores `userPromptSubmitted` hook output for prompt mutation.
 - Keep human Copilot instructions outside the `SPEC-KIT-COPILOT-CONTEXT` markers so the managed block can be replaced safely.
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 2. OVERVIEW
+
+_TODO: populate this section_
+
+---

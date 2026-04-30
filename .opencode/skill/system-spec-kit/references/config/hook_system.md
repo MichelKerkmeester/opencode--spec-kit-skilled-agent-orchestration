@@ -9,16 +9,12 @@ Current hook registration, runtime vocabulary, lifecycle behavior, and fallback 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The hook system provides automated context preservation at hook-capable prompt-time and lifecycle boundaries. Prompt delivery, startup wiring, compaction, and shutdown handling differ by runtime, but they call the same retrieval primitives and fail open to the same operator recovery path.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:hook-registration -->
 ## 2. HOOK REGISTRATION
 
 Claude Code hooks are registered in `.claude/settings.local.json`. Under the normalized Claude schema, `UserPromptSubmit` is the prompt hook, while `PreCompact`, `SessionStart`, and `Stop` are lifecycle hooks:
@@ -48,9 +44,6 @@ Codex registration is owned by the user/workspace Codex runtime config, not by t
 
 ---
 
-<!-- /ANCHOR:hook-registration -->
-
-<!-- ANCHOR:canonical-runtime-hook-vocabulary -->
 ## 3. CANONICAL RUNTIME HOOK VOCABULARY
 
 Use capability names first, then map to the runtime-local surface below when wiring or validating a specific runtime:
@@ -64,9 +57,6 @@ Use capability names first, then map to the runtime-local surface below when wir
 
 ---
 
-<!-- /ANCHOR:canonical-runtime-hook-vocabulary -->
-
-<!-- ANCHOR:hook-lifecycle -->
 ## 4. HOOK LIFECYCLE
 
 1. **Prompt-time advisor** — `UserPromptSubmit` in Claude, Codex, and Copilot; `BeforeAgent` in Gemini; `experimental.chat.system.transform` in OpenCode. Claude, Gemini, Codex, and OpenCode can inject runtime-visible advisor context in-turn. Copilot uses the same logical surface to refresh managed custom instructions and returns `{}`; this is NEXT-PROMPT freshness, so the current prompt sees the PRIOR turn's brief.
@@ -81,9 +71,6 @@ Use capability names first, then map to the runtime-local surface below when wir
 
 ---
 
-<!-- /ANCHOR:hook-lifecycle -->
-
-<!-- ANCHOR:hook-state -->
 ## 5. HOOK STATE
 
 Per-session state stored at `${os.tmpdir()}/speckit-claude-hooks/<project-hash>/<session-id>.json`.
@@ -92,9 +79,6 @@ Fields: `claudeSessionId`, `speckitSessionId`, `lastSpecFolder`, `pendingCompact
 
 ---
 
-<!-- /ANCHOR:hook-state -->
-
-<!-- ANCHOR:script-locations -->
 ## 6. SCRIPT LOCATIONS
 
 Source: `mcp_server/hooks/claude/*.ts`
@@ -102,9 +86,6 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 
 ---
 
-<!-- /ANCHOR:script-locations -->
-
-<!-- ANCHOR:token-budgets -->
 ## 7. TOKEN BUDGETS
 
 - Compaction injection: 4000 tokens (`COMPACTION_TOKEN_BUDGET`)
@@ -113,9 +94,6 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 
 ---
 
-<!-- /ANCHOR:token-budgets -->
-
-<!-- ANCHOR:runtime-hook-matrix -->
 ## 8. RUNTIME HOOK MATRIX
 
 Prompt hooks and lifecycle hooks are separate capabilities. A runtime can support prompt-time advisor context without supporting startup/code-graph lifecycle injection, and Copilot's prompt-time parity is NEXT-PROMPT freshness rather than in-turn injection; the current prompt sees the PRIOR turn's brief.
@@ -134,18 +112,12 @@ Codex `UserPromptSubmit` uses `SPECKIT_CODEX_HOOK_TIMEOUT_MS` (default `3000`) f
 
 ---
 
-<!-- /ANCHOR:runtime-hook-matrix -->
-
-<!-- ANCHOR:cross-runtime-fallback -->
 ## 9. CROSS-RUNTIME FALLBACK
 
 Claude Code uses native `UserPromptSubmit`, `SessionStart`, `PreCompact`, and `Stop` hooks. Gemini CLI uses native `BeforeAgent`, `SessionStart`, `PreCompress`, and `SessionEnd` hooks. Copilot CLI uses Copilot-supported writer scripts that refresh the Spec Kit managed block in `$HOME/.copilot/copilot-instructions.md`; hook output remains `{}` with NEXT-PROMPT freshness semantics, so the current prompt sees the PRIOR turn's brief, and the registration contract is documented in `mcp_server/hooks/copilot/README.md`. Do not use the stale merged `.claude/settings.local.json` wrapper shape for Copilot. OpenCode uses plugin-based transport rather than shell wrappers: `.opencode/plugins/spec-kit-skill-advisor.js` delivers prompt-time advisor briefs through `experimental.chat.system.transform`, while `.opencode/plugins/spec-kit-compact-code-graph.js` and plugin `event` handlers cover startup, compaction, readiness, and session cleanup. Codex CLI only reports live native-hook readiness when `[features].codex_hooks = true` is enabled in `~/.codex/config.toml` or equivalent launch flags and user/workspace `hooks.json` is wired; on `UserPromptSubmit` timeout, Codex returns a stale fallback marker (`stale:true`, `reason:"timeout-fallback"`) and logs a structured warning instead of silently serving cold-start context. Use `/spec_kit:resume` when hooks are unavailable or disabled. If automatic hook delivery is unavailable in any runtime, or the advisor hook path is intentionally disabled (`SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1`), fall back to the canonical operator path: start with `/spec_kit:resume`, rebuild packet continuity from `handover.md -> _memory.continuity -> spec docs`, then use `session_bootstrap()` or `session_resume()` only when you need lower-level structural health or merged recovery detail.
 
 ---
 
-<!-- /ANCHOR:cross-runtime-fallback -->
-
-<!-- ANCHOR:shared-startup-payload-parity -->
 ## 10. SHARED STARTUP PAYLOAD PARITY
 
 All four supported runtimes transport the same compact startup shared-payload through their runtime-specific hooks. The payload is produced by `buildStartupBrief()` in `mcp_server/lib/startup-brief.ts` and includes `graphQualitySummary` (detector provenance + edge-enrichment summary) alongside the `sharedPayloadTransport` envelope. Runtime-specific startup entrypoints:
@@ -161,9 +133,6 @@ All four supported runtimes transport the same compact startup shared-payload th
 
 ---
 
-<!-- /ANCHOR:shared-startup-payload-parity -->
-
-<!-- ANCHOR:advisor-bridge-and-threshold-contract -->
 ## 11. ADVISOR BRIDGE AND THRESHOLD CONTRACT
 
 OpenCode delivers prompt-time advisor context through a plugin-helper bridge rather than a shell wrapper:
@@ -183,9 +152,6 @@ The public MCP contract is unified across runtime hook surfaces:
 
 ---
 
-<!-- /ANCHOR:advisor-bridge-and-threshold-contract -->
-
-<!-- ANCHOR:retrieval-primitives -->
 ## 12. RETRIEVAL PRIMITIVES
 
 The same retrieval building blocks power both hook delivery and explicit recovery:
@@ -195,4 +161,3 @@ The same retrieval building blocks power both hook delivery and explicit recover
 
 ---
 
-<!-- /ANCHOR:retrieval-primitives -->

@@ -9,7 +9,6 @@ Set up Code Mode UTCP with MCP servers, environment variables, and credentials.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Required Files
@@ -23,8 +22,6 @@ Set up Code Mode UTCP with MCP servers, environment variables, and credentials.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:configuration-structure -->
 ## 2. CONFIGURATION STRUCTURE
 
 ### Complete Example
@@ -97,8 +94,6 @@ Set up Code Mode UTCP with MCP servers, environment variables, and credentials.
 
 ---
 
-<!-- /ANCHOR:configuration-structure -->
-<!-- ANCHOR:configuration-elements -->
 ## 3. CONFIGURATION ELEMENTS
 
 ### 1. Variable Loading
@@ -298,8 +293,6 @@ Set up Code Mode UTCP with MCP servers, environment variables, and credentials.
 
 ---
 
-<!-- /ANCHOR:configuration-elements -->
-<!-- ANCHOR:environment-variables -->
 ## 4. ENVIRONMENT VARIABLES
 
 ### Critical: Prefixed Variable Names
@@ -372,8 +365,6 @@ webflow_WEBFLOW_API_TOKEN=your_webflow_token_here
 
 ---
 
-<!-- /ANCHOR:environment-variables -->
-<!-- ANCHOR:adding-mcp-servers -->
 ## 5. ADDING MCP SERVERS
 
 ### Step-by-Step Guide
@@ -463,8 +454,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:adding-mcp-servers -->
-<!-- ANCHOR:common-server-configurations -->
 ## 6. COMMON SERVER CONFIGURATIONS
 
 ### Webflow (Remote SSE)
@@ -558,8 +547,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:common-server-configurations -->
-<!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
 
 ### Problem: Variable '{manual_name}_{VAR}' Not Found
@@ -660,8 +647,6 @@ const tools = await list_tools();
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:validation -->
 ## 8. VALIDATION
 
 **Use validation script:**
@@ -683,8 +668,6 @@ python scripts/validate_config.py .utcp_config.json
 
 ---
 
-<!-- /ANCHOR:validation -->
-<!-- ANCHOR:best-practices -->
 ## 9. BEST PRACTICES
 
 ### 1. Organize Manual Names Logically
@@ -752,8 +735,6 @@ python scripts/validate_config.py .utcp_config.json
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-<!-- ANCHOR:summary -->
 ## 10. SUMMARY
 
 **Configuration checklist:**
@@ -769,8 +750,6 @@ python scripts/validate_config.py .utcp_config.json
 
 ---
 
-<!-- /ANCHOR:summary -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Reference Files
@@ -781,4 +760,3 @@ python scripts/validate_config.py .utcp_config.json
 ### Templates
 - [config_template.md](../assets/config_template.md) - Configuration template
 - [env_template.md](../assets/env_template.md) - Environment variables example
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Comprehensive reference for all Claude Code CLI commands, flags, models, configu
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -37,10 +36,6 @@ Provide a comprehensive, single-source reference for all Claude Code CLI command
 | **License** | Proprietary (Anthropic) |
 | **Runtime** | Node.js 18+ |
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:installation -->
-
 ## 2. INSTALLATION
 
 | Method | Command | Notes |
@@ -57,10 +52,6 @@ Provide a comprehensive, single-source reference for all Claude Code CLI command
 | Windows | Experimental |
 
 After installation, run `claude` for interactive mode or `claude -p "prompt"` for non-interactive use.
-
-<!-- /ANCHOR:installation -->
-
-<!-- ANCHOR:authentication -->
 
 ## 3. AUTHENTICATION
 
@@ -100,10 +91,6 @@ claude auth logout
 echo "$ANTHROPIC_API_KEY" | claude setup-token
 ```
 
-<!-- /ANCHOR:authentication -->
-
-<!-- ANCHOR:core-invocation -->
-
 ## 4. CORE INVOCATION
 
 ### Non-Interactive Mode (Primary for Cross-AI)
@@ -132,10 +119,6 @@ claude "Start by reviewing the auth module"
 |------|------|--------|----------|
 | Non-interactive | `-p "prompt"` | stdout only, then exits | Cross-AI delegation, scripts, CI/CD |
 | Interactive | (none) | Full TUI | Direct human use |
-
-<!-- /ANCHOR:core-invocation -->
-
-<!-- ANCHOR:flags-reference -->
 
 ## 5. FLAGS REFERENCE
 
@@ -198,10 +181,6 @@ claude "Start by reviewing the auth module"
 | `--disallowedTools "tool1,tool2"` | Disable specific tools |
 | `--add-dir /path` | Add directory to context |
 
-<!-- /ANCHOR:flags-reference -->
-
-<!-- ANCHOR:models -->
-
 ## 6. MODELS
 
 ### Available Models
@@ -238,10 +217,6 @@ claude -p "Classify these 50 log entries by severity" \
   --model claude-haiku-4-5-20251001 --output-format text 2>&1
 ```
 
-<!-- /ANCHOR:models -->
-
-<!-- ANCHOR:subcommands -->
-
 ## 7. SUBCOMMANDS
 
 | Subcommand | Purpose | Example |
@@ -252,10 +227,6 @@ claude -p "Classify these 50 log entries by severity" \
 | `claude plugin` | Plugin management | `claude plugin list` |
 | `claude setup-token` | Non-interactive auth setup | `echo "$KEY" \| claude setup-token` |
 | `claude update` | Update CLI to latest version | `claude update` |
-
-<!-- /ANCHOR:subcommands -->
-
-<!-- ANCHOR:context-hierarchy -->
 
 ## 8. CONTEXT HIERARCHY (CLAUDE.md)
 
@@ -275,10 +246,6 @@ Claude Code automatically loads context from CLAUDE.md files in a hierarchy:
 claude -p "Review @./src/auth.ts and @./src/middleware.ts for security issues" \
   --permission-mode plan --output-format text 2>&1
 ```
-
-<!-- /ANCHOR:context-hierarchy -->
-
-<!-- ANCHOR:structured-output -->
 
 ## 9. STRUCTURED OUTPUT
 
@@ -310,10 +277,6 @@ claude -p "List functions in src/utils.ts" --output-format json 2>&1 | jq -r '.r
 # With schema validation
 claude -p "..." --json-schema '{"type":"object",...}' --output-format json 2>&1 | jq '.result'
 ```
-
-<!-- /ANCHOR:structured-output -->
-
-<!-- ANCHOR:session-management -->
 
 ## 10. SESSION MANAGEMENT
 
@@ -347,10 +310,6 @@ Session IDs appear in JSON output format:
 claude -p "Start analyzing the auth module" --output-format json 2>&1 | jq -r '.session_id'
 ```
 
-<!-- /ANCHOR:session-management -->
-
-<!-- ANCHOR:environment-variables -->
-
 ## 11. ENVIRONMENT VARIABLES
 
 | Variable | Purpose |
@@ -371,10 +330,6 @@ if [ -n "$CLAUDECODE" ]; then
     exit 1
 fi
 ```
-
-<!-- /ANCHOR:environment-variables -->
-
-<!-- ANCHOR:troubleshooting -->
 
 ## 12. TROUBLESHOOTING
 
@@ -404,10 +359,6 @@ claude -p "..." --allowedTools "Read,Glob,Grep" --output-format text 2>&1
 # Cost-controlled execution
 claude -p "..." --max-budget-usd 0.25 --output-format text 2>&1
 ```
-
-<!-- /ANCHOR:troubleshooting -->
-
-<!-- ANCHOR:quick-reference -->
 
 ## 13. QUICK REFERENCE CARD
 
@@ -443,4 +394,3 @@ claude -p "prompt" --max-budget-usd 1.00 --output-format text 2>&1
 claude -p "prompt" --output-format text 2>&1 &
 ```
 
-<!-- /ANCHOR:quick-reference -->

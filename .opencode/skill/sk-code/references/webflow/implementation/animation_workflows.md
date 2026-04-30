@@ -9,7 +9,6 @@ CSS-first animation guide with Motion.dev integration for complex sequences and 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -31,8 +30,6 @@ Follow code quality standards:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:animation-decision-tree -->
 ## 2. ANIMATION DECISION TREE
 
 ### Primary Decision Order
@@ -67,8 +64,6 @@ Need animation?
 
 ---
 
-<!-- /ANCHOR:animation-decision-tree -->
-<!-- ANCHOR:css-animation-patterns -->
 ## 3. CSS ANIMATION PATTERNS
 
 ### GPU-Accelerated Properties Only
@@ -187,8 +182,6 @@ function close_dropdown(dropdown) {
 
 ---
 
-<!-- /ANCHOR:css-animation-patterns -->
-<!-- ANCHOR:motion-dev-integration -->
 ## 4. MOTION.DEV INTEGRATION
 
 ### Library Loading (Global Setup)
@@ -371,8 +364,6 @@ animate(element, { opacity: [0, 1] }, {
 
 ---
 
-<!-- /ANCHOR:motion-dev-integration -->
-<!-- ANCHOR:performance-optimization -->
 ## 5. PERFORMANCE OPTIMIZATION
 
 ### Set Initial States (Prevent Flicker)
@@ -453,8 +444,6 @@ await animate(element, properties, {
 
 ---
 
-<!-- /ANCHOR:performance-optimization -->
-<!-- ANCHOR:testing-and-debugging-procedures -->
 ## 6. TESTING AND DEBUGGING PROCEDURES
 
 ### Pre-Deployment Checklist
@@ -729,8 +718,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:testing-and-debugging-procedures -->
-<!-- ANCHOR:common-issues-and-solutions -->
 ## 7. COMMON ISSUES AND SOLUTIONS
 
 ### Layout Jump on Height Animation
@@ -842,8 +829,6 @@ function init_animation() {
 
 ---
 
-<!-- /ANCHOR:common-issues-and-solutions -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -866,8 +851,6 @@ function init_animation() {
 
 ---
 
-<!-- /ANCHOR:related-resources -->
-<!-- ANCHOR:motion-dev-advanced-patterns -->
 ## 9. MOTION.DEV ADVANCED PATTERNS
 
 ### Timeline Sequences
@@ -1067,4 +1050,3 @@ animate(element, {
 ```
 
 **Reference implementation:** `src/javascript/hero/hero_general.js:302-549`
-<!-- /ANCHOR:motion-dev-advanced-patterns -->

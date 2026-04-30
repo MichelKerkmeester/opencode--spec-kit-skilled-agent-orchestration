@@ -9,7 +9,6 @@ This document defines the phase decomposition taxonomy, detection scoring, folde
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Are Phases?
@@ -28,8 +27,6 @@ Phase decomposition is **workflow-assisted**: the AI can suggest phasing during 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:phase-detection -->
 ## 2. PHASE DETECTION
 
 ### Complexity Scoring
@@ -69,8 +66,6 @@ If only one condition is met, the specification proceeds as a standard (non-phas
 
 ---
 
-<!-- /ANCHOR:phase-detection -->
-<!-- ANCHOR:folder-structure -->
 ## 3. FOLDER STRUCTURE
 
 ### Phase Folder Naming Convention
@@ -141,8 +136,6 @@ This back-reference enables:
 
 ---
 
-<!-- /ANCHOR:folder-structure -->
-<!-- ANCHOR:phase-lifecycle -->
 ## 4. PHASE LIFECYCLE
 
 ### Lifecycle Stages
@@ -199,8 +192,6 @@ Phase 3 (Frontend) depends on:
 
 ---
 
-<!-- /ANCHOR:phase-lifecycle -->
-<!-- ANCHOR:validation -->
 ## 5. VALIDATION
 
 ### PHASE_LINKS Rule
@@ -231,8 +222,6 @@ This validates:
 
 ---
 
-<!-- /ANCHOR:validation -->
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 ### Reference Files
@@ -242,4 +231,3 @@ This validates:
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator (includes phase commands, validation, and semantic memory context preservation)
-<!-- /ANCHOR:related-resources -->

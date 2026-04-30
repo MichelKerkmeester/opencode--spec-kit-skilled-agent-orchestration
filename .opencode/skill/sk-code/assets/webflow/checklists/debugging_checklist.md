@@ -9,7 +9,6 @@ Step-by-step checklist for investigating frontend technical issues systematicall
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:before-attempting-any-fix -->
 ## 2. BEFORE ATTEMPTING ANY FIX
 
 □ Opened browser DevTools (F12 / Cmd+Option+I)
@@ -34,8 +31,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:before-attempting-any-fix -->
-<!-- ANCHOR:phase-1-root-cause-investigation -->
 ## 3. PHASE 1: ROOT CAUSE INVESTIGATION
 
 ### Error Analysis
@@ -76,8 +71,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:phase-1-root-cause-investigation -->
-<!-- ANCHOR:phase-2-pattern-analysis -->
 ## 4. PHASE 2: PATTERN ANALYSIS
 
 ### Working Examples
@@ -108,8 +101,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:phase-2-pattern-analysis -->
-<!-- ANCHOR:phase-3-hypothesis-and-testing -->
 ## 5. PHASE 3: HYPOTHESIS AND TESTING
 
 ### Hypothesis Formation
@@ -140,8 +131,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:phase-3-hypothesis-and-testing -->
-<!-- ANCHOR:phase-4-implementation -->
 ## 6. PHASE 4: IMPLEMENTATION
 
 ### Documentation
@@ -171,8 +160,6 @@ Use this checklist for ANY frontend technical issue. Complete all applicable pha
 
 ---
 
-<!-- /ANCHOR:phase-4-implementation -->
-<!-- ANCHOR:root-cause-tracing-checklist -->
 ## 7. ROOT CAUSE TRACING CHECKLIST
 
 Use when errors occur deep in call stack:
@@ -195,8 +182,6 @@ Use when errors occur deep in call stack:
 
 ---
 
-<!-- /ANCHOR:root-cause-tracing-checklist -->
-<!-- ANCHOR:final-verification -->
 ## 8. FINAL VERIFICATION
 
 □ Root cause identified and documented
@@ -211,8 +196,6 @@ Use when errors occur deep in call stack:
 
 ---
 
-<!-- /ANCHOR:final-verification -->
-<!-- ANCHOR:if-still-stuck -->
 ## 9. IF STILL STUCK
 
 **After 3 failed fixes:**
@@ -234,10 +217,7 @@ Use when errors occur deep in call stack:
 
 ---
 
-<!-- /ANCHOR:if-still-stuck -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 - [debugging_workflows.md](../../references/debugging/debugging_workflows.md) - Full debugging guide
 - See `mcp-chrome-devtools` skill for DevTools reference
-<!-- /ANCHOR:related-resources -->

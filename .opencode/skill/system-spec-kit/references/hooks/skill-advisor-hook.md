@@ -9,7 +9,6 @@ This reference describes the current prompt-time Skill Advisor integrations. The
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### TABLE OF CONTENTS
@@ -48,9 +47,6 @@ Native tool baseline:
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:runtime-matrix -->
 ## 2. RUNTIME MATRIX
 
 | Runtime | Source Hook | Output Shape | Notes |
@@ -70,9 +66,6 @@ npm --prefix .opencode/skill/system-spec-kit/mcp_server run build
 
 ---
 
-<!-- /ANCHOR:runtime-matrix -->
-
-<!-- ANCHOR:shared-behavior -->
 ## 3. SHARED BEHAVIOR
 
 All hook adapters:
@@ -90,9 +83,6 @@ Native `advisor_recommend` returns prompt-safe lane contribution metadata when `
 
 ---
 
-<!-- /ANCHOR:shared-behavior -->
-
-<!-- ANCHOR:setup-and-smoke-tests -->
 ## 4. SETUP AND SMOKE TESTS
 
 ### Claude Code
@@ -150,9 +140,6 @@ Expected: `status: "ok"` with `metadata.route: "native"` when native is availabl
 
 ---
 
-<!-- /ANCHOR:setup-and-smoke-tests -->
-
-<!-- ANCHOR:control-flags -->
 ## 5. CONTROL FLAGS
 
 | Control | Applies To | Behavior |
@@ -176,9 +163,6 @@ printf '%s' "save this context" | python3 .opencode/skill/system-spec-kit/mcp_se
 
 ---
 
-<!-- /ANCHOR:control-flags -->
-
-<!-- ANCHOR:operator-states -->
 ## 6. OPERATOR STATES
 
 Use `advisor_status` for prompt-safe state:
@@ -206,9 +190,6 @@ See `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/manual_testing_pla
 
 ---
 
-<!-- /ANCHOR:operator-states -->
-
-<!-- ANCHOR:privacy-and-diagnostics -->
 ## 7. PRIVACY AND DIAGNOSTICS
 
 Prompt-safety rules:
@@ -230,9 +211,6 @@ Diagnostic status values:
 
 ---
 
-<!-- /ANCHOR:privacy-and-diagnostics -->
-
-<!-- ANCHOR:validation -->
 ## 8. VALIDATION
 
 Native validation:
@@ -271,4 +249,3 @@ Manual scenarios live in the Skill Advisor playbook:
 
 ---
 
-<!-- /ANCHOR:validation -->

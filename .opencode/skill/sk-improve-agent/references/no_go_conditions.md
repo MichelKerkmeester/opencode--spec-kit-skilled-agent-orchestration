@@ -9,7 +9,6 @@ Safety-brake reference for deciding when improve-agent must stop or refuse broad
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ The loop should stop before evaluator quality becomes weaker than the autonomy b
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:blocking-conditions -->
 ## 2. BLOCKING CONDITIONS
 
 Do not expand the loop beyond the current boundary when any of the following are true:
@@ -50,8 +47,6 @@ The reducer consumes these configured stop rules and marks the runtime `shouldSt
 
 ---
 
-<!-- /ANCHOR:blocking-conditions -->
-<!-- ANCHOR:related-resources -->
 ## 3. RELATED RESOURCES
 
 - `evaluator_contract.md`
@@ -59,4 +54,3 @@ The reducer consumes these configured stop rules and marks the runtime `shouldSt
 - `target_onboarding.md`
 - `../scripts/reduce-state.cjs`
 
-<!-- /ANCHOR:related-resources -->

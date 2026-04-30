@@ -9,7 +9,6 @@ Routing reference for delegating tasks from external AI assistants to specialize
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -28,11 +27,7 @@ Documents the active Claude Code agents in `.opencode/agent/` and how external A
 - Fresh-perspective debugging after the calling AI's attempts fail via Task-tool dispatch to `@debug`
 - Codebase exploration in read-only mode via `@context`
 
-<!-- /ANCHOR:overview -->
-
 ---
-
-<!-- ANCHOR:orchestration-model -->
 
 ## 2. ORCHESTRATION MODEL
 
@@ -100,11 +95,7 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 └── write.md          # Documentation generation
 ```
 
-<!-- /ANCHOR:orchestration-model -->
-
 ---
-
-<!-- ANCHOR:agent-catalog -->
 
 ## 3. CLAUDE CODE AGENT CATALOG
 
@@ -121,10 +112,6 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 | `write` | default | Documentation generation, README creation, guide writing | Creating or updating technical documentation, guides, READMEs |
 
 ---
-
-<!-- /ANCHOR:agent-catalog -->
-
-<!-- ANCHOR:agent-details -->
 
 ## 4. AGENT DETAILS
 
@@ -274,11 +261,7 @@ claude -p "Write a developer onboarding guide for this project" \
   --agent write --output-format text 2>&1
 ```
 
-<!-- /ANCHOR:agent-details -->
-
 ---
-
-<!-- ANCHOR:routing-guide -->
 
 ## 5. ROUTING DECISION GUIDE
 
@@ -309,11 +292,7 @@ SAVE CONTINUITY      → `/memory:save`
 | Research + write | `deep-research` | sonnet (default) | (default) |
 | Emergency debugging | `debug` | `claude-opus-4-6` | `--effort high` |
 
-<!-- /ANCHOR:routing-guide -->
-
 ---
-
-<!-- ANCHOR:best-practices -->
 
 ## 6. BEST PRACTICES
 
@@ -335,4 +314,3 @@ SAVE CONTINUITY      → `/memory:save`
 - **Don't forget `2>&1`** — always capture stderr for error handling
 - **Don't ignore costs** — use `--max-budget-usd` for batch operations
 
-<!-- /ANCHOR:best-practices -->

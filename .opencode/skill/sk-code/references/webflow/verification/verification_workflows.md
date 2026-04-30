@@ -9,7 +9,6 @@ Browser verification requirements for all completion claims - no exceptions.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -38,8 +37,6 @@ If you haven't opened the browser and tested in this message, you cannot claim i
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:the-gate-function -->
 ## 2. THE GATE FUNCTION
 
 **BEFORE claiming any status or expressing satisfaction:**
@@ -65,8 +62,6 @@ Skip any step = lying, not verifying.
 
 ---
 
-<!-- /ANCHOR:the-gate-function -->
-<!-- ANCHOR:automated-verification-options-mcp-or-cli -->
 ## 2.5. AUTOMATED VERIFICATION OPTIONS (MCP OR CLI)
 
 **Automated browser testing enables faster, repeatable verification.**
@@ -358,8 +353,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:automated-verification-options-mcp-or-cli -->
-<!-- ANCHOR:verification-requirements -->
 ## 3. VERIFICATION REQUIREMENTS
 
 ### Required For Every Claim
@@ -410,8 +403,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:verification-requirements -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 ### ✅ ALWAYS
@@ -475,8 +466,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:red-flags-stop -->
 ## 5. RED FLAGS - STOP
 
 If you catch yourself thinking:
@@ -494,8 +483,6 @@ If you catch yourself thinking:
 
 ---
 
-<!-- /ANCHOR:red-flags-stop -->
-<!-- ANCHOR:key-patterns -->
 ## 6. KEY PATTERNS
 
 ### Pattern 1: Layout Changes
@@ -567,8 +554,6 @@ across all tested viewports."
 
 ---
 
-<!-- /ANCHOR:key-patterns -->
-<!-- ANCHOR:common-rationalizations -->
 ## 7. COMMON RATIONALIZATIONS
 
 | Excuse | Reality |
@@ -586,8 +571,6 @@ across all tested viewports."
 
 ---
 
-<!-- /ANCHOR:common-rationalizations -->
-<!-- ANCHOR:success-criteria -->
 ## 8. SUCCESS CRITERIA
 
 **Verification is successful when:**
@@ -611,8 +594,6 @@ across all tested viewports."
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:verification-checklist -->
 ## 9. VERIFICATION CHECKLIST
 
 **Before claiming any work complete, verify:**
@@ -656,8 +637,6 @@ EVIDENCE:
 
 ---
 
-<!-- /ANCHOR:verification-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Reference Files
@@ -674,4 +653,3 @@ EVIDENCE:
 ---
 
 **See also:** [verification_checklist.md](../../assets/checklists/verification_checklist.md) for printable checklist
-<!-- /ANCHOR:related-resources -->

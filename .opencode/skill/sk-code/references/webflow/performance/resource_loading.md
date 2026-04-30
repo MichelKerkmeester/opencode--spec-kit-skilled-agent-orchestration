@@ -9,7 +9,6 @@ Resource hints and loading strategies for optimal performance in Webflow sites.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Resource loading optimization uses browser hints to prioritize critical resources and defer non-essential ones. This improves Core Web Vitals, particularly LCP (Largest Contentful Paint) and FID (First Input Delay).
@@ -24,8 +23,6 @@ Resource loading optimization uses browser hints to prioritize critical resource
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:preconnect -->
 ## 2. PRECONNECT
 
 ### What It Does
@@ -82,8 +79,6 @@ From `global.html`:
 
 ---
 
-<!-- /ANCHOR:preconnect -->
-<!-- ANCHOR:dns-prefetch -->
 ## 3. DNS PREFETCH
 
 ### What It Does
@@ -112,8 +107,6 @@ Performs DNS lookup only (no TCP/TLS). Lower priority than preconnect, used for 
 
 ---
 
-<!-- /ANCHOR:dns-prefetch -->
-<!-- ANCHOR:preload -->
 ## 4. PRELOAD
 
 ### What It Does
@@ -168,8 +161,6 @@ Downloads high-priority resources for the current page with elevated priority. B
 
 ---
 
-<!-- /ANCHOR:preload -->
-<!-- ANCHOR:prefetch -->
 ## 5. PREFETCH
 
 ### What It Does
@@ -203,8 +194,6 @@ Downloads resources for future navigation during idle time. Lower priority than 
 
 ---
 
-<!-- /ANCHOR:prefetch -->
-<!-- ANCHOR:async-css-loading-pattern -->
 ## 6. ASYNC CSS LOADING PATTERN
 
 ### The Pattern
@@ -250,8 +239,6 @@ From `home.html`:
 
 ---
 
-<!-- /ANCHOR:async-css-loading-pattern -->
-<!-- ANCHOR:script-loading -->
 ## 7. SCRIPT LOADING
 
 ### defer vs async vs dynamic
@@ -322,8 +309,6 @@ loadScript('https://example.com/analytics.js')
 
 ---
 
-<!-- /ANCHOR:script-loading -->
-<!-- ANCHOR:noscript-fallbacks -->
 ## 8. NOSCRIPT FALLBACKS
 
 Always provide fallbacks for JavaScript-dependent loading:
@@ -340,8 +325,6 @@ Always provide fallbacks for JavaScript-dependent loading:
 
 ---
 
-<!-- /ANCHOR:noscript-fallbacks -->
-<!-- ANCHOR:decision-matrix -->
 ## 9. DECISION MATRIX
 
 | Resource Type | Strategy | Reason |
@@ -359,8 +342,6 @@ Always provide fallbacks for JavaScript-dependent loading:
 
 ---
 
-<!-- /ANCHOR:decision-matrix -->
-<!-- ANCHOR:anti-patterns -->
 ## 10. ANTI-PATTERNS
 
 ### Over-Preloading
@@ -401,8 +382,6 @@ Always provide fallbacks for JavaScript-dependent loading:
 
 ---
 
-<!-- /ANCHOR:anti-patterns -->
-<!-- ANCHOR:testing-resource-loading -->
 ## 11. TESTING RESOURCE LOADING
 
 ### Chrome DevTools
@@ -431,8 +410,6 @@ Use waterfall view to verify:
 
 ---
 
-<!-- /ANCHOR:testing-resource-loading -->
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 ### Internal References
@@ -445,4 +422,3 @@ Use waterfall view to verify:
 
 - [web.dev/preconnect-and-dns-prefetch](https://web.dev/preconnect-and-dns-prefetch/) - Resource hints guide
 - [web.dev/preload-critical-assets](https://web.dev/preload-critical-assets/) - Preload best practices
-<!-- /ANCHOR:related-resources -->

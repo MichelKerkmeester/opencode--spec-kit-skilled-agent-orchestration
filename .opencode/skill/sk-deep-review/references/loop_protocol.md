@@ -9,7 +9,6 @@ Complete lifecycle specification for the autonomous deep review loop.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The deep review loop has 4 phases: initialization, iteration (repeated), synthesis, and save. The YAML workflow manages the lifecycle; the `@deep-review` agent (LEAF-only, no WebFetch) executes individual review iterations with fresh context each time.
@@ -50,8 +49,6 @@ Each agent dispatch gets a fresh context window. State continuity comes from fil
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:phase-initialization -->
 ## 2. PHASE 1: INITIALIZATION
 
 ### Purpose
@@ -141,8 +138,6 @@ Set up all state files for a new review session. Discover the scope, order dimen
 
 ---
 
-<!-- /ANCHOR:phase-initialization -->
-<!-- ANCHOR:phase-iteration-loop -->
 ## 3. PHASE 2: ITERATION LOOP
 
 ### Loop Steps (repeated until convergence)
@@ -431,8 +426,6 @@ function selectReviewRecoveryStrategy(stuckIterations, state, config):
 
 ---
 
-<!-- /ANCHOR:phase-iteration-loop -->
-<!-- ANCHOR:phase-synthesis -->
 ## 4. PHASE 3: SYNTHESIS
 
 ### Purpose
@@ -520,8 +513,6 @@ When `PASS` verdict is issued and active P2 findings remain, set `hasAdvisories 
 
 ---
 
-<!-- /ANCHOR:phase-synthesis -->
-<!-- ANCHOR:phase-save -->
 ## 5. PHASE 4: SAVE
 
 ### Purpose
@@ -548,8 +539,6 @@ If memory save fails:
 
 ---
 
-<!-- /ANCHOR:phase-save -->
-<!-- ANCHOR:auto-resume-protocol -->
 ## 6. AUTO-RESUME PROTOCOL
 
 ### Purpose
@@ -624,8 +613,6 @@ Each priority level is attempted in order. If a level fails, fall through to the
 
 ---
 
-<!-- /ANCHOR:auto-resume-protocol -->
-<!-- ANCHOR:pause-resume -->
 ## 7. PAUSE/RESUME
 
 ### Pause Sentinel Behavior
@@ -672,8 +659,6 @@ In confirm mode (`spec_kit_deep-review_confirm.yaml`), the workflow adds explici
 
 ---
 
-<!-- /ANCHOR:pause-resume -->
-<!-- ANCHOR:state-transitions -->
 ## 8. STATE TRANSITIONS
 
 ```
@@ -717,8 +702,6 @@ In confirm mode (`spec_kit_deep-review_confirm.yaml`), the workflow adds explici
 
 ---
 
-<!-- /ANCHOR:state-transitions -->
-<!-- ANCHOR:error-handling -->
 ## 9. ERROR HANDLING
 
 | Error | Phase | Action |
@@ -745,8 +728,6 @@ Five escalating tiers, attempted in order:
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-<!-- ANCHOR:review-quality-gates -->
 ## 10. REVIEW QUALITY GATES
 
 Three binary gates must pass before a STOP decision is finalized. These gates are defined in `review_mode_contract.yaml` under `qualityGates` and are evaluated after the composite convergence score exceeds the `compositeStopScore` threshold.
@@ -799,8 +780,6 @@ When any gate fails, the STOP is overridden to CONTINUE and each violation is lo
 
 ---
 
-<!-- /ANCHOR:review-quality-gates -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Shared Protocol Documentation
@@ -844,4 +823,3 @@ Runtime paths:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

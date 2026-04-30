@@ -9,7 +9,6 @@ Contract for how `sk-improve-agent` scores candidates and benchmarks packet-loca
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Weak candidates and infrastructure failures must be distinguishable. The contrac
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:evaluated-surfaces -->
 ## 2. EVALUATED SURFACES
 
 ### Dynamic Profiles (only mode)
@@ -39,8 +36,6 @@ Every agent file in `.opencode/agent/*.md` is evaluated using dynamic mode. The 
 
 ---
 
-<!-- /ANCHOR:evaluated-surfaces -->
-<!-- ANCHOR:input-contract -->
 ## 3. INPUT CONTRACT
 
 ### Dynamic Mode (5-dimension, only mode)
@@ -61,8 +56,6 @@ The benchmark runner expects:
 
 ---
 
-<!-- /ANCHOR:input-contract -->
-<!-- ANCHOR:output-contract -->
 ## 4. OUTPUT CONTRACT
 
 The scorer emits JSON with:
@@ -95,8 +88,6 @@ Each entry in the `dimensions` array contains `name`, `score`, `weight`, and `de
 
 ---
 
-<!-- /ANCHOR:output-contract -->
-<!-- ANCHOR:rubric -->
 ## 5. RUBRIC
 
 ### 5-Dimension Rubric (dynamic mode)
@@ -120,8 +111,6 @@ Each entry in the `dimensions` array contains `name`, `score`, `weight`, and `de
 
 ---
 
-<!-- /ANCHOR:rubric -->
-<!-- ANCHOR:rejection-and-failure -->
 ## 6. REJECTION AND INFRA FAILURE
 
 Reject immediately when:
@@ -136,8 +125,6 @@ Use `infra_failure` only when the scorer or benchmark runner cannot read files, 
 
 ---
 
-<!-- /ANCHOR:rejection-and-failure -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 - `benchmark_operator_guide.md`
@@ -147,4 +134,3 @@ Use `infra_failure` only when the scorer or benchmark runner cannot read files, 
 - `../scripts/scan-integration.cjs`
 - `../scripts/generate-profile.cjs`
 
-<!-- /ANCHOR:related-resources -->

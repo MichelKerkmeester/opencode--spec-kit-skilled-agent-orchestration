@@ -9,7 +9,6 @@ description: Fast-path framework selection and CLEAR checks for OpenCode CLI pro
 
 Fast-path prompt-quality guidance for OpenCode CLI dispatches. Use this asset before building a routine `opencode run` prompt so the router stays lightweight while still applying framework selection and a quick CLEAR pass.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Select a framework from the task map, run the CLEAR 5-check, and escalate to `@i
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:framework-selection-table -->
 ## 2. Framework Selection Table
 
 | Framework | Best for | Complexity band | Core components |
@@ -38,8 +35,6 @@ Select a framework from the task map, run the CLEAR 5-check, and escalate to `@i
 
 ---
 
-<!-- /ANCHOR:framework-selection-table -->
-<!-- ANCHOR:task-framework-map -->
 ## 3. Task to Framework Map
 
 | Task | Framework |
@@ -54,8 +49,6 @@ Select a framework from the task map, run the CLEAR 5-check, and escalate to `@i
 
 ---
 
-<!-- /ANCHOR:task-framework-map -->
-<!-- ANCHOR:clear-check -->
 ## 4. CLEAR 5-Check
 
 - Correctness: Does the prompt describe the real task and files without contradiction?
@@ -66,8 +59,6 @@ Select a framework from the task map, run the CLEAR 5-check, and escalate to `@i
 
 ---
 
-<!-- /ANCHOR:clear-check -->
-<!-- ANCHOR:escalation -->
 ## 5. Escalate to `@improve-prompt`
 
 Use Task-based escalation when complexity is `>= 7/10`, compliance or security sensitivity appears, more than one stakeholder matters, or more than one requirement is unclear.
@@ -76,8 +67,6 @@ OpenCode-specific example: if the task would otherwise need a long `opencode run
 
 ---
 
-<!-- /ANCHOR:escalation -->
-<!-- ANCHOR:failure-patterns -->
 ## 6. Failure Patterns
 
 - Missing output format or success criteria
@@ -90,12 +79,9 @@ OpenCode-specific example: if the task would otherwise need a long `opencode run
 
 ---
 
-<!-- /ANCHOR:failure-patterns -->
-<!-- ANCHOR:related-resources -->
 ## 7. Related Resources
 
 - `../../sk-improve-prompt/assets/cli_prompt_quality_card.md`
 - `./prompt_templates.md`
 - `../SKILL.md`
 
-<!-- /ANCHOR:related-resources -->

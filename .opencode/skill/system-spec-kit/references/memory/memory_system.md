@@ -9,7 +9,6 @@ Spec Kit Memory MCP tools, behavior notes, and configuration options.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
@@ -60,9 +59,6 @@ The indexed-continuity store indexes content from two active sources, plus a ret
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:importance-tiers -->
 ## 2. IMPORTANCE TIERS
 
 Six-tier system for prioritizing memory relevance:
@@ -93,9 +89,6 @@ Six-tier system for prioritizing memory relevance:
 
 ---
 
-<!-- /ANCHOR:importance-tiers -->
-
-<!-- ANCHOR:mcp-tools -->
 ## 3. MCP TOOLS
 
 > **Note:** MCP tool names use plain names such as `memory_search`, `memory_save`, and `checkpoint_create`.
@@ -159,9 +152,6 @@ plus 4 Skill Advisor descriptors imported into the same registry.
 
 ---
 
-<!-- /ANCHOR:mcp-tools -->
-
-<!-- ANCHOR:memory-search-behavior -->
 ## 4. MEMORY_SEARCH() BEHAVIOR
 
 ### Parameter Requirements
@@ -325,9 +315,6 @@ Brief summary of the session...
 
 ---
 
-<!-- /ANCHOR:memory-search-behavior -->
-
-<!-- ANCHOR:memory-list-behavior -->
 ## 5. MEMORY_LIST() BEHAVIOR
 
 ### Exact Matching Behavior
@@ -367,9 +354,6 @@ For consistent exact matching, use the full spec folder name.
 
 ---
 
-<!-- /ANCHOR:memory-list-behavior -->
-
-<!-- ANCHOR:decay-scoring -->
 ## 6. DECAY SCORING
 
 > [VERIFIED: matches source code as of 2026-02-08]
@@ -435,9 +419,6 @@ memory_search({
 
 ---
 
-<!-- /ANCHOR:decay-scoring -->
-
-<!-- ANCHOR:real-time-sync -->
 ## 7. REAL-TIME SYNC
 
 ### Current Limitation
@@ -471,9 +452,6 @@ The `memory_index_scan` operation has a 1-minute cooldown between scans to preve
 
 ---
 
-<!-- /ANCHOR:real-time-sync -->
-
-<!-- ANCHOR:constitutional-rules -->
 ## 8. CONSTITUTIONAL RULES
 
 ### Purpose
@@ -516,9 +494,6 @@ Constitutional files are stored in:
 
 ---
 
-<!-- /ANCHOR:constitutional-rules -->
-
-<!-- ANCHOR:session-deduplication -->
 ## 9. SESSION DEDUPLICATION
 
 > [VERIFIED: matches source code as of 2026-02-08]
@@ -590,9 +565,6 @@ Session deduplication (`enableDedup: true` with `sessionId`) provides significan
 
 ---
 
-<!-- /ANCHOR:session-deduplication -->
-
-<!-- ANCHOR:5-state-memory-model -->
 ## 10. 5-STATE MEMORY MODEL
 
 > [VERIFIED: matches source code as of 2026-02-08]
@@ -675,9 +647,6 @@ The effective stability is `max(fsrs_stability, type_stability)`, ensuring new s
 
 ---
 
-<!-- /ANCHOR:5-state-memory-model -->
-
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Reference Files
@@ -695,4 +664,3 @@ The effective stability is `max(fsrs_stability, type_stability)`, ensuring new s
 
 ---
 
-<!-- /ANCHOR:related-resources -->

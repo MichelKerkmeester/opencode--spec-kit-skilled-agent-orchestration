@@ -9,7 +9,6 @@ Templates for creating slash commands with proper frontmatter, mandatory gates, 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Are OpenCode Commands?
@@ -80,8 +79,6 @@ Level 3: Mode-Based / Dispatch Command
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-commands -->
 ## 2. WHEN TO CREATE COMMANDS
 
 ### Create Command When
@@ -145,8 +142,6 @@ Is this a repeatable workflow with defined steps?
 
 ---
 
-<!-- /ANCHOR:when-to-create-commands -->
-<!-- ANCHOR:command-types -->
 ## 3. COMMAND TYPES
 
 ### Overview
@@ -186,8 +181,6 @@ Start Here
 
 ---
 
-<!-- /ANCHOR:command-types -->
-<!-- ANCHOR:standard-command-structure -->
 ## 4. STANDARD COMMAND STRUCTURE
 
 ### Common Sections (All Command Types)
@@ -231,8 +224,6 @@ allowed-tools: Tool1, Tool2
 
 ---
 
-<!-- /ANCHOR:standard-command-structure -->
-<!-- ANCHOR:step-numbering-rules -->
 ## 5. STEP NUMBERING RULES
 
 **Rule**: Use full integers only (1, 2, 3). No decimals (1.5, 2.5) or sub-steps (1.1, 1.2).
@@ -253,8 +244,6 @@ Step 3: Execute workflow
 
 ---
 
-<!-- /ANCHOR:step-numbering-rules -->
-<!-- ANCHOR:section-vocabulary -->
 ## 6. SECTION VOCABULARY
 
 Commands use two categories of notation: **semantic markers** (for blocking/validation states) and **section names** (for content organization).
@@ -299,8 +288,6 @@ These names identify section types. Use EXACTLY as shown:
 
 ---
 
-<!-- /ANCHOR:section-vocabulary -->
-<!-- ANCHOR:frontmatter-reference -->
 ## 7. FRONTMATTER REFERENCE
 
 ### Required Fields
@@ -360,8 +347,6 @@ allowed-tools: Read, Write, Edit, Bash, Task
 
 ---
 
-<!-- /ANCHOR:frontmatter-reference -->
-<!-- ANCHOR:mandatory-gate-pattern-critical -->
 ## 8. MANDATORY GATE PATTERN (CRITICAL)
 
 ### Why This Pattern Exists
@@ -478,8 +463,6 @@ For commands exempt from Gate 3:
 
 ---
 
-<!-- /ANCHOR:mandatory-gate-pattern-critical -->
-<!-- ANCHOR:simple-command-template -->
 ## 9. SIMPLE COMMAND TEMPLATE
 
 Use for: Single-action commands with straightforward execution.
@@ -597,8 +580,6 @@ allowed-tools: mcp__semantic-search__semantic_search
 
 ---
 
-<!-- /ANCHOR:simple-command-template -->
-<!-- ANCHOR:workflow-command-template -->
 ## 10. WORKFLOW COMMAND TEMPLATE
 
 Use for: Multi-step processes with defined phases and outputs.
@@ -716,8 +697,6 @@ Next Steps:
 
 ---
 
-<!-- /ANCHOR:workflow-command-template -->
-<!-- ANCHOR:mode-based-command-template -->
 ## 11. MODE-BASED COMMAND TEMPLATE
 
 Use for: Commands supporting `:auto` and `:confirm` execution modes.
@@ -826,8 +805,6 @@ When resuming work in an existing spec folder, prompt to load prior session memo
 
 ---
 
-<!-- /ANCHOR:mode-based-command-template -->
-<!-- ANCHOR:argument-dispatch-pattern -->
 ## 12. ARGUMENT DISPATCH PATTERN
 
 Use for: Commands that accept multiple argument types and need to route to different actions.
@@ -944,8 +921,6 @@ $ARGUMENTS
 
 ---
 
-<!-- /ANCHOR:argument-dispatch-pattern -->
-<!-- ANCHOR:destructive-command-template -->
 ## 13. DESTRUCTIVE COMMAND TEMPLATE
 
 Use for: Commands that delete data or make irreversible changes.
@@ -1061,8 +1036,6 @@ allowed-tools: Bash
 
 ---
 
-<!-- /ANCHOR:destructive-command-template -->
-<!-- ANCHOR:namespace-command-pattern -->
 ## 14. NAMESPACE COMMAND PATTERN
 
 Use for: Grouping related commands under a common prefix.
@@ -1100,8 +1073,6 @@ Use for: Grouping related commands under a common prefix.
 
 ---
 
-<!-- /ANCHOR:namespace-command-pattern -->
-<!-- ANCHOR:validation-checklist -->
 ## 15. VALIDATION CHECKLIST
 
 Before publishing a command, verify:
@@ -1148,8 +1119,6 @@ Commands with mandatory input phases use these semantic markers:
 
 ---
 
-<!-- /ANCHOR:validation-checklist -->
-<!-- ANCHOR:orchestrator-workers-pattern -->
 ## 16. ORCHESTRATOR + WORKERS PATTERN
 
 Use for: Commands that spawn parallel sub-agents for exploration/analysis.
@@ -1170,8 +1139,6 @@ OPUS ORCHESTRATOR → Dispatches → SONNET WORKERS (parallel)
 
 ---
 
-<!-- /ANCHOR:orchestrator-workers-pattern -->
-<!-- ANCHOR:status-output-patterns -->
 ## 17. STATUS OUTPUT PATTERNS
 
 ### Standard Patterns
@@ -1187,8 +1154,6 @@ OPUS ORCHESTRATOR → Dispatches → SONNET WORKERS (parallel)
 
 ---
 
-<!-- /ANCHOR:status-output-patterns -->
-<!-- ANCHOR:best-practices-summary -->
 ## 18. BEST PRACTICES SUMMARY
 
 ### DO
@@ -1215,8 +1180,6 @@ OPUS ORCHESTRATOR → Dispatches → SONNET WORKERS (parallel)
 
 ---
 
-<!-- /ANCHOR:best-practices-summary -->
-<!-- ANCHOR:related-resources -->
 ## 19. RELATED RESOURCES
 
 ### Templates
@@ -1226,4 +1189,3 @@ OPUS ORCHESTRATOR → Dispatches → SONNET WORKERS (parallel)
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document type rules
 - [validation.md](../../references/global/validation.md) - Quality scoring
-<!-- /ANCHOR:related-resources -->

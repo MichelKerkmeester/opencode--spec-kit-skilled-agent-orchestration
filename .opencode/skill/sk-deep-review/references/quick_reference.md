@@ -9,7 +9,6 @@ One-page cheat sheet for the autonomous deep review loop.
 
 ---
 
-<!-- ANCHOR:commands -->
 ## 1. COMMANDS
 
 | Command | Description |
@@ -29,8 +28,6 @@ One-page cheat sheet for the autonomous deep review loop.
 
 ---
 
-<!-- /ANCHOR:commands -->
-<!-- ANCHOR:when-to-use -->
 ## 2. WHEN TO USE
 
 | Scenario | Use |
@@ -43,8 +40,6 @@ One-page cheat sheet for the autonomous deep review loop.
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:architecture -->
 ## 3. ARCHITECTURE
 
 ```
@@ -63,8 +58,6 @@ One-page cheat sheet for the autonomous deep review loop.
 
 ---
 
-<!-- /ANCHOR:architecture -->
-<!-- ANCHOR:state-files -->
 ## 4. STATE FILES
 
 Review mode stores its packet under the resolved local review path rooted at `{spec_folder}/review/`:
@@ -91,8 +84,6 @@ Review mode stores its packet under the resolved local review path rooted at `{s
 
 ---
 
-<!-- /ANCHOR:state-files -->
-<!-- ANCHOR:review-dimensions -->
 ## 5. REVIEW DIMENSIONS
 
 | ID | Dimension | Priority | Description |
@@ -104,8 +95,6 @@ Review mode stores its packet under the resolved local review path rooted at `{s
 
 ---
 
-<!-- /ANCHOR:review-dimensions -->
-<!-- ANCHOR:verdicts -->
 ## 6. REVIEW VERDICTS
 
 | Verdict | Condition | Meaning | Next Command |
@@ -126,8 +115,6 @@ Review mode stores its packet under the resolved local review path rooted at `{s
 
 ---
 
-<!-- /ANCHOR:verdicts -->
-<!-- ANCHOR:quality-guards -->
 ## 7. REVIEW QUALITY GUARDS
 
 | Gate | Rule |
@@ -138,8 +125,6 @@ Review mode stores its packet under the resolved local review path rooted at `{s
 
 ---
 
-<!-- /ANCHOR:quality-guards -->
-<!-- ANCHOR:convergence -->
 ## 8. REVIEW CONVERGENCE
 
 | Signal | Weight | Description |
@@ -154,8 +139,6 @@ Review mode stores its packet under the resolved local review path rooted at `{s
 
 ---
 
-<!-- /ANCHOR:convergence -->
-<!-- ANCHOR:agent-iteration-checklist -->
 ## 9. AGENT ITERATION CHECKLIST
 
 Each @deep-review iteration:
@@ -169,8 +152,6 @@ Each @deep-review iteration:
 
 ---
 
-<!-- /ANCHOR:agent-iteration-checklist -->
-<!-- ANCHOR:review-report-sections -->
 ## 10. REVIEW REPORT SECTIONS
 
 | # | Section | Purpose |
@@ -187,8 +168,6 @@ Each @deep-review iteration:
 
 ---
 
-<!-- /ANCHOR:review-report-sections -->
-<!-- ANCHOR:tuning-guide -->
 ## 11. TUNING GUIDE
 
 | Goal | Adjustment |
@@ -200,8 +179,6 @@ Each @deep-review iteration:
 
 ---
 
-<!-- /ANCHOR:tuning-guide -->
-<!-- ANCHOR:troubleshooting -->
 ## 12. TROUBLESHOOTING
 
 | Problem | Fix |
@@ -214,8 +191,6 @@ Each @deep-review iteration:
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:related -->
 ## 13. RELATED
 
 | Resource | Purpose |
@@ -231,4 +206,14 @@ For review-specific protocol documentation, see local `references/`:
 - `state_format.md` — Review state file schemas
 - `convergence.md` — Review convergence algorithms
 
-<!-- /ANCHOR:related -->
+## 14. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 15. OVERVIEW
+
+_TODO: populate this section_
+
+---

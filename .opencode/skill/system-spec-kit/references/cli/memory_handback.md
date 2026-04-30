@@ -9,16 +9,12 @@ When a calling AI delegates a task to one of the cli-* skills (`cli-claude-code`
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Canonical 7-step Memory Handback procedure shared across the five cli-* sibling skills. Covers MEMORY_HANDBACK extraction, structured-JSON normalization, generate-context.js dispatch modes, and the post-010 save gates.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:procedure-7-steps -->
 ## 2. PROCEDURE (7 STEPS)
 
 1. **Include epilogue**: Append the Spec-Doc Record Epilogue template (see the cli-* skill's `assets/prompt_templates.md` §N — the section number is cited inline in the skill's §4) to the delegated prompt.
@@ -34,9 +30,6 @@ Canonical 7-step Memory Handback procedure shared across the five cli-* sibling 
 
 ---
 
-<!-- /ANCHOR:procedure-7-steps -->
-
-<!-- ANCHOR:caveats -->
 ## 3. CAVEATS
 
 **Delimiter missing**: If agent output lacks `MEMORY_HANDBACK` delimiters, the calling AI manually constructs the structured JSON payload and saves it through the same JSON-primary path. The save flow normalizes `nextSteps` or `next_steps`; the first entry persists as `Next: ...` and drives `NEXT_ACTION`, and remaining entries persist as `Follow-up: ...`.
@@ -55,13 +48,9 @@ Canonical 7-step Memory Handback procedure shared across the five cli-* sibling 
 
 ---
 
-<!-- /ANCHOR:caveats -->
-
-<!-- ANCHOR:per-skill-template-anchor -->
 ## 4. PER-SKILL TEMPLATE ANCHOR
 
 Each cli-* skill cites a specific `assets/prompt_templates.md §N` anchor for its Memory Epilogue. Look in the skill's §4 Memory Handback Protocol for the cited section number — the reference paths are otherwise identical.
 
 ---
 
-<!-- /ANCHOR:per-skill-template-anchor -->

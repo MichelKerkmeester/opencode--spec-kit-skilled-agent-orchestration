@@ -11,7 +11,6 @@ This workflow assumes any branch already came from `git worktree add -b ...`, no
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Systematically complete development work by verifying tests, presenting integration options, and executing the chosen workflow. Ensures work is properly integrated with clean branch management.
@@ -20,8 +19,6 @@ Systematically complete development work by verifying tests, presenting integrat
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:process-overview -->
 ## 2. PROCESS OVERVIEW
 
 1. Verify all tests pass (blocking gate)
@@ -39,8 +36,6 @@ Systematically complete development work by verifying tests, presenting integrat
 
 ---
 
-<!-- /ANCHOR:process-overview -->
-<!-- ANCHOR:complete-workflow -->
 ## 3. COMPLETE WORKFLOW
 
 ### Step 1: Verify Tests
@@ -81,7 +76,6 @@ Cannot proceed with merge/PR until tests pass.
 
 **Validation**: `tests_verified`
 
-
 ### Step 2: Determine Base Branch
 
 **Purpose**: Identify target branch for integration
@@ -107,7 +101,6 @@ Is this correct? (y/n)
 
 **Validation**: `base_branch_determined`
 
-
 ### Step 3: Present Options
 
 **Purpose**: Give user structured choices for integration
@@ -132,7 +125,6 @@ Which option? (1-4)
 - Do NOT proceed without user input
 
 **Validation**: `options_presented`
-
 
 ### Step 4: Execute Choice
 
@@ -167,7 +159,6 @@ fi
 **Then**: Proceed to Step 5 (Cleanup Worktree)
 
 **Validation**: `merge_complete`
-
 
 #### Option 2: Push and Create PR
 
@@ -226,7 +217,6 @@ Keep worktree for PR updates? (y/n)
 
 **Validation**: `pr_created`
 
-
 #### Option 3: Keep As-Is
 
 **Workflow**:
@@ -238,7 +228,6 @@ echo "Keeping branch <feature-branch>. Worktree preserved at <path>."
 **Important**: Do NOT cleanup worktree for this option
 
 **Validation**: `branch_preserved`
-
 
 #### Option 4: Discard
 
@@ -274,7 +263,6 @@ echo "Branch <feature-branch> discarded."
 **Then**: Proceed to Step 5 (Cleanup Worktree)
 
 **Validation**: `branch_discarded`
-
 
 ### Step 5: Cleanup Worktree
 
@@ -319,7 +307,6 @@ echo "No worktree cleanup needed."
 ```
 
 **Validation**: `worktree_cleaned`
-
 
 ### Step 6: Create Release (Optional)
 
@@ -405,8 +392,6 @@ echo "No worktree cleanup needed."
 
 ---
 
-<!-- /ANCHOR:complete-workflow -->
-<!-- ANCHOR:decision-matrix -->
 ## 4. DECISION MATRIX
 
 | Scenario | Recommended Option | Rationale |
@@ -424,8 +409,6 @@ echo "No worktree cleanup needed."
 
 ---
 
-<!-- /ANCHOR:decision-matrix -->
-<!-- ANCHOR:common-mistakes -->
 ## 5. COMMON MISTAKES
 
 **Skipping test verification**:
@@ -460,8 +443,6 @@ echo "No worktree cleanup needed."
 
 ---
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:example-workflows -->
 ## 6. EXAMPLE WORKFLOWS
 
 ### Example 1: Quick Fix with Local Merge (Option 1)
@@ -510,7 +491,6 @@ Found worktree at .worktrees/modal-fix
 
 ✅ Complete! Branch merged to main and cleaned up.
 ```
-
 
 ### Example 2: Feature Branch with PR (Option 2)
 
@@ -568,7 +548,6 @@ Worktree preserved at .worktrees/user-auth for addressing review feedback.
 To cleanup later: git worktree remove .worktrees/user-auth
 ```
 
-
 ### Example 3: Keep Work for Later (Option 3)
 
 ```text
@@ -605,7 +584,6 @@ Skipping cleanup (Option 3 selected)
 ✅ Complete! Branch and worktree preserved for later.
 To resume: cd .worktrees/performance-optimization
 ```
-
 
 ### Example 4: Discard Failed Experiment (Option 4)
 
@@ -658,7 +636,6 @@ Deleted branch experiment/alternative-approach
 
 ✅ Complete! Branch and worktree discarded.
 ```
-
 
 ### Example 5: Commit, Push, and Release
 
@@ -713,8 +690,6 @@ EOF
 
 ---
 
-<!-- /ANCHOR:example-workflows -->
-<!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
 
 ### Tests Fail Before Options
@@ -738,7 +713,6 @@ go test -v ./...
 
 **Never proceed to Step 3 with failing tests unless user explicitly overrides**
 
-
 ### Cannot Determine Base Branch
 
 **Symptom**: Auto-detection fails, multiple candidates
@@ -761,7 +735,6 @@ git merge-base HEAD develop
 1. **Ask user explicitly**: "Cannot determine base branch. Which branch should I merge into? (main/master/develop/other)"
 2. **Check AGENTS.md**: Look for project-specific branch conventions
 3. **Default to main**: If project uses main as primary branch
-
 
 ### PR Creation Fails (Option 2)
 
@@ -825,7 +798,6 @@ gh pr list
 # Ask user: "PR already exists for this branch. Options: (A) Update existing (B) Cancel (C) Create draft PR"
 ```
 
-
 ### Merge Conflicts (Option 1)
 
 **Symptom**: Merge fails with conflicts
@@ -864,7 +836,6 @@ git commit
 # Verify tests
 <test-command>
 ```
-
 
 ### Worktree Removal Fails
 
@@ -919,7 +890,6 @@ git worktree prune
 git worktree list
 ```
 
-
 ### User Cancels Discard (Option 4)
 
 **Symptom**: User types something other than "discard"
@@ -942,8 +912,6 @@ Which option? (1-3)
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:success-criteria -->
 ## 8. SUCCESS CRITERIA
 
 ### Workflow Success
@@ -995,7 +963,6 @@ Which option? (1-3)
 - ✅ Worktree preserved (Option 3)
 - ✅ Final status reported
 
-
 ### Quality Gates
 
 **Before presenting options (Step 3)**:
@@ -1018,7 +985,6 @@ Which option? (1-3)
 - Warning must be displayed with full context
 - No ambiguity in user intent
 
-
 ### Overall Success
 
 **git-finish is successful when**:
@@ -1034,8 +1000,6 @@ Which option? (1-3)
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -1052,4 +1016,3 @@ Which option? (1-3)
 - [Creating Pull Requests](https://cli.github.com/manual/gh_pr_create) - PR creation with gh CLI
 - [GitHub Flow Guide](https://docs.github.com/en/get-started/quickstart/github-flow) - GitHub's recommended workflow
 - [Pull Request Best Practices](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests) - Effective PR collaboration
-<!-- /ANCHOR:related-resources -->

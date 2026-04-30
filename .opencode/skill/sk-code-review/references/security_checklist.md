@@ -9,7 +9,6 @@ Structured risk checklist for security vulnerabilities, runtime reliability issu
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -19,11 +18,9 @@ Help reviewers prioritize exploitability and business impact, not just code styl
 ### Core Principle
 
 When impact is unclear, prefer conservative classification and state uncertainty explicitly.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:input-output -->
 ## 2. INPUT/OUTPUT SAFETY
 
 Check for:
@@ -36,11 +33,9 @@ Check for:
 Review prompts:
 - "What untrusted input reaches this sink?"
 - "Is validation context-aware for this output channel?"
-<!-- /ANCHOR:input-output -->
 
 ---
 
-<!-- ANCHOR:auth -->
 ## 3. AUTHENTICATION AND AUTHORIZATION
 
 Check for:
@@ -51,11 +46,9 @@ Check for:
 - Weak token/session validation (`exp`, `iss`, `aud`, algorithm checks).
 
 High-impact rule: any missing authz control on data mutation is at least P1 and often P0.
-<!-- /ANCHOR:auth -->
 
 ---
 
-<!-- ANCHOR:secrets-privacy -->
 ## 4. SECRETS AND PRIVACY
 
 Check for:
@@ -69,11 +62,9 @@ Quick command ideas:
 ```bash
 rg -n -i "api[_-]?key|secret|token|password|BEGIN .* PRIVATE KEY"
 ```
-<!-- /ANCHOR:secrets-privacy -->
 
 ---
 
-<!-- ANCHOR:runtime-reliability -->
 ## 5. RUNTIME RELIABILITY
 
 Check for:
@@ -85,11 +76,9 @@ Check for:
 
 Review prompt:
 - "What fails under load or partial network failure?"
-<!-- /ANCHOR:runtime-reliability -->
 
 ---
 
-<!-- ANCHOR:concurrency -->
 ## 6. CONCURRENCY AND RACE CONDITIONS
 
 Flag patterns:
@@ -113,11 +102,9 @@ set(key, value)
 Reviewer questions:
 - "What happens if two requests hit this path at the same time?"
 - "Is this update atomic across all failure modes?"
-<!-- /ANCHOR:concurrency -->
 
 ---
 
-<!-- ANCHOR:rate-limiting -->
 ## 7. RATE LIMITING AND ABUSE PREVENTION
 
 Check for:
@@ -128,11 +115,9 @@ Check for:
 
 Review prompt:
 - "What stops an attacker from calling this endpoint 10,000 times per second?"
-<!-- /ANCHOR:rate-limiting -->
 
 ---
 
-<!-- ANCHOR:csp-headers -->
 ## 8. CONTENT SECURITY POLICY AND HEADERS
 
 Check for:
@@ -143,11 +128,9 @@ Check for:
 
 Review prompt:
 - "Could an attacker embed, frame, or inject scripts into this page?"
-<!-- /ANCHOR:csp-headers -->
 
 ---
 
-<!-- ANCHOR:dependency-supply-chain -->
 ## 9. DEPENDENCY AND SUPPLY CHAIN SECURITY
 
 Check for:
@@ -159,11 +142,9 @@ Check for:
 
 Review prompt:
 - "Are all dependencies pinned, audited, and from trusted sources?"
-<!-- /ANCHOR:dependency-supply-chain -->
 
 ---
 
-<!-- ANCHOR:audit-logging -->
 ## 10. AUDIT LOGGING AND OBSERVABILITY
 
 Check for:
@@ -174,11 +155,9 @@ Check for:
 
 Review prompt:
 - "If this action were abused, would we know about it from the logs?"
-<!-- /ANCHOR:audit-logging -->
 
 ---
 
-<!-- ANCHOR:privacy-data-handling -->
 ## 11. PRIVACY AND DATA HANDLING
 
 Check for:
@@ -190,11 +169,9 @@ Check for:
 
 Review prompt:
 - "Does this code collect, store, or transmit personal data - and is that justified and protected?"
-<!-- /ANCHOR:privacy-data-handling -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 - [quick_reference.md](./quick_reference.md) - Findings-first review flow, severity model, and output contract.
@@ -203,4 +180,3 @@ Review prompt:
 - [removal_plan.md](./removal_plan.md) - Safe deletion and deferred removal planning.
 
 Overlay portability: use this baseline with stack-specific controls from `sk-code-opencode` or `sk-code`.
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Canonical specification for all state files used by the deep research loop.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The deep research loop uses 6 primary state files plus one reducer-generated registry to maintain continuity across fresh-context iterations:
@@ -34,8 +33,6 @@ Runtime capability matrix references for parity-sensitive surfaces:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:config-file -->
 ## 2. CONFIG FILE (deep-research-config.json)
 
 Created during initialization. Not modified after creation.
@@ -114,8 +111,6 @@ The orchestrator validates agent outputs against these declarations before writi
 
 ---
 
-<!-- /ANCHOR:config-file -->
-<!-- ANCHOR:state-log -->
 ## 3. STATE LOG (deep-research-state.jsonl)
 
 Append-only JSON Lines file. One JSON object per line.
@@ -555,8 +550,6 @@ Example multi-segment session:
 
 ---
 
-<!-- /ANCHOR:state-log -->
-<!-- ANCHOR:strategy-file -->
 ## 4. STRATEGY FILE (deep-research-strategy.md)
 
 Updated at the end of each iteration. Template at `assets/deep_research_strategy.md`.
@@ -598,8 +591,6 @@ This keeps the strategy file aligned with the latest recovery path instead of re
 
 ---
 
-<!-- /ANCHOR:strategy-file -->
-<!-- ANCHOR:iteration-files -->
 ## 5. ITERATION FILES (research/iterations/iteration-NNN.md)
 
 Write-once files. One per iteration, named with zero-padded 3-digit number.
@@ -645,8 +636,6 @@ research/iterations/iteration-003.md
 
 ---
 
-<!-- /ANCHOR:iteration-files -->
-<!-- ANCHOR:research-output -->
 ## 6. RESEARCH OUTPUT (research/research.md)
 
 Progressive synthesis updated after each iteration when `progressiveSynthesis` is enabled. Follows the standard 17-section research template. Lives at `{artifact_dir}/research.md` (not in scratch/). `research.md` is workflow-owned canonical synthesis output.
@@ -663,8 +652,6 @@ Progressive synthesis updated after each iteration when `progressiveSynthesis` i
 
 ---
 
-<!-- /ANCHOR:research-output -->
-<!-- ANCHOR:dashboard -->
 ## 7. DASHBOARD (research/deep-research-dashboard.md)
 
 Auto-generated summary view of the research session. Never manually edited.
@@ -721,8 +708,6 @@ The `auto-generated` protection level means the file is system-managed and overw
 
 ---
 
-<!-- /ANCHOR:dashboard -->
-<!-- ANCHOR:file-location-summary -->
 ## 8. FILE LOCATION SUMMARY
 
 ```text
@@ -739,11 +724,8 @@ The `auto-generated` protection level means the file is system-managed and overw
     ...
 ```
 
-<!-- /ANCHOR:file-location-summary -->
-
 ---
 
-<!-- ANCHOR:review-mode-state -->
 ## 9. REVIEW MODE STATE
 
 When `config.mode == "review"`, the state system adapts to track findings, dimensions, traceability coverage, and adjudicated severity instead of research questions and `newInfoRatio`.
@@ -990,4 +972,3 @@ Each finding across all iterations is tracked in a registry with a unique identi
 
 Finding deduplication: when an iteration reports a finding with the same file, line range, and root cause as an existing finding, it is treated as a refinement (not a new finding) and the existing findingId is updated rather than creating a duplicate.
 
-<!-- /ANCHOR:review-mode-state -->

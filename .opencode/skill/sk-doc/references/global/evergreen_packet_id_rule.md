@@ -9,7 +9,6 @@ Evergreen documents describe the current runtime, not the packet history that pr
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -34,11 +33,8 @@ Skip this rule for spec-local docs (`spec.md`, `plan.md`, `tasks.md`, `checklist
 - Read [readme_template.md](../../assets/documentation/readme_template.md), [feature_catalog_template.md](../../assets/documentation/feature_catalog/feature_catalog_template.md), and [manual_testing_playbook_template.md](../../assets/documentation/testing_playbook/manual_testing_playbook_template.md) — these templates already enforce evergreen authoring patterns.
 - Confirm the doc class (spec-local vs evergreen) before applying the audit grep, because spec-local docs are exempt by design.
 
-<!-- /ANCHOR:overview -->
-
 ---
 
-<!-- ANCHOR:document-classes -->
 ## 2. DOCUMENT CLASSES
 
 | Class | Examples | Packet IDs Allowed |
@@ -48,11 +44,8 @@ Skip this rule for spec-local docs (`spec.md`, `plan.md`, `tasks.md`, `checklist
 
 Spec-local docs may reference packet numbers because they are the packet record. Evergreen docs must describe the shipped state by feature name, command, file path, and source anchor.
 
-<!-- /ANCHOR:document-classes -->
-
 ---
 
-<!-- ANCHOR:examples -->
 ## 3. EXAMPLES
 
 **❌ BAD evergreen references:**
@@ -70,11 +63,8 @@ Spec-local docs may reference packet numbers because they are the packet record.
 
 **Why better:** Feature-name + source-anchor references stay valid after packet renumbering, archival, or consolidation.
 
-<!-- /ANCHOR:examples -->
-
 ---
 
-<!-- ANCHOR:audit-self-check -->
 ## 4. AUDIT SELF-CHECK
 
 When auditing evergreen docs, search candidate files for packet-history references before publishing:
@@ -85,11 +75,8 @@ grep -nE '\b\d{3}-[a-z-]+\b|\b03[0-9]/00[0-9]\b|\bF-013-[0-9]+|\bP1-[0-9]+|\bpac
 
 Treat stable feature IDs, scenario IDs, and file names as false positives only when they identify current runtime artifacts rather than the packet that created them. Document any kept false positives in the audit record.
 
-<!-- /ANCHOR:audit-self-check -->
-
 ---
 
-<!-- ANCHOR:migration-guidance -->
 ## 5. MIGRATION GUIDANCE
 
 When removing packet IDs from evergreen docs:
@@ -102,11 +89,8 @@ When removing packet IDs from evergreen docs:
 
 The target sentence should remain true after packet renumbering.
 
-<!-- /ANCHOR:migration-guidance -->
-
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 ### Templates
@@ -122,4 +106,3 @@ The target sentence should remain true after packet renumbering.
 - [core_standards.md](./core_standards.md) — document type rules and frontmatter conventions
 - [hvr_rules.md](./hvr_rules.md) — high-value content rules used by sk-doc validation
 
-<!-- /ANCHOR:related-resources -->

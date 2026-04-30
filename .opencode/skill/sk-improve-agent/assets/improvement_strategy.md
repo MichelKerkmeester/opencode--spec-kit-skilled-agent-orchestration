@@ -9,7 +9,6 @@ Mutable strategy template for a improve-agent run. Use it to capture the operato
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:operator-owned -->
 ## 2. OPERATOR-OWNED FIELDS
 
 ### Target
@@ -64,8 +61,6 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 
 ---
 
-<!-- /ANCHOR:operator-owned -->
-<!-- ANCHOR:machine-owned -->
 ## 3. MACHINE-OWNED FIELDS
 
 <!-- MACHINE-OWNED: START -->
@@ -138,12 +133,9 @@ Copy this file into the runtime area, fill the operator-owned fields before the 
 
 ---
 
-<!-- /ANCHOR:machine-owned -->
-<!-- ANCHOR:related-resources -->
 ## 4. RELATED RESOURCES
 
 - `improvement_charter.md`
 - `../references/loop_protocol.md`
 - `target_manifest.jsonc`
 
-<!-- /ANCHOR:related-resources -->

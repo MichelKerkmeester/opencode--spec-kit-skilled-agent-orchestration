@@ -9,7 +9,6 @@ Policy reference for handling runtime mirror drift after canonical mutation. Use
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,16 +28,12 @@ Mirror drift is real maintenance work, but it is downstream from experiment trut
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:policy -->
 ## 2. POLICY
 
 Runtime mirrors are not phase-one experiment targets. They are downstream packaging surfaces.
 
 ---
 
-<!-- /ANCHOR:policy -->
-<!-- ANCHOR:after-canonical-change -->
 ## 3. AFTER CANONICAL CHANGE
 
 After a canonical promotion:
@@ -60,8 +55,6 @@ The scanner reports `aligned`, `diverged`, or `missing` for each mirror surface 
 
 ---
 
-<!-- /ANCHOR:after-canonical-change -->
-<!-- ANCHOR:allowed-forbidden -->
 ## 4. ALLOWED AND FORBIDDEN OUTCOMES
 
 Allowed outcomes:
@@ -75,12 +68,9 @@ Forbidden outcomes:
 
 ---
 
-<!-- /ANCHOR:allowed-forbidden -->
-<!-- ANCHOR:related-resources -->
 ## 5. RELATED RESOURCES
 
 - `rollback_runbook.md`
 - `promotion_rules.md`
 - `../scripts/check-mirror-drift.cjs`
 
-<!-- /ANCHOR:related-resources -->

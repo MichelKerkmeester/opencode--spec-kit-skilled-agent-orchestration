@@ -98,8 +98,8 @@ const TOKEN_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   motion: [['sk-code', 0.45]],
   observer: [['sk-code', 0.4]],
   intersection: [['sk-code', 0.4]],
-  // sk-code fullstack-branch keywords (added 2026-04-30 in 056-sk-code-fullstack-branch)
-  // REACT live-branch tokens (kerkmeester-style Next.js 14)
+  // sk-code fullstack-branch keywords (added 2026-04-30 in 056-sk-code-fullstack-branch; renamed REACT→NEXTJS in 057)
+  // NEXTJS stub-branch tokens (Next.js 14 target)
   'vanilla-extract': [['sk-code', 0.95]],
   vanillaextract: [['sk-code', 0.9]],
   recipe: [['sk-code', 0.4]],
@@ -114,8 +114,7 @@ const TOKEN_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   zod: [['sk-code', 0.55]],
   embla: [['sk-code', 0.6]],
   recharts: [['sk-code', 0.6]],
-  kerkmeester: [['sk-code', 1]],
-  // GO live-branch tokens (gin + sqlc + Postgres)
+  // GO stub-branch tokens (gin + sqlc + Postgres target)
   gin: [['sk-code', 0.95]],
   echo: [['sk-code', 0.55]],
   chi: [['sk-code', 0.55]],
@@ -218,8 +217,9 @@ const PHRASE_BOOSTS: Readonly<Record<string, readonly [string, number][]>> = {
   'go-playground/validator': [['sk-code', 0.95]],
   'go playground validator': [['sk-code', 0.85]],
   'golang-jwt': [['sk-code', 0.95]],
-  'react go pairing': [['sk-code', 1]],
-  'react-go pairing': [['sk-code', 1]],
+  'nextjs go pairing': [['sk-code', 1]],
+  'nextjs-go pairing': [['sk-code', 1]],
+  'next.js go pairing': [['sk-code', 1]],
   'cross-stack pairing': [['sk-code', 0.95]],
   'jwt handoff': [['sk-code', 0.85]],
   'error envelope': [['sk-code', 0.65]],

@@ -9,7 +9,6 @@ Standards and workflow guidance for creating integrated manual testing playbooks
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Manual testing playbooks are operator-facing validation packages for skills with meaningful runtime or orchestration behavior. They are not just command checklists: they define how a realistic user request should be executed, what evidence must be captured, and how release readiness is graded.
@@ -28,8 +27,6 @@ Manual testing playbooks are operator-facing validation packages for skills with
 - Separate canonical `review_protocol.md` and `subagent_utilization_ledger.md` files are no longer part of the contract.
 - Per-feature files should read like feature-catalog-style entries with frontmatter, numbered sections, and divider lines.
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-a-playbook -->
 ## 2. WHEN TO CREATE A PLAYBOOK
 
 Create a manual testing playbook when the documentation needs a reusable, reviewable manual validation surface.
@@ -55,8 +52,6 @@ Need reusable manual validation with captured evidence?
   NO  -> Keep test steps in spec/checklist docs
 ```
 
-<!-- /ANCHOR:when-to-create-a-playbook -->
-<!-- ANCHOR:canonical-package-shape -->
 ## 3. CANONICAL PACKAGE SHAPE
 
 The current playbook contract is:
@@ -84,8 +79,6 @@ manual_testing_playbook/
 - separate canonical `subagent_utilization_ledger.md`
 - duplicated scenario truth across multiple sidecar files
 
-<!-- /ANCHOR:canonical-package-shape -->
-<!-- ANCHOR:root-playbook-responsibilities -->
 ## 4. ROOT PLAYBOOK RESPONSIBILITIES
 
 The root playbook is the directory and review surface for the whole package.
@@ -111,8 +104,6 @@ It should own:
 - root document explains package-level policy
 - per-feature files carry scenario-specific execution truth
 
-<!-- /ANCHOR:root-playbook-responsibilities -->
-<!-- ANCHOR:per-feature-file-responsibilities -->
 ## 5. PER-FEATURE FILE RESPONSIBILITIES
 
 Each per-feature file is the canonical scenario contract for one feature ID.
@@ -161,8 +152,6 @@ Use memory_context in auto mode for the flaky index scan retry issue, capture th
 
 must agree.
 
-<!-- /ANCHOR:per-feature-file-responsibilities -->
-<!-- ANCHOR:authoring-workflow -->
 ## 6. AUTHORING WORKFLOW
 
 Recommended workflow:
@@ -184,8 +173,6 @@ Recommended workflow:
 **Cross-reference rule**:
 - if a feature catalog exists, every playbook scenario should link back to the matching catalog entry or explicitly note when no dedicated catalog entry exists
 
-<!-- /ANCHOR:authoring-workflow -->
-<!-- ANCHOR:validation-and-release-workflow -->
 ## 7. VALIDATION AND RELEASE WORKFLOW
 
 The current validation workflow is partly automated and partly manual.
@@ -209,8 +196,6 @@ The current validation workflow is partly automated and partly manual.
 
 That limitation must be documented honestly in both the reference and the generated playbook docs.
 
-<!-- /ANCHOR:validation-and-release-workflow -->
-<!-- ANCHOR:common-mistakes -->
 ## 8. COMMON MISTAKES
 
 | Mistake | Why It Breaks | Correct Fix |
@@ -222,8 +207,6 @@ That limitation must be documented honestly in both the reference and the genera
 | Bare command paraphrase prompts | Fails realistic orchestrator-led testing | Rewrite prompts around user intent, evidence, and verdict |
 | Overloading root summaries with full execution detail | Root doc becomes noisy and hard to review | Keep full execution truth in the per-feature file |
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 - [manual_testing_playbook_template.md](../../assets/documentation/testing_playbook/manual_testing_playbook_template.md) - root playbook scaffold
@@ -232,4 +215,3 @@ That limitation must be documented honestly in both the reference and the genera
 - [quick_reference.md](../global/quick_reference.md) - condensed commands and file locations
 - [workflows.md](../global/workflows.md) - execution-mode reference
 
-<!-- /ANCHOR:related-resources -->

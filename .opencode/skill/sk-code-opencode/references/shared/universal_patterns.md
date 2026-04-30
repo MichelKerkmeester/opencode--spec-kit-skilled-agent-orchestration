@@ -9,7 +9,6 @@ Patterns applicable to ALL languages in OpenCode system code.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -38,8 +37,6 @@ This reference defines patterns that apply universally across JavaScript, TypeSc
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:naming-principles -->
 ## 2. NAMING PRINCIPLES
 
 ### Descriptive Names
@@ -158,8 +155,6 @@ for (const entry of entry) { ... }  // very confusing
 
 ---
 
-<!-- /ANCHOR:naming-principles -->
-<!-- ANCHOR:commenting-philosophy -->
 ## 3. COMMENTING PHILOSOPHY
 
 ### Core Principles
@@ -227,8 +222,6 @@ const score = calculateDecay(baseScore, age); // weighted decay
 
 ---
 
-<!-- /ANCHOR:commenting-philosophy -->
-<!-- ANCHOR:reference-comment-patterns -->
 ## 4. REFERENCE COMMENT PATTERNS
 
 Reference comments create traceability between code and requirements/issues. OpenCode uses these prefixes:
@@ -295,8 +288,6 @@ Carry-over from 139: keep rule constants centralized and test imports referencin
 
 ---
 
-<!-- /ANCHOR:reference-comment-patterns -->
-<!-- ANCHOR:file-organization -->
 ## 5. FILE ORGANIZATION
 
 ### Universal Section Order
@@ -380,8 +371,6 @@ The first numbered divider that appears in code starts at `1`. If a file omits i
 
 ---
 
-<!-- /ANCHOR:file-organization -->
-<!-- ANCHOR:security-patterns -->
 ## 6. SECURITY PATTERNS
 
 ### Input Validation (All Languages)
@@ -450,8 +439,6 @@ const apiKey = "sk-1234567890abcdef";
 
 ---
 
-<!-- /ANCHOR:security-patterns -->
-<!-- ANCHOR:contributor-copy-paste-alignment-examples -->
 ## 7. CONTRIBUTOR COPY-PASTE ALIGNMENT EXAMPLES
 
 Use these when you need the same intent across TS, JS, Python, Shell, and JSON/JSONC.
@@ -481,7 +468,6 @@ function searchMemories(queryText) {
 **Python**
 ```python
 from typing import List, Tuple
-
 
 def search_memories(query_text: str) -> Tuple[bool, List[str], str]:
     if not query_text:
@@ -552,8 +538,6 @@ readonly MAX_RETRIES=3
 
 ---
 
-<!-- /ANCHOR:contributor-copy-paste-alignment-examples -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Language-Specific References
@@ -568,4 +552,3 @@ readonly MAX_RETRIES=3
 
 - `code_organization.md` - Module organization, file structure
 - `../../assets/checklists/universal_checklist.md` - Cross-language validation items
-<!-- /ANCHOR:related-resources -->

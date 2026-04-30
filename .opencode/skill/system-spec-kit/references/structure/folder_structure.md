@@ -9,7 +9,6 @@ Spec folder naming conventions, level requirements, and organization patterns.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This document covers spec folder organization, naming conventions, and level-specific requirements for the Spec Kit system.
@@ -41,8 +40,6 @@ templates/
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:naming-convention -->
 ## 2. NAMING CONVENTION
 
 ### Spec Folder Names
@@ -77,8 +74,6 @@ Format: `NNN-topic-name`
 
 ---
 
-<!-- /ANCHOR:naming-convention -->
-<!-- ANCHOR:level-requirements -->
 ## 3. LEVEL REQUIREMENTS
 
 ### Level 1 (< 100 LOC)
@@ -132,8 +127,6 @@ specs/NNN-name/
 
 ---
 
-<!-- /ANCHOR:level-requirements -->
-<!-- ANCHOR:special-folders -->
 ## 4. SPECIAL FOLDERS
 
 ### scratch/
@@ -225,8 +218,6 @@ specs/system-spec-kit/026-graph-and-context-optimization/
 
 ---
 
-<!-- /ANCHOR:special-folders -->
-<!-- ANCHOR:archive-pattern -->
 ## 5. ARCHIVE PATTERN
 
 Completed or superseded specs use the `z_archive/` prefix:
@@ -247,8 +238,6 @@ specs/
 
 ---
 
-<!-- /ANCHOR:archive-pattern -->
-<!-- ANCHOR:example-structures -->
 ## 6. EXAMPLE STRUCTURES
 
 ### Simple Feature (Level 1)
@@ -324,11 +313,8 @@ specs/022-hybrid-rag-fusion/        <- Coordination root (point-in-time snapshot
 
 ---
 
-<!-- /ANCHOR:example-structures -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 - [Level Specifications](../templates/level_specifications.md)
 - [Template Guide](../templates/template_guide.md)
 - [Sub-folder Versioning](../structure/sub_folder_versioning.md)
-<!-- /ANCHOR:related-resources -->

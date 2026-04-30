@@ -9,7 +9,6 @@ Stop condition algorithms, quality guards, and stuck recovery for the deep revie
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Convergence detection determines when the autonomous review loop should stop iterating. After every iteration the orchestrator evaluates three possible outcomes:
@@ -107,8 +106,6 @@ Checks are evaluated in this order (first match wins):
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:hard-stops -->
 ## 2. HARD STOPS
 
 Hard stops are evaluated first and override all other signals.
@@ -135,8 +132,6 @@ Triggers when all 4 dimensions (correctness, security, traceability, maintainabi
 
 ---
 
-<!-- /ANCHOR:hard-stops -->
-<!-- ANCHOR:stuck-detection -->
 ## 3. STUCK DETECTION
 
 Identifies when the review loop makes no meaningful progress across consecutive iterations.
@@ -166,8 +161,6 @@ The recovery entry uses `stopReason=stuckRecovery` while the loop is in recovery
 
 ---
 
-<!-- /ANCHOR:stuck-detection -->
-<!-- ANCHOR:composite-convergence -->
 ## 4. COMPOSITE CONVERGENCE
 
 Three independent signals each cast a stop/continue vote. Stop when the weighted stop-score meets or exceeds the consensus threshold. The signal set below matches the authoritative 3-signal vote in `spec_kit_deep-review_{auto,confirm}.yaml` `step_check_convergence` and the quick-reference convergence table — the 3rd signal is **dimension coverage**, not a standalone novelty ratio.
@@ -325,8 +318,6 @@ Semantic convergence signals (`semanticNovelty`, `findingStability`) require at 
 
 ---
 
-<!-- /ANCHOR:composite-convergence -->
-<!-- ANCHOR:severity-weighted-ratio -->
 ## 5. SEVERITY-WEIGHTED RATIO
 
 The review loop uses `newFindingsRatio` instead of `newInfoRatio`. It weights findings by severity so that critical discoveries count far more than minor suggestions.
@@ -370,8 +361,6 @@ A new critical finding always signals significant remaining work. The 0.50 floor
 
 ---
 
-<!-- /ANCHOR:severity-weighted-ratio -->
-<!-- ANCHOR:quality-guards -->
 ## 6. LEGAL-STOP GATE BUNDLE
 
 Deep review treats STOP as legal only when the full review-specific gate bundle passes together. Convergence math may request STOP, but the workflow must still evaluate these 5 gates and persist a blocked-stop event when any gate fails.
@@ -454,8 +443,6 @@ Use this table when replaying old packets or translating older prose/docs into t
 
 ---
 
-<!-- /ANCHOR:quality-guards -->
-<!-- ANCHOR:provisional-verdict -->
 ## 7. PROVISIONAL VERDICT
 
 The provisional verdict is determined from active findings at the time the loop stops. It appears in both the convergence report and the final `review-report.md`.
@@ -493,8 +480,6 @@ function determineVerdict(state, gateResult):
 
 ---
 
-<!-- /ANCHOR:provisional-verdict -->
-<!-- ANCHOR:recovery-strategies -->
 ## 8. RECOVERY STRATEGIES
 
 When stuck detection triggers (`stuckCount >= stuckThreshold`), the orchestrator selects a targeted recovery strategy before deciding whether to continue or exit to synthesis.
@@ -564,8 +549,6 @@ Focus on: {leastCoveredDimension}
 
 ---
 
-<!-- /ANCHOR:recovery-strategies -->
-<!-- ANCHOR:convergence-report -->
 ## 9. CONVERGENCE REPORT
 
 When the loop stops, the orchestrator generates a convergence report embedded in `review-report.md` and appended to the JSONL state file.
@@ -648,9 +631,6 @@ When STOP is vetoed instead of finalized, the workflow emits the separate `block
 
 ---
 
-<!-- /ANCHOR:convergence-report -->
-
-<!-- ANCHOR:graph-aware-convergence -->
 ## 10. GRAPH-AWARE REVIEW CONVERGENCE
 
 When `graphEvents` are present in review iteration records, the reducer builds an in-memory coverage graph and derives structural convergence signals that complement the existing statistical signals.
@@ -699,9 +679,6 @@ Graph Convergence Signals:
 
 ---
 
-<!-- /ANCHOR:graph-aware-convergence -->
-
-<!-- ANCHOR:optimizer-tunable-fields -->
 ## OPTIMIZER-TUNABLE THRESHOLDS
 
 The following convergence thresholds are managed by the offline loop optimizer (042.004). Changes to these fields are proposed through the optimizer's advisory-only promotion gate and reviewed by humans before adoption.
@@ -729,4 +706,3 @@ The following fields are runtime contracts and MUST NOT be modified by the optim
 
 The authoritative registry of tunable vs locked fields is maintained at:
 `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
-<!-- /ANCHOR:optimizer-tunable-fields -->

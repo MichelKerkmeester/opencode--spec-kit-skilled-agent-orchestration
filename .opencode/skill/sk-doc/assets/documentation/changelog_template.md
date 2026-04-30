@@ -9,7 +9,6 @@ Two formats (compact and expanded) for global component changelogs and the match
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Nested packet-local changelogs are a different output mode and use the spec-kit 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:changelog-file-format -->
 ## 2. CHANGELOG FILE FORMAT
 
 **Key Points**:
@@ -160,8 +157,6 @@ Use this format when individual fixes need full explanation - typically for audi
 
 ---
 
-<!-- /ANCHOR:changelog-file-format -->
-<!-- ANCHOR:github-release-notes-format -->
 ## 3. GITHUB RELEASE NOTES FORMAT
 
 Changelog files start directly with the summary paragraph - no version header or boilerplate. Use the file content as-is for the `gh release create` body.
@@ -174,8 +169,6 @@ Full changelog: `.opencode/changelog/{component}/v{VERSION}.md`
 
 ---
 
-<!-- /ANCHOR:github-release-notes-format -->
-<!-- ANCHOR:writing-style-rules -->
 ## 4. WRITING STYLE RULES
 
 These rules apply to both changelog files and GitHub release notes. See `PUBLIC_RELEASE.md` Section 7 for the authoritative version.
@@ -220,8 +213,6 @@ These rules apply to both changelog files and GitHub release notes. See `PUBLIC_
 
 ---
 
-<!-- /ANCHOR:writing-style-rules -->
-<!-- ANCHOR:format-selection-guide -->
 ## 5. FORMAT SELECTION GUIDE
 
 | Release Type                  | Format   | When to Use                                           |
@@ -242,8 +233,6 @@ Count the changes in the release.
 
 ---
 
-<!-- /ANCHOR:format-selection-guide -->
-<!-- ANCHOR:real-examples -->
 ## 6. REAL EXAMPLES
 
 ### Compact Format Reference
@@ -257,8 +246,6 @@ See: `.opencode/changelog/04--commands/v3.0.1.4.md`
 
 ---
 
-<!-- /ANCHOR:real-examples -->
-<!-- ANCHOR:nested-packet-local-changelogs -->
 ## 7. NESTED PACKET-LOCAL CHANGELOGS
 
 Nested packet-local changelogs are a separate output mode for spec folders and phase children. **Do not reuse this template for nested packet output.** Use the spec-kit templates listed below instead.
@@ -281,8 +268,6 @@ The global component versioning rules in this file do not apply to nested packet
 
 ---
 
-<!-- /ANCHOR:nested-packet-local-changelogs -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Templates
@@ -302,4 +287,3 @@ The global component versioning rules in this file do not apply to nested packet
 
 - [.opencode/command/create/changelog.md](../../../../command/create/changelog.md) - The `/create:changelog` command surface
 - [nested_changelog.md](../../../system-spec-kit/references/workflows/nested_changelog.md) - Nested packet-local changelog workflow
-<!-- /ANCHOR:related-resources -->

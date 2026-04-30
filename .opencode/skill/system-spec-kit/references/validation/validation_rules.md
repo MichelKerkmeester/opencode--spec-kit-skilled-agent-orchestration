@@ -9,7 +9,6 @@ Complete reference for all validation rules used by the SpecKit validation syste
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Is This Reference?
@@ -35,9 +34,6 @@ This document provides comprehensive documentation for every validation rule enf
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:rule-summary -->
 ## 2. RULE SUMMARY
 
 | Rule ID              | Severity | Applies To    | Description                                    |
@@ -60,9 +56,6 @@ This document provides comprehensive documentation for every validation rule enf
 
 ---
 
-<!-- /ANCHOR:rule-summary -->
-
-<!-- ANCHOR:file-exists -->
 ## 3. FILE_EXISTS
 
 **Severity:** ERROR  
@@ -156,9 +149,6 @@ cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007
 
 ---
 
-<!-- /ANCHOR:file-exists -->
-
-<!-- ANCHOR:phase-parent-content -->
 ## 4. PHASE_PARENT_CONTENT
 
 **Severity:** WARNING (advisory; does not block validation pass)
@@ -189,9 +179,6 @@ Move any flagged narrative to `context-index.md` (create the file if it does not
 
 ---
 
-<!-- /ANCHOR:phase-parent-content -->
-
-<!-- ANCHOR:placeholder-filled -->
 ## 5. PLACEHOLDER_FILLED
 
 **Severity:** ERROR  
@@ -249,9 +236,6 @@ Replace placeholder text with actual content:
 
 ---
 
-<!-- /ANCHOR:placeholder-filled -->
-
-<!-- ANCHOR:sections-present -->
 ## 6. SECTIONS_PRESENT
 
 **Severity:** WARNING  
@@ -308,9 +292,6 @@ Add the missing section headers. You can use numbered prefixes:
 
 ---
 
-<!-- /ANCHOR:sections-present -->
-
-<!-- ANCHOR:level-declared -->
 ## 7. LEVEL_DECLARED
 
 **Severity:** INFO  
@@ -355,9 +336,6 @@ Add the Level field to your spec.md metadata table:
 
 ---
 
-<!-- /ANCHOR:level-declared -->
-
-<!-- ANCHOR:priority-tags -->
 ## 8. PRIORITY_TAGS
 
 **Severity:** WARNING  
@@ -440,9 +418,6 @@ Add priority headers or inline tags to all checklist items:
 
 ---
 
-<!-- /ANCHOR:priority-tags -->
-
-<!-- ANCHOR:evidence-cited -->
 ## 9. EVIDENCE_CITED
 
 **Severity:** WARNING  
@@ -520,9 +495,6 @@ Add evidence to non-P2 items:
 
 ---
 
-<!-- /ANCHOR:evidence-cited -->
-
-<!-- ANCHOR:anchors-valid -->
 ## 10. ANCHORS_VALID
 
 **Severity:** ERROR  
@@ -606,9 +578,6 @@ Content here...
 
 ---
 
-<!-- /ANCHOR:anchors-valid -->
-
-<!-- ANCHOR:folder-naming -->
 ## 11. FOLDER_NAMING
 
 **Severity:** ERROR
@@ -653,9 +622,6 @@ mv specs/Feature specs/001-feature
 
 ---
 
-<!-- /ANCHOR:folder-naming -->
-
-<!-- ANCHOR:frontmatter-valid -->
 ## 12. FRONTMATTER_VALID
 
 **Severity:** WARNING
@@ -709,9 +675,6 @@ cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/007-feature/
 
 ---
 
-<!-- /ANCHOR:frontmatter-valid -->
-
-<!-- ANCHOR:complexity-match -->
 ## 13. COMPLEXITY_MATCH
 
 **Severity:** WARNING
@@ -759,9 +722,6 @@ Either adjust the declared level or modify content to match:
 
 ---
 
-<!-- /ANCHOR:complexity-match -->
-
-<!-- ANCHOR:ai-protocol -->
 ## 14. AI_PROTOCOL
 
 **Severity:** WARNING
@@ -826,9 +786,6 @@ cat .opencode/skill/system-spec-kit/templates/level_3/plan.md
 
 ---
 
-<!-- /ANCHOR:ai-protocol -->
-
-<!-- ANCHOR:level-match -->
 ## 15. LEVEL_MATCH
 
 **Severity:** ERROR
@@ -883,9 +840,6 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/007-feat
 
 ---
 
-<!-- /ANCHOR:level-match -->
-
-<!-- ANCHOR:section-counts -->
 ## 16. SECTION_COUNTS
 
 **Severity:** WARNING
@@ -929,9 +883,6 @@ Either expand content or reduce declared level:
 
 ---
 
-<!-- /ANCHOR:section-counts -->
-
-<!-- ANCHOR:phase-links -->
 ## 17. PHASE_LINKS
 
 **Severity:** WARNING
@@ -1015,9 +966,6 @@ To validate phase links across parent and all children:
 
 ---
 
-<!-- /ANCHOR:phase-links -->
-
-<!-- ANCHOR:configuration -->
 ## 18. CONFIGURATION
 
 ### Environment Variables
@@ -1048,9 +996,6 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 
 ---
 
-<!-- /ANCHOR:configuration -->
-
-<!-- ANCHOR:related-resources -->
 ## 19. RELATED RESOURCES
 
 ### Reference Files
@@ -1067,4 +1012,3 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 
 ---
 
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Code quality requirements, validation rules, and best practices for Python scrip
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Establishes quality gates and validation criteria that all Python code must meet
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:p0-hard-blockers -->
 ## 2. P0 - HARD BLOCKERS
 
 These items MUST be fixed before any commit.
@@ -123,8 +120,6 @@ max_retries = 5
 
 ---
 
-<!-- /ANCHOR:p0-hard-blockers -->
-<!-- ANCHOR:p1-required -->
 ## 3. P1 - REQUIRED
 
 These items must be addressed or receive explicit approval to defer.
@@ -227,8 +222,6 @@ TODOs must include context (ticket number or owner):
 
 ---
 
-<!-- /ANCHOR:p1-required -->
-<!-- ANCHOR:p2-recommended -->
 ## 4. P2 - RECOMMENDED
 
 These items improve quality but can be deferred with justification.
@@ -281,8 +274,6 @@ def get_version() -> str:
 
 ---
 
-<!-- /ANCHOR:p2-recommended -->
-<!-- ANCHOR:validation-patterns -->
 ## 5. VALIDATION PATTERNS
 
 ### Function Validation Pattern
@@ -344,8 +335,6 @@ def parse_file(path: Path) -> Tuple[bool, str, Dict]:
 
 ---
 
-<!-- /ANCHOR:validation-patterns -->
-<!-- ANCHOR:error-message-standards -->
 ## 6. ERROR MESSAGE STANDARDS
 
 ### Include Context
@@ -382,8 +371,6 @@ return False, f"Name '{name}' cannot start or end with hyphen. Use: '{name.strip
 
 ---
 
-<!-- /ANCHOR:error-message-standards -->
-<!-- ANCHOR:testing-requirements -->
 ## 7. TESTING REQUIREMENTS
 
 ### Test File Naming
@@ -433,8 +420,6 @@ class TestValidateRequest:
 
 ---
 
-<!-- /ANCHOR:testing-requirements -->
-<!-- ANCHOR:code-review-checklist -->
 ## 8. REVIEW HANDOFF (SK-CODE--REVIEW BASELINE)
 
 Use `sk-code-review` for formal findings-first review output and severity handling. Keep this file focused on Python technical standards.
@@ -447,8 +432,6 @@ For review runs:
 
 ---
 
-<!-- /ANCHOR:code-review-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Internal References
@@ -458,4 +441,3 @@ For review runs:
 ### External Standards
 - [PEP 8](https://peps.python.org/pep-0008/) - Style Guide for Python Code
 - [PEP 257](https://peps.python.org/pep-0257/) - Docstring Conventions
-<!-- /ANCHOR:related-resources -->

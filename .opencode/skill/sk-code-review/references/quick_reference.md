@@ -9,7 +9,6 @@ Lightweight index for the split review references in this skill.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -25,9 +24,6 @@ Use this file as an entry index, not as the primary source of review rules. Load
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:reference-map -->
 ## 2. REFERENCE MAP
 
 | Reference | Scope | Consumers |
@@ -37,9 +33,6 @@ Use this file as an entry index, not as the primary source of review rules. Load
 
 ---
 
-<!-- /ANCHOR:reference-map -->
-
-<!-- ANCHOR:supporting-checklists -->
 ## 3. SUPPORTING CHECKLISTS
 
 | Checklist | Purpose |
@@ -54,9 +47,6 @@ Overlay portability: apply this baseline with `sk-code-opencode` or `sk-code`.
 
 ---
 
-<!-- /ANCHOR:supporting-checklists -->
-
-<!-- ANCHOR:related-resources -->
 ## 4. RELATED RESOURCES
 
 - [SKILL.md](../SKILL.md) - Parent skill definition with activation triggers and resource loading rules
@@ -64,4 +54,3 @@ Overlay portability: apply this baseline with `sk-code-opencode` or `sk-code`.
 
 ---
 
-<!-- /ANCHOR:related-resources -->

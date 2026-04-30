@@ -9,7 +9,6 @@ Comprehensive reference for all Copilot CLI commands, flags, models, configurati
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -37,9 +36,6 @@ Provide a comprehensive, single-source reference for all Copilot CLI commands, f
 | **License** | Proprietary (GitHub) |
 | **Runtime** | Node.js, Homebrew, WinGet |
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:installation -->
 ## 2. INSTALLATION
 
 | Method | Command | Notes |
@@ -56,9 +52,6 @@ Provide a comprehensive, single-source reference for all Copilot CLI commands, f
 | Linux | Full support |
 | Windows | Full support |
 
-<!-- /ANCHOR:installation -->
-
-<!-- ANCHOR:authentication -->
 ## 3. AUTHENTICATION
 
 Copilot CLI requires an active GitHub Copilot subscription.
@@ -69,9 +62,6 @@ Copilot CLI requires an active GitHub Copilot subscription.
 | **PAT (Primary)** | `export GH_TOKEN=...` | Scripts, CI/CD, automation |
 | **PAT (Fallback)** | `export GITHUB_TOKEN=...` | Alternative environment variable |
 
-<!-- /ANCHOR:authentication -->
-
-<!-- ANCHOR:core-invocation -->
 ## 4. CORE INVOCATION
 
 ### Non-Interactive Mode (Primary for Cross-AI)
@@ -94,9 +84,6 @@ copilot
 copilot "Help me debug the middleware"
 ```
 
-<!-- /ANCHOR:core-invocation -->
-
-<!-- ANCHOR:flags-reference -->
 ## 5. FLAGS REFERENCE
 
 ### Primary Flags
@@ -120,9 +107,6 @@ copilot "Help me debug the middleware"
 | `gh` | GitHub CLI specific operations |
 | `git` | Git version control commands |
 
-<!-- /ANCHOR:flags-reference -->
-
-<!-- ANCHOR:models -->
 ## 6. MODELS
 
 Copilot CLI supports 5 recommended models across 3 providers.
@@ -170,9 +154,6 @@ Select model for non-interactive invocation:
 copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:models -->
-
-<!-- ANCHOR:subcommands -->
 ## 7. INTERACTIVE COMMANDS
 
 Commands available within the interactive TUI environment:
@@ -188,9 +169,6 @@ Commands available within the interactive TUI environment:
 | `/login` | Authenticate with GitHub |
 | `/alias` | Manage shell aliases |
 
-<!-- /ANCHOR:subcommands -->
-
-<!-- ANCHOR:context-hierarchy -->
 ## 8. CONTEXT & REPO MEMORY
 
 ### Repo Memory
@@ -206,9 +184,6 @@ Complex tasks can be offloaded to cloud agents for deeper processing:
 - **Command**: `/delegate "Task description"`
 - **Shorthand**: `&"Task description"` prefix
 
-<!-- /ANCHOR:context-hierarchy -->
-
-<!-- ANCHOR:session-management -->
 ## 9. SESSION MANAGEMENT
 
 ### Plan Mode
@@ -221,9 +196,6 @@ Plan Mode allows users to decompose complex requests into actionable, multi-step
 Copilot CLI can operate autonomously to execute plans, run commands, and verify changes.
 - **Auto-Approval**: Enabled via the `--allow-all-tools` flag in non-interactive mode.
 
-<!-- /ANCHOR:session-management -->
-
-<!-- ANCHOR:environment-variables -->
 ## 10. ENVIRONMENT VARIABLES
 
 | Variable | Purpose |
@@ -231,9 +203,6 @@ Copilot CLI can operate autonomously to execute plans, run commands, and verify 
 | `GH_TOKEN` | Primary GitHub Personal Access Token |
 | `GITHUB_TOKEN` | Fallback GitHub Personal Access Token |
 
-<!-- /ANCHOR:environment-variables -->
-
-<!-- ANCHOR:troubleshooting -->
 ## 11. TROUBLESHOOTING
 
 | Issue | Diagnosis | Solution |
@@ -244,9 +213,6 @@ Copilot CLI can operate autonomously to execute plans, run commands, and verify 
 | `Tool execution blocked` | Permission mode | Use `--allow-all-tools` for autonomy |
 | `Legacy extension error` | `gh copilot` active | Use standalone binary `copilot` |
 
-<!-- /ANCHOR:troubleshooting -->
-
-<!-- ANCHOR:quick-reference -->
 ## 12. QUICK REFERENCE CARD
 
 ```bash
@@ -270,4 +236,3 @@ copilot /delegate "Audit security of @./src"
 # Plan mode (interactive)
 Shift+Tab
 ```
-<!-- /ANCHOR:quick-reference -->

@@ -9,7 +9,6 @@ Canonical contract for how `/spec_kit:deep-research` inspects and mutates `spec.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -37,8 +36,6 @@ The workflow remains four-phase:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:advisory-lock-lifecycle -->
 ## 2. ADVISORY LOCK LIFECYCLE
 
 ### Lock File
@@ -68,8 +65,6 @@ The workflow remains four-phase:
 
 ---
 
-<!-- /ANCHOR:advisory-lock-lifecycle -->
-<!-- ANCHOR:folder-state-classification -->
 ## 3. FOLDER STATE CLASSIFICATION
 
 `step_detect_spec_present` outputs exactly one `folder_state` value:
@@ -96,8 +91,6 @@ The workflow remains four-phase:
 
 ---
 
-<!-- /ANCHOR:folder-state-classification -->
-<!-- ANCHOR:pre-init-branches -->
 ## 4. PRE-INIT BRANCHES
 
 ### `no-spec`
@@ -127,8 +120,6 @@ The workflow remains four-phase:
 
 ---
 
-<!-- /ANCHOR:pre-init-branches -->
-<!-- ANCHOR:post-synthesis-write-back -->
 ## 5. POST-SYNTHESIS WRITE-BACK
 
 ### Timing
@@ -156,8 +147,6 @@ The workflow writes or replaces exactly one machine-owned fence nested under the
 
 ---
 
-<!-- /ANCHOR:post-synthesis-write-back -->
-<!-- ANCHOR:audit-events -->
 ## 6. AUDIT EVENTS
 
 All protocol events are appended to `research/deep-research-state.jsonl`.
@@ -186,8 +175,6 @@ Every audit payload is typed. At minimum, emit:
 
 ---
 
-<!-- /ANCHOR:audit-events -->
-<!-- ANCHOR:idempotency-rules -->
 ## 7. IDEMPOTENCY RULES
 
 ### Topic Dedupe
@@ -217,8 +204,6 @@ Every audit payload is typed. At minimum, emit:
 
 ---
 
-<!-- /ANCHOR:idempotency-rules -->
-<!-- ANCHOR:conflict-exits -->
 ## 8. CONFLICT EXITS
 
 Fail closed when any of the following is true:
@@ -238,4 +223,3 @@ Fail closed when any of the following is true:
 No silent merge, overwrite, or best-effort repair is allowed on a conflict path.
 
 ---
-<!-- /ANCHOR:conflict-exits -->

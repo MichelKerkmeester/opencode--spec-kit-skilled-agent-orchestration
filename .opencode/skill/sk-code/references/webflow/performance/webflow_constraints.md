@@ -9,7 +9,6 @@ Platform-imposed limitations on performance optimization and available workaroun
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Webflow's platform imposes specific limitations on performance optimization. Understanding these constraints prevents wasted effort on impossible optimizations and helps focus on what IS controllable.
@@ -23,8 +22,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:typekit-adobe-fonts -->
 ## 2. TYPEKIT / ADOBE FONTS
 
 ### Limitation
@@ -53,8 +50,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:typekit-adobe-fonts -->
-<!-- ANCHOR:jquery-webflow-js -->
 ## 3. JQUERY / WEBFLOW.JS
 
 ### Limitation
@@ -77,8 +72,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:jquery-webflow-js -->
-<!-- ANCHOR:css-generation -->
 ## 4. CSS GENERATION
 
 ### Limitation
@@ -99,8 +92,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:css-generation -->
-<!-- ANCHOR:custom-code-injection-points -->
 ## 5. CUSTOM CODE INJECTION POINTS
 
 ### Head Code (Project Settings)
@@ -121,8 +112,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:custom-code-injection-points -->
-<!-- ANCHOR:summary-table -->
 ## 6. SUMMARY TABLE
 
 | Resource | Can Async? | Can Defer? | Workaround |
@@ -136,8 +125,6 @@ Webflow's platform imposes specific limitations on performance optimization. Und
 
 ---
 
-<!-- /ANCHOR:summary-table -->
-<!-- ANCHOR:what-is-controllable -->
 ## 7. WHAT IS CONTROLLABLE
 
 Despite platform constraints, you CAN optimize:
@@ -151,8 +138,6 @@ Despite platform constraints, you CAN optimize:
 
 ---
 
-<!-- /ANCHOR:what-is-controllable -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Internal References
@@ -168,4 +153,3 @@ See [decision-record.md](/specs/005-example.com/024-performance-optimization/dec
 - **DR-002**: TypeKit preconnect implementation
 - **DR-004**: GTM delay strategy (requestIdleCallback)
 - **DR-005**: Swiper CSS async loading pattern
-<!-- /ANCHOR:related-resources -->

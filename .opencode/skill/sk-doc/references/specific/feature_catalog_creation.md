@@ -9,7 +9,6 @@ Standards and workflow guidance for creating feature catalogs with a rooted inve
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Feature catalogs are the canonical inventory for what a system does today. They organize capabilities by category, summarize current behavior in a root catalog, and link to per-feature files that carry implementation anchors, tests, and metadata.
@@ -28,8 +27,6 @@ Feature catalogs are the canonical inventory for what a system does today. They 
 - per-feature files live in numbered root-level category folders
 - per-feature files describe shipped or current-reality behavior, not vague aspirations
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-a-feature-catalog -->
 ## 2. WHEN TO CREATE A FEATURE CATALOG
 
 Create a feature catalog when the system needs a canonical capability inventory.
@@ -53,8 +50,6 @@ Need a stable, reviewable current-state inventory?
   NO  -> Keep capability summary in README or install guide
 ```
 
-<!-- /ANCHOR:when-to-create-a-feature-catalog -->
-<!-- ANCHOR:canonical-package-shape -->
 ## 3. CANONICAL PACKAGE SHAPE
 
 The current catalog contract is:
@@ -80,8 +75,6 @@ feature_catalog/
 - category numbering defines root section order
 - per-feature numbering defines local order within the category
 
-<!-- /ANCHOR:canonical-package-shape -->
-<!-- ANCHOR:root-catalog-responsibilities -->
 ## 4. ROOT CATALOG RESPONSIBILITIES
 
 The root catalog is the top-level inventory and navigation layer.
@@ -106,8 +99,6 @@ It should own:
 
 That information belongs in per-feature files, playbooks, or specs.
 
-<!-- /ANCHOR:root-catalog-responsibilities -->
-<!-- ANCHOR:per-feature-file-responsibilities -->
 ## 5. PER-FEATURE FILE RESPONSIBILITIES
 
 Each per-feature file is the detailed reference entry for one catalog item.
@@ -131,8 +122,6 @@ Required structure:
 - if a rollout or compatibility layer is documented, label it explicitly
 - avoid roadmap or speculative wording unless the feature itself is a documented compatibility or feature-flag surface
 
-<!-- /ANCHOR:per-feature-file-responsibilities -->
-<!-- ANCHOR:authoring-workflow -->
 ## 6. AUTHORING WORKFLOW
 
 Recommended workflow:
@@ -154,8 +143,6 @@ Recommended workflow:
 - use the template bundle to scaffold the docs
 - use this reference to decide what belongs in the root, what belongs in the per-feature file, and how to keep the package aligned with current standards
 
-<!-- /ANCHOR:authoring-workflow -->
-<!-- ANCHOR:relationship-to-playbooks-and-validation -->
 ## 7. RELATIONSHIP TO PLAYBOOKS AND VALIDATION
 
 Feature catalogs and manual testing playbooks serve different purposes:
@@ -178,8 +165,6 @@ Feature catalogs and manual testing playbooks serve different purposes:
 - validation is strongest at the root-doc level
 - per-feature file link and source-anchor quality still require manual review
 
-<!-- /ANCHOR:relationship-to-playbooks-and-validation -->
-<!-- ANCHOR:common-mistakes -->
 ## 8. COMMON MISTAKES
 
 | Mistake | Why It Breaks | Correct Fix |
@@ -190,8 +175,6 @@ Feature catalogs and manual testing playbooks serve different purposes:
 | Writing execution-heavy scenario detail in the catalog | Blurs the boundary with playbooks | Keep execution matrices in playbooks, not the catalog |
 | Playbook cross-references drifting from catalog names | Inventory and validation no longer match | Update catalog and playbook links together when a feature name changes |
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 - [feature_catalog_template.md](../../assets/documentation/feature_catalog/feature_catalog_template.md) - root catalog scaffold
@@ -200,4 +183,3 @@ Feature catalogs and manual testing playbooks serve different purposes:
 - [quick_reference.md](../global/quick_reference.md) - condensed commands and file locations
 - [workflows.md](../global/workflows.md) - execution-mode reference
 
-<!-- /ANCHOR:related-resources -->

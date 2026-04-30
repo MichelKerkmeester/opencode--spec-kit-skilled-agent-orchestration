@@ -9,7 +9,6 @@ Quality patterns ensuring reliable, safe, and performant frontend code.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -36,8 +35,6 @@ Defensive code prevents runtime errors. Quality patterns ensure reliability.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:initialization-pattern-cdn-safe -->
 ## 2. INITIALIZATION PATTERN (CDN-SAFE)
 
 ### The Standard Pattern (COPY EXACTLY)
@@ -101,8 +98,6 @@ if (window.Webflow?.push) {
 
 ---
 
-<!-- /ANCHOR:initialization-pattern-cdn-safe -->
-<!-- ANCHOR:dom-safety-patterns -->
 ## 3. DOM SAFETY PATTERNS
 
 ### Element Existence Checks
@@ -160,8 +155,6 @@ const container = element.closest('.wrapper')
 
 ---
 
-<!-- /ANCHOR:dom-safety-patterns -->
-<!-- ANCHOR:error-handling-patterns -->
 ## 4. ERROR HANDLING PATTERNS
 
 ### Silent Catch for Non-Critical Operations
@@ -227,8 +220,6 @@ window.ComponentName = {
 
 ---
 
-<!-- /ANCHOR:error-handling-patterns -->
-<!-- ANCHOR:async-patterns -->
 ## 5. ASYNC PATTERNS
 
 ### Safe Play with Promise Handling
@@ -281,8 +272,6 @@ const throttle = (fn, limit = 100) => {
 
 ---
 
-<!-- /ANCHOR:async-patterns -->
-<!-- ANCHOR:observer-patterns -->
 ## 6. OBSERVER PATTERNS
 
 ### IntersectionObserver for Visibility-Triggered Actions
@@ -344,8 +333,6 @@ ro.observe(container);
 
 ---
 
-<!-- /ANCHOR:observer-patterns -->
-<!-- ANCHOR:validation-patterns -->
 ## 7. VALIDATION PATTERNS
 
 ### Type-Safe Number Parsing
@@ -399,8 +386,6 @@ function is_valid_email(email) {
 
 ---
 
-<!-- /ANCHOR:validation-patterns -->
-<!-- ANCHOR:performance-patterns -->
 ## 8. PERFORMANCE PATTERNS
 
 ### RequestAnimationFrame for Visual Updates
@@ -459,8 +444,6 @@ container.addEventListener('click', (e) => {
 
 ---
 
-<!-- /ANCHOR:performance-patterns -->
-<!-- ANCHOR:animation-quality-patterns -->
 ## 9. ANIMATION QUALITY PATTERNS
 
 ### Quick Decision Tree
@@ -494,8 +477,6 @@ Need animation?
 
 ---
 
-<!-- /ANCHOR:animation-quality-patterns -->
-<!-- ANCHOR:css-quality-patterns -->
 ## 10. CSS QUALITY PATTERNS
 
 ### will-change Management
@@ -557,8 +538,6 @@ html {
 
 ---
 
-<!-- /ANCHOR:css-quality-patterns -->
-<!-- ANCHOR:state-management-patterns -->
 ## 11. STATE MANAGEMENT PATTERNS
 
 ### Module-Level State with Cleanup
@@ -615,8 +594,6 @@ window.ComponentName = {
 
 ---
 
-<!-- /ANCHOR:state-management-patterns -->
-<!-- ANCHOR:cleanup-destroy-patterns -->
 ## 12. CLEANUP/DESTROY PATTERNS
 
 Proper resource cleanup prevents memory leaks and ensures components can be safely reinitialized.
@@ -724,8 +701,6 @@ if (window.Webflow) {
 
 ---
 
-<!-- /ANCHOR:cleanup-destroy-patterns -->
-<!-- ANCHOR:shared-document-listener-pattern -->
 ## 13. SHARED DOCUMENT LISTENER PATTERN
 
 Single document-level listener for all instances improves performance over per-element listeners.
@@ -841,8 +816,6 @@ function route_event(e) {
 
 ---
 
-<!-- /ANCHOR:shared-document-listener-pattern -->
-<!-- ANCHOR:weakmap-weakset-caching-patterns -->
 ## 14. WEAKMAP/WEAKSET CACHING PATTERNS
 
 WeakMap and WeakSet allow caching data against DOM elements without preventing garbage collection.
@@ -1022,8 +995,6 @@ function observe_element(el) {
 
 ---
 
-<!-- /ANCHOR:weakmap-weakset-caching-patterns -->
-<!-- ANCHOR:quick-reference-checklist -->
 ## 15. QUICK REFERENCE CHECKLIST
 
 Before deploying any component:
@@ -1082,8 +1053,6 @@ Before deploying any component:
 
 ---
 
-<!-- /ANCHOR:quick-reference-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 16. RELATED RESOURCES
 
 ### Style Guide
@@ -1099,4 +1068,3 @@ Before deploying any component:
 ---
 
 **Core principle:** These quality patterns ensure reliable, safe, and performant frontend code that integrates seamlessly with Webflow's CDN delivery and lifecycle.
-<!-- /ANCHOR:related-resources -->

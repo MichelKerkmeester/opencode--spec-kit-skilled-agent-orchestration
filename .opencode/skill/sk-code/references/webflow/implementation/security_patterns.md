@@ -9,7 +9,6 @@ Security hardening patterns covering XSS prevention, CSRF protection, and input 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -25,8 +24,6 @@ Apply during Phase 1 (Implementation) when:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:security-checklist -->
 ## 2. SECURITY CHECKLIST
 
 ### Input Validation & XSS Prevention
@@ -256,8 +253,6 @@ document.cookie = "session=abc123";  // Accessible to XSS
 
 ---
 
-<!-- /ANCHOR:security-checklist -->
-<!-- ANCHOR:owasp-top-10-coverage -->
 ## 3. OWASP TOP 10 COVERAGE
 
 1. **Broken Access Control** → Access Control checklist
@@ -273,8 +268,6 @@ document.cookie = "session=abc123";  // Accessible to XSS
 
 ---
 
-<!-- /ANCHOR:owasp-top-10-coverage -->
-<!-- ANCHOR:prototype-pollution-prevention -->
 ## 4. PROTOTYPE POLLUTION PREVENTION
 
 Prototype pollution (CWE-1321) occurs when attackers inject properties into JavaScript object prototypes, potentially enabling property injection, denial of service, or remote code execution.
@@ -365,8 +358,6 @@ const isValidModalId = (id) => {
 
 ---
 
-<!-- /ANCHOR:prototype-pollution-prevention -->
-<!-- ANCHOR:secure-id-generation -->
 ## 5. SECURE ID GENERATION
 
 Using `Math.random()` for security-sensitive operations (CWE-330) can lead to predictable values. Use `crypto.getRandomValues()` for cryptographically secure randomness.
@@ -459,8 +450,6 @@ function badGenerateId() {
 
 ---
 
-<!-- /ANCHOR:secure-id-generation -->
-<!-- ANCHOR:safe-property-access-object-hasown -->
 ## 6. SAFE PROPERTY ACCESS (Object.hasOwn)
 
 The `in` operator and `hasOwnProperty()` method have security and reliability issues. Use `Object.hasOwn()` for safe property checking.
@@ -547,8 +536,6 @@ open(id, reason) {
 
 ---
 
-<!-- /ANCHOR:safe-property-access-object-hasown -->
-<!-- ANCHOR:anti-patterns -->
 ## 7. ANTI-PATTERNS
 
 **Never:**
@@ -567,8 +554,6 @@ open(id, reason) {
 
 ---
 
-<!-- /ANCHOR:anti-patterns -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -579,4 +564,3 @@ open(id, reason) {
 ### External Resources
 - [OWASP Top 10](https://owasp.org/www-project-top-ten/) - OWASP Top 10 Web Application Security Risks
 - [MDN Web Security](https://developer.mozilla.org/en-US/docs/Web/Security) - Web security best practices
-<!-- /ANCHOR:related-resources -->

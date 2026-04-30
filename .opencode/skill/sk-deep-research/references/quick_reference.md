@@ -7,7 +7,6 @@ description: One-page cheat sheet for the autonomous deep research loop.
 
 One-page operator cheat sheet covering the autonomous deep research loop: when to invoke it, what each phase produces, how convergence is computed, and where live state lives on disk. Use it as a lookup surface during runs; defer to the full protocol and convergence references for deep reasoning.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 One-page cheat sheet for the autonomous deep research loop.
@@ -17,9 +16,7 @@ Operator contract source of truth for this page:
 - convergence math → `references/convergence.md` and the deep-research YAML workflow
 
 ---
-<!-- /ANCHOR:overview -->
 
-<!-- ANCHOR:commands -->
 ## 2. COMMANDS
 
 | Command | Description |
@@ -39,8 +36,6 @@ Operator contract source of truth for this page:
 
 ---
 
-<!-- /ANCHOR:commands -->
-<!-- ANCHOR:when-to-use -->
 ## 3. WHEN TO USE
 
 | Scenario | Use |
@@ -52,8 +47,6 @@ Operator contract source of truth for this page:
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:architecture -->
 ## 4. ARCHITECTURE
 
 ```text
@@ -72,8 +65,6 @@ Operator contract source of truth for this page:
 
 ---
 
-<!-- /ANCHOR:architecture -->
-<!-- ANCHOR:state-files -->
 ## 5. STATE FILES
 
 | File | Location | Format | Purpose |
@@ -96,8 +87,6 @@ Operator contract source of truth for this page:
 
 ---
 
-<!-- /ANCHOR:state-files -->
-<!-- ANCHOR:iteration-status-legend -->
 ## 6. ITERATION STATUS LEGEND
 
 | Status | Meaning |
@@ -111,8 +100,6 @@ Operator contract source of truth for this page:
 
 ---
 
-<!-- /ANCHOR:iteration-status-legend -->
-<!-- ANCHOR:convergence-decision-tree -->
 ## 7. CONVERGENCE DECISION TREE
 
 ```text
@@ -147,8 +134,6 @@ Quality guards (source diversity, focus alignment, no single-weak-source) must p
 
 ---
 
-<!-- /ANCHOR:convergence-decision-tree -->
-<!-- ANCHOR:agent-iteration-checklist -->
 ## 8. AGENT ITERATION CHECKLIST
 
 Each @deep-research iteration:
@@ -162,8 +147,6 @@ Each @deep-research iteration:
 
 ---
 
-<!-- /ANCHOR:agent-iteration-checklist -->
-<!-- ANCHOR:tuning-guide -->
 ## 9. TUNING GUIDE
 
 | Goal | Adjustment |
@@ -175,8 +158,6 @@ Each @deep-research iteration:
 
 ---
 
-<!-- /ANCHOR:tuning-guide -->
-<!-- ANCHOR:troubleshooting -->
 ## 10. TROUBLESHOOTING
 
 | Problem | Fix |
@@ -189,8 +170,6 @@ Each @deep-research iteration:
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:progress-visualization -->
 ## 11. PROGRESS VISUALIZATION
 
 After each iteration, the orchestrator can display a text-based convergence summary:
@@ -225,8 +204,6 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 
 ---
 
-<!-- /ANCHOR:progress-visualization -->
-<!-- ANCHOR:related -->
 ## 12. RELATED
 
 | Resource | Purpose |
@@ -236,13 +213,9 @@ Signals: RollingAvg=STOP MAD=CONTINUE Entropy=CONTINUE
 | `memory_context()` | Prior work retrieval |
 | `generate-context.js` | Supported memory save script |
 
-<!-- /ANCHOR:related -->
-
 ---
 
-<!-- ANCHOR:review-mode -->
 ## 13. REVIEW MODE
 
 Review mode has been split into a separate skill. See `sk-deep-review/references/quick_reference.md`.
 
-<!-- /ANCHOR:review-mode -->

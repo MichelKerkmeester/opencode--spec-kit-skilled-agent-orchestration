@@ -9,7 +9,6 @@ Templates for creating phased installation guides with validation checkpoints.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 **Purpose**: Install guides provide step-by-step instructions for installing, configuring, and verifying software tools. They take users from "download this" to "now use it successfully."
@@ -34,8 +33,6 @@ Each phase has a validation checkpoint - do not proceed until the checkpoint pas
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-install-guides -->
 ## 2. WHEN TO CREATE INSTALL GUIDES
 
 **Create install guides when**:
@@ -61,8 +58,6 @@ Simple one-liner install? → Just document the command inline
 
 ---
 
-<!-- /ANCHOR:when-to-create-install-guides -->
-<!-- ANCHOR:install-guide-types -->
 ## 3. INSTALL GUIDE TYPES
 
 ### MCP Server Guides
@@ -108,8 +103,6 @@ Simple one-liner install? → Just document the command inline
 
 ---
 
-<!-- /ANCHOR:install-guide-types -->
-<!-- ANCHOR:standard-install-guide-structure -->
 ## 4. STANDARD INSTALL GUIDE STRUCTURE
 
 Every install guide follows an 11-section structure (sections 0-10), with 9 required and 2 optional:
@@ -154,8 +147,6 @@ Every install guide follows an 11-section structure (sections 0-10), with 9 requ
 
 ---
 
-<!-- /ANCHOR:standard-install-guide-structure -->
-<!-- ANCHOR:phase-validation-pattern -->
 ## 5. PHASE VALIDATION PATTERN
 
 **Core Principle**: Never proceed to the next phase without validation. This prevents cascading failures.
@@ -201,8 +192,6 @@ Always include a STOP condition after validation checklists:
 
 ---
 
-<!-- /ANCHOR:phase-validation-pattern -->
-<!-- ANCHOR:platform-configuration-patterns -->
 ## 6. PLATFORM CONFIGURATION PATTERNS
 
 ### OpenCode Configuration (`opencode.json`)
@@ -271,8 +260,6 @@ Always use `YOUR_USERNAME` as a placeholder and remind users to replace it:
 
 ---
 
-<!-- /ANCHOR:platform-configuration-patterns -->
-<!-- ANCHOR:troubleshooting-patterns -->
 ## 7. TROUBLESHOOTING PATTERNS
 
 ### Error Table Format (Required)
@@ -359,8 +346,6 @@ Use 3-column format: Error → Cause → Fix
 
 ---
 
-<!-- /ANCHOR:troubleshooting-patterns -->
-<!-- ANCHOR:template-guidelines -->
 ## 8. TEMPLATE GUIDELINES
 
 ### Naming Conventions
@@ -450,8 +435,6 @@ Use `[PLACEHOLDER]` format with SCREAMING_SNAKE_CASE:
 
 ---
 
-<!-- /ANCHOR:template-guidelines -->
-<!-- ANCHOR:install-guide-checklist -->
 ## 9. INSTALL GUIDE CHECKLIST
 
 Before publishing an install guide, verify:
@@ -487,8 +470,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:install-guide-checklist -->
-<!-- ANCHOR:patterns-from-existing-guides -->
 ## 10. PATTERNS FROM EXISTING GUIDES
 
 ### MCP Server Guide Patterns
@@ -554,8 +535,6 @@ IF condition_2:
 
 ---
 
-<!-- /ANCHOR:patterns-from-existing-guides -->
-<!-- ANCHOR:install-guide-maintenance -->
 ## 11. INSTALL GUIDE MAINTENANCE
 
 ### When to Update
@@ -582,8 +561,6 @@ If a tool is deprecated:
 
 ---
 
-<!-- /ANCHOR:install-guide-maintenance -->
-<!-- ANCHOR:best-practices-summary -->
 ## 12. BEST PRACTICES SUMMARY
 
 **DO**:
@@ -608,8 +585,6 @@ If a tool is deprecated:
 
 ---
 
-<!-- /ANCHOR:best-practices-summary -->
-<!-- ANCHOR:complete-template -->
 ## 13. COMPLETE TEMPLATE
 
 Copy and customize this template for new install guides. Replace all `[PLACEHOLDERS]` with actual values.

@@ -9,7 +9,6 @@ Fixed policy template for a improve-agent run. Use it as the non-negotiable cont
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,16 +21,12 @@ Copy this file into the packet-local runtime area and treat it as the stable pol
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:mission -->
 ## 2. MISSION
 
 Build a trustworthy improvement loop for agent surfaces by proving evaluation discipline before allowing self-editing. Evaluate agents holistically across their full integration surface — not just the prompt file, but the complete system of mirrors, commands, YAML workflows, skills, and gate routing that together define agent behavior.
 
 ---
 
-<!-- /ANCHOR:mission -->
-<!-- ANCHOR:targets -->
 ## 3. TARGETS
 
 ### Dynamic Targets
@@ -41,8 +36,6 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 
 ---
 
-<!-- /ANCHOR:targets -->
-<!-- ANCHOR:policy -->
 ## 4. POLICY
 
 - proposal-only mode is mandatory
@@ -56,8 +49,6 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 
 ---
 
-<!-- /ANCHOR:policy -->
-<!-- ANCHOR:keep-discard -->
 ## 5. KEEP OR DISCARD RULE
 
 - keep the baseline when the candidate is weaker, noisier, or broader
@@ -66,8 +57,6 @@ Build a trustworthy improvement loop for agent surfaces by proving evaluation di
 
 ---
 
-<!-- /ANCHOR:keep-discard -->
-<!-- ANCHOR:audit-trail -->
 ## 6. AUDIT TRAIL OBLIGATIONS
 
 ### Journal Emission Protocol (ADR-001)
@@ -105,8 +94,6 @@ Failed gates persist `blockedStop` with full gate results.
 
 ---
 
-<!-- /ANCHOR:audit-trail -->
-<!-- ANCHOR:out-of-scope -->
 ## 7. OUT OF SCOPE
 
 - multi-canonical promotion
@@ -116,12 +103,9 @@ Failed gates persist `blockedStop` with full gate results.
 
 ---
 
-<!-- /ANCHOR:out-of-scope -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 - `../references/promotion_rules.md`
 - `../references/no_go_conditions.md`
 - `target_manifest.jsonc`
 
-<!-- /ANCHOR:related-resources -->

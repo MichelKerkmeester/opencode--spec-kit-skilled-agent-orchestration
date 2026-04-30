@@ -9,7 +9,6 @@ Five patterns demonstrating multi-tool orchestration, error handling, and state 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This document provides five comprehensive workflow patterns for Code Mode UTCP.
@@ -26,8 +25,6 @@ This document provides five comprehensive workflow patterns for Code Mode UTCP.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:webflow-workflow -->
 ## 2. WEBFLOW WORKFLOW
 
 **Scenario:** Get all Webflow sites and their CMS collections
@@ -120,8 +117,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:webflow-workflow -->
-<!-- ANCHOR:clickup-workflow -->
 ## 3. CLICKUP WORKFLOW
 
 **Scenario:** Create a task in ClickUp and immediately fetch its details for confirmation
@@ -200,8 +195,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:clickup-workflow -->
-<!-- ANCHOR:notion-workflow -->
 ## 4. NOTION WORKFLOW
 
 **Scenario:** Create a page in Notion and add content blocks
@@ -289,8 +282,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:notion-workflow -->
-<!-- ANCHOR:multi-tool-orchestration -->
 ## 5. MULTI-TOOL ORCHESTRATION
 
 **Scenario:** Design-to-implementation workflow across three platforms (Figma → ClickUp → Webflow)
@@ -420,8 +411,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:multi-tool-orchestration -->
-<!-- ANCHOR:error-handling-patterns -->
 ## 6. ERROR HANDLING PATTERNS
 
 **Scenario:** Robust error handling with fallback logic and partial success
@@ -608,8 +597,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:error-handling-patterns -->
-<!-- ANCHOR:parallel-execution-patterns -->
 ## 7. PARALLEL EXECUTION PATTERNS
 
 ### When to Parallelize
@@ -794,8 +781,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:parallel-execution-patterns -->
-<!-- ANCHOR:pattern-comparison -->
 ## 8. PATTERN COMPARISON
 
 ### Traditional Multi-Tool Approach (Without Code Mode)
@@ -829,8 +814,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:pattern-comparison -->
-<!-- ANCHOR:best-practices -->
 ## 9. BEST PRACTICES
 
 ### 1. Always Use Console Logging
@@ -918,8 +901,6 @@ const c = await webflow.webflow_collections_list({ site_id: s.id });
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-<!-- ANCHOR:summary -->
 ## 10. SUMMARY
 
 **Five workflow patterns demonstrated:**
@@ -952,8 +933,6 @@ const c = await webflow.webflow_collections_list({ site_id: s.id });
 
 ---
 
-<!-- /ANCHOR:summary -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Reference Files
@@ -964,4 +943,3 @@ const c = await webflow.webflow_collections_list({ site_id: s.id });
 
 ### Related Skills
 - `mcp-chrome-devtools` - Browser automation workflows via bdg CLI
-<!-- /ANCHOR:related-resources -->

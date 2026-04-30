@@ -5,7 +5,6 @@ description: Single source of truth for deep-research runtime parity, lifecycle 
 
 # Runtime Capability Matrix
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Canonical runtime contract for `sk-deep-research`. This matrix defines what every runtime mirror must support and what the workflow may adapt per provider. Packet files remain the source of truth; runtime behavior may differ only where this matrix says it may differ.
@@ -15,7 +14,6 @@ Machine-readable source of truth:
 - Resolver: `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs`
 
 ---
-<!-- /ANCHOR:overview -->
 
 ## 2. PARITY BASELINE
 

@@ -9,16 +9,12 @@ Packet-local changelogs capture completion state inside a spec folder instead of
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Generate packet-local changelog files for spec roots and phase child folders.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:when-to-use -->
 ## 2. WHEN TO USE
 
 - A root spec folder needs a local changelog history beside `implementation-summary.md`
@@ -27,9 +23,6 @@ Generate packet-local changelog files for spec roots and phase child folders.
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-
-<!-- ANCHOR:generator -->
 ## 3. GENERATOR
 
 ```bash
@@ -45,9 +38,6 @@ node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.j
 
 ---
 
-<!-- /ANCHOR:generator -->
-
-<!-- ANCHOR:evidence-stack -->
 ## 4. EVIDENCE STACK
 
 The generator prefers these sources, in order:
@@ -62,9 +52,6 @@ It derives summary, change bullets, verification notes, files changed, and follo
 
 ---
 
-<!-- /ANCHOR:evidence-stack -->
-
-<!-- ANCHOR:canonical-templates -->
 ## 5. CANONICAL TEMPLATES
 
 - `templates/changelog/root.md`
@@ -74,4 +61,3 @@ Use these templates for packet-local changelog generation. Do not reuse the glob
 
 ---
 
-<!-- /ANCHOR:canonical-templates -->

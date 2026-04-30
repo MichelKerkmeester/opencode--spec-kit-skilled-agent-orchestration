@@ -9,7 +9,6 @@ Complete specifications for all documentation levels using the CORE + ADDENDUM a
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Template Architecture: CORE + ADDENDUM (v2.2)
@@ -76,9 +75,6 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:level-1-baseline-documentation-loc-guidance-100 -->
 ## 2. LEVEL 1: BASELINE DOCUMENTATION (LOC GUIDANCE: <100)
 
 ### When to Use
@@ -169,9 +165,6 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ---
 
-<!-- /ANCHOR:level-1-baseline-documentation-loc-guidance-100 -->
-
-<!-- ANCHOR:level-2-verification-added-loc-guidance-100-499 -->
 ## 3. LEVEL 2: VERIFICATION ADDED (LOC GUIDANCE: 100-499)
 
 ### When to Use
@@ -286,9 +279,6 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ---
 
-<!-- /ANCHOR:level-2-verification-added-loc-guidance-100-499 -->
-
-<!-- ANCHOR:level-3-full-documentation-loc-guidance-500 -->
 ## 4. LEVEL 3: FULL DOCUMENTATION (LOC GUIDANCE: ≥500)
 
 ### When to Use
@@ -373,9 +363,6 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ---
 
-<!-- /ANCHOR:level-3-full-documentation-loc-guidance-500 -->
-
-<!-- ANCHOR:level-3-extended-documentation-complexity-score-80-100 -->
 ## 5. LEVEL 3+: EXTENDED DOCUMENTATION (COMPLEXITY SCORE: 80-100)
 
 ### When to Use
@@ -525,9 +512,6 @@ When the spec folder serves as a coordination root for a multi-phase effort, Lev
 
 ---
 
-<!-- /ANCHOR:level-3-extended-documentation-complexity-score-80-100 -->
-
-<!-- ANCHOR:level-migration -->
 ## 6. LEVEL MIGRATION
 
 ### Script-Assisted Upgrade (Recommended)
@@ -611,9 +595,6 @@ If the script is unavailable, manually add the required files:
 
 ---
 
-<!-- /ANCHOR:level-migration -->
-
-<!-- ANCHOR:status-field-convention -->
 ## 7. STATUS FIELD CONVENTION
 
 Every spec.md should include a status field to track lifecycle:
@@ -656,9 +637,6 @@ active (resume)
 
 ---
 
-<!-- /ANCHOR:status-field-convention -->
-
-<!-- ANCHOR:related-specs-update-vs-create -->
 ## 8. RELATED SPECS: UPDATE VS CREATE
 
 ### When to UPDATE Existing Spec
@@ -734,9 +712,6 @@ Search existing specs (folder names, titles)
 
 ---
 
-<!-- /ANCHOR:related-specs-update-vs-create -->
-
-<!-- ANCHOR:cross-cutting-templates-any-level -->
 ## 9. CROSS-CUTTING TEMPLATES (ANY LEVEL)
 
 Some templates are not level-specific but can be used at any documentation level. These support session management, context preservation, and work summaries.
@@ -787,9 +762,6 @@ Some templates are not level-specific but can be used at any documentation level
 
 ---
 
-<!-- /ANCHOR:cross-cutting-templates-any-level -->
-
-<!-- ANCHOR:phase-aware-specifications -->
 ## 10. PHASE-AWARE SPECIFICATIONS
 
 ### Phases as a Behavioral Overlay
@@ -824,9 +796,6 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 
 ---
 
-<!-- /ANCHOR:phase-aware-specifications -->
-
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Reference Files
@@ -878,4 +847,3 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 
 ---
 
-<!-- /ANCHOR:related-resources -->

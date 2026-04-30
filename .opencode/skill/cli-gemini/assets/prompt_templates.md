@@ -9,7 +9,6 @@ Copy-paste ready prompt templates for common Gemini CLI tasks. Replace `[placeho
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -35,7 +34,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking G
 
 ---
 
-<!-- /ANCHOR:overview -->
 <!-- ANCHOR:code_generation -->
 ## 2. CODE GENERATION
 
@@ -184,7 +182,6 @@ gemini "Generate [framework] integration tests for the [description] workflow. T
 ---
 
 <!-- /ANCHOR:test_generation -->
-<!-- ANCHOR:documentation -->
 ## 6. DOCUMENTATION
 
 ### JSDoc / TSDoc Generation
@@ -219,7 +216,6 @@ gemini "Generate API documentation for @./[file]. For each endpoint: document th
 
 ---
 
-<!-- /ANCHOR:documentation -->
 <!-- ANCHOR:code_transformation -->
 ## 7. CODE TRANSFORMATION
 

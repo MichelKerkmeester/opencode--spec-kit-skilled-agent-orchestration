@@ -7,7 +7,6 @@ description: Linguistic standards that eliminate detectable AI patterns and enfo
 
 Linguistic standards for all documentation output. These rules eliminate AI-detectable patterns and ensure every piece of writing reads as if a knowledgeable human wrote it.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -37,8 +36,6 @@ A document starts at 100 points. Hard blockers (-5 each) and soft deductions (-2
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:voice-directives -->
 ## 2. VOICE DIRECTIVES
 
 ```yaml
@@ -95,8 +92,6 @@ voice_directives:
 
 ---
 
-<!-- /ANCHOR:voice-directives -->
-<!-- ANCHOR:punctuation-standards -->
 ## 3. PUNCTUATION STANDARDS
 
 | Rule | Symbol | Action | Replace With |
@@ -123,8 +118,6 @@ Oxford:     WRONG: "revenue, retention, and churn"
 
 ---
 
-<!-- /ANCHOR:punctuation-standards -->
-<!-- ANCHOR:ai-structural-patterns -->
 ## 4. AI STRUCTURAL PATTERNS TO AVOID
 
 ### "Not Just X, But Also Y" Ban
@@ -292,8 +285,6 @@ Never include meta-commentary about the writing process. No disclaimers about to
 
 ---
 
-<!-- /ANCHOR:ai-structural-patterns -->
-<!-- ANCHOR:voice-personality -->
 ## 5. VOICE PERSONALITY
 
 Avoiding AI patterns is only half the job. Sterile, voiceless writing that follows every rule can still read as AI-generated. Clean writing needs personality.
@@ -339,8 +330,6 @@ A term listed in both hard blocker and soft deduction is evaluated only as hard 
 
 ---
 
-<!-- /ANCHOR:voice-personality -->
-<!-- ANCHOR:hard-blockers -->
 ## 6. HARD BLOCKER WORDS (-5 POINTS EACH)
 
 Never use these. Each occurrence is automatic failure.
@@ -356,8 +345,6 @@ Never use these. Each occurrence is automatic failure.
 
 ---
 
-<!-- /ANCHOR:hard-blockers -->
-<!-- ANCHOR:phrase-hard-blockers -->
 ## 7. PHRASE HARD BLOCKERS (-5 POINTS EACH)
 
 Never use any of these:
@@ -377,8 +364,6 @@ Never use any of these:
 
 ---
 
-<!-- /ANCHOR:phrase-hard-blockers -->
-<!-- ANCHOR:soft-deductions -->
 ## 8. SOFT DEDUCTIONS
 
 ### -2 Points Each
@@ -427,8 +412,6 @@ Never use any of these:
 
 ---
 
-<!-- /ANCHOR:soft-deductions -->
-<!-- ANCHOR:pre-publish-checklist -->
 ## 9. PRE-PUBLISH CHECKLIST
 
 ### Scoring
@@ -496,8 +479,6 @@ pre_publish_checklist:
 
 ---
 
-<!-- /ANCHOR:pre-publish-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Templates That Apply HVR
@@ -517,4 +498,3 @@ pre_publish_checklist:
 - [readme_creation.md](../specific/readme_creation.md) - README creation workflow and standards
 - [install_guide_creation.md](../specific/install_guide_creation.md) - Install guide creation workflow
 
-<!-- /ANCHOR:related-resources -->

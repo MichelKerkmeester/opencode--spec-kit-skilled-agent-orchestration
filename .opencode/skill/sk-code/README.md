@@ -26,8 +26,8 @@ The router runs marker-file detection in this order (first match wins):
 | Stack | Marker | Route |
 |---|---|---|
 | WEBFLOW | `src/2_javascript/`, `*.webflow.js`, `Webflow.push`, motion.dev / GSAP / Lenis / HLS / Swiper / FilePond signals | LIVE — full Webflow / vanilla animation content |
-| GO | `go.mod` | LIVE — gin + sqlc + Postgres backend (paired with REACT) |
-| REACT | `next.config.{js,mjs,ts}` OR `package.json`+react/next | LIVE — kerkmeester-style Next.js 14 (paired with GO) |
+| GO | `go.mod` | STUB — scaffolded for a future gin + sqlc + Postgres backend (paired with NEXTJS). Populate when a real Go service is wired into this skill. |
+| NEXTJS | `next.config.{js,mjs,ts}` OR `package.json`+react/next | STUB — scaffolded for a future Next.js 14 frontend (paired with GO). Populate when a real Next.js project is wired into this skill. |
 | UNKNOWN | (none, or any stack not above) | Disambiguation prompt — `sk-code` does not own Node.js / React Native / Swift / other stacks |
 
 See `references/router/stack_detection.md` for the detection precedence and edge cases. For the React↔Go cross-stack contract: `references/router/cross_stack_pairing.md`.
@@ -40,7 +40,7 @@ See `references/router/stack_detection.md` for the detection precedence and edge
 sk-code/
 ├── SKILL.md                    Merged routing pseudocode (stack → intent → load level → resources)
 ├── README.md                   This file
-├── CHANGELOG.md                Version history (1.0.0 baseline · 1.1.0 fullstack branch)
+├── changelog/                  Per-version changelog files (v1.0.0 baseline · v1.1.0 fullstack branch · v1.2.0 stack pruning · v1.3.0 placeholder fill + nextjs→react rename)
 ├── graph-metadata.json         Skill graph relationships
 ├── description.json            Auto-discoverable description
 │
@@ -53,27 +53,27 @@ sk-code/
 │   │   └── cross_stack_pairing.md   React↔Go API / JWT / CORS canonical contract
 │   ├── universal/              Stack-agnostic core (4 files: error_recovery, code_quality_standards, code_style_guide, multi_agent_research)
 │   ├── webflow/                LIVE — 28 files across implementation/debugging/verification/deployment/performance/standards
-│   ├── react/                  LIVE — kerkmeester-style Next.js 14 (App Router + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI + next-themes + optional TinaCMS)
-│   │   ├── README.md
-│   │   ├── implementation/     implementation_workflows.md (Phase-1 entry) + per-domain deep-references (app_router_patterns, vanilla_extract_styling, motion_animation, forms_validation, accessibility_aria, api_integration, content_tinacms)
-│   │   ├── debugging/          debugging_workflows.md, hydration_errors.md, network_inspection.md
-│   │   ├── verification/       verification_workflows.md (npm run type-check / lint / build + browser smoke matrix)
+│   ├── react/                  STUB — scaffolded for a future Next.js 14 project (App Router + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI + next-themes + optional TinaCMS)
+│   │   ├── README.md           stack overview stub
+│   │   ├── implementation/     implementation_workflows.md (Phase-1 entry stub) + per-domain stubs (app_router_patterns, vanilla_extract_styling, motion_animation, forms_validation, accessibility_aria, api_integration, content_tinacms)
+│   │   ├── debugging/          debugging_workflows.md, hydration_errors.md
+│   │   ├── verification/       verification_workflows.md
 │   │   ├── deployment/         vercel_deploy.md
-│   │   └── standards/          code_style.md, file_organization.md
-│   ├── go/                     LIVE — gin + sqlc + pgx + Postgres + go-playground/validator + golang-jwt
-│   │   ├── README.md
-│   │   ├── implementation/     implementation_workflows.md (Phase-1 entry) + per-domain deep-references (gin_handler_patterns, service_layer, database_sqlc_postgres, validation_patterns, auth_jwt, error_envelopes, api_design)
+│   │   └── standards/          code_style.md
+│   ├── go/                     STUB — scaffolded for a future gin + sqlc + pgx + Postgres + go-playground/validator + golang-jwt service
+│   │   ├── README.md           stack overview stub
+│   │   ├── implementation/     implementation_workflows.md (Phase-1 entry stub) + per-domain stubs (gin_handler_patterns, service_layer, database_sqlc_postgres, validation_patterns, jwt_middleware, error_envelopes, api_design)
 │   │   ├── debugging/          debugging_workflows.md, pprof_profiling.md
-│   │   ├── verification/       verification_workflows.md (go test ./... + golangci-lint run + go build ./...)
+│   │   ├── verification/       verification_workflows.md
 │   │   ├── deployment/         docker_railway.md
-│   │   └── standards/          code_style.md, file_organization.md
+│   │   └── standards/          code_style.md
 │   └── (no other stacks — Node.js / React Native / Swift fall through to UNKNOWN)
 │
 ├── assets/
 │   ├── universal/              Stack-agnostic checklists + JS validation/wait patterns
 │   ├── webflow/                LIVE — copied verbatim (10 files)
-│   ├── react/                  LIVE — checklists (code quality, debugging, verification) + patterns (server_action, api_call, form, motion, vanilla_extract recipe) + integrations (vanilla-extract, untitled-ui, tinacms)
-│   └── go/                     LIVE — checklists (code quality, debugging, verification) + patterns (handler, service, repository_sqlc, jwt_middleware, table_test)
+│   ├── react/                  STUB — checklists (code quality, debugging, verification) + patterns (server_action, api_call, form, motion, vanilla_extract recipe) + integrations (vanilla-extract, untitled-ui, tinacms)
+│   └── go/                     STUB — checklists (code quality, debugging, verification) + patterns (handler, service, repository_sqlc, jwt_middleware, table_test)
 │
 └── scripts/                    Webflow build utilities (CWD-relative; portable from new location)
     ├── minify-webflow.mjs
@@ -129,7 +129,7 @@ This re-tunes TOKEN_BOOSTS / PHRASE_BOOSTS for the current skill set and regener
 
 The two legacy code skills (a Webflow-focused skill and a multi-stack skill) were retired on 2026-04-30. Use `Read .opencode/skill/sk-code/SKILL.md` — the smart router auto-detects the project stack from cwd. The minify-webflow / verify-minification / test-minified-runtime scripts now live at `.opencode/skill/sk-code/scripts/`.
 
-The non-Webflow stack folders in `sk-code/` (`react/`, `nodejs/`, `go/`, etc.) are placeholders. Their canonical content was retired in the same packet — consult git history before that date or populate locally as needed.
+The non-Webflow stack folders in `sk-code/` (`react/`, `go/`) are scaffolded stubs as of v1.3.0 (packet `057-sk-code-multi-stack-placeholders`, 2026-04-30). They route correctly via SKILL.md but contain placeholder content with `populated: false` and `last_synced_at: 2026-04-30`. Populate them when a real Next.js / Go project is wired into this skill. The `cross_stack_pairing.md` doc under `references/router/` is the canonical React ↔ Go API contract — preserved as live content, not a stub.
 
 ---
 

@@ -9,7 +9,6 @@ Systematic debugging with four-phase investigation, root cause tracing, and perf
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -30,8 +29,6 @@ ALWAYS find root cause before attempting fixes. Symptom fixes are failure.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:systematic-debugging -->
 ## 2. SYSTEMATIC DEBUGGING
 
 ### The Four Phases
@@ -496,8 +493,6 @@ Discuss with project lead before attempting more fixes.
 
 ---
 
-<!-- /ANCHOR:systematic-debugging -->
-<!-- ANCHOR:root-cause-tracing -->
 ## 3. ROOT CAUSE TRACING
 
 **When to use**: Errors deep in call stack, event handlers fail mysteriously, animations break unexpectedly, unclear where invalid data originated
@@ -738,8 +733,6 @@ observer.observe(document.body, {
 
 ---
 
-<!-- /ANCHOR:root-cause-tracing -->
-<!-- ANCHOR:performance-debugging -->
 ## 4. PERFORMANCE DEBUGGING
 
 **When to use**: Slow page load, janky animations, memory leaks, high CPU usage
@@ -1122,8 +1115,6 @@ echo "✅ Baseline captured: $OUTPUT_DIR/"
 
 ---
 
-<!-- /ANCHOR:performance-debugging -->
-<!-- ANCHOR:quick-reference -->
 ## 5. QUICK REFERENCE
 
 ### DevTools Keyboard Shortcuts
@@ -1163,8 +1154,6 @@ console.dir(object);
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:lenis-conflict-resolution -->
 ## 6. LENIS CONFLICT RESOLUTION
 
 **When to use**: Anchor scrolling not working, double-scroll behavior, scroll position off by header height, smooth scroll library intercepting events
@@ -1383,8 +1372,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:lenis-conflict-resolution -->
-<!-- ANCHOR:sub-agent-verification-pattern -->
 ## 7. SUB-AGENT VERIFICATION PATTERN
 
 **When to use**: Complex debugging tasks, verifying assumptions before implementation, when you need a second perspective on root cause analysis
@@ -1587,8 +1574,6 @@ FALLBACK behavior:
 
 ---
 
-<!-- /ANCHOR:sub-agent-verification-pattern -->
-<!-- ANCHOR:scroll-interceptor-debugging -->
 ## 8. SCROLL INTERCEPTOR DEBUGGING
 
 **When to use**: Double-scroll problems, scroll position inconsistencies, debugging smooth scroll library conflicts, tracing scroll event sources
@@ -1913,8 +1898,6 @@ bdg stop 2>&1
 
 ---
 
-<!-- /ANCHOR:scroll-interceptor-debugging -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -1947,4 +1930,3 @@ bdg stop 2>&1
 **For complete checklists:**
 - [debugging_checklist.md](../../assets/checklists/debugging_checklist.md) - Systematic debugging checklist
 - See `mcp-chrome-devtools` skill for comprehensive DevTools reference
-<!-- /ANCHOR:related-resources -->

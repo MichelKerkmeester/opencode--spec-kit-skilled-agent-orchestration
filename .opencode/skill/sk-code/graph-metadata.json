@@ -66,7 +66,6 @@
     "gin",
     "sqlc",
     "postgres",
-    "kerkmeester",
     "fullstack",
     "cross-stack pairing"
   ],
@@ -102,7 +101,6 @@
       "react-aria",
       "react-hook-form",
       "zod",
-      "kerkmeester",
       "fullstack",
       "go service",
       "go",
@@ -160,7 +158,6 @@
       "vanilla-extract",
       "motion",
       "untitled-ui",
-      "kerkmeester",
       "go",
       "golang",
       "gin",
@@ -177,7 +174,7 @@
     "key_files": [
       ".opencode/skill/sk-code/SKILL.md",
       ".opencode/skill/sk-code/README.md",
-      ".opencode/skill/sk-code/CHANGELOG.md",
+      ".opencode/skill/sk-code/changelog/v1.3.0.0.md",
       ".opencode/skill/sk-code/references/router/stack_detection.md",
       ".opencode/skill/sk-code/references/router/intent_classification.md",
       ".opencode/skill/sk-code/references/router/resource_loading.md",
@@ -190,11 +187,11 @@
       ".opencode/skill/sk-code/references/webflow/implementation/implementation_workflows.md",
       ".opencode/skill/sk-code/references/webflow/debugging/debugging_workflows.md",
       ".opencode/skill/sk-code/references/webflow/verification/verification_workflows.md",
-      ".opencode/skill/sk-code/references/react/README.md",
-      ".opencode/skill/sk-code/references/react/implementation/implementation_workflows.md",
+      ".opencode/skill/sk-code/references/nextjs/README.md",
+      ".opencode/skill/sk-code/references/nextjs/implementation/implementation_workflows.md",
       ".opencode/skill/sk-code/references/go/README.md",
       ".opencode/skill/sk-code/references/go/implementation/implementation_workflows.md",
-      ".opencode/skill/sk-code/assets/react",
+      ".opencode/skill/sk-code/assets/nextjs",
       ".opencode/skill/sk-code/assets/go",
       ".opencode/skill/sk-code/scripts/minify-webflow.mjs",
       ".opencode/skill/sk-code/scripts/verify-minification.mjs",
@@ -244,21 +241,22 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Smart-routing umbrella skill for application code work. Detects the project stack from marker files (Webflow, React/Next.js, Go) then classifies intent and loads stack-aware resources. Three live stacks: WEBFLOW (Webflow / vanilla animation web with motion.dev / GSAP / Lenis / HLS / Swiper / FilePond signals), REACT (kerkmeester-style Next.js 14 App Router + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI + next-themes), GO (gin + sqlc + pgx + Postgres + go-playground/validator + golang-jwt). Cross-stack pairing doc captures the React↔Go API contract, JWT handoff, error envelope shape, CORS, and deploy topology. Other stacks (Node.js without React/Next, React Native, Swift) fall through to UNKNOWN — this skill does not own them.",
+    "causal_summary": "Smart-routing umbrella skill for application code work. Detects the project stack from marker files (Webflow, React/Next.js, Go) then classifies intent and loads stack-aware resources. Stacks: WEBFLOW (LIVE — Webflow / vanilla animation web with motion.dev / GSAP / Lenis / HLS / Swiper / FilePond signals), NEXTJS (STUB — scaffolded for a future Next.js 14 App Router project paired with vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI + next-themes), GO (STUB — scaffolded for a future gin + sqlc + pgx + Postgres + go-playground/validator + golang-jwt service). Cross-stack pairing doc captures the React↔Go API contract, JWT handoff, error envelope shape, CORS, and deploy topology — preserved as canonical contract content (not a stub). NEXTJS and GO subfolder content was placeholder-filled in packet 057 (2026-04-30); populate when real projects are wired in. Other stacks (Node.js without React/Next, React Native, Swift) fall through to UNKNOWN — this skill does not own them.",
     "source_docs": [
       "SKILL.md",
       "README.md",
-      "CHANGELOG.md",
+      "changelog/v1.3.0.0.md",
       "references/router/stack_detection.md",
       "references/router/intent_classification.md",
       "references/router/cross_stack_pairing.md",
-      "references/react/README.md",
+      "references/nextjs/README.md",
       "references/go/README.md"
     ],
     "created_at": "2026-04-30T08:30:00Z",
-    "last_updated_at": "2026-04-30T14:00:00Z",
+    "last_updated_at": "2026-04-30T15:00:00Z",
     "merger_packet": "skilled-agent-orchestration/054-sk-code-merger",
     "fullstack_branch_packet": "skilled-agent-orchestration/056-sk-code-fullstack-branch",
-    "supported_stacks": ["WEBFLOW", "REACT", "GO"]
+    "placeholder_fill_packet": "skilled-agent-orchestration/057-sk-code-multi-stack-placeholders",
+    "supported_stacks": ["WEBFLOW", "NEXTJS", "GO"]
   }
 }

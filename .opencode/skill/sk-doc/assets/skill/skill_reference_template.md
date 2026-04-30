@@ -9,7 +9,6 @@ Templates for creating reference files in AI agent skills with deep-dive technic
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Location & Naming
@@ -44,32 +43,7 @@ Templates for creating reference files in AI agent skills with deep-dive technic
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:document-structure -->
 ## 2. DOCUMENT STRUCTURE
-
-### Retrieval Anchor Convention (Required)
-
-Use retrieval anchors for every H2 section so section-level loading can target stable IDs.
-
-**Format**:
-- Open marker immediately before each H2: `<!-- ANCHOR:section-slug -->`
-- Close marker immediately before the next H2 (or EOF): `<!-- /ANCHOR:section-slug -->`
-- Slug rules: kebab-case from H2 text, strip numbering/emojis/punctuation
-- Duplicate slugs: append `-2`, `-3`, etc.
-
-**Example**:
-
-```markdown
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
-
-[Section content]
-
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-reference-files -->
-## 3. WHEN TO CREATE REFERENCE FILES
-```
 
 ### Document Structure: Title and Intro
 
@@ -188,8 +162,6 @@ Level 3: Reference files (this document)
 
 ---
 
-<!-- /ANCHOR:document-structure -->
-<!-- ANCHOR:when-to-create-reference-files -->
 ## 3. WHEN TO CREATE REFERENCE FILES
 
 ### Create Reference File When
@@ -237,8 +209,6 @@ Level 3: Reference files (this document)
 
 ---
 
-<!-- /ANCHOR:when-to-create-reference-files -->
-<!-- ANCHOR:ai-agent-skill-reference-characteristics -->
 ## 4. AI AGENT SKILL REFERENCE CHARACTERISTICS
 
 ### Core Principle Statements
@@ -260,7 +230,6 @@ Level 3: Reference files (this document)
 - "Wait for the actual condition you care about, not a guess about how long it takes"
 - "ALWAYS find root cause before attempting fixes. Symptom fixes are failure"
 - "Atomic commits with clear intent + filtered artifacts = maintainable Git history"
-
 
 ### Phased Workflows with Validation
 
@@ -292,7 +261,6 @@ You MUST complete each phase before proceeding to the next.
 - **Named checkpoints** - `checkpoint_name` for validation
 - **Sequential phases** - Cannot skip ahead
 
-
 ### Before/After Code Examples
 
 **Purpose**: Show transformation from wrong to right
@@ -322,7 +290,6 @@ You MUST complete each phase before proceeding to the next.
 - Inline comments explaining issues
 - "Why better" rationale
 
-
 ### Pattern Comparison Tables
 
 **Purpose**: Compare approaches across scenarios
@@ -338,7 +305,6 @@ You MUST complete each phase before proceeding to the next.
 ```
 
 **Use when**: Multiple scenarios need comparison
-
 
 ### Decision Logic in Markdown
 
@@ -379,7 +345,6 @@ Analyze situation
 \```
 \```
 
-
 ### Validation Checkpoints
 
 **Purpose**: Named checkpoints throughout workflows
@@ -396,7 +361,6 @@ Analyze situation
 - `root_cause_identified`
 
 **Usage**: Reference in quality checklists and debugging
-
 
 ### Prerequisites Section
 
@@ -425,7 +389,6 @@ Follow [standard name] for all implementations:
 - Appears in Section 1 OVERVIEW, not intro
 - Links to other reference files
 - Lists specific requirements
-
 
 ### Tool Integration References
 
@@ -470,7 +433,6 @@ Instead of [manual approach], use Chrome DevTools MCP:
 **See also:** [template_name.md](../assets/template_name.md) for complete templates
 ```
 
-
 ### Common Error Patterns
 
 **Purpose**: Document actual errors with explanations
@@ -505,7 +467,6 @@ Instead of [manual approach], use Chrome DevTools MCP:
 \```
 \```
 
-
 ### Scope Limitations
 
 **Purpose**: Explicitly state what's in/out of scope
@@ -523,7 +484,6 @@ Instead of [manual approach], use Chrome DevTools MCP:
 
 **Out of scope:** Cross-browser testing in Firefox, Safari (MCP is Chrome-only)
 ```
-
 
 ### Browser Testing Checklists
 
@@ -642,8 +602,6 @@ You MUST complete each phase before proceeding to the next.
 
 ---
 
-<!-- /ANCHOR:ai-agent-skill-reference-characteristics -->
-<!-- ANCHOR:converting-logic-to-executable-code -->
 ## 5. CONVERTING LOGIC TO EXECUTABLE CODE
 
 ### When to Extract Logic from Markdown
@@ -731,8 +689,6 @@ def test_quick_mode():
 
 ---
 
-<!-- /ANCHOR:converting-logic-to-executable-code -->
-<!-- ANCHOR:yaml-configuration-patterns -->
 ## 6. YAML CONFIGURATION PATTERNS
 
 ### Purpose
@@ -849,8 +805,6 @@ class VariantDetector:
 
 ---
 
-<!-- /ANCHOR:yaml-configuration-patterns -->
-<!-- ANCHOR:python-script-integration -->
 ## 7. PYTHON SCRIPT INTEGRATION
 
 ### When to Use Python for Logic
@@ -975,8 +929,6 @@ def test_default_mode():
 
 ---
 
-<!-- /ANCHOR:python-script-integration -->
-<!-- ANCHOR:standard-structure-template -->
 ## 8. STANDARD STRUCTURE TEMPLATE
 
 ### Complete Skill Directory Structure
@@ -1044,8 +996,6 @@ def test_default_mode():
 
 ---
 
-<!-- /ANCHOR:standard-structure-template -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Templates
@@ -1056,4 +1006,3 @@ def test_default_mode():
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document type rules
 - [skill_creation.md](../../references/specific/skill_creation.md) - Complete skill creation workflow
-<!-- /ANCHOR:related-resources -->

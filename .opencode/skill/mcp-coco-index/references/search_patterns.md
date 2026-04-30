@@ -15,15 +15,12 @@ Strategies for writing effective semantic queries and getting the best results f
 
 ---
 
-<!-- ANCHOR:overview -->
-## OVERVIEW
+## 1. OVERVIEW
 
 Strategies and patterns for effective semantic code search using CocoIndex Code. Covers query writing, language and path filters, score interpretation, comparison with Grep, result verification workflows, and common query patterns by domain.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:writing-good-queries -->
 ## 1. WRITING GOOD QUERIES
 
 Semantic search understands meaning, not just keywords. Write queries as you would describe what you are looking for to a colleague.
@@ -74,8 +71,6 @@ Write:      "error checking in Go functions"
 
 ---
 
-<!-- /ANCHOR:writing-good-queries -->
-<!-- ANCHOR:using-language-filters -->
 ## 2. USING LANGUAGE FILTERS
 
 Filter by language when you know which language you need results from. CocoIndex Code supports **28+ languages** (see tool_reference.md for the full list).
@@ -126,8 +121,6 @@ ccc search "data serialization" --lang python --lang rust --lang go
 
 ---
 
-<!-- /ANCHOR:using-language-filters -->
-<!-- ANCHOR:using-path-filters -->
 ## 3. USING PATH FILTERS
 
 Scope searches to specific directories when you know where to look.
@@ -158,8 +151,6 @@ ccc search "error handling" --path src/services/ --lang typescript --lang python
 
 ---
 
-<!-- /ANCHOR:using-path-filters -->
-<!-- ANCHOR:combining-filters-for-precision -->
 ## 4. COMBINING FILTERS FOR PRECISION
 
 Combine query specificity, language filters, and path filters for the most targeted results.
@@ -180,8 +171,6 @@ ccc search "configuration loading" --lang python --lang typescript --path src/co
 
 ---
 
-<!-- /ANCHOR:combining-filters-for-precision -->
-<!-- ANCHOR:interpreting-relevance-scores -->
 ## 5. INTERPRETING RELEVANCE SCORES
 
 Each result includes a relevance score from 0.0 to 1.0.
@@ -200,8 +189,6 @@ Each result includes a relevance score from 0.0 to 1.0.
 
 ---
 
-<!-- /ANCHOR:interpreting-relevance-scores -->
-<!-- ANCHOR:semantic-search-vs-grep -->
 ## 6. SEMANTIC SEARCH VS. GREP
 
 ### When Semantic Search Wins
@@ -243,8 +230,6 @@ Do you know the exact text?
 
 ---
 
-<!-- /ANCHOR:semantic-search-vs-grep -->
-<!-- ANCHOR:verifying-results-with-read -->
 ## 7. VERIFYING RESULTS WITH READ
 
 Semantic search returns snippets. Always verify with the Read tool before acting on results.
@@ -266,8 +251,6 @@ ccc search "database connection setup"
 
 ---
 
-<!-- /ANCHOR:verifying-results-with-read -->
-<!-- ANCHOR:common-query-patterns -->
 ## 8. COMMON QUERY PATTERNS
 
 ### Architecture and Design
@@ -326,8 +309,6 @@ ccc search "configuration validation"
 
 ---
 
-<!-- /ANCHOR:common-query-patterns -->
-<!-- ANCHOR:freshness-strategy -->
 ## 8b. INDEX FRESHNESS STRATEGY
 
 ### When to Re-index
@@ -370,8 +351,18 @@ Use `ccc_feedback` to improve search quality over time:
 
 Feedback is stored in `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl` for analysis.
 
-<!-- /ANCHOR:freshness-strategy -->
-<!-- ANCHOR:related-resources -->
+## 10. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 11. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
 ## 9. RELATED RESOURCES
 
 | Resource        | Location                                                           |
@@ -380,4 +371,3 @@ Feedback is stored in `.opencode/skill/mcp-coco-index/feedback/search-feedback.j
 | INSTALL_GUIDE   | `.opencode/skill/mcp-coco-index/INSTALL_GUIDE.md`             |
 | Config Templates| `.opencode/skill/mcp-coco-index/assets/config_templates.md`    |
 
-<!-- /ANCHOR:related-resources -->

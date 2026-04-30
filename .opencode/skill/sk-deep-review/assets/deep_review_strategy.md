@@ -7,7 +7,6 @@ description: Runtime template copied to review/ during initialization to track r
 
 Runtime template copied into the resolved `{artifact_dir}/` during initialization. Tracks review progress across iterations.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -24,15 +23,11 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:topic -->
 ## 2. TOPIC
 [Review target description from config -- set during initialization]
 
 ---
 
-<!-- /ANCHOR:topic -->
-<!-- ANCHOR:review-dimensions -->
 ## 3. REVIEW DIMENSIONS (remaining)
 <!-- MACHINE-OWNED: START -->
 - [ ] D1 Correctness — Logic errors, off-by-one, wrong return types, broken invariants
@@ -43,22 +38,16 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:review-dimensions -->
-<!-- ANCHOR:non-goals -->
 ## 4. NON-GOALS
 [What this review session is NOT trying to assess -- populated during initialization]
 
 ---
 
-<!-- /ANCHOR:non-goals -->
-<!-- ANCHOR:stop-conditions -->
 ## 5. STOP CONDITIONS
 [Explicit conditions beyond convergence that should end the session -- populated during initialization]
 
 ---
 
-<!-- /ANCHOR:stop-conditions -->
-<!-- ANCHOR:completed-dimensions -->
 ## 6. COMPLETED DIMENSIONS
 <!-- MACHINE-OWNED: START -->
 [None yet -- populated as iterations complete dimension reviews]
@@ -70,8 +59,6 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:completed-dimensions -->
-<!-- ANCHOR:running-findings -->
 ## 7. RUNNING FINDINGS
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** 0 active
@@ -84,24 +71,18 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:running-findings -->
-<!-- ANCHOR:what-worked -->
 ## 8. WHAT WORKED
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it worked] (iteration N)
 
 ---
 
-<!-- /ANCHOR:what-worked -->
-<!-- ANCHOR:what-failed -->
 ## 9. WHAT FAILED
 [First iteration -- populated after iteration 1 completes]
 - [Approach]: [Why it failed] (iteration N)
 
 ---
 
-<!-- /ANCHOR:what-failed -->
-<!-- ANCHOR:exhausted-approaches -->
 ## 10. EXHAUSTED APPROACHES (do not retry)
 [Populated when a review approach has been tried from multiple angles without yielding new findings]
 
@@ -116,16 +97,12 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:exhausted-approaches -->
-<!-- ANCHOR:ruled-out-directions -->
 ## 11. RULED OUT DIRECTIONS
 [Review angles that were investigated and definitively eliminated -- consolidated from iteration dead-end data]
 - [Approach]: [Why ruled out] (iteration N, evidence: [source])
 
 ---
 
-<!-- /ANCHOR:ruled-out-directions -->
-<!-- ANCHOR:next-focus -->
 ## 12. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
 [Recommended focus area for the next iteration -- updated at end of each iteration. Includes target dimension and/or specific files to review.]
@@ -133,15 +110,11 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:next-focus -->
-<!-- ANCHOR:known-context -->
 ## 13. KNOWN CONTEXT
 [Populated during initialization from memory_context() results, if any prior work exists]
 
 ---
 
-<!-- /ANCHOR:known-context -->
-<!-- ANCHOR:cross-reference-status -->
 ## 14. CROSS-REFERENCE STATUS
 <!-- MACHINE-OWNED: START -->
 [Alignment checks completed across core and overlay protocols]
@@ -158,8 +131,6 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:cross-reference-status -->
-<!-- ANCHOR:files-under-review -->
 ## 15. FILES UNDER REVIEW
 <!-- MACHINE-OWNED: START -->
 [Per-file coverage state table -- populated during initialization from scope discovery]
@@ -171,8 +142,6 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 
 ---
 
-<!-- /ANCHOR:files-under-review -->
-<!-- ANCHOR:review-boundaries -->
 ## 16. REVIEW BOUNDARIES
 <!-- MACHINE-OWNED: START -->
 - Max iterations: [from config]
@@ -189,11 +158,9 @@ Serves as the "persistent brain" for a deep review session. Records which dimens
 - Cross-reference checks: core=[from config.crossReference.core], overlay=[from config.crossReference.overlay]
 - Started: [timestamp]
 <!-- MACHINE-OWNED: END -->
-<!-- /ANCHOR:review-boundaries -->
 
 ---
 
-<!-- ANCHOR:example-populated -->
 ## 17. EXAMPLE (POPULATED)
 
 Reference snippet showing a partially populated strategy file mid-review. Use this as a visual anchor when opening a live strategy doc.
@@ -218,4 +185,3 @@ Reference snippet showing a partially populated strategy file mid-review. Use th
 | cross-runtime-parity | converging | 3                  |
 | observability        | converging | 4                  |
 ```
-<!-- /ANCHOR:example-populated -->

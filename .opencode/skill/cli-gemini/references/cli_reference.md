@@ -9,8 +9,6 @@ Comprehensive reference for all Gemini CLI commands, flags, models, configuratio
 
 ---
 
-<!-- ANCHOR:overview -->
-
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -37,10 +35,6 @@ Provide a comprehensive, single-source reference for all Gemini CLI commands, fl
 | **License** | Apache 2.0 |
 | **Runtime** | Node.js 20+ |
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:installation -->
-
 ## 2. INSTALLATION
 
 | Method | Command | Notes |
@@ -51,10 +45,6 @@ Provide a comprehensive, single-source reference for all Gemini CLI commands, fl
 | **From source** | `git clone` + `npm install` + `npm run build` | Development |
 
 After installation, run `gemini` to start the interactive REPL or pipe input for non-interactive use.
-
-<!-- /ANCHOR:installation -->
-
-<!-- ANCHOR:authentication -->
 
 ## 3. AUTHENTICATION
 
@@ -79,10 +69,6 @@ Or use environment variable:
 ```bash
 export GEMINI_API_KEY="AIza..."
 ```
-
-<!-- /ANCHOR:authentication -->
-
-<!-- ANCHOR:command-line-flags -->
 
 ## 4. COMMAND-LINE FLAGS
 
@@ -136,10 +122,6 @@ gemini --allowed-tools read_file,search_file_content "Find the bug"
 cat error.log | gemini -i "What caused this?"
 ```
 
-<!-- /ANCHOR:command-line-flags -->
-
-<!-- ANCHOR:model-selection -->
-
 ## 5. MODEL SELECTION
 
 ### Supported Model
@@ -166,10 +148,6 @@ gemini -m gemini-3.1-pro-preview "Design the authentication system"
   "model": "gemini-3.1-pro-preview"
 }
 ```
-
-<!-- /ANCHOR:model-selection -->
-
-<!-- ANCHOR:output-formats -->
 
 ## 6. OUTPUT FORMATS
 
@@ -217,10 +195,6 @@ echo "Generate tests" | gemini -o stream-json
 
 Outputs newline-delimited JSON objects as they are produced, suitable for real-time processing.
 
-<!-- /ANCHOR:output-formats -->
-
-<!-- ANCHOR:interactive-slash-commands -->
-
 ## 7. INTERACTIVE SLASH COMMANDS
 
 When running in interactive (REPL) mode, these commands are available:
@@ -250,10 +224,6 @@ When running in interactive (REPL) mode, these commands are available:
 | `/init` | Initialize GEMINI.md in current directory |
 | `/plan` | Enter planning mode for complex tasks |
 | `/quit` | Exit the REPL |
-
-<!-- /ANCHOR:interactive-slash-commands -->
-
-<!-- ANCHOR:special-input-syntax -->
 
 ## 8. SPECIAL INPUT SYNTAX
 
@@ -291,10 +261,6 @@ Use `@server://resource` syntax to reference MCP server resources:
 @memory://recent  Load recent memory entries
 @github://issues  List open issues
 ```
-
-<!-- /ANCHOR:special-input-syntax -->
-
-<!-- ANCHOR:configuration-files -->
 
 ## 9. CONFIGURATION FILES
 
@@ -359,10 +325,6 @@ secrets/
 
 Placed at repository root. Patterns follow gitignore syntax.
 
-<!-- /ANCHOR:configuration-files -->
-
-<!-- ANCHOR:rate-limits -->
-
 ## 10. RATE LIMITS
 
 ### Free Tier Limits
@@ -388,10 +350,6 @@ When rate limits are hit, Gemini CLI automatically:
 - Use API key for higher quotas vs. OAuth free tier
 - Monitor usage via Google AI Studio dashboard
 
-<!-- /ANCHOR:rate-limits -->
-
-<!-- ANCHOR:keyboard-shortcuts -->
-
 ## 11. KEYBOARD SHORTCUTS
 
 | Shortcut | Action |
@@ -404,10 +362,6 @@ When rate limits are hit, Gemini CLI automatically:
 | `Ctrl+D` | Exit the REPL |
 | `Up/Down` | Navigate prompt history |
 | `Tab` | Auto-complete file paths and commands |
-
-<!-- /ANCHOR:keyboard-shortcuts -->
-
-<!-- ANCHOR:troubleshooting -->
 
 ## 12. TROUBLESHOOTING
 
@@ -426,10 +380,6 @@ When rate limits are hit, Gemini CLI automatically:
 | `npm ERR!` on install | Node.js version mismatch | Ensure Node.js 20+ is installed: `node --version` |
 | Garbled output in pipe mode | Terminal control codes in non-TTY | Use `-o text` or `-o json` explicitly |
 
-<!-- /ANCHOR:troubleshooting -->
-
-<!-- ANCHOR:environment-variables -->
-
 ## 13. ENVIRONMENT VARIABLES
 
 | Variable | Purpose | Example |
@@ -442,4 +392,3 @@ When rate limits are hit, Gemini CLI automatically:
 | `GEMINI_SANDBOX` | Default sandbox mode | `docker`, `none` |
 | `NO_COLOR` | Disable colored output | `1` |
 
-<!-- /ANCHOR:environment-variables -->

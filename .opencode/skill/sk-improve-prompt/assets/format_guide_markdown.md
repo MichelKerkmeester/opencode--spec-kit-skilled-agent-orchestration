@@ -12,7 +12,6 @@ Complete formatting specification for delivering enhanced prompts in Markdown fo
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Defines the Markdown formatting rules, structures, and best practices for delive
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:fundamentals -->
 ## 2. FUNDAMENTALS
 
 ### Core Principles
@@ -62,8 +59,6 @@ Defines the Markdown formatting rules, structures, and best practices for delive
 
 ---
 
-<!-- /ANCHOR:fundamentals -->
-<!-- ANCHOR:delivery-standards -->
 ## 3. DELIVERY STANDARDS
 
 ### Mandatory Header Format
@@ -116,8 +111,6 @@ DEPTH rounds completed
 
 ---
 
-<!-- /ANCHOR:delivery-standards -->
-<!-- ANCHOR:rcaf-structure -->
 ## 4. RCAF MARKDOWN STRUCTURE
 
 ### Template
@@ -142,8 +135,6 @@ Mode: $improve | Complexity: Medium | Framework: RCAF
 
 ---
 
-<!-- /ANCHOR:rcaf-structure -->
-<!-- ANCHOR:craft-structure -->
 ## 5. CRAFT MARKDOWN STRUCTURE
 
 ### Template
@@ -191,8 +182,6 @@ Mode: $refine | Complexity: High | Framework: CRAFT
 
 ---
 
-<!-- /ANCHOR:craft-structure -->
-<!-- ANCHOR:advanced-patterns -->
 ## 6. ADVANCED PATTERNS
 
 ### Multi-Step Process
@@ -228,8 +217,6 @@ Mode: $improve | Complexity: High | Framework: RCAF
 
 ---
 
-<!-- /ANCHOR:advanced-patterns -->
-<!-- ANCHOR:syntax-validation -->
 ## 7. SYNTAX VALIDATION
 
 ### Validation Checklist
@@ -255,8 +242,6 @@ Mode: $improve | Complexity: High | Framework: RCAF
 
 ---
 
-<!-- /ANCHOR:syntax-validation -->
-<!-- ANCHOR:best-practices -->
 ## 8. BEST PRACTICES
 
 ### Do / Do Not
@@ -295,4 +280,3 @@ Core principles:
 4. Efficiency through minimalism -- No wasted tokens
 5. Focus through minimalism -- Minimal header only
 
-<!-- /ANCHOR:best-practices -->

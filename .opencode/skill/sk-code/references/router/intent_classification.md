@@ -1,50 +1,75 @@
 ---
 title: Router Reference — Intent Classification
-description: TASK_SIGNALS scoring and intent selection logic for the sk-code smart router.
-keywords: [routing, intent, classification, task-signals, sk-code]
+description: Weighted intent scoring (TASK_SIGNALS) and ambiguity handling that selects the top-N intents fired by the smart router after stack detection.
 ---
 
 # Router Reference — Intent Classification
 
-Intent classification runs AFTER stack detection. The merged TASK_SIGNALS combines high-resolution web signals with TESTING/DATABASE/API additions.
-
-> Authoritative source: `SKILL.md §2 — SMART ROUTING`. This doc is a deep-reference extract.
+TASK_SIGNALS scoring, multi-intent selection, and special-case handling that runs AFTER stack detection and BEFORE per-stack resource loading.
 
 ---
 
-## Intent Categories (12 total)
+## 1. OVERVIEW
 
-| Category | Source | Strongest signals |
-|---|---|---|
-| VERIFICATION | web | `verify` (2.4), `done` (2.1), `complete` (2.0) |
-| DEBUGGING | web | `error` (2.4), `bug` (2.3), `fix` (2.0), `console error` (2.4) |
-| CODE_QUALITY | web | `style check` (2.2), `quality check` (2.2) |
-| IMPLEMENTATION | web | `implement` (2.0), `build` (1.7), `create` (1.5) |
-| ANIMATION | web | `gsap` (2.3), `animation` (2.1), `lenis` (2.1), `swiper` (2.1) |
-| FORMS | web | `form` (2.0), `validation` (1.7), `filepond` (2.1) |
-| VIDEO | web | `hls` (2.4), `streaming` (2.1), `video` (2.0) |
-| DEPLOYMENT | web + full-stack | `deploy` (2.2), `minify` (2.1), `cdn` (2.0), `docker` (1.8), `kubernetes` (1.8) |
-| PERFORMANCE | web | `core web vitals` (2.4), `tbt` (2.4), `inp` (2.4), `lighthouse` (2.2) |
-| TESTING | full-stack | `test` (2.0), `go test` (2.0), `swift test` (2.0), `xctest` (1.8) |
-| DATABASE | full-stack | `database` (2.0), `migration` (1.7), `gorm` (1.6), `prisma` (1.6) |
-| API | full-stack | `api` (2.0), `endpoint` (1.7), `express` (1.6), `fiber` (1.6) |
+### Purpose
 
-See `SKILL.md §2 — TASK_SIGNALS` for the full keyword/weight tables.
+Documents how the smart router's `score_intents()` and `select_intents()` functions translate raw task text into a ranked list of routable intents (IMPLEMENTATION, DEBUGGING, VERIFICATION, ANIMATION, FORMS, API, DATABASE, DEPLOYMENT, TESTING, PERFORMANCE, VIDEO, CODE_QUALITY). Operators consult this file when an advisor result loaded the wrong intent map and they need to debug why.
 
-## Scoring Algorithm
+### Core Principle
 
-1. For each intent, sum weights of every keyword found in the task text
-2. Add NOISY_SYNONYMS bonuses (lower-precision matches)
-3. Apply phase boosts (verification: +5; debugging: +5; testing: +4)
-4. Rank by score
-5. Select top-N intents using AMBIGUITY_DELTA (default 0.8) — multi-symptom prompts get N=3, single-symptom N=2
+Weighted keyword matching plus an ambiguity-delta lets multi-symptom prompts (for example, "fix Webflow animation flicker" — both DEBUGGING and ANIMATION) fire multiple intents in a single dispatch, while clear single-symptom prompts route to exactly one.
 
-## Multi-Intent Selection
+### When to Use
+
+- An advisor result loaded the wrong intent map and you need to debug the scoring.
+- A multi-symptom prompt should have fired two intents but only one came through (or vice versa).
+- You are tuning `INTENT_SIGNALS` weights and want to see the canonical signal table.
+- You are writing a regression test for a new intent category.
+
+### Key Sources
+
+- Authoritative pseudocode: `SKILL.md` §2 SMART ROUTING (`INTENT_SIGNALS`, `score_intents`, `select_intents`).
+- Per-stack resource maps: `references/router/resource_loading.md`.
+
+---
+
+## 2. INTENT CATEGORIES
+
+| Category        | Strongest signals                                                                |
+| --------------- | -------------------------------------------------------------------------------- |
+| VERIFICATION    | `verify`, `done`, `complete`, `works`, `fixed`, `passing`, `type-check`, `build` |
+| DEBUGGING       | `error`, `bug`, `fix`, `broken`, `console error`, `hydration`, `stack trace`     |
+| CODE_QUALITY    | `lint`, `format`, `quality gate`, `p0`, `p1`, `code style`, `naming`             |
+| IMPLEMENTATION  | `implement`, `build`, `create`, `add feature`, `service`, `component`, `handler` |
+| ANIMATION       | `animation`, `motion`, `transition`, `scroll-trigger`, `lenis`, `gsap`, `motion v12` |
+| FORMS           | `form`, `validation`, `react-hook-form`, `zod`, `go-playground/validator`, `filepond` |
+| VIDEO           | `hls`, `video`, `streaming`                                                      |
+| DEPLOYMENT      | `deploy`, `vercel`, `railway`, `fly.io`, `docker`, `cdn`, `wrangler`             |
+| PERFORMANCE     | `lighthouse`, `lcp`, `tbt`, `inp`, `cls`, `core web vitals`, `pagespeed`, `pprof` |
+| TESTING         | `test`, `unit test`, `integration test`, `coverage`, `table test`, `race detector` |
+| DATABASE        | `postgres`, `sqlc`, `pgx`, `migration`, `transaction`, `query`                   |
+| API             | `api`, `fetch`, `endpoint`, `jwt`, `envelope`, `cors`, `cross-stack pairing`     |
+
+See `SKILL.md` §2 (`INTENT_SIGNALS`) for the full keyword/weight tables.
+
+---
+
+## 3. SCORING ALGORITHM
+
+1. For each intent, sum the weight of every keyword that appears in the task text.
+2. Add NOISY_SYNONYMS bonuses (lower-precision matches that count for ranking but are weighted lower than first-class keywords).
+3. Apply phase boosts: `verification` +5, `debugging` +5, `testing` +4 (when the task explicitly declares its phase).
+4. Rank intents by score.
+5. Select top-N intents using `ambiguity_delta` (default 1.0) — multi-symptom prompts can expand to N=3 when 3+ multi-symptom terms hit.
+
+---
+
+## 4. MULTI-INTENT SELECTION
 
 When the second-highest score is within `ambiguity_delta` of the top, multiple intents fire simultaneously. Useful for prompts like "fix Webflow animation flicker" which surfaces both DEBUGGING and ANIMATION.
 
 ```python
-selected = [ranked[0][0]]  # top intent always selected
+selected = [ranked[0][0]]                       # top intent always selected
 for intent, score in ranked[1:]:
     if (top_score - score) <= ambiguity_delta:
         selected.append(intent)
@@ -52,15 +77,20 @@ for intent, score in ranked[1:]:
         break
 ```
 
-## Special Cases
+---
 
-- **Low-signal task** (sum of all scores < 0.5): returns IMPLEMENTATION + UNKNOWN_FALLBACK_CHECKLIST surface for disambiguation
-- **Multi-symptom term hit ≥3** (e.g. "janky stutter freeze"): expands max_intents from 2 to 3
-- **Explicit phase signal** (task.phase == "verification"): adds +5 to that intent before ranking
+## 5. SPECIAL CASES
 
-## See Also
+- **Low-signal task** (sum of all scores < 0.5): returns IMPLEMENTATION + UNKNOWN_FALLBACK_CHECKLIST surface for disambiguation.
+- **Multi-symptom term hit ≥ 3** (for example, "janky stutter freeze"): expands `max_intents` from 2 to 3.
+- **Explicit phase signal** (`task.phase == "verification"`): adds +5 to that intent before ranking.
+- **No intent signals matched at all**: returns IMPLEMENTATION as the safe default rather than empty.
 
-- `references/router/stack_detection.md` — what runs before intent classification
-- `references/router/resource_loading.md` — how intents drive resource selection
-- `references/router/phase_lifecycle.md` — how intents map to phases (Implementation / Quality Gate / Debug / Verify)
-- `SKILL.md §2` — full routing pseudocode
+---
+
+## 6. RELATED RESOURCES
+
+- `references/router/stack_detection.md` - what runs before intent classification.
+- `references/router/resource_loading.md` - how scored intents drive per-stack resource selection.
+- `references/router/phase_lifecycle.md` - how intents map to Phase 0-3 lifecycle.
+- `SKILL.md` §2 — full smart-routing pseudocode (`INTENT_SIGNALS`, `score_intents`, `select_intents`).

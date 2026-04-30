@@ -9,7 +9,6 @@ description: 16 proven patterns for converting documentation into AI-friendly qu
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Is Optimization?
@@ -32,8 +31,6 @@ This reference provides deep-dive technical guidance on transformation patterns 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:quality-heuristics-non-scoring -->
 ## 2. QUALITY HEURISTICS (NON-SCORING)
 
 These heuristics describe what “good” looks like. This skill does not compute an external score; use them as guidance.
@@ -56,8 +53,6 @@ These heuristics describe what “good” looks like. This skill does not comput
 
 ---
 
-<!-- /ANCHOR:quality-heuristics-non-scoring -->
-<!-- ANCHOR:analysis-workflow -->
 ## 3. ANALYSIS WORKFLOW
 
 **Step 1: Audit Current State**
@@ -82,8 +77,6 @@ These heuristics describe what “good” looks like. This skill does not comput
 
 ---
 
-<!-- /ANCHOR:analysis-workflow -->
-<!-- ANCHOR:transformation-patterns -->
 ## 4. TRANSFORMATION PATTERNS
 
 ### Pattern 1: API Reference → Usage Example
@@ -361,8 +354,6 @@ print(response)
 
 ---
 
-<!-- /ANCHOR:transformation-patterns -->
-<!-- ANCHOR:readme-optimization-strategy -->
 ## 5. README OPTIMIZATION STRATEGY
 
 **High Priority Sections**:
@@ -389,8 +380,6 @@ print(response)
 
 ---
 
-<!-- /ANCHOR:readme-optimization-strategy -->
-<!-- ANCHOR:quality-checklist -->
 ## 6. QUALITY CHECKLIST
 
 Before finalizing, verify each snippet:
@@ -417,8 +406,6 @@ Before finalizing, verify each snippet:
 
 ---
 
-<!-- /ANCHOR:quality-checklist -->
-<!-- ANCHOR:iteration-process -->
 ## 7. ITERATION PROCESS
 
 1. Extract structure JSON (scripts)
@@ -436,8 +423,6 @@ Before finalizing, verify each snippet:
 
 ---
 
-<!-- /ANCHOR:iteration-process -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -456,4 +441,3 @@ Before finalizing, verify each snippet:
 - [install_guide_template.md](../../assets/documentation/install_guide_template.md) - Install guide template (14 sections)
 - [llmstxt_templates.md](../../assets/documentation/llmstxt_templates.md) - llms.txt with decision framework
 - [frontmatter_templates.md](../../assets/documentation/frontmatter_templates.md) - Frontmatter validation & templates (11 sections)
-<!-- /ANCHOR:related-resources -->

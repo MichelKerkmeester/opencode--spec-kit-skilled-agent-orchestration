@@ -9,15 +9,12 @@ Common patterns, commands, and conventions used across all git workflows.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This reference consolidates common patterns, commands, and conventions used across all git workflows (worktrees, commits, and finish). Use this as a quick lookup for branch naming, git commands, Conventional Commits format, and error handling patterns.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:branch-naming-conventions -->
 ## 2. BRANCH NAMING CONVENTIONS
 
 ### Temporary Branches (Main-Focused Workflow)
@@ -43,7 +40,6 @@ temp/quick-refactor
 
 **Best for**: 80% of development work
 
-
 ### Feature Branches (Long-Running Work)
 
 **Pattern**: `feature/<name>`
@@ -68,7 +64,6 @@ feature/dashboard-redesign
 
 **Best for**: Major features, team collaboration
 
-
 ### Experimental Branches
 
 **Pattern**: Detached HEAD (no branch)
@@ -91,8 +86,6 @@ git worktree add --detach .worktrees/experiment main
 
 ---
 
-<!-- /ANCHOR:branch-naming-conventions -->
-<!-- ANCHOR:git-command-reference -->
 ## 3. GIT COMMAND REFERENCE
 
 ### Worktree Operations
@@ -126,7 +119,6 @@ git worktree remove <path>
 ```bash
 git worktree prune
 ```
-
 
 ### Commit Operations
 
@@ -169,7 +161,6 @@ git commit --amend                 # Modify last commit
 git commit --amend --no-edit       # Keep message, add changes
 ```
 
-
 ### Branch Operations
 
 **Policy note**: Never create new branches directly with `git branch`, `git checkout` plus `-b`, or `git switch` plus `-c`. When a new branch is needed, create it through `git worktree add -b ...`.
@@ -199,7 +190,6 @@ git branch -m <old-name> <new-name>
 git branch -m <new-name>           # Rename current branch
 ```
 
-
 ### Merge & Integration Operations
 
 **Merge branch**:
@@ -218,7 +208,6 @@ git merge --abort
 ```bash
 git merge-base <branch1> <branch2>
 ```
-
 
 ### Remote Operations
 
@@ -242,8 +231,6 @@ git remote show origin             # Show remote details
 
 ---
 
-<!-- /ANCHOR:git-command-reference -->
-<!-- ANCHOR:conventional-commits-format -->
 ## 4. CONVENTIONAL COMMITS FORMAT
 
 ### Structure
@@ -338,8 +325,6 @@ Clients must update to handle JSON responses.
 
 ---
 
-<!-- /ANCHOR:conventional-commits-format -->
-<!-- ANCHOR:common-git-patterns -->
 ## 5. COMMON GIT PATTERNS
 
 ### Pattern 1: Quick Fix Workflow
@@ -369,7 +354,6 @@ git branch -d temp/quick-fix
 git worktree remove .worktrees/quick-fix
 ```
 
-
 ### Pattern 2: Feature Branch with PR
 
 ```bash
@@ -396,7 +380,6 @@ cd ../..
 git worktree remove .worktrees/new-feature
 ```
 
-
 ### Pattern 3: Experimental Work
 
 ```bash
@@ -420,8 +403,6 @@ git worktree remove .worktrees/experiment
 
 ---
 
-<!-- /ANCHOR:common-git-patterns -->
-<!-- ANCHOR:error-handling-patterns -->
 ## 6. ERROR HANDLING PATTERNS
 
 ### Pattern: Tests Fail After Changes
@@ -445,7 +426,6 @@ npm test
 
 # 5. Only then proceed with integration
 ```
-
 
 ### Pattern: Merge Conflicts
 
@@ -471,7 +451,6 @@ git commit
 npm test
 ```
 
-
 ### Pattern: Undo Last Commit (Not Pushed)
 
 ```bash
@@ -484,7 +463,6 @@ git reset --hard HEAD~1
 # Amend commit instead
 git commit --amend
 ```
-
 
 ### Pattern: Detached HEAD Recovery
 
@@ -514,7 +492,6 @@ git merge recovery-branch
 git branch -d recovery-branch
 ```
 
-
 ### Pattern: Worktree Branch Already Exists
 
 **Symptom**: `fatal: 'temp/feature' is already checked out`
@@ -534,7 +511,6 @@ git worktree add .worktrees/feature -b temp/feature main
 # 4. Option C: Continue work in existing worktree
 cd .worktrees/old-feature  # Navigate to existing
 ```
-
 
 ### Pattern: Failed Push (Remote Rejected)
 
@@ -558,7 +534,6 @@ git push
 # Only use --force on personal feature branches
 ```
 
-
 ### Pattern: Stale Worktree References
 
 **Symptom**: `fatal: '.worktrees/old' is a missing linked worktree`
@@ -576,8 +551,6 @@ git worktree list
 
 ---
 
-<!-- /ANCHOR:error-handling-patterns -->
-<!-- ANCHOR:quality-check-patterns -->
 ## 7. QUALITY CHECK PATTERNS
 
 ### Pre-Commit Checklist
@@ -591,7 +564,6 @@ git worktree list
 □ Tests pass
 ```
 
-
 ### Pre-Merge Checklist
 
 ```markdown
@@ -601,7 +573,6 @@ git worktree list
 □ No merge conflicts
 □ Commit history is clean
 ```
-
 
 ### Pre-PR Checklist
 
@@ -616,8 +587,6 @@ git worktree list
 
 ---
 
-<!-- /ANCHOR:quality-check-patterns -->
-<!-- ANCHOR:file-type-patterns -->
 ## 8. FILE TYPE PATTERNS
 
 ### Files to Always Commit
@@ -628,7 +597,6 @@ git worktree list
 - Documentation (README.md, API.md)
 - Build config (.github/workflows/, Dockerfile)
 
-
 ### Files to Never Commit (Add to .gitignore)
 
 - Dependencies (node_modules/, vendor/, venv/)
@@ -637,7 +605,6 @@ git worktree list
 - OS files (.DS_Store, Thumbs.db)
 - IDE files (.vscode/, .idea/)
 - Logs (*.log, logs/)
-
 
 ### Files to Exclude from Commits (Don't Add to .gitignore)
 
@@ -651,8 +618,6 @@ git worktree list
 
 ---
 
-<!-- /ANCHOR:file-type-patterns -->
-<!-- ANCHOR:github-mcp-patterns -->
 ## 9. GITHUB MCP PATTERNS
 
 GitHub MCP provides programmatic access to GitHub's remote operations via Code Mode. Use these patterns for remote collaboration tasks.
@@ -710,7 +675,6 @@ call_tool_chain({
 })
 ```
 
-
 ### Pattern 2: Pull Request Review
 
 ```typescript
@@ -744,7 +708,6 @@ call_tool_chain({
 })
 ```
 
-
 ### Pattern 3: CI/CD Status Check
 
 > **Note**: CI/CD workflow status requires the `gh` CLI (not available in GitHub MCP):
@@ -759,7 +722,6 @@ gh run view 12345
 # Get job logs for debugging failures
 gh run view 12345 --log
 ```
-
 
 ### Pattern 4: Remote File Access
 
@@ -787,7 +749,6 @@ call_tool_chain({
 > gh api repos/{owner}/{repo}/branches
 > ```
 
-
 ### When to Use GitHub MCP vs Local Git
 
 | Task | Use | Rationale |
@@ -803,8 +764,6 @@ call_tool_chain({
 
 ---
 
-<!-- /ANCHOR:github-mcp-patterns -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Reference Files
@@ -819,4 +778,3 @@ call_tool_chain({
 - [GitHub CLI Manual](https://cli.github.com/manual/) - Complete gh CLI reference
 - [Git Worktree Documentation](https://git-scm.com/docs/git-worktree) - Official git worktree documentation
 - [Semantic Versioning](https://semver.org/) - Version numbering based on changes
-<!-- /ANCHOR:related-resources -->

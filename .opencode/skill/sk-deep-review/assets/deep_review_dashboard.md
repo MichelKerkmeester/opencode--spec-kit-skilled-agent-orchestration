@@ -7,7 +7,6 @@ description: Auto-generated review session overview, refreshed after each iterat
 
 Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation. Never manually edited.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:status -->
 ## 2. STATUS
 <!-- MACHINE-OWNED: START -->
 - Target: [from config.reviewTarget]
@@ -43,8 +40,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:status -->
-<!-- ANCHOR:findings-summary -->
 ## 3. FINDINGS SUMMARY
 <!-- MACHINE-OWNED: START -->
 - **P0 (Critical):** [N] active, [N] new this iteration, [N] upgrades, [N] resolved
@@ -57,8 +52,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:findings-summary -->
-<!-- ANCHOR:progress -->
 ## 4. PROGRESS
 <!-- MACHINE-OWNED: START -->
 
@@ -69,8 +62,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:progress -->
-<!-- ANCHOR:coverage -->
 ## 5. COVERAGE
 <!-- MACHINE-OWNED: START -->
 - Files reviewed: [X] / [Y] total
@@ -81,8 +72,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:coverage -->
-<!-- ANCHOR:trend -->
 ## 6. TREND
 <!-- MACHINE-OWNED: START -->
 - Severity trend (last 3): [P0:N P1:N P2:N -> P0:N P1:N P2:N -> P0:N P1:N P2:N]
@@ -92,8 +81,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:trend -->
-<!-- ANCHOR:resolved -->
 ## 7. RESOLVED / RULED OUT
 <!-- MACHINE-OWNED: START -->
 - **Disproved findings:** [findings investigated and determined to be false positives]
@@ -102,8 +89,6 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:resolved -->
-<!-- ANCHOR:next-focus -->
 ## 8. NEXT FOCUS
 <!-- MACHINE-OWNED: START -->
 [from strategy.md "Next Focus" section — next dimension, file set, or review lens]
@@ -111,17 +96,13 @@ Provides a compact, human-readable summary of the current review session. Serves
 
 ---
 
-<!-- /ANCHOR:next-focus -->
-<!-- ANCHOR:active-risks -->
 ## 9. ACTIVE RISKS
 <!-- MACHINE-OWNED: START -->
 - [blockers, missing coverage, unresolved contradictions, gate violations, high stuck count, declining trend, etc.]
 <!-- MACHINE-OWNED: END -->
-<!-- /ANCHOR:active-risks -->
 
 ---
 
-<!-- ANCHOR:example-populated -->
 ## 10. EXAMPLE (POPULATED)
 
 Reference snippet showing what a rendered review dashboard looks like after iteration 4 of a 7-iteration run. Use this as a visual anchor when inspecting a live dashboard.
@@ -155,4 +136,3 @@ Reference snippet showing what a rendered review dashboard looks like after iter
 - 1 P0 in test-coverage dimension -- review cannot terminate PASS until resolved
 - agent_cross_runtime protocol partial: Gemini runtime path still unverified
 ```
-<!-- /ANCHOR:example-populated -->

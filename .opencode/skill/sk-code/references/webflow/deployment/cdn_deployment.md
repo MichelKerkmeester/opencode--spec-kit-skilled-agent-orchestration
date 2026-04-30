@@ -9,7 +9,6 @@ Complete workflow for deploying minified JavaScript to Cloudflare R2 CDN.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -38,8 +37,6 @@ Version parameters are your cache-busting mechanism - increment on EVERY change,
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:version-management -->
 ## 2. VERSION MANAGEMENT
 
 ### Semantic Versioning Format
@@ -75,8 +72,6 @@ script.js?v=X.Y.Z → script.js?v=(X+1).0.0
 
 ---
 
-<!-- /ANCHOR:version-management -->
-<!-- ANCHOR:html-file-update-workflow -->
 ## 3. HTML FILE UPDATE WORKFLOW
 
 ### File Locations
@@ -151,8 +146,6 @@ grep -r "script_name.js?v=" src/0_html/
 
 ---
 
-<!-- /ANCHOR:html-file-update-workflow -->
-<!-- ANCHOR:cloudflare-r2-upload -->
 ## 4. CLOUDFLARE R2 UPLOAD
 
 ### Manual Upload via Dashboard
@@ -186,8 +179,6 @@ grep -r "script_name.js?v=" src/0_html/
 
 ---
 
-<!-- /ANCHOR:cloudflare-r2-upload -->
-<!-- ANCHOR:deployment-checklist -->
 ## 5. DEPLOYMENT CHECKLIST
 
 ### Pre-Deployment
@@ -232,8 +223,6 @@ grep -r "script_name.js?v=" src/0_html/
 
 ---
 
-<!-- /ANCHOR:deployment-checklist -->
-<!-- ANCHOR:rules -->
 ## 6. RULES
 
 ### ✅ ALWAYS
@@ -263,8 +252,6 @@ grep -r "script_name.js?v=" src/0_html/
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
 
 ### Old Version Still Loading
@@ -309,8 +296,6 @@ grep -r "script_name.js?v=" src/0_html/
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -329,4 +314,3 @@ grep -r "script_name.js?v=" src/0_html/
 
 - [Cloudflare R2 Documentation](https://developers.cloudflare.com/r2/)
 - [Cloudflare Dashboard](https://dash.cloudflare.com)
-<!-- /ANCHOR:related-resources -->

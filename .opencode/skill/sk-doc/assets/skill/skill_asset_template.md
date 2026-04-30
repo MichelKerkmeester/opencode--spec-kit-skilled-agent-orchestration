@@ -7,7 +7,6 @@ description: Templates and guidelines for creating asset files in AI agent skill
 
 Templates and guidelines for creating asset files in AI agent skills.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Location & Naming
@@ -40,8 +39,6 @@ Templates and guidelines for creating asset files in AI agent skills.
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:asset-file-types -->
 ## 2. ASSET FILE TYPES
 
 ### Template Files
@@ -117,32 +114,7 @@ Templates and guidelines for creating asset files in AI agent skills.
 
 ---
 
-<!-- /ANCHOR:asset-file-types -->
-<!-- ANCHOR:document-structure -->
 ## 3. DOCUMENT STRUCTURE
-
-### Retrieval Anchor Convention (Required)
-
-Use retrieval anchors for every H2 section so sections can be loaded by anchor ID.
-
-**Format**:
-- Open marker immediately before each H2: `<!-- ANCHOR:section-slug -->`
-- Close marker immediately before the next H2 (or EOF): `<!-- /ANCHOR:section-slug -->`
-- Slug rules: kebab-case from H2 text, strip numbering/emojis/punctuation
-- Duplicate slugs: append `-2`, `-3`, etc.
-
-**Example**:
-
-```markdown
-<!-- ANCHOR:overview -->
-## 1. OVERVIEW
-
-[Section content]
-
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:asset-file-types -->
-## 2. ASSET FILE TYPES
-```
 
 ### Title and Intro
 
@@ -238,8 +210,6 @@ Atomic commits with clear intent = maintainable history.
 
 ---
 
-<!-- /ANCHOR:document-structure -->
-<!-- ANCHOR:standard-asset-structure -->
 ## 4. STANDARD ASSET STRUCTURE
 
 **Template**:
@@ -303,8 +273,6 @@ Brief introduction (1-2 sentences) explaining what this asset provides and when 
 
 ---
 
-<!-- /ANCHOR:standard-asset-structure -->
-<!-- ANCHOR:logic-representation-patterns -->
 ## 5. LOGIC REPRESENTATION PATTERNS
 
 **Purpose**: Guidelines for representing logic, workflows, and decision trees in asset files using structured formats instead of prose.
@@ -346,8 +314,6 @@ Brief introduction (1-2 sentences) explaining what this asset provides and when 
 
 ---
 
-<!-- /ANCHOR:logic-representation-patterns -->
-<!-- ANCHOR:decision-logic-examples -->
 ## 6. DECISION LOGIC EXAMPLES
 
 **Purpose**: Demonstrate how to convert markdown prose into structured decision logic.
@@ -441,8 +407,6 @@ def validate_document(doc, doc_type):
 
 ---
 
-<!-- /ANCHOR:decision-logic-examples -->
-<!-- ANCHOR:workflow-patterns -->
 ## 7. WORKFLOW PATTERNS
 
 **Purpose**: Show how to represent multi-step workflows using YAML structures.
@@ -581,8 +545,6 @@ variant_generation_logic:
 
 ---
 
-<!-- /ANCHOR:workflow-patterns -->
-<!-- ANCHOR:configuration-templates -->
 ## 8. CONFIGURATION TEMPLATES
 
 **Purpose**: Demonstrate structured data formats for configuration and metadata.
@@ -679,8 +641,6 @@ VALIDATION_LEVELS = {
 
 ---
 
-<!-- /ANCHOR:configuration-templates -->
-<!-- ANCHOR:template-guidelines -->
 ## 9. TEMPLATE GUIDELINES
 
 ### Naming Conventions
@@ -713,7 +673,6 @@ VALIDATION_LEVELS = {
 - Use title case
 - Be descriptive but concise
 - Number if sequential: `1. Template Name`
-
 
 ### Content Organization
 
@@ -777,8 +736,6 @@ VALIDATION_LEVELS = {
 
 ---
 
-<!-- /ANCHOR:template-guidelines -->
-<!-- ANCHOR:asset-file-checklist -->
 ## 10. ASSET FILE CHECKLIST
 
 **Before creating an asset file, verify**:
@@ -812,8 +769,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:asset-file-checklist -->
-<!-- ANCHOR:examples-from-this-skill -->
 ## 11. EXAMPLES FROM THIS SKILL
 
 ### Example 1: Template File
@@ -831,7 +786,6 @@ Integration:
 - Complete working examples
 - Guidance on when to use vs. not use
 
-
 ### Example 2: Structure File
 
 **File**: `structure_templates.md`
@@ -847,7 +801,6 @@ Integration:
 - Enforcement level specified
 - Complete document templates
 - Section ordering rules
-
 
 ### Example 3: Reference File
 
@@ -868,8 +821,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:examples-from-this-skill -->
-<!-- ANCHOR:asset-maintenance -->
 ## 12. ASSET MAINTENANCE
 
 ### When to Update Assets
@@ -886,7 +837,6 @@ Integration:
 - Keep examples current with latest patterns
 - Remove deprecated templates
 - Add migration notes for breaking changes
-
 
 ### Deprecation Strategy
 
@@ -909,8 +859,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:asset-maintenance -->
-<!-- ANCHOR:best-practices-summary -->
 ## 13. BEST PRACTICES SUMMARY
 
 **DO**:
@@ -932,8 +880,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:best-practices-summary -->
-<!-- ANCHOR:asset-file-naming-quick-reference -->
 ## 14. ASSET FILE NAMING QUICK REFERENCE
 
 **Location**: `.opencode/skill/[skill-name]/assets/`
@@ -956,8 +902,6 @@ Integration:
 
 ---
 
-<!-- /ANCHOR:asset-file-naming-quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 15. RELATED RESOURCES
 
 ### Templates
@@ -969,4 +913,3 @@ Integration:
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document type rules
 - [skill_creation.md](../../references/specific/skill_creation.md) - Full skill creation workflow
-<!-- /ANCHOR:related-resources -->

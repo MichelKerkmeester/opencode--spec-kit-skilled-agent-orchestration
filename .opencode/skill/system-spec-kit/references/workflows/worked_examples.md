@@ -9,7 +9,6 @@ Practical scenarios demonstrating SpecKit workflows for different documentation 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Are Worked Examples?
@@ -36,9 +35,6 @@ These examples demonstrate real-world usage of the SpecKit system across differe
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:simple-bug-fix-level-1 -->
 ## 2. SIMPLE BUG FIX (LEVEL 1)
 
 ### Scenario
@@ -92,9 +88,6 @@ specs/008-fix-button-alignment/
 
 ---
 
-<!-- /ANCHOR:simple-bug-fix-level-1 -->
-
-<!-- ANCHOR:feature-implementation-level-2 -->
 ## 3. FEATURE IMPLEMENTATION (LEVEL 2)
 
 ### Scenario
@@ -148,9 +141,6 @@ specs/009-notification-system/
 
 ---
 
-<!-- /ANCHOR:feature-implementation-level-2 -->
-
-<!-- ANCHOR:architecture-change-level-3 -->
 ## 4. ARCHITECTURE CHANGE (LEVEL 3)
 
 ### Scenario
@@ -236,9 +226,6 @@ Scenario: Large multi-phase effort requiring root coordination.
 
 ---
 
-<!-- /ANCHOR:architecture-change-level-3 -->
-
-<!-- ANCHOR:resuming-work -->
 ## 5. RESUMING WORK
 
 ### Scenario
@@ -290,9 +277,6 @@ AI: Loading context for specs/009-notification-system/
 
 ---
 
-<!-- /ANCHOR:resuming-work -->
-
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 ### Reference Files
@@ -325,4 +309,3 @@ AI: Loading context for specs/009-notification-system/
 
 ---
 
-<!-- /ANCHOR:related-resources -->

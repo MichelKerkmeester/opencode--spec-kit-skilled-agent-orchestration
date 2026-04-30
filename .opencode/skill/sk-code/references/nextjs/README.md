@@ -1,59 +1,82 @@
 ---
-title: React / Next.js stack — kerkmeester-style live branch
-description: Live reference content for sk-code REACT routing. Modeled on kerkmeester.com (Next.js 14 App Router + vanilla-extract + motion v12 + react-hook-form/zod + Untitled UI + react-aria + Sonner + next-themes). Pairs with the Go backend live branch via references/router/cross_stack_pairing.md.
-status: live
-stack: REACT
-canonical_source: ".opencode/skill/sk-code/references/react/"
-populated: true
-last_synced_at: "2026-04-30"
-keywords: [react, nextjs, app-router, vanilla-extract, motion, untitled-ui, react-hook-form, zod, react-aria, sonner, next-themes, tinacms, kerkmeester]
+title: NEXTJS stack — Next.js 14 entry README
+description: Project-agnostic stack overview stub for sk-code NEXTJS routing. Pairs with the GO backend stub via references/router/cross_stack_pairing.md. Populate when a real Next.js project is wired into this skill.
+status: stub
+stack: NEXTJS
+canonical_source: ".opencode/skill/sk-code/references/nextjs/"
+populated: false
+last_synced_at: 2026-04-30
+keywords: [nextjs, next.js, app-router, vanilla-extract, motion, untitled-ui, react-hook-form, zod, react-aria, sonner, next-themes, tinacms]
 ---
 
-# React / Next.js — sk-code live branch
+# NEXTJS — sk-code stack stub
 
-Stack detected: **REACT**. Live content under this folder is modeled on **kerkmeester.com** (Next.js 14 App Router + zero-runtime CSS via vanilla-extract + the new `motion` v12 animation library + Untitled UI components).
+Stack detected: **NEXTJS**. The smart router at `SKILL.md` §2 routes to this branch when a Next.js project is detected.
 
-This branch was promoted from placeholder to live in packet `056-sk-code-fullstack-branch/` (2026-04-30).
+> **Stub.** Project-agnostic placeholder. Populate the subfolder content with real patterns once a concrete Next.js project is wired into this skill.
+
+- [OVERVIEW](#1--overview)
+
+---
+
+
+## TABLE OF CONTENTS
+
+- [OVERVIEW](#1--overview)
+
+---
 
 ## When this branch loads
 
-The smart router at `SKILL.md` §2 routes to this branch when stack detection identifies React / Next.js — markers:
+Marker files that select this branch:
+
 - `next.config.js`, `next.config.mjs`, `next.config.ts`
-- `package.json` containing `"next"` or `"react"` (excluding react-native/expo)
+- `package.json` containing `"next"` (or `"react"` together with a Next.js indicator; excluding react-native / expo)
 
-## Pattern provenance
+## Intended target stack (from SKILL.md description)
 
-The patterns documented here come from `kerkmeester.com`'s production codebase. **If your Next.js project uses Tailwind / CSS modules / framer-motion** instead of vanilla-extract / motion v12, the implementation patterns in this folder still apply at the App Router / Server Component / forms / a11y level — but the styling and animation specifics will differ. Treat the kerkmeester-flavored snippets as one canonical example variant.
+When populated, this branch documents Next.js 14 App Router patterns paired with:
+
+- vanilla-extract (zero-runtime CSS-in-TypeScript)
+- motion v12 (animation)
+- react-hook-form + zod (forms and validation)
+- react-aria / react-aria-components (accessibility primitives)
+- Untitled UI (vendored component library)
+- next-themes (dark-mode class toggle)
+- Sonner (toasts)
+- Optional TinaCMS (Git-backed CMS)
+
+The architectural patterns (App Router, Server Component / Client Component boundaries, Server Actions, accessibility, API integration) transfer to projects that swap any single library.
 
 ## Subfolder map
 
-| Subfolder | Contents | Phase |
+| Subfolder | Status | Intended contents |
 |---|---|---|
-| `implementation/` | App Router patterns, vanilla-extract styling, motion v12 animation, react-hook-form + zod forms, react-aria a11y, API integration with Go backend, optional TinaCMS | Phase 1 |
-| `debugging/` | Server vs Client Component bugs, hydration errors, network inspection (DevTools + Go server log correlation) | Phase 2 |
-| `verification/` | type-check + lint + build + browser smoke matrix | Phase 3 |
-| `deployment/` | Vercel deploy + env vars + preview branches; backend URL config | Phase 3 |
-| `standards/` | ES2023 strict TS conventions, file organization (`src/{app,components,hooks,utils,styles}`) | Phase 1.5 |
+| `implementation/` | stub | App Router patterns, vanilla-extract styling, motion v12 animation, react-hook-form + zod forms, react-aria a11y, API integration with the Go backend, optional TinaCMS |
+| `debugging/` | stub | Server vs Client Component bug patterns, hydration mismatches, network inspection alongside backend logs |
+| `verification/` | stub | type-check + lint + build sequence; browser smoke matrix (mobile + desktop, console clean) |
+| `deployment/` | stub | Vercel deployment, env vars, preview branch CORS handling |
+| `standards/` | stub | TypeScript strict mode, naming conventions, file organization |
 
 ## Asset map
 
-| Asset folder | Contents |
-|---|---|
-| `assets/react/checklists/` | P0/P1/P2 checklists for code quality, debugging, verification |
-| `assets/react/patterns/` | Working code samples: Server Action, fetch+JWT API call, react-hook-form + zod, motion v12 mount, vanilla-extract recipe |
-| `assets/react/integrations/` | vanilla-extract setup, Untitled UI usage, optional TinaCMS bootstrap |
+| Asset folder | Status | Intended contents |
+|---|---|---|
+| `assets/nextjs/checklists/` | stub | P0/P1/P2 checklists for code quality, debugging, verification |
+| `assets/nextjs/patterns/` | stub | Reference code samples: Server Action, fetch + JWT API call, react-hook-form + zod, motion v12 mount, vanilla-extract recipe |
+| `assets/nextjs/integrations/` | stub | vanilla-extract setup, Untitled UI usage, optional TinaCMS bootstrap |
 
 ## Cross-stack pairing
 
-This branch pairs with the **Go backend live branch** (`references/go/`). For the canonical React↔Go API contract, JWT handoff, error envelope shape, and deploy topology, see `references/router/cross_stack_pairing.md`.
+This branch pairs with the **GO backend stub** under `references/go/`. For the canonical Next.js ↔ Go API contract, JWT handoff, error envelope shape, CORS configuration, and deploy topology, see `references/router/cross_stack_pairing.md` (canonical contract — not a stub).
 
 ## Verification commands
 
-```bash
-npm run type-check   # tsc --noEmit
-npm run lint         # ESLint
-npm run build        # Next.js production build
-```
+These are the standard Next.js verification commands; they apply regardless of project specifics:
+
+- `npm run type-check` — `tsc --noEmit`
+- `npm run lint` — ESLint
+- `npm run build` — Next.js production build
 
 Plus browser smoke (Phase 3): mobile + desktop + DevTools console clean.
 
@@ -61,5 +84,15 @@ Plus browser smoke (Phase 3): mobile + desktop + DevTools console clean.
 
 - `SKILL.md` §2 (smart routing) — how this branch is selected
 - `references/universal/` — stack-agnostic core (severity model, error recovery, multi-agent research)
-- `references/router/cross_stack_pairing.md` — React↔Go contract
-- Frontend reference source: `/Users/michelkerkmeester/MEGA/Development/Websites/kerkmeester.com/`
+- `references/router/cross_stack_pairing.md` — Next.js ↔ Go contract
+
+---
+
+---
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---
+

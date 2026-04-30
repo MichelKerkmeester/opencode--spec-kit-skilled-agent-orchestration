@@ -9,7 +9,6 @@ Templates for professional commit messages following Conventional Commits.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -25,8 +24,6 @@ This asset provides structured templates and examples for commit messages. Use i
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:basic-format -->
 ## 2. BASIC FORMAT
 
 ```
@@ -39,8 +36,6 @@ This asset provides structured templates and examples for commit messages. Use i
 
 ---
 
-<!-- /ANCHOR:basic-format -->
-<!-- ANCHOR:type-reference -->
 ## 3. TYPE REFERENCE
 
 | Type | When to Use | Breaking? |
@@ -70,8 +65,6 @@ When the AI infers the commit type, use first-match priority:
 
 ---
 
-<!-- /ANCHOR:type-reference -->
-<!-- ANCHOR:scope-guidelines -->
 ## 4. SCOPE GUIDELINES
 
 **What is scope?**
@@ -103,8 +96,6 @@ Use first-match order for scope inference:
 
 ---
 
-<!-- /ANCHOR:scope-guidelines -->
-<!-- ANCHOR:description-rules -->
 ## 5. DESCRIPTION RULES
 
 ✅ **DO**:
@@ -130,8 +121,6 @@ Use first-match order for scope inference:
 
 ---
 
-<!-- /ANCHOR:description-rules -->
-<!-- ANCHOR:body-guidelines -->
 ## 6. BODY GUIDELINES
 
 **When to include a body**:
@@ -148,8 +137,6 @@ Use first-match order for scope inference:
 
 ---
 
-<!-- /ANCHOR:body-guidelines -->
-<!-- ANCHOR:footer-guidelines -->
 ## 7. FOOTER GUIDELINES
 
 ### Breaking Changes
@@ -183,8 +170,6 @@ Related to #789
 
 ---
 
-<!-- /ANCHOR:footer-guidelines -->
-<!-- ANCHOR:complete-examples -->
 ## 8. COMPLETE EXAMPLES
 
 ### Example 1: Feature with Body
@@ -201,7 +186,6 @@ Improves security and enables SSO integration.
 - Scope: `auth` (authentication component)
 - Description: Clear, imperative, under 50 chars
 - Body: Explains **why** and **what** benefits
-
 
 ### Example 2: Bug Fix with Issue
 
@@ -221,7 +205,6 @@ Fixes #234
 - Body: Explains the problem and solution
 - Footer: Links to issue
 
-
 ### Example 3: Refactor
 
 ```
@@ -236,7 +219,6 @@ middleware. Reduces code duplication and improves testability.
 - Scope: `utils` (utilities)
 - Body: Explains benefits of the refactor
 
-
 ### Example 4: Documentation
 
 ```
@@ -250,7 +232,6 @@ endpoints. Includes example requests and responses.
 - Type: `docs` (documentation)
 - No scope needed (general documentation)
 - Description: Clear about what docs were updated
-
 
 ### Example 5: Breaking Change
 
@@ -272,7 +253,6 @@ Update client code to handle new response structure:
 - Body: Explains the change
 - Footer: Clear breaking change notice with migration info
 
-
 ### Example 6: Multiple Issues
 
 ```
@@ -293,8 +273,6 @@ Related to #125
 
 ---
 
-<!-- /ANCHOR:complete-examples -->
-<!-- ANCHOR:bad-examples -->
 ## 9. BAD EXAMPLES
 
 ### ❌ Example 1: Vague
@@ -414,8 +392,6 @@ Adds documentation for new login endpoints.
 
 ---
 
-<!-- /ANCHOR:bad-examples -->
-<!-- ANCHOR:templates-for-common-scenarios -->
 ## 10. TEMPLATES FOR COMMON SCENARIOS
 
 ### Feature Addition
@@ -468,8 +444,6 @@ chore(deps): <update/add X to version Y>
 
 ---
 
-<!-- /ANCHOR:templates-for-common-scenarios -->
-<!-- ANCHOR:commit-message-checklist -->
 ## 11. COMMIT MESSAGE CHECKLIST
 
 Before committing, verify:
@@ -489,8 +463,6 @@ Before committing, verify:
 
 ---
 
-<!-- /ANCHOR:commit-message-checklist -->
-<!-- ANCHOR:quick-reference -->
 ## 12. QUICK REFERENCE
 
 ### Imperative Mood Conversion
@@ -524,11 +496,8 @@ chore: update <dependency>
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 13. RELATED RESOURCES
 
 - [Conventional Commits Specification](https://www.conventionalcommits.org/) - Official specification for commit message formatting
 - [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) - Best practices guide by Chris Beams
 - [Semantic Versioning](https://semver.org/) - Versioning specification that aligns with Conventional Commits
-<!-- /ANCHOR:related-resources -->

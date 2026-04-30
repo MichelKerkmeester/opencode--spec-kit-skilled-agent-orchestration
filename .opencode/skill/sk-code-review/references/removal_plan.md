@@ -9,7 +9,6 @@ Template for identifying safe deletion candidates and planning deferred removals
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -25,11 +24,9 @@ Recommend deletion only when usage evidence, verification steps, and rollback pl
 - **P0**: Immediate removal required (critical security/correctness cost).
 - **P1**: Remove in current sprint/release window.
 - **P2**: Defer with migration plan and owner.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:safe-now -->
 ## 2. SAFE TO REMOVE NOW
 
 Use this block when evidence indicates no active consumers.
@@ -48,11 +45,9 @@ Minimum checks before recommending immediate removal:
 - [ ] Dynamic/reflective usage considered
 - [ ] Consumer ownership verified
 - [ ] Verification commands listed
-<!-- /ANCHOR:safe-now -->
 
 ---
 
-<!-- ANCHOR:defer -->
 ## 3. DEFERRED REMOVAL PLAN
 
 Use this block when active consumers still exist.
@@ -72,11 +67,9 @@ Deferred removal guidance:
 - Keep timeline concrete.
 - Identify owner explicitly.
 - Define a verification gate before execution.
-<!-- /ANCHOR:defer -->
 
 ---
 
-<!-- ANCHOR:reviewer-checklist -->
 ## 4. REVIEWER CHECKLIST
 
 - [ ] Removal candidate classified (`safe now` vs `deferred`)
@@ -86,11 +79,9 @@ Deferred removal guidance:
 - [ ] Rollback plan documented
 
 If any item is missing, keep the recommendation at P2 with follow-up actions.
-<!-- /ANCHOR:reviewer-checklist -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 5. RELATED RESOURCES
 
 - [quick_reference.md](./quick_reference.md) - Baseline review protocol and severity handling.
@@ -99,4 +90,3 @@ If any item is missing, keep the recommendation at P2 with follow-up actions.
 - [solid_checklist.md](./solid_checklist.md) - Architecture ownership checks for extraction or deletion.
 
 Overlay portability: apply this removal plan with stack-specific constraints from `sk-code-opencode` or `sk-code`.
-<!-- /ANCHOR:related-resources -->

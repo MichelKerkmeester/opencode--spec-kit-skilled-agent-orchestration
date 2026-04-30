@@ -9,7 +9,13 @@ The phase system decomposes complex specifications into independently trackable 
 
 ---
 
-## When Phases Apply
+## 1. OVERVIEW
+
+The phase system is a behavioral overlay that decomposes complex specifications into independently trackable child spec folders without introducing a new documentation level. This reference covers when phases apply, how complexity is scored, suggested phase counts, lifecycle stages, key commands, folder structure, and links to the deeper taxonomy and validation references.
+
+---
+
+## 2. WHEN PHASES APPLY
 
 Phase decomposition is suggested when **both** conditions are met:
 
@@ -20,7 +26,7 @@ If only one condition is met, the specification proceeds as a standard (non-phas
 
 ---
 
-## Complexity Scoring (5 Dimensions)
+## 3. COMPLEXITY SCORING (5 DIMENSIONS)
 
 | Dimension                | Points | Condition                                             |
 |--------------------------|--------|-------------------------------------------------------|
@@ -34,7 +40,7 @@ If only one condition is met, the specification proceeds as a standard (non-phas
 
 ---
 
-## Phase Count Mapping
+## 4. PHASE COUNT MAPPING
 
 | Score Range | Suggested Phases | Rationale                                   |
 |-------------|------------------|---------------------------------------------|
@@ -46,7 +52,7 @@ Phase counts are suggestions. The user decides the final count and organization.
 
 ---
 
-## Lifecycle
+## 5. LIFECYCLE
 
 ```
 CREATE  --> Parent folder + Phase Documentation Map + child folders with back-references
@@ -61,7 +67,7 @@ VALIDATE  --> Recursive validation of all children + parent as integrated unit
 
 ---
 
-## Key Commands and Scripts
+## 6. KEY COMMANDS AND SCRIPTS
 
 | Command / Script                        | Purpose                                            |
 |-----------------------------------------|----------------------------------------------------|
@@ -73,7 +79,7 @@ VALIDATE  --> Recursive validation of all children + parent as integrated unit
 
 ---
 
-## Folder Structure
+## 7. FOLDER STRUCTURE
 
 ```
 specs/###-parent-feature/
@@ -99,9 +105,9 @@ phase: 1 of N
 
 ---
 
-## Cross-References
+## 8. CROSS-REFERENCES
 
-- [phase_definitions.md](../references/structure/phase_definitions.md) -- Full phase taxonomy, detection scoring, and lifecycle rules
-- [phase_checklists.md](../references/validation/phase_checklists.md) -- Phase-specific validation checklists
-- [sub_folder_versioning.md](../references/structure/sub_folder_versioning.md) -- Sub-folder versioning (distinct from phase decomposition)
-- [quick_reference.md](../references/workflows/quick_reference.md) -- Phase workflow shortcuts and decision tables
+- [phase_definitions.md](phase_definitions.md) -- Full phase taxonomy, detection scoring, and lifecycle rules
+- [phase_checklists.md](../validation/phase_checklists.md) -- Phase-specific validation checklists
+- [sub_folder_versioning.md](sub_folder_versioning.md) -- Sub-folder versioning (distinct from phase decomposition)
+- [quick_reference.md](../workflows/quick_reference.md) -- Phase workflow shortcuts and decision tables

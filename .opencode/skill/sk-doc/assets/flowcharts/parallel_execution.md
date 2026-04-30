@@ -4,7 +4,6 @@ Demonstrates multiple tasks running simultaneously with synchronization points.
 
 ---
 
-<!-- ANCHOR:use-case-deployment-pipeline-with-parallel-tests -->
 ## Use Case: Deployment Pipeline with Parallel Tests
 
 ```
@@ -168,8 +167,6 @@ Demonstrates multiple tasks running simultaneously with synchronization points.
 
 ---
 
-<!-- /ANCHOR:use-case-deployment-pipeline-with-parallel-tests -->
-<!-- ANCHOR:key-features-demonstrated -->
 ## Key Features Demonstrated
 
 - **Parallel blocks**: Multiple tests running simultaneously
@@ -180,8 +177,6 @@ Demonstrates multiple tasks running simultaneously with synchronization points.
 - **Detailed timing**: Duration for each phase
 - **Error handling**: Rollback and failure paths
 
-<!-- /ANCHOR:key-features-demonstrated -->
-<!-- ANCHOR:when-to-use-this-pattern -->
 ## When to Use This Pattern
 
 - CI/CD pipelines
@@ -190,4 +185,15 @@ Demonstrates multiple tasks running simultaneously with synchronization points.
 - Concurrent API calls
 - Distributed computing tasks
 - Multi-environment deployments
-<!-- /ANCHOR:when-to-use-this-pattern -->
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---

@@ -9,7 +9,6 @@ Quick reference for choosing the right Figma tool by priority level.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Use the priority tables to select appropriate tools. HIGH priority tools should 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:priority-levels -->
 ## 2. PRIORITY LEVELS
 
 ### Definitions
@@ -45,8 +42,6 @@ Use the priority tables to select appropriate tools. HIGH priority tools should 
 
 ---
 
-<!-- /ANCHOR:priority-levels -->
-<!-- ANCHOR:high-priority-tools-5 -->
 ## 3. HIGH PRIORITY TOOLS (5)
 
 Core design file access - use actively.
@@ -68,8 +63,6 @@ Core design file access - use actively.
 
 ---
 
-<!-- /ANCHOR:high-priority-tools-5 -->
-<!-- ANCHOR:medium-priority-tools-7 -->
 ## 4. MEDIUM PRIORITY TOOLS (7)
 
 Useful but situational - use when needed.
@@ -93,8 +86,6 @@ Useful but situational - use when needed.
 
 ---
 
-<!-- /ANCHOR:medium-priority-tools-7 -->
-<!-- ANCHOR:low-priority-tools-6 -->
 ## 5. LOW PRIORITY TOOLS (6)
 
 Rarely needed - use sparingly.
@@ -117,8 +108,6 @@ Rarely needed - use sparingly.
 
 ---
 
-<!-- /ANCHOR:low-priority-tools-6 -->
-<!-- ANCHOR:tools-by-category -->
 ## 6. TOOLS BY CATEGORY
 
 ### File Management (4)
@@ -171,8 +160,6 @@ Rarely needed - use sparingly.
 
 ---
 
-<!-- /ANCHOR:tools-by-category -->
-<!-- ANCHOR:decision-flowchart -->
 ## 7. DECISION FLOWCHART
 
 ```
@@ -206,8 +193,6 @@ What do you need?
 
 ---
 
-<!-- /ANCHOR:decision-flowchart -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Guides
@@ -219,4 +204,3 @@ What do you need?
 
 - [SKILL.md](../SKILL.md) - Main skill instructions
 
-<!-- /ANCHOR:related-resources -->

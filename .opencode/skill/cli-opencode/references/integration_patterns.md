@@ -9,7 +9,6 @@ How cli-opencode positions itself relative to the four sibling cli-* skills, the
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The four sibling cli-* skills exist because their target binaries are external runtimes — Claude Code, Codex, Copilot, Gemini do not own this repo. OpenCode owns this repo. A naive "delegate to opencode" skill makes no sense for an in-OpenCode operator (it would create a circular dispatch).
@@ -24,9 +23,6 @@ cli-opencode resolves this by documenting THREE orthogonal use cases. The smart 
 
 The cycle ADR-001 protects against is the operator inside OpenCode asking cli-opencode to "delegate this exact prompt to OpenCode" — that case is REFUSED at the routing layer.
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:use-case-1 -->
 ## 2. USE CASE 1 — EXTERNAL RUNTIME TO OPENCODE
 
 ### When to use
@@ -79,9 +75,6 @@ opencode run \
 
 This is the canonical cross-AI dispatch path. It gives external runtimes a one-shot bridge into the project's full runtime without forcing the operator to leave their host session.
 
-<!-- /ANCHOR:use-case-1 -->
-
-<!-- ANCHOR:use-case-2 -->
 ## 3. USE CASE 2 — IN-OPENCODE PARALLEL DETACHED SESSION
 
 ### When to use
@@ -144,9 +137,6 @@ Parallel research, ablation studies, and worker farms need N concurrent sessions
 
 Per CHK-033, the calling AI MUST confirm with the operator before passing `--share`. The share URL exposes the session's contents to anyone with the URL, so it is opt-in.
 
-<!-- /ANCHOR:use-case-2 -->
-
-<!-- ANCHOR:use-case-3 -->
 ## 4. USE CASE 3 — CROSS-AI ORCHESTRATION HANDBACK
 
 ### When to use
@@ -205,9 +195,6 @@ The invocation shape is identical to use case 1 — the difference is the prompt
 
 Codex, Copilot, and Gemini cannot load this project's plugin / skill / MCP runtime on their own. cli-opencode is the documented bridge that lets a Codex-led orchestration call into the project's spec-kit workflows without leaving the Codex session.
 
-<!-- /ANCHOR:use-case-3 -->
-
-<!-- ANCHOR:decision-tree -->
 ## 5. SMART-ROUTER DECISION TREE
 
 The skill's smart router picks between the three use cases (or refuses) using this decision tree:
@@ -271,9 +258,6 @@ Options:
    use case 2 instead of refusal.
 ```
 
-<!-- /ANCHOR:decision-tree -->
-
-<!-- ANCHOR:silent-stdin -->
 ## 6. SILENT STDIN CONSUMPTION (BACKGROUND DISPATCH)
 
 When dispatching `opencode run` in the background inside a `while read` loop, the same trap that affects cli-codex applies: the backgrounded process inherits the loop's stdin and silently consumes the remaining input.
@@ -300,18 +284,12 @@ done < input.jsonl
 
 The `</dev/null` redirect prevents the backgrounded process from consuming the loop's stdin. This pattern is required for any cli-opencode background dispatch inside a read loop.
 
-<!-- /ANCHOR:silent-stdin -->
-
-<!-- ANCHOR:memory-handback -->
 ## 7. MEMORY HANDBACK
 
 cli-opencode dispatches that produce evidence for a Spec Kit Memory save MUST include the Memory Epilogue at the end of the prompt. The dispatched session adds `MEMORY_HANDBACK_START` / `MEMORY_HANDBACK_END` delimiters around a structured JSON payload that the calling AI extracts and feeds to `generate-context.js`.
 
 The full Memory Handback Protocol is shared with cli-claude-code and cli-codex. See SKILL.md Section 4 (RULES) for the canonical 7-step procedure. The same JSON normalization (camelCase / snake_case aliases) and post-010 save gates apply.
 
-<!-- /ANCHOR:memory-handback -->
-
-<!-- ANCHOR:related -->
 ## 8. RELATED RESOURCES
 
 - `./cli_reference.md` - Full subcommand and flag reference
@@ -320,4 +298,3 @@ The full Memory Handback Protocol is shared with cli-claude-code and cli-codex. 
 - `../assets/prompt_templates.md` - Copy-paste templates per use case
 - `../SKILL.md` - Skill entry point and smart router pseudocode
 
-<!-- /ANCHOR:related -->

@@ -9,16 +9,12 @@ The five cli-* sibling skills (`cli-claude-code`, `cli-codex`, `cli-copilot`, `c
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Canonical helper-function bodies (_task_text, _guard_in_skill, discover_markdown_resources, score_intents, select_intents, route_<provider>_resources) shared across the five cli-* sibling skills. Each cli-* skill provides its own INTENT_SIGNALS, RESOURCE_MAP, LOADING_LEVELS, UNKNOWN_FALLBACK_CHECKLIST inline.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:helper-functions -->
 ## 2. HELPER FUNCTIONS
 
 ```python
@@ -117,9 +113,6 @@ Replace `<PROVIDER>` with the provider slug (`claude_code`, `codex`, `copilot`, 
 
 ---
 
-<!-- /ANCHOR:helper-functions -->
-
-<!-- ANCHOR:loading-level-semantics -->
 ## 3. LOADING-LEVEL SEMANTICS
 
 | Level         | When to load            | Resources                                                       |
@@ -130,9 +123,6 @@ Replace `<PROVIDER>` with the provider slug (`claude_code`, `codex`, `copilot`, 
 
 ---
 
-<!-- /ANCHOR:loading-level-semantics -->
-
-<!-- ANCHOR:unknown-fallback-return-contract -->
 ## 4. UNKNOWN_FALLBACK RETURN CONTRACT
 
 When no keyword matches `score_intents()` returns all-zero scores. The router returns:
@@ -151,9 +141,6 @@ The caller surfaces `disambiguation_checklist` to the user before re-routing.
 
 ---
 
-<!-- /ANCHOR:unknown-fallback-return-contract -->
-
-<!-- ANCHOR:provider-specific-dictionaries -->
 ## 5. PROVIDER-SPECIFIC DICTIONARIES
 
 Each cli-* SKILL.md provides its own:
@@ -166,4 +153,3 @@ See the per-skill SKILL.md §2 Smart Routing for these inline dictionaries.
 
 ---
 
-<!-- /ANCHOR:provider-specific-dictionaries -->

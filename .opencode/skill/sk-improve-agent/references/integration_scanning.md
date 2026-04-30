@@ -9,7 +9,6 @@ How `scan-integration.cjs` discovers the full integration surface of any agent a
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -30,8 +29,6 @@ An agent is not just its `.md` file. It exists across canonical, mirrors, comman
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:surfaces -->
 ## 2. SCANNED SURFACES
 
 | Surface | Location Pattern | What It Checks |
@@ -48,8 +45,6 @@ An agent is not just its `.md` file. It exists across canonical, mirrors, comman
 
 ---
 
-<!-- /ANCHOR:surfaces -->
-<!-- ANCHOR:sync-detection -->
 ## 3. MIRROR SYNC DETECTION
 
 Mirror sync is determined by signal matching, not byte-identical comparison:
@@ -61,8 +56,6 @@ Mirror sync is determined by signal matching, not byte-identical comparison:
 
 ---
 
-<!-- /ANCHOR:sync-detection -->
-<!-- ANCHOR:usage -->
 ## 4. USAGE
 
 ```bash
@@ -99,12 +92,9 @@ The output JSON includes a `summary` with `totalSurfaces`, `existingCount`, `mis
 
 ---
 
-<!-- /ANCHOR:usage -->
-<!-- ANCHOR:related-resources -->
 ## 5. RELATED RESOURCES
 
 - `evaluator_contract.md` for the 5-dimension scoring rubric
 - `../scripts/scan-integration.cjs` for the implementation
 - `../scripts/check-mirror-drift.cjs` for the original mirror-only scanner
 
-<!-- /ANCHOR:related-resources -->

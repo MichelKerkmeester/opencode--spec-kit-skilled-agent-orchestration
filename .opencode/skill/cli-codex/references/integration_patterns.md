@@ -9,7 +9,6 @@ Proven patterns for orchestrating Codex CLI from any AI assistant session.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -27,10 +26,6 @@ Each pattern documented here includes the rationale, implementation template, an
 - You want to run parallel AI tasks while the calling AI continues working
 - Complex workflows benefit from structured, multi-stage generation and validation
 - You need controlled file modification with sandbox-enforced safety boundaries
-
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:generate-review-fix-cycle -->
 
 ## 2. GENERATE-REVIEW-FIX CYCLE
 
@@ -70,10 +65,6 @@ codex exec \
 - Always validate the final output yourself (neither AI is infallible)
 - Keep the review focused: bullet points of specific issues, not general feedback
 - Limit to 2 fix cycles maximum; diminishing returns beyond that
-
-<!-- /ANCHOR:generate-review-fix-cycle -->
-
-<!-- ANCHOR:json-output-processing -->
 
 ## 3. JSON OUTPUT PROCESSING
 
@@ -127,10 +118,6 @@ jq '.issues' /tmp/analysis.json
 - Extracting metrics, function signatures, or dependency lists
 - Feeding Codex analysis into the calling AI's decision logic
 - Building automated pipelines that branch on structured output
-
-<!-- /ANCHOR:json-output-processing -->
-
-<!-- ANCHOR:background-execution -->
 
 ## 4. BACKGROUND EXECUTION
 
@@ -242,10 +229,6 @@ done < input.jsonl
 
 **Always pair `codex exec ... &` inside a read-loop with `</dev/null` on the redirection.** This is independent of whether codex itself uses stdin — the issue is shared FD consumption, not a feature.
 
-<!-- /ANCHOR:background-execution -->
-
-<!-- ANCHOR:model-selection-strategy -->
-
 ## 5. MODEL SELECTION STRATEGY
 
 **Codex CLI supports 2 models. Choose based on task type.**
@@ -304,10 +287,6 @@ model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 ```
 
-<!-- /ANCHOR:model-selection-strategy -->
-
-<!-- ANCHOR:sandbox-strategy -->
-
 ## 6. SANDBOX STRATEGY
 
 **Choose the least-permissive sandbox that allows the task to succeed.**
@@ -357,10 +336,6 @@ codex exec "@/tmp/files-to-change.txt Apply the auth refactor to these files" \
 | `danger-full-access` + `never` approval | Unrestricted, unreviewed changes | Pair with `untrusted` approval |
 | `workspace-write` + blind background | Parallel writes to same files | Use `read-only` for parallel background tasks |
 | `workspace-write` for pure analysis | Unnecessary permissions | Use `read-only`; it's sufficient for analysis |
-
-<!-- /ANCHOR:sandbox-strategy -->
-
-<!-- ANCHOR:context-enrichment -->
 
 ## 7. CONTEXT ENRICHMENT
 
@@ -420,10 +395,6 @@ codex exec --search \
   --sandbox workspace-write --model gpt-5.5
 ```
 
-<!-- /ANCHOR:context-enrichment -->
-
-<!-- ANCHOR:validation-pipeline -->
-
 ## 8. VALIDATION PIPELINE
 
 **Multi-stage validation of Codex-generated output.**
@@ -474,10 +445,6 @@ codex exec \
 - Security-sensitive code (auth, payments, data handling)
 - Code that lacks test coverage
 
-<!-- /ANCHOR:validation-pipeline -->
-
-<!-- ANCHOR:incremental-refinement -->
-
 ## 9. INCREMENTAL REFINEMENT
 
 **Build complex artifacts in stages, verifying each stage before proceeding.**
@@ -522,10 +489,6 @@ npx jest src/task-queue/__tests__/queue.test.ts
 - Building new modules or subsystems from scratch
 - Complex features with multiple interacting components
 - When you want to maintain control over architectural decisions at each step
-
-<!-- /ANCHOR:incremental-refinement -->
-
-<!-- ANCHOR:cross-validation-with-claude -->
 
 ## 10. CROSS-VALIDATION WITH CLAUDE
 
@@ -573,10 +536,6 @@ codex exec "Create a caching layer with TTL support and LRU eviction" \
 | **Specialist routing** | Route by strength (table above) | Efficiency optimization |
 | **Red team** | A writes, B tries to break | Auth, payments, data access |
 | **Sandbox isolation** | Codex generates in sandboxed environment | Risky migrations or system changes |
-
-<!-- /ANCHOR:cross-validation-with-claude -->
-
-<!-- ANCHOR:session-continuity -->
 
 ## 11. SESSION CONTINUITY
 
@@ -636,10 +595,6 @@ codex exec --session-id "$FORK_ID" \
 - For cross-AI orchestration, it is often simpler to re-provide context via `@file` references than to manage session IDs across multiple `codex exec` calls.
 - Use sessions when the task genuinely builds on prior Codex reasoning that would be costly to re-establish.
 - Fork before any operation that could leave the session in a broken state.
-
-<!-- /ANCHOR:session-continuity -->
-
-<!-- ANCHOR:anti-patterns -->
 
 ## 12. ANTI-PATTERNS
 
@@ -755,4 +710,3 @@ codex exec "@src/auth.ts Fix the issues identified: $(cat /tmp/analysis.txt)" \
   --sandbox workspace-write --model gpt-5.5
 ```
 
-<!-- /ANCHOR:anti-patterns -->

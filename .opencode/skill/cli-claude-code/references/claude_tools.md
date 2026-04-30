@@ -9,7 +9,6 @@ Reference for all Claude Code CLI capabilities, highlighting unique features and
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -27,11 +26,8 @@ Covers all built-in capabilities of Claude Code CLI, highlights what is unique c
 - Mapping calling AI capabilities to Claude Code equivalents
 - Leveraging Claude Code-exclusive features (extended thinking, --json-schema, --permission-mode plan)
 
-<!-- /ANCHOR:overview -->
-
 ---
 
-<!-- ANCHOR:unique-capabilities -->
 ## 2. UNIQUE CAPABILITIES
 
 ### Extended Thinking
@@ -223,11 +219,8 @@ claude -p "Full security audit of the entire src/ directory" \
 
 **How it works:** Hooks are configured in Claude Code's settings and fire automatically. For example, a hook could run linting after every file edit, or log every Bash command execution. This is transparent to the calling AI.
 
-<!-- /ANCHOR:unique-capabilities -->
-
 ---
 
-<!-- ANCHOR:comparison-table -->
 ## 3. THREE-WAY COMPARISON TABLE
 
 ### Claude Code vs Gemini CLI vs Codex CLI
@@ -269,11 +262,8 @@ claude -p "Full security audit of the entire src/ directory" \
 | Visual input (screenshots) | **Gemini** or **Codex** | Both support `--image` |
 | Persistent project memory | **Claude Code** | Spec Kit Memory MCP |
 
-<!-- /ANCHOR:comparison-table -->
-
 ---
 
-<!-- ANCHOR:integration-tips -->
 ## 4. INTEGRATION TIPS FOR CALLING AIs
 
 ### Combine CLI Strengths
@@ -333,4 +323,3 @@ if echo "$OUTPUT" | grep -q "CLAUDECODE"; then
 fi
 ```
 
-<!-- /ANCHOR:integration-tips -->

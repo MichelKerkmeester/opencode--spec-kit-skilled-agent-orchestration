@@ -9,7 +9,6 @@ Complete workflow documentation for creating isolated git workspaces with minima
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Git worktrees create isolated working directories sharing the same repository database. Each worktree can have a different branch checked out, allowing parallel work without context switching.
@@ -18,8 +17,6 @@ Git worktrees create isolated working directories sharing the same repository da
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:workspace-choice-enforcement -->
 ## 2. WORKSPACE CHOICE ENFORCEMENT
 
 **This workflow only applies when user has explicitly chosen "Create a git worktree" (Option A).**
@@ -38,8 +35,6 @@ If the user has not been prompted or selected a different option:
 
 ---
 
-<!-- /ANCHOR:workspace-choice-enforcement -->
-<!-- ANCHOR:process-overview -->
 ## 3. PROCESS OVERVIEW
 
 1. Determine worktree directory location (priority: existing → AGENTS.md → ask user)
@@ -56,8 +51,6 @@ If the user has not been prompted or selected a different option:
 
 ---
 
-<!-- /ANCHOR:process-overview -->
-<!-- ANCHOR:complete-workflow -->
 ## 4. COMPLETE WORKFLOW
 
 ### Step 1: Gather User Inputs
@@ -111,7 +104,6 @@ Which would you prefer?
 
 **Validation**: `directory_determined`
 
-
 ### Step 3: Safety Verification
 
 **Purpose**: Ensure worktree directory won't pollute repository
@@ -138,7 +130,6 @@ git check-ignore -n .worktrees 2>/dev/null \
 - No `.gitignore` verification needed (outside project)
 
 **Validation**: `safety_verified`
-
 
 ### Step 4: Create Worktree
 
@@ -186,7 +177,6 @@ cd "$path"
 ```
 
 **Validation**: `worktree_created`
-
 
 ### Step 5: Project Setup
 
@@ -252,7 +242,6 @@ corepack prepare
 
 **Validation**: `dependencies_installed`
 
-
 ### Step 6: Baseline Verification
 
 **Purpose**: Ensure worktree starts in known-good state
@@ -278,7 +267,6 @@ Fast mode (large repos):
 
 **Validation**: `baseline_verified`
 
-
 ### Step 7: Final Report
 
 **Purpose**: Communicate location and status
@@ -295,8 +283,6 @@ Fast mode (large repos):
 
 ---
 
-<!-- /ANCHOR:complete-workflow -->
-<!-- ANCHOR:branch-strategy-guide -->
 ## 5. BRANCH STRATEGY GUIDE
 
 ### Main Temp (Default - Recommended) ⭐
@@ -324,7 +310,6 @@ git branch -d temp/fix-modal
 
 **Best for**: 80% of development work
 
-
 ### Feature Branch
 
 **When to use**:
@@ -341,7 +326,6 @@ git worktree add .worktrees/user-auth -b feature/user-auth
 ```
 
 **Best for**: Major features, team collaboration requiring review
-
 
 ### Main Detached (Experimental)
 
@@ -362,8 +346,6 @@ git worktree add --detach .worktrees/experiment main
 
 ---
 
-<!-- /ANCHOR:branch-strategy-guide -->
-<!-- ANCHOR:decision-matrix -->
 ## 6. DECISION MATRIX
 
 | Situation | Directory Strategy | Branch Strategy |
@@ -378,8 +360,6 @@ git worktree add --detach .worktrees/experiment main
 
 ---
 
-<!-- /ANCHOR:decision-matrix -->
-<!-- ANCHOR:common-mistakes -->
 ## 7. COMMON MISTAKES
 
 **Skipping .gitignore verification**:
@@ -404,8 +384,6 @@ git worktree add --detach .worktrees/experiment main
 
 ---
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:example-workflows -->
 ## 8. EXAMPLE WORKFLOWS
 
 ### Example 1: Main Temp (Default Workflow) ⭐
@@ -436,7 +414,6 @@ Agent: "Merging back to main and cleaning up temp branch..."
 > git checkout main && git merge temp/modal-fix && git branch -d temp/modal-fix
 ```
 
-
 ### Example 2: Feature Branch (Long-Running Work)
 
 ```text
@@ -460,7 +437,6 @@ Agent: "I'm using the git-worktrees skill with feature branch strategy."
 ✓ Tests passing (47 tests, 0 failures)
 ✓ Ready to implement user authentication
 ```
-
 
 ### Example 3: Main Detached (Experimental)
 
@@ -494,8 +470,6 @@ Agent: "Creating a new worktree and branch from this detached HEAD state..."
 
 ---
 
-<!-- /ANCHOR:example-workflows -->
-<!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
 
 ### Worktree Creation Fails
@@ -519,7 +493,6 @@ git worktree list
 git worktree prune
 ```
 
-
 ### Tests Fail After Creation
 
 **Symptom**: Baseline tests fail in new worktree
@@ -531,7 +504,6 @@ git worktree prune
 4. If proceed: Document that baseline is broken
 5. If abort: Remove worktree
 
-
 ### Cannot Determine Project Type
 
 **Symptom**: No package.json, Cargo.toml, requirements.txt, etc.
@@ -540,7 +512,6 @@ git worktree prune
 1. Skip automated dependency install
 2. Ask user: "Cannot detect project type. What command should I run to set up dependencies?"
 3. Document command in AGENTS.md for future use
-
 
 ### Directory Not in .gitignore
 
@@ -553,8 +524,6 @@ git worktree prune
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:success-criteria -->
 ## 10. SUCCESS CRITERIA
 
 **Worktree creation is successful when**:
@@ -572,8 +541,6 @@ git worktree prune
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Reference Files
@@ -585,4 +552,3 @@ git worktree prune
 ### External Resources
 - [Git Documentation: git-worktree](https://git-scm.com/docs/git-worktree) - Official git worktree documentation
 - [Superpowers using-git-worktrees skill](https://github.com/obra/superpowers/blob/main/skills/using-git-worktrees/SKILL.md) - Original worktree skill reference
-<!-- /ANCHOR:related-resources -->

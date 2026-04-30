@@ -9,7 +9,6 @@ Algorithms and protocols for determining when the deep research loop should stop
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Convergence detection prevents infinite loops and stops research when additional iterations yield diminishing returns. The algorithm evaluates multiple signals to make a stop/continue/recovery decision, while the reducer publishes the resulting `convergenceScore` and `coverageBySources` into the dashboard and findings registry after every iteration.
@@ -98,8 +97,6 @@ Deep review uses the same `stopReason` enum and `legalStop` record, even though 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:shouldcontinue-algorithm -->
 ## 2. THE shouldContinue() ALGORITHM
 
 > **Segment Awareness (REFERENCE-ONLY)**: When segments are explicitly enabled, `state.iterations` may be pre-filtered to the current segment. The live workflow uses a single segment by default.
@@ -474,8 +471,6 @@ Checks are evaluated in this order (first match wins):
 
 ---
 
-<!-- /ANCHOR:shouldcontinue-algorithm -->
-<!-- ANCHOR:signal-definitions -->
 ## 3. SIGNAL DEFINITIONS
 
 ### newInfoRatio (0.0 to 1.0)
@@ -613,8 +608,6 @@ See state_format.md Section 3 for JSONL schema details.
 
 ---
 
-<!-- /ANCHOR:signal-definitions -->
-<!-- ANCHOR:stuck-recovery-protocol -->
 ## 4. STUCK RECOVERY PROTOCOL
 
 When `stuckCount >= stuckThreshold` (default 3):
@@ -716,8 +709,6 @@ Add to JSONL: `{"type":"event","event":"stuck_recovery","fromIteration":N,"outco
 
 ---
 
-<!-- /ANCHOR:stuck-recovery-protocol -->
-<!-- ANCHOR:tiered-error-recovery-protocol -->
 ## 5. TIERED ERROR RECOVERY PROTOCOL
 
 Five escalating tiers for handling errors during the research loop. Each tier has a max-attempt count before escalating to the next, and the order never reverses.
@@ -772,8 +763,6 @@ When recovery tiers 1-4 have failed:
 
 ---
 
-<!-- /ANCHOR:tiered-error-recovery-protocol -->
-<!-- ANCHOR:statistical-validation -->
 ## 6. STATISTICAL VALIDATION
 
 ### MAD-Based Noise Floor Detection
@@ -831,8 +820,6 @@ This provides diagnostic visibility without overriding the composite convergence
 
 ---
 
-<!-- /ANCHOR:statistical-validation -->
-<!-- ANCHOR:convergence-threshold-tuning -->
 ## 7. CONVERGENCE THRESHOLD TUNING
 
 | Threshold | Effect | Use When |
@@ -860,8 +847,6 @@ Budget constraints:
 
 ---
 
-<!-- /ANCHOR:convergence-threshold-tuning -->
-<!-- ANCHOR:edge-cases -->
 ## 8. EDGE CASES
 
 ### Early Convergence (< 3 iterations)
@@ -882,8 +867,6 @@ If stuck detection triggers but questions remain unanswered:
 
 ---
 
-<!-- /ANCHOR:edge-cases -->
-<!-- ANCHOR:convergence-reporting -->
 ## 9. CONVERGENCE REPORTING
 
 When the loop stops, the YAML workflow generates a convergence report:
@@ -917,11 +900,8 @@ Error recovery tiers used: [list or "none"]
 
 This report is included in the final JSONL entry and displayed to the user.
 
-<!-- /ANCHOR:convergence-reporting -->
-
 ---
 
-<!-- ANCHOR:review-mode-convergence -->
 ## 10. REVIEW MODE CONVERGENCE
 
 Review mode uses a severity-weighted variant of the convergence algorithm. Instead of measuring "new information" against research questions, it measures "new findings" against the simplified four-dimension review model and machine-verifiable traceability coverage.
@@ -1179,9 +1159,6 @@ When convergence signals fire but review is incomplete:
 
 ---
 
-<!-- /ANCHOR:review-mode-convergence -->
-
-<!-- ANCHOR:graph-aware-convergence -->
 ## 11. GRAPH-AWARE CONVERGENCE MODEL
 
 Coverage graph signals provide structural convergence evidence that complements the existing statistical signals. When `graphEvents` are present in iteration records, the reducer builds an in-memory coverage graph and derives additional signals for the legal-stop gate evaluation.
@@ -1237,9 +1214,6 @@ The relation weights in `coverage-graph-core.cjs` are inherited from the memory 
 
 ---
 
-<!-- /ANCHOR:graph-aware-convergence -->
-
-<!-- ANCHOR:optimizer-tunable-fields -->
 ## OPTIMIZER-TUNABLE THRESHOLDS
 
 The following convergence thresholds are managed by the offline loop optimizer (042.004). Changes to these fields are proposed through the optimizer's advisory-only promotion gate and reviewed by humans before adoption.
@@ -1265,4 +1239,3 @@ The following fields are runtime contracts and MUST NOT be modified by the optim
 
 The authoritative registry of tunable vs locked fields is maintained at:
 `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
-<!-- /ANCHOR:optimizer-tunable-fields -->

@@ -9,7 +9,6 @@ Reference for all Codex CLI capabilities, highlighting unique features and Claud
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -27,11 +26,8 @@ Covers all built-in capabilities available in Codex CLI, highlights what is uniq
 - Mapping Claude Code capabilities to Codex CLI equivalents
 - Leveraging Codex-exclusive features (/review workflow, --search, MCP, session management)
 
-<!-- /ANCHOR:overview -->
-
 ---
 
-<!-- ANCHOR:unique-capabilities -->
 ## 2. UNIQUE CAPABILITIES (NOT IN CLAUDE CODE)
 
 These capabilities are exclusive to Codex CLI or provide significantly different workflows.
@@ -266,11 +262,8 @@ codex cloud "Generate comprehensive unit tests for this project" \
 
 **Note:** Requires appropriate account permissions and may incur additional usage costs.
 
-<!-- /ANCHOR:unique-capabilities -->
-
 ---
 
-<!-- ANCHOR:standard-tools -->
 ## 3. STANDARD TOOLS (SIMILAR TO CLAUDE CODE)
 
 These capabilities provide functionality comparable to Claude Code's built-in tools, with Codex-specific syntax variations.
@@ -302,11 +295,8 @@ These capabilities provide functionality comparable to Claude Code's built-in to
 | Clarification | Ask for input when needed | Automatic within TUI sessions |
 | Task tracking | Internal task management | Built into session context |
 
-<!-- /ANCHOR:standard-tools -->
-
 ---
 
-<!-- ANCHOR:comparison-table -->
 ## 4. CLAUDE CODE VS. CODEX CLI CAPABILITY COMPARISON
 
 | Capability | Claude Code Tool | Codex CLI Capability | Notes |
@@ -331,11 +321,8 @@ These capabilities provide functionality comparable to Claude Code's built-in to
 | **Cloud execution** | Not built-in | `codex cloud` | Codex-exclusive |
 | **Agent system** | `.claude/agents/` | `.codex/agents/*.toml` | Both support specialized agents |
 
-<!-- /ANCHOR:comparison-table -->
-
 ---
 
-<!-- ANCHOR:sandbox-modes -->
 ## 5. SANDBOX MODES
 
 Codex CLI uses sandbox modes to control what actions are permitted during execution. Always select the most restrictive mode that allows the task to complete.
@@ -372,11 +359,8 @@ What does the task need to do?
 | Never ask | `--ask-for-approval never` | Auto-approves all operations |
 | Full auto | `--full-auto` | Low-friction mode — combine with caution |
 
-<!-- /ANCHOR:sandbox-modes -->
-
 ---
 
-<!-- ANCHOR:tool-invocation -->
 ## 6. CAPABILITY INVOCATION
 
 ### Automatic Selection
@@ -412,11 +396,8 @@ codex exec "Implement this component based on the design" \
 codex resume abc123
 ```
 
-<!-- /ANCHOR:tool-invocation -->
-
 ---
 
-<!-- ANCHOR:best-practices -->
 ## 7. BEST PRACTICES
 
 ### When to Use --search
@@ -498,4 +479,3 @@ codex exec "Generate comprehensive tests for @./src/utils/" \
   --model gpt-5.5 --sandbox workspace-write 2>&1
 ```
 
-<!-- /ANCHOR:best-practices -->

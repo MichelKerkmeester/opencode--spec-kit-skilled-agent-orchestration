@@ -1,22 +1,41 @@
 ---
-title: React ↔ Go cross-stack pairing — canonical contract
-description: The shared API contract, JWT handoff, error envelope, CORS configuration, and deploy topology between the React/Next.js frontend live branch and the Go backend live branch. Read from BOTH stacks; this is the single source of truth for what crosses the wire.
-keywords: [cross-stack, pairing, react-go, api-contract, jwt, error-envelope, cors, vercel, railway, fly-io, kerkmeester]
+title: Router Reference — Cross-Stack Pairing (Next.js ↔ Go)
+description: Canonical API contract, JWT handoff, error envelope, CORS configuration, and deploy topology between the NEXTJS frontend stack and the GO backend stack.
 ---
 
-# React ↔ Go cross-stack pairing
+# Router Reference — Cross-Stack Pairing (Next.js ↔ Go)
 
-This doc is the **canonical contract** between the React/Next.js frontend live branch and the Go backend live branch under `sk-code`. Read it from either side; it owns what crosses the wire.
-
-References:
-- React side: `references/react/implementation/api_integration.md`
-- Go side: `references/go/implementation/api_design.md`
-
-If your project deviates from any contract here, document the deviation in your project's CLAUDE.md / AGENTS.md so future work stays consistent.
+Canonical contract between the NEXTJS frontend stack and the GO backend stack — single source of truth for what crosses the wire.
 
 ---
 
-## 1. Topology
+## 1. OVERVIEW
+
+### Purpose
+
+Documents the shared API contract, JWT handoff, error envelope shape, CORS configuration, schema-mirroring discipline, pagination convention, and deploy topology between the NEXTJS and GO stacks under `sk-code`. Read from either side; this file owns what crosses the wire. If your project deviates from any contract here, document the deviation in your project's CLAUDE.md / AGENTS.md so future work stays consistent.
+
+### Core Principle
+
+The error envelope is the most important shared contract. Both stacks must agree on the exact shape — code, message, optional structured details — and on the canonical UPPER_SNAKE_CASE error codes. Everything else (auth, pagination, CORS) is built on top of that envelope.
+
+### When to Use
+
+- Wiring a new endpoint that crosses the NEXTJS ↔ GO boundary.
+- Diagnosing a 4xx / 5xx where the frontend and backend disagree about the response shape.
+- Setting up CORS for a new Vercel preview branch.
+- Adding a JWT-protected route group on the GO side and wiring the React-side fetch helper.
+- Deciding whether to introduce codegen for shared schemas (see §4).
+
+### Key Sources
+
+- NEXTJS side: `references/nextjs/implementation/api_integration.md`.
+- GO side: `references/go/implementation/api_design.md`.
+- Smart-router surfacing: `references/router/resource_loading.md` (loaded ON_DEMAND when API/auth keywords or `cross-stack pairing` triggers fire).
+
+---
+
+## 2. Topology
 
 ```
 ┌─────────────────────────────┐         ┌──────────────────────────────┐
@@ -39,7 +58,7 @@ The frontend reads `process.env.NEXT_PUBLIC_API_URL` to pick the backend; the ba
 
 ---
 
-## 2. API contract — REST + JSON envelope
+## 3. API contract — REST + JSON envelope
 
 ### Conventions
 
@@ -171,7 +190,7 @@ Always throw `APIError` on the React side; never return raw `Response`. The form
 
 ---
 
-## 3. Schema mirroring — zod ↔ go-playground/validator
+## 4. Schema mirroring — zod ↔ go-playground/validator
 
 The frontend defines validation in zod; the backend re-validates with `go-playground/validator` struct tags. **The two must agree.** They are mirrored manually — there is no codegen step.
 
@@ -195,13 +214,13 @@ type ContactInput struct {
 }
 ```
 
-**Discipline:** when changing one side, change the other in the same PR. The cross-stack pairing checklist (in both `assets/react/checklists/` and `assets/go/checklists/`) calls this out explicitly.
+**Discipline:** when changing one side, change the other in the same PR. The cross-stack pairing checklist (in both `assets/nextjs/checklists/` and `assets/go/checklists/`) calls this out explicitly.
 
-**Why not codegen?** The trade-off: codegen tools (sqlc-style for the wire) add build complexity. Two small files in two repos / packages, kept in sync by discipline + checklist, is the kerkmeester-scale answer. Reconsider at scale (~50+ shared schemas).
+**Why not codegen?** The trade-off: codegen tools (sqlc-style for the wire) add build complexity. Two small files in two repos / packages, kept in sync by discipline + checklist, is the small-scope answer. Reconsider at scale (~50+ shared schemas).
 
 ---
 
-## 4. JWT handoff — Go issues, React stores, Auth.js consumes
+## 5. JWT handoff — Go issues, React stores, Auth.js consumes
 
 ### Issuance (Go)
 
@@ -279,7 +298,7 @@ Apply to protected route groups only — public endpoints (`/health`, `/auth/log
 
 ---
 
-## 5. CORS — Go-side configuration
+## 6. CORS — Go-side configuration
 
 The Go backend must allow the React frontend's origins. Use `gin-contrib/cors`:
 
@@ -325,7 +344,7 @@ Pick option 1 unless preview environments need their own data.
 
 ---
 
-## 6. Pagination — cursor-based
+## 7. Pagination — cursor-based
 
 Cursor pagination is the default. Offset pagination breaks under concurrent inserts and gets slow at high offsets.
 
@@ -361,7 +380,7 @@ LIMIT $2;
 
 ---
 
-## 7. Deploy topology
+## 8. Deploy topology
 
 | Layer | Recommended host | Notes |
 |---|---|---|
@@ -387,7 +406,7 @@ CORS in dev: `ALLOWED_ORIGINS=http://localhost:3000` on the Go side.
 
 ---
 
-## 8. Drift detection
+## 9. Drift detection
 
 These are the contract changes most likely to break the pairing. When making any of them, both stacks must update in the same PR (or coordinated PRs):
 
@@ -400,14 +419,18 @@ These are the contract changes most likely to break the pairing. When making any
 | New protected route | gin route + middleware (Go) + fetch call site + Auth.js session check (React) |
 | Add Vercel preview pattern | `AllowOriginFunc` regex (Go) |
 
-The cross-stack pairing checklist (in both `assets/react/checklists/code_quality_checklist.md` and `assets/go/checklists/code_quality_checklist.md`) flags these as P0 verification items.
+The cross-stack pairing checklist (in both `assets/nextjs/checklists/code_quality_checklist.md` and `assets/go/checklists/code_quality_checklist.md`) flags these as P0 verification items.
 
 ---
 
-## See also
+---
 
-- `references/react/implementation/api_integration.md` — React-side fetch patterns, SWR/React Query, Server Action proxying
-- `references/go/implementation/api_design.md` — Go-side route layout, handler patterns, sqlc integration
-- `references/go/implementation/auth_jwt.md` — full JWT issuance + refresh flow on the Go side
-- `assets/react/patterns/api_call_pattern.ts` — runnable apiCall snippet
-- `assets/go/patterns/handler_pattern.go` — runnable gin handler with envelope + validator
+## 10. RELATED RESOURCES
+
+- `references/router/stack_detection.md` - which stack(s) the router detected.
+- `references/router/intent_classification.md` - which intents fired (API / DATABASE / DEPLOYMENT all surface this doc).
+- `references/router/resource_loading.md` - the ON_DEMAND keyword set that surfaces this contract.
+- `references/router/phase_lifecycle.md` - Phase 1 API integration position in the sk-code lifecycle.
+- `references/nextjs/implementation/api_integration.md` - NEXTJS-side fetch patterns, JWT bearer, error parsing.
+- `references/go/implementation/api_design.md` - GO-side route layout, handler patterns, sqlc integration.
+- `references/go/implementation/jwt_middleware.md` - GO-side JWT issuance and verification.

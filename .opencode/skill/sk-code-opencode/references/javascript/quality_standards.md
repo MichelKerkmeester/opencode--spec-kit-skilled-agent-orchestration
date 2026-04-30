@@ -9,7 +9,6 @@ Module organization, error handling, documentation, and security patterns for Ja
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -24,8 +23,6 @@ Establishes module organization, error handling, documentation, and security pat
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:module-organization -->
 ## 2. MODULE ORGANIZATION
 
 ### Module-System Boundary
@@ -104,8 +101,6 @@ module.exports = {
 
 ---
 
-<!-- /ANCHOR:module-organization -->
-<!-- ANCHOR:error-handling -->
 ## 3. ERROR HANDLING
 
 ### Guard Clause Pattern
@@ -192,8 +187,6 @@ Consistent error response structure.
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-<!-- ANCHOR:console-logging -->
 ## 4. CONSOLE LOGGING
 
 ### Bracketed Module Prefix
@@ -220,8 +213,6 @@ console.warn(`[config] Using default value for missing key: ${key}`);
 
 ---
 
-<!-- /ANCHOR:console-logging -->
-<!-- ANCHOR:jsdoc-documentation -->
 ## 5. JSDOC DOCUMENTATION
 
 ### Function Documentation
@@ -295,8 +286,6 @@ class VectorIndex {
 
 ---
 
-<!-- /ANCHOR:jsdoc-documentation -->
-<!-- ANCHOR:security-patterns -->
 ## 6. SECURITY PATTERNS
 
 ### CWE-22: Path Traversal Prevention
@@ -371,8 +360,6 @@ function sanitizeString(input) {
 
 ---
 
-<!-- /ANCHOR:security-patterns -->
-<!-- ANCHOR:testing-patterns -->
 ## 7. TESTING PATTERNS
 
 ### Using Node.js Assert
@@ -422,8 +409,6 @@ describe('Config Module', () => {
 
 ---
 
-<!-- /ANCHOR:testing-patterns -->
-<!-- ANCHOR:async-patterns -->
 ## 8. ASYNC PATTERNS
 
 ### Async/Await Style
@@ -467,8 +452,6 @@ const posts = await fetchUserPosts(user.id);
 
 ---
 
-<!-- /ANCHOR:async-patterns -->
-<!-- ANCHOR:test-file-exemption-tier -->
 ## 9. TEST FILE EXEMPTION TIER
 
 CLI-only test runners, setup scripts, and similar utilities are exempt from certain quality standards because they are executed directly (not imported as modules) and serve a different purpose than library code.
@@ -518,8 +501,6 @@ console.log('PASS: All config tests passed');
 
 ---
 
-<!-- /ANCHOR:test-file-exemption-tier -->
-<!-- ANCHOR:opencode-plugin-exemption-tier -->
 ## 10. OPENCODE PLUGIN EXEMPTION TIER
 
 OpenCode plugin entrypoints and helper modules are exempt from the CommonJS export standard because the OpenCode plugin loader requires ESM default exports. This exemption is narrow and does not relax other JavaScript quality standards.
@@ -597,10 +578,7 @@ export default async function ExamplePlugin(ctx, options = {}) {
 
 ---
 
-<!-- /ANCHOR:opencode-plugin-exemption-tier -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 - [style_guide.md](./style_guide.md) - Formatting and naming conventions
 - [quick_reference.md](./quick_reference.md) - Copy-paste templates and cheat sheets
-<!-- /ANCHOR:related-resources -->

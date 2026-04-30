@@ -7,7 +7,8 @@ description: Validation checklist for JavaScript and CSS code quality and style 
 
 Validation checklist for JavaScript and CSS code quality and style compliance.
 
-<!-- ANCHOR:overview -->
+---
+
 ## 1. OVERVIEW
 
 ### Purpose
@@ -45,8 +46,6 @@ For formal findings-first review output, run `sk-code-review` as the baseline an
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-header-checks -->
 ## 2. FILE HEADER CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -89,8 +88,6 @@ For formal findings-first review output, run `sk-code-review` as the baseline an
 
 ---
 
-<!-- /ANCHOR:file-header-checks -->
-<!-- ANCHOR:section-organization-checks -->
 ## 3. SECTION ORGANIZATION CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -152,8 +149,6 @@ const INIT_FLAG = '__componentNameInit';
 
 ---
 
-<!-- /ANCHOR:section-organization-checks -->
-<!-- ANCHOR:comment-quality-checks -->
 ## 4. COMMENT QUALITY CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -205,8 +200,6 @@ if (element) { }
 
 ---
 
-<!-- /ANCHOR:comment-quality-checks -->
-<!-- ANCHOR:naming-convention-checks -->
 ## 5. NAMING CONVENTION CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -267,8 +260,6 @@ function data(form) { }    // Should be: get_form_data
 
 ---
 
-<!-- /ANCHOR:naming-convention-checks -->
-<!-- ANCHOR:initialization-pattern-checks -->
 ## 6. INITIALIZATION PATTERN CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -319,8 +310,6 @@ if (window.Webflow?.push) {
 
 ---
 
-<!-- /ANCHOR:initialization-pattern-checks -->
-<!-- ANCHOR:formatting-checks -->
 ## 7. FORMATTING CHECKS
 
 **Applies to:** JavaScript (`.js`)
@@ -338,8 +327,6 @@ if (window.Webflow?.push) {
 
 ---
 
-<!-- /ANCHOR:formatting-checks -->
-<!-- ANCHOR:css-style-checks -->
 ## 8. CSS STYLE CHECKS
 
 **Applies to:** CSS (`.css`)
@@ -434,8 +421,6 @@ if (window.Webflow?.push) {
 
 ---
 
-<!-- /ANCHOR:css-style-checks -->
-<!-- ANCHOR:verification-summary-template -->
 ## 9. VERIFICATION SUMMARY TEMPLATE
 
 After completing validation, document the results using the appropriate template.
@@ -495,8 +480,6 @@ After completing validation, document the results using the appropriate template
 
 ---
 
-<!-- /ANCHOR:verification-summary-template -->
-<!-- ANCHOR:quick-reference -->
 ## 10. QUICK REFERENCE
 
 ### JavaScript Pass Criteria
@@ -526,8 +509,6 @@ After completing validation, document the results using the appropriate template
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Source Standards
@@ -542,4 +523,3 @@ After completing validation, document the results using the appropriate template
 ### Parent Skill
 
 - [SKILL.md](../../SKILL.md) - (Phase 1.5: Code Quality Gate)
-<!-- /ANCHOR:related-resources -->

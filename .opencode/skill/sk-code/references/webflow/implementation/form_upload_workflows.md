@@ -9,7 +9,6 @@ Complete architecture reference for the FilePond-to-R2 file upload pipeline, cov
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -37,8 +36,6 @@ Single source of truth for understanding, maintaining, and extending the file up
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:architecture -->
 ## 2. ARCHITECTURE
 
 ### Pipeline Overview
@@ -79,8 +76,6 @@ Browser (drag/click)
 
 ---
 
-<!-- /ANCHOR:architecture -->
-<!-- ANCHOR:webflow-integration -->
 ## 3. WEBFLOW INTEGRATION
 
 ### Data Attribute Reference
@@ -170,8 +165,6 @@ Mobile detection uses multiple signals: user agent, viewport width (<=991px), to
 
 ---
 
-<!-- /ANCHOR:webflow-integration -->
-<!-- ANCHOR:filepond-configuration -->
 ## 4. FILEPOND CONFIGURATION
 
 ### Plugin Registration
@@ -280,8 +273,6 @@ FilePond.create(input_el, {
 
 ---
 
-<!-- /ANCHOR:filepond-configuration -->
-<!-- ANCHOR:state-machine -->
 ## 5. STATE MACHINE
 
 ### States
@@ -351,8 +342,6 @@ State transitions always remove all state classes first, then add the appropriat
 
 ---
 
-<!-- /ANCHOR:state-machine -->
-<!-- ANCHOR:cloudflare-worker-proxy -->
 ## 6. CLOUDFLARE WORKER PROXY
 
 ### Endpoint and Purpose
@@ -404,8 +393,6 @@ FormData:
 
 ---
 
-<!-- /ANCHOR:cloudflare-worker-proxy -->
-<!-- ANCHOR:form-integration -->
 ## 7. FORM INTEGRATION
 
 ### Upload URL to Formspark
@@ -505,8 +492,6 @@ When a form resets, the upload component cleans up:
 
 ---
 
-<!-- /ANCHOR:form-integration -->
-<!-- ANCHOR:mime-type-reference -->
 ## 8. MIME TYPE REFERENCE
 
 ### Accepted Types Table
@@ -623,8 +608,6 @@ To accept additional file types:
 
 ---
 
-<!-- /ANCHOR:mime-type-reference -->
-<!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
 
 ### "Invalid file type" Error
@@ -690,8 +673,6 @@ To accept additional file types:
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:pages-and-deployment -->
 ## 10. PAGES AND DEPLOYMENT
 
 ### Pages Using Upload
@@ -748,8 +729,6 @@ window.cleanupFilepondInstances();
 
 ---
 
-<!-- /ANCHOR:pages-and-deployment -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 - **[implementation_workflows.md](./implementation_workflows.md)** — Condition-based waiting, validation patterns used by the upload connector
@@ -757,4 +736,3 @@ window.cleanupFilepondInstances();
 - **[code_quality_standards.md](../standards/code_quality_standards.md)** — Naming conventions and initialization patterns
 - **CDN Deployment**: See [cdn_deployment.md](../deployment/cdn_deployment.md) for R2 upload workflow
 - **Minification**: See [minification_guide.md](../deployment/minification_guide.md) for terser configuration
-<!-- /ANCHOR:related-resources -->

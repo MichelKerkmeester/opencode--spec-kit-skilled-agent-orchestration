@@ -9,7 +9,6 @@ Complete workflow documentation for professional commit practices with Conventio
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Systematically analyze changes, determine appropriate commit strategy, and craft professional commit messages following best practices. Ensures commits are atomic, well-documented, and exclude internal development artifacts.
@@ -18,8 +17,6 @@ Systematically analyze changes, determine appropriate commit strategy, and craft
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:process-overview -->
 ## 2. PROCESS OVERVIEW
 
 1. Analyze all changed files (categorize, evaluate value, identify patterns)
@@ -37,8 +34,6 @@ Systematically analyze changes, determine appropriate commit strategy, and craft
 
 ---
 
-<!-- /ANCHOR:process-overview -->
-<!-- ANCHOR:complete-workflow -->
 ## 3. COMPLETE WORKFLOW
 
 ### Step 1: Analyze Changed Files
@@ -69,7 +64,6 @@ git diff --cached --name-only
    - **Long-term relevance**: Will this be useful in 6 months?
 
 **Validation**: `files_analyzed`
-
 
 ### Step 2: Filter Development Artifacts
 
@@ -103,7 +97,6 @@ git diff --cached --name-only
 
 **Validation**: `artifacts_filtered`
 
-
 ### Step 3: Identify Change Patterns
 
 **Purpose**: Determine if changes form cohesive logical unit
@@ -129,7 +122,6 @@ git diff --cached --name-only
    - Different components affected
 
 **Validation**: `patterns_identified`
-
 
 ### Step 4: Determine Commit Strategy
 
@@ -157,7 +149,6 @@ IF changes include both code and tests:
 - Review with `git diff --cached` before committing
 
 **Validation**: `strategy_determined`
-
 
 ### Step 5: Write Commit Message
 
@@ -277,7 +268,6 @@ Implemented the thing from the task.
 
 **Validation**: `message_written`
 
-
 ### Step 6: Verify Commit Readiness
 
 **Purpose**: Final checklist before committing
@@ -311,8 +301,6 @@ git commit -m "type(scope): description" -m "Body explaining why"
 
 ---
 
-<!-- /ANCHOR:complete-workflow -->
-<!-- ANCHOR:decision-matrix -->
 ## 4. DECISION MATRIX
 
 | Scenario | Strategy | Commit Type | Notes |
@@ -328,8 +316,6 @@ git commit -m "type(scope): description" -m "Body explaining why"
 
 ---
 
-<!-- /ANCHOR:decision-matrix -->
-<!-- ANCHOR:common-mistakes -->
 ## 5. COMMON MISTAKES
 
 **Including internal artifacts**:
@@ -362,8 +348,6 @@ git commit -m "type(scope): description" -m "Body explaining why"
 
 ---
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:example-workflows -->
 ## 6. EXAMPLE WORKFLOWS
 
 ### Example 1: Single Feature Commit
@@ -410,7 +394,6 @@ Ready to commit:
     -m "Implements JWT-based authentication with login and middleware.
 Adds token validation and user session management."
 ```
-
 
 ### Example 2: Multiple Commits (Mixed Changes)
 
@@ -469,7 +452,6 @@ Adds examples for common error scenarios.
 > git commit -m "docs: update API error response format" ...
 ```
 
-
 ### Example 3: Excluding Non-Conventional Files
 
 ```text
@@ -509,8 +491,6 @@ Action Required: Please move test_helper.py to tests/ before next commit.
 
 ---
 
-<!-- /ANCHOR:example-workflows -->
-<!-- ANCHOR:troubleshooting -->
 ## 7. TROUBLESHOOTING
 
 ### Cannot Determine Commit Scope
@@ -522,7 +502,6 @@ Action Required: Please move test_helper.py to tests/ before next commit.
 2. Ask user: "These changes affect multiple areas. Should I split into separate commits?"
 3. If split: Create one commit per logical area
 4. If single: Use general scope or omit scope
-
 
 ### Internal Artifacts Keep Getting Staged
 
@@ -537,7 +516,6 @@ git reset HEAD TASK_NOTES.md debug_output.txt
 git add src/ tests/  # Stage only specific directories
 ```
 
-
 ### Commit Message Too Long
 
 **Symptom**: Subject line exceeds 50 characters
@@ -548,7 +526,6 @@ git add src/ tests/  # Stage only specific directories
 - Example:
   - Too long: "Add new user authentication system with JWT tokens and middleware"
   - Better: "feat(auth): add JWT authentication system"
-
 
 ### Breaking Change Not Documented
 
@@ -565,7 +542,6 @@ BREAKING CHANGE: XML response format no longer supported.
 Clients must update to handle JSON responses.
 ```
 
-
 ### Tests Failing Before Commit
 
 **Symptom**: Test suite has failures
@@ -578,8 +554,6 @@ Clients must update to handle JSON responses.
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-<!-- ANCHOR:success-criteria -->
 ## 8. SUCCESS CRITERIA
 
 **Commit is successful when**:
@@ -602,8 +576,6 @@ Clients must update to handle JSON responses.
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -617,4 +589,3 @@ Clients must update to handle JSON responses.
 - [Git Best Practices](https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project) - Pro Git book chapter on contributing
 - [How to Write a Git Commit Message](https://chris.beams.io/posts/git-commit/) - The seven rules of great commits
 - [Semantic Versioning](https://semver.org/) - Version numbering based on changes
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ State file schemas for the autonomous deep review loop.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The deep review loop uses 8 state files under the resolved `{artifact_dir}/` owned by the target spec:
@@ -44,8 +43,6 @@ The deep review loop uses 8 state files under the resolved `{artifact_dir}/` own
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:config-file -->
 ## 2. CONFIG FILE (deep-review-config.json)
 
 Created during initialization. Not modified after creation.
@@ -159,8 +156,6 @@ Created during initialization. Not modified after creation.
 
 ---
 
-<!-- /ANCHOR:config-file -->
-<!-- ANCHOR:state-log -->
 ## 3. STATE LOG (deep-review-state.jsonl)
 
 Append-only JSON Lines file. One JSON object per line.
@@ -441,8 +436,6 @@ When `activeP2 > 0` on PASS, set `hasAdvisories: true`.
 
 ---
 
-<!-- /ANCHOR:state-log -->
-<!-- ANCHOR:strategy-file -->
 ## 4. STRATEGY FILE (deep-review-strategy.md)
 
 Updated at the end of each iteration. Serves as the persistent brain across fresh-context iterations.
@@ -489,8 +482,6 @@ Sections unchanged from research: topic, what-worked, what-failed, exhausted-app
 
 ---
 
-<!-- /ANCHOR:strategy-file -->
-<!-- ANCHOR:findings-registry -->
 ## 5. FINDINGS REGISTRY (deep-review-findings-registry.json)
 
 Reducer-owned JSON document regenerated after every iteration and lifecycle transition.
@@ -554,8 +545,6 @@ When JSONL parses cleanly, `corruptionWarnings: []`.
 
 ---
 
-<!-- /ANCHOR:findings-registry -->
-<!-- ANCHOR:iteration-files -->
 ## 6. ITERATION FILES (review/iterations/iteration-NNN.md)
 
 Write-once files. One per iteration, zero-padded 3-digit naming.
@@ -610,8 +599,6 @@ Every finding must include: unique ID (`F001`...), severity (`P0`/`P1`/`P2`), co
 
 ---
 
-<!-- /ANCHOR:iteration-files -->
-<!-- ANCHOR:review-report -->
 ## 7. REVIEW REPORT (review/review-report.md)
 
 The review synthesis output contains 9 core sections plus a conditional `## Resource Map Coverage Gate` section when `resource_map_present` is true:
@@ -649,8 +636,6 @@ The review synthesis output contains 9 core sections plus a conditional `## Reso
 
 ---
 
-<!-- /ANCHOR:review-report -->
-<!-- ANCHOR:dashboard -->
 ## 8. DASHBOARD (review/deep-review-dashboard.md)
 
 Auto-generated summary. Never manually edited.
@@ -673,8 +658,6 @@ Auto-generated summary. Never manually edited.
 
 ---
 
-<!-- /ANCHOR:dashboard -->
-<!-- ANCHOR:claim-adjudication -->
 ## 9. CLAIM ADJUDICATION
 
 Every new P0/P1 finding must carry a **typed claim-adjudication packet**. The packet is parsed by `step_post_iteration_claim_adjudication` in the review workflow and its pass/fail result is persisted as a `claim_adjudication` event in `deep-review-state.jsonl`. The next iteration's `step_check_convergence` legal-stop decision tree reads the latest event via `claimAdjudicationGate` (gate `f`) — a missing or failed packet vetoes STOP even if every other gate passes. Prose-only adjudication blocks are no longer accepted.
@@ -733,8 +716,6 @@ Embed the packet inside the iteration file for each new P0/P1 finding. The orche
 
 ---
 
-<!-- /ANCHOR:claim-adjudication -->
-<!-- ANCHOR:finding-registry -->
 ## 10. FINDING REGISTRY
 
 Each finding is tracked with a unique identifier enabling deduplication, severity transitions, and status lifecycle.
@@ -822,4 +803,3 @@ All three gates must pass before STOP. Gate failure forces `verdict: "FAIL"` reg
 
 ---
 
-<!-- /ANCHOR:finding-registry -->

@@ -12,7 +12,6 @@ Complete formatting specification for delivering enhanced prompts in JSON format
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Defines the JSON formatting rules, structures, and best practices for delivering
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:fundamentals -->
 ## 2. FUNDAMENTALS
 
 ### Core Principles
@@ -70,8 +67,6 @@ Defines the JSON formatting rules, structures, and best practices for delivering
 
 ---
 
-<!-- /ANCHOR:fundamentals -->
-<!-- ANCHOR:delivery-standards -->
 ## 3. DELIVERY STANDARDS
 
 ### Mandatory Header Format
@@ -120,8 +115,6 @@ If YES -> DELIVER as file
 
 ---
 
-<!-- /ANCHOR:delivery-standards -->
-<!-- ANCHOR:rcaf-structure -->
 ## 4. RCAF JSON STRUCTURE
 
 ### Template
@@ -158,8 +151,6 @@ Mode: $json | Complexity: Medium | Framework: RCAF
 
 ---
 
-<!-- /ANCHOR:rcaf-structure -->
-<!-- ANCHOR:craft-structure -->
 ## 5. CRAFT JSON STRUCTURE
 
 ### Template
@@ -234,8 +225,6 @@ Mode: $json | Complexity: High | Framework: CRAFT
 
 ---
 
-<!-- /ANCHOR:craft-structure -->
-<!-- ANCHOR:advanced-patterns -->
 ## 6. ADVANCED PATTERNS
 
 ### Multi-Step Process
@@ -306,8 +295,6 @@ Mode: $json | Complexity: High | Framework: CRAFT
 
 ---
 
-<!-- /ANCHOR:advanced-patterns -->
-<!-- ANCHOR:syntax-validation -->
 ## 7. SYNTAX VALIDATION
 
 ### Validation Checklist
@@ -336,8 +323,6 @@ Mode: $json | Complexity: High | Framework: CRAFT
 
 ---
 
-<!-- /ANCHOR:syntax-validation -->
-<!-- ANCHOR:best-practices -->
 ## 8. BEST PRACTICES
 
 ### Do / Do Not
@@ -374,8 +359,6 @@ Mode: $json | Complexity: High | Framework: CRAFT
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-<!-- ANCHOR:format-selection -->
 ## 9. FORMAT SELECTION
 
 ### When to Use JSON
@@ -399,4 +382,3 @@ Core principles:
 4. Integration through standards -- API compatibility
 5. Quality through validation -- Syntax enforcement
 
-<!-- /ANCHOR:format-selection -->

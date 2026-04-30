@@ -9,7 +9,6 @@ Routing reference for delegating tasks to specialized Codex CLI agents.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -28,11 +27,7 @@ Documents the active Codex agents in `.codex/agents/` and how any AI assistant o
 - Fresh-perspective debugging after the calling AI's attempts fail (dispatch `@debug` via the Task tool)
 - Multi-agent Codex-side workflows (`@orchestrate`)
 
-<!-- /ANCHOR:overview -->
-
 ---
-
-<!-- ANCHOR:orchestration-model -->
 
 ## 2. ORCHESTRATION MODEL
 
@@ -129,11 +124,7 @@ model_reasoning_effort = "xhigh"
 5. If an agent returns low-quality output, the calling AI retries with refined instructions or uses a different approach.
 6. Each `codex exec` invocation is **stateless** by default; include all necessary context in the prompt.
 
-<!-- /ANCHOR:orchestration-model -->
-
 ---
-
-<!-- ANCHOR:agent-catalog -->
 
 ## 3. AGENT CATALOG
 
@@ -303,11 +294,7 @@ codex exec -p write -s workspace-write \
   --model gpt-5.5
 ```
 
-<!-- /ANCHOR:agent-catalog -->
-
 ---
-
-<!-- ANCHOR:routing-table -->
 
 ## 4. ROUTING TABLE
 
@@ -323,11 +310,7 @@ codex exec -p write -s workspace-write \
 | Session continuity       | `/memory:save`         | `/spec_kit:resume`   | Refresh continuity before pause      |
 | Complex multi-agent task | @orchestrate           | (decompose manually) | Codex-internal coordination          |
 
-<!-- /ANCHOR:routing-table -->
-
 ---
-
-<!-- ANCHOR:anti-patterns -->
 
 ## 5. ANTI-PATTERNS
 
@@ -342,11 +325,7 @@ codex exec -p write -s workspace-write \
 | Over-permissive sandbox        | Using `danger-full-access` when `workspace-write` suffices                         | Use the least-permissive mode that works                         |
 | Missing approval for risky ops | Using `--ask-for-approval never` with `danger-full-access`                         | Always pair elevated sandbox with `--ask-for-approval untrusted` |
 
-<!-- /ANCHOR:anti-patterns -->
-
 ---
-
-<!-- ANCHOR:output-handling -->
 
 ## 6. OUTPUT HANDLING
 
@@ -391,4 +370,3 @@ jq '.issues[] | select(.severity == "critical")' /tmp/review.json
 | Timeout / hung      | No output within expected time      | Simplify task scope; break into smaller steps         |
 | Low-quality output  | Calling AI validation fails        | Retry with refined prompt; use different agent        |
 
-<!-- /ANCHOR:output-handling -->

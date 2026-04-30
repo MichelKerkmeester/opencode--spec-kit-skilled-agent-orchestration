@@ -9,16 +9,12 @@ Interactive behavior for a one-pass review where findings are reported first and
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Interactive single-pass review behavior for human-facing review sessions.
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:human-interaction-behavior -->
 ## 2. HUMAN INTERACTION BEHAVIOR
 
 - Review first, implement second.
@@ -35,9 +31,6 @@ Recommended next-step options:
 
 ---
 
-<!-- /ANCHOR:human-interaction-behavior -->
-
-<!-- ANCHOR:report-flow -->
 ## 3. REPORT FLOW
 
 Use this flow for interactive review responses:
@@ -55,9 +48,6 @@ If no diff is present, report:
 
 ---
 
-<!-- /ANCHOR:report-flow -->
-
-<!-- ANCHOR:mode-specific-presentation -->
 ## 4. MODE-SPECIFIC PRESENTATION
 
 Choose the lightest presentation that fits the request:
@@ -75,9 +65,6 @@ Presentation rules:
 
 ---
 
-<!-- /ANCHOR:mode-specific-presentation -->
-
-<!-- ANCHOR:pr-and-pre-commit-guidance -->
 ## 5. PR AND PRE-COMMIT GUIDANCE
 
 For PR review:
@@ -94,9 +81,6 @@ For pre-commit or staged review:
 
 ---
 
-<!-- /ANCHOR:pr-and-pre-commit-guidance -->
-
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 - [review_core.md](./review_core.md) - Shared doctrine used by both interactive and deep review modes.
@@ -105,4 +89,3 @@ For pre-commit or staged review:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

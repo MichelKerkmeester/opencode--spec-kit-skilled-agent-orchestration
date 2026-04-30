@@ -4,7 +4,6 @@ Complex decision tree with multiple branches and conditional logic.
 
 ---
 
-<!-- ANCHOR:use-case-e-commerce-order-processing-system -->
 ## Use Case: E-commerce Order Processing System
 
 ```
@@ -251,8 +250,6 @@ Complex decision tree with multiple branches and conditional logic.
 
 ---
 
-<!-- /ANCHOR:use-case-e-commerce-order-processing-system -->
-<!-- ANCHOR:key-features-demonstrated -->
 ## Key Features Demonstrated
 
 - **Multiple decision points** - 8 different conditional branches
@@ -264,8 +261,6 @@ Complex decision tree with multiple branches and conditional logic.
 - **Complex convergence** - Multiple paths merging back to main flow
 - **Clear labeling** - All decision outcomes explicitly labeled
 
-<!-- /ANCHOR:key-features-demonstrated -->
-<!-- ANCHOR:decision-points-covered -->
 ## Decision Points Covered
 
 1. **Payment Method Validation** - Valid/Invalid
@@ -279,8 +274,6 @@ Complex decision tree with multiple branches and conditional logic.
 9. **Payment Processing** - Success/Failed
 10. **Retry Logic** - Success/Final Failure
 
-<!-- /ANCHOR:decision-points-covered -->
-<!-- ANCHOR:when-to-use-this-pattern -->
 ## When to Use This Pattern
 
 - E-commerce order flows
@@ -292,8 +285,6 @@ Complex decision tree with multiple branches and conditional logic.
 - Conditional business processes
 - Risk assessment workflows
 
-<!-- /ANCHOR:when-to-use-this-pattern -->
-<!-- ANCHOR:design-principles-applied -->
 ## Design Principles Applied
 
 1. **Clear Decision Labels** - Every branch explicitly labeled
@@ -303,4 +294,15 @@ Complex decision tree with multiple branches and conditional logic.
 5. **Business Logic** - Real-world e-commerce rules
 6. **Fallback Options** - Alternatives provided when possible
 7. **Complete Coverage** - All possible paths considered
-<!-- /ANCHOR:design-principles-applied -->
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 1. OVERVIEW
+
+_TODO: populate this section_
+
+---

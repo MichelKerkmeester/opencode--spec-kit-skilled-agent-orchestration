@@ -9,7 +9,6 @@ Commands, quality gates, and patterns at a glance.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 **README Format Validation** (MANDATORY before delivery):
@@ -54,8 +53,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:quality-gates -->
 ## 2. QUALITY GATES
 
 | Document Type | Target | Checklist | Content |
@@ -74,8 +71,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:quality-gates -->
-<!-- ANCHOR:dqi-scoring -->
 ## 3. DQI SCORING
 
 | Component | Max | Measures |
@@ -88,8 +83,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:dqi-scoring -->
-<!-- ANCHOR:transformation-patterns-top-8 -->
 ## 4. TRANSFORMATION PATTERNS (TOP 8)
 
 | # | Pattern | Impact | Effort |
@@ -105,8 +98,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:transformation-patterns-top-8 -->
-<!-- ANCHOR:document-types-enforcement -->
 ## 5. DOCUMENT TYPES & ENFORCEMENT
 
 **SKILL.md** (Strict):
@@ -145,8 +136,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:document-types-enforcement -->
-<!-- ANCHOR:common-issues-quick-fixes -->
 ## 6. COMMON ISSUES - QUICK FIXES
 
 **Issue**: Checklist failures in JSON output
@@ -163,8 +152,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:common-issues-quick-fixes -->
-<!-- ANCHOR:file-structure -->
 ## 7. FILE STRUCTURE
 
 ```
@@ -212,8 +199,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:file-structure -->
-<!-- ANCHOR:content-quality-quick-guide -->
 ## 8. CONTENT QUALITY QUICK GUIDE
 
 **AI evaluates content for**:
@@ -230,8 +215,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:content-quality-quick-guide -->
-<!-- ANCHOR:integration-points -->
 ## 9. INTEGRATION POINTS
 
 **Validation Workflow**:
@@ -244,8 +227,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:install-guide-creation -->
 ## 10. INSTALL GUIDE CREATION
 
 ### Template
@@ -297,8 +278,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:install-guide-creation -->
-<!-- ANCHOR:skill-creation-quick-steps -->
 ## 11. SKILL CREATION QUICK STEPS
 
 1. **Understanding** → Get concrete examples (~5 min)
@@ -310,8 +289,6 @@ python scripts/package_skill.py skill-path        # Package skill
 
 ---
 
-<!-- /ANCHOR:skill-creation-quick-steps -->
-<!-- ANCHOR:playbook-creation-quick-steps -->
 ## 12. PLAYBOOK AND FEATURE CATALOG QUICK STEPS
 
 ### Companion: Feature Catalog Creation
@@ -360,8 +337,6 @@ Validation note: the current validator checks the root playbook, but it does not
 
 ---
 
-<!-- /ANCHOR:playbook-creation-quick-steps -->
-<!-- ANCHOR:related-resources -->
 ## 13. RELATED RESOURCES
 
 ### Reference Files
@@ -395,4 +370,3 @@ Validation note: the current validator checks the root playbook, but it does not
 ---
 
 **For complete documentation**: See [SKILL.md](../../SKILL.md)
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Complete platform constraints and collection list patterns for Webflow developme
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -28,8 +27,6 @@ Follow code quality standards:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:platform-limits-quick-reference -->
 ## 2. PLATFORM LIMITS QUICK REFERENCE
 
 ### CMS Limits (Next-Gen)
@@ -78,8 +75,6 @@ Webflow enforces these settings in production - you cannot override them:
 
 ---
 
-<!-- /ANCHOR:platform-limits-quick-reference -->
-<!-- ANCHOR:collection-list-patterns -->
 ## 3. COLLECTION LIST PATTERNS
 
 ### Problem 1: ID Duplication
@@ -483,8 +478,6 @@ function init_collection_items() {
 
 ---
 
-<!-- /ANCHOR:collection-list-patterns -->
-<!-- ANCHOR:development-best-practices -->
 ## 4. DEVELOPMENT BEST PRACTICES
 
 ### Architectural Guidance
@@ -576,8 +569,6 @@ function init_collection_items() {
 
 ---
 
-<!-- /ANCHOR:development-best-practices -->
-<!-- ANCHOR:production-configuration-constraints -->
 ## 5. PRODUCTION CONFIGURATION CONSTRAINTS
 
 ### JavaScript Loading (Synchronous)
@@ -676,8 +667,6 @@ const handlers = {
 
 ---
 
-<!-- /ANCHOR:production-configuration-constraints -->
-<!-- ANCHOR:testing-checklist -->
 ## 6. TESTING CHECKLIST
 
 ### Collection List Testing
@@ -727,8 +716,6 @@ Test across all Webflow breakpoints:
 
 ---
 
-<!-- /ANCHOR:testing-checklist -->
-<!-- ANCHOR:integration -->
 ## 7. INTEGRATION WITH WORKFLOWS-CODE
 
 ### Phase 1: Implementation
@@ -761,8 +748,6 @@ When verifying Webflow implementations:
 
 ---
 
-<!-- /ANCHOR:integration -->
-<!-- ANCHOR:finsweet-custom-select-bridge-pattern -->
 ## 8. FINSWEET CUSTOM SELECT BRIDGE PATTERN
 
 ### Problem: Custom Select + Native Form Submission
@@ -1078,8 +1063,6 @@ document.querySelectorAll('.fs-sort-select--hidden').forEach(sel => {
 
 ---
 
-<!-- /ANCHOR:finsweet-custom-select-bridge-pattern -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -1096,4 +1079,3 @@ document.querySelectorAll('.fs-sort-select--hidden').forEach(sel => {
 
 ### External Documentation
 - [Finsweet CMS Sort](https://finsweet.com/attributes/cms-sort) - Official Finsweet list-sort documentation
-<!-- /ANCHOR:related-resources -->

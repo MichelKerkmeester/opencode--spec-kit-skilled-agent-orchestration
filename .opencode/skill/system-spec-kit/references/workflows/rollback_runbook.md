@@ -9,7 +9,6 @@ Rollback procedure for safely disabling and re-enabling working-memory automatio
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This runbook defines the rollback and staged recovery flow for working-memory automation features (session boost, pressure policy, extraction, causal boost, auto-resume).
@@ -18,8 +17,6 @@ Use this runbook when rollout quality gates regress and feature flags must be di
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:scope -->
 ## 2. SCOPE
 
 This runbook defines the rollback flow for the working-memory automation features (session boost, pressure policy, extraction, causal boost, auto-resume).
@@ -31,8 +28,6 @@ Rollback is required when one or more of the following occurs:
 
 ---
 
-<!-- /ANCHOR:scope -->
-<!-- ANCHOR:flags -->
 ## 3. DISABLE FLAGS
 
 Disable all rollout-sensitive automation flags:
@@ -47,8 +42,6 @@ SPECKIT_AUTO_RESUME=false
 
 ---
 
-<!-- /ANCHOR:flags -->
-<!-- ANCHOR:smoke-tests -->
 ## 4. SMOKE TESTS
 
 Run focused verification immediately after restart:
@@ -64,8 +57,6 @@ Expected outcomes:
 
 ---
 
-<!-- /ANCHOR:smoke-tests -->
-<!-- ANCHOR:verification -->
 ## 5. BASELINE VERIFICATION
 
 Confirm baseline behavior before closing rollback:
@@ -75,8 +66,6 @@ Confirm baseline behavior before closing rollback:
 
 ---
 
-<!-- /ANCHOR:verification -->
-<!-- ANCHOR:re-enable -->
 ## 6. CONTROLLED RE-ENABLE
 
 Re-enable features one flag at a time in this order:
@@ -91,4 +80,3 @@ After each flag:
 - compare extraction precision/recall and top-5 MRR against baseline artifacts
 
 Stop re-enable if any gate fails.
-<!-- /ANCHOR:re-enable -->

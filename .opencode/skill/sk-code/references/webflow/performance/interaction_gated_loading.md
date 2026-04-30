@@ -9,7 +9,6 @@ Practical guidance for deferring non-critical script loading to first interactio
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Use interaction-gated loading when startup JavaScript is expensive but the feature is not required for first paint, LCP, or compliance.
@@ -22,8 +21,6 @@ Use interaction-gated loading when startup JavaScript is expensive but the featu
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:gate-selection -->
 ## 2. GATE SELECTION
 
 | Gate | Use For | Trigger | Fallback |
@@ -37,8 +34,6 @@ Use interaction-gated loading when startup JavaScript is expensive but the featu
 
 ---
 
-<!-- /ANCHOR:gate-selection -->
-<!-- ANCHOR:non-deferrable-exclusions -->
 ## 3. NON-DEFERRABLE EXCLUSIONS
 
 Do not gate these behind interaction, viewport, or idle triggers:
@@ -52,8 +47,6 @@ If deferral changes whether the page can paint, reveal, submit, or collect conse
 
 ---
 
-<!-- /ANCHOR:non-deferrable-exclusions -->
-<!-- ANCHOR:implementation-pattern -->
 ## 4. IMPLEMENTATION PATTERN
 
 Use one idempotent init path and let multiple gates point to it.
@@ -79,8 +72,6 @@ See `../../assets/patterns/interaction_gate_patterns.js` for reusable helpers.
 
 ---
 
-<!-- /ANCHOR:implementation-pattern -->
-<!-- ANCHOR:measurement -->
 ## 5. MEASUREMENT
 
 Measure before and after each gating change:
@@ -94,8 +85,6 @@ Measure before and after each gating change:
 
 ---
 
-<!-- /ANCHOR:measurement -->
-<!-- ANCHOR:anti-patterns -->
 ## 6. ANTI-PATTERNS
 
 - Deferring hero or consent code to chase a better Lighthouse score.
@@ -106,12 +95,9 @@ Measure before and after each gating change:
 
 ---
 
-<!-- /ANCHOR:anti-patterns -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 - [cwv_remediation.md](./cwv_remediation.md) - Metric-specific fixes for Lighthouse/PageSpeed issues
 - [resource_loading.md](./resource_loading.md) - Preconnect, preload, async, and dynamic loading patterns
 - [third_party.md](./third_party.md) - Deferral guidance for non-critical external scripts
 - [../../assets/checklists/performance_loading_checklist.md](../../assets/checklists/performance_loading_checklist.md) - Verification checklist for gated loading rollouts
-<!-- /ANCHOR:related-resources -->

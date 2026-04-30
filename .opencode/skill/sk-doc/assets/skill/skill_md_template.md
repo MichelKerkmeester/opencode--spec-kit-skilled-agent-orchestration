@@ -9,7 +9,6 @@ Templates for creating SKILL.md files with proper structure, frontmatter, and re
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose of SKILL.md Files
@@ -66,8 +65,6 @@ SKILL.md architecture follows progressive disclosure:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:frontmatter-requirements -->
 ## 2. FRONTMATTER REQUIREMENTS
 
 ### Required Fields
@@ -100,35 +97,6 @@ version: 1.0.0
 
 ---
 
-<!-- /ANCHOR:frontmatter-requirements -->
-<!-- ANCHOR:a-retrieval-anchor-convention -->
-## 2A. RETRIEVAL ANCHOR CONVENTION
-
-Use retrieval anchors for every H2 section so section-level loading can target stable IDs.
-
-**Format**:
-- Open marker immediately before each H2: `<!-- ANCHOR:section-slug -->`
-- Close marker immediately before the next H2 (or EOF): `<!-- /ANCHOR:section-slug -->`
-- Slug rules: kebab-case from H2 text, strip numbering/emojis/punctuation
-- Duplicate slugs: append `-2`, `-3`, etc.
-
-**Example**:
-
-```markdown
-<!-- ANCHOR:when-to-use -->
-## 1. WHEN TO USE
-
-[Section content]
-
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
-## 2. SMART ROUTING
-```
-
----
-
-<!-- /ANCHOR:a-retrieval-anchor-convention -->
-<!-- ANCHOR:skill-template-with-bundled-resources -->
 ## 3. SKILL TEMPLATE (WITH BUNDLED RESOURCES)
 
 **Use for**: Skills with bundled resources (references, scripts, or assets)
@@ -200,8 +168,6 @@ version: 1.0.0
 
 ---
 
-<!-- /ANCHOR:when-to-use -->
-<!-- ANCHOR:smart-routing -->
 ## 2. SMART ROUTING
 
 <!-- CRITICAL: Keep one authoritative Smart Router Pseudocode block in this section.
@@ -337,8 +303,6 @@ def route_[skill_name]_resources(user_request, task=None):
 
 ---
 
-<!-- /ANCHOR:smart-routing -->
-<!-- ANCHOR:how-it-works -->
 ## 3. HOW IT WORKS
 
 ### [Primary Workflow] Overview
@@ -397,8 +361,6 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
      Use H3 by default; H4 is allowed when nested under phase headings.
      Do NOT add horizontal dividers (---) between RULES subsections. -->
 
-<!-- /ANCHOR:how-it-works -->
-<!-- ANCHOR:rules -->
 ## 4. RULES
 
 <!-- REQUIRED SUBSECTIONS (package_skill.py validation): -->
@@ -454,8 +416,6 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-<!-- /ANCHOR:rules -->
-<!-- ANCHOR:references -->
 ## 5. REFERENCES
 
 ### Core References
@@ -476,8 +436,6 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-<!-- /ANCHOR:references -->
-<!-- ANCHOR:success-criteria -->
 ## 6. SUCCESS CRITERIA
 
 ### [Primary Workflow] Completion Checklist
@@ -505,8 +463,6 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-<!-- /ANCHOR:success-criteria -->
-<!-- ANCHOR:integration-points -->
 ## 7. INTEGRATION POINTS
 
 ### [Integration System 1 - e.g., Validation Workflow]
@@ -546,8 +502,6 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 
 ---
 
-<!-- /ANCHOR:integration-points -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Reference Files
@@ -599,11 +553,8 @@ See [workflow-details.md](./references/workflow-details.md) for complete step-by
 - Skills appear as `skills_<name>` functions in OpenCode (hyphens → underscores)
 - Invoke via `Read(".opencode/skill/<name>/SKILL.md")`
 
-
 ---
 
-<!-- /ANCHOR:related-resources -->
-<!-- ANCHOR:section-by-section-content-guidance -->
 ## 4. SECTION-BY-SECTION CONTENT GUIDANCE
 
 ### Section 1: WHEN TO USE
@@ -688,8 +639,6 @@ Section 2 typically contains five subsections:
 
 **Structure**:
 
-<!-- /ANCHOR:section-by-section-content-guidance -->
-<!-- ANCHOR:smart-routing-2 -->
 ## 2. SMART ROUTING
 
 ### [Primary Detection Signal]
@@ -1035,8 +984,6 @@ mode_detection:
 
 ---
 
-<!-- /ANCHOR:smart-routing-2 -->
-<!-- ANCHOR:common-pitfalls -->
 ## 5. COMMON PITFALLS
 
 For the complete list of 8 common pitfalls with before/after examples, see:
@@ -1060,8 +1007,6 @@ For the complete list of 8 common pitfalls with before/after examples, see:
 
 ---
 
-<!-- /ANCHOR:common-pitfalls -->
-<!-- ANCHOR:quality-checklist-quick-reference -->
 ## 6. QUALITY CHECKLIST & QUICK REFERENCE
 
 ### Pre-Packaging Checklist
@@ -1123,7 +1068,6 @@ Quality:
 □ Section 1 contains ONLY triggers/use cases (NO file references)
 □ Section 2 Smart Router Pseudocode load() calls include file refs with descriptions
 
-
 ### Quick Reference Table
 
 | Element               | Requirement                | Example                                                                                            |
@@ -1170,8 +1114,6 @@ python .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/[skill-na
 
 ---
 
-<!-- /ANCHOR:quality-checklist-quick-reference -->
-<!-- ANCHOR:related-resources-2 -->
 ## 7. RELATED RESOURCES
 
 ### Templates
@@ -1182,4 +1124,3 @@ python .opencode/skill/sk-doc/scripts/package_skill.py .opencode/skill/[skill-na
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document type rules
 - [skill_creation.md](../../references/specific/skill_creation.md) - Complete skill creation workflow
-<!-- /ANCHOR:related-resources-2 -->

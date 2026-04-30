@@ -18,7 +18,6 @@ Active enforcement reference for code quality and style standards. Use this docu
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -46,8 +45,6 @@ Use this enforcement reference when:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-header-enforcement -->
 ## 2. FILE HEADER ENFORCEMENT
 
 ### Validation Prompt
@@ -97,8 +94,6 @@ Use this enforcement reference when:
 
 ---
 
-<!-- /ANCHOR:file-header-enforcement -->
-<!-- ANCHOR:section-organization-enforcement -->
 ## 3. SECTION ORGANIZATION ENFORCEMENT
 
 ### Validation Prompt
@@ -164,8 +159,6 @@ Use this enforcement reference when:
 
 ---
 
-<!-- /ANCHOR:section-organization-enforcement -->
-<!-- ANCHOR:comment-quality-enforcement -->
 ## 4. COMMENT QUALITY ENFORCEMENT
 
 ### Validation Prompt
@@ -239,8 +232,6 @@ if (element) {
 
 ---
 
-<!-- /ANCHOR:comment-quality-enforcement -->
-<!-- ANCHOR:naming-convention-enforcement -->
 ## 5. NAMING CONVENTION ENFORCEMENT
 
 ### Validation Prompt
@@ -319,8 +310,6 @@ const required = true;            // Should be: is_required or has_required
 
 ---
 
-<!-- /ANCHOR:naming-convention-enforcement -->
-<!-- ANCHOR:initialization-pattern-enforcement -->
 ## 6. INITIALIZATION PATTERN ENFORCEMENT
 
 ### Validation Prompt
@@ -393,8 +382,6 @@ const INIT_DELAY_MS = 50;
 
 ---
 
-<!-- /ANCHOR:initialization-pattern-enforcement -->
-<!-- ANCHOR:css-style-enforcement -->
 ## 7. CSS STYLE ENFORCEMENT
 
 ### 7.1 Custom Property Naming Enforcement
@@ -603,8 +590,6 @@ const INIT_DELAY_MS = 50;
 
 ---
 
-<!-- /ANCHOR:css-style-enforcement -->
-<!-- ANCHOR:enforcement-workflow -->
 ## 8. ENFORCEMENT WORKFLOW
 
 ### Pre-Completion Gate
@@ -655,8 +640,6 @@ If you cannot resolve a violation:
 
 ---
 
-<!-- /ANCHOR:enforcement-workflow -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Primary Standards
@@ -676,4 +659,3 @@ If you cannot resolve a violation:
 - `src/1_css/global/fluid_responsive.css` - Custom property naming example
 - `src/1_css/button/btn_primary.css` - BEM naming example
 - `src/1_css/animations/hover_state_machine.css` - GPU-accelerated animations
-<!-- /ANCHOR:related-resources -->

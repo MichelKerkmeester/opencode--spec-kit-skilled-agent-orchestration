@@ -9,7 +9,6 @@ Five-phase thinking system for all prompt improvement work with energy-level sca
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -80,8 +79,6 @@ Configure the maximum number of DEPTH improvement rounds per mode:
 | **Short** (`$short`) | 3 | Quick refinements need fewer rounds |
 | **Raw** (`$raw`) | 0 | Passthrough mode; no enhancement rounds |
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:depth-phases -->
 ## 2. DEPTH Phases
 
 | Phase | Purpose | Output |
@@ -193,8 +190,6 @@ system_state:
   techniques_applied: []
 ```
 
-<!-- /ANCHOR:depth-phases -->
-<!-- ANCHOR:cognitive-rigor -->
 ## 3. Cognitive Rigor
 
 ### Standard Perspectives (Per-Prompt, Not Per-Iteration)
@@ -243,8 +238,6 @@ If any gate fails, apply the relevant technique and re-validate.
 | Test | Full rigor validation, assumption flags check, mechanism depth | CLEAR scoring |
 | Harmonize | Final perspective check (per energy level), all gates pass | Final verification, delivery prep |
 
-<!-- /ANCHOR:cognitive-rigor -->
-<!-- ANCHOR:clear-scoring -->
 ## 4. CLEAR Scoring and Integration
 
 **CLEAR** is the quality scoring framework for prompt improvement deliverables. CLEAR validates quality; DEPTH provides process methodology. **C**orrectness, **L**ogic, **E**xpression, **A**rrangement, **R**eusability.
@@ -365,8 +358,6 @@ clear_depth_check:
     blocking: true
 ```
 
-<!-- /ANCHOR:clear-scoring -->
-<!-- ANCHOR:quality-transparency -->
 ## 5. Quality and Transparency
 
 ### Proof Through Output Metadata
@@ -419,8 +410,6 @@ improvement_cycle:
 
 For structural recovery when enhancement fails validation repeatedly, reference the REPAIR protocol for systematic error diagnosis and correction. Consult the Patterns and Evaluation guide.
 
-<!-- /ANCHOR:quality-transparency -->
-<!-- ANCHOR:quick-reference -->
 ## 6. Quick Reference
 
 ### Energy Level Summary
@@ -453,4 +442,3 @@ H -- HARMONIZE:   [ ] Output metadata  [ ] Perspectives confirmed  [ ] Format ve
 
 *DEPTH: five phases, five energy levels, cognitive techniques when they add value. Proof is in the output.*
 
-<!-- /ANCHOR:quick-reference -->

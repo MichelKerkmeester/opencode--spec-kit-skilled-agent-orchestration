@@ -9,16 +9,12 @@ Copy-paste templates for `opencode run` dispatches. Each template names the use 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The cli-opencode skill ships templates for the three documented use cases (per ADR-002) plus specialized dispatches for agent routing, parallel research, ablation, worker farms, and cross-AI handback. Every template ends with the Memory Epilogue when the calling AI needs to preserve session context.
 
 Templates are numbered for cross-reference from `references/integration_patterns.md` and `SKILL.md`.
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:template-1 -->
 ## 2. TEMPLATE 1 — EXTERNAL RUNTIME TO OPENCODE (USE CASE 1)
 
 **Framework:** RCAF
@@ -68,9 +64,6 @@ opencode run \
   "<prompt-from-template>" 2>&1
 ```
 
-<!-- /ANCHOR:template-1 -->
-
-<!-- ANCHOR:template-2 -->
 ## 3. TEMPLATE 2 — IN-OPENCODE PARALLEL DETACHED SESSION (USE CASE 2)
 
 **Framework:** CIDI
@@ -108,9 +101,6 @@ opencode run \
   "<prompt-from-template>" 2>&1
 ```
 
-<!-- /ANCHOR:template-2 -->
-
-<!-- ANCHOR:template-3 -->
 ## 4. TEMPLATE 3 — CROSS-AI ORCHESTRATION HANDBACK (USE CASE 3)
 
 **Framework:** RCAF + TIDD-EC
@@ -151,9 +141,6 @@ opencode run \
   "<prompt-from-template>" 2>&1
 ```
 
-<!-- /ANCHOR:template-3 -->
-
-<!-- ANCHOR:template-4 -->
 ## 5. TEMPLATE 4 — SPECIALIZED AGENT DISPATCH
 
 **Framework:** RCAF
@@ -173,9 +160,6 @@ opencode run \
 
 Common slugs: `general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `ultra-think`, `improve-agent`.
 
-<!-- /ANCHOR:template-4 -->
-
-<!-- ANCHOR:template-5 -->
 ## 6. TEMPLATE 5 — CODE REVIEW
 
 **Framework:** TIDD-EC
@@ -215,9 +199,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-5 -->
-
-<!-- ANCHOR:template-6 -->
 ## 7. TEMPLATE 6 — ITERATIVE DEEP RESEARCH
 
 **Framework:** CRISPE
@@ -249,9 +230,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-6 -->
-
-<!-- ANCHOR:template-7 -->
 ## 8. TEMPLATE 7 — ABLATION SUITE
 
 **Framework:** CIDI
@@ -287,9 +265,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-7 -->
-
-<!-- ANCHOR:template-8 -->
 ## 9. TEMPLATE 8 — WORKER FARM DISPATCH
 
 **Framework:** CIDI
@@ -326,9 +301,6 @@ done
 wait
 ```
 
-<!-- /ANCHOR:template-8 -->
-
-<!-- ANCHOR:template-9 -->
 ## 10. TEMPLATE 9 — SPEC KIT MEMORY SEARCH VIA OPENCODE
 
 **Framework:** RCAF
@@ -358,9 +330,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-9 -->
-
-<!-- ANCHOR:template-10 -->
 ## 11. TEMPLATE 10 — MULTI-STRATEGY PLANNING VIA @ULTRA-THINK
 
 **Framework:** CRAFT
@@ -387,9 +356,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-10 -->
-
-<!-- ANCHOR:template-11 -->
 ## 12. TEMPLATE 11 — DOC GENERATION VIA @WRITE
 
 **Framework:** RCAF
@@ -414,9 +380,6 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-<!-- /ANCHOR:template-11 -->
-
-<!-- ANCHOR:template-12 -->
 ## 13. TEMPLATE 12 — SELF-INVOCATION REFUSAL SURFACE
 
 **Use case:** Refusal path
@@ -442,9 +405,6 @@ Options:
 
 This template is NOT an `opencode run` invocation — it is the user-facing message the calling AI prints when the router refuses dispatch.
 
-<!-- /ANCHOR:template-12 -->
-
-<!-- ANCHOR:template-13 -->
 ## 14. TEMPLATE 13 — MEMORY EPILOGUE (REUSABLE TAIL)
 
 Append this block to any prompt that produces evidence the calling AI wants to save through Spec Kit Memory.
@@ -481,9 +441,6 @@ The calling AI extracts this block via regex
 and feeds it to generate-context.js.
 ```
 
-<!-- /ANCHOR:template-13 -->
-
-<!-- ANCHOR:related -->
 ## 15. RELATED RESOURCES
 
 - `../references/cli_reference.md` - Full subcommand and flag reference
@@ -493,4 +450,3 @@ and feeds it to generate-context.js.
 - `./prompt_quality_card.md` - Framework selection and CLEAR check
 - `../SKILL.md` - Smart router pseudocode
 
-<!-- /ANCHOR:related -->

@@ -9,7 +9,6 @@ Standards and workflow guidance for creating OpenCode agents with runtime-aware 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Agent creation is for cases where the system needs a named AI persona with explicit authority, tool permissions, and operating rules. Agents are not just documentation shells. They shape how work is delegated, what tools are allowed, and what safety boundaries apply at runtime.
@@ -28,8 +27,6 @@ Agent creation is for cases where the system needs a named AI persona with expli
 - the deprecated standalone `tools:` object is no longer the canonical contract
 - `@write /create:agent` is the preferred creation workflow for new agents
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-an-agent -->
 ## 2. WHEN TO CREATE AN AGENT
 
 Create an agent when the system needs a durable role with authority and operating constraints.
@@ -54,8 +51,6 @@ Need a named runtime persona with authority and tool policy?
   NO  -> Use or create a skill, template, or command instead
 ```
 
-<!-- /ANCHOR:when-to-create-an-agent -->
-<!-- ANCHOR:agent-vs-skill-vs-command -->
 ## 3. AGENT VS SKILL VS COMMAND
 
 Choose the component type before authoring.
@@ -76,8 +71,6 @@ Choose the component type before authoring.
 - skill provides the detailed domain knowledge
 - command provides the ergonomic entry point
 
-<!-- /ANCHOR:agent-vs-skill-vs-command -->
-<!-- ANCHOR:canonical-file-contract -->
 ## 4. CANONICAL FILE CONTRACT
 
 The canonical agent file is one markdown file in the active runtime agent directory.
@@ -105,8 +98,6 @@ Examples:
 
 Do not create the file in one runtime directory and document it as if it belongs to another. The runtime path is part of the contract.
 
-<!-- /ANCHOR:canonical-file-contract -->
-<!-- ANCHOR:frontmatter-and-permission-design -->
 ## 5. FRONTMATTER AND PERMISSION DESIGN
 
 Every agent must start with valid YAML frontmatter.
@@ -154,8 +145,6 @@ permission:
 
 Do not treat the old standalone `tools:` object as canonical. Use the unified `permission:` object.
 
-<!-- /ANCHOR:frontmatter-and-permission-design -->
-<!-- ANCHOR:required-content-sections -->
 ## 6. REQUIRED CONTENT SECTIONS
 
 Use [agent_template.md](../../assets/agents/agent_template.md) as the scaffold.
@@ -179,8 +168,6 @@ At minimum, production-ready agents should include:
 - do not paste full skill guidance into the agent body
 - link to supporting skills and references instead of duplicating them
 
-<!-- /ANCHOR:required-content-sections -->
-<!-- ANCHOR:authoring-workflow -->
 ## 7. AUTHORING WORKFLOW
 
 Recommended workflow:
@@ -202,8 +189,6 @@ Recommended workflow:
 - decide permissions before adding tool-heavy instructions
 - finish workflow and verification before polishing summary language
 
-<!-- /ANCHOR:authoring-workflow -->
-<!-- ANCHOR:validation-and-delivery -->
 ## 8. VALIDATION AND DELIVERY
 
 Before delivery, verify both document quality and runtime correctness.
@@ -225,8 +210,6 @@ Before delivery, verify both document quality and runtime correctness.
 - inspect the final frontmatter literally
 - compare the role description, workflow, and permissions for consistency
 
-<!-- /ANCHOR:validation-and-delivery -->
-<!-- ANCHOR:common-mistakes -->
 ## 9. COMMON MISTAKES
 
 | Mistake | Why It Breaks | Correct Fix |
@@ -239,8 +222,6 @@ Before delivery, verify both document quality and runtime correctness.
 | Copying skill reference content into the agent body | The agent becomes bloated and hard to maintain | Keep deep guidance in skills and link to them |
 | Using deprecated frontmatter conventions | The file drifts from current runtime expectations | Use the unified `permission:` contract |
 
-<!-- /ANCHOR:common-mistakes -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 - [agent_template.md](../../assets/agents/agent_template.md) - canonical agent scaffold
@@ -250,4 +231,3 @@ Before delivery, verify both document quality and runtime correctness.
 - [workflows.md](../global/workflows.md) - execution-mode reference
 - `.opencode/command/create/agent.md` - preferred command-driven creation workflow
 
-<!-- /ANCHOR:related-resources -->

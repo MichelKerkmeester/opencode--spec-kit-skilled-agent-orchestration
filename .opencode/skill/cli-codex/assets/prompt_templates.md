@@ -9,8 +9,6 @@ Copy-paste ready prompt templates for common Codex CLI tasks. Replace `[placehol
 
 ---
 
-<!-- ANCHOR:overview -->
-
 ## 1. OVERVIEW
 
 ### Purpose
@@ -43,7 +41,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ---
 
-<!-- /ANCHOR:overview -->
 <!-- ANCHOR:code_generation -->
 
 ## 2. CODE GENERATION
@@ -277,7 +274,6 @@ codex exec "Analyze @./[test-file] against the implementation in @./[source-file
 ---
 
 <!-- /ANCHOR:test_generation -->
-<!-- ANCHOR:documentation -->
 
 ## 6. DOCUMENTATION
 
@@ -316,7 +312,6 @@ codex exec "Generate API documentation for @./[file]. For each endpoint: documen
 
 ---
 
-<!-- /ANCHOR:documentation -->
 <!-- ANCHOR:code_transformation -->
 
 ## 7. CODE TRANSFORMATION

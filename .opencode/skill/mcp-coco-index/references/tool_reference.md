@@ -15,8 +15,7 @@ Complete reference for all CLI commands and the MCP tool exposed by CocoIndex Co
 
 ---
 
-<!-- ANCHOR:overview -->
-## OVERVIEW
+## 1. OVERVIEW
 
 This document provides the complete reference for CocoIndex Code CLI commands and MCP tool. It covers all available commands (search, index, status, init, reset, mcp, daemon), their parameters, expected output, supported languages, environment variables, settings schema, and related resources.
 
@@ -24,8 +23,6 @@ This document provides the complete reference for CocoIndex Code CLI commands an
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:cli-commands -->
 ## 1. CLI COMMANDS
 
 ### ccc search
@@ -230,8 +227,6 @@ ccc daemon stop
 
 ---
 
-<!-- /ANCHOR:cli-commands -->
-<!-- ANCHOR:mcp-tools -->
 ## 2. MCP TOOL
 
 The MCP server (`ccc mcp`) exposes exactly **1 tool**: `search`. All other operations (status, index, reset) are CLI-only commands.
@@ -279,8 +274,6 @@ Perform semantic search across the indexed codebase.
 
 ---
 
-<!-- /ANCHOR:mcp-tools -->
-<!-- ANCHOR:parameter-mapping -->
 ## 3. CLI vs. MCP PARAMETER MAPPING
 
 | Concept          | CLI Parameter       | MCP Parameter    | Notes                                       |
@@ -294,8 +287,6 @@ Perform semantic search across the indexed codebase.
 
 ---
 
-<!-- /ANCHOR:parameter-mapping -->
-<!-- ANCHOR:supported-languages -->
 ## 4. SUPPORTED LANGUAGES
 
 CocoIndex Code supports **28+ programming and markup languages**:
@@ -338,8 +329,6 @@ Use these code values with the CLI `--lang` flag or the MCP `languages` paramete
 
 ---
 
-<!-- /ANCHOR:supported-languages -->
-<!-- ANCHOR:environment-variables -->
 ## 5. ENVIRONMENT VARIABLES
 
 | Variable                      | Required | Default              | Description                                       |
@@ -358,8 +347,6 @@ Legacy variables are recognized for backward compatibility and automatically map
 
 ---
 
-<!-- /ANCHOR:environment-variables -->
-<!-- ANCHOR:settings-schema -->
 ## 6. SETTINGS SCHEMA
 
 CocoIndex Code uses YAML settings files stored in the project `.cocoindex_code/` directory and the user home `~/.cocoindex_code/` directory.
@@ -379,8 +366,6 @@ For detailed schema and configuration examples, see the upstream test files in `
 
 ---
 
-<!-- /ANCHOR:settings-schema -->
-<!-- ANCHOR:fork-telemetry -->
 ## 7. FORK-SPECIFIC OUTPUT TELEMETRY
 
 This skill bundles a vendored soft-fork of `cocoindex-code` (Python wrapper) at version `0.2.3+spec-kit-fork.0.2.0`. The fork ships REQ-001 through REQ-006 patches that add dedup, canonical path identity, path-class reranking, and ranking telemetry. All search responses (CLI `ccc search` and MCP `search` tool) include the fields below in addition to the standard `file` / `lines` / `snippet` / `score` / `language` baseline. **Vanilla upstream `cocoindex-code` 0.2.3 does NOT emit any of these fields.**
@@ -454,8 +439,18 @@ The boost is bounded so it cannot flip an obviously-wrong hit to the top; it nud
 - **Reindex required.** Existing indexes built by an older binary won't have `source_realpath` / `content_hash` / `path_class` populated on their chunk rows. Run `ccc reset && ccc index` once after upgrading to fork ≥0.2.0 to populate. The fallback path (using `content_hash` only when `source_realpath` is missing) keeps the dedup correct during the transition.
 - **Verifying the binary.** Run `ccc --version` — a fork build reports `0.2.3+spec-kit-fork.0.2.0`. If the version string does NOT contain `+spec-kit-fork.`, the binary is upstream PyPI cocoindex-code and none of the fields above will be emitted. See `INSTALL_GUIDE.md` §Verify and §Reinstall for recovery.
 
-<!-- /ANCHOR:fork-telemetry -->
-<!-- ANCHOR:related-resources -->
+## 9. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 10. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
 ## 8. RELATED RESOURCES
 
 | Resource         | Location                                                            |
@@ -468,4 +463,3 @@ The boost is bounded so it cannot flip an obviously-wrong hit to the top; it nud
 | Config Templates | `.opencode/skill/mcp-coco-index/assets/config_templates.md`    |
 | Upstream Tests   | `.opencode/skill/mcp-coco-index/tests/`                        |
 
-<!-- /ANCHOR:related-resources -->

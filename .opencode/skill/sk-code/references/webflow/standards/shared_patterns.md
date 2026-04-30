@@ -9,7 +9,6 @@ Common patterns for DevTools usage, logging, testing, error handling, and browse
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -20,8 +19,6 @@ Cross-workflow standards and reusable patterns for DevTools, console logging, ma
 - Setting up logging and error handling
 - Ensuring cross-browser compatibility
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:devtools-quick-reference -->
 ## 2. DEVTOOLS QUICK REFERENCE
 
 ### Opening DevTools
@@ -101,8 +98,6 @@ console.groupEnd();
 
 ---
 
-<!-- /ANCHOR:devtools-quick-reference -->
-<!-- ANCHOR:logging-standards -->
 ## 3. LOGGING STANDARDS
 
 ### Consistent Log Format
@@ -176,8 +171,6 @@ console.groupEnd();
 
 ---
 
-<!-- /ANCHOR:logging-standards -->
-<!-- ANCHOR:testing-requirements -->
 ## 4. TESTING REQUIREMENTS
 
 ### Manual Testing Checklist
@@ -228,8 +221,6 @@ PERFORMANCE:
 
 ---
 
-<!-- /ANCHOR:testing-requirements -->
-<!-- ANCHOR:automation-patterns -->
 ## 5. AUTOMATION PATTERNS
 
 ### Chrome DevTools MCP Automation
@@ -402,8 +393,6 @@ Both can navigate, test, and screenshot without conflicts.
 
 ---
 
-<!-- /ANCHOR:automation-patterns -->
-<!-- ANCHOR:error-patterns -->
 ## 6. ERROR PATTERNS
 
 ### Common Frontend Errors
@@ -508,8 +497,6 @@ async function robustOperation() {
 
 ---
 
-<!-- /ANCHOR:error-patterns -->
-<!-- ANCHOR:browser-compatibility -->
 ## 7. BROWSER COMPATIBILITY
 
 ### Feature Detection
@@ -564,8 +551,6 @@ element.classList.add('animate');
 
 ---
 
-<!-- /ANCHOR:browser-compatibility -->
-<!-- ANCHOR:quick-command-reference -->
 ## 8. QUICK COMMAND REFERENCE
 
 ### DevTools Console Commands
@@ -621,8 +606,6 @@ window.addEventListener('offline', handleOffline);
 
 ---
 
-<!-- /ANCHOR:quick-command-reference -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Reference Files
@@ -636,4 +619,3 @@ window.addEventListener('offline', handleOffline);
 - [MDN Web Docs](https://developer.mozilla.org) - JavaScript, CSS, and browser API documentation
 - [Can I Use](https://caniuse.com) - Browser compatibility tables
 - [Chrome DevTools Docs](https://developer.chrome.com/docs/devtools/) - Official DevTools documentation
-<!-- /ANCHOR:related-resources -->

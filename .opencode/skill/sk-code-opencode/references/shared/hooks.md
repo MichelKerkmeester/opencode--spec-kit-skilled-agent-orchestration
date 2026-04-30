@@ -9,7 +9,6 @@ Reference for the four runtime hook surfaces that wire `mcp_server/hooks/` entry
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -39,8 +38,6 @@ This reference documents the runtime hook entrypoints under `.opencode/skill/sys
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:dynamic-load-pattern -->
 ## 2. DYNAMIC-LOAD PATTERN
 
 ### Why Hooks Look Dead
@@ -66,8 +63,6 @@ Removing the source without removing the settings entry produces a runtime error
 
 ---
 
-<!-- /ANCHOR:dynamic-load-pattern -->
-<!-- ANCHOR:claude-hooks -->
 ## 3. CLAUDE HOOKS
 
 `mcp_server/hooks/claude/` - 4 wired entrypoints + shared helpers.
@@ -102,8 +97,6 @@ The nested shape (`hooks.<Event>[].hooks[]`) is required. A flat shape with top-
 
 ---
 
-<!-- /ANCHOR:claude-hooks -->
-<!-- ANCHOR:codex-hooks -->
 ## 4. CODEX HOOKS
 
 `mcp_server/hooks/codex/` - 3 wired entrypoints + 1 fallback wrapper + setup helper.
@@ -137,8 +130,6 @@ Codex hook stdin JSON wins over argv JSON when both are present (per advisor hoo
 
 ---
 
-<!-- /ANCHOR:codex-hooks -->
-<!-- ANCHOR:gemini-hooks -->
 ## 5. GEMINI HOOKS
 
 `mcp_server/hooks/gemini/` - 5 wired entrypoints + shared helpers.
@@ -180,8 +171,6 @@ Gemini accepts a `name` field on each hook entry - Claude and Codex do not.
 
 ---
 
-<!-- /ANCHOR:gemini-hooks -->
-<!-- ANCHOR:copilot-hooks -->
 ## 6. COPILOT HOOKS
 
 `mcp_server/hooks/copilot/` - managed custom-instructions writer pattern, NOT a native hook contract.
@@ -211,8 +200,6 @@ See `mcp_server/hooks/copilot/README.md` for the full contract; do NOT duplicate
 
 ---
 
-<!-- /ANCHOR:copilot-hooks -->
-<!-- ANCHOR:maintenance-checklist -->
 ## 7. MAINTENANCE CHECKLIST
 
 ### Editing an Existing Hook
@@ -256,8 +243,6 @@ Hooks are RUNTIME-SPECIFIC. Adding `compact-inject` to Claude does NOT auto-add 
 
 ---
 
-<!-- /ANCHOR:maintenance-checklist -->
-<!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
 ### Canonical Evidence
@@ -281,4 +266,3 @@ Hooks are RUNTIME-SPECIFIC. Adding `compact-inject` to Claude does NOT auto-add 
 ### Framework Context
 
 - `CLAUDE.md` §"Session Start & Recovery" notes hook-capable runtimes auto-inject startup context; this reference is the implementation-side complement.
-<!-- /ANCHOR:related-resources -->

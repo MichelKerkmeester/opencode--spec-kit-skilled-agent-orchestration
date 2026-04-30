@@ -9,7 +9,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -22,8 +21,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:before-claiming-anything -->
 ## 2. BEFORE CLAIMING ANYTHING
 
 □ **I have opened an actual browser** (not just reviewed code)
@@ -35,8 +32,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:before-claiming-anything -->
-<!-- ANCHOR:browser-testing -->
 ## 3. BROWSER TESTING
 
 ### Minimum Requirements (ALWAYS REQUIRED)
@@ -61,8 +56,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:browser-testing -->
-<!-- ANCHOR:viewport-testing -->
 ## 4. VIEWPORT TESTING
 
 □ Mobile viewport (375px minimum)
@@ -89,8 +82,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:viewport-testing -->
-<!-- ANCHOR:functionality-testing -->
 ## 5. FUNCTIONALITY TESTING
 
 ### Interactive Elements
@@ -132,8 +123,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:functionality-testing -->
-<!-- ANCHOR:console-errors -->
 ## 6. CONSOLE & ERRORS
 
 ### DevTools Console
@@ -160,8 +149,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:console-errors -->
-<!-- ANCHOR:documentation -->
 ## 7. DOCUMENTATION
 
 ### Evidence Recorded
@@ -187,8 +174,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:documentation -->
-<!-- ANCHOR:red-flags-avoided -->
 ## 8. RED FLAGS AVOIDED
 
 **Did NOT think:**
@@ -205,8 +190,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:red-flags-avoided -->
-<!-- ANCHOR:final-verification -->
 ## 9. FINAL VERIFICATION
 
 ### Can You Answer These?
@@ -222,8 +205,6 @@ Use this checklist BEFORE claiming any work is complete, fixed, or working. Comp
 
 ---
 
-<!-- /ANCHOR:final-verification -->
-<!-- ANCHOR:claiming-format -->
 ## 10. CLAIMING FORMAT
 
 ### ✅ CORRECT Claim:
@@ -243,8 +224,6 @@ Timing appears correct
 
 ---
 
-<!-- /ANCHOR:claiming-format -->
-<!-- ANCHOR:special-cases -->
 ## 11. SPECIAL CASES
 
 ### Can't Open Browser
@@ -274,10 +253,7 @@ Timing appears correct
 
 ---
 
-<!-- /ANCHOR:special-cases -->
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 - [verification_workflows.md](../../references/verification/verification_workflows.md) - Full verification guide
 - [quick_reference.md](../../references/standards/quick_reference.md) - Quick checklist
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Coding conventions and formatting standards for Python scripts in the OpenCode d
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -32,8 +31,6 @@ Applies to all Python files in:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-structure -->
 ## 2. FILE STRUCTURE
 
 ### Shebang Line
@@ -132,8 +129,6 @@ def validate_something():
 
 ---
 
-<!-- /ANCHOR:file-structure -->
-<!-- ANCHOR:naming-conventions -->
 ## 3. NAMING CONVENTIONS
 
 ### Functions and Variables
@@ -192,8 +187,6 @@ def _parse_frontmatter(content: str) -> dict:
 
 ---
 
-<!-- /ANCHOR:naming-conventions -->
-<!-- ANCHOR:type-hints -->
 ## 4. TYPE HINTS
 
 ### Function Signatures
@@ -233,8 +226,6 @@ def func() -> Dict[str, Any]:
 
 ---
 
-<!-- /ANCHOR:type-hints -->
-<!-- ANCHOR:docstrings -->
 ## 5. DOCSTRINGS
 
 ### Google-Style Format
@@ -345,8 +336,6 @@ All comment text MUST start with a capital letter:
 
 ---
 
-<!-- /ANCHOR:docstrings -->
-<!-- ANCHOR:code-patterns -->
 ## 6. CODE PATTERNS
 
 ### Early Return Pattern
@@ -402,8 +391,6 @@ message = "Missing required field '%s' in frontmatter" % field
 
 ---
 
-<!-- /ANCHOR:code-patterns -->
-<!-- ANCHOR:error-handling -->
 ## 7. ERROR HANDLING
 
 ### Specific Exceptions
@@ -440,8 +427,6 @@ return False, "Invalid name format"
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-<!-- ANCHOR:line-length-and-formatting -->
 ## 8. LINE LENGTH AND FORMATTING
 
 ### Line Length
@@ -480,8 +465,6 @@ REQUIRED_SECTIONS = [
 
 ---
 
-<!-- /ANCHOR:line-length-and-formatting -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 ### Internal References
@@ -492,4 +475,3 @@ REQUIRED_SECTIONS = [
 - [PEP 8](https://peps.python.org/pep-0008/) - Python Style Guide
 - [PEP 257](https://peps.python.org/pep-0257/) - Docstring Conventions
 - [Google Python Style Guide](https://google.github.io/styleguide/pyguide.html)
-<!-- /ANCHOR:related-resources -->

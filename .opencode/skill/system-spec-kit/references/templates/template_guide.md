@@ -9,7 +9,6 @@ Guide to template selection, copying, adaptation, and quality standards.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Progressive Enhancement Model
@@ -72,9 +71,6 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:template-selection-by-level-progressive-enhancement -->
 ## 2. TEMPLATE SELECTION BY LEVEL (PROGRESSIVE ENHANCEMENT)
 
 ### Level 1: Baseline Documentation (LOC guidance: <100)
@@ -243,9 +239,6 @@ cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/#
 
 ---
 
-<!-- /ANCHOR:template-selection-by-level-progressive-enhancement -->
-
-<!-- ANCHOR:template-structure-standards -->
 ## 3. TEMPLATE STRUCTURE STANDARDS
 
 ### 1. Numbered H2 Sections
@@ -337,9 +330,6 @@ submissions are duplicates.
 
 ---
 
-<!-- /ANCHOR:template-structure-standards -->
-
-<!-- ANCHOR:template-adaptation-process -->
 ## 4. TEMPLATE ADAPTATION PROCESS
 
 ### Step-by-Step Adaptation
@@ -395,9 +385,6 @@ cp .opencode/skill/system-spec-kit/templates/level_N/[template].md specs/###-nam
 
 ---
 
-<!-- /ANCHOR:template-adaptation-process -->
-
-<!-- ANCHOR:supporting-templates -->
 ## 5. SUPPORTING TEMPLATES
 
 ### research/research.md - Comprehensive Feature Research
@@ -530,9 +517,6 @@ cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/##
 
 ---
 
-<!-- /ANCHOR:supporting-templates -->
-
-<!-- ANCHOR:session-management-templates -->
 ## 6. SESSION MANAGEMENT TEMPLATES
 
 These templates support session continuity, temporary workspaces, and context preservation.
@@ -713,9 +697,6 @@ Task tool -> @debug for specs/007-feature/
 
 ---
 
-<!-- /ANCHOR:session-management-templates -->
-
-<!-- ANCHOR:quality-standards -->
 ## 7. QUALITY STANDARDS
 
 ### Adherence Rules
@@ -778,9 +759,6 @@ For manual upgrades (fallback), copy the required templates from the target leve
 
 ---
 
-<!-- /ANCHOR:quality-standards -->
-
-<!-- ANCHOR:common-mistakes -->
 ## 8. COMMON MISTAKES
 
 ### Mistake 1: Creating from Scratch
@@ -880,9 +858,6 @@ spec.md and plan.md exist but don't reference each other
 
 ---
 
-<!-- /ANCHOR:common-mistakes -->
-
-<!-- ANCHOR:troubleshooting -->
 ## 9. TROUBLESHOOTING
 
 ### "I don't know what to put in this section"
@@ -913,9 +888,6 @@ spec.md and plan.md exist but don't reference each other
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
-
-<!-- ANCHOR:using-sub-folders-for-organization -->
 ## 10. USING SUB-FOLDERS FOR ORGANIZATION
 
 There are **two distinct sub-folder systems**:
@@ -1104,9 +1076,6 @@ See each sub-folder's README.md for details.
 
 ---
 
-<!-- /ANCHOR:using-sub-folders-for-organization -->
-
-<!-- ANCHOR:phase-organization -->
 ## 11. PHASE ORGANIZATION
 
 ### Phase Template Addendums
@@ -1152,9 +1121,6 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 
 ---
 
-<!-- /ANCHOR:phase-organization -->
-
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 ### Reference Files
@@ -1204,4 +1170,3 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 
 ---
 
-<!-- /ANCHOR:related-resources -->

@@ -170,3 +170,15 @@ non-empty and start with `Advisor:` on the prompt hook.
   `https://github.com/openai/codex/issues/16933`
 - Packet-local synthesis:
   `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-package/005-codex-hook-parity-remediation/research/007-deep-review-remediation-pt-02/research.md`
+
+## 8. OVERVIEW
+
+_TODO: populate this section_
+
+---
+
+## 9. OVERVIEW
+
+_TODO: populate this section_
+
+---

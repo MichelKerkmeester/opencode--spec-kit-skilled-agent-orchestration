@@ -9,7 +9,6 @@ Templates and validation rules for YAML frontmatter by document type.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### What Is YAML Frontmatter?
@@ -89,8 +88,6 @@ Level 3: Field Format
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-add-frontmatter -->
 ## 2. WHEN TO ADD FRONTMATTER
 
 ### Add Frontmatter When
@@ -167,8 +164,6 @@ Is this document invoked programmatically?
 
 ---
 
-<!-- /ANCHOR:when-to-add-frontmatter -->
-<!-- ANCHOR:field-reference -->
 ## 3. FIELD REFERENCE
 
 ### `name` Field
@@ -295,8 +290,6 @@ model: opus
 
 ---
 
-<!-- /ANCHOR:field-reference -->
-<!-- ANCHOR:document-type-templates -->
 ## 4. DOCUMENT TYPE TEMPLATES
 
 ### SKILL.md Frontmatter Template
@@ -380,8 +373,6 @@ Brief introduction...
 
 ---
 
-<!-- /ANCHOR:document-type-templates -->
-<!-- ANCHOR:validation-rules -->
 ## 5. VALIDATION RULES
 
 ### Validation by Document Type
@@ -463,8 +454,6 @@ validation_rules:
 
 ---
 
-<!-- /ANCHOR:validation-rules -->
-<!-- ANCHOR:common-fixes -->
 ## 6. COMMON FIXES
 
 ### Missing Frontmatter
@@ -576,8 +565,6 @@ Content...
 
 ---
 
-<!-- /ANCHOR:common-fixes -->
-<!-- ANCHOR:auto-generation-guidelines -->
 ## 7. AUTO-GENERATION GUIDELINES
 
 ### Field Inference Rules
@@ -664,8 +651,6 @@ Document type detected?
 
 ---
 
-<!-- /ANCHOR:auto-generation-guidelines -->
-<!-- ANCHOR:interactive-workflow -->
 ## 8. INTERACTIVE WORKFLOW
 
 ### Adding Frontmatter Interactively
@@ -719,8 +704,6 @@ Press Enter to keep default, or type new value.
 
 ---
 
-<!-- /ANCHOR:interactive-workflow -->
-<!-- ANCHOR:best-practices-summary -->
 ## 9. BEST PRACTICES SUMMARY
 
 ### DO
@@ -745,8 +728,6 @@ Press Enter to keep default, or type new value.
 
 ---
 
-<!-- /ANCHOR:best-practices-summary -->
-<!-- ANCHOR:quick-reference -->
 ## 10. QUICK REFERENCE
 
 ### Frontmatter Decision Tree
@@ -782,8 +763,6 @@ Document type?
 
 ---
 
-<!-- /ANCHOR:quick-reference -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Templates
@@ -793,4 +772,3 @@ Document type?
 ### Standards
 - [core_standards.md](../../references/global/core_standards.md) - Document type rules
 - [validation.md](../../references/global/validation.md) - Quality scoring
-<!-- /ANCHOR:related-resources -->

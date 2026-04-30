@@ -9,7 +9,6 @@ Policy reference for deciding whether a improve-agent candidate stays baseline-o
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Promotion stays intentionally narrower than scoring and benchmarking. A candidat
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:current-posture -->
 ## 2. CURRENT PROMOTION POSTURE
 
 All agent targets are evaluated via dynamic mode. Promotion is a per-target decision made under dynamic mode; there are no static, automatically promotion-eligible profiles.
@@ -43,8 +40,6 @@ When promotion is enabled, the shipped promotion script enforces:
 
 ---
 
-<!-- /ANCHOR:current-posture -->
-<!-- ANCHOR:keep-reject -->
 ## 3. KEEP VS REJECT
 
 Keep the baseline when:
@@ -64,8 +59,6 @@ Prefer the candidate only when:
 
 ---
 
-<!-- /ANCHOR:keep-reject -->
-<!-- ANCHOR:tie-break -->
 ## 4. TIE-BREAK
 
 When scores tie, prefer the simpler option:
@@ -76,8 +69,6 @@ When scores tie, prefer the simpler option:
 
 ---
 
-<!-- /ANCHOR:tie-break -->
-<!-- ANCHOR:prerequisites -->
 ## 5. PROMOTION PREREQUISITES
 
 Promotion is allowed only when:
@@ -89,8 +80,6 @@ Promotion is allowed only when:
 
 ---
 
-<!-- /ANCHOR:prerequisites -->
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 - `evaluator_contract.md`
@@ -98,4 +87,3 @@ Promotion is allowed only when:
 - `no_go_conditions.md`
 - `../scripts/promote-candidate.cjs`
 
-<!-- /ANCHOR:related-resources -->

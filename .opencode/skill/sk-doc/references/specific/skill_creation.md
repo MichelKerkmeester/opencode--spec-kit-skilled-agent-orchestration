@@ -9,7 +9,6 @@ Step-by-step guide from concept to packaged skill with validation standards and 
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Level 3 reference for the full skill lifecycle: creation, validation, and distribution.
@@ -28,8 +27,6 @@ Skills are modular packages that extend an AI agent with specialized workflows, 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:skill-anatomy -->
 ## 2. SKILL ANATOMY
 
 Every skill consists of a required SKILL.md file and optional bundled resources:
@@ -181,8 +178,6 @@ Files used within the output the agent produces (not loaded into context).
 
 ---
 
-<!-- /ANCHOR:skill-anatomy -->
-<!-- ANCHOR:skill-creation-process -->
 ## 3. SKILL CREATION PROCESS
 
 Follow these steps in order, skipping only if there is a clear reason they are not applicable.
@@ -219,7 +214,6 @@ AI: What optimization do you want for AI readability?
 User: Convert documentation to question-answering format, remove metadata.
 ```
 
-
 ### Step 2: Planning Reusable Skill Contents (~5 min)
 
 **Objective**: Identify scripts, references, and assets that will be reused across skill invocations.
@@ -254,7 +248,6 @@ User: Convert documentation to question-answering format, remove metadata.
 - **Rationale**: Document parsing better in Python, AI evaluates the output
 
 **Output**: List of reusable resources (scripts, references, assets) with rationale.
-
 
 ### Step 3: Initializing the Skill (~2 min)
 
@@ -291,7 +284,6 @@ scripts/init_skill.py markdown-optimizer --path .opencode/skill
 # ├── references/example_reference.md
 # └── assets/example_asset.txt
 ```
-
 
 ### Step 4: Edit the Skill (~10-15 min)
 
@@ -413,7 +405,6 @@ version: 1.0.0
 
 > **Complete Reference**: For validation rules, format specifications, and all document types, see [frontmatter_templates.md](../../assets/documentation/frontmatter_templates.md)
 
-
 ### Step 5: Packaging a Skill (~2 min)
 
 **Objective**: Validate skill and package into distributable zip file.
@@ -470,7 +461,6 @@ scripts/package_skill.py <path/to/skill-folder> ./dist
    markdown-document-specialist extract markdown-optimizer/SKILL.md
    Review the JSON output + re-read the doc for clarity and completeness
 ```
-
 
 ### Step 6: Iterate (ongoing)
 
@@ -530,8 +520,6 @@ Iteration 3:
 
 ---
 
-<!-- /ANCHOR:skill-creation-process -->
-<!-- ANCHOR:validation-requirements -->
 ## 4. VALIDATION REQUIREMENTS
 
 ### Minimal Validation (quick_validate.py)
@@ -549,7 +537,6 @@ Iteration 3:
 **Output**: Pass/fail with error messages
 
 **When to use**: Automatically during packaging
-
 
 ### Comprehensive Validation (markdown-document-specialist)
 
@@ -575,8 +562,6 @@ scripts/extract_structure.py .opencode/skill/my-skill/SKILL.md
 
 ---
 
-<!-- /ANCHOR:validation-requirements -->
-<!-- ANCHOR:common-pitfalls -->
 ## 5. COMMON PITFALLS
 
 ### Pitfall 1: Generic Descriptions
@@ -593,7 +578,6 @@ description: Complete document quality pipeline with structure enforcement, cont
 ```
 
 **Fix**: Be specific about capabilities and use cases.
-
 
 ### Pitfall 2: Bloated SKILL.md
 
@@ -615,7 +599,6 @@ See [optimization.md](../global/optimization.md) for transformation patterns.
 
 **Fix**: Move detailed content to references/, keep SKILL.md lean.
 
-
 ### Pitfall 3: Missing Bundled Resources
 
 **Problem**: The agent recreates same code repeatedly instead of using scripts.
@@ -632,7 +615,6 @@ Use scripts/rotate_pdf.py to rotate PDF files.
 ```
 
 **Fix**: Identify repeatedly needed code, create scripts.
-
 
 ### Pitfall 4: Unclear Triggers
 
@@ -655,7 +637,6 @@ Manual optimization when:
 
 **Fix**: Be specific about automatic vs manual triggers, clear use cases.
 
-
 ### Pitfall 5: Second-Person Language
 
 **Problem**: Skill uses "you" instead of imperative form.
@@ -670,7 +651,6 @@ Validate the file before processing.
 ```
 
 **Fix**: Use imperative/infinitive form throughout.
-
 
 ### Pitfall 6: Platform Compatibility
 
@@ -705,7 +685,6 @@ Enforcement runs automatically via triggers:
 grep -E "runs automatically|blocks commits|Automatic.*via|auto-enforced" SKILL.md
 ```
 
-
 ### Pitfall 7: Multiline YAML Description
 
 **Problem**: Skill description uses YAML multiline block format which isn't parsed correctly.
@@ -724,7 +703,6 @@ description: This is my skill description all on one line.
 **Cause**: Prettier and other formatters may auto-format long descriptions to multiline.
 
 **Fix**: Keep description on a single line after the colon. If a formatter changes it, manually revert.
-
 
 ### Pitfall 8: File References in Wrong Section or Redundant Navigation Guide
 
@@ -786,8 +764,6 @@ def route_request(context):
 
 ---
 
-<!-- /ANCHOR:common-pitfalls -->
-<!-- ANCHOR:example-skills -->
 ## 6. EXAMPLE SKILLS
 
 ### Example 1: PDF Editor Skill
@@ -818,7 +794,6 @@ pdf-editor/
 - `scripts/merge_pdfs.py` - Merge multiple PDFs
 - `references/pdf_operations.md` - PyPDF2 documentation
 
-
 ### Example 2: Brand Guidelines Skill
 
 **Purpose**: Apply company branding to documents
@@ -847,7 +822,6 @@ brand-guidelines/
 - `assets/color_palette.json` - Official colors
 - `references/brand_guidelines.md` - Detailed brand rules
 
-
 ### ️ Example 3: Database Query Skill
 
 **Purpose**: Query company database with proper schemas
@@ -873,8 +847,6 @@ database-query/
 
 ---
 
-<!-- /ANCHOR:example-skills -->
-<!-- ANCHOR:skill-maintenance -->
 ## 7. SKILL MAINTENANCE
 
 ### When to Update Skills
@@ -914,8 +886,6 @@ version: 2.0.0
 
 ---
 
-<!-- /ANCHOR:skill-maintenance -->
-<!-- ANCHOR:distribution -->
 ## 8. DISTRIBUTION
 
 ### Packaging for Distribution
@@ -949,8 +919,6 @@ scripts/package_skill.py <path/to/skill> <output-directory>
 
 ---
 
-<!-- /ANCHOR:distribution -->
-<!-- ANCHOR:skill-structure-system -->
 ## 9. SKILL STRUCTURE SYSTEM
 
 ### Why Layered Skill Docs
@@ -1004,8 +972,6 @@ Use these templates when authoring layered skills:
 
 ---
 
-<!-- /ANCHOR:skill-structure-system -->
-<!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
 ### Templates
@@ -1023,4 +989,3 @@ Use these templates when authoring layered skills:
 ---
 
 *End of Skill Creation Workflow*
-<!-- /ANCHOR:related-resources -->

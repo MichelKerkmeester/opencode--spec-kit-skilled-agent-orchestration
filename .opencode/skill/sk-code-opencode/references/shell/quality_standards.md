@@ -9,7 +9,6 @@ Code quality requirements, validation rules, and best practices for Bash scripts
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Establishes quality gates and validation criteria that all Bash scripts must mee
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:p0-hard-blockers -->
 ## 2. P0 - HARD BLOCKERS
 
 These items MUST be fixed before any commit.
@@ -122,8 +119,6 @@ for f in *.md; do
 
 ---
 
-<!-- /ANCHOR:p0-hard-blockers -->
-<!-- ANCHOR:p1-required -->
 ## 3. P1 - REQUIRED
 
 These items must be addressed or receive explicit approval to defer.
@@ -203,8 +198,6 @@ TODOs must include owner or ticket:
 
 ---
 
-<!-- /ANCHOR:p1-required -->
-<!-- ANCHOR:p2-recommended -->
 ## 4. P2 - RECOMMENDED
 
 These items improve quality but can be deferred.
@@ -267,8 +260,6 @@ shellcheck script.sh
 
 ---
 
-<!-- /ANCHOR:p2-recommended -->
-<!-- ANCHOR:validation-patterns -->
 ## 5. VALIDATION PATTERNS
 
 ### Input Validation Pattern
@@ -342,8 +333,6 @@ main "$@"
 
 ---
 
-<!-- /ANCHOR:validation-patterns -->
-<!-- ANCHOR:error-handling -->
 ## 6. ERROR HANDLING
 
 ### Exit Code Standards
@@ -389,8 +378,6 @@ TEMP_FILES+=("$TEMP_FILE")
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-<!-- ANCHOR:output-standards -->
 ## 7. OUTPUT STANDARDS
 
 ### Message Format
@@ -439,8 +426,6 @@ printf "\rProgress: %d%%" "$((i * 100 / total))"
 
 ---
 
-<!-- /ANCHOR:output-standards -->
-<!-- ANCHOR:security-considerations -->
 ## 8. SECURITY CONSIDERATIONS
 
 ### Avoid eval
@@ -482,8 +467,6 @@ fi
 
 ---
 
-<!-- /ANCHOR:security-considerations -->
-<!-- ANCHOR:code-review-checklist -->
 ## 9. REVIEW HANDOFF (SK-CODE--REVIEW BASELINE)
 
 Use `sk-code-review` for formal findings-first review output and severity handling. Keep this file focused on shell technical standards.
@@ -496,8 +479,6 @@ For review runs:
 
 ---
 
-<!-- /ANCHOR:code-review-checklist -->
-<!-- ANCHOR:shellcheck-integration -->
 ## 10. SHELLCHECK INTEGRATION
 
 ### Running ShellCheck
@@ -538,8 +519,6 @@ problematic_function() {
 
 ---
 
-<!-- /ANCHOR:shellcheck-integration -->
-<!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
 ### Internal References
@@ -549,4 +528,3 @@ problematic_function() {
 ### External Tools
 - [ShellCheck](https://www.shellcheck.net/) - Static analysis
 - [Google Shell Style Guide](https://google.github.io/styleguide/shellguide.html)
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Complete configuration guide for memory trigger phrases and the fast trigger mat
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 **Core Principle:** Trigger detection must be fast (<50ms) and reliable, using optimized phrase matching to surface relevant spec-doc records without impacting conversation flow.
@@ -33,9 +32,6 @@ This reference covers trigger phrase configuration, the MCP-based matching syste
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:trigger-phrases -->
 ## 2. TRIGGER PHRASES
 
 The following phrases activate memory operations (case-insensitive matching):
@@ -178,9 +174,6 @@ Save-time trigger validation now applies sanitization rules to prevent low-quali
 
 ---
 
-<!-- /ANCHOR:trigger-phrases -->
-
-<!-- ANCHOR:manual-save-methods -->
 ## 3. MANUAL SAVE METHODS
 
 ### Primary Method: Command
@@ -217,9 +210,6 @@ Include any of these phrases in your message:
 
 ---
 
-<!-- /ANCHOR:manual-save-methods -->
-
-<!-- ANCHOR:customization -->
 ## 4. CUSTOMIZATION
 
 ### Adding Custom Triggers
@@ -293,9 +283,6 @@ _memory:
 
 ---
 
-<!-- /ANCHOR:customization -->
-
-<!-- ANCHOR:performance-targets -->
 ## 5. PERFORMANCE TARGETS
 
 ### Trigger Matching Performance
@@ -328,9 +315,6 @@ function optimizedDetection(userMessage: string): CompiledTrigger | undefined {
 
 ---
 
-<!-- /ANCHOR:performance-targets -->
-
-<!-- ANCHOR:best-practices -->
 ## 6. BEST PRACTICES
 
 ### Good vs Bad Trigger Phrases
@@ -386,9 +370,6 @@ Before deploying custom triggers:
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 ### Reference Files
@@ -402,4 +383,3 @@ Before deploying custom triggers:
 
 ---
 
-<!-- /ANCHOR:related-resources -->

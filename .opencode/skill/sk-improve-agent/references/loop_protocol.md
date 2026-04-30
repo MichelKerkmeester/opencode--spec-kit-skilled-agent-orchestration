@@ -9,7 +9,6 @@ End-to-end operator view of how the improve-agent command, mutator, scorer, benc
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ The loop is evaluator-first. Candidate generation, scoring, benchmarking, reduct
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:init -->
 ## 2. INIT
 
 - Confirm spec folder and execution mode
@@ -43,8 +40,6 @@ The loop is evaluator-first. Candidate generation, scoring, benchmarking, reduct
 
 ---
 
-<!-- /ANCHOR:init -->
-<!-- ANCHOR:propose -->
 ## 3. PROPOSE
 
 - Read the charter and target manifest first
@@ -55,8 +50,6 @@ The loop is evaluator-first. Candidate generation, scoring, benchmarking, reduct
 
 ---
 
-<!-- /ANCHOR:propose -->
-<!-- ANCHOR:score-and-benchmark -->
 ## 4. SCORE AND BENCHMARK
 
 - Run `score-candidate.cjs` against the candidate (dynamic 5-dimension mode is the only supported path)
@@ -67,8 +60,6 @@ The loop is evaluator-first. Candidate generation, scoring, benchmarking, reduct
 
 ---
 
-<!-- /ANCHOR:score-and-benchmark -->
-<!-- ANCHOR:reduce-and-decide -->
 ## 5. REDUCE AND DECIDE
 
 - Run `reduce-state.cjs`
@@ -81,8 +72,6 @@ The loop is evaluator-first. Candidate generation, scoring, benchmarking, reduct
 
 ---
 
-<!-- /ANCHOR:reduce-and-decide -->
-<!-- ANCHOR:promote -->
 ## 6. PROMOTE
 
 Promotion is a per-target decision under dynamic mode and remains a guarded later-phase workflow requiring:
@@ -94,8 +83,6 @@ Promotion is a per-target decision under dynamic mode and remains a guarded late
 
 ---
 
-<!-- /ANCHOR:promote -->
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 - `quick_reference.md`
@@ -105,4 +92,3 @@ Promotion is a per-target decision under dynamic mode and remains a guarded late
 - `rollback_runbook.md`
 - `../README.md`
 
-<!-- /ANCHOR:related-resources -->

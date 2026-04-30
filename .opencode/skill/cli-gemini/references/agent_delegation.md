@@ -9,7 +9,6 @@ Routing reference for delegating tasks to specialized Gemini CLI agents.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -28,11 +27,8 @@ Documents the active Gemini agents in `.gemini/agents/` and how any AI assistant
 - Fresh-perspective debugging after the calling AI's attempts fail (dispatch `@debug` via the Task tool)
 - Multi-agent Gemini-side workflows (`@orchestrate`)
 
-<!-- /ANCHOR:overview -->
-
 ---
 
-<!-- ANCHOR:orchestration-model -->
 ## 2. ORCHESTRATION MODEL
 
 ```
@@ -86,11 +82,8 @@ gemini "As @context agent: Explore the authentication module" --include-director
 4. Gemini agents operate within their declared tool/scope boundaries
 5. If an agent returns low-quality output, The calling AI retries with refined instructions or uses a different approach
 
-<!-- /ANCHOR:orchestration-model -->
-
 ---
 
-<!-- ANCHOR:agent-catalog -->
 ## 3. AGENT CATALOG
 
 ### @context — Codebase Explorer
@@ -239,11 +232,8 @@ gemini "As @ultra-think agent: Design the caching strategy for this API. Conside
 gemini "As @write agent: Generate a comprehensive README.md for this project based on the codebase structure" -y -o text
 ```
 
-<!-- /ANCHOR:agent-catalog -->
-
 ---
 
-<!-- ANCHOR:routing-table -->
 ## 4. ROUTING TABLE
 
 | Task Type | Primary Agent | Fallback | Rationale |
@@ -258,11 +248,8 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 | Session continuity | `/memory:save` | `/spec_kit:resume` | Refresh continuity before pause |
 | Complex multi-agent task | @orchestrate | (decompose manually) | Gemini-internal coordination |
 
-<!-- /ANCHOR:routing-table -->
-
 ---
 
-<!-- ANCHOR:anti-patterns -->
 ## 5. ANTI-PATTERNS
 
 | Anti-Pattern | Why It Fails | Correct Approach |
@@ -274,11 +261,8 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 | Stateful assumptions | Assuming Gemini remembers prior delegations | Each invocation is stateless; include all context |
 | Interactive mode delegation | Starting Gemini in REPL mode from the calling AI | Always use non-interactive mode with prompt as argument |
 
-<!-- /ANCHOR:anti-patterns -->
-
 ---
 
-<!-- ANCHOR:output-handling -->
 ## 6. OUTPUT HANDLING
 
 ### JSON Output (Recommended for Integration)
@@ -306,4 +290,3 @@ Suitable when the output will be presented to the user directly.
 | Timeout | No output within timeout_mins | Simplify task scope, break into smaller pieces |
 | Low-quality output | Calling AI validation fails | Retry with refined prompt, or use different agent |
 
-<!-- /ANCHOR:output-handling -->

@@ -9,7 +9,6 @@ Test adequacy, coverage quality, and anti-pattern detection checklist for identi
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -19,11 +18,9 @@ Provide a systematic pass for test defects that reduce confidence in code correc
 ### Core Principle
 
 Tests that cannot fail are worse than no tests. They create false confidence and hide real defects.
-<!-- /ANCHOR:overview -->
 
 ---
 
-<!-- ANCHOR:coverage-quality -->
 ## 2. COVERAGE QUALITY
 
 Flag:
@@ -42,11 +39,9 @@ Severity guidance:
 - P0 for assertion-free test functions (silently passing tests that verify nothing).
 - P1 for changed behavior with no corresponding test update.
 - P2 for missing edge case coverage on low-risk paths.
-<!-- /ANCHOR:coverage-quality -->
 
 ---
 
-<!-- ANCHOR:test-structure -->
 ## 3. TEST STRUCTURE AND CLARITY
 
 Flag:
@@ -64,11 +59,9 @@ Review prompts:
 Severity guidance:
 - P2 default for structural clarity issues.
 - P1 if poor structure makes regression detection unreliable (for example, a multi-assertion test where early failures mask later ones).
-<!-- /ANCHOR:test-structure -->
 
 ---
 
-<!-- ANCHOR:test-independence -->
 ## 4. TEST INDEPENDENCE AND RELIABILITY
 
 Flag:
@@ -86,11 +79,9 @@ Review prompts:
 Severity guidance:
 - P1 for flaky tests or tests with execution-order dependencies.
 - P2 for missing teardown or cleanup that does not yet cause observed failures.
-<!-- /ANCHOR:test-independence -->
 
 ---
 
-<!-- ANCHOR:test-smells -->
 ## 5. TEST SMELL DETECTION
 
 Flag:
@@ -109,11 +100,9 @@ Severity guidance:
 - P0 for catch blocks that swallow assertion failures (tests that cannot fail).
 - P1 for over-mocking that makes the test unable to detect real defects.
 - P2 for implementation coupling or copy-paste duplication.
-<!-- /ANCHOR:test-smells -->
 
 ---
 
-<!-- ANCHOR:test-pyramid -->
 ## 6. TEST PYRAMID AWARENESS
 
 Flag:
@@ -130,11 +119,9 @@ Review prompts:
 Severity guidance:
 - P2 default for test-level misplacement.
 - P1 when wrong test level creates a confidence gap (for example, unit-testing an integration boundary without any integration test).
-<!-- /ANCHOR:test-pyramid -->
 
 ---
 
-<!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
 - [quick_reference.md](./quick_reference.md) - Baseline review flow and severity output contract.
@@ -143,4 +130,3 @@ Severity guidance:
 - [solid_checklist.md](./solid_checklist.md) - SOLID (SRP/OCP/LSP/ISP/DIP) and architecture risk prompts.
 
 Overlay portability: pair this baseline with stack-specific test guidance from `sk-code-opencode` or `sk-code`.
-<!-- /ANCHOR:related-resources -->

@@ -9,7 +9,6 @@ Reference catalog of 170+ tools across 7 MCP servers, organized by service.
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Dynamic Discovery (Recommended)
@@ -40,8 +39,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:configured-mcp-servers -->
 ## 2. CONFIGURED MCP SERVERS
 
 1. **Webflow** - 40+ tools (Site & CMS management)
@@ -59,8 +56,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:configured-mcp-servers -->
-<!-- ANCHOR:webflow-40-tools -->
 ## 3. WEBFLOW (40+ TOOLS)
 
 **Manual name:** `webflow`
@@ -136,8 +131,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:webflow-40-tools -->
-<!-- ANCHOR:clickup-20-tools -->
 ## 4. CLICKUP (20+ TOOLS)
 
 **Manual name:** `clickup`
@@ -184,8 +177,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:clickup-20-tools -->
-<!-- ANCHOR:figma-15-tools -->
 ## 5. FIGMA (15+ TOOLS)
 
 **Manual name:** `figma`
@@ -226,8 +217,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:figma-15-tools -->
-<!-- ANCHOR:chrome-devtools-52-tools -->
 ## 6. CHROME DEVTOOLS (52 TOOLS)
 
 **Manual names:** `chrome_devtools_1`, `chrome_devtools_2`
@@ -286,8 +275,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:chrome-devtools-52-tools -->
-<!-- ANCHOR:shadcn-ui-components -->
 ## 7. SHADCN UI (COMPONENTS)
 
 **Manual name:** `shadcn_ui`
@@ -301,8 +288,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:shadcn-ui-components -->
-<!-- ANCHOR:imagician-image-processing -->
 ## 8. IMAGICIAN (IMAGE PROCESSING)
 
 **Manual name:** `imagician`
@@ -319,8 +304,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:imagician-image-processing -->
-<!-- ANCHOR:video-audio-30-tools -->
 ## 9. VIDEO AUDIO (30+ TOOLS)
 
 **Manual name:** `video_audio`
@@ -358,8 +341,6 @@ const info = await tool_info({
 
 ---
 
-<!-- /ANCHOR:video-audio-30-tools -->
-<!-- ANCHOR:tool-discovery-examples -->
 ## 10. TOOL DISCOVERY EXAMPLES
 
 ### Example 1: Search by Task Description
@@ -416,8 +397,6 @@ console.log(info.interface);
 
 ---
 
-<!-- /ANCHOR:tool-discovery-examples -->
-<!-- ANCHOR:summary -->
 ## 11. SUMMARY
 
 **Total Tools:** 170+ across 7 MCP servers
@@ -432,8 +411,6 @@ console.log(info.interface);
 
 ---
 
-<!-- /ANCHOR:summary -->
-<!-- ANCHOR:related-resources -->
 ## 12. RELATED RESOURCES
 
 ### Reference Files
@@ -444,4 +421,3 @@ console.log(info.interface);
 
 ### Related Skills
 - `mcp-chrome-devtools` - Direct Chrome DevTools Protocol access via bdg CLI
-<!-- /ANCHOR:related-resources -->

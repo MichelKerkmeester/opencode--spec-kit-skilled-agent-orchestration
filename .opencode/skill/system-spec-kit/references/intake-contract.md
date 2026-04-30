@@ -9,7 +9,6 @@ This reference module defines the single canonical intake contract used by any S
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 <!-- SPECKIT_REFERENCE_SOURCE: intake-contract | v1.0 -->
@@ -47,9 +46,6 @@ This reference module defines the single canonical intake contract used by any S
 
 ---
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:workflow-phases -->
 ## 2. WORKFLOW PHASES
 
 | Phase | Purpose | Outputs |
@@ -62,9 +58,6 @@ This reference module defines the single canonical intake contract used by any S
 
 ---
 
-<!-- /ANCHOR:workflow-phases -->
-
-<!-- ANCHOR:folder-state-classification -->
 ## 3. FOLDER STATE CLASSIFICATION
 
 Invoking YAML assets first classify a local `folder_state`, then map it to the canonical `start_state` enum before returning contract outputs or emitting intake events. After T-YML-PLN-01, four of the five tokens align 1:1; only the empty-folder case keeps a local-vs-canonical rename.
@@ -96,9 +89,6 @@ The canonical `start_state` values are:
 
 ---
 
-<!-- /ANCHOR:folder-state-classification -->
-
-<!-- ANCHOR:repair-mode-routing -->
 ## 4. REPAIR-MODE ROUTING
 
 After folder classification, the caller confirms (or overrides) the repair mode before the Interview phase runs:
@@ -114,9 +104,6 @@ After folder classification, the caller confirms (or overrides) the repair mode 
 
 ---
 
-<!-- /ANCHOR:repair-mode-routing -->
-
-<!-- ANCHOR:consolidated-interview -->
 ## 5. CONSOLIDATED INTERVIEW
 
 All missing inputs are gathered in a SINGLE consolidated prompt. Never split into multiple messages.
@@ -137,9 +124,6 @@ Parse the response into the returned contract fields. In `:auto` mode, proceed o
 
 ---
 
-<!-- /ANCHOR:consolidated-interview -->
-
-<!-- ANCHOR:canonical-trio-publication -->
 ## 6. CANONICAL TRIO PUBLICATION
 
 The Emit phase stages and commits three files atomically:
@@ -158,9 +142,6 @@ The Emit phase stages and commits three files atomically:
 
 ---
 
-<!-- /ANCHOR:canonical-trio-publication -->
-
-<!-- ANCHOR:manual-relationships -->
 ## 7. MANUAL RELATIONSHIPS
 
 Relationship objects use:
@@ -180,9 +161,6 @@ Relationship objects use:
 
 ---
 
-<!-- /ANCHOR:manual-relationships -->
-
-<!-- ANCHOR:resume-semantics -->
 ## 8. RESUME SEMANTICS
 
 When a session is interrupted mid-intake, `resume_question_id` and `reentry_reason` persist the re-entry point.
@@ -198,9 +176,6 @@ When a session is interrupted mid-intake, `resume_question_id` and `reentry_reas
 
 ---
 
-<!-- /ANCHOR:resume-semantics -->
-
-<!-- ANCHOR:intake-lock -->
 ## 9. INTAKE LOCK
 
 An advisory lock file prevents concurrent trio publication on the same folder.
@@ -214,9 +189,6 @@ An advisory lock file prevents concurrent trio publication on the same folder.
 
 ---
 
-<!-- /ANCHOR:intake-lock -->
-
-<!-- ANCHOR:optional-memory-save-branch -->
 ## 10. OPTIONAL MEMORY SAVE BRANCH
 
 Memory save runs AFTER Emit success, only when:
@@ -232,9 +204,6 @@ Report save result independently from trio success — a failed save never inval
 
 ---
 
-<!-- /ANCHOR:optional-memory-save-branch -->
-
-<!-- ANCHOR:error-handling -->
 ## 11. ERROR HANDLING
 
 | Error | Action |
@@ -248,9 +217,6 @@ Report save result independently from trio success — a failed save never inval
 
 ---
 
-<!-- /ANCHOR:error-handling -->
-
-<!-- ANCHOR:consumer-integration -->
 ## 12. CONSUMER INTEGRATION
 
 ### `/spec_kit:plan`
@@ -274,9 +240,6 @@ Reads `handover.md` and `_memory.continuity` for `reentry_reason` and `resume_qu
 
 ---
 
-<!-- /ANCHOR:consumer-integration -->
-
-<!-- ANCHOR:quality-gates -->
 ## 13. QUALITY GATES
 
 - Folder state classified to exactly one of the five values
@@ -289,9 +252,6 @@ Reads `handover.md` and `_memory.continuity` for `reentry_reason` and `resume_qu
 
 ---
 
-<!-- /ANCHOR:quality-gates -->
-
-<!-- ANCHOR:reference -->
 ## 14. REFERENCE
 
 | Category | Paths |
@@ -308,9 +268,6 @@ Reads `handover.md` and `_memory.continuity` for `reentry_reason` and `resume_qu
 
 ---
 
-<!-- /ANCHOR:reference -->
-
-<!-- ANCHOR:supersedes -->
 ## 15. SUPERSEDES
 
 This module supersedes the deleted standalone intake command surface that packet `012-command-graph-consolidation` removed from `026-graph-and-context-optimization`. The former standalone intake surface duplicated the same logic that `/spec_kit:plan` and `/spec_kit:complete` carried inline, producing three parallel copies that drifted independently. Consolidation into this single reference eliminates drift risk and simplifies the command graph.
@@ -321,4 +278,3 @@ This module supersedes the deleted standalone intake command surface that packet
 
 ---
 
-<!-- /ANCHOR:supersedes -->

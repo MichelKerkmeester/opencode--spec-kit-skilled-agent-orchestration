@@ -9,7 +9,6 @@ Formatting standards and naming conventions for JavaScript files in the OpenCode
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -24,8 +23,6 @@ Defines consistent styling rules for JavaScript files to ensure readability, mai
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:file-header-format -->
 ## 2. FILE HEADER FORMAT
 
 All JavaScript files MUST begin with a boxed header identifying the module.
@@ -52,8 +49,6 @@ but follow ESM module syntax instead of CommonJS.
 
 ---
 
-<!-- /ANCHOR:file-header-format -->
-<!-- ANCHOR:use-strict-directive -->
 ## 3. USE STRICT DIRECTIVE
 
 Every `.js` and `.cjs` JavaScript file MUST include the strict mode directive.
@@ -71,8 +66,6 @@ helpers still use `'use strict'`.
 
 ---
 
-<!-- /ANCHOR:use-strict-directive -->
-<!-- ANCHOR:section-organization -->
 ## 4. SECTION ORGANIZATION
 
 Large files are organized using numbered section dividers.
@@ -99,8 +92,6 @@ Large files are organized using numbered section dividers.
 
 ---
 
-<!-- /ANCHOR:section-organization -->
-<!-- ANCHOR:naming-conventions -->
 ## 5. NAMING CONVENTIONS
 
 ### Function Names
@@ -193,8 +184,6 @@ const valid = true;          // ambiguous
 
 ---
 
-<!-- /ANCHOR:naming-conventions -->
-<!-- ANCHOR:formatting-rules -->
 ## 6. FORMATTING RULES
 
 ### Indentation
@@ -276,8 +265,6 @@ const message = "Hello world";  // Double quotes
 
 ---
 
-<!-- /ANCHOR:formatting-rules -->
-<!-- ANCHOR:commenting-rules -->
 ## 7. COMMENTING RULES
 
 ### Principles
@@ -428,8 +415,6 @@ Format for tracking incomplete work.
 
 ---
 
-<!-- /ANCHOR:commenting-rules -->
-<!-- ANCHOR:import-order -->
 ## 8. IMPORT ORDER
 
 Organize imports in three groups with blank lines between.
@@ -458,10 +443,7 @@ const logger = require('../utils/logger');
 
 ---
 
-<!-- /ANCHOR:import-order -->
-<!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
 - [quality_standards.md](./quality_standards.md) - Error handling, JSDoc, security patterns
 - [quick_reference.md](./quick_reference.md) - Copy-paste templates and cheat sheets
-<!-- /ANCHOR:related-resources -->

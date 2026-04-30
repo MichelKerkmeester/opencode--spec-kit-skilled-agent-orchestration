@@ -9,7 +9,6 @@ Copy-paste ready prompt templates for common Copilot CLI tasks. Replace `[placeh
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -36,7 +35,6 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 ---
 
-<!-- /ANCHOR:overview -->
 <!-- ANCHOR:code_generation -->
 
 ## 2. CODE GENERATION
@@ -108,7 +106,6 @@ copilot -p "Analyze performance of @./[file]. Identify bottlenecks, O(n) complex
 ```
 
 <!-- /ANCHOR:code_review -->
-<!-- ANCHOR:planning -->
 
 ## 4. ARCHITECTURE & PLANNING
 
@@ -137,7 +134,6 @@ copilot -p "Create a step-by-step plan to migrate @./[dir] from [old-stack] to [
  --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:planning -->
 <!-- ANCHOR:bug_fixing -->
 
 ## 5. BUG FIXING
@@ -191,7 +187,6 @@ copilot -p "Create a Playwright E2E test for the [user flow]. Test files: @./[re
 ```
 
 <!-- /ANCHOR:test_generation -->
-<!-- ANCHOR:documentation -->
 
 ## 7. DOCUMENTATION
 
@@ -213,7 +208,6 @@ copilot -p "Update documentation in @./docs to match code changes in @./src. Ens
   --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-<!-- /ANCHOR:documentation -->
 <!-- ANCHOR:code_transformation -->
 
 ## 8. CODE TRANSFORMATION

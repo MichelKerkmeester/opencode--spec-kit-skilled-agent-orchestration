@@ -7,7 +7,6 @@ description: Fast-path framework selection and CLEAR checks for CLI orchestrator
 
 Lightweight prompt-quality guidance for CLI orchestrator skills. Use this card on the fast path so routine dispatches get framework selection, a quick CLEAR check, and explicit escalation triggers without loading the full `sk-improve-prompt` body.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -20,8 +19,6 @@ Load this card before building any CLI dispatch prompt. Select a framework from 
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:framework-selection-table -->
 ## 2. Framework Selection Table
 
 | Framework | Best for | Complexity band | Core components |
@@ -36,8 +33,6 @@ Load this card before building any CLI dispatch prompt. Select a framework from 
 
 ---
 
-<!-- /ANCHOR:framework-selection-table -->
-<!-- ANCHOR:task-framework-map -->
 ## 3. CLI Task to Framework Map
 
 | CLI task type | Default framework | Notes |
@@ -50,8 +45,6 @@ Load this card before building any CLI dispatch prompt. Select a framework from 
 
 ---
 
-<!-- /ANCHOR:task-framework-map -->
-<!-- ANCHOR:clear-checklist -->
 ## 4. CLEAR 5-Question Pre-Dispatch Checklist
 
 Use one question per dimension before every CLI dispatch. If any answer is "no", tighten the prompt before running the CLI.
@@ -66,8 +59,6 @@ Use one question per dimension before every CLI dispatch. If any answer is "no",
 
 ---
 
-<!-- /ANCHOR:clear-checklist -->
-<!-- ANCHOR:escalation-triggers -->
 ## 5. Escalation Triggers
 
 Dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline when any of the following are true:
@@ -91,8 +82,6 @@ ESCALATION_NOTES: <open ambiguity or risk>
 
 ---
 
-<!-- /ANCHOR:escalation-triggers -->
-<!-- ANCHOR:failure-patterns -->
 ## 6. Common CLI Prompt Failure Patterns
 
 - Missing output format or success criteria
@@ -105,8 +94,6 @@ ESCALATION_NOTES: <open ambiguity or risk>
 
 ---
 
-<!-- /ANCHOR:failure-patterns -->
-<!-- ANCHOR:mirror-sync -->
 ## 7. Mirror Sync
 
 Mirror paths:
@@ -120,8 +107,6 @@ When editing this file, also update the mirrors or run `.opencode/skill/scripts/
 
 ---
 
-<!-- /ANCHOR:mirror-sync -->
-<!-- ANCHOR:related-resources -->
 ## 8. Related Resources
 
 - `../SKILL.md`
@@ -132,4 +117,3 @@ When editing this file, also update the mirrors or run `.opencode/skill/scripts/
 - `../../cli-copilot/assets/prompt_quality_card.md`
 - `../../cli-gemini/assets/prompt_quality_card.md`
 
-<!-- /ANCHOR:related-resources -->

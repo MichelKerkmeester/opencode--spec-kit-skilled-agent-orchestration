@@ -9,7 +9,21 @@ Standards and workflow for clear, reliable install guides with validation checkp
 
 ---
 
-<!-- ANCHOR:overview -->
+## TABLE OF CONTENTS
+
+- [OVERVIEW](#1--overview)
+- [CORE PRINCIPLES](#2--core-principles)
+- [REQUIRED SECTIONS](#3--required-sections)
+- [PHASE VALIDATION PATTERN](#4--phase-validation-pattern)
+- [PLATFORM CONFIGURATION](#5--platform-configuration)
+- [TROUBLESHOOTING STANDARDS](#6--troubleshooting-standards)
+- [QUALITY CRITERIA](#7--quality-criteria)
+- [CROSS-REFERENCES](#8--cross-references)
+- [INSTALLATION](#9--installation)
+- [VERIFICATION](#10--verification)
+
+---
+
 ## 1. OVERVIEW
 
 This reference defines standards for install guide documentation. Install guides require special consideration: unclear instructions lead to failed setups, wasted time, and frustrated users.
@@ -30,9 +44,7 @@ This reference defines standards for install guide documentation. Install guides
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:core-principles -->
-## 2. Core Principles
+## 2. CORE PRINCIPLES
 
 ### Phase-Based Installation
 
@@ -61,8 +73,6 @@ Phase 5: Verification     → Validate: System works end-to-end
 
 ---
 
-<!-- /ANCHOR:core-principles -->
-<!-- ANCHOR:required-sections -->
 ## 3. REQUIRED SECTIONS
 
 Every install guide follows an 11-section structure (sections 0-10), with 9 required and 2 optional:
@@ -93,7 +103,7 @@ I want to install [Tool] from [URL]. Please help me...
 
 **Section 1 - Overview** (must include Core Principle blockquote):
 ```markdown
-## 1. OVERVIEW
+## 4. OVERVIEW
 
 [Tool] is [description]. It provides [benefits].
 
@@ -104,7 +114,7 @@ I want to install [Tool] from [URL]. Please help me...
 
 **Section 2 - Prerequisites** (checklist format required):
 ```markdown
-## 2. PREREQUISITES
+## 5. PREREQUISITES
 - [ ] Node.js v18+ installed (`node --version`)
 - [ ] npm v9+ installed (`npm --version`)
 - [ ] Terminal access with standard permissions
@@ -123,9 +133,7 @@ Install guides should contain 5+ STOP blocks across all validation checkpoints.
 
 ---
 
-<!-- /ANCHOR:required-sections -->
-<!-- ANCHOR:phase-validation-pattern -->
-## 4. PHASE VALIDATION PATTERN
+## 6. PHASE VALIDATION PATTERN
 
 ### Validation Checkpoint Format
 
@@ -156,9 +164,7 @@ Install guides should contain 5+ STOP blocks across all validation checkpoints.
 
 ---
 
-<!-- /ANCHOR:phase-validation-pattern -->
-<!-- ANCHOR:platform-configuration -->
-## 5. PLATFORM CONFIGURATION
+## 7. PLATFORM CONFIGURATION
 
 ### Multi-Platform Instructions
 
@@ -207,9 +213,7 @@ $env:MCP_PATH = "$HOME\.mcp"
 
 ---
 
-<!-- /ANCHOR:platform-configuration -->
-<!-- ANCHOR:troubleshooting-standards -->
-## 6. TROUBLESHOOTING STANDARDS
+## 8. TROUBLESHOOTING STANDARDS
 
 ### Error Table Format (3-column required)
 
@@ -237,9 +241,7 @@ $env:MCP_PATH = "$HOME\.mcp"
 
 ---
 
-<!-- /ANCHOR:troubleshooting-standards -->
-<!-- ANCHOR:quality-criteria -->
-## 7. QUALITY CRITERIA
+## 9. QUALITY CRITERIA
 
 ### DQI Components for Install Guides
 
@@ -271,9 +273,7 @@ $env:MCP_PATH = "$HOME\.mcp"
 
 ---
 
-<!-- /ANCHOR:quality-criteria -->
-<!-- ANCHOR:cross-references -->
-## 8. CROSS-REFERENCES
+## 10. CROSS-REFERENCES
 
 - **[core_standards.md](../global/core_standards.md)** - Filename conventions, heading format, emoji rules
 - **[validation.md](../global/validation.md)** - DQI scoring methodology, quality bands
@@ -293,4 +293,15 @@ $env:MCP_PATH = "$HOME\.mcp"
 - [ ] Platform requirements in overview
 - [ ] Time estimate included
 - [ ] All code blocks have language tags
-<!-- /ANCHOR:cross-references -->
+
+## 11. INSTALLATION
+
+_TODO: populate this section_
+
+---
+
+## 12. VERIFICATION
+
+_TODO: populate this section_
+
+---

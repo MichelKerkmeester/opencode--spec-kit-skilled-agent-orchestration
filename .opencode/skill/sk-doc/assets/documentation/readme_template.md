@@ -9,7 +9,6 @@ Templates for creating README files with scannable structure and progressive dis
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 **Purpose**: README files are the entry point to any project, component, or feature. They answer "What is this?" and "How do I use it?" in a scannable, progressive format.
@@ -50,8 +49,6 @@ A good README lets someone:
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:when-to-create-readmes -->
 ## 2. WHEN TO CREATE READMEs
 
 **Create READMEs when**:
@@ -80,8 +77,6 @@ Is this a project root?
 
 ---
 
-<!-- /ANCHOR:when-to-create-readmes -->
-<!-- ANCHOR:readme-types -->
 ## 3. README TYPES
 
 | Type | Purpose | Location | Audience | Voice | Key Focus |
@@ -114,8 +109,6 @@ Is this a project root?
 
 ---
 
-<!-- /ANCHOR:readme-types -->
-<!-- ANCHOR:standard-readme-structure -->
 ## 4. STANDARD README STRUCTURE
 
 Every README follows a 9-section structure. Use what's needed, remove what's not.
@@ -134,8 +127,6 @@ Every README follows a 9-section structure. Use what's needed, remove what's not
 
 ---
 
-<!-- /ANCHOR:standard-readme-structure -->
-<!-- ANCHOR:section-deep-dives -->
 ## 5. SECTION DEEP DIVES
 
 > See §14 Complete Template for the copy-paste scaffold.
@@ -327,8 +318,6 @@ Newcomers read the narrative. Power users jump to the reference. Both tiers live
 
 ---
 
-<!-- /ANCHOR:section-deep-dives -->
-<!-- ANCHOR:writing-patterns -->
 ## 6. WRITING PATTERNS
 
 ### Two-Tier Voice
@@ -417,8 +406,6 @@ For optional content:
 
 ---
 
-<!-- /ANCHOR:writing-patterns -->
-<!-- ANCHOR:style-reference -->
 ## 7. STYLE REFERENCE
 
 ### Heading Format
@@ -476,8 +463,6 @@ Badges go above H1 in a `<div align="left">` wrapper. The blockquote tagline goe
 
 ---
 
-<!-- /ANCHOR:style-reference -->
-<!-- ANCHOR:readme-checklist -->
 ## 8. README CHECKLIST
 
 Before finalizing a README, verify all applicable items:
@@ -534,8 +519,6 @@ Before finalizing a README, verify all applicable items:
 
 ---
 
-<!-- /ANCHOR:readme-checklist -->
-<!-- ANCHOR:human-voice-rules-hvr -->
 ## 9. HUMAN VOICE RULES (HVR)
 
 All README content must follow Human Voice Rules. The full ruleset lives in a standalone reference file. This section provides a quick reference for writing.
@@ -576,8 +559,6 @@ For the complete banned words list, banned phrases, banned metaphors and soft de
 
 ---
 
-<!-- /ANCHOR:human-voice-rules-hvr -->
-<!-- ANCHOR:patterns-from-existing-readmes -->
 ## 10. PATTERNS FROM EXISTING READMES
 
 ### Effective Overview Pattern
@@ -615,8 +596,6 @@ For the complete README creation workflow with quality criteria and pre-publish 
 
 ---
 
-<!-- /ANCHOR:patterns-from-existing-readmes -->
-<!-- ANCHOR:readme-maintenance -->
 ## 11. README MAINTENANCE
 
 ### When to Update
@@ -668,8 +647,6 @@ If deprecating a project/component:
 
 ---
 
-<!-- /ANCHOR:readme-maintenance -->
-<!-- ANCHOR:yaml-frontmatter-schema -->
 ## 12. YAML FRONTMATTER SCHEMA
 
 README files can include YAML frontmatter at the very top for consistent metadata across tooling and documentation workflows.
@@ -728,8 +705,6 @@ trigger_phrases:
 
 ---
 
-<!-- /ANCHOR:yaml-frontmatter-schema -->
-<!-- ANCHOR:anchor-templates-for-structured-retrieval -->
 ## 13. ANCHOR TEMPLATES FOR STRUCTURED RETRIEVAL
 
 Structured documents can use standardized **retrieval anchors** for fine-grained context extraction. These anchors enable tooling to pull specific sections without loading entire files.
@@ -818,8 +793,6 @@ README files typically use **section-based anchor names** like `overview`, `quic
 - No session IDs (unlike memory files)
 - Minimum: Every README should have at least an `overview` anchor
 
-<!-- /ANCHOR:anchor-templates-for-structured-retrieval -->
-<!-- ANCHOR:complete-template -->
 ## 14. COMPLETE TEMPLATE
 
 Copy and customize this template. Replace all `[PLACEHOLDER]` markers with actual content. Remove sections that don't apply (keep minimum: Overview, Quick Start, Troubleshooting).
@@ -1167,8 +1140,6 @@ A: [Answer with code if applicable.]
 
 ---
 
-<!-- /ANCHOR:complete-template -->
-<!-- ANCHOR:related-resources -->
 ## 15. RELATED RESOURCES
 
 ### Templates
@@ -1189,4 +1160,3 @@ A: [Answer with code if applicable.]
 
 ### Skill Reference
 - [sk-doc SKILL.md](../../SKILL.md) - Parent skill documentation
-<!-- /ANCHOR:related-resources -->

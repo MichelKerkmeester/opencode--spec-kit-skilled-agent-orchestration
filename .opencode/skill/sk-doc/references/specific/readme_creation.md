@@ -15,7 +15,6 @@ Standards and workflow for creating README files with scannable structure and pr
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This reference defines standards for README documentation. READMEs are the entry point to any project, component or feature. They answer "What is this?" and "How do I use it?" in a scannable, progressive format.
@@ -36,8 +35,6 @@ This reference defines standards for README documentation. READMEs are the entry
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:core-principles -->
 ## 2. CORE PRINCIPLES
 
 ### README Type Decision Tree
@@ -85,8 +82,6 @@ Project, Skill and Feature READMEs use both tiers. Component and Code Folder REA
 
 ---
 
-<!-- /ANCHOR:core-principles -->
-<!-- ANCHOR:required-sections -->
 ## 3. REQUIRED SECTIONS
 
 Every README follows a 9-section structure. For the full section-by-type requirements matrix (which sections are required, optional or skipped per README type), see [readme_template.md](../../assets/documentation/readme_template.md) Section 3.
@@ -95,8 +90,6 @@ Every README follows a 9-section structure. For the full section-by-type require
 
 ---
 
-<!-- /ANCHOR:required-sections -->
-<!-- ANCHOR:section-writing-standards -->
 ## 4. SECTION WRITING STANDARDS
 
 For detailed "Must include" lists per section, see [readme_template.md](../../assets/documentation/readme_template.md) Section 5. This section covers workflow guidance and writing tips unique to each section.
@@ -151,8 +144,6 @@ Split into a narrative subsection (`### 3.1 HOW IT WORKS`) and a reference subse
 
 ---
 
-<!-- /ANCHOR:section-writing-standards -->
-<!-- ANCHOR:writing-patterns -->
 ## 5. WRITING PATTERNS
 
 ### Two-Tier Voice Examples
@@ -302,8 +293,6 @@ Use `[PLACEHOLDER]` format with descriptive names:
 
 ---
 
-<!-- /ANCHOR:writing-patterns -->
-<!-- ANCHOR:quality-criteria -->
 ## 6. QUALITY CRITERIA
 
 ### DQI Components for READMEs
@@ -330,8 +319,6 @@ Use `[PLACEHOLDER]` format with descriptive names:
 
 ---
 
-<!-- /ANCHOR:quality-criteria -->
-<!-- ANCHOR:pre-publish-checklist -->
 ## 7. PRE-PUBLISH CHECKLIST
 
 ### Structure
@@ -388,8 +375,6 @@ Use `[PLACEHOLDER]` format with descriptive names:
 
 ---
 
-<!-- /ANCHOR:pre-publish-checklist -->
-<!-- ANCHOR:cross-references -->
 ## 8. CROSS-REFERENCES
 
 ### Templates
@@ -404,4 +389,3 @@ Use `[PLACEHOLDER]` format with descriptive names:
 - [install_guide_creation.md](./install_guide_creation.md) - Install guide creation workflow
 - [skill_creation.md](./skill_creation.md) - Skill creation workflow
 - [feature_catalog_creation.md](./feature_catalog_creation.md) - Feature catalog creation workflow
-<!-- /ANCHOR:cross-references -->

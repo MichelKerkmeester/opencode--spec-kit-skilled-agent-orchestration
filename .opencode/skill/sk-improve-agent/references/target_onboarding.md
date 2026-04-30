@@ -9,7 +9,6 @@ Workflow for onboarding new improve-agent targets while keeping evaluator discip
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -29,8 +28,6 @@ Target growth should be explicit, repeatable, and evaluator-backed. If the targe
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:preconditions -->
 ## 2. PRECONDITIONS
 
 Only add a target when all of the following are true:
@@ -42,8 +39,6 @@ Only add a target when all of the following are true:
 
 ---
 
-<!-- /ANCHOR:preconditions -->
-<!-- ANCHOR:required-steps -->
 ## 3. REQUIRED STEPS
 
 1. (Optional) Add the manifest entry in `assets/target_manifest.jsonc` if the target needs explicit classification or guardrail protections
@@ -61,8 +56,6 @@ Dynamic mode is the only scoring path. There are no static profiles to maintain.
 
 ---
 
-<!-- /ANCHOR:required-steps -->
-<!-- ANCHOR:classification-rules -->
 ## 4. CLASSIFICATION RULES
 
 - `canonical`: may become promotion-eligible only with explicit guardrails
@@ -71,8 +64,6 @@ Dynamic mode is the only scoring path. There are no static profiles to maintain.
 
 ---
 
-<!-- /ANCHOR:classification-rules -->
-<!-- ANCHOR:current-recommendation -->
 ## 5. CURRENT RECOMMENDATION
 
 - every target is onboarded through dynamic mode; there is no static, automatically promotion-eligible profile
@@ -80,12 +71,9 @@ Dynamic mode is the only scoring path. There are no static profiles to maintain.
 
 ---
 
-<!-- /ANCHOR:current-recommendation -->
-<!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
 - `second_target_evaluation.md`
 - `evaluator_contract.md`
 - `../assets/target_manifest.jsonc`
 
-<!-- /ANCHOR:related-resources -->

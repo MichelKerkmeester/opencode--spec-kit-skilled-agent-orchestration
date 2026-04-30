@@ -9,7 +9,6 @@ Comprehensive reference for the OpenCode CLI binary, every subcommand the cli-op
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Core Principle
@@ -37,9 +36,6 @@ Provide a single-source reference for the OpenCode CLI surface — every subcomm
 | **Version baseline** | v1.3.17 (pinned in this reference) |
 | **Runtime** | Node.js 18+ for the npm install path; standalone binary on macOS |
 
-<!-- /ANCHOR:overview -->
-
-<!-- ANCHOR:installation -->
 ## 2. INSTALLATION
 
 | Method | Command | Notes |
@@ -52,9 +48,6 @@ Provide a single-source reference for the OpenCode CLI surface — every subcomm
 
 After installation, run `opencode --version` to confirm. The cli-opencode skill is pinned to v1.3.17. Newer binaries may add or rename flags — consult Section 9 (Version Drift) before relying on a non-pinned flag.
 
-<!-- /ANCHOR:installation -->
-
-<!-- ANCHOR:subcommand-map -->
 ## 3. SUBCOMMAND MAP
 
 OpenCode exposes a multi-subcommand surface. The cli-opencode skill primarily invokes `run`, with secondary use of `serve`, `web`, `agent`, and `debug`.
@@ -80,9 +73,6 @@ OpenCode exposes a multi-subcommand surface. The cli-opencode skill primarily in
 | `opencode upgrade [target]` | Upgrade the binary | No (operator-driven) |
 | `opencode uninstall` | Uninstall the binary | No (operator-driven) |
 
-<!-- /ANCHOR:subcommand-map -->
-
-<!-- ANCHOR:run-flag-table -->
 ## 4. `opencode run` FLAGS
 
 `opencode run [message..]` is the canonical non-interactive entry point. The cli-opencode skill builds every dispatch around this subcommand.
@@ -172,9 +162,6 @@ opencode providers login deepseek
 
 **On auth-error mid-dispatch** (`401 Unauthorized`, `provider/model not found`): invalidate the cache, rerun the pre-flight, and apply the same decision tree before retrying. Never substitute a model the user didn't approve.
 
-<!-- /ANCHOR:run-flag-table -->
-
-<!-- ANCHOR:models -->
 ## 5. MODEL SELECTION
 
 OpenCode resolves models through configured providers. The cli-opencode skill supports two providers — `opencode-go` (default) and `deepseek` — confirmed against `opencode providers list` and `opencode models`. Run `opencode models [provider]` for the full live list on a given install.
@@ -203,9 +190,6 @@ The `--variant` flag maps to provider-specific reasoning effort. Underlying-mode
 
 Default skill behavior: pass `--variant high` for cross-AI dispatches. Operators may override via the prompt template's variant field.
 
-<!-- /ANCHOR:models -->
-
-<!-- ANCHOR:agent-flag -->
 ## 6. AGENT FLAG
 
 `--agent <slug>` loads an agent definition from `.opencode/agent/<slug>.md` (project-local) or the user-level fallback. The agent definition's frontmatter pins the model, tool permissions, and system prompt that shape the dispatch.
@@ -235,9 +219,6 @@ Default skill behavior: pass `--variant high` for cross-AI dispatches. Operators
 
 The cli-opencode skill defers to the calling AI on agent selection — see `references/agent_delegation.md` for the routing matrix and `assets/prompt_templates.md` for canonical invocation shapes.
 
-<!-- /ANCHOR:agent-flag -->
-
-<!-- ANCHOR:format-and-events -->
 ## 7. OUTPUT FORMAT AND EVENT STREAM
 
 `--format default` produces a human-formatted log. `--format json` emits a newline-delimited JSON event stream.
@@ -255,9 +236,6 @@ Each line is a JSON object with at minimum:
 
 External runtimes parse the stream incrementally to surface tool calls, partial messages, and the final summary. cli-opencode prompt templates always pass `--format json` so the calling AI parses structured events instead of guessing format boundaries.
 
-<!-- /ANCHOR:format-and-events -->
-
-<!-- ANCHOR:state-and-share -->
 ## 8. STATE LOCATION AND SHARE URLS
 
 ### State directory
@@ -274,9 +252,6 @@ The cli-opencode self-invocation guard probes this directory as the third-layer 
 
 `--share` publishes a session URL via OpenCode's share infrastructure. The skill ONLY appends `--share` for use case 2 (in-OpenCode parallel detached sessions). The CHK-033 P1 checklist item requires operator confirmation before publishing a share URL because the URL exposes the session contents.
 
-<!-- /ANCHOR:state-and-share -->
-
-<!-- ANCHOR:version-drift -->
 ## 9. VERSION DRIFT
 
 This reference is pinned to OpenCode v1.3.17. If the live binary reports a different version, do the following:
@@ -295,9 +270,6 @@ This reference is pinned to OpenCode v1.3.17. If the live binary reports a diffe
 | `unknown option --format json` | v1.0 — JSON event stream was the default and the flag did not exist |
 | `MODULE_NOT_FOUND` | Plugin loader crash; rerun with `--pure` to bypass plugins |
 
-<!-- /ANCHOR:version-drift -->
-
-<!-- ANCHOR:troubleshooting -->
 ## 10. TROUBLESHOOTING
 
 | Symptom | Cause | Fix |
@@ -311,9 +283,6 @@ This reference is pinned to OpenCode v1.3.17. If the live binary reports a diffe
 | Self-invocation refused | cli-opencode detected an in-OpenCode runtime | Use a sibling cli-* skill or a fresh shell session — see ADR-001 |
 | `--share` URL leaks | Share infrastructure published a session containing secrets | Operator MUST confirm before publishing per CHK-033 |
 
-<!-- /ANCHOR:troubleshooting -->
-
-<!-- ANCHOR:related -->
 ## 11. RELATED RESOURCES
 
 - `./integration_patterns.md` - The three documented use cases and their copy-paste invocation shapes
@@ -323,4 +292,3 @@ This reference is pinned to OpenCode v1.3.17. If the live binary reports a diffe
 - `../assets/prompt_quality_card.md` - Framework selection and CLEAR 5-check
 - `../SKILL.md` - Skill entry point and smart router
 
-<!-- /ANCHOR:related -->

@@ -9,7 +9,6 @@ Quick reminder for running `sk-improve-agent` without re-reading the full protoc
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -31,8 +30,6 @@ The workflow copies `improvement_*` assets into the runtime, but the packet-loca
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:commands -->
 ## 2. COMMANDS
 
 ```text
@@ -65,8 +62,6 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 
 ---
 
-<!-- /ANCHOR:commands -->
-<!-- ANCHOR:runtime-layout -->
 ## 3. RUNTIME LAYOUT
 
 ```text
@@ -82,8 +77,6 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 
 ---
 
-<!-- /ANCHOR:runtime-layout -->
-<!-- ANCHOR:key-guards -->
 ## 4. KEY GUARDS
 
 - proposal-only by default
@@ -95,8 +88,6 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 
 ---
 
-<!-- /ANCHOR:key-guards -->
-<!-- ANCHOR:related-resources -->
 ## 5. RELATED RESOURCES
 
 - `loop_protocol.md`
@@ -106,4 +97,3 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 - `promotion_rules.md`
 - `../README.md`
 
-<!-- /ANCHOR:related-resources -->

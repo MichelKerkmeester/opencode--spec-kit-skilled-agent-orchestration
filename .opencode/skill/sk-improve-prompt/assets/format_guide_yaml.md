@@ -13,7 +13,6 @@ Complete formatting specification for delivering enhanced prompts in YAML format
 
 ---
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -30,8 +29,6 @@ Defines the YAML formatting rules, structures, and best practices for delivering
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:fundamentals -->
 ## 2. FUNDAMENTALS
 
 ### Core Principles
@@ -71,8 +68,6 @@ output:
 
 ---
 
-<!-- /ANCHOR:fundamentals -->
-<!-- ANCHOR:delivery-standards -->
 ## 3. DELIVERY STANDARDS
 
 ### Mandatory Header Format
@@ -139,8 +134,6 @@ role: Data analyst
 
 ---
 
-<!-- /ANCHOR:delivery-standards -->
-<!-- ANCHOR:rcaf-structure -->
 ## 4. RCAF YAML STRUCTURE
 
 ### Template
@@ -176,8 +169,6 @@ format:
 
 ---
 
-<!-- /ANCHOR:rcaf-structure -->
-<!-- ANCHOR:craft-structure -->
 ## 5. CRAFT YAML STRUCTURE
 
 ### Template
@@ -248,8 +239,6 @@ target:
 
 ---
 
-<!-- /ANCHOR:craft-structure -->
-<!-- ANCHOR:advanced-patterns -->
 ## 6. ADVANCED PATTERNS
 
 ### Multi-Phase Process
@@ -334,8 +323,6 @@ format:
 
 ---
 
-<!-- /ANCHOR:advanced-patterns -->
-<!-- ANCHOR:examples-and-templates -->
 ## 7. EXAMPLES AND TEMPLATES
 
 ### Customer Segmentation
@@ -364,8 +351,6 @@ format:
 
 ---
 
-<!-- /ANCHOR:examples-and-templates -->
-<!-- ANCHOR:syntax-validation -->
 ## 8. SYNTAX VALIDATION
 
 ### Validation Checklist
@@ -392,8 +377,6 @@ format:
 
 ---
 
-<!-- /ANCHOR:syntax-validation -->
-<!-- ANCHOR:best-practices -->
 ## 9. BEST PRACTICES
 
 ### Do / Do Not
@@ -448,8 +431,6 @@ task_1:
 
 ---
 
-<!-- /ANCHOR:best-practices -->
-<!-- ANCHOR:format-selection -->
 ## 10. FORMAT SELECTION
 
 ### Philosophy
@@ -463,4 +444,3 @@ Core principles:
 4. Readability through spacing -- Natural formatting
 5. Maintainability through comments -- Self-documenting
 
-<!-- /ANCHOR:format-selection -->

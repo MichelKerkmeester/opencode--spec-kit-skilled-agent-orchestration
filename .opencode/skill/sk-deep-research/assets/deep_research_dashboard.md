@@ -7,7 +7,6 @@ description: Template for the auto-generated dashboard file regenerated after ev
 
 Auto-generated from JSONL state log and strategy file. Regenerated after every iteration evaluation. Never manually edited.
 
-<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 ### Purpose
@@ -26,8 +25,6 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 ---
 
-<!-- /ANCHOR:overview -->
-<!-- ANCHOR:status -->
 ## 2. STATUS
 - Topic: [from config]
 - Started: [from config.createdAt]
@@ -40,8 +37,6 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 ---
 
-<!-- /ANCHOR:status -->
-<!-- ANCHOR:progress -->
 ## 3. PROGRESS
 
 | # | Focus | Track | Ratio | Findings | Status |
@@ -55,8 +50,6 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 ---
 
-<!-- /ANCHOR:progress -->
-<!-- ANCHOR:questions -->
 ## 4. QUESTIONS
 - Answered: [X/Y]
 - [x] Q1: [summary] (iteration N)
@@ -64,8 +57,6 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 ---
 
-<!-- /ANCHOR:questions -->
-<!-- ANCHOR:trend -->
 ## 5. TREND
 - Last 3 ratios: [0.XX -> 0.XX -> 0.XX] [improving | stable | declining]
 - Stuck count: [N]
@@ -75,30 +66,22 @@ Provides a compact, human-readable summary of the current research session. Serv
 
 ---
 
-<!-- /ANCHOR:trend -->
-<!-- ANCHOR:dead-ends -->
 ## 6. DEAD ENDS
 - [approach]: [reason] (iteration N)
 
 ---
 
-<!-- /ANCHOR:dead-ends -->
-<!-- ANCHOR:next-focus -->
 ## 7. NEXT FOCUS
 [from strategy.md "Next Focus" section]
 
 ---
 
-<!-- /ANCHOR:next-focus -->
-<!-- ANCHOR:active-risks -->
 ## 8. ACTIVE RISKS
 - [guard violations, high stuck count, declining trend, etc.]
 - [migration events, reducer warnings, lifecycle conflicts]
-<!-- /ANCHOR:active-risks -->
 
 ---
 
-<!-- ANCHOR:example-populated -->
 ## 9. EXAMPLE (POPULATED)
 
 Reference snippet showing what a rendered dashboard looks like after iteration 5 of a 10-iteration run. Use this as a visual anchor when inspecting a live dashboard.
@@ -133,4 +116,3 @@ Reference snippet showing what a rendered dashboard looks like after iteration 5
 - convergenceScore: 0.71
 - coverageBySources: 0.83
 ```
-<!-- /ANCHOR:example-populated -->
