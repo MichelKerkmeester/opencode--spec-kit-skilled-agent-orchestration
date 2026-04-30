@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Search Quality Telemetry Export Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises harness telemetry preservation and JSONL export side effects.
+
 import {
   existsSync,
   mkdtempSync,

@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Gate D Trigger Fast-Path Benchmark Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises trigger-only memory matching latency and legacy memory filtering.
+
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 interface MockMemoryRow {
@@ -105,6 +110,12 @@ vi.mock('../../lib/session/session-manager.js', () => ({
 import { clearCache } from '../../lib/parsing/trigger-matcher.js';
 import { handle_memory_match_triggers } from '../../handlers/memory-triggers.js';
 
+interface TriggerEnvelope {
+  data: {
+    results: Array<Record<string, unknown>>;
+  };
+}
+
 function buildSpecDocContent(title: string, triggerPhrases: string[]): string {
   return [
     '---',
@@ -135,6 +146,21 @@ function summarizeDurations(durations: number[]) {
     p95: percentile(sorted, 0.95),
     p99: percentile(sorted, 0.99),
   };
+}
+
+function isTriggerEnvelope(value: unknown): value is TriggerEnvelope {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const data = (value as Record<string, unknown>).data;
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) return false;
+  return Array.isArray((data as Record<string, unknown>).results);
+}
+
+function parseTriggerEnvelope(text: string): TriggerEnvelope {
+  const parsed: unknown = JSON.parse(text);
+  if (!isTriggerEnvelope(parsed)) {
+    throw new Error('Expected trigger envelope with results array');
+  }
+  return parsed;
 }
 
 describe('Gate D benchmark — trigger fast path', () => {
@@ -183,14 +209,16 @@ describe('Gate D benchmark — trigger fast path', () => {
       const elapsedMs = performance.now() - start;
       durations.push(elapsedMs);
 
-      const envelope = JSON.parse(response.content[0].text) as Record<string, any>;
-      const results = envelope.data.results as Array<Record<string, unknown>>;
+      const envelope = parseTriggerEnvelope(response.content[0].text);
+      const results = envelope.data.results;
       expect(results.length).toBeGreaterThan(0);
       expect(results.every((row) => !String(row.filePath ?? '').includes('/memory/'))).toBe(true);
     }
 
     const summary = summarizeDurations(durations);
-    console.log(`[gate-d-benchmark][trigger] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms iterations=${ITERATIONS}`);
+    if (process.env.DEBUG_STRESS_TEST === 'true') {
+      console.log(`[gate-d-benchmark][trigger] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms iterations=${ITERATIONS}`);
+    }
 
     expect(summary.p95).toBeLessThan(10);
   });

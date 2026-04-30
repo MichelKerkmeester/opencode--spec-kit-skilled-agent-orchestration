@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W6 CocoIndex Calibration Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises duplicate-density calibration and duplicate-heavy quality deltas.
+
 import { describe, expect, it } from 'vitest';
 
 import { calibrateCocoIndexOverfetch } from '../../lib/search/cocoindex-calibration.js';

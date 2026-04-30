@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Gate D Resume Performance Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises the canonical session-resume ladder over repeated measured runs.
+
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -26,6 +31,16 @@ interface BenchReport {
   maxMs: number;
   happyPathLt300Ms: boolean;
   p95Lt500Ms: boolean;
+}
+
+interface ResumePayload {
+  status: string;
+  data: {
+    memory: {
+      source: string;
+      freshnessWinner: string;
+    };
+  };
 }
 
 function writeFixtureDocs(): void {
@@ -81,6 +96,27 @@ function mean(values: number[]): number {
   return Number((total / values.length).toFixed(3));
 }
 
+function isResumePayload(value: unknown): value is ResumePayload {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  if (typeof record.status !== 'string') return false;
+  const data = record.data;
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) return false;
+  const memory = (data as Record<string, unknown>).memory;
+  if (typeof memory !== 'object' || memory === null || Array.isArray(memory)) return false;
+  const memoryRecord = memory as Record<string, unknown>;
+  return typeof memoryRecord.source === 'string'
+    && typeof memoryRecord.freshnessWinner === 'string';
+}
+
+function parseResumePayload(text: string): ResumePayload {
+  const parsed: unknown = JSON.parse(text);
+  if (!isResumePayload(parsed)) {
+    throw new Error('Expected session resume payload with memory source');
+  }
+  return parsed;
+}
+
 writeFixtureDocs();
 
 afterAll(() => {
@@ -99,7 +135,7 @@ describe('Gate D resume perf benchmark', () => {
 
       for (let index = 0; index < WARMUP_RUNS; index += 1) {
         const result = await handleSessionResume({ specFolder: FIXTURE_SPEC_FOLDER });
-        const parsed = JSON.parse(result.content[0].text as string);
+        const parsed = parseResumePayload(String(result.content[0].text));
         expect(parsed.status).toBe('ok');
         expect(parsed.data.memory.source).toBe('handover');
       }
@@ -108,7 +144,7 @@ describe('Gate D resume perf benchmark', () => {
         const start = performance.now();
         const result = await handleSessionResume({ specFolder: FIXTURE_SPEC_FOLDER });
         const elapsed = performance.now() - start;
-        const parsed = JSON.parse(result.content[0].text as string);
+        const parsed = parseResumePayload(String(result.content[0].text));
 
         expect(parsed.status).toBe('ok');
         expect(parsed.data.memory.source).toBe('handover');
@@ -134,7 +170,9 @@ describe('Gate D resume perf benchmark', () => {
         p95Lt500Ms: percentile(sorted, 95) < 500,
       };
 
-      console.log(`__GATE_D_RESUME_PERF__${JSON.stringify(report)}`);
+      if (process.env.DEBUG_STRESS_TEST === 'true') {
+        console.log(`__GATE_D_RESUME_PERF__${JSON.stringify(report)}`);
+      }
     },
     120_000,
   );

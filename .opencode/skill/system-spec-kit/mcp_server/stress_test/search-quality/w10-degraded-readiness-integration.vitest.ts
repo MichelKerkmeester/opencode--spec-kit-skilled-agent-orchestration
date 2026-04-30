@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W10 Degraded Readiness Integration Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises real code_graph_query degraded readiness envelope capture.
+
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -8,6 +13,30 @@ import { handleCodeGraphQuery } from '../../code_graph/handlers/query.js';
 import { createEmptyQueryPlan } from '../../lib/query/query-plan.js';
 import { mapGraphReadinessToTelemetry } from '../../lib/search/graph-readiness-mapper.js';
 import { buildSearchDecisionEnvelope } from '../../lib/search/search-decision-envelope.js';
+
+interface CodeGraphQueryPayload {
+  status: string;
+  data?: Record<string, unknown>;
+}
+
+function isCodeGraphQueryPayload(value: unknown): value is CodeGraphQueryPayload {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const record = value as Record<string, unknown>;
+  return typeof record.status === 'string'
+    && (record.data === undefined || (
+      typeof record.data === 'object'
+      && record.data !== null
+      && !Array.isArray(record.data)
+    ));
+}
+
+function parseCodeGraphQueryPayload(text: string): CodeGraphQueryPayload {
+  const parsed: unknown = JSON.parse(text);
+  if (!isCodeGraphQueryPayload(parsed)) {
+    throw new Error('Expected code_graph_query payload with status and optional data');
+  }
+  return parsed;
+}
 
 describe('W10 degraded-readiness integration', () => {
   const tempDirs: string[] = [];
@@ -31,10 +60,7 @@ describe('W10 degraded-readiness integration', () => {
       operation: 'calls_from',
       subject: 'src/example.ts',
     });
-    const parsed = JSON.parse(result.content[0]?.text ?? '{}') as {
-      status: string;
-      data?: Record<string, unknown>;
-    };
+    const parsed = parseCodeGraphQueryPayload(result.content[0]?.text ?? '{}');
 
     expect(parsed.status).toBe('blocked');
     expect(parsed.data?.blockReason).toBe('full_scan_required');

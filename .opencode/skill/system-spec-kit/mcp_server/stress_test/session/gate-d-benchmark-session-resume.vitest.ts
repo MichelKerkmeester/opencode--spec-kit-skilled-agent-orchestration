@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Gate D Session Resume Benchmark Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises the handover-first resume ladder latency and cleanup behavior.
+
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -43,6 +48,14 @@ vi.mock('../../hooks/claude/hook-state.js', () => ({
 }));
 
 import { handleSessionResume } from '../../handlers/session-resume.js';
+
+interface SessionResumeEnvelope {
+  data: {
+    memory: {
+      source: string;
+    };
+  };
+}
 
 const TEMP_WORKSPACES: string[] = [];
 
@@ -112,6 +125,23 @@ function summarizeDurations(durations: number[]) {
   };
 }
 
+function isSessionResumeEnvelope(value: unknown): value is SessionResumeEnvelope {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const data = (value as Record<string, unknown>).data;
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) return false;
+  const memory = (data as Record<string, unknown>).memory;
+  if (typeof memory !== 'object' || memory === null || Array.isArray(memory)) return false;
+  return typeof (memory as Record<string, unknown>).source === 'string';
+}
+
+function parseSessionResumeEnvelope(text: string): SessionResumeEnvelope {
+  const parsed: unknown = JSON.parse(text);
+  if (!isSessionResumeEnvelope(parsed)) {
+    throw new Error('Expected session-resume envelope with memory source');
+  }
+  return parsed;
+}
+
 describe('Gate D benchmark — session resume', () => {
   let originalCwd = process.cwd();
 
@@ -140,7 +170,7 @@ describe('Gate D benchmark — session resume', () => {
     process.chdir(workspace);
 
     const warmup = await handleSessionResume({ specFolder });
-    const warmupPayload = JSON.parse(warmup.content[0].text) as Record<string, any>;
+    const warmupPayload = parseSessionResumeEnvelope(warmup.content[0].text);
     expect(warmupPayload.data.memory.source).toBe('handover');
 
     const durations: number[] = [];
@@ -152,12 +182,14 @@ describe('Gate D benchmark — session resume', () => {
       const elapsedMs = performance.now() - start;
       durations.push(elapsedMs);
 
-      const payload = JSON.parse(response.content[0].text) as Record<string, any>;
+      const payload = parseSessionResumeEnvelope(response.content[0].text);
       expect(payload.data.memory.source).toBe('handover');
     }
 
     const summary = summarizeDurations(durations);
-    console.log(`[gate-d-benchmark][resume] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms iterations=${ITERATIONS}`);
+    if (process.env.DEBUG_STRESS_TEST === 'true') {
+      console.log(`[gate-d-benchmark][resume] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms iterations=${ITERATIONS}`);
+    }
 
     expect(summary.p50).toBeLessThan(300);
     expect(summary.p95).toBeLessThan(500);

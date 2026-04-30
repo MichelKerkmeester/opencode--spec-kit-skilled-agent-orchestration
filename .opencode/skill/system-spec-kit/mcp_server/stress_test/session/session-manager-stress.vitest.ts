@@ -1,4 +1,8 @@
-// TEST: Session Entry-Limit Stress Regressions (T014)
+// ───────────────────────────────────────────────────────────────
+// MODULE: Session Manager Entry-Limit Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises interleaved session limits and stale session cleanup behavior.
+
 import { describe, expect, it } from 'vitest';
 import Database from 'better-sqlite3';
 import * as workingMemory from '../../lib/cognitive/working-memory';

@@ -1,6 +1,6 @@
-// ---------------------------------------------------------------
-// TEST: Code Graph Degraded Stress Cell (packet 013)
-// ---------------------------------------------------------------
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Degraded Sweep Stress Test
+// ───────────────────────────────────────────────────────────────
 // Integration-style sweep that complements (but does not replace)
 // the mocked unit tests in `code-graph-query-fallback-decision.vitest.ts`.
 //

@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W7 Stale Readiness Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises fixture metrics for stale code-graph fallback envelopes.
+
 import { describe, expect, it } from 'vitest';
 
 import { runMeasurement } from './measurement-fixtures.js';

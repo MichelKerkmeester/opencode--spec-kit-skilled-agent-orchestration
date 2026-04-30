@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W5 Shadow Learned Weights Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises live weight isolation and shadow diagnostics quality deltas.
+
 import { describe, expect, it } from 'vitest';
 
 import {

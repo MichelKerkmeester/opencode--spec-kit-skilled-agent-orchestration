@@ -1,5 +1,5 @@
 // ───────────────────────────────────────────────────────────────
-// 1. TEST — SHADOW COMPARISON
+// MODULE: Matrix Shadow Comparison Stress Test
 // ───────────────────────────────────────────────────────────────
 // Verifies that tier-based channel routing produces results comparable
 // To full pipeline (all 5 channels) while reducing simulated latency.

@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W7 Full-Scan Readiness Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises fixture metrics for full-scan-required fallback envelopes.
+
 import { describe, expect, it } from 'vitest';
 
 import { runMeasurement } from './measurement-fixtures.js';

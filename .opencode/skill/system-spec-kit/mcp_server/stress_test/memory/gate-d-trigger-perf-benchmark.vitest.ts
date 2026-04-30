@@ -1,6 +1,11 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Gate D Trigger Performance Benchmark Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises trigger matcher warmup and measured latency with an in-memory DB.
+
+import Database from 'better-sqlite3';
 import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 
-type DatabaseModule = typeof import('better-sqlite3');
 type DatabaseInstance = import('better-sqlite3').Database;
 type TriggerHandlerModule = typeof import('../../handlers/memory-triggers.js');
 type TriggerMatcherModule = typeof import('../../lib/parsing/trigger-matcher.js');
@@ -145,7 +150,6 @@ function createCanonicalRows(): MemoryRow[] {
 }
 
 function createMockDb(rows: MemoryRow[]): DatabaseInstance {
-  const Database = require('better-sqlite3') as DatabaseModule;
   const db = new Database(':memory:');
   db.exec(`
     CREATE TABLE memory_index (
@@ -287,7 +291,9 @@ describe('Gate D trigger fast-path benchmark', () => {
     }
 
     const metrics = summarize(timesMs);
-    console.log(`TRIGGER_PERF_METRICS ${JSON.stringify(metrics)}`);
+    if (process.env.DEBUG_STRESS_TEST === 'true') {
+      console.log(`TRIGGER_PERF_METRICS ${JSON.stringify(metrics)}`);
+    }
 
     expect(metrics.p50Ms).toBeGreaterThanOrEqual(0);
     expect(metrics.p95Ms).toBeGreaterThanOrEqual(metrics.p50Ms);

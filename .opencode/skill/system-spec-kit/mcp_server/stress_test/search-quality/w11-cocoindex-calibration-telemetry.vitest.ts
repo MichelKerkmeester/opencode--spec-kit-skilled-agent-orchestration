@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W11 CocoIndex Calibration Telemetry Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises recommended overfetch telemetry without changing live routing.
+
 import { describe, expect, it } from 'vitest';
 
 import { createEmptyQueryPlan } from '../../lib/query/query-plan.js';
@@ -15,7 +20,7 @@ describe('W11 CocoIndex calibration telemetry', () => {
         { filePath: 'src/a.ts', pathClass: 'runtime' },
         { filePath: 'src/b.ts', pathClass: 'runtime' },
       ],
-      env: { SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH: 'false' } as NodeJS.ProcessEnv,
+      env: { SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH: 'false' },
     });
 
     const envelope = buildSearchDecisionEnvelope({

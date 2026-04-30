@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W4 Conditional Rerank Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises rerank gating, telemetry, and ambiguous-query quality deltas.
+
 import { describe, expect, it } from 'vitest';
 
 import { createEmptyQueryPlan } from '../../lib/query/query-plan.js';

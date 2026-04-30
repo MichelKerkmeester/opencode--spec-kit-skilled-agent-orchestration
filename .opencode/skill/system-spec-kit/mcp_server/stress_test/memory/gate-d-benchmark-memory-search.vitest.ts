@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Gate D Memory Search Benchmark Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises canonical memory-search latency and source-contract invariants.
+
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const SEARCH_QUERIES = [
@@ -142,6 +147,15 @@ vi.mock('../../lib/feedback/feedback-ledger', () => ({
 
 import { handleMemorySearch } from '../../handlers/memory-search';
 
+interface MemorySearchEnvelope {
+  data: {
+    sourceContract: {
+      archivedTierEnabled: boolean;
+      legacyFallbackEnabled: boolean;
+    };
+  };
+}
+
 function percentile(sortedDurations: number[], ratio: number): number {
   const index = Math.min(sortedDurations.length - 1, Math.floor(sortedDurations.length * ratio));
   return sortedDurations[index] ?? 0;
@@ -154,6 +168,25 @@ function summarizeDurations(durations: number[]) {
     p95: percentile(sorted, 0.95),
     p99: percentile(sorted, 0.99),
   };
+}
+
+function isMemorySearchEnvelope(value: unknown): value is MemorySearchEnvelope {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const data = (value as Record<string, unknown>).data;
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) return false;
+  const sourceContract = (data as Record<string, unknown>).sourceContract;
+  if (typeof sourceContract !== 'object' || sourceContract === null || Array.isArray(sourceContract)) return false;
+  const sourceRecord = sourceContract as Record<string, unknown>;
+  return typeof sourceRecord.archivedTierEnabled === 'boolean'
+    && typeof sourceRecord.legacyFallbackEnabled === 'boolean';
+}
+
+function parseMemorySearchEnvelope(text: string): MemorySearchEnvelope {
+  const parsed: unknown = JSON.parse(text);
+  if (!isMemorySearchEnvelope(parsed)) {
+    throw new Error('Expected memory-search envelope with sourceContract booleans');
+  }
+  return parsed;
 }
 
 describe('Gate D benchmark — memory search', () => {
@@ -181,14 +214,16 @@ describe('Gate D benchmark — memory search', () => {
         const elapsedMs = performance.now() - start;
         durations.push(elapsedMs);
 
-        const envelope = JSON.parse(response.content[0].text) as Record<string, any>;
+        const envelope = parseMemorySearchEnvelope(response.content[0].text);
         expect(envelope.data.sourceContract.archivedTierEnabled).toBe(false);
         expect(envelope.data.sourceContract.legacyFallbackEnabled).toBe(false);
       }
     }
 
     const summary = summarizeDurations(durations);
-    console.log(`[gate-d-benchmark][search] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms samples=${durations.length}`);
+    if (process.env.DEBUG_STRESS_TEST === 'true') {
+      console.log(`[gate-d-benchmark][search] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms samples=${durations.length}`);
+    }
 
     expect(summary.p95).toBeLessThan(300);
   });

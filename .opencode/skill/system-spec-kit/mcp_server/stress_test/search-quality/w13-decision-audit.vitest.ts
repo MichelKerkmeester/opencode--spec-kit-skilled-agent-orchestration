@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W13 Decision Audit Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises search decision JSONL audit rows and SLA metric computation.
+
 import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
@@ -68,4 +73,3 @@ describe('W13 decision audit', () => {
     expect(metrics.rerankTriggerRate).toBe(0.5);
   });
 });
-

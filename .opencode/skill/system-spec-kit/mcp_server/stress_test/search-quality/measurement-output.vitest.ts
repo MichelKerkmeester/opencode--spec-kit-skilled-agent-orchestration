@@ -1,5 +1,10 @@
-import { dirname } from 'node:path';
+// ───────────────────────────────────────────────────────────────
+// MODULE: Search Quality Measurement Output Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises extended measurement corpus output and optional JSON emission.
+
 import { mkdirSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import {
@@ -8,8 +13,17 @@ import {
 } from './measurement-fixtures.js';
 import type { SearchQualityWorkstream } from './corpus.js';
 
-const WORKSTREAMS = new Set(['W3', 'W4', 'W5', 'W6', 'W7', 'all']);
-const VARIANTS = new Set(['baseline', 'variant']);
+const WORKSTREAMS = ['W3', 'W4', 'W5', 'W6', 'W7', 'all'] as const;
+const VARIANTS = ['baseline', 'variant'] as const;
+type MeasurementWorkstream = (typeof WORKSTREAMS)[number];
+
+function isMeasurementWorkstream(value: string): value is MeasurementWorkstream {
+  return WORKSTREAMS.includes(value as MeasurementWorkstream);
+}
+
+function isMeasurementVariant(value: string): value is MeasurementVariant {
+  return VARIANTS.includes(value as MeasurementVariant);
+}
 
 describe('search-quality measurement output', () => {
   it('runs the extended measurement corpus and optionally writes JSON output', async () => {
@@ -36,16 +50,16 @@ describe('search-quality measurement output', () => {
 
 function normalizeWorkstream(value: string | undefined): SearchQualityWorkstream | 'all' {
   if (!value) return 'all';
-  if (!WORKSTREAMS.has(value)) {
+  if (!isMeasurementWorkstream(value)) {
     throw new Error(`Unsupported workstream: ${value}`);
   }
-  return value as SearchQualityWorkstream | 'all';
+  return value;
 }
 
 function normalizeVariant(value: string | undefined): MeasurementVariant {
   if (!value) return 'baseline';
-  if (!VARIANTS.has(value)) {
+  if (!isMeasurementVariant(value)) {
     throw new Error(`Unsupported measurement variant: ${value}`);
   }
-  return value as MeasurementVariant;
+  return value;
 }

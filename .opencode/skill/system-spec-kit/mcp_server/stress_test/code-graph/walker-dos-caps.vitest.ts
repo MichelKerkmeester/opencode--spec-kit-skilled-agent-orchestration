@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Code Graph Walker DoS Caps Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises filesystem walker safety caps for large ignores and deep specs.
+
 import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, relative } from 'node:path';

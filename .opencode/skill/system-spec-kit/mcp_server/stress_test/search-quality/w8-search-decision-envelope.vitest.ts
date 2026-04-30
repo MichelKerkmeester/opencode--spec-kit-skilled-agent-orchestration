@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W8 Search Decision Envelope Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises request decision envelope composition and immutability.
+
 import { describe, expect, it } from 'vitest';
 
 import { createEmptyQueryPlan } from '../../lib/query/query-plan.js';
@@ -126,4 +131,3 @@ describe('W8 SearchDecisionEnvelope', () => {
     expect(complete.degradedReadiness?.freshness).toBe('empty');
   });
 });
-

@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: Search Quality Baseline Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises deterministic corpus quality dimensions through the harness.
+
 import { describe, expect, it } from 'vitest';
 
 import {

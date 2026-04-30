@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W3 Trust Tree Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises composed RAG trust tree signals and measurement quality deltas.
+
 import { describe, expect, it } from 'vitest';
 
 import { buildTrustTree } from '../../lib/rag/trust-tree.js';

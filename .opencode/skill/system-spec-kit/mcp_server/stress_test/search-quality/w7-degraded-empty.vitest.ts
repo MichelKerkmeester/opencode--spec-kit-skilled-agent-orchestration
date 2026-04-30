@@ -1,3 +1,8 @@
+// ───────────────────────────────────────────────────────────────
+// MODULE: W7 Empty Readiness Stress Test
+// ───────────────────────────────────────────────────────────────
+// Exercises fixture metrics for empty code-graph fallback envelopes.
+
 import { describe, expect, it } from 'vitest';
 
 import { runMeasurement } from './measurement-fixtures.js';
