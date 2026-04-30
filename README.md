@@ -4,7 +4,7 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 21 skills, 23 command entry points, 63 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 23 command entry points, 63 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
@@ -515,7 +515,7 @@ The framework uses two different code-understanding systems on purpose. **CocoIn
 
 The intended routing order is graph-first: the code graph resolves structural queries first, CocoIndex finds semantic candidates when structural resolution misses, and Memory supports session decisions and active-task context after the packet-local recovery sources have been checked. A 3-tier FTS fallback escalates automatically when results are weak.
 
-> **🍴 We ship a forked CocoIndex, not the upstream one.** The `cocoindex-code` Python wrapper that powers semantic search lives inside this repo at [`.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/`](.opencode/skill/mcp-coco-index/mcp_server/cocoindex_code/) as a soft-fork at version `0.2.3+spec-kit-fork.0.2.0`. We forked it to add four things vanilla upstream does not give you: (1) duplicate suppression so mirror copies of the same file don't crowd your search results, (2) canonical path identity per chunk so dedup works across symlinks, (3) a path-class taxonomy (implementation / tests / docs / etc.) with a small score nudge so "find me the implementation of X" actually returns implementation files first, and (4) ranking telemetry so you can see *why* a result ranked where it did. The Rust-based `cocoindex` engine underneath is NOT forked — that still comes from PyPI. If you call the MCP tool or `ccc search` from the CLI, the response carries seven fork-specific fields (`source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals`) that you won't see in vanilla cocoindex output. Schema and reading guide: [`.opencode/skill/mcp-coco-index/references/tool_reference.md`](.opencode/skill/mcp-coco-index/references/tool_reference.md) §7. Fork attribution and per-release patch list: [`.opencode/skill/mcp-coco-index/NOTICE`](.opencode/skill/mcp-coco-index/NOTICE) + [`.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md`](.opencode/skill/mcp-coco-index/changelog/CHANGELOG.md).
+Our CocoIndex is forked. The Python wrapper that powers semantic search is a soft-fork at version `0.2.3+spec-kit-fork.0.2.0`, vendored alongside the skill so it ships with this repo; the Rust engine underneath stays on PyPI. The fork adds four things the upstream wrapper doesn't: duplicate suppression so mirror copies of the same file don't crowd results, canonical path identity per chunk (so dedup works across symlinks), a path-class taxonomy that nudges "find me the implementation of X" toward implementation files first, and ranking telemetry that surfaces *why* each result ranked where it did. Responses from the MCP tool or `ccc search` CLI carry seven fork-specific fields — `source_realpath`, `content_hash`, `path_class`, `dedupedAliases`, `uniqueResultCount`, `raw_score`, `rankingSignals` — that vanilla cocoindex output does not include. Schema, attribution, and per-release patch list all live under [`.opencode/skill/mcp-coco-index/`](.opencode/skill/mcp-coco-index/).
 
 &nbsp;
 #### How the Code Graph Works
@@ -695,7 +695,7 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 
 ### 🎯 Skills Library
 
-21 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
+19 skills in `.opencode/skill/`, loaded on demand when Gate 2 matches a task (confidence >= 0.8 means the skill must be loaded).
 
 #### DOCUMENTATION
 
@@ -714,9 +714,10 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 #### CODE WORKFLOW
 
 **sk-code**
-- Smart-routing umbrella for application code work — detects stack first (Webflow, React/Next, Node.js, Go, React Native, Swift) then classifies intent and loads stack-aware resources
-- Webflow stack runs full live content (browser testing, Lighthouse/TBT/INP targets, CDN deployment)
-- Non-Webflow stacks scaffold to placeholder skeletons (canonical content retired in packet 055; consult git history)
+- Smart-routing umbrella for application code work — detects stack first then classifies intent and loads stack-aware resources
+- Three owned stacks: WEBFLOW (live — full content + Lighthouse/TBT/INP targets + CDN deployment), NEXTJS (stub — Next.js 14 + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI scaffolding), GO (stub — gin + sqlc + Postgres + golang-jwt scaffolding)
+- Cross-stack pairing doc captures the Next.js↔Go API contract (JWT handoff, error envelope, CORS, deploy topology)
+- Other stacks (Node.js, React Native, Swift) fall through to UNKNOWN disambiguation
 - 3 mandatory phases: implementation → testing/debugging → verification
 
 **sk-code-review**
@@ -1243,7 +1244,7 @@ The runtime centers on a SQLite `memory_index` table with 56 columns plus compan
 
 ## 5. FAQ
 
-**Q: Do I need all 21 skills installed to use the framework?**
+**Q: Do I need all 19 skills installed to use the framework?**
 
 A: No. Skills are loaded on demand by Gate 2. You only need the ones relevant to your work. The two core skills -`system-spec-kit` and `sk-doc` - cover most documentation workflows. The MCP and cross-AI CLI skills require additional API keys or tools.
 &nbsp;
@@ -1302,12 +1303,11 @@ A: The feature catalog is a 294-entry reference across 22 categories documenting
 - **[→ Deployment Notes](DEPLOYMENT.md)** - Docker anti-patterns, Copilot notes, and session-resume auth flag
 - **[→ Architecture](.opencode/skill/system-spec-kit/ARCHITECTURE.md)** - API boundary contract
 - **[→ sk-doc Skill](.opencode/skill/sk-doc/SKILL.md)** - Documentation standards, DQI scoring
-- **[→ Skills Index](.opencode/skill/README.md)** - All 21 skills with invocation patterns
+- **[→ Skills Index](.opencode/skill/README.md)** - All 19 skills with invocation patterns
 - **[→ Feature Catalog](.opencode/skill/system-spec-kit/feature_catalog/feature_catalog.md)** - 294-entry technical reference
 - **[→ Code Graph Runtime Catalog](.opencode/skill/system-spec-kit/mcp_server/code_graph/feature_catalog/feature_catalog.md)** - Package-local code graph runtime inventory
 - **[→ Code Graph Manual Playbook](.opencode/skill/system-spec-kit/mcp_server/code_graph/manual_testing_playbook/manual_testing_playbook.md)** - Operator scenarios for code graph validation
 - **[→ Latest System Spec-Kit Release Notes](.opencode/changelog/system-spec-kit/v3.4.0.3.md)** - Most recent shipped release notes
-- **[→ Enterprise Example](AGENTS_example_fs_enterprises.md)** - Example AGENTS.md for full-stack enterprise
 
 **External Resources:**
 
@@ -1318,4 +1318,4 @@ A: The feature catalog is a 294-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.5 | Last updated: 2026-04-29 | Framework: 10 agents, 21 skills, 23 commands, 63 MCP tools (54 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
+*Documentation version: 4.5 | Last updated: 2026-04-30 | Framework: 10 agents, 19 skills, 23 commands, 63 MCP tools (54 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*

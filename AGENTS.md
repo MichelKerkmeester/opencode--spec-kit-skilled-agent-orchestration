@@ -21,10 +21,7 @@ Stack-specific behavior is handled automatically by the `sk-code` skill (sibling
 | **React/Next.js** | `next.config.*` / `package.json` + react/next                                             | Component architecture, state boundaries                           |
 | **Node.js**       | `package.json` (fallback)                                                                 | Service layering, async flow, middleware                           |
 
-**How It Works:**
-1. `sk-code` detects stack via marker files at session start
-2. Stack-specific patterns load from `.opencode/skill/sk-code/references/{repo}/`
-3. Verification commands auto-adjust per stack (see Quick Reference below)
+**How It Works:** `sk-code` detects stack via marker files, loads patterns from `.opencode/skill/sk-code/references/{repo}/`, and selects stack-appropriate verification (see Quick Reference).
 
 **The Iron Law:** NO completion claims without running stack-appropriate verification.
 
@@ -70,14 +67,13 @@ Stack-specific behavior is handled automatically by the `sk-code` skill (sibling
 - **Use frequent self-checks and reasoning loops** to catch and fix your own mistakes before asking for help.
 - **Reason from actual data, not assumptions.** Verify against the real files, outputs, and behavior in front of you.
 
+
 ---
 
-### Tools & Search
+### Required Tools & Search Routing
 
 **MANDATORY TOOLS:**
-- **Spec Kit Memory MCP** - research tasks, context recovery, finding prior work. For full saves (DB indexing + embeddings): use `generate-context.js`. For session continuity updates: AI may directly edit `_memory.continuity` frontmatter blocks in `implementation-summary.md`.
-  - Full save: `generate-context.js --json '{"specFolder":"...","sessionSummary":"..."}' [spec-folder]` → handles DB indexing, embeddings, description.json, graph-metadata.json refresh.
-  - Quick continuity: directly edit `_memory.continuity` YAML in `implementation-summary.md` frontmatter (no script round-trip needed).
+- **Spec Kit Memory MCP** - research, context recovery, saves. See Memory Save Rule below for save mechanics.
 - **Skill Advisor Hook** - primary advisor invocation path. Hook-capable runtimes surface a compact skill recommendation on prompt entry when wired; explicit `skill_advisor.py` invocation remains the fallback for scripted checks, unsupported runtimes and hook diagnostics. Reference: `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
 - **CocoIndex Code MCP** - semantic code search. MUST use when exploring unfamiliar code, finding implementations by concept/intent, or when Grep/Glob exact matching is insufficient. Skill: `.opencode/skill/mcp-coco-index/`
 - **Git (sk-git)** - worktree setup, conventional commits, PR creation. Full details: `.opencode/skill/sk-git/`. Trigger keywords: worktree, branch, commit, merge, pr, pull request, git workflow, finish work, integrate changes
@@ -113,7 +109,7 @@ Set `refresh_index=false` after the first search in a session unless the codebas
 
 ---
 
-### Session Start & Recovery
+### Startup & Resume Recovery
 
 Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode) may inject startup context when wired. Per-runtime triggers: `.opencode/skill/system-spec-kit/references/config/hook_system.md`. Feature-flag defaults: `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md` ("Feature flags reference table").
 
@@ -171,16 +167,15 @@ Hook-capable runtimes (Claude, Codex, Copilot, Gemini, OpenCode) may inject star
 | **End session**           | `/memory:save` → `handover_state` routing updates `handover.md` → Provide continuation prompt                                      |
 | **New spec folder**       | Option B (Gate 3) → Research via Task tool → Evidence-based plan → Approval → Implement                                            |
 | **Complex multi-step**    | Task tool → Decompose → Delegate → Synthesize                                                                                      |
+| **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
+| **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                               |
+| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Documentation**         | sk-doc skill → Classify → Load template → Fill → Validate → DQI score → Verify                                                     |
 | **Application code**      | sk-code skill → smart router (detects stack: Webflow → live web content; React/Node/Go/Swift/RN → placeholder stub, canonical content retired); Phase 1-3 (Implement → Quality Gate → Debug → Verify) |
 | **OpenCode system code**  | sk-code-opencode skill → JS/TS/Python/Shell standards, language detection, quality checklists                                       |
 | **Git workflow**          | sk-git skill → Worktree setup / Commit / Finish (PR)                                                                                |
-| **Phase workflow**        | `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases` → Decompose → Populate → Plan first child                        |
-| **Database maintenance**  | `/memory:manage` → stats, health, cleanup, checkpoint, ingest operations                                                           |
 | **Deep research**         | `/spec_kit:deep-research` → Init → Loop iterations → Convergence → Synthesize → Memory save                                        |
 | **Deep review**           | `/spec_kit:deep-review` → Scope → Loop iterations → Convergence → review-report.md → Memory save                                   |
-| **Analysis/evaluation**   | `/memory:search` → preflight, postflight, causal graph, ablation, dashboard, history                                               |
-| **Constitutional memory** | `/memory:learn` → create, list, edit, remove, budget                                                                                |
 
 ---
 
@@ -196,8 +191,6 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 2. Classify intent: Research or Implementation
 3. Parse request → Check confidence AND uncertainty (see §4)
 4. **Dual-threshold:** confidence ≥ 0.70 AND uncertainty ≤ 0.35 → PROCEED. Either fails → INVESTIGATE (max 3 iterations) → ESCALATE. Simple: <40% ASK | 40-69% CAUTION | ≥70% PASS
-
-> Gate 1 is SOFT - if file modification detected, Gate 3 (HARD) takes precedence. Ask spec folder question BEFORE analysis.
 
 ####  GATE 2: SKILL ROUTING [REQUIRED for non-trivial tasks]
 1. A) Primary: use the automatic Skill Advisor Hook brief already surfaced by the runtime when present. See `.opencode/skill/system-spec-kit/references/hooks/skill-advisor-hook.md`.
@@ -215,9 +208,7 @@ Trigger: EACH new user message (re-evaluate even in ongoing conversations)
 - **Read-only disqualifiers:** `review`, `audit`, `inspect`, `analyze`, `explain` — suppress Gate 3 when they appear ALONE (e.g. "review the decomposition phase"). Do NOT suppress when a continuity-write trigger is also present.
 - **Note:** tokens `analyze`, `decompose`, `phase` are NOT positive triggers; they false-positive on read-only review prompts.
 - **Options:** A) Existing | B) New | C) Update related | D) Skip | E) Phase folder (e.g., `specs/NNN-name/001-phase/`)
-- **DO NOT** use Read/Edit/Write/Bash (except Gate Actions) before asking. ASK FIRST, wait for response, THEN proceed
-- **Session persistence:** Once the user answers Gate 3 in a conversation, that answer applies for the ENTIRE session. Do NOT re-ask on subsequent messages unless the user explicitly starts a completely different task/feature. Follow-up messages, implementation steps, and phase transitions within the same task reuse the original answer.
-- **Re-ask ONLY when:** the user says "new task" / "different feature" / explicitly names a different spec folder, OR the user asks you to re-ask.
+- **Ask first, then act.** No Read/Edit/Write/Bash (except Gate Actions) before answer. The answer applies for the ENTIRE session — re-ask ONLY when user says "new task" / "different feature" / names a different spec folder, or asks you to re-ask.
 
 #### GATE 4: SKILL-OWNED WORKFLOW ENFORCEMENT [HARD] BLOCK
 Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "convergence", "autoresearch", "research loop", "review loop", iterative investigation/audit at scale (>5 iterations).
@@ -234,15 +225,11 @@ Trigger phrases: "deep-research", "deep-review", "iterations", ":auto" suffix, "
 **Tiebreaker for skill advisor ambiguity:** When `command-spec-kit` matches alongside `cli-*` for iteration phrases, `command-spec-kit` wins. The CLI executor is a tool inside the command's workflow, not a replacement for it.
 
 #### CONSOLIDATED QUESTION PROTOCOL
-When multiple inputs are needed, consolidate into a SINGLE prompt - never split across messages. Include only applicable questions; omit when pre-determined.
-- **Round-trip optimization** - Only 1 user interaction needed for setup
-- **First Message Protocol** - ALL questions asked BEFORE any analysis or tool calls
-- **Violation:** Multiple separate prompts → STOP, apologize, re-present as single prompt
-- **Bypass phrases:** "skip context" / "fresh start" / "skip memory" / [skip] for memory loading; Level 1 tasks skip completion verification
+Consolidate multiple questions into a SINGLE prompt before any analysis or tool calls — never split across messages. **Bypass phrases:** "skip context" / "fresh start" / "skip memory" / [skip] for memory loading; Level 1 tasks skip completion verification.
 
 ---
 
-### 🔒 POST-EXECUTION RULES
+### 🔒 POST-EXECUTION GATES
 
 #### MEMORY SAVE RULE [HARD] BLOCK
 Trigger: "save context", "save memory", `/memory:save`
@@ -260,10 +247,9 @@ Trigger: "save context", "save memory", `/memory:save`
 
 #### COMPLETION VERIFICATION RULE [HARD] BLOCK
 Trigger: Claiming "done", "complete", "finished", "works"
-1. Completion claim triggers a validation requirement for the spec folder (if exists)
-2. Operator must run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict`
-3. Load `checklist.md` → Verify ALL items → Mark `[x]` with evidence
-- Skip: Level 1 tasks (no checklist.md required) | Exit 0 = pass, Exit 1 = warnings, Exit 2 = errors (must fix)
+1. Run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` (Exit 0 = pass, 1 = warnings, 2 = errors).
+2. Load `checklist.md` → verify ALL items → mark `[x]` with evidence.
+- Skip: Level 1 tasks (no checklist.md required).
 
 #### VIOLATION RECOVERY [SELF-CORRECTION]
 Trigger: About to skip gates, or realized gates were skipped → STOP → STATE: "Before I proceed, I need to ask about documentation:" → ASK Gate 3 (A/B/C/D/E) → WAIT
@@ -278,7 +264,7 @@ Trigger: About to skip gates, or realized gates were skipped → STOP → STATE:
 
 ---
 
-## 3. 📝 CONVERSATION DOCUMENTATION
+## 3. 📝 SPEC FOLDER DOCUMENTATION
 
 Every conversation that modifies files MUST have a spec folder. **Full details:** system-spec-kit SKILL.md (§1 When to Use, §3 How it Works, §4 Rules)
 
@@ -304,13 +290,9 @@ Every conversation that modifies files MUST have a spec folder. **Full details:*
 
 **Spec folder path:** `specs/[###-short-name]/` | **Templates:** `.opencode/skill/system-spec-kit/templates/`
 
-**For details on:** folder structure, `scratch/` usage, `graph-metadata.json`, sub-folder versioning, checklist verification (P0/P1/P2), and completion workflow - see system-spec-kit SKILL.md §3.
-
 ---
 
 ## 4. 🧑‍🏫 CONFIDENCE & CLARIFICATION FRAMEWORK
-
-**Core Principle:** If confidence < 80%, pause and ask for clarification with multiple-choice options.
 
 | Confidence   | Action                                       |
 | ------------ | -------------------------------------------- |
@@ -348,12 +330,12 @@ Use the agent directory that matches the active runtime/provider profile:
 - **`@orchestrate`** - Multi-agent coordination, complex workflows
 - **`@write`** - Creating READMEs, Skills, Guides
 - **`@review`** - Code review, PRs, quality gates (READ-ONLY)
-- **`@debug`** - Fresh perspective debugging, root cause analysis. Dispatch via Task tool when a dedicated debugging pass is needed; retains exclusive write access for `debug-delegation.md` inside spec folders
-- **`@deep-research`** - Autonomous deep research iterations. LEAF agent executing single research cycles with externalized JSONL + strategy.md state. Dispatched by `/spec_kit:deep-research` command
-- **`@deep-review`** - Autonomous deep review iterations. LEAF agent executing single review cycles with P0/P1/P2 findings, severity-weighted convergence, and 4 review dimensions. Dispatched by `/spec_kit:deep-review` command
-- **`@ultra-think`** - Multi-strategy planning architect. Dispatches diverse thinking strategies, scores via 5-dimension rubric, synthesizes optimal plan. Planning-only: no file modifications
-- **`@improve-agent`** - Evaluator-first proposal generator for bounded agent improvement with 5-dimension integration-aware scoring; integrates with `sk-improve-agent` skill. Dispatched by `/improve:agent` command
-- **`@improve-prompt`** - Prompt engineering specialist using DEPTH thinking and CLEAR scoring across 7 frameworks (RCAF, COSTAR, RACE, CIDI, TIDD-EC, CRISPE, CRAFT); integrates with `sk-improve-prompt` skill. Dispatched by `/improve:prompt` command
+- **`@debug`** - Fresh perspective debugging (5-phase root-cause). Dispatched via Task tool; retains exclusive write access for `debug-delegation.md`
+- **`@deep-research`** - Autonomous deep research iterations (LEAF). Dispatched by `/spec_kit:deep-research`
+- **`@deep-review`** - Autonomous deep review iterations (LEAF, P0/P1/P2). Dispatched by `/spec_kit:deep-review`
+- **`@ultra-think`** - Multi-strategy planning architect (planning-only)
+- **`@improve-agent`** - Bounded agent improvement via `sk-improve-agent`. Dispatched by `/improve:agent`
+- **`@improve-prompt`** - Prompt engineering via `sk-improve-prompt`. Dispatched by `/improve:prompt`
 
 #### Distributed Governance Rule
 
@@ -361,7 +343,7 @@ Use the agent directory that matches the active runtime/provider profile:
 
 ---
 
-## 6. ⚙️  MCP CONFIGURATION
+## 6. ⚙️  MCP TOOL ROUTING
 
 **Two systems:**
 
@@ -375,7 +357,7 @@ Use the agent directory that matches the active runtime/provider profile:
   
 ---
 
-## 7. 🧩 SKILLS SYSTEM
+## 7. 🧩 SKILL ROUTING REFERENCE
 
 Skills are specialized, on-demand capabilities that provide domain expertise. Unlike knowledge files (passive references), skills are explicitly invoked to handle complex, multi-step workflows.
 

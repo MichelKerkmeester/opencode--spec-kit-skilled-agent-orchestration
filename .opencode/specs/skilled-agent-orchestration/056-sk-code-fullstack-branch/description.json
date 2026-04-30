@@ -1,39 +1,50 @@
 {
-  "specFolder": "056-sk-code-fullstack-branch",
-  "description": "Promote sk-code react/ and go/ from placeholder to live branches. Frontend modeled on kerkmeester.com (Next.js 14 App Router + vanilla-extract + motion v12 + Untitled UI + react-hook-form/zod + react-aria + Sonner + next-themes). Backend paired: gin + sqlc + Postgres + go-playground/validator + golang-jwt. Cross-stack pairing doc documents React↔Go API contract, JWT handoff, error envelope, CORS, Vercel + Railway deploy topology. SKILL.md routing updated to move REACT and GO from PLACEHOLDER_STACKS to LIVE_STACKS with full intent → file maps. No new branch label or detection edits — uses existing Next.js → REACT and go.mod → GO precedent.",
-  "keywords": [
-    "sk-code",
-    "react",
-    "nextjs",
-    "next-js",
-    "app-router",
-    "vanilla-extract",
-    "motion",
-    "untitled-ui",
-    "react-hook-form",
-    "zod",
-    "react-aria",
-    "sonner",
-    "next-themes",
-    "tinacms",
-    "kerkmeester",
-    "go",
-    "gin",
-    "sqlc",
-    "pgx",
-    "postgres",
-    "go-playground-validator",
-    "golang-jwt",
-    "fullstack",
-    "smart-router",
-    "live-branch",
-    "placeholder-promotion",
-    "056"
+  "trigger_phrases": [
+    "sk-code multi-stack",
+    "sk-code nextjs go",
+    "056 sk-code",
+    "smart router alignment",
+    "stack scaffolding"
   ],
-  "lastUpdated": "2026-04-30T13:00:00Z",
+  "name": "056-sk-code-fullstack-branch",
+  "version": "2.0.0",
+  "importance_tier": "high",
+  "level": 2,
+  "status": "complete",
+  "completion_pct": 100,
+  "absorbed_packet": "skilled-agent-orchestration/057-sk-code-multi-stack-placeholders",
+  "builds_on": [
+    "skilled-agent-orchestration/054-sk-code-merger",
+    "skilled-agent-orchestration/055-cli-skill-removal-sk-code-merger-deprecated"
+  ],
+  "key_files": [
+    ".opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/spec.md",
+    ".opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/plan.md",
+    ".opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/tasks.md",
+    ".opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/checklist.md",
+    ".opencode/specs/skilled-agent-orchestration/056-sk-code-fullstack-branch/implementation-summary.md",
+    ".opencode/skill/sk-code/SKILL.md",
+    ".opencode/skill/sk-code/references/router/cross_stack_pairing.md",
+    ".opencode/skill/sk-code/changelog/v1.3.0.0.md"
+  ],
+  "specFolder": "skilled-agent-orchestration/056-sk-code-fullstack-branch",
+  "description": "Feature Specification: sk-code multi-stack scaffolding",
+  "keywords": [
+    "feature",
+    "specification",
+    "sk-code",
+    "multi-stack",
+    "scaffolding"
+  ],
+  "lastUpdated": "2026-04-30T17:23:41.580Z",
   "specId": "056",
   "folderSlug": "sk-code-fullstack-branch",
-  "parentChain": ["skilled-agent-orchestration"],
-  "memorySequence": 1,
-  "memoryNameHistory": []
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "30-04-26_18-22__audited-the-live-skill-advisor-graph-for-residue.md",
+    "30-04-26_18-23__audited-the-live-skill-advisor-graph-for-residue.md"
+  ]
 }

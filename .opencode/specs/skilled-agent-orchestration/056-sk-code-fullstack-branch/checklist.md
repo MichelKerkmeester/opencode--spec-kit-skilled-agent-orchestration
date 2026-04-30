@@ -1,20 +1,20 @@
 ---
-title: "Verification Checklist: sk-code react/ + go/ live promotion"
-description: "P0/P1/P2 verification items for 056. Verification Date: TBD."
-trigger_phrases: ["056 checklist", "sk-code fullstack checklist"]
+title: "Verification Checklist: sk-code multi-stack scaffolding"
+description: "P0/P1/P2 verification gate. Phases A → B → C → D all complete; final memory save pending."
+trigger_phrases: ["056 checklist", "sk-code multi-stack verification"]
 importance_tier: "high"
 contextType: "general"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/056-sk-code-fullstack-branch"
-    last_updated_at: "2026-04-30T13:00:00Z"
+    last_updated_at: "2026-04-30T17:30:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Checklist authored"
-    next_safe_action: "Mark items [x] with evidence as work completes"
+    recent_action: "057 merged into 056"
+    next_safe_action: "Run /memory:save"
     blockers: []
-    completion_pct: 5
+    completion_pct: 95
 ---
-# Verification Checklist: sk-code react/ + go/ live promotion
+# Verification Checklist: sk-code multi-stack scaffolding
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
@@ -27,8 +27,13 @@ _memory:
 | Priority | Handling | Completion Impact |
 |----------|----------|-------------------|
 | **[P0]** | HARD BLOCKER | Cannot claim done until complete |
-| **[P1]** | Required | Must complete OR get user approval to defer |
+| **[P1]** | Required | Must complete OR get user approval |
 | **[P2]** | Optional | Can defer with documented reason |
+
+**Evidence required**: Each `[x]` mark MUST include a one-line evidence note.
+
+---
+
 <!-- /ANCHOR:protocol -->
 
 ---
@@ -36,104 +41,33 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001..REQ-021) [File: spec.md §4]
-- [x] CHK-002 [P0] Plan authored with 5-phase structure [File: plan.md §4 — Phase 1 react/, Phase 2 go/, Phase 3 cross-stack, Phase 4 routing, Phase 5 validate]
-- [x] CHK-003 [P0] kerkmeester README + manifests read; stack confirmed [Source: kerkmeester.com README] [File: spec.md §1 Technical Context]
-- [x] CHK-004 [P1] User-resolved decisions captured (placement: existing placeholders; backend: gin + Postgres; spec slot: 056) [File: spec.md §1] [Source: ~/.claude/plans/merge-users-michelkerkmeester-mega-devel-crispy-rabin.md "Confirmed by user" section]
+- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001 through REQ-020). Evidence: `wc -l spec.md` ≈ 220 lines, all 8 P0 + 3 P1 + 1 P2 requirements present.
+- [x] CHK-002 [P0] Technical approach defined in plan.md (Phases A-D, dependencies). Evidence: plan.md §4 IMPLEMENTATION PHASES enumerates all 4 phases with task lists.
+- [x] CHK-003 [P0] tasks.md authored with T001-T070 covering every plan step. Evidence: 70 tasks across 3 numbered Phase headings (Setup, Implementation, Verification).
+- [x] CHK-004 [P1] Absorbed-packet lineage documented. Evidence: spec.md §1 METADATA `Absorbed packet` row references `057-sk-code-multi-stack-placeholders`.
+
+---
+
 <!-- /ANCHOR:pre-impl -->
-
----
-
-<!-- ANCHOR:react-content -->
-## React/ Content (kerkmeester-style frontend)
-
-- [ ] CHK-010 [P0] `references/react/README.md` exists with populated:true frontmatter (replaces _placeholder.md)
-- [ ] CHK-011 [P0] `references/react/implementation/implementation_workflows.md` exists with substantive content (>100 lines)
-- [ ] CHK-012 [P0] `references/react/implementation/{app_router_patterns,vanilla_extract_styling,motion_animation,forms_validation,accessibility_aria,api_integration}.md` authored
-- [ ] CHK-013 [P1] `references/react/implementation/content_tinacms.md` authored
-- [ ] CHK-014 [P0] `references/react/debugging/{debugging_workflows,hydration_errors}.md` authored
-- [ ] CHK-015 [P1] `references/react/debugging/network_inspection.md` authored
-- [ ] CHK-016 [P0] `references/react/verification/verification_workflows.md` authored
-- [ ] CHK-017 [P0] `references/react/standards/{code_style,file_organization}.md` authored
-- [ ] CHK-018 [P1] `references/react/deployment/vercel_deploy.md` authored
-- [ ] CHK-019 [P0] `assets/react/README.md` + 3 checklists + 5 patterns authored
-- [ ] CHK-020 [P1] `assets/react/integrations/{vanilla_extract,untitled_ui,tinacms}.md` authored
-- [ ] CHK-021 [P0] `assets/react/patterns/*.{ts,tsx}` lint clean (`tsc --noEmit`)
-- [ ] CHK-022 [P0] No `_placeholder.md` remaining in `references/react/` or `assets/react/`
-<!-- /ANCHOR:react-content -->
-
----
-
-<!-- ANCHOR:go-content -->
-## Go/ Content (gin + sqlc + Postgres backend)
-
-- [ ] CHK-030 [P0] `references/go/README.md` exists with populated:true frontmatter
-- [ ] CHK-031 [P0] `references/go/implementation/implementation_workflows.md` substantive (>100 lines)
-- [ ] CHK-032 [P0] `references/go/implementation/{gin_handler_patterns,service_layer,database_sqlc_postgres,validation_patterns,auth_jwt,error_envelopes,api_design}.md` authored
-- [ ] CHK-033 [P0] `references/go/debugging/debugging_workflows.md` authored
-- [ ] CHK-034 [P2] `references/go/debugging/pprof_profiling.md` authored
-- [ ] CHK-035 [P0] `references/go/verification/verification_workflows.md` authored
-- [ ] CHK-036 [P0] `references/go/standards/{code_style,file_organization}.md` authored
-- [ ] CHK-037 [P1] `references/go/deployment/docker_railway.md` authored
-- [ ] CHK-038 [P0] `assets/go/README.md` + 3 checklists + 5 .go patterns authored
-- [ ] CHK-039 [P0] `assets/go/patterns/*.go` `gofmt -d` empty (formatted clean)
-- [ ] CHK-040 [P0] No `_placeholder.md` remaining in `references/go/` or `assets/go/`
-<!-- /ANCHOR:go-content -->
-
----
-
-<!-- ANCHOR:cross-stack -->
-## Cross-stack pairing
-
-- [ ] CHK-050 [P0] `references/router/cross_stack_pairing.md` authored (~150 lines)
-- [ ] CHK-051 [P1] Cross-linked from `references/react/implementation/api_integration.md` and `references/go/implementation/api_design.md`
-<!-- /ANCHOR:cross-stack -->
-
----
-
-<!-- ANCHOR:routing-updates -->
-## SKILL.md routing + metadata updates
-
-- [ ] CHK-060 [P0] `LIVE_STACKS = {WEBFLOW, REACT, GO}` and `PLACEHOLDER_STACKS = {NODEJS, REACT_NATIVE, SWIFT}` in SKILL.md
-- [ ] CHK-061 [P0] `resource_map_for(REACT)` populated with intent → file maps mirroring WEBFLOW shape
-- [ ] CHK-062 [P0] `resource_map_for(GO)` populated similarly
-- [ ] CHK-063 [P0] ~25 fullstack-specific keywords added to TASK_SIGNALS (vanilla-extract, motion v12, server action, gin, sqlc, etc.)
-- [ ] CHK-064 [P1] `references/router/stack_detection.md` precedence table updated
-- [ ] CHK-065 [P1] `references/router/main_router.md` pseudocode extended
-- [ ] CHK-066 [P0] `graph-metadata.json` key_files += new paths; trigger_phrases extended
-- [ ] CHK-067 [P1] `description.json` keywords + trigger_examples extended
-- [ ] CHK-068 [P1] `README.md` structure inventory updated
-- [ ] CHK-069 [P1] `CHANGELOG.md` `[1.1.0]` entry authored
-- [ ] CHK-070 [P0] Advisor `lib/scorer/lanes/explicit.ts` TOKEN_BOOSTS gain ~12 stack-specific tokens
-- [ ] CHK-071 [P0] `cd mcp_server && npm run build` clean
-- [ ] CHK-072 [P0] `advisor_rebuild` MCP tool refreshes SQLite without errors
-<!-- /ANCHOR:routing-updates -->
-
----
-
-<!-- ANCHOR:routing-tests -->
-## Trigger Tests
-
-- [ ] CHK-080 [P0] "fix Webflow animation flicker" → sk-code WEBFLOW (no regression)
-- [ ] CHK-081 [P0] "implement Next.js App Router page with vanilla-extract" → sk-code REACT
-- [ ] CHK-082 [P0] "add a Server Action with zod validation" → sk-code REACT
-- [ ] CHK-083 [P0] "build a gin handler with sqlc" → sk-code GO
-- [ ] CHK-084 [P0] "set up JWT auth between Next.js and Go" → sk-code (REACT or GO)
-- [ ] CHK-085 [P0] "Audit OpenCode plugin loader" → sk-code-opencode (no regression)
-- [ ] CHK-086 [P0] "review this PR" → sk-code-review (no regression)
-- [ ] CHK-087 [P0] `npx vitest run lane-attribution.test.ts` green
-<!-- /ANCHOR:routing-tests -->
 
 ---
 
 <!-- ANCHOR:code-quality -->
 ## Code Quality
 
-- [ ] CHK-088 [P0] All authored markdown passes existing linters (no broken links inside packet)
-- [ ] CHK-089 [P0] React assets/patterns/*.{ts,tsx} compile under `tsc --noEmit` from a clean fixture
-- [ ] CHK-090 [P0] Go assets/patterns/*.go pass `gofmt -d` (no diff)
-- [ ] CHK-091 [P1] All new docs include YAML frontmatter (`title`, `description`, `keywords`)
-- [ ] CHK-092 [P1] No commented-out code in pattern files; no dead imports
+- [x] CHK-010 [P0] Folder structure: `references/nextjs/` exists; `references/react/` does NOT exist. Evidence: `ls .opencode/skill/sk-code/references/` shows webflow/, nextjs/, go/, router/, universal/.
+- [x] CHK-011 [P0] Asset directories: `assets/nextjs/{checklists,patterns,integrations}/` and `assets/go/{checklists,patterns}/` populated.
+- [x] CHK-012 [P0] All 33 paths in SKILL.md `RESOURCE_MAPS[NEXTJS|GO]` (and matching WEBFLOW) resolve. Evidence: path-existence sweep returns 33/33, 0 missing.
+- [x] CHK-013 [P0] Every md stub declares `status: stub`. Evidence: `grep -rL "status: stub" references/{nextjs,go} assets/{nextjs,go} --include="*.md"` returns empty.
+- [x] CHK-014 [P0] Every code stub declares `Status: stub` in comment header. Evidence: `grep -rL "Status: stub" assets/{nextjs,go}/patterns/` returns empty.
+- [x] CHK-015 [P0] No fenced code blocks in markdown stubs (cross_stack_pairing exempt). Evidence: `grep -rE '^\`\`\`' references/{nextjs,go} --include="*.md"` returns empty.
+- [x] CHK-016 [P0] No `kerkmeester` references anywhere in `sk-code/`. Evidence: `grep -rl "kerkmeester" .opencode/skill/sk-code/` returns empty.
+- [x] CHK-017 [P0] No `<!--.*ANCHOR:.*-->` HTML comments anywhere in `sk-code/`. Evidence: `grep -rln '<!--.*ANCHOR:' .opencode/skill/sk-code/` returns 0.
+- [x] CHK-018 [P1] Webflow content untouched. Evidence: `git diff -- references/webflow assets/webflow scripts/` shows only the perl pass replacing REACT → NEXTJS in stack-name strings — no functional Webflow changes.
+- [x] CHK-019 [P1] cross_stack_pairing.md structure intact post-restructure. Evidence: 10 numbered sections (OVERVIEW + Topology/API/Schema/JWT/CORS/Pagination/Deploy/Drift + RELATED RESOURCES); 16K bytes preserved.
+
+---
+
 <!-- /ANCHOR:code-quality -->
 
 ---
@@ -141,10 +75,17 @@ _memory:
 <!-- ANCHOR:testing -->
 ## Testing
 
-- [ ] CHK-093 [P0] 7-prompt trigger battery exits 0 (5 packet-new + 2 regression)
-- [ ] CHK-094 [P0] `npx vitest run lane-attribution.test.ts` green
-- [ ] CHK-095 [P1] Skill advisor `--threshold 0.5` returns sk-code as top hit on each REACT/GO trigger prompt
-- [ ] CHK-096 [P2] Manual smoke: spot-check pattern code in a real Next.js + Go fixture
+- [x] CHK-020 [P0] sk-doc validate_document.py on 9 reference files: all `valid: true`, 0 issues.
+- [x] CHK-021 [P0] sk-doc validate_document.py on 2 universal asset checklists: all `valid: true`, 0 issues.
+- [x] CHK-022 [P0] sk-doc validate_document.py on SKILL.md: `valid: true`, 0 issues.
+- [x] CHK-023 [P0] Advisor smoke test "implement Next.js App Router page with vanilla-extract" → sk-code wins (score 0.857).
+- [x] CHK-024 [P0] Advisor smoke test "build a gin handler with sqlc and Postgres" → sk-code wins (score 0.78).
+- [x] CHK-025 [P0] Advisor smoke test (regression) "fix Webflow animation flicker" → sk-code wins (score 0.842).
+- [x] CHK-026 [P1] Path-existence sweep returns 0 missing across 33 NEXTJS + GO paths.
+- [ ] CHK-027 [P1] Memory save POST-SAVE QUALITY REVIEW shows no HIGH issues. (Pending — user runs `/memory:save` after merge.)
+
+---
+
 <!-- /ANCHOR:testing -->
 
 ---
@@ -152,10 +93,12 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [ ] CHK-097 [P0] Cross-stack pairing doc `auth_jwt` patterns load HS256 secret from env, not hardcoded
-- [ ] CHK-098 [P0] CORS guidance never combines `AllowOrigins: ["*"]` with `AllowCredentials: true`
-- [ ] CHK-099 [P0] React-side JWT storage guidance excludes `localStorage` / `sessionStorage` (XSS exposure)
-- [ ] CHK-100 [P1] Validator / zod schema mirroring section flags drift-detection items as P0
+- [x] CHK-030 [P0] No hardcoded secrets, API keys, or credentials in any stub or reference file.
+- [x] CHK-031 [P0] No external URLs in stubs except `example.com` placeholders or canonical doc URLs.
+- [x] CHK-032 [P1] No fictional library version pins (`motion@12.23.12` ❌ → `motion v12` ✓).
+
+---
+
 <!-- /ANCHOR:security -->
 
 ---
@@ -163,10 +106,17 @@ _memory:
 <!-- ANCHOR:docs -->
 ## Documentation
 
-- [ ] CHK-101 [P0] `references/router/cross_stack_pairing.md` referenced from BOTH `references/react/implementation/api_integration.md` AND `references/go/implementation/api_design.md`
-- [ ] CHK-102 [P0] `CHANGELOG.md` `[1.1.0]` entry covers REACT + GO promotion + pairing doc + advisor scoring updates
-- [ ] CHK-103 [P0] `README.md` structure inventory reflects live REACT + GO branches
-- [ ] CHK-104 [P0] `description.json` and `graph-metadata.json` keywords/trigger_phrases extended with fullstack tokens
+- [x] CHK-040 [P0] SKILL.md §2 SMART ROUTING follows sk-doc canonical pattern (single Python pseudocode block, sk-doc helper names).
+- [x] CHK-041 [P0] SKILL.md §5 REFERENCES section present (Core References → Templates and Assets → Build/Verification Scripts).
+- [x] CHK-042 [P0] SKILL.md sections numbered 1-10 sequentially without gaps.
+- [x] CHK-043 [P1] sk-code/README.md describes three-stack model honestly.
+- [x] CHK-044 [P1] sk-code/changelog/v1.3.0.0.md exists with version 1.3.0 entry summarizing the work.
+- [x] CHK-045 [P1] description.json `lastUpdated` ≥ 2026-04-30; `placeholder_fill_packet` field references `056-sk-code-fullstack-branch` (post-merge).
+- [x] CHK-046 [P1] graph-metadata.json `derived.last_updated_at` ≥ 2026-04-30; `placeholder_fill_packet` field references `056-sk-code-fullstack-branch` (post-merge).
+- [x] CHK-047 [P2] DQI scores ≥ good for all 9 reference docs. Evidence: 95, 93, 96, 93, 92 (router); 88, 90, 93, 91 (universal). All ≥ 88; 7 of 9 are excellent.
+
+---
+
 <!-- /ANCHOR:docs -->
 
 ---
@@ -174,9 +124,13 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [ ] CHK-105 [P0] No new top-level folders under `sk-code/` (only existing `references/` + `assets/` + `scripts/` + spec metadata)
-- [ ] CHK-106 [P0] `references/react/` and `references/go/` mirror the `references/webflow/` shape (implementation/debugging/verification/deployment/standards/)
-- [ ] CHK-107 [P1] `assets/react/{checklists,patterns,integrations}/` and `assets/go/{checklists,patterns}/` match the same convention as `assets/webflow/`
+- [x] CHK-050 [P1] Spec folder structure: spec.md / plan.md / tasks.md / checklist.md / implementation-summary.md / description.json / graph-metadata.json present.
+- [x] CHK-051 [P1] No leftover `scratch/` directory in 056 packet (cleared during merge).
+- [x] CHK-052 [P1] No new feature branch created (stay-on-main rule); current branch = main.
+- [x] CHK-053 [P1] Absorbed packet 057 deleted (rm -rf during merge).
+
+---
+
 <!-- /ANCHOR:file-org -->
 
 ---
@@ -186,9 +140,9 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 49 | [ ]/49 |
-| P1 Items | 17 | [ ]/17 |
-| P2 Items | 2 | [ ]/2 |
+| P0 Items | 22 | 22/22 |
+| P1 Items | 14 | 13/14 (CHK-027 memory save pending) |
+| P2 Items | 1 | 1/1 |
 
-**Verification Date**: TBD
+**Verification Date**: 2026-04-30.
 <!-- /ANCHOR:summary -->

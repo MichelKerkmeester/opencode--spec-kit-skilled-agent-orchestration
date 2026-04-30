@@ -1,20 +1,20 @@
 ---
-title: "Tasks: sk-code react/ + go/ live promotion"
-description: "Task tracking for 056 packet. 5 phases. Mirrors plan.md."
-trigger_phrases: ["056 tasks", "sk-code fullstack tasks"]
+title: "Tasks: sk-code multi-stack scaffolding"
+description: "Executable task list — Phases A (origin) → B (rename + fill) → C (sk-doc align) → D (validate). All complete."
+trigger_phrases: ["056 tasks", "sk-code multi-stack tasks"]
 importance_tier: "high"
 contextType: "general"
 _memory:
   continuity:
     packet_pointer: "skilled-agent-orchestration/056-sk-code-fullstack-branch"
-    last_updated_at: "2026-04-30T13:00:00Z"
+    last_updated_at: "2026-04-30T17:30:00Z"
     last_updated_by: "claude-opus-4-7"
-    recent_action: "Task list authored"
-    next_safe_action: "Execute Phase 1 — author react/ content"
+    recent_action: "057 merged into 056"
+    next_safe_action: "Run /memory:save"
     blockers: []
-    completion_pct: 5
+    completion_pct: 100
 ---
-# Tasks: sk-code react/ + go/ live promotion
+# Tasks: sk-code multi-stack scaffolding
 
 <!-- SPECKIT_LEVEL: 2 -->
 <!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
@@ -31,7 +31,10 @@ _memory:
 | `[P]` | Parallelizable |
 | `[B]` | Blocked |
 
-**Format**: `T### [P?] Description`
+**Task Format**: `T### [P?] Description (file path)`
+
+---
+
 <!-- /ANCHOR:notation -->
 
 ---
@@ -39,14 +42,18 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-> Spec packet bootstrap.
+(Original 056 spec packet creation + later merge-rewrite during 057 absorption.)
 
-- [x] T001 Create spec folder `056-sk-code-fullstack-branch/`
-- [x] T002 Author spec.md (problem, scope, requirements P0/P1/P2)
-- [x] T003 Author plan.md (5-phase plan)
-- [x] T004 Author tasks.md (this file)
-- [ ] T005 Author checklist.md
-- [ ] T006 Generate description.json + graph-metadata.json
+- [x] T001 Author original 056 spec/plan/tasks/checklist (Phase A start).
+- [x] T002 Pre-flight grep: identify consumers of `references/nextjs` / `assets/nextjs` paths.
+- [x] T003 Decision: rename to `nextjs/` (final user direction), with constant `NEXTJS`.
+- [x] T004 `git mv .opencode/skill/sk-code/references/nextjs .opencode/skill/sk-code/references/react` (Phase A initial — later reverted by user).
+- [x] T005 `git mv references/react references/nextjs` (final state).
+- [x] T006 `mkdir -p .opencode/skill/sk-code/assets/nextjs/{checklists,patterns,integrations}`.
+- [x] T007 `mkdir -p .opencode/skill/sk-code/assets/go/{checklists,patterns}`.
+
+---
+
 <!-- /ANCHOR:phase-1 -->
 
 ---
@@ -54,79 +61,57 @@ _memory:
 <!-- ANCHOR:phase-2 -->
 ## Phase 2: Implementation
 
-> Author react/ + go/ content + cross-stack pairing + SKILL.md routing updates.
+(Bulk stub fill + carry-over rewrites + kerkmeester scrub + SKILL.md updates + universal/router reference rewrites + sk-doc smart-router alignment + anchor removal.)
 
-### Phase 2.a: react/ content (kerkmeester-style)
-- [ ] T010 Create `references/react/README.md` (replaces _placeholder.md)
-- [ ] T011 Author `references/react/implementation/implementation_workflows.md` (Phase 1 entry)
-- [ ] T012 [P] Author `references/react/implementation/app_router_patterns.md`
-- [ ] T013 [P] Author `references/react/implementation/vanilla_extract_styling.md`
-- [ ] T014 [P] Author `references/react/implementation/motion_animation.md`
-- [ ] T015 [P] Author `references/react/implementation/forms_validation.md`
-- [ ] T016 [P] Author `references/react/implementation/accessibility_aria.md`
-- [ ] T017 [P] Author `references/react/implementation/api_integration.md`
-- [ ] T018 [P] Author `references/react/implementation/content_tinacms.md`
-- [ ] T019 [P] Author `references/react/debugging/debugging_workflows.md`
-- [ ] T020 [P] Author `references/react/debugging/hydration_errors.md`
-- [ ] T021 [P] Author `references/react/debugging/network_inspection.md`
-- [ ] T022 [P] Author `references/react/verification/verification_workflows.md`
-- [ ] T023 [P] Author `references/react/deployment/vercel_deploy.md`
-- [ ] T024 [P] Author `references/react/standards/code_style.md`
-- [ ] T025 [P] Author `references/react/standards/file_organization.md`
-- [ ] T026 Author `assets/react/README.md`
-- [ ] T027 [P] Author `assets/react/checklists/code_quality_checklist.md` (P0/P1/P2)
-- [ ] T028 [P] Author `assets/react/checklists/debugging_checklist.md`
-- [ ] T029 [P] Author `assets/react/checklists/verification_checklist.md`
-- [ ] T030 [P] Author `assets/react/patterns/server_action_pattern.tsx`
-- [ ] T031 [P] Author `assets/react/patterns/api_call_pattern.ts`
-- [ ] T032 [P] Author `assets/react/patterns/form_pattern.tsx`
-- [ ] T033 [P] Author `assets/react/patterns/motion_pattern.tsx`
-- [ ] T034 [P] Author `assets/react/patterns/vanilla_extract_recipe.css.ts`
-- [ ] T035 [P] Author `assets/react/integrations/vanilla_extract.md`
-- [ ] T036 [P] Author `assets/react/integrations/untitled_ui.md`
-- [ ] T037 [P] Author `assets/react/integrations/tinacms.md`
-- [ ] T038 Delete `references/react/_placeholder.md` and `assets/react/_placeholder.md`
+### Phase B — Bulk stub fill + carry-over rewrites + scrub
 
-### Phase 2.b: go/ content (gin + sqlc + Postgres)
-- [ ] T040 Create `references/go/README.md` (replaces _placeholder.md)
-- [ ] T041 Author `references/go/implementation/implementation_workflows.md`
-- [ ] T042 [P] Author `references/go/implementation/gin_handler_patterns.md`
-- [ ] T043 [P] Author `references/go/implementation/service_layer.md`
-- [ ] T044 [P] Author `references/go/implementation/database_sqlc_postgres.md`
-- [ ] T045 [P] Author `references/go/implementation/validation_patterns.md`
-- [ ] T046 [P] Author `references/go/implementation/auth_jwt.md`
-- [ ] T047 [P] Author `references/go/implementation/error_envelopes.md`
-- [ ] T048 [P] Author `references/go/implementation/api_design.md`
-- [ ] T049 [P] Author `references/go/debugging/debugging_workflows.md`
-- [ ] T050 [P] Author `references/go/debugging/pprof_profiling.md`
-- [ ] T051 [P] Author `references/go/verification/verification_workflows.md`
-- [ ] T052 [P] Author `references/go/deployment/docker_railway.md`
-- [ ] T053 [P] Author `references/go/standards/code_style.md`
-- [ ] T054 [P] Author `references/go/standards/file_organization.md`
-- [ ] T055 Author `assets/go/README.md`
-- [ ] T056 [P] Author `assets/go/checklists/code_quality_checklist.md`
-- [ ] T057 [P] Author `assets/go/checklists/debugging_checklist.md`
-- [ ] T058 [P] Author `assets/go/checklists/verification_checklist.md`
-- [ ] T059 [P] Author `assets/go/patterns/handler_pattern.go`
-- [ ] T060 [P] Author `assets/go/patterns/service_pattern.go`
-- [ ] T061 [P] Author `assets/go/patterns/repository_sqlc.go`
-- [ ] T062 [P] Author `assets/go/patterns/jwt_middleware.go`
-- [ ] T063 [P] Author `assets/go/patterns/table_test_pattern_test.go`
-- [ ] T064 Delete `references/go/_placeholder.md` and `assets/go/_placeholder.md`
+- [x] T010 Read `.opencode/skill/cli-codex/SKILL.md` to confirm dispatch contract.
+- [x] T011 Compose cli-codex dispatch prompt (43-entry flat path list + canonical templates + strict prohibitions).
+- [x] T012 Invoke cli-codex `codex exec -c service_tier="fast" --model gpt-5.5` → 43 stub files written.
+- [x] T013 Post-dispatch verification: file count, status:stub markers, kerkmeester sweep, no-fenced-code sweep.
+- [x] T014 Hand-rewrite `references/nextjs/README.md` as project-agnostic stub.
+- [x] T015 Hand-rewrite `references/go/README.md` as project-agnostic stub.
+- [x] T016 Hand-rewrite `references/nextjs/implementation/implementation_workflows.md` as Phase 1 entry stub.
+- [x] T017 Hand-rewrite `references/go/implementation/implementation_workflows.md` as Phase 1 entry stub.
+- [x] T018 Scrub kerkmeester from `references/router/cross_stack_pairing.md` (keyword line + line 200 prose).
 
-### Phase 2.c: Cross-stack pairing
-- [ ] T070 Author `references/router/cross_stack_pairing.md` (~150 lines)
-- [ ] T071 Cross-link from react/implementation/api_integration.md and go/implementation/api_design.md
+### Phase B — SKILL.md / metadata updates
 
-### Phase 2.d: SKILL.md routing + metadata
-- [ ] T080 Update `SKILL.md` LIVE_STACKS, PLACEHOLDER_STACKS, resource_map_for(REACT), resource_map_for(GO), TASK_SIGNALS keywords
-- [ ] T081 Update `references/router/stack_detection.md` precedence table
-- [ ] T082 Update `references/router/main_router.md` pseudocode reference
-- [ ] T083 Update `graph-metadata.json` key_files + trigger_phrases + intent_signals
-- [ ] T084 Update `description.json` keywords + trigger_examples
-- [ ] T085 Update `README.md` structure inventory + stack-detection table
-- [ ] T086 Update `CHANGELOG.md` [1.1.0] entry
-- [ ] T087 Update advisor `lib/scorer/lanes/explicit.ts` TOKEN_BOOSTS (~12 tokens)
+- [x] T020 SKILL.md: line 119-120 LIVE → STUB for NEXTJS / GO.
+- [x] T021 SKILL.md: lines 148-149 Resource Domains LIVE → STUB.
+- [x] T022 sk-code/README.md: stack detection table updated; STUB markers honest.
+- [x] T023 sk-code/changelog/v1.3.0.0.md: new version changelog entry.
+- [x] T024 description.json: supported_stacks, keywords, trigger_examples, lastUpdated, placeholder_fill_packet field.
+- [x] T025 graph-metadata.json: domains, intent_signals, key_files, causal_summary, placeholder_fill_packet field.
+- [x] T026 explicit.ts: NEXTJS lane (was REACT); kerkmeester key removed; nextjs go pairing triggers added.
+- [x] T027 sk-code SKILL.md frontmatter: version 1.2.0 → 1.3.0.
+
+### Phase C — sk-doc smart-router alignment + universal/router rewrites
+
+- [x] T030 SKILL.md §2 SMART ROUTING: anchor renamed `smart-routing` → `smart-routing-references` (sk-doc canonical).
+- [x] T031 SKILL.md §2: subsection order matches sk-doc (Stack Detection → Resource Domains → Resource Loading Levels → Smart Router Pseudocode).
+- [x] T032 SKILL.md §2: single comprehensive Python pseudocode block (replacing fragmented sub-blocks).
+- [x] T033 SKILL.md §2: helper signatures match sk-doc (`_task_text`, `_guard_in_skill`, `discover_markdown_resources`, `score_intents`, `select_intents`, `route_code_resources`).
+- [x] T034 SKILL.md §2: `LOADING_LEVELS = {ALWAYS, ON_DEMAND_KEYWORDS, ON_DEMAND}` (sk-doc shape).
+- [x] T035 SKILL.md §2: `RESOURCE_MAPS = {stack: {intent: paths}}` nested per-stack maps.
+- [x] T036 SKILL.md: insert §5 REFERENCES section (sk-doc canonical: Core References → Templates and Assets → Build/Verification Scripts).
+- [x] T037 SKILL.md: renumber sections 5-9 → 6-10 (SUCCESS CRITERIA → 6, EXTERNAL → 7, RELATED → 8, WHERE AM I → 9, QUICK REFERENCE → 10).
+- [x] T038 [P] Rewrite `references/universal/code_quality_standards.md` to sk-doc reference template.
+- [x] T039 [P] Rewrite `references/universal/code_style_guide.md` to sk-doc reference template.
+- [x] T040 [P] Rewrite `references/universal/error_recovery.md` to sk-doc reference template.
+- [x] T041 [P] Rewrite `references/universal/multi_agent_research.md` to sk-doc reference template.
+- [x] T042 [P] Rewrite `references/router/stack_detection.md` to sk-doc reference template.
+- [x] T043 [P] Rewrite `references/router/intent_classification.md` to sk-doc reference template.
+- [x] T044 [P] Rewrite `references/router/resource_loading.md` to sk-doc reference template.
+- [x] T045 [P] Rewrite `references/router/phase_lifecycle.md` to sk-doc reference template.
+- [x] T046 Restructure `references/router/cross_stack_pairing.md` (insert OVERVIEW; renumber sections 1-8 → 2-9; replace See also with `## 10. RELATED RESOURCES`).
+- [x] T047 [P] Rewrite `assets/universal/checklists/debugging_checklist.md` to sk-doc asset template.
+- [x] T048 [P] Rewrite `assets/universal/checklists/verification_checklist.md` to sk-doc asset template.
+- [x] T049 Strip all `<!--.*ANCHOR:.*-->` HTML comments from every md file under `sk-code/` (Python sweep).
+- [x] T050 Cleanup pass: strip auto-linter `## N. OVERVIEW _TODO_` pollution.
+
+---
+
 <!-- /ANCHOR:phase-2 -->
 
 ---
@@ -134,19 +119,20 @@ _memory:
 <!-- ANCHOR:phase-3 -->
 ## Phase 3: Verification
 
-- [ ] T090 `bash validate.sh --strict` on `056-sk-code-fullstack-branch` exits 0
-- [ ] T091 `cd mcp_server && npm run build` clean
-- [ ] T092 `advisor_rebuild` MCP tool refreshes SQLite (skillCount unchanged; indexedNodes reflects updated paths)
-- [ ] T093 Trigger test: "fix Webflow animation flicker" → sk-code WEBFLOW (regression check)
-- [ ] T094 [P] Trigger test: "implement Next.js App Router page with vanilla-extract" → sk-code REACT
-- [ ] T095 [P] Trigger test: "add a Server Action with zod validation" → sk-code REACT
-- [ ] T096 [P] Trigger test: "build a gin handler with sqlc" → sk-code GO
-- [ ] T097 [P] Trigger test: "set up JWT auth between Next.js and Go" → sk-code (REACT or GO)
-- [ ] T098 [P] Trigger test: "Audit OpenCode plugin loader" → sk-code-opencode (regression)
-- [ ] T099 [P] Trigger test: "review this PR" → sk-code-review (regression)
-- [ ] T100 `npx vitest run lane-attribution.test.ts` green
-- [ ] T101 Pattern code lints clean (`tsc --noEmit` + `gofmt -d`)
-- [ ] T102 Cross-repo regrep `_placeholder.md` returns only nodejs/, react-native/, swift/ entries
+- [x] T060 Path-existence sweep: 33/33 RESOURCE_MAPS paths for WEBFLOW + NEXTJS + GO resolve.
+- [x] T061 [P] sk-doc validate: 9 reference + 2 asset checklist files all `valid: true`, 0 issues.
+- [x] T062 [P] sk-doc DQI: all 11 files band ∈ {good, excellent} (DQI ≥ 88).
+- [x] T063 [P] No-fenced-code in markdown stubs sweep: 0 hits.
+- [x] T064 [P] Final kerkmeester sweep across whole `sk-code/`: 0 hits.
+- [x] T065 [P] Anchor sweep: 0 hits.
+- [x] T066 Advisor smoke #1: "implement Next.js App Router page with vanilla-extract" → score 0.857, sk-code wins.
+- [x] T067 Advisor smoke #2: "build a gin handler with sqlc and Postgres" → score 0.78, sk-code wins.
+- [x] T068 Advisor smoke #3: "fix Webflow animation flicker" (regression check) → score 0.842, sk-code wins (no regression).
+- [x] T069 Mark every checklist.md item `[x]` with evidence (command output, file paths).
+- [ ] T070 Final `/memory:save` for spec folder 056 (refreshes description.json + graph-metadata.json + memory index).
+
+---
+
 <!-- /ANCHOR:phase-3 -->
 
 ---
@@ -154,11 +140,14 @@ _memory:
 <!-- ANCHOR:completion -->
 ## Completion Criteria
 
-- [ ] All P0 tasks (T001..T087, T090..T102) complete
-- [ ] No `[B]` blocked tasks remaining
-- [ ] Manual verification (T093..T099) passed: 7/7 routing
-- [ ] `tsc --noEmit` and `gofmt -d` clean on patterns
-- [ ] checklist.md verified
+- [x] All tasks T001-T069 marked `[x]`.
+- [ ] T070 (memory save) — run by user after merge.
+- [x] No `[B]` blocked tasks remaining.
+- [x] checklist.md verified end-to-end with evidence.
+- [x] implementation-summary.md authored AFTER above (post-merge consolidation).
+
+---
+
 <!-- /ANCHOR:completion -->
 
 ---
@@ -166,9 +155,9 @@ _memory:
 <!-- ANCHOR:cross-refs -->
 ## Cross-References
 
-- **Specification**: See `spec.md`
-- **Plan**: See `plan.md`
-- **Checklist**: See `checklist.md`
-- **Approved planning artifact**: `~/.claude/plans/merge-users-michelkerkmeester-mega-devel-crispy-rabin.md`
-- **Frontend reference source**: `/Users/michelkerkmeester/MEGA/Development/Websites/kerkmeester.com/README.md`
+- **Specification**: See `spec.md`.
+- **Plan**: See `plan.md`.
+- **Verification**: See `checklist.md`.
+- **Implementation summary**: See `implementation-summary.md`.
+- **Absorbed packet**: `057-sk-code-multi-stack-placeholders` (deleted; content merged here).
 <!-- /ANCHOR:cross-refs -->

@@ -4,85 +4,209 @@
   "spec_folder": "skilled-agent-orchestration/056-sk-code-fullstack-branch",
   "parent_id": null,
   "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
   "manual": {
-    "depends_on": ["skilled-agent-orchestration/054-sk-code-merger"],
+    "depends_on": [],
     "supersedes": [],
-    "related_to": [
-      "skilled-agent-orchestration/054-sk-code-merger",
-      "skilled-agent-orchestration/055-cli-skill-removal-sk-code-merger-deprecated"
-    ]
+    "related_to": []
   },
   "derived": {
     "trigger_phrases": [
-      "sk-code react live",
-      "sk-code go live",
-      "kerkmeester pattern",
-      "fullstack branch",
+      "sk-code multi-stack",
+      "sk-code nextjs go",
       "056 sk-code",
+      "smart router alignment",
+      "stack scaffolding",
       "056 plan",
+      "sk-code multi-stack plan",
+      "stack scaffolding plan",
       "056 tasks",
+      "sk-code multi-stack tasks",
       "056 checklist",
-      "react placeholder promotion",
-      "go placeholder promotion",
-      "vanilla-extract example",
-      "gin sqlc postgres example",
-      "react go pairing"
+      "sk-code multi-stack verification"
     ],
     "key_topics": [
       "sk-code",
-      "react",
+      "multi-stack",
       "nextjs",
-      "app-router",
-      "vanilla-extract",
-      "motion",
-      "untitled-ui",
-      "tinacms",
-      "kerkmeester",
-      "go",
-      "gin",
-      "sqlc",
-      "postgres",
-      "fullstack",
-      "smart-router",
-      "live-branch",
-      "placeholder-promotion",
-      "056"
+      "056",
+      "smart",
+      "router",
+      "alignment",
+      "stack",
+      "scaffolding",
+      "plan",
+      "tasks",
+      "checklist"
     ],
     "importance_tier": "high",
     "status": "in_progress",
     "key_files": [
-      ".opencode/skill/sk-code",
+      ".opencode/skill/sk-code/references/router/cross_stack_pairing.md",
       ".opencode/skill/sk-code/SKILL.md",
       ".opencode/skill/sk-code/README.md",
-      ".opencode/skill/sk-code/CHANGELOG.md",
-      ".opencode/skill/sk-code/graph-metadata.json",
       ".opencode/skill/sk-code/description.json",
-      ".opencode/skill/sk-code/references/react",
-      ".opencode/skill/sk-code/references/go",
-      ".opencode/skill/sk-code/assets/react",
-      ".opencode/skill/sk-code/assets/go",
-      ".opencode/skill/sk-code/references/router/cross_stack_pairing.md",
-      ".opencode/skill/sk-code/references/router/stack_detection.md",
-      ".opencode/skill/sk-code/references/router/main_router.md",
+      ".opencode/skill/sk-code/graph-metadata.json",
       ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts",
+      ".opencode/skill/cli-codex/SKILL.md",
       "spec.md",
       "plan.md",
-      "tasks.md",
       "checklist.md",
-      "implementation-summary.md"
+      "implementation-summary.md",
+      "tasks.md"
     ],
     "entities": [
-      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
-      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
-      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
-      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
-      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" }
+      {
+        "name": "cross_stack_pairing.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code/references/router/cross_stack_pairing.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-code/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "description.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-code/description.json",
+        "source": "derived"
+      },
+      {
+        "name": "graph-metadata.json",
+        "kind": "config",
+        "path": ".opencode/skill/sk-code/graph-metadata.json",
+        "source": "derived"
+      },
+      {
+        "name": "explicit.ts",
+        "kind": "code",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Restore",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "App Router",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "React Native",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Three",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Mechanical",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      }
     ],
-    "causal_summary": "Promotes sk-code react/ and go/ from placeholder to live branches. Frontend content modeled on kerkmeester.com (Next.js 14 App Router + vanilla-extract + motion v12 + Untitled UI + react-hook-form/zod + react-aria + Sonner + next-themes + optional TinaCMS). Backend paired: gin + sqlc + Postgres + go-playground/validator + golang-jwt JWT auth. Adds a cross-stack pairing reference doc that documents the React↔Go API contract (REST, JSON envelope, cursor pagination), JWT handoff (Go issues, React stores in httpOnly cookie or memory, Auth.js consumes), error envelope shape ({error: {code, message, details?}}), CORS configuration, and deploy topology (React on Vercel, Go on Railway/Fly.io/DigitalOcean). SKILL.md routing updates move REACT and GO from PLACEHOLDER_STACKS to LIVE_STACKS with full intent → file maps mirroring WEBFLOW shape; ~25 fullstack-specific keywords added to TASK_SIGNALS (vanilla-extract, motion v12, server action, server component, hydration, app router, untitled ui, gin, sqlc, pgx, golang-jwt, etc.). No new branch label or stack-detection edits — uses existing Next.js → REACT and go.mod → GO precedent. Three placeholders remain (nodejs/, react-native/, swift/); their canonical content was retired in packet 055 and they continue to surface a placeholder pointer.",
+    "causal_summary": "Restore a working three-stack `sk-code`:",
     "created_at": "2026-04-30T13:00:00Z",
-    "last_save_at": "2026-04-30T13:00:00Z",
+    "last_save_at": "2026-04-30T17:23:41.580Z",
     "save_lineage": "same_pass",
-    "last_accessed_at": null,
+    "last_accessed_at": "2026-04-30T18:30:00Z",
     "source_docs": [
       "spec.md",
       "plan.md",
