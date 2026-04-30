@@ -1,4 +1,4 @@
-import SpecKitSkillAdvisorPlugin from '../../../../../plugins/spec-kit-skill-advisor.js';
+import SpecKitSkillAdvisorPlugin from '../../../../../../../plugins/spec-kit-skill-advisor.js';
 
 import {
   REPO_ROOT,
