@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Causal chain tracing (memory_drift_why)
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Covers the graph traversal tool that traces causal relationship chains to explain why decisions were made.
 
 This answers the question "why was this decision made?" by following the chain of connections backward through related memories. It is like tracing a family tree to understand how you got from a problem to a solution. If two memories in the chain contradict each other, the system flags the conflict so you can resolve it.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 "Why was this decision made?" This tool answers that question by tracing the causal relationship chain for a given memory through depth-limited graph traversal.
@@ -26,8 +28,9 @@ You can filter to specific relationship types after traversal. Pass `relations: 
 
 When contradictions are found, the response includes warning hints. Two memories that contradict each other in the same causal chain is a signal that something needs resolution.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -42,7 +45,7 @@ When contradictions are found, the response includes warning hints. Two memories
 | `mcp_server/schemas/tool-input-schemas.ts` | Zod input schemas for drift_why arguments |
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `memory_drift_why` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -52,18 +55,23 @@ When contradictions are found, the response includes warning hints. Two memories
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Causal graph integration |
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation tests |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. MANUAL PLAYBOOK COVERAGE
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Analysis
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--analysis/04-causal-chain-tracing-memorydriftwhy.md`
+
+- Group: Analysis
+- Source feature title: Causal chain tracing (memory_drift_why)
+- Current reality source: FEATURE_CATALOG.md
+
+### MANUAL PLAYBOOK COVERAGE
 
 | Scenario | Role |
 |----------|------|
 | `EX-022` | Direct manual validation for bidirectional causal-chain tracing |
 
----
-
-## 5. SOURCE METADATA
-
-- Group: Analysis
-- Source feature title: Causal chain tracing (memory_drift_why)
-- Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

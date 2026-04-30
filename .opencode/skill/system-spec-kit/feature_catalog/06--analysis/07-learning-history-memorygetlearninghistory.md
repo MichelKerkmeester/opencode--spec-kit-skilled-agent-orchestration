@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Learning history (memory_get_learning_history)
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Covers the learning history retrieval tool that aggregates Learning Index trends across completed tasks in a spec folder.
 
 This shows you a report card of learning across all completed tasks in a project. You can see the average learning score, which tasks produced the biggest breakthroughs and whether your understanding is trending up or down over time. It is like a fitness tracker for knowledge growth.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 Retrieves learning records for a spec folder with optional filtering by session ID and completion status. Each record shows the preflight scores, postflight scores, computed deltas and Learning Index.
@@ -26,8 +28,9 @@ Handler safety around the backing table is tighter now. Schema initialization is
 
 The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance]`, even though this catalog groups it under Analysis. Treat the catalog placement as a documentation grouping rather than the handler's runtime layer classification.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -41,7 +44,7 @@ The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `memory_get_learning_history` (labeled `[L7:Maintenance]`) |
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for learning tools |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,18 +52,23 @@ The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance
 | `mcp_server/tests/integration-learning-history.vitest.ts` | Learning history integration |
 | `mcp_server/tests/learning-stats-filters.vitest.ts` | Learning stats filter tests including `includeSummary` and `onlyComplete` |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. MANUAL PLAYBOOK COVERAGE
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Analysis
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--analysis/07-learning-history-memorygetlearninghistory.md`
+
+- Group: Analysis
+- Source feature title: Learning history (memory_get_learning_history)
+- Current reality source: FEATURE_CATALOG.md
+
+### MANUAL PLAYBOOK COVERAGE
 
 | Scenario | Role |
 |----------|------|
 | `EX-025` | Direct manual validation for filtered/completed learning-history retrieval |
 
----
-
-## 5. SOURCE METADATA
-
-- Group: Analysis
-- Source feature title: Learning history (memory_get_learning_history)
-- Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

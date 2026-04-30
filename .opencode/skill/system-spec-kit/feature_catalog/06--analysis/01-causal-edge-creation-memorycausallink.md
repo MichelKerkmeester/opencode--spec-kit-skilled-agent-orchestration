@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Causal edge creation (memory_causal_link)
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Covers the causal edge creation tool that builds directed relationship edges between memories in the causal graph.
 
 This lets you draw a line between two memories to show they are related, like connecting pins on a corkboard with string. You can say one memory caused another, replaced another or contradicts another. These connections help the search system understand how ideas relate to each other and surface better results when you are tracing the history of a decision.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 Creates a directed relationship edge between two memories in the causal graph. Six relationship types are supported: caused (this memory led to that one), enabled (this memory made that one possible), supersedes (this memory replaces that one), contradicts (these memories disagree), derived_from (this memory was produced from that one) and supports (this memory backs up that one).
@@ -26,8 +28,9 @@ A batch insert variant (`insertEdgesBatch()`) handles bulk edge creation during 
 
 Reference resolution for auto-extracted causal links now batches all references from the spec-doc record file before insertion begins. The resolver tries numeric IDs first, then exact `canonical_file_path`/`file_path` equality using normalized path candidates, then exact title matches, and only falls back to fuzzy `LIKE` lookups for unresolved path or title references. That exact-first order reduces false-positive fuzzy resolutions and avoids rerunning separate lookup queries for each edge candidate.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -44,7 +47,7 @@ Reference resolution for auto-extracted causal links now batches all references 
 | `mcp_server/schemas/tool-input-schemas.ts` | Zod input schemas for causal link arguments |
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `memory_causal_link` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -54,18 +57,23 @@ Reference resolution for auto-extracted causal links now batches all references 
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation tests |
 | `mcp_server/tests/causal-boost.vitest.ts` | Causal boost scoring tests |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. MANUAL PLAYBOOK COVERAGE
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Analysis
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--analysis/01-causal-edge-creation-memorycausallink.md`
+
+- Group: Analysis
+- Source feature title: Causal edge creation (memory_causal_link)
+- Current reality source: FEATURE_CATALOG.md
+
+### MANUAL PLAYBOOK COVERAGE
 
 | Scenario | Role |
 |----------|------|
 | `EX-019` | Direct manual validation for causal edge creation and immediate trace visibility |
 
----
-
-## 5. SOURCE METADATA
-
-- Group: Analysis
-- Source feature title: Causal edge creation (memory_causal_link)
-- Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

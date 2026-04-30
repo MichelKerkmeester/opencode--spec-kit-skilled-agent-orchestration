@@ -5,30 +5,26 @@ description: "Code standards alignment brought comments, MODULE/COMPONENT header
 
 # Code standards alignment
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE EVIDENCE](#3-source-evidence)
-- [4. VERIFICATION TRACEABILITY](#4-verification-traceability)
-- [5. SOURCE FILES](#5-source-files)
-- [6. SOURCE METADATA](#6-source-metadata)
-
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Code standards alignment brought comments, MODULE/COMPONENT headers, import ordering, and constant naming into line with sk-code-opencode standards.
 
 This was a cleanup pass that made the code follow a consistent style across the project. It fixed 45 places where comments, file headers, naming patterns or import ordering did not match the agreed-upon rules. Think of it like an editor going through a document to make sure every chapter uses the same formatting and citation style.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 All modified files were reviewed against sk-code-opencode standards. At HEAD, the live codebase uses MODULE/COMPONENT headers plus purposeful inline comments where explanation adds value. Legacy AI-intent prefixes (`AI-WHY`, `AI-TRACE`, `AI-GUARD`) are no longer part of the active convention, and `rg "AI-(WHY|TRACE|GUARD):" .opencode/skill/system-spec-kit/mcp_server` returns no matches.
 
----
+<!-- /ANCHOR:current-reality -->
 
-## 3. SOURCE EVIDENCE
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### SOURCE EVIDENCE
 
 ### 1) Purposeful comments and retired AI-intent prefixes
 
@@ -79,7 +75,7 @@ All modified files were reviewed against sk-code-opencode standards. At HEAD, th
 
 ---
 
-## 4. VERIFICATION TRACEABILITY
+### VERIFICATION TRACEABILITY
 
 ### Lint/check commands
 
@@ -109,9 +105,16 @@ All modified files were reviewed against sk-code-opencode standards. At HEAD, th
   - `mcp_server/package.json` (`lint`, `check`)
   - `package.json` at `system-spec-kit` root (`typecheck`)
 
----
+<!-- /ANCHOR:source-files -->
 
-## 5. SOURCE FILES
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Tooling and scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/05-code-standards-alignment.md`
+
+### SOURCE FILES
 
 ### Representative implementation
 
@@ -121,8 +124,9 @@ All modified files were reviewed against sk-code-opencode standards. At HEAD, th
 
 ---
 
-## 6. SOURCE METADATA
+### SOURCE METADATA
 
-- Group: Multi-agent deep review remediation (Phase 018)
+- Group: Multi-agent review remediation
 - Source feature title: Code standards alignment
 - Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

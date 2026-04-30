@@ -11,15 +11,6 @@ Assigns P0 or P1 or P2 meaning and severity weight to each review finding.
 
 The severity system converts raw review observations into blocker, required, or suggestion findings. Those levels control convergence math, verdict routing, and whether a finding can block release.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The live contract uses three severity levels with fixed weights: `P0 = 10.0`, `P1 = 5.0`, `P2 = 1.0`. All severities require concrete file-line evidence. The loop uses those weights to compute `newFindingsRatio`, including half-weight refinements, and applies the P0 override so any newly discovered blocker raises the ratio to at least `0.50`.

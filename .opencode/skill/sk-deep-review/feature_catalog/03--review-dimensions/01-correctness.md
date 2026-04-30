@@ -11,15 +11,6 @@ Audits logic, invariants, and behavior against observable intent.
 
 Correctness is the review loop's highest-priority audit dimension. It asks whether the reviewed system does what it claims, handles edge cases, and preserves its own invariants under real execution paths.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The review contract ranks correctness first in the default dimension order. It is required for severity coverage and is one of the dimensions that must be examined before a clean stop is possible. The loop uses this dimension for logic errors, broken state transitions, off-by-one mistakes, wrong return behavior, and other direct behavior mismatches.

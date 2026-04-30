@@ -11,15 +11,6 @@ Turns new P0 and P1 findings into typed, review-visible claims with evidence and
 
 Claim adjudication is the typed review packet that stops severe findings from floating through the loop as unstructured prose. It records what the finding claims, what evidence supports it, what counterevidence was sought, and whether the severity should stand.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 Every new P0 or P1 must carry a typed packet embedded in the iteration file. Required fields include the finding ID, the single claim, evidence refs, counterevidence search, alternative explanation, final severity, confidence, downgrade trigger, and transition history when severity changes. The orchestrator parses this packet after evaluation and writes a `claim_adjudication` event into `deep-review-state.jsonl`.

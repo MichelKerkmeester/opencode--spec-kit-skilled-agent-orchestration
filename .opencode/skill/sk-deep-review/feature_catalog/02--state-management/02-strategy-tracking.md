@@ -11,15 +11,6 @@ Maintains the mutable review brain across fresh-context agent dispatches.
 
 `deep-review-strategy.md` is the review loop's shared working memory. It keeps the loop pointed at uncovered dimensions and unresolved findings while preserving learned context from prior passes.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The strategy file carries required sections for remaining dimensions, completed dimensions, running findings, worked and failed approaches, exhausted paths, ruled-out directions, next focus, known context, cross-reference status, files under review, and review boundaries. Initialization seeds the topic, scope, and boundaries, then each iteration moves completed dimensions, updates counts and protocol status, and rewrites the next-focus anchor.

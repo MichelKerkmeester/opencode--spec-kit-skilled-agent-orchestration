@@ -10,44 +10,48 @@ trigger_phrases:
 
 # Skill-Nodes / Skill-Edges Projection
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Expose only the graph data the `graph_causal` lane actually needs, in a stable shape that the scorer can consume directly without traversing the whole compiled graph on every call.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `lib/scorer/projection.ts` projects the compiled skill graph into `skill_nodes` and `skill_edges` collections shaped for the graph-causal lane. The projection is side-effect-free and does not carry prompt text or raw graph prose. Bounded node counts keep memory usage stable as the corpus grows.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts` | Library | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts` | Library | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts` — graph-causal lane behavior.
-- Playbook scenario [SC-002](../../manual_testing_playbook/08--scorer-fusion/002-projection.md).
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts` | Automated test | graph-causal lane behavior |
+| `Playbook scenario [SC-002](../../manual_testing_playbook/08--scorer-fusion/002-projection.md).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Scorer fusion
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `04--scorer-fusion/02-projection.md`
+
+Related references:
 
 - [01-five-lane-fusion.md](./01-five-lane-fusion.md).
 - [04-attribution.md](./04-attribution.md).
 - [`06--mcp-surface/03-advisor-validate.md`](../06--mcp-surface/03-advisor-validate.md).
+<!-- /ANCHOR:source-metadata -->

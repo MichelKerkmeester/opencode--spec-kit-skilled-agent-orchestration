@@ -10,22 +10,14 @@ trigger_phrases:
 
 # advisor_validate MCP Tool
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Drive release-readiness decisions from real measurements. Consolidate corpus, holdout, parity, safety, and latency slices behind one tool call, while also exposing the threshold contract and prompt-safe telemetry summaries operators need to interpret the run.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `handlers/advisor-validate.ts` runs the bundled validation slices and returns the landed public contract:
@@ -66,24 +58,36 @@ Telemetry is published as prompt-safe rollups rather than raw prompt content:
 
 `telemetry.outcomes.totals` reports durable outcome counts, and `recordedThisRun` reflects any `outcomeEvents` supplied on the validating call.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-validate.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-validate.ts` | Handler | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts` | Schema | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/handlers/advisor-validate.vitest.ts`.
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/parity/` — Python/TS parity harness.
-- Playbook scenario [NC-003](../../manual_testing_playbook/01--native-mcp-tools/003-native-validate-slices.md).
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/handlers/advisor-validate.vitest.ts` | Automated test | Validation reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/parity/` | Automated test | Python/TS parity harness |
+| `Playbook scenario [NC-003](../../manual_testing_playbook/01--native-mcp-tools/003-native-validate-slices.md).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: MCP surface
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--mcp-surface/03-advisor-validate.md`
+
+Related references:
 
 - [01-advisor-recommend.md](./01-advisor-recommend.md).
 - [`04--scorer-fusion/05-ablation.md`](../04--scorer-fusion/05-ablation.md).
+<!-- /ANCHOR:source-metadata -->

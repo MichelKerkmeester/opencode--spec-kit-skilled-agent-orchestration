@@ -6,29 +6,34 @@ audited_post_018: true
 
 # Auto-promotion on validation
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Describes automatic tier promotion triggered by positive validations (normal at 5, important at 10) with a throttle safeguard limiting promotions to 3 per 8-hour rolling window.
 
 When a spec-doc record keeps proving useful over and over, it earns a promotion. After five thumbs-up reviews, a regular memory becomes "important." After ten, it becomes "critical." This happens automatically so you do not have to manually tag your most valuable knowledge. A speed limit prevents too many promotions from happening at once during a busy session.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 Positive validations now trigger automatic tier promotion. When a normal-tier memory accumulates 5 positive validations, it is promoted to important. When an important-tier memory reaches 10, it is promoted to critical. A throttle safeguard limits promotions to 3 per 8-hour rolling window to prevent runaway promotion during bulk validation sessions.
 
 Constitutional, critical, temporary and deprecated tiers are non-promotable. Each promotion is logged to a `memory_promotion_audit` table for traceability. The `memory_validate` response includes `autoPromotion` metadata showing whether promotion was attempted, the previous and new tier, validation count and the reason.
 
----
+<!-- /ANCHOR:current-reality -->
 
-## 3. HANDLER-PATH COVERAGE
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### HANDLER-PATH COVERAGE
 
 `memory_validate` enters `handleMemoryValidate(...)` in `mcp_server/handlers/checkpoints.ts`, records validation via `confidenceTracker.recordValidation(...)` and on positive feedback (`wasUseful === true`) calls `executeAutoPromotion(database, memoryId)`. The returned result is surfaced in `data.autoPromotion`.
 
 ---
 
-## 4. BEHAVIOR COVERAGE MATRIX
+### BEHAVIOR COVERAGE MATRIX
 
 | Behavior | Implementation path | Test coverage |
 |------|----------------------|---------------|
@@ -37,9 +42,16 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 | Throttle behavior (3 per 8h rolling window) | `MAX_PROMOTIONS_PER_WINDOW = 3`, `PROMOTION_WINDOW_HOURS = 8`, enforced in `executeAutoPromotion(...)` transaction | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP12`, `R11-AP13`) |
 | Non-promotable tier rejection | `NON_PROMOTABLE_TIERS` guard in `checkAutoPromotion(...)`, returns `tier_not_promotable:*` reason | `mcp_server/tests/learned-feedback.vitest.ts` (`R11-AP05`, `R11-AP06`) |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 5. SOURCE FILES
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Scoring and calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/10-auto-promotion-on-validation.md`
+
+### SOURCE FILES
 
 ### Implementation
 
@@ -59,8 +71,9 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 ---
 
-## 6. SOURCE METADATA
+### SOURCE METADATA
 
 - Group: Scoring and calibration
 - Source feature title: Auto-promotion on validation
 - Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

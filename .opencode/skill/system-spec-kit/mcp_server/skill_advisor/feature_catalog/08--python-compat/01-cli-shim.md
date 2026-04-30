@@ -10,22 +10,14 @@ trigger_phrases:
 
 # Python CLI Shim (skill_advisor.py)
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Keep pre-Phase-027 Python consumers working while moving routing to the native advisor. The shim probes the native daemon first, translates native output into the legacy JSON-array shape, and falls back to the local Python scorer when native routing is unavailable or explicitly bypassed.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `scripts/skill_advisor.py` is the CLI surface. `scripts/skill_advisor_runtime.py` implements the local Python scorer used by `--force-local` and the fallback path. Control flags:
@@ -39,27 +31,39 @@ Keep pre-Phase-027 Python consumers working while moving routing to the native a
 | `SPECKIT_SKILL_ADVISOR_HOOK_DISABLED=1` | Disable advisor invocation entirely. |
 | `SPECKIT_SKILL_ADVISOR_FORCE_LOCAL=1` | Env-level force-local toggle for plugin/script diagnostics. |
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_runtime.py`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/compat/daemon-probe.ts`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py` | Script | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_runtime.py` | Script | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/compat/daemon-probe.ts` | Library | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/compat/shim.vitest.ts`.
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/compat/daemon-probe.vitest.ts`.
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/` — Python unit test.
-- Playbook scenarios [PC-001](../../manual_testing_playbook/10--python-compat/001-stdin-mode.md), [PC-002](../../manual_testing_playbook/10--python-compat/002-force-native-force-local.md), [PC-003](../../manual_testing_playbook/10--python-compat/003-threshold-flag.md), and [CP-001..CP-004](../../manual_testing_playbook/03--compat-and-disable/).
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/compat/shim.vitest.ts` | Automated test | Validation reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/compat/daemon-probe.vitest.ts` | Automated test | Validation reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/` | Automated test | Python unit test |
+| `Playbook scenarios [PC-001](../../manual_testing_playbook/10--python-compat/001-stdin-mode.md), [PC-002](../../manual_testing_playbook/10--python-compat/002-force-native-force-local.md), [PC-003](../../manual_testing_playbook/10--python-compat/003-threshold-flag.md), and [CP-001..CP-004](../../manual_testing_playbook/03--compat-and-disable/).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Python compat
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--python-compat/01-cli-shim.md`
+
+Related references:
 
 - [02-regression-suite.md](./02-regression-suite.md).
 - [03-bench-runner.md](./03-bench-runner.md).
 - [`06--mcp-surface/04-compat-entrypoint.md`](../06--mcp-surface/04-compat-entrypoint.md).
+<!-- /ANCHOR:source-metadata -->

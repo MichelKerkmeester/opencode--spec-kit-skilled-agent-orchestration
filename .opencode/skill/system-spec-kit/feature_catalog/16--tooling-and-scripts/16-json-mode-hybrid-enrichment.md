@@ -5,23 +5,16 @@ description: "Structured JSON summary support for generate-context.js, including
 
 # JSON mode structured summary hardening
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. FEATURE BREAKDOWN](#3-feature-breakdown)
-- [4. SOURCE FILES](#4-source-files)
-- [5. VERIFICATION SOURCES](#5-verification-sources)
-- [6. SOURCE METADATA](#6-source-metadata)
-
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Phase 016 added structured JSON summary support to the session capturing pipeline. The shipped implementation accepts richer caller-authored session data via `--json` and `--stdin` inputs, including fields like `toolCalls` and `exchanges`. It also preserves file-backed JSON authority and ships Wave 2 hardening fixes for decision confidence, truncated outcome titles, `git_changed_file_count` stability, and template count preservation.
+The structured JSON summary path added support to the session capturing pipeline. The shipped implementation accepts richer caller-authored session data via `--json` and `--stdin` inputs, including fields like `toolCalls` and `exchanges`. It also preserves file-backed JSON authority and ships Wave 2 hardening fixes for decision confidence, truncated outcome titles, `git_changed_file_count` stability, and template count preservation.
 
 The original phase design described a broader file-backed enrichment path, but only the narrower structured-summary contract and hardening fixes shipped.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 The session capturing pipeline now handles structured JSON summaries as follows:
@@ -36,9 +29,30 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 8. After the spec-doc record file is written (Step 10.5), a post-save quality review validates that JSON payload fields propagated correctly to the saved memory, using both frontmatter and the `## MEMORY METADATA` YAML block before indexing begins.
 9. JSON payload fields `sessionSummary`, `triggerPhrases`, `keyDecisions`, and `contextType` now properly flow through to rendered frontmatter via RC1–RC5 fixes (see §3.4).
 
----
+<!-- /ANCHOR:current-reality -->
 
-## 3. FEATURE BREAKDOWN
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Role |
+|------|------|
+| `scripts/types/session-types.ts` | Structured JSON contract types for `toolCalls` and `exchanges` |
+| `scripts/utils/input-normalizer.ts` | Snake_case JSON compatibility, structured-summary normalization, `projectPhase` propagation (fast-path and slow-path) |
+| `scripts/extractors/collect-session-data.ts` | Wave 2 count, confidence, and outcome handling |
+| `scripts/extractors/quality-scorer.ts` | Quality score computation; penalty-only model |
+| `scripts/extractors/session-extractor.ts` | `resolveProjectPhase()` for projectPhase override |
+| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, trigger-phrase filtering, post-save review invocation gating, and SHA1-based pre-save overlap checks |
+| `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, MEMORY METADATA-aware field checks, `computeReviewScorePenalty()`, multi-token path fragment detection |
+| `scripts/extractors/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
+| `scripts/lib/validate-memory-quality.ts` | V13 YAML parsing and memory-quality validation |
+| `scripts/renderers/template-renderer.ts` | Optional-placeholder handling for compact tool/exchange sections |
+| `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
+| `mcp_server/lib/providers/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
+| `mcp_server/handlers/memory-crud-health.ts` | `embeddingRetry` block in `memory_health` MCP response |
+
+### FEATURE BREAKDOWN
 
 ### 3.1 Structured JSON summary contract
 
@@ -75,7 +89,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - Always active. The review runs for every JSON-mode save where the payload is available.
 - See feature catalog entry `13--memory-quality-and-indexing/19-post-save-quality-review.md` for full specification.
 
-### 3.6 Quality scorer recalibration (Phase 002)
+### 3.6 Quality scorer recalibration
 
 - Removed +0.20 bonus system (+0.05 messages, +0.05 tools, +0.10 decisions) from `extractors/quality-scorer.ts`.
 - Base score is now 1.0 with only penalties subtracting.
@@ -83,13 +97,13 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - Five simultaneous MEDIUM penalties produce 0.85 (discriminative, below 0.90).
 - Calibration test import fixed to test live scorer (`extractors/`, not `core/`).
 
-### 3.7 Contamination filter extension (Phase 002)
+### 3.7 Contamination filter extension
 
 - `filterContamination` now called on 4 additional text fields: `_JSON_SESSION_SUMMARY`, `_manualDecisions[]`, `recentContext[]`, `technicalContext` KEY/VALUE.
 - 18 new contamination patterns across 7 categories added (33 -> 51 total): hedging phrases, conversational acknowledgment, meta-commentary, instruction echoing, markdown artifacts, safety disclaimers, redundant certainty markers.
 - Safety edge case: "I cannot reproduce the bug" preserved (not stripped).
 
-### 3.8 Field integrity hardening (Phase 003)
+### 3.8 Field integrity hardening
 
 - Fast-path `filesModified` -> FILES conversion added (mirrors slow-path).
 - Unknown-field warnings via `KNOWN_RAW_INPUT_FIELDS` set.
@@ -100,7 +114,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - V12 path normalization for relative `spec_folder` paths.
 - Status/percentage contradiction detection (V14 warning).
 
-### 3.9 Indexing coherence (Phase 004)
+### 3.9 Indexing coherence
 
 - Trigger phrase filter pipeline: 3-stage filter (path fragments, short tokens, shingle subsets) applied to auto-extracted phrases before manual merge.
 - Template sections for `toolCalls`/`exchanges` as compact strings.
@@ -109,46 +123,26 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 - Observation dedup at normalization time (string-equality).
 - Pre-save overlap check enabled by default (set `SPECKIT_PRE_SAVE_DEDUP=false` to disable). Current algorithm is advisory exact-match SHA1 comparison against the most recent 20 sibling memories.
 
-### 3.10 Embedding visibility (Phase 004)
+### 3.10 Embedding visibility
 
 - Zero-DB `getEmbeddingRetryStats()` accessor in `retry-manager.ts`.
 - `embeddingRetry` returns an in-memory health snapshot refreshed by retry-manager queue scans and status mutations; the accessor itself does not hit SQLite.
 - `embeddingRetry` block in `memory_health` MCP response with: `pending`, `failed`, `retryAttempts`, `circuitBreakerOpen`, `lastRun`, `queueDepth`.
 
-### 3.11 projectPhase override (Phase 002)
+### 3.11 projectPhase override
 
 - `resolveProjectPhase()` in `session-extractor.ts` following `resolveContextType()` pattern.
 - `projectPhase` propagated through fast-path and slow-path in `input-normalizer.ts`.
 - Valid values: RESEARCH, PLANNING, IMPLEMENTATION, DEBUGGING, REVIEW.
 
-### 3.12 Post-save review score feedback (Phase 002)
+### 3.12 Post-save review score feedback
 
 - `computeReviewScorePenalty()` with severity-based penalties (HIGH=-0.10, MEDIUM=-0.05, LOW=-0.02).
 - Advisory logging only (does not modify saved file to preserve duplicate detection).
 
 ---
 
-## 4. SOURCE FILES
-
-### Implementation
-
-| File | Role |
-|------|------|
-| `scripts/types/session-types.ts` | Structured JSON contract types for `toolCalls` and `exchanges` |
-| `scripts/utils/input-normalizer.ts` | Snake_case JSON compatibility, structured-summary normalization, `projectPhase` propagation (fast-path and slow-path) |
-| `scripts/extractors/collect-session-data.ts` | Wave 2 count, confidence, and outcome handling |
-| `scripts/extractors/quality-scorer.ts` | Quality score computation; penalty-only model (Phase 002 recalibration) |
-| `scripts/extractors/session-extractor.ts` | `resolveProjectPhase()` for projectPhase override |
-| `scripts/core/workflow.ts` | JSON/file authority behavior, structured-input routing, trigger-phrase filtering, post-save review invocation gating, and SHA1-based pre-save overlap checks |
-| `scripts/core/post-save-review.ts` | Post-save review logic, severity grading, MEMORY METADATA-aware field checks, `computeReviewScorePenalty()`, multi-token path fragment detection |
-| `scripts/extractors/contamination-filter.ts` | Contamination filter extension: 4 additional text fields, 18 new patterns (33 -> 51 total) |
-| `scripts/lib/validate-memory-quality.ts` | V13 YAML parsing and memory-quality validation |
-| `scripts/renderers/template-renderer.ts` | Optional-placeholder handling for compact tool/exchange sections |
-| `scripts/memory/generate-context.ts` | CLI help text and structured-first save workflow documentation |
-| `mcp_server/lib/providers/retry-manager.ts` | `getEmbeddingRetryStats()` accessor for embedding retry visibility |
-| `mcp_server/handlers/memory-crud-health.ts` | `embeddingRetry` block in `memory_health` MCP response |
-
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -165,9 +159,16 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 | `mcp_server/tests/embedding-retry-stats.vitest.ts` | `embeddingRetry` type and zero-state contract |
 | `mcp_server/tests/retry-manager-health.vitest.ts` | Zero-DB `embeddingRetry` snapshot accessor coverage |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 5. VERIFICATION SOURCES
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Tooling and scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`
+
+### VERIFICATION SOURCES
 
 - `cd .opencode/skill/system-spec-kit/scripts && npm run lint`
 - `cd .opencode/skill/system-spec-kit/scripts && npx vitest run --config ../mcp_server/vitest.config.ts --root . tests/generate-context-cli-authority.vitest.ts tests/input-normalizer-unit.vitest.ts tests/post-save-review.vitest.ts tests/project-phase-e2e.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/task-enrichment.vitest.ts tests/template-mustache-sections.vitest.ts tests/trigger-phrase-filter.vitest.ts tests/validation-v13-v14-v12.vitest.ts tests/workflow-e2e.vitest.ts`
@@ -175,9 +176,9 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 ---
 
-## 6. SOURCE METADATA
+### SOURCE METADATA
 
 - Group: Tooling and scripts
 - Source feature title: JSON mode structured summary hardening
-- Source spec: `009-perfect-session-capturing/016-json-mode-hybrid-enrichment`
-- Phase: 016
+- Current reality source: `scripts/types/session-types.ts` and `scripts/core/workflow.ts`
+<!-- /ANCHOR:source-metadata -->

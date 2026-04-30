@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Post-save quality review
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The post-save quality review runs after canonical packet continuity is written (Step 10.5 in the save workflow) and before indexing starts (Step 11). It compares the saved frontmatter and continuity metadata against the original JSON payload to detect propagation failures and field-level quality issues.
 
 This is a verification step that catches cases where the rendering pipeline silently dropped or degraded caller-supplied fields — generic titles, path-fragment trigger phrases, missing decisions, wrong contextType — before those problems become permanent in the index. Think of it as a proof-reader who checks the printed form against the original application to make sure nothing was lost in transcription.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 The post-save quality review runs as Step 10.5 in the save workflow, between file write and indexing. It is always active.
@@ -35,9 +37,21 @@ Each finding is emitted with a severity level:
 
 The review output is machine-readable so callers and downstream quality monitors can surface actionable per-field failures without parsing prose.
 
----
+<!-- /ANCHOR:current-reality -->
 
-## 3. FEATURE BREAKDOWN
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|------|-------|------|
+| `scripts/core/post-save-review.ts` | Script | Post-save review logic: frontmatter comparison, severity classification, machine-readable output, `computeReviewScorePenalty()` export |
+| `scripts/core/workflow.ts` | Script | Invokes post-save review at Step 10.5, passes original JSON payload and saved file path |
+| `scripts/memory/generate-context.ts` | Script | CLI entrypoint; delegates save workflow to `workflow.ts` |
+| `scripts/utils/input-normalizer.ts` | Script | Normalizes JSON payload fields before comparison (snake_case/camelCase parity) |
+
+### FEATURE BREAKDOWN
 
 ### 3.1 Placement in the save workflow
 
@@ -62,7 +76,7 @@ The review output is machine-readable so callers and downstream quality monitors
 - Complements the **verify-fix-verify memory quality loop** (entry `01-verify-fix-verify-memory-quality-loop.md`) which handles iterative quality improvement. The post-save review is a single-pass snapshot check, not an iterative loop.
 - The RC1–RC5 propagation fixes documented in `16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md` address the root causes that this review detects.
 
-### 3.5 Score penalty computation (Phase 002)
+### 3.5 Score penalty computation
 
 - `computeReviewScorePenalty()` computes a numeric `quality_score` adjustment from review findings.
 - Penalty per severity: HIGH=-0.10, MEDIUM=-0.05, LOW=-0.02, capped at -0.30 total.
@@ -71,28 +85,23 @@ The review output is machine-readable so callers and downstream quality monitors
 
 ---
 
-## 4. SOURCE FILES
-
-### Implementation
-
-| File | Layer | Role |
-|------|-------|------|
-| `scripts/core/post-save-review.ts` | Script | Post-save review logic: frontmatter comparison, severity classification, machine-readable output, `computeReviewScorePenalty()` export |
-| `scripts/core/workflow.ts` | Script | Invokes post-save review at Step 10.5, passes original JSON payload and saved file path |
-| `scripts/memory/generate-context.ts` | Script | CLI entrypoint; delegates save workflow to `workflow.ts` |
-| `scripts/utils/input-normalizer.ts` | Script | Normalizes JSON payload fields before comparison (snake_case/camelCase parity) |
-
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
 | `scripts/tests/post-save-review.vitest.ts` | Severity classification, detection checks, machine-readable output shape, score-penalty computation |
 | `scripts/tests/workflow-e2e.vitest.ts` | End-to-end coverage of Step 10.5 placement within the save workflow |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 5. SOURCE METADATA
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Memory quality and indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/19-post-save-quality-review.md`
 
 - Group: Memory quality and indexing
 - Source feature title: Post-save quality review
-- Current reality source: spec 009-perfect-session-capturing / RC1-RC5 propagation fixes in `scripts/core/post-save-review.ts`
+- Current reality source: `scripts/core/post-save-review.ts` and the save workflow
+<!-- /ANCHOR:source-metadata -->

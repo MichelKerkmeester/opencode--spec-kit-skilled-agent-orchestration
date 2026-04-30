@@ -10,44 +10,48 @@ trigger_phrases:
 
 # Python Regression Suite (52/52)
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Guarantee the Python compatibility surface does not regress on hand-curated P0 cases that have been stable since pre-027.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `scripts/skill_advisor_regression.py` reads the JSONL dataset at `scripts/fixtures/skill_advisor_regression_cases.jsonl` and exercises the Python scorer against each case. The current baseline is 52 of 52 cases passing with zero regressions under the ADR-007 parity rules. Exit code is 0 only when every case passes.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_regression.py`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_regression.py` | Script | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl` | Script | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/parity/` — Python/TS parity harness consuming the same corpus.
-- Playbook scenario [PC-004](../../manual_testing_playbook/10--python-compat/004-regression-suite.md).
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/parity/` | Automated test | Python/TS parity harness consuming the same corpus |
+| `Playbook scenario [PC-004](../../manual_testing_playbook/10--python-compat/004-regression-suite.md).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Python compat
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--python-compat/02-regression-suite.md`
+
+Related references:
 
 - [01-cli-shim.md](./01-cli-shim.md).
 - [03-bench-runner.md](./03-bench-runner.md).
 - [`06--mcp-surface/03-advisor-validate.md`](../06--mcp-surface/03-advisor-validate.md).
+<!-- /ANCHOR:source-metadata -->

@@ -10,44 +10,48 @@ trigger_phrases:
 
 # Chokidar Narrow-Scope Watcher
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Keep the advisor graph fresh without incurring the cost of watching the whole workspace. The narrow-scope watcher subscribes only to files that can affect routing: each skill's `SKILL.md`, its `graph-metadata.json`, and any path declared under `derived.key_files`.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
-`lib/daemon/watcher.ts` boots a Chokidar watcher at daemon startup (through `lib/daemon/lifecycle.ts`) scoped to per-skill `SKILL.md` and `graph-metadata.json` paths. When a skill declares additional tracked files via `derived.key_files` in its graph metadata, those paths are added dynamically. Unrelated writes under `.opencode/plugins/`, repo source code, or other skill subfolders do not trigger a reindex. Track H hardening (post-Phase-027) added reindex-storm back-pressure so rapid bursts of writes debounce into a single reindex event.
+`lib/daemon/watcher.ts` boots a Chokidar watcher at daemon startup (through `lib/daemon/lifecycle.ts`) scoped to per-skill `SKILL.md` and `graph-metadata.json` paths. When a skill declares additional tracked files via `derived.key_files` in its graph metadata, those paths are added dynamically. Unrelated writes under `.opencode/plugins/`, repo source code, or other skill subfolders do not trigger a reindex. Daemon hardening added reindex-storm back-pressure so rapid bursts of writes debounce into a single reindex event.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lifecycle.ts`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts` | Daemon | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lifecycle.ts` | Daemon | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/daemon-freshness-foundation.vitest.ts` — watcher bring-up, scope assertions, debounce checks.
-- Playbook scenario [AU-001](../../manual_testing_playbook/05--auto-update-daemon/001-watcher-narrow-scope.md) — manual scope validation.
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/daemon-freshness-foundation.vitest.ts` | Automated test | watcher bring-up, scope assertions, debounce checks |
+| `Playbook scenario [AU-001](../../manual_testing_playbook/05--auto-update-daemon/001-watcher-narrow-scope.md)` | Manual playbook | manual scope validation |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Daemon and freshness
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--daemon-and-freshness/01-watcher.md`
+
+Related references:
 
 - [02-lease.md](./02-lease.md) — single-writer lease.
 - [03-lifecycle.md](./03-lifecycle.md) — daemon lifecycle.
 - [04-generation.md](./04-generation.md) — generation bump publication.
+<!-- /ANCHOR:source-metadata -->

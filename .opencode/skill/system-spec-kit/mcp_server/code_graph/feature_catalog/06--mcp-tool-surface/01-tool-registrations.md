@@ -7,34 +7,53 @@ trigger_phrases:
   - "tool registrations"
 importance_tier: "important"
 ---
+
 # Tool registrations
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The runtime exposes code graph tools through the code_graph dispatcher and deep-loop coverage graph tools through the top-level tool dispatcher.
+<!-- /ANCHOR:overview -->
 
-## 2. SURFACE
+<!-- ANCHOR:current-reality -->
+## 2. CURRENT REALITY
 
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:20-31` registers `code_graph_*`, `detect_changes`, and `ccc_*` names.
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:60-100` dispatches those names to handlers.
-- `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:79-101` includes code graph, skill graph, advisor, and coverage graph names in schema-validated dispatch.
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:561-678` defines code graph and detect_changes schemas.
-
-## 3. TRIGGER / AUTO-FIRE PATH
+### Trigger / Auto-Fire Path
 
 Manual MCP dispatch. Some coverage graph tools are called by command YAML, but the dispatcher itself only routes requested tool names.
 
-## 4. CLASS
+### Class
 
 manual. Tool registration is availability, not automation.
 
-## 5. CAVEATS / FALLBACK
+### Caveats / Fallback
 
 Schema validation rejects malformed tool calls before handler execution for registered names.
+<!-- /ANCHOR:current-reality -->
 
-## 6. CROSS-REFS
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:20-31` | Tool surface | registers `code_graph_*`, `detect_changes`, and `ccc_*` names |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:60-100` | Tool surface | dispatches those names to handlers |
+| `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:79-101` | Tool surface | includes code graph, skill graph, advisor, and coverage graph names in schema-validated dispatch |
+| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:561-678` | Schema | defines code graph and detect_changes schemas |
+<!-- /ANCHOR:source-files -->
+
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: MCP tool surface
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--mcp-tool-surface/01-tool-registrations.md`
+
+Related references:
 
 - [../01--read-path-freshness/02-query-self-heal.md](../01--read-path-freshness/02-query-self-heal.md)
 - [../../manual_testing_playbook/06--mcp-tool-surface/011-tool-call-shape-validation.md](../../manual_testing_playbook/06--mcp-tool-surface/011-tool-call-shape-validation.md)
-
-
+<!-- /ANCHOR:source-metadata -->

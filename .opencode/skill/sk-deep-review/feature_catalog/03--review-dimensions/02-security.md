@@ -11,15 +11,6 @@ Audits trust boundaries, exploit paths, and exposure risk.
 
 Security is the second review dimension. It examines whether the target exposes vulnerabilities through input handling, authn or authz drift, secrets leakage, or other attacker-controlled paths.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The review contract ranks security second, immediately after correctness, and marks it as required for severity coverage. Its checks explicitly cover trust boundaries, authentication and authorization behavior, input handling, secrets exposure, and exploit paths.

@@ -10,22 +10,14 @@ trigger_phrases:
 
 # advisor_rebuild MCP Tool
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. TEST COVERAGE](#4--test-coverage)
-- [5. RELATED](#5--related)
-
----
-
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Give operators an explicit repair path for stale, absent, or unavailable advisor state without hiding rebuild side effects inside `advisor_status`.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `advisor_rebuild` is the explicit MCP repair tool that keeps rebuild behavior out of `advisor_status`. The handler reads the current status first. If status is `live` and `force` is not true, it skips the rebuild and returns a diagnostic telling the caller to pass `force:true` when a live rebuild is intentional.
@@ -34,8 +26,9 @@ When rebuild proceeds, it indexes `.opencode/skill`, publishes a fresh skill-gra
 
 The tool descriptor and dispatcher register `advisor_rebuild` alongside `advisor_recommend`, `advisor_status`, and `advisor_validate`. The top-level MCP `TOOL_DEFINITIONS` list includes this tool in the server's 54-tool count.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -58,15 +51,24 @@ The tool descriptor and dispatcher register `advisor_rebuild` alongside `advisor
 
 ---
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-rebuild.vitest.ts`.
-- `.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts`.
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/tests/advisor-rebuild.vitest.ts` | Automated test | Validation reference |
+| `.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts` | Automated test | Validation reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: MCP surface
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--mcp-surface/05-advisor-rebuild.md`
+
+Related references:
 
 - [02-advisor-status.md](./02-advisor-status.md).
 - [`01--daemon-and-freshness/06-rebuild-from-source.md`](../01--daemon-and-freshness/06-rebuild-from-source.md).
 - [`02--auto-indexing/04-sync.md`](../02--auto-indexing/04-sync.md).
+<!-- /ANCHOR:source-metadata -->

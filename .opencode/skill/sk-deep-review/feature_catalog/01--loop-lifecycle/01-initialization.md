@@ -11,15 +11,6 @@ Creates the canonical deep-review packet and seeds the first review charter.
 
 This phase turns a requested review target into a working `review/` packet. It decides whether the run is fresh or resumable, resolves scope, orders review dimensions, selects applicable traceability protocols, and writes the initial packet files the loop depends on.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 Initialization begins by classifying the prior state as `fresh`, `resume`, `completed-session`, or `invalid-state`. A valid new run creates `review/iterations/`, resolves the target according to one of the five target types, and writes the canonical packet under `{spec_folder}/review/`.

@@ -11,15 +11,6 @@ Audits whether claims and linked artifacts line up with shipped behavior.
 
 Traceability is the review dimension that checks alignment across docs, specs, catalogs, playbooks, and code. It is where the review loop executes the protocol-based evidence checks that prove whether claims about the system are actually supported.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The review contract ranks traceability third. Its checks cover spec alignment, completion evidence, and cross-reference integrity across linked artifacts. During traceability-focused iterations, the loop can execute core protocols such as `spec_code` and `checklist_evidence`, then add overlay checks like `skill_agent`, `feature_catalog_code`, and `playbook_capability` when the target type makes them applicable.

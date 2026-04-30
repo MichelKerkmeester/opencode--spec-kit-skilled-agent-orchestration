@@ -5,23 +5,16 @@ description: "Routine saves prefer --json or --stdin structured input, while pos
 
 # JSON-primary deprecation posture
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1-overview)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. FEATURE BREAKDOWN](#3-feature-breakdown)
-- [4. SOURCE FILES](#4-source-files)
-- [5. VERIFICATION SOURCES](#5-verification-sources)
-- [6. SOURCE METADATA](#6-source-metadata)
-
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
-Phase 017 established the JSON-primary deprecation posture for `generate-context.js`. Runtime-derived capture for routine saves proved unreliable: wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is the preferred routine-save contract, while positional JSON file input remains functional on the same structured-input path.
+The JSON-primary deprecation posture for `generate-context.js` is now established. Runtime-derived capture for routine saves proved unreliable: wrong-session selection, contamination, and thin-evidence failures persisted across multiple research and fix rounds. The resolution: AI-composed JSON via `--json` or `--stdin` is the preferred routine-save contract, while positional JSON file input remains functional on the same structured-input path.
 
-The obsolete follow-up phases now live in the archived branch for this workstream.
+The obsolete follow-up workstreams now live in the archived branch for this area.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 The shipped posture enforces the following behavior:
@@ -29,11 +22,24 @@ The shipped posture enforces the following behavior:
 1. Positional JSON file input remains supported and routes through the same structured loader path as other file-backed saves.
 2. `generate-context.js --json '<data>'` and `generate-context.js --stdin` are the documented and preferred routine-save paths for AI-composed structured input.
 3. Operator-facing guidance in SKILL.md and the save command documents JSON mode as the preferred routine-save contract, not an exclusive removal of positional file input.
-4. The obsolete follow-up phases (001-session-source-validation, 002-outsourced-agent-handback, 003-multi-cli-parity) are archived under the retired branch for this workstream.
+4. The obsolete session-source-validation, outsourced-agent-handback, and multi-cli-parity follow-up workstreams are archived under the retired branch for this area.
 
----
+<!-- /ANCHOR:current-reality -->
 
-## 3. FEATURE BREAKDOWN
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Role |
+|------|------|
+| `scripts/memory/generate-context.ts` | CLI argument parsing for `--json`, `--stdin`, and positional JSON file input |
+| `scripts/loaders/data-loader.ts` | Structured-input routing enforcement |
+| `scripts/types/session-types.ts` | Structured JSON enrichment types |
+| `SKILL.md` | Operator guidance: JSON-primary deprecation posture |
+| `.opencode/command/memory/save.md` | Save command alignment with the JSON-primary contract |
+
+### FEATURE BREAKDOWN
 
 ### 3.1 JSON-primary preference
 
@@ -53,45 +59,39 @@ The shipped posture enforces the following behavior:
 - The save command (`/memory:save`) updated to document the JSON-primary posture.
 - CLAUDE.md and equivalent agent instructions updated to emphasize structured JSON capture without claiming positional file input was removed.
 
-### 3.4 Follow-up phase archival
+### 3.4 Follow-up workstream archival
 
-- Phases 001 (session-source-validation), 002 (outsourced-agent-handback), and 003 (multi-cli-parity) moved under the archived follow-up branch.
+- The session-source-validation, outsourced-agent-handback, and multi-cli-parity follow-up workstreams moved under the archived follow-up branch.
 - These phases were originally designed to improve runtime-capture quality but became obsolete when the JSON-primary posture stopped depending on routine runtime capture.
 
 ---
 
-## 4. SOURCE FILES
-
-### Implementation
-
-| File | Role |
-|------|------|
-| `scripts/memory/generate-context.ts` | CLI argument parsing for `--json`, `--stdin`, and positional JSON file input |
-| `scripts/loaders/data-loader.ts` | Structured-input routing enforcement |
-| `scripts/types/session-types.ts` | Structured JSON enrichment types |
-| `SKILL.md` | Operator guidance: JSON-primary deprecation posture |
-| `.opencode/command/memory/save.md` | Save command alignment with the JSON-primary contract |
-
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | `--stdin` / `--json` structured-input precedence, explicit CLI target authority, and positional JSON file support |
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | Invalid inline JSON and missing-target failures for structured-input modes |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 5. VERIFICATION SOURCES
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Tooling and scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/17-json-primary-deprecation-posture.md`
+
+### VERIFICATION SOURCES
 
 - `cd .opencode/skill/system-spec-kit/scripts && npm run check`
 - `cd .opencode/skill/system-spec-kit/scripts && npm test -- --run tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts`
 
 ---
 
-## 6. SOURCE METADATA
+### SOURCE METADATA
 
 - Group: Tooling and scripts
 - Source feature title: JSON-primary deprecation posture
-- Source spec: `009-perfect-session-capturing/017-json-primary-deprecation`
-- Phase: 017
-- audited_post_018: true
+- Current reality source: `scripts/memory/generate-context.ts`, `scripts/loaders/data-loader.ts`, and `.opencode/command/memory/save.md`
+<!-- /ANCHOR:source-metadata -->

@@ -10,22 +10,14 @@ trigger_phrases:
 
 # A7 Sanitizer at Every Write Boundary
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Keep malformed or malicious skill labels out of every surface that touches trust: SQLite rows, graph-metadata derived writes, response envelopes, and adapter diagnostics. A single sanitizer, applied at every boundary, is the routing surface's anti-injection line.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `lib/derived/sanitizer.ts` normalizes skill labels to the slug shape `[a-z0-9][a-z0-9-]*` and rejects control characters, path separators, and prompt-shaped content. It runs at four write boundaries:
@@ -37,26 +29,38 @@ Keep malformed or malicious skill labels out of every surface that touches trust
 
 Unsanitized labels never leak to readers.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/sanitizer.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/sync.ts`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/sanitizer.ts` | Library | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/derived/sync.ts` | Library | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-recommend.ts` | Handler | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/legacy/advisor-privacy.vitest.ts` — boundary sanitization.
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/handlers/advisor-recommend.vitest.ts` — envelope sanitization.
-- Playbook scenario [AI-002](../../manual_testing_playbook/06--auto-indexing/002-sanitizer-boundaries.md).
+| File | Type | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/legacy/advisor-privacy.vitest.ts` | Automated test | boundary sanitization |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/handlers/advisor-recommend.vitest.ts` | Automated test | envelope sanitization |
+| `Playbook scenario [AI-002](../../manual_testing_playbook/06--auto-indexing/002-sanitizer-boundaries.md).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Auto indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--auto-indexing/02-sanitizer.md`
+
+Related references:
 
 - [01-derived-extraction.md](./01-derived-extraction.md).
 - [05-anti-stuffing.md](./05-anti-stuffing.md).
 - [`06--mcp-surface/01-advisor-recommend.md`](../06--mcp-surface/01-advisor-recommend.md).
+<!-- /ANCHOR:source-metadata -->

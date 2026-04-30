@@ -10,43 +10,47 @@ trigger_phrases:
 
 # Python Bench Runner (skill_advisor_bench.py)
 
-## TABLE OF CONTENTS
-
-- [1. PURPOSE](#1-purpose)
-- [2. CURRENT REALITY](#2-current-reality)
-- [3. SOURCE FILES](#3-source-files)
-- [4. TEST COVERAGE](#4-test-coverage)
-- [5. RELATED](#5-related)
-
----
-
-## 1. PURPOSE
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
 
 Keep latency visible from the Python surface so routing performance regressions are caught quickly without needing a TypeScript test harness.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 `scripts/skill_advisor_bench.py` drives the bench measurements. The documented envelope is `cache-hit p95 <= 50 ms` and `uncached p95 <= 60 ms`. Current measurements are 6.989 ms (cache-hit p95) and 11.45 ms (uncached p95). Daemon-side idle measurements are 0.031% CPU and 5.516 MB RSS.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_bench.py`
-- `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/bench/`
+### Implementation
 
----
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor_bench.py` | Script | Source reference |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/bench/` | Implementation | Source reference |
 
-## 4. TEST COVERAGE
+### Validation And Tests
 
-- Playbook scenario [PC-005](../../manual_testing_playbook/10--python-compat/005-bench-runner.md).
+| File | Type | Role |
+|---|---|---|
+| `Playbook scenario [PC-005](../../manual_testing_playbook/10--python-compat/005-bench-runner.md).` | Manual playbook | Source reference |
+<!-- /ANCHOR:source-files -->
 
----
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-## 5. RELATED
+- Group: Python compat
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--python-compat/03-bench-runner.md`
+
+Related references:
 
 - [01-cli-shim.md](./01-cli-shim.md).
 - [02-regression-suite.md](./02-regression-suite.md).
 - [`06--mcp-surface/03-advisor-validate.md`](../06--mcp-surface/03-advisor-validate.md).
+<!-- /ANCHOR:source-metadata -->

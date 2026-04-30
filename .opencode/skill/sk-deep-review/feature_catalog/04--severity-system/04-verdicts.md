@@ -11,15 +11,6 @@ Maps active findings and gate status into FAIL or CONDITIONAL or PASS.
 
 Verdicts are the final decision surface for the review loop. They tell downstream workflows whether the review found release blockers, required fixes, or only advisory items.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The verdict contract is stable across the skill. FAIL applies when active P0 remains or any required gate fails. CONDITIONAL applies when no P0 remains but at least one active P1 is still open. PASS applies only when active P0 and P1 are both zero, with `hasAdvisories=true` when P2 remains.

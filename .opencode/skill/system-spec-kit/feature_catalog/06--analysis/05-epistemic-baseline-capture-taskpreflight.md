@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Epistemic baseline capture (task_preflight)
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution.
 
 Before starting a task, this tool records how much you know, how uncertain you are and how complete your context is. It is like taking a "before" photo at the start of a home renovation. Later, you can compare against the "after" to measure how much progress you made and what you learned along the way.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 Before starting implementation work, this tool records how much the agent knows, how uncertain it is and how complete the context is. All three scores are on a 0-100 scale. You can optionally list identified knowledge gaps as an array of strings.
@@ -22,8 +24,9 @@ Records are stored in the `session_learning` table with a `UNIQUE` constraint on
 
 The purpose of preflight is establishing a baseline for learning measurement. Without knowing where you started, you cannot measure how much you learned. The postflight tool completes the measurement.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -37,7 +40,7 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `task_preflight` |
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for learning tools |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,18 +48,23 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 | `mcp_server/tests/integration-learning-history.vitest.ts` | Learning history integration |
 | `mcp_server/tests/learning-stats-filters.vitest.ts` | Learning stats filter tests |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. MANUAL PLAYBOOK COVERAGE
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Analysis
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--analysis/05-epistemic-baseline-capture-taskpreflight.md`
+
+- Group: Analysis
+- Source feature title: Epistemic baseline capture (task_preflight)
+- Current reality source: FEATURE_CATALOG.md
+
+### MANUAL PLAYBOOK COVERAGE
 
 | Scenario | Role |
 |----------|------|
 | `EX-023` | Direct manual validation for creating the task preflight baseline |
 
----
-
-## 5. SOURCE METADATA
-
-- Group: Analysis
-- Source feature title: Epistemic baseline capture (task_preflight)
-- Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

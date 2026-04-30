@@ -11,15 +11,6 @@ Defines the immutable review-packet contract for the current lineage.
 
 `deep-review-config.json` fixes the core parameters for one deep-review run. It captures the target, the active lineage, the dimension and protocol scope, thresholds, protection rules, and reducer contract the rest of the packet must honor.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The config file is written during initialization and treated as immutable after that point. It records `mode: "review"`, the review target and target type, the four configured dimensions, session lineage fields, convergence settings, severity threshold, cross-reference sets, release-readiness state, status, and a file-protection map for every packet artifact.

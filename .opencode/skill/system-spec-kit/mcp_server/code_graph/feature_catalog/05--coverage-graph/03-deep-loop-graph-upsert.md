@@ -7,33 +7,53 @@ trigger_phrases:
   - "deep_loop_graph_upsert"
 importance_tier: "important"
 ---
+
 # deep_loop_graph_upsert
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 `deep_loop_graph_upsert` stores coverage graph nodes and edges for deep research/review loops. The command workflows call it only when a reducer exposes graph events.
+<!-- /ANCHOR:overview -->
 
-## 2. SURFACE
+<!-- ANCHOR:current-reality -->
+## 2. CURRENT REALITY
 
-- `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:65-86` validates namespace and rejects empty batches.
-- `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:817-836` conditionally calls upsert for research graph events.
-- `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:841-863` conditionally calls upsert for review graph events.
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:804-848` defines the public schema.
-
-## 3. TRIGGER / AUTO-FIRE PATH
+### Trigger / Auto-Fire Path
 
 Command-owned deep-research/deep-review YAML, conditional on `graphEvents`; direct MCP call remains available.
 
-## 4. CLASS
+### Class
 
 half, copied from the current reality map.
 
-## 5. CAVEATS / FALLBACK
+### Caveats / Fallback
 
 No `graphEvents` means no upsert. The workflow skip is intentional and should not be described as a failed write.
+<!-- /ANCHOR:current-reality -->
 
-## 6. CROSS-REFS
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/upsert.ts:65-86` | Handler | validates namespace and rejects empty batches |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:817-836` | Implementation | conditionally calls upsert for research graph events |
+| `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:841-863` | Implementation | conditionally calls upsert for review graph events |
+| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:804-848` | Schema | defines the public schema |
+<!-- /ANCHOR:source-files -->
+
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Coverage graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--coverage-graph/03-deep-loop-graph-upsert.md`
+
+Related references:
 
 - [04-deep-loop-graph-convergence.md](./04-deep-loop-graph-convergence.md)
 - [../../manual_testing_playbook/05--coverage-graph/010-deep-loop-graph-upsert-conditional.md](../../manual_testing_playbook/05--coverage-graph/010-deep-loop-graph-upsert-conditional.md)
-
+<!-- /ANCHOR:source-metadata -->

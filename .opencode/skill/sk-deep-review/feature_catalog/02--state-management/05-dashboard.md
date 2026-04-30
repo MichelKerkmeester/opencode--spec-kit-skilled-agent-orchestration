@@ -11,15 +11,6 @@ Publishes the current review status as a machine-owned summary surface.
 
 `deep-review-dashboard.md` is the packet's operator view. It turns the raw log and reducer state into a readable status page without becoming a manual editing surface that could drift from the underlying packet.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The dashboard is regenerated after every iteration from the JSONL log, strategy file, and findings registry. It reports the provisional verdict, findings summary, progress table, coverage state, trend signals, and active risks. In confirm mode it is surfaced at approval checkpoints, while in auto mode it is written for later inspection.

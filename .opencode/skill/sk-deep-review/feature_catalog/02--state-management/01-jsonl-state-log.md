@@ -11,15 +11,6 @@ Stores the append-only execution history for the deep-review lineage.
 
 `deep-review-state.jsonl` is the packet's event spine. It captures config, iteration output, stop decisions, pause and recovery events, graph-assisted convergence data, and the final synthesis result in one ordered stream.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The JSONL log starts with a config record, then appends one record per iteration with required fields for focus, dimensions, files reviewed, findings counts, severity-weighted `newFindingsRatio`, session lineage, and timing. Optional fields extend the record with traceability checks, graph events, coverage, ruled-out directions, and convergence signals.

@@ -11,15 +11,6 @@ Determines whether the review loop continues, enters recovery, or stops legally.
 
 This phase evaluates the review history after every iteration. It mixes hard stops, a weighted stop vote, legal-stop gates, graph-aware blockers, pause handling, and stuck recovery so the loop only exits when the review is actually saturated.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The live convergence model evaluates outcomes in priority order: max iterations, all dimensions covered with stabilization, stuck detection, composite convergence, legal-stop gate bundle, then default continue. The weighted vote uses rolling average, MAD noise floor, and dimension coverage as its three core signals. A new P0 finding forces `newFindingsRatio` up to at least `0.50`, which blocks premature stop.

@@ -6,14 +6,16 @@ audited_post_018: true
 
 # Causal graph statistics (memory_causal_stats)
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage.
 
 This gives you a health report on the web of connections between your spec-doc records. It tells you how many connections exist, how strong they are and whether enough spec-doc records are linked together. If too many records are isolated with no edges, the system warns you because it means the decision-lineage network is too thin to be useful for tracing decisions.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 Returns the health metrics of the causal graph in a single call. Total edge count, breakdown by relationship type (how many caused edges, how many supports edges and so on), average edge strength across all edges, unique source and target spec-doc record counts and the link coverage percentage.
@@ -24,8 +26,9 @@ Orphaned edges (edges referencing source or target spec-doc records that no long
 
 The response now also reports rolling-window deltas and balance metrics: `deltaByRelation` (per-relation count of new edges in the active window), `dominantRelation` and `dominantRelationShare` (largest relation type and its share of the window total), `balanceStatus` (one of `balanced`, `relation_skewed`, `insufficient_data`), `remediationHint` (a string naming the producer when skew is detected, e.g. prediction-error supersede burst), and `windowStartedAt`. `by_relation` is zero-filled across all 6 relation types so a missing type appears as 0 rather than disappearing. When `dominantRelationShare > 0.80` AND total new edges in window >= 50, `balanceStatus` is `relation_skewed` and `remediationHint` is set. Auto-edge insertion on PE / reconsolidation paths now respects a per-relation per-window cap routed through shared cap logic so supersedes bursts cannot dominate the graph.
 
----
+<!-- /ANCHOR:current-reality -->
 
+<!-- ANCHOR:source-files -->
 ## 3. SOURCE FILES
 
 ### Implementation
@@ -41,7 +44,7 @@ The response now also reports rolling-window deltas and balance metrics: `deltaB
 | `mcp_server/schemas/tool-input-schemas.ts` | Zod input schemas for causal stats arguments |
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `memory_causal_stats` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,18 +54,23 @@ The response now also reports rolling-window deltas and balance metrics: `deltaB
 | `mcp_server/tests/integration-causal-graph.vitest.ts` | Causal graph integration |
 | `mcp_server/tests/graph-signals.vitest.ts` | Graph signal computation tests |
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. MANUAL PLAYBOOK COVERAGE
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Analysis
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `06--analysis/02-causal-graph-statistics-memorycausalstats.md`
+
+- Group: Analysis
+- Source feature title: Causal graph statistics (memory_causal_stats)
+- Current reality source: FEATURE_CATALOG.md
+
+### MANUAL PLAYBOOK COVERAGE
 
 | Scenario | Role |
 |----------|------|
 | `EX-020` | Direct manual validation for causal graph statistics and coverage reporting |
 
----
-
-## 5. SOURCE METADATA
-
-- Group: Analysis
-- Source feature title: Causal graph statistics (memory_causal_stats)
-- Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

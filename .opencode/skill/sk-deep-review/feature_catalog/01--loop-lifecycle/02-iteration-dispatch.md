@@ -11,15 +11,6 @@ Runs one fresh-context review cycle against the current focus dimension and file
 
 This phase is the steady-state loop body. It reads the packet, summarizes the current state, dispatches the leaf review agent, and requires a new iteration file plus JSONL and strategy updates before the next convergence pass can proceed.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 Before each dispatch, the loop reads `deep-review-state.jsonl`, `deep-review-findings-registry.json`, and `deep-review-strategy.md`, then generates a compact state summary with counts, coverage, and next-focus data. The dispatch prompt carries one focus dimension, one focus file set, applicable traceability protocols, and the canonical packet paths.

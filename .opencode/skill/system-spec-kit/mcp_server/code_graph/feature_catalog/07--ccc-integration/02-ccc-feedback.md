@@ -7,32 +7,52 @@ trigger_phrases:
   - "ccc_feedback"
 importance_tier: "important"
 ---
+
 # ccc_feedback
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 `ccc_feedback` records operator feedback for CocoIndex search results.
+<!-- /ANCHOR:overview -->
 
-## 2. SURFACE
+<!-- ANCHOR:current-reality -->
+## 2. CURRENT REALITY
 
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/ccc-feedback.ts:29-60` validates query/rating, creates the feedback directory, and appends JSONL.
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:91-96` validates required fields before dispatch.
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:741-753` defines the public schema.
-
-## 3. TRIGGER / AUTO-FIRE PATH
+### Trigger / Auto-Fire Path
 
 Direct MCP call only. No hook, CI, session bootstrap, or memory command path invokes feedback automatically.
 
-## 4. CLASS
+### Class
 
 manual, copied from the current reality map.
 
-## 5. CAVEATS / FALLBACK
+### Caveats / Fallback
 
 Feedback writes under `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`. It does not alter ranking immediately.
+<!-- /ANCHOR:current-reality -->
 
-## 6. CROSS-REFS
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/ccc-feedback.ts:29-60` | Handler | validates query/rating, creates the feedback directory, and appends JSONL |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:91-96` | Tool surface | validates required fields before dispatch |
+| `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:741-753` | Schema | defines the public schema |
+<!-- /ANCHOR:source-files -->
+
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: CCC integration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `07--ccc-integration/02-ccc-feedback.md`
+
+Related references:
 
 - [01-ccc-reindex.md](./01-ccc-reindex.md)
 - [03-ccc-status.md](./03-ccc-status.md)
-
+<!-- /ANCHOR:source-metadata -->

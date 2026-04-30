@@ -7,33 +7,53 @@ trigger_phrases:
   - "context handler"
 importance_tier: "important"
 ---
+
 # Context handler
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 The context handler is the boundary between external seeds and internal graph context assembly. It normalizes CocoIndex/manual/graph seeds, picks a query mode, and refuses unsafe readiness before `buildContext()`.
+<!-- /ANCHOR:overview -->
 
-## 2. SURFACE
+<!-- ANCHOR:current-reality -->
+## 2. CURRENT REALITY
 
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:112-151` matches normalized seed source metadata back onto resolved anchors.
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:232-280` normalizes query mode and seed payloads.
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts` owns compact graph context assembly and token-budget behavior.
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/budget-allocator.ts` owns context budget allocation.
-
-## 3. TRIGGER / AUTO-FIRE PATH
+### Trigger / Auto-Fire Path
 
 Only through `code_graph_context` dispatch.
 
-## 4. CLASS
+### Class
 
 half. The handler performs readiness checks after a manual/requested tool call, matching the `code_graph_context` classification.
 
-## 5. CAVEATS / FALLBACK
+### Caveats / Fallback
 
 The handler can return partial output under deadline or budget pressure. Check `metadata.partialOutput` before treating a context response as complete.
+<!-- /ANCHOR:current-reality -->
 
-## 6. CROSS-REFS
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+### Implementation
+
+| File | Layer | Role |
+|---|---|---|
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:112-151` | Handler | matches normalized seed source metadata back onto resolved anchors |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:232-280` | Handler | normalizes query mode and seed payloads |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts` | Library | owns compact graph context assembly and token-budget behavior |
+| `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/budget-allocator.ts` | Library | owns context budget allocation |
+<!-- /ANCHOR:source-files -->
+
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
+
+- Group: Context retrieval
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `04--context-retrieval/02-context-handler.md`
+
+Related references:
 
 - [01-code-graph-context.md](./01-code-graph-context.md)
 - [../06--mcp-tool-surface/01-tool-registrations.md](../06--mcp-tool-surface/01-tool-registrations.md)
-
+<!-- /ANCHOR:source-metadata -->

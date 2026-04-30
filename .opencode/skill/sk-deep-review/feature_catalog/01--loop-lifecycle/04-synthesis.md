@@ -11,15 +11,6 @@ Compiles iteration output into the final review report, verdict, and terminal st
 
 This phase converts the accumulated review packet into a final deliverable. It consolidates findings, replays the stop decision from stored state, writes the nine-section review report, and marks the packet complete.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 Synthesis reads all iteration files, groups duplicate findings by file and root cause, keeps the highest adjudicated severity, and preserves the audit trail back to contributing iterations. It then replays convergence from `deep-review-state.jsonl`, including the coverage vote, traceability status, and gate outcomes, before building `review-report.md`.

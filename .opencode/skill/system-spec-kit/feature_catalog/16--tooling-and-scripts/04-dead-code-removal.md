@@ -5,12 +5,14 @@ description: "Completed remediation record for removed dead branches, feature fl
 
 # Dead code removal
 
+<!-- ANCHOR:overview -->
 ## 1. OVERVIEW
 
 This entry records the completed dead-code cleanup rather than a live runtime feature. Approximately 360 lines of dead code across four categories have been verified absent from the source tree.
 
----
+<!-- /ANCHOR:overview -->
 
+<!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
 The codebase is clean across four dead-code categories:
@@ -25,9 +27,31 @@ The codebase is clean across four dead-code categories:
 
 **Preserved but not part of the removal set:** `computeStructuralFreshness` and `computeGraphCentrality` still exist as exported utilities in `fsrs.ts`. They remain in the source tree, but this entry does not treat them as active runtime search features or pending activations.
 
+<!-- /ANCHOR:current-reality -->
+
+<!-- ANCHOR:source-files -->
+## 3. SOURCE FILES
+
+Cross-cutting evidence is distributed across:
+
+- `mcp_server/lib/search/hybrid-search.ts`
+- `mcp_server/lib/search/search-flags.ts`
+- `mcp_server/lib/search/rsf-fusion.ts` (module fully deleted in v3 remediation)
+- `mcp_server/lib/search/learned-feedback.ts`
+- `mcp_server/lib/eval/shadow-scoring.ts`
+- `mcp_server/lib/graph/community-detection.ts`
+- `mcp_server/lib/search/cross-encoder.ts`
+- `mcp_server/lib/storage/access-tracker.ts`
+- `mcp_server/lib/cognitive/working-memory.ts`
+- `mcp_server/lib/graph/graph-signals.ts`
+- `mcp_server/lib/search/graph-search-fn.ts`
+- `mcp_server/lib/scoring/negative-feedback.ts`
+- `mcp_server/lib/cognitive/co-activation.ts`
+- `mcp_server/lib/storage/causal-edges.ts`
+
 ---
 
-## 3. SOURCE EVIDENCE
+### SOURCE EVIDENCE
 
 ### 1) Hot-path dead branches (RSF + shadow-scoring)
 
@@ -107,31 +131,16 @@ The codebase is clean across four dead-code categories:
     - `rg -n "computeCausalDepth\\b|computeCausalDepthScores" mcp_server/lib/graph/graph-signals.ts` => only `computeCausalDepthScores` is present and used.
 - **Approx LOC removed:** `~118` (`graph-signals -65`, `graph-search-fn -16`, `negative-feedback -5`, `co-activation -20`, `causal-edges -12`, commit `b4f85e327`).
 
----
+<!-- /ANCHOR:source-files -->
 
-## 4. SOURCE FILES
+<!-- ANCHOR:source-metadata -->
+## 4. SOURCE METADATA
 
-Cross-cutting evidence is distributed across:
-
-- `mcp_server/lib/search/hybrid-search.ts`
-- `mcp_server/lib/search/search-flags.ts`
-- `mcp_server/lib/search/rsf-fusion.ts` (module fully deleted in v3 remediation)
-- `mcp_server/lib/search/learned-feedback.ts`
-- `mcp_server/lib/eval/shadow-scoring.ts`
-- `mcp_server/lib/graph/community-detection.ts`
-- `mcp_server/lib/search/cross-encoder.ts`
-- `mcp_server/lib/storage/access-tracker.ts`
-- `mcp_server/lib/cognitive/working-memory.ts`
-- `mcp_server/lib/graph/graph-signals.ts`
-- `mcp_server/lib/search/graph-search-fn.ts`
-- `mcp_server/lib/scoring/negative-feedback.ts`
-- `mcp_server/lib/cognitive/co-activation.ts`
-- `mcp_server/lib/storage/causal-edges.ts`
-
----
-
-## 5. SOURCE METADATA
+- Group: Tooling and scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/04-dead-code-removal.md`
 
 - Group: Comprehensive remediation (Sprint 8)
 - Source feature title: Dead code removal
 - Current reality source: FEATURE_CATALOG.md
+<!-- /ANCHOR:source-metadata -->

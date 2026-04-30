@@ -11,15 +11,6 @@ Audits codebase clarity and the safety of follow-on change.
 
 Maintainability is the loop's fourth default audit dimension. It looks at patterns, readability, documentation quality, and how hard the reviewed system will be to change safely after the current review.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The contract ranks maintainability fourth and does not mark it as required for severity coverage, but it is still part of the mandatory four-dimension coverage model. The dimension's checks focus on codebase patterns, documentation quality, clarity, and ease of safe follow-on changes.

@@ -11,15 +11,6 @@ Prevents the review loop from stopping or passing on weak evidence, missing cove
 
 The quality-gate system turns convergence from a simple score threshold into a legal-stop decision. It checks whether the review has enough evidence, enough scope coverage, and enough blocker resolution to justify a stop or a clean verdict.
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 2. CURRENT REALITY
 
 The gate model is split across two layers. The contract-level binary gates are Evidence, Scope, and Coverage. The review-specific legal-stop bundle expands that into concrete stop checks such as dimension coverage, P0 resolution, evidence density, hotspot saturation, and claim adjudication. If any required gate fails, STOP is vetoed and the loop appends a `blocked_stop` event with the failing gates and a recovery hint.
