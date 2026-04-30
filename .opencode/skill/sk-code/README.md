@@ -27,11 +27,8 @@ The router runs marker-file detection in this order (first match wins):
 |---|---|---|
 | WEBFLOW | `src/2_javascript/`, `*.webflow.js`, `Webflow.push`, motion.dev / GSAP / Lenis / HLS / Swiper / FilePond signals | LIVE — full Webflow / vanilla animation content |
 | GO | `go.mod` | LIVE — gin + sqlc + Postgres backend (paired with REACT) |
-| SWIFT | `Package.swift`, `*.xcodeproj` | Placeholder (canonical content retired) |
-| REACT_NATIVE | `app.json`+expo OR `package.json`+react-native | Placeholder (canonical content retired) |
 | REACT | `next.config.{js,mjs,ts}` OR `package.json`+react/next | LIVE — kerkmeester-style Next.js 14 (paired with GO) |
-| NODEJS | `package.json` (fallback) | Placeholder (canonical content retired) |
-| UNKNOWN | (none) | Disambiguation prompt |
+| UNKNOWN | (none, or any stack not above) | Disambiguation prompt — `sk-code` does not own Node.js / React Native / Swift / other stacks |
 
 See `references/router/stack_detection.md` for the detection precedence and edge cases. For the React↔Go cross-stack contract: `references/router/cross_stack_pairing.md`.
 
@@ -70,16 +67,13 @@ sk-code/
 │   │   ├── verification/       verification_workflows.md (go test ./... + golangci-lint run + go build ./...)
 │   │   ├── deployment/         docker_railway.md
 │   │   └── standards/          code_style.md, file_organization.md
-│   ├── nodejs/                 Placeholder (_placeholder.md)
-│   ├── react-native/           Placeholder (_placeholder.md)
-│   └── swift/                  Placeholder (_placeholder.md)
+│   └── (no other stacks — Node.js / React Native / Swift fall through to UNKNOWN)
 │
 ├── assets/
 │   ├── universal/              Stack-agnostic checklists + JS validation/wait patterns
 │   ├── webflow/                LIVE — copied verbatim (10 files)
 │   ├── react/                  LIVE — checklists (code quality, debugging, verification) + patterns (server_action, api_call, form, motion, vanilla_extract recipe) + integrations (vanilla-extract, untitled-ui, tinacms)
-│   ├── go/                     LIVE — checklists (code quality, debugging, verification) + patterns (handler, service, repository_sqlc, jwt_middleware, table_test)
-│   └── {nodejs,react-native,swift}/  Placeholder _placeholder.md per stack
+│   └── go/                     LIVE — checklists (code quality, debugging, verification) + patterns (handler, service, repository_sqlc, jwt_middleware, table_test)
 │
 └── scripts/                    Webflow build utilities (CWD-relative; portable from new location)
     ├── minify-webflow.mjs

@@ -110,7 +110,7 @@ Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-g
 - Agent prompts shown as `As @<agent>: <instruction>` when the prompt-time inline routing pattern is used (per `references/agent_delegation.md` §5).
 - `->` separates sequential steps.
 - All `opencode run` invocations MUST pipe to a `.jsonl` file with `2>&1` to capture both the JSON event stream and any stderr.
-- File references inside dispatched prompts use `@/absolute/path` or `@./relative/path` notation (sk-code-review compatible).
+- File references inside dispatched prompts use `@/absolute/path` or `@./relative/path` notation (`sk-code` baseline compatible).
 - Memory Epilogue references use `<!-- MEMORY_HANDBACK_START -->` / `<!-- MEMORY_HANDBACK_END -->` HTML comment delimiters.
 
 ---

@@ -394,10 +394,11 @@ opencode run \
 5. Append `</dev/null` when backgrounding `opencode run` inside `while read` loops (otherwise stdin is silently consumed).
 6. **Pass the spec folder to the dispatched session** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the dispatched session cannot answer Gate 3 interactively in non-interactive `run` mode.
 7. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool first.
-8. Validate dispatched session output: parse JSON events incrementally (tool calls, partial messages, final summary), run syntax checks if code generated, cross-reference against project standards (sk-code-review, sk-code-opencode).
+8. Validate dispatched session output: parse JSON events incrementally (tool calls, partial messages, final summary), run syntax checks if code generated, cross-reference against project standards via the baseline+overlay contract (`sk-code` baseline + one matching `sk-code-*` overlay; see ALWAYS rule 12).
 9. Capture stderr (`2>&1`) to catch tool errors and warnings.
 10. Classify the use case (1 / 2 / 3) before dispatching — the smart router refuses dispatches that do not map to one of the three.
 11. **Run the Provider Auth Pre-Flight once per session** (see §3 Provider Auth Pre-Flight). Cache the configured-providers list. If the default `opencode-go` is missing, ASK the user — never silently substitute the model. If a later dispatch returns an auth error, invalidate the cache and rerun the pre-flight before retrying.
+12. **Code Standards Loading (codebase-agnostic baseline+overlay contract)** — When dispatching for code review or code generation, instruct the dispatched session to: (1) load `sk-code` baseline first (universal findings-first rules, security/correctness minimums, severity contract); (2) detect stack/codebase signals (markers, framework presence, file extensions); (3) load exactly one overlay skill matching `sk-code-*` selected from those signals; (4) apply precedence: overlay style/process guidance overrides generic baseline style guidance, while baseline security/correctness minimums remain mandatory. Fallback: if stack cannot be determined confidently, use the default available `sk-code-*` overlay and note the uncertainty. NEVER hardcode a specific overlay (e.g. `sk-code-opencode`, `sk-code-review`) in dispatch prompts — the dispatched session selects the overlay; the CLI skill only stipulates the contract.
 
 ### NEVER
 
@@ -511,7 +512,7 @@ Key integrations:
 | **cli-gemini** | Sibling — dispatch Gemini for Google Search grounding |
 | **system-spec-kit** | Cross-AI handback target — dispatched sessions load this skill for spec-folder workflows |
 | **sk-doc** | Doc generation in dispatched `@write` agent runs |
-| **sk-code-opencode** | Code-quality enforcement in dispatched code review or generation runs |
+| **sk-code** + `sk-code-*` overlay | Baseline+overlay code-quality contract for dispatched code review/generation; dispatched session selects overlay from stack signals (see Section 4 ALWAYS rule 12) |
 | **sk-deep-research** | LEAF agent dispatched as `--agent deep-research` for parallel research iterations |
 | **sk-deep-review** | LEAF agent dispatched as `--agent deep-review` for parallel review iterations |
 | **mcp-code-mode** | Code Mode tools available inside the dispatched session via the project's MCP wiring |

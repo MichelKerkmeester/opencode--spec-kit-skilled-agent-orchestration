@@ -34,7 +34,7 @@ The cli-opencode skill exists because no sibling provides this. It is the bridge
 
 When `opencode run` starts a session, the runtime loads every plugin, skill, and MCP server the project configures. The dispatched agent has access to:
 
-- All `Skill` invocations the calling AI has access to (system-spec-kit, sk-doc, sk-code-opencode, etc.)
+- All `Skill` invocations the calling AI has access to (system-spec-kit, sk-doc, `sk-code` + matching `sk-code-*` overlay, etc.)
 - All MCP tools (Spec Kit Memory's 40+ tools, CocoIndex semantic search, Code Mode for ClickUp / Figma / Webflow, sequential thinking)
 - Every project-local plugin
 - The repo's CLAUDE.md / AGENTS.md instruction set as the system prompt

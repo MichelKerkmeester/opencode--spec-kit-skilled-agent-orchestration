@@ -190,11 +190,11 @@ Task: Review <files> for <issue type>.
 Instructions:
 - Cite file:line evidence for every finding.
 - Surface P0 / P1 / P2 separately.
-- Map findings to the closest sk-code-review check item.
+- Map findings to the closest sk-code baseline check item.
 
 Do's:
-- Apply the project's sk-code-review baseline.
-- Layer the appropriate stack-specific overlay (sk-code-opencode / sk-code).
+- Apply the project's sk-code baseline.
+- Layer the appropriate stack-specific sk-code-* overlay selected from codebase signals.
 
 Don'ts:
 - Do not propose fixes — leave that for a follow-up dispatch.

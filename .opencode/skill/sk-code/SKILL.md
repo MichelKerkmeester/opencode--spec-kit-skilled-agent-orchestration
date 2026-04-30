@@ -78,7 +78,7 @@ For formal findings-first code review output, use `sk-code-review` as the baseli
 
 ### Stack Detection (FIRST — gates all downstream resource loading)
 
-Stack detection is explicit and ordered. **First match wins.** Webflow / vanilla animation web is checked first because such projects often carry `package.json` for build tooling but should NOT route to NODEJS.
+Stack detection is explicit and ordered. **First match wins.** Webflow / vanilla animation web is checked first because such projects often carry `package.json` for build tooling but should NOT mistakenly route to REACT.
 
 ```bash
 # 1. WEBFLOW stack — Webflow / vanilla animation-library web
@@ -145,16 +145,14 @@ The router discovers markdown resources recursively from `references/` and `asse
 ```text
 references/universal/                       stack-agnostic core (decision trees, severity models, research methodology)
 references/webflow/{implementation,debugging,verification,deployment,performance,standards}/  LIVE
-references/react/{implementation,debugging,verification,deployment,standards}/   LIVE (kerkmeester-style)
+references/react/{implementation,debugging,verification,deployment,standards}/   LIVE (kerkmeester-style Next.js 14)
 references/go/{implementation,debugging,verification,deployment,standards}/      LIVE (gin + sqlc + Postgres)
-references/{nodejs,react-native,swift}/     placeholder skeletons + _placeholder.md pointers
 references/router/{stack_detection,intent_classification,resource_loading,phase_lifecycle,cross_stack_pairing}.md  routing internals + React↔Go contract
 
 assets/universal/{checklists,patterns}/     stack-agnostic checklists + JS validation/wait patterns
 assets/webflow/{checklists,patterns,integrations}/  WEBFLOW live: code quality, performance loading, lenis, hls
 assets/react/{checklists,patterns,integrations}/    REACT live: code quality, server-action / form / motion / vanilla-extract patterns, untitled-ui + tinacms integration
 assets/go/{checklists,patterns}/                    GO live: code quality, gin handler / service / sqlc repo / jwt middleware / table-driven test patterns
-assets/{nodejs,react-native,swift}/_placeholder.md  pointer files
 
 scripts/{minify-webflow,verify-minification,test-minified-runtime}.mjs  WEBFLOW build utilities (CWD-relative; portable)
 ```
@@ -174,21 +172,18 @@ For deep-reference reads on TASK_SIGNALS scoring, MULTI_SYMPTOM_TERMS, intent ra
 
 ```python
 STACK_VERIFICATION_COMMANDS = {
-    "WEBFLOW":      ["node scripts/minify-webflow.mjs",
-                     "node scripts/verify-minification.mjs",
-                     "node scripts/test-minified-runtime.mjs",
-                     "browser test (mobile+desktop+console clean)"],
-    "GO":           ["go test ./...", "golangci-lint run", "go build ./..."],
-    "NODEJS":       ["npm test", "npx eslint .", "npm run build"],
-    "REACT":        ["npm test", "npx eslint .", "npm run build"],
-    "REACT_NATIVE": ["npm test", "npx eslint .", "npx expo export"],
-    "SWIFT":        ["swift test", "swiftlint", "swift build"],
+    "WEBFLOW": ["node scripts/minify-webflow.mjs",
+                "node scripts/verify-minification.mjs",
+                "node scripts/test-minified-runtime.mjs",
+                "browser test (mobile+desktop+console clean)"],
+    "REACT":   ["npm run type-check", "npm run lint", "npm run build"],
+    "GO":      ["go test ./...", "golangci-lint run", "go build ./..."],
 }
 ```
 
 ### Smart Router (algorithm summary)
 
-`LIVE_STACKS = {"WEBFLOW", "REACT", "GO"}` and `PLACEHOLDER_STACKS = {"NODEJS", "REACT_NATIVE", "SWIFT"}`. Live stacks return full intent → file maps; placeholders return their pointer file.
+`LIVE_STACKS = {"WEBFLOW", "REACT", "GO"}`. Anything else returns `UNKNOWN` (this skill does not own Node.js / React Native / Swift / other stacks).
 
 **Algorithm at a glance:**
 
@@ -196,8 +191,8 @@ STACK_VERIFICATION_COMMANDS = {
 2. `score_intents()` — sum keyword weights from `TASK_SIGNALS` (12 intent categories) + `NOISY_SYNONYMS` bonuses + phase boosts (verification +5, debugging +5, testing +4)
 3. `select_intents()` — rank by score; pick top-N where N=2 normally, N=3 when 3+ multi-symptom terms hit
 4. `select_load_level()` — map primary intent → MINIMAL / DEBUGGING / FOCUSED / STANDARD
-5. `resource_map_for(stack)` — return intent → file paths (see live maps below; placeholders return `_placeholder.md`)
-6. `route_code_resources()` — orchestrate the above; load `ALWAYS_LOAD` (universal core) + intent-specific resources + WEBFLOW-only on-demand keywords (lenis, hls, deep dive, full checklist) + per-stack placeholder pointers + `references/router/cross_stack_pairing.md` when REACT or GO API/auth intents fire
+5. `resource_map_for(stack)` — return intent → file paths (see live maps below; UNKNOWN returns empty + UNKNOWN_FALLBACK_CHECKLIST)
+6. `route_code_resources()` — orchestrate the above; load `ALWAYS_LOAD` (universal core) + intent-specific resources + WEBFLOW-only on-demand keywords (lenis, hls, deep dive, full checklist) + `references/router/cross_stack_pairing.md` when REACT or GO API/auth intents fire
 
 **Returns:** `{stack, verification_commands, intents, intent_scores, load_level, resources}`
 
@@ -283,23 +278,18 @@ Implementation patterns are stack-specific. The router loads from `references/<s
 
 **Universal principles** (apply across stacks):
 
-1. **Condition-based waiting** — replace arbitrary timeouts with condition polling; include timeout limits with clear errors. Stack examples: WEBFLOW DOM ready / library load; GO context cancellation; SWIFT async/await.
+1. **Condition-based waiting** — replace arbitrary timeouts with condition polling; include timeout limits with clear errors. Stack examples: WEBFLOW DOM ready / library load; REACT useEffect with cancellation; GO context cancellation.
 2. **Defense-in-depth validation** — Layer 1: entry-point validation; Layer 2: processing validation; Layer 3: output validation; Layer 4: safe-access patterns.
 3. **Stack-specific bootstrap** —
    - **WEBFLOW**: CDN version management, IntersectionObserver gates, snake_case naming, file headers
-   - **GO**: DI configuration, microservice bootstrap, validator registration
-   - **REACT**: Component architecture, state management, data fetching, hooks rules
-   - **NODEJS**: Express middleware patterns, async patterns, service architecture
-   - **REACT_NATIVE**: Expo patterns, navigation, native modules
-   - **SWIFT**: MVVM, SwiftUI patterns, persistence
+   - **REACT**: App Router (Server vs Client Components), vanilla-extract recipes, motion v12 transitions, react-hook-form + zod, react-aria a11y
+   - **GO**: cmd/ + internal/ + pkg/ layout, gin handler + service + repository layers, sqlc-generated repositories, validator registration, golang-jwt issuance/verification
 
 For stack-specific workflows: `references/<stack>/`. Live entry-point docs:
 - WEBFLOW: `references/webflow/implementation/implementation_workflows.md`
 - REACT: `references/react/implementation/implementation_workflows.md` (kerkmeester-style Next.js 14)
 - GO: `references/go/implementation/implementation_workflows.md` (gin + sqlc + Postgres)
 - Cross-stack contract (REACT↔GO API/JWT/CORS): `references/router/cross_stack_pairing.md`
-
-Placeholder stacks (NODEJS / REACT_NATIVE / SWIFT): `_placeholder.md` (canonical content retired; populate locally as needed).
 
 ### Phase 1.5: Code Quality Gate
 
@@ -310,7 +300,7 @@ Placeholder stacks (NODEJS / REACT_NATIVE / SWIFT): `_placeholder.md` (canonical
    - WEBFLOW CSS: `assets/webflow/checklists/code_quality_checklist.md` (Section 8 P0 items: semantic custom property prefixes, attribute selectors with `i` flag, BEM naming, GPU-accelerated animations only)
    - REACT: `assets/react/checklists/code_quality_checklist.md` (P0: TypeScript strict, no `any`, named exports, vanilla-extract recipes, server/client boundary, zod boundaries, no console.log, no dangerouslySetInnerHTML with unsanitized data)
    - GO: `assets/go/checklists/code_quality_checklist.md` (P0: gofmt clean, golangci-lint clean, error wrapping with `%w`, context propagation, no naked goroutines)
-   - Placeholder stacks (NODEJS / REACT_NATIVE / SWIFT): `assets/<stack>/_placeholder.md` (canonical checklists retired; populate locally as needed)
+   - UNKNOWN: this skill does not own checklists for unsupported stacks; surface disambiguation prompt
 
 2. Validate items by severity — P0 (blocker), P1 (required), P2 (optional)
 3. Universal severity model: `references/universal/code_quality_standards.md`
@@ -326,7 +316,7 @@ Placeholder stacks (NODEJS / REACT_NATIVE / SWIFT): `_placeholder.md` (canonical
 - **WEBFLOW**: `references/webflow/debugging/debugging_workflows.md` (DevTools Console, network panel, performance profiler) + `mcp-chrome-devtools` skill
 - **REACT**: `references/react/debugging/debugging_workflows.md` + `references/react/debugging/hydration_errors.md` (Server vs Client Component bugs, hydration mismatches, network inspection)
 - **GO**: `references/go/debugging/debugging_workflows.md` + `references/go/debugging/pprof_profiling.md` (dlv, structured logs via slog, race detector, pprof)
-- **Placeholder stacks** (NODEJS / REACT_NATIVE / SWIFT): `references/<stack>/_placeholder.md` (stack debugging conventions retired; populate locally as needed)
+- **UNKNOWN stacks** (Node.js without React/Next, React Native, Swift, etc.): not owned by this skill; surface disambiguation prompt
 
 **Universal error recovery**: `references/universal/error_recovery.md` (decision tree for rollback, recovery, escalation).
 
@@ -351,7 +341,6 @@ Placeholder stacks (NODEJS / REACT_NATIVE / SWIFT): `_placeholder.md` (canonical
 **Non-WEBFLOW stacks**: run `STACK_VERIFICATION_COMMANDS[stack]`. All commands must exit 0 before claiming done.
 - **REACT**: `references/react/verification/verification_workflows.md` (npm run type-check / lint / build + browser smoke matrix)
 - **GO**: `references/go/verification/verification_workflows.md` (`go test ./...` + `golangci-lint run` + `go build ./...` + `-race` for race detector)
-- **Placeholder stacks**: `references/<stack>/_placeholder.md` (stack-specific testing strategy retired; populate locally as needed).
 
 ---
 
@@ -430,11 +419,8 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 
 | Stack | Target |
 | --- | --- |
+| REACT | `npm run type-check` clean; `npm run lint` clean; `npm run build` succeeds; browser smoke (mobile + desktop) console clean |
 | GO | `go test ./...` exits 0; `golangci-lint run` clean; `go build ./...` succeeds |
-| NODEJS | `npm test` exits 0; `npx eslint .` clean; `npm run build` succeeds |
-| REACT | `npm test` exits 0; `npx eslint .` clean; `npm run build` succeeds |
-| REACT_NATIVE | `npm test` exits 0; `npx eslint .` clean; `npx expo export` succeeds |
-| SWIFT | `swift test` exits 0; `swiftlint` clean; `swift build` succeeds |
 
 ---
 
@@ -451,12 +437,14 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 | WEBFLOW | Motion.dev | motion.dev/docs |
 | WEBFLOW | HLS.js | github.com/video-dev/hls.js |
 | WEBFLOW | Lenis | lenis.darkroom.engineering |
-| GO | Go documentation | go.dev/doc |
-| NODEJS | Node.js docs | nodejs.org/docs |
 | REACT | React docs | react.dev |
 | REACT | Next.js docs | nextjs.org/docs |
-| REACT_NATIVE | Expo docs | docs.expo.dev |
-| SWIFT | Apple Developer | developer.apple.com/documentation |
+| REACT | vanilla-extract | vanilla-extract.style |
+| REACT | motion | motion.dev/docs |
+| GO | Go documentation | go.dev/doc |
+| GO | gin | gin-gonic.com/docs |
+| GO | sqlc | docs.sqlc.dev |
+| GO | pgx | github.com/jackc/pgx |
 
 ### Testing & Debugging
 
@@ -464,9 +452,8 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 | --- | --- | --- |
 | WEBFLOW | Chrome DevTools | Browser debugging |
 | WEBFLOW | Can I Use | Browser compatibility |
-| GO | `go test`, `go vet`, `dlv` | Unit tests, static analysis, debugger |
-| REACT | React DevTools, Vitest | Component inspection, unit tests |
-| SWIFT | Xcode Instruments, XCTest | Profiling, unit tests |
+| REACT | React DevTools, Vitest, Chrome DevTools | Component inspection, unit tests, browser smoke |
+| GO | `go test`, `go vet`, `dlv`, `pprof` | Unit tests, static analysis, debugger, profiler |
 
 ---
 
@@ -493,9 +480,9 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 
 ### Navigation Guide
 
-**For implementation tasks:** Confirm stack via marker files (this skill auto-detects); load Phase 1 resources from `references/<stack>/` (live for WEBFLOW / REACT / GO; placeholder for NODEJS / REACT_NATIVE / SWIFT); cite `references/universal/` for stack-agnostic principles. For React↔Go fullstack work also load `references/router/cross_stack_pairing.md`.
+**For implementation tasks:** Confirm stack via marker files (this skill auto-detects WEBFLOW, REACT, GO); load Phase 1 resources from `references/<stack>/`; cite `references/universal/` for stack-agnostic principles. For React↔Go fullstack work also load `references/router/cross_stack_pairing.md`. If detection returns UNKNOWN (Node.js without React/Next, React Native, Swift, etc.), this skill does not own the stack — surface a disambiguation prompt.
 
-**For debugging tasks:** Load `assets/universal/checklists/debugging_checklist.md`; live stacks also load their `references/<stack>/debugging/` content (WEBFLOW: + `mcp-chrome-devtools`; REACT: hydration / Server vs Client / network inspection; GO: dlv + slog + pprof); placeholder stacks follow `_placeholder.md` (stack debugging conventions retired; populate locally as needed).
+**For debugging tasks:** Load `assets/universal/checklists/debugging_checklist.md`; load `references/<stack>/debugging/` content (WEBFLOW: + `mcp-chrome-devtools`; REACT: hydration / Server vs Client / network inspection; GO: dlv + slog + pprof).
 
 **For verification tasks:** Load `assets/universal/checklists/verification_checklist.md`; run `STACK_VERIFICATION_COMMANDS[stack]`; for WEBFLOW also run browser matrix (mobile + desktop + console clean); only claim "done" when all commands exit 0 + checklist passes.
 
@@ -524,16 +511,12 @@ Run Lighthouse 3× in Incognito with mobile emulation, use median scores.
 ### Stack Detection (single command)
 
 ```bash
-# Run from project root — first match wins
+# Run from project root — first match wins; sk-code only owns WEBFLOW / REACT / GO
 ([ -d "src/2_javascript" ] || ls *.webflow.js 2>/dev/null | head -1 >/dev/null) && echo WEBFLOW \
   || ([ -f "wrangler.toml" ] && echo WEBFLOW) \
   || ([ -f "go.mod" ] && echo GO) \
-  || ([ -f "Package.swift" ] && echo SWIFT) \
-  || ([ -f "app.json" ] && grep -q expo app.json && echo REACT_NATIVE) \
-  || ([ -f "package.json" ] && grep -Eq "react-native|expo" package.json && echo REACT_NATIVE) \
   || (ls next.config.* 2>/dev/null | head -1 >/dev/null && echo REACT) \
   || ([ -f "package.json" ] && grep -Eq '"next"|"react"' package.json && echo REACT) \
-  || ([ -f "package.json" ] && echo NODEJS) \
   || echo UNKNOWN
 ```
 
@@ -556,14 +539,10 @@ node .opencode/skill/sk-code/scripts/test-minified-runtime.mjs   # Runtime testi
 # CDN deploy: wrangler r2 object put project-cdn/js/[file].min.js --file src/javascript/z_minified/[file].min.js
 # Version check: grep -n "v=" src/html/global.html | head -5
 
+# REACT
+npm run type-check && npm run lint && npm run build
 # GO
 go test ./... && golangci-lint run && go build ./...
-# NODEJS / REACT
-npm test && npx eslint . && npm run build
-# REACT_NATIVE
-npm test && npx eslint . && npx expo export
-# SWIFT
-swift test && swiftlint && swift build
 ```
 
 ### Success Criteria Checklist (Quick)
@@ -586,6 +565,6 @@ Verification:
   □ Documented what was tested
 ```
 
-For routing trace examples and full pseudocode invocation: `references/router/main_router.md`.
+For routing detail (precedence, intent classification, resource loading, cross-stack pairing): see `references/router/`.
 
 <!-- /ANCHOR:quick-reference -->

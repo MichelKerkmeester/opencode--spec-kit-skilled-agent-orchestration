@@ -4,6 +4,32 @@ All notable changes to the `sk-code` skill are documented here. The skill follow
 
 ---
 
+## [1.2.0] — 2026-04-30
+
+### Removed — placeholder stacks dropped entirely
+
+User-directed cleanup. The skill now owns exactly three stacks: WEBFLOW, REACT, GO. Anything else returns UNKNOWN.
+
+- Deleted `references/{nodejs,react-native,swift}/` and `assets/{nodejs,react-native,swift}/` folders entirely (placeholder skeletons that pointed at retired sibling content)
+- Stack detection block (SKILL.md §2 + `references/router/stack_detection.md`): removed SWIFT, REACT_NATIVE, NODEJS branches; only WEBFLOW / GO / REACT detection remains
+- `LIVE_STACKS = {"WEBFLOW", "REACT", "GO"}`; `PLACEHOLDER_STACKS` removed from the codebase entirely
+- `STACK_VERIFICATION_COMMANDS` shrunk to 3 entries (WEBFLOW / REACT / GO)
+- Performance / Verification Targets table reduced to REACT + GO entries
+- §6 External Resources reorganized: WEBFLOW + REACT (vanilla-extract, motion) + GO (gin, sqlc, pgx) only
+- §7 Navigation Guide: live-stack-only language; UNKNOWN explicitly noted as "not owned by this skill"
+- description.json + graph-metadata.json: dropped `react-native`, `swift`, `swiftui`, `nodejs`, `expo` from keywords / trigger_phrases / key_topics / domains; `causal_summary` rewritten; `supported_stacks: ["WEBFLOW", "REACT", "GO"]` field added
+- README.md: Stack Detection table reduced to WEBFLOW / REACT / GO + UNKNOWN; Structure Inventory drops placeholder stack folders
+
+### Rationale
+
+The prior placeholder pattern (point at retired canonical content + maintain stub folders) added cognitive overhead for the user without serving real workflows — this skill is used for Webflow + the kerkmeester-style React/Go fullstack pairing, nothing else. Cleaner ownership: detection returns UNKNOWN for unsupported stacks, surfacing a disambiguation prompt instead of pretending to route.
+
+### Note
+
+Skill advisor TOKEN_BOOSTS for `nodejs`, `swift`, `swiftui`, `expo` (added in 1.0.0) remain in `lib/scorer/lanes/explicit.ts` but are now dead routes — they still nominally point at sk-code, but UNKNOWN detection will surface disambiguation rather than load resources. Cleanup of the dead boosts is a follow-on (low impact).
+
+---
+
 ## [1.1.0] — 2026-04-30
 
 ### Added — REACT and GO promoted to LIVE_STACKS

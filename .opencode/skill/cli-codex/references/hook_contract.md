@@ -109,7 +109,7 @@ Use JSON output for model-visible context:
 {
   "hookSpecificOutput": {
     "hookEventName": "UserPromptSubmit",
-    "additionalContext": "Advisor: live; use sk-code-opencode 0.91/0.23 pass."
+    "additionalContext": "Advisor: live; use sk-code 0.91/0.23 pass."
   }
 }
 ```

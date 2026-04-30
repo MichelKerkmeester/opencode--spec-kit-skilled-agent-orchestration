@@ -45,8 +45,7 @@ LOAD_LEVELS = {
 The router builds a stack-specific resource map.
 
 - `LIVE_STACKS = {"WEBFLOW", "REACT", "GO"}` — return full live intent → file maps
-- `PLACEHOLDER_STACKS = {"NODEJS", "REACT_NATIVE", "SWIFT"}` — return their `_placeholder.md` for every intent
-- `UNKNOWN` — empty map; surface `UNKNOWN_FALLBACK_CHECKLIST`
+- `UNKNOWN` — empty map; surface disambiguation prompt (this skill does not own Node.js / React Native / Swift / other stacks)
 
 ```python
 def resource_map_for(stack):
@@ -74,9 +73,6 @@ def resource_map_for(stack):
             "DATABASE":       ["references/go/implementation/database_sqlc_postgres.md"],
             # ... see SKILL.md §2 for complete GO map
         }
-    elif stack in PLACEHOLDER_STACKS:
-        return {intent: [f"references/{folder}/_placeholder.md"]
-                for intent in TASK_SIGNALS}
     else:  # UNKNOWN
         return {}
 ```
@@ -91,9 +87,7 @@ ALWAYS_LOAD = [
 ]
 ```
 
-Plus, for placeholder stacks, the router additionally loads:
-- `references/<stack>/_placeholder.md` (the migration pointer)
-- `assets/<stack>/_placeholder.md` (the asset pointer)
+For UNKNOWN stacks (Node.js without React/Next, React Native, Swift, etc.), the router loads only `ALWAYS_LOAD` and surfaces a disambiguation prompt — `sk-code` does not own those stacks.
 
 ## On-Demand Resources (WEB only)
 
@@ -125,15 +119,12 @@ In both cases, the router surfaces `UNKNOWN_FALLBACK_CHECKLIST` (5 disambiguatio
 
 ```python
 STACK_VERIFICATION_COMMANDS = {
-    "WEBFLOW":          ["node scripts/minify-webflow.mjs",
-                     "node scripts/verify-minification.mjs",
-                     "node scripts/test-minified-runtime.mjs",
-                     "browser test (mobile+desktop+console clean)"],
-    "GO":           ["go test ./...", "golangci-lint run", "go build ./..."],
-    "NODEJS":       ["npm test", "npx eslint .", "npm run build"],
-    "REACT":        ["npm test", "npx eslint .", "npm run build"],
-    "REACT_NATIVE": ["npm test", "npx eslint .", "npx expo export"],
-    "SWIFT":        ["swift test", "swiftlint", "swift build"],
+    "WEBFLOW": ["node scripts/minify-webflow.mjs",
+                "node scripts/verify-minification.mjs",
+                "node scripts/test-minified-runtime.mjs",
+                "browser test (mobile+desktop+console clean)"],
+    "REACT":   ["npm run type-check", "npm run lint", "npm run build"],
+    "GO":      ["go test ./...", "golangci-lint run", "go build ./..."],
 }
 ```
 

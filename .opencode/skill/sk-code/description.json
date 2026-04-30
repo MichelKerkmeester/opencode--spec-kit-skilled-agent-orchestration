@@ -1,7 +1,7 @@
 {
   "name": "sk-code",
-  "description": "Smart-routing umbrella skill for application code work — detects stack first (Webflow, React/Next, Go, Node.js, React Native, Swift) then classifies intent and loads stack-aware resources. WEBFLOW + REACT + GO run full live content (REACT modeled on kerkmeester.com Next.js 14 + vanilla-extract + motion v12; GO paired with gin + sqlc + Postgres). Three placeholder stacks remain (NODEJS, REACT_NATIVE, SWIFT).",
-  "version": "1.1.0",
+  "description": "Smart-routing umbrella skill for application code work — detects stack first (Webflow, React/Next.js, Go) then classifies intent and loads stack-aware resources. Three live stacks: WEBFLOW (Webflow / vanilla animation web), REACT (kerkmeester-style Next.js 14 + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI), GO (gin + sqlc + Postgres + golang-jwt). Cross-stack pairing doc captures the React↔Go API contract. Other stacks fall through to UNKNOWN.",
+  "version": "1.2.0",
   "importance_tier": "high",
   "keywords": [
     "sk-code",
@@ -25,8 +25,6 @@
     "react-aria",
     "next-themes",
     "kerkmeester",
-    "react-native",
-    "swift",
     "go",
     "golang",
     "gin",
@@ -35,7 +33,6 @@
     "postgres",
     "golang-jwt",
     "golangci-lint",
-    "nodejs",
     "implementation",
     "debugging",
     "verification",
@@ -59,7 +56,8 @@
     "minify the Webflow JS bundle",
     "Lighthouse audit shows poor LCP"
   ],
-  "lastUpdated": "2026-04-30T13:00:00Z",
+  "lastUpdated": "2026-04-30T14:00:00Z",
   "merger_spec_folder": "skilled-agent-orchestration/054-sk-code-merger",
-  "fullstack_branch_spec_folder": "skilled-agent-orchestration/056-sk-code-fullstack-branch"
+  "fullstack_branch_spec_folder": "skilled-agent-orchestration/056-sk-code-fullstack-branch",
+  "supported_stacks": ["WEBFLOW", "REACT", "GO"]
 }

@@ -359,6 +359,7 @@ codex exec -p research "Research latest security advisories for Express.js" --mo
 8. **Pass the spec folder to the delegated agent** in the prompt: if the calling AI has an active Gate-3 spec folder, include `Spec folder: <path> (pre-approved, skip Gate 3)`. If none, ASK the user before delegating — the delegated agent cannot answer Gate 3 in `--full-auto` or non-interactive mode.
 9. **Load `assets/prompt_quality_card.md` before building any dispatch prompt.** Apply the CLEAR 5-question check, tag the framework in the Bash invocation comment, and use the returned `ENHANCED_PROMPT`. If complexity ≥ 7/10 or compliance/security signals appear, dispatch `@improve-prompt` via the Task tool instead of loading `sk-improve-prompt` inline.
 10. **Never inject user-level voice/personalization content into AI-orchestrated Codex delegations.** Codex CLI reads user-level voice from `~/.codex/AGENTS.md` (the human's global settings, loaded automatically). When an AI delegates via `codex exec`, the calling AI's own voice rules govern the response — do NOT read `~/.codex/AGENTS.md` and paste into delegation prompts. Keep delegations focused on task/model/sandbox/effort/(spec-folder pre-approval). If the user asks how to make Codex sound more like Claude in *their own* sessions, point to `~/.codex/AGENTS.md` — not any repo asset.
+11. **Code Standards Loading (codebase-agnostic baseline+overlay contract)** — When dispatching for code review or code generation, instruct the dispatched session to: (1) load `sk-code` baseline first (universal findings-first rules, security/correctness minimums, severity contract); (2) detect stack/codebase signals (markers, framework presence, file extensions); (3) load exactly one overlay skill matching `sk-code-*` selected from those signals; (4) apply precedence: overlay style/process guidance overrides generic baseline style guidance, while baseline security/correctness minimums remain mandatory. Fallback: if stack cannot be determined confidently, use the default available `sk-code-*` overlay and note the uncertainty. NEVER hardcode a specific overlay (e.g. `sk-code-opencode`, `sk-code-review`) in dispatch prompts — the dispatched session selects the overlay; the CLI skill only stipulates the contract.
 
 ### NEVER
 
@@ -461,8 +462,7 @@ Key integrations:
 | Skill | Integration |
 |-------|-------------|
 | **cli-gemini** | Parallel cross-AI validation — Gemini for Google Search grounding, Codex for OpenAI perspective |
-| **sk-code** | Use Codex for code review during web development |
-| **sk-code** | Delegate test generation or architecture analysis to Codex |
+| **sk-code** + `sk-code-*` overlay | Baseline+overlay code-quality contract — apply when dispatching code review or generation; dispatched session selects overlay from stack signals (see Section 4 ALWAYS rule 11) |
 | **mcp-code-mode** | Codex CLI is independent; does not require Code Mode |
 
 ---
