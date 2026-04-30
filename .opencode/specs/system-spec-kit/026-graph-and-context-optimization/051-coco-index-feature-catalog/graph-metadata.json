@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/051-coco-index-feature-catalog",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/051-coco-index-feature-catalog",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/050-feature-catalog-shape-realignment"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "051-coco-index-feature-catalog",
+      "mcp-coco-index feature catalog",
+      "cocoindex catalog",
+      "semantic search catalog"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "audit-findings.md",
+      "remediation-log.md",
+      "implementation-summary.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "audit-findings.md",
+      "remediation-log.md",
+      "implementation-summary.md"
+    ],
+    "entities": []
+  }
+}
