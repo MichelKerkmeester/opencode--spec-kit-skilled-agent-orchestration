@@ -1,7 +1,6 @@
 ---
 title: "Compact merger"
 description: "Compact merger combines context from Memory, Code Graph, and CocoIndex into a unified compact brief within the 4000-token budget."
-audited_post_018: true
 ---
 
 # Compact merger
@@ -29,7 +28,7 @@ mcp_server/code_graph/lib/compact-merger.ts
 | `Lib` | 3-source merge with budget allocation | _ |
 
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ mcp_server/code_graph/lib/compact-merger.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Compact merger
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/12-compact-merger.md`

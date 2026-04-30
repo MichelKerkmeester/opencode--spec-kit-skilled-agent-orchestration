@@ -14,11 +14,13 @@ This scenario validates DB_PATH extraction and import standardization for `087`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `087` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm shared DB path resolution
-- Prompt: `As a pipeline validation operator, validate DB_PATH extraction and import standardization against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm shared DB path resolution.
+- Real user request: `Please validate DB_PATH extraction and import standardization against the documented validation surface and tell me whether the expected signals are present: All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge.`
+- RCAF Prompt: `As a pipeline validation operator, validate DB_PATH extraction and import standardization against the documented validation surface. Verify all scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All scripts/tools resolve to the same DB path for identical env vars; precedence chain is respected; no hardcoded fallbacks diverge
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all entry points resolve the same DB path and env var precedence is consistent across scripts/tools
 
 ---
@@ -54,8 +56,7 @@ DB path resolver output from multiple scripts + env var configuration evidence
 
 Verify shared resolver module is imported by all consumers; check env var precedence order; inspect for hardcoded path fallbacks
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md](../../feature_catalog/14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md)
 

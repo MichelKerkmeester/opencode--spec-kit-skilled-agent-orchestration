@@ -17,12 +17,13 @@ Verify deep-loop command YAML contains live convergence calls before stop voting
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify deep-loop command YAML contains live convergence calls before stop voting.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 009 (deep_loop_graph_convergence yaml fire), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify deep-loop command YAML contains live convergence calls before stop voting.
+- Real user request: `Review the deep-research and deep-review auto YAML to confirm graph convergence is called before stop voting.`
+- RCAF Prompt: `As a coverage graph workflow reviewer, inspect deep-loop command YAML convergence paths against the auto workflow files. Verify graph convergence MCP calls occur before inline stop logic and produce a convergence event. Return PASS/FAIL with file anchors and evidence excerpts.`
+- Expected execution process: Read the specified deep-research and deep-review YAML line ranges, then optionally run a minimal deep-loop fixture and capture a graph convergence JSONL event.
+- Expected signals: YAML calls `mcp__spec_kit_memory__deep_loop_graph_convergence` before inline stop logic and appends a graph convergence event.
+- Desired user-visible outcome: A concise verdict explaining whether deep-loop stop voting is guarded by live graph convergence checks.
+- Pass/fail: PASS if both YAML paths call graph convergence before stop logic and event evidence is present when run; FAIL if the call is missing, occurs after stop voting, or no convergence event can be observed in the fixture.
 
 ---
 
@@ -62,4 +63,3 @@ Check confirm-mode YAML paths for parity.
 - Group: Code Graph Runtime
 - Playbook ID: 009
 - Canonical root source: `manual_testing_playbook.md`
-

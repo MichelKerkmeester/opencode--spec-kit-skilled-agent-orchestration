@@ -44,7 +44,7 @@ TEMPLATES_DIR="$(cd "${SCRIPT_DIR}/../../templates" 2>/dev/null && pwd)" || {
 }
 ADDENDUM_L2="${TEMPLATES_DIR}/addendum/level2-verify"
 ADDENDUM_L3="${TEMPLATES_DIR}/addendum/level3-arch"
-ADDENDUM_L3PLUS="${TEMPLATES_DIR}/addendum/level3plus-govern"
+ADDENDUM_L3PLUS="${TEMPLATES_DIR}/addendum/level3-plus-govern"
 
 # Output control
 VERBOSE=false

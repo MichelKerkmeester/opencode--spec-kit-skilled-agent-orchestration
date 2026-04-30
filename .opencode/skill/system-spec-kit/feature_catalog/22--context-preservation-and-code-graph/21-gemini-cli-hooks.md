@@ -1,7 +1,6 @@
 ---
 title: "Gemini CLI hooks"
 description: "Gemini-native lifecycle hooks providing session priming, compact injection, and stop tracking for the Gemini CLI runtime."
-audited_post_018: true
 ---
 
 # Gemini CLI hooks
@@ -36,7 +35,6 @@ mcp_server/hooks/gemini/
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Gemini CLI hooks
-- Current reality source: spec 024-compact-code-graph phase 022
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/21-gemini-cli-hooks.md`

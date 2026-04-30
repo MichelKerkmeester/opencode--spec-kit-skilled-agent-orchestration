@@ -1,7 +1,6 @@
 ---
 title: "Query expansion"
 description: "Covers the embedding-based query expansion path and distinguishes it from the separate rule-based deep-mode query-variant expansion path."
-audited_post_018: true
 ---
 
 # Query expansion
@@ -34,7 +33,7 @@ When R15 classifies a query as "simple", the embedding-based expansion path is s
 | `mcp_server/lib/search/query-classifier.ts` | Lib | Complexity classification; simple queries suppress embedding expansion |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isEmbeddingExpansionEnabled()` flag accessor (`SPECKIT_EMBEDDING_EXPANSION`) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,7 +45,6 @@ When R15 classifies a query as "simple", the embedding-based expansion path is s
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Query expansion
-- Current reality source: FEATURE_CATALOG.md
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/06-query-expansion.md`

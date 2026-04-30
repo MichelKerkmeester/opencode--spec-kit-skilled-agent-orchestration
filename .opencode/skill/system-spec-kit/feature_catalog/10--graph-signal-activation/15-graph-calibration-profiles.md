@@ -1,7 +1,6 @@
 ---
 title: "Graph calibration profiles and community thresholds"
 description: "Graph calibration profiles define weight caps, RRF fusion overflow limits, and Louvain community detection threshold configuration as an active graduated feature in the live Stage 2 pipeline. Weight cap enforcement is wired end-to-end; Louvain activation thresholds are implemented and tested but not consumed by the community detection pipeline."
-audited_post_018: true
 ---
 
 # Graph calibration profiles and community thresholds
@@ -35,7 +34,7 @@ The module also includes an ablation harness with MRR and NDCG computation for p
 | `mcp_server/lib/search/graph-calibration.ts` | Lib | Calibration profiles, Louvain thresholds, weight cap enforcement, ablation harness |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isGraphCalibrationProfileEnabled()` unified flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ The module also includes an ablation harness with MRR and NDCG computation for p
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Graph calibration profiles and community thresholds
-- Current reality source: graph-calibration.ts module header and implementation
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/15-graph-calibration-profiles.md`

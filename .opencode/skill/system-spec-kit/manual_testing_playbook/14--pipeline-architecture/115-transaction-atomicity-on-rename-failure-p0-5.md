@@ -14,11 +14,13 @@ This scenario validates Transaction atomicity on rename failure (P0-5) for `115`
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `115` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup
-- Prompt: `As a pipeline validation operator, validate Transaction atomicity on rename failure (P0-5) against executeAtomicSave(). Verify pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify that pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup.
+- Real user request: `Please validate Transaction atomicity on rename failure (P0-5) against executeAtomicSave() and tell me whether the expected signals are present: Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file.`
+- RCAF Prompt: `As a pipeline validation operator, validate Transaction atomicity on rename failure (P0-5) against executeAtomicSave(). Verify pending file is preserved (not deleted) when rename fails after DB commit, enabling recovery on next startup. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Rename failure returns {success:false, dbCommitted:true}; pending file preserved on disk after failure; recoverAllPendingFiles discovers and recovers the pending file
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if pending file survives rename failure and recovery function can find and process it
 
 ---
@@ -56,8 +58,7 @@ Function return value + pending file existence check + recovery function output
 
 Inspect executeAtomicSave error handling for rename failures; verify pending file cleanup is skipped when dbCommitted=true; check recoverAllPendingFiles scan logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/21-atomic-pending-file-recovery.md](../../feature_catalog/14--pipeline-architecture/21-atomic-pending-file-recovery.md)
 

@@ -21,13 +21,12 @@ Tool and resource hints can improve Skill Advisor recall, but raw descriptions c
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `199` and confirm the expected signals without contradictory evidence.
 
 - Objective: Validate normalized affordance evidence in Skill Advisor scoring.
 - Real user request: `Route this prompt using the browser recorder affordance, but do not expose the raw tool phrase.`
-- Prompt: `As a Skill Advisor validation operator, run the affordance routing fixture against the native scorer. Verify affordance evidence contributes through derived_generated and graph_causal only, raw matched phrases stay out of recommendation payloads, and explicit triggers still win. Return a concise pass/fail verdict with cited test output.`
+- RCAF Prompt: `As a Skill Advisor validation operator, run the affordance routing fixture against the native scorer. Verify affordance evidence contributes through derived_generated and graph_causal only, raw matched phrases stay out of recommendation payloads, and explicit triggers still win. Return a concise pass/fail verdict with cited test output.`
 - Expected execution process: Run focused Vitest and Python compiler checks, inspect lane attribution, then inspect the public recommendation payload shape.
-- Expected signals: `affordance-normalizer.test.ts` passes privacy assertions, `lane-attribution.test.ts` shows `derived_generated` and `graph_causal`, `routing-fixtures.affordance.test.ts` shows recall lift and explicit precedence, and Python compiler tests keep `ALLOWED_ENTITY_KINDS` unchanged.
+- Expected signals: `affordance-normalizer.test.ts` passes privacy assertions, `lane-attribution.test.ts` shows `derived_generated` and `graph_causal`, `routing-fixtures.affordance.test.ts` shows recall lift and explicit precedence, and Python compiler tests keep `ALLOWED_ENTITY_KINDS` unchanged
 - Desired user-visible outcome: The advisor can use sanitized affordance hints without leaking raw tool descriptions or adding routing vocabulary.
 - Pass/fail: PASS if all checks pass and no raw matched affordance phrase appears in output. FAIL if a new lane appears, raw phrases leak, or explicit triggers lose to affordance-only evidence.
 

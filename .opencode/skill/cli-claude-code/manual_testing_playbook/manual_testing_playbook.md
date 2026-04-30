@@ -43,7 +43,7 @@ Canonical package artifacts:
 - [13. PROMPT TEMPLATES](#13--prompt-templates)
 - [14. COST AND BACKGROUND](#14--cost-and-background)
 - [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
-- [16. FEATURE FILE INDEX](#16--feature-file-index)
+- [16. FEATURE CATALOG CROSS-REFERENCE INDEX](#16--feature-catalog-cross-reference-index)
 
 ---
 
@@ -681,7 +681,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 ---
 
-## 16. FEATURE FILE INDEX
+## 16. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI INVOCATION
 

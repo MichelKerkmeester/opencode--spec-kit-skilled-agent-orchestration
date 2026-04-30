@@ -1,7 +1,6 @@
 ---
 title: "Causal neighbor boost and injection"
 description: "Describes the post-fusion causal boost that walks `causal_edges` up to 2 hops from top-ranked seed results, applying relation-type weighted amplification with a combined causal + session boost ceiling of 0.20."
-audited_post_018: true
 ---
 
 # Causal neighbor boost and injection
@@ -35,7 +34,7 @@ The combined causal + session boost ceiling is 0.20, preventing runaway score in
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | Pipeline type definitions |
 | `mcp_server/lib/search/session-boost.ts` | Lib | Session boost (shared ceiling with causal) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,7 +44,6 @@ The combined causal + session boost ceiling is 0.20, preventing runaway score in
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Causal neighbor boost and injection
-- Current reality source: audit-D04 gap backfill
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md`

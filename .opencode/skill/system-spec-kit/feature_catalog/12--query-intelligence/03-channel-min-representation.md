@@ -1,7 +1,6 @@
 ---
 title: "Channel min-representation"
 description: "Channel min-representation ensures every retrieval channel with results has at least one entry in the top-k window after fusion."
-audited_post_018: true
 ---
 
 # Channel min-representation
@@ -33,7 +32,7 @@ The architecture is two-layered: `channel-representation.ts` performs the core a
 | `mcp_server/lib/search/channel-representation.ts` | Lib | Core analysis: detects under-represented channels, appends promoted items (no re-sort) |
 | `mcp_server/lib/search/channel-enforcement.ts` | Lib | Pipeline wrapper: delegates to core, re-sorts globally by score, returns enforcement metadata |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ The architecture is two-layered: `channel-representation.ts` performs the core a
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Channel min-representation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/03-channel-min-representation.md`

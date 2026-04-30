@@ -13,11 +13,13 @@ This scenario validates Context-server success-envelope finalization for `105`. 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `105` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract
-- Prompt: `As a runtime-hook validation operator, validate Context-server success-envelope finalization against npx vitest run tests/context-server.vitest.ts. Verify appendAutoSurfaceHints() runs before budget enforcement and preserves the finalized envelope contract. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm `appendAutoSurfaceHints()` runs before budget enforcement and preserves the finalized envelope contract.
+- Real user request: `` Please validate Context-server success-envelope finalization against npx vitest run tests/context-server.vitest.ts and tell me whether the expected signals are present: Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Context-server success-envelope finalization against npx vitest run tests/context-server.vitest.ts. Verify appendAutoSurfaceHints() runs before budget enforcement and preserves the finalized envelope contract. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Context-server suite passes with end-to-end assertions for appended hints, preserved `autoSurfacedContext`, and finalized token metadata
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if `tests/context-server.vitest.ts` passes and the assertions cover the final success-envelope path end to end
 
 ---
@@ -54,8 +56,7 @@ Test transcript + key assertion output
 
 Inspect `context-server.ts` success-path assembly and expected envelope fields
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/08-context-server-success-hint-append.md](../../feature_catalog/18--ux-hooks/08-context-server-success-hint-append.md)
 

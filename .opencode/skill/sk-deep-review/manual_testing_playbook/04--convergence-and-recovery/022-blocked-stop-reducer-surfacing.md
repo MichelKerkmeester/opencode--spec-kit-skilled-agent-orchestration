@@ -1,17 +1,17 @@
 ---
-title: "DRV-022 -- Review reducer surfaces blocked-stop history across registry, dashboard, and next-focus"
+title: "DRV-033 -- Review reducer surfaces blocked-stop history across registry, dashboard, and next-focus"
 description: "Verify that blocked_stop events preserve the review gate bundle in blockedStopHistory, render in the dashboard, and rewrite the strategy next-focus anchor with recovery guidance."
 ---
 
-# DRV-022 -- Review reducer surfaces blocked-stop history across registry, dashboard, and next-focus
+# DRV-033 -- Review reducer surfaces blocked-stop history across registry, dashboard, and next-focus
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-022`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-033`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates blocked-stop reducer surfacing for `DRV-022`. The objective is to verify that a review packet with at least one `blocked_stop` event preserves the review-specific legal-stop bundle in `blockedStopHistory`, renders that blocked-stop evidence in the dashboard, and rewrites the strategy `next-focus` anchor with the recovery strategy.
+This scenario validates blocked-stop reducer surfacing for `DRV-033`. The objective is to verify that a review packet with at least one `blocked_stop` event preserves the review-specific legal-stop bundle in `blockedStopHistory`, renders that blocked-stop evidence in the dashboard, and rewrites the strategy `next-focus` anchor with the recovery strategy.
 
 ### WHY THIS MATTERS
 
@@ -89,7 +89,7 @@ Privilege `deep-review-findings-registry.json` as the reducer-owned source of tr
 ## 5. SOURCE METADATA
 
 - Group: CONVERGENCE AND RECOVERY
-- Playbook ID: DRV-022
+- Playbook ID: DRV-033
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/022-blocked-stop-reducer-surfacing.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-04-11.

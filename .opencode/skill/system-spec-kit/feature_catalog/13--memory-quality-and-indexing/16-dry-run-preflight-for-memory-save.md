@@ -1,7 +1,6 @@
 ---
 title: "Dry-run preflight for memory_save"
 description: "The `dryRun` parameter on `memory_save` runs preflight validation without indexing, database mutation or file writes."
-audited_post_018: true
 ---
 
 # Dry-run preflight for memory_save
@@ -44,7 +43,7 @@ In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod schema with dryRun parameter |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema with dryRun option |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -65,7 +64,6 @@ In non-dry-run mode, the same preflight checks run first (unless `skipPreflight=
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Dry-run preflight for memory_save
-- Current reality source: audit-D04 gap backfill
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md`

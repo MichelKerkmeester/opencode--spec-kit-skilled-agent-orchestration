@@ -39,7 +39,7 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 | `mcp_server/lib/session/session-manager.ts` | Lib | #37 Session dedup hash extended from `.slice(0, 16)` to `.slice(0, 32)` (128-bit) |
 | `mcp_server/lib/storage/access-tracker.ts` | Lib | #38 `_exitFlushHandler` ref stored, `cleanupExitHandlers()` calls `process.removeListener()` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -53,14 +53,10 @@ Six fixes addressed evaluation framework reliability and protocol-boundary safet
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Opus review remediation (Phase 017)
-- Source feature title: Evaluation and housekeeping fixes
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 082

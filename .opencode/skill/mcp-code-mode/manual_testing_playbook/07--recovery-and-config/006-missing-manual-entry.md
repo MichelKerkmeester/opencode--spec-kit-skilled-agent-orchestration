@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-026` and confirm the
 
 - Objective: Verify `call_tool_chain` calling `nonexistent.nonexistent_anything()` returns an error naming `nonexistent` as a missing manual.
 - Real user request: `"Why does my call to a manual I haven't installed fail with a generic error?"` (debugging session)
-- Prompt: `As a manual-testing orchestrator, call nonexistent.nonexistent_anything() through Code Mode against the current registry. Verify the error names the missing manual. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call nonexistent.nonexistent_anything() through Code Mode against the current registry. Verify the error names the missing manual. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` deliberately referencing a non-configured manual; inspect the error.
 - Expected signals: call returns error; error message contains "manual" or "not found" or "registry"; error message references `nonexistent`.
 - Desired user-visible outcome: A short report quoting the error message and confirming it names the missing manual with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-026` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, call nonexistent.nonexistent_anything() through Code Mode against the current registry. Verify the error names the missing manual. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call nonexistent.nonexistent_anything() through Code Mode against the current registry. Verify the error names the missing manual. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -36,7 +36,7 @@ Phase awareness is built into the engine. If the target folder contains child di
 
 The current rule engine therefore behaves like a shell-based plugin host: central orchestration, distributed checks, configurable order, shared severity policy, and optional recursive traversal across phased spec packets.
 
-Phase 017 extended the strict path beyond the original shell-rule inventory. `validate.sh --strict` now runs the continuity-freshness check (`32a180bba`), the evidence-marker lint wrapper built on the new bracket-depth audit parser (`7d85861a0`, `e40dff0bb`), and the scope-normalizer duplication guard (`ded5ece07`). That means the rule engine now enforces stale continuity timestamps, malformed `[EVIDENCE:...]` markers, and new duplicate `normalizeScope*` helpers in the same operator-facing strict run instead of relying on ad hoc sweep scripts alone.
+The implementation extended the strict path beyond the original shell-rule inventory. `validate.sh --strict` now runs the continuity-freshness check (`32a180bba`), the evidence-marker lint wrapper built on the new bracket-depth audit parser (`7d85861a0`, `e40dff0bb`), and the scope-normalizer duplication guard (`ded5ece07`). That means the rule engine now enforces stale continuity timestamps, malformed `[EVIDENCE:...]` markers, and new duplicate `normalizeScope*` helpers in the same operator-facing strict run instead of relying on ad hoc sweep scripts alone.
 
 ---
 
@@ -77,8 +77,6 @@ Phase 017 extended the strict path beyond the original shell-rule inventory. `va
 | `.opencode/skill/system-spec-kit/scripts/rules/check-toc-policy.sh` | Validation rule | Rule script discovered and executed by the orchestrator for table-of-contents policy checks |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Spec Validation Rule Engine
-- Source spec: Deep research remediation 2026-03-26 plus Phase 017 validation hardening
-- Current reality source: direct audit of `validate.sh`, `scripts/validation/*.ts`, and filesystem inventory of `scripts/rules/*.sh`
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/24-spec-validation-rule-engine.md`

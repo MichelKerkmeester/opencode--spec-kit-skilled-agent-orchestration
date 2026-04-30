@@ -1,7 +1,6 @@
 ---
 title: "Cross-document entity linking"
 description: "Cross-document entity linking creates causal edges between memories in different spec folders that reference the same entity."
-audited_post_018: true
 ---
 
 # Cross-document entity linking
@@ -39,7 +38,7 @@ A density guard prevents runaway edge creation: current global edge density is c
 | `mcp_server/lib/search/entity-linker.ts` | Lib | Builds the entity catalog, finds cross-document matches, and creates `supports` edges with density-guard enforcement |
 | `mcp_server/handlers/save/post-insert.ts` | Handler | Save-time enrichment path that invokes entity linking after entity extraction succeeds |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,7 +48,6 @@ A density guard prevents runaway edge creation: current global edge density is c
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Cross-document entity linking
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/06-cross-document-entity-linking.md`

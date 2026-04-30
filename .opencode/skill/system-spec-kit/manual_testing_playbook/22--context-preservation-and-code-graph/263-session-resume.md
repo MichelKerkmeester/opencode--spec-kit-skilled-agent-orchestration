@@ -14,24 +14,14 @@ This scenario validates the detailed Session resume tool (`session_resume`). It 
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, binds explicit `args.sessionId` to the transport caller context by default, and merges everything into a single `SessionResumeResult`. Failures must degrade into hints and status fields instead of crashing the tool, except for strict auth mismatches which should reject cleanly. The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
-- **Prerequisites**:
-  - MCP server running and accessible
-  - A packet with at least one canonical recovery document (`handover.md`, `implementation-summary.md`, or sibling spec docs)
-  - Code graph database present or intentionally empty
-- **Prompt**: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume rebuilds memory from the resume ladder (handover.md -> _memory.continuity -> spec docs), reports freshness-aware code graph status (fresh, stale, empty, or error), checks CocoIndex availability, appends the shared structural ready/stale/missing contract, rejects mismatched args.sessionId values in strict mode, allows them only under the permissive rollout flag, and merges everything else into a single SessionResumeResult. The response must include memory, codeGraph, cocoIndex, structuralContext, and hints when the auth check passes. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - `memory.source` is one of `handover`, `continuity`, `spec-docs`, or `none`
-  - `memory.summary` and `memory.documents` reflect the winning ladder source when packet docs exist
-  - `codeGraph.status` is `fresh`, `stale`, `empty`, or `error`, and counts are non-negative integers
-  - cocoIndex.available is boolean, binaryPath is string
-  - structuralContext.status is one of `ready`, `stale`, `missing`
-  - structuralContext.summary is a string, `recommendedAction` is a string, and `sourceSurface === "session_resume"`
-  - hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`)
-  - strict mode rejects mismatched caller/session IDs; permissive mode logs and continues
-- **Pass/fail criteria**:
-  - PASS: All subsystem results and structuralContext fields are present in response when auth passes, the spec-doc record payload follows the resume ladder contract, degraded structural states emit the expected bootstrap guidance without throwing, and strict-vs-permissive session binding matches the documented contract
-  - FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, missing type fields, or incorrect auth-binding behavior
+
+- Objective: Verify that `session_resume` rebuilds recovery state from the current resume ladder (`handover.md -> _memory.continuity -> spec docs`), reports freshness-aware code graph status (`fresh | stale | empty | error`), checks CocoIndex availability, appends the shared structural `ready | stale | missing` contract, binds explicit `args.sessionId` to the transport caller context by default, and merges everything into a single `SessionResumeResult`; Failures must degrade into hints and status fields instead of crashing the tool, except for strict auth mismatches which should reject cleanly; The response must include `memory` (ladder-backed recovery context), `codeGraph` (freshness status with counts), `cocoIndex` (available boolean with binary path), `structuralContext` (`status`, `summary`, `recommendedAction`, `sourceSurface`), and `hints`.
+- Real user request: `` Please validate Session resume returns detailed recovery state against session_resume({}) and tell me whether the expected signals are present: `memory.source` is one of `handover`, `continuity`, `spec-docs`, or `none`; `memory.summary` and `memory.documents` reflect the winning ladder source when packet docs exist; `codeGraph.status` is `fresh`, `stale`, `empty`, or `error`, and counts are non-negative integers; cocoIndex.available is boolean, binaryPath is string; structuralContext.status is one of `ready`, `stale`, `missing`; structuralContext.summary is a string, `recommendedAction` is a string, and `sourceSurface === "session_resume"`; hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`); strict mode rejects mismatched caller/session IDs; permissive mode logs and continues. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Session resume returns detailed recovery state against session_resume({}). Verify session_resume rebuilds memory from the resume ladder (handover.md -> _memory.continuity -> spec docs), reports freshness-aware code graph status (fresh, stale, empty, or error), checks CocoIndex availability, appends the shared structural ready/stale/missing contract, rejects mismatched args.sessionId values in strict mode, allows them only under the permissive rollout flag, and merges everything else into a single SessionResumeResult. The response must include memory, codeGraph, cocoIndex, structuralContext, and hints when the auth check passes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `memory.source` is one of `handover`, `continuity`, `spec-docs`, or `none`; `memory.summary` and `memory.documents` reflect the winning ladder source when packet docs exist; `codeGraph.status` is `fresh`, `stale`, `empty`, or `error`, and counts are non-negative integers; cocoIndex.available is boolean, binaryPath is string; structuralContext.status is one of `ready`, `stale`, `missing`; structuralContext.summary is a string, `recommendedAction` is a string, and `sourceSurface === "session_resume"`; hints array present (may be empty if all subsystems healthy; degraded states should point to `session_bootstrap` and/or `code_graph_scan`); strict mode rejects mismatched caller/session IDs; permissive mode logs and continues
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All subsystem results and structuralContext fields are present in response when auth passes, the spec-doc record payload follows the resume ladder contract, degraded structural states emit the expected bootstrap guidance without throwing, and strict-vs-permissive session binding matches the documented contract; FAIL: Missing subsystem or structuralContext in response, unhandled exception from sub-call, missing type fields, or incorrect auth-binding behavior
 
 ---
 
@@ -182,8 +172,7 @@ Strict-mode rejection output plus permissive-mode response JSON
 
 Check `caller-context.ts`, `context-server.ts`, and the strict-vs-permissive branch in `session-resume.ts`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/18-session-resume-tool.md](../../feature_catalog/22--context-preservation-and-code-graph/18-session-resume-tool.md)
 

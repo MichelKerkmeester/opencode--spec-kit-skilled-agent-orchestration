@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CC-001` and confirm the
 
 - Objective: Confirm that `claude -p "<prompt>" --output-format text 2>&1` returns a coherent text response and exits 0.
 - Real user request: `Use Claude Code to explain what the following TypeScript snippet does and tell me if it has any obvious bugs: function add(a, b) { return a + b }`
-- Prompt: `As an external-AI conductor delegating a quick code-explanation task to Claude Code CLI, dispatch a single non-interactive claude -p call against a small TypeScript snippet. Verify the binary returns plain-text output and exits 0. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As an external-AI conductor delegating a quick code-explanation task to Claude Code CLI, dispatch a single non-interactive claude -p call against a small TypeScript snippet. Verify the binary returns plain-text output and exits 0. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: External-AI orchestrator constructs the prompt, runs the dispatch through Bash, captures stdout+stderr via `2>&1`, parses the output and returns a one-line verdict to the user.
 - Expected signals: Command exits 0. Stdout contains a coherent natural-language explanation of the snippet. Stderr is empty or contains only warnings. Total runtime under 60 seconds for a simple prompt.
 - Desired user-visible outcome: A short paragraph explaining the snippet plus a one-line verdict (PASS or FAIL with the reason).

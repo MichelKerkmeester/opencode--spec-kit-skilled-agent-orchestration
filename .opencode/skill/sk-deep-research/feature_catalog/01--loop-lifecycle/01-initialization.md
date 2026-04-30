@@ -34,7 +34,7 @@ Lineage handling is narrower than some older drafts. The runtime supports `new`,
 | `.opencode/skill/sk-deep-research/assets/deep_research_config.json` | Asset | Supplies the default config shape written during initialization. |
 | `.opencode/skill/sk-deep-research/assets/deep_research_strategy.md` | Asset | Supplies the initial strategy structure and anchor layout. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

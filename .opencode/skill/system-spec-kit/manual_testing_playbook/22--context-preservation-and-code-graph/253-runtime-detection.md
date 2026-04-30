@@ -14,23 +14,14 @@ This scenario validates Runtime detection.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that `detectRuntime()` correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct `hookPolicy` to each. Also verify the helper functions `areHooksAvailable()` and `getRecoveryApproach()` return correct values per runtime, with Copilot interpreted as file-based hook transport through custom instructions.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - Tests must be able to simulate environment variables for each runtime
-- **Prompt**: `As a context-and-code-graph validation operator, validate Runtime detection outputs against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct hookPolicy to each. Also verify the helper functions areHooksAvailable() and getRecoveryApproach() return correct values per runtime. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `runtime-detection.vitest.ts` pass
-  - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }` — `areHooksAvailable()` returns `true`, `getRecoveryApproach()` returns `'hooks'`
-  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when settings are missing/invalid; `unavailable` only when the Codex probe fails
-  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` exposes repo hook wiring; prompt-time context is expected in the managed custom-instructions block, not in hook stdout; `disabled_by_scope` when the repo hook config is absent
-  - Gemini CLI: hook policy is config-driven from `.gemini/settings.json`, not hardcoded
-  - Unknown: `{ runtime: 'unknown', hookPolicy: 'unknown' }` — `areHooksAvailable()` returns `false`
-  - Detection priority: claude-code checked first, then codex, copilot, gemini (first match wins)
-- **Pass/fail criteria**:
-  - PASS: All 5 runtime/hookPolicy combinations correct, helper functions return expected values, detection priority respected, and Copilot enabled policy is documented as custom-instructions transport rather than prompt-output injection
-  - FAIL: Any runtime misidentified, hookPolicy wrong, or detection order incorrect (e.g., codex env vars matching claude-code)
+
+- Objective: Verify that `detectRuntime()` correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct `hookPolicy` to each; Also verify the helper functions `areHooksAvailable()` and `getRecoveryApproach()` return correct values per runtime, with Copilot interpreted as file-based hook transport through custom instructions.
+- Real user request: `` Please validate Runtime detection outputs against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts and tell me whether the expected signals are present: All vitest tests in `runtime-detection.vitest.ts` pass; Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }` — `areHooksAvailable()` returns `true`, `getRecoveryApproach()` returns `'hooks'`; Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when settings are missing/invalid; `unavailable` only when the Codex probe fails; Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` exposes repo hook wiring; prompt-time context is expected in the managed custom-instructions block, not in hook stdout; `disabled_by_scope` when the repo hook config is absent; Gemini CLI: hook policy is config-driven from `.gemini/settings.json`, not hardcoded; Unknown: `{ runtime: 'unknown', hookPolicy: 'unknown' }` — `areHooksAvailable()` returns `false`; Detection priority: claude-code checked first, then codex, copilot, gemini (first match wins). ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Runtime detection outputs against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify detectRuntime() correctly identifies all 4 supported runtimes (claude-code, codex-cli, copilot-cli, gemini-cli) plus the unknown fallback from environment variables, and assigns the correct hookPolicy to each. Also verify the helper functions areHooksAvailable() and getRecoveryApproach() return correct values per runtime. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `runtime-detection.vitest.ts` pass; Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }` — `areHooksAvailable()` returns `true`, `getRecoveryApproach()` returns `'hooks'`; Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when settings are missing/invalid; `unavailable` only when the Codex probe fails; Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.github/hooks/*.json` exposes repo hook wiring; prompt-time context is expected in the managed custom-instructions block, not in hook stdout; `disabled_by_scope` when the repo hook config is absent; Gemini CLI: hook policy is config-driven from `.gemini/settings.json`, not hardcoded; Unknown: `{ runtime: 'unknown', hookPolicy: 'unknown' }` — `areHooksAvailable()` returns `false`; Detection priority: claude-code checked first, then codex, copilot, gemini (first match wins)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All 5 runtime/hookPolicy combinations correct, helper functions return expected values, detection priority respected, and Copilot enabled policy is documented as custom-instructions transport rather than prompt-output injection; FAIL: Any runtime misidentified, hookPolicy wrong, or detection order incorrect (e.g., codex env vars matching claude-code)
 
 ---
 
@@ -121,8 +112,7 @@ Test output showing unknown detection
 
 Ensure test clears all runtime-related env vars before assertion
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/06-runtime-detection.md](../../feature_catalog/22--context-preservation-and-code-graph/06-runtime-detection.md)
 

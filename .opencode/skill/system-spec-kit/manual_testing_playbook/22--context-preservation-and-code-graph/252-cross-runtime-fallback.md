@@ -15,22 +15,14 @@ This scenario validates Cross-runtime fallback.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that runtime detection reports the correct hook policy per runtime. Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report wrapper-backed hook wiring from `.claude/settings.local.json` while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - Environment variables can be simulated in test fixtures (e.g., `CODEX_CLI=1`, `COPILOT_CLI=1`, `GEMINI_CLI=1`)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI reports live or partial hook policy from local Codex/settings availability, Copilot CLI derives hookPolicy from `.claude/settings.local.json` wrapper wiring plus managed custom-instructions refresh, and Gemini CLI derives hookPolicy from repo config before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `runtime-detection.vitest.ts` pass
-  - Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`
-  - Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when Codex is installed but settings are missing or invalid; `unavailable` only when the probe fails.
-  - Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.claude/settings.local.json` exposes Copilot-safe top-level `type` / `bash` / `timeoutSec` wrapper fields and the `UserPromptSubmit` / `SessionStart` writer commands; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`
-  - Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`
-  - `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
-- **Pass/fail criteria**:
-  - PASS: Each runtime is correctly detected from env vars, hookPolicy matches the current runtime/config reality, Copilot custom-instructions refresh is recognized as the enabled prompt-time transport, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume
-  - FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for a runtime/config state that should fall back
+
+- Objective: Verify that runtime detection reports the correct hook policy per runtime; Claude Code must report native hooks, Codex CLI must report `live` or `partial` based on local Codex/settings availability, Copilot CLI must report wrapper-backed hook wiring from `.claude/settings.local.json` while delivering prompt-time context through the managed custom-instructions block, and Gemini CLI must follow repo-configured hook wiring before falling back to `/spec_kit:resume`.
+- Real user request: `` Please validate Runtime-aware recovery across supported runtimes against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts and tell me whether the expected signals are present: All vitest tests in `runtime-detection.vitest.ts` pass; Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`; Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when Codex is installed but settings are missing or invalid; `unavailable` only when the probe fails.; Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.claude/settings.local.json` exposes Copilot-safe top-level `type` / `bash` / `timeoutSec` wrapper fields and the `UserPromptSubmit` / `SessionStart` writer commands; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`; Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`; `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer. ``
+- RCAF Prompt: `` As a context-and-code-graph validation operator, validate Cross-runtime fallback against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/runtime-detection.vitest.ts. Verify Claude Code reports native hooks, Codex CLI reports live or partial hook policy from local Codex/settings availability, Copilot CLI derives hookPolicy from `.claude/settings.local.json` wrapper wiring plus managed custom-instructions refresh, and Gemini CLI derives hookPolicy from repo config before falling back to /spec_kit:resume. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `runtime-detection.vitest.ts` pass; Claude Code: `{ runtime: 'claude-code', hookPolicy: 'enabled' }`; Codex CLI: `{ runtime: 'codex-cli', hookPolicy: 'live' }` when Codex is installed and repo `.codex/settings.json` is valid; `partial` when Codex is installed but settings are missing or invalid; `unavailable` only when the probe fails.; Copilot CLI: `{ runtime: 'copilot-cli', hookPolicy: 'enabled' }` in this repo when `.claude/settings.local.json` exposes Copilot-safe top-level `type` / `bash` / `timeoutSec` wrapper fields and the `UserPromptSubmit` / `SessionStart` writer commands; `userPromptSubmitted` should print `{}` and refresh `SPEC-KIT-COPILOT-CONTEXT` in custom instructions; otherwise `disabled_by_scope`; Gemini CLI: `{ runtime: 'gemini-cli', hookPolicy: 'enabled' }` only when `.gemini/settings.json` contains hooks; otherwise `disabled_by_scope` or `unavailable`; `areHooksAvailable()` and `getRecoveryApproach()` follow the detected hookPolicy instead of a hardcoded per-runtime answer
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Each runtime is correctly detected from env vars, hookPolicy matches the current runtime/config reality, Copilot custom-instructions refresh is recognized as the enabled prompt-time transport, and fallback only appears when hooks are unavailable or disabled_by_scope and routes through /spec_kit:resume; FAIL: Any runtime misidentified, hookPolicy incorrect, or hooks reported as available for a runtime/config state that should fall back
 
 ---
 
@@ -165,8 +157,7 @@ Test output showing detection and recovery approach
 
 Check env var detection for GEMINI_CLI or GOOGLE_GENAI_USE_VERTEXAI
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/05-cross-runtime-fallback.md](../../feature_catalog/22--context-preservation-and-code-graph/05-cross-runtime-fallback.md)
 

@@ -43,6 +43,13 @@ Run full scans in a disposable workspace for destructive exclude/prune checks. `
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:241-278` | Handler | prunes removed files and persists indexed results |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:307-360` | Handler | returns scan counts, readiness, provenance, and verification fields |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:562-576` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/02--manual-scan-verify-status/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

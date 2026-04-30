@@ -33,7 +33,7 @@ Returns a limit-based list of available checkpoints with metadata: name, creatio
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `checkpoint_list` |
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for checkpoint tools |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,8 +46,6 @@ Returns a limit-based list of available checkpoints with metadata: name, creatio
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Checkpoint listing (checkpoint_list)
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/02-checkpoint-listing-checkpointlist.md`

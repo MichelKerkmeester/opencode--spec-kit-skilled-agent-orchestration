@@ -1,7 +1,6 @@
 ---
 title: "Math.max/min stack overflow hardening"
 description: "Tracks targeted replacement of `Math.max(...array)` spread patterns with stack-safe extrema logic, while noting residual production sites that still remain."
-audited_post_018: true
 ---
 
 # Math.max/min stack overflow hardening
@@ -45,7 +44,7 @@ Two residual production spread sites still remain outside that converted set: `m
 | `mcp_server/lib/eval/k-value-analysis.ts` | RRF K-sensitivity analysis | Residual: still uses `Math.min(...avgScores)` and `Math.max(...avgScores)` |
 | `mcp_server/lib/search/graph-lifecycle.ts` | Graph lifecycle management | Residual: still uses `Math.max(...degreeRows.map(...))` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -57,7 +56,6 @@ Two residual production spread sites still remain outside that converted set: `m
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: Math.max/min stack overflow hardening
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md`

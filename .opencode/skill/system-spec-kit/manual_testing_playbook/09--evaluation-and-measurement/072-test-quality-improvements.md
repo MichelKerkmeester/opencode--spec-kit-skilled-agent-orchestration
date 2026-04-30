@@ -13,11 +13,13 @@ This scenario validates Test quality improvements for `072`. It focuses on Confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `072` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm test quality remediations
-- Prompt: `As an evaluation validation operator, validate Test quality improvements against the documented validation surface. Verify tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm test quality remediations.
+- Real user request: `Please validate Test quality improvements against the documented validation surface and tell me whether the expected signals are present: Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained.`
+- RCAF Prompt: `As an evaluation validation operator, validate Test quality improvements against the documented validation surface. Verify tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Tests use proper teardown; assertions are specific (not generic truthy checks); no flaky timing-dependent patterns; test isolation maintained
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if changed tests follow quality patterns (proper teardown, specific assertions, no flaky timing)
 
 ---
@@ -53,8 +55,7 @@ Test inspection evidence + teardown/assertion pattern samples + reliability sign
 
 Inspect specific test changes; verify teardown completeness; check for residual flaky patterns
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/12-test-quality-improvements.md](../../feature_catalog/09--evaluation-and-measurement/12-test-quality-improvements.md)
 

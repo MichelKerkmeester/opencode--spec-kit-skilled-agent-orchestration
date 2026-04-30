@@ -1,7 +1,6 @@
 ---
 title: "Guards and edge cases"
 description: "Tracks six guard/edge-case fixes for temporal contiguity scoring, entity resolution fallback, retrieval expiry filtering, limit enforcement, embedding validation and partial-status accounting."
-audited_post_018: true
 ---
 
 # Guards and edge cases
@@ -41,7 +40,7 @@ Six guard/edge-case issues were fixed:
 | `mcp_server/lib/cognitive/temporal-contiguity.ts` | Lib | **E1**: pairwise loop uses `for (let j = i + 1; ...)` to avoid double-counting `(A,B)` and `(B,A)`. |
 | `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | **E2**: unresolved memory references return `null` (no most-recent-memory fallback). |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,7 +50,6 @@ Six guard/edge-case issues were fixed:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Guards and edge cases
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md`

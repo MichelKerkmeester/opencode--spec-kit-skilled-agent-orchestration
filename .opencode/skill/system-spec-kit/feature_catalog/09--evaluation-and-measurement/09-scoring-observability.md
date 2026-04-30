@@ -31,7 +31,7 @@ Failures are fail-safe but not silent. Initialization, insert and stats-query er
 |------|-------|------|
 | `mcp_server/lib/telemetry/scoring-observability.ts` | Lib | Scoring observability |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,14 +41,10 @@ Failures are fail-safe but not silent. Initialization, insert and stats-query er
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Scoring observability
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/09-scoring-observability.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 013

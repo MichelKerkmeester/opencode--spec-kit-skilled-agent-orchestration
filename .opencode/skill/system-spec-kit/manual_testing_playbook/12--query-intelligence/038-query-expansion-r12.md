@@ -14,11 +14,13 @@ This scenario validates Query expansion (R12) for `038`. It focuses on Confirm p
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `038` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm parallel expansion + dedup
-- Prompt: `As a query-intelligence validation operator, validate Query expansion (R12) against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm parallel expansion + dedup.
+- Real user request: `Please validate Query expansion (R12) against the documented validation surface and tell me whether the expected signals are present: Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate Query expansion (R12) against the documented validation surface. Verify complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Complex queries produce expanded variants; expanded results deduplicated against baseline; simple queries skip expansion
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Complex query generates >=2 expansion variants; results deduplicated; simple queries bypass expansion; FAIL: No expansion or duplicate results in output
 
 ---
@@ -54,8 +56,7 @@ Expanded query variants + dedup count + simple-query skip confirmation
 
 Verify expansion trigger threshold → Check dedup logic → Inspect simple-query detection
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/06-query-expansion.md](../../feature_catalog/12--query-intelligence/06-query-expansion.md)
 

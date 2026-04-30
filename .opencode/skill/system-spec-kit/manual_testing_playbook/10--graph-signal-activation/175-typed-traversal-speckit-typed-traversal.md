@@ -14,11 +14,13 @@ This scenario validates typed traversal (SPECKIT_TYPED_TRAVERSAL) for `175`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `175` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify sparse-first policy + intent-aware edge traversal scoring
-- Prompt: `As a graph-signal validation operator, validate Typed traversal (SPECKIT_TYPED_TRAVERSAL) against SPECKIT_TYPED_TRAVERSAL. Verify sparse-first policy + intent-aware edge traversal scoring. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify sparse-first policy + intent-aware edge traversal scoring.
+- Real user request: `Please validate Typed traversal (SPECKIT_TYPED_TRAVERSAL) against SPECKIT_TYPED_TRAVERSAL and tell me whether the expected signals are present: SPARSE_DENSITY_THRESHOLD=0.5 gates sparse-first policy; SPARSE_MAX_HOPS=1 constrains traversal in sparse graphs; INTENT_EDGE_PRIORITY maps intents to edge-type orderings; scoring formula = seedScore * edgePrior * hopDecay * freshness; edge prior tiers: first=1.0, second=0.75, remaining=0.5; MAX_HOPS=2 in normal mode.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Typed traversal (SPECKIT_TYPED_TRAVERSAL) against SPECKIT_TYPED_TRAVERSAL. Verify sparse-first policy + intent-aware edge traversal scoring. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: SPARSE_DENSITY_THRESHOLD=0.5 gates sparse-first policy; SPARSE_MAX_HOPS=1 constrains traversal in sparse graphs; INTENT_EDGE_PRIORITY maps intents to edge-type orderings; scoring formula = seedScore * edgePrior * hopDecay * freshness; edge prior tiers: first=1.0, second=0.75, remaining=0.5; MAX_HOPS=2 in normal mode
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if sparse graphs constrain to 1-hop and intent-aware scoring applies correct formula with edge prior tiers; FAIL if sparse graphs allow multi-hop, intent mapping missing, or scoring formula incorrect
 
 ---
@@ -57,8 +59,7 @@ Causal boost output + traversal hop count + edge prior values + scoring breakdow
 
 Verify isTypedTraversalEnabled() → Confirm flag is not forced off → Check SPARSE_DENSITY_THRESHOLD=0.5 → Inspect SPARSE_MAX_HOPS=1 enforcement → Verify INTENT_EDGE_PRIORITY mappings → Check scoring formula components
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/16-typed-traversal.md](../../feature_catalog/10--graph-signal-activation/16-typed-traversal.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

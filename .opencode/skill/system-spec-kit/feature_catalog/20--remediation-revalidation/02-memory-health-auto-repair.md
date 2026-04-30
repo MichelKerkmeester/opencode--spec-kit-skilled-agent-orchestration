@@ -1,7 +1,6 @@
 ---
 title: "Memory health auto-repair"
 description: "Documents the confirmed repair path behind `memory_health`, including FTS rebuilds, trigger-cache refreshes, and orphan cleanup for causal edges, vectors, and chunks."
-audited_post_018: true
 ---
 
 # Memory health auto-repair
@@ -54,10 +53,6 @@ Repair outcomes are returned in structured metadata rather than implied by the s
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Remediation and Revalidation
-- Source feature title: Memory health auto-repair
-- Canonical catalog source: `FEATURE_CATALOG.md`
+- Group: Remediation Revalidation
+- Canonical catalog source: `feature_catalog.md`
 - Feature file path: `20--remediation-revalidation/02-memory-health-auto-repair.md`
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit

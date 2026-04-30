@@ -13,11 +13,13 @@ This scenario validates core workflow infrastructure for `240`. It focuses on co
 
 ## 2. SCENARIO CONTRACT
 
-Operators validate the internal workflow layer through the regression suites that cover weighting, post-save review, quality scoring, and end-to-end workflow behavior, rather than trying to probe those modules one at a time through ad hoc shell calls.
 
-- Objective: Confirm the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests
-- Prompt: `As a tooling validation operator, validate Core Workflow Infrastructure against cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts. Verify the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests.
+- Real user request: `Please validate Core Workflow Infrastructure against cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts and tell me whether the expected signals are present: all targeted Vitest suites pass; post-save review assertions stay intact; indexing/scoring regressions do not fail.`
+- RCAF Prompt: `As a tooling validation operator, validate Core Workflow Infrastructure against cd .opencode/skill/system-spec-kit/scripts && npx vitest run tests/memory-indexer-weighting.vitest.ts tests/post-save-review.vitest.ts tests/quality-scorer-calibration.vitest.ts tests/generate-context-cli-authority.vitest.ts tests/workflow-e2e.vitest.ts. Verify the shared workflow layer remains stable across indexing, review, scoring, and end-to-end workflow tests. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: all targeted Vitest suites pass; post-save review assertions stay intact; indexing/scoring regressions do not fail
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the shared workflow module suites pass together without unexpected skips or failures
 
 ---
@@ -51,8 +53,7 @@ Vitest transcript showing passing suite counts and file names
 
 Inspect `scripts/core/memory-indexer.ts`, `post-save-review.ts`, `quality-scorer.ts`, `config.ts`, and workflow entrypoints if any targeted suite fails
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/26-core-workflow-infrastructure.md](../../feature_catalog/16--tooling-and-scripts/26-core-workflow-infrastructure.md)
 

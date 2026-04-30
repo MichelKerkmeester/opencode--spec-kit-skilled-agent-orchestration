@@ -1,7 +1,6 @@
 ---
 title: "Context preservation metrics"
 description: "In-memory session quality scoring and event tracking that computes a QualityScore from recency, recovery, graph freshness, and continuity factors."
-audited_post_018: true
 ---
 
 # Context preservation metrics
@@ -33,7 +32,6 @@ mcp_server/lib/session/context-metrics.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Context preservation metrics
-- Current reality source: spec 024-compact-code-graph phase 023
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/22-context-preservation-metrics.md`

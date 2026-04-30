@@ -109,8 +109,7 @@ All modified files were reviewed against sk-code-opencode standards. At HEAD, th
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/05-code-standards-alignment.md`
 
@@ -125,8 +124,4 @@ All modified files were reviewed against sk-code-opencode standards. At HEAD, th
 ---
 
 ### SOURCE METADATA
-
-- Group: Multi-agent review remediation
-- Source feature title: Code standards alignment
-- Current reality source: FEATURE_CATALOG.md
 <!-- /ANCHOR:source-metadata -->

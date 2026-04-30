@@ -35,7 +35,7 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 | `mcp_server/lib/eval/ground-truth-data.ts` | Lib | Ground truth data |
 | `mcp_server/lib/eval/reporting-dashboard.ts` | Lib | Reporting dashboard |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,14 +48,10 @@ The reporting dashboard aggregates per-sprint metric summaries (mean, min, max, 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Full reporting and ablation study framework
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/10-full-reporting-and-ablation-study-framework.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 014

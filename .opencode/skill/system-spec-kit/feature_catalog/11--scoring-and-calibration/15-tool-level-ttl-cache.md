@@ -1,7 +1,6 @@
 ---
 title: "Tool-level TTL cache"
 description: "Describes the per-tool TTL-based in-memory cache that reduces expensive embedding and database operations by SHA-256 keyed deduplication with configurable TTL and oldest-entry eviction."
-audited_post_018: true
 ---
 
 # Tool-level TTL cache
@@ -31,7 +30,7 @@ Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked 
 | `mcp_server/lib/cache/tool-cache.ts` | Lib | TTL-based tool cache with eviction |
 | `mcp_server/handlers/mutation-hooks.ts` | Handler | Cache invalidation on mutations |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +39,6 @@ Cache statistics (hits, misses, evictions, invalidations, hit rate) are tracked 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Tool-level TTL cache
-- Current reality source: audit-D04 gap backfill
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/15-tool-level-ttl-cache.md`

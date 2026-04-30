@@ -1,8 +1,6 @@
 ---
 title: "Atomic write-then-index API"
 description: "The atomic write-then-index API provides crash-safe file persistence via pending-file rename with decoupled asynchronous indexing."
-audited_post_018: true
-phase_018_change: "Phase 018 kept the atomic write/index/rename behavior but moved the canonical writer helper into handlers/save/atomic-index-memory.ts behind the spec-doc record-save wrapper."
 ---
 
 # Atomic write-then-index API
@@ -34,7 +32,7 @@ This means the current implementation is a compatibility wrapper in `memory-save
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Pending-path derivation and pending-file cleanup/recovery helpers |
 | `mcp_server/tool-schemas.ts` | Core | Tool schema definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,7 +43,6 @@ This means the current implementation is a compatibility wrapper in `memory-save
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Atomic write-then-index API
-- Current reality source: audit-D04 gap backfill
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/18-atomic-write-then-index-api.md`

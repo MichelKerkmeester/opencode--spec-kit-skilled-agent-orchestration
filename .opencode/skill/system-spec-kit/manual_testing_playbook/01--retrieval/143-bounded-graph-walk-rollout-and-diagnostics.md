@@ -15,11 +15,13 @@ This scenario validates bounded graph diagnostics for `143`. It focuses on confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `143` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify bounded graph diagnostics expose the live trace fields and preserve deterministic ordering even when any legacy rollout metadata is treated as compatibility-only
-- Prompt: `As a retrieval validation operator, validate Bounded graph diagnostics and ordering stability against memory_search({ query:"graph diagnostics stable ordering", includeTrace:true, limit:10 }). Verify bounded graph diagnostics expose the live trace fields and preserve deterministic ordering even when any legacy rollout metadata is treated as compatibility-only. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify bounded graph diagnostics expose the live trace fields and preserve deterministic ordering even when any legacy rollout metadata is treated as compatibility-only.
+- Real user request: `` Please validate Bounded graph diagnostics and ordering stability against memory_search({ query:"graph diagnostics stable ordering", includeTrace:true, limit:10 }) and tell me whether the expected signals are present: Trace diagnostics expose `raw`, `normalized`, `appliedBonus`, and `capApplied`; repeated identical runs preserve deterministic ordering; any legacy rollout-state label is compatibility metadata only and not part of the active operator contract. ``
+- RCAF Prompt: `As a retrieval validation operator, validate Bounded graph diagnostics and ordering stability against memory_search({ query:"graph diagnostics stable ordering", includeTrace:true, limit:10 }). Verify bounded graph diagnostics expose the live trace fields and preserve deterministic ordering even when any legacy rollout metadata is treated as compatibility-only. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Trace diagnostics expose `raw`, `normalized`, `appliedBonus`, and `capApplied`; repeated identical runs preserve deterministic ordering; any legacy rollout-state label is compatibility metadata only and not part of the active operator contract
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if bounded bonus and ordering remain stable and the active contract no longer depends on rollout-state transitions
 
 ---
@@ -56,8 +58,7 @@ Search outputs for repeated identical runs + trace-envelope comparison
 
 Inspect `mcp_server/formatters/search-results.ts`, `mcp_server/lib/search/hybrid-search.ts`, and `mcp_server/tests/search-results-format.vitest.ts` if the trace envelope no longer carries the bounded graph fields
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
 

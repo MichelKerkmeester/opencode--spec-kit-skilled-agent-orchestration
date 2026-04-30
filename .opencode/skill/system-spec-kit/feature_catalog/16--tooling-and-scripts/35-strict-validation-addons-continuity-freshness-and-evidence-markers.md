@@ -1,21 +1,21 @@
 ---
 title: "Strict validation add-ons: continuity freshness and evidence markers"
-description: "Phase 017 extended validate.sh --strict with continuity-freshness, evidence-marker lint, the bracket-depth audit tooling, and the normalizer lint guardrail."
+description: "The implementation extended validate.sh --strict with continuity-freshness, evidence-marker lint, the bracket-depth audit tooling, and the normalizer lint guardrail."
 ---
 
 # Strict validation add-ons: continuity freshness and evidence markers
 
 ## 1. OVERVIEW
 
-Phase 017 extended `validate.sh --strict` with continuity-freshness, evidence-marker lint, the bracket-depth audit tooling, and the normalizer lint guardrail.
+The implementation extended `validate.sh --strict` with continuity-freshness, evidence-marker lint, the bracket-depth audit tooling, and the normalizer lint guardrail.
 
-This is the tooling layer that turned the Phase 017 save-path fixes into enforceable policy. Instead of only fixing stale metadata, malformed evidence markers, or new scope-normalizer duplicates once, the validator now catches those states automatically during strict packet validation.
+This is the tooling layer that turned the save-path fixes into enforceable policy. Instead of only fixing stale metadata, malformed evidence markers, or new scope-normalizer duplicates once, the validator now catches those states automatically during strict packet validation.
 
 ---
 
 ## 2. CURRENT REALITY
 
-Phase 017 added four related validation surfaces.
+The implementation added four related validation surfaces.
 
 1. Commit `32a180bba` added `scripts/validation/continuity-freshness.ts`, which compares `_memory.continuity.last_updated_at` against `graph-metadata.json.derived.last_save_at` and warns when continuity lags by more than 10 minutes.
 2. Commit `7d85861a0` added `scripts/validation/evidence-marker-audit.ts`, a bracket-depth parser that distinguishes real malformed `[EVIDENCE:...]` markers from false positives such as parentheses inside evidence text.
@@ -38,7 +38,7 @@ The validator therefore gained both freshness enforcement and structural linting
 | `scripts/validation/evidence-marker-lint.ts` | Script | Strict lint wrapper over the evidence-marker audit parser |
 | `scripts/rules/check-normalizer-lint.sh` | Validation rule | Blocks new duplicate local scope-normalizer helpers |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,8 +50,6 @@ The validator therefore gained both freshness enforcement and structural linting
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Strict validation add-ons: continuity freshness and evidence markers
-- Phase 017 commits: `32a180bba`, `7d85861a0`, `e40dff0bb`, `ded5ece07`
-- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/implementation-summary.md`
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/35-strict-validation-addons-continuity-freshness-and-evidence-markers.md`

@@ -31,7 +31,7 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 | `mcp_server/lib/eval/eval-logger.ts` | Lib | Fail-safe logging hooks that write query, per-channel, and final-result rows to the eval database |
 | `mcp_server/lib/telemetry/eval-channel-tracking.ts` | Lib | Collects per-channel attribution payloads and graph-walk diagnostics emitted into eval logging |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,15 +40,12 @@ Logging hooks in the search, context and trigger handlers are best-effort and fa
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Evaluation database and schema
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/01-evaluation-database-and-schema.md`
 - Source list updated 2026-03-25 per deep review
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 005

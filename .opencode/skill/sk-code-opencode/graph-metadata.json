@@ -14,14 +14,14 @@
     ],
     "siblings": [
       {
-        "target": "sk-code-full-stack",
+        "target": "sk-code",
         "weight": 0.4,
-        "context": "code quality peer"
+        "context": "code quality peer (application code umbrella)"
       },
       {
-        "target": "sk-code-web",
+        "target": "sk-code-review",
         "weight": 0.4,
-        "context": "code quality peer"
+        "context": "code quality peer (review baseline)"
       }
     ],
     "conflicts_with": [],

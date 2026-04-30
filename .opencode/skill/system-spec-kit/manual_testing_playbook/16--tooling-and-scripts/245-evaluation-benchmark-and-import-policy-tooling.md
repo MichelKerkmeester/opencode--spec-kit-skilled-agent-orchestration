@@ -13,11 +13,13 @@ This scenario validates evaluation, benchmark, and import-policy tooling for `24
 
 ## 2. SCENARIO CONTRACT
 
-Operators validate the evaluation surface through the main runners, the ground-truth provenance helper, and the dedicated policy tests that guard architecture boundaries and prohibited imports.
 
-- Objective: Confirm ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage
-- Prompt: `As a tooling validation operator, validate Evaluation, benchmark, and import-policy tooling against npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run. Verify ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage.
+- Real user request: `Please validate Evaluation, benchmark, and import-policy tooling against npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run and tell me whether the expected signals are present: mapping preview logs DB provenance; ablation run succeeds and writes JSON; BM25 baseline run completes; performance benchmark writes scratch artifacts; policy suites pass.`
+- RCAF Prompt: `As a tooling validation operator, validate Evaluation, benchmark, and import-policy tooling against npx tsx .opencode/skill/system-spec-kit/scripts/evals/map-ground-truth-ids.ts --dry-run. Verify ground-truth provenance, ablation, BM25 baseline, performance benchmark, and import-policy tooling coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: mapping preview logs DB provenance; ablation run succeeds and writes JSON; BM25 baseline run completes; performance benchmark writes scratch artifacts; policy suites pass
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the runners and policy checks behave consistently with the current CLI and import-boundary contract, with invalid benchmarks clearly identified
 
 ---
@@ -55,8 +57,7 @@ Runner stdout plus the generated benchmark artifacts under the target spec folde
 
 Inspect `scripts/evals/map-ground-truth-ids.ts`, `run-ablation.ts`, `run-bm25-baseline.ts`, `run-performance-benchmarks.ts`, `check-architecture-boundaries.ts`, and `import-policy-rules.ts` if provenance, runner behavior, or policy checks fail
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md](../../feature_catalog/16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md)
 

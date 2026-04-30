@@ -1,7 +1,6 @@
 ---
 title: "AST-level section retrieval tool"
 description: "Tracks the deferred AST-based section retrieval tool for precise heading-level document access."
-audited_post_018: true
 ---
 
 # AST-level section retrieval tool
@@ -29,7 +28,6 @@ No source files yet. This feature is planned but not yet implemented.
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: AST-level section retrieval tool
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/07-ast-level-section-retrieval-tool.md`

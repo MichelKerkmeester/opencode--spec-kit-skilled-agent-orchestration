@@ -1,8 +1,6 @@
 ---
 title: "Tier-based bulk deletion (memory_bulk_delete)"
 description: "Covers the bulk delete tool that targets entire importance tiers with safety checkpoints and constitutional protection."
-audited_post_018: true
-phase_018_change: "Tier bulk delete remains live with post-018 audit coverage"
 ---
 
 # Tier-based bulk deletion (memory_bulk_delete)
@@ -45,7 +43,7 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 | `mcp_server/lib/response/envelope.ts` | Lib | Response envelope formatting |
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | `MEMORY_BULK_DELETE_MIN_OLDER_THAN_DAYS` constant and Zod schema |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -58,8 +56,8 @@ The `olderThanDays` parameter is validated as a positive integer (>= 1) before q
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Tier-based bulk deletion (memory_bulk_delete)
-- Current reality source: direct implementation audit of `memory-bulk-delete.ts`, related mutation/storage helpers, and the listed Vitest coverage
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md`
+
 - Source list updated 2026-03-26 per audit remediation

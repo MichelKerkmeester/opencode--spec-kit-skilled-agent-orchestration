@@ -1,7 +1,6 @@
 ---
 title: "Shadow scoring with holdout evaluation"
 description: "Shadow scoring compares would-have-changed rankings against live rankings on a deterministic holdout slice of queries, tracking weekly improvement cycles and gating promotion of learned signals to production via the SPECKIT_SHADOW_FEEDBACK flag."
-audited_post_018: true
 ---
 
 # Shadow scoring with holdout evaluation
@@ -34,7 +33,7 @@ Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. 
 | `mcp_server/lib/feedback/shadow-evaluation-runtime.ts` | Lib | Production runtime scheduler that replays holdout queries weekly, wired into `context-server.ts` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isShadowFeedbackEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Enabled by default (graduated). Set `SPECKIT_SHADOW_FEEDBACK=false` to disable. 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Shadow scoring with holdout evaluation
-- Current reality source: mcp_server/lib/feedback/shadow-scoring.ts module header and implementation
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md`

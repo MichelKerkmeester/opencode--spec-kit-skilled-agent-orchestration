@@ -17,12 +17,13 @@ Verify doctor-code-graph separates read-only diagnostic mode from explicit apply
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify doctor-code-graph separates read-only diagnostic mode from explicit apply-mode mutation and verification policy.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 015 (doctor apply mode policy), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify doctor-code-graph separates read-only diagnostic mode from explicit apply-mode mutation and verification policy.
+- Real user request: `Review doctor-code-graph auto and apply workflows to confirm diagnostics are read-only and apply mode has explicit verification and rollback policy.`
+- RCAF Prompt: `As a doctor-code-graph policy reviewer, inspect diagnostic and apply workflow definitions against doctor-code-graph command files. Verify read-only mode forbids mutation and apply mode limits writes before scan/query verification and rollback policy. Return PASS/FAIL with source anchors and evidence excerpts.`
+- Expected execution process: Read the documented command and YAML line ranges, and run only diagnostic mode unless using a disposable workspace for apply-mode checks.
+- Expected signals: Diagnostic auto/confirm forbids source mutation and scan; apply/apply-confirm explicitly limits writes to config/scratch, then verifies with scan/query and rollback policy.
+- Desired user-visible outcome: A concise verdict explaining whether doctor-code-graph keeps diagnostic and apply policies separate.
+- Pass/fail: PASS if diagnostic paths stay read-only and apply paths document limited writes plus verification/rollback; FAIL if diagnostic mode mutates, apply mode lacks verification policy, or medium/low tiers bypass interactive gating.
 
 ---
 
@@ -63,4 +64,3 @@ In apply-confirm, verify medium/low tiers require interactive gating.
 - Group: Code Graph Runtime
 - Playbook ID: 015
 - Canonical root source: `manual_testing_playbook.md`
-

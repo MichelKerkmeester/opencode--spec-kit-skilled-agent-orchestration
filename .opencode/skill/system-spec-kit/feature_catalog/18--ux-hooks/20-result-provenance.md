@@ -29,7 +29,7 @@ During Stage 2 fusion, each result that receives a graph-derived boost is annota
 | `mcp_server/formatters/search-results.ts` | Formatter | Graph evidence serialization in response envelope |
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | `graphEvidence` type definition |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,9 +38,8 @@ During Stage 2 fusion, each result that receives a graph-derived boost is annota
 ---
 
 ## 4. SOURCE METADATA
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/20-result-provenance.md`
 
-- Group: UX hooks
-- Source feature title: Result provenance (graph evidence)
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_RESULT_PROVENANCE=false
-- audited_post_018: true

@@ -1,9 +1,7 @@
 ---
 title: "Implementation Plan: Remove mcp-clickup skill"
 description: "Sequenced removal of the mcp-clickup skill folder, changelog, advisor data, skill graphs, and README references — all on main, no feature branch."
-trigger_phrases:
-  - "implementation plan mcp-clickup removal"
-  - "053 plan"
+trigger_phrases: ["plan mcp-clickup removal", "053 plan"]
 importance_tier: "normal"
 contextType: "general"
 _memory:
@@ -14,14 +12,7 @@ _memory:
     recent_action: "Authored implementation plan"
     next_safe_action: "Execute Phase 2 deletions and reference edits"
     blockers: []
-    key_files: []
-    session_dedup:
-      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "053-skill-removal"
-      parent_session_id: null
     completion_pct: 10
-    open_questions: []
-    answered_questions: []
 ---
 # Implementation Plan: Remove mcp-clickup skill
 

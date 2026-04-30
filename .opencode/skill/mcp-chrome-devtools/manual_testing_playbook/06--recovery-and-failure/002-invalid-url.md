@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-020` and confirm th
 
 - Objective: Verify `bdg not-a-url 2>&1` exits non-zero and stderr contains a URL parse / invalid input indication.
 - Real user request: `"What happens if I typo the URL when starting bdg?"`
-- Prompt: `As a manual-testing orchestrator, attempt to start bdg with an invalid URL (e.g., not-a-url) through the bdg CLI against an installed Chrome. Verify the error names the URL parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, attempt to start bdg with an invalid URL (e.g., not-a-url) through the bdg CLI against an installed Chrome. Verify the error names the URL parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run a single CLI command with a guaranteed-invalid URL; capture exit code and stderr; assert non-zero exit and parse-error message.
 - Expected signals: exit code != 0; stderr contains "url" / "invalid" / "parse" / "scheme" or names the bad input.
 - Desired user-visible outcome: A short report quoting the error message and exit code with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-020` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, attempt to start bdg with an invalid URL (e.g., not-a-url) through the bdg CLI against an installed Chrome. Verify the error names the URL parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, attempt to start bdg with an invalid URL (e.g., not-a-url) through the bdg CLI against an installed Chrome. Verify the error names the URL parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

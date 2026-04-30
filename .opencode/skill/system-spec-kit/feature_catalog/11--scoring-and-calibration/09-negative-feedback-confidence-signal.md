@@ -1,7 +1,6 @@
 ---
 title: "Negative feedback confidence signal"
 description: "Describes the negative validation demotion multiplier that decreases by 0.1 per negative feedback event (floor 0.3) with a 30-day half-life recovery, applied during Stage 2 feedback signals."
-audited_post_018: true
 ---
 
 # Negative feedback confidence signal
@@ -35,7 +34,7 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 | `shared/normalization.ts` | Shared | Text normalization |
 | `shared/types.ts` | Shared | Type definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -52,7 +51,6 @@ Negative feedback events are persisted to a `negative_feedback_events` table. Th
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Negative feedback confidence signal
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/09-negative-feedback-confidence-signal.md`

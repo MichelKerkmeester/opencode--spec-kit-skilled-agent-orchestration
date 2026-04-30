@@ -1,17 +1,17 @@
 ---
-title: "DRV-023 -- Review reducer fails closed on corruption and missing anchors"
+title: "DRV-034 -- Review reducer fails closed on corruption and missing anchors"
 description: "Verify that malformed JSONL exits 2 unless --lenient is passed, and missing machine-owned anchors block reducer writes unless --create-missing-anchors is used."
 ---
 
-# DRV-023 -- Review reducer fails closed on corruption and missing anchors
+# DRV-034 -- Review reducer fails closed on corruption and missing anchors
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-023`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-034`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates fail-closed reducer behavior for `DRV-023`. The objective is to verify that malformed JSONL blocks the reducer unless `--lenient` is passed, that missing machine-owned anchors block strategy rewrites unless `--create-missing-anchors` is passed, and that `corruptionWarnings` remains visible in reducer-owned state even when lenient recovery is used.
+This scenario validates fail-closed reducer behavior for `DRV-034`. The objective is to verify that malformed JSONL blocks the reducer unless `--lenient` is passed, that missing machine-owned anchors block strategy rewrites unless `--create-missing-anchors` is passed, and that `corruptionWarnings` remains visible in reducer-owned state even when lenient recovery is used.
 
 ### WHY THIS MATTERS
 
@@ -92,7 +92,7 @@ Privilege `reduce-state.cjs` for exit semantics and `review-reducer-fail-closed.
 ## 5. SOURCE METADATA
 
 - Group: CONVERGENCE AND RECOVERY
-- Playbook ID: DRV-023
+- Playbook ID: DRV-034
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/023-fail-closed-reducer.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-04-11.

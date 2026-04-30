@@ -13,11 +13,13 @@ This scenario validates Schema and type contract synchronization for `211`. It f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `211` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm `checkpoint_delete.confirmName` and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries
-- Prompt: `As a runtime-hook validation operator, validate Schema and type contract synchronization against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify checkpoint_delete.confirmName and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm `checkpoint_delete.confirmName` and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries.
+- Real user request: `` Please validate Schema and type contract synchronization against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts and tell me whether the expected signals are present: Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Schema and type contract synchronization against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-checkpoints.vitest.ts tests/tool-input-schema.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify checkpoint_delete.confirmName and mutation-hook result contracts stay aligned across schema, handler, and tool boundaries. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Checkpoint-delete tests reject missing or mismatched `confirmName`, tool-schema validation accepts matching payloads, and mutation-hook/save-path suites confirm the shared result contract remains synchronized
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the contract suites pass and the assertions confirm `confirmName` is required everywhere while mutation-hook result fields stay aligned across runtime and response boundaries
 
 ---
@@ -53,8 +55,7 @@ Test transcript + key assertion output for schema validation and shared result-c
 
 Inspect `handlers/checkpoints.ts`, `schemas/tool-input-schemas.ts`, `tool-schemas.ts`, `tools/types.ts`, and hook result type definitions if any contract diverges
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/04-schema-and-type-contract-synchronization.md](../../feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md)
 

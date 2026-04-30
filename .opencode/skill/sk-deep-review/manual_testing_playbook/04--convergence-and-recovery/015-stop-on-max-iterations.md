@@ -1,17 +1,17 @@
 ---
-title: "DRV-015 -- Stop on max iterations"
+title: "DRV-030 -- Stop on max iterations"
 description: "Verify review stops at maxIterations (default 7) even if dimensions remain uncovered."
 ---
 
-# DRV-015 -- Stop on max iterations
+# DRV-030 -- Stop on max iterations
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-015`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-030`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates stop on max iterations for `DRV-015`. The objective is to verify that the review loop stops at `maxIterations` (default 7) even if review dimensions remain uncovered.
+This scenario validates stop on max iterations for `DRV-030`. The objective is to verify that the review loop stops at `maxIterations` (default 7) even if review dimensions remain uncovered.
 
 ### WHY THIS MATTERS
 
@@ -82,7 +82,7 @@ Privilege the convergence reference for exact algorithm and use YAML workflow st
 ## 5. SOURCE METADATA
 
 - Group: CONVERGENCE AND RECOVERY
-- Playbook ID: DRV-015
+- Playbook ID: DRV-030
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/015-stop-on-max-iterations.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

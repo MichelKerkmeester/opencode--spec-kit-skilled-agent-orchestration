@@ -1,7 +1,6 @@
 ---
 title: "Runtime remediation, revalidation, and auto-repair workflows"
 description: "Maps the live runtime safety surface for remediation: preflight checks, V-rule enforcement, save-time auto-fix and revalidation, health auto-repair, validation feedback, and checkpoint-backed rollback."
-audited_post_018: true
 ---
 
 # Runtime remediation, revalidation, and auto-repair workflows
@@ -51,7 +50,6 @@ The remediation surface is distributed but coherent:
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-health.ts` | Handler | Diagnostics and explicitly confirmed auto-repair for FTS, trigger cache, orphaned edges, vectors, chunks, and alias-health reporting |
 
 ## 4. SOURCE METADATA
-
-- Group: Remediation and Revalidation
-- Source feature title: Runtime remediation, revalidation, and auto-repair workflows
-- Source spec: Deep research remediation 2026-03-26
+- Group: Remediation Revalidation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `20--remediation-revalidation/01-category-stub.md`

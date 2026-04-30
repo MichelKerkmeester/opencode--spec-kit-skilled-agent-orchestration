@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-012` and confirm th
 
 - Objective: Verify `bdg network getCookies 2>&1 | jq '.'` succeeds and returns a JSON array (length may be 0).
 - Real user request: `"Show me the cookies on this page."`
-- Prompt: `As a manual-testing orchestrator, retrieve cookies from the active page through the bdg CLI against an active session. Verify output is JSON array (may be empty for example.com). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, retrieve cookies from the active page through the bdg CLI against an active session. Verify output is JSON array (may be empty for example.com). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session (BDG-002); run getCookies; verify JSON-array shape.
 - Expected signals: `bdg network getCookies` exits 0; `jq '.'` parses successfully; `jq 'type'` reports `array`.
 - Desired user-visible outcome: A short report stating the cookie count (e.g., "0 cookies on example.com") with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-012` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, retrieve cookies from the active page through the bdg CLI against an active session. Verify output is JSON array (may be empty for example.com). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, retrieve cookies from the active page through the bdg CLI against an active session. Verify output is JSON array (may be empty for example.com). Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

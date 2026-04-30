@@ -14,11 +14,13 @@ This scenario validates Memory filename uniqueness (ensureUniqueMemoryFilename) 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `119` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm collision resolution
-- Prompt: `As a spec-doc record-quality validation operator, validate Memory filename uniqueness (ensureUniqueMemoryFilename) against -1. Verify memory filename uniqueness (ensureUniqueMemoryFilename). Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: 
+- Objective: Confirm collision resolution.
+- Real user request: `` Please validate Memory filename uniqueness (ensureUniqueMemoryFilename) against -1 and tell me whether the expected signals are present: Second save produces filename with `-1` suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) | 0` coercion; and `memoryNameHistory` is updated. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Memory filename uniqueness (ensureUniqueMemoryFilename) against -1. Verify memory filename uniqueness (ensureUniqueMemoryFilename). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Second save produces filename with `-1` suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence) | 0` coercion; and `memoryNameHistory` is updated
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: Second save produces filename with -1 suffix; both files exist with distinct names; exhausting `-1` through `-100` collisions triggers a random 12-hex fallback suffix from `crypto.randomBytes(6).toString('hex')`, not SHA1; repeated fallback saves still reserve distinct filenames; `memorySequence` increments through the hardened `Number(existing.memorySequence)
 
 ---
@@ -59,8 +61,7 @@ Saved filenames + collision-run outputs + `description.json` state before and af
 
 Inspect the `ensureUniqueMemoryFilename` path, the random-fallback suffix generation, and the `description.json` update flow if collision handling regresses.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
 

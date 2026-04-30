@@ -13,11 +13,13 @@ This scenario validates Hooks barrel + README synchronization for `106`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `106` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm hooks index exports and docs cover the finalized modules and contract fields
-- Prompt: `As a runtime-hook validation operator, validate Hooks barrel + README synchronization against the documented validation surface. Verify hooks index exports and docs cover the finalized modules and contract fields. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm hooks index exports and docs cover the finalized modules and contract fields.
+- Real user request: `` Please validate Hooks barrel + README synchronization against the documented validation surface and tell me whether the expected signals are present: Both barrel (`hooks/index.ts`) and README (`hooks/README.md`) reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Hooks barrel + README synchronization against the documented validation surface. Verify hooks index exports and docs cover the finalized modules and contract fields. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Both barrel (`hooks/index.ts`) and README (`hooks/README.md`) reference `mutation-feedback`, `response-hints`, `MutationHookResult`, and `postMutationHooks`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if both files reference the new modules and contract fields
 
 ---
@@ -53,8 +55,7 @@ ripgrep output snippets
 
 Inspect hooks/index.ts exports and hooks/README.md for missing entries
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/12-hooks-readme-and-export-alignment.md](../../feature_catalog/18--ux-hooks/12-hooks-readme-and-export-alignment.md)
 

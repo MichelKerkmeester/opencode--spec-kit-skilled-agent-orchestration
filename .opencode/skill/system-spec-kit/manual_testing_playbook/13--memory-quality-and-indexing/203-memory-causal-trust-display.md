@@ -14,11 +14,13 @@ This scenario validates memory causal trust display for `203`. It focuses on add
 
 ## 2. SCENARIO CONTRACT
 
-Operators validate the display layer, not storage. The scenario confirms `memory_search` results surface `trustBadges` derived from existing causal-edge metadata, and that response profiles preserve the same per-result badge payload instead of dropping it during shaping.
 
-- Objective: Verify additive per-result trust badges for confidence, extraction age, last access age, orphan status, and weight-history change state
-- Prompt: `As a spec-doc record-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify additive per-result trust badges for confidence, extraction age, last access age, orphan status, and weight-history change state.
+- Real user request: `` Please validate Memory causal trust display against the search-result formatter and response-profile layer and tell me whether the expected signals are present: `trustBadges` appear on search results; confidence is sourced from edge strength; ages render from causal-edge timestamps; orphan becomes true when inbound causal edges are absent; weight-history change becomes true when `weight_history` contains a connected edge; quick and research profiles preserve the badge payload. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Memory causal trust display against the search-result formatter and response-profile layer. Verify trustBadges are additive, derived from existing causal-edge metadata only, preserved through response profiles, and do not require schema or relation-vocabulary changes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `trustBadges` appear on search results; confidence is sourced from edge strength; ages render from causal-edge timestamps; orphan becomes true when inbound causal edges are absent; weight-history change becomes true when `weight_history` contains a connected edge; quick and research profiles preserve the badge payload
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if formatter output contains the five badge fields with stable values and response profiles preserve them. FAIL if badges are missing, top-level only, dependent on new schema, or stripped by profile formatting.
 
 ---
@@ -67,8 +69,7 @@ Saved `rg` output, static diff output for the protected files, the final Vitest 
 - **Block A**: Inspect `mcp_server/formatters/search-results.ts` for badge derivation + DB lookup, `mcp_server/lib/response/profile-formatters.ts` for profile preservation, `mcp_server/tests/memory/trust-badges.test.ts` for runtime contract. Note: 010/007/T-E DI fix exposes `fetchTrustBadgeSnapshots` with optional `dbGetter` parameter; trust-badges suite was previously `describe.skip` and is now 3/3 PASS.
 - **Block B**: Inspect `mcp_server/lib/storage/causal-edges.ts` for `causalEdgesGeneration` counter + `invalidateDegreeCache()` mutator; `mcp_server/lib/search/search-utils.ts` for `causalEdgesGeneration?: number` on `CacheArgsInput` gated by `enableCausalBoost === true`; `mcp_server/handlers/memory-search.ts` for the import + thread-through (010/007/T-F R-007-12).
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/28-memory-causal-trust-display.md](../../feature_catalog/13--memory-quality-and-indexing/28-memory-causal-trust-display.md)
 - Source files: `mcp_server/formatters/search-results.ts`, `mcp_server/lib/response/profile-formatters.ts`

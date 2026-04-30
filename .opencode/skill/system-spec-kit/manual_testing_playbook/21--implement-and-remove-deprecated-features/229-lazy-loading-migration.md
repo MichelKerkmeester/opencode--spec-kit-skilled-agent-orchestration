@@ -15,11 +15,13 @@ This scenario validates Lazy-loading migration and warmup compatibility for `229
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `229` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces
-- Prompt: `As a canonical-continuity validation operator, validate Lazy-loading migration and warmup compatibility against the documented validation surface. Verify lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces.
+- Real user request: `` Please validate Lazy-loading migration and warmup compatibility against the documented validation surface and tell me whether the expected signals are present: The targeted lazy-loading and context-server tests pass, `shouldEagerWarmup()` stays false by default, startup logs say lazy loading is enabled, and the deprecated warmup flags are only acknowledged in compatibility messaging. ``
+- RCAF Prompt: `As a canonical-continuity validation operator, validate Lazy-loading migration and warmup compatibility against the documented validation surface. Verify lazy embedding initialization is the only live startup path while the old warmup flags remain deprecated compatibility surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: The targeted lazy-loading and context-server tests pass, `shouldEagerWarmup()` stays false by default, startup logs say lazy loading is enabled, and the deprecated warmup flags are only acknowledged in compatibility messaging
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted checks confirm startup always follows the lazy path and the legacy warmup flags do not restore eager initialization behavior
 
 ---
@@ -56,8 +58,7 @@ Vitest transcript plus the source excerpts showing the lazy startup branch and d
 
 Inspect `context-server.ts`, `lib/providers/embeddings.ts`, and `../shared/embeddings.ts`; confirm no test setup or shell environment is forcing legacy warmup behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md](../../feature_catalog/21--implement-and-remove-deprecated-features/02-lazy-loading-migration-and-warmup-compatibility.md)
 

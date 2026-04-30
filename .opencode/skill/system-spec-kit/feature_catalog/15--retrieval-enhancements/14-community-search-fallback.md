@@ -1,7 +1,6 @@
 ---
 title: "Community-level search fallback"
 description: "searchCommunities() provides topic-level fallback via word overlap scoring against community summaries, surfacing broad topical matches when fine-grained retrieval fails, gated by the SPECKIT_COMMUNITY_SEARCH_FALLBACK flag."
-audited_post_018: true
 ---
 
 # Community-level search fallback
@@ -28,7 +27,7 @@ The `searchCommunities()` function scores the query against community summaries 
 |------|-------|------|
 | `mcp_server/lib/search/community-search.ts` | Lib | `searchCommunities()` — word overlap scoring against community summaries |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,8 +36,8 @@ The `searchCommunities()` function scores the query against community summaries 
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/14-community-search-fallback.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Community-level search fallback
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_COMMUNITY_SEARCH_FALLBACK=false

@@ -14,11 +14,13 @@ This scenario validates Auto-promotion on validation (T002a) for `032`. It focus
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `032` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm promotion thresholds/throttle
-- Prompt: `As a scoring validation operator, validate Auto-promotion on validation (T002a) against the documented validation surface. Verify positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm promotion thresholds/throttle.
+- Real user request: `Please validate Auto-promotion on validation (T002a) against the documented validation surface and tell me whether the expected signals are present: Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged.`
+- RCAF Prompt: `As a scoring validation operator, validate Auto-promotion on validation (T002a) against the documented validation surface. Verify positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Positive validations promote tier at configured threshold; throttle prevents rapid re-promotion; audit trail logged
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Promotion occurs at threshold count; throttle blocks re-promotion within window; audit row created; FAIL: Promotion at wrong threshold or throttle bypassed
 
 ---
@@ -54,8 +56,7 @@ Tier change log + throttle enforcement evidence + promotion audit trail
 
 Verify promotion threshold configuration → Check throttle window duration → Inspect audit logging
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/10-auto-promotion-on-validation.md](../../feature_catalog/11--scoring-and-calibration/10-auto-promotion-on-validation.md)
 

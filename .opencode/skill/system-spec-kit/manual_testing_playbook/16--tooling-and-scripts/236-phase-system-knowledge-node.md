@@ -13,11 +13,13 @@ This scenario validates phase-system knowledge node for `236`. It focuses on con
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that the phase-system reference is not just descriptive: the shipped tests, validation fixtures, and rule runner all reflect the documented parent-child phase topology and recursive validation workflow.
 
-- Objective: Confirm the documented phase model aligns with the live creation, workflow, and validation surfaces
-- Prompt: `As a tooling validation operator, validate Phase-System Knowledge Node against bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh. Verify the documented phase model aligns with the live creation, workflow, and validation surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm the documented phase model aligns with the live creation, workflow, and validation surfaces.
+- Real user request: `Please validate Phase-System Knowledge Node against bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh and tell me whether the expected signals are present: phase-system shell and JS tests pass; recursive validation succeeds on the valid-phase fixture; direct phase-link validation passes.`
+- RCAF Prompt: `As a tooling validation operator, validate Phase-System Knowledge Node against bash .opencode/skill/system-spec-kit/scripts/tests/test-phase-system.sh. Verify the documented phase model aligns with the live creation, workflow, and validation surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: phase-system shell and JS tests pass; recursive validation succeeds on the valid-phase fixture; direct phase-link validation passes
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the knowledge node's promised phase workflow is reflected by the executable scripts and fixtures
 
 ---
@@ -54,8 +56,7 @@ Test transcript, recursive validation output, and direct rule output
 
 Inspect `nodes/phase-system.md`, `scripts/tests/test-phase-system.sh`, `scripts/spec/validate.sh`, and `scripts/rules/check-phase-links.sh` if the documented model diverges from executable behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/22-phase-system-knowledge-node.md](../../feature_catalog/16--tooling-and-scripts/22-phase-system-knowledge-node.md)
 

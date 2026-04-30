@@ -1,7 +1,6 @@
 ---
 title: "Always-on graph context injection"
 description: "injectGraphContext() runs concept routing and a 1-hop causal walk even without seed results, ensuring graph-derived context is always available to enrich search output, gated by the SPECKIT_GRAPH_CONTEXT_INJECTION flag."
-audited_post_018: true
 ---
 
 # Always-on graph context injection
@@ -28,7 +27,7 @@ The `injectGraphContext()` function in `causal-boost.ts` performs concept routin
 |------|-------|------|
 | `mcp_server/lib/search/causal-boost.ts` | Lib | `injectGraphContext()` — unconditional concept routing and 1-hop causal walk |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,8 +36,8 @@ The `injectGraphContext()` function in `causal-boost.ts` performs concept routin
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/13-always-on-graph-context-injection.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Always-on graph context injection
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_GRAPH_CONTEXT_INJECTION=false

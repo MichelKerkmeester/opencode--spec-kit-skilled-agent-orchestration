@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-015` and confirm th
 
 - Objective: Verify `Promise.all([navigate+shot on _1, navigate+shot on _2])` returns an array of length 2 with both shot byte lengths > 1000, and total wall time < 2× single-instance baseline.
 - Real user request: `"Open example.com on one browser and example.org on another at the same time and screenshot both."`
-- Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com and chrome_devtools_2 to https://example.org in parallel via Promise.all through Code Mode against both MCP instances. Verify both return successfully and total wall time < 2x single-instance time. Cross-reference: depends on CM-012 (Promise.all parallel). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com and chrome_devtools_2 to https://example.org in parallel via Promise.all through Code Mode against both MCP instances. Verify both return successfully and total wall time < 2x single-instance time. Cross-reference: depends on CM-012 (Promise.all parallel). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: build a Code Mode script that runs both navigate+screenshot pairs inside `Promise.all`, measure wall time, assert array shape and byte lengths.
 - Expected signals: result is array of length 2; both shot byte lengths > 1000; wall time < 2× the prior single-instance run from BDG-014.
 - Desired user-visible outcome: A short report quoting both URLs, both byte lengths, total wall time, and a comparison vs. single-instance baseline with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-015` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com and chrome_devtools_2 to https://example.org in parallel via Promise.all through Code Mode against both MCP instances. Verify both return successfully and total wall time < 2x single-instance time. Cross-reference: depends on CM-012 (Promise.all parallel). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com and chrome_devtools_2 to https://example.org in parallel via Promise.all through Code Mode against both MCP instances. Verify both return successfully and total wall time < 2x single-instance time. Cross-reference: depends on CM-012 (Promise.all parallel). Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

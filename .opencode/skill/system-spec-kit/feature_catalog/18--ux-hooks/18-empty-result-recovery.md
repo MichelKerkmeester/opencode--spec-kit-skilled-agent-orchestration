@@ -40,7 +40,7 @@ The recommended actions are: `retry_broader`, `switch_mode`, `save_memory`, or `
 | `mcp_server/lib/search/recovery-payload.ts` | Lib | Recovery status classification, reason inference, suggested query generation, payload construction |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Central flag registry reference |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,8 +49,6 @@ The recommended actions are: `retry_broader`, `switch_mode`, `save_memory`, or `
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks
-- Source feature title: Empty result recovery
-- Current reality source: mcp_server/lib/search/recovery-payload.ts module header and implementation
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/18-empty-result-recovery.md`

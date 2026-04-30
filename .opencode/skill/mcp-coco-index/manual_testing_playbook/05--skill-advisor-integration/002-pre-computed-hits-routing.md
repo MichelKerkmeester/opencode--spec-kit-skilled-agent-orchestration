@@ -10,7 +10,7 @@ description: "This scenario validates Pre-computed hits routing for `ADV-002`. I
 - [1. OVERVIEW](#1--overview)
 - [2. SCENARIO CONTRACT](#2--scenario-contract)
 - [3. TEST EXECUTION](#3--test-execution)
-- [4. REFERENCES](#4--references)
+- [4. SOURCE FILES](#4--source-files)
 - [5. SOURCE METADATA](#5--source-metadata)
 
 ## 1. OVERVIEW
@@ -25,8 +25,11 @@ This scenario validates Pre-computed hits routing for `ADV-002`. It focuses on V
 Operators run the exact prompt and command sequence for `ADV-002` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify `--semantic-hits` with JSON array boosts confidence for the referenced skill
-- Prompt: `As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify sk-git appears in the semantic-hits run, its confidence is higher than in the baseline run, and the boosted reason references semantic input. Return a concise user-facing pass/fail verdict with the main reason.`
+- Real user request: `Please verify --semantic-hits with JSON array boosts confidence for the referenced skill.`
+- RCAF Prompt: `As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Both JSON outputs are valid; sk-git appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted reason references semantic input. Return a concise user-visible pass/fail verdict with the main reason.`
+- Expected execution process: Run the TEST EXECUTION command sequence for `ADV-002`, capture the listed evidence, compare observed output with the expected signals, and return the verdict to the user.
 - Expected signals: Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted `reason` references semantic input
+- Desired user-visible outcome: A concise user-visible PASS/PARTIAL/FAIL verdict naming whether the scenario satisfied the objective and the main reason.
 - Pass/fail: PASS if `sk-git` appears in the semantic-hits run with confidence higher than the baseline run; PARTIAL if `sk-git` appears but confidence is unchanged; FAIL if command errors or `sk-git` is absent from the semantic-hits run
 
 
@@ -36,12 +39,12 @@ Operators run the exact prompt and command sequence for `ADV-002` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| ADV-002 | Pre-computed hits routing | Verify `--semantic-hits` with JSON array boosts confidence for the referenced skill | `As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify sk-git appears in the semantic-hits run, its confidence is higher than in the baseline run, and the boosted reason references semantic input. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "deploy to production" --show-rejections` -> 2. Capture baseline JSON output and `sk-git` confidence if present -> 3. `bash: python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "deploy to production" --semantic-hits '[{"path":".opencode/skill/sk-git/SKILL.md","score":0.92}]' --show-rejections` -> 4. Capture semantic-hits JSON output and compare the `sk-git` confidence against the baseline run | Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted `reason` references semantic input | Baseline and semantic-hits JSON outputs with the `sk-git` entries highlighted | PASS if `sk-git` appears in the semantic-hits run with confidence higher than the baseline run; PARTIAL if `sk-git` appears but confidence is unchanged; FAIL if command errors or `sk-git` is absent from the semantic-hits run | Verify `--semantic-hits` JSON is valid (must be array of objects with `path` and `score`); check skill_advisor.py `SEMANTIC_BOOST_MULTIPLIER` config; confirm the same query string is used in both runs |
+| ADV-002 | Pre-computed hits routing | Verify `--semantic-hits` with JSON array boosts confidence for the referenced skill | `As a manual-testing orchestrator, run skill advisor twice for the same deployment query: first without semantic hits, then with pre-computed CocoIndex hits against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Both JSON outputs are valid; sk-git appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted reason references semantic input. Return a concise user-visible pass/fail verdict with the main reason.` | 1. `bash: python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "deploy to production" --show-rejections` -> 2. Capture baseline JSON output and `sk-git` confidence if present -> 3. `bash: python3 .opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py "deploy to production" --semantic-hits '[{"path":".opencode/skill/sk-git/SKILL.md","score":0.92}]' --show-rejections` -> 4. Capture semantic-hits JSON output and compare the `sk-git` confidence against the baseline run | Both JSON outputs are valid; `sk-git` appears in the semantic-hits run; its confidence is higher than in the baseline run; boosted `reason` references semantic input | Baseline and semantic-hits JSON outputs with the `sk-git` entries highlighted | PASS if `sk-git` appears in the semantic-hits run with confidence higher than the baseline run; PARTIAL if `sk-git` appears but confidence is unchanged; FAIL if command errors or `sk-git` is absent from the semantic-hits run | Verify `--semantic-hits` JSON is valid (must be array of objects with `path` and `score`); check skill_advisor.py `SEMANTIC_BOOST_MULTIPLIER` config; confirm the same query string is used in both runs |
 
 
 ---
 
-## 4. REFERENCES
+## 4. SOURCE FILES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 

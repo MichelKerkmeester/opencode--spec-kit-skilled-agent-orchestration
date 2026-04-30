@@ -43,7 +43,7 @@ The no-symlinks policy is documented in `ARCHITECTURE.md` under "No Symlinks in 
 | `mcp_server/lib/MODULE_MAP.md` | Documentation | Module ownership map, dependency directions, canonical locations |
 | `ARCHITECTURE.md` | Documentation | No-symlinks policy and source-dist alignment policy |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -52,7 +52,6 @@ The no-symlinks policy is documented in `ARCHITECTURE.md` under "No Symlinks in 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Module boundary map
-- Current reality source: mcp_server/lib/MODULE_MAP.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/15-module-boundary-map.md`

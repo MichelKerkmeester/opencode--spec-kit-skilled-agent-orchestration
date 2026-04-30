@@ -13,13 +13,14 @@ This scenario validates the read-path contract. Structural code graph freshness 
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Modify a tracked file, run `code_graph_query`, verify selective self-heal metadata, and confirm full scans remain operator-triggered.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - Code Graph MCP tools are available.
-  - Use a disposable workspace copy for file mutations.
-  - Initial graph scan has completed for the disposable workspace.
-- **Prompt**: `As a code-graph operator, in a disposable workspace run code_graph_scan, modify one tracked TypeScript file, call code_graph_query for that file, verify readiness shows selective_reindex with inlineIndexPerformed true or selfHealResult ok, and confirm no full_scan was auto-triggered. Return PASS/FAIL with the query payload and the explicit full-scan handoff evidence.`
+
+- Objective: Modify a tracked file, run `code_graph_query`, verify selective self-heal metadata, and confirm full scans remain operator-triggered.
+- Real user request: `` Please validate Code graph read-path selective self-heal against the documented validation surface and tell me whether the expected signals are present: Step 1 scan returns an indexed graph with non-zero files/nodes.; Step 3 returns `status: "ok"` and readiness/canonical readiness metadata showing bounded repair, such as `action: "selective_reindex"`, `inlineIndexPerformed: true`, or `selfHealResult: "ok"`.; Step 4 does not report a broad `full_scan` performed automatically.; Step 5 query returns a blocked payload when the stale set exceeds the selective threshold: `status: "blocked"`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, and `fallbackDecision.nextTool: "code_graph_scan"` when present.; No transcript line shows an unrequested `code_graph_scan` during the query path. ``
+- RCAF Prompt: `` As a context-and-code-graph validation operator, validate Code graph read-path selective self-heal against the documented validation surface. Verify Step 1 scan returns an indexed graph with non-zero files/nodes.; Step 3 returns `status: "ok"` and readiness/canonical readiness metadata showing bounded repair, such as `action: "selective_reindex"`, `inlineIndexPerformed: true`, or `selfHealResult: "ok"`.; Step 4 does not report a broad `full_scan` performed automatically.; Step 5 query returns a blocked payload when the stale set exceeds the selective threshold: `status: "blocked"`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, and `fallbackDecision.nextTool: "code_graph_scan"` when present.; No transcript line shows an unrequested `code_graph_scan` during the query path. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Step 1 scan returns an indexed graph with non-zero files/nodes.; Step 3 returns `status: "ok"` and readiness/canonical readiness metadata showing bounded repair, such as `action: "selective_reindex"`, `inlineIndexPerformed: true`, or `selfHealResult: "ok"`.; Step 4 does not report a broad `full_scan` performed automatically.; Step 5 query returns a blocked payload when the stale set exceeds the selective threshold: `status: "blocked"`, `requiredAction: "code_graph_scan"`, `blockReason: "full_scan_required"`, and `fallbackDecision.nextTool: "code_graph_scan"` when present.; No transcript line shows an unrequested `code_graph_scan` during the query path
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if the expected signals are present without contradicting evidence; FAIL if required signals are missing or execution cannot complete.
 
 ---
 
@@ -90,8 +91,7 @@ rm -rf "$WORK"
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Existing scan/query scenario: [254-code-graph-scan-query.md](254-code-graph-scan-query.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts`

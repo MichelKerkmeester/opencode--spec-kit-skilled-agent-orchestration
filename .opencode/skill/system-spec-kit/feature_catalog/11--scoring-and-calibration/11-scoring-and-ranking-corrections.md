@@ -1,7 +1,6 @@
 ---
 title: "Scoring and ranking corrections"
 description: "Covers four scoring-layer bug fixes: composite score overflow clamping, citation fallback chain removal, causal-boost cycle deduplication and ablation binomial overflow prevention."
-audited_post_018: true
 ---
 
 # Scoring and ranking corrections
@@ -41,7 +40,7 @@ Four scoring-layer bugs were fixed:
 | C3 | `mcp_server/lib/search/causal-boost.ts` | Lib | Recursive CTE cycle-safe traversal (`UNION` dedupe) |
 | C4 | `mcp_server/lib/eval/ablation-framework.ts` | Lib | Log-space binomial summation for stable sign test |
 
-### Tests
+### Validation And Tests
 
 | Correction | File | Focus |
 |------------|------|-------|
@@ -53,7 +52,6 @@ Four scoring-layer bugs were fixed:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Scoring and ranking corrections
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/11-scoring-and-ranking-corrections.md`

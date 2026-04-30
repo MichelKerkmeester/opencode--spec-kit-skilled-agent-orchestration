@@ -14,20 +14,14 @@ This scenario validates Session health tool (session_health).
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that session_health correctly computes session status based on time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). Response must include structured details (sessionAgeMs, lastToolCallAgoMs, graphFreshness, specFolder, primingStatus), a QualityScore with 4 factors (recency, recovery, graphFreshness, continuity), and actionable hints.
-- **Prerequisites**:
-  - MCP server running and accessible
-  - At least one prior tool call in the session (to establish timestamps)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Session health reports ok/warning/stale status against session_health({}). Verify session_health correctly computes session status based on time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). Response must include structured details (sessionAgeMs, lastToolCallAgoMs, graphFreshness, specFolder, primingStatus), a QualityScore with 4 factors (recency, recovery, graphFreshness, continuity), and actionable hints. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - status === 'ok' when called shortly after another tool call
-  - All detail fields present with numeric values for age/time fields
-  - graphFreshness is one of: fresh, stale, empty, error
-  - qualityScore.level is 'healthy' for a fresh session
-  - qualityScore.factors has all 4 keys with values 0.0-1.0
-- **Pass/fail criteria**:
-  - PASS: Status correct for timing, all detail fields present, quality score computed with valid factors
-  - FAIL: Wrong status for timing, missing detail fields, or quality score factors missing/out of range
+
+- Objective: Verify that session_health correctly computes session status based on time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours); Response must include structured details (sessionAgeMs, lastToolCallAgoMs, graphFreshness, specFolder, primingStatus), a QualityScore with 4 factors (recency, recovery, graphFreshness, continuity), and actionable hints.
+- Real user request: `Please validate Session health reports ok/warning/stale status against session_health({}) and tell me whether the expected signals are present: status === 'ok' when called shortly after another tool call; All detail fields present with numeric values for age/time fields; graphFreshness is one of: fresh, stale, empty, error; qualityScore.level is 'healthy' for a fresh session; qualityScore.factors has all 4 keys with values 0.0-1.0.`
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Session health reports ok/warning/stale status against session_health({}). Verify session_health correctly computes session status based on time thresholds: ok (last tool call within 15 minutes), warning (within 60 minutes), stale (beyond 60 minutes or session older than 24 hours). Response must include structured details (sessionAgeMs, lastToolCallAgoMs, graphFreshness, specFolder, primingStatus), a QualityScore with 4 factors (recency, recovery, graphFreshness, continuity), and actionable hints. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: status === 'ok' when called shortly after another tool call; All detail fields present with numeric values for age/time fields; graphFreshness is one of: fresh, stale, empty, error; qualityScore.level is 'healthy' for a fresh session; qualityScore.factors has all 4 keys with values 0.0-1.0
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Status correct for timing, all detail fields present, quality score computed with valid factors; FAIL: Wrong status for timing, missing detail fields, or quality score factors missing/out of range
 
 ---
 
@@ -147,8 +141,7 @@ Two `session_health` responses showing increasing `lastToolCallAgoMs` despite an
 
 Check `hooks/memory-surface.ts` `recordToolCall()` usage and confirm `session_health` reads timestamps without mutating them
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/17-session-health-tool.md](../../feature_catalog/22--context-preservation-and-code-graph/17-session-health-tool.md)
 

@@ -17,8 +17,11 @@ This scenario validates Basic semantic search for `MCP-001`. It focuses on Verif
 Operators run the exact prompt and command sequence for `MCP-001` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify MCP search returns results with file paths, scores, and line ranges
-- Prompt: `As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-facing pass/fail verdict with the main reason.`
+- Real user request: `Please verify MCP search returns results with file paths, scores, and line ranges.`
+- RCAF Prompt: `As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-visible pass/fail verdict with the main reason.`
+- Expected execution process: Run the TEST EXECUTION command sequence for `MCP-001`, capture the listed evidence, compare observed output with the expected signals, and return the verdict to the user.
 - Expected signals: Results array with at least 1 entry; each entry contains `file` (string), `score` (float 0.0-1.0), `lines` (start/end), `snippet` (string), `language` (string)
+- Desired user-visible outcome: A concise user-visible PASS/FAIL verdict naming whether the scenario satisfied the objective and the main reason.
 - Pass/fail: PASS if results non-empty AND each result has all 5 fields (file, score, lines, snippet, language); FAIL if empty results or missing fields
 
 
@@ -28,12 +31,12 @@ Operators run the exact prompt and command sequence for `MCP-001` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| MCP-001 | Basic semantic search | Verify MCP search returns results with file paths, scores, and line ranges | `As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-facing pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "fibonacci calculation" })` | Results array with at least 1 entry; each entry contains `file` (string), `score` (float 0.0-1.0), `lines` (start/end), `snippet` (string), `language` (string) | MCP tool output showing result structure | PASS if results non-empty AND each result has all 5 fields (file, score, lines, snippet, language); FAIL if empty results or missing fields | Check index status with `ccc status`; verify index is non-empty; try broader query like "math calculation" |
+| MCP-001 | Basic semantic search | Verify MCP search returns results with file paths, scores, and line ranges | `As a manual-testing orchestrator, use CocoIndex to search for "fibonacci calculation" against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results array with at least 1 entry; each entry contains file (string), score (float 0.0-1.0), lines (start/end), snippet (string), language (string). Return a concise user-visible pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "fibonacci calculation" })` | Results array with at least 1 entry; each entry contains `file` (string), `score` (float 0.0-1.0), `lines` (start/end), `snippet` (string), `language` (string) | MCP tool output showing result structure | PASS if results non-empty AND each result has all 5 fields (file, score, lines, snippet, language); FAIL if empty results or missing fields | Check index status with `ccc status`; verify index is non-empty; try broader query like "math calculation" |
 
 
 ---
 
-## 4. REFERENCES
+## 4. SOURCE FILES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 

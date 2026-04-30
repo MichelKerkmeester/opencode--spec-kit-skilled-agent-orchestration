@@ -15,7 +15,7 @@ This is a set of automated tests that checks the entire response from start to f
 
 ## 2. CURRENT REALITY
 
-Phase 014 verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
+The implementation verification includes end-to-end success-envelope assertions in `tests/context-server.vitest.ts`. This coverage verifies the finalized success-path hint append flow, preserved `autoSurfacedContext` and final token metadata behavior together so response-envelope regressions fail fast.
 
 ---
 
@@ -29,7 +29,7 @@ Phase 014 verification includes end-to-end success-envelope assertions in `tests
 | `mcp_server/hooks/response-hints.ts` | Hook | Hint append + token-count resync on finalized envelope |
 | `mcp_server/hooks/index.ts` | Hook Barrel | Exposes response-hint hooks to server runtime |
 
-### Tests
+### Validation And Tests
 
 | Test File | Test Name | Coverage |
 |-----------|-----------|----------|
@@ -40,8 +40,6 @@ Phase 014 verification includes end-to-end success-envelope assertions in `tests
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: End-to-end success-envelope verification
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/13-end-to-end-success-envelope-verification.md`

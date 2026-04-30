@@ -1,7 +1,6 @@
 ---
 title: "Adaptive shadow ranking, bounded proposals, and rollback"
 description: "Describes the shipped adaptive ranking module that records signals, persists bounded threshold state in SQLite, and emits shadow or promoted proposal payloads without changing live result order."
-audited_post_018: true
 ---
 
 # Adaptive shadow ranking, bounded proposals, and rollback
@@ -57,7 +56,7 @@ Rollback remains a flag flip, not a schema rollback. Disabling `SPECKIT_MEMORY_A
 | `mcp_server/handlers/memory-search.ts` | Handler | Adds adaptive proposal payloads to search responses without changing live result ordering |
 | `mcp_server/formatters/search-results.ts` | Formatter | Surfaces adaptive mode metadata from the attached proposal payload |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -68,13 +67,11 @@ Rollback remains a flag flip, not a schema rollback. Disabling `SPECKIT_MEMORY_A
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Adaptive shadow ranking, bounded proposals, and rollback
-- Current reality source: `mcp_server/lib/cognitive/adaptive-ranking.ts` plus approved spec packet `specs/system-spec-kit/023-esm-module-compliance/011-indexing-and-adaptive-fusion/`
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 121

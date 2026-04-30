@@ -1,7 +1,6 @@
 ---
 title: "Spec folder hierarchy as retrieval structure"
 description: "Spec folder paths are parsed into an in-memory hierarchy tree that surfaces parent, sibling and ancestor memories during retrieval."
-audited_post_018: true
 ---
 
 # Spec folder hierarchy as retrieval structure
@@ -33,7 +32,7 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 | `mcp_server/lib/search/graph-search-fn.ts` | Lib | Augments graph retrieval with hierarchy rows when `specFolder` is provided |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ The `queryHierarchyMemories()` function returns parent, sibling and ancestor mem
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Spec folder hierarchy as retrieval structure
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md`

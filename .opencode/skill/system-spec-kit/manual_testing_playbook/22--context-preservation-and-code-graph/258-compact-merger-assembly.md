@@ -14,24 +14,14 @@ This scenario validates Compact merger.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the compact merger (`mergeCompactBrief()`) combines context from 3 sources (Memory, Code Graph, CocoIndex) plus session state and triggered memories into a unified compact brief. Must render up to 5 sections in priority order: "Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories". Uses the budget allocator for per-source token allocation. File-level deduplication removes duplicate file paths across sections (higher-priority source keeps its mentions). Output includes allocation metadata (`totalTokenEstimate`, `sourceCount`, `mergedAt`, `mergeDurationMs`, `deduplicatedFiles`). Total must stay within 4000 tokens.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-- **Prompt**: `As a context-and-code-graph validation operator, validate 3-source compact merger within budget against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify the compact merger (mergeCompactBrief()) combines context from 3 sources (Memory, Code Graph, CocoIndex) plus session state and triggered memories into a unified compact brief. Must render up to 5 sections in priority order: "Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories". Uses the budget allocator for per-source token allocation. File-level deduplication removes duplicate file paths across sections (higher-priority source keeps its mentions). Output includes allocation metadata (totalTokenEstimate, sourceCount, mergedAt, mergeDurationMs, deduplicatedFiles). Total must stay within 4000 tokens. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `compact-merger.vitest.ts` pass
-  - When all 5 inputs non-empty: 5 sections rendered ("Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories")
-  - When any input is empty string: corresponding section omitted from output
-  - Each section truncated to its allocated budget via `truncateToTokens()`
-  - File paths appearing in multiple sections: kept in highest-priority section, removed from lower
-  - `MergedBrief.allocation` shows per-source `floor`, `requested`, `granted`, `dropped`
-  - `MergedBrief.metadata.totalTokenEstimate` <= 4000
-  - `MergedBrief.metadata.sourceCount` matches number of non-empty sections
-  - `MergedBrief.metadata.deduplicatedFiles` shows count of removed duplicate references
-- **Pass/fail criteria**:
-  - PASS: All non-empty sources rendered with correct headers, total within 4000 tokens, deduplication removes duplicates, metadata accurate
-  - FAIL: Empty source renders as section, total exceeds 4000 tokens, duplicate file paths remain across sections, or metadata fields missing/incorrect
+
+- Objective: Verify that the compact merger (`mergeCompactBrief()`) combines context from 3 sources (Memory, Code Graph, CocoIndex) plus session state and triggered memories into a unified compact brief; Must render up to 5 sections in priority order: "Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories"; Uses the budget allocator for per-source token allocation; File-level deduplication removes duplicate file paths across sections (higher-priority source keeps its mentions); Output includes allocation metadata (`totalTokenEstimate`, `sourceCount`, `mergedAt`, `mergeDurationMs`, `deduplicatedFiles`); Total must stay within 4000 tokens.
+- Real user request: `` Please validate 3-source compact merger within budget against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts and tell me whether the expected signals are present: All vitest tests in `compact-merger.vitest.ts` pass; When all 5 inputs non-empty: 5 sections rendered ("Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories"); When any input is empty string: corresponding section omitted from output; Each section truncated to its allocated budget via `truncateToTokens()`; File paths appearing in multiple sections: kept in highest-priority section, removed from lower; `MergedBrief.allocation` shows per-source `floor`, `requested`, `granted`, `dropped`; `MergedBrief.metadata.totalTokenEstimate` <= 4000; `MergedBrief.metadata.sourceCount` matches number of non-empty sections; `MergedBrief.metadata.deduplicatedFiles` shows count of removed duplicate references. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate 3-source compact merger within budget against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/compact-merger.vitest.ts. Verify the compact merger (mergeCompactBrief()) combines context from 3 sources (Memory, Code Graph, CocoIndex) plus session state and triggered memories into a unified compact brief. Must render up to 5 sections in priority order: "Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories". Uses the budget allocator for per-source token allocation. File-level deduplication removes duplicate file paths across sections (higher-priority source keeps its mentions). Output includes allocation metadata (totalTokenEstimate, sourceCount, mergedAt, mergeDurationMs, deduplicatedFiles). Total must stay within 4000 tokens. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `compact-merger.vitest.ts` pass; When all 5 inputs non-empty: 5 sections rendered ("Constitutional Rules", "Active Files & Structural Context", "Semantic Neighbors", "Session State / Next Steps", "Triggered Memories"); When any input is empty string: corresponding section omitted from output; Each section truncated to its allocated budget via `truncateToTokens()`; File paths appearing in multiple sections: kept in highest-priority section, removed from lower; `MergedBrief.allocation` shows per-source `floor`, `requested`, `granted`, `dropped`; `MergedBrief.metadata.totalTokenEstimate` <= 4000; `MergedBrief.metadata.sourceCount` matches number of non-empty sections; `MergedBrief.metadata.deduplicatedFiles` shows count of removed duplicate references
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All non-empty sources rendered with correct headers, total within 4000 tokens, deduplication removes duplicates, metadata accurate; FAIL: Empty source renders as section, total exceeds 4000 tokens, duplicate file paths remain across sections, or metadata fields missing/incorrect
 
 ---
 
@@ -122,8 +112,7 @@ Test output showing dedup count and metadata fields
 
 Check `deduplicateFilePaths()` and metadata construction
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/12-compact-merger.md](../../feature_catalog/22--context-preservation-and-code-graph/12-compact-merger.md)
 

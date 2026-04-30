@@ -47,7 +47,7 @@ Canonical package artifacts:
 - [14. BUILT-IN TOOLS (`CX-023..CX-025`)](#14--built-in-tools-cx-023cx-025)
 - [15. CODEX CLOUD (`CX-028`)](#15--codex-cloud-cx-028)
 - [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
-- [17. FEATURE FILE INDEX](#17--feature-file-index)
+- [17. FEATURE CATALOG CROSS-REFERENCE INDEX](#17--feature-catalog-cross-reference-index)
 
 ---
 
@@ -769,7 +769,7 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 
 ---
 
-## 17. FEATURE FILE INDEX
+## 17. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI INVOCATION
 

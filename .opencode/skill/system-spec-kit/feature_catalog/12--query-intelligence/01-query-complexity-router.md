@@ -1,7 +1,6 @@
 ---
 title: "Query complexity router"
 description: "The query complexity router classifies incoming queries by term count and trigger match to select how many search channels run."
-audited_post_018: true
 ---
 
 # Query complexity router
@@ -64,12 +63,7 @@ The router's classification tier (`routeResult.tier`) is propagated into `traceM
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
+- Group: Query Intelligence
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `12--query-intelligence/01-query-complexity-router.md`
-
-- Group: Query intelligence
-- Source feature title: Query complexity router
-- Current reality source: FEATURE_CATALOG.md
 <!-- /ANCHOR:source-metadata -->

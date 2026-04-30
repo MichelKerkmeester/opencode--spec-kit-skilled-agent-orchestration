@@ -1,7 +1,6 @@
 ---
 title: "Weight history audit tracking"
 description: "Describes the `created_by`/`last_accessed` metadata on causal edges, the `weight_history` audit table and the edge bounds enforcement that caps auto-generated edges at 20 per node and 0.5 max strength."
-audited_post_018: true
 ---
 
 # Weight history audit tracking
@@ -37,7 +36,7 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,7 +50,6 @@ This audit infrastructure supports the N3-lite consolidation engine: Hebbian str
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Weight history audit tracking
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/04-weight-history-audit-tracking.md`

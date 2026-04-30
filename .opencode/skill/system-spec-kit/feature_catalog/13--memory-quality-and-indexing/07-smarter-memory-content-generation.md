@@ -1,7 +1,6 @@
 ---
 title: "Smarter memory content generation"
 description: "The content normalizer strips markdown formatting noise before embedding generation and BM25 indexing to improve retrieval quality."
-audited_post_018: true
 ---
 
 # Smarter memory content generation
@@ -36,7 +35,7 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 | `mcp_server/handlers/memory-save.ts` | Handler | Save path that invokes content normalization before embedding generation |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | BM25 rebuild/index path calling `normalizeContentForBM25()` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,7 +45,6 @@ The normalizer has no feature flag because it is a non-destructive improvement. 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Smarter memory content generation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/07-smarter-memory-content-generation.md`

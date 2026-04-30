@@ -1,8 +1,6 @@
 ---
 title: "Prediction-error save arbitration"
 description: "Covers the 5-action decision engine that classifies new saves as REINFORCE, UPDATE, SUPERSEDE, CREATE_LINKED or CREATE based on semantic similarity."
-audited_post_018: true
-phase_018_change: "PE arbitration remains live on the post-018 continuity save path"
 ---
 
 # Prediction-error save arbitration
@@ -38,7 +36,7 @@ For chunked saves, PE supersede state now finalizes atomically after chunk index
 | `mcp_server/handlers/save/create-record.ts` | Handler | Record creation logic |
 | `mcp_server/handlers/memory-save.ts` | Handler | Chunked-save PE finalize transaction, cross-path supersede edge recording, and compensating cleanup |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,8 +49,7 @@ For chunked saves, PE supersede state now finalizes atomically after chunk index
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Undocumented feature gap scan
-- Source feature title: Prediction-error save arbitration
-- Current reality source: 10-agent feature gap scan
+- Group: Mutation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/08-prediction-error-save-arbitration.md`
 - Playbook reference: 110

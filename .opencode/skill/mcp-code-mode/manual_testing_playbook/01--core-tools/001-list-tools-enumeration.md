@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-001` and confirm the
 
 - Objective: Verify `list_tools()` returns a non-empty array of tool names; every entry contains a `.` separator; at least one entry per configured manual in `.utcp_config.json`.
 - Real user request: `"What MCP tools do I have access to right now?"`
-- Prompt: `As a manual-testing orchestrator, enumerate all available external MCP tools through Code Mode against the current Code Mode and .utcp_config.json registry. Verify the returned list is non-empty and every entry follows the manual.manual_tool naming pattern. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate all available external MCP tools through Code Mode against the current Code Mode and .utcp_config.json registry. Verify the returned list is non-empty and every entry follows the manual.manual_tool naming pattern. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: call `list_tools()` directly through the Code Mode native tool; do not delegate.
 - Expected signals: array length > 0; every entry has at least one `.` character; the set of unique prefixes (everything before the first `.`) matches the set of `name` keys in `.utcp_config.json` `manual_call_templates`.
 - Desired user-visible outcome: A short report listing the count of tools, the manual names discovered, and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-001` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, enumerate all available external MCP tools through Code Mode against the current Code Mode and .utcp_config.json registry. Verify the returned list is non-empty and every entry follows the manual.manual_tool naming pattern. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate all available external MCP tools through Code Mode against the current Code Mode and .utcp_config.json registry. Verify the returned list is non-empty and every entry follows the manual.manual_tool naming pattern. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

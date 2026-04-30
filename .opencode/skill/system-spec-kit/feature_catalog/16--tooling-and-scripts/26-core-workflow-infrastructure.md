@@ -56,8 +56,6 @@ Taken together, these files are the reusable infrastructure beneath the higher-l
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Core Workflow Infrastructure
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct audit of the shared configuration, indexing, scoring, review, and metadata helper modules
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/26-core-workflow-infrastructure.md`

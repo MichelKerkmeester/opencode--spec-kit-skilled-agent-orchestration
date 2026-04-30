@@ -1,7 +1,6 @@
 ---
 title: "Performance improvements"
 description: "Sixteen performance improvements reduce runtime cost across TF-IDF scoring, fallback fusion, token budgeting, mutation ledger scanning, entity linking and hierarchy caching."
-audited_post_018: true
 ---
 
 # Performance improvements
@@ -44,7 +43,7 @@ Sixteen performance improvements were applied:
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Transactional upsert with deterministic pre/post lookup for weight-history logging |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | WeakMap + TTL caching for folder hierarchy tree |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -59,7 +58,6 @@ Sixteen performance improvements were applied:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Performance improvements
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/08-performance-improvements.md`

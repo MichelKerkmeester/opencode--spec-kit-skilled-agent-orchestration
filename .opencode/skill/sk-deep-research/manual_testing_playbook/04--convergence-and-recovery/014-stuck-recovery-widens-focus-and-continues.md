@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that stuck detection triggers a recovery path that widens focus before giving up.
 - Real user request: If the loop gets stuck, I want it to try a different angle before it quits.
-- Prompt: `As a manual-testing orchestrator, validate the stuck-recovery contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify consecutive no-progress iterations trigger recovery, widen focus to a less-explored question, consult deferred ideas, and continue before final synthesis. Return a concise verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the stuck-recovery contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify consecutive no-progress iterations trigger recovery, widen focus to a less-explored question, consult deferred ideas, and continue before final synthesis. Return a concise verdict.`
 - Expected execution process: Inspect the convergence recovery protocol, then the loop protocol stuck-recovery ladder, then the YAML recovery logic and ideas-backlog hooks.
-- Desired user-facing outcome: The user is told that the loop tries a different research angle before giving up on the session.
+- Desired user-visible outcome: The user is told that the loop tries a different research angle before giving up on the session.
 - Expected signals: Stuck threshold is enforced, recovery resets the counter, the next focus widens scope, and the ideas backlog can be consulted during recovery.
 - Pass/fail posture: PASS if recovery widens focus and continues before exiting to synthesis; FAIL if the contract jumps straight from stuck to termination without a recovery attempt.
 

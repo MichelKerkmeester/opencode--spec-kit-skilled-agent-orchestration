@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-017` and confirm the
 
 - Objective: Verify `figma.figma_get_file({file_key: "<test-file>"})` returns object with `name`, `lastModified`, and `document` containing at least one child node.
 - Real user request: `"Get the metadata for our design file."`
-- Prompt: `As a manual-testing orchestrator, fetch metadata for a public Figma file through Code Mode against the configured Figma MCP server. Verify the response contains name, lastModified, and a document tree. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, fetch metadata for a public Figma file through Code Mode against the configured Figma MCP server. Verify the response contains name, lastModified, and a document tree. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: requires `FIGMA_FILE_KEY` (operator-provided test file key) and `figma_FIGMA_TOKEN` env var (per CM-008).
 - Expected signals: response is an object; `name` is a string; `lastModified` is an ISO date string; `document` has at least one child.
 - Desired user-visible outcome: A short report quoting file name + last modified + child count and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-017` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, fetch metadata for a public Figma file through Code Mode against the configured Figma MCP server. Verify the response contains name, lastModified, and a document tree. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, fetch metadata for a public Figma file through Code Mode against the configured Figma MCP server. Verify the response contains name, lastModified, and a document tree. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -1,7 +1,6 @@
 ---
 title: "RRF K experimental tuning"
 description: "RRF K experimental tuning enables judged K-value selection for Reciprocal Rank Fusion, sweeping candidate K values and selecting the one that maximizes NDCG@10 per query intent, gated by the SPECKIT_RRF_K_EXPERIMENTAL flag."
-audited_post_018: true
 ---
 
 # RRF K experimental tuning
@@ -34,7 +33,7 @@ Additionally, the runtime override `SPECKIT_RRF_K` allows a single global K over
 | `shared/algorithms/rrf-fusion.ts` | Shared | `resolveRrfK()` with `SPECKIT_RRF_K` runtime override, `DEFAULT_K = 60` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Central flag registry reference |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Additionally, the runtime override `SPECKIT_RRF_K` allows a single global K over
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: RRF K experimental tuning
-- Current reality source: mcp_server/lib/eval/k-value-analysis.ts module header and `isKExperimentalEnabled()` implementation
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/22-rrf-k-experimental.md`

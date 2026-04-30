@@ -31,7 +31,7 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 | `mcp_server/lib/eval/eval-metrics.ts` | Lib | Core metric computation |
 | `mcp_server/lib/eval/ground-truth-data.ts` | Lib | Ground truth data |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,15 +42,10 @@ If BM25 had been competitive, the entire multi-channel approach would be questio
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: BM25-only baseline
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-- phase_018_change: aligned the baseline wording with the live BM25/FTS5-only runner and the default-enabled BM25 path
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/07-bm25-only-baseline.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 011

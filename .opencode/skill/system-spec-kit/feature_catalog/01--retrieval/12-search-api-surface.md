@@ -1,7 +1,6 @@
 ---
 title: "Search API surface"
 description: "Covers the stable public search barrel that re-exports hybrid search, SQLite FTS helpers, and the vector index namespace."
-audited_post_018: true
 ---
 # Search API surface
 ## TABLE OF CONTENTS
@@ -31,7 +30,7 @@ The `vectorIndex` namespace is not a single function but a large facade re-expor
 | `mcp_server/lib/search/sqlite-fts.ts` | Lib | SQLite FTS5 BM25 helper functions |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Namespace facade over vector-index types, schema, mutations, queries, cache, and store exports |
 
-### Tests
+### Validation And Tests
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct export contract for `api/search.ts` and top-level barrel parity |
@@ -39,5 +38,5 @@ The `vectorIndex` namespace is not a single function but a large facade re-expor
 ---
 ## 4. SOURCE METADATA
 - Group: Retrieval
-- Source feature title: Search API surface
-- Current reality source: direct implementation audit of `mcp_server/api/search.ts` plus the listed export and hybrid-search coverage
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/12-search-api-surface.md`

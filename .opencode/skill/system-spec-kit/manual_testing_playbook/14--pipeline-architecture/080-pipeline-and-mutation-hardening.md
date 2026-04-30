@@ -14,13 +14,14 @@ This scenario validates Pipeline and mutation hardening for `080`. It focuses on
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `080` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm mutation hardening bundle including chunked-save finalization rollback safety
-- Prompt: `As a pipeline validation operator, validate Pipeline and mutation hardening against the documented validation surface. Verify mutation hardening bundle including chunked-save finalization rollback safety. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm mutation hardening bundle including chunked-save finalization rollback safety.
+- Real user request: `Please validate Pipeline and mutation hardening against the documented validation surface and tell me whether the expected signals are present: CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; chunked-save finalize failures remove staged chunk trees; safe-swap rollback keeps old children linked; parent BM25 is preserved on all-chunks-failed rollback.`
+- RCAF Prompt: `As a pipeline validation operator, validate Pipeline and mutation hardening against the documented validation surface. Verify mutation hardening bundle including chunked-save finalization rollback safety. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: CRUD mutations are atomic (all-or-nothing); error handling cleans up partial state; no orphaned records on failure; chunked-save finalize failures remove staged chunk trees; safe-swap rollback keeps old children linked; parent BM25 is preserved on all-chunks-failed rollback
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all mutation paths are atomic, error handling leaves no partial state, and chunked-save rollback paths preserve old children/BM25 while cleaning staged replacements
-- Additional focus: checkpoint restore maintenance blocks `memory_save`, `memory_index_scan`, and `memory_bulk_delete` with `E_RESTORE_IN_PROGRESS` until the restore lifecycle exits
 
 ---
 
@@ -123,8 +124,7 @@ Before/after mutation responses + restore completion or failure output
 
 If the retry still reports restore-in-progress, inspect the `restoreCheckpoint()` barrier release in the storage layer `finally` path
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/11-pipeline-and-mutation-hardening.md](../../feature_catalog/14--pipeline-architecture/11-pipeline-and-mutation-hardening.md)
 

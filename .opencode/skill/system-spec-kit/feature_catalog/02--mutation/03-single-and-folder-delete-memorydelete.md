@@ -1,8 +1,6 @@
 ---
 title: "Single and folder delete (memory_delete)"
 description: "Covers the delete tool that supports both single-record and bulk folder deletion with atomic transactions."
-audited_post_018: true
-phase_018_change: "Delete behavior remains live with post-018 audit coverage"
 ---
 
 # Single and folder delete (memory_delete)
@@ -19,7 +17,7 @@ You can remove one memory at a time or clear out an entire folder at once. Befor
 
 Two deletion modes in one tool. Pass a numeric `id` for single delete or a `specFolder` string (with `confirm: true`) for bulk folder delete.
 
-Single deletes run inside a database transaction: remove the spec-doc record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in Phase 018 (CR-P1-1) to prevent partial deletes from leaving orphaned data.
+Single deletes run inside a database transaction: remove the spec-doc record via `vectorIndex.deleteMemory(id)`, clean up associated causal graph edges via `causalEdges.deleteEdgesForMemory(id)` and record a mutation ledger entry. If any step fails, the entire transaction rolls back. This atomicity guarantee was added in the implementation (CR-P1-1) to prevent partial deletes from leaving orphaned data.
 
 Bulk deletes by spec folder are more involved. The system first creates an auto-checkpoint with a timestamped name (like `pre-cleanup-2026-02-28T12-00-00`) so you can roll back if the deletion was a mistake. Then it deletes all matching spec-doc records inside a database transaction with per-record causal edge cleanup and per-record mutation ledger entries. The entire operation is atomic: either all spec-doc records in the folder are deleted or none are. The response includes the checkpoint name and a restore command hint.
 
@@ -44,7 +42,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 | `mcp_server/lib/search/graph-search-fn.ts` | Lib | Degree cache clearing after delete |
 | `mcp_server/lib/response/envelope.ts` | Lib | Response envelope formatting |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -58,8 +56,7 @@ Bulk deletes by spec folder are more involved. The system first creates an auto-
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Single and folder delete (memory_delete)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/03-single-and-folder-delete-memorydelete.md`
 - Source list updated 2026-03-26 per audit remediation

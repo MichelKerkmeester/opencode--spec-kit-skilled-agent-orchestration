@@ -13,13 +13,14 @@ This scenario validates response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) for `1
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `167` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify mode-aware response shape routing for the quick profile
-- Prompt: `As a runtime-hook validation operator, validate Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) against SPECKIT_RESPONSE_PROFILE_V1=true. Verify mode-aware response shape routing for the quick profile. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify mode-aware response shape routing for the quick profile.
+- Real user request: `Please validate Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) against SPECKIT_RESPONSE_PROFILE_V1=true and tell me whether the expected signals are present: quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and tokenReduction.savingsPercent; research profile returns results[], evidenceDigest, followUps[]; resume profile returns state, nextSteps[], blockers[]; original full response when flag OFF or profile omitted.`
+- RCAF Prompt: `As a runtime-hook validation operator, validate Response profile v1 (SPECKIT_RESPONSE_PROFILE_V1) against SPECKIT_RESPONSE_PROFILE_V1=true. Verify mode-aware response shape routing for the quick profile. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: quick profile returns QuickProfile with topResult, oneLineWhy, omittedCount, and tokenReduction.savingsPercent; research profile returns results[], evidenceDigest, followUps[]; resume profile returns state, nextSteps[], blockers[]; original full response when flag OFF or profile omitted
-- Pass/fail: PASS if quick profile contains topResult + tokenReduction, research has evidenceDigest, resume has nextSteps, and full response when flag OFF; FAIL if profile shape missing expected fields or token savings not calculated
-- memory_context now auto-routes an inferred profile when no explicit profile is supplied, so the profile surface is live on both search and context handlers even though this scenario stays search-first.
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if quick profile contains topResult + tokenReduction, research has evidenceDigest, resume has nextSteps, and full response when flag OFF; FAIL if profile shape missing expected fields or token savings not calculated; memory_context now auto-routes an inferred profile when no explicit profile is supplied, so the profile surface is live on both search and context handlers even though this scenario stays search-first.
 
 ---
 
@@ -56,8 +57,7 @@ Response JSON per profile + token savings calculation
 
 Verify SPECKIT_RESPONSE_PROFILE_V1 env → Inspect profile-formatters.ts profile routing → Check estimateTokens() → Verify QuickProfile.tokenReduction.savingsPercent → Check fallback for unknown profile names
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/15-mode-aware-response-profiles.md](../../feature_catalog/18--ux-hooks/15-mode-aware-response-profiles.md)
 - Feature flag reference: [19--feature-flag-reference/028-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)

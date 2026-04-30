@@ -30,16 +30,17 @@ Canonical package artifacts:
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
 - [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
 - [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
-- [5. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#5--sub-agent-orchestration-and-wave-planning)
-- [6. INTEGRATION SCANNER](#6--integration-scanner)
-- [7. PROFILE GENERATOR](#7--profile-generator)
-- [8. 5-DIMENSION SCORER](#8-5-dimension-scorer)
-- [9. BENCHMARK INTEGRATION](#9--benchmark-integration)
-- [10. REDUCER DIMENSIONS](#10--reducer-dimensions)
-- [11. END-TO-END LOOP](#11--end-to-end-loop)
-- [12. RUNTIME TRUTH](#12--runtime-truth)
-- [13. REVIEW PROTOCOL](#13--review-protocol)
-- [14. RELATED RESOURCES](#14--related-resources)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
+- [7. INTEGRATION SCANNER](#7--integration-scanner)
+- [8. PROFILE GENERATOR](#8--profile-generator)
+- [9. 5-DIMENSION SCORER](#9-5-dimension-scorer)
+- [10. BENCHMARK INTEGRATION](#10--benchmark-integration)
+- [11. REDUCER DIMENSIONS](#11--reducer-dimensions)
+- [12. END-TO-END LOOP](#12--end-to-end-loop)
+- [13. RUNTIME TRUTH](#13--runtime-truth)
+- [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
+- [15. FEATURE CATALOG CROSS-REFERENCE INDEX](#15--feature-catalog-cross-reference-index)
 
 ---
 
@@ -82,7 +83,54 @@ This playbook provides 31 deterministic scenarios across 7 categories validating
 
 ---
 
-## 5. SUB-AGENT ORCHESTRATION AND WAVE PLANNING
+## 5. REVIEW PROTOCOL AND RELEASE READINESS
+
+### Inputs Required
+
+1. `manual_testing_playbook.md`
+2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
+3. Scenario execution evidence including command transcripts, generated files, and verification output
+4. Feature-to-scenario coverage map from the root category sections
+5. Triage notes for every non-pass outcome
+
+### Scenario Acceptance Rules
+
+For each executed scenario, check:
+
+1. Preconditions were satisfied.
+2. Prompt and command sequence were executed as written in the per-feature file.
+3. Expected signals are present in the captured output or generated artifacts.
+4. Evidence is complete, readable, and tied to the same run that produced the verdict.
+5. Outcome rationale is explicit and references the decisive user-visible result.
+
+Scenario verdict:
+- `PASS`: all acceptance checks true
+- `PARTIAL`: core behavior works but non-critical evidence or metadata is incomplete
+- `FAIL`: expected behavior missing, contradictory output, or critical check failed
+
+### Feature Verdict Rules
+
+- `PASS`: all mapped scenarios for feature are `PASS`
+- `PARTIAL`: at least one mapped scenario is `PARTIAL`, none are `FAIL`
+- `FAIL`: any mapped scenario is `FAIL`
+
+### Release Readiness Rule
+
+Release is `READY` only when:
+
+1. No feature verdict is `FAIL`.
+2. Runtime-truth closure scenarios RT-025..RT-034 have all been executed or explicitly skipped with a sandbox blocker.
+3. Coverage is 100% of playbook scenarios defined by the root index and backed by per-feature files (`COVERED_FEATURES == TOTAL_FEATURES == 31`).
+4. No unresolved blocking triage item remains.
+5. Drift between root summaries and per-feature files has been resolved, with the per-feature file treated as the temporary source of truth until resynchronized.
+
+### Root-vs-Feature Rule
+
+Keep global verdict logic in the root playbook. Put scenario-specific commands, expected signals, caveats, and triage in the matching per-feature files.
+
+---
+
+## 6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING
 
 - Run scanner, profile, scorer, and benchmark scenarios before end-to-end loop scenarios.
 - Treat runtime-truth scenarios as a closure wave after the loop and reducer behaviors are already validated.
@@ -90,7 +138,7 @@ This playbook provides 31 deterministic scenarios across 7 categories validating
 
 ---
 
-## 6. INTEGRATION SCANNER
+## 7. INTEGRATION SCANNER
 
 This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -149,7 +197,7 @@ Expected signals: File `/tmp/test-scan-output.json` is created after the command
 
 ---
 
-## 7. PROFILE GENERATOR
+## 8. PROFILE GENERATOR
 
 This category covers 4 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -208,7 +256,7 @@ Expected signals: File `/tmp/test-profile.json` is created after the command com
 
 ---
 
-## 8. 5-DIMENSION SCORER
+## 9. 5-DIMENSION SCORER
 
 This category covers 3 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -254,7 +302,7 @@ Expected signals: Exit code is 1 (not 0); Output is valid JSON (no stack trace);
 
 ---
 
-## 9. BENCHMARK INTEGRATION
+## 10. BENCHMARK INTEGRATION
 
 This category covers 2 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -287,7 +335,7 @@ Expected signals: Benchmark output at `/tmp/bench-with-integration.json` include
 
 ---
 
-## 10. REDUCER DIMENSIONS
+## 11. REDUCER DIMENSIONS
 
 This category covers 3 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -333,7 +381,7 @@ Expected signals: Reducer completes without errors, exit code 0; Dashboard gener
 
 ---
 
-## 11. END-TO-END LOOP
+## 12. END-TO-END LOOP
 
 This category covers 5 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -405,7 +453,7 @@ Expected signals: Candidate lineage graph created with per-session node entries;
 
 ---
 
-## 12. RUNTIME TRUTH
+## 13. RUNTIME TRUTH
 
 This category covers 10 scenario summaries while the linked feature files remain the canonical execution contract.
 
@@ -541,17 +589,32 @@ Expected signals: `experiment-registry.json` contains:
 
 ---
 
-## 13. REVIEW PROTOCOL
+## 14. AUTOMATED TEST CROSS-REFERENCE
 
-- For each scenario, run the linked commands or workflow, capture the output, and record the verdict with supporting evidence.
-- If an output shape or score is wrong, compare the live result against the linked feature file rather than the old root matrix.
-- Treat drift between the root summary and the feature file as a documentation bug; the feature file wins until both are resynchronized.
+The manual scenarios exercise the operator-visible behavior. Runtime helper coverage lives under `.opencode/skill/sk-improve-agent/scripts/tests/` and should be used as regression evidence when a scenario touches the matching helper.
+
+| Runtime Test | Covered Runtime Surface |
+|---|---|
+| `.opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts` | Benchmark stability helpers used by RT-029 and low-sample validation |
+| `.opencode/skill/sk-improve-agent/scripts/tests/candidate-lineage.vitest.ts` | Candidate lineage graph helpers used by E2E-024 and replay-consumer validation |
+| `.opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts` | Journal emission and taxonomy helpers used by RT-025, RT-026, and RT-032 |
+| `.opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts` | Mutation coverage and trajectory helpers used by E2E-022 and RT-030 |
+| `.opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts` | Trade-off and insufficient-data helpers used by E2E-023 and RT-033 |
 
 ---
 
-## 14. RELATED RESOURCES
+## 15. FEATURE CATALOG CROSS-REFERENCE INDEX
 
-- `SKILL.md`: `.opencode/skill/sk-improve-agent/SKILL.md`
-- `references/evaluator_contract.md`: scoring rubric and evaluator rules.
-- `references/integration_scanning.md`: scanner behavior and surface expectations.
-- `references/quick_reference.md`: command examples and operator shortcuts.
+The feature catalog root is `.opencode/skill/sk-improve-agent/feature_catalog/feature_catalog.md`. Use it as the current-state capability index when a scenario needs source-of-truth feature context beyond the command transcript.
+
+| Playbook Category | Feature Catalog Cross-Reference |
+|---|---|
+| Integration Scanner | `.opencode/skill/sk-improve-agent/feature_catalog/02--integration-scanning/01-surface-discovery.md`, `02-runtime-mirrors.md`, `03-command-dispatch.md` |
+| Profile Generator | `.opencode/skill/sk-improve-agent/feature_catalog/03--scoring-system/02-dynamic-profiling.md` |
+| 5-Dimension Scorer | `.opencode/skill/sk-improve-agent/feature_catalog/03--scoring-system/01-five-dimension-rubric.md`, `03-deterministic-scoring.md` |
+| Benchmark Integration | No one-to-one catalog file; validate against the script anchors in the per-feature files and the scoring-system catalog root. |
+| Reducer Dimensions | `.opencode/skill/sk-improve-agent/feature_catalog/03--scoring-system/04-dimensional-progress.md` |
+| End-to-End Loop | `.opencode/skill/sk-improve-agent/feature_catalog/01--evaluation-loop/01-initialization.md`, `02-candidate-generation.md`, `03-scoring-dispatch.md`, `04-promotion-gates.md`, `05-rollback.md`, `06-plateau-detection.md` |
+| Runtime Truth | No single catalog category owns all runtime-truth scenarios; use the per-feature source anchors plus the evaluation-loop and scoring-system catalog files above. |
+
+Additional skill references remain anchored from the per-feature files: `SKILL.md`, `references/evaluator_contract.md`, `references/integration_scanning.md`, and `references/quick_reference.md`.

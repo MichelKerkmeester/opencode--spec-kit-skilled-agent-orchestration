@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that the loop honors the strategy file’s Next Focus and avoids approaches marked exhausted or blocked.
 - Real user request: Make sure the next iteration actually follows the strategy file and does not retry blocked approaches.
-- Prompt: `As a manual-testing orchestrator, validate the strategy-discipline contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify iteration focus comes from Next Focus and that exhausted or blocked approaches are not retried. Return a concise user-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the strategy-discipline contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify iteration focus comes from Next Focus and that exhausted or blocked approaches are not retried. Return a concise user-facing verdict.`
 - Expected execution process: Inspect the strategy-file update rules, the loop protocol focus logic, and the runtime agent’s mandatory pre-check for exhausted approaches.
-- Desired user-facing outcome: The user is told that the next iteration follows the strategy file rather than picking an arbitrary direction.
+- Desired user-visible outcome: The user is told that the next iteration follows the strategy file rather than picking an arbitrary direction.
 - Expected signals: Next Focus is read explicitly, exhausted approaches are treated as do-not-retry, and recovery mode consults deferred ideas instead of repeating blocked tactics.
 - Pass/fail posture: PASS if the workflow and runtime both treat `Next Focus` as primary and exhausted approaches as non-retriable; FAIL if focus selection is unconstrained or blocked tactics can be reused.
 

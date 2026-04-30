@@ -13,11 +13,13 @@ This scenario validates memory maintenance and migration CLIs for `239`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify the maintenance surface through dry-run migrations, targeted regression scripts, and a simple ranking input so the command cluster can be exercised without destructive corpus changes.
 
-- Objective: Confirm dry-run migration reporting, cleanup/parser regression coverage, and ranking output
-- Prompt: `As a tooling validation operator, validate Memory Maintenance and Migration CLIs against node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json. Verify dry-run migration reporting, cleanup/parser regression coverage, and ranking output. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm dry-run migration reporting, cleanup/parser regression coverage, and ranking output.
+- Real user request: `Please validate Memory Maintenance and Migration CLIs against node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json and tell me whether the expected signals are present: backfill dry-run writes a JSON report; cleanup and parser regression scripts pass; rank-memories prints a structured summary for the sample JSON input.`
+- RCAF Prompt: `As a tooling validation operator, validate Memory Maintenance and Migration CLIs against node .opencode/skill/system-spec-kit/scripts/dist/memory/backfill-frontmatter.js --dry-run --include-archive --report /tmp/frontmatter-dry-run.json. Verify dry-run migration reporting, cleanup/parser regression coverage, and ranking output. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: backfill dry-run writes a JSON report; cleanup and parser regression scripts pass; rank-memories prints a structured summary for the sample JSON input
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the maintenance surface behaves deterministically in dry-run and regression-driven validation modes
 
 ---
@@ -56,8 +58,7 @@ Dry-run report file, regression-script transcripts, and rank-memories stdout
 
 Inspect `scripts/memory/backfill-frontmatter.ts`, `cleanup-orphaned-vectors.ts`, `ast-parser.ts`, and `rank-memories.ts` if one command fails or returns malformed output
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/25-memory-maintenance-and-migration-clis.md](../../feature_catalog/16--tooling-and-scripts/25-memory-maintenance-and-migration-clis.md)
 

@@ -15,7 +15,7 @@ After the system adds hints and adjusts a response, it recalculates the size cou
 
 ## 2. CURRENT REALITY
 
-Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`: auto-resume `systemPromptContext` items are injected before `enforceTokenBudget()` runs, so both `meta.tokenCount` and the delivered payload stay aligned with the final serialized envelope returned to callers.
+The implementation recomputes final token metadata after `appendAutoSurfaceHints(...)` mutates the envelope and before token-budget enforcement evaluates the payload. The same finalize-then-budget ordering now also applies in `memory_context`: auto-resume `systemPromptContext` items are injected before `enforceTokenBudget()` runs, so both `meta.tokenCount` and the delivered payload stay aligned with the final serialized envelope returned to callers.
 
 ---
 
@@ -29,7 +29,7 @@ Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mu
 | `mcp_server/context-server.ts` | Server | Runs hint append before budget enforcement in success path |
 | `shared/utils/token-estimate.ts` | Shared | Token estimation utility used for final token sync |
 
-### Tests
+### Validation And Tests
 
 | Test File | Test Name | Coverage |
 |-----------|-----------|----------|
@@ -39,8 +39,6 @@ Phase 014 recomputes final token metadata after `appendAutoSurfaceHints(...)` mu
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Final token metadata recomputation
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/11-final-token-metadata-recomputation.md`

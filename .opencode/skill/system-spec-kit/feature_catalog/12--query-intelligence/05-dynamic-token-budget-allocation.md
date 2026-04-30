@@ -1,7 +1,6 @@
 ---
 title: "Dynamic token budget allocation"
 description: "Dynamic token budget allocation scales the token budget returned per query based on query complexity tier."
-audited_post_018: true
 ---
 
 # Dynamic token budget allocation
@@ -34,7 +33,7 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Budget adjustment with header overhead (CHK-060) |
 | `mcp_server/lib/search/query-classifier.ts` | Lib | Query complexity classification |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,7 +44,6 @@ The savings add up. If 60% of your queries are simple, you recover roughly 40% o
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Dynamic token budget allocation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/05-dynamic-token-budget-allocation.md`

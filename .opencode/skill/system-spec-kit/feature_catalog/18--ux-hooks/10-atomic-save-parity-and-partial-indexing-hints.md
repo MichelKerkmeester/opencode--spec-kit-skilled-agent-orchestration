@@ -36,7 +36,7 @@ Failure semantics are tighter on the primary governed-save path too. After a new
 | `mcp_server/handlers/memory-crud-types.ts` | Handler | `MutationHookResult` contract shape shared by both save paths |
 | `mcp_server/hooks/mutation-feedback.ts` | Hook | Mutation feedback hook consuming the shared contract |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,8 +47,6 @@ Failure semantics are tighter on the primary governed-save path too. After a new
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Atomic-save parity and partial-indexing hints
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md`

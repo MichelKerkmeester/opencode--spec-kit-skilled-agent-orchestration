@@ -13,11 +13,13 @@ This scenario validates Evaluation database and schema (R13-S1) for `005`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `005` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm eval data isolation
-- Prompt: `As an evaluation validation operator, validate Evaluation database and schema (R13-S1) against the documented validation surface. Verify eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm eval data isolation.
+- Real user request: `Please validate Evaluation database and schema (R13-S1) against the documented validation surface and tell me whether the expected signals are present: Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB.`
+- RCAF Prompt: `As an evaluation validation operator, validate Evaluation database and schema (R13-S1) against the documented validation surface. Verify eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Eval tables created in separate DB/schema; retrieval events logged without affecting main memory DB
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Eval data isolated in dedicated tables; main DB unaffected; FAIL: Eval writes pollute main memory tables
 
 ---
@@ -53,8 +55,7 @@ Eval DB schema dump + retrieval event rows + main DB integrity check
 
 Check eval DB path configuration → Verify schema migration ran → Inspect table isolation boundaries
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/01-evaluation-database-and-schema.md](../../feature_catalog/09--evaluation-and-measurement/01-evaluation-database-and-schema.md)
 

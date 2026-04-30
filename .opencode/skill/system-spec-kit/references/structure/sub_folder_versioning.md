@@ -30,6 +30,7 @@ Sub-folder versioning is **workflow-assisted**: the AI can suggest it during Opt
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:directory-structure -->
 ## 2. DIRECTORY STRUCTURE
 
@@ -55,6 +56,7 @@ specs/###-name/
 ---
 
 <!-- /ANCHOR:directory-structure -->
+
 <!-- ANCHOR:workflow-steps -->
 ## 3. WORKFLOW STEPS
 
@@ -92,6 +94,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 ---
 
 <!-- /ANCHOR:workflow-steps -->
+
 <!-- ANCHOR:naming-convention -->
 ## 4. NAMING CONVENTION
 
@@ -103,6 +106,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 ---
 
 <!-- /ANCHOR:naming-convention -->
+
 <!-- ANCHOR:memory-context-routing -->
 ## 5. MEMORY CONTEXT ROUTING
 
@@ -115,6 +119,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 ---
 
 <!-- /ANCHOR:memory-context-routing -->
+
 <!-- ANCHOR:example-use-case -->
 ## 6. EXAMPLE USE CASE
 
@@ -165,6 +170,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 ---
 
 <!-- /ANCHOR:example-use-case -->
+
 <!-- ANCHOR:benefits -->
 ## 7. BENEFITS
 
@@ -177,6 +183,7 @@ Routine saves pass the target spec folder alongside structured JSON.
 ---
 
 <!-- /ANCHOR:benefits -->
+
 <!-- ANCHOR:phases-vs-versions -->
 ## 8. PHASES VS VERSIONS
 
@@ -199,8 +206,9 @@ Both systems use the same `###-name/` naming convention for child folders and bo
 ---
 
 <!-- /ANCHOR:phases-vs-versions -->
+
 <!-- ANCHOR:generate-context-js-integration -->
-## 9. generate-context.js Integration
+## 9. GENERATE-CONTEXT.JS INTEGRATION
 
 When using subfolder versioning, the spec-doc record save script (`generate-context.js`) fully supports nested paths.
 
@@ -234,6 +242,7 @@ Please specify the full path: parent/child
 ---
 
 <!-- /ANCHOR:generate-context-js-integration -->
+
 <!-- ANCHOR:related-resources -->
 ## 10. RELATED RESOURCES
 
@@ -245,4 +254,7 @@ Please specify the full path: parent/child
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator
 - `system-spec-kit` - Context preservation with semantic memory
+
+---
+
 <!-- /ANCHOR:related-resources -->

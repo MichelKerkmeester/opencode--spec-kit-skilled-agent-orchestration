@@ -12,12 +12,16 @@ This scenario validates the phase 018 spec-doc structure validator for `201`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the validator against a real spec doc and confirm the phase-018 rule surface rejects malformed continuity/frontmatter state before the doc can be accepted.
 
-- Objective: Verify the five-rule validator bridge and continuity block enforcement
-- Prompt: `As a spec-doc record-quality validation operator, validate Spec-doc structure validator and continuity frontmatter against _memory.continuity. Verify the five-rule validator bridge and continuity block enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the five-rule validator bridge and continuity block enforcement.
+- Real user request: `` Please validate Spec-doc structure validator and continuity frontmatter against _memory.continuity and tell me whether the expected signals are present: five named rules execute in order; malformed `_memory.continuity` fails closed; valid docs pass cleanly. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Spec-doc structure validator and continuity frontmatter against _memory.continuity. Verify the five-rule validator bridge and continuity block enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: five named rules execute in order; malformed `_memory.continuity` fails closed; valid docs pass cleanly
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the five rules run in order and malformed continuity/frontmatter state fails closed; FAIL if a rule is skipped or invalid continuity state is accepted
+
+---
 
 ## 3. TEST EXECUTION
 
@@ -52,8 +56,7 @@ Validator output from the malformed and repaired runs
 
 Inspect `mcp_server/lib/validation/spec-doc-structure.ts` rule dispatch, validate.sh aliases, and the continuity block renderer
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/26-spec-doc-structure-validator.md](../../feature_catalog/13--memory-quality-and-indexing/26-spec-doc-structure-validator.md)
 - Source files: `mcp_server/lib/validation/spec-doc-structure.ts`, `scripts/spec/validate.sh`

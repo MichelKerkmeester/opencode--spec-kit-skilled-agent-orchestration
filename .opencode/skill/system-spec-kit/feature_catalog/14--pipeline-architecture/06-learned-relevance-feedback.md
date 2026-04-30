@@ -1,7 +1,6 @@
 ---
 title: "Learned relevance feedback"
 description: "Learned relevance feedback captures query terms from user result selections and boosts future searches with a 0.7x weight via isolated `learned_triggers`."
-audited_post_018: true
 ---
 
 # Learned relevance feedback
@@ -38,7 +37,7 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 | `shared/normalization.ts` | Shared | Text normalization |
 | `shared/types.ts` | Shared | Type definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -56,7 +55,6 @@ Learned triggers boost future searches via a 0.7x weight applied during the feed
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Learned relevance feedback
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/06-learned-relevance-feedback.md`

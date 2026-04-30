@@ -1,8 +1,6 @@
 ---
 title: "Memory indexing (memory_save)"
 description: "Covers the save entry point that reads files, generates embeddings, applies quality gating and indexes content into the spec-doc record database."
-audited_post_018: true
-phase_018_replaces: "legacy memory-file save model with spec-doc anchored continuity save path"
 ---
 
 # Memory indexing (memory_save)
@@ -25,7 +23,7 @@ The canonical router now classifies save chunks across 8 categories: `narrative_
 
 Before the indexed write, the handler still normalizes content, generates embeddings, runs prediction-error arbitration, applies the three-layer quality gate and performs reconsolidation where enabled. The save path still records mutation history, invalidates caches and preserves async-embedding behavior, but those steps now feed spec-doc anchored continuity instead of treating legacy memory-file continuity as the primary source of truth.
 
-Phase 017 tightened the canonical writer contract in two places. Commit `aaf0f49a8` fixed H-56-1 so every successful canonical save refreshes packet metadata instead of treating repeat saves as a structural no-op, and commit `88063287b` added the research-tree follow-up that backfills missing `description.json` and `graph-metadata.json` files under research iteration folders when the saved packet owns those children. That means a successful `memory_save` now updates the merged spec doc, the packet metadata, and any newly missing research metadata surfaces in one canonical pass.
+The implementation tightened the canonical writer contract in two places. Commit `aaf0f49a8` fixed H-56-1 so every successful canonical save refreshes packet metadata instead of treating repeat saves as a structural no-op, and commit `88063287b` added the research-tree follow-up that backfills missing `description.json` and `graph-metadata.json` files under research iteration folders when the saved packet owns those children. That means a successful `memory_save` now updates the merged spec doc, the packet metadata, and any newly missing research metadata surfaces in one canonical pass.
 
 The interesting part is what happens before the record is created. A Prediction Error (PE) gating system compares the new content against existing spec-doc records via cosine similarity and decides one of five actions. CREATE stores a new record when no similar spec-doc record exists. REINFORCE boosts the FSRS stability of an existing duplicate without creating a new entry (the system already knows this, so it strengthens the spec-doc record). UPDATE overwrites an existing high-similarity memory in-place when the new version supersedes the old. SUPERSEDE marks the older spec-doc record as deprecated, creates a new record and links them with a causal edge. CREATE_LINKED stores a new spec-doc record with a relationship edge to a similar but distinct existing spec-doc record. Auto-edge insertion on the SUPERSEDE and CREATE_LINKED paths now respects a per-relation per-window cap routed through shared cap logic so prediction-error / reconsolidation supersedes bursts cannot dominate the causal graph.
 
@@ -83,7 +81,7 @@ Document type affects importance weighting automatically: constitutional files g
 | `scripts/core/workflow.ts` | Script orchestrator | Canonical save workflow that now always refreshes packet metadata on successful saves |
 | `scripts/memory/backfill-research-metadata.ts` | Script | Research-tree metadata backfill step invoked from the canonical save workflow |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -96,8 +94,7 @@ Document type affects importance weighting automatically: constitutional files g
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Memory indexing (memory_save)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/01-memory-indexing-memorysave.md`
 - Source list updated 2026-03-25 per deep review

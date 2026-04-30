@@ -1,7 +1,6 @@
 ---
 title: "Entity normalization consolidation"
 description: "Entity normalization consolidation unified two divergent normalization functions and deduplicated `computeEdgeDensity` into a single source."
-audited_post_018: true
 ---
 
 # Entity normalization consolidation
@@ -34,7 +33,7 @@ Two cross-cutting normalization issues were resolved:
 | `mcp_server/lib/extraction/entity-extractor.ts` | Lib | Entity extraction; imports and re-exports `normalizeEntityName` and `computeEdgeDensity` from `entity-linker.ts` |
 | `mcp_server/lib/extraction/entity-denylist.ts` | Lib | Entity denylist |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ Two cross-cutting normalization issues were resolved:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Entity normalization consolidation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/13-entity-normalization-consolidation.md`

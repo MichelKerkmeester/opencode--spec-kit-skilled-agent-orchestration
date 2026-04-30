@@ -45,7 +45,7 @@ const EXAMPLES_DIR = path.join(TEMPLATES_DIR, 'examples');
 // Addendum subdirectories
 const ADDENDUM_L2 = path.join(ADDENDUM_DIR, 'level2-verify');
 const ADDENDUM_L3 = path.join(ADDENDUM_DIR, 'level3-arch');
-const ADDENDUM_L3PLUS = path.join(ADDENDUM_DIR, 'level3plus-govern');
+const ADDENDUM_L3PLUS = path.join(ADDENDUM_DIR, 'level3-plus-govern');
 
 // Compose.sh script
 const COMPOSE_SCRIPT = path.join(SCRIPTS_DIR, 'templates', 'compose.sh');

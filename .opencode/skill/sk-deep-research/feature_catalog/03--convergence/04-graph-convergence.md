@@ -33,7 +33,7 @@ The reducer consumes the newest `graph_convergence` event and surfaces its verdi
 | `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Reducer | Reads the latest graph event and exposes graph score, decision, and blockers. |
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/convergence.ts` | MCP handler | Produces the graph convergence verdict that the workflow records and the reducer consumes. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

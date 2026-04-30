@@ -17,12 +17,13 @@ Verify ccc_status reports binary/index availability and recommendation without i
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify ccc_status reports binary/index availability and recommendation without invoking reindex.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 014 (ccc_status availability probe), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify ccc_status reports binary/index availability and recommendation without invoking reindex.
+- Real user request: `Probe ccc_status and confirm it reports binary and index availability without creating or changing CocoIndex artifacts.`
+- RCAF Prompt: `As a CocoIndex integration tester, execute availability probe checks against ccc_status. Verify binary/index diagnostics and recommendations are reported without invoking reindex or mutating artifacts. Return PASS/FAIL with diagnostic payload evidence.`
+- Expected execution process: Call `ccc_status({})` and capture `available`, `binaryPath`, `indexExists`, `indexSize`, and `recommendation`.
+- Expected signals: Response is diagnostic-only and does not create or modify `.cocoindex_code`; recommendation matches binary/index presence.
+- Desired user-visible outcome: A concise verdict explaining whether ccc_status stayed read-only and reported actionable availability diagnostics.
+- Pass/fail: PASS if diagnostics match binary/index state and no reindex artifacts change; FAIL if status invokes reindex, mutates `.cocoindex_code`, or gives a mismatched recommendation.
 
 ---
 
@@ -60,4 +61,3 @@ Temporarily rename the copied binary in a disposable workspace to test unavailab
 - Group: Code Graph Runtime
 - Playbook ID: 014
 - Canonical root source: `manual_testing_playbook.md`
-

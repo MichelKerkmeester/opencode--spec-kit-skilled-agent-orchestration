@@ -14,11 +14,13 @@ This scenario validates Graph and cognitive memory fixes for `081`. It focuses o
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `081` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm graph/cognitive fix bundle
-- Prompt: `As a graph-signal validation operator, validate Graph and cognitive memory fixes against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm graph/cognitive fix bundle.
+- Real user request: `Please validate Graph and cognitive memory fixes against the documented validation surface and tell me whether the expected signals are present: Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Graph and cognitive memory fixes against the documented validation surface. Verify self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Self-loops prevented; depth clamps enforced; cache invalidation triggers on mutation; no stale cognitive data returned
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if self-loops are blocked, depth stays within clamped bounds, and cache invalidates correctly on mutation
 
 ---
@@ -54,8 +56,7 @@ Self-loop attempt output + depth clamp evidence + cache invalidation trace
 
 Inspect self-loop guard logic; verify depth clamp constants; check cache invalidation trigger points
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md](../../feature_catalog/10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md)
 

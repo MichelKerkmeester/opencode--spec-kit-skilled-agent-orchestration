@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-010` and confirm th
 
 - Objective: Verify `bdg dom screenshot /tmp/bdg-test.png` exits 0; the file exists; and the first four bytes are PNG magic `89 50 4e 47`.
 - Real user request: `"Take a screenshot of example.com and save it to /tmp/bdg-test.png."`
-- Prompt: `As a manual-testing orchestrator, capture a screenshot of the active page through the bdg CLI against an active session on https://example.com. Verify the file is created and starts with PNG magic bytes. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, capture a screenshot of the active page through the bdg CLI against an active session on https://example.com. Verify the file is created and starts with PNG magic bytes. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session on `https://example.com` (BDG-002 prerequisite); run screenshot, verify file existence, verify PNG magic.
 - Expected signals: screenshot command exits 0; `/tmp/bdg-test.png` exists; `xxd` head shows PNG magic `89 50 4e 47`.
 - Desired user-visible outcome: A short report quoting the file path, file size, and PNG-magic confirmation with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-010` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, capture a screenshot of the active page through the bdg CLI against an active session on https://example.com. Verify the file is created and starts with PNG magic bytes. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, capture a screenshot of the active page through the bdg CLI against an active session on https://example.com. Verify the file is created and starts with PNG magic bytes. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

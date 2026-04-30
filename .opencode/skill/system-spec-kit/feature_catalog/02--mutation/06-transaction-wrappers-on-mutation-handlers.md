@@ -1,8 +1,6 @@
 ---
 title: "Transaction wrappers on mutation handlers"
 description: "Covers the database transaction wrappers that ensure atomicity across update, delete and reconsolidation mutation paths."
-audited_post_018: true
-phase_018_change: "Wrapper coverage includes the post-018 atomic save commit path"
 ---
 
 # Transaction wrappers on mutation handlers
@@ -34,7 +32,7 @@ Every time the system saves or changes your data, it wraps the operation in a sa
 | `mcp_server/lib/storage/history.ts` | Lib | History writes that now execute inside mutation transactions |
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction management |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +45,6 @@ Every time the system saves or changes your data, it wraps the operation in a sa
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: Transaction wrappers on mutation handlers
-- Current reality source: FEATURE_CATALOG.md
+- Group: Mutation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/06-transaction-wrappers-on-mutation-handlers.md`

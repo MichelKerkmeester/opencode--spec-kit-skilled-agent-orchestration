@@ -1,8 +1,6 @@
 ---
 title: "Search Pipeline Features (SPECKIT_*)"
 description: "Feature flag reference for the Spec Kit Memory search pipeline controls, compatibility shims, and retrieval-shaping toggles."
-audited_post_018: true
-phase_018_replaces: legacy rollout/shadow/state-machine framing with the phase-018 compatibility-shim and live-controls view
 ---
 
 # Search Pipeline Features (SPECKIT_*)
@@ -53,7 +51,7 @@ These flags turn major retrieval behaviors on or off, including fallback logic, 
 | `SPECKIT_CONSUMPTION_LOG` | `true` | boolean | `lib/telemetry/consumption-logger.ts` | **Default ON (graduated via rollout policy).** Agent consumption instrumentation remains live. `isConsumptionLogEnabled()` delegates to `isFeatureEnabled('SPECKIT_CONSUMPTION_LOG')`, so the logger stays active unless explicitly disabled or rollout policy gates it off. Logging stays fail-safe (updated 2026-03-25 per deep review). |
 | `SPECKIT_CONTEXT_HEADERS` | `true` | boolean | `lib/search/hybrid-search.ts` | **IMPLEMENTED (Sprint 019).** P1-4: Contextual tree injection into returned chunks. When enabled, `injectContextualTree()` string-prepends hierarchical context headers (`[parent > child — description]`, max 100 chars) using PI-B3 cached spec folder descriptions. Token budget adjusted for calibrated header overhead (~26 tokens/result) before truncation (CHK-060). |
 | `SPECKIT_CROSS_ENCODER` | `true` | boolean | `lib/search/search-flags.ts` | Enables cross-encoder reranking in Stage 3 of the 4-stage pipeline. When enabled, the reranker rescores candidates using a more expensive cross-attention model, but only when at least 4 candidates reach the Stage 3 gate. Disabling falls back to vector-only ranking from fusion. |
-| `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in Phase 018 (CR-P2-3). |
+| `SPECKIT_DASHBOARD_LIMIT` | `10000` | number | `lib/eval/reporting-dashboard.ts` | Maximum number of rows fetched for the reporting dashboard. Parsed as integer with NaN guard (`|| 10000`). Replaces a previously hardcoded limit of 1000. Added in the implementation (CR-P2-3). |
 | `SPECKIT_DEBUG_INDEX_SCAN` | `false` | boolean | `handlers/memory-index.ts` | When `'true'`, emits additional file-count diagnostics during `memory_index_scan` runs. Off by default; intended for debugging index coverage issues. Must be explicitly set to `'true'`. |
 | `SPECKIT_DEGREE_BOOST` | `true` | boolean | `lib/search/search-flags.ts` | Enables the degree-search channel in hybrid search. Re-ranks results by hub score via `computeDegreeScores()` with logarithmic normalization and a hard cap of 50. Base channel weight is 0.4. |
 | `SPECKIT_DOCSCORE_AGGREGATION` | `true` | boolean | `lib/search/search-flags.ts` | Enables R1 MPAB (Multi-Parent Aggregated Bonus) chunk-to-memory score aggregation. Collapses chunk-level results back to parent memory documents using `sMax + 0.3 * sum(remaining) / sqrt(N)` to prevent multi-chunk dominance. |
@@ -147,7 +145,6 @@ Source file references are included in the flag table above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: Search Pipeline Features (SPECKIT_*)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/01-1-search-pipeline-features-speckit.md`

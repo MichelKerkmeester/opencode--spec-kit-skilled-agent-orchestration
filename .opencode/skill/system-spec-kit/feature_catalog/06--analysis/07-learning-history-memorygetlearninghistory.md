@@ -1,7 +1,6 @@
 ---
 title: "Learning history (memory_get_learning_history)"
 description: "Covers the learning history retrieval tool that aggregates Learning Index trends across completed tasks in a spec folder."
-audited_post_018: true
 ---
 
 # Learning history (memory_get_learning_history)
@@ -56,14 +55,9 @@ The runtime tool schema labels `memory_get_learning_history` as `[L7:Maintenance
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/07-learning-history-memorygetlearninghistory.md`
-
-- Group: Analysis
-- Source feature title: Learning history (memory_get_learning_history)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

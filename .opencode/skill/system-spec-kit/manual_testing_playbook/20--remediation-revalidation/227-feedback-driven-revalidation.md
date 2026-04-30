@@ -15,11 +15,13 @@ This scenario validates Feedback-driven revalidation for `227`. It focuses on Co
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `227` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals
-- Prompt: `As a remediation validation operator, validate Feedback-driven revalidation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts. Verify memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals.
+- Real user request: `Please validate Feedback-driven revalidation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts and tell me whether the expected signals are present: Validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded.`
+- RCAF Prompt: `As a remediation validation operator, validate Feedback-driven revalidation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/learned-feedback.vitest.ts tests/promotion-positive-validation-semantics.vitest.ts tests/mcp-input-validation.vitest.ts. Verify memory_validate persists confidence updates, adaptive feedback, promotion decisions, and bounded learned-feedback signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Validation, learned-feedback, and promotion suites pass; positive and negative validations update confidence and counters correctly; adaptive signals stay best-effort instead of failing the request; promotion thresholds honor positive-validation semantics and rate limits; and learned-feedback or ground-truth outputs remain explicitly bounded
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted suites pass and the evidence confirms memory_validate preserves confidence tracking, adaptive feedback, guarded promotion, negative-feedback persistence, and bounded learned-feedback behavior
 
 ---
@@ -56,8 +58,7 @@ Test transcript + key assertion output for confidence tracking, adaptive feedbac
 
 Inspect `mcp_server/handlers/checkpoints.ts`, `mcp_server/lib/scoring/confidence-tracker.ts`, `mcp_server/lib/cognitive/adaptive-ranking.ts`, `mcp_server/lib/search/auto-promotion.ts`, `mcp_server/lib/scoring/negative-feedback.ts`, `mcp_server/lib/search/learned-feedback.ts`, and `mcp_server/lib/eval/ground-truth-feedback.ts` if validation outcomes or bounded learning signals regress
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [20--remediation-revalidation/03-feedback-driven-revalidation.md](../../feature_catalog/20--remediation-revalidation/03-feedback-driven-revalidation.md)
 

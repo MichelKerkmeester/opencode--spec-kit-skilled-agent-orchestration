@@ -1,7 +1,6 @@
 ---
 title: "Strict Zod schema validation"
 description: "Strict Zod schema validation adds runtime input validation across the schema-backed MCP tool surface, rejecting hallucinated parameters from calling LLMs."
-audited_post_018: true
 ---
 
 # Strict Zod schema validation
@@ -28,7 +27,7 @@ AI assistants sometimes invent parameters that do not exist when calling tools. 
 |------|-------|------|
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Zod input schemas |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,7 +36,6 @@ AI assistants sometimes invent parameters that do not exist when calling tools. 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Strict Zod schema validation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/13-strict-zod-schema-validation.md`

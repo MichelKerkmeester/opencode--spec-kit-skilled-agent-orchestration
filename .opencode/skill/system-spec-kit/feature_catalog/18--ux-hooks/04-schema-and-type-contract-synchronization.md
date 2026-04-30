@@ -15,7 +15,7 @@ This feature makes sure every layer of the system agrees on the shape of data be
 
 ## 2. CURRENT REALITY
 
-Phase 014 aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
+The implementation aligned runtime validation and TypeScript contracts for mutation-safety behavior. The finalized state keeps `checkpoint_delete.confirmName` required across handler, schema and tool-boundary typing, and keeps the shared mutation-hook result contract synchronized for all mutation handlers.
 
 ---
 
@@ -33,7 +33,7 @@ Phase 014 aligned runtime validation and TypeScript contracts for mutation-safet
 | `mcp_server/handlers/mutation-hooks.ts` | Handler Runtime | Produces contract-aligned hook result fields |
 | `mcp_server/hooks/mutation-feedback.ts` | Hook Consumer | Consumes hook-result contract for UX payload shaping |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,8 +45,6 @@ Phase 014 aligned runtime validation and TypeScript contracts for mutation-safet
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Schema and type contract synchronization
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/04-schema-and-type-contract-synchronization.md`

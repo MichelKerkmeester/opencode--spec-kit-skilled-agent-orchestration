@@ -1,7 +1,6 @@
 ---
 title: "Graph-expanded fallback"
 description: "buildGraphExpandedFallback() walks 1-hop causal edges from concept seeds when search returns no_results or low_confidence, providing graph-derived recovery candidates, gated by the SPECKIT_GRAPH_FALLBACK flag."
-audited_post_018: true
 ---
 
 # Graph-expanded fallback
@@ -28,7 +27,7 @@ When the search pipeline produces a `no_results` or `low_confidence` outcome, th
 |------|-------|------|
 | `mcp_server/lib/search/recovery-payload.ts` | Lib | `buildGraphExpandedFallback()` — 1-hop causal walk from concept seeds for recovery |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,8 +36,8 @@ When the search pipeline produces a `no_results` or `low_confidence` outcome, th
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/12-graph-expanded-fallback.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Graph-expanded fallback
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_GRAPH_FALLBACK=false

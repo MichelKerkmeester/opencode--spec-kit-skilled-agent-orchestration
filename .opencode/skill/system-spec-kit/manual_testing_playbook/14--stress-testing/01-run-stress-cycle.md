@@ -19,10 +19,16 @@ Preconditions:
 
 ## 2. SCENARIO CONTRACT
 
+
 - Objective: Produce reproducible release-readiness or regression evidence for a packet set.
-- Prompt: `As a stress-cycle validation operator, run the frozen corpus against the target packets, score every packet x dimension cell on the 0-2 rubric, write findings.md with evidence and verdicts, emit findings-rubric.json, compare against the prior cycle if present, capture measurements for wired runtime paths, and return a concise pass/fail verdict with cited evidence.`
-- Expected signals: fixed corpus, completed score cells, narrative findings, parseable sidecar, aggregate percent, comparison deltas, REGRESSION self-checks, optional telemetry samples, strict validator output.
+- Real user request: `Please validate Run stress cycle against the target packets, score every packet x dimension cell on the 0-2 rubric, write findings.md with evidence and verdicts, emit findings-rubric.json, compare against the prior cycle if present, capture measurements for wired runtime paths, and return a concise pass/fail verdict with cited evidence. and tell me whether the expected signals are present: fixed corpus, completed score cells, narrative findings, parseable sidecar, aggregate percent, comparison deltas, REGRESSION self-checks, optional telemetry samples, strict validator output.`
+- RCAF Prompt: `As a stress-cycle validation operator, run the frozen corpus against the target packets, score every packet x dimension cell on the 0-2 rubric, write findings.md with evidence and verdicts, emit findings-rubric.json, compare against the prior cycle if present, capture measurements for wired runtime paths, and return a concise pass/fail verdict with cited evidence.. Verify fixed corpus, completed score cells, narrative findings, parseable sidecar, aggregate percent, comparison deltas, REGRESSION self-checks, optional telemetry samples, strict validator output. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Execute the documented validation request against the target packets, score every packet x dimension cell on the 0-2 rubric, write findings.md with evidence and verdicts, emit findings-rubric.json, compare against the prior cycle if present, capture measurements for wired runtime paths, and return a concise pass/fail verdict with cited evidence., capture the response and evidence, compare it against the expected signals, and return the pass/fail verdict.
+- Expected signals: fixed corpus, completed score cells, narrative findings, parseable sidecar, aggregate percent, comparison deltas, REGRESSION self-checks, optional telemetry samples, strict validator output
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the artifacts let a future investigator reproduce the verdict reasoning without the original operator; FAIL if evidence, scoring, comparison, or validation is missing.
+
+---
 
 ## 3. TEST EXECUTION
 
@@ -70,7 +76,7 @@ Do not publish a REGRESSION verdict from score delta alone. A dropped score is a
 
 ### Step 5: Emit `findings-rubric.json`
 
-Fill `.opencode/skill/system-spec-kit/templates/stress-test/findings-rubric.template.json` and save the completed sidecar next to `findings.md`.
+Fill `.opencode/skill/system-spec-kit/templates/stress_test/findings-rubric.template.json` and save the completed sidecar next to `findings.md`.
 
 The sidecar must include cycle metadata, corpus metadata, rubric dimensions, scale, weights, one scored cell per packet x dimension, aggregate math, verdict counts, and prior-version comparison fields.
 
@@ -138,9 +144,9 @@ Success criteria: a future investigator can read `findings.md`, `findings-rubric
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--stress-testing/01-stress-test-cycle.md](../../feature_catalog/14--stress-testing/01-stress-test-cycle.md)
-- Rubric template: [findings-rubric.template.json](../../templates/stress-test/findings-rubric.template.json)
-- Rubric schema: [findings-rubric.schema.md](../../templates/stress-test/findings-rubric.schema.md)
-- Findings template: [findings.template.md](../../templates/stress-test/findings.template.md)
+- Rubric template: [findings-rubric.template.json](../../templates/stress_test/findings-rubric.template.json)
+- Rubric schema: [findings-rubric.schema.md](../../templates/stress_test/findings-rubric.schema.md)
+- Findings template: [findings.template.md](../../templates/stress_test/findings.template.md)
 - v1.0.1 baseline: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/`
 - v1.0.2 rerun: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/`
 - v1.0.3 wiring run: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/`

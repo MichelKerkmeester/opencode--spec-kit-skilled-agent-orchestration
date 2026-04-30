@@ -47,7 +47,6 @@ The Python graph compiler mirrors the same contract for derived metadata. It can
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Canonical catalog source: `FEATURE_CATALOG.md`
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
 - Feature file path: `11--scoring-and-calibration/24-skill-advisor-affordance-evidence.md`

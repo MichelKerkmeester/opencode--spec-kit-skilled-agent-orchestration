@@ -14,18 +14,14 @@ This scenario validates Query-intent routing in memory_context.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that memory_context auto-routes queries based on the query-intent classifier. Structural queries (containing keywords like "calls", "imports", "callers", "function", "class") must route to the code graph backend. Semantic queries (containing keywords like "similar", "find examples", "how to") must route to the standard memory/CocoIndex pipeline. Hybrid queries must trigger both backends and merge results. The classifier confidence score and matched keywords must be available in the response metadata.
-- **Prerequisites**:
-  - MCP server running with code graph populated (at least one scan)
-  - At least some memories in the database for semantic results
-- **Prompt**: `As a context-and-code-graph validation operator, validate Query-intent routing in memory_context against memory_context({ input: "what functions call handleMemoryContext" }). Verify memory_context auto-routes queries based on the query-intent classifier. Structural queries (containing keywords like "calls", "imports", "callers", "function", "class") must route to the code graph backend. Semantic queries (containing keywords like "similar", "find examples", "how to") must route to the standard memory/CocoIndex pipeline. Hybrid queries must trigger both backends and merge results. The classifier confidence score and matched keywords must be available in the response metadata. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - Structural query: response includes code graph symbols/edges, classifier intent === 'structural'
-  - Semantic query: response includes memory hits with similarity scores, classifier intent === 'semantic'
-  - Hybrid query: response includes both code graph and memory results, classifier intent === 'hybrid'
-- **Pass/fail criteria**:
-  - PASS: Each query type routes to the correct backend(s) and returns appropriate result types
-  - FAIL: Structural query returns only memory results, semantic query hits code graph, or hybrid missing one backend
+
+- Objective: Verify that memory_context auto-routes queries based on the query-intent classifier; Structural queries (containing keywords like "calls", "imports", "callers", "function", "class") must route to the code graph backend; Semantic queries (containing keywords like "similar", "find examples", "how to") must route to the standard memory/CocoIndex pipeline; Hybrid queries must trigger both backends and merge results; The classifier confidence score and matched keywords must be available in the response metadata.
+- Real user request: `Please validate Query-intent routing in memory_context against memory_context({ input: "what functions call handleMemoryContext" }) and tell me whether the expected signals are present: Structural query: response includes code graph symbols/edges, classifier intent === 'structural'; Semantic query: response includes memory hits with similarity scores, classifier intent === 'semantic'; Hybrid query: response includes both code graph and memory results, classifier intent === 'hybrid'.`
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Query-intent routing in memory_context against memory_context({ input: "what functions call handleMemoryContext" }). Verify memory_context auto-routes queries based on the query-intent classifier. Structural queries (containing keywords like "calls", "imports", "callers", "function", "class") must route to the code graph backend. Semantic queries (containing keywords like "similar", "find examples", "how to") must route to the standard memory/CocoIndex pipeline. Hybrid queries must trigger both backends and merge results. The classifier confidence score and matched keywords must be available in the response metadata. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Structural query: response includes code graph symbols/edges, classifier intent === 'structural'; Semantic query: response includes memory hits with similarity scores, classifier intent === 'semantic'; Hybrid query: response includes both code graph and memory results, classifier intent === 'hybrid'
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Each query type routes to the correct backend(s) and returns appropriate result types; FAIL: Structural query returns only memory results, semantic query hits code graph, or hybrid missing one backend
 
 ---
 
@@ -148,8 +144,7 @@ IntentTelemetry envelopes from all three runtimes side-by-side
 
 Inspect `mcp_server/handlers/memory/context.ts` IntentTelemetry serializer and the query-intent-classifier; confirm packet 007 dist marker present across all runtimes
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/19-query-intent-routing.md](../../feature_catalog/22--context-preservation-and-code-graph/19-query-intent-routing.md)
 

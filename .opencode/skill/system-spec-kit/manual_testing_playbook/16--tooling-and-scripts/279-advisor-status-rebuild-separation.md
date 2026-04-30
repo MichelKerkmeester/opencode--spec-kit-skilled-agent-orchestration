@@ -13,12 +13,14 @@ This scenario validates the Skill Advisor repair contract from the system-spec-k
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Reproduce advisor stale state, prove `advisor_status` is diagnostic-only, then prove `advisor_rebuild` repairs it.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - Skill Advisor MCP tools are available: `advisor_status` and `advisor_rebuild`.
-  - Run in a disposable copy when touching metadata mtimes.
-- **Prompt**: `As a Skill Advisor operator, make the advisor graph stale by touching a skill graph-metadata.json in a disposable workspace, call advisor_status twice to prove it reports but does not rebuild, then call advisor_rebuild and verify rebuilt:true plus generationAfter >= generationBefore. Return PASS/FAIL with the before/status/after evidence.`
+
+- Objective: Reproduce advisor stale state, prove `advisor_status` is diagnostic-only, then prove `advisor_rebuild` repairs it.
+- Real user request: `` Please validate Advisor status and rebuild separation against the documented validation surface and tell me whether the expected signals are present: Steps 2 and 3 both report `freshness: "stale"` or a stale trust-state reason, and `generation` is unchanged.; Step 4 reports `status: "ok"`, `data.rebuilt: true`, `data.skipped: false`, and a `reason` of `stale`, `absent`, `unavailable`, or `force` depending on the engineered state.; Step 5 reports `freshness: "live"` or the expected post-rebuild healthy state for the disposable workspace.; Step 6 reports `rebuilt: false`, `skipped: true`, `reason: "status-live"`.; Step 7 reports `rebuilt: true`, `reason: "force"`. ``
+- RCAF Prompt: `` As a tooling validation operator, validate Advisor status and rebuild separation against the documented validation surface. Verify Steps 2 and 3 both report `freshness: "stale"` or a stale trust-state reason, and `generation` is unchanged.; Step 4 reports `status: "ok"`, `data.rebuilt: true`, `data.skipped: false`, and a `reason` of `stale`, `absent`, `unavailable`, or `force` depending on the engineered state.; Step 5 reports `freshness: "live"` or the expected post-rebuild healthy state for the disposable workspace.; Step 6 reports `rebuilt: false`, `skipped: true`, `reason: "status-live"`.; Step 7 reports `rebuilt: true`, `reason: "force"`. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Steps 2 and 3 both report `freshness: "stale"` or a stale trust-state reason, and `generation` is unchanged.; Step 4 reports `status: "ok"`, `data.rebuilt: true`, `data.skipped: false`, and a `reason` of `stale`, `absent`, `unavailable`, or `force` depending on the engineered state.; Step 5 reports `freshness: "live"` or the expected post-rebuild healthy state for the disposable workspace.; Step 6 reports `rebuilt: false`, `skipped: true`, `reason: "status-live"`.; Step 7 reports `rebuilt: true`, `reason: "force"`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if the expected signals are present without contradicting evidence; FAIL if required signals are missing or execution cannot complete.
 
 ---
 
@@ -95,8 +97,7 @@ rm -rf "$WORK"
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Skill Advisor playbook scenario: [006-advisor-status-rebuild-separation.md](../../mcp_server/skill_advisor/manual_testing_playbook/01--native-mcp-tools/006-advisor-status-rebuild-separation.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/handlers/advisor-status.ts`

@@ -44,7 +44,7 @@ No-op when `SPECKIT_RESULT_EXPLAIN_V1` is not set. Default ON (graduated), contr
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | `PipelineRow` type and `resolveEffectiveScore()` helper |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Flag accessor (pattern, not direct export) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -53,8 +53,6 @@ No-op when `SPECKIT_RESULT_EXPLAIN_V1` is not set. Default ON (graduated), contr
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks
-- Source feature title: Two-tier result explainability
-- Current reality source: mcp_server/lib/search/result-explainability.ts module header and implementation
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/14-result-explainability.md`

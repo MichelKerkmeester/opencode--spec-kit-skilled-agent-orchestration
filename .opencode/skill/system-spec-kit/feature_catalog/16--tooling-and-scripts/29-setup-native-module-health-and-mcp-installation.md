@@ -47,8 +47,6 @@ For canonical post-rebuild verification, see the four reference docs under packe
 | `.opencode/skill/system-spec-kit/scripts/setup/record-node-version.js` | Marker writer | Persists the current Node/runtime compatibility snapshot into `.node-version-marker` |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Setup, Native Module Health, and MCP Installation
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of the setup validation, installer, native-module probe, rebuild, and marker-recording scripts
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md`

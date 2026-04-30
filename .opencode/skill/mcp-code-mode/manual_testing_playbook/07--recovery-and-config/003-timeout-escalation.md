@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-023` and confirm the
 
 - Objective: Verify a deliberately slow chain (sleep 7 seconds) with `timeout: 5000` aborts in approximately 5 seconds with a timeout error.
 - Real user request: `"Limit my next chain to 5 seconds to avoid hanging."`
-- Prompt: `As a manual-testing orchestrator, run a deliberately slow chain (sleep 7 seconds) with timeout: 5000 through Code Mode against the local Code Mode runtime. Verify the chain returns a timeout error in approximately 5 seconds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a deliberately slow chain (sleep 7 seconds) with timeout: 5000 through Code Mode against the local Code Mode runtime. Verify the chain returns a timeout error in approximately 5 seconds. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation with explicit timeout; capture wall time.
 - Expected signals: response includes timeout/abort error; wall-clock time approximately 5 seconds (within ±1s).
 - Desired user-visible outcome: A short report quoting the timeout error and the actual wall time with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-023` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run a deliberately slow chain (sleep 7 seconds) with timeout: 5000 through Code Mode against the local Code Mode runtime. Verify the chain returns a timeout error in approximately 5 seconds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a deliberately slow chain (sleep 7 seconds) with timeout: 5000 through Code Mode against the local Code Mode runtime. Verify the chain returns a timeout error in approximately 5 seconds. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -1,7 +1,6 @@
 ---
 title: "Structural code indexer"
 description: "Structural code indexer orchestrates tree-sitter WASM symbol extraction by default, with regex fallback support for JS/TS/Python/Bash."
-audited_post_018: true
 ---
 
 # Structural code indexer
@@ -30,7 +29,7 @@ The structural indexer extracts functions, classes, methods, interfaces, type al
 | `mcp_server/code_graph/lib/tree-sitter-parser.ts` | Lib | Default tree-sitter WASM parser adapter |
 | `mcp_server/code_graph/lib/indexer-types.ts` | Lib | Type definitions, language detection, symbol/content hashing |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -39,7 +38,6 @@ The structural indexer extracts functions, classes, methods, interfaces, type al
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Structural code indexer
-- Current reality source: spec 024-compact-code-graph phases 008, 015, and 017
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/07-structural-code-indexer.md`

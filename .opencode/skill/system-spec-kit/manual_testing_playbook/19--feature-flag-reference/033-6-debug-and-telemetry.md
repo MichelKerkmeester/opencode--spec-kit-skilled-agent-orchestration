@@ -14,11 +14,13 @@ This scenario validates 6. Debug and Telemetry for `EX-033`. It focuses on Obser
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-033` and confirm the expected signals without contradicting evidence.
 
-- Objective: Observability toggle check
-- Prompt: `As a feature-flag validation operator, validate 6. Debug and Telemetry against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Observability toggle check.
+- Real user request: `Please validate 6. Debug and Telemetry against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }) and tell me whether the expected signals are present: Debug/telemetry controls identified.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 6. Debug and Telemetry against memory_search({ query:"DEBUG_TRIGGER_MATCHER telemetry opt-in inert flags", limit:20 }). Verify debug/telemetry controls identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Debug/telemetry controls identified
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if opt-in vs inert controls are clearly separated
 
 ---
@@ -52,8 +54,7 @@ Search output
 
 Check feature flag governance section
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/06-6-debug-and-telemetry.md](../../feature_catalog/19--feature-flag-reference/06-6-debug-and-telemetry.md)
 

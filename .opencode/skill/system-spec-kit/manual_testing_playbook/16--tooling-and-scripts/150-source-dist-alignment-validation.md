@@ -10,7 +10,7 @@ description: "This scenario validates the check-source-dist-alignment.ts script 
 - [1. OVERVIEW](#1-overview)
 - [2. SCENARIO CONTRACT](#2-scenario-contract)
 - [3. TEST EXECUTION](#3-test-execution)
-- [4. REFERENCES](#4-references)
+- [4. SOURCE FILES](#4-source-files)
 - [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
@@ -21,11 +21,13 @@ This scenario validates the check-source-dist-alignment.ts script for `150`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the alignment script and confirm zero violations. The script scans all `.js` files under `dist/lib/`, maps each to its expected `.ts` source, and reports orphans.
 
-- Objective: Verify source-dist alignment passes with 0 violations
-- Prompt: `As a tooling validation operator, validate Source-dist alignment validation against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify source-dist alignment passes with 0 violations.
+- Real user request: `Please validate Source-dist alignment validation against cd .opencode/skill/system-spec-kit and tell me whether the expected signals are present: 0 violations, all dist files aligned.`
+- RCAF Prompt: `As a tooling validation operator, validate Source-dist alignment validation against cd .opencode/skill/system-spec-kit. Verify 0 violations, all dist files aligned. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: 0 violations, all dist files aligned
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if 0 violations reported and exit code is 0
 
 ---
@@ -62,8 +64,7 @@ Script summary output showing scanned count, aligned count, violations count
 
 Identify orphaned dist file -> check if source was deleted/renamed -> either restore source, remove dist artifact, or add time-bounded allowlist entry
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 

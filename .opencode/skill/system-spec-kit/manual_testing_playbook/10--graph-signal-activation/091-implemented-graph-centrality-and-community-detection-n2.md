@@ -14,11 +14,13 @@ This scenario validates Implemented: graph centrality and community detection (N
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `091` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm deferred->implemented status
-- Prompt: `As a graph-signal validation operator, validate Implemented: graph centrality and community detection (N2) against the documented validation surface. Verify n2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm deferred->implemented status.
+- Real user request: `Please validate Implemented: graph centrality and community detection (N2) against the documented validation surface and tell me whether the expected signals are present: N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Implemented: graph centrality and community detection (N2) against the documented validation surface. Verify n2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: N2 tables exist with data; feature flags show active status; graph queries include centrality/community contributions in scores
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if N2 tables are populated, flags are active, and graph queries include centrality/community scoring. NOTE: ANCHOR-as-node is PLANNED/DEFERRED (feature catalog `_deprecated/09-anchor-tags-as-graph-nodes.md`) and is excluded from pass criteria. This scenario passes based on the implemented N2 features (momentum, depth, community) alone.
 
 ---
@@ -54,8 +56,7 @@ Table inspection + flag status + graph query output showing N2 score contributio
 
 Verify N2 migration completed; check feature flag state; inspect graph scoring pipeline for N2 channel integration
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/07-community-detection.md](../../feature_catalog/10--graph-signal-activation/07-community-detection.md)
 

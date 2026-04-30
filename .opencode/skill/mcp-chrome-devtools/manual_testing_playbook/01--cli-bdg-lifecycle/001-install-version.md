@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-001` and confirm th
 
 - Objective: Verify `command -v bdg` returns a path AND `bdg --version` returns a non-empty version string.
 - Real user request: `"Confirm bdg is installed."`
-- Prompt: `As a manual-testing orchestrator, confirm bdg is installed and reports its version through the bdg CLI against the local install. Verify command -v bdg returns a path and bdg --version returns a non-empty string. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, confirm bdg is installed and reports its version through the bdg CLI against the local install. Verify command -v bdg returns a path and bdg --version returns a non-empty string. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run two bash commands; do not delegate.
 - Expected signals: `command -v bdg` returns non-empty path; `bdg --version 2>&1` returns version string (semver-like or named version).
 - Desired user-visible outcome: A short report quoting the path and version with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-001` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, confirm bdg is installed and reports its version through the bdg CLI against the local install. Verify command -v bdg returns a path and bdg --version returns a non-empty string. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, confirm bdg is installed and reports its version through the bdg CLI against the local install. Verify command -v bdg returns a path and bdg --version returns a non-empty string. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

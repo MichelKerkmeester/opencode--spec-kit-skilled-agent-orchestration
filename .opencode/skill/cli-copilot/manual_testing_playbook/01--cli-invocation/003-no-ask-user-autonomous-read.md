@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CP-003` and confirm the
 
 - Objective: Confirm `--no-ask-user` lets a read-only prompt complete without operator interaction or project mutation
 - Real user request: `Ask Copilot a quick read-only question and confirm it answers without ever asking me a clarifying question or modifying anything in the repo.`
-- Prompt: `As a cross-AI orchestrator running unattended, invoke Copilot CLI with --no-ask-user against the cli-copilot skill in this repository for a strictly read-only prompt. Verify the call exits 0, returns a non-empty answer, and never blocks stdin asking a clarifying question. Return a concise pass/fail verdict with the main reason and the parsed answer.`
+- RCAF Prompt: `As a cross-AI orchestrator running unattended, invoke Copilot CLI with --no-ask-user against the cli-copilot skill in this repository for a strictly read-only prompt. Verify the call exits 0, returns a non-empty answer, and never blocks stdin asking a clarifying question. Return a concise pass/fail verdict with the main reason and the parsed answer.`
 - Expected execution process: orchestrator captures a pre-call tripwire (`git status --porcelain`), dispatches `copilot -p "..." --no-ask-user 2>&1` for a read-only question, then verifies non-empty answer and unchanged working tree
 - Expected signals: `EXIT=0`. Stdout contains a multi-sentence answer naming Copilot CLI capabilities. `git status --porcelain` diff is empty. No operator prompt appears
 - Desired user-visible outcome: PASS verdict + a one-line note that the autonomous read completed without operator interaction

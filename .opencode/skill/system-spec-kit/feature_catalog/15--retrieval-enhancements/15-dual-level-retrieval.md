@@ -1,7 +1,6 @@
 ---
 title: "Dual-level retrieval"
 description: "Adds a retrievalLevel parameter (local|global|auto) to memory_search, where auto mode falls back to community search on weak results, enabling both fine-grained and topic-level retrieval in a single query, gated by the SPECKIT_DUAL_RETRIEVAL flag."
-audited_post_018: true
 ---
 
 # Dual-level retrieval
@@ -29,7 +28,7 @@ The `memory_search` handler accepts a `retrievalLevel` parameter with three mode
 | `mcp_server/handlers/memory-search.ts` | Handler | `retrievalLevel` parameter handling and mode dispatch |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Flag registration and `retrievalLevel` parameter definition |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,8 +37,8 @@ The `memory_search` handler accepts a `retrievalLevel` parameter with three mode
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/15-dual-level-retrieval.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Dual-level retrieval
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_DUAL_RETRIEVAL=false

@@ -33,7 +33,7 @@ The log is append-only by contract. The agent may add one iteration line, the wo
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow | Appends workflow-owned events such as `graph_convergence` and `blocked_stop`. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Workflow | Mirrors the same event-writing path in confirm mode. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

@@ -17,8 +17,11 @@ This scenario validates Project settings inspection for `CFG-002`. It focuses on
 Operators run the exact prompt and command sequence for `CFG-002` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify project settings contain language extension patterns
-- Prompt: `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.`
+- Real user request: `Please verify project settings contain language extension patterns.`
+- RCAF Prompt: `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns is present and covers multiple supported language extensions. Return a concise user-visible pass/fail verdict with the main reason.`
+- Expected execution process: Run the TEST EXECUTION command sequence for `CFG-002`, capture the listed evidence, compare observed output with the expected signals, and return the verdict to the user.
 - Expected signals: `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.)
+- Desired user-visible outcome: A concise user-visible PASS/PARTIAL/FAIL verdict naming whether the scenario satisfied the objective and the main reason.
 - Pass/fail: PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing
 
 
@@ -28,12 +31,12 @@ Operators run the exact prompt and command sequence for `CFG-002` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CFG-002 | Project settings inspection | Verify project settings contain language extension patterns | `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `bash: cat .cocoindex_code/settings.yml` -> 2. Locate `include_patterns` field -> 3. Count unique file extension patterns | `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.) | Contents of `settings.yml` with include_patterns section; count of extension patterns | PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing | Run `ccc init -f` to regenerate defaults; compare against supported languages in tool_reference.md |
+| CFG-002 | Project settings inspection | Verify project settings contain language extension patterns | `As a manual-testing orchestrator, inspect the CocoIndex Code project settings for language coverage against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify include_patterns is present and covers multiple supported language extensions. Return a concise user-visible pass/fail verdict with the main reason.` | 1. `bash: cat .cocoindex_code/settings.yml` -> 2. Locate `include_patterns` field -> 3. Count unique file extension patterns | `include_patterns` field present; contains patterns covering multiple language extensions (e.g., `*.py`, `*.ts`, `*.js`, `*.go`, `*.rs`, etc.) | Contents of `settings.yml` with include_patterns section; count of extension patterns | PASS if `include_patterns` contains patterns for 28+ language extensions (matching supported languages list); PARTIAL if patterns present but fewer than 28; FAIL if `include_patterns` missing | Run `ccc init -f` to regenerate defaults; compare against supported languages in tool_reference.md |
 
 
 ---
 
-## 4. REFERENCES
+## 4. SOURCE FILES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 

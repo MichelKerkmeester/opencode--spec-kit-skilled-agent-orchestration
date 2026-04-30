@@ -14,11 +14,13 @@ This scenario validates the deferred AST-level section retrieval tool entry for 
 
 ## 2. SCENARIO CONTRACT
 
-Operators review the exact feature entry and nearby retrieval references for `188` and confirm the deferred status without contradicting evidence.
 
-- Objective: Verify `read_spec_section(filePath, heading)` remains a planned AST-based retrieval tool, no implementation/source files exist yet, and R7 anchor-aware thinning remains the active approach until spec docs routinely exceed about 1000 lines
-- Prompt: `As a retrieval validation operator, validate AST-level section retrieval tool against feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md. Verify read_spec_section(filePath, heading) remains a planned AST-based retrieval tool, no implementation/source files exist yet, and R7 anchor-aware thinning remains the active approach until spec docs routinely exceed about 1000 lines. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `read_spec_section(filePath, heading)` remains a planned AST-based retrieval tool, no implementation/source files exist yet, and R7 anchor-aware thinning remains the active approach until spec docs routinely exceed about 1000 lines.
+- Real user request: `` Please validate AST-level section retrieval tool against feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md and tell me whether the expected signals are present: Feature is marked planned/deferred; `read_spec_section(filePath, heading)` is described as future work; no implementation/source files are present; R7 anchor-aware thinning is still documented as the current approach. ``
+- RCAF Prompt: `As a retrieval validation operator, validate AST-level section retrieval tool against feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md. Verify read_spec_section(filePath, heading) remains a planned AST-based retrieval tool, no implementation/source files exist yet, and R7 anchor-aware thinning remains the active approach until spec docs routinely exceed about 1000 lines. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Feature is marked planned/deferred; `read_spec_section(filePath, heading)` is described as future work; no implementation/source files are present; R7 anchor-aware thinning is still documented as the current approach
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Deferred status, no implementation, and current-approach notes all align; FAIL: the repo contains a live implementation without catalog updates, or the entry claims shipped behavior
 
 ---
@@ -55,8 +57,7 @@ Feature catalog excerpt showing deferred status; repository search output showin
 
 Reconcile documentation drift if implementation exists; update the feature catalog if status changed; if docs are routinely above threshold, confirm whether implementation should move from deferred to active
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/07-ast-level-section-retrieval-tool.md](../../feature_catalog/01--retrieval/07-ast-level-section-retrieval-tool.md)
 

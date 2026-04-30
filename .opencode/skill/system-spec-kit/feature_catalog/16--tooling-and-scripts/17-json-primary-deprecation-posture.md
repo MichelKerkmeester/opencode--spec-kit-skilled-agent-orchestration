@@ -77,8 +77,7 @@ The shipped posture enforces the following behavior:
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/17-json-primary-deprecation-posture.md`
 
@@ -90,8 +89,4 @@ The shipped posture enforces the following behavior:
 ---
 
 ### SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: JSON-primary deprecation posture
-- Current reality source: `scripts/memory/generate-context.ts`, `scripts/loaders/data-loader.ts`, and `.opencode/command/memory/save.md`
 <!-- /ANCHOR:source-metadata -->

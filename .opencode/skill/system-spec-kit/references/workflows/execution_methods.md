@@ -17,6 +17,7 @@ This document covers validation, completion checking, context saving, folder cre
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:validation -->
 ## 2. VALIDATION
 
@@ -46,6 +47,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --json specs/001-f
 ---
 
 <!-- /ANCHOR:validation -->
+
 <!-- ANCHOR:completion-checking -->
 ## 3. COMPLETION CHECKING
 
@@ -71,6 +73,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/check-completion.sh --json spe
 ---
 
 <!-- /ANCHOR:completion-checking -->
+
 <!-- ANCHOR:context-saving -->
 ## 4. CONTEXT SAVING
 
@@ -100,6 +103,7 @@ echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node .opencode/skil
 ---
 
 <!-- /ANCHOR:context-saving -->
+
 <!-- ANCHOR:spec-folder-creation -->
 ## 5. SPEC FOLDER CREATION
 
@@ -136,6 +140,7 @@ under a coordination root.
 ---
 
 <!-- /ANCHOR:spec-folder-creation -->
+
 <!-- ANCHOR:level-recommendation -->
 ## 6. LEVEL RECOMMENDATION
 
@@ -163,6 +168,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --auth --ap
 ---
 
 <!-- /ANCHOR:level-recommendation -->
+
 <!-- ANCHOR:template-composition -->
 ## 7. TEMPLATE COMPOSITION
 
@@ -214,8 +220,9 @@ bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh 2 3
 ---
 
 <!-- /ANCHOR:template-composition -->
+
 <!-- ANCHOR:memory-workflow-12-steps -->
-## 8. MEMORY WORKFLOW (12 Steps)
+## 8. MEMORY WORKFLOW (12 STEPS)
 
 The `generate-context.js` script orchestrates a 12-step workflow via `workflow.ts`:
 
@@ -283,6 +290,7 @@ After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This re
 ---
 
 <!-- /ANCHOR:memory-workflow-12-steps -->
+
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
@@ -290,4 +298,7 @@ After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This re
 - [Folder Routing](../structure/folder_routing.md)
 - [Quick Reference](../workflows/quick_reference.md)
 - [Template Guide](../templates/template_guide.md)
+
+---
+
 <!-- /ANCHOR:related-resources -->

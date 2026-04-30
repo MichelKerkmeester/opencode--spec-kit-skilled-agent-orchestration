@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that the command binds topic, spec folder, execution mode, max iterations, and convergence threshold before the YAML workflow starts.
 - Real user request: I want deep research on a topic, but make sure it goes into the right spec folder with the limits I picked.
-- Prompt: `As a manual-testing orchestrator, validate the setup-binding contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the command entrypoint gathers required values before loading YAML and that the YAML preflight rejects missing bindings or invalid spec-folder scope. Return a concise pass/fail verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the setup-binding contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the command entrypoint gathers required values before loading YAML and that the YAML preflight rejects missing bindings or invalid spec-folder scope. Return a concise pass/fail verdict.`
 - Expected execution process: Inspect the unified setup prompt first, then both YAML preflight guards, then the state-format config schema to confirm the same values are represented end-to-end.
-- Desired user-facing outcome: The user is told which inputs are required and why the workflow will not proceed until they are bound.
+- Desired user-visible outcome: The user is told which inputs are required and why the workflow will not proceed until they are bound.
 - Expected signals: The command explicitly names topic, spec folder, execution mode, max iterations, and convergence threshold; YAML preflight verifies them before file writes.
 - Pass/fail posture: PASS if setup requirements and YAML preflight align on the required bindings and spec-folder scope; FAIL if one surface allows missing bindings the other forbids.
 

@@ -1,7 +1,6 @@
 ---
 title: "7-layer tool architecture metadata"
 description: "The 7-layer tool architecture defines token budgets, priorities and use-case guidance for each MCP tool layer (L1-L7) as governance metadata."
-audited_post_018: true
 ---
 
 # 7-layer tool architecture metadata
@@ -33,7 +32,7 @@ Runtime dispatch in `context-server.ts` has a single name-based dispatch hop (`d
 | `mcp_server/tools/index.ts` | API | Name-based dispatcher routing across tool modules |
 | `mcp_server/handlers/memory-context.ts` | Handler | Surfaces recommended layers as advisory metadata |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,7 +44,6 @@ Runtime dispatch in `context-server.ts` has a single name-based dispatch hop (`d
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: 7-layer tool architecture metadata
-- Current reality source: audit-D04 gap backfill
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md`

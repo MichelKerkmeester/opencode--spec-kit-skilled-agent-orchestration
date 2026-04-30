@@ -43,6 +43,13 @@ Schema validation rejects malformed tool calls before handler execution for regi
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:60-100` | Tool surface | dispatches those names to handlers |
 | `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:79-101` | Tool surface | includes code graph, skill graph, advisor, and coverage graph names in schema-validated dispatch |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:561-678` | Schema | defines code graph and detect_changes schemas |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/06--mcp-tool-surface/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

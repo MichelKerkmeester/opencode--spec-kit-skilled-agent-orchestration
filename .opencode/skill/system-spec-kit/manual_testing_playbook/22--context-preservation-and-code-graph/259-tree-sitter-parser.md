@@ -14,21 +14,14 @@ This scenario validates Tree-Sitter WASM parser.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the tree-sitter WASM parser (`tree-sitter-parser.ts`) correctly parses TypeScript files and extracts function declarations, class definitions, method definitions, interfaces, type aliases, imports, and exports as RawCapture arrays. The parser must lazily initialize WASM grammars, cache them per language, produce results compatible with capturesToNodes() and extractEdges() from structural-indexer.ts, and generate correct content hashes for incremental re-indexing.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - tree-sitter-wasms package installed with WASM grammar files
-- **Prompt**: `As a context-and-code-graph validation operator, validate Tree-sitter WASM parser extracts symbols from TS file against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify the tree-sitter WASM parser (tree-sitter-parser.ts) correctly parses TypeScript files and extracts function declarations, class definitions, method definitions, interfaces, type aliases, imports, and exports as RawCapture arrays. The parser must lazily initialize WASM grammars, cache them per language, produce results compatible with capturesToNodes() and extractEdges() from structural-indexer.ts, and generate correct content hashes for incremental re-indexing. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - WASM grammar loaded from tree-sitter-wasms for TypeScript
-  - ParseResult contains nodes for functions, classes, methods, interfaces, type aliases
-  - Import nodes include source module path
-  - Content hash matches SHA-256 of file content
-  - RawCapture array is accepted by capturesToNodes() without errors
-- **Pass/fail criteria**:
-  - PASS: All symbol types extracted from fixture TS file, content hash valid, captures compatible with indexer pipeline
-  - FAIL: Missing symbol types, WASM init failure, or incompatible capture format
+
+- Objective: Verify that the tree-sitter WASM parser (`tree-sitter-parser.ts`) correctly parses TypeScript files and extracts function declarations, class definitions, method definitions, interfaces, type aliases, imports, and exports as RawCapture arrays; The parser must lazily initialize WASM grammars, cache them per language, produce results compatible with capturesToNodes() and extractEdges() from structural-indexer.ts, and generate correct content hashes for incremental re-indexing.
+- Real user request: `Please validate Tree-sitter WASM parser extracts symbols from TS file against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts and tell me whether the expected signals are present: WASM grammar loaded from tree-sitter-wasms for TypeScript; ParseResult contains nodes for functions, classes, methods, interfaces, type aliases; Import nodes include source module path; Content hash matches SHA-256 of file content; RawCapture array is accepted by capturesToNodes() without errors.`
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Tree-sitter WASM parser extracts symbols from TS file against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/code-graph-indexer.vitest.ts. Verify the tree-sitter WASM parser (tree-sitter-parser.ts) correctly parses TypeScript files and extracts function declarations, class definitions, method definitions, interfaces, type aliases, imports, and exports as RawCapture arrays. The parser must lazily initialize WASM grammars, cache them per language, produce results compatible with capturesToNodes() and extractEdges() from structural-indexer.ts, and generate correct content hashes for incremental re-indexing. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: WASM grammar loaded from tree-sitter-wasms for TypeScript; ParseResult contains nodes for functions, classes, methods, interfaces, type aliases; Import nodes include source module path; Content hash matches SHA-256 of file content; RawCapture array is accepted by capturesToNodes() without errors
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All symbol types extracted from fixture TS file, content hash valid, captures compatible with indexer pipeline; FAIL: Missing symbol types, WASM init failure, or incompatible capture format
 
 ---
 
@@ -148,8 +141,7 @@ Vitest output showing failed grammar path plus successful parsing for another la
 
 Check `lib/code-graph/tree-sitter-parser.ts` grammar cache behavior; note current implementation exposes boolean readiness, not a separate partial-status object
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/13-tree-sitter-wasm-parser.md](../../feature_catalog/22--context-preservation-and-code-graph/13-tree-sitter-wasm-parser.md)
 

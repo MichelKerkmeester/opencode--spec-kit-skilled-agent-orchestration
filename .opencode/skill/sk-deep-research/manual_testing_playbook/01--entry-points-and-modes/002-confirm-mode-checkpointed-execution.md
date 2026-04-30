@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that confirm mode adds approval checkpoints without changing the core loop phases or artifact contract.
 - Real user request: Run deep research, but stop so I can review the strategy and each iteration before you continue.
-- Prompt: `As a manual-testing orchestrator, validate the confirm-mode contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:confirm is documented as interactive, approval-gated, and still uses the same core loop and output artifacts as auto mode. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the confirm-mode contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:confirm is documented as interactive, approval-gated, and still uses the same core loop and output artifacts as auto mode. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the command entrypoint for mode descriptions, then the confirm YAML for approval gates, then the README to ensure the user-facing explanation still describes the same loop outputs.
-- Desired user-facing outcome: The user is told that confirm mode pauses for review at defined checkpoints while still producing the same scratch state and synthesis artifacts.
+- Desired user-visible outcome: The user is told that confirm mode pauses for review at defined checkpoints while still producing the same scratch state and synthesis artifacts.
 - Expected signals: Confirm mode is interactive, approval-gated, and still routes through initialization, loop, synthesis, and save rather than a separate workflow.
 - Pass/fail posture: PASS if confirm mode is approval-gated and still preserves the same loop/artifact contract as auto mode; FAIL if the docs or YAML describe a materially different behavior.
 

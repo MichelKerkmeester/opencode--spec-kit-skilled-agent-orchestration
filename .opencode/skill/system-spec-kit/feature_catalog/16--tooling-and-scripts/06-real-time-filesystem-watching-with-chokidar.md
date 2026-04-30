@@ -31,7 +31,7 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 | `mcp_server/context-server.ts` | Server | Starts and stops the watcher during MCP server lifecycle |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Exposes the `SPECKIT_FILE_WATCHER` gate via `isFileWatcherEnabled()` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +40,6 @@ Instead of waiting for you to ask the system to re-scan your files, this feature
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Real-time filesystem watching with chokidar
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md`

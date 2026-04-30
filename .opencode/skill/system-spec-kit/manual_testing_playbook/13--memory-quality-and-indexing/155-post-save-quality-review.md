@@ -14,11 +14,13 @@ This scenario validates the POST-SAVE QUALITY REVIEW hook that fires after a JSO
 
 ## 2. SCENARIO CONTRACT
 
-Operators invoke `generate-context.js --json` with controlled payloads and inspect the POST-SAVE QUALITY REVIEW block in stdout as well as the rendered frontmatter of the produced memory file.
 
-- Objective: Verify that the post-save quality review correctly identifies field-propagation failures and guides AI remediation
-- Prompt: `As a spec-doc record-quality validation operator, validate Post-save quality review against sessionSummary. Verify the post-save quality review correctly identifies field-propagation failures and guides AI remediation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify that the post-save quality review correctly identifies field-propagation failures and guides AI remediation.
+- Real user request: `Please validate Post-save quality review against sessionSummary and tell me whether the expected signals are present: REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Post-save quality review against sessionSummary. Verify the post-save quality review correctly identifies field-propagation failures and guides AI remediation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: REVIEW block present in stdout; issue count and severity match the scenario; fix instructions are actionable
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if review output matches expected status for each scenario and AI-applied patches resolve all reported issues
 
 ---
@@ -253,8 +255,7 @@ CLI stdout
 
 Check computeReviewScorePenalty in post-save-review.ts and advisory logging in workflow.ts
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/19-post-save-quality-review.md](../../feature_catalog/13--memory-quality-and-indexing/19-post-save-quality-review.md)
 - Related entry: [16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md](../16--tooling-and-scripts/153-json-mode-hybrid-enrichment.md)

@@ -13,11 +13,13 @@ This scenario validates eval runner CLI for `235`. It focuses on confirming flag
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that the ablation CLI refuses to run without explicit enablement, accepts supported channel lists, warns on invalid channels, writes the final JSON artifact after a successful run against the production evaluation surface, and is paired with the read-only ground-truth mapping preview before trusting cross-run comparisons.
 
-- Objective: Confirm ablation flag gating, provenance preview, channel handling, report output, and artifact persistence
-- Prompt: `As a tooling validation operator, validate Eval Runner CLI against /tmp/ablation-result.json. Verify ablation flag gating, provenance preview, channel handling, report output, and artifact persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm ablation flag gating, provenance preview, channel handling, report output, and artifact persistence.
+- Real user request: `` Please validate Eval Runner CLI against /tmp/ablation-result.json and tell me whether the expected signals are present: mapping preview logs the production DB path and parent-memory count; flag-disabled run exits non-zero with usage guidance; enabled run initializes production and eval DBs; formatted report prints; `/tmp/ablation-result.json` is written. ``
+- RCAF Prompt: `As a tooling validation operator, validate Eval Runner CLI against /tmp/ablation-result.json. Verify ablation flag gating, provenance preview, channel handling, report output, and artifact persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: mapping preview logs the production DB path and parent-memory count; flag-disabled run exits non-zero with usage guidance; enabled run initializes production and eval DBs; formatted report prints; `/tmp/ablation-result.json` is written
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the mapping preview and CLI contract both behave as documented, with truncation clearly called out when present
 
 ---
@@ -54,8 +56,7 @@ CLI transcript for preview and both runs, plus the contents of `/tmp/ablation-re
 
 Inspect `scripts/evals/map-ground-truth-ids.ts`, `scripts/evals/run-ablation.ts`, ground-truth/eval DB initialization, and channel parsing if provenance, gating, or artifact persistence regresses
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/21-eval-runner-cli.md](../../feature_catalog/16--tooling-and-scripts/21-eval-runner-cli.md)
 

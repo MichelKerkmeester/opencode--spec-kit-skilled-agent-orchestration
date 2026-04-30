@@ -14,11 +14,13 @@ This scenario validates Session transition trace contract for `142`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `142` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `memory_context` emits trace-only session transitions with no non-trace leakage
-- Prompt: `As a retrieval validation operator, validate Session transition trace contract against memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true }). Verify memory_context emits trace-only session transitions with no non-trace leakage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `memory_context` emits trace-only session transitions with no non-trace leakage.
+- Real user request: `` Please validate Session transition trace contract against memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true }) and tell me whether the expected signals are present: Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled. ``
+- RCAF Prompt: `As a retrieval validation operator, validate Session transition trace contract against memory_context({ input: "resume previous work on rollout hardening", mode: "resume", sessionId: "markovian-142", includeTrace: true }). Verify memory_context emits trace-only session transitions with no non-trace leakage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Trace-enabled responses include spec-shaped `sessionTransition`; non-trace responses omit it entirely; no top-level metadata leak appears when trace is disabled
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if trace-only gating holds and the contract fields are present only in the traced call
 
 ---
@@ -55,8 +57,7 @@ Two `memory_context` outputs with and without `includeTrace` + field-level compa
 
 Inspect `handlers/memory-context.ts`, `handlers/memory-search.ts`, and `lib/search/session-transition.ts` if fields leak or ordering drifts
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 

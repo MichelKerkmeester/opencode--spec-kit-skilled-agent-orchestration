@@ -14,11 +14,13 @@ This scenario validates Adaptive shadow proposal and rollback (Phase 4) for `121
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `121` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly
-- Prompt: `As a scoring validation operator, validate Adaptive shadow proposal and rollback (Phase 4) against SPECKIT_MEMORY_ADAPTIVE_RANKING=true. Verify adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly.
+- Real user request: `Please validate Adaptive shadow proposal and rollback (Phase 4) against SPECKIT_MEMORY_ADAPTIVE_RANKING=true and tell me whether the expected signals are present: Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output.`
+- RCAF Prompt: `As a scoring validation operator, validate Adaptive shadow proposal and rollback (Phase 4) against SPECKIT_MEMORY_ADAPTIVE_RANKING=true. Verify adaptive scoring runs in shadow mode only, captures bounded proposals, and can be disabled cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Adaptive proposal is present in shadow mode, proposal deltas are bounded, production ordering is unchanged by the shadow run, and disabling the flag removes adaptive proposal output
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Shadow proposal emitted without mutating live order; disable flag removes proposal cleanly; FAIL: Live order changes under shadow mode or proposal persists after disable
 
 ---
@@ -56,8 +58,7 @@ Search output with `adaptiveShadow` payload + before/after flag comparison + sig
 
 Verify adaptive signals were recorded from access/validation → Inspect bounded delta cap → Confirm disable path clears proposal output without schema rollback
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md)
 

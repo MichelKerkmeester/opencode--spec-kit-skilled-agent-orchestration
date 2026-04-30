@@ -14,19 +14,14 @@ This scenario validates MCP auto-priming.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the spec-doc record-surface hook delivers a PrimePackage on the first MCP tool call of a session. The package must contain constitutional memories, code graph status snapshot, and any triggered memories from the current prompt. Subsequent tool calls must NOT re-deliver the prime package (one-shot behavior). The priming status must be reflected in session_health as 'primed' after the first call.
-- **Prerequisites**:
-  - MCP server running and accessible
-  - At least one constitutional memory saved in the database
-  - Code graph database initialized (even if empty)
-- **Prompt**: `As a context-and-code-graph validation operator, validate MCP auto-priming delivers Prime Package on first tool call against memory_stats({}). Verify the spec-doc record-surface hook delivers a PrimePackage on the first MCP tool call of a session. The package must contain constitutional memories, code graph status snapshot, and any triggered memories from the current prompt. Subsequent tool calls must NOT re-deliver the prime package (one-shot behavior). The priming status must be reflected in session_health as 'primed' after the first call. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - First call: response hints contain primePackage with constitutional array and codeGraphStatus
-  - Second call: response hints do NOT contain primePackage
-  - session_health: primingStatus === 'primed'
-- **Pass/fail criteria**:
-  - PASS: First call delivers prime package, subsequent calls skip it, session_health confirms primed
-  - FAIL: No prime package on first call, prime package repeated on second call, or primingStatus incorrect
+
+- Objective: Verify that the spec-doc record-surface hook delivers a PrimePackage on the first MCP tool call of a session; The package must contain constitutional memories, code graph status snapshot, and any triggered memories from the current prompt; Subsequent tool calls must NOT re-deliver the prime package (one-shot behavior); The priming status must be reflected in session_health as 'primed' after the first call.
+- Real user request: `Please validate MCP auto-priming delivers Prime Package on first tool call against memory_stats({}) and tell me whether the expected signals are present: First call: response hints contain primePackage with constitutional array and codeGraphStatus; Second call: response hints do NOT contain primePackage; session_health: primingStatus === 'primed'.`
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate MCP auto-priming delivers Prime Package on first tool call against memory_stats({}). Verify the spec-doc record-surface hook delivers a PrimePackage on the first MCP tool call of a session. The package must contain constitutional memories, code graph status snapshot, and any triggered memories from the current prompt. Subsequent tool calls must NOT re-deliver the prime package (one-shot behavior). The priming status must be reflected in session_health as 'primed' after the first call. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: First call: response hints contain primePackage with constitutional array and codeGraphStatus; Second call: response hints do NOT contain primePackage; session_health: primingStatus === 'primed'
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: First call delivers prime package, subsequent calls skip it, session_health confirms primed; FAIL: No prime package on first call, prime package repeated on second call, or primingStatus incorrect
 
 ---
 
@@ -146,8 +141,7 @@ Two MCP response envelopes showing independent primePackage delivery for session
 
 Check `hooks/memory-surface.ts` session-scoped priming set and session identity propagation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/16-mcp-auto-priming.md](../../feature_catalog/22--context-preservation-and-code-graph/16-mcp-auto-priming.md)
 

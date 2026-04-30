@@ -49,8 +49,6 @@ The shipped behavior in this slice currently works as follows:
 | `.opencode/skill/system-spec-kit/scripts/spec-folder/index.ts` | Barrel export | Re-exports the spec-folder detection, validation, and setup API surface |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Spec-Folder Detection and Description Metadata
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of the spec-folder detection, validation, setup, and description-generation modules
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/28-spec-folder-detection-and-description.md`

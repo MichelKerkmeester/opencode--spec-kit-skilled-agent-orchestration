@@ -14,11 +14,13 @@ This scenario validates Stage 3 effectiveScore fallback chain for `074`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `074` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm fallback order correctness
-- Prompt: `As a scoring validation operator, validate Stage 3 effectiveScore fallback chain against the documented validation surface. Verify fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm fallback order correctness.
+- Real user request: `Please validate Stage 3 effectiveScore fallback chain against the documented validation surface and tell me whether the expected signals are present: Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score.`
+- RCAF Prompt: `As a scoring validation operator, validate Stage 3 effectiveScore fallback chain against the documented validation surface. Verify fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Fallback chain follows defined priority order; missing score fields trigger next fallback; final fallback produces valid score
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if fallback chain follows correct priority order and produces valid scores for all missing-field combinations
 
 ---
@@ -54,8 +56,7 @@ Stage 3 output with score field trace showing fallback path taken for each test 
 
 Inspect resolveEffectiveScore implementation; verify fallback priority constants; test all combinations of missing fields
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md](../../feature_catalog/11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md)
 

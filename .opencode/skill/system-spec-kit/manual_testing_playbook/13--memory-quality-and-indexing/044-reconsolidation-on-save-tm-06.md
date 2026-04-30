@@ -14,11 +14,13 @@ This scenario validates Reconsolidation-on-save (TM-06) for `044`. It focuses on
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `044` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence
-- Prompt: `As a spec-doc record-quality validation operator, validate Reconsolidation-on-save (TM-06) against the documented validation surface. Verify merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence.
+- Real user request: `` Please validate Reconsolidation-on-save (TM-06) against the documented validation surface and tell me whether the expected signals are present: Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; stale predecessor changes abort merge instead of archiving/inserting; BM25 repair failure leaves merged lineage committed and sets `bm25_repair_needed=1`. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Reconsolidation-on-save (TM-06) against the documented validation surface. Verify merge/deprecate thresholds plus stale-merge abort and BM25 repair-flag persistence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Similarity >=0.88 triggers merge; 0.75-0.88 triggers supersede/deprecate; below 0.75 saves independently; stale predecessor changes abort merge instead of archiving/inserting; BM25 repair failure leaves merged lineage committed and sets `bm25_repair_needed=1`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Threshold behavior is correct, stale predecessor writes return `predecessor_changed` or `predecessor_gone` without destructive merge side effects, and failed BM25 repair persists `bm25_repair_needed=1`; FAIL: Wrong threshold action, stale merge still commits, or BM25 repair debt is not recorded
 
 ---
@@ -122,8 +124,7 @@ Targeted vitest output plus SQL evidence for merged row `bm25_repair_needed=1` a
 
 Verify BM25 error path after commit → Check `setBm25RepairNeededFlag()` execution → Confirm merged row ID is updated instead of predecessor row
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/06-reconsolidation-on-save.md](../../feature_catalog/13--memory-quality-and-indexing/06-reconsolidation-on-save.md)
 

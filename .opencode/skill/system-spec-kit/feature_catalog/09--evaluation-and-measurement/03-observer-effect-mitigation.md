@@ -29,7 +29,7 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 |------|-------|------|
 | `mcp_server/lib/eval/eval-logger.ts` | Lib | Non-fatal evaluation logging hooks for query, per-channel, and final-result events |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,14 +38,10 @@ A formal p95 latency comparison (eval logging enabled vs disabled) and an automa
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Observer effect mitigation
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/03-observer-effect-mitigation.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 007

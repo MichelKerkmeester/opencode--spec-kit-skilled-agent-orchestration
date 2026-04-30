@@ -13,11 +13,13 @@ This scenario validates Final token metadata recomputation for `215`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `215` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm token counts are recomputed from the finalized envelope after hint mutation and before budget enforcement
-- Prompt: `As a runtime-hook validation operator, validate Final token metadata recomputation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts. Verify token counts are recomputed from the finalized envelope after hint mutation and before budget enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm token counts are recomputed from the finalized envelope after hint mutation and before budget enforcement.
+- Real user request: `` Please validate Final token metadata recomputation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts and tell me whether the expected signals are present: Hook and context-server suites pass, `appendAutoSurfaceHints` recomputes `meta.tokenCount` from the finalized envelope, and end-to-end success-path assertions prove token-budget enforcement runs on the final serialized payload. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Final token metadata recomputation against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hooks-ux-feedback.vitest.ts tests/context-server.vitest.ts. Verify token counts are recomputed from the finalized envelope after hint mutation and before budget enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Hook and context-server suites pass, `appendAutoSurfaceHints` recomputes `meta.tokenCount` from the finalized envelope, and end-to-end success-path assertions prove token-budget enforcement runs on the final serialized payload
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the suites pass and the assertions prove final token-count recomputation happens after hint append and before budget enforcement
 
 ---
@@ -53,8 +55,7 @@ Test transcript + highlighted assertion names or output snippets for hook-level 
 
 Inspect `hooks/response-hints.ts`, `context-server.ts`, and token-estimation helpers if token metadata diverges from the serialized payload
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/11-final-token-metadata-recomputation.md](../../feature_catalog/18--ux-hooks/11-final-token-metadata-recomputation.md)
 

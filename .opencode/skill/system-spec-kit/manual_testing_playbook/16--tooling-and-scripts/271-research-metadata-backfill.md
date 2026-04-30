@@ -13,9 +13,13 @@ This scenario validates the research metadata backfill script for `271`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-- Objective: Verify the research backfill script creates missing `description.json` and `graph-metadata.json` files while leaving complete iteration folders untouched
-- Prompt: `As a tooling validation operator, validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts. Verify missing metadata files are created under research iteration folders, complete folders are not rewritten, and canonical save follow-up coverage for research trees is restored. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+- Objective: Verify the research backfill script creates missing `description.json` and `graph-metadata.json` files while leaving complete iteration folders untouched.
+- Real user request: `Please validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts and tell me whether the expected signals are present: missing metadata files created; complete folders unchanged; output identifies only the folders that needed repair.`
+- RCAF Prompt: `As a tooling validation operator, validate Research metadata backfill against scripts/memory/backfill-research-metadata.ts. Verify missing metadata files are created under research iteration folders, complete folders are not rewritten, and canonical save follow-up coverage for research trees is restored. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: missing metadata files created; complete folders unchanged; output identifies only the folders that needed repair
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the script repairs incomplete research iteration folders without rewriting the complete ones
 
 ---
@@ -52,8 +56,7 @@ Script output plus before/after file listings for incomplete and complete iterat
 
 Inspect `scripts/memory/backfill-research-metadata.ts`, the workflow follow-up integration, and the backfill test fixtures
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/34-research-metadata-backfill.md](../../feature_catalog/16--tooling-and-scripts/34-research-metadata-backfill.md)
 

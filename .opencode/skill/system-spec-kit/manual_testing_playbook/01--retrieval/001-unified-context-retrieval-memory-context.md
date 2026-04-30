@@ -15,11 +15,13 @@ This scenario validates Unified context retrieval (memory_context) for `EX-001`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-001` and confirm the expected signals without contradicting evidence.
 
-- Objective: Intent-aware context pull through the canonical `/spec_kit:resume` recovery surface, with `handover.md` first, then `_memory.continuity`, then supporting spec docs
-- Prompt: `As a retrieval validation operator, validate Unified context retrieval (memory_context) against /spec_kit:resume specs/<target-spec>. Verify intent-aware context pull through the canonical /spec_kit:resume recovery surface, with handover.md first, then _memory.continuity, then supporting spec docs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Intent-aware context pull through the canonical `/spec_kit:resume` recovery surface, with `handover.md` first, then `_memory.continuity`, then supporting spec docs.
+- Real user request: `Please validate Unified context retrieval (memory_context) against /spec_kit:resume specs/<target-spec> and tell me whether the expected signals are present: Relevant bounded context returned; no empty response.`
+- RCAF Prompt: `As a retrieval validation operator, validate Unified context retrieval (memory_context) against /spec_kit:resume specs/<target-spec>. Verify intent-aware context pull through the canonical /spec_kit:resume recovery surface, with handover.md first, then _memory.continuity, then supporting spec docs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Relevant bounded context returned; no empty response
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if relevant context returned in both calls
 
 ---
@@ -86,8 +88,7 @@ memory_context responses for all three budgets with envelope fields highlighted
 
 Inspect `mcp_server/handlers/memory/context.ts` token-budget enforcement path and the envelope serializer; confirm packet 003 dist marker present
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 

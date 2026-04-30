@@ -14,11 +14,13 @@ This scenario validates HyDE (SPECKIT_HYDE) for `162`. It focuses on enabling th
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `162` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify HyDE pseudo-document generation for low-confidence deep queries
-- Prompt: `As a query-intelligence validation operator, validate HyDE (SPECKIT_HYDE) against SPECKIT_HYDE=true. Verify hyDE pseudo-document generation for low-confidence deep queries. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify HyDE pseudo-document generation for low-confidence deep queries.
+- Real user request: `Please validate HyDE (SPECKIT_HYDE) against SPECKIT_HYDE=true and tell me whether the expected signals are present: HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence threshold (top score < 0.45) triggers generation; LLM cache shared with reformulation; active mode (default): results merged into candidates; shadow mode (SPECKIT_HYDE_ACTIVE=false): results logged but not merged.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate HyDE (SPECKIT_HYDE) against SPECKIT_HYDE=true. Verify hyDE pseudo-document generation for low-confidence deep queries. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: HyDEResult contains pseudoDocument (non-empty) and embedding (Float32Array); low-confidence threshold (top score < 0.45) triggers generation; LLM cache shared with reformulation; active mode (default): results merged into candidates; shadow mode (SPECKIT_HYDE_ACTIVE=false): results logged but not merged
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if pseudo-document generated for low-confidence query and results are merged by default (active mode), and stay shadow-only when SPECKIT_HYDE_ACTIVE=false; FAIL if no pseudo-document generated or merge behavior does not match flag state
 
 ---
@@ -57,8 +59,7 @@ HyDEResult output + merge verification + shadow log + cache key verification
 
 Verify isHyDEEnabled() → Check LOW_CONFIDENCE_THRESHOLD (0.45) → Inspect baseline result scores → Verify getLlmCache() key → Check HYDE_TIMEOUT_MS (8000) → Verify isHyDEActive() gate
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/08-hyde-hypothetical-document-embeddings.md](../../feature_catalog/12--query-intelligence/08-hyde-hypothetical-document-embeddings.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

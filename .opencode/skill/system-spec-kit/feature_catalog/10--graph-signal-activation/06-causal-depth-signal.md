@@ -1,7 +1,6 @@
 ---
 title: "Causal depth signal"
 description: "Describes the SCC-condensed longest-path depth signal that normalizes each spec-doc record's structural distance from root components to a [0,1] score, applied as a capped +0.05 additive bonus in Stage 2."
-audited_post_018: true
 ---
 
 # Causal depth signal
@@ -36,7 +35,7 @@ The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This kee
 | `mcp_server/lib/graph/graph-signals.ts` | Lib | Graph momentum and depth signals |
 | `mcp_server/lib/search/causal-boost.ts` | Lib | Causal neighbor boosting |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ The combined N2a+N2b adjustment is modest by design: up to +0.10 total. This kee
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Causal depth signal
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/06-causal-depth-signal.md`

@@ -13,11 +13,13 @@ This scenario validates Evaluation and housekeeping fixes for `082`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `082` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm eval/housekeeping reliability
-- Prompt: `As an evaluation validation operator, validate Evaluation and housekeeping fixes against the documented validation surface. Verify run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm eval/housekeeping reliability.
+- Real user request: `Please validate Evaluation and housekeeping fixes against the documented validation surface and tell me whether the expected signals are present: Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly.`
+- RCAF Prompt: `As an evaluation validation operator, validate Evaluation and housekeeping fixes against the documented validation surface. Verify run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Run-IDs are unique across restarts; upserts are idempotent; boundary guards prevent out-of-range values; housekeeping completes cleanly
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if run-IDs are unique, upserts produce consistent state, and boundary guards reject invalid values
 
 ---
@@ -53,8 +55,7 @@ Eval run output with run-ID + upsert verification + boundary guard test evidence
 
 Inspect run-ID generation logic; verify upsert idempotency; check boundary guard threshold values
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md](../../feature_catalog/09--evaluation-and-measurement/13-evaluation-and-housekeeping-fixes.md)
 

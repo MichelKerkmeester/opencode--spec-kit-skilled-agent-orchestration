@@ -14,11 +14,13 @@ This scenario validates Cross-document entity linking (S5) for `060`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `060` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm guarded supports-edge linking
-- Prompt: `As a retrieval-enhancement validation operator, validate Cross-document entity linking (S5) against the documented validation surface. Verify supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm guarded supports-edge linking.
+- Real user request: `Please validate Cross-document entity linking (S5) against the documented validation surface and tell me whether the expected signals are present: Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Cross-document entity linking (S5) against the documented validation surface. Verify supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Supports-edges created between documents sharing entities; density guard prevents excessive edges; entity normalization applied
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if supports-edges are created for shared entities and density guards cap edge count appropriately
 
 ---
@@ -54,8 +56,7 @@ Linker output showing created edges + density guard metrics + entity normalizati
 
 Verify shared entities exist across documents; check density guard thresholds; inspect entity normalization pipeline
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/06-cross-document-entity-linking.md](../../feature_catalog/15--retrieval-enhancements/06-cross-document-entity-linking.md)
 

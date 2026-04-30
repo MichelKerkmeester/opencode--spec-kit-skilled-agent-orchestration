@@ -1,7 +1,6 @@
 ---
 title: "Typed-weighted degree channel"
 description: "Describes the fifth RRF channel that scores memories by graph connectivity using typed edge weights, logarithmic normalization and hub caps to prevent connection-count dominance."
-audited_post_018: true
 ---
 
 # Typed-weighted degree channel
@@ -38,7 +37,7 @@ Cold-cache degree scoring now computes uncached candidate nodes in one batched S
 | `mcp_server/lib/search/search-types.ts` | Lib | Search type definitions |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -55,7 +54,6 @@ Cold-cache degree scoring now computes uncached candidate nodes in one batched S
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Typed-weighted degree channel
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/01-typed-weighted-degree-channel.md`

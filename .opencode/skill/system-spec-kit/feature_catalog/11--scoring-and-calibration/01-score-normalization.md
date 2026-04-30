@@ -1,7 +1,6 @@
 ---
 title: "Score normalization"
 description: "Covers how raw retrieval scores from RRF and composite scoring are min-max normalized to a common [0,1] range before fusion, so relevance signals compete on comparable scale."
-audited_post_018: true
 ---
 
 # Score normalization
@@ -40,7 +39,7 @@ Normalization is batch-relative (the same spec-doc record can score differently 
 | `shared/scoring/folder-scoring.ts` | Shared | Shared folder scoring |
 | `shared/types.ts` | Shared | Type definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -72,7 +71,6 @@ Normalization is batch-relative (the same spec-doc record can score differently 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Score normalization
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/01-score-normalization.md`

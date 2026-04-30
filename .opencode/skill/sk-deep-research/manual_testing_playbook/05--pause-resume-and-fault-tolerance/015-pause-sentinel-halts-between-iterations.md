@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that the pause sentinel halts the loop between iterations and logs a pause event.
 - Real user request: If I need to interrupt an autonomous run safely, tell me how the pause file works.
-- Prompt: `As a manual-testing orchestrator, validate the pause-sentinel contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/.deep-research-pause is checked between research iterations, {spec_folder}/review/.deep-research-pause is checked between review iterations, both emit a paused event, and both halt the loop without entering synthesis. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the pause-sentinel contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/.deep-research-pause is checked between research iterations, {spec_folder}/review/.deep-research-pause is checked between review iterations, both emit a paused event, and both halt the loop without entering synthesis. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the loop protocol pause section, then the YAML pause checks, then the FAQ and troubleshooting wording for user-facing explanation.
-- Desired user-facing outcome: The user is told exactly how to pause a run safely and what the loop does when the sentinel is present.
+- Desired user-visible outcome: The user is told exactly how to pause a run safely and what the loop does when the sentinel is present.
 - Expected signals: The sentinel is checked before dispatch, a paused event is logged, and the loop halts rather than flowing into synthesis.
 - Pass/fail posture: PASS if the sentinel pauses between iterations and does not route to synthesis; FAIL if pause is undocumented or modeled as a hard stop to completion.
 

@@ -27,7 +27,7 @@ templates/
 ├── addendum/                # Level-specific additions
 │   ├── level2-verify/       # +Verification addendums
 │   ├── level3-arch/         # +Architecture addendums
-│   └── level3plus-govern/   # +Governance addendums
+│   └── level3-plus-govern/   # +Governance addendums
 │
 ├── level_1/                 # Pre-composed Level 1 (ALWAYS use for new specs)
 ├── level_2/                 # Pre-composed Level 2

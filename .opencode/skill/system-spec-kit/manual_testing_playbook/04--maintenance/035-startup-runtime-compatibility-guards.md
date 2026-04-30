@@ -13,11 +13,13 @@ This scenario validates Startup runtime compatibility guards for `EX-035`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-035` and confirm the expected signals without contradicting evidence.
 
-- Objective: Startup diagnostics verification
-- Prompt: `As a maintenance validation operator, validate Startup runtime compatibility guards against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Startup diagnostics verification.
+- Real user request: `Please validate Startup runtime compatibility guards against cd .opencode/skill/system-spec-kit/mcp_server and tell me whether the expected signals are present: Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript.`
+- RCAF Prompt: `As a maintenance validation operator, validate Startup runtime compatibility guards against cd .opencode/skill/system-spec-kit/mcp_server. Verify targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Targeted suite passes; runtime mismatch, marker creation, and SQLite diagnostics coverage are visible in the transcript
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if `startup-checks.vitest.ts` completes with all tests passing and no failures
 
 ---
@@ -52,8 +54,7 @@ Test transcript + suite summary
 
 Re-run `npm test -- --run tests/startup-checks.vitest.ts -t detectRuntimeMismatch`; inspect `startup-checks.ts` and test expectations if counts or assertions drift
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [04--maintenance/02-startup-runtime-compatibility-guards.md](../../feature_catalog/04--maintenance/02-startup-runtime-compatibility-guards.md)
 

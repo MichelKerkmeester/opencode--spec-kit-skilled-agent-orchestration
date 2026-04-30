@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-008` and confirm the
 
 - Objective: Verify a `.env` line `clickup_CLICKUP_API_KEY=pk_xxx` is loaded by the ClickUp MCP server and an authenticated tool call succeeds.
 - Real user request: `"Confirm my ClickUp credentials are wired up correctly."`
-- Prompt: `As a manual-testing orchestrator, set clickup_CLICKUP_API_KEY in .env, restart Code Mode, and call a ClickUp tool that requires auth against the live ClickUp API. Verify the auth succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set clickup_CLICKUP_API_KEY in .env, restart Code Mode, and call a ClickUp tool that requires auth against the live ClickUp API. Verify the auth succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: confirm `.env` line; restart Code Mode; call `clickup.clickup_get_teams({})` (per CM-005); confirm success.
 - Expected signals: `.env` contains the prefixed key; ClickUp call returns workspace data without auth error; no "missing credential" error in logs.
 - Desired user-visible outcome: A short report confirming the env-var path-through and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-008` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, set clickup_CLICKUP_API_KEY in .env, restart Code Mode, and call a ClickUp tool that requires auth against the live ClickUp API. Verify the auth succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set clickup_CLICKUP_API_KEY in .env, restart Code Mode, and call a ClickUp tool that requires auth against the live ClickUp API. Verify the auth succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

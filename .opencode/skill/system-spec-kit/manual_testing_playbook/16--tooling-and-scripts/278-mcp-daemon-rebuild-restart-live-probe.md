@@ -13,21 +13,14 @@ This scenario validates the canonical rebuild + restart + live-probe contract au
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify a representative MCP TypeScript fix passes the 4-part contract end-to-end: source diff captured, targeted vitest pass, `dist/` marker grep finds the new code, runtime restarted by the appropriate per-client procedure, and a live MCP probe returns the new contract field/behavior.
-- **Prerequisites**:
-  - Reference docs available: `references/mcp-rebuild-restart-protocol.md`, `references/live-probe-template.md`, `references/dist-marker-grep-cheatsheet.md`, `references/implementation-verification-checklist.md` (under `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol/`)
-  - A pending or recently landed MCP TypeScript change with a known new code marker (e.g. a new payload field, helper export, or log string)
-  - Per-client restart command for the active runtime (OpenCode reload tools / Claude Code restart / Codex CLI restart / Gemini CLI restart)
-- **Prompt**: `As a tooling validation operator, validate the canonical MCP daemon rebuild + restart + live-probe contract against a representative TypeScript fix. Verify the 4 parts in order: (1) source diff capture, (2) targeted vitest pass, (3) dist marker grep + runtime restart, (4) live MCP probe surfaces the new contract field. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - Step 1: `git diff mcp_server/` shows the expected file paths for the change
-  - Step 2: `cd mcp_server && npx vitest run <suite>` exits 0
-  - Step 3: `npm run build && grep -l <new-marker> mcp_server/dist/<file>.js` returns 1 hit AND `dist/` mtime > source mtime
-  - Step 4: per-client runtime restart completes (output confirms reload, not a silent no-op)
-  - Step 5: live MCP probe (per `live-probe-template.md`) returns the new contract field/behavior, not the pre-fix shape
-- **Pass/fail criteria**:
-  - PASS: all 4 parts verified in order; live probe returns post-fix payload
-  - FAIL: any part skipped, dist marker missing despite vitest pass (means stale dist), or live probe still returns pre-fix payload (means stale daemon)
+
+- Objective: Verify a representative MCP TypeScript fix passes the 4-part contract end-to-end: source diff captured, targeted vitest pass, `dist/` marker grep finds the new code, runtime restarted by the appropriate per-client procedure, and a live MCP probe returns the new contract field/behavior.
+- Real user request: `` Please validate MCP daemon rebuild, restart, and live-probe protocol against a representative TypeScript fix and tell me whether the expected signals are present: Step 1: `git diff mcp_server/` shows the expected file paths for the change; Step 2: `cd mcp_server && npx vitest run <suite>` exits 0; Step 3: `npm run build && grep -l <new-marker> mcp_server/dist/<file>.js` returns 1 hit AND `dist/` mtime > source mtime; Step 4: per-client runtime restart completes (output confirms reload, not a silent no-op); Step 5: live MCP probe (per `live-probe-template.md`) returns the new contract field/behavior, not the pre-fix shape. ``
+- RCAF Prompt: `As a tooling validation operator, validate the canonical MCP daemon rebuild + restart + live-probe contract against a representative TypeScript fix. Verify the 4 parts in order: (1) source diff capture, (2) targeted vitest pass, (3) dist marker grep + runtime restart, (4) live MCP probe surfaces the new contract field. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Step 1: `git diff mcp_server/` shows the expected file paths for the change; Step 2: `cd mcp_server && npx vitest run <suite>` exits 0; Step 3: `npm run build && grep -l <new-marker> mcp_server/dist/<file>.js` returns 1 hit AND `dist/` mtime > source mtime; Step 4: per-client runtime restart completes (output confirms reload, not a silent no-op); Step 5: live MCP probe (per `live-probe-template.md`) returns the new contract field/behavior, not the pre-fix shape
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: all 4 parts verified in order; live probe returns post-fix payload; FAIL: any part skipped, dist marker missing despite vitest pass (means stale dist), or live probe still returns pre-fix payload (means stale daemon)
 
 ---
 
@@ -64,8 +57,7 @@ Source diff non-empty on expected paths; targeted vitest exits 0; `dist/` carrie
 
 If dist marker missing: re-run `npm run build`, check `tsc -b` errors. If marker present but live probe pre-fix: confirm runtime restart actually happened (some IDEs cache the MCP daemon process). If live probe still pre-fix after confirmed restart: check whether multiple `mcp_server/dist/` copies exist on the search path (workspace cache, plugin folder, etc.) and which one the runtime is actually loading.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Reference (canonical contract): `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol/references/mcp-rebuild-restart-protocol.md`
 - Reference (probe queries): `.opencode/specs/.../008-mcp-daemon-rebuild-protocol/references/live-probe-template.md`

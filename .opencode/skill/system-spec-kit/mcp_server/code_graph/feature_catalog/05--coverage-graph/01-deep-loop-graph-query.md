@@ -42,6 +42,13 @@ Requires `specFolder`, `loopType`, and `sessionId`; reads are session-scoped.
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/coverage-graph/query.ts:42-120` | Handler | validates namespace fields and routes query types |
 | `.opencode/skill/system-spec-kit/mcp_server/tools/index.ts:33-49` | Tool surface | registers and dispatches the tool |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:851-866` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/05--coverage-graph/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

@@ -1,13 +1,13 @@
 ---
 title: "Post-insert retry budget"
-description: "Phase 017 added a bounded retry budget for save-time enrichment so structurally non-retryable post-insert failures stop after three attempts instead of looping indefinitely."
+description: "The implementation added a bounded retry budget for save-time enrichment so structurally non-retryable post-insert failures stop after three attempts instead of looping indefinitely."
 ---
 
 # Post-insert retry budget
 
 ## 1. OVERVIEW
 
-Phase 017 added a bounded retry budget for save-time enrichment so structurally non-retryable post-insert failures stop after three attempts instead of looping indefinitely.
+The implementation added a bounded retry budget for save-time enrichment so structurally non-retryable post-insert failures stop after three attempts instead of looping indefinitely.
 
 This is lifecycle control for the enrichment pipeline. It keeps the save path from re-scheduling the same doomed repair work forever and gives operators a deterministic reset point when a spec-doc record is retried successfully or the process restarts.
 
@@ -36,7 +36,7 @@ The budget is intentionally process-local. It resets on restart, which is accept
 | `mcp_server/lib/enrichment/retry-budget.ts` | Lib | In-memory retry budget keyed by memory ID, enrichment step, and failure reason |
 | `mcp_server/handlers/save/post-insert.ts` | Handler | Consults the retry budget before re-scheduling deferred enrichment |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,8 +46,6 @@ The budget is intentionally process-local. It resets on restart, which is accept
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Post-insert retry budget
-- Phase 017 commits: `61f93c9bf`
-- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/003-cluster-consumers/implementation-summary.md`
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/09-post-insert-retry-budget.md`

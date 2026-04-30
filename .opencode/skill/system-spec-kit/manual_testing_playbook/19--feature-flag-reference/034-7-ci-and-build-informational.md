@@ -14,11 +14,13 @@ This scenario validates 7. CI and Build (informational) for `EX-034`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-034` and confirm the expected signals without contradicting evidence.
 
-- Objective: Branch metadata source audit
-- Prompt: `As a feature-flag validation operator, validate 7. CI and Build (informational) against memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 }). Verify branch source vars surfaced. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Branch metadata source audit.
+- Real user request: `Please validate 7. CI and Build (informational) against memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 }) and tell me whether the expected signals are present: Branch source vars surfaced.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 7. CI and Build (informational) against memory_search({ query:"GIT_BRANCH BRANCH_NAME checkpoint metadata", limit:20 }). Verify branch source vars surfaced. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Branch source vars surfaced
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all listed vars are found
 
 ---
@@ -52,8 +54,7 @@ Search output
 
 Search CI scripts and runtime helpers
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/07-7-ci-and-build-informational.md](../../feature_catalog/19--feature-flag-reference/07-7-ci-and-build-informational.md)
 

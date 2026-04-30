@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that partial or contradictory scratch artifacts trigger a halt for repair instead of a guessed resume path.
 - Real user request: My deep-research scratch folder looks half-broken. Will the workflow repair it automatically or stop?
-- Prompt: `As a manual-testing orchestrator, validate the invalid-state halt contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify contradictory or partial deep-research artifacts stop the workflow for repair instead of guessing through initialization. Return a concise user-facing pass/fail verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the invalid-state halt contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify contradictory or partial deep-research artifacts stop the workflow for repair instead of guessing through initialization. Return a concise user-facing pass/fail verdict.`
 - Expected execution process: Inspect the protocol rules, inspect YAML invalid-state handling, then compare the result against README troubleshooting language.
-- Desired user-facing outcome: The user is warned clearly that broken state must be repaired or archived before continuing.
+- Desired user-visible outcome: The user is warned clearly that broken state must be repaired or archived before continuing.
 - Expected signals: Invalid-state is a named class, both YAML files halt with a repair message, and the docs do not promise silent guessing for contradictory state.
 - Pass/fail posture: PASS if the contract consistently halts on contradictory state; FAIL if any source implies silent auto-repair for invalid-state.
 

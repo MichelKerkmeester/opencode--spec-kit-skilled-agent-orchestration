@@ -33,7 +33,7 @@ Negative knowledge is part of the live contract here. Synthesis must consolidate
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow | Drives the autonomous synthesis phase and config-status update. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Workflow | Mirrors the same synthesis phase with confirm-mode review gates. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

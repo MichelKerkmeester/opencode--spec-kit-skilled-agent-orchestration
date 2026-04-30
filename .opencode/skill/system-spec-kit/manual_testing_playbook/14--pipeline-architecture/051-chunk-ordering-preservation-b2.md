@@ -14,11 +14,13 @@ This scenario validates Chunk ordering preservation (B2) for `051`. It focuses o
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `051` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm ordered reassembly
-- Prompt: `As a pipeline validation operator, validate Chunk ordering preservation (B2) against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm ordered reassembly.
+- Real user request: `Please validate Chunk ordering preservation (B2) against the documented validation surface and tell me whether the expected signals are present: Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts.`
+- RCAF Prompt: `As a pipeline validation operator, validate Chunk ordering preservation (B2) against the documented validation surface. Verify collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Collapsed chunks reassembled in original document order; marker sequence preserved; no reordering artifacts
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Marker sequence in collapsed output matches original save order; FAIL: Markers out of order or missing
 
 ---
@@ -54,8 +56,7 @@ Collapsed output with marker sequence verification + original order comparison
 
 Verify chunk ordering index → Check collapse algorithm → Inspect ordering preservation across save/retrieve cycle
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/03-chunk-ordering-preservation.md](../../feature_catalog/14--pipeline-architecture/03-chunk-ordering-preservation.md)
 

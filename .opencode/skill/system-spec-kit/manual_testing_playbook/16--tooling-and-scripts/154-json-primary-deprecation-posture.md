@@ -10,7 +10,7 @@ description: "This scenario validates the JSON-primary deprecation posture: rout
 - [1. OVERVIEW](#1-overview)
 - [2. SCENARIO CONTRACT](#2-scenario-contract)
 - [3. TEST EXECUTION](#3-test-execution)
-- [4. REFERENCES](#4-references)
+- [4. SOURCE FILES](#4-source-files)
 - [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
@@ -21,11 +21,13 @@ This scenario validates the phase 017 JSON-primary deprecation posture. It confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify the JSON-first save contract: structured JSON succeeds and direct positional file input still succeeds.
 
-- Objective: Verify JSON-primary preference without removing positional file input support
-- Prompt: `As a tooling validation operator, validate JSON-primary deprecation posture against the documented validation surface. Verify jSON-primary preference without removing positional file input support. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify JSON-primary preference without removing positional file input support.
+- Real user request: `Please validate JSON-primary deprecation posture against the documented validation surface and tell me whether the expected signals are present: Path 1 exits 0, Path 2 exits 0, Path 3 exits 0.`
+- RCAF Prompt: `As a tooling validation operator, validate JSON-primary deprecation posture against the documented validation surface. Verify jSON-primary preference without removing positional file input support. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Path 1 exits 0, Path 2 exits 0, Path 3 exits 0
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all three paths behave as documented; FAIL if any path has unexpected behavior
 
 ---
@@ -61,8 +63,7 @@ CLI exit codes and stdout/stderr output
 
 Check generate-context.ts argument parsing, loader routing, and structured-input authority
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/17-json-primary-deprecation-posture.md](../../feature_catalog/16--tooling-and-scripts/17-json-primary-deprecation-posture.md)
 - Source spec: [017-json-primary-deprecation/spec.md](../../../../specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/017-json-primary-deprecation/spec.md)

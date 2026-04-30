@@ -15,11 +15,13 @@ This scenario validates Runtime remediation, revalidation, and auto-repair workf
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `225` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals
-- Prompt: `As a remediation validation operator, validate Runtime remediation, revalidation, and auto-repair workflows against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts. Verify the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals.
+- Real user request: `Please validate Runtime remediation, revalidation, and auto-repair workflows against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts and tell me whether the expected signals are present: Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence.`
+- RCAF Prompt: `As a remediation validation operator, validate Runtime remediation, revalidation, and auto-repair workflows against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/memory-crud-extended.vitest.ts tests/mcp-input-validation.vitest.ts. Verify the live remediation surface blocks unsafe writes, exposes bounded repair paths, and preserves rollback-aware revalidation signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Targeted save, health, and checkpoint suites pass; save-time flows show preflight, validation, and quality-loop enforcement; the V-rule bridge load path resolves successfully; health repair remains confirmation-gated and bounded; and checkpoint or validation paths expose rollback-aware remediation and revalidation signals without contradicting evidence
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted suites pass and the evidence confirms the remediation surface enforces save-time guards, bounded operator repair, and rollback-aware revalidation behavior end to end
 
 ---
@@ -57,8 +59,7 @@ Test transcript + load-path check output + key assertion output for save-time gu
 
 Inspect `mcp_server/handlers/memory-save.ts`, `mcp_server/lib/validation/preflight.ts`, `mcp_server/handlers/v-rule-bridge.ts`, `mcp_server/handlers/quality-loop.ts`, `mcp_server/lib/validation/save-quality-gate.ts`, `mcp_server/handlers/checkpoints.ts`, and `mcp_server/handlers/memory-crud-health.ts` if any remediation-stage signal is missing or contradictory
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [20--remediation-revalidation/01-category-stub.md](../../feature_catalog/20--remediation-revalidation/01-category-stub.md)
 

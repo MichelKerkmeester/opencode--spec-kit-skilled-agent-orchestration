@@ -13,16 +13,14 @@ This scenario validates System statistics (memory_stats) for `EX-012`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-012` and confirm the expected signals without contradicting evidence.
 
-- Objective: System baseline snapshot
-- Prompt: `As a discovery validation operator, validate System statistics (memory_stats) against memory_stats(folderRanking:composite,includeScores:true). Verify counts, tiers, folder ranking present. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: System baseline snapshot.
+- Real user request: `Please validate System statistics (memory_stats) against memory_stats(folderRanking:composite,includeScores:true) and tell me whether the expected signals are present: Counts, tiers, folder ranking present.`
+- RCAF Prompt: `As a discovery validation operator, validate System statistics (memory_stats) against memory_stats(folderRanking:composite,includeScores:true). Verify counts, tiers, folder ranking present. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Counts, tiers, folder ranking present
-- Pass/fail: PASS if dashboard fields populated
-
-Additional audit scenario: `Return memory_stats from a fixture set that includes at least one partial embedding_status row. Capture the evidence needed to prove the response exposes a partial bucket and that total equals pending + success + failed + retry + partial. Return a concise user-facing pass/fail verdict with the main reason.`
-
-Partial bucket present and included in totals
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if dashboard fields populated; Additional audit scenario: `Return memory_stats from a fixture set that includes at least one partial embedding_status row. Capture the evidence needed to prove the response exposes a partial bucket and that total equals pending + success + failed + retry + partial. Return a concise user-facing pass/fail verdict with the main reason.`; Partial bucket present and included in totals
 
 ---
 
@@ -55,8 +53,7 @@ Stats output
 
 Retry with default ranking on scoring error
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/02-system-statistics-memorystats.md](../../feature_catalog/03--discovery/02-system-statistics-memorystats.md)
 

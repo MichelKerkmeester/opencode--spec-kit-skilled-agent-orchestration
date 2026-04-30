@@ -15,11 +15,13 @@ This scenario validates Adaptive-fusion flag drift for `232`. It focuses on conf
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `232` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch
-- Prompt: `As a canonical-continuity validation operator, validate Adaptive-fusion flag drift against cd .opencode/skill/system-spec-kit/mcp_server. Verify live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch.
+- Real user request: `` Please validate Adaptive-fusion flag drift against cd .opencode/skill/system-spec-kit/mcp_server and tell me whether the expected signals are present: The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch. ``
+- RCAF Prompt: `As a canonical-continuity validation operator, validate Adaptive-fusion flag drift against cd .opencode/skill/system-spec-kit/mcp_server. Verify live hybrid search always applies adaptive fusion while the install guide still documents a stale disable switch. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: The targeted adaptive-fusion and hybrid-search tests pass, the live fusion path always calls `hybridAdaptiveFuse(...)` without a flag gate in `hybrid-search.ts`, and `INSTALL_GUIDE.md` still documents `SPECKIT_ADAPTIVE_FUSION` as an operator-facing disable switch
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted checks prove adaptive fusion stays active in the live runtime path while the install guide still reflects stale flag-toggle guidance
 
 ---
@@ -57,8 +59,7 @@ Vitest transcript plus the runtime-source excerpt and the install-guide lines th
 
 Inspect `lib/search/hybrid-search.ts` and `INSTALL_GUIDE.md`; confirm the checked-in docs match the tested source tree and that no alternate fusion gate was introduced elsewhere in the pipeline
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md](../../feature_catalog/21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md)
 

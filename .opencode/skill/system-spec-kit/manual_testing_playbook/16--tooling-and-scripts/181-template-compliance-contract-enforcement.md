@@ -13,11 +13,13 @@ This scenario validates the end-to-end template compliance enforcement pipeline.
 
 ## 2. SCENARIO CONTRACT
 
-Operators create a Level 2 spec folder via the distributed-governance spec-authoring flow and verify that all generated documents comply with template contracts on first pass.
 
-- Objective: Confirm that the 3-layer template compliance system produces compliant spec documents on first generation
-- Prompt: `As a tooling validation operator, validate Template Compliance Contract Enforcement against bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>. Verify the 3-layer template compliance system produces compliant spec documents on first generation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm that the 3-layer template compliance system produces compliant spec documents on first generation.
+- Real user request: `Please validate Template Compliance Contract Enforcement against bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder> and tell me whether the expected signals are present: All 5 Level 2 files (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) pass validate.sh --strict with exit code 0; no post-hoc fixes needed.`
+- RCAF Prompt: `As a tooling validation operator, validate Template Compliance Contract Enforcement against bash .opencode/skill/system-spec-kit/scripts/validate.sh --strict <spec-folder>. Verify the 3-layer template compliance system produces compliant spec documents on first generation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All 5 Level 2 files (spec.md, plan.md, tasks.md, checklist.md, implementation-summary.md) pass validate.sh --strict with exit code 0; no post-hoc fixes needed
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if 0 errors on first generation across all 5 document types
 
 ---
@@ -53,8 +55,7 @@ validate.sh --strict stdout showing 0 errors + exit code 0 + per-file validation
 
 Inspect template definitions in `templates/`; verify distributed-governance spec-authoring flow contract loading in SKILL.md; check validate.sh rule set for false positives
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/](../../feature_catalog/16--tooling-and-scripts/)
 

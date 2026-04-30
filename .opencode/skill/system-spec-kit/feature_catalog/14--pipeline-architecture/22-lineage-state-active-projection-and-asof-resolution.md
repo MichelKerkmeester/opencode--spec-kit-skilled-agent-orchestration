@@ -1,7 +1,6 @@
 ---
 title: "Lineage state active projection and asOf resolution"
 description: "Lineage state active projection appends immutable lineage rows at save time and resolves the currently effective state via deterministic `asOf` timestamp lookup."
-audited_post_018: true
 ---
 
 # Lineage state active projection and asOf resolution
@@ -34,7 +33,7 @@ Schema support is now part of vector index setup, and save handlers integrate li
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Lineage schema creation and compatibility checks |
 | `mcp_server/handlers/memory-save.ts` | Handler | Save-path integration for lineage writes and projection updates |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,13 +43,11 @@ Schema support is now part of vector index setup, and save handlers integrate li
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Lineage state active projection and asOf resolution
-- Current reality source: Phase 015 implementation
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/22-lineage-state-active-projection-and-asof-resolution.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenarios 129 and 130

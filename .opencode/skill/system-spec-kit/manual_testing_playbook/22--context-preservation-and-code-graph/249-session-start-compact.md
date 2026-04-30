@@ -15,23 +15,14 @@ This scenario validates SessionStart priming (compact).
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the SessionStart hook, when triggered with `source=compact`, reads the cached PreCompact payload from hook state, injects it to stdout with "Recovered Context (Post-Compaction)" and "Recovery Instructions" sections, includes the last spec folder if known, clears the `pendingCompactPrime` from state after injection, points recovery back to `/spec_kit:resume` when the cache is missing, and stays within the 4000-token budget (COMPACTION_TOKEN_BUDGET).
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - Hook state directory exists with a valid session state file containing `pendingCompactPrime`
-- **Prompt**: `As a context-and-code-graph validation operator, validate SessionStart injects post-compact context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=compact, reads the cached PreCompact payload from hook state, injects it to stdout with "Recovered Context (Post-Compaction)" and "Recovery Instructions" sections, includes the last spec folder if known, clears the pendingCompactPrime from state after injection, points recovery back to /spec_kit:resume when the cache is missing, and stays within the 4000-token budget (COMPACTION_TOKEN_BUDGET). Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `hook-session-start.vitest.ts` pass for compact source
-  - `loadState(sessionId)` returns object with `pendingCompactPrime.payload` and `pendingCompactPrime.cachedAt`
-  - Stdout contains `## Recovered Context (Post-Compaction)` followed by the cached payload text
-  - Stdout contains `## Recovery Instructions` mentioning "3-source merge (Memory + Code Graph + CocoIndex)" and `/spec_kit:resume`
-  - After injection, `updateState()` sets `pendingCompactPrime: null`
-  - When `state.lastSpecFolder` is set, stdout includes `## Active Spec Folder` with the path
-  - When no cached payload exists, fallback output instructs calling `/spec_kit:resume`
-- **Pass/fail criteria**:
-  - PASS: Cached payload injected to stdout, sections correctly formatted, state cleared after injection, budget respected
-  - FAIL: Payload not found in stdout, pendingCompactPrime not cleared, or output exceeds 4000 tokens
+
+- Objective: Verify that the SessionStart hook, when triggered with `source=compact`, reads the cached PreCompact payload from hook state, injects it to stdout with "Recovered Context (Post-Compaction)" and "Recovery Instructions" sections, includes the last spec folder if known, clears the `pendingCompactPrime` from state after injection, points recovery back to `/spec_kit:resume` when the cache is missing, and stays within the 4000-token budget (COMPACTION_TOKEN_BUDGET).
+- Real user request: `` Please validate SessionStart injects post-compact context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts and tell me whether the expected signals are present: All vitest tests in `hook-session-start.vitest.ts` pass for compact source; `loadState(sessionId)` returns object with `pendingCompactPrime.payload` and `pendingCompactPrime.cachedAt`; Stdout contains `## Recovered Context (Post-Compaction)` followed by the cached payload text; Stdout contains `## Recovery Instructions` mentioning "3-source merge (Memory + Code Graph + CocoIndex)" and `/spec_kit:resume`; After injection, `updateState()` sets `pendingCompactPrime: null`; When `state.lastSpecFolder` is set, stdout includes `## Active Spec Folder` with the path; When no cached payload exists, fallback output instructs calling `/spec_kit:resume`. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate SessionStart injects post-compact context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=compact, reads the cached PreCompact payload from hook state, injects it to stdout with "Recovered Context (Post-Compaction)" and "Recovery Instructions" sections, includes the last spec folder if known, clears the pendingCompactPrime from state after injection, points recovery back to /spec_kit:resume when the cache is missing, and stays within the 4000-token budget (COMPACTION_TOKEN_BUDGET). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `hook-session-start.vitest.ts` pass for compact source; `loadState(sessionId)` returns object with `pendingCompactPrime.payload` and `pendingCompactPrime.cachedAt`; Stdout contains `## Recovered Context (Post-Compaction)` followed by the cached payload text; Stdout contains `## Recovery Instructions` mentioning "3-source merge (Memory + Code Graph + CocoIndex)" and `/spec_kit:resume`; After injection, `updateState()` sets `pendingCompactPrime: null`; When `state.lastSpecFolder` is set, stdout includes `## Active Spec Folder` with the path; When no cached payload exists, fallback output instructs calling `/spec_kit:resume`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Cached payload injected to stdout, sections correctly formatted, state cleared after injection, budget respected; FAIL: Payload not found in stdout, pendingCompactPrime not cleared, or output exceeds 4000 tokens
 
 ---
 
@@ -122,8 +113,7 @@ Test output showing fallback message
 
 Verify test fixture simulates missing cache state
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/03-session-start-priming.md](../../feature_catalog/22--context-preservation-and-code-graph/03-session-start-priming.md)
 

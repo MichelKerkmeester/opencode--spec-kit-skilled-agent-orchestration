@@ -52,8 +52,6 @@ Taken together, the lifecycle tooling currently covers recommendation, creation,
 | `.opencode/skill/system-spec-kit/scripts/spec/calculate-completeness.sh` | Script | Measures placeholder replacement progress and optional content quality across root spec documents |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Spec Lifecycle Automation
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of lifecycle scripts
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/23-spec-lifecycle-automation.md`

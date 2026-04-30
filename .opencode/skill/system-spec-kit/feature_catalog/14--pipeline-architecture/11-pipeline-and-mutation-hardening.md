@@ -1,8 +1,6 @@
 ---
 title: "Pipeline and mutation hardening"
 description: "Pipeline and mutation hardening applies baseline fixes for schema completeness, pipeline metadata, embedding efficiency, stemmer quality, data cleanup and checkpoint restore mutation safety."
-audited_post_018: true
-phase_018_change: "Phase 018 moved the canonical save writer into handlers/save/atomic-index-memory.ts and added contentRouter, anchorMergeOperation, and spec-doc structure validation to the save pipeline."
 ---
 
 # Pipeline and mutation hardening
@@ -36,7 +34,7 @@ A later audit added three more pipeline-side corrections to the same runtime pat
 - **Constitutional scope parity (H12):** Constitutional injection now uses `shouldApplyScopeFiltering`, so global scope enforcement applies even when callers omit explicit governance scope fields.
 - **CamelCase chunk metadata support (H14):** Chunk reassembly now accepts `parentId`, `chunkIndex` and `chunkLabel` aliases in addition to snake_case fields, preventing silent bypass of parent collapse.
 
-Phase 018 reshaped the save pipeline itself:
+The implementation reshaped the save pipeline itself:
 
 - **Canonical save routing (018):** `memory_save` now routes through `contentRouter`, applies `anchorMergeOperation`, validates legality with `spec-doc-structure.ts`, and commits through `atomicIndexMemory` inside the existing spec-folder lock. `memory-save.ts` remains the orchestration shell.
 
@@ -66,7 +64,7 @@ Phase 13 added three chunking and mutation hardening follow-ups to the same save
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Query embedding caching plus deep-mode filter parity and constitutional scope enforcement |
 | `mcp_server/lib/search/chunk-reassembly.ts` | Lib | CamelCase chunk metadata support during parent collapse |
 | `mcp_server/lib/search/bm25-index.ts` | Lib | Doubled-consonant stemming fix after suffix stripping |
-| `mcp_server/handlers/save/atomic-index-memory.ts` | Handler | Canonical save writer helper for the phase-018 atomic index path |
+| `mcp_server/handlers/save/atomic-index-memory.ts` | Handler | Canonical save writer helper for the canonical continuity atomic index path |
 | `mcp_server/lib/routing/content-router.ts` | Lib | Classifies save content and selects the merge/routing path |
 | `mcp_server/lib/merge/anchor-merge-operation.ts` | Lib | Anchor-aware merge modes used by the save path |
 | `mcp_server/lib/validation/spec-doc-structure.ts` | Lib | Phase-018 spec-doc structure rule set for save legality |
@@ -85,7 +83,7 @@ Phase 13 added three chunking and mutation hardening follow-ups to the same save
 | `mcp_server/handlers/memory-index.ts` | Handler | Blocks `memory_index_scan` during active checkpoint restore maintenance |
 | `mcp_server/handlers/memory-bulk-delete.ts` | Handler | Blocks `memory_bulk_delete` during active checkpoint restore maintenance |
 
-### Tests — Pipeline hardening
+### Validation And Tests — Pipeline hardening
 
 | File | Focus |
 |------|-------|
@@ -96,7 +94,7 @@ Phase 13 added three chunking and mutation hardening follow-ups to the same save
 | `mcp_server/tests/bm25-index.vitest.ts` | Stemmer regression coverage |
 | `mcp_server/tests/search-extended.vitest.ts` | Additional simpleStem doubled-consonant checks |
 
-### Tests — Mutation hardening
+### Validation And Tests — Mutation hardening
 
 | File | Focus |
 |------|-------|
@@ -110,7 +108,6 @@ Phase 13 added three chunking and mutation hardening follow-ups to the same save
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Opus review remediation (Phase 017)
-- Source feature title: Pipeline and mutation hardening
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/11-pipeline-and-mutation-hardening.md`

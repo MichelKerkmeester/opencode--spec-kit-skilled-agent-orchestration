@@ -14,11 +14,13 @@ This scenario validates node-llama-cpp optionalDependencies for `102`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `102` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm install succeeds without native build tools
-- Prompt: `As a scoring validation operator, validate node-llama-cpp optionalDependencies against mcp_server/package.json. Verify node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm install succeeds without native build tools.
+- Real user request: `Please validate node-llama-cpp optionalDependencies against mcp_server/package.json and tell me whether the expected signals are present: node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent.`
+- RCAF Prompt: `As a scoring validation operator, validate node-llama-cpp optionalDependencies against mcp_server/package.json. Verify node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: node-llama-cpp listed in optionalDependencies (not dependencies); npm install completes without error on clean env; dynamic import with graceful fallback when module absent
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if install succeeds and reranker gracefully falls back when module missing
 
 ---
@@ -54,8 +56,7 @@ package.json content + install output
 
 Check `package.json` optionalDependencies section
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: *(node-llama-cpp optionalDependencies — covered by `11--scoring-and-calibration/14`)*
 

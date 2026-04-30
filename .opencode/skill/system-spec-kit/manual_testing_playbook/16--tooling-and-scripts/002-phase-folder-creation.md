@@ -13,11 +13,13 @@ This scenario validates Phase folder creation for `PHASE-002`. It focuses on Run
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `PHASE-002` and confirm the expected signals without contradicting evidence.
 
-- Objective: Run `create.sh "Test" --phase --level 3 --phases 3` and verify parent+children structure
-- Prompt: `As a tooling validation operator, validate Phase folder creation against bash .opencode/skill/system-spec-kit/scripts/spec/create.sh "Phase Test" --phase --level 3 --phases 3 --phase-names "Design,Implement,Verify". Verify run create.sh "Test" --phase --level 3 --phases 3 and verify parent+children structure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Run `create.sh "Test" --phase --level 3 --phases 3` and verify parent+children structure.
+- Real user request: `Please validate Phase folder creation against bash .opencode/skill/system-spec-kit/scripts/spec/create.sh "Phase Test" --phase --level 3 --phases 3 --phase-names "Design,Implement,Verify" and tell me whether the expected signals are present: Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders.`
+- RCAF Prompt: `As a tooling validation operator, validate Phase folder creation against bash .opencode/skill/system-spec-kit/scripts/spec/create.sh "Phase Test" --phase --level 3 --phases 3 --phase-names "Design,Implement,Verify". Verify run create.sh "Test" --phase --level 3 --phases 3 and verify parent+children structure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Parent folder with Phase Documentation Map in spec.md; 3 child folders with correct naming; back-references and predecessor/successor links in child spec.md files; Level 3 template files in all folders
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if parent contains Phase Documentation Map listing all 3 children, each child has parent back-reference, middle child has both predecessor and successor links, and all folders contain Level 3 templates
 
 ---
@@ -56,8 +58,7 @@ Command transcript + `ls -R` of created structure + spec.md excerpts showing lin
 
 Check create.sh supports --phase flag; verify --phase-names parsing; inspect template directory for Level 3 files; check folder naming collision with existing specs
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 

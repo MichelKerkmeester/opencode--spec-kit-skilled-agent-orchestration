@@ -1,7 +1,6 @@
 ---
 title: "Unified context retrieval (memory_context)"
 description: "Describes the L1 orchestration layer that auto-detects task intent and routes to the best retrieval strategy."
-audited_post_018: true
 ---
 
 # Unified context retrieval (memory_context)
@@ -56,7 +55,7 @@ Extended telemetry now records transition diagnostics alongside mode selection a
 | `mcp_server/lib/telemetry/retrieval-telemetry.ts` | Lib | Retrieval telemetry and transition diagnostics |
 | `mcp_server/formatters/token-metrics.ts` | Formatter | Token estimation for budget enforcement |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -72,7 +71,6 @@ Extended telemetry now records transition diagnostics alongside mode selection a
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Unified context retrieval (memory_context)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/01-unified-context-retrieval-memorycontext.md`

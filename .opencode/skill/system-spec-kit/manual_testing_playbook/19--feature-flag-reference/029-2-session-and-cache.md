@@ -14,11 +14,13 @@ This scenario validates 2. Session and Cache for `EX-029`. It focuses on Session
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-029` and confirm the expected signals without contradicting evidence.
 
-- Objective: Session policy audit
-- Prompt: `As a feature-flag validation operator, validate 2. Session and Cache against memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 }). Verify session/cache controls found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Session policy audit.
+- Real user request: `Please validate 2. Session and Cache against memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 }) and tell me whether the expected signals are present: Session/cache controls found.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 2. Session and Cache against memory_search({ query:"DISABLE_SESSION_DEDUP session cache policy settings", limit:20 }). Verify session/cache controls found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Session/cache controls found
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all required keys surfaced
 
 ---
@@ -52,8 +54,7 @@ Search output
 
 Expand query terms
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/02-2-session-and-cache.md](../../feature_catalog/19--feature-flag-reference/02-2-session-and-cache.md)
 

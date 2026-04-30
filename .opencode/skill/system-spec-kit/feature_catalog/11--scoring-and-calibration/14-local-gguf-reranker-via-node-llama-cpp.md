@@ -1,7 +1,6 @@
 ---
 title: "Local GGUF reranker via node-llama-cpp"
 description: "Describes the `RERANKER_LOCAL` flag-gated local GGUF reranker using `node-llama-cpp` with `bge-reranker-v2-m3.Q4_K_M.gguf` in Stage 3, with strict activation criteria including model path readability and host memory thresholds."
-audited_post_018: true
 ---
 
 # Local GGUF reranker via node-llama-cpp
@@ -74,7 +73,7 @@ The shared cross-encoder path now keys its reranker cache by provider, query, an
 | `shared/utils/path-security.ts` | Shared | Shared path security |
 | `shared/utils/retry.ts` | Shared | Shared retry utility |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -122,7 +121,6 @@ The shared cross-encoder path now keys its reranker cache by provider, query, an
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Local GGUF reranker via node-llama-cpp
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md`

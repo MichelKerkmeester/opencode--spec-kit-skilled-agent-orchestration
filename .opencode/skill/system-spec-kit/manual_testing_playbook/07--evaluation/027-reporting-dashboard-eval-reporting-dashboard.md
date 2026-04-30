@@ -13,11 +13,13 @@ This scenario validates Reporting dashboard (eval_reporting_dashboard) for `EX-0
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-027` and confirm the expected signals without contradicting evidence.
 
-- Objective: Eval reporting pass
-- Prompt: `As an evaluation validation operator, validate Reporting dashboard (eval_reporting_dashboard) against eval_reporting_dashboard({ format:"text", limit:2 }). Verify trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; sprint grouping uses recency selection by lastSeen while report order stays chronological; chunk-backed rows aggregate to parent memory IDs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Eval reporting pass.
+- Real user request: `` Please validate Reporting dashboard (eval_reporting_dashboard) against eval_reporting_dashboard({ format:"text", limit:2 }) and tell me whether the expected signals are present: Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; sprint grouping uses recency selection by `lastSeen` while report order stays chronological; chunk-backed rows aggregate to parent memory IDs. ``
+- RCAF Prompt: `As an evaluation validation operator, validate Reporting dashboard (eval_reporting_dashboard) against eval_reporting_dashboard({ format:"text", limit:2 }). Verify trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; sprint grouping uses recency selection by lastSeen while report order stays chronological; chunk-backed rows aggregate to parent memory IDs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Trend/channel/summary data present in supported runtime formats; active eval DB remains selected; request limit trims sprint groups rather than raw runs; sprint grouping uses recency selection by `lastSeen` while report order stays chronological; chunk-backed rows aggregate to parent memory IDs
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if report generated without error in supported format and latest rows stay parent-memory-normalized
 
 ---
@@ -51,8 +53,7 @@ Dashboard output in text and JSON plus source-backed confirmation of parent-memo
 
 Retry with `format:"json"` or `format:"text"`; inspect `handlers/eval-reporting.ts` and `lib/eval/reporting-dashboard.ts` if chunk IDs leak through or sprint ordering contradicts recency selection
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [07--evaluation/02-reporting-dashboard-evalreportingdashboard.md](../../feature_catalog/07--evaluation/02-reporting-dashboard-evalreportingdashboard.md)
 

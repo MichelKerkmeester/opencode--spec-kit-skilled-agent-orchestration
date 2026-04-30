@@ -14,11 +14,13 @@ This scenario validates Provenance-rich response envelopes (P0-2) for `096`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `096` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm includeTrace opt-in exposes scores/source/trace
-- Prompt: `As a retrieval-enhancement validation operator, validate Provenance-rich response envelopes (P0-2) against SPECKIT_RESPONSE_TRACE. Verify trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm includeTrace opt-in exposes scores/source/trace.
+- Real user request: `Please validate Provenance-rich response envelopes (P0-2) against SPECKIT_RESPONSE_TRACE and tell me whether the expected signals are present: Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Provenance-rich response envelopes (P0-2) against SPECKIT_RESPONSE_TRACE. Verify trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Trace objects (scores, source, trace) present when includeTrace=true or env override active; absent when neither is set; score fields include all 7 expected sub-fields
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if trace objects present when opt-in or env-forced and absent otherwise
 
 ---
@@ -56,8 +58,7 @@ Search outputs with/without includeTrace + env override
 
 Check `handlers/memory-search.ts` for includeTrace and env branching
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/08-provenance-rich-response-envelopes.md](../../feature_catalog/15--retrieval-enhancements/08-provenance-rich-response-envelopes.md)
 

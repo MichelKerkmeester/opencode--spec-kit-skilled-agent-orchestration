@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-015` and confirm the
 
 - Objective: Verify `navigate_page({url})` then `take_screenshot()` returns a base64 string of length > 1000, with PNG magic bytes when decoded.
 - Real user request: `"Take a screenshot of example.com via Chrome DevTools."`
-- Prompt: `As a manual-testing orchestrator, navigate Chrome to https://example.com then take a screenshot through Code Mode against the chrome_devtools_1 MCP instance. Verify navigation succeeds and screenshot returns image bytes. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate Chrome to https://example.com then take a screenshot through Code Mode against the chrome_devtools_1 MCP instance. Verify navigation succeeds and screenshot returns image bytes. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation; assumes Chrome DevTools MCP is configured as `chrome_devtools_1` in `.utcp_config.json`.
 - Expected signals: navigate returns success; screenshot returns base64 string of length > 1000; decoded bytes start with PNG magic header `89 50 4E 47`.
 - Desired user-visible outcome: A short report stating screenshot length and PNG magic verification with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-015` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, navigate Chrome to https://example.com then take a screenshot through Code Mode against the chrome_devtools_1 MCP instance. Verify navigation succeeds and screenshot returns image bytes. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate Chrome to https://example.com then take a screenshot through Code Mode against the chrome_devtools_1 MCP instance. Verify navigation succeeds and screenshot returns image bytes. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

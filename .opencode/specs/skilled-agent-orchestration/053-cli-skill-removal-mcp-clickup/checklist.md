@@ -1,9 +1,7 @@
 ---
 title: "Verification Checklist: Remove mcp-clickup skill"
 description: "QA checklist for the mcp-clickup skill removal sweep."
-trigger_phrases:
-  - "checklist mcp-clickup removal"
-  - "053 checklist"
+trigger_phrases: ["checklist mcp-clickup removal", "053 checklist"]
 importance_tier: "normal"
 contextType: "general"
 _memory:
@@ -14,14 +12,7 @@ _memory:
     recent_action: "Authored verification checklist"
     next_safe_action: "Mark items as evidence accumulates during execution"
     blockers: []
-    key_files: []
-    session_dedup:
-      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
-      session_id: "053-skill-removal"
-      parent_session_id: null
     completion_pct: 10
-    open_questions: []
-    answered_questions: []
 ---
 # Verification Checklist: Remove mcp-clickup skill
 
@@ -45,9 +36,9 @@ _memory:
 <!-- ANCHOR:pre-impl -->
 ## Pre-Implementation
 
-- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001..REQ-007)
-- [x] CHK-002 [P0] Technical approach defined in plan.md (5 phases)
-- [x] CHK-003 [P1] Reference inventory complete (12 files mapped)
+- [x] CHK-001 [P0] Requirements documented in spec.md (REQ-001..REQ-007) [EVIDENCE: spec.md ANCHOR:requirements lists all 7 requirements with acceptance criteria]
+- [x] CHK-002 [P0] Technical approach defined in plan.md (5 phases) [EVIDENCE: plan.md ANCHOR:phases — Setup / Deletions / Advisor / Docs / Verify]
+- [x] CHK-003 [P1] Reference inventory complete (12 files mapped) [EVIDENCE: spec.md "Files to Change" table — 12 rows]
 <!-- /ANCHOR:pre-impl -->
 
 ---
@@ -77,9 +68,9 @@ _memory:
 <!-- ANCHOR:security -->
 ## Security
 
-- [x] CHK-030 [P0] No hardcoded secrets touched (deletion + reference cleanup only)
-- [x] CHK-031 [P0] Input validation N/A (no input surfaces touched)
-- [x] CHK-032 [P1] Auth/authz N/A
+- [x] CHK-030 [P0] No hardcoded secrets touched (deletion + reference cleanup only) [EVIDENCE: deleted skill folder contained only install scripts and docs; no env/credential files]
+- [x] CHK-031 [P0] Input validation N/A (no input surfaces touched) [EVIDENCE: no runtime/CLI/HTTP surfaces modified — config and docs only]
+- [x] CHK-032 [P1] Auth/authz N/A [EVIDENCE: no auth code paths modified]
 <!-- /ANCHOR:security -->
 
 ---
@@ -97,8 +88,8 @@ _memory:
 <!-- ANCHOR:file-org -->
 ## File Organization
 
-- [x] CHK-050 [P1] Temp files in scratch/ only (none expected)
-- [x] CHK-051 [P1] scratch/ cleaned before completion (only .gitkeep)
+- [x] CHK-050 [P1] Temp files in scratch/ only (none expected) [EVIDENCE: `ls scratch/` shows only `.gitkeep`]
+- [x] CHK-051 [P1] scratch/ cleaned before completion (only .gitkeep) [EVIDENCE: `ls scratch/` shows only `.gitkeep`]
 <!-- /ANCHOR:file-org -->
 
 ---

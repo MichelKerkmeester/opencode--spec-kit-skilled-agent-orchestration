@@ -1,7 +1,6 @@
 ---
 title: "LLM query reformulation"
 description: "Corpus-grounded LLM query reformulation applies step-back abstraction combined with real corpus seed grounding to produce enriched query variants in deep mode, gated by the SPECKIT_LLM_REFORMULATION flag."
-audited_post_018: true
 ---
 
 # LLM query reformulation
@@ -38,7 +37,7 @@ After reformulated variants run through retrieval, Stage 1 now reapplies the sam
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isLlmReformulationEnabled()` flag accessor |
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 integration: invokes reformulation in deep mode |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +46,6 @@ After reformulated variants run through retrieval, Stage 1 now reapplies the sam
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: LLM query reformulation
-- Current reality source: mcp_server/lib/search/llm-reformulation.ts module header and implementation
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/07-llm-query-reformulation.md`

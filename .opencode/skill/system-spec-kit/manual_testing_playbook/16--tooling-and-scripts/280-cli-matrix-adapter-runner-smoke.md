@@ -13,13 +13,14 @@ This scenario validates the matrix runner surface. It exercises one cell through
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Run a single matrix cell through `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`, then verify per-cell JSONL and timeout behavior.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/` exists.
-  - External CLIs are installed and authenticated for live adapter execution, or blocked cells are recorded with explicit `BLOCKED` reasons.
-  - `jq` is available for JSONL checks.
-- **Prompt**: `As a matrix-runner operator, run the F5 cell through all five shipped CLI adapters, verify every JSONL record has the normalized cell fields and status enum, then run the mocked matrix-adapter timeout tests and confirm TIMEOUT_CELL handling. Return PASS/FAIL with output directory and timeout-test evidence.`
+
+- Objective: Run a single matrix cell through `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`, then verify per-cell JSONL and timeout behavior.
+- Real user request: `` Please validate CLI matrix adapter runner smoke against the documented validation surface and tell me whether the expected signals are present: Step 1 writes five files under `$OUT`: one each for `F5-cli-codex`, `F5-cli-copilot`, `F5-cli-gemini`, `F5-cli-claude-code`, and `F5-cli-opencode`.; Live cells may be `PASS`, `FAIL`, or `BLOCKED` depending on local CLI auth; `NA` is not expected for F5.; Every JSONL record has `cell_id`, `featureId`, `featureName`, `executor`, `status`, `durationMs`, `evidence.stdout`, `evidence.stderr`, and `evidence.exitCode`.; `summary.tsv` contains per-feature and per-executor aggregate rows.; The timeout test command passes and includes `TIMEOUT_CELL` assertions for every adapter suite. ``
+- RCAF Prompt: `` As a tooling validation operator, validate CLI matrix adapter runner smoke against the documented validation surface. Verify Step 1 writes five files under `$OUT`: one each for `F5-cli-codex`, `F5-cli-copilot`, `F5-cli-gemini`, `F5-cli-claude-code`, and `F5-cli-opencode`.; Live cells may be `PASS`, `FAIL`, or `BLOCKED` depending on local CLI auth; `NA` is not expected for F5.; Every JSONL record has `cell_id`, `featureId`, `featureName`, `executor`, `status`, `durationMs`, `evidence.stdout`, `evidence.stderr`, and `evidence.exitCode`.; `summary.tsv` contains per-feature and per-executor aggregate rows.; The timeout test command passes and includes `TIMEOUT_CELL` assertions for every adapter suite. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Step 1 writes five files under `$OUT`: one each for `F5-cli-codex`, `F5-cli-copilot`, `F5-cli-gemini`, `F5-cli-claude-code`, and `F5-cli-opencode`.; Live cells may be `PASS`, `FAIL`, or `BLOCKED` depending on local CLI auth; `NA` is not expected for F5.; Every JSONL record has `cell_id`, `featureId`, `featureName`, `executor`, `status`, `durationMs`, `evidence.stdout`, `evidence.stderr`, and `evidence.exitCode`.; `summary.tsv` contains per-feature and per-executor aggregate rows.; The timeout test command passes and includes `TIMEOUT_CELL` assertions for every adapter suite
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if the expected signals are present without contradicting evidence; FAIL if required signals are missing or execution cannot complete.
 
 ---
 
@@ -98,8 +99,7 @@ rm -rf "$OUT"
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Runner docs: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md`
 - Manifest: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json`

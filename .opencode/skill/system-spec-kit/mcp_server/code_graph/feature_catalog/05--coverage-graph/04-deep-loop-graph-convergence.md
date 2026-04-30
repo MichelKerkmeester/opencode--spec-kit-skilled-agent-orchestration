@@ -43,6 +43,13 @@ Auto means "inside the command YAML workflow," not globally scheduled. Empty gra
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml:392-408` | Implementation | calls convergence before the research stop vote |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml:410-425` | Implementation | calls convergence before the review stop vote |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:883-896` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/05--coverage-graph/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

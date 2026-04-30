@@ -14,11 +14,13 @@ This scenario validates graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PRO
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `158` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify graph weight cap enforcement and community score capping
-- Prompt: `As a graph-signal validation operator, validate Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify graph weight cap enforcement and community score capping. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify graph weight cap enforcement and community score capping.
+- Real user request: `Please validate Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) against SPECKIT_GRAPH_CALIBRATION_PROFILE=true and tell me whether the expected signals are present: applyGraphWeightCap() clamps values to [0, 0.05]; applyCommunityScoring() caps boost at 0.03; shouldActivateLouvain() returns activate=false when density or size below thresholds; calibrateGraphWeight() enforces N2a/N2b caps.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Graph calibration profile (SPECKIT_GRAPH_CALIBRATION_PROFILE) against SPECKIT_GRAPH_CALIBRATION_PROFILE=true. Verify graph weight cap enforcement and community score capping. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: applyGraphWeightCap() clamps values to [0, 0.05]; applyCommunityScoring() caps boost at 0.03; shouldActivateLouvain() returns activate=false when density or size below thresholds; calibrateGraphWeight() enforces N2a/N2b caps
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if graph weight capped at 0.05, community score capped at 0.03, and Louvain thresholds enforced; FAIL if any score exceeds its cap or Louvain activates below threshold
 
 ---
@@ -55,8 +57,7 @@ Test transcript with cap verification + scoring context before/after calibration
 
 Verify isGraphCalibrationEnabled() → Check loadCalibrationProfile() env overrides → Inspect GRAPH_WEIGHT_CAP constant (0.05) → Verify COMMUNITY_SCORE_CAP constant (0.03) → Check Louvain minDensity (0.3) and minSize (10)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/15-graph-calibration-profiles.md](../../feature_catalog/10--graph-signal-activation/15-graph-calibration-profiles.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)

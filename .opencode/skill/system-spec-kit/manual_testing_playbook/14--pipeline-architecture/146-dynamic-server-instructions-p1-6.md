@@ -14,11 +14,13 @@ This scenario validates Dynamic server instructions (P1-6) for `146`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `146` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning
-- Prompt: `As a pipeline validation operator, validate Dynamic server instructions (P1-6) against setInstructions(). Verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `setInstructions()` is called at MCP startup with memory count, spec folder count, channel list, and stale warning.
+- Real user request: `Please validate Dynamic server instructions (P1-6) against setInstructions() and tell me whether the expected signals are present: Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions.`
+- RCAF Prompt: `As a pipeline validation operator, validate Dynamic server instructions (P1-6) against setInstructions(). Verify setInstructions() is called at MCP startup with memory count, spec folder count, channel list, and stale warning. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Startup instructions include memory system overview with counts and channels; stale warning appears only above threshold; disabled flag yields empty instructions
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if enabled mode emits overview with counts/channels and disabled mode yields empty string
 
 ---
@@ -56,8 +58,7 @@ Server startup log + instructions content snapshot + flag toggle comparison
 
 Inspect `context-server.ts` `buildServerInstructions`, `startup-checks.ts`, and `SPECKIT_DYNAMIC_INIT` flag handling
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md](../../feature_catalog/14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md)
 

@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that max iterations is a hard stop checked before softer convergence signals.
 - Real user request: If I set a maximum number of iterations, I want to know the loop will stop there no matter what.
-- Prompt: `As a manual-testing orchestrator, validate the max-iterations stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the hard cap is checked before softer convergence logic and that the stop reason is surfaced as max_iterations_reached. Return a concise operator verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the max-iterations stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the hard cap is checked before softer convergence logic and that the stop reason is surfaced as max_iterations_reached. Return a concise operator verdict.`
 - Expected execution process: Inspect convergence pseudocode first, then the YAML decision algorithm, then the README parameter table and examples.
-- Desired user-facing outcome: The user is told that `--max-iterations` is a hard cap that overrides further looping.
+- Desired user-visible outcome: The user is told that `--max-iterations` is a hard cap that overrides further looping.
 - Expected signals: Max iterations is checked first, the stop reason is named explicitly, and the parameter is exposed consistently in the docs.
 - Pass/fail posture: PASS if max iterations is consistently treated as a first-priority hard stop; FAIL if it is demoted below softer signals or described inconsistently.
 

@@ -32,7 +32,7 @@ Hard negative queries are included to verify that irrelevant memories rank low. 
 | `mcp_server/lib/eval/ground-truth-data.ts` | Lib | Ground truth data |
 | `mcp_server/lib/eval/ground-truth-generator.ts` | Lib | Synthetic ground truth generator |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,14 +41,10 @@ Hard negative queries are included to verify that irrelevant memories rank low. 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Synthetic ground truth corpus
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 010

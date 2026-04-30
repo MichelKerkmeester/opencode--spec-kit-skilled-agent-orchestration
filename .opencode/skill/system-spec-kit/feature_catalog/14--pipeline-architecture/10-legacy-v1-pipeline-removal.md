@@ -1,7 +1,6 @@
 ---
 title: "Legacy V1 pipeline removal"
 description: "The 4-stage pipeline is the sole runtime search path. The SPECKIT_PIPELINE_V2 environment variable is not consumed by runtime code."
-audited_post_018: true
 ---
 
 # Legacy V1 pipeline removal
@@ -34,7 +33,7 @@ Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix:
 | `mcp_server/lib/search/pipeline/stage4-filter.ts` | Lib | Stage 4 filtering with `verifyScoreInvariant()` |
 | `mcp_server/handlers/memory-crud-health.ts` | Handler | `verify_integrity()` with orphaned chunk detection (P0 fix) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Orphaned chunk detection was added to `verify_integrity()` as the fourth P0 fix:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Opus review remediation (Phase 017)
-- Source feature title: Legacy V1 pipeline removal
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/10-legacy-v1-pipeline-removal.md`

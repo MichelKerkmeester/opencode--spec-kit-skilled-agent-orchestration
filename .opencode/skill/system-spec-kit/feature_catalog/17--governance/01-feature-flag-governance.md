@@ -1,7 +1,6 @@
 ---
 title: "Feature flag governance"
 description: "Feature flag governance defines operational targets for keeping the active flag surface small with explicit sunset windows and periodic audits."
-audited_post_018: true
 ---
 
 # Feature flag governance
@@ -38,7 +37,6 @@ The B8 signal ceiling ("12 active scoring signals") is a governance target, not 
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Governance
-- Source feature title: Feature flag governance
-- Current reality source: `mcp_server/lib/cognitive/rollout-policy.ts`, `mcp_server/lib/config/capability-flags.ts`
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `17--governance/01-feature-flag-governance.md`

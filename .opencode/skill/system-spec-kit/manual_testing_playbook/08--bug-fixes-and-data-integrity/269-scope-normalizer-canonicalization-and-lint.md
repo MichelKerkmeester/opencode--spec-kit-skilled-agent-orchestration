@@ -13,9 +13,13 @@ This scenario validates the canonical scope normalizer and duplicate-helper lint
 
 ## 2. SCENARIO CONTRACT
 
-- Objective: Verify all target callers use `normalizeScopeValue()` and strict validation rejects new duplicate local helpers
-- Prompt: `As a data-integrity validation operator, validate Scope normalizer canonicalization and lint against normalizeScopeValue(). Verify the documented callers all import the canonical helper, string and null semantics still match the parity matrix, and validate.sh --strict rejects a synthetic duplicate normalizeScope helper outside scope-governance.ts. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+- Objective: Verify all target callers use `normalizeScopeValue()` and strict validation rejects new duplicate local helpers.
+- Real user request: `Please validate Scope normalizer canonicalization and lint against normalizeScopeValue() and tell me whether the expected signals are present: canonical imports visible at the documented call sites; parity matrix still passes; synthetic duplicate helper fails the lint rule.`
+- RCAF Prompt: `As a data-integrity validation operator, validate Scope normalizer canonicalization and lint against normalizeScopeValue(). Verify the documented callers all import the canonical helper, string and null semantics still match the parity matrix, and validate.sh --strict rejects a synthetic duplicate normalizeScope helper outside scope-governance.ts. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: canonical imports visible at the documented call sites; parity matrix still passes; synthetic duplicate helper fails the lint rule
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if scope normalization stays centralized and the lint guard blocks new duplicates
 
 ---
@@ -52,8 +56,7 @@ Caller import snippets, parity test output, and lint failure output for the dupl
 
 Inspect `mcp_server/lib/governance/scope-governance.ts`, the four documented callers, `scripts/rules/check-normalizer-lint.sh`, and `scripts/tests/normalizer-lint.vitest.ts`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md](../../feature_catalog/08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md)
 

@@ -1,7 +1,6 @@
 ---
 title: "Validation signals as retrieval metadata"
 description: "Validation signals as retrieval metadata integrates spec document quality scores into the Stage 2 scoring layer as a bounded multiplier."
-audited_post_018: true
 ---
 
 # Validation signals as retrieval metadata
@@ -32,7 +31,7 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 | `mcp_server/lib/search/validation-metadata.ts` | Lib | Validation signal metadata |
 | `shared/contracts/retrieval-trace.ts` | Shared | Retrieval trace contract |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ The combined multiplier is bounded to 0.8-1.2 via a clamping function, composed 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Validation signals as retrieval metadata
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md`

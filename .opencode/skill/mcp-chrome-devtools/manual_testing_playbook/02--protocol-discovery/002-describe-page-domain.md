@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-006` and confirm th
 
 - Objective: Verify `bdg cdp --describe Page` returns non-empty method documentation containing `navigate` and `reload`.
 - Real user request: `"What methods does the Page CDP domain expose?"`
-- Prompt: `As a manual-testing orchestrator, describe the Page CDP domain through the bdg CLI against the live CDP catalog. Verify output lists at least navigate and reload methods. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, describe the Page CDP domain through the bdg CLI against the live CDP catalog. Verify output lists at least navigate and reload methods. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run a single CLI command and grep output for the core method names.
 - Expected signals: `bdg cdp --describe Page` exits 0 with non-empty output; output mentions `navigate` and `reload`.
 - Desired user-visible outcome: A short report quoting the matched method names with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-006` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, describe the Page CDP domain through the bdg CLI against the live CDP catalog. Verify output lists at least navigate and reload methods. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, describe the Page CDP domain through the bdg CLI against the live CDP catalog. Verify output lists at least navigate and reload methods. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

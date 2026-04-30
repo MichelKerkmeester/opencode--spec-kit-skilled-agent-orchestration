@@ -17,12 +17,13 @@ Verify ccc_reindex shells out to the local ccc binary and reports unavailable bi
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify ccc_reindex shells out to the local ccc binary and reports unavailable binary cleanly.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 012 (ccc_reindex binary shell out), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify ccc_reindex shells out to the local ccc binary and reports unavailable binary cleanly.
+- Real user request: `Check whether ccc_reindex uses the local ccc binary and gives a clear install message when the binary is unavailable.`
+- RCAF Prompt: `As a CocoIndex integration tester, execute ccc_reindex availability checks against the local ccc binary path. Verify available binaries produce reindex status and missing binaries report install guidance cleanly. Return PASS/FAIL with status and error evidence.`
+- Expected execution process: Call `ccc_status`, then call `ccc_reindex({"full":false})` in a disposable workspace if the binary exists, or capture the install error from `ccc_reindex` if it is missing.
+- Expected signals: Available binary path leads to `status:"ok"` with mode and duration; missing binary returns a clear install instruction.
+- Desired user-visible outcome: A concise verdict explaining whether ccc_reindex delegates to the binary or fails with actionable setup guidance.
+- Pass/fail: PASS if available binary reindex succeeds or unavailable binary returns clear install guidance; FAIL if the shell-out path is invisible, missing-binary errors are unclear, or generated artifacts are not isolated.
 
 ---
 
@@ -62,4 +63,3 @@ Run with `full:true` only in a disposable copy.
 - Group: Code Graph Runtime
 - Playbook ID: 012
 - Canonical root source: `manual_testing_playbook.md`
-

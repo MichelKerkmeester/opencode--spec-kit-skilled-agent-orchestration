@@ -1,8 +1,6 @@
 ---
 title: "Per-memory history log"
 description: "Covers the per-record audit trail that records ADD, UPDATE and DELETE mutation events in the `memory_history` table."
-audited_post_018: true
-phase_018_change: "History logging remains live across the post-018 mutation paths"
 ---
 
 # Per-memory history log
@@ -39,7 +37,7 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 | `.opencode/skill/system-spec-kit/mcp_server/lib/search/vector-index-mutations.ts` | Lib | Writes `DELETE` events for mutation API delete helpers |
 | `.opencode/skill/system-spec-kit/scripts/memory/cleanup-orphaned-vectors.ts` | Script | Removes orphaned `memory_history` rows and orphaned vectors |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,7 +47,6 @@ The history log is written by mutation handlers (`memory_save`, `memory_update`,
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Per-memory history log
-- Current reality source: audit-D04 gap backfill
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/10-per-memory-history-log.md`

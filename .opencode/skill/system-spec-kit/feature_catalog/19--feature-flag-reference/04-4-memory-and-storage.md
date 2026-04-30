@@ -1,7 +1,6 @@
 ---
 title: "4. Memory and Storage"
 description: "This document captures the implemented behavior, source references, and validation scope for 4. Memory and Storage."
-audited_post_018: true
 ---
 
 # 4. Memory and Storage
@@ -36,7 +35,6 @@ Source file references are included in the flag table above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: 4. Memory and Storage
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/04-4-memory-and-storage.md`

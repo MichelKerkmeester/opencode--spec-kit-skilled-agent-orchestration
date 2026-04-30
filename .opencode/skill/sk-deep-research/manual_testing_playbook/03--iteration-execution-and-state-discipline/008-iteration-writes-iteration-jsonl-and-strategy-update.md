@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that each completed iteration writes the detailed iteration file, appends JSONL, and enables reducer-owned packet synchronization.
 - Real user request: Show me what a successful iteration writes back to disk after it finishes researching.
-- Prompt: `As a manual-testing orchestrator, validate the iteration write-back contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md, appends a JSONL iteration record, and triggers reducer-owned refresh of deep-research-strategy.md, findings-registry.json, and deep-research-dashboard.md. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the iteration write-back contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify each iteration writes iteration-NNN.md, appends a JSONL iteration record, and triggers reducer-owned refresh of deep-research-strategy.md, findings-registry.json, and deep-research-dashboard.md. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the loop protocol evaluation rules, the state-format schemas, and the runtime agent write sequence.
-- Desired user-facing outcome: The user is told exactly which files are written at the end of a successful iteration and what each one represents.
+- Desired user-visible outcome: The user is told exactly which files are written at the end of a successful iteration and what each one represents.
 - Expected signals: Iteration file creation, JSONL append, and reducer refresh are all mandatory parts of the loop, not optional side effects.
 - Pass/fail posture: PASS if all sources require the iteration file, JSONL append, and reducer refresh together; FAIL if any source treats one of them as optional.
 

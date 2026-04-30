@@ -17,12 +17,13 @@ Verify status reads readiness and graph quality without mutating or repairing st
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify status reads readiness and graph quality without mutating or repairing stale state.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 006 (code_graph_status readonly), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify status reads readiness and graph quality without mutating or repairing stale state.
+- Real user request: `Inspect code_graph_status around a stale-file fixture and confirm it reports diagnostics without repairing the graph.`
+- RCAF Prompt: `As a code graph status reviewer, execute read-only status checks against code_graph_status around a stale-file fixture. Verify readiness and graph-quality diagnostics are reported without mutation or repair. Return PASS/FAIL with before-and-after evidence.`
+- Expected execution process: Capture `code_graph_status({})` twice around a stale-file fixture, compare `lastPersistedAt`, readiness, and scan counts, and confirm no `code_graph_scan` was invoked.
+- Expected signals: Status returns diagnostic fields including `freshness`, `readiness`, `canonicalReadiness`, `trustState`, and `graphQualitySummary`, but does not repair stale state.
+- Desired user-visible outcome: A concise verdict explaining whether status stayed diagnostic-only.
+- Pass/fail: PASS if status reports diagnostics without changing persistence or scan evidence; FAIL if it repairs stale state, invokes scan, or omits readiness and graph-quality diagnostics.
 
 ---
 
@@ -62,4 +63,3 @@ Corrupt the copied DB and verify status returns a degraded envelope rather than 
 - Group: Code Graph Runtime
 - Playbook ID: 006
 - Canonical root source: `manual_testing_playbook.md`
-

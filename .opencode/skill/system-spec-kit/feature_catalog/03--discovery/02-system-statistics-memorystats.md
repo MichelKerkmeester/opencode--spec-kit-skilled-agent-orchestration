@@ -40,7 +40,7 @@ Embedding-status totals now treat `partial` as a first-class state instead of si
 | `mcp_server/lib/search/vector-index.ts` | Database access facade used by the handler |
 | `mcp_server/lib/response/envelope.ts` | MCP success/error envelope helpers |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,8 +51,6 @@ Embedding-status totals now treat `partial` as a first-class state instead of si
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Discovery
-- Source feature title: System statistics (memory_stats)
-- Current reality source: `mcp_server/handlers/memory-crud-stats.ts` and discovery test coverage
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `03--discovery/02-system-statistics-memorystats.md`

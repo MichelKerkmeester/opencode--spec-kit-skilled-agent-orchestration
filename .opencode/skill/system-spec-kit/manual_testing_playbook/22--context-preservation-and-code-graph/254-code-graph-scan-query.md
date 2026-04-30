@@ -16,26 +16,14 @@ For package-local code_graph runtime scenarios, see `mcp_server/code_graph/manua
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into `code_files`, `code_nodes`, and `code_edges` tables. The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges. The 4 MCP tools (`code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`) must return correct results. WAL mode and foreign keys must be enabled.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - SQLite3 available (bundled via better-sqlite3)
-  - Test fixture files available for indexing
-- **Prompt**: `As a context-and-code-graph validation operator, validate Code graph scan and structural query against the live handler suites under cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts code-graph/tests/code-graph-scan.vitest.ts tests/unit-path-security.vitest.ts. Verify the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into code_files, code_nodes, and code_edges tables. The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges. The 4 MCP tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) must return correct results, and code_graph_status must surface graphQualitySummary with detector provenance plus edge-enrichment detail. WAL mode and foreign keys must be enabled. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All targeted vitest suites in `code-graph/tests/` and `tests/unit-path-security.vitest.ts` pass
-  - `code_graph_scan` populates `code_files` table with indexed file paths and hashes
-  - `code_nodes` table contains entries with types: function, class, import (with fqName, file, line, column)
-  - `code_edges` table contains directional relationships (source_id, target_id, edge_type: calls/imports)
-  - `code_graph_query` for outline mode returns symbol list for a given file
-  - `code_graph_query` for calls mode returns callers/callees of a symbol
-  - `code_graph_query` for imports mode returns import relationships
-  - `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper. Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).
-  - Database uses WAL journal mode and has foreign keys enabled
-- **Pass/fail criteria**:
-  - PASS: All tables populated correctly, query tools return expected results, WAL mode confirmed
-  - FAIL: Missing nodes/edges for known fixtures, query returns empty when data exists, or foreign key violations
+
+- Objective: Verify that the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into `code_files`, `code_nodes`, and `code_edges` tables; The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges; The 4 MCP tools (`code_graph_scan`, `code_graph_query`, `code_graph_status`, `code_graph_context`) must return correct results; WAL mode and foreign keys must be enabled.
+- Real user request: `` Please validate Code graph scan and structural query against the live handler suites under cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts code-graph/tests/code-graph-scan.vitest.ts tests/unit-path-security.vitest.ts and tell me whether the expected signals are present: All targeted vitest suites in `code-graph/tests/` and `tests/unit-path-security.vitest.ts` pass; `code_graph_scan` populates `code_files` table with indexed file paths and hashes; `code_nodes` table contains entries with types: function, class, import (with fqName, file, line, column); `code_edges` table contains directional relationships (source_id, target_id, edge_type: calls/imports); `code_graph_query` for outline mode returns symbol list for a given file; `code_graph_query` for calls mode returns callers/callees of a symbol; `code_graph_query` for imports mode returns import relationships; `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper. Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).; Database uses WAL journal mode and has foreign keys enabled. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Code graph scan and structural query against the live handler suites under cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run code-graph/tests/code-graph-indexer.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-siblings-readiness.vitest.ts code-graph/tests/code-graph-scan.vitest.ts tests/unit-path-security.vitest.ts. Verify the code graph SQLite storage (code-graph.sqlite) correctly indexes source files into code_files, code_nodes, and code_edges tables. The structural indexer must extract function declarations, class definitions, and import statements as nodes, and build call/import relationship edges. The 4 MCP tools (code_graph_scan, code_graph_query, code_graph_status, code_graph_context) must return correct results, and code_graph_status must surface graphQualitySummary with detector provenance plus edge-enrichment detail. WAL mode and foreign keys must be enabled. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All targeted vitest suites in `code-graph/tests/` and `tests/unit-path-security.vitest.ts` pass; `code_graph_scan` populates `code_files` table with indexed file paths and hashes; `code_nodes` table contains entries with types: function, class, import (with fqName, file, line, column); `code_edges` table contains directional relationships (source_id, target_id, edge_type: calls/imports); `code_graph_query` for outline mode returns symbol list for a given file; `code_graph_query` for calls mode returns callers/callees of a symbol; `code_graph_query` for imports mode returns import relationships; `code_graph_status` returns counts (files indexed, nodes, edges) plus `graphQualitySummary.detectorProvenanceSummary`, `graphQualitySummary.graphEdgeEnrichmentSummary`, and `readiness.action ∈ {full_scan, selective_reindex, none}` derived from the read-only `getGraphReadinessSnapshot()` helper. Snapshot MUST be side-effect free — handler invocation must NOT call any write-side `code-graph-db` export (e.g. `ensureCodeGraphReady`).; Database uses WAL journal mode and has foreign keys enabled
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All tables populated correctly, query tools return expected results, WAL mode confirmed; FAIL: Missing nodes/edges for known fixtures, query returns empty when data exists, or foreign key violations
 
 ---
 
@@ -217,8 +205,7 @@ code_graph_status responses for the four states + sha256 hash pair (before/after
 
 Inspect `mcp_server/code_graph/handlers/status.ts` and `lib/get-graph-readiness-snapshot.ts`; ensure no call to `ensureCodeGraphReady` and confirm the built distribution marker matches the source implementation.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/08-code-graph-storage-query.md](../../feature_catalog/22--context-preservation-and-code-graph/08-code-graph-storage-query.md)
 

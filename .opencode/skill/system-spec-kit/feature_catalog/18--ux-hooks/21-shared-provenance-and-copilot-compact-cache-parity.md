@@ -1,15 +1,15 @@
 ---
 title: "Shared provenance and Copilot compact-cache parity"
-description: "Phase 017 extracted the shared provenance wrapper and added a Copilot compact-cache producer so Copilot matches Claude and Gemini on cached recovered-payload behavior."
+description: "the implementation extracted the shared provenance wrapper and added a Copilot compact-cache producer so Copilot matches Claude and Gemini on cached recovered-payload behavior."
 ---
 
 # Shared provenance and Copilot compact-cache parity
 
 ## 1. OVERVIEW
 
-Phase 017 extracted the shared provenance wrapper and added a Copilot compact-cache producer so Copilot matches Claude and Gemini on cached recovered-payload behavior.
+The implementation extracted the shared provenance wrapper and added a Copilot compact-cache producer so Copilot matches Claude and Gemini on cached recovered-payload behavior.
 
-This is a UX-hook feature because it governs how recovered context is wrapped, sanitized, labeled, and replayed back into the runtime. The Phase 017 change closed the last runtime-specific parity gap in the compact-cache path.
+This is a UX-hook feature because it governs how recovered context is wrapped, sanitized, labeled, and replayed back into the runtime. The implementation change closed the last runtime-specific parity gap in the compact-cache path.
 
 ---
 
@@ -19,7 +19,7 @@ Commit `77da3013a` extracted the shared recovered-payload helpers into `mcp_serv
 
 Commit `5923737c7` added `mcp_server/hooks/copilot/compact-cache.ts` and extended `mcp_server/hooks/copilot/session-prime.ts` so Copilot reads and writes provenance-wrapped cached payloads with `trustState: 'cached'`, matching the Claude and Gemini compact-cache flows.
 
-The shared module now owns the provenance escaping, recovered-payload sanitization, and `wrapRecoveredCompactPayload()` logic for all three runtimes. Copilot therefore no longer lacks a compact-cache producer or a shared provenance wrapper, which was the last remaining observability gap called out in Phase 017 Cluster E.
+The shared module now owns the provenance escaping, recovered-payload sanitization, and `wrapRecoveredCompactPayload()` logic for all three runtimes. Copilot therefore no longer lacks a compact-cache producer or a shared provenance wrapper, which was the last remaining observability gap called out in the implementation Cluster E.
 
 ---
 
@@ -35,7 +35,7 @@ The shared module now owns the provenance escaping, recovered-payload sanitizati
 | `mcp_server/hooks/copilot/compact-cache.ts` | Hook | Copilot compact-cache producer |
 | `mcp_server/hooks/copilot/session-prime.ts` | Hook | Copilot session-prime consumer of cached provenance-wrapped payloads |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,8 +46,6 @@ The shared module now owns the provenance escaping, recovered-payload sanitizati
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX Hooks
-- Source feature title: Shared provenance and Copilot compact-cache parity
-- Phase 017 commits: `77da3013a`, `5923737c7`
-- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md`

@@ -31,7 +31,7 @@ Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which
 |------|-------|------|
 | `mcp_server/lib/ops/file-watcher.ts` | Lib | Filesystem watcher with delete/rename handling |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +40,6 @@ Scenario coverage is defined in `mcp_server/tests/file-watcher.vitest.ts`, which
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Watcher delete/rename cleanup
-- Current reality source: audit-D04 gap backfill
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md`

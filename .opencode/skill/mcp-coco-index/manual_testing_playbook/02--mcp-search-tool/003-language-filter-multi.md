@@ -17,8 +17,11 @@ This scenario validates Language filter (multi) for `MCP-003`. It focuses on Ver
 Operators run the exact prompt and command sequence for `MCP-003` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify `languages` parameter accepts multiple languages
-- Prompt: `As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-facing pass/fail verdict with the main reason.`
+- Real user request: `Please verify languages parameter accepts multiple languages.`
+- RCAF Prompt: `As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-visible pass/fail verdict with the main reason.`
+- Expected execution process: Run the TEST EXECUTION command sequence for `MCP-003`, capture the listed evidence, compare observed output with the expected signals, and return the verdict to the user.
 - Expected signals: Results contain mix of `.py` and `.js` files; no other extensions
+- Desired user-visible outcome: A concise user-visible PASS/PARTIAL/FAIL verdict naming whether the scenario satisfied the objective and the main reason.
 - Pass/fail: PASS if all results are Python or JavaScript files AND at least one of each appears; PARTIAL if all results are one language only but correct; FAIL if wrong language appears
 
 
@@ -28,12 +31,12 @@ Operators run the exact prompt and command sequence for `MCP-003` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| MCP-003 | Language filter (multi) | Verify `languages` parameter accepts multiple languages | `As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "function definition", "languages": ["python", "javascript"] })` -> 2. Verify returned files are `.py` or `.js`/`.mjs`/`.cjs` only | Results contain mix of `.py` and `.js` files; no other extensions | MCP output with file extensions annotated | PASS if all results are Python or JavaScript files AND at least one of each appears; PARTIAL if all results are one language only but correct; FAIL if wrong language appears | Check language code values (use "python", "javascript"); verify index has both file types |
+| MCP-003 | Language filter (multi) | Verify `languages` parameter accepts multiple languages | `As a manual-testing orchestrator, search CocoIndex for "function" in both Python and JavaScript against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Results contain mix of .py and .js files; no other extensions. Return a concise user-visible pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "function definition", "languages": ["python", "javascript"] })` -> 2. Verify returned files are `.py` or `.js`/`.mjs`/`.cjs` only | Results contain mix of `.py` and `.js` files; no other extensions | MCP output with file extensions annotated | PASS if all results are Python or JavaScript files AND at least one of each appears; PARTIAL if all results are one language only but correct; FAIL if wrong language appears | Check language code values (use "python", "javascript"); verify index has both file types |
 
 
 ---
 
-## 4. REFERENCES
+## 4. SOURCE FILES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 

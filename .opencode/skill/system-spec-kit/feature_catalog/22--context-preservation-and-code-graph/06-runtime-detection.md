@@ -1,7 +1,6 @@
 ---
 title: "Runtime detection and hook policy"
 description: "Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, unavailable, or unknown based on repo/config reality."
-audited_post_018: true
 ---
 
 # Runtime detection and hook policy
@@ -29,7 +28,7 @@ mcp_server/code_graph/lib/runtime-detection.ts
 | `Lib` | Runtime detection from env vars | _ |
 
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ mcp_server/code_graph/lib/runtime-detection.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Runtime detection and hook policy
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/06-runtime-detection.md`

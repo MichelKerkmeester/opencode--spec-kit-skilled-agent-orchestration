@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CG-001` and confirm the
 
 - Objective: Confirm `gemini "[prompt]" -o text 2>&1` returns a non-empty, human-readable response in a single non-interactive invocation
 - Real user request: `Ask Gemini to summarise what cli-gemini's role is in this repo and return it as plain text I can paste into a status update.`
-- Prompt: `As a cross-AI orchestrator delegating from Claude Code, invoke Gemini CLI in non-interactive mode against the cli-gemini skill in this repository. Verify a single-shot prompt returns plain readable text without opening a REPL and without leaving the calling shell blocked on input. Return a concise pass/fail verdict with the main reason and the first ~10 lines of Gemini's response.`
+- RCAF Prompt: `As a cross-AI orchestrator delegating from Claude Code, invoke Gemini CLI in non-interactive mode against the cli-gemini skill in this repository. Verify a single-shot prompt returns plain readable text without opening a REPL and without leaving the calling shell blocked on input. Return a concise pass/fail verdict with the main reason and the first ~10 lines of Gemini's response.`
 - Expected execution process: orchestrator runs `command -v gemini` first, then issues a single `gemini "..." -o text 2>&1` call from Bash, captures stdout/stderr together and validates non-empty output
 - Expected signals: `command -v gemini` resolves to a binary path, `gemini "..." -o text 2>&1` exits 0, stdout contains a multi-sentence answer to the prompt and no REPL banner/prompt asking the operator to type
 - Desired user-visible outcome: a short paragraph (1-3 sentences) summarising cli-gemini's role, returned to the operator with a PASS verdict

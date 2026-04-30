@@ -74,6 +74,7 @@ The indexed-continuity store supports **2 independent execution paths**. Any met
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:method-selection -->
 ## 2. METHOD SELECTION
 
@@ -128,6 +129,7 @@ The indexed-continuity store supports **2 independent execution paths**. Any met
 ---
 
 <!-- /ANCHOR:method-selection -->
+
 <!-- ANCHOR:slash-commands -->
 ## 3. SLASH COMMANDS
 
@@ -171,6 +173,7 @@ The indexed-continuity store supports **2 independent execution paths**. Any met
 ---
 
 <!-- /ANCHOR:slash-commands -->
+
 <!-- ANCHOR:direct-script -->
 ## 4. DIRECT SCRIPT
 
@@ -248,6 +251,7 @@ If that explicit CLI argument resolves to a phase folder, the command keeps that
 ---
 
 <!-- /ANCHOR:direct-script -->
+
 <!-- ANCHOR:output-format -->
 ## 5. OUTPUT FORMAT
 
@@ -312,6 +316,7 @@ The parent has NO `implementation-summary.md`, NO `plan.md`, NO `tasks.md`, NO `
 ---
 
 <!-- /ANCHOR:output-format -->
+
 <!-- ANCHOR:document-structure -->
 ## 6. DOCUMENT STRUCTURE
 
@@ -377,7 +382,6 @@ For retrieval, `memory_context()` routes queries across 7 intents (including `fi
 ---
 
 <!-- /ANCHOR:document-structure -->
-<!-- /ANCHOR:name -->
 
 <!-- ANCHOR:metadata -->
 ## 7. METADATA
@@ -425,6 +429,7 @@ For retrieval, `memory_context()` routes queries across 7 intents (including `fi
 ---
 
 <!-- /ANCHOR:metadata -->
+
 <!-- ANCHOR:anchor-retrieval -->
 ## 8. ANCHOR RETRIEVAL
 
@@ -451,7 +456,6 @@ sed -n '/<!-- ANCHOR:decision-jwt-049 -->/,/<!-- \/ANCHOR:decision-jwt-049 -->/p
 ---
 
 <!-- /ANCHOR:anchor-retrieval -->
-<!-- /ANCHOR:decision-jwt-049 -->
 
 <!-- ANCHOR:context-recovery -->
 ## 9. CONTEXT RECOVERY
@@ -521,7 +525,6 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ---
 
 <!-- /ANCHOR:context-recovery -->
-<!-- /ANCHOR:decision-auth-049 -->
 
 <!-- ANCHOR:validation-checklists -->
 ## 10. VALIDATION CHECKLISTS
@@ -556,8 +559,9 @@ sed -n '/<!-- ANCHOR:decision-auth-049 -->/,/<!-- \/ANCHOR:decision-auth-049 -->
 ---
 
 <!-- /ANCHOR:validation-checklists -->
-<!-- ANCHOR:post-save-quality-review -->
-## 10.5. POST-SAVE QUALITY REVIEW (026 Calibration)
+
+<!-- ANCHOR:post-save-quality-review-026-calibration -->
+## 11. POST-SAVE QUALITY REVIEW (026 CALIBRATION)
 
 After `generate-context.js` completes, it emits a **POST-SAVE QUALITY REVIEW** block. This review checks the saved canonical continuity surfaces for common issues that degrade retrieval quality.
 
@@ -592,9 +596,10 @@ Legacy rendered continuity templates were retired in v3.4.0.0. The post-save qua
 
 ---
 
-<!-- /ANCHOR:post-save-quality-review -->
+<!-- /ANCHOR:post-save-quality-review-026-calibration -->
+
 <!-- ANCHOR:troubleshooting -->
-## 11. TROUBLESHOOTING
+## 12. TROUBLESHOOTING
 
 ### Common Issues
 
@@ -630,11 +635,14 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --h
 ---
 
 <!-- /ANCHOR:troubleshooting -->
+
 <!-- ANCHOR:related-resources -->
-## 12. RELATED RESOURCES
+## 13. RELATED RESOURCES
 
 ### Reference Files
 - [SKILL.md](../../SKILL.md) - Main workflow-memory skill documentation
 - [troubleshooting.md](../debugging/troubleshooting.md) - Troubleshooting guide for memory operations
+
+---
 
 <!-- /ANCHOR:related-resources -->

@@ -33,7 +33,7 @@ After the agent finishes, the loop does not treat the strategy, dashboard, or fi
 | `.opencode/agent/deep-research.md` | Agent | Defines the single-iteration read, research, write, and progressive-synthesis rules. |
 | `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Reducer | Synchronizes strategy, findings registry, and dashboard from iteration artifacts and events. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

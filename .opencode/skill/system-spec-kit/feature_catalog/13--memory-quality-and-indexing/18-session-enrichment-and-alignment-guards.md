@@ -1,8 +1,6 @@
 ---
 title: "Stateless enrichment and alignment guards"
 description: "Stateless enrichment and alignment guards enrich thin OpenCode session data with spec-folder and git context while blocking saves that belong to a different task."
-audited_post_018: true
-phase_018_replaces: "archived phase 014 quality-gate framing and external memory-continuity assumptions"
 ---
 
 # Stateless enrichment and alignment guards
@@ -30,7 +28,7 @@ Git extraction also preserves uncommitted file context in freshly initialized re
 
 Downstream session snapshots now prefer live observations over synthetic spec/git enrichment when deriving `activeFile`, `lastAction`, `nextAction` and blocker summaries. That keeps provenance-enrichment useful for context without letting epoch-timestamped synthetic entries masquerade as the user's most recent action.
 
-Phase 018 adds a supporting continuity ladder on the document side: `handover.md` now overrides older research notes when they conflict, `_memory.continuity` is a thin frontmatter block rather than a separate external continuity artifact, and spec-doc content remains the final source of truth for recovery.
+The implementation adds a supporting continuity ladder on the document side: `handover.md` now overrides older research notes when they conflict, `_memory.continuity` is a thin frontmatter block rather than a separate external continuity artifact, and spec-doc content remains the final source of truth for recovery.
 
 Status: Implemented and covered by targeted Vitest regressions.
 
@@ -48,7 +46,7 @@ Status: Implemented and covered by targeted Vitest regressions.
 | `scripts/core/workflow.ts` | Script | Captured-session enrichment orchestration plus pre/post alignment guard enforcement |
 | `scripts/extractors/file-extractor.ts` | Script | Preserves `ACTION` semantics from enriched file entries |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -59,7 +57,6 @@ Status: Implemented and covered by targeted Vitest regressions.
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Stateless enrichment and alignment guards
-- Current reality source: phase 018 canonical-continuity-refactor handover.md and implementation design
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md`

@@ -1,7 +1,6 @@
 ---
 title: "Error response credential sanitization"
 description: "Strips API keys and bearer tokens from MCP tool error responses to prevent credential leakage through buildErrorResponse()."
-audited_post_018: true
 ---
 
 # Error response credential sanitization
@@ -42,7 +41,7 @@ Both functions are applied in `buildErrorResponse()` to the `summary`, `data.err
 | `mcp_server/context-server.ts` | Server | Shutdown cleanup logging uses `get_error_message()` instead of raw error objects |
 | `mcp_server/lib/utils/cleanup-helpers.ts` | Lib | Side-effect-free cleanup helpers extracted from context-server |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,7 +50,6 @@ Both functions are applied in `buildErrorResponse()` to the `summary`, `data.err
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug Fixes and Data Integrity
-- Source feature title: Error response credential sanitization
-- Current reality source: 025-mcp-runtime-hardening spec folder
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/07-error-response-credential-sanitization.md`

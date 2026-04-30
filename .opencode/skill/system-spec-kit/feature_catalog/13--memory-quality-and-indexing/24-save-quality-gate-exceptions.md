@@ -1,7 +1,6 @@
 ---
 title: "Save quality gate exceptions"
 description: "Save quality gate exceptions allow decision-type documents with sufficient structural signals to bypass the minimum content length check, preventing false rejections of short but high-value memories, gated by the SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS flag."
-audited_post_018: true
 ---
 
 # Save quality gate exceptions
@@ -35,7 +34,7 @@ Documents meeting both criteria bypass the `MIN_CONTENT_LENGTH = 50` character c
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Quality gate layers, short-critical exception logic, structural signal counting |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isSaveQualityGateExceptionsEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Documents meeting both criteria bypass the `MIN_CONTENT_LENGTH = 50` character c
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Save quality gate exceptions
-- Current reality source: mcp_server/lib/validation/save-quality-gate.ts REQ-D4-003 section and implementation
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md`

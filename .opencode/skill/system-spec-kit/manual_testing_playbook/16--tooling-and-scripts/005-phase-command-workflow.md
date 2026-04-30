@@ -13,11 +13,13 @@ This scenario validates Phase command workflow for `PHASE-005`. It focuses on Ex
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `PHASE-005` and confirm the expected signals without contradicting evidence.
 
-- Objective: Execute `/spec_kit:plan :with-phases` command in auto mode and verify 7-step workflow
-- Prompt: `As a tooling validation operator, validate Phase command workflow against /spec_kit:plan :with-phases. Verify execute /spec_kit:plan :with-phases command in auto mode and verify 7-step workflow. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Execute `/spec_kit:plan :with-phases` command in auto mode and verify 7-step workflow.
+- Real user request: `Please validate Phase command workflow against /spec_kit:plan :with-phases and tell me whether the expected signals are present: All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths.`
+- RCAF Prompt: `As a tooling validation operator, validate Phase command workflow against /spec_kit:plan :with-phases. Verify execute /spec_kit:plan :with-phases command in auto mode and verify 7-step workflow. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All 7 steps execute in sequence; scoring output visible; folders created with correct structure; link validation passes; recursive validation passes; success summary with paths
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 7 workflow steps complete without error, created folders match expected structure, link validation reports no warnings, and recursive validation exits 0
 
 ---
@@ -59,8 +61,7 @@ Command transcript covering all 7 steps + final output summary
 
 Run individual steps in isolation to identify failing step; verify script permissions; check for missing dependencies; inspect auto mode decision logic for phase count/naming
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 

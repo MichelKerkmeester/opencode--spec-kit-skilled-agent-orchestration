@@ -13,11 +13,13 @@ This scenario validates setup, native module health, and MCP installation for `2
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify the setup surface from least to most invasive: prerequisite validation, native-module probing, ABI marker recording, and the bundled installer flow that builds the workspace and updates MCP configuration.
 
-- Objective: Confirm prerequisite validation, native-module diagnostics, marker recording, and installer execution
-- Prompt: `As a tooling validation operator, validate Setup, Native Module Health, and MCP Installation against bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate. Verify prerequisite validation, native-module diagnostics, marker recording, and installer execution. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm prerequisite validation, native-module diagnostics, marker recording, and installer execution.
+- Real user request: `` Please validate Setup, Native Module Health, and MCP Installation against bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate and tell me whether the expected signals are present: prerequisite JSON emitted; native-module probe prints PASS/FAIL lines; record-node-version writes `.node-version-marker`; installer completes or reports existing configuration. ``
+- RCAF Prompt: `As a tooling validation operator, validate Setup, Native Module Health, and MCP Installation against bash .opencode/skill/system-spec-kit/scripts/setup/check-prerequisites.sh --json --validate. Verify prerequisite validation, native-module diagnostics, marker recording, and installer execution. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: prerequisite JSON emitted; native-module probe prints PASS/FAIL lines; record-node-version writes `.node-version-marker`; installer completes or reports existing configuration
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if readiness, native-module health, marker recording, and installer behavior match the documented setup contract
 
 ---
@@ -54,8 +56,7 @@ JSON prerequisite output, native-module probe transcript, record-node-version st
 
 Inspect `scripts/setup/check-prerequisites.sh`, `check-native-modules.sh`, `rebuild-native-modules.sh`, `record-node-version.js`, and `install.sh` if setup state or native-module health is misreported
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md](../../feature_catalog/16--tooling-and-scripts/29-setup-native-module-health-and-mcp-installation.md)
 

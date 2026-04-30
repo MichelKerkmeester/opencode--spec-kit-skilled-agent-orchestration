@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `BDG-022` and confirm th
 
 - Objective: Verify the Chrome process count increases after `bdg <url>` and decreases after `bdg stop` — specifically: post-session count > baseline AND post-stop count <= baseline.
 - Real user request: `"Show me that bdg actually leaks Chrome if I forget to stop it."`
-- Prompt: `As a manual-testing orchestrator, start a session, omit bdg stop, count Chrome processes, then run bdg stop and recount through the bdg CLI against an active session. Verify process count decreases after bdg stop. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, start a session, omit bdg stop, count Chrome processes, then run bdg stop and recount through the bdg CLI against an active session. Verify process count decreases after bdg stop. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: count Chrome baseline; start session; recount; do NOT call stop yet (capture leak proof); then call stop; recount.
 - Expected signals: pre-session count = `B`; post-session count > `B`; post-stop count <= `B`.
 - Desired user-visible outcome: A short report listing the three counts with the leak delta and the post-stop recovery delta with a PASS verdict.
@@ -39,7 +39,7 @@ Operators run the exact prompt and command sequence for `BDG-022` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, start a session, omit bdg stop, count Chrome processes, then run bdg stop and recount through the bdg CLI against an active session. Verify process count decreases after bdg stop. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, start a session, omit bdg stop, count Chrome processes, then run bdg stop and recount through the bdg CLI against an active session. Verify process count decreases after bdg stop. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

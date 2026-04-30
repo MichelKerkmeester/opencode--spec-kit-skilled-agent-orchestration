@@ -1,7 +1,6 @@
 ---
 title: "Tool-result extraction to working memory"
 description: "Covers the working memory module that captures salient tool results as session-scoped attention items for cross-turn continuity."
-audited_post_018: true
 ---
 
 # Tool-result extraction to working memory
@@ -39,7 +38,7 @@ The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preser
 | `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working memory with tool-result extraction, session-local query indexes, and `ON CONFLICT` extraction upserts |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint preservation of working memory |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,7 +49,6 @@ The checkpoint module (`lib/storage/checkpoints.ts`) also participates by preser
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Tool-result extraction to working memory
-- Current reality source: audit-D04 gap backfill
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/09-tool-result-extraction-to-working-memory.md`

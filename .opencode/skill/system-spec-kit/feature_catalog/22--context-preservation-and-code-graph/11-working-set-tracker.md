@@ -1,7 +1,6 @@
 ---
 title: "Working-set tracker"
 description: "Working-set tracker tracks files and symbols accessed during a session using recency-weighted scoring for compaction priority."
-audited_post_018: true
 ---
 
 # Working-set tracker
@@ -29,7 +28,7 @@ mcp_server/code_graph/lib/working-set-tracker.ts
 | `Lib` | Recency-weighted file tracking | _ |
 
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ mcp_server/code_graph/lib/working-set-tracker.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Working-set tracker
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/11-working-set-tracker.md`

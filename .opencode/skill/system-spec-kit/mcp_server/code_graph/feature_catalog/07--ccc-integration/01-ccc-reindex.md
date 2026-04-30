@@ -42,6 +42,13 @@ Requires the local `ccc` binary. Use `mcp__cocoindex_code__search` for actual se
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/ccc-reindex.ts:27-54` | Handler | locates the `ccc` binary and runs `index` or `index --full` |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:86-90` | Tool surface | dispatches the requested tool |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:729-739` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/07--ccc-integration/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

@@ -14,11 +14,13 @@ This scenario validates Governed ingest and scope isolation (Phase 5) for `122`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `122` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage
-- Prompt: `As a governance validation operator, validate Governed ingest and scope isolation (Phase 5) against memory_save(). Verify governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage.
+- Real user request: `` Please validate Governed ingest and scope isolation (Phase 5) against memory_save() and tell me whether the expected signals are present: agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows. ``
+- RCAF Prompt: `As a governance validation operator, validate Governed ingest and scope isolation (Phase 5) against memory_save(). Verify governed saves require provenance and scope markers and scoped retrieval blocks cross-actor leakage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: agentId,sessionId,provenanceSource,provenanceActor}` metadata 3) Query with matching scope and verify hit appears 4) Query with mismatched user/agent or tenant and verify hit is filtered out 5) Review `governance_audit` rows
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: Save/search outputs + DB query of scoped columns + audit rows showing allow/deny decisions
 
 ---
@@ -56,8 +58,7 @@ Save/search outputs + DB query of scoped columns + audit rows showing allow/deny
 
 Inspect the governed save validation path, scope-filtering logic, and `governance_audit` writes if provenance or isolation behavior regresses.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 

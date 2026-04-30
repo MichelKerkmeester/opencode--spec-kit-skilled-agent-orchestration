@@ -14,11 +14,13 @@ This scenario validates Causal edge creation (memory_causal_link) for `EX-019`. 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-019` and confirm the expected signals without contradicting evidence.
 
-- Objective: Causal provenance linking plus exact-first batch reference resolution
-- Prompt: `As an analysis validation operator, validate Causal edge creation (memory_causal_link) against memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 }). Verify causal provenance linking plus exact-first batch reference resolution. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Causal provenance linking plus exact-first batch reference resolution.
+- Real user request: `Please validate Causal edge creation (memory_causal_link) against memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 }) and tell me whether the expected signals are present: Direct edge appears in chain trace; batched causal-link reference resolution succeeds for exact path matches first; fuzzy fallback is only used for unresolved references.`
+- RCAF Prompt: `As an analysis validation operator, validate Causal edge creation (memory_causal_link) against memory_causal_link({ sourceId:"<memory-id-a>", targetId:"<memory-id-b>", relation:"supports", strength:0.8 }). Verify causal provenance linking plus exact-first batch reference resolution. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Direct edge appears in chain trace; batched causal-link reference resolution succeeds for exact path matches first; fuzzy fallback is only used for unresolved references
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the direct relation is visible in trace and the batch resolver proves exact canonical/file-path lookup wins before fuzzy fallback. FAIL if the trace is missing, references are resolved one-by-one without batching, or fuzzy matching is used before exact path equality.
 
 ---
@@ -56,8 +58,7 @@ Link + trace outputs + indexing/processor diagnostics showing batched exact-firs
 
 Validate IDs and relation type -> normalize path references before indexing -> inspect `canonical_file_path` presence in `memory_index` -> confirm only unresolved references reach the fuzzy fallback stage
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/01-causal-edge-creation-memorycausallink.md](../../feature_catalog/06--analysis/01-causal-edge-creation-memorycausallink.md)
 

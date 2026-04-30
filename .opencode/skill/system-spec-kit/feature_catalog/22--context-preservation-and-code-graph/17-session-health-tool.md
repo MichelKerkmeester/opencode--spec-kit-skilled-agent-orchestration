@@ -1,7 +1,6 @@
 ---
 title: "Session health tool"
 description: "MCP tool (session_health) that reports session readiness with ok/warning/stale status, code graph freshness, priming status, and quality score."
-audited_post_018: true
 ---
 
 # Session health tool
@@ -34,7 +33,6 @@ mcp_server/handlers/session-health.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Session health tool
-- Current reality source: spec 024-compact-code-graph phase 018
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/17-session-health-tool.md`

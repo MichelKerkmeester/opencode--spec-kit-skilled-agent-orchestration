@@ -14,11 +14,13 @@ This scenario validates Embedding retry orchestrator for `204`. It focuses on ve
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `204` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking
-- Prompt: `As a pipeline validation operator, validate Embedding retry orchestrator against memory_save. Verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking.
+- Real user request: `Please validate Embedding retry orchestrator against memory_save and tell me whether the expected signals are present: Provider outage yields saved memory with pending embedding status and lexical-only fallback; retry manager scans and processes pending items; embedding cache participates in deduplication; retry count/progressive backoff state changes across failures; successful retry updates memory index and vector storage.`
+- RCAF Prompt: `As a pipeline validation operator, validate Embedding retry orchestrator against memory_save. Verify failed embeddings fall back to pending lexical-only storage and are later repaired by the background retry manager with retry/backoff tracking. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Provider outage yields saved memory with pending embedding status and lexical-only fallback; retry manager scans and processes pending items; embedding cache participates in deduplication; retry count/progressive backoff state changes across failures; successful retry updates memory index and vector storage
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if pending memories remain searchable lexically during outage and are later upgraded with vectors by retry orchestration; FAIL if failed embeddings are dropped, pending items are never retried, or success does not refresh index/vector state
 
 ---
@@ -56,8 +58,7 @@ Save/index transcript during outage + pending status evidence + retry-manager ru
 
 Inspect retry-manager batch selection and backoff logic; verify embedding cache reuse; check pending-status persistence during fallback; confirm retry success path clears stale vector rows and writes refreshed embeddings
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/19-embedding-retry-orchestrator.md](../../feature_catalog/14--pipeline-architecture/19-embedding-retry-orchestrator.md)
 

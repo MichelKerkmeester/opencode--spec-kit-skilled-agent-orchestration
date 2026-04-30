@@ -1,7 +1,6 @@
 ---
 title: "Memory summary search channel"
 description: "The spec-doc record summary search channel generates TF-IDF extractive summaries at save time and searches against summary embeddings to improve retrieval precision on large memories."
-audited_post_018: true
 ---
 
 # Memory summary search channel
@@ -42,7 +41,7 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 | `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry |
 | `mcp_server/lib/search/tfidf-summarizer.ts` | Lib | TF-IDF extractive summarizer |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -54,7 +53,6 @@ A runtime scale gate activates the channel only when the system exceeds 5,000 in
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Memory summary search channel
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/05-memory-summary-search-channel.md`

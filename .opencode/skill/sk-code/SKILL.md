@@ -1,11 +1,11 @@
 ---
 name: sk-code
-description: "Smart-routing umbrella skill for application code work — detects stack first (Webflow, React/Next, Go, Node.js, React Native, Swift) then classifies intent and loads stack-aware resources. WEBFLOW + REACT + GO run full live content (REACT modeled on kerkmeester.com Next.js 14 + vanilla-extract + motion v12; GO paired with gin + sqlc + Postgres). Three placeholder stacks remain (NODEJS, REACT_NATIVE, SWIFT) whose canonical content was retired in packet 055 (consult git history)."
+description: "Smart-routing umbrella skill for application code work — detects stack first (Webflow, React/Next.js, Go) then classifies intent and loads stack-aware resources. Three live stacks: WEBFLOW (Webflow / vanilla animation web), REACT (kerkmeester-style Next.js 14 + vanilla-extract + motion v12 + react-hook-form/zod + react-aria + Untitled UI), GO (gin + sqlc + Postgres + golang-jwt). Cross-stack pairing doc captures the React↔Go API contract. Other stacks (Node.js, React Native, Swift) fall through to UNKNOWN disambiguation."
 allowed-tools: [Bash, Edit, Glob, Grep, Read, Task, Write]
-version: 1.1.0
+version: 1.2.0
 ---
 
-<!-- Keywords: sk-code, application-code, smart-router, stack-detection, multi-stack, webflow, frontend, react, nextjs, app-router, server-component, server-action, hydration, vanilla-extract, motion, untitled-ui, react-aria, react-hook-form, zod, react-native, swift, go, golang, gin, sqlc, pgx, postgres, golang-jwt, golangci-lint, nodejs, debugging-workflow, implementation-patterns, browser-verification, kerkmeester, fullstack -->
+<!-- Keywords: sk-code, application-code, smart-router, stack-detection, multi-stack, webflow, frontend, react, nextjs, app-router, server-component, server-action, hydration, vanilla-extract, motion, untitled-ui, react-aria, react-hook-form, zod, go, golang, gin, sqlc, pgx, postgres, golang-jwt, golangci-lint, debugging-workflow, implementation-patterns, browser-verification, kerkmeester, fullstack -->
 
 # Code Workflows — Stack-Aware Smart Router
 
@@ -20,9 +20,9 @@ Single umbrella skill for application code work. Detects the project stack from 
 ### Activation Triggers
 
 **Use this skill when:**
-- Starting application development work (any stack)
+- Starting application development work (Webflow / React-Next.js / Go)
 - Implementing features, components, services, handlers, modules
-- JavaScript / TypeScript / Go / Swift files have been modified
+- JavaScript / TypeScript / Go files have been modified
 - Encountering errors, failing tests, or unexpected runtime behavior
 - Multiple debugging attempts needed; need root cause identification
 - Before ANY completion claim (`works`, `fixed`, `done`, `complete`, `passing`)
@@ -36,7 +36,6 @@ Single umbrella skill for application code work. Detects the project stack from 
 - **Stack-specific (Webflow)**: `webflow`, `motion.dev`, `gsap`, `lenis`, `swiper`, `hls.js`, `filepond`
 - **Stack-specific (React/Next.js)**: `react`, `nextjs`, `next.js`, `app router`, `server component`, `client component`, `server action`, `hydration`, `vanilla-extract`, `vanilla extract`, `recipe`, `motion v12`, `untitled ui`, `untitledui`, `tinacms`, `sonner`, `next-themes`, `react aria`, `react-aria`, `embla`, `recharts`, `kerkmeester`
 - **Stack-specific (Go)**: `go`, `golang`, `gin`, `echo`, `chi`, `fiber`, `sqlc`, `pgx`, `postgres`, `golang-migrate`, `go-playground/validator`, `validator`, `golang-jwt`, `dlv`, `pprof`, `golangci-lint`, `slog`
-- **Stack-specific (other)**: `react-native`, `expo`, `swift`, `swiftui`, `nodejs`, `express`
 
 ### When NOT to Use
 
@@ -91,7 +90,7 @@ grep -lq "Webflow\.push\|--vw-" src/**/*.{js,css,html} 2>/dev/null && STACK="WEB
 
 # 1b. Vanilla animation / scroll / video library signals
 #     (motion.dev, GSAP, Lenis, HLS.js, Swiper, FilePond — common in vanilla
-#     web projects but rare in React/Next/RN bundles which use framer-motion etc.)
+#     web projects but rare in React/Next bundles which use framer-motion etc.)
 grep -lqE "from ['\"]motion['\"]|motion\.dev|window\.gsap|gsap\.(to|from|set|timeline|registerPlugin)|new Lenis|new Hls|new Swiper|FilePond" \
   src/**/*.{js,mjs,ts,html} *.{js,mjs,ts,html} 2>/dev/null && STACK="WEBFLOW"
 
@@ -107,21 +106,11 @@ grep -lqE "from ['\"]motion['\"]|motion\.dev|window\.gsap|gsap\.(to|from|set|tim
 # 2. Backend Go
 [ -f "go.mod" ] && STACK="GO"
 
-# 3. Apple Swift
-[ -f "Package.swift" ] || ls *.xcodeproj 2>/dev/null | head -1 && STACK="SWIFT"
-
-# 4. React Native (Expo manifest precedence)
-[ -f "app.json" ] && grep -q "expo" app.json 2>/dev/null && STACK="REACT_NATIVE"
-[ -f "package.json" ] && grep -Eq "react-native|expo" package.json && STACK="REACT_NATIVE"
-
-# 5. React / Next.js
+# 3. React / Next.js
 [ -f "next.config.js" -o -f "next.config.mjs" -o -f "next.config.ts" ] && STACK="REACT"
 [ -f "package.json" ] && grep -Eq '"next"|"react"' package.json && STACK="REACT"
 
-# 6. Generic Node.js (fallback)
-[ -f "package.json" ] && STACK="NODEJS"
-
-# 7. None matched
+# 4. None matched (Node.js / React Native / Swift / other) → UNKNOWN
 STACK="UNKNOWN"
 ```
 
@@ -129,8 +118,7 @@ STACK="UNKNOWN"
 - `WEBFLOW` — full live content under `references/webflow/`, `assets/webflow/`, `scripts/`
 - `REACT` — full live content under `references/react/`, `assets/react/` (modeled on kerkmeester.com: Next.js 14 App Router + vanilla-extract + motion v12 + Untitled UI + react-hook-form/zod + react-aria + Sonner + next-themes + optional TinaCMS). Pairs with `GO` via `references/router/cross_stack_pairing.md`.
 - `GO` — full live content under `references/go/`, `assets/go/` (gin + sqlc + pgx + Postgres + go-playground/validator + golang-jwt). Pairs with `REACT` via the same cross-stack pairing doc.
-- `NODEJS` / `REACT_NATIVE` / `SWIFT` — placeholder route under `references/<stack>/`; `_placeholder.md` records that canonical content was retired (consult git history before 2026-04-30)
-- `UNKNOWN` — disambiguation prompt with marker-file examples
+- `UNKNOWN` — anything else (Node.js without React/Next, React Native, Swift, etc.) — disambiguation prompt; this skill does not own those stacks
 
 For deep-reference reads on the detection precedence, multi-marker edge cases, and test cases: `references/router/stack_detection.md`.
 

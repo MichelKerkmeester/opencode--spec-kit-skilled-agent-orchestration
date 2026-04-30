@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-007` and confirm the
 
 - Objective: Verify (a) at least one `list_tools()` entry contains 2+ dots; (b) calling that entry verbatim (dot form) fails; (c) translating to underscore form succeeds.
 - Real user request: `"I copied a tool name from list_tools and it doesn't work — what's wrong?"`
-- Prompt: `As a manual-testing orchestrator, enumerate ClickUp tools then translate one entry from list-form to call-form and verify the call works through Code Mode against the live registry. Verify the dot-to-underscore translation is required. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate ClickUp tools then translate one entry from list-form to call-form and verify the call works through Code Mode against the live registry. Verify the dot-to-underscore translation is required. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: call `list_tools()`, pick one entry with 2+ dots, attempt the dot form (expect failure), then attempt the underscore form (expect success).
 - Expected signals: at least one list entry has 2+ dots; dot-form call fails with "tool not found"; underscore-form call succeeds.
 - Desired user-visible outcome: A short report demonstrating the translation contract (dot in list, underscore in call) with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-007` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, enumerate ClickUp tools then translate one entry from list-form to call-form and verify the call works through Code Mode against the live registry. Verify the dot-to-underscore translation is required. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate ClickUp tools then translate one entry from list-form to call-form and verify the call works through Code Mode against the live registry. Verify the dot-to-underscore translation is required. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that the loop stops when the tracked key questions are fully answered.
 - Real user request: If all of my main questions are answered, the loop should stop instead of searching forever.
-- Prompt: `As a manual-testing orchestrator, validate the all-questions-answered stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop stops when the tracked key questions are answered and that this condition is checked before softer convergence logic. Return a concise verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the all-questions-answered stop contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop stops when the tracked key questions are answered and that this condition is checked before softer convergence logic. Return a concise verdict.`
 - Expected execution process: Inspect the convergence decision order, then the YAML logic, then the README and quick reference language that explains question coverage.
-- Desired user-facing outcome: The user is told the loop can end cleanly once the tracked key questions are answered.
+- Desired user-visible outcome: The user is told the loop can end cleanly once the tracked key questions are answered.
 - Expected signals: Question completion is a named hard stop and is reflected in the convergence and usage docs.
 - Pass/fail posture: PASS if all sources treat complete question coverage as a stop condition; FAIL if the loop could continue indefinitely despite full question coverage.
 

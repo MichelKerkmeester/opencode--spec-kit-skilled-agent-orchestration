@@ -42,6 +42,13 @@ Feedback writes under `.opencode/skill/mcp-coco-index/feedback/search-feedback.j
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/ccc-feedback.ts:29-60` | Handler | validates query/rating, creates the feedback directory, and appends JSONL |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:91-96` | Tool surface | validates required fields before dispatch |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:741-753` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/07--ccc-integration/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

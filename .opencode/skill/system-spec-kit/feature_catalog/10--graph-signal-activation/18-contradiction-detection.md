@@ -1,7 +1,6 @@
 ---
 title: "Contradiction detection"
 description: "detectContradictions() auto-invalidates old edges when superseding or conflicting edges are created, maintaining graph consistency by ensuring only the most current causal relationships remain active, gated by the SPECKIT_TEMPORAL_EDGES flag."
-audited_post_018: true
 ---
 
 # Contradiction detection
@@ -28,7 +27,7 @@ When a new causal edge is created, `detectContradictions()` checks for existing 
 |------|-------|------|
 | `mcp_server/lib/graph/contradiction-detection.ts` | Lib | `detectContradictions()` — conflict detection and automatic edge invalidation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,8 +36,8 @@ When a new causal edge is created, `detectContradictions()` checks for existing 
 ---
 
 ## 4. SOURCE METADATA
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/18-contradiction-detection.md`
 
-- Group: Graph signal activation
-- Source feature title: Contradiction detection
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_TEMPORAL_EDGES=false

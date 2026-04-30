@@ -1,7 +1,6 @@
 ---
 title: "Causal edge deletion (memory_causal_unlink)"
 description: "Covers the causal edge deletion tool that removes relationship edges by ID with automatic cleanup on memory deletion."
-audited_post_018: true
 ---
 
 # Causal edge deletion (memory_causal_unlink)
@@ -52,14 +51,9 @@ A library-level variant, `deleteEdgesForMemory()`, removes all edges referencing
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/03-causal-edge-deletion-memorycausalunlink.md`
-
-- Group: Analysis
-- Source feature title: Causal edge deletion (memory_causal_unlink)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

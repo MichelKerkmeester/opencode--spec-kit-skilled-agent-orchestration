@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify every iteration JSONL record includes noveltyJustification alongside newInfoRatio.
 - Real user request: How can I tell WHY the agent rated its findings as 70% new?
-- Prompt: `As a manual-testing orchestrator, validate the novelty justification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL iteration record schema requires both newInfoRatio and noveltyJustification, that the justification is a human-readable sentence, and that ALWAYS rule 11 and the agent Step 6 mandate their inclusion. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the novelty justification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the JSONL iteration record schema requires both newInfoRatio and noveltyJustification, that the justification is a human-readable sentence, and that ALWAYS rule 11 and the agent Step 6 mandate their inclusion. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the state format for the noveltyJustification field definition, then SKILL.md ALWAYS rule 11, then the agent file Step 6 for the required fields list.
-- Desired user-facing outcome: The user can inspect any JSONL iteration record and find a plain-language explanation of what the newInfoRatio represents.
+- Desired user-visible outcome: The user can inspect any JSONL iteration record and find a plain-language explanation of what the newInfoRatio represents.
 - Expected signals: JSONL iteration records contain both `newInfoRatio` (number, 0.0-1.0) and `noveltyJustification` (string, human-readable sentence); the justification field is listed as required in v1.1.0 agent instructions; ALWAYS rule 11 mandates both fields.
 - Pass/fail posture: PASS if the field schema, ALWAYS rule 11, and agent Step 6 all consistently require both fields and the justification is a human-readable sentence; FAIL if any source omits the requirement, or the field is defined as optional without enforcement.
 

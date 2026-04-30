@@ -13,11 +13,13 @@ This scenario validates progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSUR
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `168` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify full results are preserved while additive disclosure metadata and cursor pagination are exposed
-- Prompt: `As a runtime-hook validation operator, validate Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) against memory_search({ query: "broad query", limit: 20 }). Verify full results are preserved while additive disclosure metadata and cursor pagination are exposed. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify full results are preserved while additive disclosure metadata and cursor pagination are exposed.
+- Real user request: `` Please validate Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) against memory_search({ query: "broad query", limit: 20 }) and tell me whether the expected signals are present: `data.results` remains present; `data.progressiveDisclosure.summaryLayer` with count and digest; `data.progressiveDisclosure.results` as Snippet[] with snippet (max 100 chars), detailAvailable, resultId; continuation cursor with remainingCount; cursor expiry at DEFAULT_CURSOR_TTL_MS (5 min); page size DEFAULT_PAGE_SIZE (5). ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Progressive disclosure v1 (SPECKIT_PROGRESSIVE_DISCLOSURE_V1) against memory_search({ query: "broad query", limit: 20 }). Verify full results are preserved while additive disclosure metadata and cursor pagination are exposed. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `data.results` remains present; `data.progressiveDisclosure.summaryLayer` with count and digest; `data.progressiveDisclosure.results` as Snippet[] with snippet (max 100 chars), detailAvailable, resultId; continuation cursor with remainingCount; cursor expiry at DEFAULT_CURSOR_TTL_MS (5 min); page size DEFAULT_PAGE_SIZE (5)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if response preserves full results, adds disclosure metadata, and next-page retrieval works via cursor; FAIL if hard truncation replaces results or disclosure metadata is missing
 
 ---
@@ -56,8 +58,7 @@ Response JSON + pagination test with cursor + test transcript
 
 Verify SPECKIT_PROGRESSIVE_DISCLOSURE_V1 env → Check DEFAULT_PAGE_SIZE (5) → Inspect SNIPPET_MAX_LENGTH (100) → Verify hashQuery() cursor key → Check DEFAULT_CURSOR_TTL_MS (300000) → Inspect cursorStore map
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/16-progressive-disclosure.md](../../feature_catalog/18--ux-hooks/16-progressive-disclosure.md)
 - Feature flag reference: [01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

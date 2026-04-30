@@ -1,7 +1,6 @@
 ---
 title: "Working Memory Session Cleanup Timestamp Fix"
 description: "Tracks the fix for incorrect session cleanup caused by mismatched timestamp formats between SQLite and JavaScript."
-audited_post_018: true
 ---
 
 # Working Memory Session Cleanup Timestamp Fix
@@ -28,7 +27,7 @@ The `cleanupOldSessions()` method in the working memory manager compared `last_f
 |------|-------|------|
 | `mcp_server/lib/cognitive/working-memory.ts` | Lib | Session lifecycle and cleanup logic |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ The `cleanupOldSessions()` method in the working memory manager compared `last_f
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug Fixes and Data Integrity
-- Source feature title: Working Memory Session Cleanup Timestamp Fix
-- Current reality source: P0 code review finding (2026-03-08)
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md`

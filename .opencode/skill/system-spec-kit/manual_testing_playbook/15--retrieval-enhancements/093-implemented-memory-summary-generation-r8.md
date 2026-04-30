@@ -14,11 +14,13 @@ This scenario validates Implemented: memory summary generation (R8) for `093`. I
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `093` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm deferred->implemented status
-- Prompt: `As a retrieval-enhancement validation operator, validate Implemented: memory summary generation (R8) against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm deferred->implemented status.
+- Real user request: `Please validate Implemented: memory summary generation (R8) against the documented validation surface and tell me whether the expected signals are present: Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Implemented: memory summary generation (R8) against the documented validation surface. Verify summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Summary generated for long memories; summary persisted in DB; scale gate prevents summary generation below corpus threshold
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if summaries are generated and persisted for long memories and scale gate correctly controls activation
 
 ---
@@ -54,8 +56,7 @@ Save output + summary field in DB record + scale gate threshold verification
 
 Verify summary generation triggers on save; check summary persistence field in schema; inspect scale gate threshold configuration
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/05-memory-summary-search-channel.md](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
 

@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that `research/research.md` remains workflow-owned while progressive updates are allowed when `progressiveSynthesis` is enabled.
 - Real user request: Tell me whether the agent updates research/research.md` during the loop or if that only happens at the end.`
-- Prompt: `As a manual-testing orchestrator, validate the progressive-synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/research.md is workflow-owned canonical output, that incremental updates are allowed when progressiveSynthesis is true, and that synthesis still finalizes the document. Return a concise verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the progressive-synthesis contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify research/research.md is workflow-owned canonical output, that incremental updates are allowed when progressiveSynthesis is true, and that synthesis still finalizes the document. Return a concise verdict.`
 - Expected execution process: Inspect the README and state-format wording, then the runtime agent progressive-update rules, then the YAML synthesis/save phases.
-- Desired user-facing outcome: The user is told that `research/research.md` may be updated during the loop but is still finalized by the workflow.
+- Desired user-visible outcome: The user is told that `research/research.md` may be updated during the loop but is still finalized by the workflow.
 - Expected signals: The docs describe `research/research.md` as workflow-owned, `progressiveSynthesis` defaults to true, and the final synthesis phase still runs.
 - Pass/fail posture: PASS if all sources agree that progressive updates may occur but final synthesis still owns canonical completion; FAIL if ownership of `research/research.md` is contradictory.
 

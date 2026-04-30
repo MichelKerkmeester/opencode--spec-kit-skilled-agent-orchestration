@@ -1,12 +1,6 @@
 ---
 title: "Nested Changelog Templates"
-description: "Canonical packet-local changelog templates for root specs and phase child folders."
-trigger_phrases:
-  - "nested changelog"
-  - "packet changelog"
-  - "phase changelog"
-importance_tier: "normal"
-contextType: "general"
+description: "Canonical packet-local changelog templates for root specs and phase child folders. Distinct from sk-doc's global changelog template — these stay packet-local."
 ---
 # Nested Changelog Templates
 

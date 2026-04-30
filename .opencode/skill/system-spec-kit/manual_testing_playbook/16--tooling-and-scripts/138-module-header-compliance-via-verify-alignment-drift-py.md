@@ -13,11 +13,13 @@ This scenario validates MODULE: header compliance via verify_alignment_drift.py 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `138` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings
-- Prompt: `As a tooling validation operator, validate MODULE: header compliance via verify_alignment_drift.py against cd .opencode/skill/system-spec-kit. Verify verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `verify_alignment_drift.py` returns 0 TS-MODULE-HEADER findings.
+- Real user request: `Please validate MODULE: header compliance via verify_alignment_drift.py against cd .opencode/skill/system-spec-kit and tell me whether the expected signals are present: verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings.`
+- RCAF Prompt: `As a tooling validation operator, validate MODULE: header compliance via verify_alignment_drift.py against cd .opencode/skill/system-spec-kit. Verify verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: verify_alignment_drift.py reports PASS with 0 TS-MODULE-HEADER findings
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if 0 TS-MODULE-HEADER findings reported
 
 ---
@@ -54,8 +56,7 @@ Script output showing PASS verdict + finding count
 
 Check for new .ts files without MODULE: header → Add 3-line header block → Re-run verifier
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 

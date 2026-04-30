@@ -36,6 +36,7 @@ This document provides comprehensive documentation for every validation rule enf
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:rule-summary -->
 ## 2. RULE SUMMARY
 
@@ -60,6 +61,7 @@ This document provides comprehensive documentation for every validation rule enf
 ---
 
 <!-- /ANCHOR:rule-summary -->
+
 <!-- ANCHOR:file-exists -->
 ## 3. FILE_EXISTS
 
@@ -156,7 +158,8 @@ cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007
 
 <!-- /ANCHOR:file-exists -->
 
-## 3.5 PHASE_PARENT_CONTENT
+<!-- ANCHOR:phase-parent-content -->
+## 4. PHASE_PARENT_CONTENT
 
 **Severity:** WARNING (advisory; does not block validation pass)
 **Description:** When a spec folder qualifies as a phase parent, its `spec.md` must avoid migration-history narratives. The phase-parent surface is a manifest of children plus root purpose; consolidation, merge, or rename history rots fast and creates the very hallucination surface the lean trio policy was designed to eliminate.
@@ -186,8 +189,10 @@ Move any flagged narrative to `context-index.md` (create the file if it does not
 
 ---
 
+<!-- /ANCHOR:phase-parent-content -->
+
 <!-- ANCHOR:placeholder-filled -->
-## 4. PLACEHOLDER_FILLED
+## 5. PLACEHOLDER_FILLED
 
 **Severity:** ERROR  
 **Description:** Detects unfilled template placeholders that should be replaced with actual content.
@@ -245,8 +250,9 @@ Replace placeholder text with actual content:
 ---
 
 <!-- /ANCHOR:placeholder-filled -->
+
 <!-- ANCHOR:sections-present -->
-## 5. SECTIONS_PRESENT
+## 6. SECTIONS_PRESENT
 
 **Severity:** WARNING  
 **Description:** Validates that required markdown sections exist in each file type.
@@ -303,8 +309,9 @@ Add the missing section headers. You can use numbered prefixes:
 ---
 
 <!-- /ANCHOR:sections-present -->
+
 <!-- ANCHOR:level-declared -->
-## 6. LEVEL_DECLARED
+## 7. LEVEL_DECLARED
 
 **Severity:** INFO  
 **Description:** Checks if the documentation level is explicitly declared in spec.md metadata.
@@ -349,8 +356,9 @@ Add the Level field to your spec.md metadata table:
 ---
 
 <!-- /ANCHOR:level-declared -->
+
 <!-- ANCHOR:priority-tags -->
-## 7. PRIORITY_TAGS
+## 8. PRIORITY_TAGS
 
 **Severity:** WARNING  
 **Description:** Validates that checklist items use proper P0/P1/P2 priority tagging format.
@@ -433,8 +441,9 @@ Add priority headers or inline tags to all checklist items:
 ---
 
 <!-- /ANCHOR:priority-tags -->
+
 <!-- ANCHOR:evidence-cited -->
-## 8. EVIDENCE_CITED
+## 9. EVIDENCE_CITED
 
 **Severity:** WARNING  
 **Description:** Validates that non-P2 checklist items include evidence citations to support claims.
@@ -512,8 +521,9 @@ Add evidence to non-P2 items:
 ---
 
 <!-- /ANCHOR:evidence-cited -->
+
 <!-- ANCHOR:anchors-valid -->
-## 9. ANCHORS_VALID
+## 10. ANCHORS_VALID
 
 **Severity:** ERROR  
 **Description:** Validates that generated continuity artifacts and other indexed support docs use proper ANCHOR format with matching open/close pairs.
@@ -597,10 +607,9 @@ Content here...
 ---
 
 <!-- /ANCHOR:anchors-valid -->
-<!-- /ANCHOR:decisions -->
 
 <!-- ANCHOR:folder-naming -->
-## 10. FOLDER_NAMING
+## 11. FOLDER_NAMING
 
 **Severity:** ERROR
 **Description:** Validates that the spec folder follows the `###-short-name` naming convention.
@@ -645,8 +654,9 @@ mv specs/Feature specs/001-feature
 ---
 
 <!-- /ANCHOR:folder-naming -->
+
 <!-- ANCHOR:frontmatter-valid -->
-## 11. FRONTMATTER_VALID
+## 12. FRONTMATTER_VALID
 
 **Severity:** WARNING
 **Description:** Validates YAML frontmatter structure in markdown files and checks for template source markers.
@@ -700,8 +710,9 @@ cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/007-feature/
 ---
 
 <!-- /ANCHOR:frontmatter-valid -->
+
 <!-- ANCHOR:complexity-match -->
-## 12. COMPLEXITY_MATCH
+## 13. COMPLEXITY_MATCH
 
 **Severity:** WARNING
 **Description:** Validates that declared complexity level matches actual content metrics (user stories, phases, tasks).
@@ -749,8 +760,9 @@ Either adjust the declared level or modify content to match:
 ---
 
 <!-- /ANCHOR:complexity-match -->
+
 <!-- ANCHOR:ai-protocol -->
-## 13. AI_PROTOCOL
+## 14. AI_PROTOCOL
 
 **Severity:** WARNING
 **Description:** Validates that Level 3 and 3+ specs include AI execution protocol sections for agent guidance.
@@ -815,8 +827,9 @@ cat .opencode/skill/system-spec-kit/templates/level_3/plan.md
 ---
 
 <!-- /ANCHOR:ai-protocol -->
+
 <!-- ANCHOR:level-match -->
-## 14. LEVEL_MATCH
+## 15. LEVEL_MATCH
 
 **Severity:** ERROR
 **Description:** Validates that the declared level is consistent across all spec folder files and required files exist.
@@ -871,8 +884,9 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/007-feat
 ---
 
 <!-- /ANCHOR:level-match -->
+
 <!-- ANCHOR:section-counts -->
-## 15. SECTION_COUNTS
+## 16. SECTION_COUNTS
 
 **Severity:** WARNING
 **Description:** Validates that section counts are within expected ranges for the declared documentation level.
@@ -916,8 +930,9 @@ Either expand content or reduce declared level:
 ---
 
 <!-- /ANCHOR:section-counts -->
+
 <!-- ANCHOR:phase-links -->
-## 16. PHASE_LINKS
+## 17. PHASE_LINKS
 
 **Severity:** WARNING
 **Description:** Validates the integrity of parent-child phase relationships in phase-decomposed spec folders.
@@ -1001,8 +1016,9 @@ To validate phase links across parent and all children:
 ---
 
 <!-- /ANCHOR:phase-links -->
+
 <!-- ANCHOR:configuration -->
-## 17. CONFIGURATION
+## 18. CONFIGURATION
 
 ### Environment Variables
 
@@ -1033,8 +1049,9 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 ---
 
 <!-- /ANCHOR:configuration -->
+
 <!-- ANCHOR:related-resources -->
-## 18. RELATED RESOURCES
+## 19. RELATED RESOURCES
 
 ### Reference Files
 
@@ -1047,4 +1064,7 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 
 - `../../scripts/spec/validate.sh` - Main validation script
 - `../../scripts/rules/` - Individual rule implementations
+
+---
+
 <!-- /ANCHOR:related-resources -->

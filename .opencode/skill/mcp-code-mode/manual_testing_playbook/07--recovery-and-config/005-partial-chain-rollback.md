@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-025` and confirm the
 
 - Objective: Verify that a chain creating a ClickUp task then deliberately failing on the next call (a) returns the failure error, (b) leaves the task created (verifiable by `clickup_get_task`), and (c) the task can be deleted manually.
 - Real user request: `"What happens if my chain partially fails — does it roll back?"` (educational scenario)
-- Prompt: `As a manual-testing orchestrator, run a chain that creates a ClickUp task then deliberately fails on the next call, then verify the task exists, then delete it through Code Mode against the live ClickUp API. Verify the create succeeded, the follow-up failed, and manual cleanup works. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a chain that creates a ClickUp task then deliberately fails on the next call, then verify the task exists, then delete it through Code Mode against the live ClickUp API. Verify the create succeeded, the follow-up failed, and manual cleanup works. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: chain with create + deliberately-failing call (e.g., invalid task_id update); separate verify call; explicit delete.
 - Expected signals: chain returns object with `created_task_id` and `error`; `clickup_get_task({id})` returns the task; `clickup_delete_task({id})` succeeds.
 - Desired user-visible outcome: A short report stating the contract (no auto-rollback) and confirming explicit cleanup with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-025` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run a chain that creates a ClickUp task then deliberately fails on the next call, then verify the task exists, then delete it through Code Mode against the live ClickUp API. Verify the create succeeded, the follow-up failed, and manual cleanup works. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a chain that creates a ClickUp task then deliberately fails on the next call, then verify the task exists, then delete it through Code Mode against the live ClickUp API. Verify the create succeeded, the follow-up failed, and manual cleanup works. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

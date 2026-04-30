@@ -14,11 +14,13 @@ This scenario validates /memory:search command routing for `185`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `185` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `/memory:search` command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard)
-- Prompt: `As a retrieval validation operator, validate /memory:search command routing against /memory:search. Verify /memory:search command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `/memory:search` command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard).
+- Real user request: `Please validate /memory:search command routing against /memory:search and tell me whether the expected signals are present: No-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard) each route to the correct tool.`
+- RCAF Prompt: `As a retrieval validation operator, validate /memory:search command routing against /memory:search. Verify /memory:search command routing logic covers no-args interactive prompt, query-based retrieval mode with intent detection, and all analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: No-args triggers interactive intent prompt; query text triggers retrieval mode with intent detection; analysis subcommands (preflight, postflight, history, causal, link, unlink, causal-stats, ablation, dashboard) each route to the correct tool
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: No-args prompts for intent, retrieval returns intent-weighted results, each analysis subcommand invokes its dedicated tool; FAIL: No-args proceeds without prompt, retrieval ignores intent, or an analysis subcommand routes to the wrong tool
 
 ---
@@ -60,8 +62,7 @@ Tool invocation logs for each subcommand; intent detection output for retrieval 
 
 Verify argument routing logic in Section 4 of search.md → Check intent detection keywords → Confirm analysis subcommand first-token matching → Inspect tool coverage matrix for correct tool-to-subcommand mapping
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/01-unified-context-retrieval-memorycontext.md](../../feature_catalog/01--retrieval/01-unified-context-retrieval-memorycontext.md)
 - Command file: [.opencode/command/memory/search.md](../../../../command/memory/search.md)

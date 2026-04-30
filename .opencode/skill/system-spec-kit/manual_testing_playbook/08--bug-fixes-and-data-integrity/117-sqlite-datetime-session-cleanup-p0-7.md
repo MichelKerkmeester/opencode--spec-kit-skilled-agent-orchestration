@@ -14,11 +14,13 @@ This scenario validates SQLite datetime session cleanup (P0-7) for `117`. It foc
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `117` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format
-- Prompt: `As a data-integrity validation operator, validate SQLite datetime session cleanup (P0-7) against last_focused. Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format.
+- Real user request: `Please validate SQLite datetime session cleanup (P0-7) against last_focused and tell me whether the expected signals are present: Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats.`
+- RCAF Prompt: `As a data-integrity validation operator, validate SQLite datetime session cleanup (P0-7) against last_focused. Verify cleanupOldSessions() correctly identifies expired sessions using SQLite-native datetime comparison regardless of timestamp format. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Expired session (45min old) deleted; active session (5min old) preserved; cleanup works with both YYYY-MM-DD HH:MM:SS and ISO timestamp formats
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if only expired sessions are deleted regardless of timestamp format and active sessions are preserved
 
 ---
@@ -57,8 +59,7 @@ Session table before/after cleanup + timestamp format verification
 
 Inspect cleanupOldSessions datetime comparison SQL; verify SQLite datetime function compatibility; test with edge-case timestamps (midnight, timezone boundaries)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/11-working-memory-timestamp-fix.md)
 

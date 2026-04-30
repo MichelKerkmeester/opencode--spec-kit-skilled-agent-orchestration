@@ -15,11 +15,13 @@ This scenario validates Shadow-scoring retirement for `230`. It focuses on confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `230` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable
-- Prompt: `As a canonical-continuity validation operator, validate Shadow-scoring retirement against the documented validation surface. Verify runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable.
+- Real user request: `` Please validate Shadow-scoring retirement against the documented validation surface and tell me whether the expected signals are present: The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface. ``
+- RCAF Prompt: `As a canonical-continuity validation operator, validate Shadow-scoring retirement against the documented validation surface. Verify runtime shadow scoring and persistence stay retired while read-only comparison helpers remain usable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: The targeted shadow-scoring tests pass, `runShadowScoring()` returns `null`, `logShadowComparison()` returns `false`, `getShadowStats()` stays in the zero-case when no historical rows exist, and `compareShadowResults()` remains available as the live analysis surface
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted checks prove runtime execution and write paths are retired while comparison and historical read helpers remain intact
 
 ---
@@ -56,8 +58,7 @@ Vitest transcript plus the source excerpts showing the retired runtime/write pat
 
 Inspect `lib/eval/shadow-scoring.ts`; confirm the test sandbox DB path is isolated; verify no environment leakage or stale eval DB state is affecting the results
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md](../../feature_catalog/21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md)
 

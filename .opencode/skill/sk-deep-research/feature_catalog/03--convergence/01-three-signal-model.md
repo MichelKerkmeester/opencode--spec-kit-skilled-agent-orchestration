@@ -31,7 +31,7 @@ The model is selective about which iterations count. `thought` iterations are ig
 | `.opencode/skill/sk-deep-research/references/state_format.md` | Reference | Defines the `convergenceSignals` payload written into iteration records. |
 | `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Reference | Places the statistical vote inside the live loop order before guard evaluation. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

@@ -33,7 +33,7 @@ After-tool callbacks now receive a `structuredClone(result)` snapshot of the res
 | `mcp_server/hooks/memory-surface.ts` | Hook | Auto-surface UX hook providing `autoSurfacedContext` payload |
 | `shared/utils/token-estimate.ts` | Shared | Token estimation utility used for final token sync |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,8 +43,6 @@ After-tool callbacks now receive a `structuredClone(result)` snapshot of the res
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Context-server success-path hint append
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/08-context-server-success-hint-append.md`

@@ -1,7 +1,6 @@
 ---
 title: "Stop hook token tracking"
 description: "Stop hook token tracking parses Claude Code transcript JSONL for token usage, calculates cost estimates per model, and stores snapshots."
-audited_post_018: true
 ---
 
 # Stop hook token tracking
@@ -29,7 +28,7 @@ mcp_server/hooks/claude/session-stop.ts
 | `Hook` | Stop hook: parse, estimate, store | mcp_server/hooks/claude/claude-transcript.ts |
 | `Hook` | JSONL transcript parser and cost estimator | mcp_server/tests/hook-stop-token-tracking.vitest.ts |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ mcp_server/hooks/claude/session-stop.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Stop hook token tracking
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/04-stop-token-tracking.md`

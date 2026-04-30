@@ -13,11 +13,13 @@ This scenario validates Real-time filesystem watching (P1-7) for `099`. It focus
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `099` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm file watcher debounce, hash seeding, and ENOENT grace
-- Prompt: `As a tooling validation operator, validate Real-time filesystem watching (P1-7) against SPECKIT_FILE_WATCHER=true. Verify file watcher debounce, hash seeding, and ENOENT grace. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm file watcher debounce, hash seeding, and ENOENT grace.
+- Real user request: `Please validate Real-time filesystem watching (P1-7) against SPECKIT_FILE_WATCHER=true and tell me whether the expected signals are present: File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash.`
+- RCAF Prompt: `As a tooling validation operator, validate Real-time filesystem watching (P1-7) against SPECKIT_FILE_WATCHER=true. Verify file watcher debounce, hash seeding, and ENOENT grace. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: File add seeds hash cache; modifications trigger reindex after 2s debounce; identical-content modifications produce no reindex; rapid create-delete produces no ENOENT crash
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if debounce works, hash dedup prevents redundant reindex, and ENOENT is handled silently
 
 ---
@@ -55,8 +57,7 @@ Server logs for `[file-watcher]` messages
 
 Inspect `lib/ops/file-watcher.ts` for `seedHash`, `scheduleReindex`, and ENOENT catch
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md](../../feature_catalog/16--tooling-and-scripts/06-real-time-filesystem-watching-with-chokidar.md)
 

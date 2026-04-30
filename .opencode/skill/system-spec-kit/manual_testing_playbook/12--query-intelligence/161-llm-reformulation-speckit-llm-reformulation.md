@@ -14,11 +14,13 @@ This scenario validates LLM reformulation (SPECKIT_LLM_REFORMULATION) for `161`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `161` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify reformulation pipeline runs in deep mode with corpus-grounded seeds
-- Prompt: `As a query-intelligence validation operator, validate LLM reformulation (SPECKIT_LLM_REFORMULATION) against memory_search({ query: "complex multi-faceted query", mode: "deep" }). Verify reformulation pipeline runs in deep mode with corpus-grounded seeds. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify reformulation pipeline runs in deep mode with corpus-grounded seeds.
+- Real user request: `Please validate LLM reformulation (SPECKIT_LLM_REFORMULATION) against memory_search({ query: "complex multi-faceted query", mode: "deep" }) and tell me whether the expected signals are present: cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; pipeline is no-op when mode != deep.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate LLM reformulation (SPECKIT_LLM_REFORMULATION) against memory_search({ query: "complex multi-faceted query", mode: "deep" }). Verify reformulation pipeline runs in deep mode with corpus-grounded seeds. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: cheapSeedRetrieve() returns up to 3 seed results from FTS5; ReformulationResult contains abstract (>= 5 chars) and variants array (max 2 entries); LLM cache hit on repeated query; pipeline is no-op when mode != deep
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if reformulation produces valid abstract and variants in deep mode, and is skipped in non-deep mode; FAIL if abstract empty, variants exceed MAX_VARIANTS (2), or pipeline runs outside deep mode
 
 ---
@@ -55,8 +57,7 @@ ReformulationResult output + cache hit log + test transcript
 
 Verify isLlmReformulationEnabled() → Check LLM_REFORMULATION_ENDPOINT configured → Inspect cheapSeedRetrieve() for FTS5 results → Verify normalizeQuery() cache key → Check REFORMULATION_TIMEOUT_MS (8000)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/07-llm-query-reformulation.md](../../feature_catalog/12--query-intelligence/07-llm-query-reformulation.md)
 - Feature flag reference: [01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

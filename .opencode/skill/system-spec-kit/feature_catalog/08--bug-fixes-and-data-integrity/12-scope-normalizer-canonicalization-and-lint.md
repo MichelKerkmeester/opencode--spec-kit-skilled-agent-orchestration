@@ -1,15 +1,15 @@
 ---
 title: "Scope normalizer canonicalization and lint"
-description: "Phase 017 collapsed four duplicate string-scope normalizers into one canonical helper and added a strict validator rule that blocks new duplicates."
+description: "The implementation collapsed four duplicate string-scope normalizers into one canonical helper and added a strict validator rule that blocks new duplicates."
 ---
 
 # Scope normalizer canonicalization and lint
 
 ## 1. OVERVIEW
 
-Phase 017 collapsed four duplicate string-scope normalizers into one canonical helper and added a strict validator rule that blocks new duplicates.
+The implementation collapsed four duplicate string-scope normalizers into one canonical helper and added a strict validator rule that blocks new duplicates.
 
-This is a data-integrity fix because scope normalization affects governed save, reconsolidation, lineage, and preflight filtering. The Phase 017 change removed drift-prone copies and then added a validator guard so the duplication does not reappear in a later packet.
+This is a data-integrity fix because scope normalization affects governed save, reconsolidation, lineage, and preflight filtering. The implementation change removed drift-prone copies and then added a validator guard so the duplication does not reappear in a later packet.
 
 ---
 
@@ -24,7 +24,7 @@ Commit `b923623cc` introduced the canonical `normalizeScopeValue(value: unknown)
 
 The canonical helper preserves the return shape that these consumers already expected: valid strings are trimmed and returned, while empty, whitespace-only, or non-string inputs collapse to `null`.
 
-Commit `ded5ece07` added `scripts/rules/check-normalizer-lint.sh` and its test coverage. `validate.sh --strict` now fails if new local helpers such as `normalizeScope*` or `getOptionalString` are declared outside the canonical governance module. Phase 017 therefore fixed the live drift and added a forward guardrail against recurrence.
+Commit `ded5ece07` added `scripts/rules/check-normalizer-lint.sh` and its test coverage. `validate.sh --strict` now fails if new local helpers such as `normalizeScope*` or `getOptionalString` are declared outside the canonical governance module. The current implementation therefore fixed the live drift and added a forward guardrail against recurrence.
 
 ---
 
@@ -41,7 +41,7 @@ Commit `ded5ece07` added `scripts/rules/check-normalizer-lint.sh` and its test c
 | `mcp_server/lib/validation/preflight.ts` | Lib | Preflight scope normalization routed through the canonical helper |
 | `scripts/rules/check-normalizer-lint.sh` | Validation rule | Strict validator rule that blocks new duplicate normalizers |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,8 +51,6 @@ Commit `ded5ece07` added `scripts/rules/check-normalizer-lint.sh` and its test c
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug Fixes and Data Integrity
-- Source feature title: Scope normalizer canonicalization and lint
-- Phase 017 commits: `b923623cc`, `ded5ece07`
-- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/implementation-summary.md`
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/12-scope-normalizer-canonicalization-and-lint.md`

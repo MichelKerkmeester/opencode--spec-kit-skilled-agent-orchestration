@@ -1,7 +1,6 @@
 ---
 title: "Graph channel ID fix"
 description: "Tracks the fix for the graph search channel that had a 0% hit rate due to string-vs-numeric ID comparison mismatches."
-audited_post_018: true
 ---
 
 # Graph channel ID fix
@@ -36,7 +35,7 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 | `mcp_server/lib/search/search-types.ts` | Lib | Search type definitions |
 | `mcp_server/lib/search/spec-folder-hierarchy.ts` | Lib | Spec folder hierarchy traversal |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,7 +49,6 @@ Both comparison points now extract numeric IDs, and the graph channel returns re
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug fixes and data integrity
-- Source feature title: Graph channel ID fix
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md`

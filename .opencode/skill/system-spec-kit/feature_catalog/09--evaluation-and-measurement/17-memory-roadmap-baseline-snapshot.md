@@ -33,7 +33,7 @@ The baseline path now initializes the eval database beside the context database 
 | `mcp_server/lib/eval/eval-db.ts` | Lib | Eval DB initialization and schema support for persisted snapshots |
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Memory-roadmap phase/capability metadata snapshot |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,14 +42,10 @@ The baseline path now initializes the eval database beside the context database 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Memory roadmap baseline snapshot
-- Current reality source: direct implementation audit of `memory-state-baseline.ts`, `eval-db.ts`, `capability-flags.ts`, and `mcp_server/tests/memory-state-baseline.vitest.ts`
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 126

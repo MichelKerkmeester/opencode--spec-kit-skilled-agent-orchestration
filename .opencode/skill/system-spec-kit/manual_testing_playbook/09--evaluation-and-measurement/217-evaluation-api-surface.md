@@ -13,11 +13,13 @@ This scenario validates Evaluation API Surface for `217`. It focuses on verifyin
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `217` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the stable public facade exposes ablation, BM25 baseline, ground-truth loading, and eval DB setup through one approved import path
-- Prompt: `As an evaluation validation operator, validate Evaluation API Surface against mcp_server/api/eval.ts. Verify the stable public facade exposes ablation, BM25 baseline, ground-truth loading, and eval DB setup through one approved import path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the stable public facade exposes ablation, BM25 baseline, ground-truth loading, and eval DB setup through one approved import path.
+- Real user request: `` Please validate Evaluation API Surface against mcp_server/api/eval.ts and tell me whether the expected signals are present: `mcp_server/api/eval.ts` exposes ablation exports, BM25 baseline exports, `loadGroundTruth`, and `initEvalDb`; downstream consumers can use one stable import path; the file adds no local wrapper or transformation logic. ``
+- RCAF Prompt: `As an evaluation validation operator, validate Evaluation API Surface against mcp_server/api/eval.ts. Verify the stable public facade exposes ablation, BM25 baseline, ground-truth loading, and eval DB setup through one approved import path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `mcp_server/api/eval.ts` exposes ablation exports, BM25 baseline exports, `loadGroundTruth`, and `initEvalDb`; downstream consumers can use one stable import path; the file adds no local wrapper or transformation logic
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the public facade exposes the full evaluation contract from one import path and remains a pure pass-through re-export layer; FAIL if required evaluation exports are missing, consumers must import internal modules directly, or facade-local behavior appears
 
 ---
@@ -54,8 +56,7 @@ Export-list capture from `api/eval.ts` + comparison notes against internal modul
 
 Check for missing re-exports in `mcp_server/api/eval.ts` -> verify the internal eval module symbol names still match the facade export list -> inspect recent script imports for drift back to `lib/eval/*` paths -> confirm no local implementation was added to the facade
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/15-evaluation-api-surface.md](../../feature_catalog/09--evaluation-and-measurement/15-evaluation-api-surface.md)
 

@@ -49,8 +49,6 @@ The current system is therefore not just descriptive documentation. The node is 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Phase-System Knowledge Node
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct audit of the node, phase reference, phase command, and supporting script/validation surfaces
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/22-phase-system-knowledge-node.md`

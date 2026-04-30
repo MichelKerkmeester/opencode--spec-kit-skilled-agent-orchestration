@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-013` and confirm th
 
 - Objective: Verify `bdg network har /tmp/bdg.har` exits 0; the file exists; and `jq '.log.version'` returns a non-empty version string.
 - Real user request: `"Save the network activity for this page as a HAR file."`
-- Prompt: `As a manual-testing orchestrator, export the page network activity as HAR through the bdg CLI against an active session. Verify the file is created and is valid HAR JSON. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, export the page network activity as HAR through the bdg CLI against an active session. Verify the file is created and is valid HAR JSON. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session (BDG-002); export HAR to `/tmp/bdg.har`; verify file existence and HAR-shape signature.
 - Expected signals: command exits 0; `/tmp/bdg.har` exists; `jq '.log.version'` returns a quoted version string (typically `"1.2"`).
 - Desired user-visible outcome: A short report quoting the file path, size, and HAR version with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-013` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, export the page network activity as HAR through the bdg CLI against an active session. Verify the file is created and is valid HAR JSON. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, export the page network activity as HAR through the bdg CLI against an active session. Verify the file is created and is valid HAR JSON. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

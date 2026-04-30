@@ -13,11 +13,13 @@ This scenario validates Checkpoint listing (checkpoint_list) for `EX-016`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-016` and confirm the expected signals without contradicting evidence.
 
-- Objective: Recovery asset discovery
-- Prompt: `As a lifecycle validation operator, validate Checkpoint listing (checkpoint_list) against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Recovery asset discovery.
+- Real user request: `Please validate Checkpoint listing (checkpoint_list) against checkpoint_list(specFolder,limit) and tell me whether the expected signals are present: Available restore points displayed.`
+- RCAF Prompt: `As a lifecycle validation operator, validate Checkpoint listing (checkpoint_list) against checkpoint_list(specFolder,limit). Verify available restore points displayed. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Available restore points displayed
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if checkpoints returned
 
 ---
@@ -51,8 +53,7 @@ List output
 
 Remove spec filter if empty
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/02-checkpoint-listing-checkpointlist.md](../../feature_catalog/05--lifecycle/02-checkpoint-listing-checkpointlist.md)
 

@@ -13,7 +13,14 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 ## 2. SCENARIO CONTRACT
 
-This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
+
+- Objective: This snippet preserves the canonical memory/spec-kit operator workflow for `M-004`.
+- Real user request: `Please validate Main-Agent Review and Verdict Handoff against @review and tell me whether the expected signals are present: severity-ranked findings and final verdict.`
+- RCAF Prompt: `As a tooling validation operator, validate Main-Agent Review and Verdict Handoff against @review. Verify severity-ranked findings and final verdict. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Execute the documented validation request against @review, capture the response and evidence, compare it against the expected signals, and return the pass/fail verdict.
+- Expected signals: severity-ranked findings and final verdict
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: deterministic verdict issued with rationale.
 
 ---
 
@@ -37,8 +44,7 @@ collect missing evidence and rerun review.
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 

@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that convergence STOP is blocked when an answered question cites <2 independent sources.
 - Real user request: How does the loop prevent shallow answers that rely on a single source?
-- Prompt: `As a manual-testing orchestrator, validate the source diversity quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question for >= 2 independent sources, and that a violation emits a guard_violation event and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the source diversity quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard checks each answered question for >= 2 independent sources, and that a violation emits a guard_violation event and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.`
 - Expected execution process: Inspect the Quality Guard Protocol in the convergence reference first, then the YAML algorithm guard check, then the loop protocol Step 2c, then the state format guard_violation event schema.
-- Desired user-facing outcome: The user gets an accurate explanation of how single-source answers are caught and why the loop continues past them.
+- Desired user-visible outcome: The user gets an accurate explanation of how single-source answers are caught and why the loop continues past them.
 - Expected signals: guard_violation event logged with guard="source_diversity", STOP decision overridden to CONTINUE, violated question targeted in next iteration focus.
 - Pass/fail posture: PASS if the source_diversity guard rule (>= 2 independent sources), its violation logging, and its STOP-override behavior are consistent across convergence.md, loop_protocol.md, auto.yaml, and state_format.md; FAIL if any of those elements drift or contradict.
 

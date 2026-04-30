@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-014` and confirm th
 
 - Objective: Verify `chrome_devtools_1.chrome_devtools_1_navigate_page({url: 'https://example.com'})` succeeds via Code Mode and that a subsequent `take_screenshot` returns base64 of length > 1000.
 - Real user request: `"Open example.com in chrome_devtools_1 and take a screenshot."`
-- Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com through Code Mode against the configured chrome_devtools_1 MCP server. Verify the call succeeds and screenshot returns valid bytes. Cross-reference: this scenario depends on CM-005 (correct manual.tool form) and CM-015 (Chrome navigate + screenshot). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com through Code Mode against the configured chrome_devtools_1 MCP server. Verify the call succeeds and screenshot returns valid bytes. Cross-reference: this scenario depends on CM-005 (correct manual.tool form) and CM-015 (Chrome navigate + screenshot). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: build a Code Mode script that calls navigate then screenshot via `call_tool_chain`; execute; assert success and base64 length.
 - Expected signals: navigate call returns success (no thrown error); screenshot returns base64 string with length > 1000.
 - Desired user-visible outcome: A short report quoting the navigated URL, screenshot byte length, and "VALID PNG" with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-014` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com through Code Mode against the configured chrome_devtools_1 MCP server. Verify the call succeeds and screenshot returns valid bytes. Cross-reference: this scenario depends on CM-005 (correct manual.tool form) and CM-015 (Chrome navigate + screenshot). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate chrome_devtools_1 to https://example.com through Code Mode against the configured chrome_devtools_1 MCP server. Verify the call succeeds and screenshot returns valid bytes. Cross-reference: this scenario depends on CM-005 (correct manual.tool form) and CM-015 (Chrome navigate + screenshot). Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -1,7 +1,6 @@
 ---
 title: "MCP Server Public API Barrel"
 description: "Stable top-level import surface re-exporting evaluation, indexing, search, provider, and metadata helpers without exposing internal lib/core/handlers modules."
-audited_post_018: true
 ---
 
 # MCP Server Public API Barrel
@@ -57,7 +56,7 @@ Finally, the barrel exposes architecture and roadmap metadata surfaces that woul
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Roadmap capability flag and default/phase helpers |
 | `mcp_server/api/README.md` | Docs | Consumer policy documenting `api/` as the approved public surface |
 
-### Tests
+### Validation And Tests
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct barrel export contract for search and top-level API surfaces |
@@ -68,5 +67,5 @@ Finally, the barrel exposes architecture and roadmap metadata surfaces that woul
 
 ## 4. SOURCE METADATA
 - Group: Pipeline Architecture
-- Source feature title: MCP Server Public API Barrel
-- Current reality source: direct implementation audit of `mcp_server/api/index.ts` plus the listed export and rollout-metadata tests
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/22-mcp-server-public-api-barrel.md`

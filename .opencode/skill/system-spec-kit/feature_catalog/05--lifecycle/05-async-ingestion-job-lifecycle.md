@@ -82,7 +82,7 @@ When extended telemetry is enabled, ingest-status responses also record lifecycl
 | `shared/utils/retry.ts` | Shared | Shared retry utility |
 | `shared/utils/token-estimate.ts` | Shared | Token estimation utility |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -129,8 +129,6 @@ When extended telemetry is enabled, ingest-status responses also record lifecycl
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Async ingestion job lifecycle
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Lifecycle
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/05-async-ingestion-job-lifecycle.md`

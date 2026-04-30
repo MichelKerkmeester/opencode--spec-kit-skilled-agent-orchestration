@@ -13,11 +13,13 @@ This scenario validates template composition system for `244`. It focuses on con
 
 ## 2. SCENARIO CONTRACT
 
-Operators exercise the template composer in its three main modes and confirm it can detect drift, preview changes, recompose a targeted level, and then verify the outputs again.
 
-- Objective: Confirm verify mode, dry-run previewing, targeted composition, and post-compose drift checks
-- Prompt: `As a tooling validation operator, validate Template Composition System against bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verify. Verify verify mode, dry-run previewing, targeted composition, and post-compose drift checks. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm verify mode, dry-run previewing, targeted composition, and post-compose drift checks.
+- Real user request: `Please validate Template Composition System against bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verify and tell me whether the expected signals are present: verify mode returns stable drift status; dry-run previews changes without writing; targeted compose completes; follow-up verify succeeds for the targeted level.`
+- RCAF Prompt: `As a tooling validation operator, validate Template Composition System against bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verify. Verify verify mode, dry-run previewing, targeted composition, and post-compose drift checks. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: verify mode returns stable drift status; dry-run previews changes without writing; targeted compose completes; follow-up verify succeeds for the targeted level
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the composer exposes stable verify and dry-run behavior and can successfully recompose the requested level
 
 ---
@@ -54,8 +56,7 @@ Composer stdout/stderr for verify, dry-run, targeted compose, and post-compose v
 
 Inspect `scripts/templates/compose.sh`, required addendum file checks, and generated `templates/level_*` outputs if drift detection or targeted composition fails
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/30-template-composition-system.md](../../feature_catalog/16--tooling-and-scripts/30-template-composition-system.md)
 

@@ -1,7 +1,6 @@
 ---
 title: "Content-aware memory filename generation"
 description: "Content-aware memory filename generation derives slugs from task context and session data instead of using the spec folder name alone."
-audited_post_018: true
 ---
 
 # Content-aware memory filename generation
@@ -33,7 +32,7 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 | `scripts/utils/task-enrichment.ts` | Script | Enriches generic task names from `spec.md` titles during slug generation |
 | `scripts/core/workflow.ts` | Script | Applies spec-title fallback and `preferredMemoryTask` selection before filename generation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ The slug is lowercased, non-alphanumeric characters replaced with hyphens, colla
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Content-aware memory filename generation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md`

@@ -1,7 +1,6 @@
 ---
 title: "Spec-doc structure validator"
 description: "Spec-doc structure validator fail-closes malformed frontmatter continuity blocks, merge legality, sufficiency, contamination and post-save fingerprint checks before a spec doc is accepted."
-audited_post_018: true
 ---
 
 # Spec-doc structure validator
@@ -14,7 +13,7 @@ The validator is the last structural checkpoint before a routed save becomes par
 
 ## 2. CURRENT REALITY
 
-`mcp_server/lib/validation/spec-doc-structure.ts` exposes five phase-018 rules through `validate.sh --strict`.
+`mcp_server/lib/validation/spec-doc-structure.ts` exposes five canonical continuity rules through `validate.sh --strict`.
 
 - `FRONTMATTER_MEMORY_BLOCK` verifies that the `_memory.continuity` block exists, is well-formed, and stays within the compact size budget.
 - `MERGE_LEGALITY` checks that the requested edit is legal for the current anchor and section shape.
@@ -34,7 +33,7 @@ The validator is wired into the save pipeline and the dedicated regression suite
 | `mcp_server/handlers/memory-save.ts` | Handler | Save-path integration that invokes the validator before storage |
 | `scripts/spec/validate.sh` | Shell | Rule exposure and `--strict` orchestration surface |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ The validator is wired into the save pipeline and the dedicated regression suite
 | `mcp_server/tests/gate-d-regression-quality-gates.vitest.ts` | Gate D regression coverage for the validator bridge |
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Spec-doc structure validator
-- Current reality source: phase 018 canonical-continuity-refactor gate C decision record
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/26-spec-doc-structure-validator.md`

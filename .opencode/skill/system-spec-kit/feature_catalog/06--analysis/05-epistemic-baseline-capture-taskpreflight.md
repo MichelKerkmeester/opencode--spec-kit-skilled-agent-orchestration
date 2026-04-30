@@ -1,7 +1,6 @@
 ---
 title: "Epistemic baseline capture (task_preflight)"
 description: "Covers the preflight tool that records knowledge, uncertainty and context completeness baselines before task execution."
-audited_post_018: true
 ---
 
 # Epistemic baseline capture (task_preflight)
@@ -52,14 +51,9 @@ The purpose of preflight is establishing a baseline for learning measurement. Wi
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/05-epistemic-baseline-capture-taskpreflight.md`
-
-- Group: Analysis
-- Source feature title: Epistemic baseline capture (task_preflight)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

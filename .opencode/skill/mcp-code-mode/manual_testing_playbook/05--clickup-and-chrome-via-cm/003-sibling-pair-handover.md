@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-016` and confirm the
 
 - Objective: Verify a chain navigates Chrome to a target URL, captures a screenshot reference, then creates a ClickUp task in a designated test list with the reference embedded — and cleans up after.
 - Real user request: `"Capture a screenshot of our staging site and file a ClickUp bug with the screenshot."`
-- Prompt: `As a manual-testing orchestrator, navigate Chrome to a target URL, capture a screenshot, then create a ClickUp task in the test list whose description includes a reference to the screenshot through Code Mode against the live ClickUp + Chrome MCP servers. Verify the chain executes both tools and the task contains the screenshot reference. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate Chrome to a target URL, capture a screenshot, then create a ClickUp task in the test list whose description includes a reference to the screenshot through Code Mode against the live ClickUp + Chrome MCP servers. Verify the chain executes both tools and the task contains the screenshot reference. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation orchestrating both MCPs; cleanup at the end.
 - Expected signals: chain returns object with both `screenshot_id` (or screenshot length) and `task_id`; created task description contains the screenshot reference; cleanup deletes the task.
 - Desired user-visible outcome: A short report quoting both ids and confirming cleanup with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-016` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, navigate Chrome to a target URL, capture a screenshot, then create a ClickUp task in the test list whose description includes a reference to the screenshot through Code Mode against the live ClickUp + Chrome MCP servers. Verify the chain executes both tools and the task contains the screenshot reference. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, navigate Chrome to a target URL, capture a screenshot, then create a ClickUp task in the test list whose description includes a reference to the screenshot through Code Mode against the live ClickUp + Chrome MCP servers. Verify the chain executes both tools and the task contains the screenshot reference. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -14,11 +14,13 @@ This scenario validates Memory summary search channel (R8) for `059`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `059` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm scale-gated summary channel
-- Prompt: `As a retrieval-enhancement validation operator, validate Memory summary search channel (R8) against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm scale-gated summary channel.
+- Real user request: `Please validate Memory summary search channel (R8) against the documented validation surface and tell me whether the expected signals are present: Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Memory summary search channel (R8) against the documented validation surface. Verify summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Summary channel activates only above corpus size threshold; channel contributes to fusion when active; channel is inert below threshold
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if summary channel activates above threshold and remains inert below it
 
 ---
@@ -54,8 +56,7 @@ Search output showing channel activation status + corpus size count + fusion con
 
 Verify corpus size counting logic; check threshold configuration; inspect channel activation gate in stage-1 pipeline
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/05-memory-summary-search-channel.md](../../feature_catalog/15--retrieval-enhancements/05-memory-summary-search-channel.md)
 

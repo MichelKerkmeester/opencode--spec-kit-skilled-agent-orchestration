@@ -38,7 +38,7 @@ The corresponding policy is documented in `ARCHITECTURE.md` under "Source-Dist A
 |------|-------|------|
 | `scripts/evals/check-source-dist-alignment.ts` | Script (evals) | Source-dist alignment enforcement: scans dist/lib/*.js, maps to lib/*.ts, reports orphans |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +47,6 @@ The corresponding policy is documented in `ARCHITECTURE.md` under "Source-Dist A
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Source-dist alignment enforcement
-- Current reality source: ARCHITECTURE.md (Source-Dist Alignment Enforcement subsection)
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/14-source-dist-alignment-enforcement.md`

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CP-004` and confirm the
 
 - Objective: Confirm `--model gpt-5.4` succeeds for a frontier-reasoning prompt and an unsupported model name fails fast with a non-zero exit
 - Real user request: `Pin Copilot to GPT-5.4 for a reasoning question and confirm a typo in the model name fails loudly instead of silently using a different model.`
-- Prompt: `As a cross-AI orchestrator preparing reproducible scripts, invoke Copilot CLI with the GPT-5.4 model pinned explicitly against the cli-copilot skill in this repository. Verify the supported model accepts the prompt and an unsupported model name is rejected with a clear non-zero exit. Return a concise pass/fail verdict with the main reason plus the parsed answer from the supported run.`
+- RCAF Prompt: `As a cross-AI orchestrator preparing reproducible scripts, invoke Copilot CLI with the GPT-5.4 model pinned explicitly against the cli-copilot skill in this repository. Verify the supported model accepts the prompt and an unsupported model name is rejected with a clear non-zero exit. Return a concise pass/fail verdict with the main reason plus the parsed answer from the supported run.`
 - Expected execution process: orchestrator dispatches the supported `--model gpt-5.4` call, captures the answer, then dispatches the bogus `--model gpt-bogus-99` call and verifies the non-zero exit and model-related error message
 - Expected signals: supported call exits 0 with a multi-sentence answer. Unsupported call exits non-zero with a model-related error in stdout/stderr (e.g. `unknown model`, `unsupported`, `not available`)
 - Desired user-visible outcome: PASS verdict with the supported-model answer + a one-line note that the bogus-model call was correctly rejected

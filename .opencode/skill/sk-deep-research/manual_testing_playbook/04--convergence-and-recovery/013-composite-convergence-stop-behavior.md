@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify the three-signal weighted stop model and its graceful degradation rules.
 - Real user request: Explain how the loop decides it has probably converged when it has not hit the hard cap yet.
-- Prompt: `As a manual-testing orchestrator, validate the composite-convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the rolling average, MAD noise floor, and question-entropy signals, their weights, and the >0.60 weighted stop-score threshold. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the composite-convergence contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the rolling average, MAD noise floor, and question-entropy signals, their weights, and the >0.60 weighted stop-score threshold. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the convergence reference first, then the YAML algorithm, then the quick reference visualization and README feature summary.
-- Desired user-facing outcome: The user gets an accurate explanation of the weighted convergence model and when it applies.
+- Desired user-visible outcome: The user gets an accurate explanation of the weighted convergence model and when it applies.
 - Expected signals: Three named signals, weights of 0.30/0.35/0.35, graceful degradation with fewer iterations, and a stop threshold above 0.60.
 - Pass/fail posture: PASS if the signals, weights, and threshold align across reference, YAML, and user-facing docs; FAIL if any of those elements drift materially.
 

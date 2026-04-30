@@ -43,6 +43,13 @@ The handler refuses stale graphs. Run `code_graph_scan({ incremental:false })` b
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/gold-query-verifier.ts:23-26` | Library | defines the default battery path |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/gold-query-verifier.ts:405-430` | Library | loads and validates the battery JSON |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:645-664` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/02--manual-scan-verify-status/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

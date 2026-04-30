@@ -1,7 +1,6 @@
 ---
 title: "Confidence-based result truncation"
 description: "Confidence-based result truncation detects where relevant results end by analyzing consecutive score gaps and trims the irrelevant tail."
-audited_post_018: true
 ---
 
 # Confidence-based result truncation
@@ -32,7 +31,7 @@ Edge cases are handled. NaN and Infinity scores are filtered, and all-equal scor
 |------|-------|------|
 | `mcp_server/lib/search/confidence-truncation.ts` | Lib | Confidence-based truncation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ Edge cases are handled. NaN and Infinity scores are filtered, and all-equal scor
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Confidence-based result truncation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/04-confidence-based-result-truncation.md`

@@ -14,11 +14,13 @@ This scenario validates Constitutional memory as expert knowledge injection (PI-
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `056` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm directive enrichment
-- Prompt: `As a retrieval-enhancement validation operator, validate Constitutional memory as expert knowledge injection (PI-A4) against the documented validation surface. Verify directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm directive enrichment.
+- Real user request: `Please validate Constitutional memory as expert knowledge injection (PI-A4) against the documented validation surface and tell me whether the expected signals are present: Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Constitutional memory as expert knowledge injection (PI-A4) against the documented validation surface. Verify directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Directive metadata appears in retrieval results; constitutional tier classification applied; enrichment fields populated
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if constitutional directives are injected into retrieval results with correct metadata and tier
 
 ---
@@ -54,8 +56,7 @@ Save output + retrieval output showing directive metadata + tier classification 
 
 Verify constitutional/ directory contains valid directives; check tier classification logic; inspect enrichment pipeline for directive handling
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md](../../feature_catalog/15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md)
 

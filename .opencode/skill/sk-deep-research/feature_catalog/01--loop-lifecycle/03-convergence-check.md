@@ -32,7 +32,7 @@ That legal-stop bundle is workflow-visible, not only prose guidance. The YAML wo
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow | Runs convergence evaluation, graph convergence calls, and blocked-stop emission in autonomous mode. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Workflow | Mirrors the same convergence and blocked-stop flow with confirm-mode approvals. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

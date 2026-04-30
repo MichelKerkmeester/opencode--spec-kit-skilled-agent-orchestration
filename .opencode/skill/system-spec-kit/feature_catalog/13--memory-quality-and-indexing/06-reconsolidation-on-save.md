@@ -1,7 +1,6 @@
 ---
 title: "Reconsolidation-on-save"
 description: "Reconsolidation-on-save merges, supersedes or complements new spec-doc records with existing similar spec-doc records based on cosine similarity thresholds."
-audited_post_018: true
 ---
 
 # Reconsolidation-on-save
@@ -41,7 +40,7 @@ A checkpoint must exist for the spec folder before reconsolidation can run. When
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
 | `mcp_server/lib/storage/reconsolidation.ts` | Lib | Memory reconsolidation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,7 +50,6 @@ A checkpoint must exist for the spec folder before reconsolidation can run. When
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Reconsolidation-on-save
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/06-reconsolidation-on-save.md`

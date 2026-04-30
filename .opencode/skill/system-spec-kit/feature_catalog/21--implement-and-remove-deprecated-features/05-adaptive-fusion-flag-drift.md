@@ -1,8 +1,6 @@
 ---
 title: "Adaptive-fusion mode flag"
 description: "`SPECKIT_ADAPTIVE_FUSION` remains a live runtime flag that selects between fixed and adaptive fusion modes in hybrid search."
-audited_post_018: true
-phase_018_change: "Validated against phase-018 canonical continuity refactor; adaptive fusion remains the live hybrid-search path and the older disable wording is treated as stale guidance."
 ---
 
 # Adaptive-fusion mode flag
@@ -47,7 +45,6 @@ The current shipped reality is therefore a live runtime mode selector, not a dep
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Implement and Remove Deprecated Features
-- Source feature title: Adaptive-fusion mode flag
-- Source spec: Deep research remediation 2026-03-26
+- Group: Implement And Remove Deprecated Features
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `21--implement-and-remove-deprecated-features/05-adaptive-fusion-flag-drift.md`

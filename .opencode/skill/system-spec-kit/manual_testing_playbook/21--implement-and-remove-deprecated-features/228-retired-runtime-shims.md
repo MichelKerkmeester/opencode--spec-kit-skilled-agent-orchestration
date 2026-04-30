@@ -15,11 +15,13 @@ This scenario validates Retired runtime shims and inert compatibility flags for 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `228` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm deprecated runtime flags remain visible for compatibility while no longer steering live behavior
-- Prompt: `As a canonical-continuity validation operator, validate Retired runtime shims and inert compatibility flags against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify deprecated runtime flags remain visible for compatibility while no longer steering live behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm deprecated runtime flags remain visible for compatibility while no longer steering live behavior.
+- Real user request: `Please validate Retired runtime shims and inert compatibility flags against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts and tell me whether the expected signals are present: Targeted runtime and scoring suites pass; eager warmup remains hard-disabled despite compatibility flags; shadow scoring runtime entry points stay inert; novelty boost always reports as not applied; and hybrid search uses adaptive fusion as the default live path without consulting the retired rollout flag.`
+- RCAF Prompt: `As a canonical-continuity validation operator, validate Retired runtime shims and inert compatibility flags against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/learned-feedback.vitest.ts tests/memory-save-ux-regressions.vitest.ts. Verify deprecated runtime flags remain visible for compatibility while no longer steering live behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Targeted runtime and scoring suites pass; eager warmup remains hard-disabled despite compatibility flags; shadow scoring runtime entry points stay inert; novelty boost always reports as not applied; and hybrid search uses adaptive fusion as the default live path without consulting the retired rollout flag
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted suites pass and the evidence confirms the deprecated flag surface is compatibility-only and no longer steers production behavior
 
 ---
@@ -56,8 +58,7 @@ Test transcript + key assertion output or source-backed snapshots for warmup, sh
 
 Inspect `shared/embeddings.ts`, `mcp_server/context-server.ts`, `mcp_server/lib/eval/shadow-scoring.ts`, `mcp_server/lib/scoring/composite-scoring.ts`, and `mcp_server/lib/search/hybrid-search.ts` if any deprecated flag appears to change live execution
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/01-category-stub.md](../../feature_catalog/21--implement-and-remove-deprecated-features/01-category-stub.md)
 

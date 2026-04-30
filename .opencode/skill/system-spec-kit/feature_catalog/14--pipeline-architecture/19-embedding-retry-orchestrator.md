@@ -1,7 +1,6 @@
 ---
 title: "Embedding retry orchestrator"
 description: "The embedding retry orchestrator runs background batch retries for memories with failed embedding generation, using cache dedup and progressive backoff."
-audited_post_018: true
 ---
 
 # Embedding retry orchestrator
@@ -33,7 +32,7 @@ Each retry attempt uses the embedding cache to avoid redundant API calls for con
 | `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding cache for retry dedup |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Memory row lookup and DB access used by retry orchestration |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ Each retry attempt uses the embedding cache to avoid redundant API calls for con
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Embedding retry orchestrator
-- Current reality source: audit-D04 gap backfill
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/19-embedding-retry-orchestrator.md`

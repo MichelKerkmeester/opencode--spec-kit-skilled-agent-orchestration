@@ -1,8 +1,6 @@
 ---
 title: "SessionStart priming (Claude)"
 description: "Claude-specific SessionStart priming via stdout with source routing (compact/startup/resume/clear). For cross-runtime startup payload parity see the shared startup payload entry."
-audited_post_018: true
-phase_018_change: "Updated recovery wording so SessionStart guidance points at the phase-018 canonical recovery chain and /spec_kit:resume."
 ---
 
 # SessionStart priming (Claude)
@@ -32,7 +30,7 @@ The SessionStart hook routes by `source` field from stdin JSON. For `compact`: r
 | `mcp_server/hooks/claude/session-prime.ts` | Hook | SessionStart injection with source routing |
 | `mcp_server/hooks/claude/hook-state.ts` | Hook | Per-session state management |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +39,6 @@ The SessionStart hook routes by `source` field from stdin JSON. For `compact`: r
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: SessionStart priming
-- Current reality source: spec 024-compact-code-graph phase 002
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/03-session-start-priming.md`

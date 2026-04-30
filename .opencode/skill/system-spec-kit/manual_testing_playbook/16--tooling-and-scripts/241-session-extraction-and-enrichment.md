@@ -13,11 +13,13 @@ This scenario validates session extraction and enrichment for `241`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators validate the extractor-layer contract through the loader smoke test plus the targeted enrichment suites that cover file shaping, phase classification, and description-quality upgrades.
 
-- Objective: Confirm extractor loading, enrichment behavior, and phase classification stability
-- Prompt: `As a tooling validation operator, validate Session Extraction and Enrichment against cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js. Verify extractor loading, enrichment behavior, and phase classification stability. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm extractor loading, enrichment behavior, and phase classification stability.
+- Real user request: `Please validate Session Extraction and Enrichment against cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js and tell me whether the expected signals are present: extractor loader script passes; targeted Vitest suites pass; enrichment-specific assertions remain green.`
+- RCAF Prompt: `As a tooling validation operator, validate Session Extraction and Enrichment against cd .opencode/skill/system-spec-kit/scripts && node tests/test-extractors-loaders.js. Verify extractor loading, enrichment behavior, and phase classification stability. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: extractor loader script passes; targeted Vitest suites pass; enrichment-specific assertions remain green
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the extractor-layer tests pass together and the loader script confirms the barrel surface is usable
 
 ---
@@ -52,8 +54,7 @@ Loader script output and Vitest transcript
 
 Inspect `scripts/extractors/file-extractor.ts`, `diagram-extractor.ts`, `session-activity-signal.ts`, and the extractor barrel if module loading or enrichment semantics fail
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/27-session-extraction-and-enrichment.md](../../feature_catalog/16--tooling-and-scripts/27-session-extraction-and-enrichment.md)
 

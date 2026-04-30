@@ -31,7 +31,7 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 |------|-------|------|
 | `scripts/evals/check-architecture-boundaries.ts` | Script (evals) | Architecture boundary enforcement (GAP A: shared neutrality, GAP B: wrapper-only) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +40,6 @@ GAP B scans top-level `.ts` files in `mcp_server/scripts/` (non-recursive) and v
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Architecture boundary enforcement
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/02-architecture-boundary-enforcement.md`

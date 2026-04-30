@@ -1,7 +1,6 @@
 ---
 title: "Atomic pending-file recovery"
 description: "Atomic pending-file recovery scans for `_pending` files left by interrupted saves and completes the rename when the DB row exists."
-audited_post_018: true
 ---
 
 # Atomic pending-file recovery
@@ -31,7 +30,7 @@ The `findPendingFiles()` function scans the spec-doc record directories for file
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Pending file detection and recovery |
 | `mcp_server/context-server.ts` | Core | Startup recovery invocation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ The `findPendingFiles()` function scans the spec-doc record directories for file
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Atomic pending-file recovery
-- Current reality source: audit-D04 gap backfill
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/21-atomic-pending-file-recovery.md`

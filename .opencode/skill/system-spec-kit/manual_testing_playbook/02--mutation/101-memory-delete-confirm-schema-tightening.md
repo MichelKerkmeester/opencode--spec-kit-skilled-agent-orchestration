@@ -14,11 +14,13 @@ This scenario validates memory_delete confirm schema tightening for `101`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `101` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm confirm field accepts only literal true
-- Prompt: `As a mutation validation operator, validate memory_delete confirm schema tightening against memory_delete({id:1, confirm:true}). Verify confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm confirm field accepts only literal true.
+- Real user request: `Please validate memory_delete confirm schema tightening against memory_delete({id:1, confirm:true}) and tell me whether the expected signals are present: confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path.`
+- RCAF Prompt: `As a mutation validation operator, validate memory_delete confirm schema tightening against memory_delete({id:1, confirm:true}). Verify confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: confirm:true accepted; confirm:false rejected with Zod literal error; bulk delete requires confirm:true; missing confirm field rejected for bulk path
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if only `confirm:true` is accepted, `confirm:false` is rejected
 
 ---
@@ -55,8 +57,7 @@ Tool validation outputs
 
 Inspect `tool-schemas.ts` memory_delete union schema
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: *(memory_delete confirm schema — covered by `02--mutation/03`)*
 

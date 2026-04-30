@@ -37,7 +37,7 @@ Four test quality issues were addressed:
 |------|-------|------|
 | `mcp_server/lib/parsing/memory-parser.ts` | Lib | Added `/z_archive/` exclusion in `isMemoryFile()` during test-alignment fixes |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,14 +48,10 @@ Four test quality issues were addressed:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Test quality improvements
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/12-test-quality-improvements.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 072

@@ -1,7 +1,6 @@
 ---
 title: "Hybrid search pipeline"
 description: "Covers the multi-channel retrieval engine with five search channels, adaptive fusion and tiered fallback."
-audited_post_018: true
 ---
 
 # Hybrid search pipeline
@@ -57,7 +56,7 @@ The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_S
 | `shared/algorithms/adaptive-fusion.ts` | Shared | Adaptive intent-aware fusion |
 | `shared/algorithms/mmr-reranker.ts` | Shared | MMR diversity reranking algorithm |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -77,8 +76,7 @@ The fallback chain (`searchWithFallback()`) provides resilience. When `SPECKIT_S
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Hybrid search pipeline
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/04-hybrid-search-pipeline.md`
 - Source list updated 2026-03-26 per audit remediation

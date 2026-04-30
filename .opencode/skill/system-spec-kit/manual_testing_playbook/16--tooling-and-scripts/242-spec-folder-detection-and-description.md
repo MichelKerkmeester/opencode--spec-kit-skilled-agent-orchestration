@@ -13,11 +13,13 @@ This scenario validates spec-folder detection and description metadata for `242`
 
 ## 2. SCENARIO CONTRACT
 
-Operators validate the folder-selection and metadata surface through the functional detector tests, alignment tests, subfolder resolution coverage, and one explicit description-generation refresh against a live spec path.
 
-- Objective: Confirm folder detection, alignment safety, subfolder resolution, and description generation
-- Prompt: `As a tooling validation operator, validate Spec-Folder Detection and Description Metadata against cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js. Verify folder detection, alignment safety, subfolder resolution, and description generation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm folder detection, alignment safety, subfolder resolution, and description generation.
+- Real user request: `Please validate Spec-Folder Detection and Description Metadata against cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js and tell me whether the expected signals are present: folder-detector and alignment tests pass; subfolder resolution test passes; description generation completes without path-safety errors.`
+- RCAF Prompt: `As a tooling validation operator, validate Spec-Folder Detection and Description Metadata against cd .opencode/skill/system-spec-kit/scripts && node tests/test-folder-detector-functional.js. Verify folder detection, alignment safety, subfolder resolution, and description generation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: folder-detector and alignment tests pass; subfolder resolution test passes; description generation completes without path-safety errors
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the detection, alignment, and description-refresh surfaces all behave as documented
 
 ---
@@ -54,8 +56,7 @@ JS test transcripts and the updated `description.json` output or timestamp under
 
 Inspect `scripts/spec-folder/folder-detector.ts`, `alignment-validator.ts`, `directory-setup.ts`, and `generate-description.ts` if a path cannot be resolved or description generation fails
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/28-spec-folder-detection-and-description.md](../../feature_catalog/16--tooling-and-scripts/28-spec-folder-detection-and-description.md)
 

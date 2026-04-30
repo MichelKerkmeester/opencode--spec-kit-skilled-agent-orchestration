@@ -14,11 +14,13 @@ This scenario validates Causal chain tracing (memory_drift_why) for `EX-022`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-022` and confirm the expected signals without contradicting evidence.
 
-- Objective: Decision why-trace
-- Prompt: `As an analysis validation operator, validate Causal chain tracing (memory_drift_why) against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Decision why-trace.
+- Real user request: `Please validate Causal chain tracing (memory_drift_why) against memory_drift_why(memoryId,direction:both,maxDepth:4) and tell me whether the expected signals are present: Chain includes expected relations.`
+- RCAF Prompt: `As an analysis validation operator, validate Causal chain tracing (memory_drift_why) against memory_drift_why(memoryId,direction:both,maxDepth:4). Verify chain includes expected relations. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Chain includes expected relations
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if causal path returned
 
 ---
@@ -52,8 +54,7 @@ Trace output
 
 Lower depth/rel filters if empty
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/04-causal-chain-tracing-memorydriftwhy.md](../../feature_catalog/06--analysis/04-causal-chain-tracing-memorydriftwhy.md)
 

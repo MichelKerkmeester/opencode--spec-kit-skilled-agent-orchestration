@@ -14,11 +14,13 @@ This scenario validates Trigger phrase matching (memory_match_triggers) for `EX-
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-003` and confirm the expected signals without contradicting evidence.
 
-- Objective: Fast recall path plus trigger-cache reload efficiency
-- Prompt: `As a retrieval validation operator, validate Trigger phrase matching (memory_match_triggers) against memory_match_triggers(prompt,include_cognitive:true,sessionId:ex003). Verify fast trigger hits + cognitive enrichment + partial-index-backed trigger-cache reload + per-connection prepared-statement reuse. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Fast recall path plus trigger-cache reload efficiency.
+- Real user request: `Please validate Trigger phrase matching (memory_match_triggers) against memory_match_triggers(prompt,include_cognitive:true,sessionId:ex003) and tell me whether the expected signals are present: Fast trigger hits + cognitive enrichment + partial-index-backed trigger-cache reload + per-connection prepared-statement reuse.`
+- RCAF Prompt: `As a retrieval validation operator, validate Trigger phrase matching (memory_match_triggers) against memory_match_triggers(prompt,include_cognitive:true,sessionId:ex003). Verify fast trigger hits + cognitive enrichment + partial-index-backed trigger-cache reload + per-connection prepared-statement reuse. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Fast trigger hits + cognitive enrichment + partial-index-backed trigger-cache reload + per-connection prepared-statement reuse
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if matched triggers return with cognitive fields and cache reload evidence shows the partial index source plus prepared-statement reuse on the same DB connection. FAIL if trigger hits are missing, cognitive enrichment is absent, reload falls back to a full-table source, or each reload recompiles the loader statement.
 
 ---
@@ -55,8 +57,7 @@ Trigger output + cache-refresh logs or instrumentation + query-plan/schema evide
 
 Retry with higher-quality trigger phrase -> inspect trigger-cache clear/reload instrumentation -> verify `idx_trigger_cache_source` exists and the reload query still filters to successful rows with non-empty trigger phrases
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md](../../feature_catalog/01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md)
 

@@ -33,7 +33,7 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 |------|-------|------|
 | `mcp_server/lib/eval/eval-metrics.ts` | Lib | Core metric computation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,14 +42,10 @@ This battery of metrics means you can diagnose where the pipeline fails, not jus
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Core metric computation
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/02-core-metric-computation.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 006

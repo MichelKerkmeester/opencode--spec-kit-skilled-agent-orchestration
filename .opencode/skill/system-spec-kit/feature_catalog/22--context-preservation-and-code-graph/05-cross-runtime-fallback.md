@@ -1,8 +1,6 @@
 ---
 title: "Cross-runtime tool fallback"
 description: "Cross-runtime tool fallback ensures context injection remains available when runtime hooks are missing or unavailable."
-audited_post_018: true
-phase_018_replaces: "Legacy placeholder recovery wording that pointed at .claude/CLAUDE.md instead of the canonical /spec_kit:resume ladder."
 ---
 
 # Cross-runtime tool fallback
@@ -29,7 +27,7 @@ Runtime detection is the source of truth for hook-aware fallback. It identifies 
 | `mcp_server/context-server.ts` | Server | Startup recovery guidance and tool routing hints |
 | `mcp_server/tests/runtime-detection.vitest.ts` | Tests | Runtime env simulation and detection |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +36,6 @@ Runtime detection is the source of truth for hook-aware fallback. It identifies 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Cross-runtime tool fallback
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/05-cross-runtime-fallback.md`

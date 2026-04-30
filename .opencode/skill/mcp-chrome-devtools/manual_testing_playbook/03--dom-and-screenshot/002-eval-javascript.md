@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-009` and confirm th
 
 - Objective: Verify `bdg dom eval "document.title"` returns a non-empty string containing "Example".
 - Real user request: `"What's the title of this page?"`
-- Prompt: `As a manual-testing orchestrator, evaluate JavaScript on the active page through the bdg CLI against an active session on https://example.com. Verify the returned title matches Example Domain. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, evaluate JavaScript on the active page through the bdg CLI against an active session on https://example.com. Verify the returned title matches Example Domain. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session on `https://example.com` (BDG-002 prerequisite); run a single eval.
 - Expected signals: `bdg dom eval "document.title"` exits 0; result is a non-empty string containing "Example".
 - Desired user-visible outcome: A short report quoting the title string with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-009` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, evaluate JavaScript on the active page through the bdg CLI against an active session on https://example.com. Verify the returned title matches Example Domain. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, evaluate JavaScript on the active page through the bdg CLI against an active session on https://example.com. Verify the returned title matches Example Domain. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

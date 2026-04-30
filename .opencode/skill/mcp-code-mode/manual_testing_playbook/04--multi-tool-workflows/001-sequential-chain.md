@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-011` and confirm the
 
 - Objective: Verify a chain calling `clickup_get_teams` then `clickup_get_spaces({team_id})` (using the first team's id) returns both results.
 - Real user request: `"List the spaces in my first ClickUp workspace."`
-- Prompt: `As a manual-testing orchestrator, call clickup_get_teams then use the first team's id to call clickup_get_spaces({team_id}) in a single call_tool_chain execution against the live ClickUp API. Verify both calls succeed and the second returns spaces for the first team. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call clickup_get_teams then use the first team's id to call clickup_get_spaces({team_id}) in a single call_tool_chain execution against the live ClickUp API. Verify both calls succeed and the second returns spaces for the first team. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation containing both calls in sequence with await.
 - Expected signals: chain returns object with both call results; spaces array is non-empty (assuming the first team has at least one space); spaces reference the first team's id.
 - Desired user-visible outcome: A short report listing the team id and number of spaces and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-011` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, call clickup_get_teams then use the first team's id to call clickup_get_spaces({team_id}) in a single call_tool_chain execution against the live ClickUp API. Verify both calls succeed and the second returns spaces for the first team. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call clickup_get_teams then use the first team's id to call clickup_get_spaces({team_id}) in a single call_tool_chain execution against the live ClickUp API. Verify both calls succeed and the second returns spaces for the first team. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

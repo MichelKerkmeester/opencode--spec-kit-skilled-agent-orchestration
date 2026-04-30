@@ -15,11 +15,13 @@ This scenario validates Inert scoring flags and compatibility shims for `231`. I
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `231` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic
-- Prompt: `As a canonical-continuity validation operator, validate Inert scoring flags and compatibility shims against the documented validation surface. Verify retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic.
+- Real user request: `` Please validate Inert scoring flags and compatibility shims against the documented validation surface and tell me whether the expected signals are present: The targeted scoring and rollout tests pass, `calculateNoveltyBoost()` always returns `0`, novelty telemetry stays disabled, and `getGraphWalkRolloutState()` continues to mirror `resolveGraphWalkRolloutState()` instead of restoring separate legacy flag behavior. ``
+- RCAF Prompt: `As a canonical-continuity validation operator, validate Inert scoring flags and compatibility shims against the documented validation surface. Verify retired scoring controls stay inert while legacy graph-flag imports only forward into newer rollout logic. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: The targeted scoring and rollout tests pass, `calculateNoveltyBoost()` always returns `0`, novelty telemetry stays disabled, and `getGraphWalkRolloutState()` continues to mirror `resolveGraphWalkRolloutState()` instead of restoring separate legacy flag behavior
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted checks prove novelty boost is inert and the graph-flag module acts only as a compatibility shim over the newer rollout logic
 
 ---
@@ -57,8 +59,7 @@ Vitest transcript plus the source excerpts showing inert novelty boost logic and
 
 Inspect `lib/scoring/composite-scoring.ts`, `lib/search/graph-flags.ts`, and `lib/search/search-flags.ts`; confirm test env setup is not leaking rollout variables across cases
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md](../../feature_catalog/21--implement-and-remove-deprecated-features/04-inert-scoring-flags-and-compatibility-shims.md)
 

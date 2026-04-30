@@ -33,7 +33,7 @@ The config also points at the runtime capability matrix and resolver script. `ru
 | `.opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs` | Script | Loads and validates the capability matrix and resolves runtime records by ID. |
 | `.opencode/skill/sk-deep-research/SKILL.md` | Skill | Publishes the live lifecycle modes, capability-path references, and optimizer-managed config fields. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

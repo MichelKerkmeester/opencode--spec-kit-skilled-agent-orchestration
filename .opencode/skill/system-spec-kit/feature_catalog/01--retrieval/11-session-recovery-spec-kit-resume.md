@@ -1,8 +1,6 @@
 ---
 title: "Session recovery via /spec_kit:resume"
 description: "Reconstructs interrupted session state through the unified spec-folder resume workflow."
-audited_post_018: true
-phase_018_change: Aligned the recovery ladder to `handover.md -> _memory.continuity -> spec docs` and removed the legacy crash-prompt wording from the primary path.
 ---
 
 # Session recovery via /spec_kit:resume
@@ -67,7 +65,7 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 | `.opencode/skill/system-spec-kit/mcp_server/handlers/memory-crud-list.ts` | Handler | List handler (candidate discovery) |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/session/session-manager.ts` | Lib | Session lifecycle and crash-recovery breadcrumbs |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -79,7 +77,6 @@ When a session is interrupted by a crash, context compaction, timeout, or an ord
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval (session recovery)
-- Source feature title: Session recovery via /spec_kit:resume
-- Current reality source: direct command/runtime audit of `.opencode/command/spec_kit/resume.md` plus the listed resume and crash-recovery tests
+- Group: Retrieval
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/11-session-recovery-spec-kit-resume.md`

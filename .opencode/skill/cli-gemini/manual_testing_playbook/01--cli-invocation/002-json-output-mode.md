@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CG-002` and confirm the
 
 - Objective: Confirm `gemini "[prompt]" -o json 2>&1` returns parseable JSON containing `response` and `stats` keys at minimum
 - Real user request: `Have Gemini count the markdown files under the cli-gemini references folder and give me back the answer plus token stats so I can log it.`
-- Prompt: `As a cross-AI orchestrator preparing automated logging, invoke Gemini CLI with structured JSON output against the cli-gemini skill in this repository. Verify the result parses as JSON and exposes the documented response and stats envelope. Return a concise pass/fail verdict with the main reason, the parsed answer, and the totalInputTokens / totalOutputTokens from stats.`
+- RCAF Prompt: `As a cross-AI orchestrator preparing automated logging, invoke Gemini CLI with structured JSON output against the cli-gemini skill in this repository. Verify the result parses as JSON and exposes the documented response and stats envelope. Return a concise pass/fail verdict with the main reason, the parsed answer, and the totalInputTokens / totalOutputTokens from stats.`
 - Expected execution process: orchestrator runs the JSON-mode call, pipes stdout into `jq` to confirm parseability and inspects the documented envelope keys
 - Expected signals: command exits 0. Stdout starts with `{`. `jq -r '.response'` returns a non-empty string. `jq -e '.stats.totalInputTokens'` and `jq -e '.stats.totalOutputTokens'` succeed and return numeric values
 - Desired user-visible outcome: orchestrator returns the natural-language count + a token-stats line such as `tokens in/out: 1234/56`

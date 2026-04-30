@@ -13,11 +13,13 @@ This scenario validates Schema compatibility validation for `128`. It focuses on
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `128` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify backward-compatibility validation flags required schema gaps without throwing on partial databases
-- Prompt: `As a tooling validation operator, validate Schema compatibility validation against cd .opencode/skill/system-spec-kit/mcp_server. Verify backward-compatibility validation flags required schema gaps without throwing on partial databases. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify backward-compatibility validation flags required schema gaps without throwing on partial databases.
+- Real user request: `Please validate Schema compatibility validation against cd .opencode/skill/system-spec-kit/mcp_server and tell me whether the expected signals are present: Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage.`
+- RCAF Prompt: `As a tooling validation operator, validate Schema compatibility validation against cd .opencode/skill/system-spec-kit/mcp_server. Verify backward-compatibility validation flags required schema gaps without throwing on partial databases. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Targeted suite passes; transcript shows missing-table reporting and minimal-compatible schema success coverage
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if `vector-index-schema-compatibility.vitest.ts` completes with all tests passing and no failures
 
 ---
@@ -52,8 +54,7 @@ Test transcript + suite summary
 
 Re-run `npm test -- --run tests/vector-index-schema-compatibility.vitest.ts -t compatible`; inspect `vector-index-schema.ts` required-table/column lists if assertions drift
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/10-schema-compatibility-validation.md](../../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md)
 

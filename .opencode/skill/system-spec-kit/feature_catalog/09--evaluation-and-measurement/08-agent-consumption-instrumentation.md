@@ -29,7 +29,7 @@ Calls remain fail-safe so instrumentation errors never break the handlers, while
 |------|-------|------|
 | `mcp_server/lib/telemetry/consumption-logger.ts` | Lib | Agent consumption logging |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,14 +38,10 @@ Calls remain fail-safe so instrumentation errors never break the handlers, while
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Agent consumption instrumentation
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/08-agent-consumption-instrumentation.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 012

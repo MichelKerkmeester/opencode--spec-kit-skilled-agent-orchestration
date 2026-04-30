@@ -13,11 +13,13 @@ This scenario validates Advisory ingest lifecycle forecast for `144`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `144` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress
-- Prompt: `As a lifecycle validation operator, validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] }). Verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `memory_ingest_status` exposes advisory forecast fields and degrades safely on sparse progress.
+- Real user request: `` Please validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] }) and tell me whether the expected signals are present: Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive. ``
+- RCAF Prompt: `As a lifecycle validation operator, validate Advisory ingest lifecycle forecast against memory_ingest_start({ paths:["specs/<target-spec>/decision-record.md","specs/<target-spec>/implementation-summary.md"] }). Verify memory_ingest_status exposes advisory forecast fields and degrades safely on sparse progress. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Status payloads always include a `forecast` object; sparse progress yields null or low-confidence fields plus caveat text; progressing jobs update ETA/risk fields without breaking the handler contract; optional telemetry remains additive
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if forecast fields are always present, sparse states degrade safely, and progressing jobs update the advisory values without handler failure
 
 ---
@@ -55,8 +57,7 @@ Start/status transcript across early and progressing states + optional telemetry
 
 Inspect `handlers/memory-ingest.ts`, `lib/ops/job-queue.ts`, and `lib/telemetry/retrieval-telemetry.ts` if forecast fields disappear or throw
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/05-async-ingestion-job-lifecycle.md](../../feature_catalog/05--lifecycle/05-async-ingestion-job-lifecycle.md)
 

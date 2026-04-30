@@ -1,7 +1,6 @@
 ---
 title: "Interference scoring"
 description: "Describes the interference penalty that demotes memories in dense similarity clusters, preventing near-identical results from crowding out unique content."
-audited_post_018: true
 ---
 
 # Interference scoring
@@ -32,7 +31,7 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 |------|-------|------|
 | `mcp_server/lib/scoring/interference-scoring.ts` | Lib | Interference penalty scoring |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ Both the threshold (0.75) and coefficient (-0.08) are provisional. They will be 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Interference scoring
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/03-interference-scoring.md`

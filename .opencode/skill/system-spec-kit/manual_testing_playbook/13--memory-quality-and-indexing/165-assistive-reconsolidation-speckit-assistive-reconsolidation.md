@@ -14,11 +14,13 @@ This scenario validates assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDA
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `165` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation
-- Prompt: `As a spec-doc record-quality validation operator, validate Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation.
+- Real user request: `` Please validate Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) against SPECKIT_ASSISTIVE_RECONSOLIDATION=true and tell me whether the expected signals are present: similarity >= 0.96 returns the internal 'auto_merge' classifier and emits a high-similarity compatibility note without archiving the older row; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action; companion merge guard aborts stale merge attempts with `predecessor_changed` or `predecessor_gone`. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Assistive reconsolidation (SPECKIT_ASSISTIVE_RECONSOLIDATION) against SPECKIT_ASSISTIVE_RECONSOLIDATION=true. Verify the high-similarity compatibility note and borderline recommendation behavior plus companion predecessor validation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: similarity >= 0.96 returns the internal 'auto_merge' classifier and emits a high-similarity compatibility note without archiving the older row; 0.88 <= similarity < 0.96 returns 'review' with AssistiveRecommendation logged; similarity < 0.88 returns 'keep_separate'; review tier produces classification (supersede/complement/keep_separate) without destructive action; companion merge guard aborts stale merge attempts with `predecessor_changed` or `predecessor_gone`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the high-similarity compatibility note triggers at >= 0.96, recommendation logs for review tier, no destructive action occurs for assistive tiers, and predecessor-change detection blocks stale companion merges; FAIL if tier classification is wrong, assistive tiers mutate state, or stale predecessor changes still commit a merge
 
 ---
@@ -91,8 +93,7 @@ Targeted vitest output plus DB evidence showing no merged row was inserted after
 
 Verify predecessor snapshot comparison (`content_hash`, `updated_at`) → Check shared reconsolidation guardrails → Confirm assistive bridge still limits itself to shadow-archive/recommend behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/21-assistive-reconsolidation.md](../../feature_catalog/13--memory-quality-and-indexing/21-assistive-reconsolidation.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)

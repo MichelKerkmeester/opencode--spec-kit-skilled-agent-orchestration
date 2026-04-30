@@ -1,7 +1,6 @@
 ---
 title: "CocoIndex bridge and code_graph_context"
 description: "CocoIndex bridge resolves semantic search results to code graph nodes, preserves seed fidelity, and exposes blocked or partial context outcomes."
-audited_post_018: true
 ---
 
 # CocoIndex bridge and code_graph_context
@@ -30,7 +29,7 @@ mcp_server/code_graph/lib/seed-resolver.ts
 | `mcp_server/code_graph/lib/code-graph-context.ts` | Lib | Expands resolved seeds into structural neighborhoods and reports structured partial-output metadata |
 | `mcp_server/code_graph/handlers/context.ts` | Handler | Exposes `code_graph_context`, preserves CocoIndex seed fidelity, and returns blocked-read payloads when full scans are required |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ mcp_server/code_graph/lib/seed-resolver.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: CocoIndex bridge and code_graph_context
-- Current reality source: spec 024-compact-code-graph phases 010 and 020
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md`

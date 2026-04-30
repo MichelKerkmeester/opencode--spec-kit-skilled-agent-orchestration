@@ -44,7 +44,7 @@ The composed templates also preserve the Gate E continuity model: packet docs st
 |----------|-------|---------|
 | Documentation Levels | 4 | Level 1, 2, 3, 3+ |
 | Core Templates | 4 | spec, plan, tasks, implementation-summary |
-| Addendum Sets | 3 | level2-verify, level3-arch, level3plus-govern |
+| Addendum Sets | 3 | level2-verify, level3-arch, level3-plus-govern |
 | Output Templates | 21 | Generated template files across Levels 1, 2, 3, and 3+ (excluding README.md) |
 
 ### Key Features
@@ -123,7 +123,7 @@ templates/
 ├── addendum/                    # Level-specific extensions
 │   ├── level2-verify/           # Level 2 additions (QA/verification)
 │   ├── level3-arch/             # Level 3 additions (architecture)
-│   └── level3plus-govern/       # Level 3+ additions (governance)
+│   └── level3-plus-govern/       # Level 3+ additions (governance)
 └── level_N/                     # Composed output templates
     ├── spec.md                  # Ready-to-use templates
     ├── plan.md
@@ -372,7 +372,7 @@ grep -r "SPECKIT_" core/ addendum/
 | Core templates | `../../templates/core/` |
 | Level 2 addendum | `../../templates/addendum/level2-verify/` |
 | Level 3 addendum | `../../templates/addendum/level3-arch/` |
-| Level 3+ addendum | `../../templates/addendum/level3plus-govern/` |
+| Level 3+ addendum | `../../templates/addendum/level3-plus-govern/` |
 | Composed outputs | `../../templates/level_N/` |
 
 <!-- /ANCHOR:related -->

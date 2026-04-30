@@ -14,11 +14,13 @@ This scenario validates 5. Embedding and API for `EX-032`. It focuses on Provide
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-032` and confirm the expected signals without contradicting evidence.
 
-- Objective: Provider selection audit
-- Prompt: `As a feature-flag validation operator, validate 5. Embedding and API against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Provider selection audit.
+- Real user request: `Please validate 5. Embedding and API against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }) and tell me whether the expected signals are present: Provider rules and key precedence shown.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 5. Embedding and API against memory_search({ query:"EMBEDDINGS_PROVIDER auto provider selection rules", limit:20 }). Verify provider rules and key precedence shown. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Provider rules and key precedence shown
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if provider routing is clear
 
 ---
@@ -52,8 +54,7 @@ Search output
 
 Verify env in runtime
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/05-5-embedding-and-api.md](../../feature_catalog/19--feature-flag-reference/05-5-embedding-and-api.md)
 

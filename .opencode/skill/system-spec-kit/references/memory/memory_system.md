@@ -7,12 +7,12 @@ description: Detailed documentation for Spec Kit Memory MCP tools, behavior note
 
 Spec Kit Memory MCP tools, behavior notes, and configuration options.
 
-Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
-
 ---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
+
+Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content sources, 7 intent types, and `includeSpecDocs: true` by default.
 
 The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and packet-first continuity. Phase 018 makes `handover.md -> _memory.continuity -> spec docs` the canonical recovery chain; retired `[spec]/memory/*.md` artifacts are no longer produced at save time and only matter when older packets still contain them. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
 
@@ -61,6 +61,7 @@ The indexed-continuity store indexes content from two active sources, plus a ret
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:importance-tiers -->
 ## 2. IMPORTANCE TIERS
 
@@ -93,6 +94,7 @@ Six-tier system for prioritizing memory relevance:
 ---
 
 <!-- /ANCHOR:importance-tiers -->
+
 <!-- ANCHOR:mcp-tools -->
 ## 3. MCP TOOLS
 
@@ -158,6 +160,7 @@ plus 4 Skill Advisor descriptors imported into the same registry.
 ---
 
 <!-- /ANCHOR:mcp-tools -->
+
 <!-- ANCHOR:memory-search-behavior -->
 ## 4. MEMORY_SEARCH() BEHAVIOR
 
@@ -323,6 +326,7 @@ Brief summary of the session...
 ---
 
 <!-- /ANCHOR:memory-search-behavior -->
+
 <!-- ANCHOR:memory-list-behavior -->
 ## 5. MEMORY_LIST() BEHAVIOR
 
@@ -364,6 +368,7 @@ For consistent exact matching, use the full spec folder name.
 ---
 
 <!-- /ANCHOR:memory-list-behavior -->
+
 <!-- ANCHOR:decay-scoring -->
 ## 6. DECAY SCORING
 
@@ -431,6 +436,7 @@ memory_search({
 ---
 
 <!-- /ANCHOR:decay-scoring -->
+
 <!-- ANCHOR:real-time-sync -->
 ## 7. REAL-TIME SYNC
 
@@ -466,6 +472,7 @@ The `memory_index_scan` operation has a 1-minute cooldown between scans to preve
 ---
 
 <!-- /ANCHOR:real-time-sync -->
+
 <!-- ANCHOR:constitutional-rules -->
 ## 8. CONSTITUTIONAL RULES
 
@@ -510,6 +517,7 @@ Constitutional files are stored in:
 ---
 
 <!-- /ANCHOR:constitutional-rules -->
+
 <!-- ANCHOR:session-deduplication -->
 ## 9. SESSION DEDUPLICATION
 
@@ -583,6 +591,7 @@ Session deduplication (`enableDedup: true` with `sessionId`) provides significan
 ---
 
 <!-- /ANCHOR:session-deduplication -->
+
 <!-- ANCHOR:5-state-memory-model -->
 ## 10. 5-STATE MEMORY MODEL
 
@@ -667,6 +676,7 @@ The effective stability is `max(fsrs_stability, type_stability)`, ensuring new s
 ---
 
 <!-- /ANCHOR:5-state-memory-model -->
+
 <!-- ANCHOR:related-resources -->
 ## 11. RELATED RESOURCES
 
@@ -682,4 +692,7 @@ The effective stability is `max(fsrs_stability, type_stability)`, ensuring new s
 
 ### Related Skills
 - `system-spec-kit` - Parent skill orchestrating spec folder workflow
+
+---
+
 <!-- /ANCHOR:related-resources -->

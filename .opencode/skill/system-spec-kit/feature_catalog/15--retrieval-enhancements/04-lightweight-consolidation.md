@@ -1,7 +1,6 @@
 ---
 title: "Lightweight consolidation"
 description: "Lightweight consolidation is invoked after every save, but contradiction scanning, Hebbian edge strengthening, staleness detection and edge bounds enforcement execute on a weekly cadence."
-audited_post_018: true
 ---
 
 # Lightweight consolidation
@@ -35,7 +34,7 @@ All weight modifications are logged to the `weight_history` table. The runtime h
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage |
 | `mcp_server/lib/storage/consolidation.ts` | Lib | Lightweight consolidation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,7 +44,6 @@ All weight modifications are logged to the `weight_history` table. The runtime h
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Lightweight consolidation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/04-lightweight-consolidation.md`

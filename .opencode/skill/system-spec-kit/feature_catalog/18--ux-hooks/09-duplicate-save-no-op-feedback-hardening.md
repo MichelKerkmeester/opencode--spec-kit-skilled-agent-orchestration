@@ -34,7 +34,7 @@ This suppression applies to both the standard save path (`response-builder.ts`) 
 | `mcp_server/handlers/mutation-hooks.ts` | Handler | Post-mutation hook dispatch (skipped on no-op statuses) |
 | `mcp_server/hooks/mutation-feedback.ts` | Hook | Mutation feedback hook (not invoked on no-op saves) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -45,8 +45,6 @@ This suppression applies to both the standard save path (`response-builder.ts`) 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Duplicate-save no-op feedback hardening
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`

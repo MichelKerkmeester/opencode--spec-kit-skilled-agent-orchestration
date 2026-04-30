@@ -31,7 +31,7 @@ Checkpoint deletion now requires a matching `confirmName` safety parameter befor
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint storage layer executing the deletion |
 | `mcp_server/handlers/types.ts` | Handler | Type definitions including checkpoint handler contracts |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,8 +42,6 @@ Checkpoint deletion now requires a matching `confirmName` safety parameter befor
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Checkpoint delete confirmName safety
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/03-checkpoint-delete-confirmname-safety.md`

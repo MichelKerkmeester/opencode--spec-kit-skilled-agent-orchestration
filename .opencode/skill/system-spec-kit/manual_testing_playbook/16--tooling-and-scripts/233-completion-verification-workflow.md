@@ -13,11 +13,13 @@ This scenario validates completion verification workflow for `233`. It focuses o
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the completion gate against compliant, lightweight, and intentionally degraded fixtures and confirm the workflow returns the expected advisory, pass, and blocking states.
 
-- Objective: Confirm advisory handling, COMPLETE status, and evidence-aware blocking for `check-completion.sh`
-- Prompt: `As a tooling validation operator, validate Completion Verification Workflow against the documented validation surface. Verify advisory handling, COMPLETE status, and evidence-aware blocking for check-completion.sh. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm advisory handling, COMPLETE status, and evidence-aware blocking for `check-completion.sh`.
+- Real user request: `Please validate Completion Verification Workflow against the documented validation surface and tell me whether the expected signals are present: missing checklist returns exit 0 advisory; compliant checklist returns COMPLETE; degraded checklist returns non-zero with evidence or blocking status.`
+- RCAF Prompt: `As a tooling validation operator, validate Completion Verification Workflow against the documented validation surface. Verify advisory handling, COMPLETE status, and evidence-aware blocking for check-completion.sh. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: missing checklist returns exit 0 advisory; compliant checklist returns COMPLETE; degraded checklist returns non-zero with evidence or blocking status
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if advisory, COMPLETE, and blocking outcomes match the fixture state and exit codes remain consistent with the script contract
 
 ---
@@ -57,8 +59,7 @@ Command transcript, JSON output for the compliant and degraded runs, and the mod
 
 Inspect `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh`, especially checklist parsing, inherited priority logic, and evidence marker detection
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/19-completion-verification-workflow.md](../../feature_catalog/16--tooling-and-scripts/19-completion-verification-workflow.md)
 

@@ -13,11 +13,13 @@ This scenario validates watcher delete/rename cleanup for `207`. It focuses on c
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the watcher runtime coverage and confirm deleted files are purged from the index, renames clean up old paths and create fresh entries, and debounce handling prevents stale rename bursts from leaving orphaned results.
 
-- Objective: Confirm delete and rename cleanup remove stale index state
-- Prompt: `As a tooling validation operator, validate Watcher delete/rename cleanup against the documented validation surface. Verify delete and rename cleanup remove stale index state. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm delete and rename cleanup remove stale index state.
+- Real user request: `Please validate Watcher delete/rename cleanup against the documented validation surface and tell me whether the expected signals are present: unlink events call removeFn for deleted markdown files; rename removes the old path and indexes the new path; the default 2-second debounce window collapses rapid rename/change bursts to one stable reindex; burst renames keep only the final path indexed; concurrent renames remove all stale paths and keep all renamed paths indexed.`
+- RCAF Prompt: `As a tooling validation operator, validate Watcher delete/rename cleanup against the documented validation surface. Verify delete and rename cleanup remove stale index state. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: unlink events call removeFn for deleted markdown files; rename removes the old path and indexes the new path; the default 2-second debounce window collapses rapid rename/change bursts to one stable reindex; burst renames keep only the final path indexed; concurrent renames remove all stale paths and keep all renamed paths indexed
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if stale paths are removed, renamed paths are reindexed, and no orphaned entries remain after delete, rename, burst-rename, or concurrent-rename flows
 
 ---
@@ -55,8 +57,7 @@ Vitest output for delete/unlink, rename lifecycle, default debounce, burst renam
 
 Inspect `mcp_server/lib/ops/file-watcher.ts` debounce scheduling, unlink handling, and `removeFn` wiring if stale entries persist or rename paths duplicate
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md](../../feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md)
 

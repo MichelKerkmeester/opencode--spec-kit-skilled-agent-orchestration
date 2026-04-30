@@ -14,11 +14,13 @@ This scenario validates Cross-process DB hot rebinding for `112`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `112` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm marker-file triggers DB reinitialization
-- Prompt: `As a pipeline validation operator, validate Cross-process DB hot rebinding against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm marker-file triggers DB reinitialization.
+- Real user request: `Please validate Cross-process DB hot rebinding against memory_save(filePath) and tell me whether the expected signals are present: Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind.`
+- RCAF Prompt: `As a pipeline validation operator, validate Cross-process DB hot rebinding against memory_save(filePath). Verify server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Server detects DB_UPDATED_FILE marker; DB reinitializes without restart; stats reflect post-mutation state (no stale data); health reports healthy after rebind
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if server detects marker file, reinitializes DB, returns current (non-stale) data, and health is healthy
 
 ---
@@ -57,8 +59,7 @@ memory_stats output post-rebind + memory_health output + marker file detection e
 
 Inspect DB_UPDATED_FILE marker path and detection logic; verify DB reinitialization clears caches; check for stale connection handles
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/17-cross-process-db-hot-rebinding.md](../../feature_catalog/14--pipeline-architecture/17-cross-process-db-hot-rebinding.md)
 

@@ -1,7 +1,6 @@
 ---
 title: "Cross-process DB hot rebinding"
 description: "Cross-process DB hot rebinding detects external database mutations via a marker file and reinitializes the DB connection with module rebinding."
-audited_post_018: true
 ---
 
 # Cross-process DB hot rebinding
@@ -29,7 +28,7 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 | `mcp_server/core/db-state.ts` | Core | Database state management and hot rebinding |
 | `mcp_server/core/config.ts` | Core | Server configuration including DB_UPDATED_FILE |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,8 +37,7 @@ Process-lifetime DB connection manager via marker file (`DB_UPDATED_FILE`). When
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Undocumented feature gap scan
-- Source feature title: Cross-process DB hot rebinding
-- Current reality source: 10-agent feature gap scan
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/17-cross-process-db-hot-rebinding.md`
 - Playbook reference: 112

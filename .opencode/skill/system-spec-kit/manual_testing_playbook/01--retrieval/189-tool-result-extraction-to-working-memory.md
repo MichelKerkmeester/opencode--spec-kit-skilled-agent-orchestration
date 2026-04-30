@@ -14,11 +14,13 @@ This scenario validates tool-result extraction to working memory for `189`. It f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `189` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify salient tool results are summarized and inserted into working memory with provenance, remain available across turns in the same session, survive checkpoint save/restore, follow the documented decay rules with bounded mention boosts, and use the optimized index/upsert path
-- Prompt: `As a retrieval validation operator, validate Tool-result extraction to working memory against ex189-session. Verify salient tool results are summarized and inserted into working memory with provenance, remain available across turns in the same session, survive checkpoint save/restore, follow the documented decay rules with bounded mention boosts, and use the optimized index/upsert path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify salient tool results are summarized and inserted into working memory with provenance, remain available across turns in the same session, survive checkpoint save/restore, follow the documented decay rules with bounded mention boosts, and use the optimized index/upsert path.
+- Real user request: `Please validate Tool-result extraction to working memory against ex189-session and tell me whether the expected signals are present: Tool-result capture runs automatically after eligible tool responses; extracted entries appear in working memory with provenance; follow-up context can reuse the extracted result; checkpoint restore preserves the entry; decay behavior matches the documented floor, mention boost, and eviction boundaries; the new indexes back LRU eviction and attention-ordered reads; extraction upsert executes without a pre-upsert existence probe.`
+- RCAF Prompt: `As a retrieval validation operator, validate Tool-result extraction to working memory against ex189-session. Verify salient tool results are summarized and inserted into working memory with provenance, remain available across turns in the same session, survive checkpoint save/restore, follow the documented decay rules with bounded mention boosts, and use the optimized index/upsert path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Tool-result capture runs automatically after eligible tool responses; extracted entries appear in working memory with provenance; follow-up context can reuse the extracted result; checkpoint restore preserves the entry; decay behavior matches the documented floor, mention boost, and eviction boundaries; the new indexes back LRU eviction and attention-ordered reads; extraction upsert executes without a pre-upsert existence probe
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Automatic extraction, cross-turn reuse, checkpoint preservation, attention-scoring behavior, index-backed reads/eviction, and direct `ON CONFLICT` upserts all align. FAIL: extracted entries are missing, unusable across turns, lost on restore, decay/boost behavior contradicts the documented contract, required indexes are absent, or the write path still performs a pre-upsert existence check.
 
 ---
@@ -59,8 +61,7 @@ Tool outputs; working-memory or log evidence showing extraction/upsert; schema/q
 
 Verify after-tool callback registration in `context-server.ts` -> inspect `extraction-adapter.ts` for summary or redaction gating -> confirm session IDs and memory IDs are stable -> inspect checkpoint restore flow -> review score-clamp and eviction handling in working-memory decay logic -> confirm no pre-upsert existence probe remains in `upsertExtractedEntry()`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/09-tool-result-extraction-to-working-memory.md](../../feature_catalog/01--retrieval/09-tool-result-extraction-to-working-memory.md)
 

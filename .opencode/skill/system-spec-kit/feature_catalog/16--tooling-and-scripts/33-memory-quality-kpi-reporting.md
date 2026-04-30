@@ -43,8 +43,6 @@ The shipped KPI reporting behavior is:
 | `.opencode/skill/system-spec-kit/scripts/kpi/README.md` | Documentation | Declares the KPI script contract, usage examples, metric definitions, and output format |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Memory Quality KPI Reporting
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of the KPI script and its README contract
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/33-memory-quality-kpi-reporting.md`

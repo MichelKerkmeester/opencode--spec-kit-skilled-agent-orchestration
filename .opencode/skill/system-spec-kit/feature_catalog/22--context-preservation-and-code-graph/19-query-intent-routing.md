@@ -1,7 +1,6 @@
 ---
 title: "Query-intent routing"
 description: "Automatic backend selection in memory_context that routes queries to code graph, CocoIndex, or both based on the query-intent classifier output."
-audited_post_018: true
 ---
 
 # Query-intent routing
@@ -33,7 +32,6 @@ mcp_server/handlers/memory-context.ts (integration point)
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Query-intent routing
-- Current reality source: spec 024-compact-code-graph phase 020
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/19-query-intent-routing.md`

@@ -50,8 +50,6 @@ Exit behavior is intentionally narrow: `0` means completion is allowed, `1` mean
 | `.opencode/skill/system-spec-kit/scripts/spec/check-completion.sh` | Script | Parses `checklist.md`, derives priority state, enforces evidence rules, and returns human-readable or JSON completion status |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Completion Verification Workflow
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/19-completion-verification-workflow.md`

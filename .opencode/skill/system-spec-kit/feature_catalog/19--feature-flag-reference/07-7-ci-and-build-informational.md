@@ -1,7 +1,6 @@
 ---
 title: "7. CI and Build (informational)"
 description: "This document captures the implemented behavior, source references, and validation scope for 7. CI and Build (informational)."
-audited_post_018: true
 ---
 
 # 7. CI and Build (informational)
@@ -34,7 +33,6 @@ Source file references are included in the flag table above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: 7. CI and Build (informational)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/07-7-ci-and-build-informational.md`

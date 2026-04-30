@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `BDG-021` and confirm th
 
 - Objective: Verify post-kill `bdg dom screenshot` exits non-zero with a session-error message; verify a subsequent `bdg https://example.com` succeeds; verify a follow-up screenshot succeeds.
 - Real user request: `"Simulate Chrome crashing while I'm using bdg, then recover."`
-- Prompt: `As a manual-testing orchestrator, deliberately kill the active Chrome process, attempt a bdg dom screenshot, then restart with a new session through the bdg CLI against an active-then-killed-then-restarted session. Verify the kill produces a clear error and restart recovers. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, deliberately kill the active Chrome process, attempt a bdg dom screenshot, then restart with a new session through the bdg CLI against an active-then-killed-then-restarted session. Verify the kill produces a clear error and restart recovers. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: start session; confirm it; identify and kill the bdg-owned Chrome process; attempt a CDP operation (expect failure); restart; confirm recovery.
 - Expected signals: post-kill screenshot exits non-zero with a session/disconnected message; restart `bdg <url>` exits 0; post-restart screenshot exits 0 and writes a valid PNG.
 - Desired user-visible outcome: A short report walking through "session started -> killed -> error captured -> restarted -> screenshot OK" with a PASS verdict.
@@ -39,7 +39,7 @@ Operators run the exact prompt and command sequence for `BDG-021` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, deliberately kill the active Chrome process, attempt a bdg dom screenshot, then restart with a new session through the bdg CLI against an active-then-killed-then-restarted session. Verify the kill produces a clear error and restart recovers. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, deliberately kill the active Chrome process, attempt a bdg dom screenshot, then restart with a new session through the bdg CLI against an active-then-killed-then-restarted session. Verify the kill produces a clear error and restart recovers. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

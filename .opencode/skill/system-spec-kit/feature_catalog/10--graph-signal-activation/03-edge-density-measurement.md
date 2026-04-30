@@ -1,7 +1,6 @@
 ---
 title: "Edge density measurement"
 description: "Describes the global edge density metric (`total_edges / total_memories`) used by runtime guards to gate graph-derived features and entity-linking creation."
-audited_post_018: true
 ---
 
 # Edge density measurement
@@ -28,7 +27,7 @@ The current density metric used by runtime guards is global edge density: `total
 |------|-------|------|
 | `mcp_server/lib/eval/edge-density.ts` | Lib | Edge density measurement |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,7 +36,6 @@ The current density metric used by runtime guards is global edge density: `total
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Edge density measurement
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/03-edge-density-measurement.md`

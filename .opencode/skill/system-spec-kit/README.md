@@ -527,7 +527,7 @@ Each addendum adds sections and files for its level:
 | -------------------- | ----- | ------------------------------------------------------ |
 | `level2-verify/`     | 2+    | Quality gates, NFRs, edge cases, checklist template    |
 | `level3-arch/`       | 3+    | Architecture decisions, ADRs, risk matrix              |
-| `level3plus-govern/` | 3+    | Approval workflow, compliance checkpoints, stakeholder tracking |
+| `level3-plus-govern/` | 3+    | Approval workflow, compliance checkpoints, stakeholder tracking |
 | `phase/`             | Any   | Phase decomposition headers for parent/child folders   |
 
 **Location**: `templates/addendum/`

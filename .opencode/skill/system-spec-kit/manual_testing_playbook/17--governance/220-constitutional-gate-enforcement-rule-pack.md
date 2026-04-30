@@ -14,11 +14,13 @@ This scenario validates Constitutional Gate-Enforcement Rule Pack for `220`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `220` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the always-surface constitutional memory preserves gate triggers, cross-references, and continuation or compaction recovery behavior
-- Prompt: `As a governance validation operator, validate Constitutional Gate-Enforcement Rule Pack against .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md. Verify the always-surface constitutional memory preserves gate triggers, cross-references, and continuation or compaction recovery behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the always-surface constitutional memory preserves gate triggers, cross-references, and continuation or compaction recovery behavior.
+- Real user request: `` Please validate Constitutional Gate-Enforcement Rule Pack against .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md and tell me whether the expected signals are present: `gate-enforcement.md` declares constitutional importance and decision-style trigger metadata; the body includes gate cross-reference, continuation validation, compaction recovery, and quick-reference guidance; `constitutional/README.md` documents top-ranked, non-decaying constitutional surfacing semantics. ``
+- RCAF Prompt: `As a governance validation operator, validate Constitutional Gate-Enforcement Rule Pack against .opencode/skill/system-spec-kit/constitutional/gate-enforcement.md. Verify the always-surface constitutional memory preserves gate triggers, cross-references, and continuation or compaction recovery behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `gate-enforcement.md` declares constitutional importance and decision-style trigger metadata; the body includes gate cross-reference, continuation validation, compaction recovery, and quick-reference guidance; `constitutional/README.md` documents top-ranked, non-decaying constitutional surfacing semantics
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the rule pack preserves the operational gate overlays and constitutional surfacing guarantees described in the catalog; FAIL if trigger coverage is incomplete, recovery guidance is absent, or constitutional visibility semantics are undocumented
 
 ---
@@ -55,8 +57,7 @@ Frontmatter capture from `gate-enforcement.md` + notes/snippets for cross-refere
 
 Verify `gate-enforcement.md` frontmatter still includes constitutional tier and trigger phrases -> inspect the gate cross-reference and continuation/compaction sections for accidental removal -> confirm `constitutional/README.md` still documents fixed-priority surfacing semantics -> check `AGENTS.md` Section 2 remains the referenced authoritative source
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [17--governance/05-constitutional-gate-enforcement-rule-pack.md](../../feature_catalog/17--governance/05-constitutional-gate-enforcement-rule-pack.md)
 

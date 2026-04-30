@@ -32,7 +32,7 @@ Recovery is automatic and requires no user intervention. If the pending file is 
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Atomic write + pending-file recovery |
 | `mcp_server/context-server.ts` | Core | Startup hook that triggers recovery |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,8 +42,6 @@ Recovery is automatic and requires no user intervention. If the pending file is 
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Startup pending-file recovery
-- Current reality source: audit-D04 gap backfill
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/06-startup-pending-file-recovery.md`

@@ -1,7 +1,6 @@
 ---
 title: "SHA-256 content-hash deduplication"
 description: "Tracks the O(1) SHA-256 hash lookup that skips embedding generation when identical content is re-saved."
-audited_post_018: true
 ---
 
 # SHA-256 content-hash deduplication
@@ -34,7 +33,7 @@ The save-path dedup gate that runs ahead of the content-hash probe now builds ex
 | `mcp_server/handlers/save/types.ts` | Type definitions for dedup pipeline context |
 | `mcp_server/lib/storage/incremental-index.ts` | Incremental indexing integration for content hash checks |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ The save-path dedup gate that runs ahead of the content-hash probe now builds ex
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug fixes and data integrity
-- Source feature title: SHA-256 content-hash deduplication
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md`

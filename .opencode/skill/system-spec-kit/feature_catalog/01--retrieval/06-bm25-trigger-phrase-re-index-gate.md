@@ -1,7 +1,6 @@
 ---
 title: "BM25 trigger phrase re-index gate"
 description: "Tracks the fix that expands the BM25 re-index condition to include trigger phrase changes alongside title changes."
-audited_post_018: true
 ---
 
 # BM25 trigger phrase re-index gate
@@ -33,7 +32,7 @@ T312 changed the runtime posture of this path: the in-memory BM25 engine is now 
 | `mcp_server/lib/search/sqlite-fts.ts` | Lib | SQLite FTS5 interface |
 | `mcp_server/handlers/memory-crud-update.ts` | Handler | Update handler with BM25 re-index gate |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ T312 changed the runtime posture of this path: the in-memory BM25 engine is now 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: BM25 trigger phrase re-index gate
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/06-bm25-trigger-phrase-re-index-gate.md`

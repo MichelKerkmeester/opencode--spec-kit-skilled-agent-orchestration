@@ -1,7 +1,6 @@
 ---
 title: "Quality-aware 3-tier search fallback"
 description: "Covers the adaptive search degradation chain that progressively widens retrieval when initial results fail quality checks."
-audited_post_018: true
 ---
 
 # Quality-aware 3-tier search fallback
@@ -31,7 +30,7 @@ T310 split the fallback path into fusion-only collection followed by a single po
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Multi-channel search orchestration: `executeFallbackPlan()`, `searchWithFallbackTiered()`, `enrichFusedResults()`, `checkDegradation()`, 3-tier fallback chain |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Feature flag registry (`SPECKIT_SEARCH_FALLBACK` gate) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,8 +42,7 @@ T310 split the fallback path into fusion-only collection followed by a single po
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Undocumented feature gap scan
-- Source feature title: Quality-aware 3-tier search fallback
-- Current reality source: 10-agent feature gap scan
+- Group: Retrieval
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/08-quality-aware-3-tier-search-fallback.md`
 - Playbook reference: 109

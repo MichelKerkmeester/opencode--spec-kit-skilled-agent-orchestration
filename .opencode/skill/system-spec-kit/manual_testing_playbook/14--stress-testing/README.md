@@ -21,5 +21,5 @@ This section contains operational playbooks for running structured stress test c
 - Group: Stress testing
 - Playbook root: `.opencode/skill/system-spec-kit/manual_testing_playbook/14--stress-testing/`
 - Feature catalog: `.opencode/skill/system-spec-kit/feature_catalog/14--stress-testing/01-stress-test-cycle.md`
-- Template bundle: `.opencode/skill/system-spec-kit/templates/stress-test/`
+- Template bundle: `.opencode/skill/system-spec-kit/templates/stress_test/`
 

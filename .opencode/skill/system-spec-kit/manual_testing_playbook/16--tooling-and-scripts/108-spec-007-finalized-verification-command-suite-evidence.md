@@ -13,11 +13,13 @@ This scenario validates Spec 007 finalized verification command suite evidence f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `108` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm the recorded verification set matches the current Spec 007 evidence
-- Prompt: `As a tooling validation operator, validate Spec 007 finalized verification command suite evidence against npx tsc -b. Verify the recorded verification set matches the current Spec 007 evidence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm the recorded verification set matches the current Spec 007 evidence.
+- Real user request: `` Please validate Spec 007 finalized verification command suite evidence against npx tsc -b and tell me whether the expected signals are present: `npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 510 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed. ``
+- RCAF Prompt: `As a tooling validation operator, validate Spec 007 finalized verification command suite evidence against npx tsc -b. Verify the recorded verification set matches the current Spec 007 evidence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `npx tsc -b` PASS, `npm run lint` PASS, UX suite PASS with 7 files / 510 tests, stdio plus embeddings suite PASS with 2 files / 15 tests, and MCP SDK stdio smoke PASS with 28 tools listed
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all five verification steps match the recorded Spec 007 evidence exactly
 
 ---
@@ -55,8 +57,7 @@ Build/lint/test/smoke transcripts with totals and tool count
 
 Re-run the failing verification step in isolation and inspect the corresponding Spec 007 handler or test coverage
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: *(Spec 007 verification suite — no dedicated catalog entry)*
 

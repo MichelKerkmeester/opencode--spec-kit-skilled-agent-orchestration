@@ -1,7 +1,6 @@
 ---
 title: "Canonical ID dedup hardening"
 description: "Tracks the fix for mixed ID format deduplication failures in hybrid search caused by string/number mismatches."
-audited_post_018: true
 ---
 
 # Canonical ID dedup hardening
@@ -32,7 +31,7 @@ The save-path dedup path is now hardened around the same canonicalization princi
 | `mcp_server/handlers/save/dedup.ts` | Handler | Two-probe same-path lookup over canonical and raw file paths for unchanged-save detection |
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Parent-only partial index creation for save-path and scoped content-hash dedup hot paths |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ The save-path dedup path is now hardened around the same canonicalization princi
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Alignment remediation (Phase 016)
-- Source feature title: Canonical ID dedup hardening
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md`

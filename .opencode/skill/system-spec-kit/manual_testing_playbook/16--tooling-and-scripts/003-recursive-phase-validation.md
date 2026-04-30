@@ -13,11 +13,13 @@ This scenario validates Recursive phase validation for `PHASE-003`. It focuses o
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `PHASE-003` and confirm the expected signals without contradicting evidence.
 
-- Objective: Run `validate.sh --recursive` on a phase parent folder and verify per-phase results
-- Prompt: `As a tooling validation operator, validate Recursive phase validation against create.sh "Validate Test" --phase --level 2 --phases 2. Verify run validate.sh --recursive on a phase parent folder and verify per-phase results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Run `validate.sh --recursive` on a phase parent folder and verify per-phase results.
+- Real user request: `` Please validate Recursive phase validation against create.sh "Validate Test" --phase --level 2 --phases 2 and tell me whether the expected signals are present: Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects worst child; error propagation works. ``
+- RCAF Prompt: `As a tooling validation operator, validate Recursive phase validation against create.sh "Validate Test" --phase --level 2 --phases 2. Verify run validate.sh --recursive on a phase parent folder and verify per-phase results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Per-phase pass/fail in output; JSON `phases` array; combined exit code reflects worst child; error propagation works
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if `--recursive` discovers all `[0-9][0-9][0-9]-*/` child folders, validates each independently, produces aggregated JSON with per-phase status, and combined exit code escalates to highest severity
 
 ---
@@ -56,8 +58,7 @@ Command transcript + validation output + JSON phases array + exit code after del
 
 Verify parent folder contains child folders matching `[0-9][0-9][0-9]-*/` pattern; check validate.sh supports --recursive flag; inspect exit code handling logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 

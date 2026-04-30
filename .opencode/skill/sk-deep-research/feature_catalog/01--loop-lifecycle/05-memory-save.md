@@ -32,7 +32,7 @@ The save rules also reject manual writes under `memory/`. The command entrypoint
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow | Runs `generate-context.js` in autonomous mode and marks manual memory authoring as invalid. |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Workflow | Runs the same save flow with confirm-mode review gates. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

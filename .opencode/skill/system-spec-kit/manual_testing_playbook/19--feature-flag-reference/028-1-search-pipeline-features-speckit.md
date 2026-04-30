@@ -14,11 +14,13 @@ This scenario validates 1. Search Pipeline Features (SPECKIT_*) for `EX-028`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-028` and confirm the expected signals without contradicting evidence.
 
-- Objective: Flag catalog verification with inert and retired surface cleanup
-- Prompt: `As a feature-flag validation operator, validate 1. Search Pipeline Features (SPECKIT_*) against memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 }). Verify flag catalog verification with inert and retired surface cleanup. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Flag catalog verification with inert and retired surface cleanup.
+- Real user request: `Please validate 1. Search Pipeline Features (SPECKIT_*) against memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 }) and tell me whether the expected signals are present: Accurate active/inert/retired classification; retired topics absent from active manual-test guidance.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 1. Search Pipeline Features (SPECKIT_*) against memory_search({ query: "SPECKIT search pipeline flags active inert retired RSF shadow scoring", limit: 20 }). Verify flag catalog verification with inert and retired surface cleanup. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Accurate active/inert/retired classification; retired topics absent from active manual-test guidance
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if classifications are internally consistent and retired topics are not framed as active checks
 
 ---
@@ -53,8 +55,7 @@ Search/context outputs + catalog cross-check notes
 
 Validate against code/config docs; remove any manual-test wording that still treats retired topics as live search-pipeline behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 

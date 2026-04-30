@@ -56,8 +56,6 @@ For canonical post-implementation verification of MCP daemon changes, see the fo
 | `.opencode/skill/system-spec-kit/scripts/ops/ops-common.sh` | Shared library | Provides validation helpers, UTC logging, deterministic retry loops, escalation JSON emission, and recovery payload generation |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Ops Self-Healing Runbooks
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/20-ops-self-healing-runbooks.md`

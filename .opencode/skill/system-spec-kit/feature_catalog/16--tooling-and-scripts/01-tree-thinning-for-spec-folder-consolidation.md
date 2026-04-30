@@ -32,7 +32,7 @@ Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered fi
 | `scripts/core/tree-thinning.ts` | Core script (primary) | Tree thinning model and implementation (`applyTreeThinning()`, thresholds, parent merges) |
 | `scripts/core/workflow.ts` | Core workflow (integration) | Step 7.6 integration (`applyTreeThinning()` and `applyThinningToFileChanges()`) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +41,6 @@ Integration happens in `scripts/core/workflow.ts` at Step 7.6, where rendered fi
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Tree thinning for spec folder consolidation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md`

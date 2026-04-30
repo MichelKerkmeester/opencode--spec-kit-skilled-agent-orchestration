@@ -42,6 +42,13 @@ Availability does not prove search quality. Pair with an actual CocoIndex search
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/ccc-status.ts:22-58` | Handler | reports binary path, index presence, readiness-not-applicable fields, and recommendation |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:86-88` | Tool surface | dispatches the requested tool |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:723-727` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/07--ccc-integration/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

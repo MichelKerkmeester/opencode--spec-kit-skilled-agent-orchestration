@@ -17,12 +17,13 @@ Verify ccc_feedback appends one JSONL feedback entry with query, rating, resultF
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify ccc_feedback appends one JSONL feedback entry with query, rating, resultFile, and comment fields.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 013 (ccc_feedback jsonl append), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify ccc_feedback appends one JSONL feedback entry with query, rating, resultFile, and comment fields.
+- Real user request: `Record a CocoIndex feedback entry and confirm exactly one valid JSONL line is appended with the expected fields.`
+- RCAF Prompt: `As a CocoIndex integration tester, execute ccc_feedback append checks against the feedback JSONL file in a disposable workspace. Verify one valid feedback entry records query, rating, resultFile, and comment fields. Return PASS/FAIL with response and JSONL evidence.`
+- Expected execution process: In a disposable copy, call `ccc_feedback({"query":"code graph","rating":"partial","comment":"manual test"})` and inspect `.opencode/skill/mcp-coco-index/feedback/search-feedback.jsonl`.
+- Expected signals: Response has `recorded:true`; JSONL file contains one new valid JSON line with timestamp, query, rating, and comment.
+- Desired user-visible outcome: A concise verdict explaining whether feedback recording produced the expected JSONL audit entry.
+- Pass/fail: PASS if one valid JSONL feedback line is appended with expected fields; FAIL if no line is written, multiple lines appear, fields are missing, or validation accepts a missing rating.
 
 ---
 
@@ -61,4 +62,3 @@ Run with missing rating and verify validation error.
 - Group: Code Graph Runtime
 - Playbook ID: 013
 - Canonical root source: `manual_testing_playbook.md`
-

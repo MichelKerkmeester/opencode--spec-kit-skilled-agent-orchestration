@@ -1,7 +1,6 @@
 ---
 title: "Hierarchical scope governance, governed ingest, retention, and audit"
 description: "Hierarchical scope governance enforces multi-scope controls across ingest and retrieval with provenance requirements, retention policies and an audit trail."
-audited_post_018: true
 ---
 
 # Hierarchical scope governance, governed ingest, retention, and audit
@@ -40,7 +39,7 @@ The governance audit trail remains queryable after runtime operations. Audit row
 | `mcp_server/handlers/memory-save.ts` | Handler | Validates governed ingest and transactionally applies governance metadata with fail-safe cleanup on failure |
 | `mcp_server/handlers/memory-search.ts` | Handler | Normalizes scoped retrieval context before pipeline execution |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,13 +49,11 @@ The governance audit trail remains queryable after runtime operations. Audit row
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Governance
-- Source feature title: Hierarchical scope governance, governed ingest, retention, and audit
-- Current reality source: Phase 015 implementation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 122

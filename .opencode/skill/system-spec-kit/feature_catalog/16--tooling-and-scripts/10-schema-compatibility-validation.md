@@ -31,7 +31,7 @@ The function is exported in both snake_case and camelCase form from `vector-inde
 |------|-------|------|
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Backward-compatibility validation and schema-report generation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,13 +40,11 @@ The function is exported in both snake_case and camelCase form from `vector-inde
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Schema compatibility validation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/10-schema-compatibility-validation.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 128

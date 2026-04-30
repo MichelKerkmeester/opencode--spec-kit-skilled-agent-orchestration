@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-005` and confirm the
 
 - Objective: Verify `clickup.clickup_get_teams({})` returns workspace team data without error.
 - Real user request: `"List my ClickUp workspaces."`
-- Prompt: `As a manual-testing orchestrator, call the ClickUp get_teams tool using the canonical clickup.clickup_get_teams({}) form through Code Mode against the live ClickUp MCP server. Verify the call succeeds and returns workspace team data. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call the ClickUp get_teams tool using the canonical clickup.clickup_get_teams({}) form through Code Mode against the live ClickUp MCP server. Verify the call succeeds and returns workspace team data. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: invoke via `call_tool_chain` with a snippet calling the canonical form.
 - Expected signals: tool returns without error; response contains team objects with `id` and `name`; at least one team present.
 - Desired user-visible outcome: A short report listing the team names found and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-005` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, call the ClickUp get_teams tool using the canonical clickup.clickup_get_teams({}) form through Code Mode against the live ClickUp MCP server. Verify the call succeeds and returns workspace team data. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call the ClickUp get_teams tool using the canonical clickup.clickup_get_teams({}) form through Code Mode against the live ClickUp MCP server. Verify the call succeeds and returns workspace team data. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

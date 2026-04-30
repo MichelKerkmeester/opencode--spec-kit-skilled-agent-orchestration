@@ -31,7 +31,7 @@ The hooks barrel and hooks README were brought back into sync with the implement
 | `mcp_server/hooks/response-hints.ts` | Hook | Response hint hook |
 | `mcp_server/hooks/memory-surface.ts` | Hook | Auto-surface UX hook |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,8 +42,6 @@ The hooks barrel and hooks README were brought back into sync with the implement
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Hooks README and export alignment
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/12-hooks-readme-and-export-alignment.md`

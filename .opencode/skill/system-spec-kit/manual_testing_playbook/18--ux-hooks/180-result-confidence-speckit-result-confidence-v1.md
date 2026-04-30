@@ -13,11 +13,13 @@ This scenario validates result confidence scoring (SPECKIT_RESULT_CONFIDENCE_V1)
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `180` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify per-result calibrated confidence with 4-factor weighting
-- Prompt: `As a runtime-hook validation operator, validate Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) against SPECKIT_RESULT_CONFIDENCE_V1. Verify 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_boost, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify per-result calibrated confidence with 4-factor weighting.
+- Real user request: `Please validate Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) against SPECKIT_RESULT_CONFIDENCE_V1 and tell me whether the expected signals are present: 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_boost, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM).`
+- RCAF Prompt: `As a runtime-hook validation operator, validate Result confidence (SPECKIT_RESULT_CONFIDENCE_V1) against SPECKIT_RESULT_CONFIDENCE_V1. Verify 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_boost, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: 4 factors: margin 0.35, channel agreement 0.30, reranker support 0.20, anchor density 0.15; HIGH_THRESHOLD=0.7; LOW_THRESHOLD=0.4; labels: high/medium/low; confidence drivers: large_margin, multi_channel_agreement, reranker_boost, anchor_density; requestQuality: good/weak/gap; heuristic only (no LLM)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if per-result confidence uses 4-factor heuristic weighting (margin/channel/reranker/anchor) blended with a score-prior calibration term, labels match thresholds, and drivers are reported; FAIL if heuristic factors missing, thresholds wrong, labels missing, or LLM called in hot path
 
 ---
@@ -57,8 +59,7 @@ Per-result confidence output + factor breakdown + label assignments + driver lis
 
 Verify confidence-scoring.ts module loaded → Confirm flag is not forced off → Check factor weights (0.35/0.30/0.20/0.15) → Inspect HIGH_THRESHOLD=0.7 and LOW_THRESHOLD=0.4 → Verify driver detection logic → Check requestQuality computation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/19-result-confidence.md](../../feature_catalog/18--ux-hooks/19-result-confidence.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

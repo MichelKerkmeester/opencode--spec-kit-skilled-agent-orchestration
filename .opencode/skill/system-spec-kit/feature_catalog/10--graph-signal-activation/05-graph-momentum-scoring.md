@@ -1,7 +1,6 @@
 ---
 title: "Graph momentum scoring"
 description: "Describes the temporal degree delta signal that scores memories higher when they gain new graph edges recently, applied as a capped +0.05 additive bonus in Stage 2."
-audited_post_018: true
 ---
 
 # Graph momentum scoring
@@ -34,7 +33,7 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 |------|-------|------|
 | `mcp_server/lib/graph/graph-signals.ts` | Lib | Graph momentum and depth signals |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ When no snapshot exists for the 7-day lookback (common during initial rollout), 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Graph momentum scoring
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/05-graph-momentum-scoring.md`

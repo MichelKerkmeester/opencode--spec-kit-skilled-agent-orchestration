@@ -1,7 +1,6 @@
 ---
 title: "Encoding-intent capture at index time"
 description: "Encoding-intent capture classifies content as `document`, `code` or `structured_data` at index time using heuristic scoring."
-audited_post_018: true
 ---
 
 # Encoding-intent capture at index time
@@ -30,7 +29,7 @@ The classification is stored as read-only metadata on the `encoding_intent` colu
 |------|-------|------|
 | `mcp_server/lib/search/encoding-intent.ts` | Lib | Encoding intent classification |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -39,7 +38,6 @@ The classification is stored as read-only metadata on the `encoding_intent` colu
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Encoding-intent capture at index time
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md`

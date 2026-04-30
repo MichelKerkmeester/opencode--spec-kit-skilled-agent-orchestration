@@ -13,11 +13,13 @@ This scenario validates Agent consumption instrumentation (G-NEW-2) for `012`. I
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `012` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm wiring with inert runtime
-- Prompt: `As an evaluation validation operator, validate Agent consumption instrumentation (G-NEW-2) against the documented validation surface. Verify logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm wiring with inert runtime.
+- Real user request: `Please validate Agent consumption instrumentation (G-NEW-2) against the documented validation surface and tell me whether the expected signals are present: Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors.`
+- RCAF Prompt: `As an evaluation validation operator, validate Agent consumption instrumentation (G-NEW-2) against the documented validation surface. Verify logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Logger gate is closed (inert); telemetry handlers are wired but produce no output; no runtime errors
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Handlers execute without error and produce no telemetry output (inert mode); FAIL: Telemetry output produced or handler errors
 
 ---
@@ -53,8 +55,7 @@ Instrumentation trace showing handler wiring + logger gate state + empty telemet
 
 Verify logger gate configuration → Check handler registration → Inspect inert/active mode toggle
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/08-agent-consumption-instrumentation.md](../../feature_catalog/09--evaluation-and-measurement/08-agent-consumption-instrumentation.md)
 

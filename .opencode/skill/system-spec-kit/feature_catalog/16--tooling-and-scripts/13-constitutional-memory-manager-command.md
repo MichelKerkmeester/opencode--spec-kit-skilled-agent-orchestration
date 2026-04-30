@@ -57,13 +57,11 @@ The supporting command indexes and operator-facing docs now consistently describ
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Constitutional memory manager command
-- Current reality source: direct command/docs audit of `.opencode/command/memory/*.md` plus the live docs-alignment regression in `scripts/tests/memory-learn-command-docs.vitest.ts`
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/13-constitutional-memory-manager-command.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 147

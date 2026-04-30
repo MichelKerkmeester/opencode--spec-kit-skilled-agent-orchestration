@@ -15,27 +15,14 @@ This scenario validates SessionStart priming (startup).
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs the current startup contract: a `Session Context` startup surface, `Recovery Tools`, `Structural Context`, and `Startup Payload Contract` sections when the startup brief is available; Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`); CocoIndex Code availability status; Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`); graph-quality context sourced from `graphQualitySummary`; and resume instructions that point to `/spec_kit:resume` and the packet continuity chain. Output must stay within `SESSION_PRIME_TOKEN_BUDGET` (2000 tokens).
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - No prior session state required (fresh startup scenario)
-- **Prompt**: `As a context-and-code-graph validation operator, validate SessionStart primes fresh session against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=startup (fresh session), outputs the current startup contract: Session Context, Recovery Tools, Structural Context, and Startup Payload Contract sections when the startup brief is available; Spec Kit Memory tools (memory_context, memory_match_triggers, memory_search); CocoIndex availability status; Code Graph tools (code_graph_scan, code_graph_query, code_graph_context, code_graph_status); graph-quality context sourced from graphQualitySummary; and resume instructions that point to /spec_kit:resume and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens). Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `hook-session-start.vitest.ts` pass for startup source
-  - Startup output contains `Session Context` and `Recovery Tools`
-  - Recovery tools mention `memory_context`, `memory_match_triggers`, `memory_search`
-  - Recovery tools mention `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`
-  - CocoIndex status line shows either "available" or "missing" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence
-  - Startup output contains `Structural Context` when the startup brief is available
-  - Startup output contains `Startup Payload Contract` when the startup brief is available
-  - Startup payload transport includes `"kind": "startup"`, `"producer": "startup_brief"`, and `sectionKeys` containing `structural-context`
-  - Startup brief fixture includes `graphQualitySummary`, and the startup formatter keeps graph-quality information on the structural-context path
-  - Resume instruction: `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain
-  - Output length stays within 2000 tokens (8000 chars)
-- **Pass/fail criteria**:
-  - PASS: Startup sections, payload contract, tool references, graph-quality evidence, CocoIndex status, and token budget all match the live startup contract
-  - FAIL: Missing startup sections, missing payload or graph-quality evidence, incorrect CocoIndex status, or output exceeds 2000 tokens
+
+- Objective: Verify that the SessionStart hook, when triggered with `source=startup` (fresh session), outputs the current startup contract: a `Session Context` startup surface, `Recovery Tools`, `Structural Context`, and `Startup Payload Contract` sections when the startup brief is available; Spec Kit Memory tools (`memory_context`, `memory_match_triggers`, `memory_search`); CocoIndex Code availability status; Code Graph tools (`code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`); graph-quality context sourced from `graphQualitySummary`; and resume instructions that point to `/spec_kit:resume` and the packet continuity chain; Output must stay within `SESSION_PRIME_TOKEN_BUDGET` (2000 tokens).
+- Real user request: `` Please validate SessionStart primes fresh session against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts and tell me whether the expected signals are present: All vitest tests in `hook-session-start.vitest.ts` pass for startup source; Startup output contains `Session Context` and `Recovery Tools`; Recovery tools mention `memory_context`, `memory_match_triggers`, `memory_search`; Recovery tools mention `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`; CocoIndex status line shows either "available" or "missing" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence; Startup output contains `Structural Context` when the startup brief is available; Startup output contains `Startup Payload Contract` when the startup brief is available; Startup payload transport includes `"kind": "startup"`, `"producer": "startup_brief"`, and `sectionKeys` containing `structural-context`; Startup brief fixture includes `graphQualitySummary`, and the startup formatter keeps graph-quality information on the structural-context path; Resume instruction: `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain; Output length stays within 2000 tokens (8000 chars). ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate SessionStart primes fresh session against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-session-start.vitest.ts. Verify the SessionStart hook, when triggered with source=startup (fresh session), outputs the current startup contract: Session Context, Recovery Tools, Structural Context, and Startup Payload Contract sections when the startup brief is available; Spec Kit Memory tools (memory_context, memory_match_triggers, memory_search); CocoIndex availability status; Code Graph tools (code_graph_scan, code_graph_query, code_graph_context, code_graph_status); graph-quality context sourced from graphQualitySummary; and resume instructions that point to /spec_kit:resume and the packet continuity chain. Output must stay within SESSION_PRIME_TOKEN_BUDGET (2000 tokens). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `hook-session-start.vitest.ts` pass for startup source; Startup output contains `Session Context` and `Recovery Tools`; Recovery tools mention `memory_context`, `memory_match_triggers`, `memory_search`; Recovery tools mention `code_graph_scan`, `code_graph_query`, `code_graph_context`, `code_graph_status`; CocoIndex status line shows either "available" or "missing" based on `.opencode/skill/mcp-coco-index/mcp_server/.venv/bin/ccc` existence; Startup output contains `Structural Context` when the startup brief is available; Startup output contains `Startup Payload Contract` when the startup brief is available; Startup payload transport includes `"kind": "startup"`, `"producer": "startup_brief"`, and `sectionKeys` containing `structural-context`; Startup brief fixture includes `graphQualitySummary`, and the startup formatter keeps graph-quality information on the structural-context path; Resume instruction: `/spec_kit:resume` with the `handover.md -> _memory.continuity -> spec docs` chain; Output length stays within 2000 tokens (8000 chars)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Startup sections, payload contract, tool references, graph-quality evidence, CocoIndex status, and token budget all match the live startup contract; FAIL: Missing startup sections, missing payload or graph-quality evidence, incorrect CocoIndex status, or output exceeds 2000 tokens
 
 ---
 
@@ -184,8 +171,7 @@ Test output showing char count
 
 Check `shared.ts` SESSION_PRIME_TOKEN_BUDGET constant
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/03-session-start-priming.md](../../feature_catalog/22--context-preservation-and-code-graph/03-session-start-priming.md)
 

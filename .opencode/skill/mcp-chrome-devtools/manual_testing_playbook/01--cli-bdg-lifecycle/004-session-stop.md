@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-004` and confirm th
 
 - Objective: Verify `bdg stop` exits 0; subsequent `bdg status` shows no active session; no leaked Chrome processes attributable to bdg.
 - Real user request: `"Stop my debug session and clean up."`
-- Prompt: `As a manual-testing orchestrator, stop the active bdg session through the bdg CLI against an active session. Verify subsequent bdg status reports no active session. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, stop the active bdg session through the bdg CLI against an active session. Verify subsequent bdg status reports no active session. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session from BDG-002; run stop; verify status; check for leaked processes.
 - Expected signals: stop exits 0; status shows no active session; `pgrep -fl chrome` does not show bdg-launched Chrome processes (or count returns to baseline).
 - Desired user-visible outcome: A short report confirming cleanup with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-004` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, stop the active bdg session through the bdg CLI against an active session. Verify subsequent bdg status reports no active session. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, stop the active bdg session through the bdg CLI against an active session. Verify subsequent bdg status reports no active session. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

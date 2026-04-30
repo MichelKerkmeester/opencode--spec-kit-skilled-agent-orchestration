@@ -13,13 +13,14 @@ This scenario validates the operator-visible retention sweep. It proves that an 
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify `memory_retention_sweep` consumes `memory_index.delete_after` without deleting retained rows.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - Spec Kit Memory MCP tools are available.
-  - A disposable spec folder is used for the inserted row.
-  - Terminal transcript capture is enabled.
-- **Prompt**: `As a Spec Kit operator, create one governed ephemeral memory with deleteAfter in the past, preview it with memory_retention_sweep dryRun, run the real sweep, verify the row is gone and audit metadata names retention_expired, then repeat with SPECKIT_RETENTION_SWEEP_INTERVAL_MS=1000 in a disposable server runtime to prove the scheduled sweep fires. Return PASS/FAIL with evidence paths.`
+
+- Objective: Verify `memory_retention_sweep` consumes `memory_index.delete_after` without deleting retained rows.
+- Real user request: `` Please validate Memory retention sweep basic flow against the documented validation surface and tell me whether the expected signals are present: Dry-run returns `dryRun: true`, `swept: 0`, and a candidate containing the saved row.; Real sweep returns `dryRun: false`, `swept >= 1`, and `deletedIds` includes the expired row.; The follow-up `memory_context` call does not return the unique temporary title or trigger phrase.; Governance/audit evidence records `reason: "retention_expired"` and preserves the original `delete_after`.; Interval test removes the second expired row without manual sweep invocation. ``
+- RCAF Prompt: `` As a maintenance validation operator, validate Memory retention sweep basic flow against the documented validation surface. Verify Dry-run returns `dryRun: true`, `swept: 0`, and a candidate containing the saved row.; Real sweep returns `dryRun: false`, `swept >= 1`, and `deletedIds` includes the expired row.; The follow-up `memory_context` call does not return the unique temporary title or trigger phrase.; Governance/audit evidence records `reason: "retention_expired"` and preserves the original `delete_after`.; Interval test removes the second expired row without manual sweep invocation. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Dry-run returns `dryRun: true`, `swept: 0`, and a candidate containing the saved row.; Real sweep returns `dryRun: false`, `swept >= 1`, and `deletedIds` includes the expired row.; The follow-up `memory_context` call does not return the unique temporary title or trigger phrase.; Governance/audit evidence records `reason: "retention_expired"` and preserves the original `delete_after`.; Interval test removes the second expired row without manual sweep invocation
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if the expected signals are present without contradicting evidence; FAIL if required signals are missing or execution cannot complete.
 
 ---
 
@@ -103,8 +104,7 @@ If the interval server is still running, stop it with `Ctrl-C`.
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - MCP docs: [mcp_server/README.md](../../mcp_server/README.md)
 - Source: `.opencode/skill/system-spec-kit/mcp_server/lib/governance/memory-retention-sweep.ts`

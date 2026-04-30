@@ -13,11 +13,13 @@ This scenario validates Multi-feature annotation coverage for `137`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `137` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify known multi-feature files have annotation count >= 2
-- Prompt: `As a tooling validation operator, validate Multi-feature annotation coverage against handlers/memory-save.ts. Verify known multi-feature files have annotation count >= 2. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify known multi-feature files have annotation count >= 2.
+- Real user request: `Please validate Multi-feature annotation coverage against handlers/memory-save.ts and tell me whether the expected signals are present: All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate.`
+- RCAF Prompt: `As a tooling validation operator, validate Multi-feature annotation coverage against handlers/memory-save.ts. Verify known multi-feature files have annotation count >= 2. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All known multi-feature files carry >= 2 annotations; annotations are semantically appropriate
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all checked multi-feature files have >= 2 annotations and no obviously-missing features
 
 ---
@@ -54,8 +56,7 @@ File list with annotation counts + sample content verification
 
 Review file implementation scope → Compare against catalog feature boundaries → Add missing annotations
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 

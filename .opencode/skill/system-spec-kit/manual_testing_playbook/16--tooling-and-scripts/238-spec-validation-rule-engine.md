@@ -13,11 +13,13 @@ This scenario validates spec validation rule engine for `238`. It focuses on con
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the validation orchestrator against compliant, warning-bearing, and phased fixtures and confirm the engine exposes stable human and JSON results without collapsing the severity model. Phase 017 extends the scenario so strict validation must also surface continuity freshness, malformed evidence markers, and duplicate scope-normalizer helpers.
 
-- Objective: Confirm clean validation, warning behavior, strict escalation, recursive phase validation, and the Phase 017 strict add-ons
-- Prompt: `As a tooling validation operator, validate Spec Validation Rule Engine against the documented validation surface. Verify clean validation, warning behavior, strict escalation, recursive phase validation, continuity-freshness warnings, malformed evidence-marker failure, and duplicate-normalizer failure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm clean validation, warning behavior, strict escalation, recursive phase validation, and the Phase 017 strict add-ons.
+- Real user request: `Please validate Spec Validation Rule Engine against the documented validation surface and tell me whether the expected signals are present: compliant fixture exits cleanly with JSON output; warning fixture returns non-zero; strict mode escalates warning-bearing runs; recursive phase validation emits aggregate phase results; the Phase 017 strict add-ons surface the documented failures.`
+- RCAF Prompt: `As a tooling validation operator, validate Spec Validation Rule Engine against the documented validation surface. Verify clean validation, warning behavior, strict escalation, recursive phase validation, continuity-freshness warnings, malformed evidence-marker failure, and duplicate-normalizer failure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: compliant fixture exits cleanly with JSON output; warning fixture returns non-zero; strict mode escalates warning-bearing runs; recursive phase validation emits aggregate phase results; the Phase 017 strict add-ons surface the documented failures
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the orchestrator preserves the documented severity and recursion behavior across the baseline runs and enforces the Phase 017 strict add-ons
 
 ---
@@ -57,8 +59,7 @@ Validation transcript for the warning-bearing fixture plus JSON output for the c
 
 Inspect `scripts/spec/validate.sh`, `.speckit.yaml` rule ordering, `scripts/validation/*.ts`, and `scripts/rules/check-*.sh` severity mapping if warnings, strict escalation, or recursive phase reporting are inconsistent
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/24-spec-validation-rule-engine.md](../../feature_catalog/16--tooling-and-scripts/24-spec-validation-rule-engine.md)
 

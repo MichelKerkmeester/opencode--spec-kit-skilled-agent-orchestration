@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-013` and confirm the
 
 - Objective: Verify a chain where the first call deliberately fails (invalid id) and is caught, then a fallback `get_user` succeeds — chain returns both outcomes.
 - Real user request: `"If my first call fails, fall back to a basic info call."`
-- Prompt: `As a manual-testing orchestrator, run a chain where the first call deliberately fails (invalid id) and the second is a fallback get_user, with try/catch around the first against the live ClickUp API. Verify the chain returns both the caught error and the fallback success. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a chain where the first call deliberately fails (invalid id) and the second is a fallback get_user, with try/catch around the first against the live ClickUp API. Verify the chain returns both the caught error and the fallback success. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` with try/catch around the first call; second call runs unconditionally.
 - Expected signals: chain returns object with `error` and `fallback` keys; error is structured (not a runtime exception that aborts the chain); fallback contains user data.
 - Desired user-visible outcome: A short report quoting both the caught error message and the fallback user data with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-013` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run a chain where the first call deliberately fails (invalid id) and the second is a fallback get_user, with try/catch around the first against the live ClickUp API. Verify the chain returns both the caught error and the fallback success. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a chain where the first call deliberately fails (invalid id) and the second is a fallback get_user, with try/catch around the first against the live ClickUp API. Verify the chain returns both the caught error and the fallback success. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

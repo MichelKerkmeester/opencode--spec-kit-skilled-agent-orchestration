@@ -14,19 +14,14 @@ This scenario validates the resource-map template rollout.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that `templates/resource-map.md` exists on disk, that every intended discovery surface references it, and that the spec-document classifier recognizes `resource-map.md` as a canonical packet document.
-- **Prerequisites**:
-  - Working directory is the project root
-  - `templates/resource-map.md` exists
-  - The rollout edits are present in the documented template, guide, reference, and config surfaces
-- **Prompt**: `As a context-preservation validation operator, validate the Resource map template rollout against Manual: confirm the cross-cutting template exists, that the discovery surfaces and CLAUDE.md reference resource-map.md, and that the spec-doc classifier includes resource-map.md. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - `test -f` confirms `templates/resource-map.md` exists
-  - `rg -n "resource-map\\.md"` returns matches in the targeted template, guide, reference, config, and runtime instruction surfaces
-  - `mcp_server/lib/config/spec-doc-paths.ts` contains `resource-map.md` in `SPEC_DOCUMENT_FILENAMES`
-- **Pass/fail criteria**:
-  - PASS: the template exists, every target discovery surface references it, and the spec-doc classifier includes it
-  - FAIL: the template is missing, any required surface has no match, or the classifier omits it
+
+- Objective: Verify that `templates/resource-map.md` exists on disk, that every intended discovery surface references it, and that the spec-document classifier recognizes `resource-map.md` as a canonical packet document.
+- Real user request: `` Please validate Resource map template against Manual: confirm the cross-cutting template exists, that the discovery surfaces and CLAUDE.md reference resource-map.md, and that the spec-doc classifier includes resource-map.md and tell me whether the expected signals are present: `test -f` confirms `templates/resource-map.md` exists; `rg -n "resource-map\\.md"` returns matches in the targeted template, guide, reference, config, and runtime instruction surfaces; `mcp_server/lib/config/spec-doc-paths.ts` contains `resource-map.md` in `SPEC_DOCUMENT_FILENAMES`. ``
+- RCAF Prompt: `` As a context-preservation validation operator, validate the Resource map template rollout against Manual: confirm the cross-cutting template exists, that the discovery surfaces and CLAUDE.md reference resource-map.md, and that the spec-doc classifier includes resource-map.md. Verify `test -f` confirms `templates/resource-map.md` exists; `rg -n "resource-map\\.md"` returns matches in the targeted template, guide, reference, config, and runtime instruction surfaces; `mcp_server/lib/config/spec-doc-paths.ts` contains `resource-map.md` in `SPEC_DOCUMENT_FILENAMES`. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `test -f` confirms `templates/resource-map.md` exists; `rg -n "resource-map\\.md"` returns matches in the targeted template, guide, reference, config, and runtime instruction surfaces; `mcp_server/lib/config/spec-doc-paths.ts` contains `resource-map.md` in `SPEC_DOCUMENT_FILENAMES`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: the template exists, every target discovery surface references it, and the spec-doc classifier includes it; FAIL: the template is missing, any required surface has no match, or the classifier omits it
 
 ---
 
@@ -88,8 +83,7 @@ Grep output with at least one `resource-map.md` match per target surface
 
 Patch whichever documentation or config surface drifted, then rerun the grep to confirm coverage is complete
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/25-resource-map-template.md](../../feature_catalog/22--context-preservation-and-code-graph/25-resource-map-template.md)
 

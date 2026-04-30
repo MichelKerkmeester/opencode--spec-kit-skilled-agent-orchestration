@@ -41,7 +41,7 @@ Confidence drivers (`large_margin`, `multi_channel_agreement`, `reranker_boost`,
 | `mcp_server/lib/search/confidence-scoring.ts` | Lib | Per-result confidence computation, weighted factor scoring, label assignment, driver detection |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Central flag registry reference |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,8 +50,6 @@ Confidence drivers (`large_margin`, `multi_channel_agreement`, `reranker_boost`,
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks
-- Source feature title: Result confidence scoring
-- Current reality source: mcp_server/lib/search/confidence-scoring.ts module header and implementation
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/19-result-confidence.md`

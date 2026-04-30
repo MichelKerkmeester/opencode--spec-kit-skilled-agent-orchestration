@@ -1,7 +1,6 @@
 ---
 title: "Calibrated overlap bonus"
 description: "Calibrated overlap bonus replaces the flat convergence bonus in RRF fusion with a query-aware scaled bonus that accounts for the number of overlapping channels and the mean normalized top score, gated by the SPECKIT_CALIBRATED_OVERLAP_BONUS flag."
-audited_post_018: true
 ---
 
 # Calibrated overlap bonus
@@ -33,7 +32,7 @@ Key constants: `CALIBRATED_OVERLAP_BETA = 0.15`, `CALIBRATED_OVERLAP_MAX = 0.06`
 | `shared/algorithms/rrf-fusion.ts` | Shared | `isCalibratedOverlapBonusEnabled()`, calibrated bonus computation in `fuseResultsMulti()` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Central flag registry reference |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Key constants: `CALIBRATED_OVERLAP_BETA = 0.15`, `CALIBRATED_OVERLAP_MAX = 0.06`
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Calibrated overlap bonus
-- Current reality source: shared/algorithms/rrf-fusion.ts module constants and `isCalibratedOverlapBonusEnabled()` implementation
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/21-calibrated-overlap-bonus.md`

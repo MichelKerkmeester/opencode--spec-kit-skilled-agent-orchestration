@@ -30,8 +30,8 @@ Current runtime behavior is documented in the source files below.
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Context preservation and code graph
+- Group: Context Preservation And Code Graph
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `22--context-preservation-and-code-graph/26-skill-graph-scan.md`
+
 <!-- /ANCHOR:source-metadata -->

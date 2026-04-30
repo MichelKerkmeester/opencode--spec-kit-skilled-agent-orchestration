@@ -28,6 +28,7 @@ Path-scoped rules enable differentiated validation based on:
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:rule-hierarchy -->
 ## 2. RULE HIERARCHY
 
@@ -44,6 +45,7 @@ ENVIRONMENT OVERRIDES (runtime control)
 ---
 
 <!-- /ANCHOR:rule-hierarchy -->
+
 <!-- ANCHOR:path-patterns -->
 ## 3. PATH PATTERNS
 
@@ -68,6 +70,7 @@ ENVIRONMENT OVERRIDES (runtime control)
 ---
 
 <!-- /ANCHOR:path-patterns -->
+
 <!-- ANCHOR:validation-rules -->
 ## 4. VALIDATION RULES
 
@@ -101,7 +104,6 @@ ENVIRONMENT OVERRIDES (runtime control)
 ---
 
 <!-- /ANCHOR:validation-rules -->
-<!-- /ANCHOR:id -->
 
 <!-- ANCHOR:usage -->
 ## 5. USAGE
@@ -139,6 +141,7 @@ ENVIRONMENT OVERRIDES (runtime control)
 ---
 
 <!-- /ANCHOR:usage -->
+
 <!-- ANCHOR:integration-points -->
 ## 6. INTEGRATION POINTS
 
@@ -157,6 +160,7 @@ Step 11 (Completion) runs validation as the first action.
 ---
 
 <!-- /ANCHOR:integration-points -->
+
 <!-- ANCHOR:future-enhancements -->
 ## 7. FUTURE ENHANCEMENTS
 
@@ -167,6 +171,7 @@ Planned but not yet implemented:
 ---
 
 <!-- /ANCHOR:future-enhancements -->
+
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
@@ -181,4 +186,7 @@ Planned but not yet implemented:
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator
+
+---
+
 <!-- /ANCHOR:related-resources -->

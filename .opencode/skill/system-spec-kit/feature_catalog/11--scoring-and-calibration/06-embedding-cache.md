@@ -1,7 +1,6 @@
 ---
 title: "Embedding cache"
 description: "Describes the SQLite-backed embedding cache keyed by SHA-256 content hash and model ID that avoids redundant embedding API calls on re-index, plus the request-scoped embedding reuse path for MMR reranking."
-audited_post_018: true
 ---
 
 # Embedding cache
@@ -37,7 +36,7 @@ The cache has no feature flag because cache misses fall through to normal embedd
 | `mcp_server/lib/cache/embedding-cache.ts` | Lib | Embedding Cache |
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Request-scoped `vectorEmbeddingCache` reuse for MMR reranking and map-based rehydration of diversified rows |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +46,6 @@ The cache has no feature flag because cache misses fall through to normal embedd
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Embedding cache
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/06-embedding-cache.md`

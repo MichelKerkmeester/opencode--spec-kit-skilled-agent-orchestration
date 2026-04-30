@@ -1,21 +1,25 @@
 ---
-title: "Shared Smart-Router Helpers for cli-* Skills"
-description: "Canonical helper-function bodies (_task_text, _guard_in_skill, discover_markdown_resources, score_intents, select_intents, route_<provider>_resources) shared across the five cli-* sibling skills. Each cli-* skill provides its own INTENT_SIGNALS, RESOURCE_MAP, LOADING_LEVELS, UNKNOWN_FALLBACK_CHECKLIST inline."
-trigger_phrases:
-  - "shared smart router"
-  - "cli smart router helpers"
-  - "discover_markdown_resources"
-  - "score_intents"
-  - "route resources helper"
-importance_tier: "supporting"
-contextType: "general"
+title: Shared Smart-Router Helpers for cli-* Skills
+description: Canonical helper-function bodies (_task_text, _guard_in_skill, discover_markdown_resources, score_intents, select_intents, route_<provider>_resources) shared across the five cli-* sibling skills. Each cli-* skill provides its own INTENT_SIGNALS, RESOURCE_MAP, LOADING_LEVELS, UNKNOWN_FALLBACK_CHECKLIST inline.
 ---
 
 # Shared Smart-Router Helpers (cli-* family)
 
 The five cli-* sibling skills (`cli-claude-code`, `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-opencode`) share an identical smart-router structure. The helper bodies below are byte-identical across all five files (except the `route_<provider>_resources` function name). Each cli-* SKILL.md provides its own provider-specific dictionaries (`INTENT_SIGNALS`, `RESOURCE_MAP`, `LOADING_LEVELS`, `UNKNOWN_FALLBACK_CHECKLIST`) inline; this reference holds the shared procedural code.
 
-## Helper functions
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+Canonical helper-function bodies (_task_text, _guard_in_skill, discover_markdown_resources, score_intents, select_intents, route_<provider>_resources) shared across the five cli-* sibling skills. Each cli-* skill provides its own INTENT_SIGNALS, RESOURCE_MAP, LOADING_LEVELS, UNKNOWN_FALLBACK_CHECKLIST inline.
+
+---
+
+<!-- /ANCHOR:overview -->
+
+<!-- ANCHOR:helper-functions -->
+## 2. HELPER FUNCTIONS
 
 ```python
 from pathlib import Path
@@ -111,7 +115,12 @@ def route_<PROVIDER>_resources(task):
 
 Replace `<PROVIDER>` with the provider slug (`claude_code`, `codex`, `copilot`, `gemini`, `opencode`).
 
-## Loading-level semantics
+---
+
+<!-- /ANCHOR:helper-functions -->
+
+<!-- ANCHOR:loading-level-semantics -->
+## 3. LOADING-LEVEL SEMANTICS
 
 | Level         | When to load            | Resources                                                       |
 | ------------- | ----------------------- | --------------------------------------------------------------- |
@@ -119,7 +128,12 @@ Replace `<PROVIDER>` with the provider slug (`claude_code`, `codex`, `copilot`, 
 | `CONDITIONAL` | If intent signals match | Intent-mapped reference docs from `RESOURCE_MAP`                |
 | `ON_DEMAND`   | Only on explicit request| Extended templates and patterns (gated by `ON_DEMAND_KEYWORDS`) |
 
-## UNKNOWN_FALLBACK return contract
+---
+
+<!-- /ANCHOR:loading-level-semantics -->
+
+<!-- ANCHOR:unknown-fallback-return-contract -->
+## 4. UNKNOWN_FALLBACK RETURN CONTRACT
 
 When no keyword matches `score_intents()` returns all-zero scores. The router returns:
 
@@ -135,7 +149,12 @@ When no keyword matches `score_intents()` returns all-zero scores. The router re
 
 The caller surfaces `disambiguation_checklist` to the user before re-routing.
 
-## Provider-specific dictionaries
+---
+
+<!-- /ANCHOR:unknown-fallback-return-contract -->
+
+<!-- ANCHOR:provider-specific-dictionaries -->
+## 5. PROVIDER-SPECIFIC DICTIONARIES
 
 Each cli-* SKILL.md provides its own:
 - `INTENT_SIGNALS` — provider-specific keyword-to-weight intent map
@@ -144,3 +163,7 @@ Each cli-* SKILL.md provides its own:
 - `UNKNOWN_FALLBACK_CHECKLIST` — provider-specific disambiguation prompts
 
 See the per-skill SKILL.md §2 Smart Routing for these inline dictionaries.
+
+---
+
+<!-- /ANCHOR:provider-specific-dictionaries -->

@@ -13,11 +13,13 @@ This scenario validates memory quality KPI reporting for `247`. It focuses on co
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that the KPI reporter can scan the full active specs tree or one scoped spec path, always prints structured JSON to stdout, and emits the compact operator summary to stderr without converting defect findings into hard failures.
 
-- Objective: Confirm global and scoped KPI scans, JSON output, and stderr summary behavior
-- Prompt: `As a tooling validation operator, validate Memory Quality KPI Reporting against bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh. Verify global and scoped KPI scans, JSON output, and stderr summary behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm global and scoped KPI scans, JSON output, and stderr summary behavior.
+- Real user request: `` Please validate Memory Quality KPI Reporting against bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh and tell me whether the expected signals are present: full and scoped scans both emit JSON; stderr summary line is present; scoped output contains `scope`; command exits 0. ``
+- RCAF Prompt: `As a tooling validation operator, validate Memory Quality KPI Reporting against bash .opencode/skill/system-spec-kit/scripts/kpi/quality-kpi.sh. Verify global and scoped KPI scans, JSON output, and stderr summary behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: full and scoped scans both emit JSON; stderr summary line is present; scoped output contains `scope`; command exits 0
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if both scan modes produce structured output and the summary line matches the documented contract
 
 ---
@@ -54,8 +56,7 @@ Full-run transcript, scoped-run transcript, and parsed `/tmp/quality-kpi.json` o
 
 Inspect `scripts/kpi/quality-kpi.sh`, markdown traversal logic, and trigger-phrase counting if scope handling or JSON generation is wrong
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/33-memory-quality-kpi-reporting.md](../../feature_catalog/16--tooling-and-scripts/33-memory-quality-kpi-reporting.md)
 

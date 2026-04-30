@@ -37,7 +37,7 @@ Canonical package artifacts:
 - [11. MCP PARALLEL INSTANCES](#11--mcp-parallel-instances)
 - [12. RECOVERY AND FAILURE](#12--recovery-and-failure)
 - [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
-- [14. FEATURE FILE INDEX](#14--feature-file-index)
+- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
 
 ---
 
@@ -439,7 +439,7 @@ Expected signals: Step 1: pre-session Chrome count baseline; Step 2: post-sessio
 
 ---
 
-## 14. FEATURE FILE INDEX
+## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI BDG LIFECYCLE
 

@@ -1,7 +1,6 @@
 ---
 title: "Classification-based decay"
 description: "Describes how FSRS decay rates vary by a two-dimensional multiplier matrix across context type and importance tier, so decisions never decay while scratch notes decay at 0.5x rate."
-audited_post_018: true
 ---
 
 # Classification-based decay
@@ -42,7 +41,7 @@ The combined multiplier uses `Infinity` for never-decay cases, which produces `R
 | `shared/scoring/folder-scoring.ts` | Shared | Shared folder scoring |
 | `shared/types.ts` | Shared | Type definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -69,7 +68,6 @@ The combined multiplier uses `Infinity` for never-decay cases, which produces `R
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Classification-based decay
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/04-classification-based-decay.md`

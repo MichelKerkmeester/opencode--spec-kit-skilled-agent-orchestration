@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that convergence STOP is blocked when answered questions don't map to original key questions.
 - Real user request: What stops the loop from answering the wrong questions and calling it done?
-- Prompt: `As a manual-testing orchestrator, validate the focus alignment quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard compares answered questions against the original key questions from initialization, and that a mismatch emits a guard_violation event with guard="focus_alignment" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the focus alignment quality guard for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify when composite convergence votes STOP, the guard compares answered questions against the original key questions from initialization, and that a mismatch emits a guard_violation event with guard="focus_alignment" and overrides the decision to CONTINUE. Return a concise operator-facing PASS/FAIL verdict with the key evidence.`
 - Expected execution process: Inspect the Quality Guard Protocol in the convergence reference first, then the YAML algorithm guard check, then the loop protocol Step 2c, then the state format guard_violation event schema.
-- Desired user-facing outcome: The user gets an accurate explanation of how the loop detects and blocks convergence on off-topic answers.
+- Desired user-visible outcome: The user gets an accurate explanation of how the loop detects and blocks convergence on off-topic answers.
 - Expected signals: guard_violation event logged with guard="focus_alignment", STOP decision overridden to CONTINUE, misaligned question flagged in violation detail.
 - Pass/fail posture: PASS if the focus_alignment guard rule (answered questions must map to originalKeyQuestions), its violation logging, and its STOP-override behavior are consistent across convergence.md, loop_protocol.md, auto.yaml, and state_format.md; FAIL if any of those elements drift or contradict.
 

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-003` and confirm th
 
 - Objective: Verify `bdg status 2>&1 | jq '.'` succeeds AND parsed object contains `state` and `url` fields.
 - Real user request: `"Get the bdg status as JSON."`
-- Prompt: `As a manual-testing orchestrator, query bdg session status as JSON through the bdg CLI against an active session. Verify output is valid JSON with state and url fields. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, query bdg session status as JSON through the bdg CLI against an active session. Verify output is valid JSON with state and url fields. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes BDG-002 ran successfully (active session); run jq pipeline.
 - Expected signals: jq pipeline succeeds (no parse error); fields `state` and `url` present.
 - Desired user-visible outcome: A short report quoting the parsed `state` and `url` values with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-003` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, query bdg session status as JSON through the bdg CLI against an active session. Verify output is valid JSON with state and url fields. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, query bdg session status as JSON through the bdg CLI against an active session. Verify output is valid JSON with state and url fields. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

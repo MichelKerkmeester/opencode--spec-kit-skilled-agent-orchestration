@@ -45,8 +45,6 @@ The shipped extractor behavior in this slice currently works as follows:
 | `.opencode/skill/system-spec-kit/scripts/extractors/index.ts` | Barrel export | Exposes the extractor-layer API surface, including file, diagram, session, implementation-guide, contamination, quality, and activity-signal modules |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Session Extraction and Enrichment
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit of the extractor-layer files and their exported behavior
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/27-session-extraction-and-enrichment.md`

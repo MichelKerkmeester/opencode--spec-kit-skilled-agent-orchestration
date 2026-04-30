@@ -1,7 +1,6 @@
 ---
 title: "Dynamic server instructions at MCP initialization"
 description: "Dynamic server instructions inject a spec-doc record-system overview (total memories, spec folder count, channels, stale count) into the MCP instruction payload at startup."
-audited_post_018: true
 ---
 
 # Dynamic server instructions at MCP initialization
@@ -31,7 +30,7 @@ When the spec-doc record server starts up, it now tells the calling AI how many 
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isDynamicInitEnabled()` flag accessor (`SPECKIT_DYNAMIC_INIT`, default ON) |
 | `mcp_server/lib/cognitive/rollout-policy.ts` | Lib | `isFeatureEnabled()` used by the flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ When the spec-doc record server starts up, it now tells the calling AI how many 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Dynamic server instructions at MCP initialization
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/14-dynamic-server-instructions-at-mcp-initialization.md`

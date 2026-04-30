@@ -1,7 +1,6 @@
 ---
 title: "Quality gate timer persistence"
 description: "Quality gate timer persistence stores the warn-only countdown timestamp in SQLite so server restarts do not reset the 14-day graduation period."
-audited_post_018: true
 ---
 
 # Quality gate timer persistence
@@ -28,7 +27,7 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 |------|-------|------|
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,7 +36,6 @@ The `qualityGateActivatedAt` timestamp in `save-quality-gate.ts` was stored pure
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Gemini review P1 fixes (Phase 015)
-- Source feature title: Quality gate timer persistence
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/14-quality-gate-timer-persistence.md`

@@ -31,7 +31,7 @@ The weights were chosen to prioritize relevance over speed while still penalizin
 |------|-------|------|
 | `mcp_server/lib/eval/eval-quality-proxy.ts` | Lib | Quality proxy formula |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,14 +42,10 @@ Test file removed: `mcp_server/tests/ceiling-quality.vitest.ts`.
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: Quality proxy formula
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/05-quality-proxy-formula.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 009

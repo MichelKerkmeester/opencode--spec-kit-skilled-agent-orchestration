@@ -2,7 +2,6 @@
 title: "Feature flag reference mapping note"
 description: "Records the slug-based mapping contract for the feature-flag-reference catalog category."
 type: meta-note
-audited_post_018: true
 ---
 
 # Feature flag reference mapping note
@@ -28,8 +27,8 @@ No source files are listed yet.
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Feature flag reference
+- Group: Feature Flag Reference
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `19--feature-flag-reference/08-audit-phase-020-mapping-note.md`
+
 <!-- /ANCHOR:source-metadata -->

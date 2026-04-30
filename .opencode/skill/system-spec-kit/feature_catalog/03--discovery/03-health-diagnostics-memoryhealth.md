@@ -42,7 +42,7 @@ All health validation failures return MCP error envelopes with `E_INVALID_INPUT`
 | `mcp_server/lib/response/envelope.ts` | MCP success/error envelope helpers |
 | `mcp_server/lib/search/vector-index.ts` | Database access facade used by the handler |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -54,8 +54,6 @@ All health validation failures return MCP error envelopes with `E_INVALID_INPUT`
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Discovery
-- Source feature title: Health diagnostics (memory_health)
-- Current reality source: `mcp_server/handlers/memory-crud-health.ts`, public schemas, and discovery test coverage
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `03--discovery/03-health-diagnostics-memoryhealth.md`

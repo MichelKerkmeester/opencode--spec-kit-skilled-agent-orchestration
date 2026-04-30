@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-019` and confirm th
 
 - Objective: Verify `CHROME_PATH=/nonexistent/chrome bdg https://example.com 2>&1` exits non-zero and stderr names the missing binary or contains "browser not found".
 - Real user request: `"Try to start bdg with no Chrome installed and confirm the error is clear."`
-- Prompt: `As a manual-testing orchestrator, simulate a missing-browser scenario by setting CHROME_PATH to a non-existent binary and starting bdg through the bdg CLI against the missing-browser path. Verify the error names the missing binary. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, simulate a missing-browser scenario by setting CHROME_PATH to a non-existent binary and starting bdg through the bdg CLI against the missing-browser path. Verify the error names the missing binary. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run a single CLI command with `CHROME_PATH` overridden to a guaranteed-missing path; capture exit code and stderr; assert non-zero exit and informative message.
 - Expected signals: exit code != 0; stderr contains the missing path string OR a phrase like "browser not found" / "executable not found" / "no such file".
 - Desired user-visible outcome: A short report quoting the actual error message and exit code with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-019` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, simulate a missing-browser scenario by setting CHROME_PATH to a non-existent binary and starting bdg through the bdg CLI against the missing-browser path. Verify the error names the missing binary. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, simulate a missing-browser scenario by setting CHROME_PATH to a non-existent binary and starting bdg through the bdg CLI against the missing-browser path. Verify the error names the missing binary. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-019` and confirm the
 
 - Objective: Verify `github.github_list_user_repos()` returns array of repo objects with `name`, `owner.login`, `private` fields.
 - Real user request: `"List my GitHub repos."`
-- Prompt: `As a manual-testing orchestrator, list repos owned by the authenticated GitHub user through Code Mode against the live GitHub API. Verify the response is a non-empty array of repo objects. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, list repos owned by the authenticated GitHub user through Code Mode against the live GitHub API. Verify the response is a non-empty array of repo objects. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation; assumes `github_GITHUB_TOKEN` env var per CM-008.
 - Expected signals: response is array; each entry has `name`, `owner.login`, `private` fields; array length > 0 (most accounts have at least one repo).
 - Desired user-visible outcome: A short report quoting count + first-repo name and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-019` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, list repos owned by the authenticated GitHub user through Code Mode against the live GitHub API. Verify the response is a non-empty array of repo objects. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, list repos owned by the authenticated GitHub user through Code Mode against the live GitHub API. Verify the response is a non-empty array of repo objects. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

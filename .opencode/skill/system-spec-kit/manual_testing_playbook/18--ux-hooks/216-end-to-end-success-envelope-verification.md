@@ -13,11 +13,13 @@ This scenario validates End-to-end success-envelope verification for `216`. It f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `216` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together
-- Prompt: `As a runtime-hook validation operator, validate End-to-end success-envelope verification against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together.
+- Real user request: `` Please validate End-to-end success-envelope verification against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts and tell me whether the expected signals are present: Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate End-to-end success-envelope verification against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/context-server.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify finalized success envelopes preserve appended hints, auto-surfaced context, and token metadata correctness together. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Context-server and hook suites pass, success envelopes append auto-surface hints, preserve `autoSurfacedContext`, and keep `meta.tokenCount` aligned with the finalized serialized payload
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted suites pass and the assertions prove the final success envelope preserves hints, context, and token metadata end to end
 
 ---
@@ -54,8 +56,7 @@ Test transcript + key assertion output for success-envelope and token-alignment 
 
 Inspect `context-server.ts`, `hooks/index.ts`, and `hooks/response-hints.ts` if any success-envelope field or final token count regresses
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/13-end-to-end-success-envelope-verification.md](../../feature_catalog/18--ux-hooks/13-end-to-end-success-envelope-verification.md)
 

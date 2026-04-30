@@ -29,7 +29,7 @@ _memory:
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: [NAME]
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3-plus-govern | v2.2 -->
 
 <!-- WHEN TO USE THIS TEMPLATE:
 Level 3+ (+Govern) is appropriate when:

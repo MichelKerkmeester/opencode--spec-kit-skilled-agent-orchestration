@@ -13,11 +13,13 @@ This scenario validates /memory:manage command routing for `186`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `186` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `/memory:manage` default stats dashboard and subcommand routing for the currently supported management modes
-- Prompt: `As a tooling validation operator, validate /memory:manage command routing against /memory:manage. Verify /memory:manage default stats dashboard and subcommand routing for the currently supported management modes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `/memory:manage` default stats dashboard and subcommand routing for the currently supported management modes.
+- Real user request: `` Please validate /memory:manage command routing against /memory:manage and tell me whether the expected signals are present: No-args shows stats dashboard via `memory_stats()` + `memory_list()`; scan routes to `memory_index_scan()`; health routes to `memory_health()`; checkpoint subcommands route to checkpoint tools; ingest subcommands route to ingest tools; unrecognized mode returns STATUS=FAIL. ``
+- RCAF Prompt: `As a tooling validation operator, validate /memory:manage command routing against /memory:manage. Verify /memory:manage default stats dashboard and subcommand routing for the currently supported management modes. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: No-args shows stats dashboard via `memory_stats()` + `memory_list()`; scan routes to `memory_index_scan()`; health routes to `memory_health()`; checkpoint subcommands route to checkpoint tools; ingest subcommands route to ingest tools; unrecognized mode returns STATUS=FAIL
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Default shows stats dashboard, each subcommand invokes its dedicated tool, unrecognized mode errors cleanly; FAIL: Default mode skips stats, subcommand routes to wrong tool, or unrecognized mode does not error
 
 ---
@@ -60,8 +62,7 @@ Tool invocation logs for each subcommand; stats dashboard output for default mod
 
 Verify argument routing logic in Section 4 of manage.md → Check mode parsing in mandatory first action → Confirm tool-to-mode mapping → Inspect confirmation gates on destructive operations (delete, bulk-delete, checkpoint restore)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/13-constitutional-memory-manager-command.md](../../feature_catalog/16--tooling-and-scripts/13-constitutional-memory-manager-command.md)
 - Command file: [.opencode/command/memory/manage.md](../../../../command/memory/manage.md)

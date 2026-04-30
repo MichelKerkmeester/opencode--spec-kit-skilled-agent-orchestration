@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that removing the pause sentinel lets the loop resume from read-state rather than re-initializing.
 - Real user request: After I remove the pause file, tell me where the loop resumes from and what it logs.
-- Prompt: `As a manual-testing orchestrator, validate the pause-resume contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify removing research/.deep-research-pause lets the research loop log a resumed event and continue from the read-state step, and removing {spec_folder}/review/.deep-research-pause lets the review loop do the same, instead of either mode starting from scratch. Return a concise verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the pause-resume contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify removing research/.deep-research-pause lets the research loop log a resumed event and continue from the read-state step, and removing {spec_folder}/review/.deep-research-pause lets the review loop do the same, instead of either mode starting from scratch. Return a concise verdict.`
 - Expected execution process: Inspect the loop protocol resume-after-pause wording, then the event schema, then the YAML session behavior for resumed runs.
-- Desired user-facing outcome: The user is told that resume continues from the persisted state after logging a resumed event.
+- Desired user-visible outcome: The user is told that resume continues from the persisted state after logging a resumed event.
 - Expected signals: The loop logs `resumed`, continues from state read, and does not recreate config/strategy files during a valid resume.
 - Pass/fail posture: PASS if resume continues from persisted state after logging a resumed event; FAIL if resume implies a fresh initialization path.
 

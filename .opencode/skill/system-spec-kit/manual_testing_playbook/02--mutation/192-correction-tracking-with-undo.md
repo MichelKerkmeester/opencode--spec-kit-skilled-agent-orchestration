@@ -14,11 +14,13 @@ This scenario validates Correction tracking with undo for `192`. It focuses on C
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `192` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm library-level correction recording, stability rollback, and scoped undo behavior
-- Prompt: `As a mutation validation operator, validate Correction tracking with undo against record_correction(). Verify library-level correction recording, stability rollback, and scoped undo behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm library-level correction recording, stability rollback, and scoped undo behavior.
+- Real user request: `` Please validate Correction tracking with undo against record_correction() and tell me whether the expected signals are present: `record_correction()` persists correction metadata plus before/after stability values; stability penalties and boosts are visible for both memories; `undo_correction()` restores original stability, marks the correction row undone, and removes only the correction-specific causal edge; no MCP handler or tool-dispatch path is required for the validation. ``
+- RCAF Prompt: `As a mutation validation operator, validate Correction tracking with undo against record_correction(). Verify library-level correction recording, stability rollback, and scoped undo behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `record_correction()` persists correction metadata plus before/after stability values; stability penalties and boosts are visible for both memories; `undo_correction()` restores original stability, marks the correction row undone, and removes only the correction-specific causal edge; no MCP handler or tool-dispatch path is required for the validation
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if direct library exercise proves correction recording and scoped undo behavior work as documented without implying a live end-user MCP mutation endpoint
 
 ---
@@ -58,8 +60,7 @@ Direct invocation output or focused test harness output + correction row/history
 
 Confirm `SPECKIT_RELATIONS` is enabled; verify the correction row captured the expected stability snapshots; inspect evidence prefix matching for scoped causal-edge deletion; if deletion is over-broad, review legacy fallback handling and correction-owned edge attribution
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/09-correction-tracking-with-undo.md](../../feature_catalog/02--mutation/09-correction-tracking-with-undo.md)
 

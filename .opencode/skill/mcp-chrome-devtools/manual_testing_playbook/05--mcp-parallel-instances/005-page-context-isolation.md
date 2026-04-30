@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-018` and confirm th
 
 - Objective: Verify a cookie `bdg_test=BDG-018` set in `chrome_devtools_1` appears in `chrome_devtools_1`'s `getCookies` output and does NOT appear in `chrome_devtools_2`'s `getCookies` output.
 - Real user request: `"Confirm that cookies set in one MCP browser don't leak to the other one."`
-- Prompt: `As a manual-testing orchestrator, set a cookie in chrome_devtools_1 then check it does NOT appear in chrome_devtools_2 through Code Mode against both MCP instances. Verify cookie isolation. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set a cookie in chrome_devtools_1 then check it does NOT appear in chrome_devtools_2 through Code Mode against both MCP instances. Verify cookie isolation. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: navigate both instances to the same origin; set cookie in instance 1 via `dom eval`; call `getCookies` on both; assert cookie present in 1, absent in 2.
 - Expected signals: cookie set succeeds in instance 1; `getCookies` on instance 1 includes `bdg_test`; `getCookies` on instance 2 does NOT include `bdg_test`.
 - Desired user-visible outcome: A short report listing the cookie name in instance 1, "absent in instance 2", and "ISOLATION CONFIRMED" with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-018` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, set a cookie in chrome_devtools_1 then check it does NOT appear in chrome_devtools_2 through Code Mode against both MCP instances. Verify cookie isolation. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set a cookie in chrome_devtools_1 then check it does NOT appear in chrome_devtools_2 through Code Mode against both MCP instances. Verify cookie isolation. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

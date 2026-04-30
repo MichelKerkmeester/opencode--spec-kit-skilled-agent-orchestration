@@ -1,7 +1,6 @@
 ---
 title: "Temporal-structural coherence scoring"
 description: "Describes the coherence dimension in the quality loop that scores basic content structure, future-dated completion claims, and unresolved or self-referential causal links."
-audited_post_018: true
 ---
 
 # Temporal-structural coherence scoring
@@ -49,12 +48,7 @@ The verify-fix-verify retry cycle in `mcp_server/handlers/quality-loop.ts` is **
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
+- Group: Scoring And Calibration
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md`
-
-- Group: Scoring and calibration
-- Source feature title: Temporal-structural coherence scoring
-- Current reality source: audit-D04 gap backfill
 <!-- /ANCHOR:source-metadata -->

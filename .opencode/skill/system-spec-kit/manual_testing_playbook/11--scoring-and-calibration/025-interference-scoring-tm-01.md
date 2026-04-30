@@ -14,11 +14,13 @@ This scenario validates Interference scoring (TM-01) for `025`. It focuses on Co
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `025` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm cluster penalty
-- Prompt: `As a scoring validation operator, validate Interference scoring (TM-01) against the documented validation surface. Verify active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm cluster penalty.
+- Real user request: `Please validate Interference scoring (TM-01) against the documented validation surface and tell me whether the expected signals are present: Active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count.`
+- RCAF Prompt: `As a scoring validation operator, validate Interference scoring (TM-01) against the documented validation surface. Verify active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Active near-duplicate cluster receives penalty; penalty reduces effective score; non-duplicates unaffected; inactive or deprecated siblings do not increase the active interference count
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Active duplicates are penalized with lower effective score while inactive or deprecated copies stay ignored; FAIL: No penalty is applied, inactive rows still count, or false positive penalties appear
 
 ---
@@ -55,8 +57,7 @@ Query output showing penalized vs unpenalized scores + state/tier verification f
 
 Verify similarity threshold, retrievable-row predicates, and penalty formula in `interference-scoring.ts`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/03-interference-scoring.md](../../feature_catalog/11--scoring-and-calibration/03-interference-scoring.md)
 

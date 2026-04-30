@@ -1,0 +1,17 @@
+{
+  "title": "040 sk-doc Conformance Sweep and Template Cleanup",
+  "description": "Brings all manual_testing_playbook, feature_catalog, and skill reference surfaces into strict sk-doc conformance; deletes templates/sharded; renames templates/stress-test → stress_test (with new README); aligns templates/changelog to sk-doc shape; renames templates/addendum/level3plus-govern → level3-plus-govern; sweeps all path references; rewrites .opencode/plugins/README.md per sk-doc README template.",
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "trigger_phrases": [
+    "040-sk-doc-conformance-sweep-and-template-cleanup",
+    "sk-doc conformance sweep",
+    "manual testing playbook conformance",
+    "feature catalog conformance",
+    "skill reference conformance",
+    "template cleanup",
+    "rcaf prompt conformance",
+    "level3plus-govern rename",
+    "stress-test stress_test rename"
+  ]
+}

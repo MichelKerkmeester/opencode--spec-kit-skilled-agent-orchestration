@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CC-025` and confirm the
 
 - Objective: Confirm `--agent write` writes a README to a temp path that contains a TABLE OF CONTENTS and >= 3 emoji-prefixed H2 headers.
 - Real user request: `Use Claude Code to generate a README for a small demo skill. Make sure it follows our doc standards.`
-- Prompt: `As an external-AI conductor wanting a template-driven README for a small skill, dispatch claude -p --agent write to generate /tmp/cc-025-readme/README.md for a fictional skill called "Demo Skill" with one short description paragraph. Verify the file is written, contains a TABLE OF CONTENTS section, and has at least 3 emoji-prefixed H2 headers. Return a verdict naming the file path and the H2 emoji count.`
+- RCAF Prompt: `As an external-AI conductor wanting a template-driven README for a small skill, dispatch claude -p --agent write to generate /tmp/cc-025-readme/README.md for a fictional skill called "Demo Skill" with one short description paragraph. Verify the file is written, contains a TABLE OF CONTENTS section, and has at least 3 emoji-prefixed H2 headers. Return a verdict naming the file path and the H2 emoji count.`
 - Expected execution process: External-AI orchestrator pre-creates the temp directory, dispatches with `--agent write`, then verifies the file exists with TOC and emoji-prefixed H2 sections.
 - Expected signals: Dispatch exits 0. README file exists at the requested path. README contains a `TABLE OF CONTENTS` section. H2 headers include emojis (per sk-doc template enforcement).
 - Desired user-visible outcome: A working README the operator can use as the seed for a new skill, with documentation-quality discipline visible in the structure.

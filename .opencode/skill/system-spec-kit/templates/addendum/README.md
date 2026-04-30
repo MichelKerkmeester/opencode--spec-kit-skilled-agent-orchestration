@@ -45,7 +45,7 @@ Each addendum adds a distinct concern layer on top of the core spec template, ke
 | 1     | Core only                             |
 | 2     | Core + `level2-verify`                |
 | 3     | Level 2 + `level3-arch`               |
-| 3+    | Level 3 + `level3plus-govern`         |
+| 3+    | Level 3 + `level3-plus-govern`         |
 
 The `phase/` addendum is orthogonal to level composition -- it can be applied to any level when a spec is decomposed into ordered phase children via `/spec_kit:plan :with-phases` or `/spec_kit:complete :with-phases`. If the targeted packet is still `no-spec`, `partial-folder`, `repair-mode`, or `placeholder-upgrade`, those parent commands delegate to the shared intake contract in [`../../references/intake-contract.md`](../../references/intake-contract.md) first.
 
@@ -60,7 +60,7 @@ The `phase/` addendum is orthogonal to level composition -- it can be applied to
 | --------------------- | ---------------------------------------------- |
 | `level2-verify/`      | NFRs, edge cases, verification scaffolding     |
 | `level3-arch/`        | Architecture, risk, and dependency content     |
-| `level3plus-govern/`  | Governance, compliance, and approval sections  |
+| `level3-plus-govern/`  | Governance, compliance, and approval sections  |
 | `phase/`              | Phase decomposition headers and parent sections (`phase-child-header.md`, `phase-parent-section.md`) |
 
 <!-- /ANCHOR:contents -->

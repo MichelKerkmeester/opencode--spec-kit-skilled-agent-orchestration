@@ -76,7 +76,7 @@ Matrix status treats the code-graph cells as native/local validation surfaces ra
 | `mcp_server/code_graph/handlers/ccc-reindex.ts` | Handler | CCC reindex stub readiness block |
 | `mcp_server/code_graph/handlers/ccc-feedback.ts` | Handler | CCC feedback stub readiness block |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -88,8 +88,8 @@ Matrix status treats the code-graph cells as native/local validation surfaces ra
 ---
 
 ## 4. SOURCE METADATA
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md`
 
-- Group: Context Preservation and Code Graph
-- Source feature title: Code-graph readiness contract
 - Current implementation commits: `4a154c555`, `f253194bf`
-- Current reality source: `026-graph-and-context-optimization/016-foundational-runtime/002-infrastructure-primitives/implementation-summary.md` and `002-cluster-consumers/implementation-summary.md`

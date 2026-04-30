@@ -1,8 +1,6 @@
 ---
 title: "Session resume tool"
 description: "Composite MCP tool (session_resume) that merges memory resume context, code graph status, CocoIndex availability, and structural bootstrap hints into a detailed recovery payload."
-audited_post_018: true
-phase_018_change: "Clarified that session_resume is the detailed merged recovery surface after the phase-018 canonical /spec_kit:resume ladder and session_bootstrap first-call path."
 ---
 
 # Session resume tool
@@ -17,11 +15,11 @@ The `session_resume` handler performs three recovery steps: (1) a filesystem-fir
 
 ## 2. CURRENT REALITY
 
-`session_resume` is the detailed merged recovery surface behind the higher-level `/spec_kit:resume` workflow. The handler still merges the resume ladder, code-graph status, CocoIndex availability, and structural bootstrap hints into one response, but Phase 017 added a transport-bound auth check around any explicit `args.sessionId`.
+`session_resume` is the detailed merged recovery surface behind the higher-level `/spec_kit:resume` workflow. The handler still merges the resume ladder, code-graph status, CocoIndex availability, and structural bootstrap hints into one response, but The implementation added a transport-bound auth check around any explicit `args.sessionId`.
 
 Commit `debb5d7a8` introduced `mcp_server/lib/context/caller-context.ts` and wrapped the MCP transport with AsyncLocalStorage caller binding. Commit `87636d923` then changed `mcp_server/handlers/session-resume.ts` so a supplied `args.sessionId` is compared against the caller-bound session identity by default. In the normal strict mode, a mismatch is rejected instead of being treated as an informational hint. `MCP_SESSION_RESUME_AUTH_MODE=permissive` is the canary rollout flag that logs the mismatch and allows the request to continue.
 
-The rest of the merged recovery payload is unchanged in shape: `memory` still comes from the `handover.md -> _memory.continuity -> spec docs` ladder, `codeGraph` still reports freshness-aware graph state, `cocoIndex` still reports binary availability, and `structuralContext` plus `hints` still explain whether the caller should escalate to `session_bootstrap` or `code_graph_scan`. Phase 017 therefore hardened who may resume a session without changing the overall recovery contract that callers consume.
+The rest of the merged recovery payload is unchanged in shape: `memory` still comes from the `handover.md -> _memory.continuity -> spec docs` ladder, `codeGraph` still reports freshness-aware graph state, `cocoIndex` still reports binary availability, and `structuralContext` plus `hints` still explain whether the caller should escalate to `session_bootstrap` or `code_graph_scan`. The current implementation therefore hardened who may resume a session without changing the overall recovery contract that callers consume.
 
 ---
 
@@ -39,7 +37,7 @@ The rest of the merged recovery payload is unchanged in shape: `memory` still co
 | `mcp_server/lib/session/session-snapshot.ts` | Lib | Shared structural context contract used for recovery hints |
 | `mcp_server/tools/lifecycle-tools.ts` | Dispatch | Tool dispatch registration for session_resume |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,7 +47,6 @@ The rest of the merged recovery payload is unchanged in shape: `memory` still co
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Session resume tool
-- Current reality source: spec 024-compact-code-graph phases 020 and 027 plus Phase 017 caller-binding hardening
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/18-session-resume-tool.md`

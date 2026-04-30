@@ -14,11 +14,13 @@ This scenario validates scoring and fusion corrections for `079`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that the implementing symbols are present in the expected source files, then rerun the targeted regression suite from the `@spec-kit/mcp-server` workspace.
 
 - Objective: Confirm the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement with executable source and regression checks.
-- Prompt: `As a scoring validation operator, validate Scoring and fusion corrections against the documented validation surface. Verify the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement with executable source and regression checks. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: `rg` finds the corrected scoring, normalization, fusion, BM25 scope, interference-threshold, score-alias, and single-pass fusion symbols; the targeted Vitest run exits 0 with all files passing; the current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)`.
+- Real user request: `` Please validate Scoring and fusion corrections against the documented validation surface and tell me whether the expected signals are present: `rg` finds the corrected scoring, normalization, fusion, BM25 scope, interference-threshold, score-alias, and single-pass fusion symbols; the targeted Vitest run exits 0 with all files passing; the current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)`. ``
+- RCAF Prompt: `As a scoring validation operator, validate Scoring and fusion corrections against the documented validation surface. Verify the phase-017 scoring and fusion correction bundle plus the T315 single-pass fusion refinement with executable source and regression checks. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `rg` finds the corrected scoring, normalization, fusion, BM25 scope, interference-threshold, score-alias, and single-pass fusion symbols; the targeted Vitest run exits 0 with all files passing; the current baseline summary is `Test Files 8 passed (8)` and `Tests 350 passed (350)`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all required source anchors are present and the targeted Vitest bundle exits 0 with no failed tests.
 
 ---
@@ -54,8 +56,7 @@ Saved `rg` output showing each symbol in the expected implementation files plus 
 
 If a symbol is missing, inspect the corresponding implementation file listed in step 1 or 2. Use `mcp_server/lib/search/hybrid-search.ts` first when the missing anchor is `fusionLists`, `keywordFusionResults`, or `fuseResultsMulti(fusionLists)`. If Vitest fails, use the first failing file to localize the regression: `composite-scoring.vitest.ts` / `score-normalization.vitest.ts` for normalization math, `hybrid-search.vitest.ts` for BM25 scope handling and single-pass fusion wiring, `unit-rrf-fusion.vitest.ts` and `adaptive-fusion.vitest.ts` for fusion logic, `score-resolution-consistency.vitest.ts` for alias resolution, `interference.vitest.ts` for threshold wiring, and `intent-weighting.vitest.ts` for recency-aware intent weighting.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/13-scoring-and-fusion-corrections.md](../../feature_catalog/11--scoring-and-calibration/13-scoring-and-fusion-corrections.md)
 - Source files: `mcp_server/lib/scoring/composite-scoring.ts`, `mcp_server/lib/scoring/interference-scoring.ts`, `mcp_server/lib/search/hybrid-search.ts`, `mcp_server/lib/search/intent-classifier.ts`, `mcp_server/lib/search/pipeline/types.ts`, `mcp_server/lib/search/pipeline/stage2-fusion.ts`, `shared/algorithms/adaptive-fusion.ts`, `shared/algorithms/rrf-fusion.ts`

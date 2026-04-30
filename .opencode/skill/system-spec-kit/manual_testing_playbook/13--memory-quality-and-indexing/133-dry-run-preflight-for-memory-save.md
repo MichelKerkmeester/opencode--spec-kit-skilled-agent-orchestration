@@ -14,11 +14,13 @@ This scenario validates Dry-run preflight for memory_save for `133`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `133` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects
-- Prompt: `As a spec-doc record-quality validation operator, validate Dry-run preflight for memory_save against memory_stats(). Verify dry-run previews preflight plus semantic insufficiency without indexing side effects. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm dry-run previews preflight plus semantic insufficiency without indexing side effects.
+- Real user request: `` Please validate Dry-run preflight for memory_save against memory_stats() and tell me whether the expected signals are present: Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Dry-run preflight for memory_save against memory_stats(). Verify dry-run previews preflight plus semantic insufficiency without indexing side effects. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Dry-run returns preflight plus quality-loop and sufficiency payloads; thin memories report `INSUFFICIENT_CONTEXT_ABORT` without indexing/database mutation; `force:true` does not bypass insufficiency; rich non-dry-run save indexes the same file
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if dry-run surfaces sufficiency explicitly with no index mutation, forced thin save still rejects, and rich non-dry-run save makes the record searchable
 
 ---
@@ -58,8 +60,7 @@ Dry-run responses for thin and rich files + before/after stats + search outputs 
 
 Inspect `handlers/memory-save.ts` dryRun and insufficiency branches, `shared/parsing/memory-sufficiency.ts`, `handlers/quality-loop.ts`, and `lib/validation/preflight.ts`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md](../../feature_catalog/13--memory-quality-and-indexing/16-dry-run-preflight-for-memory-save.md)
 

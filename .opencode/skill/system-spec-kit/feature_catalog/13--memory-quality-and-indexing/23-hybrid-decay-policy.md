@@ -1,7 +1,6 @@
 ---
 title: "Hybrid decay policy"
 description: "Hybrid decay policy applies type-aware no-decay rules to permanent artifacts (decision, constitutional, critical context types) while all other types follow the standard FSRS schedule, gated by the SPECKIT_HYBRID_DECAY_POLICY flag."
-audited_post_018: true
 ---
 
 # Hybrid decay policy
@@ -38,7 +37,7 @@ The FSRS v4 formula for standard decay is: `R(t) = (1 + 19/81 * t/S)^(-0.5)` whe
 | `mcp_server/lib/cognitive/fsrs-scheduler.ts` | Lib | `isHybridDecayPolicyEnabled()`, `classifyHybridDecay()`, `applyHybridDecayPolicy()`, FSRS v4 algorithm |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isHybridDecayPolicyEnabled()` flag accessor (central registry) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ The FSRS v4 formula for standard decay is: `R(t) = (1 + 19/81 * t/S)^(-0.5)` whe
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Hybrid decay policy
-- Current reality source: mcp_server/lib/cognitive/fsrs-scheduler.ts hybrid decay section and `isHybridDecayPolicyEnabled()` implementation
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/23-hybrid-decay-policy.md`

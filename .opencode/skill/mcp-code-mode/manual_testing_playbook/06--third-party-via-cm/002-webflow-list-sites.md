@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-018` and confirm the
 
 - Objective: Verify `webflow.webflow_list_sites()` returns an array of site objects, each with `id` and a display-name field.
 - Real user request: `"What Webflow sites do I have access to?"`
-- Prompt: `As a manual-testing orchestrator, list all Webflow sites visible to the configured token through Code Mode against the live Webflow API. Verify the response is a non-empty array (or explicit empty if account has no sites). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, list all Webflow sites visible to the configured token through Code Mode against the live Webflow API. Verify the response is a non-empty array (or explicit empty if account has no sites). Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation; assumes `webflow_WEBFLOW_TOKEN` env var per CM-008.
 - Expected signals: response is an array; each entry has `id` and `displayName` (or `name`); array length >= 0 (empty is valid for fresh accounts).
 - Desired user-visible outcome: A short report listing site names + count and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-018` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, list all Webflow sites visible to the configured token through Code Mode against the live Webflow API. Verify the response is a non-empty array (or explicit empty if account has no sites). Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, list all Webflow sites visible to the configured token through Code Mode against the live Webflow API. Verify the response is a non-empty array (or explicit empty if account has no sites). Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

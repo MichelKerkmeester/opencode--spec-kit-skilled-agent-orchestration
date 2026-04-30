@@ -1,7 +1,6 @@
 ---
 title: "Embeddings and Retry API"
 description: "The embeddings and retry API exposes a stable provider-facing surface for embedding generation while pairing it with shared embedding lifecycle utilities and a background retry manager for failed vector creation."
-audited_post_018: true
 ---
 
 # Embeddings and Retry API
@@ -36,6 +35,6 @@ Behind that narrow facade, the requested source files show two complementary res
 
 ---
 ## 4. SOURCE METADATA
-- Group: Pipeline architecture
-- Source feature title: Embeddings and Retry API
-- Source spec: Deep research remediation 2026-03-26
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/23-embeddings-and-retry-api.md`

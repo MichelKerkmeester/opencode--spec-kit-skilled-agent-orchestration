@@ -1,7 +1,6 @@
 ---
 title: "5. Embedding and API"
 description: "This document captures the implemented behavior, source references, and validation scope for 5. Embedding and API."
-audited_post_018: true
 ---
 
 # 5. Embedding and API
@@ -54,7 +53,6 @@ Source file references are included in the flag tables above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: 5. Embedding and API
-- Current reality source: `mcp_server/lib/search/cross-encoder.ts`, `shared/embeddings/factory.ts`, `mcp_server/lib/search/local-reranker.ts`, `mcp_server/lib/search/graph-calibration.ts`, `mcp_server/lib/search/hybrid-search.ts`
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/05-5-embedding-and-api.md`

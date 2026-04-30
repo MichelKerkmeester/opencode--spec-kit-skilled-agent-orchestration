@@ -15,7 +15,14 @@ This snippet preserves the canonical packet/spec-kit operator workflow for `M-00
 
 ## 2. SCENARIO CONTRACT
 
-This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
+
+- Objective: This snippet preserves the canonical packet/spec-kit operator workflow for `M-008`.
+- Real user request: `Please validate Feature 09 Direct Manual Scenario (Per-memory History Log) against memory_save({ filePath:"<sandbox-spec-doc>", force:true }) and tell me whether the expected signals are present: repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage.`
+- RCAF Prompt: `As a mutation validation operator, validate Feature 09 Direct Manual Scenario (Per-memory History Log) against memory_save({ filePath:"<sandbox-spec-doc>", force:true }). Verify repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: repeated save/update activity is observable via retrieval output and packet metadata remains coherent for the same saved document lineage
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: direct operator run confirms per-record history behavior without relying only on automated suites.
 
 ---
 
@@ -43,8 +50,7 @@ verify sandbox file path and spec scope -> rerun with `force:true` -> inspect me
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/10-per-record-history-log.md](../../feature_catalog/02--mutation/10-per-record-history-log.md)
 

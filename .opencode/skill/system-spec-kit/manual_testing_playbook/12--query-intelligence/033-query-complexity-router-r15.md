@@ -14,11 +14,13 @@ This scenario validates Query complexity router (R15) for `033`. It focuses on C
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `033` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm query-class routing
-- Prompt: `As a query-intelligence validation operator, validate Query complexity router (R15) against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm query-class routing.
+- Real user request: `Please validate Query complexity router (R15) against the documented validation surface and tell me whether the expected signals are present: Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate Query complexity router (R15) against the documented validation surface. Verify simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Simple queries route to fewer channels; complex queries activate all channels; disabled flag falls back to default routing
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Channel count increases with complexity class; disabled flag uses default routing; FAIL: All queries use same channels or flag-disabled produces error
 
 ---
@@ -54,8 +56,7 @@ Channel selection trace for simple/moderate/complex queries + flag-disabled fall
 
 Verify complexity classification logic → Check channel mapping per class → Inspect feature flag fallback behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/01-query-complexity-router.md](../../feature_catalog/12--query-intelligence/01-query-complexity-router.md)
 

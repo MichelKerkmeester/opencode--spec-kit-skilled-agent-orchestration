@@ -1,7 +1,6 @@
 ---
 title: "Stage 3 effectiveScore fallback chain"
 description: "Describes the unified `effectiveScore()` fallback chain (`intentAdjustedScore -> rrfScore -> score -> similarity/100`) with `isFinite()` guards and [0,1] clamping used by Stage 3 reranking and cross-encoder mapping."
-audited_post_018: true
 ---
 
 # Stage 3 effectiveScore fallback chain
@@ -29,7 +28,7 @@ A search result can carry several different scores from different stages of proc
 | `mcp_server/lib/search/pipeline/stage3-rerank.ts` | Pipeline | `effectiveScore()` alias for `resolveEffectiveScore()`, used in cross-encoder mapping and MMR candidate scoring |
 | `mcp_server/lib/search/pipeline/types.ts` | Pipeline | `resolveEffectiveScore()` fallback chain implementation and `stage2Score` field on `PipelineRow` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -39,7 +38,6 @@ A search result can carry several different scores from different stages of proc
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Gemini review P1 fixes (Phase 015)
-- Source feature title: Stage 3 effectiveScore fallback chain
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/12-stage-3-effectivescore-fallback-chain.md`

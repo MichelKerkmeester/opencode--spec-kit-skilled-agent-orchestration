@@ -33,7 +33,7 @@ The final workflow still owns synthesis. After convergence, the synth phase read
 | `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Reference | Defines the final synthesis cleanup pass that consolidates the document. |
 | `.opencode/command/spec_kit/deep-research.md` | Command | Publishes `research/research.md` as a canonical loop output. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

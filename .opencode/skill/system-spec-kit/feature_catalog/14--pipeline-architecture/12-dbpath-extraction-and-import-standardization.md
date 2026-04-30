@@ -1,7 +1,6 @@
 ---
 title: "DB_PATH extraction and import standardization"
 description: "`DB_PATH` extraction and import standardization centralizes database path resolution into `shared/config.ts` and converts cross-boundary imports to workspace aliases."
-audited_post_018: true
 ---
 
 # DB_PATH extraction and import standardization
@@ -33,7 +32,7 @@ Multiple parts of the system were figuring out where the database lives in their
 | `scripts/memory/cleanup-orphaned-vectors.ts` | Script | DB cleanup script now consuming shared DB_PATH |
 | `scripts/spec-folder/folder-detector.ts` | Script | Spec-folder scanner consuming shared DB_PATH |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ Multiple parts of the system were figuring out where the database lives in their
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: DB_PATH extraction and import standardization
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/12-dbpath-extraction-and-import-standardization.md`

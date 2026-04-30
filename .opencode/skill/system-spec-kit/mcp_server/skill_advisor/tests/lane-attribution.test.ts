@@ -31,7 +31,7 @@ describe('012/004 affordance lane attribution', () => {
   it('routes affordance evidence through derived and graph-causal lanes only', () => {
     const projection = createFixtureProjection([
       skill({ id: 'mcp-chrome-devtools' }),
-      skill({ id: 'sk-code-web' }),
+      skill({ id: 'sk-code' }),
     ]);
 
     const result = scoreAdvisorPrompt('browser recorder failure', {
@@ -41,12 +41,12 @@ describe('012/004 affordance lane attribution', () => {
       affordances: [{
         skillId: 'mcp-chrome-devtools',
         triggers: ['browser recorder failure'],
-        enhances: [{ target: 'sk-code-web', weight: 0.8 }],
+        enhances: [{ target: 'sk-code', weight: 0.8 }],
       }],
     });
 
     const chrome = result.recommendations.find((entry) => entry.skill === 'mcp-chrome-devtools');
-    const web = result.recommendations.find((entry) => entry.skill === 'sk-code-web');
+    const web = result.recommendations.find((entry) => entry.skill === 'sk-code');
     const chromeDerived = chrome?.laneContributions.find((lane) => lane.lane === 'derived_generated');
     const webGraph = web?.laneContributions.find((lane) => lane.lane === 'graph_causal');
 

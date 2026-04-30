@@ -1,7 +1,6 @@
 ---
 title: "Chunk ordering preservation"
 description: "Chunk ordering preservation sorts collapsed multi-chunk results by `chunk_index` so the consuming agent reads content in document order."
-audited_post_018: true
 ---
 
 # Chunk ordering preservation
@@ -32,7 +31,7 @@ When multi-chunk results collapse back into a single memory during MPAB aggregat
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | Chunk/contentSource response typing |
 | `mcp_server/formatters/search-results.ts` | Formatter | Emits reassembled_chunks/file_read_fallback provenance in responses |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ When multi-chunk results collapse back into a single memory during MPAB aggregat
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Chunk ordering preservation
-- Current reality source: `mcp_server/lib/search/chunk-reassembly.ts`
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/03-chunk-ordering-preservation.md`

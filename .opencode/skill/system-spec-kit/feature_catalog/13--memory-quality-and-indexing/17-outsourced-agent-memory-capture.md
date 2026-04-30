@@ -1,7 +1,6 @@
 ---
 title: "Outsourced agent memory capture"
 description: "Outsourced agent memory capture keeps external CLI save payloads aligned with the current `generate-context.js` contract. It enforces hard-fail validation for explicit JSON data files, persists `nextSteps` fields into memory observations, and now documents the post-010 save gates that can still reject a valid handback after normalization."
-audited_post_018: true
 ---
 
 # Outsourced agent memory capture
@@ -38,7 +37,7 @@ Status: Implemented. Spec folder `015-outsourced-agent-handback` is complete and
 | scripts/utils/input-normalizer.ts | Scripts | nextSteps/next_steps field normalization into NEXT_ACTION observations |
 | scripts/extractors/session-extractor.ts | Scripts | Next:/Follow-up: pattern extraction from session transcripts |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -61,7 +60,6 @@ Status: Implemented. Spec folder `015-outsourced-agent-handback` is complete and
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Outsourced agent handback protocol
-- Current reality source: spec 015-outsourced-agent-handback (Complete)
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/17-outsourced-agent-memory-capture.md`

@@ -52,13 +52,11 @@ Stale references to "Sprint N", "Phase NNN", or "spec NNN" in non-test comments 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Feature catalog code references
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/11-feature-catalog-code-references.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenarios 135, 136, 137, 138

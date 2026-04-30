@@ -14,11 +14,13 @@ This scenario validates shadow feedback (SPECKIT_SHADOW_FEEDBACK) for `160`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `160` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify shadow scoring log entries are created and holdout evaluation runs
-- Prompt: `As a scoring validation operator, validate Shadow feedback (SPECKIT_SHADOW_FEEDBACK) against SPECKIT_SHADOW_FEEDBACK=true. Verify shadow scoring log entries are created and holdout evaluation runs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify shadow scoring log entries are created and holdout evaluation runs.
+- Real user request: `Please validate Shadow feedback (SPECKIT_SHADOW_FEEDBACK) against SPECKIT_SHADOW_FEEDBACK=true and tell me whether the expected signals are present: shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_rank, delta, direction; compareRanks() produces RankComparisonResult with kendallTau and ndcgDelta; evaluatePromotionGate() returns ready/wait/rollback; no live ranking columns mutated.`
+- RCAF Prompt: `As a scoring validation operator, validate Shadow feedback (SPECKIT_SHADOW_FEEDBACK) against SPECKIT_SHADOW_FEEDBACK=true. Verify shadow scoring log entries are created and holdout evaluation runs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: shadow_scoring_log table has rows with query_id, result_id, live_rank, shadow_rank, delta, direction; compareRanks() produces RankComparisonResult with kendallTau and ndcgDelta; evaluatePromotionGate() returns ready/wait/rollback; no live ranking columns mutated
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if shadow_scoring_log has entries after evaluation and live rankings unchanged; FAIL if log empty or live ranking columns were mutated
 
 ---
@@ -56,8 +58,7 @@ shadow_scoring_log rows + ShadowEvaluationReport output + test transcript
 
 Verify isShadowFeedbackEnabled() → Check initShadowScoringLog() created tables → Inspect selectHoldoutQueries() output → Verify logRankDelta() insert count → Check PROMOTION_THRESHOLD_WEEKS (2)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md](../../feature_catalog/11--scoring-and-calibration/20-shadow-feedback-holdout-evaluation.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../19--feature-flag-reference/028-1-search-pipeline-features-speckit.md)

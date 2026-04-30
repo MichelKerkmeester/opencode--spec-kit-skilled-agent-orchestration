@@ -1,7 +1,6 @@
 ---
 title: "Causal chain tracing (memory_drift_why)"
 description: "Covers the graph traversal tool that traces causal relationship chains to explain why decisions were made."
-audited_post_018: true
 ---
 
 # Causal chain tracing (memory_drift_why)
@@ -59,14 +58,9 @@ When contradictions are found, the response includes warning hints. Two memories
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/04-causal-chain-tracing-memorydriftwhy.md`
-
-- Group: Analysis
-- Source feature title: Causal chain tracing (memory_drift_why)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

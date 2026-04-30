@@ -33,7 +33,7 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `checkpoint_delete` |
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for checkpoint tools |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,8 +46,6 @@ Permanently removes a named checkpoint from the `checkpoints` table. Returns a b
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Checkpoint deletion (checkpoint_delete)
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/04-checkpoint-deletion-checkpointdelete.md`

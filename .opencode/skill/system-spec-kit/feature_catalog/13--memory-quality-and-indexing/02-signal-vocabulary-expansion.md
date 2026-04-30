@@ -1,7 +1,6 @@
 ---
 title: "Signal vocabulary expansion"
 description: "Signal vocabulary expansion adds CORRECTION and PREFERENCE categories to the trigger matcher for better intent detection."
-audited_post_018: true
 ---
 
 # Signal vocabulary expansion
@@ -31,7 +30,7 @@ Correction signals matter because they indicate the user is fixing a prior misun
 | `mcp_server/lib/parsing/trigger-matcher.ts` | Lib | Trigger phrase matching — CORRECTION and PREFERENCE signal categories added here |
 | `mcp_server/configs/cognitive.ts` | Core | Cognitive configuration defining signal category vocabulary |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ Correction signals matter because they indicate the user is fixing a prior misun
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Signal vocabulary expansion
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/02-signal-vocabulary-expansion.md`

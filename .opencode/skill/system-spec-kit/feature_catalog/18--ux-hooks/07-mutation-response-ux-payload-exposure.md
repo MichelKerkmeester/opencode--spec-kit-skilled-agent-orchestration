@@ -33,7 +33,7 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 | `shared/types.ts` | Shared | Type definitions |
 | `shared/utils/token-estimate.ts` | Shared | Token estimation utility |
 
-### Tests
+### Validation And Tests
 
 | Test File | Test Name | Coverage |
 |-----------|-----------|----------|
@@ -44,8 +44,6 @@ Mutation responses now expose UX payload data produced by post-mutation hooks, i
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Mutation response UX payload exposure
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/07-mutation-response-ux-payload-exposure.md`

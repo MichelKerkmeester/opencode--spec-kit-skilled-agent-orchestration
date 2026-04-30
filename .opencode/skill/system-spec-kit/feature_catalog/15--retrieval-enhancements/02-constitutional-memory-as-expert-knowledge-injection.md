@@ -1,7 +1,6 @@
 ---
 title: "Constitutional memory as expert knowledge injection"
 description: "Constitutional-tier memories receive retrieval directive metadata that instructs the LLM when to surface them."
-audited_post_018: true
 ---
 
 # Constitutional memory as expert knowledge injection
@@ -33,7 +32,7 @@ In the Stage 1 injection path, constitutional rows now use `shouldApplyScopeFilt
 | `mcp_server/lib/search/retrieval-directives.ts` | Lib | Constitutional retrieval directive enrichment |
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 constitutional candidate injection with scope filtering |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ In the Stage 1 injection path, constitutional rows now use `shouldApplyScopeFilt
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Constitutional memory as expert knowledge injection
-- Current reality source: `mcp_server/lib/search/retrieval-directives.ts` and `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts`
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/02-constitutional-memory-as-expert-knowledge-injection.md`

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-022` and confirm the
 
 - Objective: Verify setting `"disabled": true` for the GitHub manual removes its tools; reverting restores them.
 - Real user request: `"Temporarily disable the GitHub MCP for this session."`
-- Prompt: `As a manual-testing orchestrator, set disabled: true for the GitHub manual, restart Code Mode, list tools, then revert through Code Mode against the modified-then-restored config. Verify GitHub tools are absent during the disabled run and present after revert. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set disabled: true for the GitHub manual, restart Code Mode, list tools, then revert through Code Mode against the modified-then-restored config. Verify GitHub tools are absent during the disabled run and present after revert. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: backup config → patch GitHub manual to disabled → restart → list_tools (verify GitHub absent) → revert → restart → list_tools (verify GitHub present).
 - Expected signals: during disabled run, no `github.` entries in `list_tools()`; after revert, `github.` entries return.
 - Desired user-visible outcome: A short report listing tool counts before/during/after with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-022` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, set disabled: true for the GitHub manual, restart Code Mode, list tools, then revert through Code Mode against the modified-then-restored config. Verify GitHub tools are absent during the disabled run and present after revert. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set disabled: true for the GitHub manual, restart Code Mode, list tools, then revert through Code Mode against the modified-then-restored config. Verify GitHub tools are absent during the disabled run and present after revert. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

@@ -9,7 +9,17 @@ Interactive behavior for a one-pass review where findings are reported first and
 
 ---
 
-## 1. HUMAN INTERACTION BEHAVIOR
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+Interactive single-pass review behavior for human-facing review sessions.
+
+---
+
+<!-- /ANCHOR:overview -->
+
+<!-- ANCHOR:human-interaction-behavior -->
+## 2. HUMAN INTERACTION BEHAVIOR
 
 - Review first, implement second.
 - After publishing findings, ask the user what to do next before writing code.
@@ -25,7 +35,10 @@ Recommended next-step options:
 
 ---
 
-## 2. REPORT FLOW
+<!-- /ANCHOR:human-interaction-behavior -->
+
+<!-- ANCHOR:report-flow -->
+## 3. REPORT FLOW
 
 Use this flow for interactive review responses:
 
@@ -42,7 +55,10 @@ If no diff is present, report:
 
 ---
 
-## 3. MODE-SPECIFIC PRESENTATION
+<!-- /ANCHOR:report-flow -->
+
+<!-- ANCHOR:mode-specific-presentation -->
+## 4. MODE-SPECIFIC PRESENTATION
 
 Choose the lightest presentation that fits the request:
 
@@ -59,7 +75,10 @@ Presentation rules:
 
 ---
 
-## 4. PR AND PRE-COMMIT GUIDANCE
+<!-- /ANCHOR:mode-specific-presentation -->
+
+<!-- ANCHOR:pr-and-pre-commit-guidance -->
+## 5. PR AND PRE-COMMIT GUIDANCE
 
 For PR review:
 
@@ -75,8 +94,15 @@ For pre-commit or staged review:
 
 ---
 
-## 5. RELATED RESOURCES
+<!-- /ANCHOR:pr-and-pre-commit-guidance -->
+
+<!-- ANCHOR:related-resources -->
+## 6. RELATED RESOURCES
 
 - [review_core.md](./review_core.md) - Shared doctrine used by both interactive and deep review modes.
 - [quick_reference.md](./quick_reference.md) - Lightweight index for the review reference set.
 - [test_quality_checklist.md](./test_quality_checklist.md) - Test quality and coverage checks for changed tests.
+
+---
+
+<!-- /ANCHOR:related-resources -->

@@ -1,7 +1,6 @@
 ---
 title: "Filter Config Contract"
 description: "JSONC contract for the content-filter pipeline, covering stage order, filtering thresholds, and the loader behavior that deep-merges `filters.jsonc` with code defaults."
-audited_post_018: true
 ---
 
 # Filter Config Contract
@@ -49,10 +48,8 @@ The live contract is therefore both file-driven and code-guarded: `filters.jsonc
 | `.opencode/skill/system-spec-kit/config/README.md` | Documentation | Describes the three-stage filter pipeline and notes that `filters.jsonc` is loaded directly by the content-filter module |
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: Filter Config Contract
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/10-filter-config-contract.md`
 
 <!-- Wave 2 verification note: this file already documents every boolean toggle exposed in config/filters.jsonc: pipeline.enabled, noise.enabled, dedupe.enabled, and quality.enabled. No extra toggle matrix was needed. -->

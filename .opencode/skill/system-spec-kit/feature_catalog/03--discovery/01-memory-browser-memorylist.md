@@ -37,7 +37,7 @@ An empty-string `specFolder` is treated the same as omitting the filter entirely
 | `mcp_server/lib/search/vector-index.ts` | Database access facade used by the handler |
 | `mcp_server/utils/json-helpers.ts` | Parses `trigger_phrases` for `triggerCount` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,8 +48,6 @@ An empty-string `specFolder` is treated the same as omitting the filter entirely
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Discovery
-- Source feature title: Memory browser (memory_list)
-- Current reality source: `mcp_server/handlers/memory-crud-list.ts` and discovery test coverage
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `03--discovery/01-memory-browser-memorylist.md`

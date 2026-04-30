@@ -5,15 +5,6 @@ description: "Discovers the repo surfaces that define an agent beyond its canoni
 
 # Surface discovery
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 1. OVERVIEW
 
 Discovers the repo surfaces that define an agent beyond its canonical markdown file.

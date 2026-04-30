@@ -1,7 +1,6 @@
 ---
 title: "Folder-level relevance scoring"
 description: "Describes the four-factor weighted formula (recency, importance, activity and validation) that scores spec folders for two-phase retrieval, with archive folder multipliers and damped aggregation via DocScore."
-audited_post_018: true
 ---
 
 # Folder-level relevance scoring
@@ -34,7 +33,7 @@ This scoring enables two-phase retrieval: first rank folders by aggregated score
 | `shared/scoring/folder-scoring.ts` | Shared | Shared folder scoring |
 | `shared/types.ts` | Shared | Type definitions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -53,7 +52,6 @@ This scoring enables two-phase retrieval: first rank folders by aggregated score
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Folder-level relevance scoring
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/05-folder-level-relevance-scoring.md`

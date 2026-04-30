@@ -1,7 +1,6 @@
 ---
 title: "6. Debug and Telemetry"
 description: "This document captures the implemented behavior, source references, and validation scope for 6. Debug and Telemetry."
-audited_post_018: true
 ---
 
 # 6. Debug and Telemetry
@@ -57,7 +56,6 @@ Source file references are included in the flag tables above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: 6. Debug and Telemetry
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/06-6-debug-and-telemetry.md`

@@ -5,15 +5,6 @@ description: "Scores candidates across structural integrity, rule coherence, int
 
 # Five-dimension rubric
 
-## TABLE OF CONTENTS
-
-- [1. OVERVIEW](#1--overview)
-- [2. CURRENT REALITY](#2--current-reality)
-- [3. SOURCE FILES](#3--source-files)
-- [4. SOURCE METADATA](#4--source-metadata)
-
----
-
 ## 1. OVERVIEW
 
 Scores candidates across structural integrity, rule coherence, integration consistency, output quality, and system fitness.

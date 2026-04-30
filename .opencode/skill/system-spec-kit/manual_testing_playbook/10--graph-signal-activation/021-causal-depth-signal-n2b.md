@@ -14,11 +14,13 @@ This scenario validates Causal depth signal (N2b) for `021`. It focuses on Confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `021` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm normalized depth scoring
-- Prompt: `As a graph-signal validation operator, validate Causal depth signal (N2b) against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm normalized depth scoring.
+- Real user request: `Please validate Causal depth signal (N2b) against the documented validation surface and tell me whether the expected signals are present: Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Causal depth signal (N2b) against the documented validation surface. Verify depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Depth score normalized to [0,1]; deeper chains produce higher normalized values; shortcut edges do not reduce longest-path depth; cycle members share one bounded depth layer
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: All depth scores in [0,1]; deeper nodes score >= shallower nodes on the same chain; shortcut targets still reflect the deeper path; FAIL: Out-of-range values or incorrect depth ordering
 
 ---
@@ -54,8 +56,7 @@ Depth scoring output across multi-level graph + normalization range verification
 
 Verify normalization formula → Check SCC condensation / longest-path traversal → Inspect graph depth counting
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/06-causal-depth-signal.md](../../feature_catalog/10--graph-signal-activation/06-causal-depth-signal.md)
 

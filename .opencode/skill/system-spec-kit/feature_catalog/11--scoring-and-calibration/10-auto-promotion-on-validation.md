@@ -1,7 +1,6 @@
 ---
 title: "Auto-promotion on validation"
 description: "Describes automatic tier promotion triggered by positive validations (normal at 5, important at 10) with a throttle safeguard limiting promotions to 3 per 8-hour rolling window."
-audited_post_018: true
 ---
 
 # Auto-promotion on validation
@@ -46,8 +45,7 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
+- Group: Scoring And Calibration
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `11--scoring-and-calibration/10-auto-promotion-on-validation.md`
 
@@ -61,7 +59,7 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 | `mcp_server/handlers/checkpoints.ts` | Handler | `memory_validate` entrypoint wiring to auto-promotion |
 | `mcp_server/lib/scoring/confidence-tracker.ts` | Lib | Validation count updates used by promotion checks |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -72,8 +70,4 @@ Constitutional, critical, temporary and deprecated tiers are non-promotable. Eac
 ---
 
 ### SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Auto-promotion on validation
-- Current reality source: FEATURE_CATALOG.md
 <!-- /ANCHOR:source-metadata -->

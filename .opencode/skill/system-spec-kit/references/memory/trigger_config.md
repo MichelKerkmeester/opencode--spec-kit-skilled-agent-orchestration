@@ -34,6 +34,7 @@ This reference covers trigger phrase configuration, the MCP-based matching syste
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:trigger-phrases -->
 ## 2. TRIGGER PHRASES
 
@@ -178,6 +179,7 @@ Save-time trigger validation now applies sanitization rules to prevent low-quali
 ---
 
 <!-- /ANCHOR:trigger-phrases -->
+
 <!-- ANCHOR:manual-save-methods -->
 ## 3. MANUAL SAVE METHODS
 
@@ -216,6 +218,7 @@ Include any of these phrases in your message:
 ---
 
 <!-- /ANCHOR:manual-save-methods -->
+
 <!-- ANCHOR:customization -->
 ## 4. CUSTOMIZATION
 
@@ -291,6 +294,7 @@ _memory:
 ---
 
 <!-- /ANCHOR:customization -->
+
 <!-- ANCHOR:performance-targets -->
 ## 5. PERFORMANCE TARGETS
 
@@ -325,6 +329,7 @@ function optimizedDetection(userMessage: string): CompiledTrigger | undefined {
 ---
 
 <!-- /ANCHOR:performance-targets -->
+
 <!-- ANCHOR:best-practices -->
 ## 6. BEST PRACTICES
 
@@ -382,6 +387,7 @@ Before deploying custom triggers:
 ---
 
 <!-- /ANCHOR:best-practices -->
+
 <!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 
@@ -393,4 +399,7 @@ Before deploying custom triggers:
 
 ### Related Skills
 - `spec_kit_memory` - Integrated MCP tools for context preservation
+
+---
+
 <!-- /ANCHOR:related-resources -->

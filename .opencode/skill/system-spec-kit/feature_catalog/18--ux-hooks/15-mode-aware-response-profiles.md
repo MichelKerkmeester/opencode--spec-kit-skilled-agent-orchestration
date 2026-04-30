@@ -41,7 +41,7 @@ Backward compatible: when the flag is OFF or profile is omitted, the original re
 | `mcp_server/handlers/memory-context.ts` | Handler | Auto-routes an inferred profile when no explicit profile is supplied |
 | `mcp_server/tool-schemas.ts` | Schema | Public tool schemas now expose `profile` for `memory_context` and `memory_search` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -50,9 +50,6 @@ Backward compatible: when the flag is OFF or profile is omitted, the original re
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks
-- Source feature title: Mode-aware response profiles
-- Current reality source: `mcp_server/lib/response/profile-formatters.ts`, `mcp_server/handlers/memory-search.ts`, `mcp_server/handlers/memory-context.ts`, and `mcp_server/tool-schemas.ts`
-- phase_018_change: memory_context now auto-routes inferred profiles when no explicit profile is supplied
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/15-mode-aware-response-profiles.md`

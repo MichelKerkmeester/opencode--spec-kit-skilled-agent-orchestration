@@ -14,11 +14,13 @@ This scenario validates Entity normalization consolidation for `069`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `069` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm shared normalization path
-- Prompt: `As a spec-doc record-quality validation operator, validate Entity normalization consolidation against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm shared normalization path.
+- Real user request: `Please validate Entity normalization consolidation against the documented validation surface and tell me whether the expected signals are present: Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Entity normalization consolidation against the documented validation surface. Verify extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Extractor and linker produce identical normalized forms for same input; unicode entities handled consistently; no normalization divergence
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if extractor and linker produce identical normalized entities for all test inputs including unicode
 
 ---
@@ -54,8 +56,7 @@ Extractor output + linker output + side-by-side comparison showing parity
 
 Verify shared normalization function is used by both paths; check unicode handling; inspect normalization rules for edge cases
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/13-entity-normalization-consolidation.md](../../feature_catalog/13--memory-quality-and-indexing/13-entity-normalization-consolidation.md)
 

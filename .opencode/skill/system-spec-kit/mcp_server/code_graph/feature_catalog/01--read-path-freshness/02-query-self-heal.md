@@ -43,6 +43,13 @@ When stale files exceed the selective threshold or Git HEAD changed, query block
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts:1093-1120` | Handler | returns a structured unavailable envelope on readiness crashes |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:579-596` | Schema | defines the public `code_graph_query` schema |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:65-70` | Tool surface | validates required `operation` and `subject` before dispatch |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/01--read-path-freshness/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

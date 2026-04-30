@@ -13,7 +13,14 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-01
 
 ## 2. SCENARIO CONTRACT
 
-This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
+
+- Objective: This snippet preserves the canonical memory/spec-kit operator workflow for `M-011`.
+- Real user request: `` Please validate Gemini Runtime Path Resolution against the documented validation surface and tell me whether the expected signals are present: `ls -d .gemini` returns `.agents`; basename diff is empty; resolved count is `9`. ``
+- RCAF Prompt: `As a tooling validation operator, validate Gemini Runtime Path Resolution against the documented validation surface. Verify ls -d .gemini returns .agents; basename diff is empty; resolved count is 9. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `ls -d .gemini` returns `.agents`; basename diff is empty; resolved count is `9`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: symlink target, resolved file set, and count all match.
 
 ---
 
@@ -45,8 +52,7 @@ symlink missing, target mismatch, or file set divergence; collect evidence and i
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/14-source-dist-alignment-enforcement.md](../../feature_catalog/16--tooling-and-scripts/14-source-dist-alignment-enforcement.md)
 

@@ -14,11 +14,13 @@ This scenario validates Auto entity extraction (R10) for `048`. It focuses on Co
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `048` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm entity pipeline persistence
-- Prompt: `As a spec-doc record-quality validation operator, validate Auto entity extraction (R10) against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm entity pipeline persistence.
+- Real user request: `Please validate Auto entity extraction (R10) against the documented validation surface and tell me whether the expected signals are present: Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Auto entity extraction (R10) against the documented validation surface. Verify entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Entities extracted and persisted in entity tables; normalization applied (case, aliases); denylist entities excluded
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Entities extracted, normalized, persisted; denylist items absent; FAIL: Missing entities, denormalized values, or denylist items present
 
 ---
@@ -54,8 +56,7 @@ Entity table contents + normalization examples + denylist exclusion verification
 
 Verify entity extraction pipeline → Check normalization rules → Inspect denylist configuration
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/10-auto-entity-extraction.md](../../feature_catalog/13--memory-quality-and-indexing/10-auto-entity-extraction.md)
 

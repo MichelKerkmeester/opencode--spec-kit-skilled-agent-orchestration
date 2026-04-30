@@ -13,11 +13,13 @@ This scenario validates Checkpoint deletion (checkpoint_delete) for `EX-018`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-018` and confirm the expected signals without contradicting evidence.
 
-- Objective: Old snapshot cleanup
-- Prompt: `As a lifecycle validation operator, validate Checkpoint deletion (checkpoint_delete) against checkpoint_list(specFolder:"<sandbox-spec>"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Old snapshot cleanup.
+- Real user request: `Please validate Checkpoint deletion (checkpoint_delete) against checkpoint_list(specFolder:"<sandbox-spec>") and tell me whether the expected signals are present: Removed checkpoint absent from list.`
+- RCAF Prompt: `As a lifecycle validation operator, validate Checkpoint deletion (checkpoint_delete) against checkpoint_list(specFolder:"<sandbox-spec>"). Verify removed checkpoint absent from list. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Removed checkpoint absent from list
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if checkpoint removed from sandbox list
 
 ---
@@ -53,8 +55,7 @@ Before/after list outputs
 
 Validate name, `confirmName`, and sandbox scope; retry
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/04-checkpoint-deletion-checkpointdelete.md](../../feature_catalog/05--lifecycle/04-checkpoint-deletion-checkpointdelete.md)
 

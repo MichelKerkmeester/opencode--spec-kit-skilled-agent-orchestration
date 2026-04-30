@@ -13,11 +13,13 @@ This scenario validates Feature catalog annotation name validity for `136`. It f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `136` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify all annotation names cross-reference against catalog H3 headings with 0 invalid
-- Prompt: `As a tooling validation operator, validate Feature catalog annotation name validity against the documented validation surface. Verify all annotation names cross-reference against catalog H3 headings with 0 invalid. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify all annotation names cross-reference against catalog H3 headings with 0 invalid.
+- Real user request: `` Please validate Feature catalog annotation name validity against the documented validation surface and tell me whether the expected signals are present: sort -u` 2) Extract all H3 headings from `feature_catalog/FEATURE_CATALOG.md`: `grep "^### " FEATURE_CATALOG.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches. ``
+- RCAF Prompt: `As a tooling validation operator, validate Feature catalog annotation name validity against the documented validation surface. Verify all annotation names cross-reference against catalog H3 headings with 0 invalid. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: sort -u` 2) Extract all H3 headings from `feature_catalog/FEATURE_CATALOG.md`: `grep "^### " FEATURE_CATALOG.md` 3) Cross-reference: every annotation name must match an H3 heading exactly 4) Report any mismatches
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: Sorted annotation list + H3 heading list + diff showing 0 invalid entries
 
 ---
@@ -54,8 +56,7 @@ Sorted annotation list + H3 heading list + diff showing 0 invalid entries.
 
 Inspect the extracted annotation comments and the catalog H3 headings if any names fail to match exactly.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 

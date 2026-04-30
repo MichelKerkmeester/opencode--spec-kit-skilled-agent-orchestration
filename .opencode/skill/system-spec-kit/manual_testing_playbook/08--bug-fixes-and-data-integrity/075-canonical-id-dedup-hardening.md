@@ -14,11 +14,13 @@ This scenario validates Canonical ID dedup hardening for `075`. It focuses on Co
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `075` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm mixed-format ID dedup plus two-probe save-path hardening and parent-only index coverage
-- Prompt: `As a data-integrity validation operator, validate Canonical ID dedup hardening against the documented validation surface. Verify mixed-format ID dedup plus two-probe save-path hardening and parent-only index coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm mixed-format ID dedup plus two-probe save-path hardening and parent-only index coverage.
+- Real user request: `` Please validate Canonical ID dedup hardening against the documented validation surface and tell me whether the expected signals are present: Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity; same-path lookup uses two direct probes without nullable OR predicates; `idx_save_parent_canonical_path` and `idx_save_parent_content_hash_scope` exist with `WHERE parent_id IS NULL`. ``
+- RCAF Prompt: `As a data-integrity validation operator, validate Canonical ID dedup hardening against the documented validation surface. Verify mixed-format ID dedup plus two-probe save-path hardening and parent-only index coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Mixed-format IDs (numeric, string, prefixed) resolve to single canonical form; dedup produces exactly one result per logical entity; same-path lookup uses two direct probes without nullable OR predicates; `idx_save_parent_canonical_path` and `idx_save_parent_content_hash_scope` exist with `WHERE parent_id IS NULL`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all mixed-format IDs for the same entity resolve to one canonical ID with no duplicates and the save-path/index optimization evidence is present
 
 ---
@@ -56,8 +58,7 @@ Dedup input (mixed IDs) + dedup output (canonical IDs) + SQL/test evidence for `
 
 Inspect canonical ID resolution logic → Check format normalization rules → Verify same-path lookup is split into direct probes → Confirm schema migration/index creation coverage
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md](../../feature_catalog/08--bug-fixes-and-data-integrity/07-canonical-id-dedup-hardening.md)
 

@@ -33,7 +33,7 @@ This same reducer pass also refreshes `findings-registry.json` and `deep-researc
 | `.opencode/agent/deep-research.md` | Agent | Defines how iteration files feed next-focus guidance and reducer-owned state refresh. |
 | `.opencode/skill/sk-deep-research/assets/deep_research_dashboard.md` | Asset | Defines the dashboard sections the reducer fills from strategy and registry data. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

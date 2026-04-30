@@ -56,8 +56,6 @@ The requested files split into two groups. `run-ablation.ts`, `run-bm25-baseline
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Evaluation, benchmark, and import-policy tooling
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct audit of the `scripts/evals/` runners, boundary checks, and import-policy helper modules
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/31-evaluation-benchmark-and-import-policy-tooling.md`

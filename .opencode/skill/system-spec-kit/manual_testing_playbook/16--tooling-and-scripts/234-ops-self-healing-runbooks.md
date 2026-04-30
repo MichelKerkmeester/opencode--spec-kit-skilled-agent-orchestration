@@ -13,11 +13,13 @@ This scenario validates ops self-healing runbooks for `234`. It focuses on confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators exercise the shell runbook surface end to end and confirm the dispatcher exposes the documented failure classes, returns ownership metadata, and emits deterministic recovery or escalation payloads.
 
-- Objective: Confirm runbook listing, metadata lookup, success drills, and escalation drills
-- Prompt: `As a tooling validation operator, validate Ops Self-Healing Runbooks against the documented validation surface. Verify runbook listing, metadata lookup, success drills, and escalation drills. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm runbook listing, metadata lookup, success drills, and escalation drills.
+- Real user request: `` Please validate Ops Self-Healing Runbooks against the documented validation surface and tell me whether the expected signals are present: `list` prints four classes; `show` prints trigger, owner, escalation, and drill command; supported success drills emit recovery payloads; degraded drills emit escalation payloads or non-zero aggregate status. ``
+- RCAF Prompt: `As a tooling validation operator, validate Ops Self-Healing Runbooks against the documented validation surface. Verify runbook listing, metadata lookup, success drills, and escalation drills. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `list` prints four classes; `show` prints trigger, owner, escalation, and drill command; supported success drills emit recovery payloads; degraded drills emit escalation payloads or non-zero aggregate status
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the dispatcher and metadata surface behave deterministically and the drill outcomes match the current degraded-versus-supported reality
 
 ---
@@ -56,8 +58,7 @@ Shell transcript for list/show/drill commands, including JSON-like recovery or e
 
 Inspect `runbook.sh`, `ops-common.sh`, and the individual `heal-*.sh` runners if a class is missing, misrouted, or emits the wrong payload shape
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/20-ops-self-healing-runbooks.md](../../feature_catalog/16--tooling-and-scripts/20-ops-self-healing-runbooks.md)
 

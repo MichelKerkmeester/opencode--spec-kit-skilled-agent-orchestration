@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that the workflow classifies an existing valid scratch state as resumable before writing new files.
 - Real user request: I already have a deep-research scratch folder. Tell me whether the workflow will resume it or start over.
-- Prompt: `As a manual-testing orchestrator, validate the resume-classification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify config, JSONL, and strategy are inspected before new files are written and that a valid prior state skips re-initialization. Return a concise pass/fail verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the resume-classification contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify config, JSONL, and strategy are inspected before new files are written and that a valid prior state skips re-initialization. Return a concise pass/fail verdict.`
 - Expected execution process: Inspect the loop protocol resume rules, then the YAML session-classification branches, then the README auto-resume wording.
-- Desired user-facing outcome: The user gets a trustworthy explanation of when a session resumes instead of restarting.
+- Desired user-visible outcome: The user gets a trustworthy explanation of when a session resumes instead of restarting.
 - Expected signals: A four-state classification model exists, resume skips init writes, and completed sessions route differently from active resumes.
 - Pass/fail posture: PASS if protocol, YAML, and README align on classification and resume semantics; FAIL if resume behavior is underdefined or contradictory.
 

@@ -13,9 +13,13 @@ This scenario validates the shared code-graph readiness contract for `275`. It f
 
 ## 2. SCENARIO CONTRACT
 
-- Objective: Verify the code-graph handlers now emit `canonicalReadiness`, `trustState`, and `lastPersistedAt` through the shared readiness contract
-- Prompt: `As a context-and-code-graph validation operator, validate Code-graph readiness contract against the shared readiness helpers. Verify query, scan, status, context, ccc-status, ccc-reindex, and ccc-feedback all emit readiness fields through one shared contract; trustState values stay inside the canonical SharedPayloadTrustState vocabulary; and the CCC trio uses the documented readiness_not_applicable stub behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+- Objective: Verify the code-graph handlers now emit `canonicalReadiness`, `trustState`, and `lastPersistedAt` through the shared readiness contract.
+- Real user request: `Please validate Code-graph readiness contract against the shared readiness helpers and tell me whether the expected signals are present: shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior.`
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Code-graph readiness contract against the shared readiness helpers. Verify query, scan, status, context, ccc-status, ccc-reindex, and ccc-feedback all emit readiness fields through one shared contract; trustState values stay inside the canonical SharedPayloadTrustState vocabulary; and the CCC trio uses the documented readiness_not_applicable stub behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: shared readiness fields present across the sibling handlers; trustState values align with the canonical vocabulary; CCC trio exposes the documented stub behavior
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the sibling handlers now share one readiness contract instead of drifting by handler
 
 ---
@@ -53,8 +57,7 @@ Handler outputs for the six siblings plus the shared readiness test output
 
 Inspect `mcp_server/code_graph/lib/readiness-contract.ts`, the sibling handler files, and the readiness-contract test suites
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md](../../feature_catalog/22--context-preservation-and-code-graph/24-code-graph-readiness-contract.md)
 

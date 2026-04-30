@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-017` and confirm th
 
 - Objective: Verify `new_page` returns a new page ID; the page list shows >= 2 pages; `select_page` succeeds for both IDs.
 - Real user request: `"Open a new tab in the same browser instance and confirm both tabs are reachable."`
-- Prompt: `As a manual-testing orchestrator, open a new page in chrome_devtools_1 (additional to the initial page) through Code Mode against the chrome_devtools_1 MCP instance. Verify both pages are accessible via select_page. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, open a new page in chrome_devtools_1 (additional to the initial page) through Code Mode against the chrome_devtools_1 MCP instance. Verify both pages are accessible via select_page. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: navigate first page; call `new_page` for second; list pages; switch via `select_page` for both IDs.
 - Expected signals: `new_page` returns success with non-empty ID; list-pages output length >= 2; both `select_page` calls succeed.
 - Desired user-visible outcome: A short report listing both page IDs, the page count, and "both pages reachable" with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-017` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, open a new page in chrome_devtools_1 (additional to the initial page) through Code Mode against the chrome_devtools_1 MCP instance. Verify both pages are accessible via select_page. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, open a new page in chrome_devtools_1 (additional to the initial page) through Code Mode against the chrome_devtools_1 MCP instance. Verify both pages are accessible via select_page. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

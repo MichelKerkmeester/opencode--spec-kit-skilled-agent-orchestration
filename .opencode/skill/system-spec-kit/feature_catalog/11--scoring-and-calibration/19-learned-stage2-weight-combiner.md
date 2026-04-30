@@ -1,7 +1,6 @@
 ---
 title: "Learned Stage 2 weight combiner"
 description: "A regularized linear ranker that learns combination weights from accumulated Stage 2 signals, running in shadow-only mode behind the SPECKIT_LEARNED_STAGE2_COMBINER flag."
-audited_post_018: true
 ---
 
 # Learned Stage 2 weight combiner
@@ -39,7 +38,7 @@ Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to d
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Pipeline | Calls `shadowScore()` after step 6 (feedback signals), gated by `isLearnedStage2CombinerEnabled()` |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isLearnedStage2CombinerEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ Enabled by default (graduated). Set `SPECKIT_LEARNED_STAGE2_COMBINER=false` to d
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Learned Stage 2 weight combiner
-- Current reality source: shared/ranking/learned-combiner.ts module header and implementation
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/19-learned-stage2-weight-combiner.md`

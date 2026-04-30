@@ -14,11 +14,13 @@ This scenario validates Edge density measurement for `018`. It focuses on Confir
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `018` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm edges-per-node thresholding
-- Prompt: `As a graph-signal validation operator, validate Edge density measurement against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm edges-per-node thresholding.
+- Real user request: `Please validate Edge density measurement against the documented validation surface and tell me whether the expected signals are present: Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Edge density measurement against the documented validation surface. Verify edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Edge density ratio computed correctly (edges/nodes); threshold gate activates/deactivates at boundary
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Ratio = edges/nodes matches manual calculation; gate state correct at boundary; FAIL: Ratio miscalculated or gate ignores threshold
 
 ---
@@ -54,8 +56,7 @@ Edge+node counts + computed ratio + threshold gate activation state
 
 Verify edge/node count queries → Check threshold configuration → Inspect gate activation logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/03-edge-density-measurement.md](../../feature_catalog/10--graph-signal-activation/03-edge-density-measurement.md)
 

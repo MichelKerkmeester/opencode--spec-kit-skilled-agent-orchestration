@@ -25,11 +25,12 @@ Operators run the exact prompt and command sequence for `DMN-003` and confirm th
 
 - Objective: Verify `doctor.sh --strict --require-config` exits 0 with healthy JSON in a healthy project; verify `ensure_ready.sh --strict --require-config` is idempotent and brings the daemon to running on first invocation; verify both scripts exit non-zero with explicit reason when `--require-config` is set against a project that lacks the config file.
 - Real user request: `"Tell me whether this project is ready to run CocoIndex commands and bootstrap the daemon if it's not."`
-- Prompt: `As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify both scripts exit 0 with healthy JSON; rerun ensure_ready.sh and confirm idempotency; then run both scripts from a temp directory with no .cocoindex_code/ to confirm --require-config makes them exit non-zero with an explicit reason. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify doctor exits 0, prints valid JSON containing health summary; ensure_ready exits 0 and reports daemon running; second ensure_ready invocation also exits 0 without error noise; in the temp directory both scripts exit non-zero with a clear "config not found" or equivalent message. Return a concise user-visible pass/fail verdict with the main reason.`
 - Expected execution process: invoke `doctor.sh` from project root with the JSON + strict flags; invoke `ensure_ready.sh` with the same flags; rerun `ensure_ready.sh` immediately and confirm the second invocation does not duplicate work; cd into a temp directory and rerun both with `--require-config` to confirm the negative-path contract.
 - Expected signals: doctor exits 0, prints valid JSON containing health summary; ensure_ready exits 0 and reports daemon running; second ensure_ready invocation also exits 0 without error noise; in the temp directory both scripts exit non-zero with a clear "config not found" or equivalent message.
 - Desired user-visible outcome: A short verdict listing exit codes for all four invocations and a PASS confirming both the positive (healthy project) and negative (missing config) paths work as documented.
 - Pass/fail: PASS if all four invocations match the expected exit codes AND JSON outputs are well-formed; PARTIAL if positive-path passes but negative-path is silent (script exits 0 despite missing config); FAIL if positive-path errors against a healthy project.
+
 
 ---
 
@@ -37,7 +38,7 @@ Operators run the exact prompt and command sequence for `DMN-003` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify both scripts exit 0 with healthy JSON; rerun ensure_ready.sh and confirm idempotency; then run both scripts from a temp directory with no .cocoindex_code/ to confirm --require-config makes them exit non-zero with an explicit reason. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run doctor.sh --json --strict --require-config followed by ensure_ready.sh --json --strict --require-config against the current CocoIndex install in this repository. Verify doctor exits 0, prints valid JSON containing health summary; ensure_ready exits 0 and reports daemon running; second ensure_ready invocation also exits 0 without error noise; in the temp directory both scripts exit non-zero with a clear "config not found" or equivalent message. Return a concise user-visible pass/fail verdict with the main reason.`
 
 ### Commands
 

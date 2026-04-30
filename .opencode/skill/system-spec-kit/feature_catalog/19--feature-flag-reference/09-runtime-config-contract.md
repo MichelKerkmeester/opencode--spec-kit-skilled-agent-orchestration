@@ -1,7 +1,6 @@
 ---
 title: "Runtime Config Contract"
 description: "JSONC contract for the script runtime loader, including the active legacy keys in `config.jsonc` and the documentation-only sections retained for reference."
-audited_post_018: true
 ---
 
 # Runtime Config Contract
@@ -76,7 +75,7 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `.opencode/skill/system-spec-kit/scripts/core/config.ts` | Loader | Parses JSONC, merges defaults, validates `WorkflowConfig`, and exports frozen runtime constants |
 | `.opencode/skill/system-spec-kit/config/README.md` | Documentation | States that only Section 1 keys are used at runtime and distinguishes `filters.jsonc` from the core config loader |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -84,7 +83,6 @@ Outside Section 1, `config/config.jsonc` currently declares the following boolea
 | `manual_testing_playbook/19--feature-flag-reference/223-runtime-config-contract.md` | End-to-end sandbox verification of Section 1 overrides, invalid values, and documentation-only sections |
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: Runtime Config Contract
-- Current reality source: direct loader audit of `scripts/core/config.ts`, `config/config.jsonc`, and the listed normalization/manual contract checks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/09-runtime-config-contract.md`

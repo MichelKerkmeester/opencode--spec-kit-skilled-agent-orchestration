@@ -1,7 +1,6 @@
 ---
 title: "Resource map template"
 description: "Optional cross-cutting template that provides a lean, scannable catalog of analyzed, created, updated, or removed paths and wires that surface into the system-spec-kit discovery docs."
-audited_post_018: true
 ---
 
 # Resource map template
@@ -42,7 +41,6 @@ templates/resource-map.md plus the discovery and classification surfaces that ex
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Resource map template
-- Current reality source: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/012-resource-map-template/`
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/25-resource-map-template.md`

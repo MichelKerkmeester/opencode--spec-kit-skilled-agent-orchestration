@@ -13,11 +13,13 @@ This scenario validates Health diagnostics (memory_health) for `EX-013`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-013` and confirm the expected signals without contradicting evidence.
 
-- Objective: Index/FTS integrity check
-- Prompt: `As a discovery validation operator, validate Health diagnostics (memory_health) against memory_health(reportMode:full). Verify healthy/degraded status and diagnostics. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Index/FTS integrity check.
+- Real user request: `Please validate Health diagnostics (memory_health) against memory_health(reportMode:full) and tell me whether the expected signals are present: healthy/degraded status and diagnostics.`
+- RCAF Prompt: `As a discovery validation operator, validate Health diagnostics (memory_health) against memory_health(reportMode:full). Verify healthy/degraded status and diagnostics. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: healthy/degraded status and diagnostics
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if report completes with actionable diagnostics
 
 ---
@@ -52,8 +54,7 @@ Health outputs
 
 Run index_scan(force) if FTS mismatch
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/03-health-diagnostics-memoryhealth.md](../../feature_catalog/03--discovery/03-health-diagnostics-memoryhealth.md)
 

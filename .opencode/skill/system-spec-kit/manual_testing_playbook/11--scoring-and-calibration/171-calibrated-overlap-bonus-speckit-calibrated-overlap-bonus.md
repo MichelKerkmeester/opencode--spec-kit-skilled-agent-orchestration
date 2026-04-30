@@ -14,11 +14,13 @@ This scenario validates calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BON
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `171` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion
-- Prompt: `As a scoring validation operator, validate Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) against SPECKIT_CALIBRATED_OVERLAP_BONUS. Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion.
+- Real user request: `Please validate Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) against SPECKIT_CALIBRATED_OVERLAP_BONUS and tell me whether the expected signals are present: calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; flat CONVERGENCE_BONUS=0.10 not applied when flag ON; isCalibratedOverlapBonusEnabled() returns true by default.`
+- RCAF Prompt: `As a scoring validation operator, validate Calibrated overlap bonus (SPECKIT_CALIBRATED_OVERLAP_BONUS) against SPECKIT_CALIBRATED_OVERLAP_BONUS. Verify calibrated overlap bonus replaces flat convergence bonus in RRF fusion. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: calibrated bonus computed using CALIBRATED_OVERLAP_BETA=0.15 and mean normalized top score; bonus clamped to CALIBRATED_OVERLAP_MAX=0.06; flat CONVERGENCE_BONUS=0.10 not applied when flag ON; isCalibratedOverlapBonusEnabled() returns true by default
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if calibrated overlap bonus is applied with correct beta and cap values for multi-channel overlapping results; FAIL if flat 0.10 bonus is applied instead, bonus exceeds 0.06 cap, or flag defaults to OFF
 
 ---
@@ -56,8 +58,7 @@ fuseResultsMulti() output scores + bonus breakdown + test transcript
 
 Verify isCalibratedOverlapBonusEnabled() → Confirm flag is not forced off → Check CALIBRATED_OVERLAP_BETA=0.15 constant → Verify CALIBRATED_OVERLAP_MAX=0.06 cap → Inspect fuseResultsMulti() overlap detection logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/21-calibrated-overlap-bonus.md](../../feature_catalog/11--scoring-and-calibration/21-calibrated-overlap-bonus.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

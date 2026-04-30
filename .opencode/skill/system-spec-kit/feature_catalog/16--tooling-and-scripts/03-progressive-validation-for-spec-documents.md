@@ -36,7 +36,7 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 |------|-------|------|
 | `scripts/spec/progressive-validate.sh` | Script | Progressive 4-level validation wrapper around validate.sh |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -61,7 +61,6 @@ Flags include `--level N`, `--dry-run`, `--json`, `--strict`, `--quiet` and `--v
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Progressive validation for spec documents
-- Current reality source: direct script audit of `scripts/spec/progressive-validate.sh` and `mcp_server/tests/progressive-validation.vitest.ts`
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md`

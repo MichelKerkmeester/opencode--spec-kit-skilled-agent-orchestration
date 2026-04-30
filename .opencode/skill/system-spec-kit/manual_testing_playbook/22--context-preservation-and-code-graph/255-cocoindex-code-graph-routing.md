@@ -14,28 +14,14 @@ This scenario validates CocoIndex bridge.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the CocoIndex bridge correctly routes between semantic and structural queries. The seed resolver (`seed-resolver.ts`) normalizes CocoIndex file:line results to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor). `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop graph neighbors), outline (file symbol listing), and impact (reverse callers). The post-013 contract must also surface an explicit blocked-read payload when readiness requires a suppressed full scan and structured `metadata.partialOutput` details when deadline or budget pressure omits work.
-- **Schema contract examples**:
-  - Semantic: `mcp__cocoindex_code__search({ query: "memory search pipeline" })`
-  - Structural: `code_graph_query({ operation: "calls_to", subject: "allocateBudget" })` (`operation` + `subject` are required)
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - CocoIndex Code MCP server available (for semantic search), or mocked in tests
-  - Code graph database populated with indexed files (for structural queries)
-- **Prompt**: `As a context-and-code-graph validation operator, validate Semantic vs structural query routing against Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" }). Verify the CocoIndex bridge correctly routes between semantic and structural queries. The seed resolver (seed-resolver.ts) normalizes CocoIndex file:line and filePath seeds to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor). code_graph_context expands resolved anchors in neighborhood, outline, and impact modes, returns an explicit blocked payload when readiness requires a suppressed full scan, and reports structured metadata.partialOutput details when deadline or budget pressure omits work. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - Semantic query ("how does memory search work") returns conceptually related code files via CocoIndex embedding similarity
-  - Structural query ("what calls allocateBudget") returns exact callers/callees from code graph edges
-  - Seed resolver resolves CocoIndex results to graph nodes via: exact symbol match, then enclosing symbol fallback, then file-level anchor
-  - `code_graph_context` neighborhood mode returns 1-hop connected symbols
-  - `code_graph_context` outline mode returns all symbols in a file
-  - `code_graph_context` impact mode returns reverse callers (who depends on this)
-  - `code_graph_context` returns `status: "blocked"` plus `blocked`, `graphAnswersOmitted`, and `requiredAction: "code_graph_scan"` when readiness requires a full scan that the handler will not run inline
-  - `code_graph_context` returns structured `metadata.partialOutput` fields (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) when bounded execution omits work
-- **Pass/fail criteria**:
-  - PASS: Semantic and structural queries produce distinct, appropriate result sets; seed resolver correctly resolves CocoIndex seeds to graph nodes; the context handler proves all 3 expansion modes, blocked-read payloads, and `partialOutput` metadata
-  - FAIL: Semantic query returns structural results (or vice versa), seed resolver fails to resolve valid CocoIndex results, the playbook still points at stale suites, or the context contract misses blocked/partial-output evidence
+
+- Objective: Verify that the CocoIndex bridge correctly routes between semantic and structural queries; The seed resolver (`seed-resolver.ts`) normalizes CocoIndex file:line results to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor); `code_graph_context` expands resolved anchors in 3 modes: neighborhood (1-hop graph neighbors), outline (file symbol listing), and impact (reverse callers); The post-013 contract must also surface an explicit blocked-read payload when readiness requires a suppressed full scan and structured `metadata.partialOutput` details when deadline or budget pressure omits work.
+- Real user request: `` Please validate Semantic vs structural query routing against Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" }) and tell me whether the expected signals are present: Semantic query ("how does memory search work") returns conceptually related code files via CocoIndex embedding similarity; Structural query ("what calls allocateBudget") returns exact callers/callees from code graph edges; Seed resolver resolves CocoIndex results to graph nodes via: exact symbol match, then enclosing symbol fallback, then file-level anchor; `code_graph_context` neighborhood mode returns 1-hop connected symbols; `code_graph_context` outline mode returns all symbols in a file; `code_graph_context` impact mode returns reverse callers (who depends on this); `code_graph_context` returns `status: "blocked"` plus `blocked`, `graphAnswersOmitted`, and `requiredAction: "code_graph_scan"` when readiness requires a full scan that the handler will not run inline; `code_graph_context` returns structured `metadata.partialOutput` fields (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) when bounded execution omits work. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate Semantic vs structural query routing against Manual: call mcp__cocoindex_code__search({ query: "memory search pipeline" }). Verify the CocoIndex bridge correctly routes between semantic and structural queries. The seed resolver (seed-resolver.ts) normalizes CocoIndex file:line and filePath seeds to ArtifactRef via a resolution chain (exact symbol, enclosing symbol, file anchor). code_graph_context expands resolved anchors in neighborhood, outline, and impact modes, returns an explicit blocked payload when readiness requires a suppressed full scan, and reports structured metadata.partialOutput details when deadline or budget pressure omits work. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Semantic query ("how does memory search work") returns conceptually related code files via CocoIndex embedding similarity; Structural query ("what calls allocateBudget") returns exact callers/callees from code graph edges; Seed resolver resolves CocoIndex results to graph nodes via: exact symbol match, then enclosing symbol fallback, then file-level anchor; `code_graph_context` neighborhood mode returns 1-hop connected symbols; `code_graph_context` outline mode returns all symbols in a file; `code_graph_context` impact mode returns reverse callers (who depends on this); `code_graph_context` returns `status: "blocked"` plus `blocked`, `graphAnswersOmitted`, and `requiredAction: "code_graph_scan"` when readiness requires a full scan that the handler will not run inline; `code_graph_context` returns structured `metadata.partialOutput` fields (`isPartial`, `reasons`, `omittedSections`, `omittedAnchors`, `truncatedText`) when bounded execution omits work
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: Semantic and structural queries produce distinct, appropriate result sets; seed resolver correctly resolves CocoIndex seeds to graph nodes; the context handler proves all 3 expansion modes, blocked-read payloads, and `partialOutput` metadata; FAIL: Semantic query returns structural results (or vice versa), seed resolver fails to resolve valid CocoIndex results, the playbook still points at stale suites, or the context contract misses blocked/partial-output evidence
 
 ---
 
@@ -187,8 +173,7 @@ code_graph_context anchor payloads for all three seed shapes plus a diff against
 
 Inspect `mcp_server/code_graph/lib/seed-resolver.ts` and `code_graph/handlers/context.ts` anchor builder; confirm packet 015 dist marker; grep `lib/search` for any new rerank function
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md](../../feature_catalog/22--context-preservation-and-code-graph/09-cocoindex-bridge-context.md)
 

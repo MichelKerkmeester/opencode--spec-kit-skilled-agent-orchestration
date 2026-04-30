@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CP-001` and confirm the
 
 - Objective: Confirm `copilot -p "[prompt]" 2>&1` returns a non-empty, human-readable response in a single non-interactive invocation
 - Real user request: `Ask Copilot to summarise what cli-copilot's role is in this repo and return it as plain text I can paste into a status update.`
-- Prompt: `As a cross-AI orchestrator delegating from Claude Code, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository. Verify a single-shot -p prompt returns a readable response without opening the TUI and without leaving the calling shell blocked on input. Return a concise pass/fail verdict with the main reason and the first ~10 lines of Copilot's response.`
+- RCAF Prompt: `As a cross-AI orchestrator delegating from Claude Code, invoke Copilot CLI in non-interactive mode against the cli-copilot skill in this repository. Verify a single-shot -p prompt returns a readable response without opening the TUI and without leaving the calling shell blocked on input. Return a concise pass/fail verdict with the main reason and the first ~10 lines of Copilot's response.`
 - Expected execution process: orchestrator runs `command -v copilot` first, then issues a single `copilot -p "..." 2>&1` call from Bash, captures stdout/stderr together and validates non-empty output
 - Expected signals: `command -v copilot` resolves to a binary path. `copilot -p "..." 2>&1` exits 0. Stdout contains a multi-sentence answer to the prompt. No TUI banner/prompt asking the operator to type
 - Desired user-visible outcome: a short paragraph (1-3 sentences) summarising cli-copilot's role, returned to the operator with a PASS verdict

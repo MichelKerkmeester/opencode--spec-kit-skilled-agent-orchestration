@@ -14,11 +14,13 @@ This scenario validates `memory_quick_search` for `187`. It focuses on Verify si
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `187` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `memory_quick_search` returns relevant results for a query string, respects optional `specFolder` scoping, honors governed retrieval boundaries (`tenantId`, `userId`, `agentId`), and respects `limit` parameter
-- Prompt: `As a retrieval validation operator, validate Quick search (memory_quick_search) against memory_quick_search({ query: "authentication" }). Verify memory_quick_search returns relevant results for a query string, respects optional specFolder scoping, honors governed retrieval boundaries (tenantId, userId, agentId), and respects limit parameter. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `memory_quick_search` returns relevant results for a query string, respects optional `specFolder` scoping, honors governed retrieval boundaries (`tenantId`, `userId`, `agentId`), and respects `limit` parameter.
+- Real user request: `Please validate Quick search (memory_quick_search) against memory_quick_search({ query: "authentication" }) and tell me whether the expected signals are present: Query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately.`
+- RCAF Prompt: `As a retrieval validation operator, validate Quick search (memory_quick_search) against memory_quick_search({ query: "authentication" }). Verify memory_quick_search returns relevant results for a query string, respects optional specFolder scoping, honors governed retrieval boundaries (tenantId, userId, agentId), and respects limit parameter. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Query-only retrieval returns results; specFolder scoping narrows results to the specified folder; limit parameter caps the result count; governed retrieval boundaries filter results appropriately
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Quick search returns relevant results, specFolder narrows scope, limit is respected, governed boundaries filter; FAIL: Quick search returns no results for a known query, specFolder is ignored, limit is exceeded, or governed boundaries do not filter
 
 ---
@@ -56,8 +58,7 @@ Tool outputs for each call showing result count, specFolder scoping, limit adher
 
 Verify `memory_quick_search` tool is listed in search.md allowed-tools → Check L2 layer routing → Confirm query parameter is required → Inspect optional parameter handling for specFolder, limit, tenantId, userId, agentId
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/10-fast-delegated-search-memory-quick-search.md](../../feature_catalog/01--retrieval/10-fast-delegated-search-memory-quick-search.md)
 - Command file: [.opencode/command/memory/search.md](../../../../command/memory/search.md)

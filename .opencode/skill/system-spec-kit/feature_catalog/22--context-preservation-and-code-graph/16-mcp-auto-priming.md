@@ -1,7 +1,6 @@
 ---
 title: "MCP auto-priming"
 description: "First-call session context injection that delivers a Prime Package containing constitutional memories, code graph status, and triggered context on the first MCP tool call."
-audited_post_018: true
 ---
 
 # MCP auto-priming
@@ -33,7 +32,6 @@ mcp_server/hooks/memory-surface.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: MCP auto-priming
-- Current reality source: spec 024-compact-code-graph phase 018
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/16-mcp-auto-priming.md`

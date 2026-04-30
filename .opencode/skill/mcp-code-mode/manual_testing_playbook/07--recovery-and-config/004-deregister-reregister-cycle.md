@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `CM-024` and confirm the
 
 - Objective: Verify `deregister_manual({name: "github"})` removes GitHub tools; `register_manual({...github_config})` restores them — without Code Mode restart.
 - Real user request: `"Hot-swap the GitHub MCP without restarting my session."`
-- Prompt: `As a manual-testing orchestrator, deregister the GitHub manual, list tools (verify absent), then re-register it from the saved .utcp_config.json entry through Code Mode against the live runtime. Verify the manual is absent during the deregister window and present after re-register. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, deregister the GitHub manual, list tools (verify absent), then re-register it from the saved .utcp_config.json entry through Code Mode against the live runtime. Verify the manual is absent during the deregister window and present after re-register. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: capture original GitHub config block → deregister → list_tools (verify absent) → register with original config → list_tools (verify present).
 - Expected signals: deregister returns success; intermediate `list_tools()` shows no `github.` entries; re-register succeeds; final `list_tools()` shows GitHub tools again.
 - Desired user-visible outcome: A short report listing tool counts at each step with a PASS verdict.
@@ -39,7 +39,7 @@ Operators run the exact prompt and command sequence for `CM-024` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, deregister the GitHub manual, list tools (verify absent), then re-register it from the saved .utcp_config.json entry through Code Mode against the live runtime. Verify the manual is absent during the deregister window and present after re-register. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, deregister the GitHub manual, list tools (verify absent), then re-register it from the saved .utcp_config.json entry through Code Mode against the live runtime. Verify the manual is absent during the deregister window and present after re-register. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

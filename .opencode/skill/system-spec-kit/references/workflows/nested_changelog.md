@@ -7,13 +7,30 @@ description: Generate packet-local changelog files for spec roots and phase chil
 
 Packet-local changelogs capture completion state inside a spec folder instead of the global `.opencode/changelog/` release stream.
 
-## When To Use
+---
+
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+Generate packet-local changelog files for spec roots and phase child folders.
+
+---
+
+<!-- /ANCHOR:overview -->
+
+<!-- ANCHOR:when-to-use -->
+## 2. WHEN TO USE
 
 - A root spec folder needs a local changelog history beside `implementation-summary.md`
 - A phase child folder needs a packet-local changelog entry in the parent `changelog/` folder
 - `/spec_kit:complete` or `/spec_kit:implement` finishes work on a root packet or phase child
 
-## Generator
+---
+
+<!-- /ANCHOR:when-to-use -->
+
+<!-- ANCHOR:generator -->
+## 3. GENERATOR
 
 ```bash
 node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js <spec-folder> --write
@@ -26,7 +43,12 @@ node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.j
 | `root` | The target folder is a spec root | `<spec-folder>/changelog/changelog-<packet>-root.md` |
 | `phase` | The target folder is a direct phase child | `<parent-spec>/changelog/changelog-<packet>-<phase-folder>.md` |
 
-## Evidence Stack
+---
+
+<!-- /ANCHOR:generator -->
+
+<!-- ANCHOR:evidence-stack -->
+## 4. EVIDENCE STACK
 
 The generator prefers these sources, in order:
 
@@ -38,9 +60,18 @@ The generator prefers these sources, in order:
 
 It derives summary, change bullets, verification notes, files changed, and follow-ups from the available packet evidence. Root changelogs also roll up direct child phase folders when they exist.
 
-## Canonical Templates
+---
+
+<!-- /ANCHOR:evidence-stack -->
+
+<!-- ANCHOR:canonical-templates -->
+## 5. CANONICAL TEMPLATES
 
 - `templates/changelog/root.md`
 - `templates/changelog/phase.md`
 
 Use these templates for packet-local changelog generation. Do not reuse the global `.opencode/skill/sk-doc/assets/documentation/changelog_template.md` for nested packet output.
+
+---
+
+<!-- /ANCHOR:canonical-templates -->

@@ -1,7 +1,6 @@
 ---
 title: "Causal edge creation (memory_causal_link)"
 description: "Covers the causal edge creation tool that builds directed relationship edges between memories in the causal graph."
-audited_post_018: true
 ---
 
 # Causal edge creation (memory_causal_link)
@@ -61,14 +60,9 @@ Reference resolution for auto-extracted causal links now batches all references 
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/01-causal-edge-creation-memorycausallink.md`
-
-- Group: Analysis
-- Source feature title: Causal edge creation (memory_causal_link)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

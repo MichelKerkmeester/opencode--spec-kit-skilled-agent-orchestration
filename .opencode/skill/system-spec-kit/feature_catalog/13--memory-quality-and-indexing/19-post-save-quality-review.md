@@ -1,7 +1,6 @@
 ---
 title: "Post-save quality review"
 description: "After canonical packet continuity is written, a post-save quality review compares saved frontmatter against the original JSON payload and emits machine-readable severity-graded findings before indexing begins."
-audited_post_018: true
 ---
 
 # Post-save quality review
@@ -96,12 +95,7 @@ The review output is machine-readable so callers and downstream quality monitors
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
+- Group: Memory Quality And Indexing
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `13--memory-quality-and-indexing/19-post-save-quality-review.md`
-
-- Group: Memory quality and indexing
-- Source feature title: Post-save quality review
-- Current reality source: `scripts/core/post-save-review.ts` and the save workflow
 <!-- /ANCHOR:source-metadata -->

@@ -33,7 +33,7 @@ Manual validation is covered by playbook scenario `EX-035`, which runs the targe
 | `mcp_server/context-server.ts` | Core | Server initialization invoking checks |
 | `mcp_server/cli.ts` | Core | CLI entry point with startup checks |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,10 +44,7 @@ Manual validation is covered by playbook scenario `EX-035`, which runs the targe
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Maintenance
-- Source feature title: Startup runtime compatibility guards
-- Current reality source: audit-D04 gap backfill
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `04--maintenance/02-startup-runtime-compatibility-guards.md`
 - Manual playbook scenario: EX-035
-- audited_post_018: true
-- phase_018_change: post-018 audit verified against `mcp_server/startup-checks.ts`, `mcp_server/context-server.ts`, and `mcp_server/tests/startup-checks.vitest.ts`

@@ -13,9 +13,13 @@ This scenario validates the post-insert retry budget for `268`. It focuses on pr
 
 ## 2. SCENARIO CONTRACT
 
-- Objective: Verify deferred enrichment retries stop after three `(memoryId, step, reason)` failures, emit structured `retry_attempt` telemetry at each decision point, and reset on success
-- Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise pass/fail verdict with the main reason and cited evidence.`
+
+- Objective: Verify deferred enrichment retries stop after three `(memoryId, step, reason)` failures, emit structured `retry_attempt` telemetry at each decision point, and reset on success.
+- Real user request: `` Please validate Post-insert retry budget against the deferred enrichment path and tell me whether the expected signals are present: first three retries allowed; fourth skipped; structured exhaustion signal present; `retry_attempt` telemetry emitted with attempt/outcome fields; successful completion clears the spec-doc record-specific budget. ``
+- RCAF Prompt: `As a lifecycle validation operator, validate Post-insert retry budget against the deferred enrichment path. Verify the same unresolved post-insert failure is retried only three times for one memory and step, the fourth attempt is skipped with a structured exhaustion signal, and a successful completion clears the budget. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: first three retries allowed; fourth skipped; structured exhaustion signal present; `retry_attempt` telemetry emitted with attempt/outcome fields; successful completion clears the spec-doc record-specific budget
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the retry budget caps repeat failures deterministically and resets after success
 
 ---
@@ -52,8 +56,7 @@ Deferred enrichment traces for attempts one through four plus a successful post-
 
 Inspect `mcp_server/lib/enrichment/retry-budget.ts`, `mcp_server/handlers/save/post-insert.ts`, and the retry-budget tests
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/09-post-insert-retry-budget.md](../../feature_catalog/05--lifecycle/09-post-insert-retry-budget.md)
 

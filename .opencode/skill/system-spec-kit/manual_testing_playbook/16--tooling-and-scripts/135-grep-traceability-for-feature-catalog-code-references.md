@@ -13,11 +13,13 @@ This scenario validates Grep traceability for feature catalog code references fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `135` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits
-- Prompt: `As a tooling validation operator, validate Grep traceability for feature catalog code references against grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/. Verify grep -r "// Feature catalog: <feature>" mcp_server/ returns handler + lib hits. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `grep -r "// Feature catalog: <feature>" mcp_server/` returns handler + lib hits.
+- Real user request: `Please validate Grep traceability for feature catalog code references against grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/ and tell me whether the expected signals are present: Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist.`
+- RCAF Prompt: `As a tooling validation operator, validate Grep traceability for feature catalog code references against grep -r "// Feature catalog: <feature>" .opencode/skill/system-spec-kit/mcp_server/. Verify grep -r "// Feature catalog: <feature>" mcp_server/ returns handler + lib hits. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Each feature grep returns at least 2 hits spanning handlers and lib layers; all referenced files exist
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 3 features return multi-layer hits with no orphaned file references
 
 ---
@@ -54,8 +56,7 @@ Grep output for 3 features showing file paths and line numbers
 
 Check annotation placement after MODULE: header → Verify feature name spelling matches catalog H3 heading exactly
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/11-feature-catalog-code-references.md](../../feature_catalog/16--tooling-and-scripts/11-feature-catalog-code-references.md)
 

@@ -18,17 +18,19 @@ This playbook validates the runtime-package code graph surface at `.opencode/ski
 - [1. OVERVIEW](#1--overview)
 - [2. GLOBAL PRECONDITIONS](#2--global-preconditions)
 - [3. GLOBAL EVIDENCE REQUIREMENTS](#3--global-evidence-requirements)
-- [4. COMMAND NOTATION](#4--command-notation)
-- [5. REVIEW RULES](#5--review-rules)
-- [6. READ-PATH FRESHNESS](#6--read-path-freshness)
-- [7. MANUAL SCAN / VERIFY / STATUS](#7--manual-scan-verify-status)
-- [8. DETECT CHANGES](#8--detect-changes)
-- [9. CONTEXT RETRIEVAL](#9--context-retrieval)
-- [10. COVERAGE GRAPH](#10--coverage-graph)
-- [11. MCP TOOL SURFACE](#11--mcp-tool-surface)
-- [12. CCC INTEGRATION](#12--ccc-integration)
-- [13. DOCTOR CODE GRAPH](#13--doctor-code-graph)
-- [14. FEATURE CATALOG CROSS-REFERENCE](#14--feature-catalog-cross-reference)
+- [4. DETERMINISTIC COMMAND NOTATION](#4--deterministic-command-notation)
+- [5. REVIEW PROTOCOL AND RELEASE READINESS](#5--review-protocol-and-release-readiness)
+- [6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING](#6--sub-agent-orchestration-and-wave-planning)
+- [7. READ-PATH FRESHNESS](#7--read-path-freshness)
+- [8. MANUAL SCAN / VERIFY / STATUS](#8--manual-scan-verify-status)
+- [9. DETECT CHANGES](#9--detect-changes)
+- [10. CONTEXT RETRIEVAL](#10--context-retrieval)
+- [11. COVERAGE GRAPH](#11--coverage-graph)
+- [12. MCP TOOL SURFACE](#12--mcp-tool-surface)
+- [13. CCC INTEGRATION](#13--ccc-integration)
+- [14. DOCTOR CODE GRAPH](#14--doctor-code-graph)
+- [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
+- [16. FEATURE CATALOG CROSS-REFERENCE INDEX](#16--feature-catalog-cross-reference-index)
 
 ---
 
@@ -61,20 +63,24 @@ The playbook contains 15 scenarios across 8 groups. It targets the current reali
 - JSON fields that prove readiness, action, status, or output shape.
 - PASS, FAIL, or SKIP verdict with one reason.
 
-## 4. COMMAND NOTATION
+## 4. DETERMINISTIC COMMAND NOTATION
 
-- Shell commands are fenced `bash`.
-- MCP calls are shown as text, for example `code_graph_status({})`.
+- Bash commands are shown as `bash: <command>`.
+- MCP tool calls are shown as `mcp.<tool>(<args>)`.
 - Slash-command scenarios cite the command and the YAML path; run them in a disposable workspace.
+- `->` separates sequential steps.
 
-## 5. REVIEW RULES
+## 5. REVIEW PROTOCOL AND RELEASE READINESS
 
 A scenario passes only when the expected fields appear and the transcript shows no hidden full scan, unrequested mutation, or missing readiness block.
 
+## 6. SUB-AGENT ORCHESTRATION AND WAVE PLANNING
+
+Operators may dispatch sub-agents in parallel waves for independent scenarios, especially read-only category checks. The primary use remains single-operator sequential execution so command transcripts, MCP payloads, and verdict evidence stay easy to audit.
 
 ---
 
-## 6. READ-PATH FRESHNESS
+## 7. READ-PATH FRESHNESS
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -83,7 +89,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 7. MANUAL SCAN / VERIFY / STATUS
+## 8. MANUAL SCAN / VERIFY / STATUS
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -94,7 +100,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 8. DETECT CHANGES
+## 9. DETECT CHANGES
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -102,7 +108,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 9. CONTEXT RETRIEVAL
+## 10. CONTEXT RETRIEVAL
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -110,7 +116,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 10. COVERAGE GRAPH
+## 11. COVERAGE GRAPH
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -119,7 +125,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 11. MCP TOOL SURFACE
+## 12. MCP TOOL SURFACE
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -127,7 +133,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 12. CCC INTEGRATION
+## 13. CCC INTEGRATION
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -137,7 +143,7 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 13. DOCTOR CODE GRAPH
+## 14. DOCTOR CODE GRAPH
 
 | ID | Scenario | File |
 | --- | --- | --- |
@@ -146,7 +152,10 @@ A scenario passes only when the expected fields appear and the transcript shows 
 
 ---
 
-## 14. FEATURE CATALOG CROSS-REFERENCE
+## 15. AUTOMATED TEST CROSS-REFERENCE
+
+Automated coverage lives in the code_graph runtime tests and build checks. Use this section as the manual-to-automated trace point when recording evidence for release review.
+
+## 16. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 Each scenario maps to the runtime catalog at [../feature_catalog/feature_catalog.md](../feature_catalog/feature_catalog.md).
-

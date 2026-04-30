@@ -13,11 +13,13 @@ This scenario validates Ablation studies (eval_run_ablation) for `EX-026`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-026` and confirm the expected signals without contradicting evidence.
 
-- Objective: Full plus focused channel-impact verification
-- Prompt: `As an evaluation validation operator, validate Ablation studies (eval_run_ablation) against eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true }). Verify baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are all explicit. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Full plus focused channel-impact verification.
+- Real user request: `Please validate Ablation studies (eval_run_ablation) against eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true }) and tell me whether the expected signals are present: Baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are all explicit.`
+- RCAF Prompt: `As an evaluation validation operator, validate Ablation studies (eval_run_ablation) against eval_run_ablation({ mode:"ablation", storeResults:true, includeFormattedReport:true }). Verify baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are all explicit. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Baseline recall, per-channel deltas, focused fts5 verdict, requested/resolved/missing query-ID reporting, and provenance/truncation status are all explicit
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the runs either produce clean comparable metrics or clearly isolate why the benchmark is invalid
 
 ---
@@ -53,8 +55,7 @@ Full ablation report, focused fts5 report with query-ID warnings, and dashboard 
 
 Validate ground-truth mapping against the active parent-memory DB; inspect missing-query-ID warnings and runtime logs for token-budget truncation if Recall@K collapses
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [07--evaluation/01-ablation-studies-evalrunablation.md](../../feature_catalog/07--evaluation/01-ablation-studies-evalrunablation.md)
 

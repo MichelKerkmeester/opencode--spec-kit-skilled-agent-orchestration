@@ -15,7 +15,7 @@ The logic for generating user-facing feedback after a save or change used to be 
 
 ## 2. CURRENT REALITY
 
-Phase 014 introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
+The implementation introduced dedicated UX hook modules for mutation feedback and response hints. This separated UX hook logic from individual mutation handlers and standardized post-mutation UX behavior through shared module boundaries.
 
 ---
 
@@ -31,7 +31,7 @@ Phase 014 introduced dedicated UX hook modules for mutation feedback and respons
 | `mcp_server/hooks/memory-surface.ts` | Hook | Dedicated auto-surface UX hook module |
 | `mcp_server/handlers/memory-crud-types.ts` | Handler | Shared `MutationHookResult` contract consumed by hook modules |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,8 +42,6 @@ Phase 014 introduced dedicated UX hook modules for mutation feedback and respons
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Dedicated UX hook modules
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/05-dedicated-ux-hook-modules.md`

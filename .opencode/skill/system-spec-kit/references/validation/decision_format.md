@@ -22,6 +22,7 @@ The Structured Gate Decision Format provides a consistent way to document decisi
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:the-format -->
 ## 2. THE FORMAT
 
@@ -60,6 +61,7 @@ ADR entries are particularly important for coordination-root decisions that esta
 ---
 
 <!-- /ANCHOR:the-format -->
+
 <!-- ANCHOR:field-definitions -->
 ## 3. FIELD DEFINITIONS
 
@@ -197,6 +199,7 @@ with path specs/078-new-feature/
 ---
 
 <!-- /ANCHOR:field-definitions -->
+
 <!-- ANCHOR:examples -->
 ## 4. EXAMPLES
 
@@ -264,8 +267,9 @@ ALTERNATIVE: N/A - P0 items cannot be skipped
 ---
 
 <!-- /ANCHOR:examples -->
+
 <!-- ANCHOR:session-decision-log-level-3 -->
-## 5. SESSION DECISION LOG (Level 3+)
+## 5. SESSION DECISION LOG (LEVEL 3+)
 
 For Level 3+ spec folders, maintain a decision log table in decision-record.md:
 
@@ -298,6 +302,7 @@ For Level 3+ spec folders, maintain a decision log table in decision-record.md:
 ---
 
 <!-- /ANCHOR:session-decision-log-level-3 -->
+
 <!-- ANCHOR:dual-threshold-validation -->
 ## 6. DUAL-THRESHOLD VALIDATION
 
@@ -346,6 +351,7 @@ RESOLUTION_PATH:
 ---
 
 <!-- /ANCHOR:dual-threshold-validation -->
+
 <!-- ANCHOR:quick-reference -->
 ## 7. QUICK REFERENCE
 
@@ -376,6 +382,7 @@ Before recording a decision:
 ---
 
 <!-- /ANCHOR:quick-reference -->
+
 <!-- ANCHOR:related-resources -->
 ## 8. RELATED RESOURCES
 
@@ -383,4 +390,7 @@ Before recording a decision:
 - [Decision Record Template](../../templates/level_3/decision-record.md) - For Level 3/3+ spec folders
 - [SKILL.md - Gates Overview](../../SKILL.md) - Gate system documentation
 - [AGENTS.md - Section 2](../../../../../AGENTS.md) - Gate definitions and protocols
+
+---
+
 <!-- /ANCHOR:related-resources -->

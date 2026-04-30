@@ -14,11 +14,13 @@ This scenario validates RRF K experimental tuning (SPECKIT_RRF_K_EXPERIMENTAL) f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `172` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify per-intent K optimization selects best K from sweep grid
-- Prompt: `As a scoring validation operator, validate RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) against SPECKIT_RRF_K_EXPERIMENTAL. Verify per-intent K optimization selects best K from sweep grid. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify per-intent K optimization selects best K from sweep grid.
+- Real user request: `Please validate RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) against SPECKIT_RRF_K_EXPERIMENTAL and tell me whether the expected signals are present: perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; evalQueriesAtK() computes aggregate NDCG@10 and MRR@5; falls back to DEFAULT_K=60 when OFF.`
+- RCAF Prompt: `As a scoring validation operator, validate RRF K experimental (SPECKIT_RRF_K_EXPERIMENTAL) against SPECKIT_RRF_K_EXPERIMENTAL. Verify per-intent K optimization selects best K from sweep grid. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: perIntentKSweep() groups queries by intent and sweeps JUDGED_K_SWEEP_VALUES; argmaxNdcg10() selects K maximizing NDCG@10 with ties broken by lower K; evalQueriesAtK() computes aggregate NDCG@10 and MRR@5; falls back to DEFAULT_K=60 when OFF
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if per-intent K sweep runs with correct grid and selects best K by NDCG@10; FAIL if sweep does not execute, wrong grid values used, or K=60 applied when flag is ON
 
 ---
@@ -56,8 +58,7 @@ perIntentKSweep() output + NDCG@10/MRR@5 metrics + selected K values + test tran
 
 Verify isKExperimentalEnabled() → Confirm flag is not forced off → Check JUDGED_K_SWEEP_VALUES constant → Inspect argmaxNdcg10() tie-breaking logic → Verify evalQueriesAtK() metric computation → Check resolveRrfK() override path
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/22-rrf-k-experimental.md](../../feature_catalog/11--scoring-and-calibration/22-rrf-k-experimental.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

@@ -14,11 +14,13 @@ This scenario validates Spec folder hierarchy as retrieval structure (S4) for `0
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `057` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm hierarchy-aware retrieval
-- Prompt: `As a retrieval-enhancement validation operator, validate Spec folder hierarchy as retrieval structure (S4) against the documented validation surface. Verify self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm hierarchy-aware retrieval.
+- Real user request: `Please validate Spec folder hierarchy as retrieval structure (S4) against the documented validation surface and tell me whether the expected signals are present: Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Spec folder hierarchy as retrieval structure (S4) against the documented validation surface. Verify self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Self-folder results ranked highest; parent and sibling folders contribute scored results; hierarchy depth reflected in ranking
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if retrieval respects folder hierarchy with self > parent > sibling ordering
 
 ---
@@ -54,8 +56,7 @@ Query output showing hierarchy-aware ranking + folder path evidence in results
 
 Verify nested hierarchy exists; check hierarchy scoring weights; inspect folder-path resolution in retrieval pipeline
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md](../../feature_catalog/15--retrieval-enhancements/03-spec-folder-hierarchy-as-retrieval-structure.md)
 

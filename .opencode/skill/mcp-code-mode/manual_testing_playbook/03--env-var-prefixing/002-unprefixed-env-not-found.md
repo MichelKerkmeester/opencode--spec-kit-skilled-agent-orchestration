@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-009` and confirm the
 
 - Objective: Verify setting only `CLICKUP_API_KEY` (no prefix) in `.env` causes a ClickUp tool call to fail with a missing-credential error.
 - Real user request: `"My env var is set but ClickUp says it's not authenticated — why?"` (debugging session)
-- Prompt: `As a manual-testing orchestrator, set only CLICKUP_API_KEY (no prefix) in .env, restart Code Mode, and call a ClickUp tool against the live ClickUp API. Verify the auth fails with a missing-credential error. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set only CLICKUP_API_KEY (no prefix) in .env, restart Code Mode, and call a ClickUp tool against the live ClickUp API. Verify the auth fails with a missing-credential error. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: temporarily replace prefixed env var with unprefixed; restart; call ClickUp tool; observe auth failure; restore prefixed env.
 - Expected signals: `.env` has unprefixed `CLICKUP_API_KEY` only; ClickUp call returns auth error; error message references missing/invalid API key.
 - Desired user-visible outcome: A short report demonstrating the failure mode and confirming that adding the prefix fixes it, with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-009` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, set only CLICKUP_API_KEY (no prefix) in .env, restart Code Mode, and call a ClickUp tool against the live ClickUp API. Verify the auth fails with a missing-credential error. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set only CLICKUP_API_KEY (no prefix) in .env, restart Code Mode, and call a ClickUp tool against the live ClickUp API. Verify the auth fails with a missing-credential error. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

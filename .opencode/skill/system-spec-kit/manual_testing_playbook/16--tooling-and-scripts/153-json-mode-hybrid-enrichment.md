@@ -10,7 +10,7 @@ description: "This scenario validates the structured JSON summary contract for g
 - [1. OVERVIEW](#1-overview)
 - [2. SCENARIO CONTRACT](#2-scenario-contract)
 - [3. TEST EXECUTION](#3-test-execution)
-- [4. REFERENCES](#4-references)
+- [4. SOURCE FILES](#4-source-files)
 - [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
@@ -21,11 +21,13 @@ This scenario validates the phase 016 structured JSON summary contract for `gene
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that structured JSON inputs produce correct memory output and that the hardening fixes prevent data loss from sparse conversation arrays or missing explicit values.
 
-- Objective: Verify structured JSON summary contract and Wave 2 hardening
-- Prompt: `As a tooling validation operator, validate JSON mode structured summary hardening against toolCalls. Verify structured JSON summary contract and Wave 2 hardening. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify structured JSON summary contract and Wave 2 hardening.
+- Real user request: `Please validate JSON mode structured summary hardening against toolCalls and tell me whether the expected signals are present: Structured fields preserved in rendered output, counts match explicit input, file-backed JSON stays on the structured path.`
+- RCAF Prompt: `As a tooling validation operator, validate JSON mode structured summary hardening against toolCalls. Verify structured JSON summary contract and Wave 2 hardening. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Structured fields preserved in rendered output, counts match explicit input, file-backed JSON stays on the structured path
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all structured fields survive rendering and hardening fixes hold; FAIL if any field is lost or overwritten by heuristics
 
 ---
@@ -543,8 +545,7 @@ Rendered .md frontmatter
 
 Check resolveProjectPhase() in session-extractor.ts and projectPhase propagation in input-normalizer.ts
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md](../../feature_catalog/16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md)
 - Source spec: [016-json-mode-hybrid-enrichment/spec.md](../../../../specs/system-spec-kit/022-hybrid-rag-fusion/009-perfect-session-capturing/016-json-mode-hybrid-enrichment/spec.md)

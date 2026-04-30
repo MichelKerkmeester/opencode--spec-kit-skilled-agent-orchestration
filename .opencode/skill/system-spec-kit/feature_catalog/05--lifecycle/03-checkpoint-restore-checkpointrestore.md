@@ -48,7 +48,7 @@ Barrier release is guaranteed in the restore `finally` path, so the maintenance 
 | `mcp_server/tool-schemas.ts` | MCP-visible JSON schema for `checkpoint_restore` |
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for checkpoint tools |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -61,8 +61,6 @@ Barrier release is guaranteed in the restore `finally` path, so the maintenance 
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Checkpoint restore (checkpoint_restore)
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/03-checkpoint-restore-checkpointrestore.md`

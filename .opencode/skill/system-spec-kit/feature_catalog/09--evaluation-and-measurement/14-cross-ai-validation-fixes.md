@@ -46,7 +46,7 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Deletion-path error propagation hardening |
 | `mcp_server/handlers/memory-search.ts` | Handler | Search-handler flow fix moving cache lookup ahead of the embedding-readiness wait |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -60,14 +60,10 @@ All 14 items verified through 3-stage review: Codex implemented, Gemini reviewed
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: Cross-AI validation fixes
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/14-cross-ai-validation-fixes.md`
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 088

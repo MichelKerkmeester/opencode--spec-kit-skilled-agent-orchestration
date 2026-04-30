@@ -1,7 +1,6 @@
 ---
 title: "Pre-storage quality gate"
 description: "The pre-storage quality gate validates structural integrity, content quality and semantic deduplication before a spec-doc record enters the index."
-audited_post_018: true
 ---
 
 # Pre-storage quality gate
@@ -50,7 +49,7 @@ The gate still supports its existing warn-only rollout behavior for threshold tu
 | `mcp_server/lib/validation/save-quality-gate.ts` | Lib | Pre-storage quality gate |
 | `mcp_server/handlers/memory-save.ts` | Handler | Orders quality-loop, insufficiency, template-contract, and quality-gate evaluation before persistence |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -60,7 +59,6 @@ The gate still supports its existing warn-only rollout behavior for threshold tu
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Pre-storage quality gate
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/05-pre-storage-quality-gate.md`

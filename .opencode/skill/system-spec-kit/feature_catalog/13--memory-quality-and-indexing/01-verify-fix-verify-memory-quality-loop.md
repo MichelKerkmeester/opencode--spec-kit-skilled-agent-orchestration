@@ -1,7 +1,6 @@
 ---
 title: "Verify-fix-verify memory quality loop"
 description: "The verify-fix-verify loop evaluates memory quality at save time and auto-retries fixes before accepting or rejecting the save."
-audited_post_018: true
 ---
 
 # Verify-fix-verify memory quality loop
@@ -49,7 +48,7 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 | `shared/parsing/memory-sufficiency.ts` | Shared | Shared semantic sufficiency evaluation that runs after quality-loop fixes |
 | `shared/parsing/memory-template-contract.ts` | Shared | Rendered-memory structural contract that runs after quality-loop fixes |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -59,8 +58,7 @@ The `CHARS_PER_TOKEN` ratio defaults to `4` and is shared with `preflight.ts` th
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Verify-fix-verify memory quality loop
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/01-verify-fix-verify-memory-quality-loop.md`
 - Source list updated 2026-03-25 per deep review

@@ -1,17 +1,17 @@
 ---
-title: "DRV-021 -- Review graph convergence signals participate in legal-stop gates"
+title: "DRV-032 -- Review graph convergence signals participate in legal-stop gates"
 description: "Verify that graph-backed dimension coverage can block premature STOP in deep review."
 ---
 
-# DRV-021 -- Review graph convergence signals participate in legal-stop gates
+# DRV-032 -- Review graph convergence signals participate in legal-stop gates
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-021`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-032`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates graph-backed legal-stop behavior for `DRV-021`. The objective is to verify that when review stability signals nominate STOP but graph-backed dimension coverage remains below threshold, the legal-stop gates block premature STOP.
+This scenario validates graph-backed legal-stop behavior for `DRV-032`. The objective is to verify that when review stability signals nominate STOP but graph-backed dimension coverage remains below threshold, the legal-stop gates block premature STOP.
 
 ### WHY THIS MATTERS
 
@@ -81,7 +81,7 @@ Privilege `references/convergence.md` for the review stop contract and the fixtu
 ## 5. SOURCE METADATA
 
 - Group: CONVERGENCE AND RECOVERY
-- Playbook ID: DRV-021
+- Playbook ID: DRV-032
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/021-graph-convergence-review.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-04-10.

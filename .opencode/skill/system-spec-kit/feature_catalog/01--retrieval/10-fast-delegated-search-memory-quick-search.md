@@ -1,7 +1,6 @@
 ---
 title: "Fast delegated search (memory_quick_search)"
 description: "Simplified search wrapper in the L2 Core layer that accepts query, optional limit, and optional spec folder, then delegates to memory_search with sensible defaults (intent auto-detect ON, dedup ON, content included, reranking ON, constitutional inclusion ON, limit 10)."
-audited_post_018: true
 ---
 
 # Fast delegated search (memory_quick_search)
@@ -41,7 +40,7 @@ The constructed `SearchArgs` are passed directly to `handleMemorySearch()`, the 
 | `mcp_server/tools/memory-tools.ts` | Tool | Dispatch case: validates args, builds `SearchArgs` with defaults, delegates to `handleMemorySearch` |
 | `mcp_server/handlers/memory-search.ts` | Handler | Search handler that executes the full pipeline (shared with `memory_search`) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -52,7 +51,6 @@ The constructed `SearchArgs` are passed directly to `handleMemorySearch()`, the 
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Fast delegated search (memory_quick_search)
-- Current reality source: mcp_server/tool-schemas.ts definition and mcp_server/tools/memory-tools.ts dispatch logic
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/10-fast-delegated-search-memory-quick-search.md`

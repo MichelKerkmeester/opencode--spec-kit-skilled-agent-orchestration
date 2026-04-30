@@ -13,11 +13,13 @@ This scenario validates Runtime Config Contract for `223`. It focuses on confirm
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `223` and confirm the expected signals without contradicting evidence.
 
-- Objective: confirming the runtime loader consumes only the active Section 1 keys, validates and normalizes configured values, and leaves documentation-only sections non-binding
-- Prompt: `As a feature-flag validation operator, validate Runtime Config Contract against config/config.jsonc. Verify confirming the runtime loader consumes only the active Section 1 keys, validates and normalizes configured values, and leaves documentation-only sections non-binding. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: confirming the runtime loader consumes only the active Section 1 keys, validates and normalizes configured values, and leaves documentation-only sections non-binding.
+- Real user request: `` Please validate Runtime Config Contract against config/config.jsonc and tell me whether the expected signals are present: valid Section 1 keys such as `maxResultPreview` and `timezoneOffsetHours` appear in the loaded runtime config; invalid numeric values fall back with warnings; legacy `qualityAbortThreshold` values on the `1..100` scale normalize into `0.0..1.0`; empty, missing, or invalid JSONC does not crash the loader; documentation-only sections remain descriptive and do not show up as newly bound core runtime controls. ``
+- RCAF Prompt: `As a feature-flag validation operator, validate Runtime Config Contract against config/config.jsonc. Verify confirming the runtime loader consumes only the active Section 1 keys, validates and normalizes configured values, and leaves documentation-only sections non-binding. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: valid Section 1 keys such as `maxResultPreview` and `timezoneOffsetHours` appear in the loaded runtime config; invalid numeric values fall back with warnings; legacy `qualityAbortThreshold` values on the `1..100` scale normalize into `0.0..1.0`; empty, missing, or invalid JSONC does not crash the loader; documentation-only sections remain descriptive and do not show up as newly bound core runtime controls
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the loader only binds the active top-level workflow keys, safely validates or normalizes bad input, and treats the deeper JSONC sections as reference-only metadata
 
 ---
@@ -55,8 +57,7 @@ sandbox copies of `config.jsonc`, captured runtime config output for each load, 
 
 Inspect `scripts/core/config.ts` merge and validation flow, confirm the test run is loading the intended sandbox file, and verify any observed behavior change is not coming from a different runtime path outside the core config loader
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/09-runtime-config-contract.md](../../feature_catalog/19--feature-flag-reference/09-runtime-config-contract.md)
 

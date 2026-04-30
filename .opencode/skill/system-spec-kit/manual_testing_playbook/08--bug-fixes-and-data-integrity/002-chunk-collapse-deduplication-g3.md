@@ -14,11 +14,13 @@ This scenario validates Chunk collapse deduplication (G3) for `002`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `002` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm dedup in default mode
-- Prompt: `As a data-integrity validation operator, validate Chunk collapse deduplication (G3) against memory_search(includeContent:false). Verify no duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm dedup in default mode.
+- Real user request: `Please validate Chunk collapse deduplication (G3) against memory_search(includeContent:false) and tell me whether the expected signals are present: No duplicate memory IDs in results; collapsed chunks yield unique parents only.`
+- RCAF Prompt: `As a data-integrity validation operator, validate Chunk collapse deduplication (G3) against memory_search(includeContent:false). Verify no duplicate memory IDs in results; collapsed chunks yield unique parents only. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: No duplicate memory IDs in results; collapsed chunks yield unique parents only
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Zero duplicate parent IDs in collapsed results; FAIL: Same parent ID appears >1 time in output
 
 ---
@@ -54,8 +56,7 @@ Search output with result IDs + dedup count before/after collapse
 
 Check chunk parentId linkage → Verify dedup runs after collapse stage → Inspect includeContent flag behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md)
 

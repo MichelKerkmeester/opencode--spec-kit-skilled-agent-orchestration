@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-002` and confirm the
 
 - Objective: Verify `search_tools({task_description: "task management", limit: 5})` returns ClickUp-related tool names within the `limit` cap.
 - Real user request: `"What tools do I have for managing project tasks?"`
-- Prompt: `As a manual-testing orchestrator, search for tools that handle task management through Code Mode against the registered ClickUp manual. Verify the search returns ClickUp-related tool names within the limit cap. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search for tools that handle task management through Code Mode against the registered ClickUp manual. Verify the search returns ClickUp-related tool names within the limit cap. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: call `search_tools` natively; do not delegate.
 - Expected signals: result is an array; length <= 5 (the limit); at least one entry's name contains `clickup`.
 - Desired user-visible outcome: A short report naming the matched tools and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-002` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, search for tools that handle task management through Code Mode against the registered ClickUp manual. Verify the search returns ClickUp-related tool names within the limit cap. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search for tools that handle task management through Code Mode against the registered ClickUp manual. Verify the search returns ClickUp-related tool names within the limit cap. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

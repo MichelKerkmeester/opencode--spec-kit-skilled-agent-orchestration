@@ -15,7 +15,14 @@ This snippet preserves the canonical memory/spec-kit operator workflow for `M-00
 
 ## 2. SCENARIO CONTRACT
 
-This scenario remains prose-first because it carries compound operator logic, supplemental checks, or shared closure rules that are clearer than a single-row matrix.
+
+- Objective: This snippet preserves the canonical memory/spec-kit operator workflow for `M-006`.
+- Real user request: `` Please validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }) and tell me whether the expected signals are present: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Session Enrichment and Alignment Guardrails against memory_search({ query: "handover continuity alignment", specFolder: "specs/<target-spec>" }). Verify the save resolves through handover.md first, then _memory.continuity, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise ALIGNMENT_BLOCK when captured files match the spec's files-to-change table. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: the save resolves through `handover.md` first, then `_memory.continuity`, then spec docs; spec-folder and git enrichment remain supporting-only; and it does not raise `ALIGNMENT_BLOCK` when captured files match the spec's files-to-change table
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: captured-session save succeeds for matching files, emits provenance-backed context, and still blocks unrelated captures when overlap is genuinely low.
 
 ---
 
@@ -67,8 +74,7 @@ inspect `input-normalizer.ts` relevance filtering, compare captured file paths t
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md](../../feature_catalog/13--memory-quality-and-indexing/18-session-enrichment-and-alignment-guards.md)
 

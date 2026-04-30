@@ -31,7 +31,7 @@ When the counter reaches the configured threshold, the recovery protocol classif
 | `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Reference | Places stuck recovery in the live loop state machine. |
 | `.opencode/agent/deep-research.md` | Agent | Defines recovery-mode behavior for the iteration agent when the dispatcher marks a run as recovery. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

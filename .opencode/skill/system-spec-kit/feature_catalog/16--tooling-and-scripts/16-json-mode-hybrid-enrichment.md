@@ -163,8 +163,7 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/16-json-mode-hybrid-enrichment.md`
 
@@ -177,8 +176,4 @@ The session capturing pipeline now handles structured JSON summaries as follows:
 ---
 
 ### SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: JSON mode structured summary hardening
-- Current reality source: `scripts/types/session-types.ts` and `scripts/core/workflow.ts`
 <!-- /ANCHOR:source-metadata -->

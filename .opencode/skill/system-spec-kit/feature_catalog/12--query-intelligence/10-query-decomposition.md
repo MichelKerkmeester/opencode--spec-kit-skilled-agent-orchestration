@@ -1,7 +1,6 @@
 ---
 title: "Query decomposition"
 description: "Query decomposition splits multi-faceted questions into up to 3 sub-queries using rule-based heuristics, enabling facet-aware retrieval in deep mode without LLM calls, gated by the SPECKIT_QUERY_DECOMPOSITION flag."
-audited_post_018: true
 ---
 
 # Query decomposition
@@ -38,7 +37,7 @@ The `isQueryDecompositionEnabled()` function in `search-flags.ts` checks the fla
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage-1 orchestration, deep-mode gate for decomposition |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isQueryDecompositionEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ The `isQueryDecompositionEnabled()` function in `search-flags.ts` checks the fla
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Query decomposition
-- Current reality source: mcp_server/lib/search/pipeline/stage1-candidate-gen.ts deep-mode decomposition branch and mcp_server/lib/search/query-decomposer.ts heuristics
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/10-query-decomposition.md`

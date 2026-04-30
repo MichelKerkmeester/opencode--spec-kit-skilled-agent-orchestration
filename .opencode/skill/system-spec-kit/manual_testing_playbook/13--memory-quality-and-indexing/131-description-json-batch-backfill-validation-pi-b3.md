@@ -14,11 +14,13 @@ This scenario validates Description.json batch backfill validation (PI-B3) for `
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `131` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm batch-generated folder descriptions exist and conform to schema
-- Prompt: `As a spec-doc record-quality validation operator, validate Description.json batch backfill validation (PI-B3) against specId. Verify batch-generated folder descriptions exist and conform to schema. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm batch-generated folder descriptions exist and conform to schema.
+- Real user request: `` Please validate Description.json batch backfill validation (PI-B3) against specId and tell me whether the expected signals are present: Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Description.json batch backfill validation (PI-B3) against specId. Verify batch-generated folder descriptions exist and conform to schema. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Description.json coverage stays in parity with the current active spec inventory; all JSON files parse without syntax errors; C1 field-type checks pass with `specId` string, `parentChain` array of strings, and `memorySequence` number; schema fields are present at varying depths; per-folder files preferred over spec.md fallback
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if description.json coverage matches the active spec inventory, every description.json is valid JSON, C1 field-type checks pass, and per-folder generation is preferred over spec.md fallback
 
 ---
@@ -57,8 +59,7 @@ Folder count comparison showing `spec.md`/`description.json` parity + JSON synta
 
 Verify generateFolderDescriptions covers the current spec inventory → Check JSON schema validation and C1 field-type rules → Inspect per-folder vs spec.md preference logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/04-spec-folder-description-discovery.md](../../feature_catalog/13--memory-quality-and-indexing/04-spec-folder-description-discovery.md)
 

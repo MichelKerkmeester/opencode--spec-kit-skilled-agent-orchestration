@@ -1,7 +1,6 @@
 ---
 title: "Causal graph boost (graduated default-ON)"
 description: "Causal graph traversal boost amplifies search results related to top-ranked seeds via weighted 2-hop CTE walk, gated by SPECKIT_CAUSAL_BOOST (default true, graduated)."
-audited_post_018: true
 ---
 
 # Causal graph boost (graduated default-ON)
@@ -34,7 +33,7 @@ Status: **Graduated** — default ON, kill-switch available via env var.
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isCausalBoostEnabled()` flag check |
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Stage 2 fusion invoking causal boost |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,9 +43,9 @@ Status: **Graduated** — default ON, kill-switch available via env var.
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/11-causal-boost-graduated.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Causal graph boost
-- Graduated via: 006-default-on-boost-rollout
 - Kill switch: `SPECKIT_CAUSAL_BOOST=false`
 - See also: `10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md` (detailed causal mechanics)

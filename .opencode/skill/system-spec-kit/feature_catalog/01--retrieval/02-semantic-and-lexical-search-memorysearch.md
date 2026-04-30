@@ -1,8 +1,6 @@
 ---
 title: "Semantic and lexical search (memory_search)"
 description: "Covers the primary search tool that runs the full hybrid retrieval pipeline across multiple channels."
-audited_post_018: true
-phase_018_change: Retired the graph-walk rollout-state ladder from the active contract; keep bounded graph diagnostics and trace compatibility only.
 ---
 
 # Semantic and lexical search (memory_search)
@@ -59,7 +57,7 @@ When `requestQuality.label != "good"` AND `recovery.status` indicates degraded r
 | `.opencode/skill/system-spec-kit/mcp_server/lib/telemetry/eval-channel-tracking.ts` | Lib | Eval channel payload collection and graph-walk diagnostics |
 | `.opencode/skill/system-spec-kit/mcp_server/formatters/search-results.ts` | Formatter | Search result formatting |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -73,8 +71,7 @@ When `requestQuality.label != "good"` AND `recovery.status` indicates degraded r
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Semantic and lexical search (memory_search)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/02-semantic-and-lexical-search-memorysearch.md`
 - Source list updated 2026-03-26 per audit remediation

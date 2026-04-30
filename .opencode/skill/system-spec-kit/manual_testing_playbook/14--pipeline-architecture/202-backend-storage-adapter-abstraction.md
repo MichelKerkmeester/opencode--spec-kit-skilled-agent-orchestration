@@ -14,11 +14,13 @@ This scenario validates Backend storage adapter abstraction for `202`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `202` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides
-- Prompt: `As a pipeline validation operator, validate Backend storage adapter abstraction against the documented validation surface. Verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides.
+- Real user request: `` Please validate Backend storage adapter abstraction against the documented validation surface and tell me whether the expected signals are present: `IVectorStore` defines the vector-storage contract; SQLite-backed vector store implements that contract; vector index/facade consumes the seam; broader graph/document storage paths still use direct SQLite integrations; current abstraction scope is intentionally limited to vector storage. ``
+- RCAF Prompt: `As a pipeline validation operator, validate Backend storage adapter abstraction against the documented validation surface. Verify the shipped storage seam is scoped to vector storage and does not claim broader multi-backend abstraction than the code actually provides. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `IVectorStore` defines the vector-storage contract; SQLite-backed vector store implements that contract; vector index/facade consumes the seam; broader graph/document storage paths still use direct SQLite integrations; current abstraction scope is intentionally limited to vector storage
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if vector storage is abstracted through the seam while non-vector persistence remains explicitly SQLite-backed; FAIL if the seam is missing at the vector boundary or if the docs overstate a broader backend abstraction not present in code
 
 ---
@@ -56,8 +58,7 @@ Interface definition + implementation trace + facade usage evidence + contrastin
 
 Inspect `vector-store.ts` contract completeness; verify `vector-index-store.ts` implementation coverage; confirm `vector-index.ts` re-export/facade usage; audit any claims of generalized backend abstraction outside the vector boundary
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/16-backend-storage-adapter-abstraction.md](../../feature_catalog/14--pipeline-architecture/16-backend-storage-adapter-abstraction.md)
 

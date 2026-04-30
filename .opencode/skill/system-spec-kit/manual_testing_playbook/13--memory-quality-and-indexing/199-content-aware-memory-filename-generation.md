@@ -14,11 +14,13 @@ This scenario validates Content-aware memory filename generation for `199`. It f
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `199` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable
-- Prompt: `As a spec-doc record-quality validation operator, validate Content-aware memory filename generation against the documented validation surface. Verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable.
+- Real user request: `` Please validate Content-aware memory filename generation against the documented validation surface and tell me whether the expected signals are present: Preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches `slugToTitle()` output; pathless batch inputs receive distinct synthetic keys. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Content-aware memory filename generation against the documented validation surface. Verify content-aware slug selection prefers task/session context over folder fallback and keeps same-folder saves distinguishable. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Preferred slug source order is task -> spec title -> session candidates -> folder base; saved filenames in the same folder differ when task context differs; slug normalization lowercases and hyphenates content-aware names; H1 heading matches `slugToTitle()` output; pathless batch inputs receive distinct synthetic keys
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if same-folder saves produce distinct content-aware filenames and matching headings without falling back to the folder slug unnecessarily; FAIL if filenames collapse to the folder slug, headings diverge from filenames, or pathless batch items overwrite one another
 
 ---
@@ -56,8 +58,7 @@ Saved filenames + opened file headings + batch/pathless save output + normalizat
 
 Inspect `preferredMemoryTask` selection in workflow orchestration; verify session candidate precedence; review `generateContentSlug()` normalization/truncation rules; check pathless batch key assignment before slug generation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md](../../feature_catalog/13--memory-quality-and-indexing/11-content-aware-memory-filename-generation.md)
 

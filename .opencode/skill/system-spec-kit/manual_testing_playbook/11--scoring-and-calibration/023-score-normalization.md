@@ -14,11 +14,13 @@ This scenario validates Score normalization for `023`. It focuses on Confirm bat
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `023` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm batch min-max behavior
-- Prompt: `As a scoring validation operator, validate Score normalization against the documented validation surface. Verify normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm batch min-max behavior.
+- Real user request: `Please validate Score normalization against the documented validation surface and tell me whether the expected signals are present: Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled.`
+- RCAF Prompt: `As a scoring validation operator, validate Score normalization against the documented validation surface. Verify normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Normalized scores in [0,1] range; min-max normalization correct; equal-score and single-result edge cases handled
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: All normalized scores in [0,1]; equal scores produce uniform output; single result = 0.0 (composite min-max with zero range returns 0); FAIL: Out-of-range values or division-by-zero on equal scores
 
 ---
@@ -54,8 +56,7 @@ Normalized output with range verification + edge case test results
 
 Verify min-max formula → Check edge case guards (single result, all-equal) → Inspect batch processing order
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/01-score-normalization.md](../../feature_catalog/11--scoring-and-calibration/01-score-normalization.md)
 

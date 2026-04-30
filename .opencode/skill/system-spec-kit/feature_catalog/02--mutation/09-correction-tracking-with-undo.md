@@ -1,7 +1,6 @@
 ---
 title: "Correction tracking with undo"
 description: "Covers the corrections module that records inter-memory relationship signals and adjusts stability scores during learning."
-audited_post_018: true
 ---
 
 # Correction tracking with undo
@@ -38,7 +37,7 @@ Undo logic exists in the module. `undo_correction()` runs inside a transaction w
 |------|-------|------|
 | `mcp_server/lib/learning/corrections.ts` | Lib | Correction tracking and stability adjustment |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +46,6 @@ Undo logic exists in the module. `undo_correction()` runs inside a transaction w
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Correction tracking with undo
-- Current reality source: audit-D04 gap backfill
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/09-correction-tracking-with-undo.md`

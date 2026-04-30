@@ -14,11 +14,13 @@ This scenario validates Deferred lexical-only indexing for `111`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `111` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm embedding-failure fallback and BM25 searchability
-- Prompt: `As a spec-doc record-quality validation operator, validate Deferred lexical-only indexing against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm embedding-failure fallback and BM25 searchability.
+- Real user request: `Please validate Deferred lexical-only indexing against OPENAI_API_KEY and tell me whether the expected signals are present: Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Deferred lexical-only indexing against OPENAI_API_KEY. Verify memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Memory saved with embedding_status='pending' on embedding failure; BM25/FTS5 lexical search returns the spec-doc record; reindex transitions status to 'success'; vector search works after reindex
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if embedding failure falls back to lexical-only indexing, BM25 search works, and reindex recovers full embedding
 
 ---
@@ -57,8 +59,7 @@ Save output showing pending status + lexical search result + reindex output + po
 
 Verify embedding_status column exists in schema; check BM25/FTS5 index includes pending memories; inspect reindex retry logic and retry_count tracking
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md](../../feature_catalog/13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md)
 

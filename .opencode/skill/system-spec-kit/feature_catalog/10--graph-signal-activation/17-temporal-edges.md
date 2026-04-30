@@ -1,7 +1,6 @@
 ---
 title: "Temporal edge validity"
 description: "valid_at/invalid_at columns on causal_edges enable time-bounded graph traversal, with invalidateEdge() marking outdated edges and getValidEdges() filtering to currently valid ones, gated by the SPECKIT_TEMPORAL_EDGES flag."
-audited_post_018: true
 ---
 
 # Temporal edge validity
@@ -28,7 +27,7 @@ The `causal_edges` table includes `valid_at` (timestamp when the edge became val
 |------|-------|------|
 | `mcp_server/lib/graph/temporal-edges.ts` | Lib | `invalidateEdge()`, `getValidEdges()`, temporal column management |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,8 +36,8 @@ The `causal_edges` table includes `valid_at` (timestamp when the edge became val
 ---
 
 ## 4. SOURCE METADATA
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/17-temporal-edges.md`
 
-- Group: Graph signal activation
-- Source feature title: Temporal edge validity
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_TEMPORAL_EDGES=false

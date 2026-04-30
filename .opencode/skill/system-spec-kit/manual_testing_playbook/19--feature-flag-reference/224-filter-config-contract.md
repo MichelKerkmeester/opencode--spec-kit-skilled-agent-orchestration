@@ -13,11 +13,13 @@ This scenario validates Filter Config Contract for `224`. It focuses on confirmi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `224` and confirm the expected signals without contradicting evidence.
 
-- Objective: confirming the content-filter loader honors file-backed pipeline settings, stage order, thresholds, and deep-merge fallback behavior
-- Prompt: `As a feature-flag validation operator, validate Filter Config Contract against config/filters.jsonc. Verify confirming the content-filter loader honors file-backed pipeline settings, stage order, thresholds, and deep-merge fallback behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: confirming the content-filter loader honors file-backed pipeline settings, stage order, thresholds, and deep-merge fallback behavior.
+- Real user request: `` Please validate Filter Config Contract against config/filters.jsonc and tell me whether the expected signals are present: `pipeline.enabled: false` returns the original prompt list unchanged; enabled runs respect the configured `noise`, `dedupe`, and `quality` stages in the declared order; configured thresholds such as `similarityThreshold` and `warnThreshold` affect filtering decisions; partial overrides preserve unspecified nested defaults; malformed JSONC logs a warning and falls back to built-in defaults. ``
+- RCAF Prompt: `As a feature-flag validation operator, validate Filter Config Contract against config/filters.jsonc. Verify confirming the content-filter loader honors file-backed pipeline settings, stage order, thresholds, and deep-merge fallback behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `pipeline.enabled: false` returns the original prompt list unchanged; enabled runs respect the configured `noise`, `dedupe`, and `quality` stages in the declared order; configured thresholds such as `similarityThreshold` and `warnThreshold` affect filtering decisions; partial overrides preserve unspecified nested defaults; malformed JSONC logs a warning and falls back to built-in defaults
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if filters.jsonc actively controls the filter pipeline while deep-merge fallback keeps the pipeline operational when fields are omitted or the file is malformed
 
 ---
@@ -55,8 +57,7 @@ sandbox copies of `filters.jsonc`, captured before or after prompt lists for eac
 
 Inspect `scripts/lib/content-filter.ts` loader and merge logic, verify the fixture prompt list actually exercises noise plus dedupe plus quality branches, and confirm the malformed-config run did not silently reuse stale in-memory config from a prior execution
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/10-filter-config-contract.md](../../feature_catalog/19--feature-flag-reference/10-filter-config-contract.md)
 

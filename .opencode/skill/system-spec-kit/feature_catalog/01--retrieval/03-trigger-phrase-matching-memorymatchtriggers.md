@@ -1,7 +1,6 @@
 ---
 title: "Trigger phrase matching (memory_match_triggers)"
 description: "Covers the fast-path trigger matching tool that performs direct string matching for sub-100ms retrieval."
-audited_post_018: true
 ---
 
 # Trigger phrase matching (memory_match_triggers)
@@ -50,7 +49,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 | `mcp_server/lib/search/vector-index-store.ts` | Lib | DB access for governed-scope row lookup |
 | `mcp_server/formatters/token-metrics.ts` | Formatter | Token metrics calculation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -65,8 +64,7 @@ The cognitive path fetches 2x the requested limit from the trigger matcher to gi
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: Trigger phrase matching (memory_match_triggers)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/03-trigger-phrase-matching-memorymatchtriggers.md`
 - Source list updated 2026-03-26 per audit remediation

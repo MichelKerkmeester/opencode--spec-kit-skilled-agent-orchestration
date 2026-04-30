@@ -14,11 +14,13 @@ This scenario validates Pre-storage quality gate (TM-04) for `043`. It focuses o
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `043` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm 3-layer gate behavior
-- Prompt: `As a spec-doc record-quality validation operator, validate Pre-storage quality gate (TM-04) against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm 3-layer gate behavior.
+- Real user request: `Please validate Pre-storage quality gate (TM-04) against the documented validation surface and tell me whether the expected signals are present: Structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Pre-storage quality gate (TM-04) against the documented validation surface. Verify structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Structural, semantic, and duplication checks all run; blocking failures stop the save; warn-only findings remain advisory; no fake persisted decision-log claim
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Each failure class triggers the correct gate stage with accurate blocking vs advisory behavior; FAIL: A stage is skipped, severity is wrong, or the scenario claims a persisted decision log that runtime does not emit
 
 ---
@@ -54,8 +56,7 @@ Tool output per failure class plus warnings/save outcome
 
 Verify gate ordering, warning surfacing, and save-path branching in the actual runtime output
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/05-pre-storage-quality-gate.md](../../feature_catalog/13--memory-quality-and-indexing/05-pre-storage-quality-gate.md)
 

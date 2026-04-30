@@ -13,11 +13,13 @@ This scenario validates session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_ST
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `169` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify additive session-state metadata and goal refinement are emitted on session-aware searches
-- Prompt: `As a runtime-hook validation operator, validate Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) against memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] }). Verify additive session-state metadata and goal refinement are emitted on session-aware searches. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify additive session-state metadata and goal refinement are emitted on session-aware searches.
+- Real user request: `` Please validate Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) against memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] }) and tell me whether the expected signals are present: `data.sessionState` includes activeGoal, seenResultIds, openQuestions, preferredAnchors; `data.goalRefinement` includes activeGoal and applied status; follow-up search in same session can deprioritize seen results (score * 0.3 fallback path); session expires after SESSION_TTL_MS (30 min); LRU eviction at MAX_SESSIONS (100). ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Session retrieval state v1 (SPECKIT_SESSION_RETRIEVAL_STATE_V1) against memory_search({ query: "first search", sessionId: "test-session", anchors: ["state", "next-steps"] }). Verify additive session-state metadata and goal refinement are emitted on session-aware searches. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `data.sessionState` includes activeGoal, seenResultIds, openQuestions, preferredAnchors; `data.goalRefinement` includes activeGoal and applied status; follow-up search in same session can deprioritize seen results (score * 0.3 fallback path); session expires after SESSION_TTL_MS (30 min); LRU eviction at MAX_SESSIONS (100)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if additive session metadata is present and session-aware follow-up behavior is visible; FAIL if session metadata is missing or follow-up behavior is absent
 
 ---
@@ -55,8 +57,7 @@ Response JSON before/after follow-up + test transcript
 
 Verify isSessionRetrievalStateEnabled() → Check SessionStateManager.getOrCreate() → Inspect SEEN_DEDUP_FACTOR (0.3) → Verify seenResultIds tracking → Check SESSION_TTL_MS (1800000) → Verify MAX_SESSIONS (100) LRU
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/17-retrieval-session-state.md](../../feature_catalog/18--ux-hooks/17-retrieval-session-state.md)
 - Feature flag reference: [01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

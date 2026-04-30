@@ -47,7 +47,7 @@ The decomposition mirrors the previous inline flow exactly. No phase reorders pe
 | `mcp_server/code_graph/lib/phase-runner.ts` | Lib | Defines `Phase<I,O>`, `PhaseRunnerError`, `topologicalSort()`, `runPhases()` |
 | `mcp_server/code_graph/lib/structural-indexer.ts` | Lib | `buildIndexPhases()` declares the four scan phases; `indexFiles()` invokes `runPhases()` and preserves the historical `IndexFilesResult` shape |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -58,10 +58,10 @@ The decomposition mirrors the previous inline flow exactly. No phase reorders pe
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Pipeline Architecture
-- Source feature title: Code Graph phase-DAG runner
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/25-code-graph-phase-dag-runner.md`
+
 - Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §4 (Code Graph "Phase registry" + "Runner contract" rows), §11 Packet 1
 - Decision record: 012/decision-record.md ADR-012-001 (clean-room), ADR-012-002 (sub-phase split)
-- Current reality source: `mcp_server/code_graph/lib/phase-runner.ts`, `mcp_server/code_graph/lib/structural-indexer.ts:buildIndexPhases`

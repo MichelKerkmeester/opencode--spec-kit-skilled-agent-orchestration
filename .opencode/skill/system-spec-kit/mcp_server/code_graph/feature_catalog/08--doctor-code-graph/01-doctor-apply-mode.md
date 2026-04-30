@@ -44,6 +44,13 @@ Apply mode writes config, not source code. The YAML itself notes scanner-config 
 | `.opencode/command/doctor/assets/doctor_code-graph_auto.yaml:191-204` | Implementation | forbids source mutations and `code_graph_scan` in Phase A |
 | `.opencode/command/doctor/assets/doctor_code-graph_apply.yaml:24-30` | Implementation | defines apply-mode snapshot and rollback invariants |
 | `.opencode/command/doctor/assets/doctor_code-graph_apply.yaml:135-156` | Implementation | defines scan plus gold-query verification |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/08--doctor-code-graph/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

@@ -134,7 +134,7 @@ See the Phase System in the [main templates README](../README.md#phase-system) f
 <!-- ANCHOR:related -->
 
 - `../level_3/README.md`
-- `../addendum/level3plus-govern/`
+- `../addendum/level3-plus-govern/`
 - `../../references/templates/level_specifications.md`
 - `../../references/validation/validation_rules.md`
 

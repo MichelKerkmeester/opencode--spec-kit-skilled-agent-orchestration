@@ -13,12 +13,14 @@ This scenario is an evidence-led manual check for code-graph-adjacent matrix cel
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Reference and inspect stored evidence for code-graph cells F5, F6, F7, and F8.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - Matrix evidence files exist under `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/022-full-matrix-execution-validation/`.
-  - `jq` is available.
-- **Prompt**: `As a matrix evidence operator, inspect stored evidence for F5 code_graph_query, F6 code_graph_scan/verify, F7 causal graph, and F8 CocoIndex search. Verify each feature has native and inline PASS records where applicable, external CLI records are explicit PASS/BLOCKED/RUNNER_MISSING, and every referenced evidence file exists. Return PASS/FAIL with the decisive file paths.`
+
+- Objective: Reference and inspect stored evidence for code-graph cells F5, F6, F7, and F8.
+- Real user request: `` Please validate Code graph matrix cell coverage evidence against the documented validation surface and tell me whether the expected signals are present: F5 references `logs/feature-runs/F5-code-graph-query.log`.; F6 references `logs/feature-runs/F6-code-graph-verify.log`.; F7 references `logs/feature-runs/F7-causal-graph.log`.; F8 references `logs/feature-runs/F8-cocoindex-calibration.log`.; Native and inline F5-F8 records are `PASS` where local focused runners executed.; External CLI records are explicit and non-silent: `PASS`, `BLOCKED`, `RUNNER_MISSING`, or another normalized status with a concrete `output_summary`.; Every `evidence_files` path resolves under the matrix evidence root. ``
+- RCAF Prompt: `` As a context-and-code-graph validation operator, validate Code graph matrix cell coverage evidence against the documented validation surface. Verify F5 references `logs/feature-runs/F5-code-graph-query.log`.; F6 references `logs/feature-runs/F6-code-graph-verify.log`.; F7 references `logs/feature-runs/F7-causal-graph.log`.; F8 references `logs/feature-runs/F8-cocoindex-calibration.log`.; Native and inline F5-F8 records are `PASS` where local focused runners executed.; External CLI records are explicit and non-silent: `PASS`, `BLOCKED`, `RUNNER_MISSING`, or another normalized status with a concrete `output_summary`.; Every `evidence_files` path resolves under the matrix evidence root. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: F5 references `logs/feature-runs/F5-code-graph-query.log`.; F6 references `logs/feature-runs/F6-code-graph-verify.log`.; F7 references `logs/feature-runs/F7-causal-graph.log`.; F8 references `logs/feature-runs/F8-cocoindex-calibration.log`.; Native and inline F5-F8 records are `PASS` where local focused runners executed.; External CLI records are explicit and non-silent: `PASS`, `BLOCKED`, `RUNNER_MISSING`, or another normalized status with a concrete `output_summary`.; Every `evidence_files` path resolves under the matrix evidence root
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS if the expected signals are present without contradicting evidence; FAIL if required signals are missing or execution cannot complete.
 
 ---
 
@@ -108,8 +110,7 @@ No cleanup. This scenario is read-only.
 
 ---
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Evidence root: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/022-full-matrix-execution-validation/`
 

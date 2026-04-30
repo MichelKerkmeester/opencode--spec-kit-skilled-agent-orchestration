@@ -1,7 +1,6 @@
 ---
 title: "Scoring and fusion corrections"
 description: "Covers nine scoring fixes including intent weight recency, five-factor weight normalization, stack overflow prevention, BM25 specFolder filter, shared `resolveEffectiveScore` consolidation, RRF ID canonicalization, and a later single-pass fusion refinement."
-audited_post_018: true
 ---
 
 # Scoring and fusion corrections
@@ -46,7 +45,7 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 | `shared/algorithms/adaptive-fusion.ts` | Shared | Exposes `getAdaptiveWeights(...)` for the single-pass live fusion weighting path |
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -74,7 +73,6 @@ In the non-hybrid flow, after Step 4 applies `intentAdjustedScore`, subsequent p
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Opus review remediation (Phase 017)
-- Source feature title: Scoring and fusion corrections
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/13-scoring-and-fusion-corrections.md`

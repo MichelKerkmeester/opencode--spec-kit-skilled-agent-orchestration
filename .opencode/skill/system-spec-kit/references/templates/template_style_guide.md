@@ -38,6 +38,7 @@ Current templates (user-facing only):
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:metadata-format -->
 ## 2. METADATA FORMAT
 
@@ -71,6 +72,7 @@ Use bulleted list format for metadata sections in all templates:
 ---
 
 <!-- /ANCHOR:metadata-format -->
+
 <!-- ANCHOR:placeholder-syntax -->
 ## 3. PLACEHOLDER SYNTAX
 
@@ -112,6 +114,7 @@ Use bulleted list format for metadata sections in all templates:
 ---
 
 <!-- /ANCHOR:placeholder-syntax -->
+
 <!-- ANCHOR:section-numbering -->
 ## 4. SECTION NUMBERING
 
@@ -145,6 +148,7 @@ The following templates may use Title Case for improved readability:
 ---
 
 <!-- /ANCHOR:section-numbering -->
+
 <!-- ANCHOR:date-formats -->
 ## 5. DATE FORMATS
 
@@ -169,6 +173,7 @@ Always use ISO 8601 format: `YYYY-MM-DD`
 ---
 
 <!-- /ANCHOR:date-formats -->
+
 <!-- ANCHOR:file-naming -->
 ## 6. FILE NAMING
 
@@ -200,6 +205,7 @@ All templates should include a source marker for validation and change tracking:
 ---
 
 <!-- /ANCHOR:file-naming -->
+
 <!-- ANCHOR:frontmatter-requirements -->
 ## 7. FRONTMATTER REQUIREMENTS
 
@@ -238,6 +244,7 @@ status: [Planning / In Progress / Complete]
 ---
 
 <!-- /ANCHOR:frontmatter-requirements -->
+
 <!-- ANCHOR:validation-rules -->
 ## 8. VALIDATION RULES
 
@@ -265,6 +272,7 @@ The `validate.sh` script enforces these rules:
 ---
 
 <!-- /ANCHOR:validation-rules -->
+
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
@@ -288,4 +296,7 @@ The `validate.sh` script enforces these rules:
 - [validation_rules.md](../validation/validation_rules.md) - Complete validation rule documentation
 - [memory_system.md](../memory/memory_system.md) - Continuity artifact format and indexing
 - [folder_routing.md](../structure/folder_routing.md) - Spec folder organization
+
+---
+
 <!-- /ANCHOR:related-resources -->

@@ -48,7 +48,7 @@ The output preserves the readiness envelope (`canonicalReadiness`, `trustState`)
 | `mcp_server/code_graph/lib/readiness-contract.ts` | Lib (existing) | Source of `buildReadinessBlock` envelope shape mirrored in the response |
 | `mcp_server/code_graph/lib/code-graph-db.ts` | Lib (existing) | Source of `queryOutline` and `resolveSubjectFilePath` (consumed read-only) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -57,10 +57,10 @@ The output preserves the readiness envelope (`canonicalReadiness`, `trustState`)
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Discovery
-- Source feature title: detect_changes preflight (Code Graph)
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `03--discovery/04-detect-changes-preflight.md`
+
 - Phase / sub-phase: `026-graph-and-context-optimization/010-graph-impact-and-affordance-uplift/002-code-graph-phase-runner-and-detect-changes`
 - Research basis: pt-02 §4 (Code Graph findings, `detect_changes` row), §11 Packet 1, §12 RISK-03 (false-safe changed-symbol impact)
 - Decision record: 012/decision-record.md ADR-012-001 (clean-room), ADR-012-002 (sub-phase split)
-- Current reality source: `mcp_server/code_graph/handlers/detect-changes.ts`, `mcp_server/code_graph/lib/diff-parser.ts`

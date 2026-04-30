@@ -1,7 +1,6 @@
 ---
 title: "2. Session and Cache"
 description: "This document captures the implemented behavior, source references, and validation scope for 2. Session and Cache."
-audited_post_018: true
 ---
 
 # 2. Session and Cache
@@ -39,7 +38,6 @@ Source file references are included in the flag table above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: 2. Session and Cache
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/02-2-session-and-cache.md`

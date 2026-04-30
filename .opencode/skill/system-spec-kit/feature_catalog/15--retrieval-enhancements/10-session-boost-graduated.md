@@ -1,7 +1,6 @@
 ---
 title: "Session attention boost (graduated default-ON)"
 description: "Session attention boost re-ranks search results by amplifying memories the user recently interacted with during the current session, gated by SPECKIT_SESSION_BOOST (default true, graduated)."
-audited_post_018: true
 ---
 
 # Session attention boost (graduated default-ON)
@@ -34,7 +33,7 @@ Status: **Graduated** — default ON, kill-switch available via env var.
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isSessionBoostEnabled()` flag check |
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Stage 2 fusion invoking session boost |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,8 +42,8 @@ Status: **Graduated** — default ON, kill-switch available via env var.
 ---
 
 ## 4. SOURCE METADATA
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/10-session-boost-graduated.md`
 
-- Group: Retrieval enhancements
-- Source feature title: Session attention boost
-- Graduated via: 006-default-on-boost-rollout
 - Kill switch: `SPECKIT_SESSION_BOOST=false`

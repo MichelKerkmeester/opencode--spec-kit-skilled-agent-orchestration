@@ -13,9 +13,9 @@
     ],
     "enhances": [
       {
-        "target": "sk-code-web",
+        "target": "sk-code",
         "weight": 0.4,
-        "context": "design-to-code workflow"
+        "context": "design-to-code workflow for sk-code WEB stack route"
       }
     ],
     "siblings": [],

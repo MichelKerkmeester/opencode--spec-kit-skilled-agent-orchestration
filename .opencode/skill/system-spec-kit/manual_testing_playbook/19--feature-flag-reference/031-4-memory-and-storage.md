@@ -14,11 +14,13 @@ This scenario validates 4. Memory and Storage for `EX-031`. It focuses on Storag
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-031` and confirm the expected signals without contradicting evidence.
 
-- Objective: Storage precedence check
-- Prompt: `As a feature-flag validation operator, validate 4. Memory and Storage against memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 }). Verify precedence chain identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Storage precedence check.
+- Real user request: `Please validate 4. Memory and Storage against memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 }) and tell me whether the expected signals are present: Precedence chain identified.`
+- RCAF Prompt: `As a feature-flag validation operator, validate 4. Memory and Storage against memory_search({ query: "SPEC_KIT_DB_DIR SPECKIT_DB_DIR MEMORY_DB_PATH database path precedence", limit: 20 }). Verify precedence chain identified. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Precedence chain identified
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if precedence is unambiguous
 
 ---
@@ -53,8 +55,7 @@ Search/context output
 
 Cross-check shared config loader and vector-index store override path
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [19--feature-flag-reference/04-4-memory-and-storage.md](../../feature_catalog/19--feature-flag-reference/04-4-memory-and-storage.md)
 

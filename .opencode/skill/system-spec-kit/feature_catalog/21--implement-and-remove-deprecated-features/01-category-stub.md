@@ -1,8 +1,6 @@
 ---
 title: "Retired runtime shims and inert compatibility flags"
 description: "Current-state reference for compatibility flags and runtime shims that remain visible in code but no longer change live behavior."
-audited_post_018: true
-phase_018_change: "Validated against phase-018 canonical continuity refactor; retained as a live compatibility summary for lazy loading, shadow retirement, novelty inertness, and adaptive fusion."
 ---
 
 # Retired runtime shims and inert compatibility flags
@@ -60,8 +58,6 @@ Taken together, these shims show the post-remediation pattern for deprecated run
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Implement and Remove Deprecated Features
-- Source feature title: Retired runtime shims and inert compatibility flags
+- Group: Implement And Remove Deprecated Features
+- Canonical catalog source: `feature_catalog.md`
 - Feature file path: `21--implement-and-remove-deprecated-features/01-category-stub.md`
-- Current reality source: direct implementation audit of the listed runtime modules plus the listed lazy-loading, scoring, graph-flag, and barrel export tests

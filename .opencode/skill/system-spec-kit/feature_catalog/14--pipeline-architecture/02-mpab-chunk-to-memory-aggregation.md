@@ -1,7 +1,6 @@
 ---
 title: "MPAB chunk-to-memory aggregation"
 description: "MPAB chunk-to-memory aggregation combines multiple chunk scores into a single memory-level score using a damped bonus formula."
-audited_post_018: true
 ---
 
 # MPAB chunk-to-memory aggregation
@@ -30,7 +29,7 @@ Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 a
 |------|-------|------|
 | `mcp_server/lib/scoring/mpab-aggregation.ts` | Lib | MPAB chunk aggregation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -39,7 +38,6 @@ Guards handle the edge cases: N=0 returns 0, N=1 returns the raw score and N>1 a
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: MPAB chunk-to-memory aggregation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md`

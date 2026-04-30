@@ -13,11 +13,13 @@ This scenario validates `detect_changes` end-to-end. Covers (1) the P1 safety in
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-014` and confirm the expected signals without contradicting evidence.
 
 - Objective: Confirm `detect_changes` refuses to answer on stale state, reports correct affected symbols on fresh state, rejects diffs whose paths escape the canonical root, and correctly partitions multi-file diffs.
-- Prompt: `As a discovery validation operator, validate detect_changes against (1) a stale graph, (2) a fresh graph with a single-file diff, (3) a fresh graph with an adversarial path-traversal diff, and (4) a fresh graph with a 3-file diff. Verify the stale run returns status='blocked' (never 'ok' with empty affectedSymbols), the fresh run returns status='ok' with affectedSymbols, the path-traversal run returns status='parse_error' with blockedReason naming the offending path, and the 3-file run attributes symbols to all three files without dropping any. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: `status='blocked'` on stale; `status='ok'` with non-empty `affectedSymbols` on fresh diff; `status='parse_error'` on path traversal; `status='ok'` with `affectedFiles.length === 3` on multi-file diff.
+- Real user request: `` Please validate detect_changes preflight (Code Graph) against (1) a stale graph, (2) a fresh graph with a single-file diff, (3) a fresh graph with an adversarial path-traversal diff, and (4) a fresh graph with a 3-file diff and tell me whether the expected signals are present: `status='blocked'` on stale; `status='ok'` with non-empty `affectedSymbols` on fresh diff; `status='parse_error'` on path traversal; `status='ok'` with `affectedFiles.length === 3` on multi-file diff. ``
+- RCAF Prompt: `As a discovery validation operator, validate detect_changes against (1) a stale graph, (2) a fresh graph with a single-file diff, (3) a fresh graph with an adversarial path-traversal diff, and (4) a fresh graph with a 3-file diff. Verify the stale run returns status='blocked' (never 'ok' with empty affectedSymbols), the fresh run returns status='ok' with affectedSymbols, the path-traversal run returns status='parse_error' with blockedReason naming the offending path, and the 3-file run attributes symbols to all three files without dropping any. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `status='blocked'` on stale; `status='ok'` with non-empty `affectedSymbols` on fresh diff; `status='parse_error'` on path traversal; `status='ok'` with `affectedFiles.length === 3` on multi-file diff
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all four behaviors are observed; FAIL on any false-safe (`'ok'` with empty `affectedSymbols` on stale OR silent acceptance of a `../../etc/passwd` path) or on a multi-file diff that drops a file.
 
 ---
@@ -76,8 +78,7 @@ Stored response payloads from steps 3, 5, 9, 10, 13; the diff texts from steps 2
 - Block B: confirm `mcp_server/code_graph/handlers/detect-changes.ts:118-160` returns the structured `CandidatePathResult` with `status: 'reject'` for paths escaping `canonicalRootDir` (010/007/T-D R-007-3); verify the `blockedReason` string carries the offending path.
 - Block C: confirm `mcp_server/code_graph/lib/diff-parser.ts:109-220` tracks `remainingOldLines` / `remainingNewLines` per hunk so subsequent `---`/`+++` headers terminate the hunk body (010/007/T-D R-007-4); compare hunk-body line counters against expected per-file totals.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [03--discovery/04-detect-changes-preflight.md](../../feature_catalog/03--discovery/04-detect-changes-preflight.md)
 

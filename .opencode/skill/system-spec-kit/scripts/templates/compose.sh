@@ -34,7 +34,7 @@ set -euo pipefail
 #   Level 1:  Core only
 #   Level 2:  Core + level2-verify addendum
 #   Level 3:  Core + level2-verify + level3-arch addendums
-#   Level 3+: Core + level2-verify + level3-arch + level3plus-govern addendums
+#   Level 3+: Core + level2-verify + level3-arch + level3-plus-govern addendums
 #
 # FILE MAPPING:
 #   Spec.md:                 Merge spec-core.md + spec-levelN.md sections
@@ -63,7 +63,7 @@ CORE_DIR="$TEMPLATES_DIR/core"
 ADDENDUM_DIR="$TEMPLATES_DIR/addendum"
 ADDENDUM_L2="$ADDENDUM_DIR/level2-verify"
 ADDENDUM_L3="$ADDENDUM_DIR/level3-arch"
-ADDENDUM_L3PLUS="$ADDENDUM_DIR/level3plus-govern"
+ADDENDUM_L3PLUS="$ADDENDUM_DIR/level3-plus-govern"
 
 # Output directories
 OUT_L1="$TEMPLATES_DIR/level_1"
@@ -128,7 +128,7 @@ COMPOSITION RULES:
   Level 1:  Core templates only (spec, plan, tasks, impl-summary)
   Level 2:  Core + level2-verify (adds checklist, NFRs, edge cases)
   Level 3:  Core + L2 + level3-arch (adds decision-record, risk matrix)
-  Level 3+: Core + L2 + L3 + level3plus-govern (adds governance, compliance)
+  Level 3+: Core + L2 + L3 + level3-plus-govern (adds governance, compliance)
 
 EOF
     exit 0
@@ -472,7 +472,7 @@ LEVEL 3 SPEC (~165 lines)
 <!-- SPECKIT_LEVEL: 3+ -->
 # Feature Specification: [NAME]
 
-<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3plus-govern | v2.2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3-plus-govern | v2.2 -->
 
 ${l3plus_guidance}
 

@@ -1,7 +1,6 @@
 ---
 title: "Post-task learning measurement (task_postflight)"
 description: "Covers the postflight tool that computes a Learning Index by comparing post-task epistemic state against the preflight baseline."
-audited_post_018: true
 ---
 
 # Post-task learning measurement (task_postflight)
@@ -56,14 +55,9 @@ The handler also supports re-correction runs. It accepts both "preflight" and al
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/06-post-task-learning-measurement-taskpostflight.md`
-
-- Group: Analysis
-- Source feature title: Post-task learning measurement (task_postflight)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

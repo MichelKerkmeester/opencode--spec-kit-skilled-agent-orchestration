@@ -14,11 +14,13 @@ This scenario validates MCP Server Public API Barrel for `218`. It focuses on ve
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `218` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary
-- Prompt: `As a pipeline validation operator, validate MCP Server Public API Barrel against mcp_server/api/index.ts. Verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary.
+- Real user request: `` Please validate MCP Server Public API Barrel against mcp_server/api/index.ts and tell me whether the expected signals are present: `mcp_server/api/index.ts` re-exports the documented evaluation, indexing, search, provider, storage, helper, and metadata symbols; `mcp_server/api/README.md` names `api/` as the approved public surface; consumers can rely on one stable top-level barrel. ``
+- RCAF Prompt: `As a pipeline validation operator, validate MCP Server Public API Barrel against mcp_server/api/index.ts. Verify the top-level barrel re-exports the approved runtime, helper, and metadata surfaces from one stable import boundary. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `mcp_server/api/index.ts` re-exports the documented evaluation, indexing, search, provider, storage, helper, and metadata symbols; `mcp_server/api/README.md` names `api/` as the approved public surface; consumers can rely on one stable top-level barrel
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the barrel centralizes the approved public import contract and the docs steer consumers to `api/`; FAIL if required exports are missing, helper surfaces require internal imports, or the docs contradict the barrel policy
 
 ---
@@ -55,8 +57,7 @@ Barrel export capture + README policy snippet + cross-check notes against sub-ba
 
 Inspect `mcp_server/api/index.ts` for stale or missing re-exports -> verify renamed helper symbols still match the barrel contract -> check `mcp_server/api/README.md` for outdated consumer guidance -> confirm callers are not forced back to internal paths for metadata or rollout helpers
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/22-mcp-server-public-api-barrel.md](../../feature_catalog/14--pipeline-architecture/22-mcp-server-public-api-barrel.md)
 

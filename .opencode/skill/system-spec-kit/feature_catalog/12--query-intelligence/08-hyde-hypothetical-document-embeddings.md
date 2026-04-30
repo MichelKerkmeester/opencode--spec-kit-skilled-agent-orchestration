@@ -1,7 +1,6 @@
 ---
 title: "HyDE (Hypothetical Document Embeddings)"
 description: "HyDE generates a short hypothetical document answering the query, embeds it, and uses the pseudo-document embedding as an additional retrieval channel for deep low-confidence queries, gated by the SPECKIT_HYDE flag."
-audited_post_018: true
 ---
 
 # HyDE (Hypothetical Document Embeddings)
@@ -42,7 +41,7 @@ When HyDE candidates are returned in active mode, Stage 1 now subjects them to t
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isHyDEEnabled()` flag accessor |
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 integration: invokes HyDE in deep mode with low-confidence baseline |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -51,7 +50,6 @@ When HyDE candidates are returned in active mode, Stage 1 now subjects them to t
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: HyDE (Hypothetical Document Embeddings)
-- Current reality source: mcp_server/lib/search/hyde.ts module header and implementation
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/08-hyde-hypothetical-document-embeddings.md`

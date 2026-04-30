@@ -1,7 +1,6 @@
 ---
 title: "Typed traversal"
 description: "Typed traversal is active for sparse-first graph policy and intent-aware edge traversal in `causal-boost.ts`, behind the `SPECKIT_TYPED_TRAVERSAL` flag, with live runtime and test coverage."
-audited_post_018: true
 ---
 
 # Typed traversal
@@ -39,7 +38,7 @@ Key constants: `MAX_HOPS = 2` (normal mode), `SPARSE_MAX_HOPS = 1`, `SPARSE_DENS
 | `mcp_server/lib/search/causal-boost.ts` | Lib | `isTypedTraversalEnabled()`, sparse-first policy, intent-aware edge traversal, CTE walk scoring |
 | `mcp_server/lib/search/search-flags.ts` | Lib | Central flag registry reference |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -49,7 +48,6 @@ Key constants: `MAX_HOPS = 2` (normal mode), `SPARSE_MAX_HOPS = 1`, `SPARSE_DENS
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Typed traversal
-- Current reality source: mcp_server/lib/search/causal-boost.ts module header and `isTypedTraversalEnabled()` implementation
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/16-typed-traversal.md`

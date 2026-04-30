@@ -1,7 +1,6 @@
 ---
 title: "Temporal contiguity layer"
 description: "Describes the pairwise temporal proximity boost that amplifies scores for memories created close together in time, using a clamped window with a cumulative cap of 0.50 per result."
-audited_post_018: true
 ---
 
 # Temporal contiguity layer
@@ -35,7 +34,7 @@ This captures the temporal contiguity effect from memory psychology: memories fo
 | `mcp_server/lib/cognitive/temporal-contiguity.ts` | Lib | Temporal proximity boost and timeline queries |
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Schema migrations and common index creation for `idx_spec_folder_created_at` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ This captures the temporal contiguity effect from memory psychology: memories fo
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Temporal contiguity layer
-- Current reality source: active Stage 1 vector channel integration
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/11-temporal-contiguity-layer.md`

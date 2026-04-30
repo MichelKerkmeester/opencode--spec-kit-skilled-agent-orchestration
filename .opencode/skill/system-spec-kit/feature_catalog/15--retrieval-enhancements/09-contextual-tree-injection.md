@@ -1,7 +1,6 @@
 ---
 title: "Contextual tree injection"
 description: "Contextual tree injection prefixes returned chunks with hierarchical context headers using cached spec folder descriptions."
-audited_post_018: true
 ---
 
 # Contextual tree injection
@@ -43,14 +42,9 @@ When search results come back, each piece of information now carries a short lab
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
+- Group: Retrieval Enhancements
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `15--retrieval-enhancements/09-contextual-tree-injection.md`
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Contextual tree injection
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

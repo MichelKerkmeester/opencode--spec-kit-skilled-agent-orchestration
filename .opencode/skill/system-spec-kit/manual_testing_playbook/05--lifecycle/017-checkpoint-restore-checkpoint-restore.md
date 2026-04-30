@@ -13,13 +13,14 @@ This scenario validates Checkpoint restore (checkpoint_restore) for `EX-017`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-017` and confirm the expected signals without contradicting evidence.
 
-- Objective: Rollback restore drill
-- Prompt: `As a lifecycle validation operator, validate Checkpoint restore (checkpoint_restore) against checkpoint_restore(name,clearExisting:false). Verify restored data + healthy state. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Rollback restore drill.
+- Real user request: `Please validate Checkpoint restore (checkpoint_restore) against checkpoint_restore(name,clearExisting:false) and tell me whether the expected signals are present: Restored data + healthy state.`
+- RCAF Prompt: `As a lifecycle validation operator, validate Checkpoint restore (checkpoint_restore) against checkpoint_restore(name,clearExisting:false). Verify restored data + healthy state. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Restored data + healthy state
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if known record restored
-- Additional focus: active checkpoint restore maintenance blocks mutation traffic with `E_RESTORE_IN_PROGRESS`, then clears after restore success or failure
 
 ---
 
@@ -119,8 +120,7 @@ Before/after mutation responses + restore completion or failure output
 
 If the barrier remains latched, inspect the `restoreCheckpoint()` `finally` path that releases restore maintenance
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [05--lifecycle/03-checkpoint-restore-checkpointrestore.md](../../feature_catalog/05--lifecycle/03-checkpoint-restore-checkpointrestore.md)
 

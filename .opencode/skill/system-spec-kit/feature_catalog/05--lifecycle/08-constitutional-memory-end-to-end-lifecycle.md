@@ -68,8 +68,6 @@ In practice, this is the highest-priority memory path in the system. Constitutio
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Lifecycle
-- Source feature title: Constitutional Memory End-to-End Lifecycle
-- Source spec: Deep research remediation 2026-03-26
-- audited_post_018: true
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `05--lifecycle/08-constitutional-memory-end-to-end-lifecycle.md`

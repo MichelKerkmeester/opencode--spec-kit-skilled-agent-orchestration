@@ -7,12 +7,12 @@ description: Guide to selecting appropriate documentation levels based on task c
 
 Guide to selecting appropriate documentation levels based on task complexity.
 
-> Use `--level N` with `scripts/spec/create.sh` to select a level directly.
-
 ---
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
+
+> Use `--level N` with `scripts/spec/create.sh` to select a level directly.
 
 The complexity detection system automatically analyzes task descriptions to:
 - Recommend appropriate documentation levels (1, 2, 3, or 3+)
@@ -27,6 +27,7 @@ The complexity detection system automatically analyzes task descriptions to:
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:5-dimension-scoring-algorithm -->
 ## 2. 5-DIMENSION SCORING ALGORITHM
 
@@ -82,6 +83,7 @@ Measures dependency complexity:
 ---
 
 <!-- /ANCHOR:5-dimension-scoring-algorithm -->
+
 <!-- ANCHOR:level-mapping -->
 ## 3. LEVEL MAPPING
 
@@ -106,6 +108,7 @@ Level 3+ includes everything from Level 3 plus:
 ---
 
 <!-- /ANCHOR:level-mapping -->
+
 <!-- ANCHOR:cli-tool -->
 ## 4. CLI TOOL
 
@@ -139,6 +142,7 @@ Templates are pre-expanded and ready to use in level-specific folders:
 ---
 
 <!-- /ANCHOR:cli-tool -->
+
 <!-- ANCHOR:dynamic-section-scaling -->
 ## 5. DYNAMIC SECTION SCALING
 
@@ -156,6 +160,7 @@ Sections scale based on detected complexity:
 ---
 
 <!-- /ANCHOR:dynamic-section-scaling -->
+
 <!-- ANCHOR:validation-rules -->
 ## 6. VALIDATION RULES
 
@@ -205,6 +210,7 @@ Validates level consistency across all spec files:
 ---
 
 <!-- /ANCHOR:validation-rules -->
+
 <!-- ANCHOR:related-resources -->
 ## 7. RELATED RESOURCES
 

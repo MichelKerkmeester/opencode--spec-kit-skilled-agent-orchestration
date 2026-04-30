@@ -1,7 +1,6 @@
 ---
 title: "Graph lifecycle refresh"
 description: "Graph lifecycle refresh manages dirty-node tracking and graph recomputation after write operations, with synchronous local or scheduled background modes controlled by the SPECKIT_GRAPH_REFRESH_MODE flag."
-audited_post_018: true
 ---
 
 # Graph lifecycle refresh
@@ -35,7 +34,7 @@ Key constants: `DEFAULT_LOCAL_RECOMPUTE_THRESHOLD = 50`, `LOCAL_RECOMPUTE_EDGE_L
 | `mcp_server/lib/search/search-flags.ts` | Lib | `getGraphRefreshMode()` and `isLlmGraphBackfillEnabled()` flag accessors |
 | `mcp_server/handlers/save/post-insert.ts` | Handler | Post-insert wiring that invokes graph refresh |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,8 +43,8 @@ Key constants: `DEFAULT_LOCAL_RECOMPUTE_THRESHOLD = 50`, `LOCAL_RECOMPUTE_EDGE_L
 ---
 
 ## 4. SOURCE METADATA
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/13-graph-lifecycle-refresh.md`
 
-- Group: Graph signal activation
-- Source feature title: Graph lifecycle refresh
-- Current reality source: graph-lifecycle.ts module header and implementation
 - Source list updated 2026-03-25 per deep review

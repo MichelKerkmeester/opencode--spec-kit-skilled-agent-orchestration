@@ -15,11 +15,13 @@ This scenario validates Memory metadata update (memory_update) for `EX-007`. It 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-007` and confirm the expected signals without contradicting evidence.
 
-- Objective: Metadata + re-embed update
-- Prompt: `As a mutation validation operator, validate Memory metadata update (memory_update) against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Metadata + re-embed update.
+- Real user request: `Please validate Memory metadata update (memory_update) against memory_update(id,title,triggers) and tell me whether the expected signals are present: Updated metadata reflected in retrieval.`
+- RCAF Prompt: `As a mutation validation operator, validate Memory metadata update (memory_update) against memory_update(id,title,triggers). Verify updated metadata reflected in retrieval. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Updated metadata reflected in retrieval
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if updated title retrievable
 
 ---
@@ -54,8 +56,7 @@ Update output + search
 
 Retry with allowPartialUpdate if embedding fails
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/02-memory-metadata-update-memoryupdate.md](../../feature_catalog/02--mutation/02-memory-metadata-update-memoryupdate.md)
 

@@ -57,8 +57,6 @@ The shipped maintenance surface is a mixed toolkit rather than a single monolith
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Memory Maintenance and Migration CLIs
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct audit of the maintenance CLI implementations and adjacent markdown parsing utility
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/25-memory-maintenance-and-migration-clis.md`

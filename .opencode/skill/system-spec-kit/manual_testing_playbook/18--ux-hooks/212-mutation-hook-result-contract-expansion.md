@@ -13,11 +13,13 @@ This scenario validates Mutation hook result contract expansion for `212`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `212` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details
-- Prompt: `As a runtime-hook validation operator, validate Mutation hook result contract expansion against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details.
+- Real user request: `` Please validate Mutation hook result contract expansion against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts and tell me whether the expected signals are present: Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Mutation hook result contract expansion against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/mutation-hooks.vitest.ts tests/hooks-mutation-wiring.vitest.ts tests/hooks-ux-feedback.vitest.ts. Verify post-mutation hook results expose timing, cache invalidation booleans, and surfaced error details. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Hook and UX feedback suites pass, hook results include `latencyMs`, cache-clear booleans, `toolCacheInvalidated`, and `errors`, and UX feedback assertions reflect those values in response hints
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the suites pass and the assertions prove the expanded hook-result contract is present and consumable end to end
 
 ---
@@ -53,8 +55,7 @@ Test transcript + highlighted assertion names or output snippets showing contrac
 
 Inspect `handlers/memory-crud-types.ts`, `handlers/mutation-hooks.ts`, and `hooks/mutation-feedback.ts` if any field disappears or changes type
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/06-mutation-hook-result-contract-expansion.md](../../feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md)
 

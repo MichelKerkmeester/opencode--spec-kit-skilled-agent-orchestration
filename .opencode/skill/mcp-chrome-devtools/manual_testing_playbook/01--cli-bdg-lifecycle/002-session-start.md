@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-002` and confirm th
 
 - Objective: Verify `bdg https://example.com` exits 0 AND `bdg status` reports active state.
 - Real user request: `"Open example.com in a debug session."`
-- Prompt: `As a manual-testing orchestrator, start a bdg session against https://example.com through the bdg CLI against a real Chrome/Chromium browser. Verify session reports active state. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, start a bdg session against https://example.com through the bdg CLI against a real Chrome/Chromium browser. Verify session reports active state. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run two bash commands; do not delegate.
 - Expected signals: `bdg https://example.com` exits 0; `bdg status` reports active session with the URL.
 - Desired user-visible outcome: A short report quoting the status JSON's `state` and `url` fields with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-002` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, start a bdg session against https://example.com through the bdg CLI against a real Chrome/Chromium browser. Verify session reports active state. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, start a bdg session against https://example.com through the bdg CLI against a real Chrome/Chromium browser. Verify session reports active state. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

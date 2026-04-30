@@ -13,11 +13,13 @@ This scenario validates empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1)
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `179` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify structured recovery payloads for empty/weak search results
-- Prompt: `As a runtime-hook validation operator, validate Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) against SPECKIT_EMPTY_RESULT_RECOVERY_V1. Verify structured recovery payloads for empty/weak search results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify structured recovery payloads for empty/weak search results.
+- Real user request: `Please validate Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) against SPECKIT_EMPTY_RESULT_RECOVERY_V1 and tell me whether the expected signals are present: 3 statuses: no_results, low_confidence, partial; root cause reasons: spec_filter_too_narrow, low_signal_query, knowledge_gap; suggested actions: retry_broader, switch_mode, save_memory, ask_user; alternative queries generated; DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4; PARTIAL_RESULT_MIN=3.`
+- RCAF Prompt: `As a runtime-hook validation operator, validate Empty result recovery (SPECKIT_EMPTY_RESULT_RECOVERY_V1) against SPECKIT_EMPTY_RESULT_RECOVERY_V1. Verify structured recovery payloads for empty/weak search results. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: 3 statuses: no_results, low_confidence, partial; root cause reasons: spec_filter_too_narrow, low_signal_query, knowledge_gap; suggested actions: retry_broader, switch_mode, save_memory, ask_user; alternative queries generated; DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4; PARTIAL_RESULT_MIN=3
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 3 recovery statuses generate structured payloads with root cause, actions, and alternative queries; FAIL if any status missing, payloads lack required fields, or recovery not triggered at correct thresholds
 
 ---
@@ -55,8 +57,7 @@ Recovery payload JSON per status + root cause + action list + alternative querie
 
 Verify recovery-payload.ts module loaded → Confirm flag is not forced off → Check DEFAULT_LOW_CONFIDENCE_THRESHOLD=0.4 → Verify PARTIAL_RESULT_MIN=3 → Inspect reason inference logic → Check alternative query generation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/18-empty-result-recovery.md](../../feature_catalog/18--ux-hooks/18-empty-result-recovery.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

@@ -10,7 +10,7 @@ description: "This scenario validates MODULE_MAP.md content accuracy by spot-che
 - [1. OVERVIEW](#1-overview)
 - [2. SCENARIO CONTRACT](#2-scenario-contract)
 - [3. TEST EXECUTION](#3-test-execution)
-- [4. REFERENCES](#4-references)
+- [4. SOURCE FILES](#4-source-files)
 - [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
@@ -21,11 +21,13 @@ This scenario validates MODULE_MAP.md content accuracy for `151`. It focuses on 
 
 ## 2. SCENARIO CONTRACT
 
-Operators spot-check 5 representative modules from MODULE_MAP.md and verify their entries are accurate against the live codebase.
 
-- Objective: Verify MODULE_MAP.md entries match actual code structure for 5 sampled modules
-- Prompt: `As a tooling validation operator, validate MODULE_MAP.md accuracy validation against cd .opencode/skill/system-spec-kit. Verify mODULE_MAP.md entries match actual code structure for 5 sampled modules. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify MODULE_MAP.md entries match actual code structure for 5 sampled modules.
+- Real user request: `Please validate MODULE_MAP.md accuracy validation against cd .opencode/skill/system-spec-kit and tell me whether the expected signals are present: All 5 sampled modules have accurate file lists and consumer mappings.`
+- RCAF Prompt: `As a tooling validation operator, validate MODULE_MAP.md accuracy validation against cd .opencode/skill/system-spec-kit. Verify mODULE_MAP.md entries match actual code structure for 5 sampled modules. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All 5 sampled modules have accurate file lists and consumer mappings
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 5 sampled modules are accurate
 
 ---
@@ -63,8 +65,7 @@ ls output + grep output per module vs MODULE_MAP.md entries
 
 Identify stale entry -> update MODULE_MAP.md -> re-verify
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/15-module-boundary-map.md](../../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
 

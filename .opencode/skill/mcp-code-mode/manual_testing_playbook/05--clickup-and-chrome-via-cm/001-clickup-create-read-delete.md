@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-014` and confirm the
 
 - Objective: Verify `clickup_create_task` followed by `clickup_get_task` returns the created task; `clickup_delete_task` removes it.
 - Real user request: `"Create a test task, confirm it exists, then clean it up."`
-- Prompt: `As a manual-testing orchestrator, create a throwaway test task in a designated test list, then read it back, then delete it through Code Mode against the live ClickUp API. Verify the round-trip values match (name, list_id) and cleanup succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, create a throwaway test task in a designated test list, then read it back, then delete it through Code Mode against the live ClickUp API. Verify the round-trip values match (name, list_id) and cleanup succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation; require an existing test list id (the operator must provide one — production lists are unsafe).
 - Expected signals: create returns task with `id`; get returns task with same `id` and matching `name`; delete returns success.
 - Desired user-visible outcome: A short report quoting the test task id and confirming round-trip + cleanup with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-014` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, create a throwaway test task in a designated test list, then read it back, then delete it through Code Mode against the live ClickUp API. Verify the round-trip values match (name, list_id) and cleanup succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, create a throwaway test task in a designated test list, then read it back, then delete it through Code Mode against the live ClickUp API. Verify the round-trip values match (name, list_id) and cleanup succeeds. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

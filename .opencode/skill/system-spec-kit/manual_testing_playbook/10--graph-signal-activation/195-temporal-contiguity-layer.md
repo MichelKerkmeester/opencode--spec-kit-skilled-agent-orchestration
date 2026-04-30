@@ -14,11 +14,13 @@ This scenario validates Temporal contiguity layer for `195`. It focuses on Confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `195` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm Stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior
-- Prompt: `As a graph-signal validation operator, validate Temporal contiguity layer against spec_folder. Verify stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm Stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior.
+- Real user request: `Please validate Temporal contiguity layer against spec_folder and tell me whether the expected signals are present: vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window; closer-in-time memories receive stronger reinforcement than distant ones; cumulative boost per result stays within the 0.50 cap; disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer; getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Temporal contiguity layer against spec_folder. Verify stage 1 temporal proximity reinforcement plus bounded temporal-neighbor lookup behavior. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: vectorSearchWithContiguity() applies pairwise temporal boosts inside the configured clamped window; closer-in-time memories receive stronger reinforcement than distant ones; cumulative boost per result stays within the 0.50 cap; disabling SPECKIT_TEMPORAL_CONTIGUITY removes the temporal layer; getTemporalNeighbors() uses a bounded spec_folder/created_at query before computing time deltas
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if temporal boosts are distance-weighted within the clamped window, closer timestamps outrank distant ones on temporal contribution, the cumulative cap stays at or below 0.50, flag-off mode removes the boost, and temporal-neighbor lookup proves it narrows by bounded `created_at` range before computing `time_delta_seconds`. FAIL if boosts ignore window boundaries, exceed the cap, remain active when the flag is disabled, or neighbor lookup still computes deltas over an unbounded set.
 
 ---
@@ -58,8 +60,7 @@ Vector result rankings + timestamp/boost comparison + cap verification + query-p
 
 Verify clamped-window configuration and default 3600-second behavior -> inspect pairwise distance weighting factor -> check cumulative cap accumulation logic -> confirm `idx_spec_folder_created_at` exists and the bounded range predicate is used before delta computation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/11-temporal-contiguity-layer.md](../../feature_catalog/10--graph-signal-activation/11-temporal-contiguity-layer.md)
 

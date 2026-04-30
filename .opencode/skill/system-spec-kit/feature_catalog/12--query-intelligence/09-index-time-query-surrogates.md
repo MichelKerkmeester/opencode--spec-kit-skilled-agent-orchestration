@@ -1,7 +1,6 @@
 ---
 title: "Index-time query surrogates"
 description: "Index-time query surrogates generate surrogate metadata (aliases, headings, summaries, heuristic questions) at index time for improved recall without runtime LLM calls, gated by the SPECKIT_QUERY_SURROGATES flag."
-audited_post_018: true
 ---
 
 # Index-time query surrogates
@@ -39,7 +38,7 @@ Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable.
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage 1 integration: batch-loads surrogates and applies capped additive boosts to existing candidates |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isQuerySurrogatesEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ Enabled by default (graduated). Set `SPECKIT_QUERY_SURROGATES=false` to disable.
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Index-time query surrogates
-- Current reality source: mcp_server/lib/search/query-surrogates.ts, mcp_server/lib/search/surrogate-storage.ts, mcp_server/lib/search/pipeline/stage1-candidate-gen.ts, and mcp_server/lib/search/search-flags.ts
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/09-index-time-query-surrogates.md`

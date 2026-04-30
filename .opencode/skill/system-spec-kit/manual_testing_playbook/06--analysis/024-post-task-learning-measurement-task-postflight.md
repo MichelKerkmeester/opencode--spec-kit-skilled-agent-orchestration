@@ -14,11 +14,13 @@ This scenario validates Post-task learning measurement (task_postflight) for `EX
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-024` and confirm the expected signals without contradicting evidence.
 
-- Objective: Learning closeout
-- Prompt: `As an analysis validation operator, validate Post-task learning measurement (task_postflight) against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Learning closeout.
+- Real user request: `Please validate Post-task learning measurement (task_postflight) against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore) and tell me whether the expected signals are present: Delta/learning record saved.`
+- RCAF Prompt: `As an analysis validation operator, validate Post-task learning measurement (task_postflight) against task_postflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify delta/learning record saved. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Delta/learning record saved
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if completion recorded
 
 ---
@@ -52,8 +54,7 @@ Postflight output
 
 Verify taskId matches preflight
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/06-post-task-learning-measurement-taskpostflight.md](../../feature_catalog/06--analysis/06-post-task-learning-measurement-taskpostflight.md)
 

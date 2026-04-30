@@ -1,7 +1,6 @@
 ---
 title: "Spec folder description discovery"
 description: "Spec folder description discovery generates per-folder `description.json` metadata and uses it to short-circuit full-corpus vector search."
-audited_post_018: true
 ---
 
 # Spec folder description discovery
@@ -83,7 +82,7 @@ continues to derive a folder-name fallback label from the path when needed.
 | `scripts/core/workflow.ts` | Core | Memory tracking integration (`memorySequence` increment, `memoryNameHistory` ring buffer, and invalid-value hardening via `Number()` coercion) |
 | `scripts/spec/create.sh` | Shell | Auto-generation on folder creation |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -96,7 +95,6 @@ continues to derive a folder-name fallback label from the path when needed.
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Spec folder description discovery
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/04-spec-folder-description-discovery.md`

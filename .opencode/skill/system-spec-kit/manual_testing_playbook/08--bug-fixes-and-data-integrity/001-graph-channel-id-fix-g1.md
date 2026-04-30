@@ -14,11 +14,13 @@ This scenario validates Graph channel ID fix (G1) for `001`. It focuses on Confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `001` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm graph hits are non-zero when edges exist
-- Prompt: `As a data-integrity validation operator, validate Graph channel ID fix (G1) against the documented validation surface. Verify graph hits are non-zero when edges exist. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm graph hits are non-zero when edges exist.
+- Real user request: `Please validate Graph channel ID fix (G1) against the documented validation surface and tell me whether the expected signals are present: Graph channel returns >0 hits when causal edges exist.`
+- RCAF Prompt: `As a data-integrity validation operator, validate Graph channel ID fix (G1) against the documented validation surface. Verify graph hits are non-zero when edges exist. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Graph channel returns >0 hits when causal edges exist
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Graph channel contributes >=1 hit when causal edges exist; FAIL: Graph hits = 0 despite valid edges
 
 ---
@@ -54,8 +56,7 @@ Command transcript + search output showing non-zero graph hits
 
 Verify causal edges exist via `memory_causal_stats()` → Check graph channel ID matches schema → Inspect channel activation flags
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md](../../feature_catalog/08--bug-fixes-and-data-integrity/01-graph-channel-id-fix.md)
 

@@ -53,7 +53,7 @@ Core plus addendum composition:
 level_1 = core
 level_2 = core + level2-verify
 level_3 = level_2 + level3-arch
-level_3+ = level_3 + level3plus-govern
+level_3+ = level_3 + level3-plus-govern
 ```
 
 <!-- /ANCHOR:architecture -->

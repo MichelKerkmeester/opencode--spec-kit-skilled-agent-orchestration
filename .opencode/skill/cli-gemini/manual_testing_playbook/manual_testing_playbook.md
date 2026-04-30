@@ -41,7 +41,7 @@ The numeric gap at `05` is intentional. cli-gemini has no first-class session-co
 - [11. INTEGRATION PATTERNS](#11--integration-patterns)
 - [12. PROMPT TEMPLATES](#12--prompt-templates)
 - [13. AUTOMATED TEST CROSS-REFERENCE](#13--automated-test-cross-reference)
-- [14. FEATURE FILE INDEX](#14--feature-file-index)
+- [14. FEATURE CATALOG CROSS-REFERENCE INDEX](#14--feature-catalog-cross-reference-index)
 
 ---
 
@@ -110,7 +110,7 @@ Coverage note (2026-04-26): the playbook covers cli-gemini's documented behaviou
 1. `manual_testing_playbook.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence (command transcripts, captured `/tmp/cg-NNN*` artifacts)
-4. Feature-to-scenario coverage map (the §14 FEATURE FILE INDEX)
+4. Feature-to-scenario coverage map (the §14 FEATURE CATALOG CROSS-REFERENCE INDEX)
 5. Triage notes for all non-pass outcomes
 
 ### Scenario Acceptance Rules
@@ -563,7 +563,7 @@ If automated tests for cli-gemini's smart-router pseudocode are added in a futur
 
 ---
 
-## 14. FEATURE FILE INDEX
+## 14. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI INVOCATION
 

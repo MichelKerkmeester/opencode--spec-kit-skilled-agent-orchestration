@@ -204,7 +204,7 @@ The closure feature consists of these distinct shipped capabilities:
 | `scripts/tests/task-enrichment.vitest.ts` | Task and summary enrichment behavior |
 | `scripts/tests/memory-render-fixture.vitest.ts` | Rendered-memory regression coverage |
 | `scripts/tests/generate-context-cli-authority.vitest.ts` | Explicit CLI root-spec authority coverage plus `--stdin`, `--json`, and positional JSON file-input structured-path behavior |
-| `scripts/tests/semantic-signal-golden.vitest.ts` | Trigger-phrase quality regression coverage for the phase-018 output-quality fixes |
+| `scripts/tests/semantic-signal-golden.vitest.ts` | Trigger-phrase quality regression coverage for the canonical continuity output-quality fixes |
 | `scripts/tests/test-extractors-loaders.js` | Dist/export regression suite for extractors and loader |
 | `scripts/tests/test-bug-fixes.js` | Bug-fix verification stack |
 | `scripts/tests/test-integration.vitest.ts` | End-to-end script workflows; legacy `test-integration.js` test file removed |
@@ -215,14 +215,10 @@ The closure feature consists of these distinct shipped capabilities:
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/12-session-capturing-pipeline-quality.md`
 
-- Group: Tooling and scripts
-- Source feature title: Session capturing pipeline quality
-- Source spec: the session-capturing workstream
 - Manual playbook cross-reference: `M-007`
 ### VERIFICATION SOURCES
 

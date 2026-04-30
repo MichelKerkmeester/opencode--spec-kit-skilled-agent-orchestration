@@ -61,7 +61,6 @@ The system comprises 4 components spanning references, agent definitions, and va
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Template Compliance Contract Enforcement
-- Current reality source: direct implementation audit
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/18-template-compliance-contract-enforcement.md`

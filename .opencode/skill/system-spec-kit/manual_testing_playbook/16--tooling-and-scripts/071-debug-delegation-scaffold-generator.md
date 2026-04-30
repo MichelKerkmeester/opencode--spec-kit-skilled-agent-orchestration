@@ -13,17 +13,13 @@ This scenario validates the failure-threshold offer flow added by spec-folder `0
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the script against a throwaway spec folder with synthetic failure data, verify the scaffold output matches the Debug Context Handoff schema, and confirm no autonomous `@debug` invocation happens at any point.
 
 - Objective: Verify scaffold generation, versioned filenames on collision, schema parity with `.opencode/agent/debug.md` lines 60-89, and absence of autonomous @debug dispatch.
-- Prompt: `As a tooling validation operator, run scaffold-debug-delegation.sh with synthetic 3-attempt failure trail JSON, verify the output debug-delegation.md exists at the expected path, contains all 5 schema sections, populates Attempts 1/2/3 with the supplied data, and confirm no Task tool → @debug invocation was made by the script. Return a concise pass/fail verdict with cited evidence.`
-- Expected signals:
-  - Generated file exists at `<spec-folder>/debug-delegation.md` (or `debug-delegation-002.md` if a prior file exists).
-  - File contains 5 numbered sections: PROBLEM SUMMARY, ATTEMPTED FIXES, CONTEXT FOR SPECIALIST, RECOMMENDED NEXT STEPS, HANDOFF CHECKLIST.
-  - Attempt 1/2/3 approach + result fields populated from the input JSON.
-  - YAML frontmatter present with `_memory.continuity` block, `packet_pointer` set to the spec folder relative path, and `last_updated_by: "scaffold-debug-delegation.sh"`.
-  - Script exits 0 and prints the absolute output path on stdout.
-  - Script makes ZERO Task-tool invocations (verifiable: it's a Bash script, not an agent runner).
+- Real user request: `` Please validate Debug-delegation scaffold generator + failure-threshold prompt rehearsal against the documented validation surface and tell me whether the expected signals are present: Generated file exists at `<spec-folder>/debug-delegation.md` (or `debug-delegation-002.md` if a prior file exists).; File contains 5 numbered sections: PROBLEM SUMMARY, ATTEMPTED FIXES, CONTEXT FOR SPECIALIST, RECOMMENDED NEXT STEPS, HANDOFF CHECKLIST.; Attempt 1/2/3 approach + result fields populated from the input JSON.; YAML frontmatter present with `_memory.continuity` block, `packet_pointer` set to the spec folder relative path, and `last_updated_by: "scaffold-debug-delegation.sh"`.; Script exits 0 and prints the absolute output path on stdout.; Script makes ZERO Task-tool invocations (verifiable: it's a Bash script, not an agent runner). ``
+- RCAF Prompt: `` As a tooling validation operator, validate Debug-delegation scaffold generator + failure-threshold prompt rehearsal against the documented validation surface. Verify Generated file exists at `<spec-folder>/debug-delegation.md` (or `debug-delegation-002.md` if a prior file exists).; File contains 5 numbered sections: PROBLEM SUMMARY, ATTEMPTED FIXES, CONTEXT FOR SPECIALIST, RECOMMENDED NEXT STEPS, HANDOFF CHECKLIST.; Attempt 1/2/3 approach + result fields populated from the input JSON.; YAML frontmatter present with `_memory.continuity` block, `packet_pointer` set to the spec folder relative path, and `last_updated_by: "scaffold-debug-delegation.sh"`.; Script exits 0 and prints the absolute output path on stdout.; Script makes ZERO Task-tool invocations (verifiable: it's a Bash script, not an agent runner). Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Generated file exists at `<spec-folder>/debug-delegation.md` (or `debug-delegation-002.md` if a prior file exists).; File contains 5 numbered sections: PROBLEM SUMMARY, ATTEMPTED FIXES, CONTEXT FOR SPECIALIST, RECOMMENDED NEXT STEPS, HANDOFF CHECKLIST.; Attempt 1/2/3 approach + result fields populated from the input JSON.; YAML frontmatter present with `_memory.continuity` block, `packet_pointer` set to the spec folder relative path, and `last_updated_by: "scaffold-debug-delegation.sh"`.; Script exits 0 and prints the absolute output path on stdout.; Script makes ZERO Task-tool invocations (verifiable: it's a Bash script, not an agent runner)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all five signals hold AND the second invocation (with prior scaffold present) produces `debug-delegation-002.md` rather than overwriting the original.
 
 ---

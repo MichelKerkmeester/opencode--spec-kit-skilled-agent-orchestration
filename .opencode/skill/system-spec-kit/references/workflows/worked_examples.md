@@ -37,6 +37,7 @@ These examples demonstrate real-world usage of the SpecKit system across differe
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:simple-bug-fix-level-1 -->
 ## 2. SIMPLE BUG FIX (LEVEL 1)
 
@@ -92,6 +93,7 @@ specs/008-fix-button-alignment/
 ---
 
 <!-- /ANCHOR:simple-bug-fix-level-1 -->
+
 <!-- ANCHOR:feature-implementation-level-2 -->
 ## 3. FEATURE IMPLEMENTATION (LEVEL 2)
 
@@ -147,6 +149,7 @@ specs/009-notification-system/
 ---
 
 <!-- /ANCHOR:feature-implementation-level-2 -->
+
 <!-- ANCHOR:architecture-change-level-3 -->
 ## 4. ARCHITECTURE CHANGE (LEVEL 3)
 
@@ -234,6 +237,7 @@ Scenario: Large multi-phase effort requiring root coordination.
 ---
 
 <!-- /ANCHOR:architecture-change-level-3 -->
+
 <!-- ANCHOR:resuming-work -->
 ## 5. RESUMING WORK
 
@@ -287,6 +291,7 @@ AI: Loading context for specs/009-notification-system/
 ---
 
 <!-- /ANCHOR:resuming-work -->
+
 <!-- ANCHOR:related-resources -->
 ## 6. RELATED RESOURCES
 
@@ -317,4 +322,7 @@ AI: Loading context for specs/009-notification-system/
 | 500+ | High | 3 | decision-record.md |
 
 > **Note**: Risk and complexity can override LOC thresholds. When in doubt, choose the higher level.
+
+---
+
 <!-- /ANCHOR:related-resources -->

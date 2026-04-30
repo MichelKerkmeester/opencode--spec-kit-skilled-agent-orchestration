@@ -1,7 +1,6 @@
 ---
 title: "Feedback-driven revalidation"
 description: "Documents the `memory_validate` feedback loop, including confidence updates, adaptive signals, auto-promotion, negative-feedback persistence, and learned feedback."
-audited_post_018: true
 ---
 
 # Feedback-driven revalidation
@@ -60,10 +59,6 @@ When feedback is positive and a `queryId` is provided, `memory_validate` also re
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Remediation and Revalidation
-- Source feature title: Feedback-driven revalidation
-- Canonical catalog source: `FEATURE_CATALOG.md`
+- Group: Remediation Revalidation
+- Canonical catalog source: `feature_catalog.md`
 - Feature file path: `20--remediation-revalidation/03-feedback-driven-revalidation.md`
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit

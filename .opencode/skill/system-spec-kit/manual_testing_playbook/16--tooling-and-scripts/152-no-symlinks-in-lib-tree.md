@@ -10,7 +10,7 @@ description: "This scenario validates the no-symlinks policy by confirming zero 
 - [1. OVERVIEW](#1-overview)
 - [2. SCENARIO CONTRACT](#2-scenario-contract)
 - [3. TEST EXECUTION](#3-test-execution)
-- [4. REFERENCES](#4-references)
+- [4. SOURCE FILES](#4-source-files)
 - [5. SOURCE METADATA](#5-source-metadata)
 
 ## 1. OVERVIEW
@@ -21,11 +21,13 @@ This scenario validates the no-symlinks-in-lib policy for `152`. It focuses on c
 
 ## 2. SCENARIO CONTRACT
 
-Operators run a symlink scan and confirm the lib/ tree contains no symlinks. The policy was established in Phase 15 after discovering that `lib/cache/cognitive -> ../cognitive` caused invisible path aliasing that broke dead-code analysis and import tooling.
 
-- Objective: Verify zero symlinks exist under mcp_server/lib/
-- Prompt: `As a tooling validation operator, validate No symlinks in lib/ tree against cd .opencode/skill/system-spec-kit. Verify zero symlinks found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify zero symlinks exist under mcp_server/lib/.
+- Real user request: `Please validate No symlinks in lib/ tree against cd .opencode/skill/system-spec-kit and tell me whether the expected signals are present: Zero symlinks found.`
+- RCAF Prompt: `As a tooling validation operator, validate No symlinks in lib/ tree against cd .opencode/skill/system-spec-kit. Verify zero symlinks found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Zero symlinks found
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if find returns no output
 
 ---
@@ -62,8 +64,7 @@ find command output (should be empty)
 
 Identify symlink -> determine if intentional -> replace with canonical import path -> remove symlink -> update imports -> re-verify
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/15-module-boundary-map.md](../../feature_catalog/16--tooling-and-scripts/15-module-boundary-map.md)
 - Policy: [ARCHITECTURE.md](../../ARCHITECTURE.md) -- "No Symlinks in lib/ Tree" subsection

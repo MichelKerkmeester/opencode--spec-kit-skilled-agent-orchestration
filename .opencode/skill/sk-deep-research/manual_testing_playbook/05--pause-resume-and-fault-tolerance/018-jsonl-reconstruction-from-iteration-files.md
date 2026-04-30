@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that missing or unusable JSONL can be reconstructed from `iteration-NNN.md` files.
 - Real user request: If the JSONL is unusable but the iteration files still exist, tell me whether the workflow can rebuild state.
-- Prompt: `As a manual-testing orchestrator, validate the state-reconstruction contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the workflow can scan iteration-NNN.md files, reconstruct JSONL iteration records, and log a state_reconstructed event. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the state-reconstruction contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the workflow can scan iteration-NNN.md files, reconstruct JSONL iteration records, and log a state_reconstructed event. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the state-format reconstruction section first, then the event schema, then the command troubleshooting and error-handling language.
-- Desired user-facing outcome: The user is told that iteration files can be used to rebuild enough state to continue or synthesize.
+- Desired user-visible outcome: The user is told that iteration files can be used to rebuild enough state to continue or synthesize.
 - Expected signals: The reconstruction algorithm scans iteration files, extracts assessment data, writes reconstructed records, and logs a `state_reconstructed` event.
 - Pass/fail posture: PASS if iteration-file reconstruction is explicitly documented and evented; FAIL if recovery is implied but not specified well enough to execute.
 

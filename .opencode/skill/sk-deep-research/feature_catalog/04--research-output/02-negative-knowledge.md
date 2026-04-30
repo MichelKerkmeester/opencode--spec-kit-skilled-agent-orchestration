@@ -32,7 +32,7 @@ The reducer and synthesis phases keep that information alive. `reduce-state.cjs`
 | `.opencode/skill/sk-deep-research/references/loop_protocol.md` | Reference | Defines the `Eliminated Alternatives` synthesis contract. |
 | `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Reducer | Promotes ruled-out directions into synchronized strategy and registry state. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

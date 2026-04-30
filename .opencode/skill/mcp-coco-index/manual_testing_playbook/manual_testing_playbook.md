@@ -40,7 +40,7 @@ Canonical package artifacts:
 - [12. ERROR HANDLING](#12--error-handling)
 - [13. CODE GRAPH INTEGRATION](#13--code-graph-integration)
 - [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
-- [15. FEATURE FILE INDEX](#15--feature-file-index)
+- [15. FEATURE CATALOG CROSS-REFERENCE INDEX](#15--feature-catalog-cross-reference-index)
 
 ---
 
@@ -502,7 +502,7 @@ Expected signals: `session_bootstrap.resume.cocoIndex.available` and `session_re
 
 ---
 
-## 15. FEATURE FILE INDEX
+## 15. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CORE CLI COMMANDS
 

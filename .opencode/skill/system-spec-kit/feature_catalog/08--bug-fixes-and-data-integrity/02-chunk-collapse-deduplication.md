@@ -1,7 +1,6 @@
 ---
 title: "Chunk collapse deduplication"
 description: "Tracks the fix that removed the conditional gate restricting chunk deduplication to content-included queries only."
-audited_post_018: true
 ---
 
 # Chunk collapse deduplication
@@ -35,7 +34,7 @@ On the write path, chunked saves now preserve the same "no duplicate partial sta
 | `mcp_server/lib/search/pipeline/stage3-rerank.ts` | Lib | Active production-path chunk-collapse and parent dedup execution in Stage 3 |
 | `mcp_server/handlers/memory-save.ts` | Handler | Chunked-save PE finalize transaction and compensating cleanup for new chunk trees |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,7 +46,6 @@ On the write path, chunked saves now preserve the same "no duplicate partial sta
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug fixes and data integrity
-- Source feature title: Chunk collapse deduplication
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/02-chunk-collapse-deduplication.md`

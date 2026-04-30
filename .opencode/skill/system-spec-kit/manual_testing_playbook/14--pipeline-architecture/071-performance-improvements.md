@@ -14,11 +14,13 @@ This scenario validates Performance improvements for `071`. It focuses on confir
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `071` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm key perf remediations active
-- Prompt: `As a pipeline validation operator, validate Performance improvements against hybrid-search.ts. Verify optimized code paths are active (not bypassed); fallback enrichment is single-pass; token estimation is cached per result; BM25 is opt-in with FTS5 default; BM25 warmup uses incremental maintenance; heavy queries complete within acceptable time; no performance regressions. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm key perf remediations active.
+- Real user request: `Please validate Performance improvements against hybrid-search.ts and tell me whether the expected signals are present: Optimized code paths are active (not bypassed); fallback enrichment is single-pass; token estimation is cached per result; BM25 is opt-in with FTS5 default; BM25 warmup uses incremental maintenance; heavy queries complete within acceptable time; no performance regressions.`
+- RCAF Prompt: `As a pipeline validation operator, validate Performance improvements against hybrid-search.ts. Verify optimized code paths are active (not bypassed); fallback enrichment is single-pass; token estimation is cached per result; BM25 is opt-in with FTS5 default; BM25 warmup uses incremental maintenance; heavy queries complete within acceptable time; no performance regressions. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Optimized code paths are active (not bypassed); fallback enrichment is single-pass; token estimation is cached per result; BM25 is opt-in with FTS5 default; BM25 warmup uses incremental maintenance; heavy queries complete within acceptable time; no performance regressions
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if optimized paths are active and the fallback split, token cache, BM25 opt-in/default behavior, and incremental warmup are all visible in code/runtime evidence without regressions
 
 ---
@@ -56,8 +58,7 @@ Code inspection evidence from `hybrid-search.ts` and `bm25-index.ts`, plus timin
 
 Profile the heavy retrieval path; check whether enrichment helpers are re-entered per tier; inspect token-budget estimation for cache misses; verify BM25 enablement and warmup scheduling behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/08-performance-improvements.md](../../feature_catalog/14--pipeline-architecture/08-performance-improvements.md)
 

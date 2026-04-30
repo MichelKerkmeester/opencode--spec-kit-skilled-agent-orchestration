@@ -14,11 +14,13 @@ This scenario validates Math.max/min stack overflow elimination for `083`. It fo
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `083` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm large-array safety
-- Prompt: `As a data-integrity validation operator, validate Math.max/min stack overflow elimination against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm large-array safety.
+- Real user request: `Please validate Math.max/min stack overflow elimination against the documented validation surface and tell me whether the expected signals are present: Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path.`
+- RCAF Prompt: `As a data-integrity validation operator, validate Math.max/min stack overflow elimination against the documented validation surface. Verify large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Large arrays (10k+ elements) processed without RangeError; numeric outputs match expected min/max values; no stack overflow in any code path
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if large arrays process without RangeError and produce correct min/max values
 
 ---
@@ -54,8 +56,7 @@ Large-array test output + numeric comparison evidence + error-free execution pro
 
 Verify all Math.max/min spread calls have been replaced; check array size at all call sites; test with progressively larger arrays
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md](../../feature_catalog/08--bug-fixes-and-data-integrity/08-mathmax-min-stack-overflow-elimination.md)
 

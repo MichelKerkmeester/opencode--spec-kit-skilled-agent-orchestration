@@ -14,11 +14,13 @@ This scenario validates 7-layer tool architecture metadata for `205`. It focuses
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `205` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules
-- Prompt: `As a pipeline validation operator, validate 7-layer tool architecture metadata against the documented validation surface. Verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules.
+- Real user request: `Please validate 7-layer tool architecture metadata against the documented validation surface and tell me whether the expected signals are present: L1-L7 metadata includes budgets/priorities/guidance/tool membership; task-type mappings remain available for recommendations; runtime dispatch is still name-based and fans into the existing dispatcher modules; recommended-layer metadata is advisory rather than a routing prerequisite.`
+- RCAF Prompt: `As a pipeline validation operator, validate 7-layer tool architecture metadata against the documented validation surface. Verify the 7-layer model supplies advisory budgets and layer recommendations while runtime dispatch still routes tools by name through the existing dispatcher modules. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: L1-L7 metadata includes budgets/priorities/guidance/tool membership; task-type mappings remain available for recommendations; runtime dispatch is still name-based and fans into the existing dispatcher modules; recommended-layer metadata is advisory rather than a routing prerequisite
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the layer model behaves as governance metadata and dispatch remains name-based; FAIL if runtime behavior depends on a missing seven-layer router or if metadata/recommendation claims do not match the actual dispatch implementation
 
 ---
@@ -56,8 +58,7 @@ Layer-definition snapshot + dispatch trace + recommended-layer output example + 
 
 Inspect `layer-definitions.ts` completeness; verify `context-server.ts` dispatch entrypoint and budget injection; review `tools/index.ts` fan-out modules; confirm handler metadata does not masquerade as an execution router
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md](../../feature_catalog/14--pipeline-architecture/20-7-layer-tool-architecture-metadata.md)
 

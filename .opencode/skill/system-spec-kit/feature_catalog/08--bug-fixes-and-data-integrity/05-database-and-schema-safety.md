@@ -1,7 +1,6 @@
 ---
 title: "Database and schema safety"
 description: "Tracks five database-layer bug fixes covering column references, DDL placement, edge deletion filters, update validation and per-path connection isolation."
-audited_post_018: true
 ---
 
 # Database and schema safety
@@ -42,7 +41,7 @@ Five database-layer bugs were fixed:
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | **B3**: edge deletion filters by source OR target endpoint to remove only rows linked to the target spec-doc record. |
 | `mcp_server/handlers/pe-gating.ts` | Handler | **B4**: update/reinforcement paths check `result.changes` to reject zero-row updates. |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -54,7 +53,6 @@ Five database-layer bugs were fixed:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Database and schema safety
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md`

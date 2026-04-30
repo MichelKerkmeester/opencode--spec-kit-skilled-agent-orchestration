@@ -43,6 +43,13 @@ Run `code_graph_scan` first when blocked. Use plain diff review if the graph can
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:241-260` | Handler | checks readiness before diff parsing and blocks stale state |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/detect-changes.ts:265-368` | Handler | parses the diff and returns affected files/symbols |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:667-677` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/03--detect-changes/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

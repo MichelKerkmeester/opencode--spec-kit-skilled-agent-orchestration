@@ -14,11 +14,13 @@ This scenario validates Atomic write-then-index API for `203`. It focuses on ver
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `203` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure
-- Prompt: `As a pipeline validation operator, validate Atomic write-then-index API against the documented validation surface. Verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure.
+- Real user request: `Please validate Atomic write-then-index API against the documented validation surface and tell me whether the expected signals are present: Unique pending path is created before promotion; indexing runs before final rename; transient indexing failure gets one retry; successful flow ends with pending-file rename into place; validation/index failure cleans up the pending file and leaves the original target untouched.`
+- RCAF Prompt: `As a pipeline validation operator, validate Atomic write-then-index API against the documented validation surface. Verify the save flow enforces pending write -> index attempt(s) -> final rename ordering with rollback before promotion on failure. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Unique pending path is created before promotion; indexing runs before final rename; transient indexing failure gets one retry; successful flow ends with pending-file rename into place; validation/index failure cleans up the pending file and leaves the original target untouched
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the handler enforces write/index/rename ordering with cleanup on failure; FAIL if files are promoted before indexing, retries do not occur as documented, or failed saves leave promoted/partial artifacts behind
 
 ---
@@ -56,8 +58,7 @@ Save transcript + pending-file path evidence + retry evidence + before/after fil
 
 Inspect `memory-save.ts` ordering and retry path; verify pending-path generation/cleanup helpers in `transaction-manager.ts`; confirm tool schema and save handler inputs do not bypass the guarded flow
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/18-atomic-write-then-index-api.md](../../feature_catalog/14--pipeline-architecture/18-atomic-write-then-index-api.md)
 

@@ -1,7 +1,6 @@
 ---
 title: "Memory causal trust display"
 description: "Display-only trust badges add confidence, extraction age, last access age, orphan status, and weight-history change state to each result envelope without changing causal storage."
-audited_post_018: true
 ---
 
 # Memory causal trust display
@@ -37,7 +36,7 @@ The placement decision is per-result, not top-level. `memory_search` shows the b
 | `mcp_server/formatters/search-results.ts` | Formatter | Defines `MemoryTrustBadges`, batch-derives trust metadata from existing causal-edge tables, and attaches additive `trustBadges` to each `MemoryResultEnvelope` |
 | `mcp_server/lib/response/profile-formatters.ts` | Response | Extends response-profile result typing so `quick`, `research`, and `resume` outputs preserve `trustBadges` |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -47,8 +46,6 @@ The placement decision is per-result, not top-level. `memory_search` shows the b
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Memory causal trust display
-- Current reality source: `mcp_server/formatters/search-results.ts`, `mcp_server/lib/response/profile-formatters.ts`
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
 - Feature file path: `13--memory-quality-and-indexing/28-memory-causal-trust-display.md`

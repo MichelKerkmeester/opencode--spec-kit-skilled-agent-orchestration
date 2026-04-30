@@ -15,11 +15,13 @@ This scenario validates Prediction-error save arbitration for `110`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `110` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm 5-action PE decision engine during save
-- Prompt: `As a mutation validation operator, validate Prediction-error save arbitration against memory_conflicts. Verify each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm 5-action PE decision engine during save.
+- Real user request: `Please validate Prediction-error save arbitration against memory_conflicts and tell me whether the expected signals are present: Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration.`
+- RCAF Prompt: `As a mutation validation operator, validate Prediction-error save arbitration against memory_conflicts. Verify each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Each similarity band triggers the correct action (CREATE/REINFORCE/UPDATE/SUPERSEDE/CREATE_LINKED); memory_conflicts table records action/similarity/contradiction; force:true bypasses PE arbitration
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 5 PE actions trigger at correct similarity thresholds and force:true bypasses the decision engine
 
 ---
@@ -59,8 +61,7 @@ Save output per action type + memory_conflicts table query + force:true bypass e
 
 Inspect similarity threshold constants; verify contradiction detection logic; check memory_conflicts table schema matches expected columns
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/08-prediction-error-save-arbitration.md](../../feature_catalog/02--mutation/08-prediction-error-save-arbitration.md)
 

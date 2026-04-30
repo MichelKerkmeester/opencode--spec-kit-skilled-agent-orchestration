@@ -1,7 +1,6 @@
 ---
 title: "Tree-Sitter WASM parser"
 description: "Structural code parser using web-tree-sitter with prebuilt WASM grammars for JS/TS/Python/Bash, replacing regex-based extraction with cursor-based AST walks."
-audited_post_018: true
 ---
 
 # Tree-Sitter WASM parser
@@ -34,7 +33,6 @@ mcp_server/code_graph/lib/tree-sitter-parser.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Tree-Sitter WASM parser
-- Current reality source: spec 024-compact-code-graph phase 015/017
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/13-tree-sitter-wasm-parser.md`

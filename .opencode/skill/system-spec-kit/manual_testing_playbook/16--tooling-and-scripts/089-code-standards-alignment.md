@@ -13,11 +13,13 @@ This scenario validates Code standards alignment for `089`. It focuses on Confir
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `089` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm standards conformance
-- Prompt: `As a tooling validation operator, validate Code standards alignment against the documented validation surface. Verify affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm standards conformance.
+- Real user request: `Please validate Code standards alignment against the documented validation surface and tell me whether the expected signals are present: Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found.`
+- RCAF Prompt: `As a tooling validation operator, validate Code standards alignment against the documented validation surface. Verify affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Affected files follow naming conventions; comments are meaningful (not boilerplate); import order matches standard; no mismatches found
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all affected files conform to naming, commenting, and import order standards with zero mismatches
 
 ---
@@ -53,8 +55,7 @@ File inspection evidence showing naming/comments/import compliance + mismatch li
 
 Inspect code standards definition; verify linter rules cover the standards; check for files missed by alignment pass
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/05-code-standards-alignment.md](../../feature_catalog/16--tooling-and-scripts/05-code-standards-alignment.md)
 

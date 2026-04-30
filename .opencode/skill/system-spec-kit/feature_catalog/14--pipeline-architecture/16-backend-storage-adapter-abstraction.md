@@ -1,7 +1,6 @@
 ---
 title: "Backend storage adapter abstraction"
 description: "Backend storage adapter abstraction now exists as a shipped vector-store seam while SQLite remains the concrete backend."
-audited_post_018: true
 ---
 
 # Backend storage adapter abstraction
@@ -30,7 +29,7 @@ The system is still SQLite-backed, but it is no longer hard-wired directly at ev
 | `mcp_server/lib/search/vector-index-store.ts` | Lib | SQLite implementation of the vector-store contract |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Stable facade re-exporting the storage seam |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ The system is still SQLite-backed, but it is no longer hard-wired directly at ev
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Backend storage adapter abstraction
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/16-backend-storage-adapter-abstraction.md`

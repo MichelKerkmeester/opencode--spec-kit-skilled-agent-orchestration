@@ -1,7 +1,6 @@
 ---
 title: "Search pipeline safety"
 description: "Search pipeline safety fixed three bugs: summary quality bypass, FTS5 double-tokenization and quality floor vs RRF range mismatch."
-audited_post_018: true
 ---
 
 # Search pipeline safety
@@ -37,7 +36,7 @@ Three search pipeline issues were fixed:
 | `mcp_server/lib/search/bm25-index.ts` | Lib | D2: BM25 tokenization — now consumes shared `sanitizeQueryTokens()` from `sqlite-fts.ts` |
 | `mcp_server/lib/search/channel-representation.ts` | Lib | D3: `QUALITY_FLOOR` lowered from 0.2 to 0.005 for RRF-range compatibility |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,7 +47,6 @@ Three search pipeline issues were fixed:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Search pipeline safety
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/07-search-pipeline-safety.md`

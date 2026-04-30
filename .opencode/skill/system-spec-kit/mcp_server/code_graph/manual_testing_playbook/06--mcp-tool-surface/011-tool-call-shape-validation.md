@@ -17,12 +17,13 @@ Verify dispatcher/schema validation catches malformed code_graph and CCC tool ca
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify dispatcher/schema validation catches malformed code_graph and CCC tool calls.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 011 (tool call shape validation), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify dispatcher/schema validation catches malformed code_graph and CCC tool calls.
+- Real user request: `Send malformed code_graph and CCC MCP calls and confirm schema validation reports the missing fields.`
+- RCAF Prompt: `As an MCP dispatch validation operator, execute malformed tool-call checks against code_graph and CCC handlers. Verify schema validation names missing fields while valid shapes still reach handlers. Return PASS/FAIL with error payload excerpts.`
+- Expected execution process: Call `code_graph_query` with missing `subject`, call `detect_changes` with missing `diff`, and call `ccc_feedback` with missing `rating`.
+- Expected signals: Each malformed call returns `status:"error"` or a schema validation error naming missing fields; valid shape reaches the handler.
+- Desired user-visible outcome: A concise verdict explaining whether malformed MCP calls are rejected with useful validation errors.
+- Pass/fail: PASS if malformed calls are rejected with field-specific errors and valid shapes route normally; FAIL if malformed calls reach handlers silently, errors lack field detail, or valid calls are blocked by schema drift.
 
 ---
 
@@ -62,4 +63,3 @@ Check `tool-input-schemas.ts` allowlisted keys for extra-property rejection.
 - Group: Code Graph Runtime
 - Playbook ID: 011
 - Canonical root source: `manual_testing_playbook.md`
-

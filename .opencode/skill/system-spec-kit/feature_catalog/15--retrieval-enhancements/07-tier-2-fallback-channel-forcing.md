@@ -1,7 +1,6 @@
 ---
 title: "Tier-2 fallback channel forcing"
 description: "Tier-2 fallback channel forcing sets `forceAllChannels: true` during quality fallback so all retrieval channels execute regardless of simple-route reduction."
-audited_post_018: true
 ---
 
 # Tier-2 fallback channel forcing
@@ -28,7 +27,7 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 |------|-------|------|
 | `mcp_server/lib/search/hybrid-search.ts` | Lib | Tiered fallback orchestration that sets `forceAllChannels: true` during Tier-2 degradation for simple-routed queries |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -37,7 +36,6 @@ A `forceAllChannels` option was added to hybrid search. When the tier-2 quality 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Alignment remediation (Phase 016)
-- Source feature title: Tier-2 fallback channel forcing
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/07-tier-2-fallback-channel-forcing.md`

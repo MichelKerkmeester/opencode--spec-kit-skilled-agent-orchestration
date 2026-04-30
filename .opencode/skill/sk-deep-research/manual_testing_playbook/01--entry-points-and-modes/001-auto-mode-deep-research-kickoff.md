@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that autonomous mode is exposed consistently across the README, quick reference, command entrypoint, and auto YAML workflow.
 - Real user request: Run a deep research session on a topic without stopping for approvals and tell me what it will create.
-- Prompt: `As a manual-testing orchestrator, validate the autonomous entrypoint for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:auto is documented consistently across the README, quick reference, command entrypoint, and autonomous YAML workflow. Return a concise user-facing pass/fail verdict with the expected artifact summary.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the autonomous entrypoint for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify /spec_kit:deep-research:auto is documented consistently across the README, quick reference, command entrypoint, and autonomous YAML workflow. Return a concise user-facing pass/fail verdict with the expected artifact summary.`
 - Expected execution process: Inspect the public docs first, then the command entrypoint, then the autonomous YAML workflow so the operator explanation stays anchored in the user-facing contract before the internal workflow contract.
-- Desired user-facing outcome: The user is told exactly how to invoke autonomous mode, that it runs without approval gates, and that it produces a `research/` packet plus `research/research.md`.
+- Desired user-visible outcome: The user is told exactly how to invoke autonomous mode, that it runs without approval gates, and that it produces a `research/` packet plus `research/research.md`.
 - Expected signals: The same autonomous command appears across sources, autonomous mode is approval-free, and the workflow points to config, JSONL, strategy, iteration files, and `research/research.md`.
 - Pass/fail posture: PASS if all inspected sources agree on command shape, autonomous behavior, and output artifacts; FAIL if any source materially contradicts the others.
 

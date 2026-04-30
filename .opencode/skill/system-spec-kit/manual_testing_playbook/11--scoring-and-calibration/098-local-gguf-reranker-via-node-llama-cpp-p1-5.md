@@ -14,11 +14,13 @@ This scenario validates Local GGUF reranker via node-llama-cpp (P1-5) for `098`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `098` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm reranker gating and graceful fallback
-- Prompt: `As a scoring validation operator, validate Local GGUF reranker via node-llama-cpp (P1-5) against RERANKER_LOCAL=1. Verify reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus() reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty remains compatibility-only and does not change scores; scoring runs sequentially in logs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm reranker gating and graceful fallback.
+- Real user request: `Please validate Local GGUF reranker via node-llama-cpp (P1-5) against RERANKER_LOCAL=1 and tell me whether the expected signals are present: Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus() reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty does not change scores; scoring runs sequentially in logs.`
+- RCAF Prompt: `As a scoring validation operator, validate Local GGUF reranker via node-llama-cpp (P1-5) against RERANKER_LOCAL=1. Verify reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus() reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty remains compatibility-only and does not change scores; scoring runs sequentially in logs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Reranker not activated for truthy-but-not-'true' values; silent fallback when model file missing; custom model path lowers the total-memory threshold to 2GB from the default 8GB; getRerankerStatus() reports cache hits/misses/staleHits/evictions with bounded p95 latency; applyLengthPenalty does not change scores; scoring runs sequentially in logs
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if strict `=== 'true'` check works, custom model lowers threshold, telemetry fields are exposed, length penalty is neutral, and scoring is sequential
 
 ---
@@ -57,8 +59,7 @@ Reranker log output + fallback behavior + `getRerankerStatus()` snapshots
 
 Check `lib/search/local-reranker.ts` for `canUseLocalReranker()` and `rerankLocal()`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md](../../feature_catalog/11--scoring-and-calibration/14-local-gguf-reranker-via-node-llama-cpp.md)
 

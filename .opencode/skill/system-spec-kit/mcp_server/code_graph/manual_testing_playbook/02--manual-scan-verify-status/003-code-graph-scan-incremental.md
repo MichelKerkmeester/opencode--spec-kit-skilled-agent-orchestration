@@ -17,12 +17,13 @@ Confirm incremental scan skips fresh files and prunes deleted tracked files.
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Confirm incremental scan skips fresh files and prunes deleted tracked files.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 003 (code_graph_scan incremental), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Confirm incremental scan skips fresh files and prunes deleted tracked files.
+- Real user request: `Validate that incremental code_graph_scan skips unchanged files and removes deleted tracked files from graph results.`
+- RCAF Prompt: `As a code graph scan operator, execute incremental scan checks against a disposable indexed workspace. Verify fresh files are skipped and deleted tracked files are pruned. Return PASS/FAIL with scan payload excerpts and query evidence.`
+- Expected execution process: Run a full scan, delete one indexed fixture file, run `code_graph_scan` with `incremental:true`, and inspect `filesSkipped`, `filesIndexed`, and readiness fields.
+- Expected signals: Incremental scan returns `status:"ok"`, reports skipped or fresh files, and no deleted file remains in graph query or status evidence.
+- Desired user-visible outcome: A concise verdict explaining whether incremental scanning preserved fresh work and pruned deleted entries.
+- Pass/fail: PASS if skipped/fresh counts and deleted-file pruning are visible; FAIL if the deleted file remains, fresh files are reindexed unnecessarily without explanation, or readiness is missing.
 
 ---
 
@@ -63,4 +64,3 @@ Run with no changes and verify most files are skipped.
 - Group: Code Graph Runtime
 - Playbook ID: 003
 - Canonical root source: `manual_testing_playbook.md`
-

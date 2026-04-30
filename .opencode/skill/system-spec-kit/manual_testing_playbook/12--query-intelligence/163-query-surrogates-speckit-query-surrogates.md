@@ -14,11 +14,13 @@ This scenario validates query surrogates (SPECKIT_QUERY_SURROGATES) for `163`. I
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `163` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify surrogate metadata generated at index time and matched at query time
-- Prompt: `As a query-intelligence validation operator, validate Query surrogates (SPECKIT_QUERY_SURROGATES) against SPECKIT_QUERY_SURROGATES=true. Verify surrogate metadata generated at index time and matched at query time. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify surrogate metadata generated at index time and matched at query time.
+- Real user request: `Please validate Query surrogates (SPECKIT_QUERY_SURROGATES) against SPECKIT_QUERY_SURROGATES=true and tell me whether the expected signals are present: SurrogateMetadata contains aliases (from parenthetical abbreviations), headings, summary (max 200 chars), and surrogateQuestions (2-5 entries); query-time matching produces SurrogateMatchResult with score in [0,1] and matchedSurrogates list; no LLM calls on the default path.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate Query surrogates (SPECKIT_QUERY_SURROGATES) against SPECKIT_QUERY_SURROGATES=true. Verify surrogate metadata generated at index time and matched at query time. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: SurrogateMetadata contains aliases (from parenthetical abbreviations), headings, summary (max 200 chars), and surrogateQuestions (2-5 entries); query-time matching produces SurrogateMatchResult with score in [0,1] and matchedSurrogates list; no LLM calls on the default path
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if surrogates generated at save time and query matching returns boost scores with MIN_MATCH_THRESHOLD (0.15) enforced; FAIL if surrogates empty or matching produces zero scores for known-matching terms
 
 ---
@@ -57,8 +59,7 @@ SurrogateMetadata output + SurrogateMatchResult + test transcript
 
 Verify isQuerySurrogatesEnabled() → Check extractAliases() for parenthetical patterns → Inspect MAX_SURROGATE_QUESTIONS (5) → Verify MIN_MATCH_THRESHOLD (0.15) → Check MAX_SUMMARY_LENGTH (200)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/09-index-time-query-surrogates.md](../../feature_catalog/12--query-intelligence/09-index-time-query-surrogates.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

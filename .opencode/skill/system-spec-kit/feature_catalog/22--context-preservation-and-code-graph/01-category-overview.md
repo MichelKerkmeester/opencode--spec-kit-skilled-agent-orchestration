@@ -1,8 +1,6 @@
 ---
 title: "Context preservation and code graph"
 description: "Category covering Claude Code hooks (PreCompact, SessionStart, Stop), structural code graph (indexer, SQLite, MCP tools), CocoIndex bridge, and compaction working-set integration."
-audited_post_018: true
-phase_018_change: "Aligned the overview with the phase-018 canonical continuity ladder and current session_bootstrap/session_resume recovery wording."
 ---
 
 # Context preservation and code graph
@@ -46,7 +44,6 @@ For runtime-package code_graph details, see `mcp_server/code_graph/feature_catal
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Context preservation and code graph
-- Current reality source: current compact code-graph and canonical continuity runtime docs
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/01-category-overview.md`

@@ -1,17 +1,17 @@
 ---
-title: "DRV-016 -- Composite review convergence stop behavior"
+title: "DRV-031 -- Composite review convergence stop behavior"
 description: "Verify the three-signal composite convergence model with severity-weighted newFindingsRatio, weights 0.30/0.25/0.45, and threshold 0.60."
 ---
 
-# DRV-016 -- Composite review convergence stop behavior
+# DRV-031 -- Composite review convergence stop behavior
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-016`.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for `DRV-031`.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates composite review convergence stop behavior for `DRV-016`. The objective is to verify the three-signal composite convergence model using rolling average (0.30), MAD noise floor (0.25), and dimension coverage (0.45) with a weighted stop-score threshold of 0.60.
+This scenario validates composite review convergence stop behavior for `DRV-031`. The objective is to verify the three-signal composite convergence model using rolling average (0.30), MAD noise floor (0.25), and dimension coverage (0.45) with a weighted stop-score threshold of 0.60.
 
 ### WHY THIS MATTERS
 
@@ -82,7 +82,7 @@ Privilege the convergence reference for exact math and use quick reference and S
 ## 5. SOURCE METADATA
 
 - Group: CONVERGENCE AND RECOVERY
-- Playbook ID: DRV-016
+- Playbook ID: DRV-031
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `04--convergence-and-recovery/016-composite-review-convergence-stop-behavior.md`
 - Feature catalog status: No `feature_catalog/` package exists under `.opencode/skill/sk-deep-review/` as of 2026-03-28.

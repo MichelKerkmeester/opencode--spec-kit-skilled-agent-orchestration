@@ -1,8 +1,6 @@
 ---
 title: "Memory metadata update (memory_update)"
 description: "Covers the update tool that modifies memory metadata and auto-regenerates embeddings when titles change."
-audited_post_018: true
-phase_018_change: "Metadata update remains live under the post-018 save and indexing pipeline"
 ---
 
 # Memory metadata update (memory_update)
@@ -49,7 +47,7 @@ Successful metadata updates now invalidate the search cache as part of the same 
 | `mcp_server/lib/storage/mutation-ledger.ts` | Lib | Update audit ledger |
 | `mcp_server/lib/storage/transaction-manager.ts` | Lib | Transaction wrapper for the mutation path |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -60,7 +58,6 @@ Successful metadata updates now invalidate the search cache as part of the same 
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Memory metadata update (memory_update)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/02-memory-metadata-update-memoryupdate.md`

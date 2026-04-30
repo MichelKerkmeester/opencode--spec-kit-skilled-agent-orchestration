@@ -1,7 +1,6 @@
 ---
 title: "Auto entity extraction"
 description: "Auto entity extraction runs five regex rules at save time to capture technology names, project identifiers and architectural concepts from memory content."
-audited_post_018: true
 ---
 
 # Auto entity extraction
@@ -42,7 +41,7 @@ Entities are deliberately stored in a separate table rather than as causal edges
 | `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter coordinating entity extraction at save time |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isAutoEntitiesEnabled()` flag accessor (`SPECKIT_AUTO_ENTITIES`) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -53,7 +52,6 @@ Entities are deliberately stored in a separate table rather than as causal edges
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Auto entity extraction
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/10-auto-entity-extraction.md`

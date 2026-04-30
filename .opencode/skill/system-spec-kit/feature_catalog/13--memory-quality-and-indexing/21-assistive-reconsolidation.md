@@ -1,7 +1,6 @@
 ---
 title: "Assistive reconsolidation"
 description: "Three-tier assistive reconsolidation classifies memory pairs by cosine similarity into a high-similarity compatibility note, review, or keep-separate tiers, with advisory-only behavior at the assistive layer and recommendations gated by SPECKIT_ASSISTIVE_RECONSOLIDATION."
-audited_post_018: true
 ---
 
 # Assistive reconsolidation
@@ -43,7 +42,7 @@ Default ON (graduated), controlled by `SPECKIT_ASSISTIVE_RECONSOLIDATION` (updat
 | `mcp_server/lib/storage/reconsolidation.ts` | Lib | Core reconsolidation engine (merge, supersede, complement logic) |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isAssistiveReconsolidationEnabled()` base flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -52,7 +51,6 @@ Default ON (graduated), controlled by `SPECKIT_ASSISTIVE_RECONSOLIDATION` (updat
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Assistive reconsolidation
-- Current reality source: mcp_server/handlers/save/reconsolidation-bridge.ts module header and implementation
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/21-assistive-reconsolidation.md`

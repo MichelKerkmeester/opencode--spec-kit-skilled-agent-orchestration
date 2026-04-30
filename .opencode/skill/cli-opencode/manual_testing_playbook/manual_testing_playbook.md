@@ -47,7 +47,7 @@ Canonical package artifacts:
 - [14. PARALLEL DETACHED (`CO-026..CO-028`)](#14--parallel-detached-co-026co-028)
 - [15. CROSS-REPO AND CROSS-SERVER (`CO-029..CO-031`)](#15--cross-repo-and-cross-server-co-029co-031)
 - [16. AUTOMATED TEST CROSS-REFERENCE](#16--automated-test-cross-reference)
-- [17. FEATURE FILE INDEX](#17--feature-file-index)
+- [17. FEATURE CATALOG CROSS-REFERENCE INDEX](#17--feature-catalog-cross-reference-index)
 
 ---
 
@@ -782,7 +782,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 
 ---
 
-## 17. FEATURE FILE INDEX
+## 17. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI INVOCATION
 

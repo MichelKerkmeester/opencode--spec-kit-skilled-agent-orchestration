@@ -45,6 +45,7 @@ Issue Detected
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:quick-fixes -->
 ## 2. QUICK FIXES
 
@@ -87,6 +88,7 @@ memory_search({ query: "test" })
 ---
 
 <!-- /ANCHOR:quick-fixes -->
+
 <!-- ANCHOR:common-errors -->
 ## 3. COMMON ERRORS
 
@@ -190,6 +192,7 @@ Where:
 ---
 
 <!-- /ANCHOR:common-errors -->
+
 <!-- ANCHOR:debugging -->
 ## 4. DEBUGGING
 
@@ -274,6 +277,7 @@ memory_list({ limit: 3 })  // Should show recent entries
 ---
 
 <!-- /ANCHOR:debugging -->
+
 <!-- ANCHOR:escalation -->
 ## 5. ESCALATION
 
@@ -370,6 +374,7 @@ memory_update({ id: 123, importanceTier: "constitutional" })
 ---
 
 <!-- /ANCHOR:escalation -->
+
 <!-- ANCHOR:recovery-procedures -->
 ## 6. RECOVERY PROCEDURES
 
@@ -401,6 +406,7 @@ If settings are wrong:
 ---
 
 <!-- /ANCHOR:recovery-procedures -->
+
 <!-- ANCHOR:recovery-hints-catalog -->
 ## 7. RECOVERY HINTS CATALOG
 
@@ -465,6 +471,7 @@ checkpoint_restore({ name: "checkpoint-###-prev" })
 ---
 
 <!-- /ANCHOR:recovery-hints-catalog -->
+
 <!-- ANCHOR:empty-trigger-phrases -->
 ## 8. EMPTY TRIGGER PHRASES
 
@@ -485,6 +492,7 @@ memory_delete({ id: <memory_id> })
 ---
 
 <!-- /ANCHOR:empty-trigger-phrases -->
+
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
@@ -495,4 +503,7 @@ memory_delete({ id: <memory_id> })
 
 ### Related Skills
 - `system-spec-kit` - Spec folder creation and template management
+
+---
+
 <!-- /ANCHOR:related-resources -->

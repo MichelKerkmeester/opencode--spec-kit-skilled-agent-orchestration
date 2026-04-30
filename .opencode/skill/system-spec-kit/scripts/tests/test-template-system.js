@@ -359,20 +359,20 @@ async function testAddendumStructure() {
       }
     }
 
-    // Test level3plus-govern addendum
-    const level3plusGovernDir = path.join(ADDENDUM_DIR, 'level3plus-govern');
+    // Test level3-plus-govern addendum
+    const level3plusGovernDir = path.join(ADDENDUM_DIR, 'level3-plus-govern');
     if (dirExists(level3plusGovernDir)) {
-      pass('T-022a: addendum/level3plus-govern/ exists', level3plusGovernDir);
+      pass('T-022a: addendum/level3-plus-govern/ exists', level3plusGovernDir);
     } else {
-      fail('T-022a: addendum/level3plus-govern/ exists', 'Directory not found');
+      fail('T-022a: addendum/level3-plus-govern/ exists', 'Directory not found');
     }
 
     const level3plusGovernFiles = ['spec-level3plus.md', 'plan-level3plus.md', 'checklist-extended.md'];
     for (const file of level3plusGovernFiles) {
       if (fileExists(path.join(level3plusGovernDir, file))) {
-        pass(`T-022b: addendum/level3plus-govern/${file} exists`, 'File found');
+        pass(`T-022b: addendum/level3-plus-govern/${file} exists`, 'File found');
       } else {
-        fail(`T-022b: addendum/level3plus-govern/${file} exists`, 'File not found');
+        fail(`T-022b: addendum/level3-plus-govern/${file} exists`, 'File not found');
       }
     }
 

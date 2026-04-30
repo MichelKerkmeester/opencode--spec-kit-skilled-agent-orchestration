@@ -13,11 +13,13 @@ This scenario validates Workspace scanning and indexing (memory_index_scan) for 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-014` and confirm the expected signals without contradicting evidence.
 
-- Objective: Incremental sync run with spec-doc warn-only indexing plus atomic lease acquisition, rejection, expiry, and completion coverage
-- Prompt: `As a maintenance validation operator, validate Workspace scanning and indexing (memory_index_scan) against memory_index_scan(force:false, includeSpecDocs:true). Verify incremental sync run with spec-doc warn-only indexing plus atomic lease acquisition, rejection, expiry, and completion coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Incremental sync run with spec-doc warn-only indexing plus atomic lease acquisition, rejection, expiry, and completion coverage.
+- Real user request: `` Please validate Workspace scanning and indexing (memory_index_scan) against memory_index_scan(force:false, includeSpecDocs:true) and tell me whether the expected signals are present: Scan summary, updated index state, spec-doc warn-only indexing behavior, atomic lease reservation, rejection wait time, stale-lease expiry, and completion handoff to `last_index_scan`. ``
+- RCAF Prompt: `As a maintenance validation operator, validate Workspace scanning and indexing (memory_index_scan) against memory_index_scan(force:false, includeSpecDocs:true). Verify incremental sync run with spec-doc warn-only indexing plus atomic lease acquisition, rejection, expiry, and completion coverage. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Scan summary, updated index state, spec-doc warn-only indexing behavior, atomic lease reservation, rejection wait time, stale-lease expiry, and completion handoff to `last_index_scan`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if changed files are reflected, spec docs remain indexed, and all targeted atomic lease checks pass
 
 ---
@@ -172,8 +174,7 @@ Targeted test transcript showing `scan_started_at` removal and `last_index_scan`
 
 Inspect `completeIndexScanLease()` in `core/db-state.ts` and the post-response completion calls in `handlers/memory-index.ts` if cooldown starts too early or active leases linger
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md](../../feature_catalog/04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md)
 

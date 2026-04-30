@@ -1,7 +1,6 @@
 ---
 title: "Code graph auto-trigger"
 description: "ensureCodeGraphReady() provides lazy indexing that automatically detects graph freshness and triggers full scans or selective reindexing before queries."
-audited_post_018: true
 ---
 
 # Code graph auto-trigger
@@ -55,7 +54,6 @@ mcp_server/code_graph/lib/ensure-ready.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Code graph auto-trigger
-- Current reality source: spec 024-compact-code-graph phase 019
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md`

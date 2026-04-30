@@ -14,11 +14,13 @@ This scenario validates Confidence-based result truncation (R15-ext) for `036`. 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `036` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm relevance-cliff cutoff
-- Prompt: `As a query-intelligence validation operator, validate Confidence-based result truncation (R15-ext) against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm relevance-cliff cutoff.
+- Real user request: `Please validate Confidence-based result truncation (R15-ext) against the documented validation surface and tell me whether the expected signals are present: Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace.`
+- RCAF Prompt: `As a query-intelligence validation operator, validate Confidence-based result truncation (R15-ext) against the documented validation surface. Verify results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Results truncated at confidence cliff; minimum result count guaranteed; cutoff threshold documented in trace
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Results cut at confidence cliff; >=min-count results always returned; threshold visible in trace; FAIL: No truncation or fewer than min-count results
 
 ---
@@ -54,8 +56,7 @@ Truncated output with cutoff point + min-result count verification + cliff thres
 
 Verify cliff detection algorithm → Check min-result guarantee → Inspect confidence score distribution
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [12--query-intelligence/04-confidence-based-result-truncation.md](../../feature_catalog/12--query-intelligence/04-confidence-based-result-truncation.md)
 

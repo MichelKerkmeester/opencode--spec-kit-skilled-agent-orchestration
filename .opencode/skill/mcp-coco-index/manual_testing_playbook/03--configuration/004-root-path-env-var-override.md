@@ -25,11 +25,12 @@ Operators run the exact prompt and command sequence for `CFG-004` and confirm th
 
 - Objective: Verify `COCOINDEX_CODE_ROOT_PATH` overrides the marker-directory discovery path; `ccc status` invoked from a child directory with the env var set reports stats for the env-var-pinned root, not the cwd-derived root.
 - Real user request: `"I'm running ccc from inside a subfolder but I want it to act on a different project root — does the env var actually win?"`
-- Prompt: `As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path, then invoke ccc status from a subdirectory containing project markers (.git, package.json, etc.) and confirm the reported root matches the env var, not the subdirectory. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path and invoke ccc status from a subdirectory containing project markers against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify ccc status invoked from the subdirectory with the env var set reports the same file/chunk counts as ccc status invoked at the env-var-pinned root; a one-result ccc search returns a path under the env-var-pinned root, not under cwd. Return a concise user-visible pass/fail verdict with the main reason.`
 - Expected execution process: identify the current project root with markers; cd into a subdirectory of the project (or any path containing `.git`); export `COCOINDEX_CODE_ROOT_PATH` pointing at the original project root; run `ccc status` and `ccc search` with `--limit 1`; verify the reported file count and result file paths trace back to the env-pinned root.
 - Expected signals: `ccc status` invoked from the subdirectory with the env var set reports the same file/chunk counts as `ccc status` invoked at the env-var-pinned root; a one-result `ccc search` returns a path under the env-var-pinned root, not under cwd.
 - Desired user-visible outcome: A short verdict naming the resolved root, the file count, and PASS confirming env-var precedence.
 - Pass/fail: PASS if env-var-pinned root wins (counts match the root, search results live under the env-var path); FAIL if cwd-derived root wins (counts match the subdirectory, search results live under cwd-derived discovery).
+
 
 ---
 
@@ -37,7 +38,7 @@ Operators run the exact prompt and command sequence for `CFG-004` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path, then invoke ccc status from a subdirectory containing project markers (.git, package.json, etc.) and confirm the reported root matches the env var, not the subdirectory. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, set COCOINDEX_CODE_ROOT_PATH to an explicit project root path and invoke ccc status from a subdirectory containing project markers against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify ccc status invoked from the subdirectory with the env var set reports the same file/chunk counts as ccc status invoked at the env-var-pinned root; a one-result ccc search returns a path under the env-var-pinned root, not under cwd. Return a concise user-visible pass/fail verdict with the main reason.`
 
 ### Commands
 

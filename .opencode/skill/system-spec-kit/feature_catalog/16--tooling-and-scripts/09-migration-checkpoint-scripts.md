@@ -35,7 +35,7 @@ Both scripts now expose testable helpers (`parseArgs`, `main`, `runCreateCheckpo
 | `mcp_server/scripts/migrations/restore-checkpoint.ts` | Script | Raw SQLite checkpoint restore with optional pre-restore backup |
 | `mcp_server/lib/config/capability-flags.ts` | Lib | Memory roadmap metadata attached to checkpoint sidecars |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,13 +44,11 @@ Both scripts now expose testable helpers (`parseArgs`, `main`, `runCreateCheckpo
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
-- Source feature title: Migration checkpoint scripts
-- Current reality source: FEATURE_CATALOG.md
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/09-migration-checkpoint-scripts.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 127

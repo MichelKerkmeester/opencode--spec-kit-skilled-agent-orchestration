@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that each dispatched iteration reads JSONL and strategy state before performing research actions.
 - Real user request: Make sure each deep-research iteration actually reads prior state before it starts searching again.
-- Prompt: `As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-research agent both require reading JSONL and strategy state before any research actions. Return a concise operator verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the read-state-first iteration contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the loop dispatch and the @deep-research agent both require reading JSONL and strategy state before any research actions. Return a concise operator verdict.`
 - Expected execution process: Inspect the workflow loop steps, then the quick reference iteration checklist, then the Codex runtime agent instructions for the single-iteration sequence.
-- Desired user-facing outcome: The user is told that each iteration starts by reading persisted state instead of relying on memory from prior runs.
+- Desired user-visible outcome: The user is told that each iteration starts by reading persisted state instead of relying on memory from prior runs.
 - Expected signals: Loop step order begins with state reads, the quick reference checklist says the same, and the agent definition starts with JSONL plus strategy reads.
 - Pass/fail posture: PASS if all sources agree that state is read before research actions; FAIL if any source allows research before rehydrating state.
 

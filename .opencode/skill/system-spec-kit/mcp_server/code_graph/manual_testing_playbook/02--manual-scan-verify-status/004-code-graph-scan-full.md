@@ -17,12 +17,13 @@ Confirm explicit full scan reparses post-exclude candidates and can persist edge
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Confirm explicit full scan reparses post-exclude candidates and can persist edge distribution baseline.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 004 (code_graph_scan full), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Confirm explicit full scan reparses post-exclude candidates and can persist edge distribution baseline.
+- Real user request: `Run a full code_graph_scan and confirm it reparses candidates, records graph counts, and persists the edge baseline when requested.`
+- RCAF Prompt: `As a code graph scan operator, execute a full scan against a disposable workspace with baseline persistence enabled. Verify full-scan mode, graph counts, readiness, and detector provenance are present. Return PASS/FAIL with the main payload evidence.`
+- Expected execution process: Call `code_graph_scan({"rootDir":"$WORK","incremental":false,"persistBaseline":true})` in a disposable copy and inspect the returned payload.
+- Expected signals: Payload shows `fullScanRequested:true`, `effectiveIncremental:false`, nonzero graph counts, readiness with `inlineIndexPerformed:true`, and detector provenance summary.
+- Desired user-visible outcome: A concise verdict explaining whether explicit full scan and baseline persistence behaved as documented.
+- Pass/fail: PASS if all full-scan and baseline evidence appears; FAIL if the scan runs incrementally, returns empty graph counts, omits readiness, or lacks detector provenance.
 
 ---
 
@@ -60,4 +61,3 @@ Add an excludeGlobs override and verify excluded paths disappear after the full 
 - Group: Code Graph Runtime
 - Playbook ID: 004
 - Canonical root source: `manual_testing_playbook.md`
-

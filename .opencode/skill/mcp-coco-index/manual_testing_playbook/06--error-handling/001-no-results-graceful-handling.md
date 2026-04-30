@@ -17,8 +17,11 @@ This scenario validates No results graceful handling for `ERR-001`. It focuses o
 Operators run the exact prompt and command sequence for `ERR-001` and confirm the expected signals without contradictory evidence.
 
 - Objective: Verify search returns empty results gracefully for a nonsense query (no crash, no error)
-- Prompt: `As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-facing pass/fail verdict with the main reason.`
+- Real user request: `Please verify search returns empty results gracefully for a nonsense query (no crash, no error).`
+- RCAF Prompt: `As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-visible pass/fail verdict with the main reason.`
+- Expected execution process: Run the TEST EXECUTION command sequence for `ERR-001`, capture the listed evidence, compare observed output with the expected signals, and return the verdict to the user.
 - Expected signals: Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace
+- Desired user-visible outcome: A concise user-visible PASS/FAIL verdict naming whether the scenario satisfied the objective and the main reason.
 - Pass/fail: PASS if empty results returned with no error; FAIL if tool throws an exception, crashes, or returns an error message
 
 
@@ -28,12 +31,12 @@ Operators run the exact prompt and command sequence for `ERR-001` and confirm th
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| ERR-001 | No results graceful handling | Verify search returns empty results gracefully for a nonsense query (no crash, no error) | `As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-facing pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "xyzzy_nonexistent_symbol_99999" })` -> 2. Verify response is a valid empty result (empty array or "no results" message, NOT an error or crash) | Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace | MCP tool output showing empty/zero results | PASS if empty results returned with no error; FAIL if tool throws an exception, crashes, or returns an error message | Check daemon logs for unhandled exceptions; verify index exists; test with `ccc search "xyzzy_nonexistent_symbol_99999" --limit 1` via CLI for comparison |
+| ERR-001 | No results graceful handling | Verify search returns empty results gracefully for a nonsense query (no crash, no error) | `As a manual-testing orchestrator, search for a completely nonsensical term that has no matches against the current CocoIndex CLI, daemon, and MCP surfaces in this repository. Verify Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace. Return a concise user-visible pass/fail verdict with the main reason.` | 1. `mcp__cocoindex_code__search({ "query": "xyzzy_nonexistent_symbol_99999" })` -> 2. Verify response is a valid empty result (empty array or "no results" message, NOT an error or crash) | Response is valid (not an exception or error); result array is empty or contains zero entries; no stack trace | MCP tool output showing empty/zero results | PASS if empty results returned with no error; FAIL if tool throws an exception, crashes, or returns an error message | Check daemon logs for unhandled exceptions; verify index exists; test with `ccc search "xyzzy_nonexistent_symbol_99999" --limit 1` via CLI for comparison |
 
 
 ---
 
-## 4. REFERENCES
+## 4. SOURCE FILES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 

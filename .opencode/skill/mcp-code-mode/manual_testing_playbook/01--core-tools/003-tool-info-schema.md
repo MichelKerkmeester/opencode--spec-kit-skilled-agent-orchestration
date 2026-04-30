@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-003` and confirm the
 
 - Objective: Verify `tool_info({tool_name: "clickup.clickup_create_task"})` returns parameter schema, description, and required-field flags.
 - Real user request: `"What parameters does the ClickUp create-task tool need?"`
-- Prompt: `As a manual-testing orchestrator, fetch the parameter schema for clickup.clickup_create_task through Code Mode against the live ClickUp MCP server. Verify the response includes parameter names, types, and required-field flags. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, fetch the parameter schema for clickup.clickup_create_task through Code Mode against the live ClickUp MCP server. Verify the response includes parameter names, types, and required-field flags. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: call `tool_info` natively; do not delegate.
 - Expected signals: response is a non-empty object; contains a parameter or schema field; lists at least one required field (e.g., `list_id`, `name`).
 - Desired user-visible outcome: A short report enumerating the parameter names + required flags and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-003` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, fetch the parameter schema for clickup.clickup_create_task through Code Mode against the live ClickUp MCP server. Verify the response includes parameter names, types, and required-field flags. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, fetch the parameter schema for clickup.clickup_create_task through Code Mode against the live ClickUp MCP server. Verify the response includes parameter names, types, and required-field flags. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

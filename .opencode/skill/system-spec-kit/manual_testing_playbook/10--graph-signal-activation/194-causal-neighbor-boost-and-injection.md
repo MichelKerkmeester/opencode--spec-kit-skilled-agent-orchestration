@@ -14,11 +14,13 @@ This scenario validates Causal neighbor boost and injection for `194`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `194` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm 2-hop causal amplification with shared ceiling enforcement
-- Prompt: `As a graph-signal validation operator, validate Causal neighbor boost and injection against SPECKIT_CAUSAL_BOOST. Verify 2-hop causal amplification with shared ceiling enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm 2-hop causal amplification with shared ceiling enforcement.
+- Real user request: `Please validate Causal neighbor boost and injection against SPECKIT_CAUSAL_BOOST and tell me whether the expected signals are present: Stage 2 fusion seeds causal traversal from top-ranked results; traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior; combined causal plus session boost stays within the 0.20 ceiling; disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Causal neighbor boost and injection against SPECKIT_CAUSAL_BOOST. Verify 2-hop causal amplification with shared ceiling enforcement. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Stage 2 fusion seeds causal traversal from top-ranked results; traversal reaches up to 2 hops with relation-type weighting and per-hop cap behavior; combined causal plus session boost stays within the 0.20 ceiling; disabling SPECKIT_CAUSAL_BOOST removes graph-based score adjustment
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if top seeds inject causal neighbors with weighted amplification, traversal stops within 2 hops, combined causal plus session boost never exceeds 0.20, and flag-off mode bypasses adjustment. FAIL if boosts ignore relation types, exceed ceilings, or remain active when the flag is disabled.
 
 ---
@@ -55,8 +57,7 @@ Ranked results before/after boost + hop-depth trace + relation-type weighting ev
 
 Verify seed selection cap and top-result sampling → Inspect relation-type multipliers and edge-strength usage → Check shared causal/session ceiling enforcement → Confirm flag gating in Stage 2 invocation
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md](../../feature_catalog/10--graph-signal-activation/10-causal-neighbor-boost-and-injection.md)
 

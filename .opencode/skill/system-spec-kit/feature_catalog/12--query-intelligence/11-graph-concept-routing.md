@@ -1,7 +1,6 @@
 ---
 title: "Graph concept routing"
 description: "Graph concept routing extracts noun phrases from a query and matches them against a concept alias table, recording matched concepts as Stage 1 trace metadata when SPECKIT_GRAPH_CONCEPT_ROUTING is enabled."
-audited_post_018: true
 ---
 
 # Graph concept routing
@@ -32,7 +31,7 @@ The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the fl
 | `mcp_server/lib/search/pipeline/stage1-candidate-gen.ts` | Lib | Stage-1 orchestration, records concept-routing results into retrieval trace metadata |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isGraphConceptRoutingEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ The `isGraphConceptRoutingEnabled()` function in `search-flags.ts` checks the fl
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Query intelligence
-- Source feature title: Graph concept routing
-- Current reality source: mcp_server/lib/search/entity-linker.ts and mcp_server/lib/search/pipeline/stage1-candidate-gen.ts concept-routing trace branch
+- Group: Query Intelligence
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `12--query-intelligence/11-graph-concept-routing.md`

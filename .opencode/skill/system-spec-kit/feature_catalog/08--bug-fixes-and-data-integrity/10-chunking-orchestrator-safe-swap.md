@@ -1,7 +1,6 @@
 ---
 title: "Chunking Orchestrator Safe Swap"
 description: "Tracks the staged swap pattern that prevents data loss during re-chunking by indexing new chunks before deleting old ones."
-audited_post_018: true
 ---
 
 # Chunking Orchestrator Safe Swap
@@ -29,7 +28,7 @@ During re-chunking of parent memories, the orchestrator previously deleted exist
 | `mcp_server/handlers/chunking-orchestrator.ts` | Handler | Re-chunk swap logic with staged indexing |
 | `mcp_server/handlers/memory-save.ts` | Handler | Chunked-save finalize path that records PE supersede state after chunked indexing succeeds |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -39,7 +38,6 @@ During re-chunking of parent memories, the orchestrator previously deleted exist
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug Fixes and Data Integrity
-- Source feature title: Chunking Orchestrator Safe Swap
-- Current reality source: P0 code review finding (2026-03-08)
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md`

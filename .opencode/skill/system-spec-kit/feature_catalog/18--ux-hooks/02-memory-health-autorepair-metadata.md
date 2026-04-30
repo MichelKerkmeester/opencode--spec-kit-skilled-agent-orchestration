@@ -38,7 +38,7 @@ Repair metadata semantics for mixed outcomes:
 | `mcp_server/lib/storage/causal-edges.ts` | Lib | Causal edge storage for orphan-edge cleanup actions |
 | `mcp_server/lib/search/vector-index.ts` | Lib | Vector index facade for orphan-vector cleanup actions |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,8 +48,6 @@ Repair metadata semantics for mixed outcomes:
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Memory health autoRepair metadata
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/02-memory-health-autorepair-metadata.md`

@@ -1,7 +1,6 @@
 ---
 title: "Provenance-rich response envelopes"
 description: "Provenance-rich response envelopes expose internal pipeline scoring and retrieval trace data in search results when `includeTrace` is enabled."
-audited_post_018: true
 ---
 
 # Provenance-rich response envelopes
@@ -33,7 +32,7 @@ When you search for something, the system normally just gives you the answer. Wi
 | `mcp_server/schemas/tool-input-schemas.ts` | Schema | Admits `includeTrace` for `memory_search` and `memory_context` input validation. |
 | `mcp_server/tool-schemas.ts` | Schema | Documents `includeTrace` in published tool JSON schemas. |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ When you search for something, the system normally just gives you the answer. Wi
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Extra features (Sprint 019)
-- Source feature title: Provenance-rich response envelopes
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/08-provenance-rich-response-envelopes.md`

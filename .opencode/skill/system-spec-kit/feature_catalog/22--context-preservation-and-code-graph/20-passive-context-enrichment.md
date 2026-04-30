@@ -1,7 +1,6 @@
 ---
 title: "Passive context enrichment"
 description: "Server-side auto-enrichment pipeline that injects constitutional memories, triggered memories, and code graph status into every MCP response without explicit user action."
-audited_post_018: true
 ---
 
 # Passive context enrichment
@@ -33,7 +32,6 @@ mcp_server/hooks/memory-surface.ts, mcp_server/hooks/response-hints.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Passive context enrichment
-- Current reality source: spec 024-compact-code-graph phase 020
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/20-passive-context-enrichment.md`

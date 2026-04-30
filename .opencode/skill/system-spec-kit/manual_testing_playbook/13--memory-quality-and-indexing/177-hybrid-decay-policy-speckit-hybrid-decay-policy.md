@@ -15,11 +15,13 @@ This scenario validates hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) for `1
 
 ## 2. SCENARIO CONTRACT
 
-Operators confirm the hybrid-decay symbols are present in the implementing code, then rerun the targeted Vitest files that cover flag gating, no-decay classification, Infinity stability, and separation from TM-03.
 
-- Objective: Verify type-aware no-decay FSRS policy for decision/constitutional/critical types
-- Prompt: `As a spec-doc record-quality validation operator, validate Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) against the documented validation surface. Verify type-aware no-decay FSRS policy for decision/constitutional/critical types. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: `rg` finds `SPECKIT_HYBRID_DECAY_POLICY`, `HYBRID_NO_DECAY_CONTEXT_TYPES`, `classifyHybridDecay`, `getHybridDecayMultiplier`, `applyHybridDecayPolicy`, `calculateRetrievability`, and the central `isHybridDecayPolicyEnabled()` accessor; the Vitest run exits 0; the current baseline summary is `Test Files 2 passed (2)` and `Tests 30 passed (30)`.
+- Objective: Verify type-aware no-decay FSRS policy for decision/constitutional/critical types.
+- Real user request: `` Please validate Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) against the documented validation surface and tell me whether the expected signals are present: `rg` finds `SPECKIT_HYBRID_DECAY_POLICY`, `HYBRID_NO_DECAY_CONTEXT_TYPES`, `classifyHybridDecay`, `getHybridDecayMultiplier`, `applyHybridDecayPolicy`, `calculateRetrievability`, and the central `isHybridDecayPolicyEnabled()` accessor; the Vitest run exits 0; the current baseline summary is `Test Files 2 passed (2)` and `Tests 30 passed (30)`. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Hybrid decay policy (SPECKIT_HYBRID_DECAY_POLICY) against the documented validation surface. Verify type-aware no-decay FSRS policy for decision/constitutional/critical types. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `rg` finds `SPECKIT_HYBRID_DECAY_POLICY`, `HYBRID_NO_DECAY_CONTEXT_TYPES`, `classifyHybridDecay`, `getHybridDecayMultiplier`, `applyHybridDecayPolicy`, `calculateRetrievability`, and the central `isHybridDecayPolicyEnabled()` accessor; the Vitest run exits 0; the current baseline summary is `Test Files 2 passed (2)` and `Tests 30 passed (30)`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the expected symbols are present and the targeted Vitest run exits 0 with no failed tests. FAIL if any symbol is missing, protected types do not map to Infinity/no-decay, or the test run fails.
 
 ---
@@ -54,8 +56,7 @@ Saved `rg` output plus the final Vitest summary showing both files passed
 
 If the source grep misses a symbol, inspect `mcp_server/lib/cognitive/fsrs-scheduler.ts` or `mcp_server/lib/search/search-flags.ts`. If Vitest fails, use `hybrid-decay-policy.vitest.ts` for default-on flag behavior, type classification, Infinity stability, and TM-03 separation, and `fsrs-hybrid-decay.vitest.ts` for the lower-level no-decay multiplier and routing checks.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/23-hybrid-decay-policy.md](../../feature_catalog/13--memory-quality-and-indexing/23-hybrid-decay-policy.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

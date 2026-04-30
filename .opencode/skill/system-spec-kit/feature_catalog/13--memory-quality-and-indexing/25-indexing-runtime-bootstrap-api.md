@@ -1,7 +1,6 @@
 ---
 title: "Indexing runtime bootstrap API"
 description: "Covers the public bootstrap surface that initializes indexing dependencies, warms embeddings, runs index scans, and closes the shared runtime."
-audited_post_018: true
 ---
 # Indexing runtime bootstrap API
 ## TABLE OF CONTENTS
@@ -39,6 +38,6 @@ The public type surface is one interface plus four functions. `MemoryIndexScanAr
 | `mcp_server/handlers/memory-index.ts` | Handler | Actual memory index scan implementation delegated to by the API |
 ---
 ## 4. SOURCE METADATA
-- Group: Memory Quality and Indexing
-- Source feature title: Indexing runtime bootstrap API
-- Source spec: Deep research remediation 2026-03-26
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/25-indexing-runtime-bootstrap-api.md`

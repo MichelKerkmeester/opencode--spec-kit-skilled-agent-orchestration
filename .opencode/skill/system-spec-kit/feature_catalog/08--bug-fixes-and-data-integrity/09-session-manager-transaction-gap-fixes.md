@@ -1,7 +1,6 @@
 ---
 title: "Session-manager transaction gap fixes"
 description: "Tracks the fix that moved `enforceEntryLimit()` calls inside database transactions to prevent concurrent limit violations."
-audited_post_018: true
 ---
 
 # Session-manager transaction gap fixes
@@ -29,7 +28,7 @@ Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside
 | `mcp_server/lib/session/session-manager.ts` | Session lifecycle management: 3 `enforceEntryLimit()` call sites wrapped in transactions |
 | `mcp_server/lib/storage/transaction-manager.ts` | Transaction management utilities |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ Three call sites of `enforceEntryLimit()` in `session-manager.ts` now run inside
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Multi-agent deep review remediation (Phase 018)
-- Source feature title: Session-manager transaction gap fixes
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/09-session-manager-transaction-gap-fixes.md`

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-010` and confirm the
 
 - Objective: Verify `python3 .opencode/skill/mcp-code-mode/scripts/validate_config.py .utcp_config.json --check-env .env` reports missing required env vars and exits non-zero.
 - Real user request: `"Run a preflight to confirm my Code Mode setup is correct."`
-- Prompt: `As a manual-testing orchestrator, run the validation script with a .env missing one required prefixed key against the current .utcp_config.json. Verify the script exits non-zero and names the missing key. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run the validation script with a .env missing one required prefixed key against the current .utcp_config.json. Verify the script exits non-zero and names the missing key. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: temporarily remove a required env var line from `.env`; run validator; observe exit code and output; restore.
 - Expected signals: script exits non-zero when key missing; stderr/stdout names the missing key by its prefixed name; restore + re-run gives exit 0.
 - Desired user-visible outcome: A short report quoting the script's missing-key message and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-010` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run the validation script with a .env missing one required prefixed key against the current .utcp_config.json. Verify the script exits non-zero and names the missing key. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run the validation script with a .env missing one required prefixed key against the current .utcp_config.json. Verify the script exits non-zero and names the missing key. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

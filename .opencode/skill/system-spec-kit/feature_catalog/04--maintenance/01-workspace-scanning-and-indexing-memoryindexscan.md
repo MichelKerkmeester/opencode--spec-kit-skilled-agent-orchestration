@@ -58,7 +58,7 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 | `mcp_server/tools/lifecycle-tools.ts` | Lifecycle tool dispatcher for `memory_index_scan` |
 | `mcp_server/lib/response/envelope.ts` | MCP success/error envelope helpers including E429 rate-limit responses |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -74,9 +74,6 @@ The result breakdown is detailed: indexed count, updated count, unchanged count,
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Maintenance
-- Source feature title: Workspace scanning and indexing (memory_index_scan)
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
-- phase_018_change: post-018 audit verified against `mcp_server/handlers/memory-index.ts`, `mcp_server/handlers/memory-index-discovery.ts`, and `mcp_server/tests/handler-memory-index-cooldown.vitest.ts`
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `04--maintenance/01-workspace-scanning-and-indexing-memoryindexscan.md`

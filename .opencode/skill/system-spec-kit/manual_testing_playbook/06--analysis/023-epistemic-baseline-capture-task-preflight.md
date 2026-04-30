@@ -14,11 +14,13 @@ This scenario validates Epistemic baseline capture (task_preflight) for `EX-023`
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-023` and confirm the expected signals without contradicting evidence.
 
-- Objective: Pre-task baseline logging
-- Prompt: `As an analysis validation operator, validate Epistemic baseline capture (task_preflight) against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Pre-task baseline logging.
+- Real user request: `Please validate Epistemic baseline capture (task_preflight) against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore) and tell me whether the expected signals are present: Baseline record created.`
+- RCAF Prompt: `As an analysis validation operator, validate Epistemic baseline capture (task_preflight) against task_preflight(specFolder,taskId,knowledgeScore,uncertaintyScore,contextScore). Verify baseline record created. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Baseline record created
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if baseline persisted
 
 ---
@@ -52,8 +54,7 @@ Preflight output
 
 Retry with complete fields
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/05-epistemic-baseline-capture-taskpreflight.md](../../feature_catalog/06--analysis/05-epistemic-baseline-capture-taskpreflight.md)
 

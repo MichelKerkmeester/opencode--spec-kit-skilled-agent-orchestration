@@ -14,11 +14,13 @@ This scenario validates MPAB chunk-to-memory aggregation (R1) for `050`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `050` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm MPAB formula
-- Prompt: `As a pipeline validation operator, validate MPAB chunk-to-memory aggregation (R1) against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm MPAB formula.
+- Real user request: `Please validate MPAB chunk-to-memory aggregation (R1) against the documented validation surface and tell me whether the expected signals are present: MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value.`
+- RCAF Prompt: `As a pipeline validation operator, validate MPAB chunk-to-memory aggregation (R1) against the documented validation surface. Verify mPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: MPAB aggregation formula produces correct parent score from child chunks; manual formula matches computed value
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Computed MPAB score matches manual calculation within 0.001 tolerance; FAIL: Score deviation >0.001 or missing chunk contributions
 
 ---
@@ -54,8 +56,7 @@ Stage-3 aggregation output + manual MPAB formula calculation + comparison
 
 Verify MPAB formula implementation → Check child chunk linkage → Inspect aggregation stage-3 entry point
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md](../../feature_catalog/14--pipeline-architecture/02-mpab-chunk-to-memory-aggregation.md)
 

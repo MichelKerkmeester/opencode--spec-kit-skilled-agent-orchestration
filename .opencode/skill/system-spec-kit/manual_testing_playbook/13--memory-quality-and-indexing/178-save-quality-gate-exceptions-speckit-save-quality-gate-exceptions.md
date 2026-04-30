@@ -15,11 +15,13 @@ This scenario validates save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `178` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify short-critical quality gate exception for decision documents with structural signals
-- Prompt: `As a spec-doc record-quality validation operator, validate Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) against SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS. Verify short-critical quality gate exception for decision documents with structural signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify short-critical quality gate exception for decision documents with structural signals.
+- Real user request: `Please validate Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) against SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS and tell me whether the expected signals are present: context_type=decision required; SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 threshold; structural signals: title quality, trigger quality, anchor quality, metadata quality; bypasses MIN_CONTENT_LENGTH=50 in Layer 1; warn-only (not silent); non-decision types still rejected.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Save quality gate exceptions (SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS) against SPECKIT_SAVE_QUALITY_GATE_EXCEPTIONS. Verify short-critical quality gate exception for decision documents with structural signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: context_type=decision required; SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 threshold; structural signals: title quality, trigger quality, anchor quality, metadata quality; bypasses MIN_CONTENT_LENGTH=50 in Layer 1; warn-only (not silent); non-decision types still rejected
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if short decision documents with >= 2 structural signals bypass length check; FAIL if decision documents rejected despite signals, non-decision types bypass check, or fewer than 2 signals allow bypass
 
 ---
@@ -57,8 +59,7 @@ Save result (pass/warn/reject) + structural signal count + quality gate layer ou
 
 Verify isSaveQualityGateExceptionsEnabled() → Confirm flag is not forced off → Check SHORT_CRITICAL_MIN_STRUCTURAL_SIGNALS=2 → Inspect structural signal detection logic → Verify MIN_CONTENT_LENGTH=50 bypass path → Check Layer 1 exception routing
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md](../../feature_catalog/13--memory-quality-and-indexing/24-save-quality-gate-exceptions.md)
 - Feature flag reference: [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)

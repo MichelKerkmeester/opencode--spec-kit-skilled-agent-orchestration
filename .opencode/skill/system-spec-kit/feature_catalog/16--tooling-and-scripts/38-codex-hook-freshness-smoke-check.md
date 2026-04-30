@@ -55,8 +55,8 @@ If startup brief construction throws, the helper returns `fresh: false`, `lastUp
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/38-codex-hook-freshness-smoke-check.md`
+
 - Packet source: `021-half-auto-upgrades`

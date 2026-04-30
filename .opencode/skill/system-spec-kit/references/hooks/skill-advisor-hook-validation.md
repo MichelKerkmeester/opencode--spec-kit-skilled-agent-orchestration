@@ -1,11 +1,6 @@
 ---
 title: Skill Advisor Hook Validation Playbook
 description: Manual validation playbook for the shipped skill-advisor hook and MCP contract (Packet 014 surface).
-trigger_phrases:
-  - "skill advisor hook validation"
-  - "advisor hook release playbook"
-  - "advisor validate playbook"
-  - "advisor workspaceRoot validation"
 ---
 
 # Skill Advisor Hook Validation Playbook
@@ -14,8 +9,17 @@ Use this playbook after changing any runtime hook registration, any advisor MCP 
 
 ---
 
+<!-- ANCHOR:overview -->
+## 1. OVERVIEW
+
+Manual validation playbook for the shipped skill-advisor hook and MCP contract (Packet 014 surface).
+
+---
+
+<!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:preconditions -->
-## 1. PRECONDITIONS
+## 2. PRECONDITIONS
 
 Run from the repository root:
 
@@ -40,8 +44,9 @@ Required files:
 ---
 
 <!-- /ANCHOR:preconditions -->
-<!-- ANCHOR:steps -->
-## 2. VALIDATION STEPS
+
+<!-- ANCHOR:validation-steps -->
+## 3. VALIDATION STEPS
 
 ### Step 1: Public Advisor Contract — `advisor_recommend`
 
@@ -207,9 +212,10 @@ Pass condition: rollback and re-enable need no state cleanup.
 
 ---
 
-<!-- /ANCHOR:steps -->
-<!-- ANCHOR:troubleshooting -->
-## 3. TROUBLESHOOTING TABLE
+<!-- /ANCHOR:validation-steps -->
+
+<!-- ANCHOR:troubleshooting-table -->
+## 4. TROUBLESHOOTING TABLE
 
 | Symptom | Root Cause | Fix |
 |---------|------------|-----|
@@ -224,9 +230,10 @@ Pass condition: rollback and re-enable need no state cleanup.
 
 ---
 
-<!-- /ANCHOR:troubleshooting -->
+<!-- /ANCHOR:troubleshooting-table -->
+
 <!-- ANCHOR:evidence-log-template -->
-## 4. EVIDENCE LOG TEMPLATE
+## 5. EVIDENCE LOG TEMPLATE
 
 Copy this block into release notes or the parent implementation summary:
 
@@ -247,10 +254,8 @@ Advisor hook validation evidence (Packet 014 surface):
 
 <!-- /ANCHOR:evidence-log-template -->
 
----
-
 <!-- ANCHOR:multi-turn-regression-harness -->
-## 5. Multi-turn Regression Harness
+## 6. MULTI-TURN REGRESSION HARNESS
 
 Use this harness when validating hook behavior across several advisor prompts. It keeps the prompts in one Claude Code session so the run pays one cache-creation cost instead of one fresh cache-creation per prompt.
 
@@ -308,5 +313,7 @@ Remove temporary fixtures after recording evidence:
 ```bash
 rm -f /tmp/speckit-advisor-regression.jsonl /tmp/speckit-advisor-regression.out.jsonl
 ```
+
+---
 
 <!-- /ANCHOR:multi-turn-regression-harness -->

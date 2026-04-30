@@ -14,24 +14,14 @@ This scenario validates PreCompact hook context caching.
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the PreCompact hook reads the transcript tail, extracts file paths and topics, builds a compact context payload via the 3-source merge pipeline, truncates to the 4000-token budget, and caches the result in hook state at `${tmpdir}/speckit-claude-hooks/<project-hash>/<session-id>.json`. Stdout must NOT be written (caching only).
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - The MCP server `mcp_server/` directory exists with compiled dist
-- **Prompt**: `As a context-and-code-graph validation operator, validate PreCompact hook fires and caches context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-precompact.vitest.ts. Verify the PreCompact hook reads the transcript tail, extracts file paths and topics, builds a compact context payload via the 3-source merge pipeline, truncates to the 4000-token budget, and caches the result in hook state at ${tmpdir}/speckit-claude-hooks/<project-hash>/<session-id>.json. Stdout must NOT be written (caching only). Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - All vitest tests in `hook-precompact.vitest.ts` pass
-  - `tailFile()` extracts last 50 lines from transcript JSONL
-  - `extractFilePaths()` returns up to 20 unique file paths matching `/path/file.ext` pattern
-  - `extractTopics()` returns up to 10 spec folder and tool references
-  - `buildMergedContext()` produces sections (Active Files, Semantic Context, Session State)
-  - `truncateToTokenBudget()` enforces the 4000-token cap (16000 chars)
-  - `updateState()` stores `{ pendingCompactPrime: { payload, cachedAt } }` in session state JSON
-  - Process exits with code 0 even on errors (hooks must never block Claude)
-- **Pass/fail criteria**:
-  - PASS: All tests pass, cached payload is within budget, hook state file contains valid `pendingCompactPrime` object
-  - FAIL: Any test fails, payload exceeds 4000 tokens, or stdout is written during PreCompact
+
+- Objective: Verify that the PreCompact hook reads the transcript tail, extracts file paths and topics, builds a compact context payload via the 3-source merge pipeline, truncates to the 4000-token budget, and caches the result in hook state at `${tmpdir}/speckit-claude-hooks/<project-hash>/<session-id>.json`; Stdout must NOT be written (caching only).
+- Real user request: `` Please validate PreCompact hook fires and caches context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-precompact.vitest.ts and tell me whether the expected signals are present: All vitest tests in `hook-precompact.vitest.ts` pass; `tailFile()` extracts last 50 lines from transcript JSONL; `extractFilePaths()` returns up to 20 unique file paths matching `/path/file.ext` pattern; `extractTopics()` returns up to 10 spec folder and tool references; `buildMergedContext()` produces sections (Active Files, Semantic Context, Session State); `truncateToTokenBudget()` enforces the 4000-token cap (16000 chars); `updateState()` stores `{ pendingCompactPrime: { payload, cachedAt } }` in session state JSON; Process exits with code 0 even on errors (hooks must never block Claude). ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate PreCompact hook fires and caches context against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/hook-precompact.vitest.ts. Verify the PreCompact hook reads the transcript tail, extracts file paths and topics, builds a compact context payload via the 3-source merge pipeline, truncates to the 4000-token budget, and caches the result in hook state at ${tmpdir}/speckit-claude-hooks/<project-hash>/<session-id>.json. Stdout must NOT be written (caching only). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: All vitest tests in `hook-precompact.vitest.ts` pass; `tailFile()` extracts last 50 lines from transcript JSONL; `extractFilePaths()` returns up to 20 unique file paths matching `/path/file.ext` pattern; `extractTopics()` returns up to 10 spec folder and tool references; `buildMergedContext()` produces sections (Active Files, Semantic Context, Session State); `truncateToTokenBudget()` enforces the 4000-token cap (16000 chars); `updateState()` stores `{ pendingCompactPrime: { payload, cachedAt } }` in session state JSON; Process exits with code 0 even on errors (hooks must never block Claude)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: All tests pass, cached payload is within budget, hook state file contains valid `pendingCompactPrime` object; FAIL: Any test fails, payload exceeds 4000 tokens, or stdout is written during PreCompact
 
 ---
 
@@ -122,8 +112,7 @@ Test output confirming state write
 
 Check `hook-state.ts` for state directory path and atomic write logic
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/02-precompact-hook.md](../../feature_catalog/22--context-preservation-and-code-graph/02-precompact-hook.md)
 

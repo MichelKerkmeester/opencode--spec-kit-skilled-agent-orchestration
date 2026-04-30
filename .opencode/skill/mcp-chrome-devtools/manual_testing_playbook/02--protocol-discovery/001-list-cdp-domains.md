@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-005` and confirm th
 
 - Objective: Verify `bdg cdp --list` returns non-empty output containing `Page`, `Network`, and `Runtime` domain names.
 - Real user request: `"Show me which Chrome DevTools Protocol domains I can use."`
-- Prompt: `As a manual-testing orchestrator, enumerate available Chrome DevTools Protocol domains through the bdg CLI against the live CDP catalog. Verify output contains common domains like Page, Network, Runtime. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate available Chrome DevTools Protocol domains through the bdg CLI against the live CDP catalog. Verify output contains common domains like Page, Network, Runtime. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run a single CLI command and inspect output for core domain names.
 - Expected signals: `bdg cdp --list` exits 0 with non-empty output; output contains `Page`, `Network`, `Runtime`.
 - Desired user-visible outcome: A short report quoting the matched domain names with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-005` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, enumerate available Chrome DevTools Protocol domains through the bdg CLI against the live CDP catalog. Verify output contains common domains like Page, Network, Runtime. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, enumerate available Chrome DevTools Protocol domains through the bdg CLI against the live CDP catalog. Verify output contains common domains like Page, Network, Runtime. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

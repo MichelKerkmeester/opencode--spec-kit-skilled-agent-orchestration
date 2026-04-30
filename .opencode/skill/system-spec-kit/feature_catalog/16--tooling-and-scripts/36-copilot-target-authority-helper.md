@@ -46,7 +46,7 @@ The `_confirm.yaml` variants are out of scope here. Those paths require operator
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml` | Workflow | Deep-research auto-loop wires `if_cli_copilot.command` through `buildCopilotPromptArg` and writes `promptFileBody` to disk when set |
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Workflow | Deep-review auto-loop wires `if_cli_copilot.command` through `buildCopilotPromptArg`; unified onto Node-based dispatch matching deep-research |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -56,7 +56,6 @@ The `_confirm.yaml` variants are out of scope here. Those paths require operator
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Copilot target-authority helper
-- Current reality source: `026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md`
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/36-copilot-target-authority-helper.md`

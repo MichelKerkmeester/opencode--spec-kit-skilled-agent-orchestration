@@ -1,7 +1,6 @@
 ---
 title: "Token budget allocator"
 description: "Token budget allocator distributes 4000-token compaction budget across context sources using floor allocations plus overflow redistribution."
-audited_post_018: true
 ---
 
 # Token budget allocator
@@ -29,7 +28,7 @@ mcp_server/code_graph/lib/budget-allocator.ts
 | `Lib` | Floor + overflow allocation | _ |
 
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,7 +37,6 @@ mcp_server/code_graph/lib/budget-allocator.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Token budget allocator
-- Current reality source: spec 024-compact-code-graph 
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/10-budget-allocator.md`

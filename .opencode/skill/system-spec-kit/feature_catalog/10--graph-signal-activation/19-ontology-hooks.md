@@ -5,7 +5,6 @@ flag: SPECKIT_ONTOLOGY_HOOKS
 status: graduated
 default: 'true'
 category: 10--graph-signal-activation
-audited_post_018: true
 ---
 
 # Ontology-Guided Extraction Hooks
@@ -34,8 +33,7 @@ No source files are listed yet.
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
+- Group: Graph Signal Activation
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `10--graph-signal-activation/19-ontology-hooks.md`
 

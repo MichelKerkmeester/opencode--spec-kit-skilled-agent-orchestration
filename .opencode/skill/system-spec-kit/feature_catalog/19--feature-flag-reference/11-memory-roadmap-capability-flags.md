@@ -1,8 +1,6 @@
 ---
 title: "Memory roadmap capability flags (SPECKIT_MEMORY_*)"
 description: "Feature flag reference for the live memory roadmap capability resolvers."
-audited_post_018: true
-phase_018_change: added dedicated catalog companion for playbook 125
 ---
 
 # Memory roadmap capability flags (SPECKIT_MEMORY_*)
@@ -39,7 +37,6 @@ Source file references are included in the flag table above.
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Feature Flag Reference
-- Source feature title: Memory roadmap capability flags (SPECKIT_MEMORY_*)
-- Current reality source: `mcp_server/lib/config/capability-flags.ts`
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `19--feature-flag-reference/11-memory-roadmap-capability-flags.md`

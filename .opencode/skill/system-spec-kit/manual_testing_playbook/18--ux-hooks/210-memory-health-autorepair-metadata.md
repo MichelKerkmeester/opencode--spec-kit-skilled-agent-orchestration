@@ -13,11 +13,13 @@ This scenario validates Memory health autoRepair metadata for `210`. It focuses 
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `210` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm confirmation-only autoRepair behavior and structured repair metadata with partial-success reporting
-- Prompt: `As a runtime-hook validation operator, validate Memory health autoRepair metadata against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-memory-health-edge.vitest.ts tests/memory-crud-extended.vitest.ts. Verify confirmation-only autoRepair behavior and structured repair metadata with partial-success reporting. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm confirmation-only autoRepair behavior and structured repair metadata with partial-success reporting.
+- Real user request: `` Please validate Memory health autoRepair metadata against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-memory-health-edge.vitest.ts tests/memory-crud-extended.vitest.ts and tell me whether the expected signals are present: The health suites pass, unconfirmed `autoRepair:true` requests return confirmation-only guidance, confirmed repairs emit structured `repair.actions`, and mixed outcomes report `repair.repaired: false` with `repair.partialSuccess: true` when only part of the repair succeeds. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Memory health autoRepair metadata against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/handler-memory-health-edge.vitest.ts tests/memory-crud-extended.vitest.ts. Verify confirmation-only autoRepair behavior and structured repair metadata with partial-success reporting. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: The health suites pass, unconfirmed `autoRepair:true` requests return confirmation-only guidance, confirmed repairs emit structured `repair.actions`, and mixed outcomes report `repair.repaired: false` with `repair.partialSuccess: true` when only part of the repair succeeds
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the health suites pass and the assertions prove confirmation-only gating plus structured repair metadata and partial-success semantics
 
 ---
@@ -53,8 +55,7 @@ Test transcript + highlighted assertion names or output snippets for confirmatio
 
 Inspect `handlers/memory-crud-health.ts`, `handlers/memory-crud-types.ts`, and response-envelope shaping for `repair` payload regressions
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/02-memory-health-autorepair-metadata.md](../../feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md)
 

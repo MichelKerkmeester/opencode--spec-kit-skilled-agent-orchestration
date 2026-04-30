@@ -1,7 +1,6 @@
 ---
 title: "Access-driven popularity scoring"
 description: "Describes the batched access counting with soft-accumulator pattern that feeds popularity signals into composite scoring and drives archival dormancy detection."
-audited_post_018: true
 ---
 
 # Access-driven popularity scoring
@@ -31,7 +30,7 @@ The `access_count` feeds into composite scoring as a popularity signal, boosting
 | `mcp_server/lib/storage/access-tracker.ts` | Lib | Batched access tracking with accumulator |
 | `mcp_server/lib/scoring/composite-scoring.ts` | Lib | Composite scoring incorporating access counts |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ The `access_count` feeds into composite scoring as a popularity signal, boosting
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: Access-driven popularity scoring
-- Current reality source: audit-D04 gap backfill
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/16-access-driven-popularity-scoring.md`

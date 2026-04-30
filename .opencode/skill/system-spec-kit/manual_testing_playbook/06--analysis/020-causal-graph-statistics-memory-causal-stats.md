@@ -14,11 +14,13 @@ This scenario validates Causal graph statistics (memory_causal_stats) for `EX-02
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-020` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify `deltaByRelation` per-relation deltas, `balanceStatus` enum (`balanced` | `skewed_inbound` | `skewed_outbound` | `capped`), and per-relation per-window cap surface
-- Prompt: `As an analysis validation operator, validate Causal graph statistics (memory_causal_stats) against memory_causal_stats(). Verify response carries (1) deltaByRelation map keyed by relation type, (2) balanceStatus from the documented enum, (3) windowCap field surfacing when a relation hit the per-relation per-window cap, plus baseline coverage and edge metrics. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify `deltaByRelation` per-relation deltas, `balanceStatus` enum (`balanced` | `skewed_inbound` | `skewed_outbound` | `capped`), and per-relation per-window cap surface.
+- Real user request: `` Please validate Causal graph statistics (memory_causal_stats) against memory_causal_stats() and tell me whether the expected signals are present: `deltaByRelation` keys cover all causal relation types in the test corpus; `balanceStatus` value matches corpus shape; `windowCap` surfaces when configured cap is exceeded; baseline coverage/edge metrics still present. ``
+- RCAF Prompt: `As an analysis validation operator, validate Causal graph statistics (memory_causal_stats) against memory_causal_stats(). Verify response carries (1) deltaByRelation map keyed by relation type, (2) balanceStatus from the documented enum, (3) windowCap field surfacing when a relation hit the per-relation per-window cap, plus baseline coverage and edge metrics. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: `deltaByRelation` keys cover all causal relation types in the test corpus; `balanceStatus` value matches corpus shape; `windowCap` surfaces when configured cap is exceeded; baseline coverage/edge metrics still present
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all three window-metric fields are present and align with the corpus shape across balanced, skewed, and cap-trigger scenarios
 
 ---
@@ -83,8 +85,7 @@ memory_causal_stats responses for all three corpora highlighting deltaByRelation
 
 Inspect `mcp_server/handlers/memory/causal-stats.ts` window-metrics computation; confirm packet 006 dist marker present
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [06--analysis/02-causal-graph-statistics-memorycausalstats.md](../../feature_catalog/06--analysis/02-causal-graph-statistics-memorycausalstats.md)
 

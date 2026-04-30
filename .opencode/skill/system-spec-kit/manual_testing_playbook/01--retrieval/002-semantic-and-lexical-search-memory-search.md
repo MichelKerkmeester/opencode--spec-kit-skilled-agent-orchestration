@@ -14,11 +14,13 @@ This scenario validates Semantic and lexical search (memory_search) for `EX-002`
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-002` and confirm the expected signals without contradicting evidence.
 
-- Objective: Hybrid precision check
-- Prompt: `As a retrieval validation operator, validate Semantic and lexical search (memory_search) against memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 }). Verify relevant ranked results with hybrid signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Hybrid precision check.
+- Real user request: `Please validate Semantic and lexical search (memory_search) against memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 }) and tell me whether the expected signals are present: Relevant ranked results with hybrid signals.`
+- RCAF Prompt: `As a retrieval validation operator, validate Semantic and lexical search (memory_search) against memory_search({ query:"checkpoint restore clearExisting transaction rollback", limit:20 }). Verify relevant ranked results with hybrid signals. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Relevant ranked results with hybrid signals
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if top results match query intent
 
 ---
@@ -84,8 +86,7 @@ memory_search responses for both queries showing the responsePolicy / citationPo
 
 Inspect `mcp_server/handlers/memory/search.ts` response-policy logic and confidence/recall thresholds; confirm packet 009 dist marker present
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/02-semantic-and-lexical-search-memorysearch.md](../../feature_catalog/01--retrieval/02-semantic-and-lexical-search-memorysearch.md)
 

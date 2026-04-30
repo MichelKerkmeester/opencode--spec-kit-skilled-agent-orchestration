@@ -1,7 +1,6 @@
 ---
 title: "Double intent weighting investigation"
 description: "Documents the pipeline trace confirming that dual intent weight systems (channel-level in adaptive fusion, attribute-level in intent classifier) are intentional and non-overlapping by design through the `isHybrid` gate."
-audited_post_018: true
 ---
 
 # Double intent weighting investigation
@@ -57,14 +56,9 @@ The no-double-weighting behavior is validated by `mcp_server/tests/intent-weight
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
+- Group: Scoring And Calibration
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `11--scoring-and-calibration/07-double-intent-weighting-investigation.md`
-
-- Group: Scoring and calibration
-- Source feature title: Double intent weighting investigation
-- Current reality source: FEATURE_CATALOG.md
 
 ### SOURCE FILES
 
@@ -74,7 +68,7 @@ The no-double-weighting behavior is validated by `mcp_server/tests/intent-weight
 |------|-------|------|
 | `mcp_server/lib/search/intent-classifier.ts` | Lib | Intent detection |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|

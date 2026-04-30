@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-007` and confirm th
 
 - Objective: Verify `bdg cdp --search screenshot` returns non-empty matches and that output mentions `captureScreenshot` (likely qualified as `Page.captureScreenshot`).
 - Real user request: `"Find a Chrome DevTools Protocol method for taking a screenshot."`
-- Prompt: `As a manual-testing orchestrator, search CDP methods for screenshot through the bdg CLI against the live CDP catalog. Verify output mentions Page.captureScreenshot. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search CDP methods for screenshot through the bdg CLI against the live CDP catalog. Verify output mentions Page.captureScreenshot. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: run a single CLI search and grep for the expected match.
 - Expected signals: `bdg cdp --search screenshot` exits 0 with non-empty output; output contains `captureScreenshot`.
 - Desired user-visible outcome: A short report quoting the matched method with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-007` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, search CDP methods for screenshot through the bdg CLI against the live CDP catalog. Verify output mentions Page.captureScreenshot. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search CDP methods for screenshot through the bdg CLI against the live CDP catalog. Verify output mentions Page.captureScreenshot. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

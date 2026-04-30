@@ -14,11 +14,13 @@ This scenario validates Chunking safe swap atomicity (P0-6) for `116`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `116` and confirm the expected signals without contradicting evidence.
 
-- Objective: Verify re-chunking stages new chunks before deleting old ones, finalization cleans staged replacements on failure, and parent BM25 changes only after a viable chunk set exists
-- Prompt: `As a data-integrity validation operator, validate Chunking safe swap atomicity (P0-6) against memory_save(). Verify re-chunking stages new chunks before deleting old ones, finalization cleans staged replacements on failure, and parent BM25 changes only after a viable chunk set exists. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify re-chunking stages new chunks before deleting old ones, finalization cleans staged replacements on failure, and parent BM25 changes only after a viable chunk set exists.
+- Real user request: `` Please validate Chunking safe swap atomicity (P0-6) against memory_save() and tell me whether the expected signals are present: New chunks indexed in staged state before old deletion; old children keep their original `parent_id` if finalize fails; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure. ``
+- RCAF Prompt: `As a data-integrity validation operator, validate Chunking safe swap atomicity (P0-6) against memory_save(). Verify re-chunking stages new chunks before deleting old ones, finalization cleans staged replacements on failure, and parent BM25 changes only after a viable chunk set exists. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: New chunks indexed in staged state before old deletion; old children keep their original `parent_id` if finalize fails; staged replacement chunks are cleaned on finalize failure; all-chunks-failed rollback preserves old parent BM25 state; handler returns error status on failure
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if staged replacements never replace old children until finalize commits, finalize failure removes staged chunks, and BM25 stays on the old parent state when no new chunk set succeeds
 
 ---
@@ -57,8 +59,7 @@ Re-chunk output + staged chunk evidence + old-child linkage snapshot + staged ch
 
 Inspect chunking orchestrator finalize transaction; verify `parent_id` unlink happens inside the transaction; check rollback/cleanup path for staged chunks; verify parent BM25 mutation happens after chunk success/finalize only
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md](../../feature_catalog/08--bug-fixes-and-data-integrity/10-chunking-orchestrator-safe-swap.md)
 

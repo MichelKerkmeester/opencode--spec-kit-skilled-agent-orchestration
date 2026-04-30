@@ -13,11 +13,13 @@ This scenario validates Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A)
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `010` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm corpus coverage and hard negatives
-- Prompt: `As an evaluation validation operator, validate Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) against the documented validation surface. Verify corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm corpus coverage and hard negatives.
+- Real user request: `Please validate Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) against the documented validation surface and tell me whether the expected signals are present: Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced.`
+- RCAF Prompt: `As an evaluation validation operator, validate Synthetic ground truth corpus (G-NEW-1, G-NEW-3 phase A) against the documented validation surface. Verify corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Corpus covers all intent categories; hard negatives present; non-trigger prompts included; tier distribution balanced
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: >=3 intent categories covered, >=5 hard negatives, >=3 non-trigger prompts; FAIL: Missing category or zero hard negatives
 
 ---
@@ -53,8 +55,7 @@ Corpus audit report with intent counts, hard negative count, and tier histogram
 
 Check corpus generation script → Verify intent taxonomy completeness → Inspect hard negative selection criteria
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md](../../feature_catalog/09--evaluation-and-measurement/06-synthetic-ground-truth-corpus.md)
 

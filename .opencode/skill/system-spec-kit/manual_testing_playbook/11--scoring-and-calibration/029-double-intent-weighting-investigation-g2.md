@@ -14,11 +14,13 @@ This scenario validates Double intent weighting investigation (G2) for `029`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `029` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm no hybrid double-weight
-- Prompt: `As a scoring validation operator, validate Double intent weighting investigation (G2) against the documented validation surface. Verify stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm no hybrid double-weight.
+- Real user request: `Please validate Double intent weighting investigation (G2) against the documented validation surface and tell me whether the expected signals are present: Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally.`
+- RCAF Prompt: `As a scoring validation operator, validate Double intent weighting investigation (G2) against the documented validation surface. Verify stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Stage-2 intent weighting skipped for hybrid queries; no double-weight detected in trace; non-hybrid queries apply intent normally
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Hybrid queries skip stage-2 intent weighting; non-hybrid queries apply it; no double-weight in any case; FAIL: Double intent weighting detected in hybrid path
 
 ---
@@ -54,8 +56,7 @@ Stage trace output for hybrid vs non-hybrid queries + intent weight comparison
 
 Check hybrid detection logic → Verify stage-2 guard condition → Inspect intent weight application point
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/07-double-intent-weighting-investigation.md](../../feature_catalog/11--scoring-and-calibration/07-double-intent-weighting-investigation.md)
 

@@ -14,11 +14,13 @@ This scenario validates Co-activation boost strength increase (A7) for `017`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `017` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm multiplier impact and batched lookup behavior
-- Prompt: `As a graph-signal validation operator, validate Co-activation boost strength increase (A7) against the documented validation surface. Verify increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched WHERE id IN (...) fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm multiplier impact and batched lookup behavior.
+- Real user request: `` Please validate Co-activation boost strength increase (A7) against the documented validation surface and tell me whether the expected signals are present: Increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched `WHERE id IN (...)` fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch. ``
+- RCAF Prompt: `As a graph-signal validation operator, validate Co-activation boost strength increase (A7) against the documented validation surface. Verify increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched WHERE id IN (...) fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Increased co-activation strength produces measurably higher contribution delta vs baseline; related-memory hydration uses one batched `WHERE id IN (...)` fetch; causal-neighbor lookup uses one CTE + join query; Stage 2 calls the neighbor-count precompute once per boosted batch
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Contribution delta >0 when strength increased and the batched lookup path eliminates per-row N+1 calls; FAIL: No measurable difference, inverse effect, or per-row lookup behavior persists
 
 ---
@@ -55,8 +57,7 @@ Baseline vs increased strength output comparison + contribution delta calculatio
 
 Verify strength parameter propagation → Check co-activation hydration query shapes → Inspect Stage 2 batching/precompute path
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/02-co-activation-boost-strength-increase.md](../../feature_catalog/10--graph-signal-activation/02-co-activation-boost-strength-increase.md)
 

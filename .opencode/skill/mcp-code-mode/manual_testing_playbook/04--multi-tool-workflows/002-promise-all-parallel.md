@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-012` and confirm the
 
 - Objective: Verify `Promise.all([clickup_get_teams(), clickup_get_workspace_views(), clickup_get_user()])` returns all three results and total wall time < sum of individual times.
 - Real user request: `"Get me my workspaces, views, and user info in one call."`
-- Prompt: `As a manual-testing orchestrator, run three independent read-only ClickUp calls (get_teams, get_workspace_views, get_user) via Promise.all in a single call_tool_chain execution against the live ClickUp API. Verify all three return successfully. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run three independent read-only ClickUp calls (get_teams, get_workspace_views, get_user) via Promise.all in a single call_tool_chain execution against the live ClickUp API. Verify all three return successfully. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation with `Promise.all` wrapping the three calls; capture wall time.
 - Expected signals: chain returns array of length 3; each entry is a non-error response; total wall time < sum of individual call times (parallel evidence).
 - Desired user-visible outcome: A short report quoting the three result types, the total wall time, and an estimated parallelism factor with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-012` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run three independent read-only ClickUp calls (get_teams, get_workspace_views, get_user) via Promise.all in a single call_tool_chain execution against the live ClickUp API. Verify all three return successfully. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run three independent read-only ClickUp calls (get_teams, get_workspace_views, get_user) via Promise.all in a single call_tool_chain execution against the live ClickUp API. Verify all three return successfully. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

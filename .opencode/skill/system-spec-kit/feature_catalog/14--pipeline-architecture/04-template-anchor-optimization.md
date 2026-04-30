@@ -1,7 +1,6 @@
 ---
 title: "Template anchor optimization"
 description: "Template anchor optimization parses anchor markers in memory files and attaches semantic type metadata to pipeline rows without modifying scores."
-audited_post_018: true
 ---
 
 # Template anchor optimization
@@ -32,7 +31,7 @@ This is a pure annotation step wired into Stage 2 as step 8. It never modifies a
 | `mcp_server/lib/search/pipeline/types.ts` | Lib | Type definitions |
 | `shared/contracts/retrieval-trace.ts` | Shared | Retrieval trace contract |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,8 +47,7 @@ This is a pure annotation step wired into Stage 2 as step 8. It never modifies a
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Pipeline architecture
-- Source feature title: Template anchor optimization
-- Current reality source: FEATURE_CATALOG.md
+- Group: Pipeline Architecture
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `14--pipeline-architecture/04-template-anchor-optimization.md`
 <!-- /ANCHOR:state -->

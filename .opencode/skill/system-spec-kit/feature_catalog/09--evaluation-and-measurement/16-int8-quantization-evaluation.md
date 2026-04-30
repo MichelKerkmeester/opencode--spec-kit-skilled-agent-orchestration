@@ -33,8 +33,6 @@ The estimated 7.1 MB storage savings (3.9% of 180 MB total DB) did not justify 5
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Evaluation and measurement
-- Source feature title: INT8 quantization evaluation
-- Current reality source: decision-record entry aligned to manual revalidation scenario `090-int8-quantization-evaluation-r5.md`
-- audited_post_018: true
+- Group: Evaluation And Measurement
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `09--evaluation-and-measurement/16-int8-quantization-evaluation.md`

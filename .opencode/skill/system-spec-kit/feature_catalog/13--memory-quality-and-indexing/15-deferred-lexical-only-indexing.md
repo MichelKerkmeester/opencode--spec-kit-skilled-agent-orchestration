@@ -1,7 +1,6 @@
 ---
 title: "Deferred lexical-only indexing"
 description: "Deferred lexical-only indexing stores memories with `embedding_status='pending'` when embedding generation fails, keeping them searchable via BM25/FTS5 until retry succeeds."
-audited_post_018: true
 ---
 
 # Deferred lexical-only indexing
@@ -30,7 +29,7 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 | `mcp_server/lib/search/vector-index-schema.ts` | Lib | Vector index schema including embedding_status |
 | `mcp_server/handlers/save/embedding-pipeline.ts` | Handler | Embedding generation pipeline with fallback |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,8 +40,7 @@ Async embedding fallback via `index_memory_deferred()`. When embedding generatio
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Undocumented feature gap scan
-- Source feature title: Deferred lexical-only indexing
-- Current reality source: 10-agent feature gap scan
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/15-deferred-lexical-only-indexing.md`
 - Playbook reference: 111

@@ -14,11 +14,13 @@ This scenario validates Validation signals as retrieval metadata (S3) for `053`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `053` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm bounded multiplier
-- Prompt: `As a pipeline validation operator, validate Validation signals as retrieval metadata (S3) against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm bounded multiplier.
+- Real user request: `Please validate Validation signals as retrieval metadata (S3) against the documented validation surface and tell me whether the expected signals are present: Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier.`
+- RCAF Prompt: `As a pipeline validation operator, validate Validation signals as retrieval metadata (S3) against the documented validation surface. Verify validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Validation signal multiplier bounded to [0.8, 1.2]; highly validated docs score higher; zero-validation docs use 1.0 multiplier
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: All multipliers in [0.8, 1.2]; positive validations increase multiplier; zero validations = 1.0; FAIL: Multiplier out of bounds or zero-validation not neutral
 
 ---
@@ -54,8 +56,7 @@ Stage-2 output with multiplier values + bounds verification + zero-validation be
 
 Verify multiplier formula → Check bounds clamping → Inspect validation count resolution
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md](../../feature_catalog/14--pipeline-architecture/05-validation-signals-as-retrieval-metadata.md)
 

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-020` and confirm the
 
 - Objective: Verify `notion.notion_search({query: ""})` returns object with `results` array; each result has `object` (page/database) and `id`.
 - Real user request: `"What pages and databases are in my Notion workspace?"`
-- Prompt: `As a manual-testing orchestrator, search the Notion workspace for any page through Code Mode against the configured Notion MCP server. Verify the response is a list of objects with object and id fields. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search the Notion workspace for any page through Code Mode against the configured Notion MCP server. Verify the response is a list of objects with object and id fields. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: single `call_tool_chain` invocation; assumes `notion_NOTION_TOKEN` env var per CM-008.
 - Expected signals: response has `results` array; each result has `object` (one of `page` / `database`) and `id`; array length >= 0 (empty is valid if no shared pages).
 - Desired user-visible outcome: A short report quoting count + sample object types and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-020` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, search the Notion workspace for any page through Code Mode against the configured Notion MCP server. Verify the response is a list of objects with object and id fields. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, search the Notion workspace for any page through Code Mode against the configured Notion MCP server. Verify the response is a list of objects with object and id fields. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

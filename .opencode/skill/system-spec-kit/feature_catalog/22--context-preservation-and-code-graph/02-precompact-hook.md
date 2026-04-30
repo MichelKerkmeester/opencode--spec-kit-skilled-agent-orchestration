@@ -1,7 +1,6 @@
 ---
 title: "PreCompact hook context caching"
 description: "PreCompact hook precomputes critical context before Claude Code compaction and caches to temp file for later injection."
-audited_post_018: true
 ---
 
 # PreCompact hook context caching
@@ -30,7 +29,7 @@ The PreCompact hook runs as an external Node.js process triggered by Claude Code
 | `mcp_server/hooks/claude/shared.ts` | Hook | Stdin parsing, output formatting, timeout, logging |
 | `mcp_server/hooks/claude/hook-state.ts` | Hook | Per-session state management |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +39,6 @@ The PreCompact hook runs as an external Node.js process triggered by Claude Code
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: PreCompact hook context caching
-- Current reality source: spec 024-compact-code-graph phase 001
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/02-precompact-hook.md`

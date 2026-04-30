@@ -1,8 +1,6 @@
 ---
 title: "Validation feedback (memory_validate)"
 description: "Covers the validation feedback tool that adjusts confidence scores, triggers auto-promotion and records learned feedback."
-audited_post_018: true
-phase_018_change: "Feedback loop remains live with post-018 audit coverage"
 ---
 
 # Validation feedback (memory_validate)
@@ -49,7 +47,7 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 | `mcp_server/lib/search/learned-feedback.ts` | Lib | Learned-trigger extraction, audit logging, and persistence |
 | `mcp_server/lib/eval/ground-truth-feedback.ts` | Lib | Query-selection logging into the eval corpus |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -62,7 +60,6 @@ The confidence read-compute-write segment (`recordValidation`) runs within a sin
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Mutation
-- Source feature title: Validation feedback (memory_validate)
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `02--mutation/05-validation-feedback-memoryvalidate.md`

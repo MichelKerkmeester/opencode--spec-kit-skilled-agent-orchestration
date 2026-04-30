@@ -1,7 +1,6 @@
 ---
 title: "Co-activation boost strength increase"
 description: "Describes the co-activation boost multiplier increase from 0.1x to 0.25x, making graph signal contribution visible in retrieval results at 15% or higher effective contribution."
-audited_post_018: true
 ---
 
 # Co-activation boost strength increase
@@ -33,7 +32,7 @@ The stronger multiplier now runs on a cheaper retrieval path. Similarity-neighbo
 | `mcp_server/lib/cognitive/co-activation.ts` | Lib | Co-activation spreading, batched related-memory hydration, and joined causal-neighbor lookup |
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Batch-level co-activation count precomputation before score boosting |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ The stronger multiplier now runs on a cheaper retrieval path. Similarity-neighbo
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Co-activation boost strength increase
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/02-co-activation-boost-strength-increase.md`

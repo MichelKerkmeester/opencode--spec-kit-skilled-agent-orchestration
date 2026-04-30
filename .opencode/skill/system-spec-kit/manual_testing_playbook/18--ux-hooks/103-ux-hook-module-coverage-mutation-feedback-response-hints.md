@@ -13,11 +13,13 @@ This scenario validates UX hook module coverage (`mutation-feedback`, `response-
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `103` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm new hook modules return the finalized metadata and hint shape
-- Prompt: `As a runtime-hook validation operator, validate UX hook module coverage (`mutation-feedback`, `response-hints`) against npx vitest run tests/hooks-ux-feedback.vitest.ts. Verify new hook modules return the finalized metadata and hint shape. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm new hook modules return the finalized metadata and hint shape.
+- Real user request: `` Please validate UX hook module coverage (`mutation-feedback`, `response-hints`) against npx vitest run tests/hooks-ux-feedback.vitest.ts and tell me whether the expected signals are present: Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions. ``
+- RCAF Prompt: `` As a runtime-hook validation operator, validate UX hook module coverage (`mutation-feedback`, `response-hints`) against npx vitest run tests/hooks-ux-feedback.vitest.ts. Verify new hook modules return the finalized metadata and hint shape. Return a concise pass/fail verdict with the main reason and cited evidence. ``
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Test output shows suite pass (6 tests), including latency/cache-clear booleans, `errors: string[]` field in mutation feedback data, error propagation hint verification, and finalized hint payload assertions
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if `tests/hooks-ux-feedback.vitest.ts` passes all 6 tests with no failing assertions
 
 ---
@@ -51,8 +53,7 @@ Test transcript + snippet for passing assertions
 
 Inspect hook exports and fixture payloads if assertion fails
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/05-dedicated-ux-hook-modules.md](../../feature_catalog/18--ux-hooks/05-dedicated-ux-hook-modules.md)
 

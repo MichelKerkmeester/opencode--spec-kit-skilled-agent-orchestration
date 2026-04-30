@@ -1,7 +1,6 @@
 ---
 title: "Graph and cognitive memory fixes"
 description: "Covers seven fixes (of 9 planned) for graph integrity and cognitive scoring, including self-loop prevention, community debounce, WM score clamping and double-decay removal."
-audited_post_018: true
 ---
 
 # Graph and cognitive memory fixes
@@ -58,7 +57,7 @@ Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive s
 | `mcp_server/lib/search/graph-search-fn.ts` | Lib | Graph-backed FTS5 search |
 | `mcp_server/lib/graph/community-detection.ts` | Lib | Community detection |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -98,7 +97,6 @@ Seven fixes (of 9 planned, 2 deferred) addressed graph integrity and cognitive s
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Opus review remediation (Phase 017)
-- Source feature title: Graph and cognitive memory fixes
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/08-graph-and-cognitive-memory-fixes.md`

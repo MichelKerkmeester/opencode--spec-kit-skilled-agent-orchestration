@@ -43,6 +43,13 @@ Full-scan states are refused by query/context when inline full scans are disable
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:329-375` | Library | debounces checks and blocks inline repair when callers disallow it |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:398-421` | Library | runs selective reindex for stale tracked files |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:272-287` | Library | stages persistence so failed writes leave files stale for retry |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/01--read-path-freshness/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

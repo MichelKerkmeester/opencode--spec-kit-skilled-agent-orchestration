@@ -27,7 +27,7 @@ Operators run the exact prompt and command sequence for `CM-021` and confirm the
 
 - Objective: Verify that corrupted `.utcp_config.json` causes Code Mode startup to fail with a JSON parse error naming the file; restoring fixes it.
 - Real user request: `"My Code Mode broke after I edited .utcp_config.json — what's wrong?"` (debugging session)
-- Prompt: `As a manual-testing orchestrator, back up .utcp_config.json, corrupt it (delete a closing brace), restart Code Mode, observe the error, then restore through Code Mode against the corrupted then-restored config. Verify the error names the config file and the JSON parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, back up .utcp_config.json, corrupt it (delete a closing brace), restart Code Mode, observe the error, then restore through Code Mode against the corrupted then-restored config. Verify the error names the config file and the JSON parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: backup → corrupt → restart Code Mode → observe failure → restore → restart → verify recovery.
 - Expected signals: corrupted-state restart fails with JSON parse error referencing `.utcp_config.json`; restored-state restart succeeds and `list_tools()` returns normally.
 - Desired user-visible outcome: A short report quoting the parse-error message and confirming recovery with a PASS verdict.
@@ -39,7 +39,7 @@ Operators run the exact prompt and command sequence for `CM-021` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, back up .utcp_config.json, corrupt it (delete a closing brace), restart Code Mode, observe the error, then restore through Code Mode against the corrupted then-restored config. Verify the error names the config file and the JSON parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, back up .utcp_config.json, corrupt it (delete a closing brace), restart Code Mode, observe the error, then restore through Code Mode against the corrupted then-restored config. Verify the error names the config file and the JSON parse failure. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

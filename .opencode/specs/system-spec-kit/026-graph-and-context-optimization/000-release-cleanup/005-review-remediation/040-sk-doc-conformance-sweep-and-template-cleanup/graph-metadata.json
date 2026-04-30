@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/040-sk-doc-conformance-sweep-and-template-cleanup",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/040-sk-doc-conformance-sweep-and-template-cleanup",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/037-feature-catalog-shape-realignment",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/039-stress-test-expansion-and-alignment"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "sk-doc",
+      "system-spec-kit",
+      "sk-code-review",
+      "sk-improve-prompt"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "040-sk-doc-conformance-sweep-and-template-cleanup",
+      "sk-doc conformance sweep",
+      "manual testing playbook conformance",
+      "feature catalog conformance",
+      "skill reference conformance",
+      "template cleanup",
+      "rcaf prompt conformance",
+      "level3plus-govern rename",
+      "stress-test stress_test rename"
+    ],
+    "importance_tier": "important",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "audit-findings.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md"
+    ],
+    "entities": [
+      "sk-doc",
+      "system-spec-kit",
+      "sk-code-review",
+      "manual_testing_playbook",
+      "feature_catalog",
+      "RCAF",
+      "templates/sharded",
+      "templates/stress-test",
+      "templates/changelog",
+      "level3plus-govern"
+    ]
+  }
+}

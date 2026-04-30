@@ -44,8 +44,6 @@ The shipped CLI contract is:
 | `.opencode/skill/system-spec-kit/mcp_server/api/index.ts` | Public API | Re-export boundary that supplies eval, search, embedding, and vector-index surfaces to the CLI |
 
 ## 4. SOURCE METADATA
-
-- Group: Tooling and Scripts
-- Source feature title: Eval Runner CLI
-- Source spec: Deep research remediation 2026-03-26
-- Current reality source: direct implementation audit
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/21-eval-runner-cli.md`

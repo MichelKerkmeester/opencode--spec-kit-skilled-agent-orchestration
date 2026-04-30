@@ -1,0 +1,30 @@
+{
+  "specFolder": "054-sk-code-merger",
+  "description": "Merge sk-code-web + sk-code-full-stack into a new umbrella skill `sk-code` with stack-detection-first smart routing. Web stack carried verbatim; non-web stacks (React, Node.js, Go, React Native, Swift) scaffolded as empty templated stubs pointing to sk-code-full-stack canonical. Both legacy skills preserved on disk untouched (additive frontmatter deprecation only); all 40 active cross-repo references retargeted; advisor protected from re-amplification via DEPRECATED_SKILLS exclusion list.",
+  "keywords": [
+    "sk-code",
+    "sk-code-web",
+    "sk-code-full-stack",
+    "skill",
+    "merger",
+    "smart-router",
+    "stack-detection",
+    "deprecation",
+    "advisor",
+    "skill-graph",
+    "placeholder",
+    "webflow",
+    "react",
+    "nodejs",
+    "go",
+    "swift",
+    "react-native",
+    "054"
+  ],
+  "lastUpdated": "2026-04-30T08:30:00Z",
+  "specId": "054",
+  "folderSlug": "sk-code-merger",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

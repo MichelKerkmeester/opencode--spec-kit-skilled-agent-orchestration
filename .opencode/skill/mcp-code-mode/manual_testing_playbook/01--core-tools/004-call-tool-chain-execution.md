@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-004` and confirm the
 
 - Objective: Verify `call_tool_chain({code: "..."})` executes a TypeScript snippet that calls `list_tools()` and returns the count of registered tools.
 - Real user request: `"How many MCP tools are registered right now?"`
-- Prompt: `As a manual-testing orchestrator, run a TypeScript snippet that calls list_tools() then returns the count of registered tools through Code Mode against the configured .utcp_config.json. Verify the snippet executes without compile errors and returns a numeric tool count. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a TypeScript snippet that calls list_tools() then returns the count of registered tools through Code Mode against the configured .utcp_config.json. Verify the snippet executes without compile errors and returns a numeric tool count. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: call `call_tool_chain` with a small TypeScript snippet; do not delegate.
 - Expected signals: chain returns a number; the number > 0; no compile or runtime error in the response.
 - Desired user-visible outcome: A short report stating the tool count and a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-004` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, run a TypeScript snippet that calls list_tools() then returns the count of registered tools through Code Mode against the configured .utcp_config.json. Verify the snippet executes without compile errors and returns a numeric tool count. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, run a TypeScript snippet that calls list_tools() then returns the count of registered tools through Code Mode against the configured .utcp_config.json. Verify the snippet executes without compile errors and returns a numeric tool count. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

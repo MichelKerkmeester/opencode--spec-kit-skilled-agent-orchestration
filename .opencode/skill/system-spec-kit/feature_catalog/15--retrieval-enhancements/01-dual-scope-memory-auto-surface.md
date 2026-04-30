@@ -1,7 +1,6 @@
 ---
 title: "Dual-scope memory auto-surface"
 description: "Dual-scope memory auto-surface fires at tool dispatch and session compaction to re-inject critical memories outside explicit search."
-audited_post_018: true
 ---
 
 # Dual-scope memory auto-surface
@@ -31,7 +30,7 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 | `mcp_server/context-server.ts` | Core | Pre-dispatch handling for memory-aware tools (`autoSurfaceMemories` / `autoSurfaceAtCompaction`) |
 | `mcp_server/hooks/memory-surface.ts` | Hook | Auto-surface UX hook |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +39,6 @@ Each hook point has a per-point token budget of 4,000 tokens maximum. The tool d
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Retrieval enhancements
-- Source feature title: Dual-scope memory auto-surface
-- Current reality source: FEATURE_CATALOG.md
+- Group: Retrieval Enhancements
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `15--retrieval-enhancements/01-dual-scope-memory-auto-surface.md`

@@ -33,7 +33,7 @@ Guard failures are visible packet events, not quiet side effects. The workflow e
 | `.opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml` | Workflow | Emits the same guard and blocked-stop events in confirm mode. |
 | `.opencode/skill/sk-deep-research/scripts/reduce-state.cjs` | Reducer | Surfaces blocked-stop history and recovery hints into strategy and dashboard outputs. |
 
-### Tests
+### Validation And Tests
 
 | File | Type | Role |
 |---|---|---|

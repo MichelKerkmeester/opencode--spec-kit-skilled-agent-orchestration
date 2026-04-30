@@ -39,7 +39,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 | `mcp_server/lib/storage/schema-downgrade.ts` | Lib | Schema downgrade logic |
 | `mcp_server/lib/storage/checkpoints.ts` | Lib | Checkpoint storage for pre-delete snapshots |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -53,8 +53,7 @@ Non-MCP `spec-kit-cli` entry point (`cli.ts`) for database maintenance. Four com
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Undocumented feature gap scan
-- Source feature title: Standalone admin CLI
-- Current reality source: 10-agent feature gap scan
+- Group: Tooling And Scripts
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `16--tooling-and-scripts/07-standalone-admin-cli.md`
 - Playbook reference: 113

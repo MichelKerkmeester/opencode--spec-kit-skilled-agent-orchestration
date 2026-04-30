@@ -13,11 +13,13 @@ This scenario validates Scoring observability (T010) for `013`. It focuses on Co
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `013` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm sample logging + fail-safe
-- Prompt: `As an evaluation validation operator, validate Scoring observability (T010) against the documented validation surface. Verify sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm sample logging + fail-safe.
+- Real user request: `Please validate Scoring observability (T010) against the documented validation surface and tell me whether the expected signals are present: Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected.`
+- RCAF Prompt: `As an evaluation validation operator, validate Scoring observability (T010) against the documented validation surface. Verify sampled scoring rows appear in observability log; write error does not crash search; sample rate respected. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Sampled scoring rows appear in observability log; write error does not crash search; sample rate respected
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Sampled rows logged at expected rate and write error produces graceful fallback; FAIL: No sampled rows or search crashes on write error
 
 ---
@@ -53,8 +55,7 @@ Observability log rows + forced error output + sample rate verification across N
 
 Check sample rate configuration → Verify write error try/catch → Inspect observability table schema
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [09--evaluation-and-measurement/09-scoring-observability.md](../../feature_catalog/09--evaluation-and-measurement/09-scoring-observability.md)
 

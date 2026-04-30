@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that a fresh session creates the canonical config, JSONL, and strategy files from the shipped assets.
 - Real user request: Before running research, show me exactly what a brand-new deep-research session creates in my spec folder.
-- Prompt: `As a manual-testing orchestrator, validate the fresh-initialization contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization creates deep-research-config.json, deep-research-state.jsonl, and deep-research-strategy.md from the live templates. Return a concise user-facing pass/fail verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the fresh-initialization contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify initialization creates deep-research-config.json, deep-research-state.jsonl, and deep-research-strategy.md from the live templates. Return a concise user-facing pass/fail verdict.`
 - Expected execution process: Inspect the initialization reference first, then the YAML init steps, then the asset templates that seed the files.
-- Desired user-facing outcome: The user can be told which scratch files appear immediately in a fresh session and why each exists.
+- Desired user-visible outcome: The user can be told which scratch files appear immediately in a fresh session and why each exists.
 - Expected signals: The scratch directory is created, config and strategy come from the shipped assets, and the JSONL begins with a config record.
 - Pass/fail posture: PASS if protocol, YAML, and asset templates agree on the initial scratch artifacts and their roles; FAIL if the artifact list or template sources drift.
 

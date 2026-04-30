@@ -1,7 +1,6 @@
 ---
 title: "RRF K-value sensitivity analysis"
 description: "Documents the grid search over K values [10, 20, 40, 60, 80, 100, 120] that empirically grounded the RRF K parameter choice using MRR@5 delta and Kendall tau correlation."
-audited_post_018: true
 ---
 
 # RRF K-value sensitivity analysis
@@ -31,7 +30,7 @@ A grid search over K values [10, 20, 40, 60, 80, 100, 120] measured MRR@5 delta 
 | `mcp_server/lib/eval/k-value-analysis.ts` | Lib | RRF k-value sensitivity analysis |
 | `shared/algorithms/rrf-fusion.ts` | Shared | RRF fusion algorithm |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ A grid search over K values [10, 20, 40, 60, 80, 100, 120] measured MRR@5 delta 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Scoring and calibration
-- Source feature title: RRF K-value sensitivity analysis
-- Current reality source: FEATURE_CATALOG.md
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/08-rrf-k-value-sensitivity-analysis.md`

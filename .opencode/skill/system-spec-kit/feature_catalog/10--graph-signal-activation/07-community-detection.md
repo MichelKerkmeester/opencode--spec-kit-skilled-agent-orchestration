@@ -1,7 +1,6 @@
 ---
 title: "Community detection"
 description: "Describes BFS connected components and Louvain modularity-based community detection that clusters related memories, enabling co-member injection at 0.3x source score during Stage 2."
-audited_post_018: true
 ---
 
 # Community detection
@@ -34,7 +33,7 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 |------|-------|------|
 | `mcp_server/lib/graph/community-detection.ts` | Lib | Community detection algorithm |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -43,7 +42,6 @@ The `applyCommunityBoost()` function in the pipeline injects up to 3 community c
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Community detection
-- Current reality source: FEATURE_CATALOG.md
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/07-community-detection.md`

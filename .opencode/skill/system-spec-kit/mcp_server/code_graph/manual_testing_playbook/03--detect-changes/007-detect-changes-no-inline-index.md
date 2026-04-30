@@ -17,12 +17,13 @@ Verify detect_changes is read-only and blocks stale readiness instead of perform
 
 ## 2. SCENARIO CONTRACT
 
-- **Goal**: Verify detect_changes is read-only and blocks stale readiness instead of performing inline indexing.
-- **Prerequisites**:
-  - Working directory is the repository root.
-  - MCP server build is available: `npm --prefix .opencode/skill/system-spec-kit/mcp_server run build`.
-  - Use a disposable workspace copy for scenarios that modify files or graph state.
-- **Prompt**: `As a code_graph validation operator, execute scenario 007 (detect_changes no inline index), capture commands, JSON excerpts, and return PASS/FAIL with the main evidence.`
+- Objective: Verify detect_changes is read-only and blocks stale readiness instead of performing inline indexing.
+- Real user request: `Validate that detect_changes refuses stale graph state and asks for code_graph_scan instead of repairing inline.`
+- RCAF Prompt: `As a detect_changes validation operator, execute stale-readiness checks against detect_changes in a disposable workspace. Verify stale graph state blocks with scan guidance instead of inline indexing. Return PASS/FAIL with diff, command, and JSON evidence.`
+- Expected execution process: Run a full scan, modify one tracked file, capture `git diff`, and call `detect_changes` with the diff and disposable root.
+- Expected signals: The stale call returns `status:"blocked"` and says to run `code_graph_scan`; it must not silently repair via inline indexing.
+- Desired user-visible outcome: A concise verdict explaining whether detect_changes preserved read-only behavior.
+- Pass/fail: PASS if stale readiness blocks with scan guidance and no inline indexing occurs; FAIL if detect_changes repairs inline, omits the required action, or fails to return a structured blocked payload.
 
 ---
 
@@ -63,4 +64,3 @@ After an explicit scan, rerun detect_changes and verify `affectedSymbols` or `af
 - Group: Code Graph Runtime
 - Playbook ID: 007
 - Canonical root source: `manual_testing_playbook.md`
-

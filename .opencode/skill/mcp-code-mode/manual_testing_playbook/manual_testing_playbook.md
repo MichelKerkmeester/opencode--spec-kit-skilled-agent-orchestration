@@ -39,7 +39,7 @@ Canonical package artifacts:
 - [12. THIRD-PARTY VIA CM](#12--third-party-via-cm)
 - [13. RECOVERY AND CONFIG](#13--recovery-and-config)
 - [14. AUTOMATED TEST CROSS-REFERENCE](#14--automated-test-cross-reference)
-- [15. FEATURE FILE INDEX](#15--feature-file-index)
+- [15. FEATURE CATALOG CROSS-REFERENCE INDEX](#15--feature-catalog-cross-reference-index)
 
 ---
 
@@ -502,7 +502,7 @@ Expected signals: Step 1: call returns error; Step 2: error message contains "ma
 
 ---
 
-## 15. FEATURE FILE INDEX
+## 15. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CORE TOOLS
 

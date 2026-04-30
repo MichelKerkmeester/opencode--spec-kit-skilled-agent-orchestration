@@ -1,7 +1,6 @@
 ---
 title: "Usage-weighted ranking signal"
 description: "Tracks access counts per memory and computes a log-scale ranking boost (0-0.10) that rewards frequently accessed memories without letting popularity dominate relevance, gated by the SPECKIT_USAGE_RANKING flag."
-audited_post_018: true
 ---
 
 # Usage-weighted ranking signal
@@ -29,7 +28,7 @@ The usage tracking module records access counts each time a spec-doc record is r
 | `mcp_server/lib/graph/usage-tracking.ts` | Lib | Access count recording and retrieval |
 | `mcp_server/lib/graph/usage-ranking-signal.ts` | Lib | Log-scale boost computation (0-0.10 range) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -38,8 +37,8 @@ The usage tracking module records access counts each time a spec-doc record is r
 ---
 
 ## 4. SOURCE METADATA
+- Group: Scoring And Calibration
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `11--scoring-and-calibration/23-usage-weighted-ranking.md`
 
-- Group: Scoring and calibration
-- Source feature title: Usage-weighted ranking signal
-- Graduated via: 009-graph-retrieval-improvements
 - Kill switch: SPECKIT_USAGE_RANKING=false

@@ -1,7 +1,6 @@
 ---
 title: "Anchor-aware chunk thinning"
 description: "Anchor-aware chunk thinning scores each chunk by anchor presence and content density, dropping low-value chunks from the index."
-audited_post_018: true
 ---
 
 # Anchor-aware chunk thinning
@@ -31,7 +30,7 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 | `mcp_server/lib/chunking/anchor-chunker.ts` | Lib | Anchor-aware chunking |
 | `mcp_server/lib/chunking/chunk-thinning.ts` | Lib | Chunk thinning |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -40,7 +39,6 @@ Chunks scoring below the 0.3 threshold are dropped from the index, reducing stor
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Anchor-aware chunk thinning
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/08-anchor-aware-chunk-thinning.md`

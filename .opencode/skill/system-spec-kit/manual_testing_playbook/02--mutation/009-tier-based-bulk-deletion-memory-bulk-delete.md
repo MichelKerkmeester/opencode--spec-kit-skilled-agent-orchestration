@@ -15,11 +15,13 @@ This scenario validates Tier-based bulk deletion (memory_bulk_delete) for `EX-00
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-009` and confirm the expected signals without contradicting evidence.
 
-- Objective: Tier cleanup with safety
-- Prompt: `As a mutation validation operator, validate Tier-based bulk deletion (memory_bulk_delete) against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Tier cleanup with safety.
+- Real user request: `Please validate Tier-based bulk deletion (memory_bulk_delete) against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>") and tell me whether the expected signals are present: Scoped deletion count + checkpoint created.`
+- RCAF Prompt: `As a mutation validation operator, validate Tier-based bulk deletion (memory_bulk_delete) against checkpoint_create(name:"pre-ex009-bulk-delete",specFolder:"<sandbox-spec>"). Verify scoped deletion count + checkpoint created. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Scoped deletion count + checkpoint created
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if scoped deletions in sandbox and checkpoint present
 
 ---
@@ -55,8 +57,7 @@ Bulk delete output + checkpoint listing
 
 Re-run with explicit scope; restore `pre-ex009-bulk-delete` if needed
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md](../../feature_catalog/02--mutation/04-tier-based-bulk-deletion-memorybulkdelete.md)
 

@@ -13,21 +13,14 @@ This scenario validates the `fallbackDecision` routing surface on `code_graph_qu
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify `code_graph_query` emits `fallbackDecision.nextTool` for every documented blocked-read state. Empty graph → `code_graph_scan` (`reason:"full_scan_required"`, `retryAfter:"scan_complete"`); broad-stale (>50 stale tracked files) → `code_graph_scan` (`reason:"full_scan_required"`); readiness exception → `rg` (`reason:"scan_failed"`); fresh state → no `fallbackDecision` key in payload.
-- **Prerequisites**:
-  - vitest harness with `SPEC_KIT_DB_DIR` isolation pattern (per packet 013)
-  - `mcp_server/dist/` rebuilt and runtime restarted so the post-005 routing is live (per packet 008 4-part protocol)
-  - `mcp_server/tests/code-graph-query-fallback-decision.vitest.ts` and `mcp_server/tests/code-graph-degraded-sweep.vitest.ts` available
-- **Prompt**: `As a context-and-code-graph validation operator, validate fallbackDecision routing on code_graph_query against the four documented states (empty, broad-stale, readiness exception, fresh). Verify each engineered state emits the documented nextTool/reason pair, the fresh state omits the field entirely, and the live code-graph.sqlite is byte-equal pre/post (per packet 013 isolation guarantee). Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - Empty graph → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`, `fallbackDecision.retryAfter === "scan_complete"`
-  - Broad-stale (>50 stale) → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`
-  - Readiness exception (spy on `getDb` to throw) → `fallbackDecision.nextTool === "rg"`, `fallbackDecision.reason === "scan_failed"`
-  - Fresh state → `fallbackDecision` field absent from payload (omitted, not null)
-  - Live `code-graph.sqlite` sha256 byte-equal before and after the sweep
-- **Pass/fail criteria**:
-  - PASS: all four buckets emit the documented routing or omission AND live DB byte-equal pre/post
-  - FAIL: any bucket emits a wrong `nextTool`/`reason`, fresh state still carries `fallbackDecision`, or live DB sha256 changes
+
+- Objective: Verify `code_graph_query` emits `fallbackDecision.nextTool` for every documented blocked-read state; Empty graph → `code_graph_scan` (`reason:"full_scan_required"`, `retryAfter:"scan_complete"`); broad-stale (>50 stale tracked files) → `code_graph_scan` (`reason:"full_scan_required"`); readiness exception → `rg` (`reason:"scan_failed"`); fresh state → no `fallbackDecision` key in payload.
+- Real user request: `` Please validate Code-graph fast-fail fallbackDecision routing against the four documented states (empty, broad-stale, readiness exception, fresh) and tell me whether the expected signals are present: Empty graph → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`, `fallbackDecision.retryAfter === "scan_complete"`; Broad-stale (>50 stale) → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`; Readiness exception (spy on `getDb` to throw) → `fallbackDecision.nextTool === "rg"`, `fallbackDecision.reason === "scan_failed"`; Fresh state → `fallbackDecision` field absent from payload (omitted, not null); Live `code-graph.sqlite` sha256 byte-equal before and after the sweep. ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate fallbackDecision routing on code_graph_query against the four documented states (empty, broad-stale, readiness exception, fresh). Verify each engineered state emits the documented nextTool/reason pair, the fresh state omits the field entirely, and the live code-graph.sqlite is byte-equal pre/post (per packet 013 isolation guarantee). Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: Empty graph → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`, `fallbackDecision.retryAfter === "scan_complete"`; Broad-stale (>50 stale) → `fallbackDecision.nextTool === "code_graph_scan"`, `fallbackDecision.reason === "full_scan_required"`; Readiness exception (spy on `getDb` to throw) → `fallbackDecision.nextTool === "rg"`, `fallbackDecision.reason === "scan_failed"`; Fresh state → `fallbackDecision` field absent from payload (omitted, not null); Live `code-graph.sqlite` sha256 byte-equal before and after the sweep
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: all four buckets emit the documented routing or omission AND live DB byte-equal pre/post; FAIL: any bucket emits a wrong `nextTool`/`reason`, fresh state still carries `fallbackDecision`, or live DB sha256 changes
 
 ---
 
@@ -62,8 +55,7 @@ Vitest output for both suites + sha256 hash pair (before/after) showing byte-equ
 
 Inspect `mcp_server/code_graph/handlers/query.ts` `buildGraphQueryPayload()` and the readiness-to-fallback mapping; confirm packet 005 dist marker via `grep -l "fallbackDecision" mcp_server/dist/code_graph/handlers/query.js`; verify `initDb(tmpdir)` isolation in the integration sweep is wired correctly so the live DB cannot be touched
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Sibling: [254-code-graph-scan-query.md](./254-code-graph-scan-query.md) (counts + `graphQualitySummary` + `readiness.action` snapshot)
 - Sibling: [275-code-graph-readiness-contract.md](./275-code-graph-readiness-contract.md) (shared readiness vocabulary)

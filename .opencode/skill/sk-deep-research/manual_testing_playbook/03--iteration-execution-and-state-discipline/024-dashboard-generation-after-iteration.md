@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify dashboard.md is auto-generated after iteration evaluation with correct content.
 - Real user request: After an iteration completes, can I see a summary of where the research stands?
-- Prompt: `As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the dashboard file is created at the correct path, contains the required sections (iteration table, question status, trend, dead ends, next focus, active risks), and is regenerated after each iteration. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the dashboard generation contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify the dashboard file is created at the correct path, contains the required sections (iteration table, question status, trend, dead ends, next focus, active risks), and is regenerated after each iteration. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the loop protocol for Step 4a, then the state format dashboard section, then the dashboard template asset, then the YAML workflow step.
-- Desired user-facing outcome: The user can open `research/deep-research-dashboard.md` after any iteration and see an up-to-date summary of the research session.
+- Desired user-visible outcome: The user can open `research/deep-research-dashboard.md` after any iteration and see an up-to-date summary of the research session.
 - Expected signals: `research/deep-research-dashboard.md` exists after at least one iteration completes, contains an iteration table, question status with X/Y answered, trend with last 3 newInfoRatio values, dead ends consolidated from ruledOut data, next focus from strategy.md, and active risks.
 - Pass/fail posture: PASS if the dashboard file exists after iteration evaluation, contains all required sections, and is regenerated (not appended) each iteration; FAIL if the file is missing, sections are absent, or stale data persists from a prior iteration.
 

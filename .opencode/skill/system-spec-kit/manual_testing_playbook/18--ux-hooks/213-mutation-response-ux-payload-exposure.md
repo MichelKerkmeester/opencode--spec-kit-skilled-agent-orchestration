@@ -13,11 +13,13 @@ This scenario validates Mutation response UX payload exposure for `213`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `213` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm successful save responses expose typed `postMutationHooks` payloads while no-op saves suppress false UX metadata
-- Prompt: `As a runtime-hook validation operator, validate Mutation response UX payload exposure against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts. Verify successful save responses expose typed postMutationHooks payloads while no-op saves suppress false UX metadata. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm successful save responses expose typed `postMutationHooks` payloads while no-op saves suppress false UX metadata.
+- Real user request: `` Please validate Mutation response UX payload exposure against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts and tell me whether the expected signals are present: Save-path regression suite passes, successful save responses include typed `postMutationHooks` fields, and duplicate/no-op saves omit false `postMutationHooks` while surfacing cache-left-unchanged guidance. ``
+- RCAF Prompt: `As a runtime-hook validation operator, validate Mutation response UX payload exposure against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts. Verify successful save responses expose typed postMutationHooks payloads while no-op saves suppress false UX metadata. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Save-path regression suite passes, successful save responses include typed `postMutationHooks` fields, and duplicate/no-op saves omit false `postMutationHooks` while surfacing cache-left-unchanged guidance
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the save-path suite passes and the assertions prove success responses expose the UX payload contract while no-op responses suppress false hook metadata
 
 ---
@@ -53,8 +55,7 @@ Test transcript + highlighted assertion names or output snippets showing success
 
 Inspect `handlers/save/response-builder.ts`, `hooks/mutation-feedback.ts`, and response-envelope formatting if payload fields drift
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/07-mutation-response-ux-payload-exposure.md](../../feature_catalog/18--ux-hooks/07-mutation-response-ux-payload-exposure.md)
 

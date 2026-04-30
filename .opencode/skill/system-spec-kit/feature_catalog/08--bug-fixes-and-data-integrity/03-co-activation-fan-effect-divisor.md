@@ -1,7 +1,6 @@
 ---
 title: "Co-activation fan-effect divisor"
 description: "Tracks the fan-effect divisor that prevents hub memories from dominating co-activation results."
-audited_post_018: true
 ---
 
 # Co-activation fan-effect divisor
@@ -33,7 +32,7 @@ The divisor path is now batched end to end. Related-memory detail hydration is f
 | `mcp_server/lib/cognitive/co-activation.ts` | Lib | Co-activation spreading |
 | `mcp_server/lib/search/pipeline/stage2-fusion.ts` | Lib | Stage 2 hot-path co-activation boost application (`base + boost * coactivation_strength`) |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,7 +43,6 @@ The divisor path is now batched end to end. Related-memory detail hydration is f
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Bug fixes and data integrity
-- Source feature title: Co-activation fan-effect divisor
-- Current reality source: FEATURE_CATALOG.md
+- Group: Bug Fixes And Data Integrity
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `08--bug-fixes-and-data-integrity/03-co-activation-fan-effect-divisor.md`

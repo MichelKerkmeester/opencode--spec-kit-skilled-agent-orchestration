@@ -1,7 +1,6 @@
 ---
 title: "4-stage pipeline architecture"
 description: "Covers the four bounded pipeline stages (candidate generation, fusion, rerank, filter) with score-immutability enforcement."
-audited_post_018: true
 ---
 
 # 4-stage pipeline architecture
@@ -53,7 +52,7 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 | `mcp_server/lib/search/anchor-metadata.ts` | Lib | Anchor metadata annotation used by Stage 2b |
 | `mcp_server/lib/search/validation-metadata.ts` | Lib | Validation signal metadata enrichment used by Stage 2b |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -71,8 +70,7 @@ The 4-stage pipeline is the sole runtime path. The `SPECKIT_PIPELINE_V2` environ
 ---
 
 ## 4. SOURCE METADATA
-
 - Group: Retrieval
-- Source feature title: 4-stage pipeline architecture
-- Current reality source: FEATURE_CATALOG.md
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `01--retrieval/05-4-stage-pipeline-architecture.md`
 - Source list updated 2026-03-26 per audit remediation

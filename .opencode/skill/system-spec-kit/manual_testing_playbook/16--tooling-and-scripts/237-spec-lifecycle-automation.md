@@ -13,11 +13,13 @@ This scenario validates spec lifecycle automation for `237`. It focuses on confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators verify that the lifecycle surface behaves like a coordinated toolkit: recommendation and archival CLIs expose the documented contract, upgrade tests pass, and completeness plus completion status can be read directly from a known-good fixture.
 
-- Objective: Confirm lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces
-- Prompt: `As a tooling validation operator, validate Spec Lifecycle Automation against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help. Verify lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces.
+- Real user request: `Please validate Spec Lifecycle Automation against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help and tell me whether the expected signals are present: help output available for lifecycle entrypoints; upgrade regression suite passes; completeness JSON is emitted; completion gate returns a stable status.`
+- RCAF Prompt: `As a tooling validation operator, validate Spec Lifecycle Automation against bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --help. Verify lifecycle tool availability across recommendation, upgrade, completeness, completion, and archival surfaces. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: help output available for lifecycle entrypoints; upgrade regression suite passes; completeness JSON is emitted; completion gate returns a stable status
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the lifecycle scripts collectively expose the documented workflow and the known-good fixture behaves consistently
 
 ---
@@ -55,8 +57,7 @@ Help output, upgrade test transcript, completeness JSON, and completion JSON
 
 Inspect `scripts/spec/recommend-level.sh`, `scripts/tests/test-upgrade-level.sh`, `scripts/spec/calculate-completeness.sh`, and `scripts/spec/archive.sh` if a lifecycle stage is missing or inconsistent
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/23-spec-lifecycle-automation.md](../../feature_catalog/16--tooling-and-scripts/23-spec-lifecycle-automation.md)
 

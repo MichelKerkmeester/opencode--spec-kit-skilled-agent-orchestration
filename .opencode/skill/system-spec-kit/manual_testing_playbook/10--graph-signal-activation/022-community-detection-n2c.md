@@ -14,11 +14,13 @@ This scenario validates Community detection (N2c) for `022`. It focuses on Confi
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `022` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm community boost injection
-- Prompt: `As a graph-signal validation operator, validate Community detection (N2c) against the documented validation surface. Verify community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm community boost injection.
+- Real user request: `Please validate Community detection (N2c) against the documented validation surface and tell me whether the expected signals are present: Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum.`
+- RCAF Prompt: `As a graph-signal validation operator, validate Community detection (N2c) against the documented validation surface. Verify community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Community detection assigns cluster IDs; co-member boost injected; boost capped at configured maximum
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Cluster IDs assigned; co-members receive boost within cap; non-members get zero boost; FAIL: Missing cluster IDs or boost exceeds cap
 
 ---
@@ -54,8 +56,7 @@ Community assignment output + co-member boost values + cap verification
 
 Verify community detection algorithm → Check boost injection point in pipeline → Inspect cap enforcement
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [10--graph-signal-activation/07-community-detection.md](../../feature_catalog/10--graph-signal-activation/07-community-detection.md)
 

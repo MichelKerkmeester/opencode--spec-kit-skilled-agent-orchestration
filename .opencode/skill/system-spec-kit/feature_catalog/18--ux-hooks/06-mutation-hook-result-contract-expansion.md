@@ -33,7 +33,7 @@ The result contract also includes an `errors: string[]` field that captures actu
 | `mcp_server/lib/cache/embedding-cache.ts` | Lib | Cache invalidation signaled via cache-clear booleans |
 | `mcp_server/lib/cache/tool-cache.ts` | Lib | Cache invalidation signaled via cache-clear booleans |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -44,8 +44,6 @@ The result contract also includes an `errors: string[]` field that captures actu
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks automation (Phase 014)
-- Source feature title: Mutation hook result contract expansion
-- Current reality source: FEATURE_CATALOG.md
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/06-mutation-hook-result-contract-expansion.md`

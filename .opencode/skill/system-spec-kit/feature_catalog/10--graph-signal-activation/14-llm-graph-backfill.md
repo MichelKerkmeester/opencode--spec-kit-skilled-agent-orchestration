@@ -1,7 +1,6 @@
 ---
 title: "Async LLM graph backfill"
 description: "Async LLM graph backfill enriches high-value documents with probabilistic graph edges via an LLM call after deterministic extraction, gated by the SPECKIT_LLM_GRAPH_BACKFILL flag."
-audited_post_018: true
 ---
 
 # Async LLM graph backfill
@@ -32,7 +31,7 @@ The backfill runs inside the `onIndex()` path in `graph-lifecycle.ts`, which is 
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isLlmGraphBackfillEnabled()` unified flag accessor |
 | `mcp_server/handlers/save/post-insert.ts` | Handler | Post-insert wiring that schedules backfill |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ The backfill runs inside the `onIndex()` path in `graph-lifecycle.ts`, which is 
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Async LLM graph backfill
-- Current reality source: graph-lifecycle.ts module header and implementation
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/14-llm-graph-backfill.md`

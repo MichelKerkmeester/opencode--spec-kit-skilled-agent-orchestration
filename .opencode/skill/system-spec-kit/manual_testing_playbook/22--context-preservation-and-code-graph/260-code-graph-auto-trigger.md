@@ -14,20 +14,14 @@ This scenario validates Code graph auto-trigger (ensureCodeGraphReady).
 
 ## 2. SCENARIO CONTRACT
 
-- **Objective**: Verify that the live auto-trigger contract covers both the helper decision surface and the caller-visible blocked read path. `ensureCodeGraphReady()` must still distinguish fresh/stale/empty graphs and choose `none`, `selective_reindex`, or `full_scan` appropriately, while `code_graph_query` and `code_graph_context` must return an explicit `status: "blocked"` contract when readiness requires a full scan that read paths will not run inline.
-- **Prerequisites**:
-  - Node.js installed and `npx vitest` available
-  - Working directory is the project root
-  - Git repository with at least one commit
-- **Prompt**: `As a context-and-code-graph validation operator, validate the code graph auto-trigger read-path contract against cd .opencode/skill/system-spec-kit/mcp_server && npm exec -- vitest run tests/ensure-ready.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-context-handler.vitest.ts. Verify ensureCodeGraphReady() still distinguishes fresh/stale/empty graphs and chooses none/selective_reindex/full_scan correctly, and verify code_graph_query plus code_graph_context now return explicit blocked payloads when readiness requires a suppressed full scan. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- **Expected signals**:
-  - `tests/ensure-ready.vitest.ts` passes and confirms `selective_reindex` for small stale sets plus `full_scan` when git HEAD drift or large stale sets require broader reindexing on read paths
-  - `code-graph/tests/code-graph-query-handler.vitest.ts` passes and confirms `code_graph_query` returns `status: "blocked"` with `requiredAction: "code_graph_scan"` when readiness requires a full scan
-  - `code-graph/tests/code-graph-context-handler.vitest.ts` passes and confirms `code_graph_context` returns `status: "blocked"` with `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, and readiness metadata
-  - Blocked payloads carry `blockReason: "full_scan_required"` and the shared readiness vocabulary (`canonicalReadiness`, `trustState`)
-- **Pass/fail criteria**:
-  - PASS: The helper suite proves the state transitions and the query/context handler suites prove the blocked read contract callers now see
-  - FAIL: The playbook still relies on the old indexer-only path, helper state selection no longer matches the tests, or blocked read payloads are missing required fields
+
+- Objective: Verify that the live auto-trigger contract covers both the helper decision surface and the caller-visible blocked read path; `ensureCodeGraphReady()` must still distinguish fresh/stale/empty graphs and choose `none`, `selective_reindex`, or `full_scan` appropriately, while `code_graph_query` and `code_graph_context` must return an explicit `status: "blocked"` contract when readiness requires a full scan that read paths will not run inline.
+- Real user request: `` Please validate Code graph auto-trigger on read paths against cd .opencode/skill/system-spec-kit/mcp_server && npm exec -- vitest run tests/ensure-ready.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-context-handler.vitest.ts and tell me whether the expected signals are present: `tests/ensure-ready.vitest.ts` passes and confirms `selective_reindex` for small stale sets plus `full_scan` when git HEAD drift or large stale sets require broader reindexing on read paths; `code-graph/tests/code-graph-query-handler.vitest.ts` passes and confirms `code_graph_query` returns `status: "blocked"` with `requiredAction: "code_graph_scan"` when readiness requires a full scan; `code-graph/tests/code-graph-context-handler.vitest.ts` passes and confirms `code_graph_context` returns `status: "blocked"` with `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, and readiness metadata; Blocked payloads carry `blockReason: "full_scan_required"` and the shared readiness vocabulary (`canonicalReadiness`, `trustState`). ``
+- RCAF Prompt: `As a context-and-code-graph validation operator, validate the code graph auto-trigger read-path contract against cd .opencode/skill/system-spec-kit/mcp_server && npm exec -- vitest run tests/ensure-ready.vitest.ts code-graph/tests/code-graph-query-handler.vitest.ts code-graph/tests/code-graph-context-handler.vitest.ts. Verify ensureCodeGraphReady() still distinguishes fresh/stale/empty graphs and chooses none/selective_reindex/full_scan correctly, and verify code_graph_query plus code_graph_context now return explicit blocked payloads when readiness requires a suppressed full scan. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: `tests/ensure-ready.vitest.ts` passes and confirms `selective_reindex` for small stale sets plus `full_scan` when git HEAD drift or large stale sets require broader reindexing on read paths; `code-graph/tests/code-graph-query-handler.vitest.ts` passes and confirms `code_graph_query` returns `status: "blocked"` with `requiredAction: "code_graph_scan"` when readiness requires a full scan; `code-graph/tests/code-graph-context-handler.vitest.ts` passes and confirms `code_graph_context` returns `status: "blocked"` with `blocked`, `degraded`, `graphAnswersOmitted`, `requiredAction`, and readiness metadata; Blocked payloads carry `blockReason: "full_scan_required"` and the shared readiness vocabulary (`canonicalReadiness`, `trustState`)
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
+- Pass/fail: PASS: The helper suite proves the state transitions and the query/context handler suites prove the blocked read contract callers now see; FAIL: The playbook still relies on the old indexer-only path, helper state selection no longer matches the tests, or blocked read payloads are missing required fields
 
 ---
 
@@ -118,8 +112,7 @@ Vitest output showing the blocked `code_graph_context` assertion set in `code-gr
 
 Check `code-graph/handlers/context.ts` for the blocked response payload and readiness metadata passthrough
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md](../../feature_catalog/22--context-preservation-and-code-graph/15-code-graph-auto-trigger.md)
 

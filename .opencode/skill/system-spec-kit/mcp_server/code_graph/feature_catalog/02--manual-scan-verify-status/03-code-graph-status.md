@@ -43,6 +43,13 @@ Status can recommend `rg` or `code_graph_scan`; it does not perform either. Trea
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:181-212` | Handler | returns a degraded envelope when stats are unavailable |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:214-260` | Handler | assembles the successful status payload |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:599-603` | Schema | defines the public schema |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/02--manual-scan-verify-status/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

@@ -36,7 +36,7 @@ Default ON (graduated). Set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false` to disable
 | `mcp_server/lib/search/progressive-disclosure.ts` | Lib | Summary layer, snippet extraction, cursor pagination, progressive response builder |
 | `mcp_server/lib/search/search-flags.ts` | Lib | `isProgressiveDisclosureEnabled()` flag accessor |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -46,8 +46,6 @@ Default ON (graduated). Set `SPECKIT_PROGRESSIVE_DISCLOSURE_V1=false` to disable
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: UX hooks
-- Source feature title: Progressive disclosure with cursor pagination
-- Current reality source: mcp_server/lib/search/progressive-disclosure.ts and handlers/memory-search.ts
-- audited_post_018: true
+- Group: Ux Hooks
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `18--ux-hooks/16-progressive-disclosure.md`

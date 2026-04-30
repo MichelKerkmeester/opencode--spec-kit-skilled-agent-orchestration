@@ -14,11 +14,13 @@ This scenario validates Lightweight consolidation (N3-lite) for `058`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `058` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm maintenance cycle behavior
-- Prompt: `As a retrieval-enhancement validation operator, validate Lightweight consolidation (N3-lite) against the documented validation surface. Verify consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm maintenance cycle behavior.
+- Real user request: `Please validate Lightweight consolidation (N3-lite) against the documented validation surface and tell me whether the expected signals are present: Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs.`
+- RCAF Prompt: `As a retrieval-enhancement validation operator, validate Lightweight consolidation (N3-lite) against the documented validation surface. Verify consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Consolidation cycle completes; contradiction detection, hebbian strengthening, and staleness decay all produce output; no runtime errors in logs
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all three consolidation sub-processes execute and produce expected outputs without errors
 
 ---
@@ -54,8 +56,7 @@ Consolidation cycle output + log entries for each sub-step (contradiction/hebbia
 
 Check consolidation trigger mechanism; inspect individual sub-process logs; verify database state before and after cycle
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [15--retrieval-enhancements/04-lightweight-consolidation.md](../../feature_catalog/15--retrieval-enhancements/04-lightweight-consolidation.md)
 

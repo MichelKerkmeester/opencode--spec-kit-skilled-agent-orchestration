@@ -25,9 +25,9 @@ Operators should run this as a real orchestrator-led check rather than a synthet
 
 - Objective: Verify that malformed JSONL lines are skipped and missing fields are defaulted instead of crashing the loop.
 - Real user request: If one line in the JSONL is broken, I want to know whether the whole loop dies or keeps going safely.
-- Prompt: `As a manual-testing orchestrator, validate the JSONL fault-tolerance contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed lines are skipped, missing fields are defaulted, and a warning is emitted instead of crashing the loop. Return a concise operator-facing verdict.`
+- RCAF Prompt: `As a manual-testing orchestrator, validate the JSONL fault-tolerance contract for sk-deep-research against the current sk-deep-research docs, command entrypoint, YAML workflow, and runtime anchors. Verify malformed lines are skipped, missing fields are defaulted, and a warning is emitted instead of crashing the loop. Return a concise operator-facing verdict.`
 - Expected execution process: Inspect the state-format fault-tolerance rules, then the convergence reader guidance, then the README troubleshooting notes.
-- Desired user-facing outcome: The user is told that malformed JSONL lines are handled defensively and do not automatically kill the loop.
+- Desired user-visible outcome: The user is told that malformed JSONL lines are handled defensively and do not automatically kill the loop.
 - Expected signals: Per-line parse protection exists, defaults are specified, skipped-line warnings are documented, and convergence operates on valid entries only.
 - Pass/fail posture: PASS if malformed lines are skipped with documented defaults and warnings; FAIL if the contract implies full-loop failure for any parse error.
 

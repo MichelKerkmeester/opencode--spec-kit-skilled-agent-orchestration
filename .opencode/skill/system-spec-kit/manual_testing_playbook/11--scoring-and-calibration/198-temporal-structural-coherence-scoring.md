@@ -14,11 +14,13 @@ This scenario validates temporal-structural coherence scoring for `198`. It focu
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `198` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop
-- Prompt: `As a scoring validation operator, validate Temporal-structural coherence scoring against the documented validation surface. Verify structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop.
+- Real user request: `Please validate Temporal-structural coherence scoring against the documented validation surface and tell me whether the expected signals are present: structural checks evaluate non-empty content, minimum-length thresholds, and Markdown heading presence; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; sufficiently low coherence can trigger quality-loop rejection; verify-fix-verify retries remain immediate with no backoff and stay within the configured retry limit.`
+- RCAF Prompt: `As a scoring validation operator, validate Temporal-structural coherence scoring against the documented validation surface. Verify structural penalties, bounded coherence deductions, and immediate retry behavior in the quality loop. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: structural checks evaluate non-empty content, minimum-length thresholds, and Markdown heading presence; future-dated completion claims reduce coherence; self-referential or unresolved causal links reduce coherence; sufficiently low coherence can trigger quality-loop rejection; verify-fix-verify retries remain immediate with no backoff and stay within the configured retry limit
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: flawed variants receive the expected coherence penalties and rejection or downgrade behavior while retries stay immediate and bounded; FAIL: structural defects do not affect coherence, temporal or causal-link issues are ignored, or retry behavior contradicts the documented bounded immediate cycle
 
 ---
@@ -56,8 +58,7 @@ Quality-loop transcript, coherence score breakdown, control-vs-variant results, 
 
 Verify control content satisfies structural checks -> Inspect coherence penalty branches for future-dated claims and causal links -> Confirm rejection threshold or downgrade path -> Check retry loop configuration and attempt count -> Ensure broader chronology analysis was not assumed in the verdict
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md](../../feature_catalog/11--scoring-and-calibration/17-temporal-structural-coherence-scoring.md)
 

@@ -1,7 +1,6 @@
 ---
 title: "Pre-flight token budget validation"
 description: "Pre-flight token budget validation estimates token count before embedding generation and rejects oversized content at save time."
-audited_post_018: true
 ---
 
 # Pre-flight token budget validation
@@ -32,7 +31,7 @@ This validation runs in `memory_save` pre-flight before any embedding generation
 |------|-------|------|
 | `mcp_server/lib/validation/preflight.ts` | Lib | Token estimation, thresholds, and pre-flight pass/warn/fail behavior |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -41,7 +40,6 @@ This validation runs in `memory_save` pre-flight before any embedding generation
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Memory quality and indexing
-- Source feature title: Pre-flight token budget validation
-- Current reality source: FEATURE_CATALOG.md
+- Group: Memory Quality And Indexing
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `13--memory-quality-and-indexing/03-pre-flight-token-budget-validation.md`

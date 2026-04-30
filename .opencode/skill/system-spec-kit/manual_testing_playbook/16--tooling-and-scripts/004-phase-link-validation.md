@@ -13,11 +13,13 @@ This scenario validates Phase link validation for `PHASE-004`. It focuses on Run
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `PHASE-004` and confirm the expected signals without contradicting evidence.
 
-- Objective: Run `check-phase-links.sh` on a phase folder and verify 4 link checks at warn severity
-- Prompt: `As a tooling validation operator, validate Phase link validation against bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh specs/<phase-parent>. Verify run check-phase-links.sh on a phase folder and verify 4 link checks at warn severity. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Run `check-phase-links.sh` on a phase folder and verify 4 link checks at warn severity.
+- Real user request: `Please validate Phase link validation against bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh specs/<phase-parent> and tell me whether the expected signals are present: 4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity.`
+- RCAF Prompt: `As a tooling validation operator, validate Phase link validation against bash .opencode/skill/system-spec-kit/scripts/rules/check-phase-links.sh specs/<phase-parent>. Verify run check-phase-links.sh on a phase folder and verify 4 link checks at warn severity. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: 4 link check types reported; well-formed folder produces exit 0; missing child produces warn on Phase Documentation Map; corrupted back-reference produces warn; all issues at warn severity
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all 4 link types are checked, valid folders exit 0, missing/broken links exit 1 with warn-level messages, and no link issue produces error severity
 
 ---
@@ -57,8 +59,7 @@ Command transcript + output for valid and invalid cases + exit codes
 
 Verify check-phase-links.sh exists and has execute permission; check spec.md contains expected link markers; verify child folder naming matches expected pattern
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md)
 

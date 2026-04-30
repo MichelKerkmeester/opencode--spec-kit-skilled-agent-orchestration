@@ -14,11 +14,13 @@ This scenario validates Feature flag governance for `063`. It focuses on Confirm
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `063` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm governance policy conformance
-- Prompt: `As a governance validation operator, validate Feature flag governance against the documented validation surface. Verify all flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm governance policy conformance.
+- Real user request: `Please validate Feature flag governance against the documented validation surface and tell me whether the expected signals are present: All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found.`
+- RCAF Prompt: `As a governance validation operator, validate Feature flag governance against the documented validation surface. Verify all flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: All flags enumerated with age and review cadence; compliance gaps identified; no undocumented flags found
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if all flags have documented governance metadata and compliance gaps are identified
 
 ---
@@ -54,8 +56,7 @@ Flag inventory + compliance report + gap list
 
 Verify flag enumeration covers all source files; check governance policy definitions; inspect review cadence tracking
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [17--governance/01-feature-flag-governance.md](../../feature_catalog/17--governance/01-feature-flag-governance.md)
 

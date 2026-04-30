@@ -51,14 +51,8 @@ When a symbol subject resolves to multiple graph nodes, the response returns amb
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
-- Feature file path: `06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md`
-
-- Group: Analysis
-- Source feature title: Code Graph edge explanation and blast radius uplift
-- Current reality source: FEATURE_CATALOG.md
 - Feature file path: `06--analysis/08-code-graph-edge-explanation-blast-radius-uplift.md`
 
 ### MANUAL PLAYBOOK COVERAGE

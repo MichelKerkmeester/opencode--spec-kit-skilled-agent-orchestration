@@ -1,7 +1,6 @@
 ---
 title: "Unified graph retrieval, deterministic ranking, explainability, and rollback"
 description: "Describes the Phase 3 unified graph retrieval path with deterministic ranking contracts, trace-based explainability and runtime rollback via the `SPECKIT_GRAPH_UNIFIED` gate."
-audited_post_018: true
 ---
 
 # Unified graph retrieval, deterministic ranking, explainability, and rollback
@@ -38,7 +37,7 @@ Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`). Disa
 | `mcp_server/lib/search/graph-search-fn.ts` | Lib | Graph FTS CTE retrieval, SQL-side edge deduplication, and per-DB FTS availability caching |
 | `mcp_server/lib/telemetry/retrieval-telemetry.ts` | Lib | Trace-safe explainability and retrieval telemetry metadata |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -48,13 +47,11 @@ Rollback is controlled by the runtime graph gate (`SPECKIT_GRAPH_UNIFIED`). Disa
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Graph signal activation
-- Source feature title: Unified graph retrieval, deterministic ranking, explainability, and rollback
-- Current reality source: Phase 015 implementation
+- Group: Graph Signal Activation
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `10--graph-signal-activation/12-unified-graph-retrieval-deterministic-ranking-explainability-and-rollback.md`
 
 ---
-
 ## 5. PLAYBOOK COVERAGE
 
 - Mapped to manual testing playbook scenario 120

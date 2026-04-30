@@ -17,6 +17,7 @@ These variables control memory system behavior, token budgets, script execution,
 ---
 
 <!-- /ANCHOR:overview -->
+
 <!-- ANCHOR:memory-system-mcp-server -->
 ## 2. MEMORY SYSTEM (MCP SERVER)
 
@@ -43,6 +44,7 @@ Codex note: point `SPEC_KIT_DB_DIR` at a writable directory outside read-only re
 ---
 
 <!-- /ANCHOR:memory-system-mcp-server -->
+
 <!-- ANCHOR:embedding-providers -->
 ## 3. EMBEDDING PROVIDERS
 
@@ -87,6 +89,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 ---
 
 <!-- /ANCHOR:embedding-providers -->
+
 <!-- ANCHOR:token-budget -->
 ## 4. TOKEN BUDGET
 
@@ -100,6 +103,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 ---
 
 <!-- /ANCHOR:token-budget -->
+
 <!-- ANCHOR:scripts -->
 ## 5. SCRIPTS
 
@@ -114,6 +118,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 ---
 
 <!-- /ANCHOR:scripts -->
+
 <!-- ANCHOR:batch-processing -->
 ## 6. BATCH PROCESSING
 
@@ -125,6 +130,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 ---
 
 <!-- /ANCHOR:batch-processing -->
+
 <!-- ANCHOR:usage-examples -->
 ## 7. USAGE EXAMPLES
 
@@ -160,6 +166,7 @@ VOYAGE_EMBEDDINGS_MODEL=voyage-4-large VOYAGE_API_KEY=your-key node mcp_server/d
 ---
 
 <!-- /ANCHOR:usage-examples -->
+
 <!-- ANCHOR:feature-flags -->
 ## 8. FEATURE FLAGS
 
@@ -376,6 +383,7 @@ SPECKIT_RESPONSE_TRACE=true node mcp_server/dist/context-server.js
 ---
 
 <!-- /ANCHOR:feature-flags -->
+
 <!-- ANCHOR:related-resources -->
 ## 9. RELATED RESOURCES
 
@@ -383,8 +391,16 @@ SPECKIT_RESPONSE_TRACE=true node mcp_server/dist/context-server.js
 - [Troubleshooting](../debugging/troubleshooting.md)
 - [Quick Reference](../workflows/quick_reference.md)
 - [Memory System Architecture](../memory/memory_system.md)
+
+---
+
 <!-- /ANCHOR:related-resources -->
 
-## Clean Transport (MCP Protocol)
+<!-- ANCHOR:clean-transport-mcp-protocol -->
+## 10. CLEAN TRANSPORT (MCP PROTOCOL)
 
 MCP servers must keep stdout reserved for protocol traffic only. Send diagnostics, warnings and startup logs to stderr so clients such as Codex do not see extra stdout output as a broken transport handshake.
+
+---
+
+<!-- /ANCHOR:clean-transport-mcp-protocol -->

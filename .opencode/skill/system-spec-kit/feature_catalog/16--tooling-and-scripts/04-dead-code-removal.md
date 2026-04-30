@@ -135,12 +135,7 @@ Cross-cutting evidence is distributed across:
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
-- Group: Tooling and scripts
+- Group: Tooling And Scripts
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `16--tooling-and-scripts/04-dead-code-removal.md`
-
-- Group: Comprehensive remediation (Sprint 8)
-- Source feature title: Dead code removal
-- Current reality source: FEATURE_CATALOG.md
 <!-- /ANCHOR:source-metadata -->

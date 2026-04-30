@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `CM-006` and confirm the
 
 - Objective: Verify `clickup.get_teams({})` (wrong form, missing duplicated `clickup_` prefix) returns a "tool not found" error containing the wrong name.
 - Real user request: `"Why does my ClickUp tool call fail?"` (debugging session)
-- Prompt: `As a manual-testing orchestrator, call ClickUp get_teams using the wrong form clickup.get_teams through Code Mode against the live registry. Verify the call returns a tool not found error containing the wrong name. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call ClickUp get_teams using the wrong form clickup.get_teams through Code Mode against the live registry. Verify the call returns a tool not found error containing the wrong name. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: invoke via `call_tool_chain` deliberately using the wrong form, then inspect the error.
 - Expected signals: chain throws or returns an error; error message contains "tool" and "not found" (or equivalent); error references the wrong-form name `clickup.get_teams`.
 - Desired user-visible outcome: A short report quoting the error message and confirming it names the wrong call as well as suggests the correct form, with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `CM-006` and confirm the
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, call ClickUp get_teams using the wrong form clickup.get_teams through Code Mode against the live registry. Verify the call returns a tool not found error containing the wrong name. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, call ClickUp get_teams using the wrong form clickup.get_teams through Code Mode against the live registry. Verify the call returns a tool not found error containing the wrong name. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

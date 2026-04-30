@@ -13,9 +13,13 @@ This scenario validates the Phase 017 cross-runtime hook parity work for `274`. 
 
 ## 2. SCENARIO CONTRACT
 
-- Objective: Verify the shared provenance wrapper is the live helper surface and Copilot now matches Claude and Gemini on compact-cache behavior. Packet 013 additionally requires the shared compact startup payload to transport through all four runtimes — Claude, Gemini, Copilot, and **Codex** — so the parity assertion is 4-runtime, not 3-runtime.
-- Prompt: `As a UX-hook validation operator, validate Shared provenance and Copilot compact-cache parity against hooks/shared-provenance.ts and hooks/copilot/compact-cache.ts. Verify Claude and Gemini re-export the shared provenance helpers, Copilot writes a cached provenance-wrapped payload, session-prime consumes the cached trustState, the cached output matches the documented provenance format, and the compact startup shared-payload carried in graphQualitySummary / sharedPayloadTransport is identical across Claude/Gemini/Copilot/Codex startup hooks. Return a concise pass/fail verdict with the main reason and cited evidence.`
-- Expected signals: shared helper imports visible; Copilot compact-cache emits cached provenance-wrapped output; session-prime consumes the cached trustState; Codex `session-start.ts` carries the same `graphQualitySummary` and `sharedPayloadTransport` envelope as the Claude/Gemini/Copilot `session-prime.ts` entrypoints.
+
+- Objective: Verify the shared provenance wrapper is the live helper surface and Copilot now matches Claude and Gemini on compact-cache behavior; Packet 013 additionally requires the shared compact startup payload to transport through all four runtimes — Claude, Gemini, Copilot, and **Codex** — so the parity assertion is 4-runtime, not 3-runtime.
+- Real user request: `` Please validate Shared provenance and Copilot compact-cache parity against hooks/shared-provenance.ts and hooks/copilot/compact-cache.ts and tell me whether the expected signals are present: shared helper imports visible; Copilot compact-cache emits cached provenance-wrapped output; session-prime consumes the cached trustState; Codex `session-start.ts` carries the same `graphQualitySummary` and `sharedPayloadTransport` envelope as the Claude/Gemini/Copilot `session-prime.ts` entrypoints. ``
+- RCAF Prompt: `As a UX-hook validation operator, validate Shared provenance and Copilot compact-cache parity against hooks/shared-provenance.ts and hooks/copilot/compact-cache.ts. Verify Claude and Gemini re-export the shared provenance helpers, Copilot writes a cached provenance-wrapped payload, session-prime consumes the cached trustState, the cached output matches the documented provenance format, and the compact startup shared-payload carried in graphQualitySummary / sharedPayloadTransport is identical across Claude/Gemini/Copilot/Codex startup hooks. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
+- Expected signals: shared helper imports visible; Copilot compact-cache emits cached provenance-wrapped output; session-prime consumes the cached trustState; Codex `session-start.ts` carries the same `graphQualitySummary` and `sharedPayloadTransport` envelope as the Claude/Gemini/Copilot `session-prime.ts` entrypoints
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if Copilot now follows the same provenance-wrapped compact-cache contract as Claude and Gemini **and** Codex `session-start.ts` transports the same shared startup payload shape as the three `session-prime.ts` hooks.
 
 ---
@@ -53,8 +57,7 @@ Shared-provenance import evidence, helper-suite output, Copilot compact-cycle ou
 
 Inspect `mcp_server/hooks/shared-provenance.ts`, `mcp_server/hooks/claude/shared.ts`, `mcp_server/hooks/gemini/shared.ts`, `mcp_server/hooks/copilot/compact-cache.ts`, `mcp_server/hooks/copilot/session-prime.ts`, and `mcp_server/hooks/codex/session-start.ts`. If a runtime's envelope drifts, diff against `lib/startup-brief.ts` output directly.
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md](../../feature_catalog/18--ux-hooks/21-shared-provenance-and-copilot-compact-cache-parity.md)
 

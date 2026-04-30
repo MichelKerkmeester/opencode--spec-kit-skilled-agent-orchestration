@@ -1,7 +1,6 @@
 ---
 title: "Code graph SQLite storage and MCP query tools"
 description: "Code graph provides SQLite storage plus MCP tools for structural queries, readiness-aware status, and compact graph context."
-audited_post_018: true
 ---
 
 # Code graph SQLite storage and MCP query tools
@@ -32,7 +31,7 @@ mcp_server/code_graph/lib/code-graph-db.ts
 | `mcp_server/code_graph/handlers/status.ts` | Handler | Implements `code_graph_status` for readiness and health checks |
 | `mcp_server/code_graph/handlers/context.ts` | Handler | Implements `code_graph_context` for compact structural neighborhoods |
 
-### Tests
+### Validation And Tests
 
 | File | Focus |
 |------|-------|
@@ -42,7 +41,6 @@ mcp_server/code_graph/lib/code-graph-db.ts
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Context Preservation and Code Graph
-- Source feature title: Code graph SQLite storage and MCP query tools
-- Current reality source: spec 024-compact-code-graph phases 009, 019, and 020
+- Group: Context Preservation And Code Graph
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `22--context-preservation-and-code-graph/08-code-graph-storage-query.md`

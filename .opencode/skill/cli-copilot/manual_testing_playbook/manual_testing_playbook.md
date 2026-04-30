@@ -45,7 +45,7 @@ The cli-copilot playbook fills all eight category positions because Copilot CLI 
 - [13. PROMPT TEMPLATES](#13--prompt-templates)
 - [14. CLOUD DELEGATION](#14--cloud-delegation)
 - [15. AUTOMATED TEST CROSS-REFERENCE](#15--automated-test-cross-reference)
-- [16. FEATURE FILE INDEX](#16--feature-file-index)
+- [16. FEATURE CATALOG CROSS-REFERENCE INDEX](#16--feature-catalog-cross-reference-index)
 
 ---
 
@@ -117,7 +117,7 @@ Coverage note (2026-04-26): the playbook covers cli-copilot's documented behavio
 1. `manual_testing_playbook.md`
 2. Referenced per-feature files under `manual_testing_playbook/NN--category-name/`
 3. Scenario execution evidence (command transcripts, captured `/tmp/cp-NNN*` artifacts, concurrency-cap probe outputs)
-4. Feature-to-scenario coverage map (the §16 FEATURE FILE INDEX)
+4. Feature-to-scenario coverage map (the §16 FEATURE CATALOG CROSS-REFERENCE INDEX)
 5. Triage notes for all non-pass outcomes
 
 ### Scenario Acceptance Rules
@@ -624,7 +624,7 @@ If automated tests for cli-copilot's smart-router pseudocode or self-invocation 
 
 ---
 
-## 16. FEATURE FILE INDEX
+## 16. FEATURE CATALOG CROSS-REFERENCE INDEX
 
 ### CLI INVOCATION
 

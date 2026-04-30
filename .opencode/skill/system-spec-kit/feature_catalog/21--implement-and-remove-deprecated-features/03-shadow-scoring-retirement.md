@@ -1,8 +1,6 @@
 ---
 title: "Shadow-scoring retirement"
 description: "The shadow-scoring module now preserves read-only comparison helpers and historical stats access while runtime scoring and persistence remain permanently retired."
-audited_post_018: true
-phase_018_change: "Validated against phase-018 canonical continuity refactor; runtime shadow scoring stays retired while read-only comparison helpers remain available."
 ---
 
 # Shadow-scoring retirement
@@ -45,7 +43,6 @@ That makes the module read-oriented and compatibility-oriented rather than runti
 ---
 
 ## 4. SOURCE METADATA
-
-- Group: Implement and Remove Deprecated Features
-- Source feature title: Shadow-scoring retirement
-- Source spec: Deep research remediation 2026-03-26
+- Group: Implement And Remove Deprecated Features
+- Canonical catalog source: `feature_catalog.md`
+- Feature file path: `21--implement-and-remove-deprecated-features/03-shadow-scoring-retirement.md`

@@ -25,7 +25,7 @@ Operators run the exact prompt and command sequence for `BDG-011` and confirm th
 
 - Objective: Verify a message logged via `bdg dom eval "console.log('BDG-011 test')"` appears in `bdg console --list 2>&1 | jq '.'` output.
 - Real user request: `"Show me the console messages from this page."`
-- Prompt: `As a manual-testing orchestrator, retrieve console messages from the active page through the bdg CLI against an active session that has logged some console output. Verify output is JSON with messages array. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, retrieve console messages from the active page through the bdg CLI against an active session that has logged some console output. Verify output is JSON with messages array. Return a concise user-facing pass/fail verdict with the main reason.`
 - Expected execution process: assumes active session; emit a sentinel `console.log` via eval; retrieve console list; assert sentinel is present.
 - Expected signals: eval exit 0; `console --list` exits 0 with valid JSON; the sentinel string `BDG-011 test` appears in the output.
 - Desired user-visible outcome: A short report quoting the captured console message with a PASS verdict.
@@ -37,7 +37,7 @@ Operators run the exact prompt and command sequence for `BDG-011` and confirm th
 
 ### Prompt
 
-- Prompt: `As a manual-testing orchestrator, retrieve console messages from the active page through the bdg CLI against an active session that has logged some console output. Verify output is JSON with messages array. Return a concise user-facing pass/fail verdict with the main reason.`
+- RCAF Prompt: `As a manual-testing orchestrator, retrieve console messages from the active page through the bdg CLI against an active session that has logged some console output. Verify output is JSON with messages array. Return a concise user-facing pass/fail verdict with the main reason.`
 
 ### Commands
 

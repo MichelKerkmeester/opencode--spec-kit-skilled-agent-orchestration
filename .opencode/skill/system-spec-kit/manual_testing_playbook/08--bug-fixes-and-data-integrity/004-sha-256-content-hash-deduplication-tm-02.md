@@ -14,11 +14,13 @@ This scenario validates SHA-256 content-hash deduplication (TM-02) for `004`. It
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `004` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm identical re-save skips embedding and the save-path SQL stays on exact-match predicates
-- Prompt: `As a data-integrity validation operator, validate SHA-256 content-hash deduplication (TM-02) against /. Verify identical re-save skips embedding and the save-path SQL stays on exact-match predicates. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm identical re-save skips embedding and the save-path SQL stays on exact-match predicates.
+- Real user request: `` Please validate SHA-256 content-hash deduplication (TM-02) against / and tell me whether the expected signals are present: Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`. ``
+- RCAF Prompt: `As a data-integrity validation operator, validate SHA-256 content-hash deduplication (TM-02) against /. Verify identical re-save skips embedding and the save-path SQL stays on exact-match predicates. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Second save returns skip/no-op status; no new embedding row created; content hash matches; SQL shape contains direct `canonical_file_path = ?` / `file_path = ?` probes and exact scope clauses such as `tenant_id = ?` or `user_id IS NULL`
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Re-save skips embedding, reports duplicate, and emits exact-match SQL without nullable OR scope predicates; FAIL: Duplicate embedding created, hash mismatch, or SQL still depends on nullable OR predicates
 
 ---
@@ -55,8 +57,7 @@ Save output for both calls + DB query showing single embedding row + SQL/test ev
 
 Verify SHA-256 hash computation → Check content normalization before hashing → Inspect dedup lookup query shape (`T320-1`, `T320-2`)
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md](../../feature_catalog/08--bug-fixes-and-data-integrity/04-sha-256-content-hash-deduplication.md)
 

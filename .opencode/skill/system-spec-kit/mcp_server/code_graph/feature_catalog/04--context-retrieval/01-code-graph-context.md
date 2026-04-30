@@ -43,6 +43,13 @@ Blocked responses omit graph answers. Follow `requiredAction:"code_graph_scan"` 
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/context.ts:184-229` | Handler | returns blocked payloads with required action and fallback decision |
 | `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:605-643` | Schema | defines the public schema, seed formats, and blocked-read contract |
 | `.opencode/skill/system-spec-kit/mcp_server/code_graph/tools/code-graph-tools.ts:75-76` | Tool surface | dispatches the handler |
+
+### Validation And Tests
+
+| File | Type | Role |
+|---|---|---|
+| `../../manual_testing_playbook/04--context-retrieval/` | Manual Playbook | Operator-facing manual scenarios for this feature category |
+
 <!-- /ANCHOR:source-files -->
 
 <!-- ANCHOR:source-metadata -->

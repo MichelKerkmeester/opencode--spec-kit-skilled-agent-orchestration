@@ -13,11 +13,13 @@ This scenario validates Atomic-save parity and partial-indexing hints for `214`.
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `214` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots
-- Prompt: `As a runtime-hook validation operator, validate Atomic-save parity and partial-indexing hints against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts. Verify atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots.
+- Real user request: `Please validate Atomic-save parity and partial-indexing hints against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts and tell me whether the expected signals are present: Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation.`
+- RCAF Prompt: `As a runtime-hook validation operator, validate Atomic-save parity and partial-indexing hints against cd .opencode/skill/system-spec-kit/mcp_server && npx vitest run tests/memory-save-ux-regressions.vitest.ts tests/context-server.vitest.ts. Verify atomic-save responses match the primary save envelope, preserve partial-indexing guidance, and protect callback snapshots. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Save-path and context-server suites pass, atomic-save success responses match the standard save UX contract, pending async embedding keeps partial-indexing guidance, duplicate or unchanged statuses suppress false hook metadata, and callback assertions prove snapshot isolation
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the targeted suites pass and the assertions confirm atomic-save parity, partial-indexing guidance, no-op suppression, and callback snapshot protection
 
 ---
@@ -54,8 +56,7 @@ Test transcript + key assertion output for parity, partial-indexing, and callbac
 
 Inspect `handlers/memory-save.ts`, `handlers/save/response-builder.ts`, `handlers/save/post-insert.ts`, and `context-server.ts` if parity or snapshot behavior regresses
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md](../../feature_catalog/18--ux-hooks/10-atomic-save-parity-and-partial-indexing-hints.md)
 

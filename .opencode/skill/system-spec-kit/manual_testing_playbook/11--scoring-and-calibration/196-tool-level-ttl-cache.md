@@ -14,11 +14,13 @@ This scenario validates tool-level TTL cache for `196`. It focuses on confirming
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `196` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm per-tool cache hits, TTL expiry, and mutation-driven invalidation
-- Prompt: `As a scoring validation operator, validate Tool-level TTL cache against memory_search. Verify per-tool cache hits, TTL expiry, and mutation-driven invalidation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm per-tool cache hits, TTL expiry, and mutation-driven invalidation.
+- Real user request: `Please validate Tool-level TTL cache against memory_search and tell me whether the expected signals are present: first run records a cache miss for the tool/input combination; second identical run records a cache hit for the same SHA-256 key; cache stats reflect hits, misses, and invalidations; a relevant mutation or TTL expiry forces recomputation instead of returning stale results.`
+- RCAF Prompt: `As a scoring validation operator, validate Tool-level TTL cache against memory_search. Verify per-tool cache hits, TTL expiry, and mutation-driven invalidation. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: first run records a cache miss for the tool/input combination; second identical run records a cache hit for the same SHA-256 key; cache stats reflect hits, misses, and invalidations; a relevant mutation or TTL expiry forces recomputation instead of returning stale results
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: identical repeat work hits the cache within TTL and recomputes after targeted invalidation or TTL expiry; FAIL: repeat work misses unexpectedly, stale data survives mutation/expiry, or cache accounting contradicts observed behavior
 
 ---
@@ -56,8 +58,7 @@ Terminal transcript, cache stats or logs, repeated request output, and post-muta
 
 Verify TTL config and max-entry settings -> Confirm identical tool/input payloads were used -> Inspect cache-key hashing and per-tool scoping -> Check mutation hook invalidation path -> Review expiry cleanup timing and oldest-entry eviction behavior
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [11--scoring-and-calibration/15-tool-level-ttl-cache.md](../../feature_catalog/11--scoring-and-calibration/15-tool-level-ttl-cache.md)
 

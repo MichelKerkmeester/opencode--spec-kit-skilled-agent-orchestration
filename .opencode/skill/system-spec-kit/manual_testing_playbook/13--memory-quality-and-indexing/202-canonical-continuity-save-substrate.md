@@ -12,12 +12,16 @@ This scenario validates canonical continuity save substrate for `202`. It focuse
 
 ## 2. SCENARIO CONTRACT
 
-Operators drive a canonical save through the phase-018 writer substrate and confirm the routed content lands in the correct spec-doc anchor with a compact continuity block. The same run should also refresh `graph-metadata.json` with checklist-aware lowercase status, sanitized `key_files`, deduplicated entities, and no more than 12 derived trigger phrases. Phase 017 extends the scenario to prove that metadata refresh happens on every successful canonical save and that continuity freshness stays aligned with the packet metadata write. This scenario now covers the live 8-category router, the always-active Tier 3 classifier path, delivery-versus-progress cues, and the hard-drop versus soft-handover boundary.
 
-- Objective: Verify 8-category canonical routing, route overrides, anchor-aware merge, atomic promotion, continuity persistence, graph-metadata refresh on every save, and continuity freshness alignment
-- Prompt: `As a spec-doc record-quality validation operator, validate Canonical continuity save substrate against contentRouter. Verify the live 8-category router chooses the correct category and target; Tier 3 participates by default; routeAs preserves the natural decision for audit; delivery versus progress and handover versus drop stay on the intended side of the boundary; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; _memory.continuity stays thin and readable; every successful canonical save refreshes packet metadata; and graph-metadata.json plus continuity-freshness output confirm the continuity timestamp is not lagging the metadata write. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Verify 8-category canonical routing, route overrides, anchor-aware merge, atomic promotion, continuity persistence, graph-metadata refresh on every save, and continuity freshness alignment.
+- Real user request: `` Please validate Canonical continuity save substrate against contentRouter and tell me whether the expected signals are present: contentRouter chooses the correct category and tier; routeAs can override safely; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result or safe refusal; `_memory.continuity` stays thin and readable; every successful save refreshes packet metadata; continuity-freshness stays aligned. ``
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Canonical continuity save substrate against contentRouter. Verify the live 8-category router chooses the correct category and target; Tier 3 participates by default; routeAs preserves the natural decision for audit; delivery versus progress and handover versus drop stay on the intended side of the boundary; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result; _memory.continuity stays thin and readable; every successful canonical save refreshes packet metadata; and graph-metadata.json plus continuity-freshness output confirm the continuity timestamp is not lagging the metadata write. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: contentRouter chooses the correct category and tier; routeAs can override safely; anchorMergeOperation uses the right mode; atomicIndexMemory writes the canonical result or safe refusal; `_memory.continuity` stays thin and readable; every successful save refreshes packet metadata; continuity-freshness stays aligned
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if the routed save lands in the correct anchor or safely refuses, the continuity block is preserved, the override/audit path is intact, refreshed graph metadata matches the parser contract, and continuity freshness stays aligned; FAIL if the route is wrong, the merge mode is wrong, the drop boundary is unsafe, the continuity block is missing/bloated, metadata refresh is skipped, or continuity freshness lags
+
+---
 
 ## 3. TEST EXECUTION
 
@@ -58,8 +62,7 @@ Save output, override audit fields, saved doc contents, refusal output for drop,
 
 Inspect `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor-merge-operation.ts`, `mcp_server/handlers/save/atomic-index-memory.ts`, `mcp_server/lib/continuity/thin-continuity-record.ts`, `mcp_server/lib/graph/graph-metadata-parser.ts`, `scripts/core/workflow.ts`, and `scripts/validation/continuity-freshness.ts`
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md](../../feature_catalog/13--memory-quality-and-indexing/27-canonical-continuity-save-substrate.md)
 - Source files: `mcp_server/lib/routing/content-router.ts`, `mcp_server/lib/merge/anchor-merge-operation.ts`, `mcp_server/handlers/save/atomic-index-memory.ts`, `mcp_server/lib/continuity/thin-continuity-record.ts`, `mcp_server/lib/resume/resume-ladder.ts`, `mcp_server/lib/graph/graph-metadata-parser.ts`

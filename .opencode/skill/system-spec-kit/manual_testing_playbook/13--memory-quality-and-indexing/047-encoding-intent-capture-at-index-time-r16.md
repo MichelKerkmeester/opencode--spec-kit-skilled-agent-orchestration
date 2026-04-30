@@ -14,11 +14,13 @@ This scenario validates Encoding-intent capture at index time (R16) for `047`. I
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `047` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm persisted intent labels
-- Prompt: `As a spec-doc record-quality validation operator, validate Encoding-intent capture at index time (R16) against the documented validation surface. Verify intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm persisted intent labels.
+- Real user request: `Please validate Encoding-intent capture at index time (R16) against the documented validation surface and tell me whether the expected signals are present: Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels.`
+- RCAF Prompt: `As a spec-doc record-quality validation operator, validate Encoding-intent capture at index time (R16) against the documented validation surface. Verify intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Intent labels (doc/code/structured) persisted in metadata; labels read-only after indexing; varied content types produce correct labels
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS: Correct intent label assigned per content type; labels immutable after save; FAIL: Wrong label or label modified post-save
 
 ---
@@ -54,8 +56,7 @@ Metadata output showing intent labels per content type + read-only verification
 
 Verify intent classification rules → Check metadata persistence → Inspect read-only enforcement
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md](../../feature_catalog/13--memory-quality-and-indexing/09-encoding-intent-capture-at-index-time.md)
 

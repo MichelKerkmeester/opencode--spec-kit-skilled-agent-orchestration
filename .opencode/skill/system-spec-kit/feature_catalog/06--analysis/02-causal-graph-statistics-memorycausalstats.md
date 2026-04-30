@@ -1,7 +1,6 @@
 ---
 title: "Causal graph statistics (memory_causal_stats)"
 description: "Covers the causal graph health metrics tool reporting edge counts, relationship breakdowns and link coverage percentage."
-audited_post_018: true
 ---
 
 # Causal graph statistics (memory_causal_stats)
@@ -58,14 +57,9 @@ The response now also reports rolling-window deltas and balance metrics: `deltaB
 
 <!-- ANCHOR:source-metadata -->
 ## 4. SOURCE METADATA
-
 - Group: Analysis
 - Canonical catalog source: `feature_catalog.md`
 - Feature file path: `06--analysis/02-causal-graph-statistics-memorycausalstats.md`
-
-- Group: Analysis
-- Source feature title: Causal graph statistics (memory_causal_stats)
-- Current reality source: FEATURE_CATALOG.md
 
 ### MANUAL PLAYBOOK COVERAGE
 

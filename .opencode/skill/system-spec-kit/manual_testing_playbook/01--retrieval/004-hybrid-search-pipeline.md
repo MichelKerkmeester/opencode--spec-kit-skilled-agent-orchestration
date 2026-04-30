@@ -14,11 +14,13 @@ This scenario validates Hybrid search pipeline for `EX-004`. It focuses on chann
 
 ## 2. SCENARIO CONTRACT
 
-Operators run the exact prompt and command sequence for `EX-004` and confirm the expected signals without contradicting evidence.
 
-- Objective: Confirm multi-channel fusion stays coherent when routing and fallback interact
-- Prompt: `As a retrieval validation operator, validate Hybrid search pipeline against memory_search({ query:"graph rollout trace check", limit:10, includeTrace:true, bypassCache:true }). Verify multi-channel fusion stays coherent when routing and fallback interact. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Objective: Confirm multi-channel fusion stays coherent when routing and fallback interact.
+- Real user request: `` Please validate Hybrid search pipeline against memory_search({ query:"graph rollout trace check", limit:10, includeTrace:true, bypassCache:true }) and tell me whether the expected signals are present: Non-empty result set with trace evidence of multi-channel contribution; aligned boosted scores across the exposed score aliases; `useGraph:false` suppresses both graph and degree contributions even during fallback; lexical fallback only uses still-allowed lexical channels. ``
+- RCAF Prompt: `As a retrieval validation operator, validate Hybrid search pipeline against memory_search({ query:"graph rollout trace check", limit:10, includeTrace:true, bypassCache:true }). Verify multi-channel fusion stays coherent when routing and fallback interact. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
 - Expected signals: Non-empty result set with trace evidence of multi-channel contribution; aligned boosted scores across the exposed score aliases; `useGraph:false` suppresses both graph and degree contributions even during fallback; lexical fallback only uses still-allowed lexical channels
+- Desired user-visible outcome: A concise pass/fail verdict with the main reason and cited evidence.
 - Pass/fail: PASS if fusion evidence is coherent, explicit channel disables are preserved across fallback, and no contradictory trace signals appear
 
 ---
@@ -55,8 +57,7 @@ Paired trace outputs plus source-backed fallback routing confirmation if needed
 
 Inspect `hybrid-search.ts` candidate routing and trace fields if graph or degree signals leak into the `useGraph:false` run
 
-## 4. REFERENCES
-
+## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Feature catalog: [01--retrieval/04-hybrid-search-pipeline.md](../../feature_catalog/01--retrieval/04-hybrid-search-pipeline.md)
 
