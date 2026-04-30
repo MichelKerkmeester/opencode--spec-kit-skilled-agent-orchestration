@@ -52,7 +52,7 @@ _memory:
 | **Created** | 2026-04-28 |
 | **Branch** | `main` |
 | **Parent** | `026-graph-and-context-optimization/000-release-cleanup/005-review-remediation` |
-| **Source Research** | `026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research` |
+| **Source Research** | `026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research` |
 <!-- /ANCHOR:metadata -->
 
 ---

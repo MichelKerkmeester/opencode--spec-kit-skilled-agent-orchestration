@@ -84,7 +84,6 @@ Capture the verbatim chain return value, including the team id used and the spac
 | File | Role |
 |---|---|
 | `.opencode/skill/mcp-code-mode/SKILL.md` | call_tool_chain spec |
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp tool catalog (get_teams, get_spaces) |
 
 ---
 

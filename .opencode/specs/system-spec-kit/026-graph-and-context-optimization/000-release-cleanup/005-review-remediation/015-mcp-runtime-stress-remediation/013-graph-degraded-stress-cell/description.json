@@ -1,0 +1,24 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell",
+  "description": "Integration-style stress cell that exercises code_graph_query fallbackDecision routing end-to-end against a degraded graph using SPEC_KIT_DB_DIR isolation, closing the v1.0.2 NEUTRAL verdict on packet 005.",
+  "keywords": [
+    "code-graph",
+    "fallbackdecision",
+    "degraded",
+    "stress-cell",
+    "fast-fail",
+    "integration-test",
+    "spec-kit-db-dir",
+    "isolation"
+  ],
+  "lastUpdated": "2026-04-27T19:58:00Z",
+  "specId": "013",
+  "folderSlug": "graph-degraded-stress-cell",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

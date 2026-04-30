@@ -87,7 +87,7 @@ Either remediate the failures OR honestly scope-down 026's claim with documented
 
 | File | Action |
 |------|--------|
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md` | Edit — honest test-suite state |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md` | Edit — honest test-suite state |
 | `mcp_server/tests/<failing-test-files>` (if surgical fix) | Edit |
 | `mcp_server/<runtime-files>` (if real bug found) | Edit |
 | Packet's own plan.md, tasks.md, checklist.md, implementation-summary.md | Create |

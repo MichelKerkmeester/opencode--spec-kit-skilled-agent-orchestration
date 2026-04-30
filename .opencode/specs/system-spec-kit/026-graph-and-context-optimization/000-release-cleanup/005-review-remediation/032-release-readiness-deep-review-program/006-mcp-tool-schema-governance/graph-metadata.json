@@ -1,0 +1,85 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/006-mcp-tool-schema-governance",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/006-mcp-tool-schema-governance",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/020-memory-retention-sweep",
+      "system-spec-kit/026-graph-and-context-optimization/034-skill-advisor-half-auto-default"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/002-memory-data-integrity",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/004-code-graph-readiness"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "045-006-mcp-tool-schema-governance",
+      "schema audit",
+      "governance enforcement review",
+      "tool count canonical"
+    ],
+    "key_topics": [
+      "mcp tools",
+      "tool schemas",
+      "zod",
+      "strict schemas",
+      "governed ingest",
+      "scope governance",
+      "tool count",
+      "release-readiness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      {
+        "name": "P0-001 session_health schema validation bypass",
+        "kind": "finding",
+        "path": "review-report.md",
+        "source": "manual"
+      },
+      {
+        "name": "P1-001 code_graph_verify missing Zod schema",
+        "kind": "finding",
+        "path": "review-report.md",
+        "source": "manual"
+      },
+      {
+        "name": "Canonical 54 spec_kit_memory tool count",
+        "kind": "evidence",
+        "path": "review-report.md",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Deep-review angle 6: MCP tool schema strictness, governed-ingest enforcement, scope-governance, canonical tool count alignment across tool-schemas.ts / opencode.json / README / docs.",
+    "created_at": "2026-04-29T21:20:00.000Z",
+    "last_save_at": "2026-04-29T21:20:00.000Z",
+    "save_lineage": "new",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md"
+    ]
+  }
+}

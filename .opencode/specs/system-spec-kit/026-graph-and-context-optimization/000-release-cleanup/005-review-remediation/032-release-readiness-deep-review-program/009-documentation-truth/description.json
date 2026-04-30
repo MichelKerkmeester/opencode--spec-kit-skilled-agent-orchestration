@@ -1,0 +1,24 @@
+{
+  "title": "Documentation Truth Deep Review",
+  "description": "Read-only release-readiness audit of evergreen documentation truth against live runtime sources, including tool counts, feature catalog coverage, manual playbook coverage, automation claims, security posture, evergreen references, and cross-reference health.",
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/009-documentation-truth",
+  "status": "complete",
+  "level": 2,
+  "importance": "important",
+  "contextType": "review",
+  "trigger_phrases": [
+    "045-009-documentation-truth",
+    "docs truth audit",
+    "stale claims review",
+    "evergreen rule self-check"
+  ],
+  "key_files": [
+    "review-report.md",
+    "spec.md",
+    "plan.md",
+    "tasks.md",
+    "checklist.md",
+    "implementation-summary.md"
+  ],
+  "lastUpdated": "2026-04-29T22:34:00+02:00"
+}

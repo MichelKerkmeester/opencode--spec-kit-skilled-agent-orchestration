@@ -14,8 +14,8 @@
     "system-spec-kit/026-graph-and-context-optimization/007-code-graph",
     "system-spec-kit/026-graph-and-context-optimization/008-skill-advisor",
     "system-spec-kit/026-graph-and-context-optimization/009-hook-parity",
-    "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation",
-    "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation"
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation"
   ],
   "migrated": true,
   "migration_source": "legacy",
@@ -150,7 +150,7 @@
       "spec.md",
       "resource-map.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/041-resource-maps-and-memory-finalization",
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/028-resource-maps-and-memory-finalization",
     "last_active_at": "2026-04-29T18:43:38.252Z"
   }
 }

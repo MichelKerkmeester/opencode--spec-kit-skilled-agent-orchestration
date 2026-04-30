@@ -85,5 +85,5 @@ _memory:
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Source finding**: Phase J research RQ2 in sibling packet `011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research`
+- **Source finding**: Phase J research RQ2 in sibling packet `015-mcp-runtime-stress-remediation/022-stress-test-results-deep-research`
 <!-- /ANCHOR:cross-refs -->

@@ -84,7 +84,6 @@ Capture the verbatim chain response (with sensitive workspace names REDACTED if 
 | File | Role |
 |---|---|
 | `.opencode/skill/mcp-code-mode/SKILL.md` | Manual-namespace contract (line 195-216) |
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp MCP tool catalog |
 
 ---
 

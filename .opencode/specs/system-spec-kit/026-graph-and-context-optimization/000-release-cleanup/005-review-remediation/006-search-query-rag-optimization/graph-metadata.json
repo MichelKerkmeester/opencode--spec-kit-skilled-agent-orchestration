@@ -8,7 +8,7 @@
   "migration_source": null,
   "manual": {
     "depends_on": [
-      "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research"
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research"
     ],
     "supersedes": [],
     "related_to": [

@@ -51,11 +51,11 @@ Adding a skill is intentional. Every new skill goes through `sk-doc`'s scaffoldi
 
 | Metric | Value | Notes |
 | --- | --- | --- |
-| Total skill folders | 21 | Top-level skills under `.opencode/skill/` |
-| Folders with graph metadata | 21 | Every top-level skill folder under `.opencode/skill/` currently ships with `graph-metadata.json` |
+| Total skill folders | 20 | Top-level skills under `.opencode/skill/` |
+| Folders with graph metadata | 20 | Every top-level skill folder under `.opencode/skill/` currently ships with `graph-metadata.json` |
 | Graph families | 6 | `cli`, `mcp`, `sk-code`, `sk-deep`, `sk-util`, `system` |
 | CLI orchestrator skills | 5 | cli-claude-code, cli-codex, cli-copilot, cli-gemini, cli-opencode |
-| MCP integration skills | 5 | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma |
+| MCP integration skills | 4 | mcp-chrome-devtools, mcp-coco-index, mcp-code-mode, mcp-figma |
 | Code quality overlays | 4 | sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web |
 | Documentation, research, review, and improvement skills | 5 | sk-improve-agent, sk-deep-research, sk-deep-review, sk-doc, sk-improve-prompt |
 | Git and system skills | 2 | sk-git, system-spec-kit |
@@ -156,7 +156,6 @@ The skill system covers four distinct workflow domains.
 | Skill | Version | Description |
 | --- | --- | --- |
 | `mcp-chrome-devtools` | 1.0.7.0 | Browser debugging via CLI (bdg) with MCP fallback for multi-tool integration |
-| `mcp-clickup` | 1.0.0 | ClickUp project management via CLI (cu, 30+ commands) and MCP for enterprise features |
 | `mcp-coco-index` | 1.0.0 | Semantic code search via vector embeddings using natural-language queries |
 | `mcp-code-mode` | 1.0.7.0 | TypeScript-based MCP orchestration hub for all external tool calls |
 | `mcp-figma` | 1.0.7.0 | Figma design file access: file retrieval, image export, component and style extraction |
@@ -202,7 +201,6 @@ The skill system covers four distinct workflow domains.
 ├── cli-gemini/             # Google Gemini CLI orchestrator
 ├── cli-opencode/           # OpenCode CLI orchestrator
 ├── mcp-chrome-devtools/    # Browser debugging via MCP
-├── mcp-clickup/            # ClickUp project management via MCP
 ├── mcp-coco-index/         # Semantic code search via vector embeddings
 ├── mcp-code-mode/          # MCP orchestration hub (TypeScript)
 ├── mcp-figma/              # Figma design file access via MCP
@@ -259,7 +257,6 @@ For the full system-spec-kit script inventory, see `system-spec-kit/scripts/scri
 | `cli-gemini` | Yes | Yes | No |
 | `cli-opencode` | Yes | Yes | No |
 | `mcp-chrome-devtools` | Yes | No | No |
-| `mcp-clickup` | Yes | Yes | No |
 | `mcp-coco-index` | Yes | No | No |
 | `mcp-code-mode` | Yes | Yes | Yes |
 | `mcp-figma` | Yes | Yes | No |

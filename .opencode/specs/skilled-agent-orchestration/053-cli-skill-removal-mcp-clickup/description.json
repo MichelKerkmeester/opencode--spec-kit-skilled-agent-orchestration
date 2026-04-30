@@ -1,0 +1,20 @@
+{
+  "specFolder": "053-cli-skill-removal-mcp-clickup",
+  "description": "Remove mcp-clickup skill folder, changelog, and all skill-level references across advisor data, skill graphs, READMEs, and install guides — preserving service-level ClickUp/UTCP references that flow through Code Mode.",
+  "keywords": [
+    "mcp-clickup",
+    "skill",
+    "removal",
+    "decommission",
+    "advisor",
+    "skill-graph",
+    "cleanup",
+    "053"
+  ],
+  "lastUpdated": "2026-04-30T08:00:00Z",
+  "specId": "053",
+  "folderSlug": "cli-skill-removal-mcp-clickup",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

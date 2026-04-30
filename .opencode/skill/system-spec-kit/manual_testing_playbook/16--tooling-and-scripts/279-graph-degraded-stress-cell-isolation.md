@@ -67,7 +67,7 @@ If sha256 diff non-empty: inspect `mcp_server/tests/code-graph-degraded-sweep.vi
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Sibling (operator-facing fast-fail contract): [22--context-preservation-and-code-graph/277-code-graph-fast-fail.md](../22--context-preservation-and-code-graph/277-code-graph-fast-fail.md)
 - Sibling (rebuild + restart + live probe): [278-mcp-daemon-rebuild-restart-live-probe.md](./278-mcp-daemon-rebuild-restart-live-probe.md)
-- Implementation summary: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell/implementation-summary.md`
+- Implementation summary: `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/013-graph-degraded-stress-cell/implementation-summary.md`
 
 ---
 

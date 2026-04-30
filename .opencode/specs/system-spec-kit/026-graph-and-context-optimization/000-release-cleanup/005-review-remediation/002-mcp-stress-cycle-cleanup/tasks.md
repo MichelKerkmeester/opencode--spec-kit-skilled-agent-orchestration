@@ -40,7 +40,7 @@ _memory:
 <!-- ANCHOR:phase-1 -->
 ## Phase 1: Setup
 
-- [x] **T001** [REQ-001] Refresh parent 011-mcp-runtime-stress-remediation/resource-map.md to cover 18 children. Evidence: resource-map.md lists child folders `001`-`018`, updates summary totals to 43 references, marks `011` complete, and records this cleanup packet as the refresh owner.
+- [x] **T001** [REQ-001] Refresh parent 015-mcp-runtime-stress-remediation/resource-map.md to cover 18 children. Evidence: resource-map.md lists child folders `001`-`018`, updates summary totals to 43 references, marks `011` complete, and records this cleanup packet as the refresh owner.
 - [x] **T002** [REQ-002] Soften "monotonic decay" wording in 011-post-stress-followup-research/research/research.md. Evidence: research synthesis says the sequence has an overall downward trajectory with rebounds at iterations 5 and 8, not strict monotonic decay.
 <!-- /ANCHOR:phase-1 -->
 

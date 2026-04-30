@@ -1,0 +1,129 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/014-graph-status-readiness-snapshot",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/011-post-stress-followup-research",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/005-code-graph-fast-fail"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "014-graph-status-readiness-snapshot",
+      "code_graph_status readiness action",
+      "graph readiness snapshot",
+      "getGraphReadinessSnapshot helper",
+      "read-only readiness probe",
+      "graph status readiness snapshot plan",
+      "graph status readiness snapshot tasks",
+      "graph status readiness snapshot checklist",
+      "graph status readiness snapshot summary"
+    ],
+    "key_topics": [
+      "014-graph-status-readiness-snapshot",
+      "code_graph_status",
+      "readiness",
+      "snapshot",
+      "non-mutating",
+      "observability",
+      "p2",
+      "debounce",
+      "ensure-ready",
+      "detectState"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/code_graph/lib/ensure-ready.ts",
+      "mcp_server/code_graph/handlers/status.ts",
+      "mcp_server/tests/code-graph-status-readiness-snapshot.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "ensure-ready.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/ensure-ready.ts",
+        "source": "manual"
+      },
+      {
+        "name": "status.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/status.ts",
+        "source": "manual"
+      },
+      {
+        "name": "code-graph-status-readiness-snapshot.vitest.ts",
+        "kind": "code",
+        "path": "mcp_server/tests/code-graph-status-readiness-snapshot.vitest.ts",
+        "source": "manual"
+      },
+      {
+        "name": "getGraphReadinessSnapshot",
+        "kind": "function",
+        "path": "mcp_server/code_graph/lib/ensure-ready.ts",
+        "source": "manual"
+      },
+      {
+        "name": "GraphReadinessSnapshot",
+        "kind": "type",
+        "path": "mcp_server/code_graph/lib/ensure-ready.ts",
+        "source": "manual"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Adds a read-only getGraphReadinessSnapshot() helper to ensure-ready.ts and wires it into code_graph_status so readiness.action surfaces full_scan / selective_reindex / none instead of always emitting 'none'. Closes the 4-hour staleness drift observability gap from 010 findings §3 without lowering DEFAULT_DEBOUNCE_MS=2000 (research §5.3 explicitly rejects that as the first fix). Preserves the existing top-level freshness field shape on status responses. Side-effect freedom verified by mock-surface assertions on the write-side code-graph-db exports and on ensureCodeGraphReady.",
+    "created_at": "2026-04-27T19:54:00.000Z",
+    "last_save_at": "2026-04-27T19:54:00.000Z",
+    "save_lineage": "manual_author",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

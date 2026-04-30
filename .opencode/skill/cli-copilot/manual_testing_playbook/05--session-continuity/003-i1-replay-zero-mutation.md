@@ -69,7 +69,7 @@ After PASS, also exercise the second case in the I1-replay describe block: a lar
 |---|---|
 | `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts` | `buildCopilotPromptArg` + `validateSpecFolder` (packet 012 + P1 fix-up) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/executor-config-copilot-target-authority.vitest.ts` | "I1-style zero-mutation replay" describe block (2 cases added in P1 fix-up) |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md` | Packet 012 implementation summary, §"Post-Review Fixes (2026-04-27)" → Fix 3 documents the I1-replay scenario directly |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md` | Packet 012 implementation summary, §"Post-Review Fixes (2026-04-27)" → Fix 3 documents the I1-replay scenario directly |
 
 ### Related Sibling Tests
 

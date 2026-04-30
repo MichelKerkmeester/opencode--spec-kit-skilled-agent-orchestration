@@ -1,0 +1,608 @@
+{
+  "runId": "phase-k-v1.0.4-live-handler",
+  "generatedAt": "2026-04-29T12:55:00.000Z",
+  "corpusVersion": "007-search-rag-measurement-driven-implementation-v1",
+  "caseCount": 12,
+  "channelCaptureCount": 16,
+  "method": {
+    "liveHandler": "handleMemorySearch production code path",
+    "mockedBoundary": "executePipeline retrieval boundary",
+    "harnessExportPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/029-stress-test-v1-0-4/measurements/v1-0-4-harness-export",
+    "auditEnvPath": "/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/029-stress-test-v1-0-4/measurements/v1-0-4-audit-log-sample.jsonl"
+  },
+  "aggregate": {
+    "precisionAt3": 0.597,
+    "recallAt3": 0.667,
+    "latency": {
+      "p50": 2.072,
+      "p95": 13.812,
+      "p99": 13.812
+    },
+    "refusalSurvival": 1,
+    "citationQuality": 0.75
+  },
+  "workstreams": {
+    "all": {
+      "precisionAt3": 0.597,
+      "recallAt3": 0.667,
+      "latency": {
+        "p50": 2.072,
+        "p95": 13.812,
+        "p99": 13.812
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 0.75
+    },
+    "W3": {
+      "precisionAt3": 0.667,
+      "recallAt3": 1,
+      "latency": {
+        "p50": 7.176,
+        "p95": 7.176,
+        "p99": 7.176
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 1
+    },
+    "W4": {
+      "precisionAt3": 1,
+      "recallAt3": 1,
+      "latency": {
+        "p50": 5.403,
+        "p95": 5.403,
+        "p99": 5.403
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 1
+    },
+    "W5": {
+      "precisionAt3": 0.5,
+      "recallAt3": 1,
+      "latency": {
+        "p50": 2.192,
+        "p95": 2.192,
+        "p99": 2.192
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 1
+    },
+    "W6": {
+      "precisionAt3": 1,
+      "recallAt3": 1,
+      "latency": {
+        "p50": 9.43,
+        "p95": 9.43,
+        "p99": 9.43
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 1
+    },
+    "W7": {
+      "precisionAt3": 1,
+      "recallAt3": 1,
+      "latency": {
+        "p50": 1.562,
+        "p95": 1.817,
+        "p99": 1.817
+      },
+      "refusalSurvival": 1,
+      "citationQuality": 1
+    }
+  },
+  "scoreAggregate": {
+    "scoreSum": 93,
+    "maxPossible": 96,
+    "percent": 96.875,
+    "percentRounded": 96.9,
+    "regressionCandidates": []
+  },
+  "scoreByDimension": {
+    "correctness": 21,
+    "robustness": 24,
+    "telemetry": 24,
+    "regressionSafety": 24
+  },
+  "perCaseScores": [
+    {
+      "caseId": "v101-weak-retrieval-refusal",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.5,
+      "currentMetricTotal": 0.5,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "v102-code-graph-fallback",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "ambiguous-advisor-routing",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "paraphrase-query-plan",
+      "scores": {
+        "correctness": 1,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 7,
+      "max": 8,
+      "priorV103MetricTotal": 0.25,
+      "currentMetricTotal": 0.25,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w3-trust-tree-contradiction",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.917,
+      "currentMetricTotal": 0.917,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w4-ambiguous-rerank-disagreement",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w5-advisor-shadow-ambiguous",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 0.875,
+      "currentMetricTotal": 0.875,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w6-cocoindex-duplicate-heavy",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w7-code-graph-stale",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w7-code-graph-empty",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w7-code-graph-full-scan-required",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    },
+    {
+      "caseId": "w7-code-graph-unavailable",
+      "scores": {
+        "correctness": 2,
+        "robustness": 2,
+        "telemetry": 2,
+        "regressionSafety": 2
+      },
+      "total": 8,
+      "max": 8,
+      "priorV103MetricTotal": 1,
+      "currentMetricTotal": 1,
+      "candidateRegression": false
+    }
+  ],
+  "comparison": {
+    "priorV102": {
+      "percentRounded": 83.8,
+      "comparable": false,
+      "reason": "v1.0.2 is a 30-cell CLI-model rubric; v1.0.4 uses the v1.0.3 12-case telemetry corpus with 16 channel captures.",
+      "exactSameCellRegressions": []
+    },
+    "priorV103": {
+      "harnessPercent": 75.4,
+      "currentHarnessPercent": 75.4,
+      "currentHarnessPercentExact": 75.35,
+      "deltaHarnessPercent": 0,
+      "comparable": true
+    },
+    "phaseE": {
+      "baselineFile": "baseline-20260429T032525Z.json",
+      "deltaVsPhaseEBaseline": {
+        "precisionAt3": 0.139,
+        "recallAt3": 0.042,
+        "p50Latency": -0.007,
+        "p95Latency": -0.1,
+        "p99Latency": -0.1,
+        "refusalSurvival": 0,
+        "citationQuality": 0.167
+      }
+    }
+  },
+  "samples": {
+    "envelopeCount": 16,
+    "auditRowCount": 16,
+    "exportedAuditMirrorCount": 16,
+    "shadowRowCount": 16,
+    "fieldCompleteness": [
+      {
+        "requestId": "memory_search-1777458993384",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993396",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993400",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993402",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993403",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993406",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993409",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993410",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993413",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993417",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993419",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993421",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993431",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993433",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993435",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      },
+      {
+        "requestId": "memory_search-1777458993436",
+        "populated": {
+          "queryPlan": true,
+          "trustTree": true,
+          "rerankGateDecision": true,
+          "cocoindexCalibration": true,
+          "degradedReadiness": true,
+          "degradedReadinessFreshness": true,
+          "tenantId": true,
+          "latencyMs": true,
+          "pipelineTiming": true
+        }
+      }
+    ]
+  },
+  "sla": {
+    "count": 16,
+    "averageLatencyMs": 0.563,
+    "p95LatencyMs": 3,
+    "decisionClassDistribution": {
+      "degraded": 16
+    },
+    "refusalRate": 0,
+    "rerankTriggerRate": 1,
+    "latencyByStage": {
+      "stage1": {
+        "averageMs": 9.125,
+        "p95Ms": 15
+      },
+      "stage2": {
+        "averageMs": 10.125,
+        "p95Ms": 16
+      },
+      "stage3": {
+        "averageMs": 11.125,
+        "p95Ms": 17
+      },
+      "stage4": {
+        "averageMs": 1,
+        "p95Ms": 1
+      },
+      "total": {
+        "averageMs": 31.375,
+        "p95Ms": 49
+      }
+    }
+  },
+  "w4": {
+    "triggerCounts": {
+      "high-authority": 11,
+      "multi-channel-weak-margin": 12,
+      "weak-evidence": 7,
+      "complex-query": 10,
+      "disagreement:advisor-memory-divergence": 2
+    },
+    "realTriggerFireRate": 1,
+    "nonPlaceholderTriggersObserved": [
+      "high-authority",
+      "multi-channel-weak-margin",
+      "weak-evidence",
+      "complex-query",
+      "disagreement:advisor-memory-divergence"
+    ]
+  },
+  "caveatResolution": {
+    "liveHandler": {
+      "resolved": true,
+      "evidence": "handleMemorySearch response envelopes plus recordSearchDecision audit rows captured"
+    },
+    "harnessTelemetryExport": {
+      "resolved": true,
+      "evidence": "runSearchQualityHarness telemetryExportPath emitted sibling JSONL files before packet filename normalization"
+    },
+    "degradedReadiness": {
+      "resolved": true,
+      "freshnessValues": [
+        "fresh",
+        "empty",
+        "stale",
+        "error"
+      ]
+    }
+  },
+  "limitations": [
+    "Sample-size guard: SLA rates and percentiles are directional because the run has fewer than 30 corpus cases.",
+    "The retrieval pipeline is mocked at the PP-1 boundary, so retrieval-quality metrics validate corpus scoring and handler telemetry wiring rather than live database ranking.",
+    "Shadow rows are harness telemetry-export records; memory_search itself does not invoke advisor_recommend in this seam.",
+    "v1.0.2 comparison is not exact same-cell because v1.0.2 used a 30-cell CLI-model matrix."
+  ]
+}

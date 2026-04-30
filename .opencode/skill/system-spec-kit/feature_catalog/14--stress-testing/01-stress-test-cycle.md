@@ -18,7 +18,7 @@ The pattern emerged from three live system-spec-kit cycles.
 
 | Cycle | Role | Evidence |
 |-------|------|----------|
-| v1.0.1 baseline | Established the fixed search-intelligence corpus and calibrated scoring basis. | `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/spec.md:133` documents the scenario corpus; lines 200-210 document the active v1.0.1 4-dimension calibration. |
+| v1.0.1 baseline | Established the fixed search-intelligence corpus and calibrated scoring basis. | `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design/spec.md:133` documents the scenario corpus; lines 200-210 document the active v1.0.1 4-dimension calibration. |
 | v1.0.2 rerun | Proved the sidecar-and-findings format against 30 cells. | `010-stress-test-rerun-v1-0-2/findings.md:3` records all 30 cells complete; `findings.md:15` records 76.7% -> 83.8%; `findings-rubric.json:65` records scoreSum 201, max 240, and percentRounded 83.8. |
 | v1.0.3 wiring run | Extended the pattern with telemetry samples under `measurements/`. | `021-stress-test-v1-0-3-with-w3-w13-wiring/findings-v1-0-3.md:5` lists envelope, audit, shadow, summary, and sidecar artifacts; lines 37-53 report the SLA panel. |
 
@@ -92,11 +92,11 @@ Each cycle compares against the prior version's rubric where possible. The compa
 
 | Path | Role |
 |------|------|
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/` | v1.0.1 baseline corpus, dispatch matrix, and scenario execution |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md` | v1.0.2 narrative findings shape |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json` | v1.0.2 sidecar shape and aggregate math |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/findings-v1-0-3.md` | v1.0.3 wired telemetry findings |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/measurements/` | v1.0.3 telemetry samples |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/` | v1.0.1 baseline corpus, dispatch matrix, and scenario execution |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md` | v1.0.2 narrative findings shape |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json` | v1.0.2 sidecar shape and aggregate math |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/findings-v1-0-3.md` | v1.0.3 wired telemetry findings |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/measurements/` | v1.0.3 telemetry samples |
 
 ### Templates and Playbook
 

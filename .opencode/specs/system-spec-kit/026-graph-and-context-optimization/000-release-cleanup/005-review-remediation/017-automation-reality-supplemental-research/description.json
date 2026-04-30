@@ -1,0 +1,28 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/017-automation-reality-supplemental-research",
+  "description": "5-iter supplemental deep research extending 012's automation reality map. Deepens 4 P1 aspirational findings via adversarial Hunter→Skeptic→Referee, probes deep-loop graph + CCC + eval + ablation + validator auto-fire surfaces, outputs sequenced remediation backlog (packets 031-035).",
+  "keywords": [
+    "automation",
+    "self-management",
+    "supplemental-research",
+    "deep-loop-graph",
+    "ccc",
+    "eval",
+    "ablation",
+    "validator-auto-fire",
+    "remediation-backlog",
+    "adversarial-retest"
+  ],
+  "lastUpdated": "2026-04-29T18:35:50.099Z",
+  "specId": "013",
+  "folderSlug": "automation-reality-supplemental-research",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "29-04-26_14-20__supplemental-automation-reality-deep-research-5.md",
+    "29-04-26_19-35__resource-map-authored-and-memory-finalization.md"
+  ]
+}

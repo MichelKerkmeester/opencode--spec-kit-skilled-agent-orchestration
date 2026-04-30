@@ -7,7 +7,7 @@
   "migrated": false,
   "migration_source": null,
   "manual": {
-    "depends_on": ["system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation"],
+    "depends_on": ["system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation"],
     "supersedes": [],
     "related_to": []
   },
@@ -18,7 +18,7 @@
     "status": "complete",
     "key_files": ["spec.md", "plan.md", "tasks.md", "implementation-summary.md"],
     "entities": [],
-    "causal_summary": "Sub-phase that closes the 6 P2 advisories from the 011-mcp-runtime-stress-remediation deep-review report (PASS verdict).",
+    "causal_summary": "Sub-phase that closes the 6 P2 advisories from the 015-mcp-runtime-stress-remediation deep-review report (PASS verdict).",
     "created_at": "2026-04-28T15:15:00.000Z",
     "last_save_at": "2026-04-28T15:45:00.000Z",
     "save_lineage": "new",

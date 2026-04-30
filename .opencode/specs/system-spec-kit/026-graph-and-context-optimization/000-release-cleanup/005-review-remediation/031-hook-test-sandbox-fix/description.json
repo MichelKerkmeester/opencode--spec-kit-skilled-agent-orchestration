@@ -1,0 +1,21 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/031-hook-test-sandbox-fix",
+  "description": "Fixes the runtime hook test methodology by adding sandbox detection, introducing SKIPPED_SANDBOX for live CLI cells, documenting operator-run-outside-sandbox live validation, and amending the prior findings classification.",
+  "keywords": [
+    "031-hook-test-sandbox-fix",
+    "hook test methodology",
+    "sandbox detection",
+    "BLOCKED_BY_TEST_SANDBOX",
+    "operator-run-outside-sandbox"
+  ],
+  "lastUpdated": "2026-04-29T21:45:00.000Z",
+  "specId": "044",
+  "folderSlug": "hook-test-sandbox-fix",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}
+

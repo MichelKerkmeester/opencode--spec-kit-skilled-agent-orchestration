@@ -1,0 +1,154 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/011-post-stress-followup-research",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/011-post-stress-followup-research",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": null,
+  "manual": {
+    "depends_on": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2",
+        "reason": "v1.0.2 findings.md Recommendations §1-5 + per-cell scores are this packet's primary source of evidence",
+        "source": "011-scaffold-2026-04-27",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2"
+      }
+    ],
+    "supersedes": [],
+    "related_to": [
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
+        "reason": "Q3 follow-up references this packet's enforceTokenBudget contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/003-memory-context-truncation-contract"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup",
+        "reason": "Opportunity #4 (CocoIndex telemetry leverage) directly extends this packet's fork-telemetry surface",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/005-code-graph-fast-fail",
+        "reason": "P1 follow-up (graph fast-fail testability) targets this packet's fallbackDecision matrix",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/005-code-graph-fast-fail"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/006-causal-graph-window-metrics",
+        "reason": "Indirect — intelligence-system seam research may surface causal-edge balance refinements",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/006-causal-graph-window-metrics"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/007-intent-classifier-stability",
+        "reason": "Intelligence-system seam research may surface intent-dispatch refinements (sorted-token vs embedding paraphrase grouping)",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/007-intent-classifier-stability"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
+        "reason": "P2 follow-up (file-watcher debounce) extends this packet's daemon-readiness contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+        "reason": "P0 follow-up (cli-copilot Gate 3 bypass) is downstream of the response-policy contract this packet ratified",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/009-memory-search-response-policy"
+      },
+      {
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite",
+        "reason": "P0 follow-up (cli-copilot Gate 3 bypass) targets this packet's planner-first contract",
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/003-continuity-memory-runtime/004-memory-save-rewrite"
+      }
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "011-post-stress-followup-research",
+      "v1.0.2 follow-up research",
+      "post-stress follow-up research",
+      "010 deep-research follow-up",
+      "v1.0.2 P0 P1 P2 research",
+      "intelligence system seam research"
+    ],
+    "key_topics": [
+      "deep-research",
+      "follow-up",
+      "v1.0.2",
+      "p0-cli-copilot-gate3-bypass",
+      "p1-graph-fastfail-testability",
+      "p2-file-watcher-debounce",
+      "cocoindex-telemetry-leverage",
+      "intelligence-system-seams",
+      "cli-codex-gpt-5.5"
+    ],
+    "importance_tier": "important",
+    "status": "draft",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "Post-Stress Follow-Up Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "v1.0.2",
+        "kind": "version",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "cli-codex",
+        "kind": "tool",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "gpt-5.5",
+        "kind": "model",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Scaffolded packet that runs a single 10-iteration /spec_kit:deep-research:auto loop with cli-codex (gpt-5.5 high fast) refining the four follow-ups surfaced by 010's findings.md (P0 cli-copilot /memory:save Gate 3 bypass, P1 code-graph fast-fail not testable, P2 file-watcher debounce, opportunity CocoIndex fork telemetry leverage), plus a light architectural touch on the broader intelligence-system stack. Deliverable: research/research.md synthesizing per-follow-up evidence + fix candidates + recommended approach + scope estimate. Per-follow-up remediation packets are downstream work the user authors after reviewing.",
+    "created_at": "2026-04-27T18:45:00Z",
+    "last_save_at": "2026-04-27T18:45:00Z",
+    "save_lineage": "scaffold-creation",
+    "last_active_child_id": null,
+    "last_active_at": "2026-04-27T18:45:00Z",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

@@ -84,7 +84,6 @@ Capture the verbatim response object including parameter schema.
 | File | Role |
 |---|---|
 | `.opencode/skill/mcp-code-mode/SKILL.md` | tool_info API spec |
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp tool catalog (manual reference) |
 
 ---
 

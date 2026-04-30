@@ -34,7 +34,6 @@ const CATEGORY_HINTS: Readonly<Record<string, readonly string[]>> = {
   'mcp-chrome-devtools': ['chrome devtools', 'har', 'console errors', 'staging'],
   'sk-improve-prompt': ['better prompt', 'cleaner prompt', 'prompt package', 'system prompt', 'prompt variant'],
   'sk-git': ['git worktree', 'experiment branch', 'clean branch'],
-  'mcp-clickup': ['clickup', 'sprint tasks', 'blockers'],
   'sk-code-web': ['css', 'html', 'javascript', 'webflow', 'browser', 'frontend', 'layout', 'viewport', 'responsive', 'mobile', 'cdn'],
 };
 

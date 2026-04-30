@@ -1,0 +1,34 @@
+{
+  "topic": "Automation & self-management reality map: skill advisor + code graph + system-spec-kit + memory/database + hook system across 5 CLI runtimes",
+  "sessionId": "2026-04-29T13:15:00.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 7,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 180,
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/016-automation-self-management-deep-research",
+  "createdAt": "2026-04-29T13:15:00.000Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "xhigh",
+    "serviceTier": null,
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "mode": "research",
+  "researchQuestions": [
+    "RQ1: Skill advisor automation - hook fires vs CLI invocation vs MCP tool vs scoring tuner; per-runtime entry-point chain",
+    "RQ2: Code graph automation - scan/verify/status/ensureReady/watcher; auto-fires vs operator-triggered",
+    "RQ3: system-spec-kit automation - validator, generate-context, is_phase_parent detection, continuity refresh, auto-indexing",
+    "RQ4: Database/memory automation - memory_save, index_scan, match_triggers, session_bootstrap, checkpoints, retention, causal-graph",
+    "RQ5: Hook system reality per runtime - Claude / Copilot / Codex / Gemini / OpenCode-plugin-bridge / native; wired vs unwired with config-file:line evidence",
+    "RQ6: Cross-cutting auto-wiring gaps - claims-without-runtime-path; runtime-paths-without-docs",
+    "RQ7: Synthesis 4-column reality map - claim / actual behavior / gap-class / recommended-action; at least 8 rows per subsystem"
+  ]
+}

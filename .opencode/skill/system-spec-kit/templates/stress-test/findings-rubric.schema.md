@@ -60,7 +60,7 @@ The template is valid JSON. Do not add comments to completed `findings-rubric.js
 
 ## 4. WORKED EXAMPLE REFERENCES
 
-The v1.0.2 rerun sidecar is the closest historical source shape: `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json`. It records 30 cells, `scoreSum` 201, `maxScore` 240, and `percentRounded` 83.8.
+The v1.0.2 rerun sidecar is the closest historical source shape: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json`. It records 30 cells, `scoreSum` 201, `maxScore` 240, and `percentRounded` 83.8.
 
 The generalized template intentionally renames `maxScore` to `maxPossible` and uses the canonical dimensions from the stress-test cycle feature catalog. If a future cycle keeps the historical v1.0.2 dimensions for comparability, document that in `findings.md` and keep the sidecar internally consistent.
 

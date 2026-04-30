@@ -16,7 +16,7 @@ This scenario is an evidence-led manual check for code-graph-adjacent matrix cel
 - **Goal**: Reference and inspect stored evidence for code-graph cells F5, F6, F7, and F8.
 - **Prerequisites**:
   - Working directory is the repository root.
-  - Matrix evidence files exist under `specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/`.
+  - Matrix evidence files exist under `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/022-full-matrix-execution-validation/`.
   - `jq` is available.
 - **Prompt**: `As a matrix evidence operator, inspect stored evidence for F5 code_graph_query, F6 code_graph_scan/verify, F7 causal graph, and F8 CocoIndex search. Verify each feature has native and inline PASS records where applicable, external CLI records are explicit PASS/BLOCKED/RUNNER_MISSING, and every referenced evidence file exists. Return PASS/FAIL with the decisive file paths.`
 
@@ -29,7 +29,7 @@ This scenario is an evidence-led manual check for code-graph-adjacent matrix cel
 1. Set the matrix evidence root:
 
 ```bash
-EVIDENCE="specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation"
+EVIDENCE="specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/022-full-matrix-execution-validation"
 ```
 
 2. Verify focused runner logs exist:
@@ -111,7 +111,7 @@ No cleanup. This scenario is read-only.
 ## 4. REFERENCES
 
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
-- Evidence root: `specs/system-spec-kit/026-graph-and-context-optimization/035-full-matrix-execution-validation/`
+- Evidence root: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/022-full-matrix-execution-validation/`
 
 ---
 

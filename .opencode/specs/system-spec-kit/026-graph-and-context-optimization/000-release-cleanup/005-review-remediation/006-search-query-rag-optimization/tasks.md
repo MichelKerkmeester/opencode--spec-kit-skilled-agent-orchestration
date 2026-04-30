@@ -55,7 +55,7 @@ _memory:
 
 Harness setup and corpus infrastructure.
 
-- [x] T001 Read Phase C report and synthesize scope. Evidence: `../../../011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md`.
+- [x] T001 Read Phase C report and synthesize scope. Evidence: `../../../015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md`.
 - [x] T002 [P] Create search-quality corpus. Evidence: `mcp_server/stress_test/search-quality/corpus.ts`.
 - [x] T003 [P] Create injectable search-quality harness. Evidence: `mcp_server/stress_test/search-quality/harness.ts`.
 - [x] T004 [P] Create metrics module. Evidence: `mcp_server/stress_test/search-quality/metrics.ts`.
@@ -111,5 +111,5 @@ Query-plan telemetry and planned-workstream documentation.
 
 - **Specification**: See `spec.md`
 - **Plan**: See `plan.md`
-- **Source Research**: `../../../011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report`
+- **Source Research**: `../../../015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report`
 <!-- /ANCHOR:cross-refs -->

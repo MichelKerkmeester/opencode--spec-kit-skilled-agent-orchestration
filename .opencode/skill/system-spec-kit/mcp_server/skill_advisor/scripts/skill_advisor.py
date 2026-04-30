@@ -1355,10 +1355,6 @@ INTENT_BOOSTERS = {
     # ─────────────────────────────────────────────────────────────────
     # MCP-CODE-MODE: External tool integration
     # ─────────────────────────────────────────────────────────────────
-    "clickup": ("mcp-clickup", 2.5),
-    "cu": ("mcp-clickup", 2.0),
-    "sprint": ("mcp-clickup", 1.0),
-    "standup": ("mcp-clickup", 1.0),
     "cms": ("mcp-code-mode", 0.5),
     "component": ("mcp-code-mode", 0.4),
     "external": ("mcp-code-mode", 0.4),
@@ -1657,8 +1653,6 @@ PHRASE_INTENT_BOOSTERS = {
     "extended-thinking": [("cli-claude-code", 1.0)],
     "copilot-cli": [("cli-copilot", 1.5)],
     "cloud-delegation": [("cli-copilot", 1.0)],
-    "clickup-cli": [("mcp-clickup", 1.5)],
-    "task-management": [("mcp-clickup", 1.0)],
     "tidd-ec": [("sk-improve-prompt", 2.0)],
 }
 
@@ -1898,8 +1892,8 @@ INTENT_NORMALIZATION_RULES = {
     },
     "tooling": {
         "phrases": ["use mcp", "code mode", "chrome devtools", "use figma", "use webflow"],
-        "tokens": {"mcp", "devtools", "chrome", "figma", "webflow", "clickup", "notion", "toolchain"},
-        "boosts": [("mcp-code-mode", 0.3), ("mcp-chrome-devtools", 0.3), ("mcp-clickup", 0.3)],
+        "tokens": {"mcp", "devtools", "chrome", "figma", "webflow", "notion", "toolchain"},
+        "boosts": [("mcp-code-mode", 0.3), ("mcp-chrome-devtools", 0.3)],
     },
 }
 

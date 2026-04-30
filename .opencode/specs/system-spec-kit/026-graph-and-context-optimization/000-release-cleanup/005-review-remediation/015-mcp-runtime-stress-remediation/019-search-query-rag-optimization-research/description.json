@@ -1,0 +1,35 @@
+{
+  "trigger_phrases": [
+    "019-search-query-rag-optimization-research",
+    "search query rag optimization research",
+    "Phase C search query RAG optimization",
+    "MCP runtime search optimization",
+    "query intelligence RAG fusion"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research",
+  "description": "Feature Specification: Search/query/RAG optimization research for MCP runtime grounding systems",
+  "keywords": [
+    "research",
+    "deep-research",
+    "search",
+    "query-intelligence",
+    "rag-fusion",
+    "memory-search",
+    "code-graph",
+    "skill-advisor",
+    "cocoindex",
+    "causal-graph",
+    "phase-c"
+  ],
+  "lastUpdated": "2026-04-28T20:42:26Z",
+  "specId": "019",
+  "folderSlug": "search-query-rag-optimization-research",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}
+

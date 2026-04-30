@@ -36,7 +36,7 @@ _memory:
 | **Created** | 2026-04-29 |
 | **Branch** | `main` |
 | **Parent** | `005-review-remediation` |
-| **Source finding** | Phase J research RQ2 in sibling packet `011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research` + direct code investigation |
+| **Source finding** | Phase J research RQ2 in sibling packet `015-mcp-runtime-stress-remediation/022-stress-test-results-deep-research` + direct code investigation |
 <!-- /ANCHOR:metadata -->
 
 ---

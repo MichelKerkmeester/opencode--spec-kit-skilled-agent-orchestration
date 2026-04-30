@@ -85,7 +85,6 @@ Capture the verbatim chain response with timing.
 | File | Role |
 |---|---|
 | `.opencode/skill/mcp-code-mode/SKILL.md` | call_tool_chain spec; parallel-execution patterns |
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp read-only tool catalog |
 
 ---
 

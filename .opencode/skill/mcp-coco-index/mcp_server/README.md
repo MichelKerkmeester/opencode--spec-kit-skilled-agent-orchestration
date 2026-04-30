@@ -1,12 +1,12 @@
 # CocoIndex MCP Server (Soft-Fork)
 
-> Vendored Python source for the CocoIndex Code daemon and CLI, soft-forked from upstream and patched per the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (cocoindex-overfetch-dedup, currently numbered `004`; tracked as `009` during research and in commit history).
+> Vendored Python source for the CocoIndex Code daemon and CLI, soft-forked from upstream and patched per the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (cocoindex-overfetch-dedup, currently numbered `004`; tracked as `009` during research and in commit history).
 
 ---
 
 ## 1. OVERVIEW
 
-This folder bundles a soft-fork of [`cocoindex-code`](https://github.com/cocoindex-io/cocoindex-code) v0.2.3 with patches from the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (cocoindex-overfetch-dedup, currently numbered `004`; tracked as `009` during research). The vendored source ships in `cocoindex_code/` and installs as an editable Python package via `pyproject.toml`. The Rust-based upstream `cocoindex` runtime stays on PyPI as a regular dependency.
+This folder bundles a soft-fork of [`cocoindex-code`](https://github.com/cocoindex-io/cocoindex-code) v0.2.3 with patches from the spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/` (cocoindex-overfetch-dedup, currently numbered `004`; tracked as `009` during research). The vendored source ships in `cocoindex_code/` and installs as an editable Python package via `pyproject.toml`. The Rust-based upstream `cocoindex` runtime stays on PyPI as a regular dependency.
 
 ### Key Reference
 

@@ -59,4 +59,4 @@ The `_confirm.yaml` variants are out of scope here. Those paths require operator
 
 - Group: Tooling and Scripts
 - Source feature title: Copilot target-authority helper
-- Current reality source: `026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md`
+- Current reality source: `026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md`

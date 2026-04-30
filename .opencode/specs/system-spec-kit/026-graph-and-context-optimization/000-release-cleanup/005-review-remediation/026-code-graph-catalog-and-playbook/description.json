@@ -1,0 +1,21 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/026-code-graph-catalog-and-playbook",
+  "description": "Adds feature_catalog/ and manual_testing_playbook/ to mcp_server/code_graph/ -- mirroring the skill_advisor pattern. 8 feature groups + 15 playbook entries. Cross-linked from runtime + root skill catalogs/playbooks.",
+  "keywords": [
+    "026-code-graph-catalog-and-playbook",
+    "code_graph feature catalog",
+    "code_graph manual testing playbook",
+    "code_graph runtime catalog"
+  ],
+  "lastUpdated": "2026-04-29T18:40:22.647Z",
+  "specId": "039",
+  "folderSlug": "code-graph-catalog-and-playbook",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "29-04-26_19-40__resource-map-authored-and-memory-finalization.md"
+  ]
+}

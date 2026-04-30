@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/027-evergreen-doc-packet-id-removal",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/025-stress-test-folder-completion",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/026-code-graph-catalog-and-playbook"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "029-root-readme-refresh",
+      "root readme update",
+      "framework readme refresh",
+      "tool count refresh"
+    ],
+    "key_topics": [
+      "root README",
+      "tool count refresh",
+      "evergreen packet ID rule",
+      "runtime capability mentions",
+      "MCP tool counts"
+    ],
+    "importance_tier": "normal",
+    "status": "complete",
+    "key_files": [
+      "README.md",
+      ".opencode/skill/sk-doc/references/global/evergreen_packet_id_rule.md",
+      ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+      "opencode.json",
+      ".opencode/skill/system-spec-kit/SKILL.md",
+      ".opencode/skill/system-spec-kit/mcp_server/README.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh/verification-notes.md",
+      "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh/audit-findings.md"
+    ],
+    "entities": [
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": "README.md",
+        "source": "manual"
+      },
+      {
+        "name": "tool-schemas.ts",
+        "kind": "source",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts",
+        "source": "manual"
+      },
+      {
+        "name": "advisor-tool-schemas.ts",
+        "kind": "source",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Refreshes root README.md after this session's 18+ commits. Verifies tool/agent/skill/command counts against canonical sources. Adds brief mentions of memory_retention_sweep, advisor_rebuild, freshness-smoke-check, matrix_runners, stress_test/, code_graph runtime catalog/playbook. Fixes one evergreen-rule violation (packet-folder hardlink at L514).",
+    "created_at": "2026-04-29T18:48:57.000Z",
+    "last_save_at": "2026-04-29T18:52:18.000Z",
+    "save_lineage": "initial",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "verification-notes.md",
+      "audit-findings.md"
+    ]
+  }
+}

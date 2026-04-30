@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation",
+  "description": "Feature Specification: Phase Parent Documentation",
+  "keywords": [
+    "feature",
+    "specification",
+    "phase",
+    "parent",
+    "documentation"
+  ],
+  "lastUpdated": "2026-04-27T15:56:03.099Z",
+  "specId": "010",
+  "folderSlug": "phase-parent-documentation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 8,
+  "memoryNameHistory": [
+    "27-04-26_10-13__authored-level-2-planning-packet-for-the-phase.md",
+    "27-04-26_10-51__implementation-complete-phase-parents-now-require.md",
+    "27-04-26_11-18__restructured-010-into-nested-phase-parent-moved.md",
+    "27-04-26_12-56__p3-follow-on-shipped-extended-phase-parent-early.md",
+    "27-04-26_16-56__closed-packet-010-phase-parent-documentation.md"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/004-retroactive-phase-parent-migration",
+  "description": "Phase 4 of 010: retrofit the lean-trio policy across 28 legacy NNN-prefixed phase parents (21 active + 7 archived) via 3 parallel cli-copilot/gpt-5.4-medium workers. Tolerant migration policy preserved (heavy docs stay in place). Narrative + manual-block preservation enforced via worker briefs.",
+  "keywords": [
+    "retroactive",
+    "phase",
+    "parent",
+    "migration",
+    "lean",
+    "trio",
+    "backfill",
+    "cli-copilot",
+    "tolerant",
+    "narrative-preservation"
+  ],
+  "lastUpdated": "2026-04-27T15:01:11.544Z",
+  "specId": "004",
+  "folderSlug": "retroactive-phase-parent-migration",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "014-phase-parent-documentation"
+  ],
+  "memorySequence": 3,
+  "memoryNameHistory": [
+    "27-04-26_14-56__phase-4-of-the-010-phase-parent-documentation.md",
+    "27-04-26_16-01__user-requested-a-context-save-for-the-current.md"
+  ]
+}

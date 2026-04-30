@@ -1,0 +1,21 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/007-deep-loop-workflow-integrity",
+  "description": "Deep-review angle 7: deep-research/review workflow integrity. Audits convergence detection, JSONL state integrity, lineage continuation, reducer correctness, prompt-pack rendering, executor audit provenance, and post-dispatch validation.",
+  "keywords": [
+    "045-007-deep-loop-workflow-integrity",
+    "deep-loop audit",
+    "convergence detection review",
+    "JSONL state log integrity"
+  ],
+  "lastUpdated": "2026-04-29T20:30:00.000Z",
+  "specId": "007",
+  "folderSlug": "deep-loop-workflow-integrity",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "032-release-readiness-deep-review-program"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}
+

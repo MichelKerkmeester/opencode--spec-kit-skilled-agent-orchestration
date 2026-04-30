@@ -89,7 +89,7 @@ If the YAML grep returns zero: the wire-in regressed — restore the helper-rout
 | `.opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml` | Auto-workflow dispatch wire-in for cli-copilot |
 | `.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts` | `buildCopilotPromptArg` + `CopilotTargetAuthority` (packet 012) |
 | `.opencode/skill/system-spec-kit/mcp_server/tests/executor-config-copilot-target-authority.vitest.ts` | Vitest covering all 3 authority branches + override resistance |
-| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md` | Packet 012 implementation summary, §"YAML wire-ins for both auto-loop dispatch sites" |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/012-copilot-target-authority-helper/implementation-summary.md` | Packet 012 implementation summary, §"YAML wire-ins for both auto-loop dispatch sites" |
 
 ### Related Sibling Tests
 

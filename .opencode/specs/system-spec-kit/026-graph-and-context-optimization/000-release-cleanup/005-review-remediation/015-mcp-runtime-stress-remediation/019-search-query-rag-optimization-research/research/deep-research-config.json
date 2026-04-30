@@ -1,0 +1,54 @@
+{
+  "sessionId": "dr-20260428T204226Z-019-search-query-rag-optimization",
+  "topic": "Optimizing search, query intelligence, and RAG fusion systems that ground the MCP runtime",
+  "createdAt": "2026-04-28T20:42:26Z",
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research",
+  "executionMode": "auto",
+  "max_iterations": 10,
+  "maxIterations": 10,
+  "convergenceThreshold": 0.1,
+  "newInfoConvergenceRule": "Stop when 3 or more consecutive iterations have newInfoRatio <= 0.20",
+  "status": "complete",
+  "executor": {
+    "requested": {
+      "kind": "cli-codex",
+      "model": "gpt-5.5",
+      "reasoningEffort": "xhigh",
+      "serviceTier": "default",
+      "serviceTierFlag": "none"
+    },
+    "actual": {
+      "kind": "local-codex-current-session",
+      "model": "gpt-5.5",
+      "reasoningEffort": "xhigh",
+      "serviceTier": "default",
+      "selfInvocationGuard": true,
+      "note": "cli-codex skill forbids Codex self-invocation; research was executed in the active Codex session."
+    }
+  },
+  "researchQuestions": [
+    "RQ1: Highest-leverage performance optimizations across the search stack",
+    "RQ2: Precision and recall loss points",
+    "RQ3: Query intelligence improvements beyond sorted-token heuristic",
+    "RQ4: Optimal RAG fusion strategy across memory/code/skill/CocoIndex",
+    "RQ5: Cross-cutting integration friction points",
+    "RQ6: Residuals in v1.0.2 stress data",
+    "RQ7: Underutilized affordances for search quality",
+    "RQ8: Cost-of-correctness tradeoff for rerank layer",
+    "RQ9: Advisor scoring fusion under ambiguity and learned weights path",
+    "RQ10: Missing integration tests for future regressions"
+  ],
+  "sourcePackets": [
+    "001-search-intelligence-stress-test",
+    "010-stress-test-rerun-v1-0-2",
+    "002-mcp-runtime-improvement-research",
+    "011-post-stress-followup-research",
+    "006-graph-impact-and-affordance-uplift/008-deep-research-review"
+  ],
+  "scopeGuards": {
+    "runtimeCodeChanges": false,
+    "licenseAuditScope": false,
+    "closureTallyChanges": false
+  }
+}
+

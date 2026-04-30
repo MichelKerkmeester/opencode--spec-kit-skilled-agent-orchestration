@@ -17,7 +17,7 @@ _memory:
     next_safe_action: "F-005 can be closed after review"
     blockers: []
     key_files:
-      - "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md"
+      - "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md"
       - ".opencode/skill/system-spec-kit/mcp_server/tests/progressive-validation.vitest.ts"
       - ".opencode/skill/system-spec-kit/scripts/tests/progressive-validation.vitest.ts"
     session_dedup:
@@ -116,7 +116,7 @@ The broad-suite claim is now scoped to evidence. The readiness-relevant targeted
 | `checklist.md` | Created | Added Level 2 verification checklist required by strict validation |
 | `implementation-summary.md` | Created | Recorded actual test state and classifications |
 | `spec.md` | Modified | Updated continuity and Level 2 validator hygiene |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md` | Modified | Replaced broad green wording with targeted-pass plus broad-suite timeout evidence |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md` | Modified | Replaced broad green wording with targeted-pass plus broad-suite timeout evidence |
 <!-- /ANCHOR:what-built -->
 
 ---

@@ -141,9 +141,9 @@ Success criteria: a future investigator can read `findings.md`, `findings-rubric
 - Rubric template: [findings-rubric.template.json](../../templates/stress-test/findings-rubric.template.json)
 - Rubric schema: [findings-rubric.schema.md](../../templates/stress-test/findings-rubric.schema.md)
 - Findings template: [findings.template.md](../../templates/stress-test/findings.template.md)
-- v1.0.1 baseline: `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/`
-- v1.0.2 rerun: `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/`
-- v1.0.3 wiring run: `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/`
+- v1.0.1 baseline: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/`
+- v1.0.2 rerun: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/`
+- v1.0.3 wiring run: `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/021-stress-test-v1-0-3-with-w3-w13-wiring/`
 
 ## 6. SOURCE METADATA
 

@@ -13,7 +13,6 @@
       { "target": "cli-copilot", "weight": 0.7, "context": "routes copilot delegation requests" },
       { "target": "cli-gemini", "weight": 0.7, "context": "routes gemini delegation requests" },
       { "target": "mcp-chrome-devtools", "weight": 0.7, "context": "routes browser debugging requests" },
-      { "target": "mcp-clickup", "weight": 0.7, "context": "routes clickup workflow requests" },
       { "target": "mcp-coco-index", "weight": 0.7, "context": "routes semantic code search requests" },
       { "target": "mcp-code-mode", "weight": 0.7, "context": "routes MCP orchestration requests" },
       { "target": "mcp-figma", "weight": 0.7, "context": "routes figma integration requests" },

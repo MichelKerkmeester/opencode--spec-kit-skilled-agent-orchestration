@@ -21,9 +21,9 @@
         "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/002-sk-code-opencode-alignment"
       },
       {
-        "packet_id": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation",
+        "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
         "reason": "Recent-active subtree of system-spec-kit/mcp_server; audit will discover dead code resulting from 25+ packets of evolution",
-        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation"
+        "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation"
       }
     ]
   },

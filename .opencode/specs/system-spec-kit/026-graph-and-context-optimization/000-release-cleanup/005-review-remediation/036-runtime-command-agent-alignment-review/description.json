@@ -1,0 +1,12 @@
+{
+  "title": "049 Runtime Command Agent Alignment Review",
+  "description": "Audits all commands in .opencode/command/ and agents in .opencode/agent/, .claude/agents/, .codex/agents/, .gemini/agents/ for current-reality alignment after 031-048. Surfaces tool/path/count/capability drift; applies fixes; cross-checks runtime-equivalent agents for consistency.",
+  "contextType": "implementation",
+  "importance_tier": "important",
+  "trigger_phrases": [
+    "036-runtime-command-agent-alignment-review",
+    "runtime command audit",
+    "agent alignment review",
+    "cross-runtime agent consistency"
+  ]
+}

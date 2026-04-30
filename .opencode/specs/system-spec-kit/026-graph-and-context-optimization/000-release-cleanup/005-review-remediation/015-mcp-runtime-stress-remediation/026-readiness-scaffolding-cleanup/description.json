@@ -1,0 +1,14 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup",
+  "description": "Level 1 mechanical cleanup of vestigial embedding-readiness scaffolding remaining after 010 gate removal: db-state.ts exports, context-server.ts callers, 8 test mock files.",
+  "keywords": ["readiness-scaffolding", "cleanup", "embedding-readiness", "isEmbeddingModelReady", "vestigial-code", "lazy-loading"],
+  "lastUpdated": "2026-04-29T09:30:00.000Z",
+  "specId": "026",
+  "folderSlug": "readiness-scaffolding-cleanup",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 1
+}

@@ -80,7 +80,7 @@ Hunter -> Skeptic -> Referee:
 
 Evidence:
 
-- Strict validator on `011-mcp-runtime-stress-remediation` exits 2.
+- Strict validator on `015-mcp-runtime-stress-remediation` exits 2.
 - Root pass reports `SPEC_DOC_INTEGRITY` failures in `feature-catalog-impact-audit.md`, `testing-playbook-impact-audit.md`, `resource-map.md`, and `HANDOVER-deferred.md`.
 - Recursive phase validation reports 21 errors / 33 warnings; common hard error is `EVIDENCE_MARKER_LINT` trying to scan a literal `[0-9][0-9][0-9]-*` child-glob path for non-phase leaf packets.
 - Additional leaf debt appears in 010, 011, 012, 013-017 through missing-link, evidence, section-count, anchor, and template-header warnings.
@@ -159,7 +159,7 @@ Recommended implementation requirements:
 | ID | Severity | Action |
 |----|----------|--------|
 | REQ-001 | P1 | Bring `005-memory-indexer-invariants` strict validation to green without touching CHK-T15. |
-| REQ-002 | P1 | Attempt to bring `011-mcp-runtime-stress-remediation` strict validation to green; halt after two fix passes if broad historical debt remains. |
+| REQ-002 | P1 | Attempt to bring `015-mcp-runtime-stress-remediation` strict validation to green; halt after two fix passes if broad historical debt remains. |
 | REQ-003 | P1 | Refresh stale `derived.status` values for completed remediation/source packets. |
 | REQ-004 | P2 | Update parent phase maps for `005-review-remediation`. |
 | REQ-005 | P2 | Preserve B1/B2 as no-op unless tests expose real collision. |
@@ -178,7 +178,7 @@ Recommended implementation requirements:
 | Check | Result |
 |-------|--------|
 | `validate.sh .../005-memory-indexer-invariants --strict` | FAIL strict, warning-only: template headers + continuity freshness |
-| `validate.sh .../011-mcp-runtime-stress-remediation --strict` | FAIL, 21 errors / 33 warnings |
+| `validate.sh .../015-mcp-runtime-stress-remediation --strict` | FAIL, 21 errors / 33 warnings |
 | Combined focused Vitest sweep | PASS: 18 files, 106 tests |
 | `findings-rubric.json` replay | PASS: 30 cells, score sum 201, no missing score files |
 

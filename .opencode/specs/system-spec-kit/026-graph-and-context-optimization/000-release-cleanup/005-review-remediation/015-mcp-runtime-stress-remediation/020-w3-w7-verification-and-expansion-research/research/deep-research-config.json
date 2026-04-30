@@ -1,0 +1,37 @@
+{
+  "topic": "W3-W7 verification + adjacent/connecting opportunities + enterprise-readiness expansion + empty-folder audit",
+  "sessionId": "2026-04-29T06:00:00.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 10,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "maxDurationMinutes": 180,
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/020-w3-w7-verification-and-expansion-research",
+  "createdAt": "2026-04-29T06:00:00.000Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "xhigh",
+    "serviceTier": null,
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "mode": "research",
+  "researchQuestions": [
+    "RQ1: W3 trust tree wiring + consumer audit",
+    "RQ2: W4 conditional rerank wiring + post-flag-removal latency check",
+    "RQ3: W5 shadow learned weights data pipeline maturity",
+    "RQ4: W6 CocoIndex calibration documentation + promotion candidacy",
+    "RQ5: W7 degraded-readiness coverage gap analysis",
+    "RQ6: Cross-W composition (W3+W4, W5+W3, etc.)",
+    "RQ7: Adjacent integration with memory/advisor/code-graph pipelines",
+    "RQ8: Empty/dead folder audit in system-spec-kit + mcp_server",
+    "RQ9: Enterprise-readiness gap analysis (multi-tenant, SLA, RBAC, audit, alerting)",
+    "RQ10: Expansion candidates (W8/W9/W10...) ranked by leverage × feasibility"
+  ]
+}

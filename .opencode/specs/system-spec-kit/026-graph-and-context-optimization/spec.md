@@ -105,7 +105,7 @@ Provide one canonical 10-wrapper active map after two topical consolidation pass
 <!-- ANCHOR:phase-map -->
 ## PHASE DOCUMENTATION MAP
 
-> Active children are the 11 thematic wrappers below. Historical phase folders are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`. The `Status` column tracks wrapper activity only; use the current-state model below to distinguish implemented, narrowed, reopened, and still-open follow-on work. (Note: legacy `merged-phase-map.md` text below references prior 10-wrapper counts and a gap at `011`; both were superseded by the 2026-04-27 carve-out that promoted the v1.0.1 stress-test → research → remediation cycle into `011-mcp-runtime-stress-remediation/`.)
+> Active children are the 11 thematic wrappers below. Historical phase folders are preserved as direct child folders under each wrapper and mapped in `merged-phase-map.md`. The `Status` column tracks wrapper activity only; use the current-state model below to distinguish implemented, narrowed, reopened, and still-open follow-on work. (Note: legacy `merged-phase-map.md` text below references prior 10-wrapper counts and a gap at `011`; both were superseded by the 2026-04-27 carve-out that promoted the v1.0.1 stress-test → research → remediation cycle into `015-mcp-runtime-stress-remediation/`.)
 
 | Folder | Theme | Notes |
 |--------|-------|-------|
@@ -119,7 +119,7 @@ Provide one canonical 10-wrapper active map after two topical consolidation pass
 | `008-skill-advisor/` | Skill advisor system: search/routing tuning, advisor graph, phrase boosters, smart-router, advisor docs/standards, hook surface, daemon unification, plugin hardening, and hook improvements | 11 child phases (six absorbed from former `006-search-routing-advisor/` plus five from former `009-hook-package/{001,002,008,009,014}`). |
 | `009-hook-parity/` | Runtime hook parity across Claude / Codex / Copilot / OpenCode plugin: schema fixes, wrapper wiring fixes, parity remediations | Eight child phases renumbered 001-008 after second-pass migrations out. Renamed from `010-hook-parity/` during the post-push topology adjustment. |
 | `010-graph-impact-and-affordance-uplift/` | External Project pt-01 + pt-02 adoption: phase-DAG runner, edge explanation/impact uplift, advisor affordance evidence, memory causal trust display, docs/catalogs rollup | Six child phases. Owns memory-causal-trust display documentation under `005-memory-causal-trust-display/`. |
-| `011-mcp-runtime-stress-remediation/` | v1.0.1 MCP-runtime stress-test → deep research → remediation cycle: 006 sweep, 007 deep research (10 iterations producing Q1–Q8 diagnoses), 008–014 remediation packets, plus 013 daemon-rebuild contract. Carved out of `003-continuity-memory-runtime/` on 2026-04-27 once the cycle's topology became clear. | Nine child phases (006–014) plus `HANDOVER-deferred.md` tracking the four still-open follow-ups. |
+| `015-mcp-runtime-stress-remediation/` | v1.0.1 MCP-runtime stress-test → deep research → remediation cycle: 006 sweep, 007 deep research (10 iterations producing Q1–Q8 diagnoses), 008–014 remediation packets, plus 013 daemon-rebuild contract. Carved out of `003-continuity-memory-runtime/` on 2026-04-27 once the cycle's topology became clear. | Nine child phases (006–014) plus `HANDOVER-deferred.md` tracking the four still-open follow-ups. |
 
 ### Current State Model
 

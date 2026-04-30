@@ -79,9 +79,9 @@ Update 12 documents to match committed code. Pure documentation; no runtime chan
 
 | File | Line(s) | Action |
 |------|---------|--------|
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/implementation-summary.md` | 64, 113 | Update TC-3 narrative - passing not expected_fail; cite that 025 closed the wiring |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/tasks.md` | 83 | Remove typecheck-blocked annotation; final batch state typechecks cleanly |
-| `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes/spec.md` | 17 (continuity) | Update `recent_action` to "Implementation complete + shipped"; bump completion_pct to 100; refresh last_updated_at |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/implementation-summary.md` | 64, 113 | Update TC-3 narrative - passing not expected_fail; cite that 025 closed the wiring |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/tasks.md` | 83 | Remove typecheck-blocked annotation; final batch state typechecks cleanly |
+| `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes/spec.md` | 17 (continuity) | Update `recent_action` to "Implementation complete + shipped"; bump completion_pct to 100; refresh last_updated_at |
 | `.opencode/skill/system-spec-kit/references/structure/folder_structure.md` | ~196 | Update child-phase layout example to flat-first; pt-NN explicitly shown as second-run conditional |
 
 #### Code-adjacent READMEs (5 files)

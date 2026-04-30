@@ -46,7 +46,7 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The 026 release-readiness deep-review program (Tier 1: 005-memory-indexer-invariants, 011-mcp-runtime-stress-remediation, 008/008-skill-graph-daemon-and-advisor-unification) surfaced 3 P1 correctness findings and 22 P2 advisories spread across 3 packets. Without a coordinated remediation phase, the findings risk drifting back into "code-complete" status without ever being closed.
+The 026 release-readiness deep-review program (Tier 1: 005-memory-indexer-invariants, 015-mcp-runtime-stress-remediation, 008/008-skill-graph-daemon-and-advisor-unification) surfaced 3 P1 correctness findings and 22 P2 advisories spread across 3 packets. Without a coordinated remediation phase, the findings risk drifting back into "code-complete" status without ever being closed.
 
 ### Purpose
 Provide a single phase-parent home where each synthesized review report drives a sub-phase of concrete fix work. Each sub-phase owns its own spec, plan, tasks, and verification — this parent only manifests the inventory.
@@ -72,10 +72,10 @@ Provide a single phase-parent home where each synthesized review report drives a
 | Phase | Source Review | Verdict | Findings | Severity Mix |
 |-------|---------------|---------|----------|--------------|
 | `001-memory-indexer-storage-boundary/` | `005-memory-indexer-invariants/review/.../review-report.md` | CONDITIONAL | 14 | P1=1, P2=13 |
-| `002-mcp-stress-cycle-cleanup/` | `011-mcp-runtime-stress-remediation/review/.../review-report.md` | PASS (hasAdvisories) | 6 | P2=6 |
+| `002-mcp-stress-cycle-cleanup/` | `015-mcp-runtime-stress-remediation/review/.../review-report.md` | PASS (hasAdvisories) | 6 | P2=6 |
 | `003-skill-advisor-fail-open/` | `008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/review/...` | CONDITIONAL | 18 | P1=3, P2=15 |
 | `004-tier2-remediation/` | Tier 2 D/E/F/G review reports (H deferred) | 4 × CONDITIONAL | 15 | P1=8, P2=7 |
-| `006-search-query-rag-optimization/` | `011-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md` | PROCEED | 20 | P1=3, P2=17 |
+| `006-search-query-rag-optimization/` | `015-mcp-runtime-stress-remediation/019-search-query-rag-optimization-research/research/research-report.md` | PROCEED | 20 | P1=3, P2=17 |
 
 Sub-phase 003 is scaffolded as a placeholder while the 008/008 deep-review loop is still in flight. It will be populated when the synthesis writes its `review-report.md`.
 
@@ -101,6 +101,6 @@ Sub-phase 003 is scaffolded as a placeholder while the 008/008 deep-review loop 
 ## 7. RELATED DOCUMENTS
 
 - **Tier 1A review report**: `../../005-memory-indexer-invariants/review/005-memory-indexer-invariants-pt-01/review-report.md`
-- **Tier 1B review report**: `../../011-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md`
+- **Tier 1B review report**: `../../015-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md`
 - **Tier 1C review packet (in-flight)**: `../../008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/review/008-skill-graph-daemon-and-advisor-unification-pt-01/`
 - **Original investigation plan**: `~/.claude/plans/investigate-users-michelkerkmeester-mega-synthetic-rose.md`

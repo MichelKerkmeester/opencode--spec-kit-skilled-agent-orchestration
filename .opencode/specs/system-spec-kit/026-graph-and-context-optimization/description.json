@@ -22,7 +22,7 @@
     "008-skill-advisor",
     "009-hook-parity",
     "010-graph-impact-and-affordance-uplift",
-    "011-mcp-runtime-stress-remediation"
+    "015-mcp-runtime-stress-remediation"
   ],
   "specFolder": "system-spec-kit/026-graph-and-context-optimization",
   "description": "Feature Specification: Graph and Context Optimization",

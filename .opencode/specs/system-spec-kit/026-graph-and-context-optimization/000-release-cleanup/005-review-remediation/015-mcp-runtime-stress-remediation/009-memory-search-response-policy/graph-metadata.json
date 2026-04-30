@@ -1,0 +1,208 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "009-memory-search-response-policy",
+      "memory_search response policy",
+      "noCanonicalPathClaims",
+      "citationPolicy do_not_cite_results",
+      "weak retrieval refusal contract",
+      "Q4 hallucination guard",
+      "memory search response policy plan",
+      "memory search response policy tasks",
+      "memory search response policy summary"
+    ],
+    "key_topics": [
+      "009-memory-search-response-policy",
+      "response",
+      "policy",
+      "nocanonicalpathclaims",
+      "citationpolicy",
+      "weak",
+      "retrieval",
+      "refusal",
+      "contract",
+      "hallucination",
+      "guard",
+      "memory"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/formatters/search-results.ts",
+      "mcp_server/lib/search/recovery-payload.ts",
+      "mcp_server/tests/d5-recovery-payload.vitest.ts",
+      "mcp_server/tests/empty-result-recovery.vitest.ts",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "recovery-payload.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/search/recovery-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "d5-recovery-payload.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/d5-recovery-payload.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "empty-result-recovery.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/empty-result-recovery.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Add",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Change Type",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Overview Insert",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Pattern Additive",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Components",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Data Flow",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Task Notation",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Completion Criteria",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "All Phase",
+        "kind": "proper_noun",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "files",
+        "kind": "key_phrase",
+        "path": "tasks.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Add hard `responsePolicy` and `citationPolicy` fields to `memory_search` responses so weak retrieval becomes a BINDING claim-authority refusal contract, not advisory text. When `requestQuality.label != \"good\"` AND `recovery.status` indicates degraded, the response carries `responsePolicy.noCanonicalPathClaims:true` and a `safeResponse` string that the model MUST emit instead of inventing details. Also extend `RecoveryAction` vocabulary to include `ask_disambiguation`, `refuse_without_evidence`, and `broaden_or_ask`.",
+    "created_at": "2026-04-27T07:48:04.973Z",
+    "last_save_at": "2026-04-27T07:48:04.973Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "implementation-summary.md"
+    ]
+  }
+}

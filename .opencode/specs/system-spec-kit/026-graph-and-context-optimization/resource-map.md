@@ -62,10 +62,10 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/spec.md | Updated | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/context-index.md | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/spec.md | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/spec.md | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/context-index.md | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/spec.md | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/spec.md | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/context-index.md | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/spec.md | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/spec.md | Cited | OK | phase parent root |
 <!-- /ANCHOR:documents -->
 
@@ -98,10 +98,10 @@ _memory:
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/008-skill-advisor/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/description.json | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/009-hook-parity/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/description.json | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/description.json | Cited | OK | phase child root (nested phase parent) |
-| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/description.json | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/description.json | Cited | OK | phase child root (nested phase parent) |
+| .opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/graph-metadata.json | Cited | OK | phase child root (nested phase parent) |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/description.json | Cited | OK | phase parent root |
 | .opencode/specs/system-spec-kit/026-graph-and-context-optimization/graph-metadata.json | Cited | OK | phase parent root |
 <!-- /ANCHOR:specs -->

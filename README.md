@@ -806,11 +806,6 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - CLI mode (`bdg`) prioritized for speed - runs in terminal, supports Unix pipes, composable in CI/CD
 - MCP mode as fallback for multi-tool integration scenarios
 
-**mcp-clickup**
-- ClickUp project management orchestrator with 2-mode routing
-- CLI (`cu`) handles basic operations (tasks, sprints, standups) for speed
-- MCP handles enterprise features: docs, goals, webhooks, bulk operations, time tracking
-
 &nbsp;
 #### OTHER
 

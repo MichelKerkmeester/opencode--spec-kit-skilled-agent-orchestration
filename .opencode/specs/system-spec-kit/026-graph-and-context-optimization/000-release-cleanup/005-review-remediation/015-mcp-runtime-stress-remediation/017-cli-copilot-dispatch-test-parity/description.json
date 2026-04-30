@@ -1,0 +1,34 @@
+{
+  "trigger_phrases": [
+    "017-cli-copilot-dispatch-test-parity",
+    "cli-copilot dispatch test parity",
+    "F-004 cli-matrix test fix",
+    "cli-matrix.vitest.ts buildCopilotPromptArg parity",
+    "Packet B cli-copilot test hardening",
+    "promptFileBody dispatch test"
+  ],
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/017-cli-copilot-dispatch-test-parity",
+  "description": "Test-only rewrite of the cli-copilot section of cli-matrix.vitest.ts so the assertions model buildCopilotPromptArg's built.argv + promptFileBody shape (the contract packet 026/011/012 actually ships) instead of the legacy resolveCopilotPromptArg / -p \"$(cat ...)\" command-string form. Closes F-004 P2 from the 011 deep-review and satisfies the §7 Packet B PASS gate. Production code (executor-config.ts + both _auto.yaml files) is byte-stable.",
+  "keywords": [
+    "test",
+    "cli-copilot",
+    "buildCopilotPromptArg",
+    "promptFileBody",
+    "target-authority",
+    "deep-loop",
+    "executor-config",
+    "F-004",
+    "Packet-B",
+    "v1.0.2-remediation"
+  ],
+  "lastUpdated": "2026-04-27T18:30:00Z",
+  "specId": "017",
+  "folderSlug": "cli-copilot-dispatch-test-parity",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

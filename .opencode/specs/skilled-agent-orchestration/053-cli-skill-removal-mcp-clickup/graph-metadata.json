@@ -1,0 +1,73 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/053-cli-skill-removal-mcp-clickup",
+  "spec_folder": "skilled-agent-orchestration/053-cli-skill-removal-mcp-clickup",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "remove mcp-clickup",
+      "delete mcp-clickup skill",
+      "decommission mcp-clickup",
+      "053 skill removal",
+      "053 plan",
+      "053 tasks",
+      "053 checklist"
+    ],
+    "key_topics": [
+      "mcp-clickup",
+      "skill",
+      "removal",
+      "decommission",
+      "advisor",
+      "skill-graph",
+      "cleanup",
+      "053"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/mcp-clickup",
+      ".opencode/changelog/mcp-clickup",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill_advisor.py",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/skill-graph.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/graph-metadata.json",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/lexical.ts",
+      ".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts",
+      ".opencode/skill/mcp-code-mode/graph-metadata.json",
+      ".opencode/skill/README.md",
+      ".opencode/install_guides/README.md",
+      ".opencode/install_guides/SET-UP - AGENTS.md",
+      "README.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ],
+    "entities": [
+      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
+      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
+      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
+      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
+      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" }
+    ],
+    "causal_summary": "The mcp-clickup skill is being decommissioned. This packet removes the skill folder, its changelog, and every cross-reference embedded in the skill advisor (scoring tables, skill graphs, signals, adjacency) and in repo-wide READMEs/install guides. Service-level ClickUp/UTCP references that flow through mcp-code-mode are intentionally preserved because they describe the upstream tool, not the orchestrator skill being removed.",
+    "created_at": "2026-04-30T08:00:00Z",
+    "last_save_at": "2026-04-30T08:00:00Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
+  }
+}

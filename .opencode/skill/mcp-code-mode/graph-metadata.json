@@ -15,11 +15,6 @@
         "context": "figma tools via Code Mode"
       },
       {
-        "target": "mcp-clickup",
-        "weight": 0.9,
-        "context": "clickup tools via Code Mode"
-      },
-      {
         "target": "mcp-chrome-devtools",
         "weight": 0.7,
         "context": "devtools MCP fallback via Code Mode"

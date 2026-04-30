@@ -97,7 +97,7 @@ Make the post-program state auditable, traceable, and validator-clean where the 
 | `../../../008-skill-advisor/008-skill-graph-daemon-and-advisor-unification/graph-metadata.json` | Modify | Refresh stale source-packet status. |
 | `../../../005-memory-indexer-invariants/implementation-summary.md` | Modify | Refresh continuity freshness without closing CHK-T15. |
 | `../../../005-memory-indexer-invariants/graph-metadata.json` | Modify | Refresh metadata save timestamp while preserving CHK-T15 status. |
-| `../../../011-mcp-runtime-stress-remediation/*` | Modify | Targeted validator hygiene if bounded. |
+| `../../../015-mcp-runtime-stress-remediation/*` | Modify | Targeted validator hygiene if bounded. |
 | `../../../spec.md` | Modify | Add `005-review-remediation` to `000-release-cleanup` phase map. |
 | `../../../spec.md` | Modify | Refresh root phase map traceability for release cleanup. |
 <!-- /ANCHOR:scope -->
@@ -118,7 +118,7 @@ Make the post-program state auditable, traceable, and validator-clean where the 
 | ID | Requirement | Acceptance Criteria |
 |----|-------------|---------------------|
 | REQ-002 | Bring 005 strict validation to green without closing CHK-T15. | `validate.sh .../005-memory-indexer-invariants --strict` exits 0 or a known limitation records the exact residual after two attempts. |
-| REQ-003 | Attempt to bring 011 strict validation to green. | `validate.sh .../011-mcp-runtime-stress-remediation --strict` exits 0 or implementation-summary records the exact residual after two attempts. |
+| REQ-003 | Attempt to bring 011 strict validation to green. | `validate.sh .../015-mcp-runtime-stress-remediation --strict` exits 0 or implementation-summary records the exact residual after two attempts. |
 | REQ-004 | Refresh stale completion metadata. | 001 and 004 remediation sub-phases and 008/008 source packet carry status matching actual completion evidence. |
 | REQ-005 | Keep this cleanup packet validator-clean. | `validate.sh .../005-post-program-cleanup --strict` exits 0. |
 

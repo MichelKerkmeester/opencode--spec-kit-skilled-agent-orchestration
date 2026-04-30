@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/036-runtime-command-agent-alignment-review",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/036-runtime-command-agent-alignment-review",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/029-root-readme-refresh",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/034-matrix-runners-snake-case-rename",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/035-remaining-p1-p2-remediation"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/022-hybrid-rag-fusion/013-agents-alignment",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/030-hook-plugin-per-runtime-testing",
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/031-hook-test-sandbox-fix"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "036-runtime-command-agent-alignment-review",
+      "runtime command audit",
+      "agent alignment review",
+      "cross-runtime agent consistency"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "audit-findings.md",
+      "remediation-log.md",
+      "cross-runtime-diff.md",
+      "implementation-summary.md"
+    ],
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "audit-findings.md",
+      "remediation-log.md",
+      "cross-runtime-diff.md",
+      "implementation-summary.md"
+    ],
+    "entities": []
+  }
+}

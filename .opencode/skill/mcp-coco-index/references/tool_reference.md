@@ -385,7 +385,7 @@ For detailed schema and configuration examples, see the upstream test files in `
 
 This skill bundles a vendored soft-fork of `cocoindex-code` (Python wrapper) at version `0.2.3+spec-kit-fork.0.2.0`. The fork ships REQ-001 through REQ-006 patches that add dedup, canonical path identity, path-class reranking, and ranking telemetry. All search responses (CLI `ccc search` and MCP `search` tool) include the fields below in addition to the standard `file` / `lines` / `snippet` / `score` / `language` baseline. **Vanilla upstream `cocoindex-code` 0.2.3 does NOT emit any of these fields.**
 
-The canonical field-to-REQ mapping lives in [`../changelog/CHANGELOG.md`](../changelog/CHANGELOG.md#0-2-3-spec-kit-fork-0-2-0--2026-04-27); the per-REQ rationale and patch scope live in the originating spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/`.
+The canonical field-to-REQ mapping lives in [`../changelog/CHANGELOG.md`](../changelog/CHANGELOG.md#0-2-3-spec-kit-fork-0-2-0--2026-04-27); the per-REQ rationale and patch scope live in the originating spec packet at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup/`.
 
 ### 7.1 Chunk-level fields (stored at index time)
 

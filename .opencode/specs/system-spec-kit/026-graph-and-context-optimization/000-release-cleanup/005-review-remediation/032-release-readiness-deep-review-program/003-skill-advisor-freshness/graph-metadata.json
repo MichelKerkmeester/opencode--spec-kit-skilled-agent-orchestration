@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/003-skill-advisor-freshness",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/003-skill-advisor-freshness",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program",
+  "children_ids": [],
+  "migrated": false,
+  "migration_source": "manual",
+  "manual": {
+    "depends_on": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program",
+      "system-spec-kit/026-graph-and-context-optimization/008-skill-graph-daemon-and-advisor-unification",
+      "system-spec-kit/026-graph-and-context-optimization/034-copilot-freshness-codex-cold-start"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/032-release-readiness-deep-review-program/005-cross-runtime-hook-parity"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "045-003-skill-advisor-freshness",
+      "advisor freshness audit",
+      "daemon freshness review",
+      "advisor rebuild review"
+    ],
+    "key_topics": [
+      "skill advisor",
+      "freshness",
+      "advisor_status",
+      "advisor_rebuild",
+      "daemon",
+      "prompt cache",
+      "scoring",
+      "codex fallback",
+      "release-readiness"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md",
+      "description.json",
+      "graph-metadata.json"
+    ],
+    "entities": [
+      {
+        "name": "P1-001 advisor_rebuild workspaceRoot contract gap",
+        "kind": "finding",
+        "path": "review-report.md",
+        "source": "manual"
+      },
+      {
+        "name": "Codex timeout fallback stale marker",
+        "kind": "evidence",
+        "path": ".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts",
+        "source": "manual"
+      }
+    ],
+    "causal_summary": "Deep-review angle 3: skill advisor freshness - daemon detection, status/rebuild split, scoring tables, brief cache, Codex cold-start fallback marker. Verdict CONDITIONAL because the native implementation has no P0 stale/scoring corruption, but advisor_rebuild's public contract cannot target the workspace diagnosed by advisor_status and the status/rebuild playbook.",
+    "created_at": "2026-04-29T20:05:20.000Z",
+    "last_save_at": "2026-04-29T20:05:20.000Z",
+    "save_lineage": "new",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "review-report.md"
+    ]
+  }
+}

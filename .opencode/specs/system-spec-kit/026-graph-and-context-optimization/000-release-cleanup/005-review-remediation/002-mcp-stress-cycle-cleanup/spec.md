@@ -1,7 +1,7 @@
 ---
 title: "Feature Specification: MCP Stress-Cycle Doc/Observability Cleanup"
 template_source: "SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2"
-description: "Close the 6 P2 advisories surfaced by the 011-mcp-runtime-stress-remediation deep review (PASS verdict, hasAdvisories=true). Doc drift, navigation, and verdict-replayability fixes only — no runtime code change."
+description: "Close the 6 P2 advisories surfaced by the 015-mcp-runtime-stress-remediation deep review (PASS verdict, hasAdvisories=true). Doc drift, navigation, and verdict-replayability fixes only — no runtime code change."
 trigger_phrases:
   - "002-mcp-stress-cycle-cleanup"
   - "011 review remediation"
@@ -36,7 +36,7 @@ _memory:
 | **Created** | 2026-04-28 |
 | **Branch** | `main` |
 | **Parent** | `005-review-remediation` |
-| **Source review** | 026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md |
+| **Source review** | 026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md |
 | **Source verdict** | PASS (hasAdvisories=true; P0=0, P1=0, P2=6) |
 
 ---
@@ -46,7 +46,7 @@ _memory:
 ## 2. PROBLEM & PURPOSE
 
 ### Problem Statement
-The 011-mcp-runtime-stress-remediation deep review confirmed the v1.0.2 verdict (6/7 PROVEN, 0 REGRESSION, 83.8% overall) holds independent verification, AND validated that the proposed P0 cli-copilot Gate 3 bypass fix in `executor-config.ts` + `buildCopilotPromptArg` is correctly implemented across all 5 sub-checks. The review surfaced 6 P2 advisories around documentation drift, navigation, and verdict replayability. None block release; closing them tightens the cycle's auditability.
+The 015-mcp-runtime-stress-remediation deep review confirmed the v1.0.2 verdict (6/7 PROVEN, 0 REGRESSION, 83.8% overall) holds independent verification, AND validated that the proposed P0 cli-copilot Gate 3 bypass fix in `executor-config.ts` + `buildCopilotPromptArg` is correctly implemented across all 5 sub-checks. The review surfaced 6 P2 advisories around documentation drift, navigation, and verdict replayability. None block release; closing them tightens the cycle's auditability.
 
 ### Purpose
 Close the 6 P2 advisories so the 011 packet moves from PASS-with-advisories to clean PASS, and so the v1.0.2 verdict rubric is replayable from machine-readable artifacts.
@@ -74,14 +74,14 @@ Close the 6 P2 advisories so the 011 packet moves from PASS-with-advisories to c
 
 | File | Change Type | Source finding |
 |------|-------------|----------------|
-| 011-mcp-runtime-stress-remediation/resource-map.md | Modify | F-001 |
-| 011-mcp-runtime-stress-remediation/011-post-stress-followup-research/research/research.md | Modify | F-002 |
-| 011-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Modify | F-003 |
-| 011-mcp-runtime-stress-remediation/feature-catalog-impact-audit.md | Modify | F-004 |
-| 011-mcp-runtime-stress-remediation/testing-playbook-impact-audit.md | Modify | F-004 |
-| 011-mcp-runtime-stress-remediation/context-index.md | Modify | F-005 |
-| 011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md | Modify (or sidecar) | F-006 |
-| `011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json` | Create | F-006 |
+| 015-mcp-runtime-stress-remediation/resource-map.md | Modify | F-001 |
+| 015-mcp-runtime-stress-remediation/011-post-stress-followup-research/research/research.md | Modify | F-002 |
+| 015-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Modify | F-003 |
+| 015-mcp-runtime-stress-remediation/feature-catalog-impact-audit.md | Modify | F-004 |
+| 015-mcp-runtime-stress-remediation/testing-playbook-impact-audit.md | Modify | F-004 |
+| 015-mcp-runtime-stress-remediation/context-index.md | Modify | F-005 |
+| 015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings.md | Modify (or sidecar) | F-006 |
+| `015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json` | Create | F-006 |
 
 ---
 
@@ -107,7 +107,7 @@ Close the 6 P2 advisories so the 011 packet moves from PASS-with-advisories to c
 ## 5. SUCCESS CRITERIA
 
 - **SC-001**: All 6 source findings closed.
-- **SC-002**: Strict packet validator green for `011-mcp-runtime-stress-remediation`.
+- **SC-002**: Strict packet validator green for `015-mcp-runtime-stress-remediation`.
 - **SC-003**: A maintainer can recompute the 83.8% verdict from `findings-rubric.json` without re-reading the markdown narrative.
 
 ### Acceptance Scenarios
@@ -133,7 +133,7 @@ Close the 6 P2 advisories so the 011 packet moves from PASS-with-advisories to c
 
 None. Related documents for replay:
 
-- **Source review report**: `../../../011-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md`
+- **Source review report**: `../../../015-mcp-runtime-stress-remediation/review/011-mcp-runtime-stress-remediation-pt-01/review-report.md`
 - **Implementation plan**: `plan.md`
 - **Tasks**: `tasks.md`
 <!-- /ANCHOR:questions -->

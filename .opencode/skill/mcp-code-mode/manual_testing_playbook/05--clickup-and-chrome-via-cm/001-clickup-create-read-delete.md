@@ -85,7 +85,6 @@ Capture the chain response, the test list id used (REDACTED if needed), the crea
 
 | File | Role |
 |---|---|
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp tool catalog (create_task, get_task, delete_task) |
 
 ---
 

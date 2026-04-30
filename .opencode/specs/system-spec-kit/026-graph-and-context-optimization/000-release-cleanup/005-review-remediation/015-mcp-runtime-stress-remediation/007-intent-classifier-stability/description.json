@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/007-intent-classifier-stability",
+  "description": "Feature Specification: intent classifier stability + paraphrase corpus + normalized telemetry",
+  "keywords": [
+    "feature",
+    "specification",
+    "intent",
+    "classifier",
+    "stability",
+    "paraphrase",
+    "corpus",
+    "normalized",
+    "telemetry"
+  ],
+  "lastUpdated": "2026-04-27T14:15:10.489Z",
+  "specId": "007",
+  "folderSlug": "intent-classifier-stability",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

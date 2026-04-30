@@ -4266,7 +4266,7 @@
       "lastUpdated": "2026-04-27T07:22:58.728Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test",
       "description": "Feature Specification: Search Intelligence Stress-Test Playbook",
       "keywords": [
         "feature",
@@ -4279,7 +4279,7 @@
       "lastUpdated": "2026-04-26T18:11:53.902Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/001-scenario-design",
       "description": "Feature Specification: Scenario Design Sub-Phase",
       "keywords": [
         "feature",
@@ -4291,7 +4291,7 @@
       "lastUpdated": "2026-04-27T10:12:36.127Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/001-search-intelligence-stress-test/002-scenario-execution",
       "description": "Feature Specification: Scenario Execution Sub-Phase",
       "keywords": [
         "feature",
@@ -4303,7 +4303,7 @@
       "lastUpdated": "2026-04-26T18:11:53.911Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/002-mcp-runtime-improvement-research",
       "description": "Feature Specification: MCP Runtime Improvement Deep Research",
       "keywords": [
         "feature",
@@ -4317,7 +4317,7 @@
       "lastUpdated": "2026-04-27T06:26:37.169Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/003-memory-context-truncation-contract",
       "description": "Feature Specification: memory_context truncation contract + token telemetry",
       "keywords": [
         "feature",
@@ -4330,7 +4330,7 @@
       "lastUpdated": "2026-04-27T07:29:05.315Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/004-cocoindex-overfetch-dedup",
       "description": "Feature Specification: CocoIndex over-fetch + canonical-identity dedup + path-class rerank",
       "keywords": [
         "feature",
@@ -4345,7 +4345,7 @@
       "lastUpdated": "2026-04-27T07:48:04.460Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/005-code-graph-fast-fail",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/005-code-graph-fast-fail",
       "description": "Feature Specification: code_graph fail-fast routing with fallbackDecision",
       "keywords": [
         "feature",
@@ -4357,7 +4357,7 @@
       "lastUpdated": "2026-04-27T07:48:04.558Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/006-causal-graph-window-metrics",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/006-causal-graph-window-metrics",
       "description": "Feature Specification: causal-graph relation-window balance metrics + auto-edge caps",
       "keywords": [
         "feature",
@@ -4372,7 +4372,7 @@
       "lastUpdated": "2026-04-27T07:56:25.140Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/007-intent-classifier-stability",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/007-intent-classifier-stability",
       "description": "Feature Specification: intent classifier stability + paraphrase corpus + normalized telemetry",
       "keywords": [
         "feature",
@@ -4388,7 +4388,7 @@
       "lastUpdated": "2026-04-27T07:56:33.677Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/008-mcp-daemon-rebuild-protocol",
       "description": "Feature Specification: MCP daemon rebuild + restart protocol",
       "keywords": [
         "feature",
@@ -4402,7 +4402,7 @@
       "lastUpdated": "2026-04-27T10:12:36.127Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/009-memory-search-response-policy",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/009-memory-search-response-policy",
       "description": "Feature Specification: memory_search hard response policy + citation policy",
       "keywords": [
         "feature",
@@ -5045,7 +5045,7 @@
       "lastUpdated": "2026-04-25T12:42:54.318Z"
     },
     {
-      "specFolder": "system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs",
+      "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs",
       "description": "Phase 1 of the phase-parent-documentation packet: validator phase-parent branches (check-files.sh + check-level-match.sh), detection helpers (is_phase_parent shell + isPhaseParent ESM JS), templates/phase_parent/spec.md, graph-metadata schema additive accept-path, and CLAUDE.md / AGENTS.md / AGENTS sync triad / SKILL.md documentation sync. Tolerant migration policy preserves legacy parents like 026.",
       "keywords": [
         "phase",

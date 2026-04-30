@@ -18,7 +18,7 @@ _memory:
     blockers: []
     key_files:
       - ".opencode/skill/system-spec-kit/mcp_server/tests"
-      - "specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md"
+      - "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md"
     session_dedup:
       fingerprint: "sha256:012-broad-suite-vitest-honesty-plan"
       session_id: "012-broad-suite-vitest-honesty"

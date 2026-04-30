@@ -72,13 +72,13 @@ Eligible legacy spec docs now carry the template shape the sk-doc audit expected
 
 The following protected scopes were not remediated by the bulk pass:
 
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/024-harness-telemetry-export-mode/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research/`
-- `specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/022-stress-test-results-deep-research/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/024-harness-telemetry-export-mode/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research/`
+- `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes/`
 - `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/009-stress-test-pattern-documentation/`
 - `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal/`
 - `specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/011-stale-doc-and-readme-fixes/`
@@ -124,13 +124,13 @@ The remediation used the audit report as the playbook, then applied a protected-
 |-------|--------|
 | Quick HIGH/MED re-audit | PASS: eligible HIGH 82 -> 0; explicit MED eligible 136 -> 45. |
 | Protected write-set check | PASS: remediation report shows 0 protected-path modifications. Existing unrelated dirty diffs remain outside this packet. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/022-stress-test-results-deep-research --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/024-harness-telemetry-export-mode --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research --strict` | PASS, exit 0. |
-| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/011-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/022-stress-test-results-deep-research --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/024-harness-telemetry-export-mode --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/027-memory-context-structural-channel-research --strict` | PASS, exit 0. |
+| `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes --strict` | PASS, exit 0. |
 | `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/009-stress-test-pattern-documentation --strict` | PASS, exit 0. |
 | `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/010-vestigial-embedding-readiness-gate-removal --strict` | PASS, exit 0. |
 | `validate.sh specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/013-skdoc-legacy-template-debt-cleanup --strict` | PASS, exit 0. |
@@ -159,17 +159,17 @@ The remediation used the audit report as the playbook, then applied a protected-
 | G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/004-dead-code-pruning/spec.md` | HVR prose rewrite, em dash cleanup. |
 | G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/004-dead-code-pruning/tasks.md` | HVR prose rewrite, em dash cleanup. |
 | G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/002-mcp-stress-cycle-cleanup/spec.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs/checklist.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs/implementation-summary.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs/plan.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs/spec.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/001-validator-and-docs/tasks.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish/checklist.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish/implementation-summary.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish/plan.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish/spec.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/002-generator-and-polish/tasks.md` | HVR prose rewrite, em dash cleanup. |
-| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-phase-parent-documentation/003-references-and-readme-sync/checklist.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs/checklist.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs/implementation-summary.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs/plan.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs/spec.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/001-validator-and-docs/tasks.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish/checklist.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish/implementation-summary.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish/plan.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish/spec.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/002-generator-and-polish/tasks.md` | HVR prose rewrite, em dash cleanup. |
+| G1 | `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/014-phase-parent-documentation/003-references-and-readme-sync/checklist.md` | HVR prose rewrite, em dash cleanup. |
 | G6 | `.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/001-unified-context-retrieval-memory-context.md` | Non-spec manual playbook source-file section backfill. |
 | G6 | `.opencode/skill/system-spec-kit/manual_testing_playbook/01--retrieval/002-semantic-and-lexical-search-memory-search.md` | Non-spec manual playbook source-file section backfill. |
 | G6 | `.opencode/skill/system-spec-kit/manual_testing_playbook/06--analysis/020-causal-graph-statistics-memory-causal-stats.md` | Non-spec manual playbook source-file section backfill. |

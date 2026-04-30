@@ -86,7 +86,6 @@ Capture the chain response with both ids and the description-contains check.
 | File | Role |
 |---|---|
 | `.opencode/skill/mcp-chrome-devtools/SKILL.md` | Chrome MCP catalog |
-| `.opencode/skill/mcp-clickup/SKILL.md` | ClickUp MCP catalog |
 
 ---
 

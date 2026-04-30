@@ -1,0 +1,111 @@
+---
+title: "Resource Map - 031 doc truth pass"
+description: "File ledger for 018-doc-truth-pass."
+trigger_phrases:
+  - "018-doc-truth-pass resource map"
+  - "doc truth pass file ledger"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass"
+    last_updated_at: "2026-04-29T20:35:30+02:00"
+    last_updated_by: "codex-gpt-5.5"
+    recent_action: "Resource map indexed"
+    next_safe_action: "Use packet for downstream work"
+    blockers: []
+    key_files:
+      - "resource-map.md"
+    completion_pct: 100
+    open_questions: []
+    answered_questions: []
+---
+# Resource Map
+
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Summary
+
+- **Total references**: 14
+- **By category**: READMEs=0, Documents=0, Commands=1, Agents=0, Skills=4, Specs=8, Scripts=0, Tests=0, Config=0, Meta=1
+- **Missing on disk**: 0
+- **Scope**: All files created, updated, or analyzed during 018-doc-truth-pass.
+- **Generated**: 2026-04-29T20:29:34+02:00
+
+> **Action vocabulary**: `Created` · `Updated` · `Analyzed` · `Removed` · `Cited` · `Validated` · `Moved` · `Renamed`.
+> **Status vocabulary**: `OK` (exists on disk) · `MISSING` (referenced but absent) · `PLANNED` (intentional future path).
+> **Omitted categories** have zero entries; heading numbers are intentionally not renumbered.
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:commands -->
+## 3. Commands
+
+> `.opencode/command/**` and any runtime-specific command surfaces.
+
+| Path | Action | Status | Note |
+|------|--------|--------|------|
+| `.opencode/command/memory/manage.md` | Updated | OK | Path touched by packet commit history. |
+<!-- /ANCHOR:commands -->
+
+---
+
+<!-- ANCHOR:skills -->
+## 5. Skills
+
+> `.opencode/skill/**` artifacts under that skill tree, including references, assets, catalogs, playbooks, scripts, shared helpers, and MCP server files.
+
+| Path | Action | Status | Note |
+|------|--------|--------|------|
+| `.opencode/skill/system-spec-kit/ARCHITECTURE.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
+| `.opencode/skill/system-spec-kit/mcp_server/README.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
+| `.opencode/skill/system-spec-kit/references/config/hook_system.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
+| `.opencode/skill/system-spec-kit/SKILL.md` | Updated | OK | Skill or runtime documentation/code touched by the packet. |
+<!-- /ANCHOR:skills -->
+
+---
+
+<!-- ANCHOR:specs -->
+## 6. Specs
+
+> `.opencode/specs/**` spec folders, phase children, packet docs, research, review, scratch. Takes precedence over `Config` for spec-folder JSON metadata.
+
+| Path | Action | Status | Note |
+|------|--------|--------|------|
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/checklist.md` | Created | OK | Packet-local spec artifact. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/description.json` | Created | OK | Packet discovery metadata refreshed by canonical save. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/graph-metadata.json` | Created | OK | Packet graph metadata refreshed by canonical save. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/implementation-summary.md` | Created | OK | Packet-local spec artifact. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/plan.md` | Created | OK | Packet-local spec artifact. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/research/prompts/iteration-001.md` | Created | OK | Research or prompt artifact captured by the packet. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/spec.md` | Created | OK | Packet-local spec artifact. |
+| `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/018-doc-truth-pass/tasks.md` | Created | OK | Packet-local spec artifact. |
+<!-- /ANCHOR:specs -->
+
+---
+
+<!-- ANCHOR:meta -->
+## 10. Meta
+
+> Repository-wide governance artifacts: runtime instruction files, license files, and changelogs.
+
+| Path | Action | Status | Note |
+|------|--------|--------|------|
+| `AGENTS.md` | Updated | OK | Path touched by packet commit history. |
+<!-- /ANCHOR:meta -->
+
+---
+
+<!-- ANCHOR:author-instructions -->
+## Author Instructions
+
+- Paths are repo-root relative and use the real `.opencode/specs` tree rather than the `specs` symlink.
+- This map was derived from packet commit history with shared commits split by packet-owned paths and commit-body scope.
+- Keep action/status vocabulary aligned with `.opencode/skill/system-spec-kit/templates/resource-map.md`.
+- Preserve category precedence: Specs over Config, Meta over root READMEs, Skills over Documents, Tests over Scripts.
+- Refresh this map whenever the packet receives additional touched paths or a canonical save changes packet-local metadata.
+<!-- /ANCHOR:author-instructions -->

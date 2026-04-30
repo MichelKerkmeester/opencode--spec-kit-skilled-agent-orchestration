@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "sessionId": "2026-04-29T10:05:00.000Z",
+  "findings": [
+    {
+      "id": "F-001",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "023 still presents degradedReadiness as an active expected-failure after 025 closed TC-3.",
+      "evidence": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/023-live-handler-envelope-capture-seam/implementation-summary.md:64",
+      "status": "open"
+    },
+    {
+      "id": "F-002",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "025 remains marked typecheck-blocked and incomplete although the final batch state typechecks cleanly.",
+      "evidence": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/025-memory-search-degraded-readiness-wiring/tasks.md:83",
+      "status": "open"
+    },
+    {
+      "id": "F-003",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "summary": "core/README.md still documents embedding-readiness ownership after 026 removed the scaffold.",
+      "evidence": ".opencode/skill/system-spec-kit/mcp_server/core/README.md:40",
+      "status": "open"
+    },
+    {
+      "id": "F-004",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "028 spec/plan/tasks continuity still describes pre-implementation work despite the implementation summary marking the packet complete.",
+      "evidence": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes/spec.md:17",
+      "status": "open"
+    },
+    {
+      "id": "F-005",
+      "severity": "P1",
+      "dimension": "traceability",
+      "summary": "The batch cannot honestly claim full Vitest green; 026 documents broad suite failures/hang and this review reproduced broad-suite failures before termination.",
+      "evidence": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/026-readiness-scaffolding-cleanup/implementation-summary.md:58",
+      "status": "open"
+    },
+    {
+      "id": "F-006",
+      "severity": "P2",
+      "dimension": "maintainability",
+      "summary": "folder_structure.md's illustrated child-phase layout still teaches a pt-01 default before the post-028 flat-first rule.",
+      "evidence": ".opencode/skill/system-spec-kit/references/structure/folder_structure.md:196",
+      "status": "open"
+    }
+  ],
+  "open": { "P0": 0, "P1": 4, "P2": 2 },
+  "resolved": { "P0": 0, "P1": 0, "P2": 0 },
+  "lastUpdated": "2026-04-29T08:31:53Z"
+}

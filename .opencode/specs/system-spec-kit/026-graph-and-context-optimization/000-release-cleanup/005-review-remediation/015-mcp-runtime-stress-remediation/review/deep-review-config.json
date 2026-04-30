@@ -1,0 +1,30 @@
+{
+  "type": "config",
+  "mode": "review",
+  "reviewTarget": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
+  "reviewTargetType": "track",
+  "reviewDimensions": ["correctness", "security", "traceability", "maintainability"],
+  "resource_map_present": true,
+  "resource_map": { "emit": true },
+  "sessionId": "2026-04-29T10:05:00.000Z",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "maxIterations": 10,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 2,
+  "createdAt": "2026-04-29T10:05:00.000Z",
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": "workspace-write",
+    "timeoutSeconds": 1800
+  },
+  "executionMode": "auto",
+  "status": "complete",
+  "scope": "Review all 9 commits from 2026-04-29 today's batch with focus on the 7 under 011/ (022, 023, 024, 025, 026, 027, 028). Sibling packets 005-review-remediation/{009, 010} are cross-track context. Verify: degradedReadiness wiring honestly closes PP-1 TC-3; readiness scaffolding cleanup actually removed all references; harness telemetry export preserves back-compat; resolveArtifactRoot flat-first doesn't regress pt-NN consumers; YAML synthesis stage step doesn't break operator git workflow; research deltas in 022/027 cite file:line. Surface cross-cutting issues from parallel cli-codex dispatch races (025 hit typecheck race during 026 mid-execution; verify final state is clean)."
+}

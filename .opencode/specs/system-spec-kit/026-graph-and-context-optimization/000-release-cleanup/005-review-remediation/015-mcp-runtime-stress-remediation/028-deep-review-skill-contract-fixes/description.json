@@ -1,0 +1,14 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/015-mcp-runtime-stress-remediation/028-deep-review-skill-contract-fixes",
+  "description": "Two skill-contract fixes: iteration audit trail auto-staged at synthesis (no more dropped iterations on operator git add); resolveArtifactRoot returns flat on first run instead of always pt-01.",
+  "keywords": ["deep-review", "deep-research", "skill-contract", "resolveArtifactRoot", "iteration-commit", "flat-first", "pt-NN"],
+  "lastUpdated": "2026-04-29T09:50:00.000Z",
+  "specId": "028",
+  "folderSlug": "deep-review-skill-contract-fixes",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "015-mcp-runtime-stress-remediation"
+  ],
+  "memorySequence": 1
+}

@@ -1,0 +1,20 @@
+{
+  "specFolder": "specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/030-hook-plugin-per-runtime-testing",
+  "description": "Live tests hook and plugin wiring for each supported runtime, captures per-cell PASS/FAIL/SKIPPED/TIMEOUT evidence, and publishes a runtime findings matrix.",
+  "keywords": [
+    "030-hook-plugin-per-runtime-testing",
+    "runtime hook tests",
+    "per-runtime hook validation",
+    "cli skill hook tests",
+    "hook live testing"
+  ],
+  "lastUpdated": "2026-04-29T19:12:00.000Z",
+  "specId": "043",
+  "folderSlug": "hook-plugin-per-runtime-testing",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

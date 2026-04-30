@@ -819,7 +819,6 @@ Skills are automatically discovered from:
 | mcp-figma            | v1.0.7.0   | Figma design file access and integration             |
 | system-spec-kit      | v2.2.26.0  | Spec folder + template system + context preservation |
 | mcp-chrome-devtools  | v1.0.7.0   | Browser debugging                                    |
-| mcp-clickup          | v1.0.0     | ClickUp project management orchestration             |
 | cli-codex            | v1.2.0     | OpenAI Codex CLI orchestration for code and research |
 | cli-copilot          | v1.2.0     | GitHub Copilot CLI orchestration                     |
 | cli-claude-code      | v1.0.0     | Claude Code CLI orchestration                        |
@@ -1466,7 +1465,7 @@ bash .opencode/command/doctor/scripts/mcp-doctor.sh --fix
 | Category           | Count | Items                                                                                                                    |
 | ------------------ | ----- | ------------------------------------------------------------------------------------------------------------------------ |
 | Native MCP Servers | 3     | code_mode, spec_kit_memory, sequential_thinking                                                                          |
-| Skills             | 18    | mcp-chrome-devtools, mcp-clickup, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-improve-prompt |
+| Skills             | 17    | mcp-chrome-devtools, mcp-coco-index, mcp-code-mode, mcp-figma, system-spec-kit, cli-codex, cli-copilot, cli-claude-code, cli-gemini, sk-code-full-stack, sk-code-opencode, sk-code-review, sk-code-web, sk-deep-research, sk-doc, sk-git, sk-improve-prompt |
 | Commands           | 22    | /create:* (7), /memory:* (6), /spec_kit:* (8), agent_router (1)                                                         |
 | CLI Tools          | 1     | Chrome DevTools (bdg)                                                                                                    |
 | Plugins            | 2     | Antigravity Auth, OpenAI Codex Auth                                                                                      |

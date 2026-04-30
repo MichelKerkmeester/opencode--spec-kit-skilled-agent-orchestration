@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/027-evergreen-doc-packet-id-removal",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/027-evergreen-doc-packet-id-removal",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [],
+  "migrated": true,
+  "migration_source": "legacy",
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "027-evergreen-doc-packet-id-removal",
+      "evergreen doc rule",
+      "no packet ids in readmes",
+      "sk-doc evergreen rule",
+      "packet id audit",
+      "027-evergreen-doc-packet-id-removal resource map",
+      "evergreen packet id removal file ledger"
+    ],
+    "key_topics": [
+      "027-evergreen-doc-packet-id-removal",
+      "evergreen",
+      "doc",
+      "rule",
+      "packet",
+      "ids",
+      "readmes",
+      "sk-doc",
+      "audit",
+      "resource",
+      "map",
+      "removal"
+    ],
+    "importance_tier": "important",
+    "status": "complete",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      ".opencode/skill/cli-copilot/SKILL.md",
+      ".opencode/skill/cli-opencode/README.md",
+      ".opencode/skill/cli-opencode/references/agent_delegation.md",
+      ".opencode/skill/cli-opencode/references/opencode_tools.md",
+      ".opencode/skill/cli-opencode/SKILL.md",
+      ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-deep-review/feature_catalog/feature_catalog.md",
+      ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+      ".opencode/skill/sk-doc/assets/documentation/install_guide_template.md",
+      ".opencode/skill/sk-doc/assets/documentation/readme_template.md",
+      ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md",
+      ".opencode/skill/sk-doc/references/global/evergreen_packet_id_rule.md",
+      ".opencode/skill/sk-doc/references/global/quick_reference.md",
+      ".opencode/skill/sk-doc/SKILL.md",
+      ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/12-memory-retention-sweep.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/37-cli-matrix-adapter-runners.md",
+      ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "README.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/README.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent_delegation.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/agent_delegation.md",
+        "source": "derived"
+      },
+      {
+        "name": "opencode_tools.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-opencode/references/opencode_tools.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/feature_catalog/feature_catalog.md",
+        "source": "derived"
+      },
+      {
+        "name": "feature_catalog_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/feature_catalog/feature_catalog_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "install_guide_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/install_guide_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "readme_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/readme_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook_template.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/assets/documentation/testing_playbook/manual_testing_playbook_template.md",
+        "source": "derived"
+      },
+      {
+        "name": "evergreen_packet_id_rule.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/evergreen_packet_id_rule.md",
+        "source": "derived"
+      },
+      {
+        "name": "quick_reference.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-doc/references/global/quick_reference.md",
+        "source": "derived"
+      },
+      {
+        "name": "ARCHITECTURE.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/ARCHITECTURE.md",
+        "source": "derived"
+      },
+      {
+        "name": "12-memory-retention-sweep.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/02--mutation/12-memory-retention-sweep.md",
+        "source": "derived"
+      },
+      {
+        "name": "37-cli-matrix-adapter-runners.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/16--tooling-and-scripts/37-cli-matrix-adapter-runners.md",
+        "source": "derived"
+      },
+      {
+        "name": "01-category-overview.md",
+        "kind": "doc",
+        "path": ".opencode/skill/system-spec-kit/feature_catalog/22--context-preservation-and-code-graph/01-category-overview.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Evergreen Doc Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Evergreen",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Teach",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "File Path",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Evergreen docs were carrying mutable packet and phase references. Those references rot when packet folders are renumbered, archived, or consolidated, even though the runtime behavior they describe remains current.",
+    "created_at": "2026-04-29T20:05:00.000Z",
+    "last_save_at": "2026-04-29T18:40:39.132Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md",
+      "resource-map.md"
+    ]
+  }
+}

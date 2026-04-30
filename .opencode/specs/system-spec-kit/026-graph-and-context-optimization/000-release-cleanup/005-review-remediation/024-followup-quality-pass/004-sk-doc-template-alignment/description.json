@@ -1,0 +1,22 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/024-followup-quality-pass/004-sk-doc-template-alignment",
+  "description": "Audits docs touched by packets 031 through 036 against sk-doc templates and DQI rules. Fixes README TOCs, anchor markers, reference frontmatter and section structure. Out-of-scope drift and raw prompt-template assets are documented as deferred.",
+  "keywords": [
+    "037-004-sk-doc-template-alignment",
+    "sk-doc audit",
+    "template alignment 031-036",
+    "DQI compliance"
+  ],
+  "lastUpdated": "2026-04-29T18:39:16.384Z",
+  "specId": "004",
+  "folderSlug": "sk-doc-template-alignment",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "024-followup-quality-pass"
+  ],
+  "memorySequence": 5,
+  "memoryNameHistory": [
+    "29-04-26_19-39__resource-map-authored-and-memory-finalization.md"
+  ]
+}

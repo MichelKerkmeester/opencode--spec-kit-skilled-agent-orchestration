@@ -21,8 +21,8 @@ _memory:
       - "spec.md"
       - "tasks.md"
       - "implementation-summary.md"
-      - "../../../011-mcp-runtime-stress-remediation/resource-map.md"
-      - "../../../011-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json"
+      - "../../../015-mcp-runtime-stress-remediation/resource-map.md"
+      - "../../../015-mcp-runtime-stress-remediation/010-stress-test-rerun-v1-0-2/findings-rubric.json"
     session_dedup:
       fingerprint: null
       session_id: "002-mcp-stress-cycle-cleanup-2026-04-28"
@@ -59,7 +59,7 @@ This cleanup turns the 011 stress-cycle review from PASS-with-advisories into a 
 
 | Finding | Closure |
 |---------|---------|
-| F-001 resource-map stale | 011-mcp-runtime-stress-remediation/resource-map.md now covers all 18 child packets, updates counts, marks 011 complete, adds 012-018, and records this cleanup packet as the refresh owner. |
+| F-001 resource-map stale | 015-mcp-runtime-stress-remediation/resource-map.md now covers all 18 child packets, updates counts, marks 011 complete, adds 012-018, and records this cleanup packet as the refresh owner. |
 | F-002 monotonic wording | 011-post-stress-followup-research/research/research.md now says the sequence has an overall downward trajectory with rebounds at iterations 5 and 8. |
 | F-003 handover drift | HANDOVER-deferred.md now routes v1.0.2 follow-ups to 012-018 and keeps only explicitly reasoned deferred items. |
 | F-004 catalog/playbook audit drift | feature-catalog-impact-audit.md and testing-playbook-impact-audit.md now include current-state reconciliation blocks against the live `system-spec-kit` roots and packet 018 residual owner. |
@@ -70,12 +70,12 @@ This cleanup turns the 011 stress-cycle review from PASS-with-advisories into a 
 
 | File | Action | Purpose |
 |------|--------|---------|
-| 011-mcp-runtime-stress-remediation/resource-map.md | Modified | Refresh parent ledger for 18 children plus this cleanup owner. |
+| 015-mcp-runtime-stress-remediation/resource-map.md | Modified | Refresh parent ledger for 18 children plus this cleanup owner. |
 | 011-post-stress-followup-research/research/research.md | Modified | Correct convergence wording. |
-| 011-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Modified | Route follow-ups to 012-018 or explicit deferrals. |
-| 011-mcp-runtime-stress-remediation/feature-catalog-impact-audit.md | Modified | Reconcile historical snapshot with live catalog state. |
-| 011-mcp-runtime-stress-remediation/testing-playbook-impact-audit.md | Modified | Reconcile historical snapshot with live playbook state. |
-| 011-mcp-runtime-stress-remediation/context-index.md | Modified | Add cycle-phase navigator. |
+| 015-mcp-runtime-stress-remediation/HANDOVER-deferred.md | Modified | Route follow-ups to 012-018 or explicit deferrals. |
+| 015-mcp-runtime-stress-remediation/feature-catalog-impact-audit.md | Modified | Reconcile historical snapshot with live catalog state. |
+| 015-mcp-runtime-stress-remediation/testing-playbook-impact-audit.md | Modified | Reconcile historical snapshot with live playbook state. |
+| 015-mcp-runtime-stress-remediation/context-index.md | Modified | Add cycle-phase navigator. |
 | `010-stress-test-rerun-v1-0-2/findings-rubric.json` | Created | Make the 83.8% verdict recomputable from machine-readable data. |
 | 010-stress-test-rerun-v1-0-2/findings.md | Modified | Link the replayability sidecar. |
 | 002-mcp-stress-cycle-cleanup/spec.md | Modified | Mark complete and update continuity. |
@@ -106,7 +106,7 @@ The implementation was delivered as a docs/JSON-only pass. Source review finding
 | Check | Result |
 |-------|--------|
 | JSON parse for `findings-rubric.json` | PASS: parsed successfully; 30 cells; score sum 201; rounded percent 83.8. |
-| Parent validator: `validate.sh .../011-mcp-runtime-stress-remediation --strict` | FAIL: exit 2. Recursive run reported 21 errors / 33 warnings. Dominant failures are inherited `EVIDENCE_MARKER_LINT` ENOENT crashes across existing child packets plus historical doc-reference integrity issues in parent audit docs. |
+| Parent validator: `validate.sh .../015-mcp-runtime-stress-remediation --strict` | FAIL: exit 2. Recursive run reported 21 errors / 33 warnings. Dominant failures are inherited `EVIDENCE_MARKER_LINT` ENOENT crashes across existing child packets plus historical doc-reference integrity issues in parent audit docs. |
 | Cleanup packet validator: `validate.sh .../002-mcp-stress-cycle-cleanup --strict` | PASS after strict-validator closure pass; final exit code recorded in temporary hygiene summary. |
 
 <!-- /ANCHOR:verification -->
