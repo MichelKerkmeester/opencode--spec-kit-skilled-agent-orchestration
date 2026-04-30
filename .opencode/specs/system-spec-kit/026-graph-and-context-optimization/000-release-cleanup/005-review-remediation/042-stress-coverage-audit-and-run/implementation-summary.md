@@ -185,7 +185,7 @@ No failures mapped to any P0/P1 feature_id, so the gap inventory reflects covera
 
 3. **The 30 P2 features were not deeply investigated.** They were classified `Maybe`/`P2` based on rubric application; some may merit promotion to P1 after focused review. The `evidence` column in the matrix gives the per-row rationale for follow-up.
 
-4. **Packet 043 was opened and closed on the same day (2026-04-30).** All 10 P0 gaps now have direct stress coverage. The matrix's `gap_classification` for those ids is `none`, the audit §4.1 lists the new test files, and `npm run stress` reports 38 files / 94 tests passing. P1 and P2 gaps remain in the release-readiness backlog — see `coverage-audit.md` §3 for the inventory.
+4. **Packets 043 and 044 closed the entire stress-coverage backlog on 2026-04-30.** Packet 043 closed the 10 P0 gaps; packet 044 closed all remaining 6 P1 + 30 P2. The matrix now reads `gap_classification=none` for every one of the 54 features. `npm run stress` reports 56 files / 159 tests passing in 46s with exit 0. See `coverage-audit.md` §4.1 (P0 closures) and §4.2 (P1+P2 closures).
 <!-- /ANCHOR:limitations -->
 
 ---

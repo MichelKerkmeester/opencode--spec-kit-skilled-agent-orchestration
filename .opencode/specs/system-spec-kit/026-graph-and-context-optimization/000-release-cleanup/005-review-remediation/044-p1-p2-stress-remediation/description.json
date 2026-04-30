@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/044-p1-p2-stress-remediation",
+  "description": "Spec: P1 + P2 Stress-Test Remediation — Close 36 Remaining Coverage Gaps",
+  "keywords": [
+    "spec",
+    "stress-test",
+    "remediation",
+    "close",
+    "remaining",
+    "coverage",
+    "gaps"
+  ],
+  "lastUpdated": "2026-04-30T20:13:02.895Z",
+  "specId": "044",
+  "folderSlug": "p1-p2-stress-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "30-04-26_21-13__closed-36-p1-p2-stress-gaps-38-56-files-94-159.md"
+  ]
+}

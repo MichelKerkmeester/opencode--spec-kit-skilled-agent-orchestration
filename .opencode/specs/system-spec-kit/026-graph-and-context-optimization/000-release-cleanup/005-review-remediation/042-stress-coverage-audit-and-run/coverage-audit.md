@@ -202,6 +202,17 @@ After packet 043 landed, the matrix was updated for all 10 ids: `stress_test_fil
 
 P1 (6 features) and P2 (30 features) gaps remain — they roll into the normal release-readiness backlog and are not blocking.
 
+### §4.2 — Closed by packet 044 (2026-04-30)
+
+Packet `044-p1-p2-stress-remediation` closed all remaining 6 P1 + 30 P2 gaps on the same day. The matrix now reads `gap_classification=none` for every one of the 54 features. Eighteen new stress files were added (some consolidated where features share a natural test surface):
+
+| Subsystem | Consolidated test files added |
+|-----------|--------------------------------|
+| code_graph | `code-graph-scan-stress.vitest.ts`, `code-graph-context-stress.vitest.ts`, `context-handler-normalization-stress.vitest.ts`, `manual-diagnostics-stress.vitest.ts` (cg-004,005), `detect-changes-preflight-stress.vitest.ts`, `deep-loop-crud-stress.vitest.ts` (cg-009,010,011), `ccc-integration-stress.vitest.ts` (cg-014,015,016), `doctor-apply-mode-stress.vitest.ts` |
+| skill_advisor | `five-lane-fusion-stress.vitest.ts`, `skill-projection-stress.vitest.ts`, `advisor-recommend-handler-stress.vitest.ts`, `auto-indexing-derived-sync-stress.vitest.ts` (sa-008,009,010,011), `lifecycle-routing-stress.vitest.ts` (sa-014,015,016,017,018), `scorer-extras-stress.vitest.ts` (sa-022,023), `mcp-diagnostics-stress.vitest.ts` (sa-027,028), `hooks-parity-stress.vitest.ts` (sa-030,031,032,033), `opencode-plugin-bridge-stress.vitest.ts`, `python-compat-stress.vitest.ts` (sa-035,036) |
+
+After packet 044, `npm run stress` reports `Test Files 56 passed (56)`, `Tests 159 passed (159)` in 46.09s with exit code 0. The full release-readiness stress backlog for `code_graph` and `skill_advisor` is now clear.
+
 ## §5 — Method Notes
 
 - Read both catalog indexes first, then enumerated all 17 code_graph and 37 skill_advisor per-feature files in catalog order.
