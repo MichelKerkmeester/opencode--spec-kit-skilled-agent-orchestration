@@ -18,7 +18,7 @@ operating_mode:
 
 phase_a_invariant: |
   Phase A is diagnostic-only. NO mutations to any file outside packet-local scratch.
-  Phase 3 + Phase 4 will land in a future Phase B release after research packet 007 stabilizes.
+  Phase 3 + Phase 4 are handled by explicit apply workflows after resilience assets stabilize.
 
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS
@@ -47,7 +47,7 @@ mutation_boundaries:
     - "Any source file in the workspace"
   enforcement: "Phase A has no Phase 3; the activities below produce a markdown report only and never invoke code_graph_scan or write to source files"
   phase_b_promotion:
-    gated_on: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+    gated_on: "code-graph resilience assets available"
     notes: "When promoted, the confirm workflow will gain pre_phase_3 + pre_phase_4 + post_phase_4 gates mirroring doctor_skill-advisor_confirm.yaml"
 
 # ─────────────────────────────────────────────────────────────────
@@ -72,7 +72,7 @@ approval_gates:
     on_abort_action: "Exit STATUS=CANCELLED with no report written"
 
 # ─────────────────────────────────────────────────────────────────
-# DEFAULT BLOAT-DIR PATTERNS (placeholder; authoritative from 007)
+# DEFAULT BLOAT-DIR PATTERNS (placeholder until resilience assets are refreshed)
 # ─────────────────────────────────────────────────────────────────
 bloat_patterns:
   high_confidence:
@@ -87,7 +87,7 @@ bloat_patterns:
     - "build/"
     - ".opencode/skill/system-spec-kit/mcp_server/dist/"
     - ".opencode/scripts/dist/"
-  notes: "Authoritative tier definitions land in research-packet 007's assets/exclude-rule-confidence.json"
+  notes: "Authoritative tier definitions live in the code-graph resilience assets."
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW

@@ -29,6 +29,8 @@ You are the **single point of accountability**. The user receives ONE coherent r
 
 **Path Convention**: Use only `.claude/agents/*.md` as the canonical runtime path reference.
 
+**Runtime Directory Resolution**: OpenCode profile reads `.opencode/agent/`; Claude profile reads `.claude/agents/`; Codex profile reads `.codex/agents/`; Gemini profile reads `.gemini/agents/`. Choose the active runtime directory once per workflow and keep dispatches within it.
+
 **CRITICAL**: You primarily orchestrate via the `task` tool. You MAY use `read` to load agent definitions or command specs needed for correct dispatch, but you MUST NOT perform implementation or codebase exploration directly. Execution work remains delegated to sub-agents.
 
 ---
@@ -796,7 +798,7 @@ The orchestrator's own behavior can cause context overload. Follow these rules:
 
 ### Context Recovery Priority
 
-If hook-injected context is present at the start of a session (injected by Claude Code SessionStart hook), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
+If hook-injected context is present at the start of a session (from the runtime startup/bootstrap surface; trigger matrix: `.opencode/skill/system-spec-kit/references/config/hook_system.md:105`), use it directly as the baseline context. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information.
 
 If hook context is NOT present (hooks disabled, different runtime, or unavailable), fall back to standard tool-based recovery:
 1. Use `/spec_kit:resume` semantics: recover from `handover.md`, then `_memory.continuity`, then the packet's spec docs

@@ -1,5 +1,5 @@
 ---
-description: Diagnose + optionally fix code-graph index health (stale + missed + bloat). Diagnostic-only via :auto/:confirm; apply mode via :apply/:apply-confirm consumes 007 research outputs (gold battery, staleness model, exclude-rule confidence tiers).
+description: Diagnose + optionally fix code-graph index health (stale + missed + bloat). Diagnostic-only via :auto/:confirm; apply mode via :apply/:apply-confirm consumes resilience research assets (gold battery, staleness model, exclude-rule confidence tiers).
 argument-hint: "[:auto|:confirm|:apply|:apply-confirm] [--scope=stale|missed|bloat|all|excludes] [--tier-floor=high|medium|low|all]"
 allowed-tools: Read, Edit, Write, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_kit_memory__code_graph_status, mcp__spec_kit_memory__code_graph_query, mcp__spec_kit_memory__code_graph_context, mcp__spec_kit_memory__code_graph_scan, mcp__spec_kit_memory__detect_changes, mcp__spec_kit_memory__memory_context, mcp__spec_kit_memory__memory_search
 ---
@@ -29,7 +29,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob, mcp__cocoindex_code__search,
 - **YAML START CONDITION**: do not load YAML until ALL required inputs are bound: `execution_mode`, `scope`
 - **DIAGNOSTIC MODE (:auto, :confirm) IS READ-ONLY**: zero mutations to repo files; report goes to packet-local scratch only
 - **APPLY MODE (:apply, :apply-confirm) MUTATES `.opencode/code-graph.config.json`**: pre-apply snapshot + post-verify gold-battery + auto-rollback on regression in autonomous mode; user-approval gates in confirm mode
-- **APPLY MODE consumes 007 research outputs** at `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/assets/` (exclude-rule-confidence.json, staleness-model.md, code-graph-gold-queries.json, recovery-playbook.md)
+- **APPLY MODE consumes resilience research assets**: exclude-rule-confidence.json, staleness-model.md, code-graph-gold-queries.json, and recovery-playbook.md from the checked-in code-graph resilience assets folder.
 
 > **Format:** `/doctor:code-graph [:auto|:confirm] [flags]`
 > Examples: `/doctor:code-graph:auto` | `/doctor:code-graph:confirm --scope=bloat` | `/doctor:code-graph --scope=stale`
@@ -40,7 +40,7 @@ allowed-tools: Read, Edit, Write, Bash, Grep, Glob, mcp__cocoindex_code__search,
 | ------ | ----- |
 | Location | Diagnostic report under packet-local scratch only |
 | Reason | Phase A is read-only; no spec folder packet is mutated |
-| Alternative | Operator reads the diagnostic report and decides next steps; Phase B (apply mode) future packet will follow doctor_skill-advisor mutation patterns |
+| Alternative | Operator reads the diagnostic report and decides next steps; apply mode is explicit and follows doctor_skill-advisor mutation patterns |
 
 ---
 
@@ -128,7 +128,7 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Deliver a guided diagnostic over the code-graph index without requiring users to know the internal scanner architecture. Phase A produces a markdown report with stale/missed/bloat findings and proposed exclude-rule recommendations. The operator reads the report and decides whether to act manually. Phase B (apply mode) — which would write a `code-graph-config.json` and trigger re-scan — is deferred until the resilience-research packet (007-code-graph-resilience-research) produces the verification battery, staleness model, recovery playbook, and exclude-rule confidence tiers.
+Deliver a guided diagnostic over the code-graph index without requiring users to know the internal scanner architecture. Diagnostic mode produces a markdown report with stale/missed/bloat findings and proposed exclude-rule recommendations. Apply mode is manual or explicitly command-invoked: it writes `.opencode/code-graph.config.json`, runs `code_graph_scan`, and verifies against the resilience research assets.
 
 ---
 
@@ -151,7 +151,7 @@ $ARGUMENTS
 
 | Phase | Name      | Purpose                                          | Diagnostic | Apply |
 | ----- | --------- | ------------------------------------------------ | :--------: | :---: |
-| 0     | Discovery | code_graph_status + detect_changes + load 007 assets | ✓        | ✓     |
+| 0     | Discovery | code_graph_status + detect_changes + load resilience assets | ✓        | ✓     |
 | 1     | Analysis  | stale + missed + bloat sets; per-pattern safety verdicts | ✓    | ✓     |
 | 2     | Proposal  | exclude-rule + language-filter recommendations; report | ✓     | ✓     |
 | 3     | Apply     | snapshot config + atomic write `.opencode/code-graph.config.json` | — | ✓ |
@@ -227,8 +227,8 @@ STATUS=FAIL ERROR="[message]"
 **Full details in YAML prompts:** Phase activities, MCP tool invocation patterns, bloat-dir detection rules, report format.
 
 ### See also
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/006-code-graph-doctor-command/spec.md` — packet specification
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research/spec.md` — research packet that gates Phase B
+- Code-graph doctor command spec — packet specification
+- Code-graph resilience research assets — verification battery, staleness model, recovery playbook, and exclude-rule confidence tiers
 - `.opencode/command/doctor/skill-advisor.md` — sibling doctor command (5-phase mutation pattern; pattern source for Phase B)
 - `.opencode/install_guides/SET-UP - Code Graph.md` — user-facing setup guide
 
@@ -247,7 +247,7 @@ STATUS=FAIL ERROR="[message]"
 | `tmp/` | high | scratch / temp files |
 | `.DS_Store` | high | macOS metadata |
 
-(Final tier definitions come from the resilience-research packet 007.)
+(Final tier definitions come from the code-graph resilience research assets.)
 
 ---
 
@@ -271,7 +271,7 @@ STATUS=FAIL ERROR="[message]"
 | `/doctor:skill-advisor` | Sibling doctor command (5-phase pattern source) |
 | `/doctor:mcp_install` | Sibling doctor command (infrastructure setup) |
 | `/doctor:mcp_debug` | Sibling doctor command (diagnostic-only, like this one) |
-| `/spec_kit:deep-research:auto` | Run the resilience-research loop to unblock Phase B |
+| `/spec_kit:deep-research:auto` | Re-run the resilience research loop if the assets need refresh |
 | `/memory:save` | Refresh canonical continuity after running diagnostic |
 
 ---
@@ -281,12 +281,12 @@ STATUS=FAIL ERROR="[message]"
 ```
 [/doctor:code-graph:auto] → review report → [manual exclude-rule editing if desired]
                                                    ↓
-                                          [/spec_kit:deep-research:auto on 007 packet]
+                                          [explicit apply mode, if approved]
                                                    ↓
                                           [Phase B doctor command future release]
 ```
 
-Phase A ships with Phase B explicitly deferred until research outputs stabilize.
+No watcher or background task applies these recommendations; apply mode and manual edits are the only mutation paths.
 
 ---
 
@@ -294,8 +294,8 @@ Phase A ships with Phase B explicitly deferred until research outputs stabilize.
 
 | Condition | Suggested Command | Reason |
 | --------- | ----------------- | ------ |
-| Diagnostic complete, want to act on findings | Manual edit of scanner config + `code_graph_scan` | Phase B not yet released |
-| Want to unblock Phase B | `/spec_kit:deep-research:auto specs/.../007-code-graph-resilience-research/` | Run the research loop |
+| Diagnostic complete, want to act on findings | Manual edit of scanner config + `code_graph_scan`, or explicit apply mode | Mutations are operator-triggered |
+| Want to refresh resilience assets | `/spec_kit:deep-research:auto` on the code-graph resilience packet | Run the research loop |
 | Want broader audit | `/spec_kit:deep-review:auto specs/.../006-code-graph-doctor-command/` | Iterative review pass |
 | New scan completed | Re-run `/doctor:code-graph:auto` | Refresh diagnostic |
 

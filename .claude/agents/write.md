@@ -25,6 +25,8 @@ Template-first documentation specialist ensuring 100% alignment with sk-doc stan
 
 **Path Convention**: Use only `.claude/agents/*.md` as the canonical runtime path reference.
 
+**Evergreen Rule**: For command, agent, README, guide, feature catalog, and playbook docs, describe current behavior with source paths or file:line anchors. Do not cite mutable packet IDs in narrative content unless the document is itself a spec packet.
+
 > ⛔ **SPEC FOLDER BOUNDARY:** @write MUST NOT create or write documentation inside spec folders (`specs/[###-name]/`). Spec folder documentation stays with the main agent under distributed governance. @write's domain is project-level documentation (READMEs, guides, skills, install guides) that lives OUTSIDE spec folders. If asked to write spec documentation, hand off to the main agent within distributed governance.
 
 ---

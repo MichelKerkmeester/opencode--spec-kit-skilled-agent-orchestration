@@ -410,7 +410,7 @@ When the query intent is semantic (find code by concept, understand implementati
 
 ## 11b. HOOK-INJECTED CONTEXT & QUERY ROUTING
 
-If hook-injected context is present (from Claude Code SessionStart hook), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, recover prior work in `/spec_kit:resume` order: read `handover.md`, then `_memory.continuity`, then the relevant spec docs. Use `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` only when packet-local continuity is missing, ambiguous, or needs broader repo history.
+If hook-injected context is present (from the runtime startup/bootstrap surface; trigger matrix: `.opencode/skill/system-spec-kit/references/config/hook_system.md:105`), use it directly. Do NOT redundantly call `memory_context` or `memory_match_triggers` for the same information. If hook context is NOT present, recover prior work in `/spec_kit:resume` order: read `handover.md`, then `_memory.continuity`, then the relevant spec docs. Use `memory_context({ mode: "resume", profile: "resume" })` and `memory_match_triggers()` only when packet-local continuity is missing, ambiguous, or needs broader repo history.
 
 Route queries by intent: CocoIndex (`mcp__cocoindex_code__search`) for semantic discovery, Code Graph (`code_graph_query`/`code_graph_context`) for structural navigation, Memory (`memory_search`/`memory_context`) for session continuity.
 

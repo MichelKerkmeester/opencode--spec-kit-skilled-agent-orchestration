@@ -38,7 +38,7 @@ Provides a guided, step-by-step installation of all OpenCode MCP servers. Reads 
 
 | Step | Name | Purpose | Outputs |
 |------|------|---------|---------|
-| 1 | Preflight | Check prerequisites (Node.js 18+, Python 3.11+, npm, npx) | prerequisite_report |
+| 1 | Preflight | Check prerequisites (Node.js >=20.11.0, Python 3.11+, npm, npx) | prerequisite_report |
 | 2 | Assess | For each server, check current state vs expected state | gap_analysis per server |
 | 3 | Install | Run install scripts or manual steps per server | dependencies installed |
 | 4 | Configure | Verify/create MCP config entries in active runtime configs | config wiring confirmed |
@@ -54,7 +54,7 @@ Provides a guided, step-by-step installation of all OpenCode MCP servers. Reads 
 Check system prerequisites. **STOP if blocking prerequisites are missing.**
 
 ```bash
-node --version    # Must be v18+
+node --version    # Must be >=20.11.0
 python3 --version # Must be 3.11+ (for the spec-kit CocoIndex fork at .opencode/skill/mcp-coco-index/; upstream cocoindex-code may have different Python bounds)
 npm --version
 npx --version
@@ -193,7 +193,7 @@ STATUS=OK
 
 | Condition | Action |
 |-----------|--------|
-| Node.js < 18 | `STATUS=FAIL ERROR="Node.js 18+ required"` |
+| Node.js < 20.11.0 | `STATUS=FAIL ERROR="Node.js >=20.11.0 required"` |
 | Python < 3.11 | WARN — CocoIndex skipped, others proceed |
 | Install script missing | `STATUS=FAIL ERROR="Install script not found at expected path"` |
 | Config file not writable | Show snippet, ask user to add manually |

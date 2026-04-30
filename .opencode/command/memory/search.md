@@ -101,6 +101,8 @@ Provide a unified entry point that:
 - Evaluation: Run channel ablation studies and view reporting dashboards (`eval_run_ablation`, `eval_reporting_dashboard`)
 - Learning history: View PREFLIGHT/POSTFLIGHT records and Learning Index trends (`memory_get_learning_history`)
 
+**Lifecycle note:** Retrieval does not delete expired records. Use `/memory:manage retention-sweep` for the `memory_retention_sweep` tool when governed records need retention cleanup (`tool-schemas.ts:330`).
+
 ### Hybrid Retrieval Runtime (Retrieval Mode)
 
 The unified context tool runs a hybrid retrieval pipeline with **graph-first routing** (026):

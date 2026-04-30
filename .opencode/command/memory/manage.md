@@ -1,7 +1,7 @@
 ---
-description: Manage indexed-continuity database maintenance and lifecycle tasks - stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, and CocoIndex CCC operations
-argument-hint: "[scan [--force]] | [cleanup] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>] | [ccc <status|reindex|feedback>]"
-allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel, spec_kit_memory_ccc_status, spec_kit_memory_ccc_reindex, spec_kit_memory_ccc_feedback
+description: Manage indexed-continuity database maintenance and lifecycle tasks - stats, scan, cleanup, retention-sweep, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, and CocoIndex CCC operations
+argument-hint: "[scan [--force]] | [cleanup] | [retention-sweep [--dry-run]] | [bulk-delete <tier> [--older-than <days>] [--folder <spec>]] | [tier <id> <tier>] | [triggers <id>] | [validate <id> <useful|not>] | [delete <id>] | [health] | [checkpoint <subcommand>] | [ingest <subcommand>] | [ccc <status|reindex|feedback>]"
+allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, spec_kit_memory_memory_search, spec_kit_memory_memory_index_scan, spec_kit_memory_memory_validate, spec_kit_memory_memory_update, spec_kit_memory_memory_delete, spec_kit_memory_memory_bulk_delete, spec_kit_memory_memory_retention_sweep, spec_kit_memory_memory_health, spec_kit_memory_checkpoint_create, spec_kit_memory_checkpoint_restore, spec_kit_memory_checkpoint_list, spec_kit_memory_checkpoint_delete, spec_kit_memory_memory_ingest_start, spec_kit_memory_memory_ingest_status, spec_kit_memory_memory_ingest_cancel, spec_kit_memory_ccc_status, spec_kit_memory_ccc_reindex, spec_kit_memory_ccc_feedback
 ---
 
 # 🚨 MANDATORY FIRST ACTION - DO NOT SKIP
@@ -16,13 +16,13 @@ allowed-tools: Read, spec_kit_memory_memory_stats, spec_kit_memory_memory_list, 
 BEFORE executing ANY workflow:
 
 1. PARSE $ARGUMENTS to determine mode
-2. VALIDATE mode is recognized (stats, scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc)
+2. VALIDATE mode is recognized (stats, scan, cleanup, retention-sweep, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc)
    - IF $ARGUMENTS is empty → mode = "stats" (default)
 3. For modes requiring <id>: VERIFY id is provided and numeric
 4. For modes requiring <name>: VERIFY name is provided
 
 IF mode unrecognized:
-  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc"
+  → STATUS=FAIL ERROR="Unknown mode: <mode>. Valid: scan, cleanup, retention-sweep, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, ccc"
 
 IF required parameter missing:
   → STATUS=FAIL ERROR="Missing required parameter for <mode>"
@@ -37,7 +37,7 @@ Unified management interface for the indexed-continuity database: scan for new f
 ```yaml
 role: Memory Database Administrator
 purpose: Unified management interface for indexed-continuity database maintenance, checkpoint operations, and async ingest management
-action: Route through scan, cleanup, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, or ccc based on arguments
+action: Route through scan, cleanup, retention-sweep, bulk-delete, tier, triggers, validate, delete, health, checkpoint, ingest, or ccc based on arguments
 operating_mode:
   workflow: interactive_management
   approvals: cleanup_delete_restore_require_confirmation
@@ -51,7 +51,7 @@ operating-mode block and markdown workflow steps.
 
 ## 0. INSTRUCTIONS
 
-Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `spec-doc/*.md` surface is no longer accepted by the runtime. CCC routing is explicit operator-triggered management, not background CocoIndex automation.
+Parse the requested mode first, then execute only the matching management workflow. Canonical spec docs are the only active continuity source; the retired `spec-doc/*.md` surface is no longer accepted by the runtime. Retention cleanup uses `memory_retention_sweep` (`tool-schemas.ts:330`) and CCC routing is explicit operator-triggered management, not background CocoIndex automation.
 
 ---
 
@@ -60,6 +60,7 @@ Parse the requested mode first, then execute only the matching management workfl
 Provide a unified interface for the indexed-continuity database **management** operations:
 - Indexing new files and scanning for updates
 - Cleanup of old or deprecated spec-doc records
+- Retention sweep of expired governed records
 - Tier management and trigger editing
 - Validation feedback and deletion
 - Health checks and diagnostics
@@ -85,6 +86,7 @@ Provide a unified interface for the indexed-continuity database **management** o
 | `scan`                                   | Scan              | `/memory:manage scan`                                  |
 | `scan --force`                           | Force Scan        | `/memory:manage scan --force`                          |
 | `cleanup`                                | Cleanup           | `/memory:manage cleanup`                               |
+| `retention-sweep --dry-run`              | Retention Sweep   | `/memory:manage retention-sweep --dry-run`             |
 | `bulk-delete <tier>`                     | Bulk Delete       | `/memory:manage bulk-delete deprecated`                |
 | `bulk-delete <tier> --older-than <days>` | Bulk Delete       | `/memory:manage bulk-delete temporary --older-than 30` |
 | `bulk-delete <tier> --folder <spec>`     | Bulk Delete       | `/memory:manage bulk-delete normal --folder 007-auth`  |
@@ -380,7 +382,7 @@ MEMORY:CLEANUP
 STATUS=OK REMOVED=<N> KEPT=<N> CHECKPOINT=<name>
 ```
 
-### Index-Scope Violations Cleanup (Packet 026/010/002)
+### Index-Scope Violations Cleanup
 
 Operator CLI for purging rows that violate the permanent index-scope invariants (`z_future/`, `/external/`) and for normalizing stray `constitutional` tier rows on non-constitutional paths. Shared scope rules live in `mcp_server/lib/utils/index-scope.ts` (`shouldIndexForMemory()`, `shouldIndexForCodeGraph()`) and are enforced defensively at save time, so this CLI exists to repair pre-existing pollution only.
 
@@ -410,7 +412,23 @@ The two remaining constitutional rows are the real constitutional rule files und
 
 ---
 
-## 8. BULK DELETE MODE
+## 8. RETENTION SWEEP MODE
+
+**Trigger:** `/memory:manage retention-sweep [--dry-run]`
+
+Runs `memory_retention_sweep` to audit or delete governed spec-doc records whose `delete_after` timestamp has expired. The tool descriptor is canonical at `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:330`.
+
+### Workflow
+
+1. Parse `--dry-run`; default to dry-run unless the user explicitly requests apply.
+2. Execute `spec_kit_memory_memory_retention_sweep({ dryRun: true })` for previews.
+3. Before a mutating sweep, display the expired count and ask for confirmation.
+4. Execute `spec_kit_memory_memory_retention_sweep({ dryRun: false })` only after confirmation.
+5. Report deleted count plus any retention audit metadata returned by the tool.
+
+---
+
+## 9. BULK DELETE MODE
 
 **Trigger:** `/memory:manage bulk-delete <tier> [--older-than <days>] [--folder <spec>]`
 
@@ -481,7 +499,7 @@ STATUS=OK REMOVED=<N> TIER=<tier>
 
 ---
 
-## 9. TIER MANAGEMENT
+## 10. TIER MANAGEMENT
 
 **Trigger:** `/memory:manage tier <id> <tier>`
 
@@ -489,7 +507,7 @@ Tier resolution for indexed content is deterministic:
 - Precedence: **metadata tier → inline marker tier → default tier**
 - Manual tier updates via this command update the stored tier for the target spec-doc record ID **subject to invariant guards**.
 
-**Constitutional tier invariant (Packet 026/010/002):** promoting a non-constitutional spec-doc record to `importanceTier: constitutional` is **not allowed**. The save / update / post-insert / checkpoint-restore paths all enforce this: any non-constitutional-path spec-doc record attempting `constitutional` is normalized down to `important` before persistence, and the action is recorded in the governance audit log as `tier_downgrade_non_constitutional_path`. The `memory_update` call returns success with the normalized tier rather than rejecting the request. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md`) may carry the `constitutional` tier.
+**Constitutional tier invariant:** promoting a non-constitutional spec-doc record to `importanceTier: constitutional` is **not allowed**. The save / update / post-insert / checkpoint-restore paths all enforce this: any non-constitutional-path spec-doc record attempting `constitutional` is normalized down to `important` before persistence, and the action is recorded in the governance audit log as `tier_downgrade_non_constitutional_path`. The `memory_update` call returns success with the normalized tier rather than rejecting the request. Only real constitutional rule files under `.opencode/skill/system-spec-kit/constitutional/` (excluding its `README.md`) may carry the `constitutional` tier.
 
 Excluded paths (`z_future/`, `/external/`) are rejected outright at save time and cannot be tier-promoted through this command.
 
@@ -514,7 +532,7 @@ STATUS=OK ID=<id> TIER=<tier>
 
 ---
 
-## 10. TRIGGER EDIT
+## 11. TRIGGER EDIT
 
 **Trigger:** `/memory:manage triggers <id>`
 
@@ -541,7 +559,7 @@ STATUS=OK ID=<id> TRIGGERS=<N>
 
 ---
 
-## 11. VALIDATE MODE
+## 12. VALIDATE MODE
 
 **Trigger:** `/memory:manage validate <id> useful` or `/memory:manage validate <id> not`
 
@@ -564,7 +582,7 @@ STATUS=OK ID=<id> USEFUL=<true|false>
 
 ---
 
-## 12. DELETE MODE
+## 13. DELETE MODE
 
 **Trigger:** `/memory:manage delete <id>`
 
@@ -629,7 +647,7 @@ STATUS=OK DELETED=<id>
 
 ---
 
-## 13. HEALTH CHECK
+## 14. HEALTH CHECK
 
 **Trigger:** `/memory:manage health`
 
@@ -669,7 +687,7 @@ STATUS=OK HEALTH=<healthy|degraded|error> SCHEMA=v13
 
 ---
 
-## 14. CHECKPOINT OPERATIONS
+## 15. CHECKPOINT OPERATIONS
 
 ### Checkpoint Create
 
@@ -820,7 +838,7 @@ STATUS=OK CHECKPOINT=<name> ACTION=delete
 
 ---
 
-## 15. INGEST MODE
+## 16. INGEST MODE
 
 **Trigger:** `/memory:manage ingest start|status|cancel`
 
@@ -883,7 +901,7 @@ STATUS=OK ACTION=ingest JOB=<jobId>
 
 ---
 
-## 16. CCC MODE
+## 17. CCC MODE
 
 **Trigger:** `/memory:manage ccc status|reindex|feedback`
 
@@ -925,7 +943,7 @@ spec_kit_memory_ccc_feedback({
 
 ---
 
-## 17. ERROR HANDLING
+## 18. ERROR HANDLING
 
 | Condition                | Response                                                                                                                         |
 | ------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -945,7 +963,7 @@ spec_kit_memory_ccc_feedback({
 
 ---
 
-## 18. RELATED COMMANDS
+## 19. RELATED COMMANDS
 
 - `/memory:search`: Intent-aware context retrieval and analysis tools
 - `/memory:save`: Save conversation context

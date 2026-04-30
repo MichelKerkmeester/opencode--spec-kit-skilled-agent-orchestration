@@ -1,7 +1,7 @@
 ---
 description: Analyze all skills, optimize advisor scoring tables (TOKEN_BOOSTS, PHRASE_BOOSTS, graph-metadata.json), and re-index the skill graph. Supports :auto and :confirm modes
 argument-hint: "[:auto|:confirm] [--skip-tests] [--dry-run] [--scope=all|explicit|derived|lexical]"
-allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_kit_memory__advisor_recommend, mcp__spec_kit_memory__advisor_status, mcp__spec_kit_memory__advisor_validate, mcp__spec_kit_memory__skill_graph_scan, mcp__spec_kit_memory__skill_graph_query, mcp__spec_kit_memory__skill_graph_status, mcp__spec_kit_memory__memory_context, mcp__spec_kit_memory__memory_search
+allowed-tools: Read, Write, Edit, Bash, Grep, Glob, mcp__cocoindex_code__search, mcp__spec_kit_memory__advisor_recommend, mcp__spec_kit_memory__advisor_status, mcp__spec_kit_memory__advisor_validate, mcp__spec_kit_memory__advisor_rebuild, mcp__spec_kit_memory__skill_graph_scan, mcp__spec_kit_memory__skill_graph_query, mcp__spec_kit_memory__skill_graph_status, mcp__spec_kit_memory__memory_context, mcp__spec_kit_memory__memory_search
 ---
 
 > ⚠️ **EXECUTION PROTOCOL — READ FIRST**
@@ -133,7 +133,7 @@ operating_mode:
 
 ## 1. PURPOSE
 
-Deliver a guided optimization pass over the skill advisor scoring system without requiring users to know the internal scoring architecture. The command reads all skills from `.opencode/skill/*/SKILL.md`, current scoring source (`explicit.ts`, `lexical.ts`, `weights-config.ts`, `graph-metadata.json`), and detects coverage gaps. It proposes optimized trigger phrases, tokens, and phrase boosts; in confirm mode the user approves each mutation; in auto mode it applies all proposals; then re-indexes via `skill_graph_scan` and validates with the advisor test suite.
+Deliver a guided optimization pass over the skill advisor scoring system without requiring users to know the internal scoring architecture. The command reads all skills from `.opencode/skill/*/SKILL.md`, current scoring source (`explicit.ts`, `lexical.ts`, `weights-config.ts`, `graph-metadata.json`), and detects coverage gaps. It proposes optimized trigger phrases, tokens, and phrase boosts; in confirm mode the user approves each mutation; in auto mode it applies all proposals; then explicitly rebuilds via `advisor_rebuild({ force: true })` and validates with the advisor test suite. The rebuild tool is canonical at `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tools/advisor-rebuild.ts:8`.
 
 ---
 
@@ -159,8 +159,8 @@ $ARGUMENTS
 | 0     | Discovery | List skills, check graph health, detect repo context | discovery_report          |
 | 1     | Analysis  | Read SKILL.md + graph-metadata.json + scoring tables | analysis_report           |
 | 2     | Proposal  | Generate optimized triggers, tokens, phrases     | proposal_diff                 |
-| 3     | Apply     | Write graph-metadata.json, edit scoring files, rebuild | files_updated           |
-| 4     | Verify    | Run skill_graph_scan, run advisor tests          | verification_report           |
+| 3     | Apply     | Write graph-metadata.json, edit scoring files, run advisor_rebuild | files_updated           |
+| 4     | Verify    | Run advisor_rebuild, inspect graph status, run advisor tests | verification_report           |
 
 ---
 
@@ -178,7 +178,7 @@ $ARGUMENTS
 
 - Pauses at four approval gates: pre-Phase 2, pre-Phase 3, pre-Phase 4, post-Phase 4
 - Phase 3 supports per-skill or per-lane review loops (`A` apply all / `B` per-skill / `C` per-lane / `D` reject / `E` dry-run)
-- Presents diff before any mutation; rebuild + re-index happen only after explicit approval
+- Presents diff before any mutation; `advisor_rebuild` + validation happen only after explicit approval
 - Offers rollback option at the post-Phase 4 gate when tests fail
 - Documents user decisions at each checkpoint
 

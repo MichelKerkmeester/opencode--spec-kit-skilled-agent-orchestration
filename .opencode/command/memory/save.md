@@ -78,6 +78,7 @@ Save the current conversation context, including session summary, key decisions,
 - Canonical save requests now default to **planner-first** behavior: return the routed target, proposed edit summary, blockers, advisories, and follow-up actions before any mutation-first apply path is requested.
 - Explicit fallback remains available with `plannerMode: "full-auto"` or CLI `--full-auto` when an operator wants the legacy atomic writer behavior.
 - Standalone spec-doc markdown is not the primary operator-facing destination for this command.
+- Retention cleanup is outside save scope. When saved records expire under governance metadata, use `/memory:manage retention-sweep`, which routes to `memory_retention_sweep` (`tool-schemas.ts:330`).
 - `/memory:*` commands are markdown-owned contracts. They intentionally do not
   have external YAML assets; validators and reviewers should check the inline
   operating-mode blocks plus the markdown workflow steps.

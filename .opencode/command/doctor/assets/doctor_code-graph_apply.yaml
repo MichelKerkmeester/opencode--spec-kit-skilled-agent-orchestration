@@ -1,7 +1,7 @@
 # ─────────────────────────────────────────────────────────────────
 # DOCTOR: CODE-GRAPH WORKFLOW (APPLY MODE — AUTONOMOUS)
 # ─────────────────────────────────────────────────────────────────
-# Phase B apply mode: consume 007 research outputs (gold battery,
+# Apply mode consumes resilience research outputs (gold battery,
 # staleness model, exclude-rule confidence tiers) and mutate the
 # user-level code-graph config. Auto-verify via gold battery; auto
 # rollback on regression.
@@ -53,7 +53,7 @@ field_handling:
     tier_floor_empty: "high"
   scope_policy:
     excludes: "apply only exclude-rule recommendations"
-    all: "apply excludes + any other auto-safe recommendations from 007 outputs"
+    all: "apply excludes + any other auto-safe recommendations from resilience outputs"
   tier_floor_policy:
     high: "apply only patterns from tiers.high in exclude-rule-confidence.json"
     medium: "REJECTED in autonomous mode; use :apply-confirm for medium tier"
@@ -90,7 +90,7 @@ mutation_boundaries:
 phases:
   phase_1_discovery:
     name: "Discovery"
-    intent: "Probe code-graph status + load 007 assets + identify candidate excludes"
+    intent: "Probe code-graph status + load resilience assets + identify candidate excludes"
     actions:
       - "Call code_graph_status({}) and capture indexed_count + lang_histogram + lastScanAt + freshness"
       - "Call detect_changes({}) and capture stale_files[] + missed_files[]"

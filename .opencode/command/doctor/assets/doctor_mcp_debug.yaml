@@ -241,7 +241,7 @@ error_handling:
     on_fail: "STOP — diagnostic script missing. Run: bash .opencode/command/doctor/scripts/mcp-doctor.sh --help to verify installation."
   node_not_found:
     check: "command -v node"
-    on_fail: "WARN — Node.js not found. 3 of 4 MCP servers cannot be checked. Install Node.js 18+."
+    on_fail: "WARN — Node.js not found. 3 of 4 MCP servers cannot be checked. Install Node.js >=20.11.0."
   json_parse_error:
     on_fail: "Fall back to human-readable mode: bash .opencode/command/doctor/scripts/mcp-doctor.sh (without --json)"
   repair_fails:

@@ -18,10 +18,9 @@ operating_mode:
 
 phase_a_invariant: |
   Phase A is diagnostic-only. NO mutations to any file outside packet-local scratch.
-  Phase 3 (Apply) and Phase 4 (Verify) are NOT defined in this YAML — they will appear
-  in a future Phase B release after the resilience-research packet 007 produces the
-  verification battery, staleness model, recovery playbook, and exclude-rule confidence
-  tiers.
+  Phase 3 (Apply) and Phase 4 (Verify) are NOT defined in this diagnostic YAML.
+  Explicit apply workflows consume the code-graph resilience assets: verification
+  battery, staleness model, recovery playbook, and exclude-rule confidence tiers.
 
 # ─────────────────────────────────────────────────────────────────
 # USER INPUTS
@@ -50,12 +49,12 @@ mutation_boundaries:
     - "Any source file in the workspace"
   enforcement: "Phase A has no Phase 3; the activities below produce a markdown report only and never invoke code_graph_scan or write to source files"
   phase_b_promotion:
-    gated_on: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/007-code-graph-resilience-research"
+    gated_on: "code-graph resilience assets available"
     notes: "When promoted, Phase 3 will follow the doctor_skill-advisor.yaml mutation pattern: validate_targets + capture_baseline + generate_rollback_script + apply + Phase 4 verification battery"
 
 # ─────────────────────────────────────────────────────────────────
 # DEFAULT BLOAT-DIR PATTERNS (Phase A heuristic; tier definitions
-# will be authoritative from research packet 007)
+# are authoritative once resilience assets are refreshed)
 # ─────────────────────────────────────────────────────────────────
 bloat_patterns:
   high_confidence:
@@ -73,7 +72,7 @@ bloat_patterns:
   low_confidence_examples:
     - "vendor/"
     - "third_party/"
-  notes: "These are placeholder defaults. Authoritative tier definitions land in research-packet 007's assets/exclude-rule-confidence.json once that loop completes."
+  notes: "These are placeholder defaults. Authoritative tier definitions live in the code-graph resilience assets once that loop completes."
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW

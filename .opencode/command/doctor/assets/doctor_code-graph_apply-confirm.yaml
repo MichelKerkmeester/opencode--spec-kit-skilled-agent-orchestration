@@ -88,9 +88,9 @@ mutation_boundaries:
 phases:
   phase_1_discovery:
     name: "Discovery"
-    intent: "Probe code-graph status + load 007 assets + identify candidate excludes"
+    intent: "Probe code-graph status + load resilience assets + identify candidate excludes"
     actions:
-      - "Same as autonomous Phase 1: code_graph_status + detect_changes + load 007 assets"
+      - "Same as autonomous Phase 1: code_graph_status + detect_changes + load resilience assets"
       - "Identify candidates per user tier_floor selection (or ask if not provided)"
     user_gate:
       - "Optional: if tier_floor was not provided, present tier choice and wait for user input"

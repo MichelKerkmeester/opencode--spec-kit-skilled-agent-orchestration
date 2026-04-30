@@ -667,7 +667,7 @@ workflow:
             - "cli-copilot keeps a fixed permission posture via --allow-all-tools; sandboxMode is intentionally unsupported"
             - "Size check uses 16KB threshold; above that uses @PROMPT_PATH wrapper prompt"
             - "Large-prompt path relies on copilot honoring @path references within its prompt string"
-            - "buildCopilotPromptArg attaches a TARGET AUTHORITY preamble bound to the workflow-approved spec folder; recovered context cannot override it (packet 026/011/012)"
+            - "buildCopilotPromptArg attaches a TARGET AUTHORITY preamble bound to the workflow-approved spec folder; recovered context cannot override it (authority guard source: .opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml)"
             - "If spec_folder is missing/malformed/unresolved on a write-intent dispatch, the helper enforces plan-only by replacing the prompt with a Gate-3 question and stripping --allow-all-tools"
             - "Large-prompt wrapper mode rewrites the prompt file at promptPath to include the TARGET AUTHORITY preamble (prefix + divider + original body); the argv becomes a bare @promptPath reference"
         if_cli_gemini:

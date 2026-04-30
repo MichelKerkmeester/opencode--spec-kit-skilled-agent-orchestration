@@ -123,8 +123,8 @@ approval_gates:
           Build status: success
           Rollback script ready at: [rollback_script_path]
           Continue to verification?
-            A) Run skill_graph_scan + advisor tests
-            B) Run skill_graph_scan only (skip tests)
+            A) Run advisor_rebuild + advisor tests
+            B) Run advisor_rebuild only (skip tests)
             C) Skip verification (NOT recommended)
             D) Rollback all changes (run rollback_script_path)
         accepted_responses: ["A", "B", "C", "D"]
@@ -272,7 +272,7 @@ workflow:
   phase_4_verify:
     purpose: Re-index skill graph and run advisor test suite
     activities:
-      - "Run skill_graph_scan({}) to refresh SQLite graph index"
+      - "Run advisor_rebuild({ force: true }) to refresh the native advisor skill graph"
       - "Capture scan report: node_count, edge_count, freshness timestamp"
       - "If skip_tests = FALSE and user did not choose 'B skip-tests': run advisor test suite"
       - "Capture test report: pass/fail counts, regressions"
@@ -352,7 +352,7 @@ rules:
     - present_diff_before_apply
     - wait_for_user_approval_at_each_gate
     - rebuild_dist_after_source_edits
-    - run_skill_graph_scan_after_metadata_edits
+    - run_advisor_rebuild_after_metadata_edits
     - offer_rollback_on_test_failure
     - report_files_modified_in_summary
     - respect_scope_filter

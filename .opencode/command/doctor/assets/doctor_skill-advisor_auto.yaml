@@ -189,7 +189,7 @@ workflow:
   phase_4_verify:
     purpose: Re-index skill graph and run advisor test suite
     activities:
-      - "Run skill_graph_scan({}) to refresh SQLite graph index"
+      - "Run advisor_rebuild({ force: true }) to refresh the native advisor skill graph"
       - "Capture scan report: node_count, edge_count, freshness timestamp"
       - "If skip_tests = FALSE: run advisor test suite via npm --prefix .opencode/skill/system-spec-kit/mcp_server test -- skill_advisor"
       - "Capture test report: pass/fail counts, regressions"
@@ -289,7 +289,7 @@ rules:
     - capture_clean_tree_baseline_before_writes
     - generate_per_run_rollback_script_before_writes
     - rebuild_dist_after_source_edits
-    - run_skill_graph_scan_after_metadata_edits
+    - run_advisor_rebuild_after_metadata_edits
     - report_files_modified_in_summary
     - respect_scope_filter
     - respect_dry_run_flag

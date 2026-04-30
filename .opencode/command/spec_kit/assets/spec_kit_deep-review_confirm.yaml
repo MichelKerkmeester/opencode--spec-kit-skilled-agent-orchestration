@@ -511,7 +511,7 @@ workflow:
                     decision = "BLOCKED"
                     stop_blocked = true
                     stopReason = "blockedStop"
-                    # Phase 008 P1-02 closure: blockedBy must be string[] per the
+                    # Blocked-stop closure: blockedBy must be string[] per the
                     # published review blocked-stop contract. Extract the `.type`
                     # field from each structured graph blocker; preserve the full
                     # objects in graph_blocker_detail_json for operator inspection.

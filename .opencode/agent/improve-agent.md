@@ -148,7 +148,7 @@ Fix the proposal boundary first
 
 ---
 
-## 5. RUNTIME TRUTH AWARENESS (Phase 005)
+## 5. RUNTIME TRUTH AWARENESS
 
 ### Journal Emission Protocol
 

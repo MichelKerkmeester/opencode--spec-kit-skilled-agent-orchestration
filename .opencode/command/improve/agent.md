@@ -285,7 +285,7 @@ After loop exits, present:
 - `{spec_folder}/improvement/experiment-registry.json` — per-profile metrics + best-known state
 - Recommendation: continue, promote (if eligible), or stop
 
-### Step 6B: Journal Emission (Phase 005)
+### Step 6B: Journal Emission
 
 At each journal boundary, the orchestrator MUST emit events via `improvement-journal.cjs`. The CLI entrypoint accepts `--emit`, `--journal`, and `--details`:
 
@@ -303,7 +303,7 @@ node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit ses
 # node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit session_end --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{"stopReason":"blockedStop","sessionOutcome":"advisoryOnly","endedAt":"2026-04-11T12:05:00Z","totalIterations":3}'
 ```
 
-### Step 6C: Stop-Reason Reporting (Phase 005)
+### Step 6C: Stop-Reason Reporting
 
 After loop exits, classify the termination:
 

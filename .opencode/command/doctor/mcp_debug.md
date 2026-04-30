@@ -65,7 +65,7 @@ The diagnostic script lives at:
 | **Spec Kit Memory** | Node.js | dist build, better-sqlite3, native module version, database |
 | **CocoIndex Code** | Python | venv binary, ccc --help, index directory, ccc status |
 | **Code Mode** | Node.js | dist build, .utcp_config.json, node_modules |
-| **Sequential Thinking** | Node.js (npx) | node >= 18, npx package reachable |
+| **Sequential Thinking** | Node.js (npx) | node >= 20.11.0, npx package reachable |
 
 ### Config Files Scanned
 
