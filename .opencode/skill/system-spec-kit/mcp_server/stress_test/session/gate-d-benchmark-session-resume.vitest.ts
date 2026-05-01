@@ -191,7 +191,12 @@ describe('Gate D benchmark — session resume', () => {
       console.log(`[gate-d-benchmark][resume] p50=${summary.p50.toFixed(2)}ms p95=${summary.p95.toFixed(2)}ms p99=${summary.p99.toFixed(2)}ms iterations=${ITERATIONS}`);
     }
 
-    expect(summary.p50).toBeLessThan(300);
-    expect(summary.p95).toBeLessThan(500);
+    // F-015-C5-02: gate absolute latency budgets behind BENCHMARK=1 so CI runs
+    // assert correctness (memory.source === 'handover', verified in the loop above)
+    // without failing on slower hardware. Set BENCHMARK=1 to enforce the perf budget.
+    if (process.env.BENCHMARK === '1') {
+      expect(summary.p50).toBeLessThan(300);
+      expect(summary.p95).toBeLessThan(500);
+    }
   });
 });

@@ -3,7 +3,11 @@
 // ───────────────────────────────────────────────────────────────
 
 import { EventEmitter } from 'node:events';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
+// F-015-C5-04: snapshot/restore env mutations so test failures do not leak
+// SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED across tests.
+import { snapshotEnv } from '../../lib/test-helpers/env-snapshot.js';
 
 const mockedBridge = vi.hoisted(() => ({
   spawn: vi.fn(),
@@ -66,12 +70,29 @@ function bridgePayload(index: number): Record<string, unknown> {
 }
 
 describe('sa-034 — OpenCode plugin bridge', () => {
+  // F-015-C5-04: env keys mutated by these tests; snapshot before each, restore after.
+  let restoreEnv: (() => void) | null = null;
+
   beforeEach(() => {
+    // F-015-C5-04: snapshot env keys before any test mutation so afterEach restores
+    // the original values (or unsets keys that were undefined) even on test failure.
+    restoreEnv = snapshotEnv([
+      'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED',
+      'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED',
+    ]);
     vi.useRealTimers();
     vi.clearAllMocks();
     delete process.env.SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED;
     delete process.env.SPECKIT_SKILL_ADVISOR_HOOK_DISABLED;
     mockedBridge.spawn.mockImplementation(() => makeChild(bridgeResponse()));
+  });
+
+  afterEach(() => {
+    // F-015-C5-04: restore env keys snapshotted in beforeEach (runs even on failure)
+    if (restoreEnv) {
+      restoreEnv();
+      restoreEnv = null;
+    }
   });
 
   it('exposes the canonical plugin surface and status tool only', async () => {

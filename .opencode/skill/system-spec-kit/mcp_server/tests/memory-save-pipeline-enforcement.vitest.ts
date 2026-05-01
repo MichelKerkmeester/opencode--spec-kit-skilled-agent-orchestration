@@ -32,7 +32,19 @@ import {
 
 const TEST_DB_DIR = path.join(os.tmpdir(), `speckit-pipeline-enforcement-${process.pid}`);
 const TEST_DB_PATH = path.join(TEST_DB_DIR, 'speckit-memory.db');
-const FIXTURE_ROOT = path.join(process.cwd(), 'tmp-test-fixtures', 'specs', '998-pipeline-enforcement');
+// F-015-C5-06: replace the previous fixed `tmp-test-fixtures/` repo-local path
+// with a per-test mkdtemp root that has a unique random suffix. Two concurrent
+// runs no longer collide on a shared path, and a crashed run's leftover dir
+// has a unique suffix so the next run is not affected by stale fixtures.
+//
+// Note: the mkdtemp root stays inside process.cwd() (not os.tmpdir()) because
+// handleMemorySave's ALLOWED_BASE_PATHS validator rejects paths outside the
+// repo unless MEMORY_BASE_PATH is set at module load. Adjusting that gate
+// would require product-code changes that are out of scope for this test-only
+// remediation; the per-test mkdtemp suffix already solves the collision/leftover
+// problem the finding flagged.
+const FIXTURE_TEMP_ROOT = fs.mkdtempSync(path.join(process.cwd(), 'tmp-test-fixtures-'));
+const FIXTURE_ROOT = path.join(FIXTURE_TEMP_ROOT, 'specs', '998-pipeline-enforcement');
 
 // ───────────────────────────────────────────────────────────────
 // FIXTURE BUILDER
@@ -323,7 +335,8 @@ afterAll(() => {
     // Ignore cleanup errors
   }
   fs.rmSync(TEST_DB_DIR, { recursive: true, force: true });
-  fs.rmSync(FIXTURE_ROOT, { recursive: true, force: true });
+  // F-015-C5-06: remove the entire mkdtemp root (was: only FIXTURE_ROOT subdir)
+  fs.rmSync(FIXTURE_TEMP_ROOT, { recursive: true, force: true });
 });
 
 // ───────────────────────────────────────────────────────────────

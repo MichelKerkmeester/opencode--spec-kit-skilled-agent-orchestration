@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/009-test-reliability",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/009-test-reliability",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,208 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 9: test-reliability",
+    "trigger_phrases": [
+      "F-015-C5",
+      "test reliability remediation",
+      "gate-d-resume-perf hard-coded path",
+      "vi.useFakeTimers envelope latency",
+      "env snapshot restore",
+      "F-015-C5 plan",
+      "009 test reliability plan",
+      "F-015-C5 tasks",
+      "009 test reliability tasks",
+      "F-015-C5 checklist",
+      "009 test reliability checklist",
+      "009 test reliability summary"
+    ],
+    "key_topics": [
+      "f-015-c5",
+      "test",
+      "reliability",
+      "remediation",
+      "gate-d-resume-perf",
+      "hard-coded",
+      "path",
+      "usefaketimers",
+      "envelope",
+      "latency",
+      "env",
+      "snapshot"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/lib/test-helpers/env-snapshot.ts",
+      "mcp_server/stress_test/session/gate-d-resume-perf.vitest.ts",
+      "mcp_server/stress_test/session/gate-d-benchmark-session-resume.vitest.ts",
+      "mcp_server/tests/envelope.vitest.ts",
+      "mcp_server/stress_test/skill-advisor/opencode-plugin-bridge-stress.vitest.ts",
+      "mcp_server/tests/hybrid-search-flags.vitest.ts",
+      "mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "env-snapshot.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/test-helpers/env-snapshot.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-resume-perf.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/session/gate-d-resume-perf.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "gate-d-benchmark-session-resume.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/session/gate-d-benchmark-session-resume.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "envelope.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/envelope.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "opencode-plugin-bridge-stress.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/stress_test/skill-advisor/opencode-plugin-bridge-stress.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "hybrid-search-flags.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/hybrid-search-flags.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-save-pipeline-enforcement.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory-save-pipeline-enforcement.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Reliability Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Six",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Land",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "captured",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "zero",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "the",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Six tests in the stress-test and unit-test surface have reliability defects that make them brittle on non-developer machines, in CI, or under repeated runs. One test hard-codes the original developer's local checkout path. One asserts absolute latency budgets that can fail on slower hardware. One uses real-timer sleeps with elapsed-time assertions, slowing the suite and producing flakes. Two tests mutate process env vars (`SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED`, `SPECKIT_MMR`) without restoration, leaking state across the run. One test uses a repo-local temp fixture root that collides between parallel runs and survives crashes.",
     "created_at": "2026-05-01T05:18:48Z",
-    "last_save_at": "2026-05-01T05:18:48Z",
+    "last_save_at": "2026-05-01T05:58:28.244Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

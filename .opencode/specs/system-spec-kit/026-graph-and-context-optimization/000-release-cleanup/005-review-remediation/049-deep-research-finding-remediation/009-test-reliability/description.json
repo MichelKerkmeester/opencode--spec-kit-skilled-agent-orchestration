@@ -5,12 +5,14 @@
     "phase",
     "test-reliability"
   ],
-  "lastUpdated": "2026-05-01T05:18:48.948Z",
+  "lastUpdated": "2026-05-01T05:58:28.244Z",
   "specId": "009",
   "folderSlug": "test-reliability",
   "parentChain": [
     "049-deep-research-finding-remediation"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-05-26_06-58__sub-phase-009-closed-six-surgical-test-only-edits.md"
+  ]
 }

@@ -2,9 +2,13 @@
 // 1. HYBRID SEARCH FEATURE FLAGS TESTS
 // ───────────────────────────────────────────────────────────────
 // TEST: Hybrid Search Feature Flags
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import type Database from 'better-sqlite3';
 import * as hybridSearch from '../lib/search/hybrid-search';
+
+// F-015-C5-05: snapshot/restore SPECKIT_MMR so test failures do not leak the
+// flag mutation across tests.
+import { snapshotEnv } from '../lib/test-helpers/env-snapshot.js';
 
 type HybridSearchOptions = NonNullable<Parameters<typeof hybridSearch.hybridSearchEnhanced>[2]>;
 type VectorSearchFn = NonNullable<Parameters<typeof hybridSearch.init>[1]>;
@@ -56,10 +60,24 @@ const mockVectorSearch: VectorSearchFn = () => {
 };
 
 describe('Hybrid search feature flags', () => {
+  // F-015-C5-05: env key mutated by these tests; snapshot before each, restore after.
+  let restoreEnv: (() => void) | null = null;
+
   beforeEach(() => {
+    // F-015-C5-05: snapshot SPECKIT_MMR before mutation so afterEach restores
+    // the original value (or unsets) even on test failure.
+    restoreEnv = snapshotEnv(['SPECKIT_MMR']);
     delete process.env.SPECKIT_MMR;
     applyMMRMock.mockClear();
     hybridSearch.init(createMockDb(), mockVectorSearch);
+  });
+
+  afterEach(() => {
+    // F-015-C5-05: restore env snapshotted in beforeEach (runs even on failure)
+    if (restoreEnv) {
+      restoreEnv();
+      restoreEnv = null;
+    }
   });
 
   it('runs MMR by default when SPECKIT_MMR is unset', async () => {

@@ -1,7 +1,7 @@
 // TEST: RESPONSE ENVELOPE
 // Tests for REQ-019: Standardized Response Structure
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { estimateTokenCount } from '@spec-kit/shared/utils/token-estimate';
 import {
   createResponse,
@@ -302,11 +302,23 @@ describe('Response Envelope (T148-T155)', () => {
   });
 
   describe('T154: meta.latencyMs measurement', () => {
-    it('should calculate latency when startTime provided', async () => {
-      const startTime = Date.now();
+    // F-015-C5-03: replace real-timer sleeps + elapsed-time asserts with
+    // vi.useFakeTimers() + vi.setSystemTime so the test is deterministic
+    // and does not slow down the suite. Restore real timers in afterEach
+    // (always runs, even on test failure) so other describes are unaffected.
+    beforeEach(() => {
+      vi.useFakeTimers();
+      vi.setSystemTime(new Date('2026-01-01T00:00:00.000Z'));
+    });
 
-      // Simulate some work
-      await new Promise(resolve => setTimeout(resolve, 50));
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+
+    it('should calculate latency when startTime provided', () => {
+      // F-015-C5-03: deterministic time advancement (was: real setTimeout 50ms)
+      const startTime = Date.now();
+      vi.setSystemTime(Date.now() + 50);
 
       const envelope = createResponse({
         tool: 'memory_search',
@@ -316,7 +328,7 @@ describe('Response Envelope (T148-T155)', () => {
       });
 
       expect(typeof envelope.meta.latencyMs).toBe('number');
-      expect(envelope.meta.latencyMs).toBeGreaterThanOrEqual(45);
+      expect(envelope.meta.latencyMs).toBe(50);
     });
 
     it('should not include latencyMs when startTime not provided', () => {
@@ -329,10 +341,10 @@ describe('Response Envelope (T148-T155)', () => {
       expect(envelope.meta.latencyMs).toBeUndefined();
     });
 
-    it('should measure latency in error responses', async () => {
+    it('should measure latency in error responses', () => {
+      // F-015-C5-03: deterministic time advancement (was: real setTimeout 30ms)
       const startTime = Date.now();
-
-      await new Promise(resolve => setTimeout(resolve, 30));
+      vi.setSystemTime(Date.now() + 30);
 
       const envelope = createErrorResponse({
         tool: 'test_tool',
@@ -340,20 +352,20 @@ describe('Response Envelope (T148-T155)', () => {
         startTime: startTime
       });
 
-      expect(envelope.meta.latencyMs).toBeGreaterThanOrEqual(20);
+      expect(envelope.meta.latencyMs).toBe(30);
     });
 
-    it('should measure latency in empty responses', async () => {
+    it('should measure latency in empty responses', () => {
+      // F-015-C5-03: deterministic time advancement (was: real setTimeout 30ms)
       const startTime = Date.now();
-
-      await new Promise(resolve => setTimeout(resolve, 30));
+      vi.setSystemTime(Date.now() + 30);
 
       const envelope = createEmptyResponse({
         tool: 'memory_search',
         startTime: startTime
       });
 
-      expect(envelope.meta.latencyMs).toBeGreaterThanOrEqual(20);
+      expect(envelope.meta.latencyMs).toBe(30);
     });
   });
 

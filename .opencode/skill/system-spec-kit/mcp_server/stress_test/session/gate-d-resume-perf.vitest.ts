@@ -12,7 +12,10 @@ import { afterAll, describe, expect, it } from 'vitest';
 
 import { handleSessionResume } from '../../handlers/session-resume.js';
 
-const REPO_ROOT = '/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public';
+// F-015-C5-01: capture the cwd at module load instead of hard-coding the
+// original developer's checkout path. The test changes cwd inside its `it`
+// block via process.chdir(TEMP_ROOT) and must restore the original in afterAll.
+const ORIGINAL_CWD = process.cwd();
 const TEMP_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'gate-d-resume-perf-'));
 const FIXTURE_SPEC_FOLDER = 'reader-ready-happy-path';
 const FIXTURE_SPEC_PATH = path.join(TEMP_ROOT, '.opencode', 'specs', FIXTURE_SPEC_FOLDER);
@@ -120,7 +123,8 @@ function parseResumePayload(text: string): ResumePayload {
 writeFixtureDocs();
 
 afterAll(() => {
-  process.chdir(REPO_ROOT);
+  // F-015-C5-01: restore the cwd captured at module load (not a hard-coded path)
+  process.chdir(ORIGINAL_CWD);
   fs.rmSync(TEMP_ROOT, { recursive: true, force: true });
 });
 
