@@ -269,9 +269,6 @@ All exploration requests use thorough mode regardless of trigger context.
 | ------------------------- | ------------------------------- | ------------------------------------ |
 | Rule 1: Exploration-First | "Build X" without existing plan | Gather context before implementation |
 | Rule 2: Spec Folder       | New spec folder needed          | Discover patterns for new spec       |
-| Section 7: Verification   | File existence check            | Verify claimed files exist           |
-| Section 10: OnError       | 2 consecutive failures          | Investigate error context            |
-| Section 16: Reassign      | After agent failure             | Gather additional context for retry  |
 
 ### Example Dispatch Prompt
 

@@ -1,0 +1,62 @@
+{
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {"id": "Q1", "label": "skill auto-loading patterns", "resolvedInIteration": 4, "summary": "No literal skill loader. Knowledge subsystem (.swarm/knowledge.jsonl + hive shared-learnings.jsonl) supplies architect via experimental.chat.messages.transform hook at phase start; coder gets a separate scope-keyed context pack via system-enhancer that calls knowledge_recall on the declared primary file. technicalContext stays an unstructured string. Pattern: orchestrator declares context + hook injects scope-keyed knowledge."},
+    {"id": "Q2", "label": "stack-agnostic detection", "resolvedInIteration": 5, "summary": "Swarm has explicit detection: src/lang/detector.ts probes marker files (package.json, go.mod, Cargo.toml, pyproject.toml, etc.) + extensions; src/lang/profiles.ts encodes per-language commands and prompt constraints; build_check / test_runner / pkg_audit each implement their own ecosystem detection. Static worker prompts STILL leak TypeScript/Bun assumptions — a residual gap. Pattern: detect at tool/hook boundaries, not in worker prompt."},
+    {"id": "Q3", "label": "caller-restriction enforcement", "resolvedInIteration": 1, "summary": "HARNESS-LEVEL mechanism is the generated OpenCode SDK agent config in src/agents/index.ts:651. Agents named 'architect' or matching name.endsWith('_architect') become mode='primary' with permission.task='allow'; all others become mode='subagent' WITHOUT task permission, so subagents cannot dispatch via the Task tool. Tool-whitelist (AGENT_TOOL_MAP) reinforces. Coder prompt forbids delegation. Suffix classifier overmatches '_architect'/'__architect'/'not_an_architect' (adversarial test asserts these match) — a critical naming caveat. Delegation envelope validation blocks slash_command + invalid targets but is post-authorization."},
+    {"id": "Q4", "label": "write-capable safety guarantees", "resolvedInIteration": 2, "summary": "Multi-layered, NOT a syscall sandbox. (1) declare_scope tool persists scope to .swarm/scopes/scope-{taskId}.json with versioned payload, validates path traversal/symlinks/plan-presence. (2) scope-guard hook blocks Edit/Write/Patch outside declared scope (WRITE_TOOL_NAMES allowlist). (3) guardrails hook enforces role authority + per-role deny prefixes; declaredScope only relaxes coder allowedPrefix. (4) diff-scope is post-hoc advisory ('SCOPE WARNING', never throws). (5) coder STOP/BLOCKED/NEED recovery protocol explicitly forbids shell/interpreter/redirection bypass. KNOWN GAP: Bash/interpreter writes bypass scope-guard (documented limitation; declare_scope warns about it). MISMATCH: prompt says missing scope blocks all writes, but tests show no-scope falls through scope-guard early-return."},
+    {"id": "Q5", "label": "sub-agent dispatch contracts", "resolvedInIteration": 3, "summary": "Dispatch is the OpenCode Task tool with structured PROMPT TEXT (TASK/FILE/INPUT/OUTPUT/CONSTRAINT lines), NOT a typed queue or repo-owned worker SDK call. DelegationEnvelope ({taskId, targetAgent, action, commandType, files, acceptanceCriteria, technicalContext, errorStrategy?, platformNotes?}) is the audit-side schema; only commandType ('task'|'slash_command') and errorStrategy ('FAIL_FAST'|'BEST_EFFORT') are typed unions. action is unbounded string. Validation blocks slash_command and unknown targets. NO depth/generation/parentTaskId field — depth bounded entirely by SDK Task permission. Workflow advancement is HOOK-DRIVEN (delegation-gate observes Task tool calls, advances per-task workflow state) NOT response-envelope-driven. Coder returns DONE/BLOCKED text, not a typed result envelope. parallel/dispatcher exists but defaults to no-op (maxConcurrentTasks=1); council parallel dispatch is prompt-instructed."}
+  ],
+  "keyFindings": [
+    {"id": "kf-Q3-001", "question": "Q3", "severity": "P0", "label": "Caller-restriction is enforced in src/agents/index.ts:651 via the OpenCode SDK agent-mode + permission.task config. Architect = primary + task=allow; all others = subagent (no task permission).", "citation": "src/agents/index.ts:651"},
+    {"id": "kf-Q3-002", "question": "Q3", "severity": "P0", "label": "Adversarial test asserts default workers (coder, reviewer, explorer, sme, critic, test_engineer, docs) lack task permission.", "citation": "src/agents/architect-permission.adversarial.test.ts:43"},
+    {"id": "kf-Q3-003", "question": "Q3", "severity": "P1", "label": "Architect classifier is suffix-based (`name === \"architect\" || name.endsWith(\"_architect\")`) and overmatches '_architect'/'__architect'/'not_an_architect' — naming caveat for our @code agent.", "citation": "src/agents/architect-permission.adversarial.test.ts:123"},
+    {"id": "kf-Q4-001", "question": "Q4", "severity": "P0", "label": "scope-guard hook blocks Edit/Write/Patch outside declared scope (WRITE_TOOL_NAMES allowlist; non-architect sessions only).", "citation": "src/hooks/scope-guard.ts:20"},
+    {"id": "kf-Q4-002", "question": "Q4", "severity": "P0", "label": "guardrails hook enforces role authority and throws WRITE BLOCKED for unauthorized writes; declaredScope only relaxes coder allowedPrefix step.", "citation": "src/hooks/guardrails.ts:2072"},
+    {"id": "kf-Q4-003", "question": "Q4", "severity": "P0", "label": "declare_scope persists scope to .swarm/scopes/scope-{taskId}.json with versioned payload and validates path traversal/symlinks/plan-presence.", "citation": "src/tools/declare-scope.ts:91"},
+    {"id": "kf-Q4-004", "question": "Q4", "severity": "P1", "label": "KNOWN GAP: Bash/interpreter writes bypass scope-guard; documented limitation echoed in scope-persistence and declare_scope warning.", "citation": "src/hooks/scope-guard.ts:20"},
+    {"id": "kf-Q4-005", "question": "Q4", "severity": "P1", "label": "Coder STOP/BLOCKED/NEED recovery protocol forbids shell/interpreter/redirection bypass.", "citation": "src/agents/coder.ts:111"},
+    {"id": "kf-Q5-001", "question": "Q5", "severity": "P0", "label": "Dispatch happens via OpenCode Task tool with prompt text (TASK/FILE/INPUT/OUTPUT/CONSTRAINT block), not a typed worker queue.", "citation": "src/agents/architect.ts:395"},
+    {"id": "kf-Q5-002", "question": "Q5", "severity": "P0", "label": "DelegationEnvelope schema: taskId/targetAgent/action(string)/commandType/files/acceptanceCriteria/technicalContext + optional errorStrategy/platformNotes; no depth field.", "citation": "src/types/delegation.ts:6"},
+    {"id": "kf-Q5-003", "question": "Q5", "severity": "P1", "label": "delegation-gate validates envelope and blocks commandType==='slash_command'; observes Task hook to advance workflow state.", "citation": "src/hooks/delegation-gate.ts:238"},
+    {"id": "kf-Q5-004", "question": "Q5", "severity": "P2", "label": "parallel dispatcher defaults to no-op (maxConcurrentTasks=1); production code does not import the parallel implementation directly.", "citation": "src/parallel/dispatcher/index.ts:27"},
+    {"id": "kf-Q1-001", "question": "Q1", "severity": "P0", "label": "Architect-only knowledge injection via experimental.chat.messages.transform hook; isOrchestratorAgent gates non-architects out.", "citation": "src/hooks/knowledge-injector.ts:208"},
+    {"id": "kf-Q1-002", "question": "Q1", "severity": "P0", "label": "Coder-only context pack: system-enhancer reads declared scope, calls knowledge_recall on first file, injects '## CONTEXT FROM KNOWLEDGE BASE' block — closest analogue to worker auto-loading.", "citation": "src/hooks/system-enhancer.ts:850"},
+    {"id": "kf-Q1-003", "question": "Q1", "severity": "P1", "label": "DelegationEnvelope.technicalContext is plain string; no structured skill/capability slot — context is text, retrieval is hook-side.", "citation": "src/types/delegation.ts:13"},
+    {"id": "kf-Q1-004", "question": "Q1", "severity": "P2", "label": "role-filter preserves system prompts, user delegation envelopes, plan content, and knowledge content from filtering — they are never role-stripped.", "citation": "src/context/role-filter.ts:22"},
+    {"id": "kf-Q2-001", "question": "Q2", "severity": "P0", "label": "Stack detection at the tool layer: detectProjectLanguages scans root + immediate subdirs, matches every profile.build.detectFiles, and falls back to extensions.", "citation": "src/lang/detector.ts:25"},
+    {"id": "kf-Q2-002", "question": "Q2", "severity": "P0", "label": "Language profiles encode per-language extensions, marker files, and build/test/lint/audit commands — TS/JS/Python/Rust/Go/Java/Kotlin/.NET coverage.", "citation": "src/lang/profiles.ts:29"},
+    {"id": "kf-Q2-003", "question": "Q2", "severity": "P1", "label": "Worker prompts (coder.ts, test-engineer.ts) STILL leak TypeScript/Bun assumptions — residual stack bias even though tools are detector-driven.", "citation": "src/agents/coder.ts:77"},
+    {"id": "kf-Q2-004", "question": "Q2", "severity": "P1", "label": "system-enhancer hook injects language-specific coder/reviewer/test-engineer blocks from task-file paths via the language profile registry.", "citation": "src/hooks/system-enhancer.ts:324"}
+  ],
+  "ruledOutDirections": [
+    {"label": "Looking for env vars or runtime caller-identity checks as the primary caller-restriction mechanism", "reason": "The mechanism is generated OpenCode SDK agent config (mode + permission.task), not env vars or frontmatter.", "iteration": 1},
+    {"label": "Treating DelegationEnvelope as a bounded depth/generation contract", "reason": "No depth/generation/parentTaskId field exists in the envelope; depth is enforced solely by SDK Task permission.", "iteration": 3},
+    {"label": "Searching for a literal 'skill loader' subsystem in opencode-swarm-main", "reason": "There is no skill loader; the analogue is the knowledge subsystem with phase-start architect injection + scope-keyed coder context pack.", "iteration": 4},
+    {"label": "Assuming static worker prompts are stack-neutral", "reason": "Coder and test-engineer prompts contain TypeScript/Bun specifics; stack-agnosticism lives at the tool/hook layer, not in prompts.", "iteration": 5}
+  ],
+  "metrics": {
+    "iterationsCompleted": 5,
+    "openQuestions": 0,
+    "resolvedQuestions": 5,
+    "keyFindings": 19,
+    "convergenceScore": 1.0,
+    "stopReason": "all_questions_resolved",
+    "newInfoRatioByIteration": {"1": 0.86, "2": 0.78, "3": 0.74, "4": 0.72, "5": 0.69},
+    "rollingAvgLast3": 0.717,
+    "coverageBySources": {
+      "src/agents/": 5,
+      "src/hooks/": 5,
+      "src/lang/": 1,
+      "src/tools/": 3,
+      "src/scope/": 2,
+      "src/parallel/": 1,
+      "src/types/": 2,
+      "src/config/": 2,
+      "src/context/": 1,
+      "src/commands/": 1,
+      "src/build/": 1,
+      "package.json": 1
+    }
+  }
+}

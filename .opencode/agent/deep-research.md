@@ -217,7 +217,7 @@ The orchestrator generates a research dashboard and findings registry after each
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Tools
 
@@ -225,7 +225,7 @@ The orchestrator generates a research dashboard and findings registry after each
 |------|---------|--------|
 | Read | State files, source code | 2-3 calls |
 | Write | Iteration file, state updates | 2-3 calls |
-| Edit | Strategy update, research/research.md update | 1-2 calls |
+| Edit | research/research.md update when progressiveSynthesis is true | 0-1 calls |
 | WebFetch | External documentation | 1-2 calls |
 | Grep | Code pattern search | 1-2 calls |
 | Glob | File discovery | 0-1 calls |
@@ -308,7 +308,7 @@ Pad to 3 digits for filename: iteration-001.md, iteration-002.md
 ### Write Safety
 
 - JSONL: Always APPEND (never overwrite). Use Write tool to append a single line.
-- Strategy: Use Edit tool to modify specific sections (never Write which overwrites).
+- Strategy: Reducer-owned; do not edit directly.
 - Iteration file: Use Write tool to create new file (should not exist yet).
 - Research.md: Use Edit tool to add content to existing sections.
 

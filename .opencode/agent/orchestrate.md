@@ -84,7 +84,7 @@ flowchart TD
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Agent Routing & Nesting
 
@@ -97,7 +97,7 @@ flowchart TD
 | 3        | Multi-strategy planning and architecture synthesis                        | `@ultra-think`         | LEAF | Multi-lens planning rubric (planning-only)                                        | `"general"`   |
 | 4        | Code review / security                                                    | `@review`              | LEAF | `sk-code` baseline + one `sk-code-*` overlay (auto-detected)      | `"general"`   |
 | 5        | Documentation (non-spec)                                                  | `@write`               | LEAF | `sk-doc`                                                         | `"general"`   |
-| 6        | Implementation / testing                                                  | `@general`             | LEAF | `sk-code-*` (auto-detects available variant), `mcp-chrome-devtools` | `"general"`   |
+| 6        | Implementation / testing                                                  | `@code`                | LEAF | `sk-code` (stack-agnostic; sk-code performs detection at dispatch time); orchestrator dispatches `@review` separately for formal review | `"general"`   |
 | 7        | Debugging when `failure_count >= 3` — workflow surfaces a prompted offer; user opts in via Task tool. Never auto-dispatched. | `@debug`               | LEAF | Code analysis tools                                                               | `"general"`   |
 
 ### Nesting Depth Protocol (NDP)
@@ -109,7 +109,7 @@ This Copilot profile enforces **single-hop delegation**. Nested sub-agent dispat
 | Tier             | Dispatch Authority               | Who                                                                                   |
 | ---------------- | -------------------------------- | ------------------------------------------------------------------------------------- |
 | **ORCHESTRATOR** | Can dispatch LEAF agents         | Top-level orchestrator only                                                           |
-| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @general, @ultra-think, @write, @review, @debug, @deep-research, @deep-review |
+| **LEAF**         | MUST NOT dispatch any sub-agents | @context, @code, @ultra-think, @write, @review, @debug, @deep-research, @deep-review |
 
 #### Absolute Depth Rules
 
@@ -171,6 +171,7 @@ When dispatching ANY non-orchestrator agent, append this to the Task prompt:
 | @review   | `.opencode/agent/review.md`   | Codebase-agnostic quality scoring                                                      |
 | @write    | `.opencode/agent/write.md`    | DQI standards enforcement                                                              |
 | @debug    | `.opencode/agent/debug.md`    | Isolated by design (no conversation context)                                           |
+| @code     | `.opencode/agent/code.md`     | Application-code LEAF; sk-code stack delegation; D3 convention-floor caller-restriction (`Depth: 1` marker required); fail-closed verify |
 
 > **Note**: ALL exploration tasks route through `@context` exclusively. @context executes retrieval directly (no nested sub-agent dispatch).
 
@@ -188,7 +189,7 @@ TASK #N: [Descriptive Title]
 ├─ Objective: [WHY this task exists]
 ├─ Scope: [Explicit inclusions AND exclusions]
 ├─ Boundary: [What this agent MUST NOT do]
-├─ Agent: @general | @context | @deep-research | @ultra-think | @write | @review | @debug
+├─ Agent: @code | @context | @deep-research | @ultra-think | @write | @review | @debug
 ├─ Subagent Type: "general" (ALL dispatches use "general" — exploration routes through @context)
 ├─ Agent Definition: [.opencode/agent/<name>.md — MUST be read and included in prompt | "built-in" for @general]
 ├─ Skills: [Specific skills the agent should use]
@@ -334,7 +335,7 @@ TASK #2: Implement Notification System
 2. **AUTHORING VALIDATION**: When the main agent writes spec folder docs directly:
    - Spec folder path MUST be provided in task context
    - Level MUST be specified
-   - Template source (`templates/level_N/`) MUST be referenced
+   - Template source (`Level template contract`) MUST be referenced
    - `validate.sh --strict` MUST run after each doc write
 3. **POST-AUTHORING VERIFICATION**:
    - Verify files exist via @context file existence check
@@ -354,7 +355,7 @@ TASK #2: Implement Notification System
 
 ### Rule 5: Spec Documentation Governance
 **Trigger:** Any task that creates or substantively writes spec folder template documents.
-**Action:** The main agent writes spec-folder docs directly using `templates/level_N/`, runs `validate.sh --strict` after each doc write, and routes continuity via `/memory:save`.
+**Action:** The main agent writes spec-folder docs directly using `Level template contract`, runs `validate.sh --strict` after each doc write, and routes continuity via `/memory:save`.
 **Scope:** ALL documentation (*.md) written inside spec folders (`specs/[###-name]/`). This includes but is not limited to: spec.md, plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md, research/research.md, and any other markdown documentation.
 **Exceptions:**
 - `scratch/` subdirectory → temporary workspace, any agent may write
@@ -374,7 +375,7 @@ TASK #2: Implement Notification System
 | Violation Type                | Detection Signal                                                                                                | Correct Routing                |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------- | ------------------------------ |
 | **Wrong Route for Spec Docs** | Task creates `specs/*/spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md` without templates or validation evidence | Main agent + templates + `validate.sh --strict` |
-| **Template Bypass**           | Write tool used on spec folder paths WITHOUT prior Read from `templates/level_N/`                               | REJECT → Must use templates    |
+| **Template Bypass**           | Write tool used on spec folder paths WITHOUT prior Read from `Level template contract`                               | REJECT → Must use templates    |
 | **Level Not Determined**      | Spec-doc authoring without explicit Level (1/2/3/3+) in task context                                             | REJECT → Determine level first |
 | **No Validation**             | Spec-doc completion claim without `validate.sh` output                                                          | REJECT → Run validation        |
 
@@ -386,7 +387,7 @@ TASK #2: Implement Notification System
 
 2. **Output Review**: When reviewing spec-doc outputs (see §5):
    - Verify `validate.sh` was run (exit code in output)
-   - Verify template source cited (e.g., "copied from templates/level_3/spec.md")
+   - Verify template source cited (e.g., "copied from level_contract_spec.md")
    - Verify all required files for level present
 
 3. **Violation Response**: If wrong agent detected:

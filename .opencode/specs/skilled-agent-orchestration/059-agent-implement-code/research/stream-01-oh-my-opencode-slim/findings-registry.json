@@ -1,0 +1,53 @@
+{
+  "openQuestions": [],
+  "resolvedQuestions": [
+    {"id": "Q1", "label": "Skill auto-loading patterns", "iteration": 3, "summary": "Slim does install-time recommendation (presets) + runtime visibility filtering (filter-available-skills hook + getSkillPermissionsForAgent). No semantic auto-loading. <load_skills> is a task-call argument surfaced via retry guidance, not a plugin loader."},
+    {"id": "Q2", "label": "Stack-agnostic detection", "iteration": 2, "summary": "No plugin-level stack detector. CLI's package.json reads are about plugin location only. Reusable pattern is the codemap skill: agent inspects repo structure, infers include/exclude globs, persists hash-based folder map (stack-agnostic glob+hash plumbing)."},
+    {"id": "Q3", "label": "Caller-restriction enforcement", "iteration": 1, "summary": "Layered: (1) OpenCode agent mode classification (orchestrator=primary, council=all, councillor=subagent+hidden, specialists=subagent); (2) per-agent permission map with deny-by-default for restricted tools (council_session denied for all except council); (3) plugin-owned runtime caller guard (council_session checks toolContext.agent==='council' and throws); (4) delegate-task-retry hook reacts to OpenCode core's 'Agent X is not allowed' errors with corrective guidance. SUBAGENT_DELEGATION_RULES is declared but unused."},
+    {"id": "Q4", "label": "Write-capable safety guarantees", "iteration": 2, "summary": "apply-patch hook is the strongest mechanism: parses patch, runs guardPatchTargets() to refuse paths outside root/worktree (throws 'apply_patch blocked'), conservative verification (missing update/delete targets fail; add/move refuses existing targets), preserves EOL/final-newline. post-file-tool-nudge appends prompt reminders. agent-mcps allowlist limits MCP surface per agent. Fixer is prompt-led (read before edit, no delegation, run validation). Default file-tool perms inherit OpenCode/user defaults."},
+    {"id": "Q5", "label": "Sub-agent dispatch contracts", "iteration": 3, "summary": "Two distinct dispatch paths: (1) OpenCode task tool with payload {description, prompt, subagent_type, task_id?} validated by task-session-manager (only when sessionAgentMap===orchestrator); (2) Direct client.session.create + client.session.prompt for council->councillor (passes parentID, agent, model, prompt, tools.task=false). SubagentDepthTracker enforces DEFAULT_MAX_SUBAGENT_DEPTH=3 (NOT strict depth-1). Multiplexer panes mirror parent-child via session.created events. Test invariants confirm councillor dispatch as raw client.session calls with abort cleanup."}
+  ],
+  "keyFindings": [
+    {"id": "f-iter001-001", "severity": "high", "label": "Caller restriction = OpenCode agent mode classification", "citation": "src/agents/index.ts:428-442"},
+    {"id": "f-iter001-005", "severity": "high", "label": "council_session has plugin-owned caller guard via toolContext.agent", "citation": "src/tools/council.ts:52-69"},
+    {"id": "f-iter001-006", "severity": "high", "label": "council_session permission deny-by-default for non-council agents", "citation": "src/agents/index.ts:39-40,172-181"},
+    {"id": "f-iter001-008", "severity": "medium", "label": "SubagentDepthTracker default max depth = 3 (NOT strict depth-1)", "citation": "src/utils/subagent-depth.ts:4-13,src/config/constants.ts:92-94"},
+    {"id": "f-iter001-009", "severity": "medium", "label": "filter-available-skills rewrites <available_skills> per agent", "citation": "src/hooks/filter-available-skills/index.ts:127-151"},
+    {"id": "f-iter001-010", "severity": "medium", "label": "getSkillPermissionsForAgent: orchestrator wildcard, specialists deny-by-default", "citation": "src/cli/skills.ts:116-170"},
+    {"id": "f-iter002-apply", "severity": "high", "label": "apply-patch hook: root/worktree path guard + conservative verification + EOL preservation", "citation": "src/hooks/apply-patch/execution-context.ts:131-151,303-360"},
+    {"id": "f-iter002-mcps", "severity": "medium", "label": "Per-agent MCP allowlist with wildcard/exclusion semantics", "citation": "src/config/agent-mcps.ts:10-41,src/index.ts:656-691"},
+    {"id": "f-iter002-task", "severity": "medium", "label": "Task dispatch payload shape {description, prompt, subagent_type, task_id?}", "citation": "src/hooks/task-session-manager/index.ts:12-16,220-241"},
+    {"id": "f-iter003-council", "severity": "high", "label": "Council child sessions use direct client.session.create with parentID + tools.task=false", "citation": "src/council/council-manager.ts:243-275"},
+    {"id": "f-iter003-codemap", "severity": "medium", "label": "codemap skill is the stack-agnostic agentic pattern (glob/hash/diff workflow)", "citation": "src/skills/codemap/SKILL.md:32-39,src/skills/codemap/scripts/codemap.mjs:70-100"},
+    {"id": "f-iter004-startup", "severity": "medium", "label": "Plugin index.ts composes enforcement: registers agent/tool/mcp/config/event/tool.execute.before/chat hooks in fixed order", "citation": "src/index.ts:373-388,932-967"},
+    {"id": "f-iter004-orch-prompt", "severity": "medium", "label": "Orchestrator prompt explicitly documents delegation = child-session-blocking, parallel = independent branches; LEAF prompt should not have these affordances", "citation": "src/agents/orchestrator.ts:176,251"}
+  ],
+  "ruledOutDirections": [
+    {"id": "ruled-iter001-001", "label": "Schema-level caller restrictions", "citation": "oh-my-opencode-slim.schema.json:295-376", "reason": "Schema rejects additionalProperties; no caller/restricted/dispatcher fields exist in agent override surface."},
+    {"id": "ruled-iter002-stack", "label": "Workspace marker file stack detection", "citation": "src/cli/config-io.ts:42-396", "reason": "CLI reads package.json for plugin location only; no go.mod/Cargo.toml/etc. probes anywhere."},
+    {"id": "ruled-iter003-rules", "label": "SUBAGENT_DELEGATION_RULES as enforcement source", "citation": "src/config/constants.ts:25-66", "reason": "Constant declared but no caller in repo; runtime enforcement is mode + permission + caller guard."}
+  ],
+  "metrics": {
+    "iterationsCompleted": 4,
+    "openQuestions": 0,
+    "resolvedQuestions": 5,
+    "keyFindings": 13,
+    "convergenceScore": 1.0,
+    "stopReason": "all_questions_answered",
+    "ratios": [0.95, 0.86, 0.78, 0.63],
+    "coverageBySources": {
+      "src/agents/": 6,
+      "src/hooks/": 5,
+      "src/tools/": 1,
+      "src/council/": 1,
+      "src/skills/": 2,
+      "src/cli/": 2,
+      "src/config/": 2,
+      "src/utils/": 1,
+      "src/index.ts": 2,
+      "docs/": 4,
+      "schema": 1,
+      "tests": 1
+    }
+  }
+}

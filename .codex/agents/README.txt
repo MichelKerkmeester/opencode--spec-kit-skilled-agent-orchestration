@@ -8,6 +8,7 @@ and behavioral instructions.
 Mirrored to: .claude/agents/, .gemini/agents/, .codex/agents/
 
 Agents:
+  code          — Application-code implementation (write-capable LEAF; sk-code stack delegation)
   context       — Retrieval-first codebase exploration
   debug         — Fresh-perspective debugging
   deep-research — Autonomous research iterations

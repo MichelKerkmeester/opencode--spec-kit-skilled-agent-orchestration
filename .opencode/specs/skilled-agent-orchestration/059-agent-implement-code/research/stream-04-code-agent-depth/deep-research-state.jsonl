@@ -1,0 +1,18 @@
+{"type":"config","topic":"Stream-04 — @code agent depth/structure (mirroring @review rigor from coder perspective)","maxIterations":10,"convergenceThreshold":0.05,"createdAt":"2026-05-01T17:30:09.000Z","specFolder":"specs/skilled-agent-orchestration/059-agent-implement-code"}
+{"type":"event","event":"pre_dispatch","iteration":1,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:32:13.000Z"}
+{"type":"iteration","iteration":1,"newInfoRatio":0.74,"status":"insight","focus":"Q1 — Quality rubric for code work","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":2,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:37:55.000Z"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.68,"status":"insight","focus":"Q2 — Coder dispatch modes","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":3,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:40:36.000Z"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.62,"status":"insight","focus":"Q3 — Coder checklists (Pre/During/Post)","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":4,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:42:42.000Z"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.57,"status":"insight","focus":"Q4 — Output verification + Iron Law","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":5,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:45:09.000Z"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.52,"status":"insight","focus":"Q5 — Adversarial self-check (Builder/Critic/Verifier)","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":6,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:47:37.000Z"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.46,"status":"insight","focus":"Q6 anti-patterns + Q7 confidence levels","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":7,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:50:29.000Z"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.41,"status":"insight","focus":"Q8 RETURN contract + Q9 skill precedence","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"pre_dispatch","iteration":8,"executor":"cli-codex","model":"gpt-5.5","timestamp":"2026-05-01T17:52:58.000Z"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.34,"status":"insight","focus":"Q10 — ASCII summary box","graphEvents":[],"executor":{"kind":"cli-codex","model":"gpt-5.5","reasoningEffort":"high","serviceTier":"fast","timeoutSeconds":900}}
+{"type":"event","event":"convergence_stop","reason":"strong_signal_zero_remaining_questions_with_cited_findings","iterationsCompleted":8,"maxIterations":10,"timestamp":"2026-05-01T18:02:04.000Z"}

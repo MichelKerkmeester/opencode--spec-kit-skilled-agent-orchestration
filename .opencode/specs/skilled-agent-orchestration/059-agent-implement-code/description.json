@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/022-mcp-coco-integration/059-agent-implement-code",
+  "description": "Feature Specification: @code Sub-Agent for Stack-Agnostic Code Implementation",
+  "keywords": [
+    "feature",
+    "specification",
+    "code",
+    "sub-agent",
+    "stack-agnostic",
+    "implementation"
+  ],
+  "lastUpdated": "2026-05-01T14:39:33.611Z",
+  "specId": "059",
+  "folderSlug": "agent-implement-code",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "022-mcp-coco-integration"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

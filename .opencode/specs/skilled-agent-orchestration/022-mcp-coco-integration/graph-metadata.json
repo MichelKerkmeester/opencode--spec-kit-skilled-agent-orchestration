@@ -3,7 +3,9 @@
   "packet_id": "skilled-agent-orchestration/022-mcp-coco-integration",
   "spec_folder": "skilled-agent-orchestration/022-mcp-coco-integration",
   "parent_id": null,
-  "children_ids": [],
+  "children_ids": [
+    "skilled-agent-orchestration/022-mcp-coco-integration/059-agent-implement-code"
+  ],
   "manual": {
     "depends_on": [],
     "supersedes": [],
@@ -210,9 +212,10 @@
     ],
     "causal_summary": "OpenCode had no semantic code search capability. All code exploration relied on Grep (exact/regex text patterns), Glob (file path patterns), and Read (full file retrieval). The @context agent had to re-discover code structure every session with no persistent index and no way to query code by intent or concept. Searching for \"find authentication middleware\" with Grep required knowing the exact identifiers; with no semantic layer, fuzzy or conceptual queries returned zero results.",
     "created_at": "2026-04-12T09:02:50.170Z",
-    "last_save_at": "2026-04-26T09:17:15.149Z",
+    "last_save_at": "2026-05-01T14:39:36.263Z",
     "save_lineage": "graph_only",
     "last_accessed_at": null,
+    "last_active_child_id": "skilled-agent-orchestration/022-mcp-coco-integration/059-agent-implement-code",
     "source_docs": [
       "spec.md",
       "plan.md",

@@ -9,6 +9,7 @@ Sibling runtimes: .opencode/agent/ (.md), .claude/agents/ (.md), .codex/agents/ 
 Inventory rule: if an agent file is not present in this directory, it is not a live runtime surface here.
 
 Agents:
+  code          — Application-code implementation (write-capable LEAF; sk-code stack delegation)
   context       — Retrieval-first codebase exploration
   debug         — Fresh-perspective debugging
   deep-research — Autonomous research iterations

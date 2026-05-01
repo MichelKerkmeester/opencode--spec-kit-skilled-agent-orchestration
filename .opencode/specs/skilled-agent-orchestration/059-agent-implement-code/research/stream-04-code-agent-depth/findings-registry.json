@@ -1,0 +1,39 @@
+{
+  "openQuestions": [
+    {"id": "Q2", "label": "Coder-side dispatch modes — what task shapes does @code receive?"},
+    {"id": "Q3", "label": "Pre/During/Post-implementation checklists — universal + stack-specific"},
+    {"id": "Q4", "label": "Output verification protocol for coders — Iron Law for coder"},
+    {"id": "Q5", "label": "Adversarial self-check for coders — Builder/Critic/Verifier analog"},
+    {"id": "Q6", "label": "Coder-specific anti-patterns beyond AGENTS.md generics"},
+    {"id": "Q7", "label": "Confidence levels for code work — HIGH/MEDIUM/LOW evidence per band"},
+    {"id": "Q8", "label": "Orchestrator integration — RETURN contract refinement"},
+    {"id": "Q9", "label": "Skill loading precedence — baseline + overlay rule"},
+    {"id": "Q10", "label": "Summary box (ASCII) — coder-side analog of @review §13"}
+  ],
+  "resolvedQuestions": [
+    {"id": "Q1", "label": "Quality rubric for code work", "iteration": 1, "newInfoRatio": 0.74, "summary": "Coder Acceptance Rubric: Correctness 30 / Scope-Adherence 20 / Verification-Evidence 20 / Stack-Pattern-Compliance 15 / Integration 15; bands EXCELLENT/ACCEPTABLE/NEEDS REVISION/REJECTED; severity P0/P1/P2 with P0 hard-block."}
+  ],
+  "keyFindings": [
+    {"id": "f-iter001-001", "severity": "P1", "label": "@review §5 (lines 116-152) is the structural template to mirror", "iteration": 1},
+    {"id": "f-iter001-002", "severity": "P1", "label": "Verification-Evidence deserves its own scoring weight (sk-code Iron Law line 62)", "iteration": 1},
+    {"id": "f-iter001-003", "severity": "P1", "label": "Stack-Pattern-Compliance dimension owned by sk-code Phase 1.5, not embedded in @code body", "iteration": 1},
+    {"id": "f-iter001-004", "severity": "P1", "label": "Security/correctness baseline minimums always enforced via P0/P1 overrides", "iteration": 1},
+    {"id": "f-iter001-005", "severity": "P1", "label": "Scope-Adherence deserves coder-side weight (AGENTS.md scope-lock + Bash-bypass)", "iteration": 1}
+  ],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 1,
+    "openQuestions": 9,
+    "resolvedQuestions": 1,
+    "keyFindings": 5,
+    "convergenceScore": 0.10,
+    "rollingAvg": 0.74,
+    "coverageBySources": {
+      "review.md": 1,
+      "sk-code/SKILL.md": 1,
+      "sk-code-review/SKILL.md": 1,
+      "AGENTS.md": 1,
+      "synthesis.md": 1
+    }
+  }
+}

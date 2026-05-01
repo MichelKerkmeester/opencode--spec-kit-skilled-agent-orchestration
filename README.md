@@ -4,11 +4,11 @@
 [![License](https://img.shields.io/github/license/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=7bd88f&labelColor=222222)](LICENSE)
 [![Latest Release](https://img.shields.io/github/v/release/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration?style=for-the-badge&color=5ad4e6&labelColor=222222)](https://github.com/MichelKerkmeester/opencode--spec-kit-skilled-agent-orchestration/releases)
 
-> Multi-agent AI development framework with cognitive memory, structured documentation, 10 agents, 19 skills, 23 command entry points, 63 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
+> Multi-agent AI development framework with cognitive memory, structured documentation, 11 agents, 19 skills, 23 command entry points, 63 MCP tools - built for OpenCode, Codex CLI, Claude Code, Gemini CLI, with Copilot support for MCP and startup-surface workflows.
 >
 > Don't buy me unwanted coffee: https://buymeacoffee.com/michelkerkmeester
 
-**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 10 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
+**🧠 Persistent Memory** • **📋 Structured Docs** • **🤖 11 Specialized Agents** • **⚡ 5 Mirrored Runtimes**
 
 <!-- ANCHOR:table-of-contents -->
 
@@ -50,7 +50,7 @@ The framework adds three layers on top of the base platform:
 
 | | |
 |---|---|
-| **🤖 10 Agents** | 10 custom specialists, multi-runtime |
+| **🤖 11 Agents** | 11 custom specialists, multi-runtime |
 | **🎯 21 Skills** | Code, docs, git, prompts, MCP, research, review, improvement, cross-AI |
 | **⌨️ 23 Commands** | 6 spec_kit + 4 memory + 6 create + 2 improve + 4 doctor + 1 agent_router |
 | **🔧 63 MCP Tools** | spec_kit_memory (54), code mode (7), CocoIndex (1), sequential thinking (1) — see canonical count in FAQ |
@@ -825,7 +825,7 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 
 ### 🤖 Agent Network
 
-10 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
+11 custom specialist agents. Defined in `.opencode/agent/` (source of truth), mirrored for Claude Code (`.claude/agents/`), Codex CLI (`.codex/agents/`), and Gemini CLI (`.gemini/agents/`) runtime surfaces.
 
 **Orchestrate**
 - Senior task commander with full authority over decomposition, delegation and quality evaluation
@@ -883,6 +883,17 @@ These skills let you run **cross-CLI agent teams from any starting CLI**. Whiche
 - Loads `sk-code-review` baseline first, then one `sk-code-*` overlay matching the detected stack
 - Security and correctness minimums are mandatory and never relaxed by the overlay
 - Produces findings-first severity analysis with quality scoring and pattern validation
+
+**Code**
+- Stack-aware application-code implementation specialist (write-capable LEAF, `mode: subagent`, `task: deny`)
+- Delegates stack detection to `sk-code` baseline + at most one `sk-code-*` overlay; never bakes stack rules into the agent body
+- 7 dispatch modes: full implementation / surgical fix / refactor only / test add / scaffold new file / rename-move / dependency bump
+- 5-dimension acceptance rubric (100 pts total): Correctness 30, Scope-Adherence 20, Verification-Evidence 20, Stack-Pattern-Compliance 15, Integration 15
+- Builder → Critic → Verifier adversarial self-check on every completion claim (challenges `DONE`, opposite axis from `@review`'s Hunter/Skeptic/Referee which challenges findings)
+- Iron Law: NO COMPLETION CLAIMS WITHOUT FRESH VERIFICATION EVIDENCE FROM THE ACTUAL STACK; LOW confidence strictly blocks `DONE`
+- Fail-closed verification — failure returns to orchestrator, no internal retry; BLOCKED-count circuit breaker (3× BLOCKED → orchestrator offers `@debug`)
+- Compact RETURN line + structured body with `escalation` classifier (NONE / UNKNOWN_STACK / SCOPE_CONFLICT / LOW_CONFIDENCE / LOGIC_SYNC / VERIFY_FAIL)
+- Dispatched ONLY by `@orchestrate` via convention-floor caller-restriction (description prose + body §0 dispatch gate + orchestrate.md routing entry; not harness-enforced)
 
 **Write**
 - Documentation generation specialist for project-level docs outside spec folders
@@ -1318,4 +1329,4 @@ A: The feature catalog is a 294-entry reference across 22 categories documenting
 <!-- /ANCHOR:related-documents -->
 
 
-*Documentation version: 4.5 | Last updated: 2026-04-30 | Framework: 10 agents, 19 skills, 23 commands, 63 MCP tools (54 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
+*Documentation version: 4.5 | Last updated: 2026-05-01 | Framework: 11 agents, 19 skills, 23 commands, 63 MCP tools (54 spec_kit_memory + 7 code mode + 1 CocoIndex + 1 sequential thinking; canonical source `TOOL_DEFINITIONS` in `tool-schemas.ts`; deferred / internal-only handlers do NOT count).*
