@@ -248,12 +248,31 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
   return { skills: [...skills, ...COMMAND_BRIDGES], edges, generatedAt: new Date().toISOString(), source: 'filesystem' };
 }
 
+// F-004-A4-01: previously a bare `catch {}` swallowed every SQLite read error
+// and silently fell back to the filesystem projection, hiding corrupt-DB and
+// schema-drift failures from operators. We now distinguish three cases:
+//   1. SQLite read succeeded → return that projection ('sqlite').
+//   2. SQLite DB does not exist yet → loadSqliteProjection returns null and we
+//      fall through to a clean 'filesystem' projection (legitimate first run).
+//   3. SQLite read THREW → we still degrade to filesystem so the daemon stays
+//      up, but the projection is tagged 'filesystem-fallback' with a
+//      fallbackReason carrying the underlying error message AND the failure
+//      is logged via console.warn so it surfaces in daemon logs.
 export function loadAdvisorProjection(workspaceRoot: string): AdvisorProjection {
   const resolvedRoot = resolve(workspaceRoot);
   try {
-    return loadSqliteProjection(resolvedRoot) ?? loadFilesystemProjection(resolvedRoot);
-  } catch {
+    const sqliteProjection = loadSqliteProjection(resolvedRoot);
+    if (sqliteProjection !== null) return sqliteProjection;
     return loadFilesystemProjection(resolvedRoot);
+  } catch (error: unknown) {
+    const reason = error instanceof Error ? error.message : String(error);
+    console.warn(`[advisor-projection] SQLite projection failed; degraded to filesystem fallback: ${reason}`);
+    const fallback = loadFilesystemProjection(resolvedRoot);
+    return {
+      ...fallback,
+      source: 'filesystem-fallback',
+      fallbackReason: reason,
+    };
   }
 }
 

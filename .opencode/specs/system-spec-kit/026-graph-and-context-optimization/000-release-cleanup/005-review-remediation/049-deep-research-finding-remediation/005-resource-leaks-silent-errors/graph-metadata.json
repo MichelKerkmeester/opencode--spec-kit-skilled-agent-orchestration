@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,209 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 5: resource-leaks-silent-errors",
+    "trigger_phrases": [
+      "F-003-A3",
+      "F-004-A4-01",
+      "F-004-A4-04",
+      "resource leaks and silent errors",
+      "watcher target refresh leak",
+      "diagnostics ring buffer",
+      "file-watcher queue cap",
+      "advisor projection fallback",
+      "malformed graph metadata",
+      "F-003-A3 plan",
+      "F-004-A4 plan",
+      "005 resource leaks plan"
+    ],
+    "key_topics": [
+      "f-003-a3",
+      "f-004-a4-01",
+      "f-004-a4-04",
+      "resource",
+      "leaks",
+      "silent",
+      "errors",
+      "watcher",
+      "target",
+      "refresh",
+      "leak",
+      "diagnostics"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/skill_advisor/lib/daemon/watcher.ts",
+      "mcp_server/lib/ops/file-watcher.ts",
+      "mcp_server/skill_advisor/lib/scorer/projection.ts",
+      "mcp_server/skill_advisor/lib/scorer/types.ts",
+      "mcp_server/skill_advisor/tests/daemon-watcher-resource-leaks-049-005.vitest.ts",
+      "mcp_server/skill_advisor/tests/scorer/projection-fallback-049-005.vitest.ts",
+      "mcp_server/tests/file-watcher-queue-cap-049-005.vitest.ts",
+      "mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "watcher.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/daemon/watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/ops/file-watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "projection.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/projection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "types.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "daemon-watcher-resource-leaks-049-005.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/daemon-watcher-resource-leaks-049-005.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "projection-fallback-049-005.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/scorer/projection-fallback-049-005.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher-queue-cap-049-005.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/file-watcher-queue-cap-049-005.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "native-scorer.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Resource Leaks And Silent Errors Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Five",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Plug",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Technical Context The",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Type",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "oldest-eviction",
+        "kind": "key_phrase",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Five findings from packet 046's deep research describe long-running daemon resource leaks plus two silent error paths that hide degraded behavior from operators:",
     "created_at": "2026-05-01T05:18:48Z",
-    "last_save_at": "2026-05-01T05:18:48Z",
+    "last_save_at": "2026-05-01T07:55:29.751Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

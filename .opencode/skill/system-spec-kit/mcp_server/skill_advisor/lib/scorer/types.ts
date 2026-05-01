@@ -36,11 +36,18 @@ export interface SkillEdgeProjection {
   readonly context?: string;
 }
 
+// F-004-A4-01: 'filesystem-fallback' is set when SQLite projection threw
+// (corrupt DB, schema mismatch, etc.) and we degraded to filesystem scan; the
+// optional `fallbackReason` carries the underlying error so operators can
+// distinguish a clean filesystem-only run ('filesystem' source) from a
+// degraded one. 'filesystem' is preserved for the legitimate first-run path
+// where the SQLite DB simply does not exist yet.
 export interface AdvisorProjection {
   readonly skills: readonly SkillProjection[];
   readonly edges: readonly SkillEdgeProjection[];
   readonly generatedAt: string;
-  readonly source: 'sqlite' | 'filesystem' | 'fixture';
+  readonly source: 'sqlite' | 'filesystem' | 'filesystem-fallback' | 'fixture';
+  readonly fallbackReason?: string;
 }
 
 export interface LaneMatch {

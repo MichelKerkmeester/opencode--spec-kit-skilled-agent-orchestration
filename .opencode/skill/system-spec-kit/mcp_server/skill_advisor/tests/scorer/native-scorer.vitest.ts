@@ -268,7 +268,12 @@ describe('027/003 native scorer units', () => {
       const projection = loadAdvisorProjection(root);
       const alpha = projection.skills.find((entry) => entry.id === 'alpha');
 
-      expect(projection.source).toBe('filesystem');
+      // F-004-A4-01 (049/005): a corrupt SQLite DB now degrades to
+      // 'filesystem-fallback' (not 'filesystem'), and fallbackReason carries
+      // the underlying error message so operators can distinguish a clean
+      // first-run filesystem read from a degraded one.
+      expect(projection.source).toBe('filesystem-fallback');
+      expect(projection.fallbackReason).toBeDefined();
       expect(alpha?.intentSignals).toEqual(expect.arrayContaining(['corrupt sqlite fallback']));
     } finally {
       rmSync(root, { recursive: true, force: true });

@@ -221,21 +221,70 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
   // C3 fix: Bounded concurrency — prevent unbounded parallel reindex operations
   const MAX_CONCURRENT_REINDEX = 2;
+  // F-003-A3-03: Cap the pending-slot queue so a runaway watcher event storm
+  // can't grow the wait list without bound. 1000 pending entries is generous
+  // enough for ordinary workloads (debounceTimers already coalesces by file
+  // path upstream so each slot maps to one distinct file's reindex turn) but
+  // keeps a runaway loop from leaking memory until OOM. When the queue is at
+  // cap the OLDEST waiter is rejected — newer events represent fresher state,
+  // and the dropped waiter's caller has its own catch path that tolerates
+  // QUEUE_OVERFLOW. On close() every queued waiter is rejected with the same
+  // sentinel so dependent code can exit early without hanging.
+  const MAX_PENDING_REINDEX_SLOTS = 1000;
+  const QUEUE_OVERFLOW_REASON = 'file-watcher reindex queue overflow';
+  const QUEUE_CLOSED_REASON = 'file-watcher closed before queued reindex ran';
+  interface QueuedSlot {
+    readonly resolve: () => void;
+    readonly reject: (reason: Error) => void;
+  }
   let activeReindexCount = 0;
-  const pendingReindexSlots: Array<() => void> = [];
+  const pendingReindexSlots: QueuedSlot[] = [];
 
   function acquireReindexSlot(): Promise<void> {
+    if (isClosing) {
+      return Promise.reject(new Error(QUEUE_CLOSED_REASON));
+    }
     if (activeReindexCount < MAX_CONCURRENT_REINDEX) {
       activeReindexCount++;
       return Promise.resolve();
     }
-    return new Promise((resolve) => pendingReindexSlots.push(() => { activeReindexCount++; resolve(); }));
+    return new Promise((resolve, reject) => {
+      // F-003-A3-03: drop the oldest waiter when the queue is at cap; the
+      // displaced waiter's wrapping operation should treat the sentinel error
+      // as a recoverable signal (skip this round, debounce will re-fire on the
+      // next change).
+      if (pendingReindexSlots.length >= MAX_PENDING_REINDEX_SLOTS) {
+        const dropped = pendingReindexSlots.shift();
+        if (dropped) {
+          dropped.reject(new Error(QUEUE_OVERFLOW_REASON));
+        }
+      }
+      pendingReindexSlots.push({
+        resolve: () => { activeReindexCount++; resolve(); },
+        reject,
+      });
+    });
   }
 
   function releaseReindexSlot(): void {
     activeReindexCount--;
     const next = pendingReindexSlots.shift();
-    if (next) next();
+    if (next) next.resolve();
+  }
+
+  // F-003-A3-03: drain the pending-slot queue on close() so the watcher does
+  // not silently leak Promises. Every queued waiter rejects with the same
+  // sentinel; the wrapping `operation()` catch in scheduleTask logs and exits
+  // cleanly. The active count is intentionally NOT decremented here — those
+  // slots are owned by in-flight reindex tasks and `releaseReindexSlot()` runs
+  // in their finally blocks.
+  function abortPendingReindexQueue(): void {
+    while (pendingReindexSlots.length > 0) {
+      const slot = pendingReindexSlots.shift();
+      if (slot) {
+        slot.reject(new Error(QUEUE_CLOSED_REASON));
+      }
+    }
   }
 
   // M1 fix: AbortController per file path for cancellation of stale reindex
@@ -288,6 +337,13 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
 
       const task = operation().catch((error: unknown) => {
         const message = error instanceof Error ? error.message : String(error);
+        // F-003-A3-03: queue-overflow and queue-closed errors are expected
+        // outcomes of the bounded-queue policy, not failures. Log them at a
+        // lower severity so storms do not drown legitimate task warnings.
+        if (message === QUEUE_OVERFLOW_REASON || message === QUEUE_CLOSED_REASON) {
+          console.error(`[file-watcher] Skipped queued reindex for ${path.basename(filePath)}: ${message}`);
+          return;
+        }
         console.warn(`[file-watcher] Watch task failed for ${path.basename(filePath)}: ${message}`);
       });
       trackInFlight(task);
@@ -451,6 +507,11 @@ export function startFileWatcher(config: WatcherConfig): FSWatcher {
       clearTimeout(timeout);
     }
     debounceTimers.clear();
+
+    // F-003-A3-03: drop every queued slot waiter before settling in-flight
+    // work. The waiters reject with QUEUE_CLOSED_REASON; their wrapping
+    // operation()s catch and log without re-entering the watcher.
+    abortPendingReindexQueue();
 
     while (inFlightReindex.size > 0) {
       await Promise.allSettled(Array.from(inFlightReindex));

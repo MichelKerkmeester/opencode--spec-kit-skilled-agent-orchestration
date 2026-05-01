@@ -9,7 +9,9 @@
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/008-search-quality-tuning",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/007-topology-build-boundary",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency"
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/003-advisor-quality",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors"
   ],
   "manual": {
     "depends_on": [],
@@ -29,14 +31,14 @@
     "entities": [],
     "causal_summary": "Phase parent: close 78 remaining findings (27 P1 + 51 P2) from packet 046 deep research across 10 sub-phases",
     "created_at": "2026-05-01T05:18:33Z",
-    "last_save_at": "2026-05-01T07:08:59.306Z",
+    "last_save_at": "2026-05-01T07:55:32.393Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
-    "last_active_at": "2026-05-01T07:08:59.306Z"
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
+    "last_active_at": "2026-05-01T07:55:32.393Z"
   }
 }
