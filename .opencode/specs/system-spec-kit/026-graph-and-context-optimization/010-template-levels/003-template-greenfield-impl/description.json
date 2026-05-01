@@ -1,0 +1,17 @@
+{
+  "specFolder": "026-graph-and-context-optimization/010-template-levels/003-template-greenfield-impl",
+  "description": "Feature Specification: [NAME]",
+  "keywords": [
+    "feature",
+    "specification",
+    "name"
+  ],
+  "lastUpdated": "2026-05-01T12:39:51.897Z",
+  "specId": "012",
+  "folderSlug": "template-greenfield-impl",
+  "parentChain": [
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -54,7 +54,7 @@ Provide systematic debugging with fresh perspective when prior attempts have fai
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Context Handoff Format
 

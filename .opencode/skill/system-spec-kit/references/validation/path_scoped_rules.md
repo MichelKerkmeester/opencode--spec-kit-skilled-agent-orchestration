@@ -155,7 +155,7 @@ Planned but not yet implemented:
 
 ### Reference Files
 - [Validation Rules](../validation/validation_rules.md) - Detailed rule reference
-- [Level Specifications](../templates/level_specifications.md) - Complete Level 1-3 requirements
+- Level specifications reference - Complete Level 1-3 requirements
 - [Quick Reference](../workflows/quick_reference.md) - Commands and troubleshooting
 
 ### Scripts

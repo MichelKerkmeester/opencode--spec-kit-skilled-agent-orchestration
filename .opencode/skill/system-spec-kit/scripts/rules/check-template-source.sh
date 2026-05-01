@@ -28,8 +28,20 @@ run_check() {
 # 2. COLLECT FILES TO VALIDATE
 # ───────────────────────────────────────────────────────────────
 
-    # Check template source headers in spec documentation files
-    local -a spec_files=("spec.md" "plan.md" "tasks.md" "checklist.md" "decision-record.md" "implementation-summary.md")
+    local rule_dir
+    rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local helper_script="$rule_dir/../utils/template-structure.js"
+
+    # Check source markers in docs defined by the Level contract.
+    local contract_level="$level"
+    if is_phase_parent "$folder"; then
+        contract_level="phase"
+    fi
+    local -a spec_files=()
+    local doc_name
+    while IFS= read -r doc_name; do
+        [[ -n "$doc_name" ]] && spec_files+=("$doc_name")
+    done < <(node "$helper_script" docs "$contract_level")
     local -a missing_header=()
     local -a checked_files=()
 
@@ -41,10 +53,10 @@ run_check() {
         
         checked_files+=("$doc_name")
         
-        # Check for SPECKIT_TEMPLATE_SOURCE header in first 20 lines
-        # (frontmatter with trigger_phrases arrays can exceed 10 lines)
+        # Check for SPECKIT_TEMPLATE_SOURCE near the top. The marker is kept
+        # after YAML frontmatter so markdown renders it as an HTML comment.
         local has_header=false
-        if head -n 20 "$doc_path" 2>/dev/null | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
+        if head -n 60 "$doc_path" 2>/dev/null | grep -q "SPECKIT_TEMPLATE_SOURCE:"; then
             has_header=true
         fi
         

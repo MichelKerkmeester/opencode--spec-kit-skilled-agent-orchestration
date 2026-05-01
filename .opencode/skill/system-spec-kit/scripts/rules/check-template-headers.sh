@@ -20,19 +20,23 @@ run_check() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
-    # Phase-parent early branch: skip Level-N template-header expectations at phase parents.
-    # The lean phase-parent template (templates/phase_parent/spec.md) has its own header
-    # set, distinct from level_N templates; comparing against level_N produces false
-    # structural deviations on the manifest-only parent.
-    if is_phase_parent "$folder"; then
-        RULE_STATUS="info"
-        RULE_MESSAGE="Phase parent: template-header enforcement skipped (lean trio policy)"
-        return 0
-    fi
-
     local rule_dir
     rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     local helper_script="$rule_dir/../utils/template-structure.js"
+    local contract_level="$level"
+    if is_phase_parent "$folder"; then
+        if [[ -f "$folder/spec.md" ]] \
+            && grep -q "<!-- ANCHOR:phase-map -->" "$folder/spec.md" 2>/dev/null \
+            && [[ ! -f "$folder/plan.md" ]] \
+            && [[ ! -f "$folder/tasks.md" ]] \
+            && [[ ! -f "$folder/checklist.md" ]] \
+            && [[ ! -f "$folder/decision-record.md" ]] \
+            && [[ ! -f "$folder/implementation-summary.md" ]]; then
+            contract_level="phase"
+        else
+            contract_level="$level"
+        fi
+    fi
 
     local -a errors=()
     local -a warnings=()
@@ -57,7 +61,7 @@ run_check() {
         ((files_checked++)) || true
 
         local compare_output
-        compare_output=$(node "$helper_script" compare "$level" "$(basename "$file")" "$file" headers 2>/dev/null || true)
+        compare_output=$(node "$helper_script" compare "$contract_level" "$(basename "$file")" "$file" headers 2>/dev/null || true)
         if ! grep -q $'^supported\ttrue$' <<< "$compare_output"; then
             return
         fi
@@ -142,12 +146,10 @@ run_check() {
         done <<< "$compare_output"
     }
 
-    compare_headers "$folder/spec.md" "spec.md"
-    compare_headers "$folder/plan.md" "plan.md"
-    compare_headers "$folder/tasks.md" "tasks.md"
-    compare_headers "$folder/checklist.md" "checklist.md"
-    compare_headers "$folder/decision-record.md" "decision-record.md"
-    compare_headers "$folder/implementation-summary.md" "implementation-summary.md"
+    while IFS= read -r contract_doc; do
+        [[ -z "$contract_doc" ]] && continue
+        compare_headers "$folder/$contract_doc" "$contract_doc"
+    done < <(node "$helper_script" docs "$contract_level")
 
     if [[ -f "$folder/checklist.md" ]]; then
         local bare_priority_count=0
@@ -184,7 +186,7 @@ run_check() {
         if [[ ${#warnings[@]} -gt 0 ]]; then
             RULE_DETAILS+=("${warnings[@]}")
         fi
-        RULE_REMEDIATION="1. Copy the exact H1/H2 structure from the active template in .opencode/skill/system-spec-kit/templates/
+        RULE_REMEDIATION="1. Copy the exact H1/H2 structure from the active Level template
 2. Restore missing or reordered required sections before custom sections
 3. Use '# Verification Checklist:' and CHK-NNN [P0/P1/P2] format for checklist files"
         return

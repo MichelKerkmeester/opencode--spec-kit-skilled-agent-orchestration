@@ -9,7 +9,7 @@ description: "Template anchor optimization parses anchor markers in memory files
 
 Template anchor optimization parses anchor markers in memory files and attaches semantic type metadata to pipeline rows without modifying scores.
 
-Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It just adds useful tags so that later steps in the pipeline know what kind of content they are looking at.
+Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It adds useful tags so that later steps in the pipeline know what content type they are looking at.
 
 ---
 

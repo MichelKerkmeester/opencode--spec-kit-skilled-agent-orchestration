@@ -9,7 +9,7 @@ description: "Describes how FSRS decay rates vary by a two-dimensional multiplie
 
 Describes how FSRS decay rates vary by a two-dimensional multiplier matrix across context type and importance tier, so decisions never decay while scratch notes decay at 0.5x rate.
 
-Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on what kind of memory they are and how important they were marked. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between.
+Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on memory class and importance. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between.
 
 ---
 

@@ -15,7 +15,7 @@ Current baseline: schema v23 (`document_type`, `spec_level`), 3 indexed content 
 
 The Spec Kit Memory system provides context preservation across sessions through vector-based semantic search and packet-first continuity. Phase 018 makes `handover.md -> _memory.continuity -> spec docs` the canonical recovery chain; retired `[spec]/memory/*.md` artifacts are no longer produced at save time and only matter when older packets still contain them. This reference covers MCP tool behavior, importance tiers, decay scoring, and configuration.
 
-When a save mutates indexed state, the runtime also updates the `DB_UPDATED_FILE` marker from `mcp_server/core/config.ts`. Long-lived MCP processes poll that marker with `checkDatabaseUpdated()` so canonical-doc writes become visible without restarting the server.
+When a save mutates indexed state, the runtime also updates the `DB_UPDATED_FILE` marker from `mcp_server/Level sourceconfig.ts`. Long-lived MCP processes poll that marker with `checkDatabaseUpdated()` so canonical-doc writes become visible without restarting the server.
 
 ### Architecture
 
@@ -26,7 +26,7 @@ When a save mutates indexed state, the runtime also updates the `DB_UPDATED_FILE
 | Constitutional | `constitutional/` | Always-surface rules (Gate 3 enforcement) |
 | Scripts | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Canonical continuity save entrypoint for packet docs |
 
-### Core Capabilities
+### Core Support
 
 - **Semantic search** - Find indexed spec-doc records by meaning, not just keywords
 - **Importance tiers** - Six-level system for prioritizing context

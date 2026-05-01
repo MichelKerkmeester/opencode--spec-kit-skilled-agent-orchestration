@@ -123,7 +123,7 @@ CONFIDENCE: HIGH
 | Factor | Weight | Question |
 |--------|--------|----------|
 | Epistemic gaps | 0.30 | What don't I know? |
-| Model boundaries | 0.25 | At capability limits? |
+| Model boundaries | 0.25 | At support limits? |
 | Temporal variability | 0.20 | How stable is this knowledge? |
 | Situational completeness | 0.25 | Context sufficient? |
 
@@ -365,7 +365,7 @@ Before recording a decision:
 ## 8. RELATED RESOURCES
 
 - [Five Checks Framework](./five_checks.md) - Evaluation framework for significant decisions
-- [Decision Record Template](../../templates/level_3/decision-record.md) - For Level 3/3+ spec folders
+- [Decision Record Template](../../templates/manifest/decision-record.md.tmpl) - For Level 3/3+ spec folders
 - [SKILL.md - Gates Overview](../../SKILL.md) - Gate system documentation
 - [AGENTS.md - Section 2](../../../../../AGENTS.md) - Gate definitions and protocols
 

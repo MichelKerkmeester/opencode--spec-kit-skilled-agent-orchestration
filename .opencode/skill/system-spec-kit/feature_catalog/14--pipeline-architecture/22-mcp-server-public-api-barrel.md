@@ -17,7 +17,7 @@ The `mcp_server/api/index.ts` file is the public barrel for the MCP server runti
 
 The barrel is broader than a simple re-export of the five `api/*.ts` modules. It also curates selected helper surfaces from internal `lib/` modules when those helpers are needed by script families such as spec-folder workflows, memory tooling, eval benchmarking, architecture metadata consumers, and rollout reporting. That keeps the public import contract centralized: consumers still use one approved boundary even when the underlying implementation lives in multiple subsystems.
 
-Because it re-exports runtime functions, constants, types, namespace modules, and rollout metadata together, the barrel acts as a compatibility layer for orchestration code. Consumers can bootstrap search and indexing, run evals, inspect capability flags, and access approved metadata helpers from one import location without taking a direct dependency on private module layout.
+Because it re-exports runtime functions, constants, types, namespace modules, and rollout metadata together, the barrel acts as a compatibility layer for orchestration code. Consumers can bootstrap search and indexing, run evals, inspect roadmap flags, and access approved metadata helpers from one import location without taking a direct dependency on private module layout.
 
 ---
 
@@ -31,7 +31,7 @@ Provider and storage bootstrap surfaces are also promoted through the same bound
 
 The barrel also intentionally promotes several curated internal helpers. Folder-discovery helpers from `lib/search/folder-discovery.ts` include `generatePerFolderDescription`, `savePerFolderDescription`, `loadPerFolderDescription`, `extractKeywords`, `slugifyFolderName`, and the `PerFolderDescription` type. Entity extraction support comes from `lib/extraction/entity-extractor.ts` via `extractEntities` and `rebuildAutoEntities`. For benchmarking and instrumentation, the barrel exports namespace objects `sessionBoost`, `causalBoost`, and `workingMemory`, plus `initExtractionAdapter`, `getExtractionMetrics`, `resetExtractionMetrics`, and the `ExtractionMetrics` type from `lib/extraction/extraction-adapter.ts`.
 
-Finally, the barrel exposes architecture and roadmap metadata surfaces that would otherwise require deep internal imports. From `lib/architecture/layer-definitions.ts`, it exports `LAYER_DEFINITIONS`, `TOOL_LAYER_MAP`, `getLayerForTool`, `getLayerTokenBudget`, `LayerDefinition`, and `LayerId`. From `lib/config/capability-flags.ts`, it exports `getMemoryRoadmapCapabilityFlags`, `getMemoryRoadmapDefaults`, `getMemoryRoadmapPhase`, and `MemoryRoadmapCapabilityFlags`. The result is a single public barrel that spans evaluation, runtime bootstrap, search, provider orchestration, script-facing helper utilities, and roadmap metadata, while keeping consumers on one stable import path.
+Finally, the barrel exposes architecture and roadmap metadata surfaces that would otherwise require deep internal imports. From `lib/architecture/layer-definitions.ts`, it exports `LAYER_DEFINITIONS`, `TOOL_LAYER_MAP`, `getLayerForTool`, `getLayerTokenBudget`, `LayerDefinition`, and `LayerId`. From `lib/config/capability-flags.ts`, it exports memory-roadmap defaults, phase, and flag helpers. The result is a single public barrel that spans evaluation, runtime bootstrap, search, provider orchestration, script-facing helper utilities, and roadmap metadata, while keeping consumers on one stable import path.
 
 ---
 
@@ -53,15 +53,15 @@ Finally, the barrel exposes architecture and roadmap metadata surfaces that woul
 | `mcp_server/lib/cognitive/working-memory.ts` | Lib | Working-memory benchmarking namespace exported by the barrel |
 | `mcp_server/lib/extraction/extraction-adapter.ts` | Lib | Extraction adapter metrics and lifecycle helpers promoted by the barrel |
 | `mcp_server/lib/architecture/layer-definitions.ts` | Lib | Layer metadata, tool-layer mapping, and token budget helpers |
-| `mcp_server/lib/config/capability-flags.ts` | Lib | Roadmap capability flag and default/phase helpers |
+| `mcp_server/lib/config/capability-flags.ts` | Lib | Roadmap flag and default/phase helpers |
 | `mcp_server/api/README.md` | Docs | Consumer policy documenting `api/` as the approved public surface |
 
 ### Validation And Tests
 | File | Focus |
 |------|-------|
 | `mcp_server/tests/api-public-surfaces.vitest.ts` | Direct barrel export contract for search and top-level API surfaces |
-| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Rollout metadata and capability-flag exports exposed by the top-level barrel |
-| `mcp_server/tests/memory-roadmap-flags.vitest.ts` | Memory-roadmap phase/default/capability helpers exposed through the public barrel |
+| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Rollout metadata and roadmap-flag exports exposed by the top-level barrel |
+| `mcp_server/tests/memory-roadmap-flags.vitest.ts` | Memory-roadmap phase/default helpers exposed through the public barrel |
 
 ---
 

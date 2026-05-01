@@ -23,6 +23,7 @@ export const DESCRIPTION_KNOWN_AUTHORED_OPTIONAL_KEYS = [
   'type',
   'trigger_phrases',
   'path',
+  'level',
 ] as const;
 
 export const DESCRIPTION_RESERVED_KEYS = [
@@ -60,6 +61,7 @@ export const perFolderDescriptionSchema = folderDescriptionSchema.extend({
   type: z.string().optional(),
   trigger_phrases: stringArraySchema.optional(),
   path: z.string().optional(),
+  level: z.union([z.number(), z.string()]).optional(),
 }).passthrough();
 
 export type FolderDescriptionShape = z.infer<typeof folderDescriptionSchema>;

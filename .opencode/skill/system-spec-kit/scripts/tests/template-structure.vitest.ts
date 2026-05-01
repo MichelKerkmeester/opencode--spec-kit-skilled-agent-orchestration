@@ -1,6 +1,7 @@
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import { spawnSync } from 'node:child_process';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   compareDocumentToTemplate,
@@ -10,6 +11,7 @@ import {
   normalizeLevel,
   resolveTemplatePath,
 } from '../utils/template-structure.js';
+import { renderInlineGates, type RenderLevel } from '../templates/inline-gate-renderer';
 
 const tempDirs: string[] = [];
 
@@ -19,6 +21,14 @@ function createTempDoc(basename: string, content: string): string {
   const filePath = path.join(dir, basename);
   fs.writeFileSync(filePath, content, 'utf8');
   return filePath;
+}
+
+function readRenderedTemplate(level: RenderLevel, basename: string): string {
+  const templatePath = resolveTemplatePath(level, basename);
+  if (!templatePath) {
+    throw new Error(`Template not found for level ${level}: ${basename}`);
+  }
+  return renderInlineGates(fs.readFileSync(templatePath, 'utf8'), level);
 }
 
 afterEach(() => {
@@ -33,8 +43,20 @@ afterEach(() => {
 describe('template structure helper', () => {
   it('resolves live template paths by level and basename', () => {
     expect(normalizeLevel('3+')).toBe('3+');
-    expect(resolveTemplatePath('2', 'plan.md')).toMatch(/templates\/level_2\/plan\.md$/);
-    expect(resolveTemplatePath('3+', 'decision-record.md')).toMatch(/templates\/level_3\+\/decision-record\.md$/);
+    expect(resolveTemplatePath('2', 'plan.md')).toMatch(/templates\/manifest\/plan\.md\.tmpl$/);
+    expect(resolveTemplatePath('3+', 'decision-record.md')).toMatch(/templates\/manifest\/decision-record\.md\.tmpl$/);
+    expect(resolveTemplatePath('phase', 'spec.md')).toMatch(/templates\/manifest\/phase-parent\.spec\.md\.tmpl$/);
+  });
+
+  it('rejects missing or invalid CLI levels', () => {
+    const script = path.resolve(__dirname, '../utils/template-structure.js');
+    const invalid = spawnSync(process.execPath, [script, 'docs', 'bogus'], { encoding: 'utf8' });
+    const missing = spawnSync(process.execPath, [script, 'docs'], { encoding: 'utf8' });
+
+    expect(invalid.status).toBe(3);
+    expect(invalid.stderr).toContain('Internal template contract could not be resolved for Level bogus');
+    expect(missing.status).toBe(3);
+    expect(missing.stderr).toContain('Level is required');
   });
 
   it('derives required header and anchor order from the active template contract', () => {
@@ -62,9 +84,7 @@ describe('template structure helper', () => {
   });
 
   it('treats optional template sections as allowed content instead of extra custom drift', () => {
-    const templatePath = resolveTemplatePath('2', 'spec.md');
-    const templateContent = fs.readFileSync(templatePath, 'utf8');
-    const docPath = createTempDoc('spec.md', templateContent);
+    const docPath = createTempDoc('spec.md', readRenderedTemplate('2', 'spec.md'));
 
     const result = compareDocumentToTemplate('2', 'spec.md', docPath);
 

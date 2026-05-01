@@ -1,6 +1,6 @@
 ---
 title: "System Spec Kit"
-description: "Unified documentation and context preservation skill: spec folder workflows (Levels 1-3+), CORE + ADDENDUM v2.2 templates, validation scripts and Spec Kit Memory MCP with hybrid multi-channel retrieval."
+description: "Unified documentation and context preservation skill: spec folder workflows (Levels 1-3+), Level contract templates, validation scripts and Spec Kit Memory MCP with hybrid multi-channel retrieval."
 trigger_phrases:
   - "spec kit"
   - "spec folder"
@@ -69,7 +69,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | **Pipeline Stages**         | 4                    | Gather, Score, Rerank, Filter                                                                   |
 | **Importance Tiers**        | 6                    | constitutional through deprecated                                                               |
 | **Memory States**           | 4 active | HOT, WARM, COLD, DORMANT |
-| **Template Architecture**   | CORE + ADDENDUM v2.2 | Composable layers per level                                                                     |
+| **Template Architecture**   | Manifest + resolver + renderer | Level contract output shared by scaffolding and validation                                      |
 | **Script Modules**          | 12 spec + 10 memory  | TypeScript, JavaScript and Bash                                                                 |
 | **Requirements**            | Node.js 18+          | TypeScript 5.0+, Bash 4.0+                                                                      |
 
@@ -90,7 +90,7 @@ Together, these two halves form a documentation-and-memory loop: spec folders ca
 | Feature                       | What It Does                                                                                                                                                                                                   |
 | ----------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Spec Folder Workflow**      | Creates mandatory documentation for every file-modifying conversation, scaled to 4 levels based on scope and risk, with packet-local changelog closeout for packet roots and child phases                      |
-| **CORE + ADDENDUM Templates** | Composable template architecture where each level inherits from lower levels and adds what it needs                                                                                                            |
+| **Level Contract Templates** | Manifest template architecture where each level resolves the files and sections it needs                                                                                                                       |
 | **Spec Kit Memory MCP**       | 54-tool MCP server providing persistent semantic memory, graph intelligence, graph-first routing, and session orchestration across sessions, models and tools                                                 |
 | **Startup / Recovery Surfaces** | `/spec_kit:resume` is the canonical operator-facing recovery surface. Under the hood, startup and recovery rebuild active context from `handover.md`, then `_memory.continuity`, then canonical spec docs |
 | **Code Graph**                | Structural code analysis: tree-sitter WASM indexer + SQLite storage via 4 core graph tools, with adjacent `session_*` and `ccc_*` helpers for readiness, recovery, and semantic follow-up                 |
@@ -323,7 +323,7 @@ specs/022-big-feature/             # Parent spec folder
     └── ...
 ```
 
-Use `create.sh --phase` to create a parent with its first child in one step. The parent scaffolds from `templates/phase_parent/spec.md` (lean) and each child from the appropriate `templates/level_N/` set. Run `validate.sh --recursive` to validate the parent and all children together; the validator's phase-parent branch automatically skips Level-N expectations on the lean parent (rules with branches: `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, `check-template-headers.sh`).
+Use `create.sh --phase` to create a parent with its first child in one step. The parent and child folders render from the manifest template source through the Level contract resolver. Run `validate.sh --recursive` to validate the parent and all children together; the validator's phase-parent branch automatically skips Level-N expectations on the lean parent (rules with branches: `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, `check-template-headers.sh`).
 
 Tolerant migration policy: legacy phase parents that retain heavy docs continue to validate without churn. Soft deprecation is a separate follow-on packet.
 
@@ -495,57 +495,25 @@ Some commands own their tools (they are the primary home) while others borrow to
 
 ### 3.4 TEMPLATES
 
-#### CORE + ADDENDUM Architecture (v2.2)
+#### Manifest Architecture
 
-Templates compose from a CORE layer plus level-specific ADDENDUM layers. Each level inherits from the level below and adds what it needs -- like building blocks that stack.
+Templates live in one manifest source and render through the Level contract resolver. `create.sh` asks the resolver which files belong to Level 1, Level 2, Level 3, Level 3+, or phase-parent packets, then the inline renderer expands only the sections allowed for that Level.
 
 ```text
-Level 1:  CORE only               → 4 files, ~455 LOC
-Level 2:  CORE + L2-VERIFY        → 6 files, ~875 LOC  (adds checklist.md)
-Level 3:  CORE + L2 + L3-ARCH     → 7 files, ~1090 LOC (adds decision-record.md)
-Level 3+: CORE + all addendums    → 7 files, ~1350 LOC (adds approval workflow, compliance, stakeholders)
+Level 1:  spec.md, plan.md, tasks.md, implementation-summary.md
+Level 2:  Level 1 + checklist.md
+Level 3:  Level 2 + decision-record.md
+Level 3+: Level 3 + extended governance sections
+Phase:    lean parent trio plus child phase folders
 ```
 
-#### Core Templates
+Optional support documents such as `handover.md`, `debug-delegation.md`, `research.md`, and `resource-map.md` are rendered by the workflow that owns them. New spec folders should be created through the CLI:
 
-The four foundation templates appear at every level:
+```bash
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path /tmp/example-spec --name "example spec"
+```
 
-| Template               | File                   | Purpose                                                               |
-| ---------------------- | ---------------------- | --------------------------------------------------------------------- |
-| Specification          | `spec-core.md`         | What the feature is, why it exists, requirements and success criteria |
-| Plan                   | `plan-core.md`         | How to implement: architecture, phases, testing strategy              |
-| Tasks                  | `tasks-core.md`        | Step-by-step task breakdown with status tracking                      |
-| Implementation Summary | `impl-summary-core.md` | Post-implementation record of what changed and verification results   |
-
-**Location**: `templates/core/`
-
-#### Addendum Layers
-
-Each addendum adds sections and files for its level:
-
-| Addendum             | Level | What It Adds                                           |
-| -------------------- | ----- | ------------------------------------------------------ |
-| `level2-verify/`     | 2+    | Quality gates, NFRs, edge cases, checklist template    |
-| `level3-arch/`       | 3+    | Architecture decisions, ADRs, risk matrix              |
-| `level3-plus-govern/` | 3+    | Approval workflow, compliance checkpoints, stakeholder tracking |
-| `phase/`             | Any   | Phase decomposition headers for parent/child folders   |
-
-**Location**: `templates/addendum/`
-
-#### Pre-Merged Templates
-
-For convenience, pre-merged templates for each level live in `templates/level_1/` through `templates/level_3+/`. These are the templates that `create.sh` copies into new spec folders.
-
-After editing core or addendum templates, run `templates/compose.sh` to regenerate the pre-merged directories.
-
-#### Special Templates
-
-| Template                      | Purpose                                                         |
-| ----------------------------- | --------------------------------------------------------------- |
-| `research/research.md` (~20K) | Deep research template for autonomous investigation             |
-| `handover.md`                 | Session continuity template for handing off to the next AI      |
-| `debug-delegation.md`         | Debug delegation template for fresh-perspective troubleshooting |
-| `resource-map.md`             | Optional lean path catalog (any level)                          |
+Set `SPECKIT_POST_VALIDATE=1` when a strict workflow should run full validation immediately after scaffolding. The default path skips full post-create validation so normal scaffolds stay fast.
 
 #### Template Compliance
 
@@ -565,7 +533,7 @@ The `scripts/spec/` directory contains 12 scripts that manage the full lifecycle
 | ----------------------------- | ---------------------------------------------------------------------------------------------- |
 | `create.sh`                   | Create spec folders with level-appropriate templates. Use `--phase` for parent + child folders |
 | `validate.sh`                 | Run 20 validation rules. Use `--recursive` for phase folders, `--verbose` for details          |
-| `upgrade-level.sh`            | Inject addendum templates to upgrade a folder to a higher level                                |
+| `upgrade-level.sh`            | Render additional Level contract sections for a higher documentation level                     |
 | `recommend-level.sh`          | Analyze scope and risk to recommend the right documentation level                              |
 | `calculate-completeness.sh`   | Calculate spec folder completeness as a percentage                                             |
 | `check-completion.sh`         | Verify all completion criteria are met                                                         |
@@ -605,9 +573,9 @@ The `scripts/validation/` directory contains focused helpers that support `valid
 | `evidence-marker-audit.ts`    | Bracket-depth audit and optional rewrap pass for malformed `EVIDENCE` markers |
 | `evidence-marker-lint.ts`     | Strict wrapper used by validation to fail on malformed or unclosed markers |
 
-#### Template Composition
+#### Template Rendering
 
-Run `scripts/templates/compose.sh` after editing any core or addendum template to regenerate the pre-merged `level_N/` directories.
+Template changes flow through the manifest source, Level contract resolver, and inline renderer. Use `create.sh` for generated packet fixtures and `validate.sh` for explicit validation.
 
 <!-- /ANCHOR:features -->
 
@@ -622,18 +590,12 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 ├── SKILL.md                    # AI workflow instructions (when to use, gates, rules)
 ├── README.md                   # This file (what it does, how to use it)
 ├── ARCHITECTURE.md             # Boundary contract: scripts/ vs mcp_server/
-├── templates/                  # Template system (CORE + ADDENDUM v2.2)
-│   ├── core/                   # Foundation templates (spec, plan, tasks, impl-summary)
-│   ├── addendum/               # Level-specific additions (level2, level3, level3plus, phase)
-│   ├── level_1/ - level_3+/    # Pre-merged composed templates by level
-│   ├── research/research.md    # Deep research template (~20K)
-│   ├── handover.md             # Session continuity template
-│   ├── debug-delegation.md     # Debug delegation template
-│   └── resource-map.md         # Optional lean path catalog (any level)
+├── templates/                  # Manifest template source
+│   └── manifest/               # Rendered by Level contract resolver + inline renderer
 ├── scripts/                    # CLI tools (TypeScript source + Bash)
 │   ├── spec/                   # Spec folder management (12 scripts)
 │   ├── memory/                 # Memory system scripts (10 scripts)
-│   ├── templates/              # Template composition (compose.sh)
+│   ├── templates/              # Template composition (manifest renderer)
 │   ├── core/                   # Core library (17 modules)
 │   ├── extractors/             # Session data extractors (12 extractors)
 │   ├── utils/                  # Utility modules (20 utilities)
@@ -668,7 +630,6 @@ Run `scripts/templates/compose.sh` after editing any core or addendum template t
 | [`ARCHITECTURE.md`](./ARCHITECTURE.md)                                       | API boundary contract between `scripts/` and `mcp_server/`                                           |
 | [`mcp_server/README.md`](./mcp_server/README.md)                             | Full MCP architecture: 54-tool API reference, search pipeline, graph intelligence, and configuration |
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)               | Step-by-step installation with embedding providers and environment                                   |
-| [`templates/core/`](./templates/core/)                                       | Four foundation templates used at all documentation levels                                           |
 | [`scripts/spec/create.sh`](./scripts/spec/create.sh)                         | Create spec folders with level-appropriate template files                                            |
 | [`scripts/spec/validate.sh`](./scripts/spec/validate.sh)                     | Run 20-rule validation on any spec folder                                                            |
 | `scripts/dist/memory/generate-context.js`                                    | Primary workflow for updating packet continuity state from structured JSON                            |
@@ -805,7 +766,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
   .opencode/specs/[project]/043-user-profile-update/
 ```
 
-Fill `spec.md`, `plan.md`, `tasks.md` and `checklist.md` using the pre-merged templates from `templates/level_2/`.
+Fill `spec.md`, `plan.md`, `tasks.md` and `checklist.md` by running `create.sh --level 2` and editing the rendered Level 2 files.
 
 **Result**: A Level 2 spec folder with QA verification gates, ready for implementation.
 
@@ -1107,7 +1068,7 @@ bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
 | [`mcp_server/INSTALL_GUIDE.md`](./mcp_server/INSTALL_GUIDE.md)                                   | Step-by-step installation with embedding providers and environment variables                         |
 | [`references/memory/memory_system.md`](./references/memory/memory_system.md)                     | Detailed memory system reference                                                                     |
 | [`references/validation/validation_rules.md`](./references/validation/validation_rules.md)       | All 20 validation rules with fixes                                                                   |
-| [`references/templates/level_specifications.md`](./references/templates/level_specifications.md) | Level definitions and template size guidance                                                         |
+| Level specifications reference                                                                    | Level definitions and template size guidance                                                         |
 | [`references/templates/template_guide.md`](./references/templates/template_guide.md)             | Template usage and composition rules                                                                 |
 | [`references/config/environment_variables.md`](./references/config/environment_variables.md)     | Full environment variable reference                                                                  |
 | [`references/workflows/rollback_runbook.md`](./references/workflows/rollback_runbook.md)         | Feature-flag rollback and smoke-test procedures                                                      |

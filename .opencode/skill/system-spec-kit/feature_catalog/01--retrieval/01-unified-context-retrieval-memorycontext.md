@@ -9,7 +9,7 @@ description: "Describes the L1 orchestration layer that auto-detects task intent
 
 Describes the L1 orchestration layer that auto-detects task intent and routes to the best retrieval strategy.
 
-When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
+When you ask the system a question, it figures out the help type you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
 
 ---
 

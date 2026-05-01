@@ -41,6 +41,7 @@ set -euo pipefail
 #   Complexity:        20% weight (architectural +20)
 #
 # LEVEL MAPPING:
+#   Public vocabulary remains level-only; internal template routing is not surfaced here.
 #   <25 points  -> Level 0 (Quick)
 #   25-44       -> Level 1 (Baseline)
 #   45-69       -> Level 2 (Verification)

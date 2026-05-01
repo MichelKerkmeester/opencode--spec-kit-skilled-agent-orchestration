@@ -78,6 +78,34 @@ _section_count_acceptance_scenarios() {
     fi
 }
 
+_section_expected_spec_h2() {
+    local level="$1"
+    local contract_json="$2"
+    node - "$level" "$contract_json" <<'NODE'
+const [level, raw] = process.argv.slice(2);
+const contract = JSON.parse(raw);
+const count = Object.entries(contract.sectionGates || {})
+  .filter(([, levels]) => Array.isArray(levels) && levels.includes(level))
+  .length;
+process.stdout.write(String(count || 5));
+NODE
+}
+
+_section_expected_template_h2() {
+    local helper_script="$1"
+    local level="$2"
+    local basename="$3"
+    local contract_json
+    contract_json="$(node "$helper_script" contract "$level" "$basename" 2>/dev/null)" || {
+        echo "0"
+        return 0
+    }
+    node - "$contract_json" <<'NODE'
+const contract = JSON.parse(process.argv[2]);
+process.stdout.write(String((contract.headerRules || []).length));
+NODE
+}
+
 # ───────────────────────────────────────────────────────────────
 # 2. MAIN RUN_CHECK FUNCTION
 # ───────────────────────────────────────────────────────────────
@@ -103,6 +131,9 @@ run_check() {
 
     local warnings=()
     local errors=()
+    local rule_dir helper_script
+    rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    helper_script="$rule_dir/../utils/template-structure.js"
 
     # Get declared level from spec.md (fallback to passed level)
     local declared_level
@@ -118,33 +149,28 @@ run_check() {
     requirements=$(_section_count_requirements "$folder")
     scenarios=$(_section_count_acceptance_scenarios "$folder")
 
-    # Define minimum section expectations per level
+    # Define minimum section expectations from the shared Level contract.
     local min_spec_h2 min_plan_h2 min_requirements min_scenarios
+    local contract_json
+    contract_json="$(node "$helper_script" level-contract "$declared_level")"
+    min_spec_h2="$(_section_expected_spec_h2 "$declared_level" "$contract_json")"
+    min_plan_h2="$(_section_expected_template_h2 "$helper_script" "$declared_level" "plan.md")"
+    [[ "$min_plan_h2" -eq 0 ]] && min_plan_h2=4
+
     case "$declared_level" in
         1)
-            min_spec_h2=5
-            min_plan_h2=4
             min_requirements=3
             min_scenarios=2
             ;;
         2)
-            # Level 2 template has 6 required sections + 1 questions section = 7 H2 minimum.
-            # The 3 optional L2 sections (NFR, EDGE CASES, COMPLEXITY ASSESSMENT) may be
-            # legitimately absent; template-structural compliance is enforced by TEMPLATE_HEADERS.
-            min_spec_h2=7
-            min_plan_h2=6
             min_requirements=5
             min_scenarios=4
             ;;
         3|3+)
-            min_spec_h2=10
-            min_plan_h2=8
             min_requirements=8
             min_scenarios=6
             ;;
         *)
-            min_spec_h2=5
-            min_plan_h2=4
             min_requirements=3
             min_scenarios=2
             ;;
@@ -170,18 +196,13 @@ run_check() {
         warnings+=("Found $scenarios acceptance scenarios, expected at least $min_scenarios for Level $declared_level")
     fi
 
-    # Check for required files at each level
-    if [[ "$declared_level" = "2" ]] || [[ "$declared_level" = "3" ]] || [[ "$declared_level" = "3+" ]]; then
-        if [[ ! -f "$folder/checklist.md" ]]; then
-            errors+=("Level $declared_level requires checklist.md")
+    local req_doc
+    while IFS= read -r req_doc; do
+        [[ -z "$req_doc" || "$req_doc" == "implementation-summary.md" ]] && continue
+        if [[ ! -f "$folder/$req_doc" ]]; then
+            errors+=("Level $declared_level requires $req_doc")
         fi
-    fi
-
-    if [[ "$declared_level" = "3" ]] || [[ "$declared_level" = "3+" ]]; then
-        if [[ ! -f "$folder/decision-record.md" ]]; then
-            warnings+=("Level $declared_level should include decision-record.md")
-        fi
-    fi
+    done < <(node "$helper_script" docs "$declared_level")
 
     # ───────────────────────────────────────────────────────────────
     # 3. RESULTS

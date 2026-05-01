@@ -38,7 +38,7 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 | Any task (baseline) | 1 | spec.md + plan.md + tasks.md + implementation-summary.md | resource-map.md (any level) |
 | Needs QA validation | 2 | L1 + checklist.md | resource-map.md (any level) |
 | Complex/architectural | 3 | L2 + decision-record.md | research/research.md, resource-map.md |
-| Enterprise/governance heavy | 3+ | L3 file set from `templates/level_3+/` | research/research.md, resource-map.md |
+| Enterprise/governance heavy | 3+ | L3 file set from `Level 3+ template contract` | research/research.md, resource-map.md |
 
 **LOC as soft guidance:**
 - <100 LOC suggests Level 1
@@ -53,49 +53,32 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 ### Level 1: Baseline (ALL features start here)
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/###-name --name feature-name
 ```
 
 ### Level 2: Verification (complete set)
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_2/spec.md specs/###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_2/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_2/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md specs/###-name/implementation-summary.md
-cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name/checklist.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path specs/###-name --name feature-name
 ```
 
 ### Level 3: Full Documentation (complete set)
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_3/spec.md specs/###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_3/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_3/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md specs/###-name/implementation-summary.md
-cp .opencode/skill/system-spec-kit/templates/level_3/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3 --path specs/###-name --name feature-name
 ```
 
 ### Level 3+: Extended Documentation (complete set)
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_3+/spec.md specs/###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path specs/###-name --name feature-name
 ```
 
 ### Optional Templates (Level 3 Only)
 
 ```bash
 ## Comprehensive Research (from root templates folder):
-mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
 ```
 
 ---
@@ -140,17 +123,17 @@ mkdir -p specs/###-short-name/
 ### Template Composition (Maintainer)
 
 ```bash
-# Compose all level templates from core + addendum
-./scripts/templates/compose.sh
+# Compose all level templates through Level contract rendering
+Level contract resolver
 
 # Preview changes without writing
-./scripts/templates/compose.sh --dry-run
+Level contract resolver --dry-run
 
 # Verify templates are current
-./scripts/templates/compose.sh --verify
+Level contract resolver --verify
 
 # Compose specific levels
-./scripts/templates/compose.sh 2 3
+Level contract resolver 2 3
 ```
 
 **Naming rules:**
@@ -187,7 +170,7 @@ Before making ANY file changes, verify:
   - [ ] Level 1: spec.md + plan.md + tasks.md + implementation-summary.md
   - [ ] Level 2: Level 1 + checklist.md
   - [ ] Level 3: Level 2 + decision-record.md
-  - [ ] Level 3+: Use full Level 3 file set from `templates/level_3+/`
+  - [ ] Level 3+: Use full Level 3 file set from `Level 3+ template contract`
 - [ ] Renamed templates correctly
 - [ ] Filled ALL template sections with actual content
 - [ ] Removed placeholder text and sample sections
@@ -486,7 +469,7 @@ Only load root memory when updating coordination snapshots.
 
 1. Read `derived.last_active_child_id` from the parent's `graph-metadata.json`. If non-null AND `derived.last_active_at` parses as ISO-8601 within the last 24 hours, recurse directly into that child and apply the child's normal handover → `_memory.continuity` → spec docs ladder.
 2. If the pointer is null, missing, malformed, or older than 24 hours, fall back to listing children with statuses (sourced from each child's `graph-metadata.json` `derived.status`) and let the user pick.
-3. `--no-redirect` flag bypasses the pointer step entirely and shows the parent's spec.md plus child manifest.
+3. `--no-redirect` flag bypasses the pointer step entirely and shows the parent's spec.md plus child list.
 
 The pointer is maintained automatically by the generator: parent-level saves write `last_active_child_id = null`; child saves bubble up the child's `packet_id`. Atomic write via temp+rename. No `_memory.continuity` block exists at a phase parent (per the lean trio policy — parents have no `implementation-summary.md`).
 
@@ -683,45 +666,45 @@ When in doubt:
 
 ### Reference Files
 - [template_guide.md](../templates/template_guide.md) - Template selection, adaptation, and quality standards
-- [level_specifications.md](../templates/level_specifications.md) - Complete Level 1-3 requirements and migration
+- level specifications reference - Complete Level 1-3 requirements and migration
 - [path_scoped_rules.md](../validation/path_scoped_rules.md) - Path-scoped validation rules reference
 
 ### Templates (Organized by Level)
 
 **Level 1 Templates (Baseline):**
-- [spec.md](../../templates/level_1/spec.md) - Requirements and user stories template
-- [plan.md](../../templates/level_1/plan.md) - Technical implementation plan template
-- [tasks.md](../../templates/level_1/tasks.md) - Task breakdown template
-- [implementation-summary.md](../../templates/level_1/implementation-summary.md) - Completion summary template
+- [spec template](../../templates/manifest/spec.md.tmpl) - Requirements and user stories template
+- [plan.md](../../templates/manifest/plan.md.tmpl) - Technical implementation plan template
+- [tasks.md](../../templates/manifest/tasks.md.tmpl) - Task breakdown template
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Completion summary template
 
 **Level 2 Templates (Verification):**
-- [spec.md](../../templates/level_2/spec.md) - Requirements template with extended sections
-- [plan.md](../../templates/level_2/plan.md) - Implementation plan with verification
-- [tasks.md](../../templates/level_2/tasks.md) - Task breakdown template
-- [implementation-summary.md](../../templates/level_2/implementation-summary.md) - Completion summary template
-- [checklist.md](../../templates/level_2/checklist.md) - Validation checklist template
+- [spec template](../../templates/manifest/spec.md.tmpl) - Requirements template with extended sections
+- [plan.md](../../templates/manifest/plan.md.tmpl) - Implementation plan with verification
+- [tasks.md](../../templates/manifest/tasks.md.tmpl) - Task breakdown template
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Completion summary template
+- [checklist.md](../../templates/manifest/checklist.md.tmpl) - Validation checklist template
 
 **Level 3 Templates (Full Documentation):**
-- [spec.md](../../templates/level_3/spec.md) - Comprehensive requirements template
-- [plan.md](../../templates/level_3/plan.md) - Full implementation plan template
-- [tasks.md](../../templates/level_3/tasks.md) - Detailed task breakdown template
-- [implementation-summary.md](../../templates/level_3/implementation-summary.md) - Completion summary template
-- [checklist.md](../../templates/level_3/checklist.md) - Full validation checklist template
-- [decision-record.md](../../templates/level_3/decision-record.md) - Architecture Decision Records template
+- [spec template](../../templates/manifest/spec.md.tmpl) - Comprehensive requirements template
+- [plan.md](../../templates/manifest/plan.md.tmpl) - Full implementation plan template
+- [tasks.md](../../templates/manifest/tasks.md.tmpl) - Detailed task breakdown template
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Completion summary template
+- [checklist.md](../../templates/manifest/checklist.md.tmpl) - Full validation checklist template
+- [decision-record.md](../../templates/manifest/decision-record.md.tmpl) - Architecture Decision Records template
 
 **Research Templates (Level 3 optional):**
-- [research template](../../templates/research.md) - Copy to `research/research.md` for Level 3 research packets
+- [research.md.tmpl](../../templates/manifest/research.md.tmpl) - Copy to `research/research.md` for Level 3 research packets
 
 **Session Management Templates:**
-- [handover.md](../../templates/handover.md) - Full session handover document
-- [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation template
-- [resource-map.md](../../templates/resource-map.md) - Optional lean path catalog (any level)
+- [handover.md.tmpl](../../templates/manifest/handover.md.tmpl) - Full session handover document
+- [debug-delegation.md.tmpl](../../templates/manifest/debug-delegation.md.tmpl) - Debug task delegation template
+- [resource-map.md.tmpl](../../templates/manifest/resource-map.md.tmpl) - Optional lean path catalog (any level)
 
 **Summary Templates:**
-- [implementation-summary.md](../../templates/level_1/implementation-summary.md) - Required completion summary (Level 1 baseline)
-- [implementation-summary.md](../../templates/level_2/implementation-summary.md) - Required completion summary (Level 2)
-- [implementation-summary.md](../../templates/level_3/implementation-summary.md) - Required completion summary (Level 3)
-- [implementation-summary.md](../../templates/level_3+/implementation-summary.md) - Required completion summary (Level 3+)
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Required completion summary (Level 1 baseline)
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Required completion summary (Level 2)
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Required completion summary (Level 3)
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Required completion summary (Level 3+)
 
 ### Related Skills
 - `sk-code` - Implementation, debugging, and verification lifecycle
@@ -729,4 +712,3 @@ When in doubt:
 - `sk-git` - Git workspace setup and clean commits
 
 ---
-

@@ -63,20 +63,20 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    |-- --max-iterations=N -> maxIterations = N
    |-- --convergence=N -> convergenceThreshold = N
    |-- --spec-folder=PATH -> spec_path = PATH, omit Q1
-   |-- --executor=<kind> -> config.executor.kind (`native` | `cli-codex`)
+   |-- --executor=<type> -> config.executor.type (`native` | `cli-codex`)
    |-- --model=<id> -> config.executor.model (for example `gpt-5.4`)
    |-- --reasoning-effort=<level> -> config.executor.reasoningEffort (`none` | `minimal` | `low` | `medium` | `high` | `xhigh`)
    |-- --service-tier=<tier> -> config.executor.serviceTier (`priority` | `standard` | `fast`)
    |-- --executor-timeout=<seconds> -> config.executor.timeoutSeconds (positive integer, default `900`)
    |-- --no-resource-map -> config.resource_map.emit = false
-   +-- Defaults: maxIterations=7, convergenceThreshold=0.10, config.executor.kind=`native`, config.executor.timeoutSeconds=900, config.resource_map.emit=`true`
+   +-- Defaults: maxIterations=7, convergenceThreshold=0.10, config.executor.type=`native`, config.executor.timeoutSeconds=900, config.resource_map.emit=`true`
 
    Executor precedence for setup resolution:
    - CLI flag > config file > schema defaults
    - The generated `deep-review-config.json` stores executor settings under `config.executor.*`
 
    Parsing to config mapping:
-   - `--executor` -> `config.executor.kind`
+   - `--executor` -> `config.executor.type`
    - `--model` -> `config.executor.model`
    - `--reasoning-effort` -> `config.executor.reasoningEffort`
    - `--service-tier` -> `config.executor.serviceTier`
@@ -148,7 +148,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - execution_mode = [AUTONOMOUS/INTERACTIVE]
    - maxIterations = [from Q3 or flag or default 7]
    - convergenceThreshold = [from flag or default 0.10]
-   - executor config = [CLI flags, compact reply, config file, or default `native`; map compact reply fields to `config.executor.kind/model/reasoningEffort/serviceTier`, and accept an optional volunteered convergence value before executor fields]
+   - executor config = [CLI flags, compact reply, config file, or default `native`; map compact reply fields to `config.executor.type/model/reasoningEffort/serviceTier`, and accept an optional volunteered convergence value before executor fields]
 
 9. SET STATUS: PASSED
 
@@ -383,6 +383,6 @@ Convergence thresholds and recovery settings used by this command are a governed
 - Prompt optimization is deferred future work (Phase 4b) and will use generated prompt packs, never direct agent markdown mutation
 
 **References:**
-- Optimizer manifest: `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json`
+- Optimizer configuration: `.opencode/skill/system-spec-kit/scripts/optimizer/optimizer-control file.json`
 - Tunable thresholds: `convergenceThreshold`, `stuckThreshold`, `maxIterations`, `compositeStopScore`
 - Convergence reference: `.opencode/skill/sk-deep-review/references/convergence.md`

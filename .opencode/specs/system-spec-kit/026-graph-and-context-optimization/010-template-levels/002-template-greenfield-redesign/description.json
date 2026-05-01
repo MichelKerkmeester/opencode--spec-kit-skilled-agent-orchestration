@@ -1,0 +1,20 @@
+{
+  "specFolder": "026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+  "description": "Feature Specification: Template Backend Greenfield Redesign",
+  "keywords": [
+    "feature",
+    "specification",
+    "template",
+    "backend",
+    "greenfield",
+    "redesign"
+  ],
+  "lastUpdated": "2026-05-01T10:23:37.636Z",
+  "specId": "011",
+  "folderSlug": "template-greenfield-redesign",
+  "parentChain": [
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

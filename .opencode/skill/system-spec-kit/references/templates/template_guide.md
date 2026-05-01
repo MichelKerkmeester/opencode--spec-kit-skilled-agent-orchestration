@@ -47,17 +47,17 @@ Level 3+ (Extended):    Level 3 + governance/AI protocol content
 
 ### Template Composition (Maintainer Reference)
 
-Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sources:
+Templates in `Level template contract` folders are **composed** from the Level contract resolver:
 
 ```bash
 # Compose all level templates
-./scripts/templates/compose.sh
+Level contract resolver
 
 # Preview changes without writing
-./scripts/templates/compose.sh --dry-run
+Level contract resolver --dry-run
 
 # Verify templates are current
-./scripts/templates/compose.sh --verify
+Level contract resolver --verify
 ```
 
 **Composition Rules:**
@@ -67,7 +67,7 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 - Level 3+: Core + all addendums (level2-verify + level3-arch + level3-plus-govern)
 - Nested packet changelog templates live in `templates/changelog/` and are consumed directly by the generator, not by the composition pipeline.
 
-> **Note:** Maintainers should run `compose.sh` after modifying `core/` or `addendum/` templates to regenerate the composed outputs.
+> **Note:** Maintainers should run `Level contract resolver` after modifying Level contract templates to regenerate the composed outputs.
 
 ---
 
@@ -81,10 +81,7 @@ Templates in `level_N/` folders are **composed** from `core/` + `addendum/` sour
 
 **Copy commands:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md ###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_1/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md specs/###-name/implementation-summary.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/###-name --name feature-name
 ```
 
 **When to use:**
@@ -131,8 +128,8 @@ cp .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md s
 
 **Copy commands:**
 ```bash
-# First copy all Level 1 files from level_2/, then add:
-cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name/checklist.md
+# First copy all Level 1 files from Level 2 template contract, then add:
+cp level_contract_checklist.md specs/###-name/checklist.md
 ```
 
 **When to use:**
@@ -170,15 +167,15 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 
 **Copy commands:**
 ```bash
-# First copy all Level 2 files from level_3/, then add:
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
+# First copy all Level 2 files from Level 3 template contract, then add:
+cp level_contract_decision-record.md specs/###-name/decision-record.md
 ```
 
 **Optional Templates:**
 ```bash
-mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
 # Optional at any level — lean path catalog:
-cp .opencode/skill/system-spec-kit/templates/resource-map.md specs/###-name/resource-map.md
+cp level_contract_optional_resource-map.md specs/###-name/resource-map.md
 ```
 
 **When to use:**
@@ -211,16 +208,11 @@ cp .opencode/skill/system-spec-kit/templates/resource-map.md specs/###-name/reso
 
 ### Level 3+: Extended Governance (Complexity score: 80-100)
 
-**Required Templates:** Same file set as Level 3, using `templates/level_3+/`
+**Required Templates:** Same file set as Level 3, using `Level 3+ template contract`
 
 **Copy commands:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_3+/spec.md specs/###-name/spec.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/plan.md specs/###-name/plan.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/tasks.md specs/###-name/tasks.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md specs/###-name/implementation-summary.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/checklist.md specs/###-name/checklist.md
-cp .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md specs/###-name/decision-record.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path specs/###-name --name feature-name
 ```
 
 **When to use:**
@@ -336,8 +328,8 @@ submissions are duplicates.
 
 **Step 1: Copy Template**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_N/[template].md specs/###-name/[target].md
-# Where N is 1, 2, 3, or 3+ matching your documentation level
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level <N> --path specs/###-name --name feature-name
+# Where <N> is 1, 2, 3, or 3+ matching your documentation level
 ```
 
 **Step 2: Fill Metadata Block**
@@ -397,7 +389,7 @@ cp .opencode/skill/system-spec-kit/templates/level_N/[template].md specs/###-nam
 
 **Copy command:**
 ```bash
-mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates/research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
 ```
 
 **Sections to fill:**
@@ -434,8 +426,8 @@ mkdir -p specs/###-name/research && cp .opencode/skill/system-spec-kit/templates
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tasks.md
-# Or use level_2/ or level_3/ depending on documentation level
+cp level_contract_tasks.md specs/###-name/tasks.md
+# Or use Level 2 template contract or Level 3 template contract depending on documentation level
 ```
 
 **Sections to fill:**
@@ -461,8 +453,8 @@ cp .opencode/skill/system-spec-kit/templates/level_1/tasks.md specs/###-name/tas
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name/checklist.md
-# Or use level_3/ or level_3+/ for higher levels
+cp level_contract_checklist.md specs/###-name/checklist.md
+# Or use Level 3 template contract or Level 3+ template contract for higher levels
 ```
 
 **Sections to fill:**
@@ -489,7 +481,7 @@ cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/###-name
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_3/decision-record.md specs/###-name/decision-record.md
+cp level_contract_decision-record.md specs/###-name/decision-record.md
 ```
 
 **Required filename:** `decision-record.md` (topic-specific ADR files are supplemental)
@@ -533,7 +525,7 @@ These templates support session continuity, temporary workspaces, and context pr
 
 **Copy command:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/handover.md specs/###-name/handover.md
+cp level_contract_optional_handover.md specs/###-name/handover.md
 ```
 
 **Sections to fill:**
@@ -770,7 +762,7 @@ echo "# Spec" > specs/042-feature/spec.md
 
 **Right:**
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/042-feature/spec.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/042-feature --name feature-name
 ```
 
 **Why wrong:** Loses structure, misses sections, inconsistent format
@@ -1136,28 +1128,28 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 
 | Level | Folder | Contents |
 |-------|--------|----------|
-| Level 1 | `templates/level_1/` | spec.md, plan.md, tasks.md, implementation-summary.md |
-| Level 2 | `templates/level_2/` | Level 1 + checklist.md |
-| Level 3 | `templates/level_3/` | Level 2 + decision-record.md (research/research.md at root) |
-| Level 3+ | `templates/level_3+/` | Level 3 + AI protocol, extended checklist |
+| Level 1 | `Level 1 template contract` | spec.md, plan.md, tasks.md, implementation-summary.md |
+| Level 2 | `Level 2 template contract` | Level 1 + checklist.md |
+| Level 3 | `Level 3 template contract` | Level 2 + decision-record.md (research/research.md at root) |
+| Level 3+ | `Level 3+ template contract` | Level 3 + AI protocol, extended checklist |
 | Root | `templates/` (root) | handover.md, debug-delegation.md, resource-map.md (cross-level) |
 
 **Level 1 Templates:**
-- [spec.md](../../templates/level_1/spec.md) - Requirements and user stories template
-- [plan.md](../../templates/level_1/plan.md) - Technical implementation plan template
-- [tasks.md](../../templates/level_1/tasks.md) - Task breakdown template
-- [implementation-summary.md](../../templates/level_1/implementation-summary.md) - Post-implementation summary
+- [spec template](../../templates/manifest/spec.md.tmpl) - Requirements and user stories template
+- [plan.md](../../templates/manifest/plan.md.tmpl) - Technical implementation plan template
+- [tasks.md](../../templates/manifest/tasks.md.tmpl) - Task breakdown template
+- [implementation-summary.md](../../templates/manifest/implementation-summary.md.tmpl) - Post-implementation summary
 
 **Level 2 Templates (includes Level 1 content):**
-- [checklist.md](../../templates/level_2/checklist.md) - Validation checklist template
+- [checklist.md](../../templates/manifest/checklist.md.tmpl) - Validation checklist template
 
 **Level 3 Templates (includes Level 2 content):**
-- [decision-record.md](../../templates/level_3/decision-record.md) - Architecture Decision Records template
-- [research template](../../templates/research.md) - Copy to `research/research.md` when Level 3 research is needed
+- [decision-record.md](../../templates/manifest/decision-record.md.tmpl) - Architecture Decision Records template
+- [research.md.tmpl](../../templates/manifest/research.md.tmpl) - Copy to `research/research.md` when Level 3 research is needed
 
 **Cross-Level Templates (at templates root):**
-- [handover.md](../../templates/handover.md) - Full session handover document (~100-150 lines)
-- [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation for sub-agents
+- [handover.md.tmpl](../../templates/manifest/handover.md.tmpl) - Full session handover document (~100-150 lines)
+- [debug-delegation.md.tmpl](../../templates/manifest/debug-delegation.md.tmpl) - Debug task delegation for sub-agents
 
 **Non-Template Folders (for reference):**
 - `scratch/` - Temporary workspace folder (create ad-hoc files as needed, no template)
@@ -1169,4 +1161,3 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 - `sk-git` - Git workspace setup and clean commits
 
 ---
-

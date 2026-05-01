@@ -56,8 +56,8 @@ optional_workflows:
         activities: ["Load phase-parent-section.md addendum", "Fill parent Phase Documentation Map", "Load phase-child-header.md addendum", "Fill child back-references and scope boundaries"]
         output: populated_specs
     templates:
-      phase_parent_section: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md
-      phase_child_header: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-child-header.md
+      phase_parent_section: Level template contract
+      phase_child_header: Level template contract
     post_decomposition:
       action: "Update spec_path to first child phase folder, continue with normal workflow"
       validation: "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive {parent_folder}"
@@ -165,35 +165,35 @@ documentation_levels:
 available_templates:
   default_level: level_2
   level_1:
-    spec: .opencode/skill/system-spec-kit/templates/level_1/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_1/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_1/tasks.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    implementation_summary: level_contract_implementation-summary.md
   level_2:
-    spec: .opencode/skill/system-spec-kit/templates/level_2/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_2/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3:
-    spec: .opencode/skill/system-spec-kit/templates/level_3/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_3/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_3/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3/checklist.md
-    decision_record: .opencode/skill/system-spec-kit/templates/level_3/decision-record.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    decision_record: level_contract_decision-record.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3_plus:
-    spec: .opencode/skill/system-spec-kit/templates/level_3+/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_3+/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_3+/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3+/checklist.md
-    decision_record: .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    decision_record: level_contract_decision-record.md
+    implementation_summary: level_contract_implementation-summary.md
   shared:
-    research: .opencode/skill/system-spec-kit/templates/research.md
-    handover: .opencode/skill/system-spec-kit/templates/handover.md
-    debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
-    resource_map: .opencode/skill/system-spec-kit/templates/resource-map.md
+    research: level_contract_optional_research.md
+    handover: level_contract_optional_handover.md
+    debug_delegation: level_contract_optional_debug-delegation.md
+    resource_map: level_contract_optional_resource-map.md
 
 template_compliance:
   strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
@@ -509,9 +509,9 @@ workflow:
       fallback: "Proceed with activities if dispatch fails or user chooses direct"
     activities: [Run create.sh (scripts/spec/create.sh), "Estimate complexity and select doc level (L1:<100 LOC, L2:100-499, L3:>=500)", Load and fill spec.md, Generate functional requirements, Define success criteria]
     outputs: [spec.md]
-    template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+    template: level_contract_spec.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+      canonical_template: level_contract_spec.md
       inline_scaffold_key: spec_md
       writing_rule: "Embed template_compliance.inline_scaffolds.spec_md in the prompt before writing spec.md and preserve the required anchors/headers in order."
     confidence_checkpoint:
@@ -601,9 +601,9 @@ workflow:
       fallback: { on_failure: "Use inline planning activities below" }
     activities: [Run check-prerequisites.sh --json --paths-only, Load plan.md, Fill Technical Context, Fill Constitution Check, "Phase 0: Generate research/research.md", "Phase 1: Define component structure/interfaces", Generate Testing Strategy, Generate Success Metrics, Import Risk Matrix from spec, Generate Dependencies Tables, Generate Phase 2-4 outlines]
     outputs: [plan.md, research/research.md]
-    template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+    template: level_contract_plan.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+      canonical_template: level_contract_plan.md
       inline_scaffold_key: plan_md
       writing_rule: "Embed template_compliance.inline_scaffolds.plan_md in the prompt before writing plan.md and keep custom sections after the required template structure."
     confidence_checkpoint:

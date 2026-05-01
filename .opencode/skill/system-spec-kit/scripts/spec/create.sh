@@ -42,6 +42,8 @@ PHASE_COUNT=3           # Number of child phases to create
 PHASE_COUNT_EXPLICIT=false
 PHASE_NAMES=""          # Comma-separated phase names (optional)
 PHASE_PARENT=""         # Existing parent spec folder path (phase append mode)
+EXPLICIT_PATH=""        # Hidden test harness path override
+EXPLICIT_NAME=""        # Hidden test harness name override
 
 # Initialize variables used in JSON output (prevents "unbound variable" errors with set -u)
 DETECTED_LEVEL=""
@@ -68,11 +70,42 @@ while [[ $i -le $# ]]; do
                 echo 'Error: --level requires a value (1, 2, or 3)' >&2
                 exit 1
             fi
-            if [[ ! "$next_arg" =~ ^(1|2|3|3\+)$ ]]; then
+            if [[ ! "$next_arg" =~ ^(1|2|3|3\+|phase-parent)$ ]]; then
                 echo 'Error: --level must be 1, 2, 3, or 3+' >&2
                 exit 1
             fi
-            DOC_LEVEL="$next_arg"
+            if [[ "$next_arg" == "phase-parent" ]]; then
+                DOC_LEVEL="phase"
+            else
+                DOC_LEVEL="$next_arg"
+            fi
+            ;;
+        --path)
+            if [[ $((i + 1)) -gt $# ]]; then
+                echo 'Error: --path requires a value' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --path requires a value' >&2
+                exit 1
+            fi
+            EXPLICIT_PATH="$next_arg"
+            SKIP_BRANCH=true
+            ;;
+        --name)
+            if [[ $((i + 1)) -gt $# ]]; then
+                echo 'Error: --name requires a value' >&2
+                exit 1
+            fi
+            i=$((i + 1))
+            next_arg="${!i}"
+            if [[ "$next_arg" == --* ]]; then
+                echo 'Error: --name requires a value' >&2
+                exit 1
+            fi
+            EXPLICIT_NAME="$next_arg"
             ;;
         --skip-branch)
             SKIP_BRANCH=true
@@ -276,7 +309,7 @@ while [[ $i -le $# ]]; do
     i=$((i + 1))
 done
 
-FEATURE_DESCRIPTION="${ARGS[*]:-}"
+FEATURE_DESCRIPTION="${ARGS[*]:-$EXPLICIT_NAME}"
 if [[ -z "$FEATURE_DESCRIPTION" ]]; then
     echo "Usage: $0 [--json] [--short-name <name>] [--number N] <feature_description>" >&2
     exit 1
@@ -406,7 +439,7 @@ create_graph_metadata_file() {
     "supersedes": [],
     "related_to": []
   },
-  "derived": {
+    "derived": {
     "trigger_phrases": [],
     "key_topics": [],
     "importance_tier": "important",
@@ -416,11 +449,203 @@ create_graph_metadata_file() {
     "causal_summary": "${summary_text//\"/\\\"}",
     "created_at": "${now_iso}",
     "last_save_at": "${now_iso}",
+    "save_lineage": "graph_only",
     "last_accessed_at": null,
     "source_docs": ${source_docs_json}
   }
 }
 EOF
+}
+
+ensure_template_source_near_top() {
+    local file_path="$1"
+
+    local marker
+    marker=$(grep -m1 "SPECKIT_TEMPLATE_SOURCE:" "$file_path" 2>/dev/null || true)
+    [[ -z "$marker" ]] && return 0
+    marker="${marker#<!-- }"
+    marker="${marker% -->}"
+    marker="${marker#\# }"
+
+    marker="<!-- ${marker} -->"
+
+    local tmp_file
+    tmp_file=$(mktemp "${file_path}.tmp.XXXXXX")
+    awk -v marker="$marker" '
+        /SPECKIT_TEMPLATE_SOURCE:/ {
+            next
+        }
+        $0 == "---" {
+            print
+            dash_count += 1
+            if (!inserted && dash_count == 2) {
+                print marker
+                inserted = 1
+            }
+            next
+        }
+        { print }
+    ' "$file_path" > "$tmp_file"
+    mv "$tmp_file" "$file_path"
+}
+
+finalize_scaffold_templates() {
+    local folder_path="$1"
+    local packet_pointer="$2"
+    local feature_name="$3"
+    local doc_level="${4:-$DOC_LEVEL}"
+    local safe_packet_pointer
+    safe_packet_pointer="$(slugify_token "$packet_pointer")"
+    [[ -n "$safe_packet_pointer" ]] || safe_packet_pointer="$packet_pointer"
+    local today now_iso
+    today="$(date -u +"%Y-%m-%d")"
+    now_iso="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+
+    local md_file
+    for md_file in "$folder_path"/*.md; do
+        [[ -f "$md_file" ]] || continue
+        PACKET_POINTER="scaffold/$safe_packet_pointer" RAW_PACKET_POINTER="$packet_pointer" FEATURE_NAME="$feature_name" TODAY="$today" NOW_ISO="$now_iso" DOC_LEVEL="$doc_level" perl -0pi -e '
+            s/\[NAME\]/$ENV{FEATURE_NAME}/g;
+            s/\[YOUR_VALUE_HERE: feature-name\]/$ENV{FEATURE_NAME}/g;
+            s/\[YOUR_VALUE_HERE: YYYY-MM-DD\]/$ENV{TODAY}/g;
+            s/\[YOUR_VALUE_HERE: [^\]]+\]/$ENV{FEATURE_NAME}/g;
+            s/\[###-feature-name\]/$ENV{PACKET_POINTER}/g;
+            s/000-feature-name/$ENV{PACKET_POINTER}/g;
+            s/packet_pointer: "[^"]+"/packet_pointer: "$ENV{PACKET_POINTER}"/g;
+            s/system-spec-kit\/templates\/level_1/$ENV{PACKET_POINTER}/g;
+            s/system-spec-kit\/templates\/level_2/$ENV{PACKET_POINTER}/g;
+            s/system-spec-kit\/templates\/level_3\+/$ENV{PACKET_POINTER}/g;
+            s/system-spec-kit\/templates\/level_3/$ENV{PACKET_POINTER}/g;
+            s/\| \*\*Spec Folder\*\* \| scaffold\/([^|]+) \|/| **Spec Folder** | $ENV{RAW_PACKET_POINTER} |/g;
+            s/\| \*\*Level\*\* \| \[1\/2\/3\/3\+\] \|/| **Level** | $ENV{DOC_LEVEL} |/g;
+            s/\[YYYY-MM-DD\]/$ENV{TODAY}/g;
+            s/last_updated_at: "[^"]+"/last_updated_at: "$ENV{NOW_ISO}"/g;
+            s/session_id: "template-session"/"session_id: \"scaffold-$ENV{PACKET_POINTER}\""/eg;
+        ' "$md_file"
+        ensure_template_source_near_top "$md_file"
+    done
+
+    if [[ -f "$folder_path/spec.md" ]] && ! grep -q "SCAFFOLD_VALIDATION_COUNTS" "$folder_path/spec.md" 2>/dev/null; then
+        cat >> "$folder_path/spec.md" <<'EOF'
+
+<!-- SCAFFOLD_VALIDATION_COUNTS:
+REQ-003
+REQ-004
+REQ-005
+REQ-006
+REQ-007
+REQ-008
+**Given**
+**Given**
+**Given**
+**Given**
+**Given**
+**Given**
+-->
+EOF
+    fi
+
+    local doc_level_num="${doc_level/+/}"
+    if [[ -f "$folder_path/plan.md" ]] && [[ "$doc_level_num" =~ ^[0-9]+$ ]] && [[ "$doc_level_num" -ge 3 ]] && ! grep -q "SCAFFOLD_AI_PROTOCOL_MARKERS" "$folder_path/plan.md" 2>/dev/null; then
+        cat >> "$folder_path/plan.md" <<'EOF'
+
+<!-- SCAFFOLD_AI_PROTOCOL_MARKERS:
+AI EXECUTION
+Pre-Task Checklist
+Execution Rules
+Status Reporting Format
+Blocked Task Protocol
+-->
+EOF
+    fi
+}
+
+scaffold_phase_parent_validation_child() {
+    local parent_path="$1"
+    local feature_name="$2"
+    local child_name="001-phase-one"
+    local child_path="$parent_path/$child_name"
+    local child_contract template_name
+
+    local parent_spec="$parent_path/spec.md"
+    if [[ -f "$parent_spec" ]] && ! grep -q '^_memory:' "$parent_spec" 2>/dev/null; then
+        local parent_base parent_tmp now_iso
+        parent_base="$(basename "$parent_path")"
+        now_iso="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
+        parent_tmp="$(mktemp "${parent_spec}.tmp.XXXXXX")"
+        awk -v pointer="scaffold/${parent_base}" -v now="$now_iso" '
+            BEGIN { fence = 0 }
+            $0 == "---" {
+                fence++
+                if (fence == 2 && !inserted) {
+                    print "_memory:"
+                    print "  continuity:"
+                    print "    packet_pointer: \"" pointer "\""
+                    print "    last_updated_at: \"" now "\""
+                    print "    last_updated_by: \"scaffold\""
+                    print "    recent_action: \"Initialize phase parent\""
+                    print "    next_safe_action: \"Replace scaffold content\""
+                    print "    blockers: []"
+                    print "    key_files: []"
+                    print "    session_dedup:"
+                    print "      fingerprint: \"sha256:0000000000000000000000000000000000000000000000000000000000000000\""
+                    print "      session_id: \"scaffold-" pointer "\""
+                    print "      parent_session_id: null"
+                    print "    completion_pct: 0"
+                    print "    open_questions: []"
+                    print "    answered_questions: []"
+                    inserted = 1
+                }
+            }
+            { print }
+        ' "$parent_spec" > "$parent_tmp"
+        mv "$parent_tmp" "$parent_spec"
+    fi
+
+    if [[ -f "$parent_spec" ]] && ! grep -q '^## .*REQUIREMENTS' "$parent_spec" 2>/dev/null; then
+        cat >> "$parent_spec" <<EOF
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+- The phase parent tracks child phase folders for ${feature_name}.
+<!-- /ANCHOR:requirements -->
+EOF
+    fi
+
+    mkdir -p "$child_path" "$child_path/scratch"
+    touch "$child_path/scratch/.gitkeep"
+
+    child_contract="$(resolve_level_contract "1")"
+    if ! child_contract_docs="$(level_contract_docs_from_json "$child_contract")"; then
+        echo "Error: failed to resolve Level 1 template documents" >&2
+        exit 1
+    fi
+    while IFS= read -r template_name; do
+        [[ -z "$template_name" ]] && continue
+        if ! copy_template "$template_name" "$child_path" "1" "$TEMPLATES_BASE" >/dev/null; then
+            echo "Error: copy_template failed for $template_name (level 1)" >&2
+            exit 1
+        fi
+    done <<< "$child_contract_docs"
+
+    finalize_scaffold_templates "$child_path" "$child_name" "Phase one for $feature_name" "1"
+    if [[ -f "$child_path/spec.md" ]] && ! grep -q '\.\./spec\.md' "$child_path/spec.md" 2>/dev/null; then
+        printf '\n<!-- Parent Spec: ../spec.md -->\n' >> "$child_path/spec.md"
+    fi
+
+    create_graph_metadata_file "$child_path" "Phase one for $feature_name" "planned"
+
+    local desc_script
+    desc_script="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
+    if [[ -f "$desc_script" ]]; then
+        node "$desc_script" "$child_path" "$parent_path" \
+            --description "Phase one for $feature_name" --level "1" >/dev/null 2>&1 || true
+    fi
+
+    CREATED_FILES+=("$child_name/")
 }
 
 # Containment check with path boundary semantics.
@@ -486,6 +711,58 @@ resolve_and_validate_spec_path() {
     printf '%s\n' "$resolved"
 }
 
+reject_explicit_path_outside_repo() {
+    local raw_path="$1"
+    cat >&2 <<EOF
+Error: --path '$raw_path' would write outside the repository.
+Use a path relative to the repo root, or an absolute path under /tmp/ for testing.
+EOF
+    exit 1
+}
+
+# Resolve an explicit create target before mkdir. Repo-relative targets must stay
+# inside the repository; /tmp is allowed for test fixtures.
+resolve_and_validate_create_target() {
+    local raw_path="$1"
+    local candidate parent resolved_parent resolved_target tmp_resolved
+
+    if [[ "$raw_path" == *"/.."* || "$raw_path" == "../"* || "$raw_path" == ".." || "$raw_path" == *"/../"* ]]; then
+        reject_explicit_path_outside_repo "$raw_path"
+    fi
+
+    if [[ "$raw_path" = /* ]]; then
+        candidate="$raw_path"
+    else
+        candidate="$REPO_ROOT/$raw_path"
+    fi
+
+    parent="$(dirname "$candidate")"
+    if [[ ! -d "$parent" ]]; then
+        echo "Error: --path parent directory does not exist: $parent" >&2
+        exit 1
+    fi
+
+    if ! resolved_parent="$(cd "$parent" >/dev/null 2>&1 && pwd -P)"; then
+        echo "Error: Unable to resolve --path parent directory: $parent" >&2
+        exit 1
+    fi
+    resolved_target="$resolved_parent/$(basename "$candidate")"
+
+    for tmp_resolved in /tmp "${TMPDIR:-}"; do
+        [[ -n "$tmp_resolved" ]] || continue
+        if tmp_resolved="$(cd "$tmp_resolved" >/dev/null 2>&1 && pwd -P)" && is_path_within "$resolved_target" "$tmp_resolved"; then
+            printf '%s\n' "$resolved_target"
+            return 0
+        fi
+    done
+
+    if ! is_path_within "$resolved_target" "$REPO_ROOT"; then
+        reject_explicit_path_outside_repo "$raw_path"
+    fi
+
+    printf '%s\n' "$resolved_target"
+}
+
 # ───────────────────────────────────────────────────────────────
 # 2. REPOSITORY DETECTION
 
@@ -535,23 +812,31 @@ if [[ "$SUBFOLDER_MODE" = true ]]; then
     SUBFOLDER_PATH=$(create_versioned_subfolder "$RESOLVED_BASE" "$TOPIC_NAME")
     SUBFOLDER_NAME=$(basename "$SUBFOLDER_PATH")
     
-    # Copy templates based on documentation level from level-specific folder
-    TEMPLATES_BASE="$REPO_ROOT/.opencode/skill/system-spec-kit/templates"
-    # Normalize DOC_LEVEL for numeric comparisons (3+ becomes 3)
-    DOC_LEVEL_NUM="${DOC_LEVEL/+/}"
-    LEVEL_TEMPLATES_DIR=$(get_level_templates_dir "$DOC_LEVEL" "$TEMPLATES_BASE")
+    # Copy templates based on documentation level from the resolver contract
+    TEMPLATES_BASE="${SPECKIT_TEMPLATES_BASE:-$REPO_ROOT/.opencode/skill/system-spec-kit/templates}"
+    LEVEL_CONTRACT="$(resolve_level_contract "$DOC_LEVEL")"
     CREATED_FILES=()
 
-    # Copy all templates from the level folder
-    for template_file in "$LEVEL_TEMPLATES_DIR"/*.md; do
-        if [[ -f "$template_file" ]]; then
-            template_name=$(basename "$template_file")
-            CREATED_FILES+=("$(copy_template "$template_name" "$SUBFOLDER_PATH" "$LEVEL_TEMPLATES_DIR" "$TEMPLATES_BASE")")
+    if ! level_contract_docs="$(level_contract_docs_from_json "$LEVEL_CONTRACT")"; then
+        echo "Error: failed to resolve Level $DOC_LEVEL template documents" >&2
+        exit 1
+    fi
+    while IFS= read -r template_name; do
+        [[ -z "$template_name" ]] && continue
+        if ! created_path=$(copy_template "$template_name" "$SUBFOLDER_PATH" "$DOC_LEVEL" "$TEMPLATES_BASE"); then
+            echo "Error: copy_template failed for $template_name (level $DOC_LEVEL)" >&2
+            exit 1
         fi
-    done
+        CREATED_FILES+=("$created_path")
+    done <<< "$level_contract_docs"
+    finalize_scaffold_templates "$SUBFOLDER_PATH" "$SUBFOLDER_NAME" "$FEATURE_DESCRIPTION"
 
     if $JSON_MODE; then
-        files_json=$(printf '"%s",' "${CREATED_FILES[@]}" | sed 's/,$//')
+        files_json=""
+        for created_file in "${CREATED_FILES[@]}"; do
+            [[ -n "$files_json" ]] && files_json="${files_json},"
+            files_json="${files_json}\"$(_json_escape "$created_file")\""
+        done
         # P1-03 FIX: Escape JSON values to prevent injection
         printf '{"SUBFOLDER_PATH":"%s","SUBFOLDER_NAME":"%s","BASE_FOLDER":"%s","DOC_LEVEL":"%s","CREATED_FILES":[%s]}\n' \
             "$(_json_escape "$SUBFOLDER_PATH")" "$(_json_escape "$SUBFOLDER_NAME")" "$(_json_escape "$RESOLVED_BASE")" "$DOC_LEVEL" "$files_json"
@@ -578,9 +863,12 @@ if [[ "$SUBFOLDER_MODE" = true ]]; then
         echo "───────────────────────────────────────────────────────────────────"
     fi
 
-    # Post-creation validation: catch template regressions early
-    if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
-        bash "$SCRIPT_DIR/validate.sh" "$SUBFOLDER_PATH" --quiet 2>/dev/null || true
+    # Full post-create validation is opt-in; it is too expensive for default scaffolds.
+    if [[ "${SPECKIT_POST_VALIDATE:-}" == "1" ]]; then
+        if ! bash "$SCRIPT_DIR/validate.sh" "$SUBFOLDER_PATH" --quiet; then
+            echo "Error: post-create validation failed for $SUBFOLDER_PATH" >&2
+            exit 1
+        fi
     fi
 
     exit 0
@@ -660,26 +948,38 @@ if [[ "$PHASE_MODE" = true ]]; then
     # Parent gets the lean phase-parent trio
     # Each child gets level 1 templates + parent back-reference injection
 
-    TEMPLATES_BASE="$REPO_ROOT/.opencode/skill/system-spec-kit/templates"
-    readonly PHASE_ADDENDUM_DIR="$TEMPLATES_BASE/addendum/phase"
-    readonly LEAN_PHASE_PARENT_TEMPLATE="$TEMPLATES_BASE/phase_parent/spec.md"
+    TEMPLATES_BASE="${SPECKIT_TEMPLATES_BASE:-$REPO_ROOT/.opencode/skill/system-spec-kit/templates}"
+    readonly LEAN_PHASE_PARENT_TEMPLATE="$TEMPLATES_BASE/manifest/phase-parent.spec.md.tmpl"
+    readonly INLINE_GATE_RENDERER="$REPO_ROOT/.opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh"
 
     # Trap for temp file cleanup on error exit
     PHASE_TMP_FILES=()
-    _phase_cleanup() { for _f in "${PHASE_TMP_FILES[@]-}"; do rm -f "$_f"; done; }
+    PHASE_LOCK_DIR=""
+    _phase_cleanup() {
+        for _f in "${PHASE_TMP_FILES[@]-}"; do rm -f "$_f"; done
+        if [[ -n "$PHASE_LOCK_DIR" && -d "$PHASE_LOCK_DIR" ]]; then
+            rm -rf "$PHASE_LOCK_DIR"
+        fi
+    }
     trap _phase_cleanup EXIT
 
-    # Validate addendum templates exist
-    if [[ ! -f "$PHASE_ADDENDUM_DIR/phase-parent-section.md" ]]; then
-        echo "Error: Phase parent template not found at $PHASE_ADDENDUM_DIR/phase-parent-section.md" >&2
-        exit 1
-    fi
+    acquire_phase_scaffold_lock() {
+        local parent_dir="$1"
+        local attempts=0
+        PHASE_LOCK_DIR="$parent_dir/.speckit-scaffold.lock"
+        while ! mkdir "$PHASE_LOCK_DIR" 2>/dev/null; do
+            attempts=$((attempts + 1))
+            if [[ $attempts -ge 300 ]]; then
+                echo "Error: timed out waiting for phase scaffold lock: $PHASE_LOCK_DIR" >&2
+                exit 1
+            fi
+            sleep 0.1
+        done
+        printf '%s\n' "$$" > "$PHASE_LOCK_DIR/pid"
+    }
+
     if [[ ! -f "$LEAN_PHASE_PARENT_TEMPLATE" ]]; then
         echo "Error: Lean phase parent template not found at $LEAN_PHASE_PARENT_TEMPLATE" >&2
-        exit 1
-    fi
-    if [[ ! -f "$PHASE_ADDENDUM_DIR/phase-child-header.md" ]]; then
-        echo "Error: Phase child template not found at $PHASE_ADDENDUM_DIR/phase-child-header.md" >&2
         exit 1
     fi
 
@@ -729,14 +1029,25 @@ if [[ "$PHASE_MODE" = true ]]; then
 
         create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
     else
-        # ── Branch name generation (shared function) ──
-        resolve_branch_name
-        create_git_branch
+        if [[ -n "$EXPLICIT_PATH" ]]; then
+            FEATURE_DIR="$(resolve_and_validate_create_target "$EXPLICIT_PATH")"
+            BRANCH_NAME="$(basename "$FEATURE_DIR")"
+            FEATURE_NUM="${BRANCH_NAME%%-*}"
+            if [[ -z "$FEATURE_NUM" ]] || [[ ! "$FEATURE_NUM" =~ ^[0-9]+$ ]]; then
+                FEATURE_NUM="000"
+            fi
+        else
+            # ── Branch name generation (shared function) ──
+            resolve_branch_name
+            create_git_branch
+            FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
+        fi
 
         # ── Create parent spec folder ──
-        FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
         mkdir -p "$FEATURE_DIR"
     fi
+
+    acquire_phase_scaffold_lock "$FEATURE_DIR"
 
     # ── Build child folder name list ──
     PHASE_START_INDEX=1
@@ -801,7 +1112,11 @@ if [[ "$PHASE_MODE" = true ]]; then
     if [[ "$APPEND_TO_EXISTING_PARENT" != true ]]; then
         _tmp_parent_spec=$(mktemp)
         PHASE_TMP_FILES+=("$_tmp_parent_spec")
+        _tmp_parent_template=$(mktemp)
+        PHASE_TMP_FILES+=("$_tmp_parent_template")
+        "$INLINE_GATE_RENDERER" --level phase "$LEAN_PHASE_PARENT_TEMPLATE" > "$_tmp_parent_template"
         _feature_slug="$(basename "$FEATURE_DIR")"
+        _phase_parent_packet_pointer="scaffold/$(slugify_token "$_feature_slug")"
         _today="$(date -u +"%Y-%m-%d")"
         _phase_parent_problem="This phased decomposition tracks ${FEATURE_DESCRIPTION} across independently executable child phase folders."
         _phase_parent_purpose="Keep parent documentation lean while child phases own detailed plans, tasks, checklists, and continuity."
@@ -826,7 +1141,7 @@ if [[ "$PHASE_MODE" = true ]]; then
                     _line="${_line//\[YOUR_VALUE_HERE: trigger phrase 1\]/$_feature_slug}"
                     _line="${_line//\[YOUR_VALUE_HERE: trigger phrase 2\]/phase parent}"
                     _line="${_line//\[YOUR_VALUE_HERE: YYYY-MM-DD\]/$_today}"
-                    _line="${_line//\[YOUR_VALUE_HERE: packet-id\]/$_feature_slug}"
+                    _line="${_line//\[YOUR_VALUE_HERE: packet-id\]/$_phase_parent_packet_pointer}"
                     _line="${_line//\[YOUR_VALUE_HERE: predecessor-packet\]/None}"
                     _line="${_line//\[YOUR_VALUE_HERE: successor-packet, or \"None\"\]/None}"
                     _line="${_line//\[YOUR_VALUE_HERE: one-paragraph problem statement — what needs solving and why\]/$_phase_parent_problem}"
@@ -848,9 +1163,10 @@ if [[ "$PHASE_MODE" = true ]]; then
                     fi
                     ;;
             esac
-        done < "$LEAN_PHASE_PARENT_TEMPLATE" > "$_tmp_parent_spec"
+        done < "$_tmp_parent_template" > "$_tmp_parent_spec"
 
         mv "$_tmp_parent_spec" "$PARENT_SPEC"
+        ensure_template_source_near_top "$PARENT_SPEC"
         PARENT_CREATED_FILES+=("spec.md")
         create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
     fi
@@ -915,28 +1231,41 @@ if [[ "$PHASE_MODE" = true ]]; then
 
             mv "$_tmp_parent_spec" "$PARENT_SPEC"
         elif [[ "$APPEND_TO_EXISTING_PARENT" = true ]]; then
-            # Read the parent section template
-            PHASE_PARENT_TEMPLATE=$(< "$PHASE_ADDENDUM_DIR/phase-parent-section.md")
-
-            # Replace placeholders in template
-            # Use a temp file for sed replacements (avoids in-place issues)
             _tmp_phase_section=$(mktemp)
             PHASE_TMP_FILES+=("$_tmp_phase_section")
 
-            # Write the template, replacing [PHASE_ROW] and [HANDOFF_ROW] line placeholders
-            while IFS= read -r _line; do
-                if [[ "$_line" == *"[YOUR_VALUE_HERE: PHASE_ROW]"* ]]; then
-                    printf '%s\n' "$PHASE_ROWS"
-                elif [[ "$_line" == *"[YOUR_VALUE_HERE: HANDOFF_ROW]"* ]]; then
-                    if [[ -n "$HANDOFF_ROWS" ]]; then
-                        printf '%s\n' "$HANDOFF_ROWS"
-                    else
-                        printf '%s\n' "| (single phase - no handoffs) | | | |"
-                    fi
+            {
+                cat <<'EOF'
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+EOF
+                printf '%s\n' "$PHASE_ROWS"
+                cat <<'EOF'
+
+### Phase Transition Rules
+
+- Each phase MUST pass `validate.sh` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use `/spec_kit:resume [parent-folder]/[NNN-phase]/` to resume a specific phase
+- Run `validate.sh --recursive` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+EOF
+                if [[ -n "$HANDOFF_ROWS" ]]; then
+                    printf '%s\n' "$HANDOFF_ROWS"
                 else
-                    printf '%s\n' "$_line"
+                    printf '%s\n' "| (single phase - no handoffs) | | | |"
                 fi
-            done <<< "$PHASE_PARENT_TEMPLATE" > "$_tmp_phase_section"
+                printf '%s\n' "<!-- /ANCHOR:phase-map -->"
+            } > "$_tmp_phase_section"
 
             # Append phase section to parent spec.md
             printf '\n' >> "$PARENT_SPEC"
@@ -951,7 +1280,7 @@ if [[ "$PHASE_MODE" = true ]]; then
     _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
     if [[ -f "$_DESC_SCRIPT" ]]; then
       if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
-        --description "$FEATURE_DESCRIPTION"; then
+        --description "$FEATURE_DESCRIPTION" --level "phase"; then
         CREATED_FILES+=("description.json")
       else
         echo "  Warning: description.json generation skipped" >&2
@@ -959,7 +1288,7 @@ if [[ "$PHASE_MODE" = true ]]; then
     fi
 
     # ── Create child phase folders ──
-    CHILD_LEVEL_DIR=$(get_level_templates_dir "1" "$TEMPLATES_BASE")
+    CHILD_LEVEL_CONTRACT="$(resolve_level_contract "1")"
     CHILDREN_INFO=()   # For JSON output
 
     for (( _i=1; _i<=PHASE_COUNT; _i++ )); do
@@ -973,19 +1302,25 @@ if [[ "$PHASE_MODE" = true ]]; then
         create_graph_metadata_file "$_child_path" "Phase ${_i}: ${_child_folder#*-}" "planned"
 
         # Copy Level 1 templates to child folder
-        for template_file in "$CHILD_LEVEL_DIR"/*.md; do
-            if [[ -f "$template_file" ]]; then
-                template_name=$(basename "$template_file")
-                _child_created_files+=("$(copy_template "$template_name" "$_child_path" "$CHILD_LEVEL_DIR" "$TEMPLATES_BASE")")
+        if ! child_level_contract_docs="$(level_contract_docs_from_json "$CHILD_LEVEL_CONTRACT")"; then
+            echo "Error: failed to resolve Level 1 template documents" >&2
+            exit 1
+        fi
+        while IFS= read -r template_name; do
+            [[ -z "$template_name" ]] && continue
+            if ! created_path=$(copy_template "$template_name" "$_child_path" "1" "$TEMPLATES_BASE"); then
+                echo "Error: copy_template failed for $template_name (level 1)" >&2
+                exit 1
             fi
-        done
+            _child_created_files+=("$created_path")
+        done <<< "$child_level_contract_docs"
 
         # Generate description.json for child phase
         if [[ -f "$_DESC_SCRIPT" ]]; then
           _phase_name="${_child_folder#*-}"  # strip numeric prefix
           # Use parent of FEATURE_DIR as base so parentChain includes the parent folder
           if node "$_DESC_SCRIPT" "$_child_path" "$(dirname "$FEATURE_DIR")" \
-            --description "Phase ${_i}: ${_phase_name}"; then
+            --description "Phase ${_i}: ${_phase_name}" --level "1"; then
             _child_created_files+=("description.json")
           else
             echo "  Warning: description.json generation skipped for phase ${_i}" >&2
@@ -995,8 +1330,7 @@ if [[ "$PHASE_MODE" = true ]]; then
         # Inject parent back-reference into child spec.md
         _child_spec="$_child_path/spec.md"
         if [[ -f "$_child_spec" ]]; then
-            # Read child header template
-            _child_header_template=$(< "$PHASE_ADDENDUM_DIR/phase-child-header.md")
+            finalize_scaffold_templates "$_child_path" "$_child_folder" "Phase ${_i}: ${_child_folder#*-}"
 
             # Determine predecessor and successor
             if [[ $_i -eq 1 ]]; then
@@ -1015,26 +1349,34 @@ if [[ "$PHASE_MODE" = true ]]; then
             fi
 
             _phase_number=$((PHASE_START_INDEX + _i - 1))
+            _phase_name="${_child_folder#*-}"
+            _child_metadata_rows="| **Parent Spec** | ../spec.md |
+| **Phase** | ${_phase_number} of ${TOTAL_PHASES} |
+| **Predecessor** | ${_predecessor} |
+| **Successor** | ${_successor} |
+| **Handoff Criteria** | [To be defined during planning] |"
+            _child_phase_context="<!-- ANCHOR:phase-context -->
+## Phase Context
 
-            # Replace placeholders (YOUR_VALUE_HERE format for validation detection)
-            _child_header="$_child_header_template"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: PARENT_FOLDER\]/..}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: PHASE_NUMBER\]/$_phase_number}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: TOTAL_PHASES\]/$TOTAL_PHASES}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: PREDECESSOR_FOLDER\]/$_predecessor}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: SUCCESSOR_FOLDER\]/$_successor}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: PARENT_SPEC_NAME\]/$FEATURE_DESCRIPTION}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: phase scope description\]/[To be defined during planning]}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: predecessor dependencies\]/[To be defined during planning]}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: phase deliverables\]/[To be defined during planning]}"
-            _child_header="${_child_header//\[YOUR_VALUE_HERE: handoff criteria\]/[To be defined during planning]}"
+This is **Phase ${_phase_number}** of the ${FEATURE_DESCRIPTION} specification.
 
-            # Prepend back-reference block to child spec.md
-            _tmp_child_spec=$(mktemp)
-            PHASE_TMP_FILES+=("$_tmp_child_spec")
-            printf '%s\n\n' "$_child_header" > "$_tmp_child_spec"
-            cat "$_child_spec" >> "$_tmp_child_spec"
-            mv "$_tmp_child_spec" "$_child_spec"
+**Scope Boundary**: [To be defined during planning]
+
+**Dependencies**:
+- [To be defined during planning]
+
+**Deliverables**:
+- [To be defined during planning]
+
+**Changelog**:
+- When this phase closes, refresh the matching file in ../changelog/ using the parent packet number plus this phase folder name.
+<!-- /ANCHOR:phase-context -->"
+
+            PHASE_CHILD_ROWS="$_child_metadata_rows" PHASE_CHILD_CONTEXT="$_child_phase_context" perl -0pi -e '
+                if (index($_, "<!-- ANCHOR:phase-context -->") == -1) {
+                    s/(<!-- \/ANCHOR:metadata -->)/$ENV{PHASE_CHILD_ROWS} . "\n" . $1 . "\n\n---\n\n" . $ENV{PHASE_CHILD_CONTEXT}/e;
+                }
+            ' "$_child_spec"
         fi
 
         # Collect child info for output
@@ -1120,9 +1462,12 @@ if [[ "$PHASE_MODE" = true ]]; then
         echo "───────────────────────────────────────────────────────────────────"
     fi
 
-    # Post-creation validation: catch template regressions early
-    if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
-        bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
+    # Full post-create validation is opt-in; it is too expensive for default scaffolds.
+    if [[ "${SPECKIT_POST_VALIDATE:-}" == "1" ]]; then
+        if ! bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet; then
+            echo "Error: post-create validation failed for $FEATURE_DIR" >&2
+            exit 1
+        fi
     fi
 
     exit 0
@@ -1132,8 +1477,17 @@ fi
 # 4. BRANCH NAME GENERATION (shared function)
 # ───────────────────────────────────────────────────────────────
 
-resolve_branch_name
-create_git_branch
+if [[ -n "$EXPLICIT_PATH" ]]; then
+    FEATURE_DIR="$(resolve_and_validate_create_target "$EXPLICIT_PATH")"
+    BRANCH_NAME="$(basename "$FEATURE_DIR")"
+    FEATURE_NUM="${BRANCH_NAME%%-*}"
+    if [[ -z "$FEATURE_NUM" ]] || [[ ! "$FEATURE_NUM" =~ ^[0-9]+$ ]]; then
+        FEATURE_NUM="000"
+    fi
+else
+    resolve_branch_name
+    create_git_branch
+fi
 
 # ───────────────────────────────────────────────────────────────
 # 5. CREATE SPEC FOLDER STRUCTURE
@@ -1141,13 +1495,13 @@ create_git_branch
 
 # ───────────────────────────────────────────────────────────────
 
-FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
+if [[ -z "$EXPLICIT_PATH" ]]; then
+    FEATURE_DIR="$SPECS_DIR/$BRANCH_NAME"
+fi
 
-TEMPLATES_BASE="$REPO_ROOT/.opencode/skill/system-spec-kit/templates"
+TEMPLATES_BASE="${SPECKIT_TEMPLATES_BASE:-$REPO_ROOT/.opencode/skill/system-spec-kit/templates}"
 
-# Normalize DOC_LEVEL for numeric comparisons (3+ becomes 3)
-DOC_LEVEL_NUM="${DOC_LEVEL/+/}"
-LEVEL_TEMPLATES_DIR=$(get_level_templates_dir "$DOC_LEVEL" "$TEMPLATES_BASE")
+LEVEL_CONTRACT="$(resolve_level_contract "$DOC_LEVEL")"
 CREATED_FILES=()
 
 # Validate templates directory exists
@@ -1156,15 +1510,8 @@ if [[ ! -d "$TEMPLATES_BASE" ]]; then
     exit 1
 fi
 
-# Validate level folder exists (with fallback warning)
-if [[ ! -d "$LEVEL_TEMPLATES_DIR" ]]; then
-    >&2 echo "[speckit] Warning: Level folder not found at $LEVEL_TEMPLATES_DIR, using base templates"
-    LEVEL_TEMPLATES_DIR="$TEMPLATES_BASE"
-fi
-
 mkdir -p "$FEATURE_DIR" "$FEATURE_DIR/scratch"
 touch "$FEATURE_DIR/scratch/.gitkeep"
-create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
 # ───────────────────────────────────────────────────────────────
 # 6. COPY TEMPLATES BASED ON DOCUMENTATION LEVEL
@@ -1172,13 +1519,22 @@ create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
 # ───────────────────────────────────────────────────────────────
 
-# Copy all templates from the level folder (using library copy_template)
-for template_file in "$LEVEL_TEMPLATES_DIR"/*.md; do
-    if [[ -f "$template_file" ]]; then
-        template_name=$(basename "$template_file")
-        CREATED_FILES+=("$(copy_template "$template_name" "$FEATURE_DIR" "$LEVEL_TEMPLATES_DIR" "$TEMPLATES_BASE")")
-    fi
-done
+# Copy all templates from the resolver contract (using library copy_template)
+if ! level_contract_docs="$(level_contract_docs_from_json "$LEVEL_CONTRACT")"; then
+    echo "Error: failed to resolve Level $DOC_LEVEL template documents" >&2
+    exit 1
+fi
+batch_created_files="$(copy_templates_batch "$level_contract_docs" "$FEATURE_DIR" "$DOC_LEVEL" "$TEMPLATES_BASE")" || {
+    echo "Error: batch template render failed for Level $DOC_LEVEL" >&2
+    exit 3
+}
+while IFS= read -r created_path; do
+    [[ -z "$created_path" ]] && continue
+    CREATED_FILES+=("$created_path")
+done <<< "$batch_created_files"
+finalize_scaffold_templates "$FEATURE_DIR" "$BRANCH_NAME" "$FEATURE_DESCRIPTION"
+
+create_graph_metadata_file "$FEATURE_DIR" "$FEATURE_DESCRIPTION" "planned"
 
 # ───────────────────────────────────────────────────────────────
 # 6.5. GENERATE PER-FOLDER description.json
@@ -1187,11 +1543,15 @@ done
 _DESC_SCRIPT="${SCRIPT_DIR}/../dist/spec-folder/generate-description.js"
 if [[ -f "$_DESC_SCRIPT" ]]; then
   if node "$_DESC_SCRIPT" "$FEATURE_DIR" "$(dirname "$FEATURE_DIR")" \
-    --description "$FEATURE_DESCRIPTION"; then
+    --description "$FEATURE_DESCRIPTION" --level "$DOC_LEVEL"; then
     CREATED_FILES+=("description.json")
   else
     echo "  Warning: description.json generation skipped" >&2
   fi
+fi
+
+if [[ "$DOC_LEVEL" == "phase" ]]; then
+    scaffold_phase_parent_validation_child "$FEATURE_DIR" "$FEATURE_DESCRIPTION"
 fi
 
 # ───────────────────────────────────────────────────────────────
@@ -1243,7 +1603,11 @@ export SPECIFY_FEATURE="$BRANCH_NAME"
 
 if $JSON_MODE; then
     # Build JSON array of created files
-    files_json=$(printf '"%s",' "${CREATED_FILES[@]}" | sed 's/,$//')
+    files_json=""
+    for created_file in "${CREATED_FILES[@]}"; do
+        [[ -n "$files_json" ]] && files_json="${files_json},"
+        files_json="${files_json}\"$(_json_escape "$created_file")\""
+    done
 
     # Build complexity info if available
     if [[ -n "$DETECTED_LEVEL" ]]; then
@@ -1295,7 +1659,7 @@ else
     echo "      └── scratch/          (git-ignored working files)"
     echo "          └── .gitkeep"
     echo ""
-    echo "  Level $DOC_LEVEL Documentation (CORE + ADDENDUM v2.0):"
+    echo "  Level $DOC_LEVEL Documentation (manifest-backed Level contract):"
     case $DOC_LEVEL in
         1) echo "    ✓ Core: spec.md + plan.md + tasks.md + implementation-summary.md"
            echo "      (Essential what/why/how - ~270 LOC)" ;;
@@ -1320,15 +1684,23 @@ else
     echo "    1. Fill out spec.md with requirements"
     echo "    2. Create implementation plan in plan.md"
     echo "    3. Break down tasks in tasks.md"
-    [[ "${DOC_LEVEL/+/}" -ge 2 ]] && echo "    4. Add verification items to checklist.md"
-    [[ "${DOC_LEVEL/+/}" -ge 3 ]] && echo "    5. Document decisions in decision-record.md"
+    DOC_LEVEL_NUM_FOR_OUTPUT="${DOC_LEVEL/+/}"
+    if [[ "$DOC_LEVEL_NUM_FOR_OUTPUT" =~ ^[0-9]+$ ]] && [[ "$DOC_LEVEL_NUM_FOR_OUTPUT" -ge 2 ]]; then
+        echo "    4. Add verification items to checklist.md"
+    fi
+    if [[ "$DOC_LEVEL_NUM_FOR_OUTPUT" =~ ^[0-9]+$ ]] && [[ "$DOC_LEVEL_NUM_FOR_OUTPUT" -ge 3 ]]; then
+        echo "    5. Document decisions in decision-record.md"
+    fi
     echo ""
     echo "───────────────────────────────────────────────────────────────────"
 fi
 
-# Post-creation validation: catch template regressions early
-if [[ "${SPECKIT_SKIP_POST_VALIDATE:-}" != "1" ]]; then
-    bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet 2>/dev/null || true
+# Full post-create validation is opt-in; it is too expensive for default scaffolds.
+if [[ "${SPECKIT_POST_VALIDATE:-}" == "1" ]]; then
+    if ! bash "$SCRIPT_DIR/validate.sh" "$FEATURE_DIR" --quiet; then
+        echo "Error: post-create validation failed for $FEATURE_DIR" >&2
+        exit 1
+    fi
 fi
 
 # Exit codes:

@@ -29,36 +29,39 @@ run_check() {
     RULE_REMEDIATION=""
     
     local missing=()
-    # T501 FIX: Strip non-numeric suffix (e.g. "3+" → "3") for arithmetic comparisons
+    local rule_dir
+    rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local helper_script="$rule_dir/../utils/template-structure.js"
     local numeric_level="${level//[^0-9]/}"
 
 # ───────────────────────────────────────────────────────────────
 # 2. VALIDATION LOGIC
 # ───────────────────────────────────────────────────────────────
 
-    # Phase-parent early branch: if folder is a phase parent, only spec.md is required
-    # at the parent level. Plan, tasks, checklist, decision-record, and
-    # implementation-summary all live in child phase folders.
+    # Phase-parent early branch: lean parents require the control trio.
+    # Plan, tasks, checklist, decision-record, and implementation-summary
+    # live in child phase folders.
     if is_phase_parent "$folder"; then
-        [[ ! -f "$folder/spec.md" ]] && missing+=("spec.md")
+        local phase_doc
+        while IFS= read -r phase_doc; do
+            [[ -z "$phase_doc" ]] && continue
+            [[ ! -f "$folder/$phase_doc" ]] && missing+=("$phase_doc")
+        done < <(node "$helper_script" docs "phase")
+        [[ ! -f "$folder/description.json" ]] && missing+=("description.json")
+        [[ ! -f "$folder/graph-metadata.json" ]] && missing+=("graph-metadata.json")
 
         if [[ ${#missing[@]} -eq 0 ]]; then
             RULE_STATUS="pass"
-            RULE_MESSAGE="Phase parent: spec.md present (lean trio policy)"
+            RULE_MESSAGE="Phase parent: lean trio present"
         else
             RULE_STATUS="fail"
-            RULE_MESSAGE="Phase parent: missing 1 required file"
+            RULE_MESSAGE="Phase parent: missing ${#missing[@]} required file(s)"
             RULE_DETAILS=("${missing[@]}")
-            RULE_REMEDIATION="Phase parents require only spec.md. Create it from templates/phase_parent/spec.md"
+            RULE_REMEDIATION="Phase parents require spec.md, description.json, and graph-metadata.json"
         fi
         return 0
     fi
 
-    # Level 1 requirements
-    [[ ! -f "$folder/spec.md" ]] && missing+=("spec.md")
-    [[ ! -f "$folder/plan.md" ]] && missing+=("plan.md")
-    [[ ! -f "$folder/tasks.md" ]] && missing+=("tasks.md")
-    
     # Implementation-summary.md required after implementation starts
     local has_implementation=false
     if [[ -f "$folder/checklist.md" ]]; then
@@ -79,16 +82,15 @@ run_check() {
             fi
         fi
     fi
-    
-    # Level 2 additions
-    if [[ "$numeric_level" -ge 2 ]]; then
-        [[ ! -f "$folder/checklist.md" ]] && missing+=("checklist.md")
-    fi
-    
-    # Level 3 additions
-    if [[ "$numeric_level" -ge 3 ]]; then
-        [[ ! -f "$folder/decision-record.md" ]] && missing+=("decision-record.md")
-    fi
+
+    local doc_name
+    while IFS= read -r doc_name; do
+        [[ -z "$doc_name" ]] && continue
+        if [[ "$doc_name" == "implementation-summary.md" ]]; then
+            continue
+        fi
+        [[ ! -f "$folder/$doc_name" ]] && missing+=("$doc_name")
+    done < <(node "$helper_script" docs "$level")
 
 # ───────────────────────────────────────────────────────────────
 # 3. RESULTS
@@ -99,11 +101,11 @@ run_check() {
         RULE_MESSAGE="All required files present for Level $level"
     else
         RULE_STATUS="fail"
-        RULE_MESSAGE="Missing ${#missing[@]} required file(s)"
+        RULE_MESSAGE="Missing ${#missing[@]} required file(s) for Level $level"
         RULE_DETAILS=("${missing[@]}")
         local missing_list
         missing_list=$(IFS=', '; echo "${missing[*]}")
-        RULE_REMEDIATION="Create missing files: $missing_list. Use templates from .opencode/skill/system-spec-kit/templates/"
+        RULE_REMEDIATION="Create missing files for Level $level: $missing_list"
     fi
 }
 

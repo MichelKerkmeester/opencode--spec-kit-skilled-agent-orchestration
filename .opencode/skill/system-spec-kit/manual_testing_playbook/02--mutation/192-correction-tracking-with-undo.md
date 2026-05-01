@@ -41,7 +41,7 @@ As a mutation validation operator, confirm library-level correction recording, s
 4. inspect the created causal edge and confirm it is attributable to the specific correction record
 5. invoke `undo_correction(correctionId)` directly
 6. inspect post-undo state to confirm original stability values were restored, `is_undone = 1`, `undone_at` is populated, and only the correction-owned causal edge was removed
-7. confirm validation used direct library capability rather than an MCP handler or tool dispatcher path
+7. confirm validation used direct library behavior rather than an MCP handler or tool dispatcher path
 
 ### Expected
 

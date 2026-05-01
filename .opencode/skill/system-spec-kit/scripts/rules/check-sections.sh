@@ -29,37 +29,41 @@ run_check() {
     RULE_REMEDIATION=""
     
     local -a missing=()
-    # T501 FIX: Strip non-numeric suffix (e.g. "3+" → "3") for arithmetic comparisons
-    local numeric_level="${level//[^0-9]/}"
+    local rule_dir helper_script
+    rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    helper_script="$rule_dir/../utils/template-structure.js"
 
 # ───────────────────────────────────────────────────────────────
 # 2. VALIDATION LOGIC
 # ───────────────────────────────────────────────────────────────
 
-    local -a file_sections=(
-        "spec.md:Problem Statement,Requirements,Scope"
-        "plan.md:Technical Context,Architecture,Implementation"
-    )
-    
-    [[ "$numeric_level" -ge 2 ]] && file_sections+=("checklist.md:Verification Protocol,Code Quality")
-    [[ "$numeric_level" -ge 3 ]] && file_sections+=("decision-record.md:Context,Decision,Consequences")
-    
-    for entry in "${file_sections[@]-}"; do
-        local filename="${entry%%:*}"
-        local sections="${entry#*:}"
+    local contract_level="$level"
+    if is_phase_parent "$folder"; then
+        contract_level="phase"
+    fi
+
+    local -a spec_files=()
+    local filename
+    while IFS= read -r filename; do
+        [[ -n "$filename" ]] && spec_files+=("$filename")
+    done < <(node "$helper_script" docs "$contract_level")
+
+    for filename in "${spec_files[@]-}"; do
         local filepath="$folder/$filename"
-        
+
         [[ ! -f "$filepath" ]] && continue
-        
-        local headers
-        headers=$(grep -E '^#{1,3} ' "$filepath" 2>/dev/null | sed 's/^#* //' || true)
-        
-        IFS=',' read -ra required <<< "$sections"
-        for section in "${required[@]-}"; do
-            if ! echo "$headers" | grep -qi "$section"; then
-                missing+=("$filename: $section")
+
+        local compare_output
+        compare_output=$(node "$helper_script" compare "$contract_level" "$filename" "$filepath" headers 2>/dev/null || true)
+        if ! grep -q $'^supported\ttrue$' <<< "$compare_output"; then
+            continue
+        fi
+
+        while IFS=$'\t' read -r kind value; do
+            if [[ "$kind" == "missing_header" ]]; then
+                missing+=("$filename: $value")
             fi
-        done
+        done <<< "$compare_output"
     done
 
 # ───────────────────────────────────────────────────────────────

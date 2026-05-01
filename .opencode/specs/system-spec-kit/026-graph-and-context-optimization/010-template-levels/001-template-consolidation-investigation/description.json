@@ -1,0 +1,22 @@
+{
+  "specFolder": "026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation",
+  "description": "Feature Specification: Template System Consolidation — Levels and Addendum to Generator",
+  "keywords": [
+    "feature",
+    "specification",
+    "template",
+    "system",
+    "consolidation",
+    "levels",
+    "addendum",
+    "generator"
+  ],
+  "lastUpdated": "2026-05-01T07:49:26.540Z",
+  "specId": "010",
+  "folderSlug": "template-levels",
+  "parentChain": [
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

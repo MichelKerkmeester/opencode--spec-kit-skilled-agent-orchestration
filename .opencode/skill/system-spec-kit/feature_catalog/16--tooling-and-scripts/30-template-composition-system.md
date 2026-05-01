@@ -1,6 +1,6 @@
 ---
 title: "Template Composition System"
-description: "Automated composition and drift-verification pipeline that builds level-specific Spec Kit templates from core and addendum sources."
+description: "Level contract and inline rendering pipeline that generates Spec Kit packet documents from the current template source."
 ---
 
 # Template Composition System
@@ -14,23 +14,21 @@ description: "Automated composition and drift-verification pipeline that builds 
 
 ## 1. OVERVIEW
 
-The Template Composition System is the script-and-template pipeline that turns the Spec Kit `core/` and `addendum/` source fragments into the ready-to-copy template sets under `templates/level_1`, `level_2`, `level_3`, and `level_3+`.
+The Template Composition System is the current Spec Kit document-generation path. It resolves a public Level value, selects the required packet documents, renders inline Level gates, and writes the resulting `spec.md`, `plan.md`, `tasks.md`, `implementation-summary.md`, and any Level-specific verification or decision files directly into a target spec folder.
 
-Its job is not just file generation. The composer also normalizes level markers, rewrites template-title suffixes, strips composition-only markers from addendum fragments, and provides a verify mode that detects drift between the source fragments and the committed composed outputs.
+Its job is to keep scaffolding and validation on one contract. The same Level contract drives fresh packet creation, phase-parent creation, lazy support documents, and validator expectations, so generated packets and strict validation stay aligned.
 
 ## 2. CURRENT REALITY
 
-The shipped behavior in this slice currently works as follows:
+The shipped behavior currently works as follows:
 
-1. `scripts/templates/compose.sh` is the authoritative composer. It resolves the `templates/` root from its own location, defines `core/`, `addendum/`, and four output directories, and defaults to composing all four levels unless the caller explicitly limits the run to `1`, `2`, `3`, or `3+`.
-2. The CLI supports three operating modes around the same composition engine: normal write mode, `--dry-run` preview mode, and `--verify` drift-detection mode. `--verbose` enables additional debug output, and `--help` prints the composition contract and level rules.
-3. Before composing anything, the script validates that the core directory, addendum directory, and a fixed list of required source files exist. That list spans the Level 2 verification fragments, the Level 3 architecture fragments, and the Level 3+ governance fragments, so missing upstream pieces fail the run before outputs are touched.
-4. `spec.md` is composed differently by level. Level 1 is core-only. Level 2 injects `spec-level2.md` before the core open-questions section and renumbers that section from 7 to 10. Level 3 and Level 3+ rebuild the document from extracted frontmatter, a generated H1 block, level-specific guidance text, prefix and suffix fragments, the core sections 1 through 6, a renumbered open-questions block, and a shared related-documents footer.
-5. `plan.md` follows a simpler append model: the composer starts from `plan-core.md`, strips the trailing comment block, and appends Level 2, Level 3, and Level 3+ plan fragments according to the requested output level. `tasks.md` and `implementation-summary.md` stay core-only across every level, with only the `SPECKIT_LEVEL` marker updated.
-6. `checklist.md` comes from the Level 2 verification addendum for every level above 1. For both Level 3 and Level 3+, the composer appends the `level3-plus-govern/checklist-extended.md` fragment before writing the final checklist. `decision-record.md` is copied from the Level 3 architecture addendum for both Level 3 and Level 3+ outputs.
-7. Several helper transforms keep the generated files publishable. The composer strips frontmatter off inserted fragments, removes `SPECKIT_ADDENDUM` comments, rewrites `<!-- SPECKIT_LEVEL: ... -->` markers, replaces the metadata-table placeholder `| **Level** | [1/2/3] |`, and normalizes frontmatter `title` values so composed files carry a `[template:relative/path]` suffix that matches their output location.
-8. The write path ensures output directories exist and then either writes the generated files, previews the first lines in dry-run mode, or compares generated content against committed outputs in verify mode. In verify mode, any missing file or content mismatch is treated as drift and causes a non-zero exit after the full scan.
-9. The surrounding template tree documents the intended usage contract. `templates/README.md` tells consumers to copy from `level_1` through `level_3+` rather than from `core/` or `addendum/` directly, and the audited directory layout confirms that the composed outputs sit alongside the source fragments, helper templates, and supporting template documentation.
+1. `create.sh` accepts Level 1, Level 2, Level 3, Level 3+, and phase-parent requests, then asks the Level contract resolver which documents belong in the target packet.
+2. The resolver returns the required document list, lazy support-document list, section gates, and Level marker expected by downstream validation.
+3. Whole-document template files carry inline `<!-- IF level:N -->` gates. `inline-gate-renderer.ts` strips blocks that do not apply to the requested Level before the document is written.
+4. Level 1 packets receive the baseline four documents. Level 2 adds `checklist.md`. Level 3 and Level 3+ add `decision-record.md`, with Level 3+ retaining the extended governance sections. Phase-parent packets stay lean and write only the parent control documents.
+5. Lazy support documents such as `handover.md`, `debug-delegation.md`, `research.md`, `resource-map.md`, and `context-index.md` are rendered from the same template source when their owning workflow needs them.
+6. Validators consume the same Level contract instead of carrying a separate file matrix. Missing-file, section, header, Level-match, and template-source checks therefore evaluate the same document set that scaffolding writes.
+7. The workflow-invariance test protects public surfaces from leaking private implementation taxonomy. Public docs and generated packets keep Level vocabulary, while private maintainer files remain isolated.
 
 ## 3. SOURCE FILES
 
@@ -38,23 +36,23 @@ The shipped behavior in this slice currently works as follows:
 
 | File | Layer | Role |
 |------|-------|------|
-| `.opencode/skill/system-spec-kit/scripts/templates/compose.sh` | Composer CLI | Validates template sources, composes level outputs, normalizes metadata, and detects drift |
-| `.opencode/skill/system-spec-kit/templates/README.md` | Usage contract | Documents the core-plus-addendum architecture and directs consumers to the composed level outputs |
-| `.opencode/skill/system-spec-kit/templates/core/spec-core.md` | Core source | Base spec template shared by every composed level |
-| `.opencode/skill/system-spec-kit/templates/core/plan-core.md` | Core source | Base implementation-plan template shared by every composed level |
-| `.opencode/skill/system-spec-kit/templates/core/tasks-core.md` | Core source | Base task template copied into every level output |
-| `.opencode/skill/system-spec-kit/templates/core/impl-summary-core.md` | Core source | Base implementation-summary template copied into every level output |
-| `.opencode/skill/system-spec-kit/templates/addendum/level2-verify/*.md` | Addendum set | Level 2 verification fragments for spec, plan, and checklist composition |
-| `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/*.md` | Addendum set | Level 3 architecture fragments for spec, plan, and decision-record composition |
-| `.opencode/skill/system-spec-kit/templates/addendum/level3-plus-govern/*.md` | Addendum set | Level 3+ governance fragments and extended checklist inputs |
+| `.opencode/skill/system-spec-kit/mcp_server/lib/templates/level-contract-resolver.ts` | Resolver | Returns the document contract for each public Level |
+| `.opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.ts` | Renderer | Applies inline Level gates before a document is written |
+| `.opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh` | Shell wrapper | Lets shell scripts call the renderer without duplicating logic |
+| `.opencode/skill/system-spec-kit/scripts/lib/template-utils.sh` | Shell helper | Exposes `resolve_level_contract` and shared template helpers |
+| `.opencode/skill/system-spec-kit/scripts/spec/create.sh` | Scaffolder | Creates Level and phase-parent packets from the resolver output |
+| `.opencode/skill/system-spec-kit/scripts/rules/check-files.sh` | Validator | Verifies required files from the Level contract |
+| `.opencode/skill/system-spec-kit/scripts/rules/check-sections.sh` | Validator | Verifies Level-gated sections after rendering |
 
 ### Validation And Tests
 
 | File | Focus |
 |------|-------|
-| `scripts/tests/test-template-system.js` | Compose-script structure, `--verify`, `--dry-run`, and level-selection behavior |
-| `scripts/tests/test-template-comprehensive.js` | Compose-script function coverage, single/multi-level execution, and drift-detection mode |
-| `scripts/tests/template-structure.vitest.ts` | Template-structure validation and allowed-content drift checks |
+| `scripts/tests/level-contract-resolver.vitest.ts` | Resolver output for Level 1, Level 2, Level 3, Level 3+, and phase-parent packets |
+| `scripts/tests/inline-gate-renderer.vitest.ts` | Inline gate grammar and render behavior |
+| `scripts/tests/scaffold-golden-snapshots.vitest.ts` | Fresh scaffold snapshots across public Levels |
+| `scripts/tests/template-structure.vitest.ts` | Rendered template structure and section expectations |
+| `scripts/tests/workflow-invariance.vitest.ts` | Public vocabulary invariance across command, agent, catalog, playbook, and generated-doc surfaces |
 
 ## 4. SOURCE METADATA
 - Group: Tooling And Scripts

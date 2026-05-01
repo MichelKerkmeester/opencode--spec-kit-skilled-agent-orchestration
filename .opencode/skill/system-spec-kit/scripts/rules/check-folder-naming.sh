@@ -30,6 +30,16 @@ run_check() {
 
     local folder_name
     folder_name=$(basename "$folder")
+
+    case "$folder" in
+        .opencode/specs/*|specs/*|*/.opencode/specs/*|*/specs/*)
+            ;;
+        *)
+            RULE_STATUS="info"
+            RULE_MESSAGE="Folder naming check skipped outside canonical spec roots"
+            return 0
+            ;;
+    esac
     
     # Pattern: 3 digits, hyphen, lowercase alphanumeric with hyphens
     local pattern='^[0-9]{3}-[a-z0-9-]+$'

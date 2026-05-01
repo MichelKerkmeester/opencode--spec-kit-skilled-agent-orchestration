@@ -14,7 +14,7 @@ Session capturing pipeline quality is the current reality-alignment feature for 
 2. Spec-folder and git context enrichment for JSON-mode saves.
 3. Numeric quality-score calibration so thin saves score lower than rich ones.
 4. One shared semantic sufficiency gate so aligned but under-evidenced memories fail explicitly instead of indexing.
-5. Runtime-contract hardening and reality-alignment follow-through, including metadata-driven write/index dispositions, `--stdin` / `--json` structured input, and typed source capabilities for contamination policy.
+5. Runtime-contract hardening and reality-alignment follow-through, including metadata-driven write/index dispositions, `--stdin` / `--json` structured input, and typed source profiles for contamination policy.
 6. Output-quality hardening, including decision-field deduplication, completion-status recovery, blocker tightening, trigger cleanup, separator parsing, tree-thinning safeguards, and structured-data conversation synthesis.
 7. One shared rendered-memory template contract so malformed ANCHOR/frontmatter output fails before write/index, while successful flows stay free of template-data warning noise.
 8. A refreshed canonical verification, remediation, and manual-testing record that separates automated parity from retained live CLI proof.
@@ -58,7 +58,7 @@ The shipped session-capture pipeline enforces the following behavior:
    - `write_and_index`
 29. V1, V3, V8, V9, and V11 remain hard blockers; V4, V5, V6, V7, and V10 remain soft diagnostics that can still write and index when the upstream template, sufficiency, and score gates pass.
 30. V2 now remains writeable but intentionally skips semantic indexing, which makes the write-only path explicit instead of coupling it to the old `qualityValidation.valid` boolean.
-31. Contamination severity policy now uses typed source capabilities instead of a raw source-name exception; only capability profiles that expect transcript-style tool titles get the `tool title with path` downgrade.
+31. Contamination severity policy now uses typed source profiles instead of a raw source-name exception; only source profiles that expect transcript-style tool titles get the `tool title with path` downgrade.
 32. Output-quality fixes now keep rendered decisions non-duplicative, recover completed status from normalized `Next Steps` observations, avoid blocker false positives from generic words, suppress generic trigger/code-pattern filler, parse `key_files` separators beyond plain hyphens, keep tree thinning from over-merging, and synthesize richer conversations from structured JSON when prompts are sparse.
 33. Literal Mustache tokens and literal anchor examples from captured operator text are treated as content, not structural leakage.
 34. Rendered output is now validated against a shared template contract before successful write/index:
@@ -75,7 +75,7 @@ The shipped session-capture pipeline enforces the following behavior:
    - `collect-session-data.ts` guards SUMMARY derivation against error text in the `learning` field
    - `validate-memory-quality.ts` V11 rule rejects memories with error-dominated descriptions, titles, or trigger phrases
 
-Status: Implemented and strongly verified for the shared runtime contract. The automated scripts lane covers rule metadata, capability-driven contamination handling, structured-input parity, V10 write-and-index behavior, write-only indexing policy, same-minute filename stability, renderer-noise suppression, and the currently supported legacy JS compatibility suites.
+Status: Implemented and strongly verified for the shared runtime contract. The automated scripts lane covers rule metadata, profile-driven contamination handling, structured-input parity, V10 write-and-index behavior, write-only indexing policy, same-minute filename stability, renderer-noise suppression, and the currently supported legacy JS compatibility suites.
 
 <!-- /ANCHOR:current-reality -->
 
@@ -113,7 +113,7 @@ Status: Implemented and strongly verified for the shared runtime contract. The a
 
 ### FEATURE BREAKDOWN
 
-The closure feature consists of these distinct shipped capabilities:
+The closure feature consists of these distinct shipped behaviors:
 
 ### 3.1 JSON-mode authority
 
@@ -151,7 +151,7 @@ The closure feature consists of these distinct shipped capabilities:
 - Explicit CLI target authority still outranks payload `specFolder` in those structured-input modes.
 - `workflow.ts` now resolves validation outcomes into explicit `abort_write`, `write_skip_index`, and `write_and_index` dispositions instead of treating `qualityValidation.valid` as the only indexing gate.
 - `QUALITY_GATE_WARN` preserves V10 diagnostic visibility without causing false-positive aborts or write-only saves for V10-only saves.
-- `contamination-filter.ts` now uses typed source capabilities, so the `tool title with path` downgrade is driven by capability policy rather than a hardcoded source-name special case.
+- `contamination-filter.ts` now uses typed source profiles, so the `tool title with path` downgrade is driven by source policy rather than a hardcoded source-name special case.
 
 ### 3.9b Output-quality hardening
 

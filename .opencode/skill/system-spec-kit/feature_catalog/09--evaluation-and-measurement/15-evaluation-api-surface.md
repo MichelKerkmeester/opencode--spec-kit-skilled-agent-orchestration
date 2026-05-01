@@ -18,7 +18,7 @@ Its main job is architectural, not algorithmic. The file is explicitly marked as
 
 ---
 ## 2. CURRENT REALITY
-`mcp_server/api/eval.ts` contains no local implementation logic. Its entire responsibility is to re-export evaluation capabilities from internal modules. The ablation portion of the surface exports `runAblation`, `storeAblationResults`, `formatAblationReport`, `toHybridSearchFlags`, `isAblationEnabled`, `ALL_CHANNELS`, and the related `AblationChannel`, `AblationSearchFn`, and `AblationReport` types. This makes the ablation workflow available through a single public import path rather than by reaching into `lib/eval/ablation-framework`.
+`mcp_server/api/eval.ts` contains no local implementation logic. Its entire responsibility is to re-export evaluation APIs from internal modules. The ablation portion of the surface exports `runAblation`, `storeAblationResults`, `formatAblationReport`, `toHybridSearchFlags`, `isAblationEnabled`, `ALL_CHANNELS`, and the related `AblationChannel`, `AblationSearchFn`, and `AblationReport` types. This makes the ablation workflow available through a single public import path rather than by reaching into `lib/eval/ablation-framework`.
 
 The same facade pattern is used for BM25 baseline evaluation. The file re-exports `runBM25Baseline` and `recordBaselineMetrics`, along with the `BM25SearchFn`, `BM25SearchResult`, and `BM25BaselineResult` types, so baseline measurement code can depend on a stable API boundary even if the underlying baseline implementation changes location or internal structure.
 

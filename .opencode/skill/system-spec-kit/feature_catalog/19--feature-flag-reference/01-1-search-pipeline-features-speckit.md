@@ -134,7 +134,7 @@ These flags turn major retrieval behaviors on or off, including fallback logic, 
 
 Note: `hybrid-search.ts` always calls `hybridAdaptiveFuse()`, and that helper reads `SPECKIT_ADAPTIVE_FUSION` via `isAdaptiveFusionEnabled()`. In practice, the flag remains live: it selects between intent-aware adaptive fusion and standard fixed fusion, with rollout behavior still applied through `SPECKIT_ROLLOUT_PERCENT`.
 
-Roadmap capability entries in this table describe live runtime resolvers, not frozen import-time snapshots. `capability-flags.ts` reads `process.env` when helpers are called, and the default-off roadmap capability (`adaptiveRanking`) stays false until an explicit canonical opt-in.
+Roadmap flag entries in this table describe live runtime resolvers, not frozen import-time snapshots. The roadmap flag resolver reads `process.env` when helpers are called, and the default-off adaptive-ranking setting stays false until an explicit canonical opt-in.
 
 ---
 

@@ -61,7 +61,7 @@ Ultra-Think uses **adaptive dispatch** based on invocation depth:
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Skills
 

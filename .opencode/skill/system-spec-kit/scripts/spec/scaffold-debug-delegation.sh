@@ -42,6 +42,31 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "${SCRIPT_DIR}/../lib/template-utils.sh"
+source "${SCRIPT_DIR}/../lib/shell-common.sh"
+
+if git rev-parse --show-toplevel >/dev/null 2>&1; then
+    REPO_ROOT="$(git rev-parse --show-toplevel)"
+else
+    REPO_ROOT="$(find_repo_root "$SCRIPT_DIR")"
+fi
+
+is_path_within() {
+    local candidate="$1"
+    local base="$2"
+    [[ "$candidate" == "$base" || "$candidate" == "$base"/* ]]
+}
+
+reject_spec_folder_outside_repo() {
+    local raw_path="$1"
+    cat >&2 <<EOF
+Error: --spec-folder '$raw_path' would write outside the repository.
+Use a spec folder under specs/ or .opencode/specs/, or an absolute path under /tmp/ for testing.
+EOF
+    exit 1
+}
+
 SPEC_FOLDER=""
 ERRORS_FILE=""
 ERRORS_JSON=""
@@ -83,14 +108,36 @@ fi
 
 # Resolve canonical absolute path so writes stay inside an approved root.
 SPEC_FOLDER_ABS="$(cd "$SPEC_FOLDER" >/dev/null 2>&1 && pwd -P)"
-case "$SPEC_FOLDER_ABS" in
-    */specs/*|*/.opencode/specs/*) ;;
-    *)
-        echo "Error: spec-folder must be under specs/ or .opencode/specs/" >&2
-        echo "Resolved path: $SPEC_FOLDER_ABS" >&2
-        exit 1
-        ;;
-esac
+TEMP_ALLOWED=false
+for tmp_root in /tmp "${TMPDIR:-}"; do
+    [[ -n "$tmp_root" ]] || continue
+    if tmp_root="$(cd "$tmp_root" >/dev/null 2>&1 && pwd -P)" && is_path_within "$SPEC_FOLDER_ABS" "$tmp_root"; then
+        TEMP_ALLOWED=true
+        break
+    fi
+done
+
+if ! is_path_within "$SPEC_FOLDER_ABS" "$REPO_ROOT/specs" \
+    && ! is_path_within "$SPEC_FOLDER_ABS" "$REPO_ROOT/.opencode/specs" \
+    && [[ "$TEMP_ALLOWED" != "true" ]]; then
+    reject_spec_folder_outside_repo "$SPEC_FOLDER"
+fi
+
+TEMPLATES_BASE="$(cd "${SCRIPT_DIR}/../../templates" >/dev/null 2>&1 && pwd -P)"
+DEBUG_CONTRACT="$(resolve_level_contract "1")"
+if ! node - "$DEBUG_CONTRACT" <<'NODE'
+const contract = JSON.parse(process.argv[2]);
+process.exit(contract.lazyAddonDocs.includes('debug-delegation.md') ? 0 : 1);
+NODE
+then
+    echo "Error: debug-delegation template contract could not be resolved" >&2
+    exit 1
+fi
+DEBUG_TEMPLATE_PATH="${TEMPLATES_BASE}/manifest/debug-delegation.md.tmpl"
+INLINE_GATE_RENDERER="${SCRIPT_DIR}/../templates/inline-gate-renderer.sh"
+DEBUG_TEMPLATE_RENDERED="$("$INLINE_GATE_RENDERER" --level 1 "$DEBUG_TEMPLATE_PATH")"
+DEBUG_TEMPLATE_SOURCE_MARKER="$(printf '%s\n' "$DEBUG_TEMPLATE_RENDERED" | grep -m1 'SPECKIT_TEMPLATE_SOURCE:' | sed 's/^<!-- //; s/ -->$//' || true)"
+DEBUG_TEMPLATE_SOURCE_MARKER="${DEBUG_TEMPLATE_SOURCE_MARKER:-SPECKIT_TEMPLATE_SOURCE: debug-delegation | v1.0}"
 
 # Pick versioned output filename atomically so we never overwrite a prior scaffold,
 # user-authored debug-delegation.md, or another concurrent invocation's claim.
@@ -217,7 +264,7 @@ _memory:
 
 Pre-filled handoff for the @debug agent after 3+ failed task attempts. The operator must review and dispatch via Task tool. Never auto-dispatched.
 
-<!-- SPECKIT_TEMPLATE_SOURCE: debug-delegation | v1.0 -->
+<!-- ${DEBUG_TEMPLATE_SOURCE_MARKER} -->
 
 ---
 

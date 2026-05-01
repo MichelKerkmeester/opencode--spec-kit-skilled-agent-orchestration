@@ -6,6 +6,10 @@
 # Sourced by validate.sh and compatible with strict mode.
 set -euo pipefail
 
+_level_match_rule_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+_level_match_helper="$_level_match_rule_dir/../utils/template-structure.js"
+unset _level_match_rule_dir
+
 # Rule: LEVEL_MATCH
 # Severity: error
 # Description: Validates that the declared level is consistent across all
@@ -116,6 +120,17 @@ _level_should_have() {
     esac
 }
 
+_level_has_implementation_started() {
+    local folder="$1"
+    if [[ -f "$folder/checklist.md" ]] && grep -qE '\[[xX]\]' "$folder/checklist.md" 2>/dev/null; then
+        return 0
+    fi
+    if [[ -f "$folder/tasks.md" ]] && grep -qE '\[[xX]\]' "$folder/tasks.md" 2>/dev/null; then
+        return 0
+    fi
+    return 1
+}
+
 # ───────────────────────────────────────────────────────────────
 # 2. MAIN RUN_CHECK FUNCTION
 # ───────────────────────────────────────────────────────────────
@@ -181,19 +196,16 @@ run_check() {
         fi
     done
 
-    # Validate file presence based on level
-    # Level 1 requires: spec.md, plan.md, tasks.md
-    local required_files=("spec.md" "plan.md" "tasks.md")
-
-    # Level 2 adds: checklist.md
-    if [[ "$primary_level" = "2" ]] || [[ "$primary_level" = "3" ]] || [[ "$primary_level" = "3+" ]]; then
-        required_files+=("checklist.md")
-    fi
-
-    # Level 3 adds: decision-record.md
-    if [[ "$primary_level" = "3" ]] || [[ "$primary_level" = "3+" ]]; then
-        required_files+=("decision-record.md")
-    fi
+    # Validate file presence based on the shared Level contract.
+    local required_files=()
+    local req_file
+    while IFS= read -r req_file; do
+        [[ -z "$req_file" ]] && continue
+        if [[ "$req_file" == "implementation-summary.md" ]] && ! _level_has_implementation_started "$folder"; then
+            continue
+        fi
+        required_files+=("$req_file")
+    done < <(node "$_level_match_helper" docs "$primary_level")
 
     for req_file in "${required_files[@]-}"; do
         if [[ ! -f "$folder/$req_file" ]]; then

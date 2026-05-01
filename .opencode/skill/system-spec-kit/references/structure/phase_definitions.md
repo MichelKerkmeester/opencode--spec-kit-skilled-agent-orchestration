@@ -98,7 +98,7 @@ specs/###-parent-feature/
 
 **Detection rule (single source of truth):** A spec folder is a phase parent iff (a) it has at least one direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND (b) at least one such child has `spec.md` OR `description.json`. The shell helper `is_phase_parent()` (in `.opencode/skill/system-spec-kit/scripts/lib/shell-common.sh`) and the ESM JS helper `isPhaseParent()` (in `.opencode/skill/system-spec-kit/scripts/dist/spec/is-phase-parent.js`) both implement this contract; they MUST agree on every input. The validator's phase-parent branches in `check-files.sh`, `check-level-match.sh`, `check-anchors.sh`, `check-section-counts.sh`, and `check-template-headers.sh` skip Level-N expectations when this returns true.
 
-**Parent template:** New phase decompositions via `create.sh --phase` scaffold the parent from `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md` (lean) and each child from the appropriate `templates/level_N/` set. The lean template carries an inline content-discipline comment listing FORBIDDEN narrative tokens (consolidation, merge, migration history) and REQUIRED content (root purpose, sub-phase manifest, what needs done) — the new `PHASE_PARENT_CONTENT` validator enforces this advisory.
+**Parent template:** New phase decompositions via `create.sh --phase` scaffold the parent from `phase-parent Level template contract` (lean) and each child from the appropriate `Level template contract` set. The lean template carries an inline content-discipline comment listing FORBIDDEN narrative tokens (consolidation, merge, migration history) and REQUIRED content (root purpose, sub-phase control file, what needs done) — the new `PHASE_PARENT_CONTENT` validator enforces this advisory.
 
 **Tolerant migration policy:** Legacy phase parents that retain heavy docs (e.g. `026-graph-and-context-optimization/`) continue to validate without churn. Soft deprecation of legacy heavy docs is a separate follow-on packet.
 
@@ -226,7 +226,7 @@ This validates:
 
 ### Reference Files
 - [sub_folder_versioning.md](./sub_folder_versioning.md) - Sequential versioning within spec folders (distinct from parallel phase decomposition)
-- [level_specifications.md](../templates/level_specifications.md) - Complete Level 1-3+ requirements and progressive enhancement model
+- level specifications reference - Complete Level 1-3+ requirements and progressive enhancement model
 - [validation_rules.md](../validation/validation_rules.md) - Validation rules including PHASE_LINKS
 
 ### Related Skills

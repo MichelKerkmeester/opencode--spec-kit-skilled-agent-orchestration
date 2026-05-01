@@ -1,0 +1,3361 @@
+{
+  "sessionId": "2026-05-01-11-00-template-greenfield",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [],
+  "resolvedQuestions": [],
+  "keyFindings": [
+    {
+      "id": "finding-1-6-specific-phrase",
+      "text": "\"specific phrase\"",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-1-spec-kit-resume-uses-opencode-skill-system-spec-kit-mcp-server-lib-resume-resume",
+      "text": "`/spec_kit:resume` uses `.opencode/skill/system-spec-kit/mcp_server/lib/resume/resume-ladder.ts`. It resolves an explicit or cached spec folder under `.opencode/specs/` or `specs/`, reads `handover.md`, then `_memory.continuity` inside `implementation-summary.md`, then spec docs. Spec-doc fallback only needs at least one discovered spec doc. Priority order is `implementation-summary.md`, `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `research.md`, `handover.md`, `resource-map.md`.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-3-description-json-schema-requires-specfolder-description-keywords-and-lastupdated",
+      "text": "`description.json` schema requires `specFolder`, `description`, `keywords`, and `lastUpdated`. Optional fields include `specId`, `folderSlug`, `parentChain`, `memorySequence`, `memoryNameHistory`, `title`, `type`, `trigger_phrases`, and `path`.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-4-graph-metadata-json-schema-requires-schema-version-1-packet-id-spec-folder-paren",
+      "text": "`graph-metadata.json` schema requires `schema_version: 1`, `packet_id`, `spec_folder`, `parent_id`, `children_ids`, `manual.depends_on`, `manual.supersedes`, `manual.related_to`, and `derived` fields `trigger_phrases`, `key_topics`, `importance_tier`, `status`, `key_files`, `entities`, `causal_summary`, `created_at`, `last_save_at`, `last_accessed_at`, and `source_docs`.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-8-authored-validation-scaffold-currently-spec-md-plan-md-tasks-md-for-ordinary-pac",
+      "text": "Authored validation scaffold: currently `spec.md`, `plan.md`, `tasks.md` for ordinary packets, plus template provenance markers and optional capability-gated docs.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-7-runtime-discovery-core-spec-md-description-json-graph-metadata-json",
+      "text": "Runtime discovery core: `spec.md`, `description.json`, `graph-metadata.json`.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-5-the-memory-parser-indexes-description-json-as-description-metadata-and-derives-t",
+      "text": "The memory parser indexes `description.json` as `description_metadata` and derives trigger phrases from its description metadata. It indexes `graph-metadata.json` as `graph_metadata`, validates the graph schema, and uses `metadata.derived.trigger_phrases`, `metadata.derived.importance_tier`, and `metadata.spec_folder`.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-1-2-thin-continuity-requires-memory-continuity-packet-pointer-last-updated-at-last-u",
+      "text": "Thin continuity requires `_memory.continuity.packet_pointer`, `last_updated_at`, `last_updated_by`, `recent_action`, and `next_safe_action`. Optional fields are `blockers`, `key_files`, `session_dedup`, `completion_pct`, `open_questions`, and `answered_questions`. The record must serialize under 2048 bytes.",
+      "addedAtIteration": 1,
+      "sources": []
+    },
+    {
+      "id": "finding-2-1-opencode-skill-system-spec-kit-scripts-rules-check-files-sh-is-still-the-simples",
+      "text": "`.opencode/skill/system-spec-kit/scripts/rules/check-files.sh` is still the simplest hard file-presence source: Level 1 requires `spec.md`, `plan.md`, `tasks.md`; Level 2 adds `checklist.md`; Level 3 and `3+` add `decision-record.md`; `implementation-summary.md` is required after tasks/checklist show completion. Phase parents skip the ordinary level set and require only `spec.md` in this shell rule.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-5-spec-doc-structure-ts-is-the-least-coupled-to-levels-and-can-probably-consume-a-",
+      "text": "`spec-doc-structure.ts` is the least coupled to levels and can probably consume a manifest early.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-6-canonical-save-checks-should-stay-outside-the-capability-matrix-they-guard-packe",
+      "text": "Canonical-save checks should stay outside the capability matrix; they guard packet identity and graph/resume provenance, not authored-doc capability.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-7-captured-every-current-ordinary-required-file-spec-md-plan-md-tasks-md-checklist",
+      "text": "Captured every current ordinary required file: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-8-captured-every-current-phase-parent-core-file-from-the-greenfield-parser-contrac",
+      "text": "Captured every current phase-parent core file from the greenfield parser contract: `spec.md`, `description.json`, `graph-metadata.json`.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-9-captured-the-level-3-difference-without-inventing-a-new-file-the-distinction-is-",
+      "text": "Captured the Level 3+ difference without inventing a new file: the distinction is section/governance expansion, not a separate required document.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-10-excluded-handover-md-debug-delegation-md-research-research-md-resource-map-md-an",
+      "text": "Excluded `handover.md`, `debug-delegation.md`, `research/research.md`, `resource-map.md`, and `context-index.md` from default required files because every inspected writer/validator treats them as absent-ok addon or workflow outputs.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-11-excluded-research-resource-map-md-and-review-resource-map-md-from-authored-scaff",
+      "text": "Excluded `research/resource-map.md` and `review/resource-map.md` from authored scaffold requirements because they are convergence-time workflow outputs.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-12-excluded-canonical-save-source-doc-and-graph-lineage-requirements-from-authored-",
+      "text": "Excluded canonical-save source-doc and graph lineage requirements from authored-doc traits because those rules validate metadata provenance, not human scaffold capability.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-3-hard-file-presence-is-duplicated-in-at-least-check-files-sh-check-level-match-sh",
+      "text": "Hard file presence is duplicated in at least `check-files.sh`, `check-level-match.sh`, and partly `check-section-counts.sh`.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-4-hard-section-header-expectations-are-duplicated-across-check-sections-sh-check-s",
+      "text": "Hard section/header expectations are duplicated across `check-sections.sh`, `check-section-counts.sh`, `check-template-headers.sh`, and `template-structure.js`.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-2-2-the-lean-trio-phase-parent-contract-is-distributed-check-files-sh-requires-only-",
+      "text": "The \"lean trio\" phase-parent contract is distributed: `check-files.sh` requires only `spec.md`, while metadata expectations come from `description.json`, `graph-metadata.json`, canonical-save rules, memory indexing, and the project-level contract.",
+      "addedAtIteration": 2,
+      "sources": []
+    },
+    {
+      "id": "finding-3-2-b-is-eliminated-despite-24-35-scaffolding-all-addons-as-starter-docs-violates-th",
+      "text": "B is eliminated despite 24/35. Scaffolding all addons as starter docs violates the iteration-2 lifecycle table: `handover.md`, `debug-delegation.md`, and `research/research.md` are not author-scaffolded docs.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-3-d-is-eliminated-despite-26-35-it-handles-section-variance-well-but-a-roughly-25-",
+      "text": "D is eliminated despite 26/35. It handles section variance well, but a roughly 25-fragment library plus composer creates a second section-ordering source and weakens the markdown-editing ergonomics requirement.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-1-f-is-eliminated-at-16-35-it-satisfies-the-lean-runtime-core-but-it-conflates-all",
+      "text": "F is eliminated at 16/35. It satisfies the lean runtime core, but it conflates all addon lifecycles into `command-owned-lazy` and cannot reproduce today's level matrix with capability flags.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-3-4-g-is-eliminated-despite-31-35-it-represents-contracts-cleanly-but-schema-first-t",
+      "text": "G is eliminated despite 31/35. It represents contracts cleanly, but schema-first templates violate the explicit authoring ergonomic: maintainers should edit markdown templates, not TypeScript data structures.",
+      "addedAtIteration": 3,
+      "sources": []
+    },
+    {
+      "id": "finding-4-24-opencode-skill-system-spec-kit-scripts-tests-template-scaffold-vitest-ts",
+      "text": "`.opencode/skill/system-spec-kit/scripts/tests/template-scaffold.vitest.ts`",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-22-arch-change-scaffolds-8-files-under-today-s-rules-4-authored-core-docs-2-capabil",
+      "text": "`arch-change` scaffolds 8 files under today's rules: 4 authored core docs + 2 capability docs + 2 runtime metadata files. The requested `<=7` bound is not satisfiable unless either `implementation-summary.md` or generated metadata is excluded from the count. Excluding either would contradict the prompt's simple-change row and the current template mapping.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-2-capability-says-what-authored-docs-section-profiles-and-validation-rules-are-add",
+      "text": "`capability` says what authored docs, section profiles, and validation rules are added.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-3-doctemplates-says-who-owns-each-template-when-it-is-created-and-what-absence-mea",
+      "text": "`docTemplates` says who owns each template, when it is created, and what absence means.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-1-kind-says-what-kind-of-packet-this-is",
+      "text": "`kind` says what kind of packet this is.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-23-phase-parent-scaffolds-3-files-this-satisfies-the-requested-3-bound",
+      "text": "`phase-parent` scaffolds 3 files. This satisfies the requested `<=3` bound.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-5-preset-gives-users-shorthand-names-without-reintroducing-levels",
+      "text": "`preset` gives users shorthand names without reintroducing levels.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-4-sectionprofiles-says-which-headers-or-blocks-are-activated-inside-existing-autho",
+      "text": "`sectionProfiles` says which headers or blocks are activated inside existing authored docs.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-20-simple-change-scaffolds-6-files-this-satisfies-the-requested-6-bound",
+      "text": "`simple-change` scaffolds 6 files. This satisfies the requested `<=6` bound.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-21-validated-change-scaffolds-7-files",
+      "text": "`validated-change` scaffolds 7 files.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-14-current-level-1-behavior-is-reproduced-by-simple-change",
+      "text": "Current Level 1 behavior is reproduced by `simple-change`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-15-current-level-2-behavior-is-reproduced-by-validated-change",
+      "text": "Current Level 2 behavior is reproduced by `validated-change`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-16-current-level-3-behavior-is-reproduced-by-arch-change",
+      "text": "Current Level 3 behavior is reproduced by `arch-change`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-17-current-level-3-behavior-is-reproduced-by-governed-change-through-section-profil",
+      "text": "Current Level 3+ behavior is reproduced by `governed-change` through section profiles, not a unique file.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-18-current-phase-parent-behavior-is-reproduced-by-phase-parent",
+      "text": "Current phase-parent behavior is reproduced by `phase-parent`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-19-deep-research-starts-with-investigation-research-research-md-remains-workflow-ow",
+      "text": "Deep research starts with `investigation`; `research/research.md` remains workflow-owned and is created by `/spec_kit:deep-research`, not by ordinary scaffolding.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-25-existing-integration-point-opencode-skill-system-spec-kit-scripts-package-json-t",
+      "text": "Existing integration point: `.opencode/skill/system-spec-kit/scripts/package.json` `test` script, via `vitest run --config ../mcp_server/vitest.config.ts --root .`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-12-lazy-addon-owners-work-because-handover-md-can-be-declared-as-owner-command-crea",
+      "text": "Lazy addon owners work because `handover.md` can be declared as `owner=command`, `creationTrigger=/memory:save`, and `absenceBehavior=silent-skip`; validators can know the document exists without requiring it during ordinary packet validation.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-6-level-1-becomes-kind-implementation-with-no-capabilities",
+      "text": "Level 1 becomes `kind=implementation` with no capabilities.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-7-level-2-becomes-kind-implementation-plus-qa-verification",
+      "text": "Level 2 becomes `kind=implementation` plus `qa-verification`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-8-level-3-becomes-kind-implementation-plus-qa-verification-and-architecture-decisi",
+      "text": "Level 3 becomes `kind=implementation` plus `qa-verification` and `architecture-decisions`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-9-level-3-becomes-level-3-plus-governance-expansion-which-adds-sections-and-valida",
+      "text": "Level 3+ becomes Level 3 plus `governance-expansion`, which adds sections and validation rules but no new files.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-27-optional-dedicated-local-command-add-test-templates-to-opencode-skill-system-spe",
+      "text": "Optional dedicated local command: add `test:templates` to `.opencode/skill/system-spec-kit/scripts/package.json` as `vitest run tests/template-scaffold.vitest.ts --config ../mcp_server/vitest.config.ts --root .`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-10-phase-parent-becomes-kind-phase-parent-whose-requiredcoredocs-are-only-spec-md-a",
+      "text": "Phase parent becomes `kind=phase-parent`, whose `requiredCoreDocs` are only `spec.md` and whose `requiredRuntimeDocs` are `description.json` and `graph-metadata.json`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-13-phase-parent-lean-trio-works-because-kind-phase-parent-requires-only-spec-md-des",
+      "text": "Phase-parent lean trio works because `kind=phase-parent` requires only `spec.md`, `description.json`, and `graph-metadata.json`; child packets carry the heavy docs.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-26-root-integration-point-opencode-skill-system-spec-kit-package-json-test-root-whi",
+      "text": "Root integration point: `.opencode/skill/system-spec-kit/package.json` `test:root`, which already runs `npm run test --workspace=@spec-kit/scripts`.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-4-11-section-only-traits-work-because-governance-expansion-addsauthoreddocs-can-be-wh",
+      "text": "Section-only traits work because `governance-expansion.addsAuthoredDocs` can be `[]` while `addsSectionProfiles` and `addsValidationRules` are non-empty.",
+      "addedAtIteration": 4,
+      "sources": []
+    },
+    {
+      "id": "finding-5-32-capabilities-addssectionprofiles",
+      "text": "`capabilities[].addsSectionProfiles`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-31-kind-defaultsectionprofiles",
+      "text": "`kind.defaultSectionProfiles`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-48-node-helper-script-compare-manifest-manifest-path-contract-json-basename-file-fi",
+      "text": "`node \"$helper_script\" compare-manifest \"$manifest_path\" \"$contract_json\" \"$(basename \"$file\")\" \"$file\" headers`",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-60-spec-doc-basenames-is-hardcoded-to-spec-md-plan-md-tasks-md-checklist-md-decisio",
+      "text": "`SPEC_DOC_BASENAMES` is hardcoded to `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-56-active-capability-ids",
+      "text": "active capability IDs,",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-55-active-doc-templates",
+      "text": "active doc templates,",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-57-active-section-profiles",
+      "text": "active section profiles,",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-54-add-loadmanifestcontract-manifestpath-contract-that-returns",
+      "text": "Add `loadManifestContract(manifestPath, contract)` that returns:",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-59-add-a-small-inline-gate-renderer-before-extracth2headers",
+      "text": "Add a small inline-gate renderer before `extractH2Headers`:",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-28-adds-checklist-md-verification-protocol-code-quality-for-numeric-level-2",
+      "text": "Adds `checklist.md:Verification Protocol,Code Quality` for numeric level >= 2.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-16-adds-checklist-md-for-numeric-level-2",
+      "text": "Adds `checklist.md` for numeric level >= 2.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-29-adds-decision-record-md-context-decision-consequences-for-numeric-level-3",
+      "text": "Adds `decision-record.md:Context,Decision,Consequences` for numeric level >= 3.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-17-adds-decision-record-md-for-numeric-level-3",
+      "text": "Adds `decision-record.md` for numeric level >= 3.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-44-calls-opencode-skill-system-spec-kit-scripts-utils-template-structure-js-compare",
+      "text": "Calls `.opencode/skill/system-spec-kit/scripts/utils/template-structure.js compare \"$level\" \"$(basename \"$file\")\" \"$file\" headers`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-62-consume-the-same-manifest-through-a-new-module-at-opencode-skill-system-spec-kit",
+      "text": "Consume the same manifest through a new module at `.opencode/skill/system-spec-kit/mcp_server/lib/templates/manifest-loader.ts`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-3-copies-every-markdown-file-from-opencode-skill-system-spec-kit-templates-level-1",
+      "text": "Copies every Markdown file from `.opencode/skill/system-spec-kit/templates/level_1`, `.opencode/skill/system-spec-kit/templates/level_2`, `.opencode/skill/system-spec-kit/templates/level_3`, or `.opencode/skill/system-spec-kit/templates/level_3+`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-58-custom-allowed-anchors-from-active-profiles",
+      "text": "custom allowed anchors from active profiles.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-52-delete-template-paths",
+      "text": "Delete `TEMPLATE_PATHS`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-33-each-sectionprofile-already-has-appliesto-and-requiredanchors",
+      "text": "Each `sectionProfile` already has `appliesTo` and `requiredAnchors`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-13-early-branches-phase-parents",
+      "text": "Early-branches phase parents.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-5-emits-description-json-after-copying-templates-and-emits-graph-metadata-json-bef",
+      "text": "Emits `description.json` after copying templates and emits `graph-metadata.json` before the final template set is known.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-67-export-loadmanifest-and-getrequireddocs-kind-capabilities-from-the-loader-and-im",
+      "text": "Export `loadManifest()` and `getRequiredDocs(kind, capabilities)` from the loader and import them here.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-36-extracts-a-declared-level-from-spec-md",
+      "text": "Extracts a declared level from `spec.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-22-for-each-candidate-doc-look-up-doctemplates-path",
+      "text": "For each candidate doc, look up `docTemplates[path]`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-34-for-q10-inline-gates-profiles-are-enabled-by-rendering-gated-blocks-inside-the-s",
+      "text": "For Q10 inline gates, profiles are enabled by rendering gated blocks inside the same template file; validators should check anchors after rendering, not inspect separate fragments.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-9-generate-runtime-docs-from-kind-requiredruntimedocs-specifically-description-jso",
+      "text": "Generate runtime docs from `kind.requiredRuntimeDocs`, specifically `description.json` and `graph-metadata.json`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-27-hardcodes-plan-md-technical-context-architecture-implementation",
+      "text": "Hardcodes `plan.md:Technical Context,Architecture,Implementation`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-26-hardcodes-spec-md-problem-statement-requirements-scope",
+      "text": "Hardcodes `spec.md:Problem Statement,Requirements,Scope`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-23-if-absencebehavior-silent-skip-do-not-fail-when-absent-this-covers-command-owned",
+      "text": "If `absenceBehavior=silent-skip`, do not fail when absent. This covers command-owned-lazy, agent-owned-lazy, and workflow-owned-packet docs such as `handover.md`, `debug-delegation.md`, and `research/research.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-24-if-owner-author-and-absencebehavior-hard-error-fail-when-absent",
+      "text": "If `owner=author` and `absenceBehavior=hard-error`, fail when absent.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-25-if-owner-command-owner-agent-or-owner-workflow-fail-only-when-the-manifest-says-",
+      "text": "If `owner=command`, `owner=agent`, or `owner=workflow`, fail only when the manifest says `absenceBehavior=hard-error`; otherwise skip.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-11-in-phase-mode-scaffold-the-parent-through-preset-phase-parent-child-phases-defau",
+      "text": "In phase mode, scaffold the parent through preset `phase-parent`; child phases default to preset `simple-change` unless a later command surface explicitly adds a child-preset flag.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-19-infer-the-packet-template-contract-from-graph-metadata-json-derived-templatepres",
+      "text": "Infer the packet template contract from `graph-metadata.json.derived.templatePreset`, `graph-metadata.json.derived.templateKind`, and `graph-metadata.json.derived.templateCapabilities`, with a fallback of preset `simple-change` when metadata is missing in a greenfield packet created before the metadata write completed.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-50-inline-gates-must-be-evaluated-against-the-active-capability-set-before-extracti",
+      "text": "Inline gates must be evaluated against the active capability set before extracting expected H2 headers.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-66-lazy-docs-only-if-they-physically-exist-or-the-rule-being-executed-explicitly-ta",
+      "text": "lazy docs only if they physically exist or the rule being executed explicitly targets them.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-20-load-opencode-skill-system-spec-kit-templates-manifest-spec-kit-docs-json",
+      "text": "Load `.opencode/skill/system-spec-kit/templates/manifest/spec-kit-docs.json`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-41-load-active-section-profiles-from-the-manifest",
+      "text": "Load active section profiles from the manifest.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-42-merge-minimumcounts-across-all-active-profiles-by-taking-the-maximum-value-for-e",
+      "text": "Merge `minimumCounts` across all active profiles by taking the maximum value for each counter.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-61-optional-docs-are-separately-hardcoded-as-handover-md-research-md-research-resea",
+      "text": "Optional docs are separately hardcoded as `handover.md`, `research.md`, `research/research.md`, and `resource-map.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-1-parses-level-into-doc-level",
+      "text": "Parses `--level` into `DOC_LEVEL`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-38-rechecks-level-derived-file-requirements-for-checklist-md-and-decision-record-md",
+      "text": "Rechecks level-derived file requirements for `checklist.md` and `decision-record.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-10-record-the-resolved-template-contract-in-generated-metadata-templatepreset-templ",
+      "text": "Record the resolved template contract in generated metadata: `templatePreset`, `templateKind`, and `templateCapabilities`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-39-remove-section-get-declared-level",
+      "text": "Remove `_section_get_declared_level`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-12-remove-doc-level-num-level-templates-dir-and-all-output-text-that-says-doc-level",
+      "text": "Remove `DOC_LEVEL_NUM`, `LEVEL_TEMPLATES_DIR`, and all output text that says `DOC_LEVEL`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-18-remove-numeric-level-parsing",
+      "text": "Remove numeric-level parsing.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-40-remove-the-case-declared-level-matrix",
+      "text": "Remove the `case \"$declared_level\"` matrix.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-6-replace-level-with-preset-defaulting-to-simple-change",
+      "text": "Replace `--level` with `--preset`, defaulting to `simple-change`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-30-replace-file-sections-with-active-section-profiles",
+      "text": "Replace `file_sections=(...)` with active section profiles:",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-53-replace-normalizelevel-level-with-normalizecontract-contract",
+      "text": "Replace `normalizeLevel(level)` with `normalizeContract(contract)`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-63-replace-hardcoded-spec-doc-basenames-and-optional-docs-with-manifest-derived-doc",
+      "text": "Replace hardcoded `SPEC_DOC_BASENAMES` and optional docs with manifest-derived docs:",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-64-required-authored-docs-for-the-active-kind-capabilities",
+      "text": "required authored docs for the active kind/capabilities,",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-21-required-docs-are-kind-requiredcoredocs-kind-requiredruntimedocs-capabilities-ad",
+      "text": "Required docs are `kind.requiredCoreDocs + kind.requiredRuntimeDocs + capabilities[].addsAuthoredDocs`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-15-requires-implementation-summary-md-only-after-checklist-tasks-imply-work-started",
+      "text": "Requires `implementation-summary.md` only after checklist/tasks imply work started.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-14-requires-spec-md-plan-md-and-tasks-md",
+      "text": "Requires `spec.md`, `plan.md`, and `tasks.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-7-resolve-preset-kind-capabilities-from-opencode-skill-system-spec-kit-templates-m",
+      "text": "Resolve `preset -> kind + capabilities` from `.opencode/skill/system-spec-kit/templates/manifest/spec-kit-docs.json`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-2-resolves-level-templates-dir-through-get-level-templates-dir",
+      "text": "Resolves `LEVEL_TEMPLATES_DIR` through `get_level_templates_dir`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-65-runtime-docs-where-relevant",
+      "text": "runtime docs where relevant,",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-8-scaffold-only-author-owned-docs-from-kind-requiredcoredocs-capabilities-addsauth",
+      "text": "Scaffold only author-owned docs from `kind.requiredCoreDocs + capabilities[].addsAuthoredDocs`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-35-section-profile-schema-needs-one-small-iteration-005-extension-add-optional-mini",
+      "text": "Section profile schema needs one small iteration-005 extension: add optional `minimumCounts` for `check-section-counts.sh`. Without this field, count checks would either keep hidden level math or duplicate section profile semantics elsewhere.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-4-special-cases-phase-parents-through-opencode-skill-system-spec-kit-templates-pha",
+      "text": "Special-cases phase parents through `.opencode/skill/system-spec-kit/templates/phase_parent/spec.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-43-stop-checking-required-files-in-this-rule-file-existence-belongs-only-in-check-f",
+      "text": "Stop checking required files in this rule; file existence belongs only in `check-files.sh`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-49-the-helper-should-resolve-the-expected-template-through-mcp-server-lib-templates",
+      "text": "The helper should resolve the expected template through `mcp_server/lib/templates/manifest-loader.ts` or its compiled JS output.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-45-the-js-helper-has-template-paths-hardcoded-for-level-1-level-2-level-3-and-level",
+      "text": "The JS helper has `TEMPLATE_PATHS` hardcoded for Level 1, Level 2, Level 3, and Level 3+.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-51-the-shell-loop-should-compare-only-manifest-active-authored-docs-plus-generated-",
+      "text": "The shell loop should compare only manifest-active authored docs, plus generated runtime docs if a runtime doc gains a markdown template in the future.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-47-the-shell-rule-should-call-the-helper-with-a-manifest-contract-not-a-level",
+      "text": "The shell rule should call the helper with a manifest contract, not a level:",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-46-the-shell-script-always-attempts-the-same-six-authored-docs-spec-md-plan-md-task",
+      "text": "The shell script always attempts the same six authored docs: `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, and `implementation-summary.md`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-68-this-file-should-never-decide-whether-decision-record-md-exists-because-the-leve",
+      "text": "This file should never decide whether `decision-record.md` exists because the level is 3; it should ask the manifest whether capability `architecture-decisions` is active.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-5-37-uses-a-case-declared-level-matrix-to-set-min-spec-h2-min-plan-h2-min-requirement",
+      "text": "Uses a `case \"$declared_level\"` matrix to set `min_spec_h2`, `min_plan_h2`, `min_requirements`, and `min_scenarios`.",
+      "addedAtIteration": 5,
+      "sources": []
+    },
+    {
+      "id": "finding-7-50-child-created-files-copy-template-template-name-child-path-child-level-dir-templ",
+      "text": "_child_created_files+=(\"$(copy_template \"$template_name\" \"$_child_path\" \"$CHILD_LEVEL_DIR\" \"$TEMPLATES_BASE\")\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-1-level",
+      "text": "--level)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-176-entry",
+      "text": ";;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-185-entry",
+      "text": ";;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-191-entry",
+      "text": ";;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-197-entry",
+      "text": ";;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-54-json-escape-branch-name-json-escape-spec-file-feature-num-doc-level-phase-count-",
+      "text": "\"$(_json_escape \"$BRANCH_NAME\")\" \"$(_json_escape \"$SPEC_FILE\")\" \"$FEATURE_NUM\" \"$DOC_LEVEL\" \"$PHASE_COUNT\" \"$parent_files_json\" \"$children_json\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-64-json-escape-branch-name-json-escape-spec-file-feature-num-doc-level-sharded-comp",
+      "text": "\"$(_json_escape \"$BRANCH_NAME\")\" \"$(_json_escape \"$SPEC_FILE\")\" \"$FEATURE_NUM\" \"$DOC_LEVEL\" \"$SHARDED\" \"$complexity_json\" \"$expansion_json\" \"$description_json\" \"$files_json\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-40-json-escape-subfolder-path-json-escape-subfolder-name-json-escape-resolved-base-",
+      "text": "\"$(_json_escape \"$SUBFOLDER_PATH\")\" \"$(_json_escape \"$SUBFOLDER_NAME\")\" \"$(_json_escape \"$RESOLVED_BASE\")\" \"$DOC_LEVEL\" \"$files_json\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-143-plan-md-technical-context-architecture-implementation",
+      "text": "\"plan.md:Technical Context,Architecture,Implementation\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-27-source-docs-source-docs-json",
+      "text": "\"source_docs\": ${source_docs_json}",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-142-spec-md-problem-statement-requirements-scope",
+      "text": "\"spec.md:Problem Statement,Requirements,Scope\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-144-entry",
+      "text": ")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-130-f-folder-checklist-md-missing-checklist-md",
+      "text": "[[ ! -f \"$folder/checklist.md\" ]] && missing+=(\"checklist.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-134-f-folder-decision-record-md-missing-decision-record-md",
+      "text": "[[ ! -f \"$folder/decision-record.md\" ]] && missing+=(\"decision-record.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-118-f-folder-implementation-summary-md-missing-implementation-summary-md-required-af",
+      "text": "[[ ! -f \"$folder/implementation-summary.md\" ]] && missing+=(\"implementation-summary.md (required after implementation)\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-108-f-folder-plan-md-missing-plan-md",
+      "text": "[[ ! -f \"$folder/plan.md\" ]] && missing+=(\"plan.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-94-f-folder-spec-md-missing-spec-md",
+      "text": "[[ ! -f \"$folder/spec.md\" ]] && missing+=(\"spec.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-107-f-folder-spec-md-missing-spec-md",
+      "text": "[[ ! -f \"$folder/spec.md\" ]] && missing+=(\"spec.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-109-f-folder-tasks-md-missing-tasks-md",
+      "text": "[[ ! -f \"$folder/tasks.md\" ]] && missing+=(\"tasks.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-86-doc-level-ge-2-echo-4-add-verification-items-to-checklist-md",
+      "text": "[[ \"${DOC_LEVEL/+/}\" -ge 2 ]] && echo \" 4. Add verification items to checklist.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-87-doc-level-ge-3-echo-5-document-decisions-in-decision-record-md",
+      "text": "[[ \"${DOC_LEVEL/+/}\" -ge 3 ]] && echo \" 5. Document decisions in decision-record.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-145-numeric-level-ge-2-file-sections-checklist-md-verification-protocol-code-quality",
+      "text": "[[ \"$numeric_level\" -ge 2 ]] && file_sections+=(\"checklist.md:Verification Protocol,Code Quality\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-146-numeric-level-ge-3-file-sections-decision-record-md-context-decision-consequence",
+      "text": "[[ \"$numeric_level\" -ge 3 ]] && file_sections+=(\"decision-record.md:Context,Decision,Consequences\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-192-entry",
+      "text": "*)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-91-at-the-parent-level-plan-tasks-checklist-decision-record-and",
+      "text": "# at the parent level. Plan, tasks, checklist, decision-record, and",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-204-check-for-required-files-at-each-level",
+      "text": "# Check for required files at each level",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-32-copy-all-templates-from-the-level-folder",
+      "text": "# Copy all templates from the level folder",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-46-copy-level-1-templates-to-child-folder",
+      "text": "# Copy Level 1 templates to child folder",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-28-copy-templates-based-on-documentation-level-from-level-specific-folder",
+      "text": "# Copy templates based on documentation level from level-specific folder",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-164-get-declared-level-from-spec-md-fallback-to-passed-level",
+      "text": "# Get declared level from spec.md (fallback to passed level)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-92-implementation-summary-all-live-in-child-phase-folders",
+      "text": "# implementation-summary all live in child phase folders.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-110-implementation-summary-md-required-after-implementation-starts",
+      "text": "# Implementation-summary.md required after implementation starts",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-180-legitimately-absent-template-structural-compliance-is-enforced-by-template-heade",
+      "text": "# legitimately absent; template-structural compliance is enforced by TEMPLATE_HEADERS.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-106-level-1-requirements",
+      "text": "# Level 1 requirements",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-120-level-1-check-tasks-md-for-completion-if-no-checklist",
+      "text": "# Level 1: check tasks.md for completion if no checklist",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-128-level-2-additions",
+      "text": "# Level 2 additions",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-178-level-2-template-has-6-required-sections-1-questions-section-7-h2-minimum",
+      "text": "# Level 2 template has 6 required sections + 1 questions section = 7 H2 minimum.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-132-level-3-additions",
+      "text": "# Level 3 additions",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-29-normalize-doc-level-for-numeric-comparisons-3-becomes-3",
+      "text": "# Normalize DOC_LEVEL for numeric comparisons (3+ becomes 3)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-90-phase-parent-early-branch-if-folder-is-a-phase-parent-only-spec-md-is-required",
+      "text": "# Phase-parent early branch: if folder is a phase parent, only spec.md is required",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-88-t501-fix-strip-non-numeric-suffix-e-g-3-3-for-arithmetic-comparisons",
+      "text": "# T501 FIX: Strip non-numeric suffix (e.g. \"3+\" -> \"3\") for arithmetic comparisons",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-139-t501-fix-strip-non-numeric-suffix-e-g-3-3-for-arithmetic-comparisons",
+      "text": "# T501 FIX: Strip non-numeric suffix (e.g. \"3+\" -> \"3\") for arithmetic comparisons",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-179-the-3-optional-l2-sections-nfr-edge-cases-complexity-assessment-may-be",
+      "text": "# The 3 optional L2 sections (NFR, EDGE CASES, COMPLEXITY ASSESSMENT) may be",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-217-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/description.json` uses camelCase keys: `specFolder`, `lastUpdated`, `specId`, `folderSlug`, `parentChain`, `memorySequence`, `memoryNameHistory`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-218-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/graph-metadata.json` uses snake_case keys: `schema_version`, `packet_id`, `spec_folder`, `parent_id`, `children_ids`, `trigger_phrases`, `key_topics`, `importance_tier`, `key_files`, `causal_summary`, `created_at`, `last_save_at`, `source_docs`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-224-conflictswith-not-conflicts-with",
+      "text": "`conflictsWith`, not `conflicts_with`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-222-directories-not-dirs",
+      "text": "`directories`, not `dirs`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-227-manifestversion-separates-data-contract-semver-from-json-schema-schema-and-futur",
+      "text": "`manifestVersion` separates data-contract SemVer from JSON Schema `$schema` and future schema `$id` values.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-219-manifestversion-not-schemaversion",
+      "text": "`manifestVersion`, not `schemaVersion`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-223-supportskinds-not-supported-kinds",
+      "text": "`supportsKinds`, not `supported_kinds`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-221-template-contract-only-inside-graph-metadata-json-derived-to-preserve-snake-case",
+      "text": "`template_contract` only inside `graph-metadata.json.derived` to preserve snake_case in that file.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-220-templatecontract-in-manifest-facing-docs-and-typescript-types",
+      "text": "`templateContract` in manifest-facing docs and TypeScript types.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-56-2-echo-speckit-warning-level-folder-not-found-at-level-templates-dir-using-base-",
+      "text": ">&2 echo \"[speckit] Warning: Level folder not found at $LEVEL_TEMPLATES_DIR, using base templates\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-171-1",
+      "text": "1)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-68-1-echo-core-spec-md-plan-md-tasks-md-implementation-summary-md",
+      "text": "1) echo \" ✓ Core: spec.md + plan.md + tasks.md + implementation-summary.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-177-2",
+      "text": "2)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-70-2-echo-core-spec-md-plan-md-tasks-md-implementation-summary-md",
+      "text": "2) echo \" ✓ Core: spec.md + plan.md + tasks.md + implementation-summary.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-73-3-3-echo-core-spec-md-plan-md-tasks-md-implementation-summary-md",
+      "text": "3|\"3+\") echo \" ✓ Core: spec.md + plan.md + tasks.md + implementation-summary.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-186-3-3",
+      "text": "3|3+)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-170-case-declared-level-in",
+      "text": "case \"$declared_level\" in",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-67-case-doc-level-in",
+      "text": "case $DOC_LEVEL in",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-44-child-level-dir-get-level-templates-dir-1-templates-base",
+      "text": "CHILD_LEVEL_DIR=$(get_level_templates_dir \"1\" \"$TEMPLATES_BASE\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-152-compare-headers-folder-checklist-md-checklist-md",
+      "text": "compare_headers \"$folder/checklist.md\" \"checklist.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-153-compare-headers-folder-decision-record-md-decision-record-md",
+      "text": "compare_headers \"$folder/decision-record.md\" \"decision-record.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-154-compare-headers-folder-implementation-summary-md-implementation-summary-md",
+      "text": "compare_headers \"$folder/implementation-summary.md\" \"implementation-summary.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-150-compare-headers-folder-plan-md-plan-md",
+      "text": "compare_headers \"$folder/plan.md\" \"plan.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-149-compare-headers-folder-spec-md-spec-md",
+      "text": "compare_headers \"$folder/spec.md\" \"spec.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-151-compare-headers-folder-tasks-md-tasks-md",
+      "text": "compare_headers \"$folder/tasks.md\" \"tasks.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-148-compare-output-node-helper-script-compare-level-basename-file-file-headers-2-dev",
+      "text": "compare_output=$(node \"$helper_script\" compare \"$level\" \"$(basename \"$file\")\" \"$file\" headers 2>/dev/null || true)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-45-create-graph-metadata-file-child-path-phase-i-child-folder-planned",
+      "text": "create_graph_metadata_file \"$_child_path\" \"Phase ${_i}: ${_child_folder#*-}\" \"planned\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-43-create-graph-metadata-file-feature-dir-feature-description-planned",
+      "text": "create_graph_metadata_file \"$FEATURE_DIR\" \"$FEATURE_DESCRIPTION\" \"planned\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-60-created-files-copy-template-template-name-feature-dir-level-templates-dir-templa",
+      "text": "CREATED_FILES+=(\"$(copy_template \"$template_name\" \"$FEATURE_DIR\" \"$LEVEL_TEMPLATES_DIR\" \"$TEMPLATES_BASE\")\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-36-created-files-copy-template-template-name-subfolder-path-level-templates-dir-tem",
+      "text": "CREATED_FILES+=(\"$(copy_template \"$template_name\" \"$SUBFOLDER_PATH\" \"$LEVEL_TEMPLATES_DIR\" \"$TEMPLATES_BASE\")\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-168-declared-level-level",
+      "text": "declared_level=\"$level\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-166-declared-level-section-get-declared-level-folder",
+      "text": "declared_level=$(_section_get_declared_level \"$folder\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-30-doc-level-num-doc-level",
+      "text": "DOC_LEVEL_NUM=\"${DOC_LEVEL/+/}\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-8-doc-level-next-arg",
+      "text": "DOC_LEVEL=\"$next_arg\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-38-done",
+      "text": "done",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-52-done",
+      "text": "done",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-7-echo-error-level-must-be-1-2-3-or-3-2",
+      "text": "echo 'Error: --level must be 1, 2, 3, or 3+' >&2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-2-echo-error-level-requires-a-value-1-2-or-3-2",
+      "text": "echo 'Error: --level requires a value (1, 2, or 3)' >&2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-3-echo-error-level-requires-a-value-1-2-or-3-2",
+      "text": "echo 'Error: --level requires a value (1, 2, or 3)' >&2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-10-echo-level-n-documentation-level-1-2-3-or-3-extended",
+      "text": "echo \" --level N Documentation level: 1, 2, 3, or 3+ (extended)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-80-echo-architecture-decisions-adds-150-loc",
+      "text": "echo \" (Architecture decisions - adds ~150 LOC)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-69-echo-essential-what-why-how-270-loc",
+      "text": "echo \" (Essential what/why/how - ~270 LOC)\" ;;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-78-echo-full-governance-adds-100-loc",
+      "text": "echo \" (Full governance - adds ~100 LOC)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-72-echo-quality-gates-adds-120-loc",
+      "text": "echo \" (Quality gates - adds ~120 LOC)\" ;;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-75-echo-arch-decision-record-md-executive-summary-risk-matrix",
+      "text": "echo \" ✓ +Arch: decision-record.md, executive summary, risk matrix\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-77-echo-govern-approval-workflow-compliance-ai-protocols",
+      "text": "echo \" ✓ +Govern: approval workflow, compliance, AI protocols\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-71-echo-verify-checklist-md-nfrs-edge-cases-effort-estimation",
+      "text": "echo \" ✓ +Verify: checklist.md, NFRs, edge cases, effort estimation\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-74-echo-verify-checklist-md-nfrs-edge-cases",
+      "text": "echo \" ✓ +Verify: checklist.md, NFRs, edge cases\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-83-echo-sharded-spec-sections-modular-documentation",
+      "text": "echo \" ✓ Sharded: spec-sections/ (modular documentation)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-13-echo-0-implement-complex-oauth2-flow-level-2",
+      "text": "echo \" $0 'Implement complex OAuth2 flow' --level 2\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-14-echo-0-major-architecture-redesign-level-3-number-50",
+      "text": "echo \" $0 'Major architecture redesign' --level 3 --number 50\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-11-echo-1-baseline-2-verification-3-full-3-extended",
+      "text": "echo \" 1=baseline, 2=verification, 3=full, 3+=extended\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-12-echo-default-1",
+      "text": "echo \" Default: 1\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-55-echo-doc-level-level-doc-level-parent",
+      "text": "echo \" DOC_LEVEL: Level $DOC_LEVEL (parent)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-41-echo-doc-level-level-doc-level",
+      "text": "echo \" DOC_LEVEL: Level $DOC_LEVEL\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-65-echo-doc-level-level-doc-level",
+      "text": "echo \" DOC_LEVEL: Level $DOC_LEVEL\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-66-echo-level-doc-level-documentation-core-addendum-v2-0",
+      "text": "echo \" Level $DOC_LEVEL Documentation (CORE + ADDENDUM v2.0):\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-161-echo-level-line-head-1-sed-s-level-tr-d-space-sed-s-head-c-2",
+      "text": "echo \"$level_line\" | head -1 | sed 's/.*Level.*: *//' | tr -d '[:space:]' | sed 's/\\[.*\\]//' | head -c 2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-9-echo-creates-a-new-spec-folder-with-templates-based-on-documentation-level",
+      "text": "echo \"Creates a new spec folder with templates based on documentation level.\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-62-echo-warning-sharded-flag-is-only-supported-with-level-3-or-3-ignoring-sharded-2",
+      "text": "echo \"Warning: --sharded flag is only supported with --level 3 or 3+. Ignoring --sharded.\" >&2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-23-elif-f-folder-path-checklist-md-then",
+      "text": "elif [[ -f \"$folder_path/checklist.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-20-elif-f-folder-path-checklist-md-f-folder-path-decision-record-md-then",
+      "text": "elif [[ -f \"$folder_path/checklist.md\" && -f \"$folder_path/decision-record.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-79-else",
+      "text": "else",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-98-else",
+      "text": "else",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-207-errors-level-declared-level-requires-checklist-md",
+      "text": "errors+=(\"Level $declared_level requires checklist.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-85-esac",
+      "text": "esac",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-198-esac",
+      "text": "esac",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-4-exit-1",
+      "text": "exit 1",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-5-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-26-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-37-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-51-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-61-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-81-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-103-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-105-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-115-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-116-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-119-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-125-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-126-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-127-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-131-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-135-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-162-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-163-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-169-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-203-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-208-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-209-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-213-fi",
+      "text": "fi",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-84-fi",
+      "text": "fi ;;",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-47-for-template-file-in-child-level-dir-md-do",
+      "text": "for template_file in \"$CHILD_LEVEL_DIR\"/*.md; do",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-33-for-template-file-in-level-templates-dir-md-do",
+      "text": "for template_file in \"$LEVEL_TEMPLATES_DIR\"/*.md; do",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-114-has-implementation-true",
+      "text": "has_implementation=true",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-147-headers-grep-e-1-3-filepath-2-dev-null-sed-s-true",
+      "text": "headers=$(grep -E '^#{1,3} ' \"$filepath\" 2>/dev/null | sed 's/^#* //' || true)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-17-if-f-folder-path-spec-md-f-folder-path-plan-md-f-folder-path-tasks-md-then",
+      "text": "if [[ -f \"$folder_path/spec.md\" && ! -f \"$folder_path/plan.md\" && ! -f \"$folder_path/tasks.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-112-if-f-folder-checklist-md-then",
+      "text": "if [[ -f \"$folder/checklist.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-122-if-f-folder-tasks-md-then",
+      "text": "if [[ -f \"$folder/tasks.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-157-if-f-spec-file-then",
+      "text": "if [[ -f \"$spec_file\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-34-if-f-template-file-then",
+      "text": "if [[ -f \"$template_file\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-48-if-f-template-file-then",
+      "text": "if [[ -f \"$template_file\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-58-if-f-template-file-then",
+      "text": "if [[ -f \"$template_file\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-160-if-n-level-line-then",
+      "text": "if [[ -n \"$level_line\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-167-if-z-declared-level-then",
+      "text": "if [[ -z \"$declared_level\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-206-if-f-folder-checklist-md-then",
+      "text": "if [[ ! -f \"$folder/checklist.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-211-if-f-folder-decision-record-md-then",
+      "text": "if [[ ! -f \"$folder/decision-record.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-6-if-next-arg-1-2-3-3-then",
+      "text": "if [[ ! \"$next_arg\" =~ ^(1|2|3|3\\+)$ ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-205-if-declared-level-2-declared-level-3-declared-level-3-then",
+      "text": "if [[ \"$declared_level\" = \"2\" ]] || [[ \"$declared_level\" = \"3\" ]] || [[ \"$declared_level\" = \"3+\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-210-if-declared-level-3-declared-level-3-then",
+      "text": "if [[ \"$declared_level\" = \"3\" ]] || [[ \"$declared_level\" = \"3+\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-76-if-doc-level-3-then",
+      "text": "if [[ \"$DOC_LEVEL\" = \"3+\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-117-if-has-implementation-true-then",
+      "text": "if [[ \"$has_implementation\" == \"true\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-121-if-numeric-level-eq-1-f-folder-implementation-summary-md-then",
+      "text": "if [[ \"$numeric_level\" -eq 1 ]] && [[ ! -f \"$folder/implementation-summary.md\" ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-129-if-numeric-level-ge-2-then",
+      "text": "if [[ \"$numeric_level\" -ge 2 ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-133-if-numeric-level-ge-3-then",
+      "text": "if [[ \"$numeric_level\" -ge 3 ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-82-if-sharded-true-then",
+      "text": "if [[ \"$SHARDED\" = true ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-95-if-missing-eq-0-then",
+      "text": "if [[ ${#missing[@]} -eq 0 ]]; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-113-if-grep-qe-xx-folder-checklist-md-2-dev-null-then",
+      "text": "if grep -qE '\\[[xX]\\]' \"$folder/checklist.md\" 2>/dev/null; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-123-if-grep-qe-xx-folder-tasks-md-2-dev-null-then",
+      "text": "if grep -qE '\\[[xX]\\]' \"$folder/tasks.md\" 2>/dev/null; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-93-if-is-phase-parent-folder-then",
+      "text": "if is_phase_parent \"$folder\"; then",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-228-keeping-presets-inside-spec-kit-docs-json-preserves-one-schema-validated-source-",
+      "text": "Keeping presets inside `spec-kit-docs.json` preserves one schema-validated source of truth. A separate `presets.json` would create a second lifecycle and versioning surface for what is conceptually only a named `kind + capabilities` bundle.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-22-key-files-json-spec-md-plan-md-tasks-md-checklist-md-decision-record-md",
+      "text": "key_files_json='[\"spec.md\",\"plan.md\",\"tasks.md\",\"checklist.md\",\"decision-record.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-25-key-files-json-spec-md-plan-md-tasks-md-checklist-md",
+      "text": "key_files_json='[\"spec.md\",\"plan.md\",\"tasks.md\",\"checklist.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-19-key-files-json-spec-md",
+      "text": "key_files_json='[\"spec.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-159-level-line-grep-e-level-spec-file-2-dev-null-true",
+      "text": "level_line=$(grep -E \"^\\- \\*\\*Level\\*\\*:\" \"$spec_file\" 2>/dev/null || true)",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-57-level-templates-dir-templates-base",
+      "text": "LEVEL_TEMPLATES_DIR=\"$TEMPLATES_BASE\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-31-level-templates-dir-get-level-templates-dir-doc-level-templates-base",
+      "text": "LEVEL_TEMPLATES_DIR=$(get_level_templates_dir \"$DOC_LEVEL\" \"$TEMPLATES_BASE\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-141-local-a-file-sections",
+      "text": "local -a file_sections=(",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-165-local-declared-level",
+      "text": "local declared_level",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-155-local-folder-1",
+      "text": "local folder=\"$1\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-111-local-has-implementation-false",
+      "text": "local has_implementation=false",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-16-local-key-files-json-spec-md-plan-md-tasks-md",
+      "text": "local key_files_json='[\"spec.md\",\"plan.md\",\"tasks.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-158-local-level-line",
+      "text": "local level_line",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-89-local-numeric-level-level-0-9",
+      "text": "local numeric_level=\"${level//[^0-9]/}\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-140-local-numeric-level-level-0-9",
+      "text": "local numeric_level=\"${level//[^0-9]/}\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-15-local-source-docs-json-spec-md-plan-md-tasks-md",
+      "text": "local source_docs_json='[\"spec.md\",\"plan.md\",\"tasks.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-156-local-spec-file-folder-spec-md",
+      "text": "local spec_file=\"$folder/spec.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-173-min-plan-h2-4",
+      "text": "min_plan_h2=4",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-194-min-plan-h2-4",
+      "text": "min_plan_h2=4",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-182-min-plan-h2-6",
+      "text": "min_plan_h2=6",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-188-min-plan-h2-8",
+      "text": "min_plan_h2=8",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-174-min-requirements-3",
+      "text": "min_requirements=3",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-195-min-requirements-3",
+      "text": "min_requirements=3",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-183-min-requirements-5",
+      "text": "min_requirements=5",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-189-min-requirements-8",
+      "text": "min_requirements=8",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-175-min-scenarios-2",
+      "text": "min_scenarios=2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-196-min-scenarios-2",
+      "text": "min_scenarios=2",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-184-min-scenarios-4",
+      "text": "min_scenarios=4",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-190-min-scenarios-6",
+      "text": "min_scenarios=6",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-187-min-spec-h2-10",
+      "text": "min_spec_h2=10",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-172-min-spec-h2-5",
+      "text": "min_spec_h2=5",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-193-min-spec-h2-5",
+      "text": "min_spec_h2=5",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-181-min-spec-h2-7",
+      "text": "min_spec_h2=7",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-124-missing-implementation-summary-md-required-tasks-show-completion",
+      "text": "missing+=(\"implementation-summary.md (required: tasks show completion)\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-226-presets-get-namespace-defaulting-to-core-canonical-identity-is-core-simple-chang",
+      "text": "Presets get `namespace`, defaulting to `core`; canonical identity is `core:simple-change`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-225-presets-stay-inside-opencode-skill-system-spec-kit-templates-manifest-spec-kit-d",
+      "text": "Presets stay inside `.opencode/skill/system-spec-kit/templates/manifest/spec-kit-docs.json` under `presets[]`.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-53-printf-branch-name-s-spec-file-s-feature-num-s-doc-level-s-phase-mode-true-phase",
+      "text": "printf '{\"BRANCH_NAME\":\"%s\",\"SPEC_FILE\":\"%s\",\"FEATURE_NUM\":\"%s\",\"DOC_LEVEL\":\"%s\",\"PHASE_MODE\":true,\"PHASE_COUNT\":%d,\"PARENT_FILES\":[%s],\"CHILDREN\":[%s]}\\n' \\",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-63-printf-branch-name-s-spec-file-s-feature-num-s-doc-level-s-sharded-s-s-s-s-creat",
+      "text": "printf '{\"BRANCH_NAME\":\"%s\",\"SPEC_FILE\":\"%s\",\"FEATURE_NUM\":\"%s\",\"DOC_LEVEL\":\"%s\",\"SHARDED\":%s%s%s%s,\"CREATED_FILES\":[%s]}\\n' \\",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-39-printf-subfolder-path-s-subfolder-name-s-base-folder-s-doc-level-s-created-files",
+      "text": "printf '{\"SUBFOLDER_PATH\":\"%s\",\"SUBFOLDER_NAME\":\"%s\",\"BASE_FOLDER\":\"%s\",\"DOC_LEVEL\":\"%s\",\"CREATED_FILES\":[%s]}\\n' \\",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-42-readonly-lean-phase-parent-template-templates-base-phase-parent-spec-md",
+      "text": "readonly LEAN_PHASE_PARENT_TEMPLATE=\"$TEMPLATES_BASE/phase_parent/spec.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-104-return-0",
+      "text": "return 0",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-101-rule-details-missing",
+      "text": "RULE_DETAILS=(\"${missing[@]}\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-137-rule-message-all-required-files-present-for-level-level",
+      "text": "RULE_MESSAGE=\"All required files present for Level $level\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-100-rule-message-phase-parent-missing-1-required-file",
+      "text": "RULE_MESSAGE=\"Phase parent: missing 1 required file\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-97-rule-message-phase-parent-spec-md-present-lean-trio-policy",
+      "text": "RULE_MESSAGE=\"Phase parent: spec.md present (lean trio policy)\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-216-rule-message-section-counts-appropriate-for-level-declared-level",
+      "text": "RULE_MESSAGE=\"Section counts appropriate for Level $declared_level\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-214-rule-message-section-counts-below-expectations-for-level-declared-level",
+      "text": "RULE_MESSAGE=\"Section counts below expectations for Level $declared_level\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-138-rule-remediation-create-missing-files-missing-list-use-templates-from-opencode-s",
+      "text": "RULE_REMEDIATION=\"Create missing files: $missing_list. Use templates from .opencode/skill/system-spec-kit/templates/\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-215-rule-remediation-expand-spec-content-or-reduce-declared-level",
+      "text": "RULE_REMEDIATION=\"Expand spec content or reduce declared level\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-102-rule-remediation-phase-parents-require-only-spec-md-create-it-from-templates-pha",
+      "text": "RULE_REMEDIATION=\"Phase parents require only spec.md. Create it from templates/phase_parent/spec.md\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-99-rule-status-fail",
+      "text": "RULE_STATUS=\"fail\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-96-rule-status-pass",
+      "text": "RULE_STATUS=\"pass\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-136-rule-status-pass",
+      "text": "RULE_STATUS=\"pass\"",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-21-source-docs-json-spec-md-plan-md-tasks-md-checklist-md-decision-record-md",
+      "text": "source_docs_json='[\"spec.md\",\"plan.md\",\"tasks.md\",\"checklist.md\",\"decision-record.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-24-source-docs-json-spec-md-plan-md-tasks-md-checklist-md",
+      "text": "source_docs_json='[\"spec.md\",\"plan.md\",\"tasks.md\",\"checklist.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-18-source-docs-json-spec-md",
+      "text": "source_docs_json='[\"spec.md\"]'",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-35-template-name-basename-template-file",
+      "text": "template_name=$(basename \"$template_file\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-49-template-name-basename-template-file",
+      "text": "template_name=$(basename \"$template_file\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-59-template-name-basename-template-file",
+      "text": "template_name=$(basename \"$template_file\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-229-the-graph-metadata-snapshot-should-be-named-template-contract-because-that-file-",
+      "text": "The graph metadata snapshot should be named `template_contract` because that file is already snake_case. This is the one intentional bridge spelling.",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-201-warnings-found-requirements-requirements-expected-at-least-min-requirements-for-",
+      "text": "warnings+=(\"Found $requirements requirements, expected at least $min_requirements for Level $declared_level\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-202-warnings-found-scenarios-acceptance-scenarios-expected-at-least-min-scenarios-fo",
+      "text": "warnings+=(\"Found $scenarios acceptance scenarios, expected at least $min_scenarios for Level $declared_level\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-212-warnings-level-declared-level-should-include-decision-record-md",
+      "text": "warnings+=(\"Level $declared_level should include decision-record.md\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-200-warnings-plan-md-has-plan-h2-sections-expected-at-least-min-plan-h2-for-level-de",
+      "text": "warnings+=(\"plan.md has $plan_h2 sections, expected at least $min_plan_h2 for Level $declared_level\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-7-199-warnings-spec-md-has-spec-h2-sections-expected-at-least-min-spec-h2-for-level-de",
+      "text": "warnings+=(\"spec.md has $spec_h2 sections, expected at least $min_spec_h2 for Level $declared_level\")",
+      "addedAtIteration": 7,
+      "sources": []
+    },
+    {
+      "id": "finding-8-33-opencode-skill-system-spec-kit-templates-manifest-templates-plan-md-tmpl",
+      "text": "`.opencode/skill/system-spec-kit/templates/manifest/templates/plan.md.tmpl`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-32-opencode-skill-system-spec-kit-templates-manifest-templates-spec-md-tmpl",
+      "text": "`.opencode/skill/system-spec-kit/templates/manifest/templates/spec.md.tmpl`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-34-opencode-skill-system-spec-kit-templates-manifest-templates-tasks-md-tmpl",
+      "text": "`.opencode/skill/system-spec-kit/templates/manifest/templates/tasks.md.tmpl`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-27-description-json",
+      "text": "`description.json`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-4-feature-description-sample",
+      "text": "`FEATURE_DESCRIPTION=Sample`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-5-feature-dir-opencode-specs-sample",
+      "text": "`FEATURE_DIR=.opencode/specs/sample/`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-28-graph-metadata-json",
+      "text": "`graph-metadata.json`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-36-kind-implementation",
+      "text": "`kind:implementation`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-12-namespace-defaults-to-core",
+      "text": "`namespace` defaults to `core`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-24-plan-md",
+      "text": "`plan.md`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-37-preset-core-simple-change",
+      "text": "`preset:core:simple-change`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-3-preset-simple-change",
+      "text": "`PRESET=simple-change`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-11-presets-name-simple-change",
+      "text": "`presets[].name == \"simple-change\"`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-23-spec-md",
+      "text": "`spec.md`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-25-tasks-md",
+      "text": "`tasks.md`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-35-active-gate-atoms",
+      "text": "Active gate atoms:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-18-computation",
+      "text": "Computation:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-2-expected-intermediate-state",
+      "text": "Expected intermediate state:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-9-input-artifact-opencode-skill-system-spec-kit-templates-manifest-spec-kit-docs-j",
+      "text": "Input artifact: `.opencode/skill/system-spec-kit/templates/manifest/spec-kit-docs.json`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-31-input-artifact-active-authored-docs-and-their-templates",
+      "text": "Input artifact: active authored docs and their templates:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-1-input-artifact-cli-args-preset-simple-change-name-sample-target-opencode-specs-s",
+      "text": "Input artifact: CLI args `--preset simple-change`, `--name \"Sample\"`, target `.opencode/specs/sample/`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-17-input-artifact-resolved-contract-from-step-2",
+      "text": "Input artifact: resolved contract from Step 2.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-19-kind-implementation-contributes-authored-docs-spec-md-plan-md-tasks-md",
+      "text": "Kind `implementation` contributes authored docs `spec.md`, `plan.md`, `tasks.md`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-20-kind-implementation-contributes-runtime-docs-description-json-graph-metadata-jso",
+      "text": "Kind `implementation` contributes runtime docs `description.json`, `graph-metadata.json`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-10-manifest-lookup",
+      "text": "Manifest lookup:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-21-no-capabilities-add-authored-docs",
+      "text": "No capabilities add authored docs.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-14-output-artifact",
+      "text": "Output artifact:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-6-output-artifact-create-sh-starts-normal-non-phase-scaffold-flow",
+      "text": "Output artifact: `create.sh` starts normal non-phase scaffold flow.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-22-output-authored-file-list-after-filtering-owner-author-and-excluding-runtime-met",
+      "text": "Output authored file list after filtering `owner=author` and excluding runtime metadata:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-26-output-runtime-metadata-list",
+      "text": "Output runtime metadata list:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-13-preset-contract-resolves-to-core-simple-change",
+      "text": "preset contract resolves to `core:simple-change`",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-38-sample-spec-md-gate-behavior",
+      "text": "Sample `spec.md` gate behavior:",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-30-validator-behavior-check-files-sh-should-require-all-five-paths-after-scaffold-b",
+      "text": "Validator behavior: `check-files.sh` should require all five paths after scaffold, but `description.json` and `graph-metadata.json` are satisfied by Step 5, not Step 4.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-16-validator-behavior-later-validator-steps-must-use-this-resolved-contract-not-rec",
+      "text": "Validator behavior: later validator steps must use this resolved contract, not recompute from old numeric levels.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-8-validator-behavior-no-validator-behavior-yet-this-is-a-scaffolder-entrypoint-iss",
+      "text": "Validator behavior: no validator behavior yet. This is a scaffolder entrypoint issue.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-15-what-could-go-wrong-duplicate-preset-names-across-namespaces-require-either-exac",
+      "text": "What could go wrong: duplicate preset names across namespaces require either exact `core:simple-change` input or a uniqueness check. Iteration 007's helper already detects ambiguity.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-29-what-could-go-wrong-if-requireddocs-is-treated-as-copy-every-path-the-scaffolder",
+      "text": "What could go wrong: if `requiredDocs` is treated as \"copy every path\", the scaffolder will try to copy runtime metadata from markdown templates. The manifest loader must distinguish `owner=runtime` from `owner=author`.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-8-7-what-could-go-wrong-iteration-007-s-concrete-create-sh-diff-still-documents-the-",
+      "text": "What could go wrong: iteration 007's concrete `create.sh` diff still documents the older positional feature-description path and does not add `--name` or an explicit target-folder operand. Under current parser behavior, `--name` may be rejected or the target path may be interpreted as the feature description.",
+      "addedAtIteration": 8,
+      "sources": []
+    },
+    {
+      "id": "finding-9-8-phase-parent-name-x-creates-only-the-parent-child-phases-are-created-by-subseque",
+      "text": "`phase-parent --name X` creates only the parent. Child phases are created by subsequent `create.sh --subfolder` or explicit phase-child invocations.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-1-c-f-means-capability-based-authored-docs-plus-f-style-lazy-command-workflow-addo",
+      "text": "C+F means capability-based authored docs plus F-style lazy command/workflow addons.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-7-current-manifest-validation-requires-an-exact-manifestversion-match-for-greenfie",
+      "text": "Current-manifest validation requires an exact `manifestVersion` match for greenfield v1. Adapters are future work and should be introduced only with the first real migration.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-5-inline-gates-are-the-section-variance-mechanism-fragment-libraries-and-schema-fi",
+      "text": "Inline gates are the section-variance mechanism. Fragment libraries and schema-first rendering were rejected because they add composition complexity or reduce markdown authoring ergonomics.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-6-only-spec-md-carries-template-contract-frontmatter-the-same-resolved-contract-is",
+      "text": "Only `spec.md` carries template-contract frontmatter. The same resolved contract is also written to `graph-metadata.json.derived.template_contract` and optionally mirrored in `description.json.templateContract`. Duplicating it across every authored doc creates drift without improving resume or validation.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-3-the-functional-source-file-surface-drops-from-the-86-file-current-template-syste",
+      "text": "The functional source-file surface drops from the 86-file current template-system baseline to 15 manifest-era source files. The earlier 010 partial framing reduced 86 to 83 plus one resolver; this greenfield framing is the larger cut.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-2-the-level-taxonomy-should-be-removed-from-the-template-source-model-current-leve",
+      "text": "The level taxonomy should be removed from the template source model. Current Level 1/2/3/3+ behavior is reproduced by `kind + capabilities + sectionProfiles`, not by level folders.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-9-4-the-single-manifest-drives-scaffolding-validation-lifecycle-ownership-preset-res",
+      "text": "The single manifest drives scaffolding, validation, lifecycle ownership, preset resolution, directories, and active section profiles.",
+      "addedAtIteration": 9,
+      "sources": [
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-001.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-002.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-003.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-004.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-005.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-006.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-007.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/iterations/iteration-008.md`",
+        "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation/research/cross-validation/copilot-response.md`"
+      ]
+    },
+    {
+      "id": "finding-10-13-all-required-files-present-for-manifest-contract",
+      "text": "`All required files present for manifest contract`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-17-choose-a-lighter-manifest-preset",
+      "text": "`choose a lighter manifest preset`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-7-create-sh-help-remains-documentation-level-help",
+      "text": "`create.sh --help` remains documentation-level help.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-16-expected-at-least-for-active-manifest-profiles",
+      "text": "`expected at least ... for active manifest profiles`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-28-graph-metadata-json-needs-an-adr-level-decision-iteration-9-recommended-derived-",
+      "text": "`graph-metadata.json` needs an ADR-level decision. Iteration 9 recommended `derived.template_contract` with preset/kind/capabilities. Under this invariant, that exact shape is too visible for a file the AI may read during resume. Either derive contracts from `SPECKIT_LEVEL` at runtime, or persist only a public level-shaped contract.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-14-optional-manifest-file-warning-s",
+      "text": "`optional manifest file warning(s)`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-15-use-the-active-manifest-preset-templates",
+      "text": "`Use the active manifest preset templates`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-29-all-ai-user-facing-documentation-remains-level-only-claude-md-agents-md-opencode",
+      "text": "All AI/user-facing documentation remains level-only: `CLAUDE.md`, `AGENTS.md`, `.opencode/skill/system-spec-kit/SKILL.md`, `.opencode/command/spec_kit/*.md`, `.opencode/agent/orchestrate.md`, and relevant sk-doc references.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-35-amend-adr-001-adr-004-with-a-workflow-invariance-rule-public-and-ai-facing-surfa",
+      "text": "Amend ADR-001/ADR-004 with a workflow-invariance rule: public and AI-facing surfaces must remain level-based.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-11-authored-markdown-continues-to-contain-speckit-level-3-and-level-3",
+      "text": "authored Markdown continues to contain `<!-- SPECKIT_LEVEL: 3 -->` and `| **Level** | 3 |`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-6-cli-input-remains-create-sh-level-3",
+      "text": "CLI input remains `create.sh --level 3`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-31-do-not-remove-the-level-taxonomy-from-the-workflow-model-remove-duplicated-level",
+      "text": "Do not remove the level taxonomy from the workflow model. Remove duplicated level folders from the source implementation only.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-3-examples-using-preset-validated-change-and-preset-arch-change",
+      "text": "examples using `--preset validated-change` and `--preset arch-change`;",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-10-generated-file-names-remain-the-same",
+      "text": "generated file names remain the same.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-5-graph-metadata-carrying-a-resolved-contract-with-preset-kind-and-capabilities",
+      "text": "graph metadata carrying a resolved contract with `preset`, `kind`, and `capabilities`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-2-help-text-saying-manifest-preset",
+      "text": "help text saying \"manifest preset\";",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-18-helper-errors-such-as-unknown-preset-ambiguous-preset-capability-does-not-suppor",
+      "text": "helper errors such as `Unknown preset`, `Ambiguous preset`, `Capability ... does not support kind ...`",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-20-internal-helper-errors-must-be-caught-and-remapped-for-example-internal-template",
+      "text": "internal helper errors must be caught and remapped, for example `Internal template contract could not be resolved for Level $level`;",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-30-internal-source-names-may-still-use-kind-capabilities-if-they-are-not-rendered-i",
+      "text": "Internal source names may still use kind/capabilities if they are not rendered into help, logs, generated docs, validator output, slash-command prompts, or AI-facing skill text.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-4-internal-stdout-log-support-functions-such-as-template-contract-for-preset",
+      "text": "internal stdout/log support functions such as `template_contract_for_preset`;",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-9-json-remains-doc-level",
+      "text": "JSON remains `DOC_LEVEL`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-25-keep-selected-level-in-command-markdown-and-intake-contracts-internally-the-runn",
+      "text": "Keep `selected_level` in command markdown and intake contracts. Internally, the runner may call `resolve_level_contract(selected_level)`.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-12-no-generated-user-visible-file-should-contain-preset-capability-or-kind-unless-i",
+      "text": "no generated user-visible file should contain `preset`, `capability`, or `kind` unless it already did for an unrelated domain.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-26-preserve-speckit-level-n-level-n-level-n-and-spec-level-fields-for-backward-read",
+      "text": "Preserve `<!-- SPECKIT_LEVEL: N -->`, `| **Level** | N |`, `level: N`, and `spec_level` fields for backward readability.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-23-preset-names-become-1-1-level-aliases-level-1-level-2-level-3-level-3-plus-phase",
+      "text": "Preset names become 1:1 level aliases: `level-1`, `level-2`, `level-3`, `level-3-plus`, `phase-parent`. Do not use `simple-change`, `validated-change`, `arch-change`, or `governed-change` in v1 public-adjacent files.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-1-primary-preset",
+      "text": "primary `--preset`;",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-22-public-api-stays-level-only-create-sh-must-keep-level-as-the-primary-and-documen",
+      "text": "Public API stays level-only. `create.sh` must keep `--level` as the primary and documented flag. Remove the proposed public `--preset` flag for v1. If a hidden test-only flag exists, it must not appear in help, command docs, skills, or user-facing examples.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-8-stdout-remains-doc-level-level-3-and-level-3-documentation",
+      "text": "stdout remains `DOC_LEVEL: Level 3` and \"Level 3 Documentation\".",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-24-the-level-to-preset-mapping-must-be-1-1-n-1-or-semantic-presets-recreate-a-new-d",
+      "text": "The level-to-preset mapping must be 1:1. N:1 or semantic presets recreate a new decision surface and invite AI/user vocabulary drift.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-33-treat-kind-capabilities-as-a-private-manifest-implementation-model",
+      "text": "Treat kind/capabilities as a private manifest implementation model.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-32-treat-levels-as-the-stable-public-and-ai-facing-api",
+      "text": "Treat levels as the stable public and AI-facing API.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-34-treat-preset-as-either-private-terminology-or-avoid-the-word-entirely-in-shell-v",
+      "text": "Treat preset as either private terminology or avoid the word entirely in shell/validator boundaries.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-19-user-ai-visible-output-must-say-level-level-or-avoid-taxonomy-entirely",
+      "text": "user/AI-visible output must say \"Level $level\" or avoid taxonomy entirely;",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-21-validation-details-may-name-files-and-sections-but-not-preset-capability-kind",
+      "text": "validation details may name files and sections, but not preset/capability/kind.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-10-27-validator-output-must-be-level-shaped-or-taxonomy-neutral-manifest-preset-capabi",
+      "text": "Validator output must be level-shaped or taxonomy-neutral. Manifest, preset, capability, and kind are implementation terms and must not appear in errors, warnings, remediations, or summary lines.",
+      "addedAtIteration": 10,
+      "sources": []
+    },
+    {
+      "id": "finding-11-74-preset-ban-scope-ban-it-from-public-cli-help-command-markdown-skill-text-example",
+      "text": "`--preset` ban scope: ban it from public CLI help, command markdown, skill text, examples, normal logs, JSON output, validator output, generated docs, and AI-facing frontmatter. A hidden test-only environment variable is acceptable only if undocumented and never emitted.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-62-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:21` says `user-facing presets`; revise to `internal level contracts`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-63-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:25` says `Levels eliminated`; revise to `Level folders eliminated; level workflow preserved`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-69-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:363` says replace primary `--level` with `--preset`; revise to keep `--level` and route through `resolveLevelContract(level)`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-70-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:455-489` stores raw `preset`, `kind`, and `capabilities` in packet metadata; revise to no raw internal taxonomy in AI-readable packet metadata.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-60-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:5` says the manifest drives `presets`; revise so presets are internal rows and levels are the public API.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-64-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:50` says the design removes the level taxonomy and keeps user-friendly presets; revise to say the public taxonomy remains levels and only the implementation source changes.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-71-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:517-563` dry-run tables expose `preset`, `kind`, and `capabilities`; revise to show only public level, required docs, and validation behavior.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-61-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:7` says `levels disappear`; revise to `duplicated on-disk templates/level_N/ folders disappear`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-65-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:84` says implementation presets add docs; revise to level contracts add docs.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-66-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:85` says levels become capabilities; revise to levels map internally to composition data.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-67-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:87` says memory does not care about numeric levels and `SPECKIT_LEVEL` need not be preserved; revise to preserve `SPECKIT_LEVEL`, `level`, and `spec_level` as public/backward-readable markers.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-68-opencode-specs-system-spec-kit-026-graph-and-context-optimization-011-template-g",
+      "text": "`.opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign/research/research.md:91` lists a v1 public preset catalog; revise to private level rows or remove from public synthesis.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-19-frontmattermarkerlevel-is-numeric-for-marker-compatibility-3-maps-to-3-phase-map",
+      "text": "`frontmatterMarkerLevel` is numeric for marker compatibility. `3+` maps to `3`; `phase` maps to `0` only for internal comparison and must render as phase-parent wording, not `Level 0`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-72-graph-metadata-json-contract-scope-do-not-persist-raw-internal-taxonomy-preferre",
+      "text": "`graph-metadata.json` contract scope: do not persist raw internal taxonomy. Preferred v1 behavior is to derive the contract from `SPECKIT_LEVEL` and public level metadata at validation time. If a snapshot is needed for parity or performance, store only `derived.level_contract` with public fields from `LevelContract`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-17-lazyaddondocs-contains-command-owned-agent-owned-workflow-owned-or-optional-docs",
+      "text": "`lazyAddonDocs[]` contains command-owned, agent-owned, workflow-owned, or optional docs that are known to the template system but not scaffolded by default.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-16-requiredaddondocs-contains-level-required-authored-docs-beyond-the-core-such-as-",
+      "text": "`requiredAddonDocs[]` contains level-required authored docs beyond the core, such as `checklist.md` for Level 2+ and `decision-record.md` for Level 3+.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-15-requiredcoredocs-contains-the-baseline-authored-docs-for-the-requested-public-le",
+      "text": "`requiredCoreDocs[]` contains the baseline authored docs for the requested public level. For normal implementation levels this starts with `spec.md`, `plan.md`, and `tasks.md`; phase parent resolves to `spec.md`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-18-sectiongates-is-keyed-by-stable-section-ids-and-returns-the-public-levels-where-",
+      "text": "`sectionGates` is keyed by stable section IDs and returns the public levels where each section is active. Callers must not expose internal feature names.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-75-adr-004-amendment-adr-005-narrows-adr-004-adr-004-can-keep-the-single-frontmatte",
+      "text": "ADR-004 amendment: ADR-005 narrows ADR-004. ADR-004 can keep the single-frontmatter principle, but its raw `template_contract` shape must be changed to a public level-shaped marker or removed in favor of runtime derivation.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-51-allowed-level-n-documentation-level-1-2-3-or-3-extended",
+      "text": "Allowed: `--level N Documentation level: 1, 2, 3, or 3+ (extended)`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-54-allowed-all-required-files-present-for-level-3",
+      "text": "Allowed: `All required files present for Level 3`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-50-allowed-creates-a-new-spec-folder-with-templates-based-on-documentation-level",
+      "text": "Allowed: `Creates a new spec folder with templates based on documentation level.`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-52-allowed-doc-level-level-3",
+      "text": "Allowed: `DOC_LEVEL: Level 3`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-56-allowed-internal-template-contract-could-not-be-resolved-for-level-3",
+      "text": "Allowed: `Internal template contract could not be resolved for Level 3`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-53-allowed-level-3-documentation",
+      "text": "Allowed: `Level 3 Documentation`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-55-allowed-level-3-packet-missing-required-file-decision-record-md",
+      "text": "Allowed: `Level 3 packet missing required file: decision-record.md`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-57-allowed-section-counts-below-level-3-expectations",
+      "text": "Allowed: `Section counts below Level 3 expectations`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-58-banned-preset-name",
+      "text": "Banned: `--preset NAME`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-59-banned-active-manifest-preset-active-manifest-profiles-capability-kind-unknown-p",
+      "text": "Banned: `active manifest preset`, `active manifest profiles`, `capability=`, `kind=`, `Unknown preset`, `Ambiguous preset`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-6-costs-one-adapter-layer-implementers-must-route-through-resolvelevelcontract-lev",
+      "text": "Costs one adapter layer: implementers must route through `resolveLevelContract(level)` instead of calling manifest internals directly.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-42-do-not-print-section-gate-origins-such-as-capability-architecture-decisions-or-k",
+      "text": "Do not print section gate origins such as `capability:architecture-decisions` or `kind:implementation`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-45-do-not-report-active-internal-profile-names",
+      "text": "Do not report active internal profile names.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-23-drop-the-entire-public-preset-parser-branch-proposed-at-iteration-007-lines-49-6",
+      "text": "Drop the entire public `--preset)` parser branch proposed at iteration-007 lines 49-64.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-44-error-details-should-say-template-header-mismatch-for-level-level-file-checklist",
+      "text": "Error details should say `Template header mismatch for Level $level file: checklist.md`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-73-field-shape-allowed-shape-is-required-core-docs-required-addon-docs-lazy-addon-d",
+      "text": "Field shape: allowed shape is `required_core_docs`, `required_addon_docs`, `lazy_addon_docs`, `section_gates`, and `frontmatter_marker_level`, plus optional `public_level`. Banned fields in AI-readable metadata are `preset`, `kind`, `capabilities`, `manifestVersion`, and internal profile IDs unless wrapped in a private non-prompted cache that resume never surfaces.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-33-graph-metadata-creation-must-not-write-derived-template-contract-preset-derived-",
+      "text": "Graph metadata creation must not write `derived.template_contract.preset`, `derived.template_contract.kind`, or `derived.template_contract.capabilities`. Either derive the contract from `SPECKIT_LEVEL` at validation time or persist only a level-shaped snapshot such as `derived.level_contract`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-41-if-the-level-contract-cannot-be-resolved-emit-internal-template-contract-could-n",
+      "text": "If the level contract cannot be resolved, emit `Internal template contract could not be resolved for Level $level`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-5-improves-implementation-maintainability-duplicated-templates-level-n-source-fold",
+      "text": "Improves implementation maintainability: duplicated `templates/level_N/` source folders can disappear after parity, while level semantics are resolved from one manifest row.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-4-improves-workflow-invariance-existing-ai-prompts-slash-commands-gate-3-behavior-",
+      "text": "Improves workflow invariance: existing AI prompts, slash commands, Gate 3 behavior, and user muscle memory remain stable.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-21-internal-resolver-exceptions-must-be-caught-at-shell-and-validator-boundaries-an",
+      "text": "Internal resolver exceptions must be caught at shell and validator boundaries and remapped to `Internal template contract could not be resolved for Level N`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-38-internal-resolver-failures-become-internal-template-contract-could-not-be-resolv",
+      "text": "Internal resolver failures become `Internal template contract could not be resolved for Level $level`; stderr must not include raw `Unknown preset`, `Ambiguous preset`, `Capability X`, or `kind Y`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-20-internal-traversal-is-allowed-to-read-spec-kit-docs-json-follow-the-level-row-to",
+      "text": "Internal traversal is allowed to read `spec-kit-docs.json`, follow the level row to internal composition data, and collect docs/sections. The caller never receives internal row names or feature IDs.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-3-keep-level-n-speckit-level-n-level-n-frontmatter-where-already-supported-spec-le",
+      "text": "Keep `--level N`, `<!-- SPECKIT_LEVEL: N -->`, `level: N` frontmatter where already supported, `spec_level` metadata, and the `Level 1/2/3/3+` taxonomy in user-facing docs.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-24-keep-level-validation-as-the-public-selector-and-set-doc-level-next-arg-not-pres",
+      "text": "Keep `--level` validation as the public selector and set `DOC_LEVEL=\"$next_arg\"`, not `PRESET=\"$(legacy_level_to_preset \"$next_arg\")\"`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-43-keep-the-helper-boundary-but-rename-public-facing-commands-from-compare-manifest",
+      "text": "Keep the helper boundary but rename public-facing commands from `compare-manifest` to a level-shaped command such as `compare-level-contract`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-11-maintainability-pass-the-manifest-owns-internal-composition-while-callers-keep-t",
+      "text": "Maintainability: PASS. The manifest owns internal composition while callers keep the stable level contract.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-37-missing-file-details-must-be-file-only-or-level-shaped-preferred-message-level-3",
+      "text": "Missing file details must be file-only or level-shaped. Preferred message: `Level 3 packet missing required file: decision-record.md`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-8-mitigates-leakage-risk-graph-metadata-and-generated-docs-must-not-store-or-displ",
+      "text": "Mitigates leakage risk: graph metadata and generated docs must not store or display raw internal taxonomy fields.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-2-no-mention-of-preset-capability-or-kind-in-claude-md-agents-md-skill-md-opencode",
+      "text": "No mention of `preset`, `capability`, or `kind` in `CLAUDE.md`, `AGENTS.md`, `SKILL.md`, `.opencode/command/*.md`, `.opencode/agent/*.md`, `.opencode/skill/system-spec-kit/SKILL.md`, validator error messages, validator remediation text, scaffolder log lines, or frontmatter exposed to the AI.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-1-no-public-preset-x-flag-drop-it-from-create-sh-help-examples-slash-command-docs-",
+      "text": "No public `--preset X` flag. Drop it from `create.sh --help`, examples, slash-command docs, and AI-facing skill text. If test-only fixture generation needs a non-level selector, it must be private, undocumented, and unable to appear in normal help or logs.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-40-public-messages-remain-taxonomy-neutral-for-example-missing-required-section-in-",
+      "text": "Public messages remain taxonomy-neutral, for example `Missing required section in decision-record.md: Decision`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-7-reduces-taxonomy-flexibility-v1-cannot-expose-arbitrary-named-presets-without-a-",
+      "text": "Reduces taxonomy flexibility: v1 cannot expose arbitrary named presets without a future ADR that reopens the public workflow contract.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-26-remove-iteration-007-help-text-preset-name-manifest-preset-e-g-simple-change-val",
+      "text": "Remove iteration-007 help text `--preset NAME Manifest preset, e.g. simple-change, validated-change, arch-change`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-29-rename-internal-shell-variables-at-the-boundary-from-preset-name-and-capabilitie",
+      "text": "Rename internal shell variables at the boundary from `preset_name` and `capabilities` to `level` and `level_contract`. Internal Node snippets may still traverse the manifest, but shell logs and JSON output must not print internal taxonomy names.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-48-replace-expand-spec-content-or-choose-a-lighter-manifest-preset-with-expand-spec",
+      "text": "Replace `Expand spec content or choose a lighter manifest preset` with `Expand spec content or use the appropriate documentation level for this packet`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-35-replace-rule-message-rule-details-optional-manifest-file-warning-s-with-rule-mes",
+      "text": "Replace `RULE_MESSAGE=\"${#RULE_DETAILS[@]} optional manifest file warning(s)\"` with `RULE_MESSAGE=\"${#RULE_DETAILS[@]} optional workflow file warning(s)\"`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-49-replace-section-counts-appropriate-for-active-manifest-profiles-with-section-cou",
+      "text": "Replace `Section counts appropriate for active manifest profiles` with `Section counts appropriate for Level $declared_level`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-47-replace-section-counts-below-active-manifest-profile-expectations-with-section-c",
+      "text": "Replace `Section counts below active manifest profile expectations` with `Section counts below Level $declared_level expectations`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-30-replace-template-contract-for-preset-manifest-path-preset-name-with-resolve-leve",
+      "text": "Replace `template_contract_for_preset \"$manifest_path\" \"$preset_name\"` with `resolve_level_contract \"$DOC_LEVEL\"`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-36-replace-use-the-active-manifest-preset-templates-with-use-templates-for-level-le",
+      "text": "Replace `Use the active manifest preset templates.` with `Use templates for Level $level from .opencode/skill/system-spec-kit/templates/`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-32-replace-warning-sharded-flag-is-not-supported-by-preset-preset-ignoring-sharded-",
+      "text": "Replace `Warning: --sharded flag is not supported by preset $PRESET. Ignoring --sharded.` with `Warning: --sharded flag is only supported with --level 3 or 3+. Ignoring --sharded.`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-34-replace-iteration-007-rule-message-all-required-files-present-for-manifest-contr",
+      "text": "Replace iteration-007 `RULE_MESSAGE=\"All required files present for manifest contract\"` with `RULE_MESSAGE=\"All required files present for Level $level\"`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-28-replace-iteration-007-examples-using-preset-validated-change-and-preset-arch-cha",
+      "text": "Replace iteration-007 examples using `--preset validated-change` and `--preset arch-change` with `--level 2` and `--level 3`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-27-replace-iteration-007-help-text-level-n-legacy-alias-mapped-to-the-nearest-manif",
+      "text": "Replace iteration-007 help text `--level N Legacy alias mapped to the nearest manifest preset` with `--level N Documentation level: 1, 2, 3, or 3+ (extended)`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-25-replace-iteration-007-help-text-creates-a-new-spec-folder-from-a-manifest-preset",
+      "text": "Replace iteration-007 help text `Creates a new spec folder from a manifest preset.` with `Creates a new spec folder with templates based on documentation level.`",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-22-replace-iteration-007-line-preset-simple-change-default-manifest-preset-with-doc",
+      "text": "Replace iteration-007 line `+PRESET=\"simple-change\" # Default manifest preset` with `DOC_LEVEL=1 # Default to Level 1 (Baseline)`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-46-replace-iteration-007-warnings-expected-at-least-for-active-manifest-profiles-wi",
+      "text": "Replace iteration-007 warnings `expected at least ... for active manifest profiles` with `expected at least ... for Level $declared_level`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-31-replace-scaffolder-logs-such-as-preset-preset-with-doc-level-level-doc-level-and",
+      "text": "Replace scaffolder logs such as `PRESET: $PRESET` with `DOC_LEVEL: Level $DOC_LEVEL` and `Level $DOC_LEVEL Documentation`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-12-scope-discipline-pass-this-narrows-adr-004-it-does-not-supersede-or-rewrite-unre",
+      "text": "Scope discipline: PASS. This narrows ADR-004; it does not supersede or rewrite unrelated manifest decisions.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-14-signature-is-exactly-resolvelevelcontract-level-1-2-3-3-phase-levelcontract",
+      "text": "Signature is exactly `resolveLevelContract(level: '1' | '2' | '3' | '3+' | 'phase'): LevelContract`.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-10-simplicity-pass-one-resolver-centralizes-the-level-to-internal-mapping",
+      "text": "Simplicity: PASS. One resolver centralizes the level-to-internal mapping.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-39-the-implementation-can-call-resolve-level-contract-level-and-validate-active-sec",
+      "text": "The implementation can call `resolve_level_contract \"$level\"` and validate active section gates.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-13-verification-readiness-pass-iteration-12-can-probe-every-user-visible-scaffolder",
+      "text": "Verification readiness: PASS. Iteration 12 can probe every user-visible scaffolder and validator output for banned terms.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-11-9-workflow-invariance-pass-public-input-output-markers-and-docs-stay-level-only",
+      "text": "Workflow invariance: PASS. Public input, output, markers, and docs stay level-only.",
+      "addedAtIteration": 11,
+      "sources": []
+    },
+    {
+      "id": "finding-12-5-manifestversion-should-never-appear-in-ai-readable-packet-metadata",
+      "text": "`manifestVersion` should never appear in AI-readable packet metadata.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-6-ci-should-fail-on-banned-vocabulary-in-user-facing-surfaces",
+      "text": "CI should fail on banned vocabulary in user-facing surfaces.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-1-copy-the-exact-h1-h2-structure-from-the-active-template-in-opencode-skill-system",
+      "text": "Copy the exact H1/H2 structure from the active template in .opencode/skill/system-spec-kit/templates/",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-4-internal-schema-rows-should-not-be-called-presets",
+      "text": "Internal schema rows should not be called `presets[]`.",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-2-restore-missing-or-reordered-required-sections-before-custom-sections",
+      "text": "Restore missing or reordered required sections before custom sections",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-12-3-use-verification-checklist-and-chk-nnn-p0-p1-p2-format-for-checklist-files",
+      "text": "Use '# Verification Checklist:' and CHK-NNN [P0/P1/P2] format for checklist files",
+      "addedAtIteration": 12,
+      "sources": []
+    },
+    {
+      "id": "finding-13-29-capability",
+      "text": "\"capability\"",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-30-needed-behavior",
+      "text": "\"needed behavior\"",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-28-opencode-skill-system-spec-kit-scripts-tests-fixtures-phase-creation-expected-3p",
+      "text": "`.opencode/skill/system-spec-kit/scripts/tests/fixtures/phase-creation/expected-3phase-named/spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-19-opencode-skill-system-spec-kit-scripts-tests-workflow-invariance-live-surfaces-v",
+      "text": "`.opencode/skill/system-spec-kit/scripts/tests/workflow-invariance-live-surfaces.vitest.ts`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-20-opencode-skill-system-spec-kit-scripts-tests-workflow-invariance-public-docs-vit",
+      "text": "`.opencode/skill/system-spec-kit/scripts/tests/workflow-invariance-public-docs.vitest.ts`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-26-opencode-skill-system-spec-kit-templates-addendum-level3-arch-spec-level3-suffix",
+      "text": "`.opencode/skill/system-spec-kit/templates/addendum/level3-arch/spec-level3-suffix.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-25-opencode-skill-system-spec-kit-templates-addendum-level3-arch-spec-level3-md",
+      "text": "`.opencode/skill/system-spec-kit/templates/addendum/level3-arch/spec-level3.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-27-opencode-skill-system-spec-kit-templates-addendum-level3-plus-govern-spec-level3",
+      "text": "`.opencode/skill/system-spec-kit/templates/addendum/level3-plus-govern/spec-level3plus-suffix.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-23-opencode-skill-system-spec-kit-templates-level-3-spec-md",
+      "text": "`.opencode/skill/system-spec-kit/templates/level_3/spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-24-opencode-skill-system-spec-kit-templates-level-3-spec-md",
+      "text": "`.opencode/skill/system-spec-kit/templates/level_3+/spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-4-checklist-md",
+      "text": "`checklist.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-10-checklist-md",
+      "text": "`checklist.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-11-decision-record-md",
+      "text": "`decision-record.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-5-description-json",
+      "text": "`description.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-12-description-json",
+      "text": "`description.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-15-description-json",
+      "text": "`description.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-6-graph-metadata-json",
+      "text": "`graph-metadata.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-13-graph-metadata-json",
+      "text": "`graph-metadata.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-16-graph-metadata-json",
+      "text": "`graph-metadata.json`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-2-plan-md",
+      "text": "`plan.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-8-plan-md",
+      "text": "`plan.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-1-spec-md",
+      "text": "`spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-7-spec-md",
+      "text": "`spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-14-spec-md",
+      "text": "`spec.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-3-tasks-md",
+      "text": "`tasks.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-9-tasks-md",
+      "text": "`tasks.md`",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-17-four-child-phase-folders-were-created-from-the-requested-phase-names",
+      "text": "Four child phase folders were created from the requested phase names.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-22-replace-capability-placeholders-with-needed-behavior",
+      "text": "Replace `[capability]` placeholders with `[needed behavior]`.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-31-replace-phase-parent-sub-phase-manifest-with-sub-phase-list",
+      "text": "Replace phase-parent `Sub-phase manifest` with `Sub-phase list`.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-21-rewrite-existing-generated-fixtures-immediately",
+      "text": "Rewrite existing generated fixtures immediately.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-18-split-the-workflow-invariance-ci-into-two-tests",
+      "text": "Split the workflow-invariance CI into two tests.",
+      "addedAtIteration": 13,
+      "sources": []
+    },
+    {
+      "id": "finding-13-32-sub-phase-list-which-child-phase-folders-exist-and-what-each-one-does",
+      "text": "Sub-phase list: which child phase folders exist and what each one does",
+      "addedAtIteration": 13,
+      "sources": []
+    }
+  ],
+  "ruledOutDirections": [],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 14,
+    "openQuestions": 0,
+    "resolvedQuestions": 0,
+    "keyFindings": 542,
+    "convergenceScore": 0.08,
+    "coverageBySources": {
+      "other": 9
+    }
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

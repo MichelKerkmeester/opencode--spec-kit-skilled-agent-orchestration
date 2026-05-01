@@ -3,6 +3,7 @@
   "expected": {
     "recommended_phases": false,
     "phase_score": 30,
-    "suggested_phase_count": 0
+    "suggested_phase_count": 0,
+    "level_contract": "2"
   }
 }

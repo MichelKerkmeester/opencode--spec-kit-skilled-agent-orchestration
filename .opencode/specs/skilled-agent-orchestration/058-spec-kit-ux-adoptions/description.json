@@ -1,0 +1,50 @@
+{
+  "trigger_phrases": [
+    "058 spec kit ux",
+    "spec kit ux adoptions",
+    "spec kit ux implementation",
+    "spar adoptions",
+    "058 ux upgrade",
+    "058 plan",
+    "058 tasks",
+    "058 checklist"
+  ],
+  "name": "058-spec-kit-ux-adoptions",
+  "version": "1.0.0",
+  "importance_tier": "high",
+  "level": 2,
+  "status": "in_progress",
+  "completion_pct": 0,
+  "builds_on": [
+    "skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade"
+  ],
+  "key_files": [
+    ".opencode/specs/skilled-agent-orchestration/058-spec-kit-ux-adoptions/spec.md",
+    ".opencode/specs/skilled-agent-orchestration/058-spec-kit-ux-adoptions/plan.md",
+    ".opencode/specs/skilled-agent-orchestration/058-spec-kit-ux-adoptions/tasks.md",
+    ".opencode/specs/skilled-agent-orchestration/058-spec-kit-ux-adoptions/checklist.md",
+    ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/research/research.md",
+    ".opencode/command/spec_kit/plan.md",
+    ".opencode/command/spec_kit/README.txt",
+    ".opencode/skill/system-spec-kit/templates",
+    ".opencode/skill/system-spec-kit/SKILL.md"
+  ],
+  "specFolder": "skilled-agent-orchestration/058-spec-kit-ux-adoptions",
+  "description": "Implement 5 approved UX adoptions from packet 057 deep-research: gate copy, phase headers, taxonomy doc, template inventory, persona fixtures.",
+  "keywords": [
+    "spec-kit",
+    "ux",
+    "adoption",
+    "implementation",
+    "templates",
+    "taxonomy",
+    "personas",
+    "gate-copy"
+  ],
+  "lastUpdated": "2026-05-01T11:00:00Z",
+  "specId": "058",
+  "folderSlug": "spec-kit-ux-adoptions",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ]
+}

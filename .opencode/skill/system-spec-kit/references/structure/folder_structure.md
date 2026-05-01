@@ -17,26 +17,26 @@ This document covers spec folder organization, naming conventions, and level-spe
 
 ```
 templates/
-├── core/                    # Minimal templates (~60-90 LOC) - source components
+├── Level source                    # Minimal templates (~60-90 LOC) - source components
 │   ├── spec-core.md
 │   ├── plan-core.md
 │   ├── tasks-core.md
 │   └── impl-summary-core.md
 │
-├── addendum/                # Level-specific additions
+├── Level extension                # Level-specific additions
 │   ├── level2-verify/       # +Verification addendums
 │   ├── level3-arch/         # +Architecture addendums
 │   └── level3-plus-govern/   # +Governance addendums
 │
-├── level_1/                 # Pre-composed Level 1 (ALWAYS use for new specs)
-├── level_2/                 # Pre-composed Level 2
-├── level_3/                 # Pre-composed Level 3
-├── level_3+/                # Pre-composed Level 3+
+├── Level 1 template contract                 # Pre-composed Level 1 (ALWAYS use for new specs)
+├── Level 2 template contract                 # Pre-composed Level 2
+├── Level 3 template contract                 # Pre-composed Level 3
+├── Level 3+ template contract                # Pre-composed Level 3+
 │
 └── [cross-level templates]  # handover.md, debug-delegation.md, research/research.md, resource-map.md
 ```
 
-> **IMPORTANT:** Always copy templates from `level_N/` folders for new specs. The `core/` and `addendum/` folders are source components.
+> **IMPORTANT:** Always copy templates from `Level template contract` folders for new specs. The Level contract resolver owns template selection.
 
 ---
 
@@ -315,6 +315,6 @@ specs/022-hybrid-rag-fusion/        <- Coordination root (point-in-time snapshot
 
 ## 7. RELATED RESOURCES
 
-- [Level Specifications](../templates/level_specifications.md)
+- Level specifications reference
 - [Template Guide](../templates/template_guide.md)
 - [Sub-folder Versioning](../structure/sub_folder_versioning.md)

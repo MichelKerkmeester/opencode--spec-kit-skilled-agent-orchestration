@@ -31,7 +31,7 @@ This directory contains the shell and TypeScript tooling that powers spec creati
 ## 2. INVENTORY SNAPSHOT
 
 
-Top-level files with extensions (10 including this README):
+Top-level files with extensions (8 including this README):
 - `README.md`
 - `check-api-boundary.sh`
 - `check-links.sh`
@@ -40,8 +40,6 @@ Top-level files with extensions (10 including this README):
 - `registry-loader.sh`
 - `scripts-registry.json`
 - `tsconfig.json`
-- `wrap-all-templates.sh`
-- `wrap-all-templates.ts`
 
 Primary script directories:
 - `spec/` - 12 lifecycle scripts (`create.sh`, `upgrade-level.sh`, `check-placeholders.sh`, `validate.sh`, `progressive-validate.sh`, `test-validation.sh`, `check-completion.sh`, `calculate-completeness.sh`, `recommend-level.sh`, `archive.sh`, `check-template-staleness.sh`, `quality-audit.sh`)
@@ -64,7 +62,7 @@ Primary script directories:
 - `kpi/` - shell KPI scripts (`quality-kpi.sh`)
 - `tests/` - JS, shell, Python, and Vitest regression suites for scripts and modules
 - `test-fixtures/` - 62 numbered fixture directories for validation rule testing
-- `templates/` - wrapper/composition helpers for template packaging workflows
+- `templates/` - inline renderer shell and TypeScript sources for manifest template rendering
 
 
 <!-- /ANCHOR:inventory-snapshot -->

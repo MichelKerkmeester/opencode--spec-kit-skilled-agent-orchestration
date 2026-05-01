@@ -46,9 +46,9 @@ Codex registration is owned by the user/workspace Codex runtime config, not by t
 
 ## 3. CANONICAL RUNTIME HOOK VOCABULARY
 
-Use capability names first, then map to the runtime-local surface below when wiring or validating a specific runtime:
+Use support names first, then map to the runtime-local surface below when wiring or validating a specific runtime:
 
-| Capability | Claude / Codex / Copilot | Gemini | OpenCode | Trigger / fallback |
+| Support | Claude / Codex / Copilot | Gemini | OpenCode | Trigger / fallback |
 | --- | --- | --- | --- | --- |
 | Prompt-time advisor | `UserPromptSubmit` | `BeforeAgent` | `experimental.chat.system.transform` | Runtime prompt hook; Copilot is NEXT-PROMPT freshness, so current prompt sees PRIOR turn's brief; fallback is explicit `skill_advisor.py` or advisor MCP tooling |
 | Session priming | `SessionStart` | `SessionStart` | `event` startup handlers | Runtime startup hook; fallback is `/spec_kit:resume` or `session_bootstrap()` |
@@ -96,7 +96,7 @@ Compiled: `mcp_server/dist/hooks/claude/*.js`
 
 ## 8. RUNTIME HOOK MATRIX
 
-Prompt hooks and lifecycle hooks are separate capabilities. A runtime can support prompt-time advisor context without supporting startup/code-graph lifecycle injection, and Copilot's prompt-time parity is NEXT-PROMPT freshness rather than in-turn injection; the current prompt sees the PRIOR turn's brief.
+Prompt hooks and lifecycle hooks are separate support. A runtime can support prompt-time advisor context without supporting startup/code-graph lifecycle injection, and Copilot's prompt-time parity is NEXT-PROMPT freshness rather than in-turn injection; the current prompt sees the PRIOR turn's brief.
 
 | Runtime | Prompt hook | Lifecycle hook | Compaction | Stop | Trigger / default | Manual fallback |
 | --- | --- | --- | --- | --- | --- | --- |

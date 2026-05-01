@@ -1,48 +1,49 @@
 ---
 title: Level Specifications
-description: Complete specifications for all documentation levels using CORE + ADDENDUM architecture (v2.2).
+description: Complete specifications for all documentation levels using the manifest-backed Level contract architecture.
 ---
 
 # Level Specifications - Complete Level 1-3+ Requirements
 
-Complete specifications for all documentation levels using the CORE + ADDENDUM architecture (v2.2) where higher levels ADD VALUE, not just length.
+Complete specifications for all documentation levels using the manifest-backed Level contract architecture where higher levels add value, not just length.
 
 ---
 
 ## 1. OVERVIEW
 
-### Template Architecture: CORE + ADDENDUM (v2.2)
+### Template Architecture: Manifest-Backed Level Contracts
 
-Templates use a compositional model where core content is shared and addendums add level-specific VALUE:
+Templates use a manifest-backed model where `templates/manifest/spec-kit-docs.json` selects rendered `*.md.tmpl` documents for each Level:
 
 ```
-templates/
-├── core/                    # Shared foundation (~390 LOC total)
-│   ├── spec-core.md         # Essential what/why/how
-│   ├── plan-core.md         # Technical approach
-│   ├── tasks-core.md        # Task breakdown
-│   └── impl-summary-core.md # Outcomes documentation
-│
-├── addendum/                # Level-specific VALUE additions
+templates/manifest/
+├── spec-kit-docs.json       # Level contract and document membership
+├── spec.md.tmpl             # Requirements and scope
+├── plan.md.tmpl             # Technical approach
+├── tasks.md.tmpl            # Task breakdown
+├── checklist.md.tmpl        # Verification gates
+├── decision-record.md.tmpl  # Architecture decisions
+└── implementation-summary.md.tmpl
+├── Level extension                # Level-specific VALUE additions
 │   ├── level2-verify/       # +Verification (~185 LOC)
 │   ├── level3-arch/         # +Architecture (~220 LOC)
 │   └── level3-plus-govern/   # +Governance (~190 LOC)
 │
-├── level_1/                 # Composed Level 1: Core only (5 files incl. README)
-├── level_2/                 # Composed Level 2: Core + L2 (6 files incl. README)
-├── level_3/                 # Composed Level 3: Core + L2 + L3 (7 files incl. README)
-└── level_3+/                # Composed Level 3+: All addendums (7 files incl. README)
+├── Level 1 template contract                 # Composed Level 1: Core only (5 files incl. README)
+├── Level 2 template contract                 # Composed Level 2: Core + L2 (6 files incl. README)
+├── Level 3 template contract                 # Composed Level 3: Core + L2 + L3 (7 files incl. README)
+└── Level 3+ template contract                # Composed Level 3+: All addendums (7 files incl. README)
 ```
 
 ### Template Paths - Quick Reference
 
 | Path | Purpose | When to Use |
 |------|---------|-------------|
-| `templates/level_N/` | Ready-to-use templates | **ALWAYS use this for new specs** (N = 1, 2, 3, or 3+) |
-| `templates/core/` | Source components | Reference only (understanding architecture) |
-| `templates/addendum/` | Level additions | Reference only (understanding architecture) |
+| `Level template contract` | Ready-to-use templates | **ALWAYS use this for new specs** (N = 1, 2, 3, or 3+) |
+| Level source contract | Source components | Reference only (understanding architecture) |
+| Level extension contract | Level additions | Reference only (understanding architecture) |
 
-> **IMPORTANT:** Always copy templates from `templates/level_N/` (where N is 1, 2, 3, or 3+). The `core/` and `addendum/` folders are source components used to build the level templates via `scripts/templates/compose.sh` - do not use them directly for new spec folders.
+> **IMPORTANT:** Always copy templates from `Level template contract` (where N is 1, 2, 3, or 3+). The Level contract resolution selects and renders the correct template set for new spec folders.
 
 ### Progressive Enhancement Model (Value-Based)
 
@@ -87,10 +88,10 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Required Files (Baseline)
 
-- `spec.md` - Requirements and user stories (copy template from `templates/level_1/spec.md`)
-- `plan.md` - Technical implementation plan (copy template from `templates/level_1/plan.md`)
-- `tasks.md` - Task breakdown by user story (copy template from `templates/level_1/tasks.md`)
-- `implementation-summary.md` - Post-implementation documentation (copy template from `templates/level_1/implementation-summary.md`)
+- `spec.md` - Requirements and user stories (scaffolded from `templates/manifest/spec.md.tmpl`)
+- `plan.md` - Technical implementation plan (copy template from `level_contract_plan.md`)
+- `tasks.md` - Task breakdown by user story (copy template from `level_contract_tasks.md`)
+- `implementation-summary.md` - Post-implementation documentation (copy template from `level_contract_implementation-summary.md`)
 
 ### Optional Files
 
@@ -138,17 +139,17 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Template Sources
 
-**Composed templates (ready to use):**
-- `.opencode/skill/system-spec-kit/templates/level_1/spec.md`
-- `.opencode/skill/system-spec-kit/templates/level_1/plan.md`
-- `.opencode/skill/system-spec-kit/templates/level_1/tasks.md`
-- `.opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md`
+**Manifest templates (scaffolded by `create.sh`):**
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
+- `templates/manifest/implementation-summary.md.tmpl`
 
 **Core source (for reference):**
-- `.opencode/skill/system-spec-kit/templates/core/spec-core.md`
-- `.opencode/skill/system-spec-kit/templates/core/plan-core.md`
-- `.opencode/skill/system-spec-kit/templates/core/tasks-core.md`
-- `.opencode/skill/system-spec-kit/templates/core/impl-summary-core.md`
+- `Level template contract`
+- `Level template contract`
+- `Level template contract`
+- `Level template contract`
 
 ### Template Adaptation
 
@@ -221,17 +222,17 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Template Sources
 
-**Composed templates (ready to use):**
-- `.opencode/skill/system-spec-kit/templates/level_2/spec.md`
-- `.opencode/skill/system-spec-kit/templates/level_2/plan.md`
-- `.opencode/skill/system-spec-kit/templates/level_2/tasks.md`
-- `.opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md`
-- `.opencode/skill/system-spec-kit/templates/level_2/checklist.md`
+**Manifest templates (scaffolded by `create.sh`):**
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
+- `templates/manifest/implementation-summary.md.tmpl`
+- `templates/manifest/checklist.md.tmpl`
 
 **Addendum source (+Verify):**
-- `.opencode/skill/system-spec-kit/templates/addendum/level2-verify/spec-level2.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level2-verify/plan-level2.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level2-verify/checklist.md`
+- `Level template contract`
+- `Level template contract`
+- `Level template contract`
 
 ### Template Adaptation
 
@@ -331,21 +332,21 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 
 ### Template Sources
 
-**Composed templates (ready to use):**
-- `.opencode/skill/system-spec-kit/templates/level_3/spec.md`
-- `.opencode/skill/system-spec-kit/templates/level_3/plan.md`
-- `.opencode/skill/system-spec-kit/templates/level_3/tasks.md`
-- `.opencode/skill/system-spec-kit/templates/level_3/checklist.md`
-- `.opencode/skill/system-spec-kit/templates/level_3/decision-record.md`
-- `.opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md`
+**Manifest templates (scaffolded by `create.sh`):**
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
+- `templates/manifest/checklist.md.tmpl`
+- `templates/manifest/decision-record.md.tmpl`
+- `templates/manifest/implementation-summary.md.tmpl`
 
 **Addendum source (+Arch):**
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/spec-level3.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/plan-level3.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-arch/decision-record.md`
+- `Level template contract`
+- `Level template contract`
+- `Level template contract`
 
 **Optional:**
-- `.opencode/skill/system-spec-kit/templates/research.md` (copy into `research/research.md` from root templates/)
+- `level_contract_optional_research.md` (copy into `research/research.md` from root templates/)
 
 ### Template Adaptation
 
@@ -466,21 +467,21 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 
 ### Template Sources
 
-**Composed templates (ready to use):**
-- `.opencode/skill/system-spec-kit/templates/level_3+/spec.md`
-- `.opencode/skill/system-spec-kit/templates/level_3+/plan.md`
-- `.opencode/skill/system-spec-kit/templates/level_3+/tasks.md`
-- `.opencode/skill/system-spec-kit/templates/level_3+/checklist.md`
-- `.opencode/skill/system-spec-kit/templates/level_3+/decision-record.md`
-- `.opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md`
+**Manifest templates (scaffolded by `create.sh`):**
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
+- `templates/manifest/checklist.md.tmpl`
+- `templates/manifest/decision-record.md.tmpl`
+- `level_contract_implementation-summary.md`
 
 **Addendum source (+Govern):**
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-plus-govern/spec-level3plus.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-plus-govern/plan-level3plus.md`
-- `.opencode/skill/system-spec-kit/templates/addendum/level3-plus-govern/checklist-extended.md`
+- `Level template contract`
+- `Level template contract`
+- `Level template contract`
 
 **Optional:**
-- `.opencode/skill/system-spec-kit/templates/research.md` (copy into `research/research.md` from root templates/)
+- `level_contract_optional_research.md` (copy into `research/research.md` from root templates/)
 
 ### Creating Level 3+ Spec Folder
 
@@ -562,9 +563,9 @@ If the script is unavailable, manually add the required files:
 
 | From   | To                         | Action                                                 | Files to Add |
 | ------ | -------------------------- | ------------------------------------------------------ | ------------ |
-| 1 → 2  | Add verification           | Copy `checklist.md` from `templates/level_2/`          |              |
-| 2 → 3  | Add decision documentation | Copy `decision-record.md` from `templates/level_3/`    |              |
-| 3 → 3+ | Add governance             | Copy extended sections from `templates/level_3+/`      |              |
+| 1 → 2  | Add verification           | Copy `checklist.md` from `Level 2 template contract`          |              |
+| 2 → 3  | Add decision documentation | Copy `decision-record.md` from `Level 3 template contract`    |              |
+| 3 → 3+ | Add governance             | Copy extended sections from `Level 3+ template contract`      |              |
 
 **Changelog example:**
 
@@ -724,8 +725,8 @@ Some templates are not level-specific but can be used at any documentation level
 | `debug-delegation.md` | Debug task delegation | When stuck debugging (3+ failed attempts) | Task tool -> `@debug` |
 
 **Template Sources:**
-- `.opencode/skill/system-spec-kit/templates/handover.md`
-- `.opencode/skill/system-spec-kit/templates/debug-delegation.md`
+- `level_contract_optional_handover.md`
+- `level_contract_optional_debug-delegation.md`
 
 ### Summary Templates (REQUIRED for ALL Levels)
 
@@ -735,11 +736,11 @@ Some templates are not level-specific but can be used at any documentation level
 | `resource-map.md` | Lean path catalog | Any level, when reviewers need a scannable file ledger | Manual (optional) |
 
 **Template Sources:**
-- Level 1: `.opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md`
-- Level 2: `.opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md`
-- Level 3: `.opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md`
-- Level 3+: `.opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md`
-- `.opencode/skill/system-spec-kit/templates/resource-map.md`
+- Level 1: `level_contract_implementation-summary.md`
+- Level 2: `level_contract_implementation-summary.md`
+- Level 3: `level_contract_implementation-summary.md`
+- Level 3+: `level_contract_implementation-summary.md`
+- `level_contract_optional_resource-map.md`
 
 **Why Required for ALL Levels:**
 - `implementation-summary.md` documents outcomes, lessons learned, and deviations from plan
@@ -804,37 +805,37 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - [level_selection_guide.md](./level_selection_guide.md) - 5-dimension complexity scoring and auto-detection
 - [path_scoped_rules.md](../validation/path_scoped_rules.md) - Path-scoped validation rules reference
 
-### Templates (CORE + ADDENDUM v2.2)
+### Templates (Manifest-Backed Level Contracts)
 
-**Core Templates (Foundation for all levels):**
-- [spec-core.md](../../templates/core/spec-core.md) - Essential what/why/how (~80 lines)
-- [plan-core.md](../../templates/core/plan-core.md) - Technical approach (~90 lines)
-- [tasks-core.md](../../templates/core/tasks-core.md) - Task breakdown (~60 lines)
-- [impl-summary-core.md](../../templates/core/impl-summary-core.md) - Outcomes (~40 lines)
+**Manifest Templates:**
+- [spec.md.tmpl](../../templates/manifest/spec.md.tmpl) - Essential what/why/how
+- [plan.md.tmpl](../../templates/manifest/plan.md.tmpl) - Technical approach
+- [tasks.md.tmpl](../../templates/manifest/tasks.md.tmpl) - Task breakdown
+- [implementation-summary.md.tmpl](../../templates/manifest/implementation-summary.md.tmpl) - Outcomes
 
 **Composed Level 1 (Core only ~455 LOC):**
-- [spec.md](../../templates/level_1/spec.md) - Requirements and scope
-- [plan.md](../../templates/level_1/plan.md) - Technical plan
-- [tasks.md](../../templates/level_1/tasks.md) - Task breakdown
-- [implementation-summary.md](../../templates/level_1/implementation-summary.md) - Outcomes
+- [spec template](../../templates/manifest/spec.md.tmpl) - Requirements and scope
+- [plan.md.tmpl](../../templates/manifest/plan.md.tmpl) - Technical plan
+- [tasks.md.tmpl](../../templates/manifest/tasks.md.tmpl) - Task breakdown
+- [implementation-summary.md.tmpl](../../templates/manifest/implementation-summary.md.tmpl) - Outcomes
 
-**Composed Level 2 (Core + Verify ~875 LOC):**
+**Level 2 (verification):**
 - All Level 1 templates + quality gates, NFRs
-- [checklist.md](../../templates/level_2/checklist.md) - Verification checklist
+- [checklist.md.tmpl](../../templates/manifest/checklist.md.tmpl) - Verification checklist
 
-**Composed Level 3 (Core + Verify + Arch ~1090 LOC):**
+**Level 3 (architecture):**
 - All Level 2 templates + architecture decisions
-- [decision-record.md](../../templates/level_3/decision-record.md) - ADRs
-- [research template](../../templates/research.md) - Optional research template copied into `research/research.md`
+- [decision-record.md.tmpl](../../templates/manifest/decision-record.md.tmpl) - ADRs
+- [research.md.tmpl](../../templates/manifest/research.md.tmpl) - Optional research template copied into `research/research.md`
 
-**Composed Level 3+ (All addendums ~1075 LOC):**
+**Level 3+ (governance):**
 - All Level 3 templates + approval workflow, compliance, stakeholders
 - Extended checklist with approval tracking
 
 **Session Management Templates (Any Level):**
-- [handover.md](../../templates/handover.md) - Session context transfer
-- [debug-delegation.md](../../templates/debug-delegation.md) - Debug task delegation
-- [resource-map.md](../../templates/resource-map.md) - Optional lean path catalog
+- [handover.md.tmpl](../../templates/manifest/handover.md.tmpl) - Session context transfer
+- [debug-delegation.md.tmpl](../../templates/manifest/debug-delegation.md.tmpl) - Debug task delegation
+- [resource-map.md.tmpl](../../templates/manifest/resource-map.md.tmpl) - Optional lean path catalog
 
 **Non-Template Helpers:**
 - canonical continuity inside packet docs, primarily `_memory.continuity` in `implementation-summary.md`
@@ -846,4 +847,3 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 - `sk-git` - Git workspace setup and clean commits
 
 ---
-

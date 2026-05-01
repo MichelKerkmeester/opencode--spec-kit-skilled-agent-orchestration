@@ -552,13 +552,13 @@ workflow:
               state_paths_iteration_pattern: "{state_paths.iteration_pattern}"
               state_paths_delta_pattern: "{state_paths.delta_pattern}"
         pre_dispatch_audit:
-          skip_when: "config.executor.kind == 'native'"
+          skip_when: "config.executor.type == 'native'"
           call: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-audit.ts#writeFirstRecordExecutor"
           args:
             stateLogPath: "{state_paths.state_log}"
             executor: "{config.executor}"
             iteration: "{current_iteration}"
-        branch_on: "config.executor.kind"
+        branch_on: "config.executor.type"
         if_native:
           dispatch:
             agent: deep-research
@@ -574,7 +574,7 @@ workflow:
             import { resolveCodexSandboxMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
-              kind: 'cli-codex',
+              type: 'cli-codex',
               model: '{config.executor.model}',
               reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
               serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
@@ -622,7 +622,7 @@ workflow:
             const promptPath = '{state_paths.prompt_dir}/iteration-{current_iteration}.md';
             const prompt = readFileSync(promptPath, 'utf8');
             const executor = {
-              kind: 'cli-copilot',
+              type: 'cli-copilot',
               model: '{config.executor.model}',
               reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
               serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
@@ -635,10 +635,10 @@ workflow:
             // is the single source of truth for rejecting empty / unresolved
             // template / whitespace-only / string-coerced empty values. The
             // YAML hands the raw `{spec_folder}` directly; on rejection the
-            // helper safe-fails to `kind:"missing", writeIntent:true` (Gate-3
+            // helper safe-fails to `type:"missing", writeIntent:true` (Gate-3
             // enforcement, --allow-all-tools stripped).
             const specFolderRaw = '{spec_folder}';
-            const targetAuthority = { kind: 'approved', specFolder: specFolderRaw };
+            const targetAuthority = { type: 'approved', specFolder: specFolderRaw };
 
             const baseArgs = [
               '-p',
@@ -697,7 +697,7 @@ workflow:
             import { resolveGeminiSandboxMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
-              kind: 'cli-gemini',
+              type: 'cli-gemini',
               model: '{config.executor.model}',
               reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
               serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
@@ -742,7 +742,7 @@ workflow:
             import { resolveClaudePermissionMode } from './.opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/executor-config.ts';
 
             const executor = {
-              kind: 'cli-claude-code',
+              type: 'cli-claude-code',
               model: '{config.executor.model}',
               reasoningEffort: '{config.executor.reasoningEffort}' === 'null' ? null : '{config.executor.reasoningEffort}',
               serviceTier: '{config.executor.serviceTier}' === 'null' ? null : '{config.executor.serviceTier}',
@@ -783,11 +783,11 @@ workflow:
             - "claude-code has no serviceTier flag"
             - "claude-code supports --effort for reasoning depth"
         record_executor_audit:
-          skip_when: "config.executor.kind == 'native'"
+          skip_when: "config.executor.type == 'native'"
           target: "{state_paths.state_log}"
           field: "executor"
           value:
-            kind: "{config.executor.kind}"
+            type: "{config.executor.type}"
             model: "{config.executor.model}"
             reasoningEffort: "{config.executor.reasoningEffort}"
             serviceTier: "{config.executor.serviceTier}"

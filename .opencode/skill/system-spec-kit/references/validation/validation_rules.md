@@ -136,7 +136,7 @@ Create the missing file(s) using the appropriate template:
 
 ```bash
 # Core files
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/007-feature/
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/007-feature --name feature-name
 
 # Implementation summary (required for all levels)
 # Create at end of implementation phase
@@ -152,7 +152,7 @@ cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007
 ## 4. PHASE_PARENT_CONTENT
 
 **Severity:** WARNING (advisory; does not block validation pass)
-**Description:** When a spec folder qualifies as a phase parent, its `spec.md` must avoid migration-history narratives. The phase-parent surface is a manifest of children plus root purpose; consolidation, merge, or rename history rots fast and creates the very hallucination surface the lean trio policy was designed to eliminate.
+**Description:** When a spec folder qualifies as a phase parent, its `spec.md` must avoid migration-history narratives. The phase-parent surface is a control file of children plus root purpose; consolidation, merge, or rename history rots fast and creates the very hallucination surface the lean trio policy was designed to eliminate.
 
 **Detection:** Runs only when `is_phase_parent($folder)` returns true. Skips automatically on regular spec folders, phase children, and any folder that lacks NNN-named populated children.
 
@@ -169,13 +169,13 @@ reorganization
 
 The scanner skips matches inside fenced code blocks (triple-backtick) and inside HTML comment blocks (`<!-- -->`), so legitimate examples in templates and reference docs do not trigger the rule.
 
-**Required content (mirrored from `templates/phase_parent/spec.md`):** root purpose, sub-phase manifest, what needs done. Migration history goes in an optional `context-index.md` (template at `.opencode/skill/system-spec-kit/templates/context-index.md`).
+**Required content (mirrored from `phase-parent Level template contract`):** root purpose, sub-phase control file, what needs done. Migration history goes in an optional `context-index.md` (template at `level_contract_optional_context-index.md`).
 
 **Implementation:** `.opencode/skill/system-spec-kit/scripts/rules/check-phase-parent-content.sh`. Registered as `PHASE_PARENT_CONTENT` in `scripts/lib/validator-registry.json` (severity: warn, category: authored_template).
 
 ### How to Fix
 
-Move any flagged narrative to `context-index.md` (create the file if it does not exist; the template carries Author Instructions explaining when to use it). Replace the parent's narrative with a sub-phase manifest table linking each phase folder to its focus and current status.
+Move any flagged narrative to `context-index.md` (create the file if it does not exist; the template carries Author Instructions explaining when to use it). Replace the parent's narrative with a sub-phase control file table linking each phase folder to its focus and current status.
 
 ---
 
@@ -640,7 +640,7 @@ mv specs/Feature specs/001-feature
 ```markdown
 ---
 title: My Feature Spec
-SPECKIT_TEMPLATE_SOURCE: level_1/spec.md
+SPECKIT_TEMPLATE_SOURCE: Level 1 template contractspec.md
 ---
 
 # Content here
@@ -670,7 +670,7 @@ title: My Feature Spec
 2. Use templates from `.opencode/skill/system-spec-kit/templates/` which include the source marker
 
 ```bash
-cp .opencode/skill/system-spec-kit/templates/level_1/spec.md specs/007-feature/
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/007-feature --name feature-name
 ```
 
 ---
@@ -781,7 +781,7 @@ Add the AI Execution Protocol section to plan.md or tasks.md. Reference the Leve
 
 ```bash
 # See protocol examples in templates
-cat .opencode/skill/system-spec-kit/templates/level_3/plan.md
+cat level_contract_plan.md
 ```
 
 ---
@@ -835,7 +835,7 @@ Present: decision-record.md (suggests Level 3)
 
 ```bash
 # Add checklist for Level 2
-cp .opencode/skill/system-spec-kit/templates/level_2/checklist.md specs/007-feature/
+cp level_contract_checklist.md specs/007-feature/
 ```
 
 ---
@@ -1000,7 +1000,7 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 
 ### Reference Files
 
-- [level_specifications.md](../templates/level_specifications.md) - Documentation level requirements
+- level specifications reference - Documentation level requirements
 - [template_guide.md](../templates/template_guide.md) - Template usage guide
 - [path_scoped_rules.md](../validation/path_scoped_rules.md) - Path scoping overview
 - [phase_definitions.md](../structure/phase_definitions.md) - Phase decomposition system
@@ -1011,4 +1011,3 @@ SPECKIT_JSON=true ./scripts/spec/validate.sh specs/007-feature/
 - `../../scripts/rules/` - Individual rule implementations
 
 ---
-

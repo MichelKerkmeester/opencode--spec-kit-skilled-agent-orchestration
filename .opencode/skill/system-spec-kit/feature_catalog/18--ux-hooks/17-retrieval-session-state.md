@@ -15,7 +15,7 @@ When you search multiple times in a session, you keep seeing the same results. T
 
 ## 2. CURRENT REALITY
 
-The session state module provides a `SessionStateManager` class (singleton pattern) that manages sessions with the following capabilities:
+The session state module provides a `SessionStateManager` class (singleton pattern) that manages sessions with the following behaviors:
 - **Cross-turn deduplication**: seen result IDs are tracked per session. Seen results receive a score multiplier of `SEEN_DEDUP_FACTOR = 0.3` (deprioritized, not removed).
 - **Goal-aware refinement**: an `activeGoal` can be set per session. Results aligned with the goal receive a boost up to `GOAL_BOOST_MAX = 1.2`.
 - **Stateful tracking**: `openQuestions`, `preferredAnchors`, and `seenResultIds` accumulate across calls within a session.

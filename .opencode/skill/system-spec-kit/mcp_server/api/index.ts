@@ -75,6 +75,12 @@ export {
   isIndexableConstitutionalMemoryPath,
   shouldIndexForMemory,
 } from '../lib/utils/index-scope.js';
+export {
+  validateFolder,
+  type ValidateOpts,
+  type ValidationEntry,
+  type ValidationReport,
+} from '../lib/validation/orchestrator.js';
 export type {
   GovernanceAuditAction,
   GovernanceAuditEntry,

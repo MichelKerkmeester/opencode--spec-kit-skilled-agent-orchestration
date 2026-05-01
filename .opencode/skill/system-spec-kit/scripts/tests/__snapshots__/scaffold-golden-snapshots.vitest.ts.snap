@@ -1,0 +1,3760 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`manifest template golden snapshots > renders required docs for Level 1 from manifest templates > 1-implementation-summary.md 1`] = `
+"---
+title: "Implementation Summary [template:level_1/implementation-summary.md]"
+description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "template"
+  - "impl summary core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "000-feature-name"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize continuity block"
+    next_safe_action: "Replace template defaults on first save"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | [###-feature-name] |
+| **Completed** | [YYYY-MM-DD] |
+| **Level** | [1/2/3/3+] |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+<!-- Voice guide:
+     Open with a hook: what changed and why it matters. One paragraph, impact first.
+     Then use ### subsections per feature. Each subsection: what it does + why it exists.
+     Write "You can now inspect the trace" not "Trace inspection was implemented."
+     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
+     For Level 1-2, a Files Changed table after the narrative is fine.
+     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+
+[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+
+### [Feature Name]
+
+[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
+Explain what the user gains, not what files you touched.]
+
+### Files Changed
+
+<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+
+| File | Action | Purpose |
+|------|--------|---------|
+| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+<!-- Voice guide:
+     Tell the delivery story. What gave you confidence this works?
+     "All features shipped behind feature flags" not "Feature flags were used."
+     For Level 1: a single sentence is enough.
+     For Level 3+: describe stages (testing, rollout, verification). -->
+
+[How was this tested, verified and shipped? What was the rollout approach?]
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
+     "Chose X because Y" not "X was selected due to Y." -->
+
+| Decision | Why |
+|----------|-----|
+| [What was decided] | [Active-voice rationale with specific reasoning] |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+<!-- Voice guide: Be honest. Show failures alongside passes.
+     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
+
+| Check | Result |
+|-------|--------|
+| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+<!-- Voice guide: Number them. Be specific and actionable.
+     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
+     not "Some features may require configuration."
+     Write "None identified." if nothing applies. -->
+
+1. **[Limitation]** [Specific detail with workaround if one exists.]
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 1 from manifest templates > 1-plan.md 1`] = `
+"---
+title: "Implementation Plan: [NAME] [template:level_1/plan.md]"
+description: "[2-3 sentences: what this implements and the technical approach]"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "name"
+  - "template"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "000-feature-name"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize continuity block"
+    next_safe_action: "Replace template defaults on first save"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Plan: [NAME]
+
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
+| **Framework** | [e.g., React, FastAPI] |
+| **Storage** | [e.g., PostgreSQL, None] |
+| **Testing** | [e.g., Jest, pytest] |
+
+### Overview
+[2-3 sentences: what this implements and the technical approach]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [ ] Problem statement clear and scope documented
+- [ ] Success criteria measurable
+- [ ] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
+
+### Key Components
+- **[Component 1]**: [Purpose]
+- **[Component 2]**: [Purpose]
+
+### Data Flow
+[Brief description of how data moves through the system]
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Project structure created
+- [ ] Dependencies installed
+- [ ] Development environment ready
+
+### Phase 2: Core Implementation
+- [ ] [Core feature 1]
+- [ ] [Core feature 2]
+- [ ] [Core feature 3]
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | [Components/functions] | [Jest/pytest/etc.] |
+| Integration | [API endpoints/flows] | [Tools] |
+| Manual | [User journeys] | Browser |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: [Conditions requiring rollback]
+- **Procedure**: [How to revert changes]
+<!-- /ANCHOR:rollback -->
+
+---
+
+<!--
+CORE TEMPLATE (~90 lines)
+- Essential technical planning
+- Simple phase structure
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 1 from manifest templates > 1-spec.md 1`] = `
+"---
+title: "Feature Specification: [NAME] [template:level_1/spec.md]"
+description: "[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]"
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "name"
+  - "template"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "000-feature-name"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize continuity block"
+    next_safe_action: "Replace template defaults on first save"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Feature Specification: [NAME]
+
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 1 |
+| **Priority** | [P0/P1/P2] |
+| **Status** | [Draft/In Progress/Review/Complete] |
+| **Created** | [YYYY-MM-DD] |
+| **Branch** | \`[###-feature-name]\` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]
+
+### Purpose
+[One-sentence outcome statement. What does success look like?]
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+
+### Out of Scope
+- [Excluded item 1] - [why]
+- [Excluded item 2] - [why]
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| [path/to/file.js] | [Modify/Create/Delete] | [Brief description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | [Requirement description] | [How to verify it's done] |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | [Requirement description] | [How to verify it's done] |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: [Primary measurable outcome]
+- **SC-002**: [Secondary measurable outcome]
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | [System/API] | [What if blocked] | [Fallback plan] |
+| Risk | [Risk description] | [High/Med/Low] | [Mitigation strategy] |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 7. OPEN QUESTIONS
+
+- [Question 1 requiring clarification]
+- [Question 2 requiring clarification]
+<!-- /ANCHOR:questions -->
+
+---
+
+<!--
+CORE TEMPLATE (~80 lines)
+- Essential what/why/how only
+- No boilerplate sections
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 1 from manifest templates > 1-tasks.md 1`] = `
+"---
+title: "Tasks: [NAME] [template:level_1/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "name"
+  - "template"
+  - "tasks core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "000-feature-name"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize continuity block"
+    next_safe_action: "Replace template defaults on first save"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Tasks: [NAME]
+
+<!-- SPECKIT_LEVEL: 1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| \`[ ]\` | Pending |
+| \`[x]\` | Completed |
+| \`[P]\` | Parallelizable |
+| \`[B]\` | Blocked |
+
+**Task Format**: \`T### [P?] Description (file path)\`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [ ] T001 Create project structure
+- [ ] T002 Install dependencies
+- [ ] T003 [P] Configure development tools
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 [Implement core feature 1]
+- [ ] T005 [Implement core feature 2]
+- [ ] T006 [Implement core feature 3]
+- [ ] T007 [Add error handling]
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T008 Test happy path manually
+- [ ] T009 Test edge cases
+- [ ] T010 Update documentation
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked \`[x]\`
+- [ ] No \`[B]\` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See \`spec.md\`
+- **Plan**: See \`plan.md\`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 2 from manifest templates > 2-checklist.md 1`] = `
+"---
+title: "Verification Checklist: [NAME] [template:level_2/checklist.md]"
+description: "Verification Date: [YYYY-MM-DD]"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "name"
+  - "template"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_2"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 2 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Verification Checklist: [NAME]
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [ ] CHK-001 [P0] Requirements documented in spec.md
+- [ ] CHK-002 [P0] Technical approach defined in plan.md
+- [ ] CHK-003 [P1] Dependencies identified and available
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] Code passes lint/format checks
+- [ ] CHK-011 [P0] No console errors or warnings
+- [ ] CHK-012 [P1] Error handling implemented
+- [ ] CHK-013 [P1] Code follows project patterns
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] All acceptance criteria met
+- [ ] CHK-021 [P0] Manual testing complete
+- [ ] CHK-022 [P1] Edge cases tested
+- [ ] CHK-023 [P1] Error scenarios validated
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No hardcoded secrets
+- [ ] CHK-031 [P0] Input validation implemented
+- [ ] CHK-032 [P1] Auth/authz working correctly
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Spec/plan/tasks synchronized
+- [ ] CHK-041 [P1] Code comments adequate
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Temp files in scratch/ only
+- [ ] CHK-051 [P1] scratch/ cleaned before completion
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | [X] | [ ]/[X] |
+| P1 Items | [Y] | [ ]/[Y] |
+| P2 Items | [Z] | [ ]/[Z] |
+
+**Verification Date**: [YYYY-MM-DD]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!--
+Level 2 checklist - Verification focus
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 2 from manifest templates > 2-implementation-summary.md 1`] = `
+"---
+title: "Implementation Summary [template:level_2/implementation-summary.md]"
+description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "template"
+  - "impl summary core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_2"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 2 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | [###-feature-name] |
+| **Completed** | [YYYY-MM-DD] |
+| **Level** | [1/2/3/3+] |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+<!-- Voice guide:
+     Open with a hook: what changed and why it matters. One paragraph, impact first.
+     Then use ### subsections per feature. Each subsection: what it does + why it exists.
+     Write "You can now inspect the trace" not "Trace inspection was implemented."
+     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
+     For Level 1-2, a Files Changed table after the narrative is fine.
+     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+
+[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+
+### [Feature Name]
+
+[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
+Explain what the user gains, not what files you touched.]
+
+### Files Changed
+
+<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+
+| File | Action | Purpose |
+|------|--------|---------|
+| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+<!-- Voice guide:
+     Tell the delivery story. What gave you confidence this works?
+     "All features shipped behind feature flags" not "Feature flags were used."
+     For Level 1: a single sentence is enough.
+     For Level 3+: describe stages (testing, rollout, verification). -->
+
+[How was this tested, verified and shipped? What was the rollout approach?]
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
+     "Chose X because Y" not "X was selected due to Y." -->
+
+| Decision | Why |
+|----------|-----|
+| [What was decided] | [Active-voice rationale with specific reasoning] |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+<!-- Voice guide: Be honest. Show failures alongside passes.
+     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
+
+| Check | Result |
+|-------|--------|
+| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+<!-- Voice guide: Number them. Be specific and actionable.
+     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
+     not "Some features may require configuration."
+     Write "None identified." if nothing applies. -->
+
+1. **[Limitation]** [Specific detail with workaround if one exists.]
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 2 from manifest templates > 2-plan.md 1`] = `
+"---
+title: "Implementation Plan: [NAME] [template:level_2/plan.md]"
+description: "[2-3 sentences: what this implements and the technical approach]"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "name"
+  - "template"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_2"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 2 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Plan: [NAME]
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
+| **Framework** | [e.g., React, FastAPI] |
+| **Storage** | [e.g., PostgreSQL, None] |
+| **Testing** | [e.g., Jest, pytest] |
+
+### Overview
+[2-3 sentences: what this implements and the technical approach]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [ ] Problem statement clear and scope documented
+- [ ] Success criteria measurable
+- [ ] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
+
+### Key Components
+- **[Component 1]**: [Purpose]
+- **[Component 2]**: [Purpose]
+
+### Data Flow
+[Brief description of how data moves through the system]
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Project structure created
+- [ ] Dependencies installed
+- [ ] Development environment ready
+
+### Phase 2: Core Implementation
+- [ ] [Core feature 1]
+- [ ] [Core feature 2]
+- [ ] [Core feature 3]
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | [Components/functions] | [Jest/pytest/etc.] |
+| Integration | [API endpoints/flows] | [Tools] |
+| Manual | [User journeys] | Browser |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: [Conditions requiring rollback]
+- **Procedure**: [How to revert changes]
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+\`\`\`
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+\`\`\`
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | [Low/Med/High] | [e.g., 1-2 hours] |
+| Core Implementation | [Low/Med/High] | [e.g., 4-8 hours] |
+| Verification | [Low/Med/High] | [e.g., 1-2 hours] |
+| **Total** | | **[e.g., 6-12 hours]** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. [Immediate action - e.g., disable feature flag]
+2. [Revert code - e.g., git revert or redeploy previous version]
+3. [Verify rollback - e.g., smoke test critical paths]
+4. [Notify stakeholders - if user-facing]
+
+### Data Reversal
+- **Has data migrations?** [Yes/No]
+- **Reversal procedure**: [Steps or "N/A"]
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+<!--
+LEVEL 2 PLAN (~140 lines)
+- Core + Verification additions
+- Phase dependencies, effort estimation
+- Enhanced rollback procedures
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 2 from manifest templates > 2-spec.md 1`] = `
+"---
+title: "Feature Specification: [NAME] [template:level_2/spec.md]"
+description: "[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]"
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "name"
+  - "template"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_2"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 2 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Feature Specification: [NAME]
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | [1/2/3/3+] |
+| **Priority** | [P0/P1/P2] |
+| **Status** | [Draft/In Progress/Review/Complete] |
+| **Created** | [YYYY-MM-DD] |
+| **Branch** | \`[###-feature-name]\` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]
+
+### Purpose
+[One-sentence outcome statement. What does success look like?]
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+
+### Out of Scope
+- [Excluded item 1] - [why]
+- [Excluded item 2] - [why]
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| [path/to/file.js] | [Modify/Create/Delete] | [Brief description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | [Requirement description] | [How to verify it's done] |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | [Requirement description] | [How to verify it's done] |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: [Primary measurable outcome]
+- **SC-002**: [Secondary measurable outcome]
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | [System/API] | [What if blocked] | [Fallback plan] |
+| Risk | [Risk description] | [High/Med/Low] | [Mitigation strategy] |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+
+---
+
+<!-- ANCHOR:nfr -->
+## L2: NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: [Response time target - e.g., <200ms p95]
+- **NFR-P02**: [Throughput target - e.g., 100 req/sec]
+
+### Security
+- **NFR-S01**: [Auth requirement - e.g., JWT tokens required]
+- **NFR-S02**: [Data protection - e.g., TLS + encrypted at rest]
+
+### Reliability
+- **NFR-R01**: [Uptime target - e.g., 99.9%]
+- **NFR-R02**: [Error rate - e.g., <1%]
+<!-- /ANCHOR:nfr -->
+
+---
+
+<!-- ANCHOR:edge-cases -->
+## L2: EDGE CASES
+
+### Data Boundaries
+- Empty input: [How system handles]
+- Maximum length: [Limit and behavior]
+- Invalid format: [Validation response]
+
+### Error Scenarios
+- External service failure: [Fallback behavior]
+- Network timeout: [Retry strategy]
+- Concurrent access: [Conflict resolution]
+
+### State Transitions
+- Partial completion: [Recovery behavior]
+- Session expiry: [User experience]
+<!-- /ANCHOR:edge-cases -->
+
+---
+
+<!-- ANCHOR:complexity -->
+## L2: COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Notes |
+|-----------|-------|-------|
+| Scope | [/25] | [Files, LOC, systems] |
+| Risk | [/25] | [Auth, API, breaking changes] |
+| Research | [/20] | [Investigation needs] |
+| **Total** | **[/70]** | **Level 2** |
+<!-- /ANCHOR:complexity -->
+
+---
+
+## 10. OPEN QUESTIONS
+
+- [Question 1 requiring clarification]
+- [Question 2 requiring clarification]
+<!-- /ANCHOR:questions -->
+
+---
+
+<!--
+CORE TEMPLATE (~80 lines)
+- Essential what/why/how only
+- No boilerplate sections
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 2 from manifest templates > 2-tasks.md 1`] = `
+"---
+title: "Tasks: [NAME] [template:level_2/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "name"
+  - "template"
+  - "tasks core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_2"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 2 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Tasks: [NAME]
+
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| \`[ ]\` | Pending |
+| \`[x]\` | Completed |
+| \`[P]\` | Parallelizable |
+| \`[B]\` | Blocked |
+
+**Task Format**: \`T### [P?] Description (file path)\`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [ ] T001 Create project structure
+- [ ] T002 Install dependencies
+- [ ] T003 [P] Configure development tools
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 [Implement core feature 1]
+- [ ] T005 [Implement core feature 2]
+- [ ] T006 [Implement core feature 3]
+- [ ] T007 [Add error handling]
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T008 Test happy path manually
+- [ ] T009 Test edge cases
+- [ ] T010 Update documentation
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked \`[x]\`
+- [ ] No \`[B]\` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See \`spec.md\`
+- **Plan**: See \`plan.md\`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-checklist.md 1`] = `
+"---
+title: "Verification Checklist: [NAME] [template:level_3/checklist.md]"
+description: "Verification Date: [YYYY-MM-DD]"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "name"
+  - "template"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Verification Checklist: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [ ] CHK-001 [P0] Requirements documented in spec.md
+- [ ] CHK-002 [P0] Technical approach defined in plan.md
+- [ ] CHK-003 [P1] Dependencies identified and available
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] Code passes lint/format checks
+- [ ] CHK-011 [P0] No console errors or warnings
+- [ ] CHK-012 [P1] Error handling implemented
+- [ ] CHK-013 [P1] Code follows project patterns
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] All acceptance criteria met
+- [ ] CHK-021 [P0] Manual testing complete
+- [ ] CHK-022 [P1] Edge cases tested
+- [ ] CHK-023 [P1] Error scenarios validated
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No hardcoded secrets
+- [ ] CHK-031 [P0] Input validation implemented
+- [ ] CHK-032 [P1] Auth/authz working correctly
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Spec/plan/tasks synchronized
+- [ ] CHK-041 [P1] Code comments adequate
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Temp files in scratch/ only
+- [ ] CHK-051 [P1] scratch/ cleaned before completion
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | [X] | [ ]/[X] |
+| P1 Items | [Y] | [ ]/[Y] |
+| P2 Items | [Z] | [ ]/[Z] |
+
+**Verification Date**: [YYYY-MM-DD]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- Append to Level 2 checklist.md -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [ ] CHK-100 [P0] Architecture decisions documented in decision-record.md
+- [ ] CHK-101 [P1] All ADRs have status (Proposed/Accepted)
+- [ ] CHK-102 [P1] Alternatives documented with rejection rationale
+- [ ] CHK-103 [P2] Migration path documented (if applicable)
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [ ] CHK-110 [P1] Response time targets met (NFR-P01)
+- [ ] CHK-111 [P1] Throughput targets met (NFR-P02)
+- [ ] CHK-112 [P2] Load testing completed
+- [ ] CHK-113 [P2] Performance benchmarks documented
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [ ] CHK-120 [P0] Rollback procedure documented and tested
+- [ ] CHK-121 [P0] Feature flag configured (if applicable)
+- [ ] CHK-122 [P1] Monitoring/alerting configured
+- [ ] CHK-123 [P1] Runbook created
+- [ ] CHK-124 [P2] Deployment runbook reviewed
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [ ] CHK-130 [P1] Security review completed
+- [ ] CHK-131 [P1] Dependency licenses compatible
+- [ ] CHK-132 [P2] OWASP Top 10 checklist completed
+- [ ] CHK-133 [P2] Data handling compliant with requirements
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [ ] CHK-140 [P1] All spec documents synchronized
+- [ ] CHK-141 [P1] API documentation complete (if applicable)
+- [ ] CHK-142 [P2] User-facing documentation updated
+- [ ] CHK-143 [P2] Knowledge transfer documented
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+| Approver | Role | Status | Date |
+|----------|------|--------|------|
+| [Name] | Technical Lead | [ ] Approved | |
+| [Name] | Product Owner | [ ] Approved | |
+| [Name] | QA Lead | [ ] Approved | |
+<!-- /ANCHOR:sign-off -->
+
+---
+
+<!--
+Level 3 checklist - Full verification + architecture
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-decision-record.md 1`] = `
+"---
+title: "Decision Record: [NAME] [template:level_3/decision-record.md]"
+description: "Decision record template for documenting architectural choices, alternatives, consequences, and implementation notes."
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "name"
+  - "template"
+  - "decision record"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Decision Record: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:adr-001 -->
+## ADR-001: [Decision Title]
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | [Proposed/Accepted/Deprecated/Superseded] |
+| **Date** | [YYYY-MM-DD] |
+| **Deciders** | [Names] |
+
+---
+
+<!-- ANCHOR:adr-001-context -->
+### Context
+
+<!-- Voice guide: State the problem directly. "We needed to choose between X and Y because Z"
+     not "A decision was required regarding the selection of an appropriate approach." -->
+
+[What problem or situation required this decision? What was at stake?
+Write in direct, active voice.]
+
+### Constraints
+
+- [Technical constraint with specifics]
+- [Business constraint with specifics]
+<!-- /ANCHOR:adr-001-context -->
+
+---
+
+<!-- ANCHOR:adr-001-decision -->
+### Decision
+
+**We chose**: [One-sentence description of the decision, in active voice]
+
+**How it works**: [Implementation approach in 2-3 direct sentences]
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **[Chosen]** | [Advantages] | [Disadvantages] | [X/10] |
+| [Alternative A] | [Advantages] | [Disadvantages] | [Y/10] |
+
+**Why this one**: [Rationale in 1-2 sentences, direct and specific]
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- [Specific benefit with measurable impact where possible]
+- [Specific benefit]
+
+**What it costs**:
+- [Specific drawback] . Mitigation: [How to handle it]
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| [Risk with specifics] | [H/M/L] | [Concrete strategy] |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | [PASS/FAIL] | [Is this solving an actual need now?] |
+| 2 | **Beyond Local Maxima?** | [PASS/FAIL] | [Were alternatives explored?] |
+| 3 | **Sufficient?** | [PASS/FAIL] | [Is this the simplest approach?] |
+| 4 | **Fits Goal?** | [PASS/FAIL] | [Is this on the critical path?] |
+| 5 | **Open Horizons?** | [PASS/FAIL] | [Is this long-term aligned?] |
+
+**Checks Summary**: [X/5 PASS]
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- [System/Component with specific change]
+- [System/Component with specific change]
+
+**How to roll back**: [Concrete revert steps, not "revert if needed"]
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---
+
+<!--
+Level 3 Decision Record (Addendum): One ADR per major decision.
+Write in human voice: active, direct, specific. No em dashes, no hedging.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-implementation-summary.md 1`] = `
+"---
+title: "Implementation Summary [template:level_3/implementation-summary.md]"
+description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "template"
+  - "impl summary core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | [###-feature-name] |
+| **Completed** | [YYYY-MM-DD] |
+| **Level** | [1/2/3/3+] |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+<!-- Voice guide:
+     Open with a hook: what changed and why it matters. One paragraph, impact first.
+     Then use ### subsections per feature. Each subsection: what it does + why it exists.
+     Write "You can now inspect the trace" not "Trace inspection was implemented."
+     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
+     For Level 1-2, a Files Changed table after the narrative is fine.
+     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+
+[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+
+### [Feature Name]
+
+[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
+Explain what the user gains, not what files you touched.]
+
+### Files Changed
+
+<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+
+| File | Action | Purpose |
+|------|--------|---------|
+| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+<!-- Voice guide:
+     Tell the delivery story. What gave you confidence this works?
+     "All features shipped behind feature flags" not "Feature flags were used."
+     For Level 1: a single sentence is enough.
+     For Level 3+: describe stages (testing, rollout, verification). -->
+
+[How was this tested, verified and shipped? What was the rollout approach?]
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
+     "Chose X because Y" not "X was selected due to Y." -->
+
+| Decision | Why |
+|----------|-----|
+| [What was decided] | [Active-voice rationale with specific reasoning] |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+<!-- Voice guide: Be honest. Show failures alongside passes.
+     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
+
+| Check | Result |
+|-------|--------|
+| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+<!-- Voice guide: Number them. Be specific and actionable.
+     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
+     not "Some features may require configuration."
+     Write "None identified." if nothing applies. -->
+
+1. **[Limitation]** [Specific detail with workaround if one exists.]
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-plan.md 1`] = `
+"---
+title: "Implementation Plan: [NAME] [template:level_3/plan.md]"
+description: "[2-3 sentences: what this implements and the technical approach]"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "name"
+  - "template"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Plan: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
+| **Framework** | [e.g., React, FastAPI] |
+| **Storage** | [e.g., PostgreSQL, None] |
+| **Testing** | [e.g., Jest, pytest] |
+
+### Overview
+[2-3 sentences: what this implements and the technical approach]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [ ] Problem statement clear and scope documented
+- [ ] Success criteria measurable
+- [ ] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
+
+### Key Components
+- **[Component 1]**: [Purpose]
+- **[Component 2]**: [Purpose]
+
+### Data Flow
+[Brief description of how data moves through the system]
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Project structure created
+- [ ] Dependencies installed
+- [ ] Development environment ready
+
+### Phase 2: Core Implementation
+- [ ] [Core feature 1]
+- [ ] [Core feature 2]
+- [ ] [Core feature 3]
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | [Components/functions] | [Jest/pytest/etc.] |
+| Integration | [API endpoints/flows] | [Tools] |
+| Manual | [User journeys] | Browser |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: [Conditions requiring rollback]
+- **Procedure**: [How to revert changes]
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+\`\`\`
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+\`\`\`
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | [Low/Med/High] | [e.g., 1-2 hours] |
+| Core Implementation | [Low/Med/High] | [e.g., 4-8 hours] |
+| Verification | [Low/Med/High] | [e.g., 1-2 hours] |
+| **Total** | | **[e.g., 6-12 hours]** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. [Immediate action - e.g., disable feature flag]
+2. [Revert code - e.g., git revert or redeploy previous version]
+3. [Verify rollback - e.g., smoke test critical paths]
+4. [Notify stakeholders - if user-facing]
+
+### Data Reversal
+- **Has data migrations?** [Yes/No]
+- **Reversal procedure**: [Steps or "N/A"]
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+\`\`\`
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Phase 1   │────►│   Phase 2   │────►│   Phase 3   │
+│   Setup     │     │    Core     │     │   Verify    │
+└─────────────┘     └──────┬──────┘     └─────────────┘
+                          │
+                    ┌─────▼─────┐
+                    │  Phase 2b │
+                    │  Parallel │
+                    └───────────┘
+\`\`\`
+
+### Dependency Matrix
+
+| Component | Depends On | Produces | Blocks |
+|-----------|------------|----------|--------|
+| [Component A] | None | [Output] | B, C |
+| [Component B] | A | [Output] | D |
+| [Component C] | A | [Output] | D |
+| [Component D] | B, C | [Final] | None |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. **[Phase/Task]** - [Duration estimate] - CRITICAL
+2. **[Phase/Task]** - [Duration estimate] - CRITICAL
+3. **[Phase/Task]** - [Duration estimate] - CRITICAL
+
+**Total Critical Path**: [Sum of durations]
+
+**Parallel Opportunities**:
+- [Task A] and [Task B] can run simultaneously
+- [Task C] and [Task D] can run after Phase 1
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | [Setup Complete] | [All dependencies ready] | [Date/Phase] |
+| M2 | [Core Done] | [Main features working] | [Date/Phase] |
+| M3 | [Release Ready] | [All tests pass] | [Date/Phase] |
+<!-- /ANCHOR:milestones -->
+
+---
+
+## L3: ARCHITECTURE DECISION RECORD
+
+### ADR-001: [Decision Title]
+
+**Status**: [Proposed/Accepted/Deprecated]
+
+**Context**: [What problem we're solving]
+
+**Decision**: [What we decided]
+
+**Consequences**:
+- [Positive outcome 1]
+- [Negative outcome + mitigation]
+
+**Alternatives Rejected**:
+- [Option B]: [Why rejected]
+
+---
+
+<!--
+LEVEL 3 PLAN (~200 lines)
+- Core + L2 + L3 addendums
+- Dependency graphs, milestones
+- Architecture decision records
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-spec.md 1`] = `
+"---
+title: "Feature Specification: [NAME] [template:level_3/spec.md]"
+description: "[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]"
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "name"
+  - "template"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Feature Specification: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch | v2.2 -->
+
+<!-- WHEN TO USE THIS TEMPLATE:
+Level 3 (+Arch) is appropriate when:
+- Changes affect 500+ lines of code
+- Architecture decisions need formal documentation (ADRs)
+- Executive summary needed for stakeholders
+- Risk matrix required
+- 4-8 user stories
+- Multiple teams or cross-functional work
+
+DO NOT use Level 3 if:
+- Simple feature (use Level 1)
+- Only verification needed (use Level 2)
+- Governance approval workflow required (use Level 3+)
+- Compliance checkpoints needed (use Level 3+)
+- Multi-agent parallel execution coordination (use Level 3+)
+-->
+
+---
+
+## EXECUTIVE SUMMARY
+
+[2-3 sentence high-level overview for stakeholders who need quick context]
+
+**Key Decisions**: [Major decision 1], [Major decision 2]
+
+**Critical Dependencies**: [Blocking dependency]
+
+---
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 3 |
+| **Priority** | [P0/P1/P2] |
+| **Status** | [Draft/In Progress/Review/Complete] |
+| **Created** | [YYYY-MM-DD] |
+| **Branch** | \`[###-feature-name]\` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]
+
+### Purpose
+[One-sentence outcome statement. What does success look like?]
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+
+### Out of Scope
+- [Excluded item 1] - [why]
+- [Excluded item 2] - [why]
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| [path/to/file.js] | [Modify/Create/Delete] | [Brief description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | [Requirement description] | [How to verify it's done] |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | [Requirement description] | [How to verify it's done] |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: [Primary measurable outcome]
+- **SC-002**: [Secondary measurable outcome]
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | [System/API] | [What if blocked] | [Fallback plan] |
+| Risk | [Risk description] | [High/Med/Low] | [Mitigation strategy] |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: [Response time target - e.g., <200ms p95]
+
+### Security
+- **NFR-S01**: [Auth requirement - e.g., JWT tokens required]
+
+### Reliability
+- **NFR-R01**: [Uptime target - e.g., 99.9%]
+
+---
+
+## 8. EDGE CASES
+
+### Data Boundaries
+- Empty input: [How system handles]
+- Maximum length: [Limit and behavior]
+
+### Error Scenarios
+- External service failure: [Fallback behavior]
+- Network timeout: [Retry strategy]
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | [/25] | [Files: X, LOC: Y, Systems: Z] |
+| Risk | [/25] | [Auth: Y/N, API: Y/N, Breaking: Y/N] |
+| Research | [/20] | [Investigation needs] |
+| Multi-Agent | [/15] | [Workstreams: X] |
+| Coordination | [/15] | [Dependencies: X] |
+| **Total** | **[/100]** | **Level 3** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | [Risk] | [H/M/L] | [H/M/L] | [Strategy] |
+
+---
+
+## 11. USER STORIES
+
+### US-001: [Title] (Priority: P0)
+
+**As a** [user type], **I want** [needed behavior], **so that** [benefit].
+
+**Acceptance Criteria**:
+1. Given [context], When [action], Then [outcome]
+
+---
+
+### US-002: [Title] (Priority: P1)
+
+**As a** [user type], **I want** [needed behavior], **so that** [benefit].
+
+**Acceptance Criteria**:
+1. Given [context], When [action], Then [outcome]
+
+---
+
+## 12. OPEN QUESTIONS
+
+- [Question 1 requiring clarification]
+- [Question 2 requiring clarification]
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See \`plan.md\`
+- **Task Breakdown**: See \`tasks.md\`
+- **Verification Checklist**: See \`checklist.md\`
+- **Decision Records**: See \`decision-record.md\`
+
+---
+
+<!--
+LEVEL 3 SPEC (~165 lines)
+- Core + L2 + L3 addendums
+- Executive Summary, Risk Matrix, User Stories
+- Full Complexity Assessment
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3 from manifest templates > 3-tasks.md 1`] = `
+"---
+title: "Tasks: [NAME] [template:level_3/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "name"
+  - "template"
+  - "tasks core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Tasks: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| \`[ ]\` | Pending |
+| \`[x]\` | Completed |
+| \`[P]\` | Parallelizable |
+| \`[B]\` | Blocked |
+
+**Task Format**: \`T### [P?] Description (file path)\`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [ ] T001 Create project structure
+- [ ] T002 Install dependencies
+- [ ] T003 [P] Configure development tools
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 [Implement core feature 1]
+- [ ] T005 [Implement core feature 2]
+- [ ] T006 [Implement core feature 3]
+- [ ] T007 [Add error handling]
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T008 Test happy path manually
+- [ ] T009 Test edge cases
+- [ ] T010 Update documentation
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked \`[x]\`
+- [ ] No \`[B]\` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See \`spec.md\`
+- **Plan**: See \`plan.md\`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-checklist.md 1`] = `
+"---
+title: "Verification Checklist: [NAME] [template:level_3+/checklist.md]"
+description: "Verification Date: [YYYY-MM-DD]"
+trigger_phrases:
+  - "verification"
+  - "checklist"
+  - "name"
+  - "template"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Verification Checklist: [NAME]
+
+<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: checklist | v2.2 -->
+
+---
+
+<!-- ANCHOR:protocol -->
+## Verification Protocol
+
+| Priority | Handling | Completion Impact |
+|----------|----------|-------------------|
+| **[P0]** | HARD BLOCKER | Cannot claim done until complete |
+| **[P1]** | Required | Must complete OR get user approval |
+| **[P2]** | Optional | Can defer with documented reason |
+<!-- /ANCHOR:protocol -->
+
+---
+
+<!-- ANCHOR:pre-impl -->
+## Pre-Implementation
+
+- [ ] CHK-001 [P0] Requirements documented in spec.md
+- [ ] CHK-002 [P0] Technical approach defined in plan.md
+- [ ] CHK-003 [P1] Dependencies identified and available
+<!-- /ANCHOR:pre-impl -->
+
+---
+
+<!-- ANCHOR:code-quality -->
+## Code Quality
+
+- [ ] CHK-010 [P0] Code passes lint/format checks
+- [ ] CHK-011 [P0] No console errors or warnings
+- [ ] CHK-012 [P1] Error handling implemented
+- [ ] CHK-013 [P1] Code follows project patterns
+<!-- /ANCHOR:code-quality -->
+
+---
+
+<!-- ANCHOR:testing -->
+## Testing
+
+- [ ] CHK-020 [P0] All acceptance criteria met
+- [ ] CHK-021 [P0] Manual testing complete
+- [ ] CHK-022 [P1] Edge cases tested
+- [ ] CHK-023 [P1] Error scenarios validated
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:security -->
+## Security
+
+- [ ] CHK-030 [P0] No hardcoded secrets
+- [ ] CHK-031 [P0] Input validation implemented
+- [ ] CHK-032 [P1] Auth/authz working correctly
+<!-- /ANCHOR:security -->
+
+---
+
+<!-- ANCHOR:docs -->
+## Documentation
+
+- [ ] CHK-040 [P1] Spec/plan/tasks synchronized
+- [ ] CHK-041 [P1] Code comments adequate
+- [ ] CHK-042 [P2] README updated (if applicable)
+<!-- /ANCHOR:docs -->
+
+---
+
+<!-- ANCHOR:file-org -->
+## File Organization
+
+- [ ] CHK-050 [P1] Temp files in scratch/ only
+- [ ] CHK-051 [P1] scratch/ cleaned before completion
+<!-- /ANCHOR:file-org -->
+
+---
+
+<!-- ANCHOR:summary -->
+## Verification Summary
+
+| Category | Total | Verified |
+|----------|-------|----------|
+| P0 Items | [X] | [ ]/[X] |
+| P1 Items | [Y] | [ ]/[Y] |
+| P2 Items | [Z] | [ ]/[Z] |
+
+**Verification Date**: [YYYY-MM-DD]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- Append to Level 2 checklist.md -->
+
+---
+
+<!-- ANCHOR:arch-verify -->
+## L3+: ARCHITECTURE VERIFICATION
+
+- [ ] CHK-100 [P0] Architecture decisions documented in decision-record.md
+- [ ] CHK-101 [P1] All ADRs have status (Proposed/Accepted)
+- [ ] CHK-102 [P1] Alternatives documented with rejection rationale
+- [ ] CHK-103 [P2] Migration path documented (if applicable)
+<!-- /ANCHOR:arch-verify -->
+
+---
+
+<!-- ANCHOR:perf-verify -->
+## L3+: PERFORMANCE VERIFICATION
+
+- [ ] CHK-110 [P1] Response time targets met (NFR-P01)
+- [ ] CHK-111 [P1] Throughput targets met (NFR-P02)
+- [ ] CHK-112 [P2] Load testing completed
+- [ ] CHK-113 [P2] Performance benchmarks documented
+<!-- /ANCHOR:perf-verify -->
+
+---
+
+<!-- ANCHOR:deploy-ready -->
+## L3+: DEPLOYMENT READINESS
+
+- [ ] CHK-120 [P0] Rollback procedure documented and tested
+- [ ] CHK-121 [P0] Feature flag configured (if applicable)
+- [ ] CHK-122 [P1] Monitoring/alerting configured
+- [ ] CHK-123 [P1] Runbook created
+- [ ] CHK-124 [P2] Deployment runbook reviewed
+<!-- /ANCHOR:deploy-ready -->
+
+---
+
+<!-- ANCHOR:compliance-verify -->
+## L3+: COMPLIANCE VERIFICATION
+
+- [ ] CHK-130 [P1] Security review completed
+- [ ] CHK-131 [P1] Dependency licenses compatible
+- [ ] CHK-132 [P2] OWASP Top 10 checklist completed
+- [ ] CHK-133 [P2] Data handling compliant with requirements
+<!-- /ANCHOR:compliance-verify -->
+
+---
+
+<!-- ANCHOR:docs-verify -->
+## L3+: DOCUMENTATION VERIFICATION
+
+- [ ] CHK-140 [P1] All spec documents synchronized
+- [ ] CHK-141 [P1] API documentation complete (if applicable)
+- [ ] CHK-142 [P2] User-facing documentation updated
+- [ ] CHK-143 [P2] Knowledge transfer documented
+<!-- /ANCHOR:docs-verify -->
+
+---
+
+<!-- ANCHOR:sign-off -->
+## L3+: SIGN-OFF
+
+| Approver | Role | Status | Date |
+|----------|------|--------|------|
+| [Name] | Technical Lead | [ ] Approved | |
+| [Name] | Product Owner | [ ] Approved | |
+| [Name] | QA Lead | [ ] Approved | |
+<!-- /ANCHOR:sign-off -->
+
+---
+
+<!--
+Level 3+ checklist - Full verification + architecture
+Mark [x] with evidence when verified
+P0 must complete, P1 need approval to defer
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-decision-record.md 1`] = `
+"---
+title: "Decision Record: [NAME] [template:level_3+/decision-record.md]"
+description: "not \\"A decision was required regarding the selection of an appropriate approach.\\" -->"
+trigger_phrases:
+  - "decision"
+  - "record"
+  - "name"
+  - "template"
+  - "decision record"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Decision Record: [NAME]
+
+<!-- SPECKIT_LEVEL: 3 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: decision-record | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:adr-001 -->
+## ADR-001: [Decision Title]
+
+### Metadata
+
+| Field | Value |
+|-------|-------|
+| **Status** | [Proposed/Accepted/Deprecated/Superseded] |
+| **Date** | [YYYY-MM-DD] |
+| **Deciders** | [Names] |
+
+---
+
+<!-- ANCHOR:adr-001-context -->
+### Context
+
+<!-- Voice guide: State the problem directly. "We needed to choose between X and Y because Z"
+     not "A decision was required regarding the selection of an appropriate approach." -->
+
+[What problem or situation required this decision? What was at stake?
+Write in direct, active voice.]
+
+### Constraints
+
+- [Technical constraint with specifics]
+- [Business constraint with specifics]
+<!-- /ANCHOR:adr-001-context -->
+
+---
+
+<!-- ANCHOR:adr-001-decision -->
+### Decision
+
+**We chose**: [One-sentence description of the decision, in active voice]
+
+**How it works**: [Implementation approach in 2-3 direct sentences]
+<!-- /ANCHOR:adr-001-decision -->
+
+---
+
+<!-- ANCHOR:adr-001-alternatives -->
+### Alternatives Considered
+
+| Option | Pros | Cons | Score |
+|--------|------|------|-------|
+| **[Chosen]** | [Advantages] | [Disadvantages] | [X/10] |
+| [Alternative A] | [Advantages] | [Disadvantages] | [Y/10] |
+
+**Why this one**: [Rationale in 1-2 sentences, direct and specific]
+<!-- /ANCHOR:adr-001-alternatives -->
+
+---
+
+<!-- ANCHOR:adr-001-consequences -->
+### Consequences
+
+**What improves**:
+- [Specific benefit with measurable impact where possible]
+- [Specific benefit]
+
+**What it costs**:
+- [Specific drawback] . Mitigation: [How to handle it]
+
+**Risks**:
+
+| Risk | Impact | Mitigation |
+|------|--------|------------|
+| [Risk with specifics] | [H/M/L] | [Concrete strategy] |
+<!-- /ANCHOR:adr-001-consequences -->
+
+---
+
+<!-- ANCHOR:adr-001-five-checks -->
+### Five Checks Evaluation
+
+| # | Check | Result | Evidence |
+|---|-------|--------|----------|
+| 1 | **Necessary?** | [PASS/FAIL] | [Is this solving an actual need now?] |
+| 2 | **Beyond Local Maxima?** | [PASS/FAIL] | [Were alternatives explored?] |
+| 3 | **Sufficient?** | [PASS/FAIL] | [Is this the simplest approach?] |
+| 4 | **Fits Goal?** | [PASS/FAIL] | [Is this on the critical path?] |
+| 5 | **Open Horizons?** | [PASS/FAIL] | [Is this long-term aligned?] |
+
+**Checks Summary**: [X/5 PASS]
+<!-- /ANCHOR:adr-001-five-checks -->
+
+---
+
+<!-- ANCHOR:adr-001-impl -->
+### Implementation
+
+**What changes**:
+- [System/Component with specific change]
+- [System/Component with specific change]
+
+**How to roll back**: [Concrete revert steps, not "revert if needed"]
+<!-- /ANCHOR:adr-001-impl -->
+<!-- /ANCHOR:adr-001 -->
+
+---
+
+<!--
+Level 3 Decision Record (Addendum): One ADR per major decision.
+Write in human voice: active, direct, specific. No em dashes, no hedging.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-implementation-summary.md 1`] = `
+"---
+title: "Implementation Summary [template:level_3+/implementation-summary.md]"
+description: "Open with a hook: what changed and why it matters. One paragraph, impact first."
+trigger_phrases:
+  - "implementation"
+  - "summary"
+  - "template"
+  - "impl summary core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Summary
+
+<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: impl-summary-core | v2.2 -->
+<!-- HVR_REFERENCE: .opencode/skill/sk-doc/references/hvr_rules.md -->
+
+---
+
+<!-- ANCHOR:metadata -->
+## Metadata
+
+| Field | Value |
+|-------|-------|
+| **Spec Folder** | [###-feature-name] |
+| **Completed** | [YYYY-MM-DD] |
+| **Level** | [1/2/3/3+] |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:what-built -->
+## What Was Built
+
+<!-- Voice guide:
+     Open with a hook: what changed and why it matters. One paragraph, impact first.
+     Then use ### subsections per feature. Each subsection: what it does + why it exists.
+     Write "You can now inspect the trace" not "Trace inspection was implemented."
+     NO "Files Changed" table for Level 3/3+. The narrative IS the summary.
+     For Level 1-2, a Files Changed table after the narrative is fine.
+     Reference: specs/system-spec-kit/020-mcp-working-memory-hybrid-rag/implementation-summary.md -->
+
+[Opening hook: 2-3 sentences on what changed and why it matters. Lead with impact.]
+
+### [Feature Name]
+
+[What this feature does and why it exists. 1-2 paragraphs. Use direct address.
+Explain what the user gains, not what files you touched.]
+
+### Files Changed
+
+<!-- Include for Level 1-2. Omit for Level 3/3+ where the narrative carries. -->
+
+| File | Action | Purpose |
+|------|--------|---------|
+| [path] | [Created/Modified/Deleted] | [What this change accomplishes] |
+<!-- /ANCHOR:what-built -->
+
+---
+
+<!-- ANCHOR:how-delivered -->
+## How It Was Delivered
+
+<!-- Voice guide:
+     Tell the delivery story. What gave you confidence this works?
+     "All features shipped behind feature flags" not "Feature flags were used."
+     For Level 1: a single sentence is enough.
+     For Level 3+: describe stages (testing, rollout, verification). -->
+
+[How was this tested, verified and shipped? What was the rollout approach?]
+<!-- /ANCHOR:how-delivered -->
+
+---
+
+<!-- ANCHOR:decisions -->
+## Key Decisions
+
+<!-- Voice guide: "Why" column should read like you're explaining to a colleague.
+     "Chose X because Y" not "X was selected due to Y." -->
+
+| Decision | Why |
+|----------|-----|
+| [What was decided] | [Active-voice rationale with specific reasoning] |
+<!-- /ANCHOR:decisions -->
+
+---
+
+<!-- ANCHOR:verification -->
+## Verification
+
+<!-- Voice guide: Be honest. Show failures alongside passes.
+     "FAIL, TS2349 error in benchmarks.ts" not "Minor issues detected." -->
+
+| Check | Result |
+|-------|--------|
+| [Validation, lint, tests, manual check] | [PASS/FAIL with specifics] |
+<!-- /ANCHOR:verification -->
+
+---
+
+<!-- ANCHOR:limitations -->
+## Known Limitations
+
+<!-- Voice guide: Number them. Be specific and actionable.
+     "Adaptive fusion is enabled by default. Set SPECKIT_ADAPTIVE_FUSION=false to disable."
+     not "Some features may require configuration."
+     Write "None identified." if nothing applies. -->
+
+1. **[Limitation]** [Specific detail with workaround if one exists.]
+<!-- /ANCHOR:limitations -->
+
+---
+
+<!--
+CORE TEMPLATE: Post-implementation documentation, created AFTER work completes.
+Write in human voice: active, direct, specific. No em dashes, no hedging, no AI filler.
+HVR rules: .opencode/skill/sk-doc/references/hvr_rules.md
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-plan.md 1`] = `
+"---
+title: "Implementation Plan: [NAME] [template:level_3+/plan.md]"
+description: "[2-3 sentences: what this implements and the technical approach]"
+trigger_phrases:
+  - "implementation"
+  - "plan"
+  - "name"
+  - "template"
+  - "plan core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Implementation Plan: [NAME]
+
+<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: plan-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:summary -->
+## 1. SUMMARY
+
+### Technical Context
+
+| Aspect | Value |
+|--------|-------|
+| **Language/Stack** | [e.g., TypeScript, Python 3.11] |
+| **Framework** | [e.g., React, FastAPI] |
+| **Storage** | [e.g., PostgreSQL, None] |
+| **Testing** | [e.g., Jest, pytest] |
+
+### Overview
+[2-3 sentences: what this implements and the technical approach]
+<!-- /ANCHOR:summary -->
+
+---
+
+<!-- ANCHOR:quality-gates -->
+## 2. QUALITY GATES
+
+### Definition of Ready
+- [ ] Problem statement clear and scope documented
+- [ ] Success criteria measurable
+- [ ] Dependencies identified
+
+### Definition of Done
+- [ ] All acceptance criteria met
+- [ ] Tests passing (if applicable)
+- [ ] Docs updated (spec/plan/tasks)
+<!-- /ANCHOR:quality-gates -->
+
+---
+
+<!-- ANCHOR:architecture -->
+## 3. ARCHITECTURE
+
+### Pattern
+[MVC | MVVM | Clean Architecture | Serverless | Monolith | Other]
+
+### Key Components
+- **[Component 1]**: [Purpose]
+- **[Component 2]**: [Purpose]
+
+### Data Flow
+[Brief description of how data moves through the system]
+<!-- /ANCHOR:architecture -->
+
+---
+
+<!-- ANCHOR:phases -->
+## 4. IMPLEMENTATION PHASES
+
+### Phase 1: Setup
+- [ ] Project structure created
+- [ ] Dependencies installed
+- [ ] Development environment ready
+
+### Phase 2: Core Implementation
+- [ ] [Core feature 1]
+- [ ] [Core feature 2]
+- [ ] [Core feature 3]
+
+### Phase 3: Verification
+- [ ] Manual testing complete
+- [ ] Edge cases handled
+- [ ] Documentation updated
+<!-- /ANCHOR:phases -->
+
+---
+
+<!-- ANCHOR:testing -->
+## 5. TESTING STRATEGY
+
+| Test Type | Scope | Tools |
+|-----------|-------|-------|
+| Unit | [Components/functions] | [Jest/pytest/etc.] |
+| Integration | [API endpoints/flows] | [Tools] |
+| Manual | [User journeys] | Browser |
+<!-- /ANCHOR:testing -->
+
+---
+
+<!-- ANCHOR:dependencies -->
+## 6. DEPENDENCIES
+
+| Dependency | Type | Status | Impact if Blocked |
+|------------|------|--------|-------------------|
+| [System/Library] | [Internal/External] | [Green/Yellow/Red] | [Impact] |
+<!-- /ANCHOR:dependencies -->
+
+---
+
+<!-- ANCHOR:rollback -->
+## 7. ROLLBACK PLAN
+
+- **Trigger**: [Conditions requiring rollback]
+- **Procedure**: [How to revert changes]
+<!-- /ANCHOR:rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:phase-deps -->
+## L2: PHASE DEPENDENCIES
+
+\`\`\`
+Phase 1 (Setup) ──────┐
+                      ├──► Phase 2 (Core) ──► Phase 3 (Verify)
+Phase 1.5 (Config) ───┘
+\`\`\`
+
+| Phase | Depends On | Blocks |
+|-------|------------|--------|
+| Setup | None | Core, Config |
+| Config | Setup | Core |
+| Core | Setup, Config | Verify |
+| Verify | Core | None |
+<!-- /ANCHOR:phase-deps -->
+
+---
+
+<!-- ANCHOR:effort -->
+## L2: EFFORT ESTIMATION
+
+| Phase | Complexity | Estimated Effort |
+|-------|------------|------------------|
+| Setup | [Low/Med/High] | [e.g., 1-2 hours] |
+| Core Implementation | [Low/Med/High] | [e.g., 4-8 hours] |
+| Verification | [Low/Med/High] | [e.g., 1-2 hours] |
+| **Total** | | **[e.g., 6-12 hours]** |
+<!-- /ANCHOR:effort -->
+
+---
+
+<!-- ANCHOR:enhanced-rollback -->
+## L2: ENHANCED ROLLBACK
+
+### Pre-deployment Checklist
+- [ ] Backup created (if data changes)
+- [ ] Feature flag configured
+- [ ] Monitoring alerts set
+
+### Rollback Procedure
+1. [Immediate action - e.g., disable feature flag]
+2. [Revert code - e.g., git revert or redeploy previous version]
+3. [Verify rollback - e.g., smoke test critical paths]
+4. [Notify stakeholders - if user-facing]
+
+### Data Reversal
+- **Has data migrations?** [Yes/No]
+- **Reversal procedure**: [Steps or "N/A"]
+<!-- /ANCHOR:enhanced-rollback -->
+
+---
+
+
+---
+
+<!-- ANCHOR:dependency-graph -->
+## L3: DEPENDENCY GRAPH
+
+\`\`\`
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Phase 1   │────►│   Phase 2   │────►│   Phase 3   │
+│   Setup     │     │    Core     │     │   Verify    │
+└─────────────┘     └──────┬──────┘     └─────────────┘
+                          │
+                    ┌─────▼─────┐
+                    │  Phase 2b │
+                    │  Parallel │
+                    └───────────┘
+\`\`\`
+
+### Dependency Matrix
+
+| Component | Depends On | Produces | Blocks |
+|-----------|------------|----------|--------|
+| [Component A] | None | [Output] | B, C |
+| [Component B] | A | [Output] | D |
+| [Component C] | A | [Output] | D |
+| [Component D] | B, C | [Final] | None |
+<!-- /ANCHOR:dependency-graph -->
+
+---
+
+<!-- ANCHOR:critical-path -->
+## L3: CRITICAL PATH
+
+1. **[Phase/Task]** - [Duration estimate] - CRITICAL
+2. **[Phase/Task]** - [Duration estimate] - CRITICAL
+3. **[Phase/Task]** - [Duration estimate] - CRITICAL
+
+**Total Critical Path**: [Sum of durations]
+
+**Parallel Opportunities**:
+- [Task A] and [Task B] can run simultaneously
+- [Task C] and [Task D] can run after Phase 1
+<!-- /ANCHOR:critical-path -->
+
+---
+
+<!-- ANCHOR:milestones -->
+## L3: MILESTONES
+
+| Milestone | Description | Success Criteria | Target |
+|-----------|-------------|------------------|--------|
+| M1 | [Setup Complete] | [All dependencies ready] | [Date/Phase] |
+| M2 | [Core Done] | [Main features working] | [Date/Phase] |
+| M3 | [Release Ready] | [All tests pass] | [Date/Phase] |
+<!-- /ANCHOR:milestones -->
+
+---
+
+## L3: ARCHITECTURE DECISION RECORD
+
+### ADR-001: [Decision Title]
+
+**Status**: [Proposed/Accepted/Deprecated]
+
+**Context**: [What problem we're solving]
+
+**Decision**: [What we decided]
+
+**Consequences**:
+- [Positive outcome 1]
+- [Negative outcome + mitigation]
+
+**Alternatives Rejected**:
+- [Option B]: [Why rejected]
+
+---
+
+
+---
+
+<!-- ANCHOR:ai-execution -->
+## L3+: AI EXECUTION FRAMEWORK
+
+### Tier 1: Sequential Foundation
+**Files**: spec.md (sections 1-3)
+**Duration**: ~60s
+**Agent**: Primary
+
+### Tier 2: Parallel Execution
+| Agent | Focus | Files |
+|-------|-------|-------|
+| Plan Agent | plan.md | Technical approach |
+| Checklist Agent | checklist.md | Verification items |
+| Requirements Agent | spec.md (4-6) | Requirements detail |
+
+**Duration**: ~90s (parallel)
+
+### Tier 3: Integration
+**Agent**: Primary
+**Task**: Merge outputs, resolve conflicts
+**Duration**: ~60s
+<!-- /ANCHOR:ai-execution -->
+
+---
+
+<!-- ANCHOR:workstreams -->
+## L3+: WORKSTREAM COORDINATION
+
+### Workstream Definition
+
+| ID | Name | Owner | Files | Status |
+|----|------|-------|-------|--------|
+| W-A | [Core Logic] | [Primary] | [file1.ts, file2.ts] | [Active] |
+| W-B | [UI Components] | [Secondary] | [comp1.tsx, comp2.tsx] | [Active] |
+| W-C | [Tests] | [Primary] | [test/*.ts] | [Blocked on W-A] |
+
+### Sync Points
+
+| Sync ID | Trigger | Participants | Output |
+|---------|---------|--------------|--------|
+| SYNC-001 | W-A, W-B complete | All agents | Integration test |
+| SYNC-002 | All workstreams | All agents | Final verification |
+
+### File Ownership Rules
+- Each file owned by ONE workstream
+- Cross-workstream changes require SYNC
+- Conflicts resolved at sync points
+<!-- /ANCHOR:workstreams -->
+
+---
+
+<!-- ANCHOR:communication -->
+## L3+: COMMUNICATION PLAN
+
+### Checkpoints
+- **Daily**: Status update in tasks.md
+- **Per Phase**: Review meeting notes
+- **Blockers**: Immediate escalation
+
+### Escalation Path
+1. Technical blockers → Engineering Lead
+2. Scope changes → Product Owner
+3. Resource issues → Project Manager
+<!-- /ANCHOR:communication -->
+
+---
+
+<!--
+LEVEL 3+ PLAN (~260 lines)
+- Core + L2 + L3 + L3+ addendums
+- AI execution framework, workstream coordination
+- Full communication plan
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-spec.md 1`] = `
+"---
+title: "Feature Specification: [NAME] [template:level_3+/spec.md]"
+description: "[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]"
+trigger_phrases:
+  - "feature"
+  - "specification"
+  - "name"
+  - "template"
+  - "spec core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+<!-- SPECKIT_LEVEL: 3+ -->
+# Feature Specification: [NAME]
+
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core + level2-verify + level3-arch + level3-plus-govern | v2.2 -->
+
+<!-- WHEN TO USE THIS TEMPLATE:
+Level 3+ (+Govern) is appropriate when:
+- High-complexity changes needing review tracking
+- Approval workflow with reviewer checkpoints required
+- Compliance checkpoints needed
+- Stakeholder tracking across multiple workstreams
+- Changelog with version history
+- Coordinated multi-workstream execution
+- Complexity score 80-100
+
+DO NOT use Level 3+ if:
+- Standard complex feature without approval tracking (use Level 3)
+- No reviewer checkpoints required (use Level 3)
+- Single workstream is sufficient (use Level 3)
+-->
+
+---
+
+## EXECUTIVE SUMMARY
+
+[2-3 sentence high-level overview for stakeholders who need quick context]
+
+**Key Decisions**: [Major decision 1], [Major decision 2]
+
+**Critical Dependencies**: [Blocking dependency]
+
+---
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 3+ |
+| **Priority** | [P0/P1/P2] |
+| **Status** | [Draft/In Progress/Review/Complete] |
+| **Created** | [YYYY-MM-DD] |
+| **Branch** | \`[###-feature-name]\` |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[What is broken, missing, or inefficient? 2-3 sentences describing the specific pain point.]
+
+### Purpose
+[One-sentence outcome statement. What does success look like?]
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+- [Deliverable 1]
+- [Deliverable 2]
+- [Deliverable 3]
+
+### Out of Scope
+- [Excluded item 1] - [why]
+- [Excluded item 2] - [why]
+
+### Files to Change
+
+| File Path | Change Type | Description |
+|-----------|-------------|-------------|
+| [path/to/file.js] | [Modify/Create/Delete] | [Brief description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:requirements -->
+## 4. REQUIREMENTS
+
+### P0 - Blockers (MUST complete)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-001 | [Requirement description] | [How to verify it's done] |
+
+### P1 - Required (complete OR user-approved deferral)
+
+| ID | Requirement | Acceptance Criteria |
+|----|-------------|---------------------|
+| REQ-002 | [Requirement description] | [How to verify it's done] |
+<!-- /ANCHOR:requirements -->
+
+---
+
+<!-- ANCHOR:success-criteria -->
+## 5. SUCCESS CRITERIA
+
+- **SC-001**: [Primary measurable outcome]
+- **SC-002**: [Secondary measurable outcome]
+<!-- /ANCHOR:success-criteria -->
+
+---
+
+<!-- ANCHOR:risks -->
+## 6. RISKS & DEPENDENCIES
+
+| Type | Item | Impact | Mitigation |
+|------|------|--------|------------|
+| Dependency | [System/API] | [What if blocked] | [Fallback plan] |
+| Risk | [Risk description] | [High/Med/Low] | [Mitigation strategy] |
+<!-- /ANCHOR:risks -->
+
+---
+
+<!-- ANCHOR:questions -->
+
+## 7. NON-FUNCTIONAL REQUIREMENTS
+
+### Performance
+- **NFR-P01**: [Response time target]
+
+### Security
+- **NFR-S01**: [Auth requirement]
+
+### Reliability
+- **NFR-R01**: [Uptime target]
+
+---
+
+## 8. EDGE CASES
+
+### Data Boundaries
+- Empty input: [How system handles]
+- Maximum length: [Limit and behavior]
+
+### Error Scenarios
+- External service failure: [Fallback behavior]
+
+---
+
+## 9. COMPLEXITY ASSESSMENT
+
+| Dimension | Score | Triggers |
+|-----------|-------|----------|
+| Scope | [/25] | [Files: X, LOC: Y, Systems: Z] |
+| Risk | [/25] | [Auth: Y/N, API: Y/N, Breaking: Y/N] |
+| Research | [/20] | [Investigation needs] |
+| Multi-Agent | [/15] | [Workstreams: X] |
+| Coordination | [/15] | [Dependencies: X] |
+| **Total** | **[/100]** | **Level 3+** |
+
+---
+
+## 10. RISK MATRIX
+
+| Risk ID | Description | Impact | Likelihood | Mitigation |
+|---------|-------------|--------|------------|------------|
+| R-001 | [Risk] | [H/M/L] | [H/M/L] | [Strategy] |
+
+---
+
+## 11. USER STORIES
+
+### US-001: [Title] (Priority: P0)
+
+**As a** [user type], **I want** [needed behavior], **so that** [benefit].
+
+**Acceptance Criteria**:
+1. Given [context], When [action], Then [outcome]
+
+---
+
+<!-- ANCHOR:approval-workflow -->
+## 12. APPROVAL WORKFLOW
+
+| Checkpoint | Approver | Status | Date |
+|------------|----------|--------|------|
+| Spec Review | [Role/Name] | [Pending/Approved] | [Date] |
+| Design Review | [Role/Name] | [Pending/Approved] | [Date] |
+| Implementation Review | [Role/Name] | [Pending/Approved] | [Date] |
+| Launch Approval | [Role/Name] | [Pending/Approved] | [Date] |
+<!-- /ANCHOR:approval-workflow -->
+
+---
+
+<!-- ANCHOR:compliance-checkpoints -->
+## 13. COMPLIANCE CHECKPOINTS
+
+### Security Compliance
+- [ ] Security review completed
+- [ ] OWASP Top 10 addressed
+- [ ] Data protection requirements met
+
+### Code Compliance
+- [ ] Coding standards followed
+- [ ] License compliance verified
+<!-- /ANCHOR:compliance-checkpoints -->
+
+---
+
+<!-- ANCHOR:stakeholder-matrix -->
+## 14. STAKEHOLDER MATRIX
+
+| Stakeholder | Role | Interest | Communication |
+|-------------|------|----------|---------------|
+| [Name] | Product | High | [Weekly sync] |
+| [Name] | Engineering | High | [Daily standup] |
+<!-- /ANCHOR:stakeholder-matrix -->
+
+---
+
+<!-- ANCHOR:change-log -->
+## 15. CHANGE LOG
+
+### v1.0 ([Date])
+**Initial specification**
+<!-- /ANCHOR:change-log -->
+
+---
+
+## 16. OPEN QUESTIONS
+
+- [Question 1 requiring clarification]
+
+---
+
+## RELATED DOCUMENTS
+
+- **Implementation Plan**: See \`plan.md\`
+- **Task Breakdown**: See \`tasks.md\`
+- **Verification Checklist**: See \`checklist.md\`
+- **Decision Records**: See \`decision-record.md\`
+
+---
+
+<!--
+LEVEL 3+ SPEC (~200 lines)
+- Core + L2 + L3 + L3+ addendums
+- Approval Workflow, Compliance, Stakeholders
+- Full governance controls
+-->
+<!-- /ANCHOR:questions -->"
+`;
+
+exports[`manifest template golden snapshots > renders required docs for Level 3+ from manifest templates > 3+-tasks.md 1`] = `
+"---
+title: "Tasks: [NAME] [template:level_3+/tasks.md]"
+description: "Task Format: T### [P?] Description (file path)"
+trigger_phrases:
+  - "tasks"
+  - "name"
+  - "template"
+  - "tasks core"
+importance_tier: "normal"
+contextType: "general"
+_memory:
+  continuity:
+    packet_pointer: "system-spec-kit/templates/level_3+"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialized Level 3 plus template"
+    next_safe_action: "Replace continuity placeholders"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+# Tasks: [NAME]
+
+<!-- SPECKIT_LEVEL: 3+ -->
+<!-- SPECKIT_TEMPLATE_SOURCE: tasks-core | v2.2 -->
+
+---
+
+<!-- ANCHOR:notation -->
+## Task Notation
+
+| Prefix | Meaning |
+|--------|---------|
+| \`[ ]\` | Pending |
+| \`[x]\` | Completed |
+| \`[P]\` | Parallelizable |
+| \`[B]\` | Blocked |
+
+**Task Format**: \`T### [P?] Description (file path)\`
+<!-- /ANCHOR:notation -->
+
+---
+
+<!-- ANCHOR:phase-1 -->
+## Phase 1: Setup
+
+- [ ] T001 Create project structure
+- [ ] T002 Install dependencies
+- [ ] T003 [P] Configure development tools
+<!-- /ANCHOR:phase-1 -->
+
+---
+
+<!-- ANCHOR:phase-2 -->
+## Phase 2: Implementation
+
+- [ ] T004 [Implement core feature 1]
+- [ ] T005 [Implement core feature 2]
+- [ ] T006 [Implement core feature 3]
+- [ ] T007 [Add error handling]
+<!-- /ANCHOR:phase-2 -->
+
+---
+
+<!-- ANCHOR:phase-3 -->
+## Phase 3: Verification
+
+- [ ] T008 Test happy path manually
+- [ ] T009 Test edge cases
+- [ ] T010 Update documentation
+<!-- /ANCHOR:phase-3 -->
+
+---
+
+<!-- ANCHOR:completion -->
+## Completion Criteria
+
+- [ ] All tasks marked \`[x]\`
+- [ ] No \`[B]\` blocked tasks remaining
+- [ ] Manual verification passed
+<!-- /ANCHOR:completion -->
+
+---
+
+<!-- ANCHOR:cross-refs -->
+## Cross-References
+
+- **Specification**: See \`spec.md\`
+- **Plan**: See \`plan.md\`
+<!-- /ANCHOR:cross-refs -->
+
+---
+
+<!--
+CORE TEMPLATE (~60 lines)
+- Simple task tracking
+- 3 phases: Setup, Implementation, Verification
+- Add L2/L3 addendums for complexity
+-->"
+`;
+
+exports[`manifest template golden snapshots > renders the phase-parent spec from the manifest template > phase-parent-spec.md 1`] = `
+"---
+title: "Feature Specification: [YOUR_VALUE_HERE: feature-name]"
+description: "[YOUR_VALUE_HERE: one-line description]"
+trigger_phrases:
+  - "[YOUR_VALUE_HERE: trigger phrase 1]"
+  - "[YOUR_VALUE_HERE: trigger phrase 2]"
+importance_tier: "important"
+contextType: "implementation"
+_memory:
+  continuity:
+    packet_pointer: "[YOUR_VALUE_HERE: packet-id]"
+    last_updated_at: "2026-04-11T00:00:00Z"
+    last_updated_by: "template-author"
+    recent_action: "Initialize phase-parent continuity block"
+    next_safe_action: "Plan or resume a child phase folder"
+    blockers: []
+    key_files: []
+    session_dedup:
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      session_id: "template-session"
+      parent_session_id: null
+    completion_pct: 0
+    open_questions: []
+    answered_questions: []
+---
+
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
+<!-- SPECKIT_LEVEL: 2 -->
+<!-- CONTENT DISCIPLINE: PHASE PARENT
+  FORBIDDEN content (do NOT author at phase-parent level):
+    - merge/migration/consolidation narratives (consolidate*, merged from, renamed from, collapsed, X→Y, reorganization history)
+    - migrated from, ported from, originally in
+    - heavy docs: plan.md, tasks.md, checklist.md, decision-record.md, implementation-summary.md — these belong in child phase folders only
+  REQUIRED content (MUST author at phase-parent level):
+    - Root purpose: what problem does this entire phased decomposition solve?
+    - Sub-phase list: which child phase folders exist and what each one does
+    - What needs done: the high-level outcome the phases work toward
+-->
+
+# Feature Specification: [YOUR_VALUE_HERE: feature-name]
+
+<!-- ANCHOR:metadata -->
+## 1. METADATA
+
+| Field | Value |
+|-------|-------|
+| **Level** | 2 |
+| **Priority** | P1 |
+| **Status** | Draft |
+| **Created** | [YOUR_VALUE_HERE: YYYY-MM-DD] |
+| **Branch** | \`main\` |
+| **Parent Spec** | \`../spec.md\` |
+| **Parent Packet** | [YOUR_VALUE_HERE: packet-id] |
+| **Predecessor** | [YOUR_VALUE_HERE: predecessor-packet] |
+| **Successor** | [YOUR_VALUE_HERE: successor-packet, or "None"] |
+| **Handoff Criteria** | Validator + template + generator changes ship so parent validates under tolerant policy |
+<!-- /ANCHOR:metadata -->
+
+---
+
+<!-- ANCHOR:problem -->
+## 2. PROBLEM & PURPOSE
+
+### Problem Statement
+[YOUR_VALUE_HERE: one-paragraph problem statement — what needs solving and why]
+
+### Purpose
+[YOUR_VALUE_HERE: one-paragraph purpose — what this phased decomposition achieves]
+
+> **Phase-parent note:** This spec.md is the ONLY authored document at the parent level. All detailed planning, task breakdowns, checklists, and decisions live in the child phase folders listed in the Phase Documentation Map below. This keeps the parent from drifting stale as phases execute and pivot.
+<!-- /ANCHOR:problem -->
+
+---
+
+<!-- ANCHOR:scope -->
+## 3. SCOPE
+
+### In Scope
+[YOUR_VALUE_HERE: bullet list of what this phase decomposition covers]
+
+### Out of Scope
+[YOUR_VALUE_HERE: bullet list of what is explicitly excluded]
+
+### Files to Change
+[YOUR_VALUE_HERE: summary table of files touched across all phases — for audit trail only; per-phase detail lives in each child's plan.md]
+
+| File Path | Change Type | Phase | Description |
+|-----------|-------------|-------|-------------|
+| [YOUR_VALUE_HERE: path] | [YOUR_VALUE_HERE: Modify/Create] | [YOUR_VALUE_HERE: phase-name] | [YOUR_VALUE_HERE: description] |
+<!-- /ANCHOR:scope -->
+
+---
+
+<!-- ANCHOR:phase-map -->
+## PHASE DOCUMENTATION MAP
+
+> This spec uses phased decomposition. Each phase is an independently executable child spec folder. All implementation details (plan, tasks, checklist, decisions, continuity) live inside the phase children.
+
+| Phase | Folder | Focus | Status |
+|-------|--------|-------|--------|
+<!-- [YOUR_VALUE_HERE: PHASE_ROW] — Replaced by create.sh with full 4-column table rows -->
+
+### Phase Transition Rules
+
+- Each phase MUST pass \`validate.sh\` independently before the next phase begins
+- Parent spec tracks aggregate progress via this map
+- Use \`/spec_kit:resume [parent-folder]/[NNN-phase]/\` to resume a specific phase
+- Run \`validate.sh --recursive\` on parent to validate all phases as integrated unit
+
+### Phase Handoff Criteria
+
+| From | To | Criteria | Verification |
+|------|-----|----------|--------------|
+<!-- [YOUR_VALUE_HERE: HANDOFF_ROW] — Replaced by create.sh with full 4-column table rows -->
+<!-- /ANCHOR:phase-map -->
+
+---
+
+<!-- ANCHOR:questions -->
+## 4. OPEN QUESTIONS
+
+- [YOUR_VALUE_HERE: open question 1]
+- [YOUR_VALUE_HERE: open question 2]
+<!-- /ANCHOR:questions -->
+
+---
+
+## RELATED DOCUMENTS
+
+- **Phase children**: See sub-folders \`[0-9][0-9][0-9]-*/\` for per-phase spec.md, plan.md, tasks.md
+- **Parent Spec**: See \`../spec.md\`
+- **Graph Metadata**: See \`graph-metadata.json\` for \`derived.last_active_child_id\` pointer"
+`;

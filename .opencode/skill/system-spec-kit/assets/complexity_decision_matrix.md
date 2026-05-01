@@ -154,7 +154,7 @@ Choose the appropriate template **style** based on user experience and requireme
 
 | Style    | Lines  | Best For                              | Path                 |
 | -------- | ------ | ------------------------------------- | -------------------- |
-| **Core** | ~60-90 | Experienced users, clear requirements | `templates/level_N/` |
+| **Core** | ~60-90 | Experienced users, clear requirements | `Level template contract` |
 
 ### Confidence Thresholds
 
@@ -231,11 +231,11 @@ This decision matrix addresses the following spec requirements:
 - [parallel_dispatch_config.md](./parallel_dispatch_config.md) - Complexity scoring and agent dispatch
 
 ### Reference Files
-- [level_specifications.md](../references/templates/level_specifications.md) - Complete Level 1-3+ requirements
+- level specifications reference - Complete Level 1-3+ requirements
 - [template_guide.md](../references/templates/template_guide.md) - Template selection and quality standards
 
 ### Scripts
-- [compose.sh](../scripts/templates/compose.sh) - Template composition from core + addendum
+- Level contract resolver - Level contract rendering
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

@@ -597,7 +597,7 @@ scripts/
 │   ├── directory-setup.ts
 │   └── folder-detector.ts
 ├── templates/                  # Template composition
-│   └── compose.sh
+│   └── manifest renderer
 ├── utils/                      # Utility modules
 │   ├── index.ts
 │   ├── data-validator.ts

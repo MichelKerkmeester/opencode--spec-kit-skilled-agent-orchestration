@@ -15,6 +15,8 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=../lib/template-utils.sh
+source "$SCRIPT_DIR/../lib/template-utils.sh"
 
 # ───────────────────────────────────────────────────────────────
 # 1. CONFIGURATION
@@ -56,13 +58,17 @@ EOF
 # ───────────────────────────────────────────────────────────────
 
 get_current_template_version() {
-    local template_spec="$TEMPLATE_DIR/level_1/spec.md"
-    if [[ ! -f "$template_spec" ]]; then
+    local manifest_path="$TEMPLATE_DIR/manifest/spec-kit-docs.json"
+    if [[ ! -f "$manifest_path" ]]; then
         echo "unknown"
         return
     fi
     local version
-    version=$(head -n 30 "$template_spec" | grep "SPECKIT_TEMPLATE_SOURCE" | grep -oE 'v[0-9]+\.[0-9]+' | head -1 || true)
+    version=$(node -e '
+const fs = require("fs");
+const manifest = JSON.parse(fs.readFileSync(process.argv[1], "utf8"));
+process.stdout.write(manifest.versions?.["spec.md.tmpl"] || "unknown");
+' "$manifest_path" 2>/dev/null || true)
     echo "${version:-unknown}"
 }
 

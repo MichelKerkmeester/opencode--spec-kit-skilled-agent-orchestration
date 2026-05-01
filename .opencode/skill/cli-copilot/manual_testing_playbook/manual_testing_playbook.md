@@ -426,6 +426,23 @@ Desired user-visible outcome: PASS verdict + a one-line summary per model call.
 #### Test Execution
 > **Feature File:** [CP-012](04--agent-routing/003-mid-session-model-switch.md)
 
+### CP-026 | @code vs @general dispatch performance comparison **(SANDBOXED)**
+
+#### Description
+
+Confirm the new `@code` agent (shipped in packet 059) produces a structured RETURN block conforming to `code.md` §8 RETURN Contract, where the built-in `@Task` / `@general` produces only free-form narration — on the SAME bug-fix task in the same Go sandbox. Both fixes must produce `go test` exit 0; the differential is structural-quality, not raw correctness.
+
+#### Scenario Contract
+
+Prompt summary: As a cross-AI orchestrator running an A/B agent comparison, dispatch the SAME Go bug-fix task twice through Copilot — first as `As @Task: ...` (built-in default), then as `As @code: ...` with the `.opencode/agent/code.md` definition prepended and a `Depth: 1` orchestrator-context marker. Verify both fixes pass `go test ./...` AND only Call B's transcript contains the structured RETURN block (>= 7 of 8 required fields: `RETURN:`, `Mode:`, `Files:`, `Verification:`, `Command:`, `Exit Code:`, `Rubric Score:`, `Confidence:`, `Escalation:`). Tripwire diff outside `/tmp/cp-026-sandbox/` must be empty for both calls.
+
+Expected signals: `EXIT_A=0`, `EXIT_B=0`, `POST_A_GOTEST=0`, `POST_B_GOTEST=0`, `TRIPWIRE_DIFF_EXIT=0`. Per-label grep table shows >= 7 of 8 fields with `B>=1` AND >= 6 of 8 with `A=0`.
+
+Desired user-visible outcome: PASS verdict + a side-by-side field-presence table (free-form vs structured) + the actual `go test` outputs from both runs.
+
+#### Test Execution
+> **Feature File:** [CP-026](04--agent-routing/004-code-vs-general-agent-perf-comparison.md)
+
 ---
 
 ## 11. SESSION CONTINUITY
@@ -649,6 +666,7 @@ If automated tests for cli-copilot's smart-router pseudocode or self-invocation 
 - CP-010: [`@Explore` read-only codebase mapping](04--agent-routing/001-explore-agent-codebase-mapping.md)
 - CP-011: [`@Task` read-write sandboxed implementation **(SANDBOXED)**](04--agent-routing/002-task-agent-sandboxed-implementation.md)
 - CP-012: [Mid-session model switch via per-call `--model`](04--agent-routing/003-mid-session-model-switch.md)
+- CP-026: [@code vs @general dispatch performance comparison **(SANDBOXED)**](04--agent-routing/004-code-vs-general-agent-perf-comparison.md)
 
 ### SESSION CONTINUITY
 

@@ -51,6 +51,8 @@ export interface SpecFolderValidation {
 
 const SESSION_SCOPED_SAVE_CONTEXT_EXAMPLE = getSessionScopedSaveContextExample();
 const GRAPH_METADATA_FILE = 'graph-metadata.json';
+const CANONICAL_SAVE_LOCK_DIR = '.canonical-save.lock';
+const CANONICAL_SAVE_STALE_MS = 30_000;
 
 // ───────────────────────────────────────────────────────────────
 // 3. HELP TEXT
@@ -378,6 +380,40 @@ function atomicWriteJson(filePath: string, value: unknown): void {
   const data = `${JSON.stringify(value, null, 2)}\n`;
   fsSync.writeFileSync(tempPath, data, 'utf8');
   fsSync.renameSync(tempPath, filePath);
+}
+
+function acquireCanonicalSaveLock(specFolderPath: string | null): string | null {
+  if (!specFolderPath) {
+    return null;
+  }
+
+  const lockPath = path.join(specFolderPath, CANONICAL_SAVE_LOCK_DIR);
+  try {
+    fsSync.mkdirSync(lockPath);
+    fsSync.writeFileSync(path.join(lockPath, 'owner'), `${process.pid}\n${new Date().toISOString()}\n`, 'utf8');
+    return lockPath;
+  } catch (error: unknown) {
+    if (!fsSync.existsSync(lockPath)) {
+      throw error;
+    }
+    const stat = fsSync.statSync(lockPath);
+    const ageMs = Date.now() - stat.mtimeMs;
+    if (ageMs > CANONICAL_SAVE_STALE_MS) {
+      console.warn(`Warning: removing stale canonical save lock (${Math.round(ageMs)}ms): ${lockPath}`);
+      fsSync.rmSync(lockPath, { recursive: true, force: true });
+      fsSync.mkdirSync(lockPath);
+      fsSync.writeFileSync(path.join(lockPath, 'owner'), `${process.pid}\n${new Date().toISOString()}\n`, 'utf8');
+      return lockPath;
+    }
+    throw new Error(`Canonical save lock is active: ${lockPath}`);
+  }
+}
+
+function releaseCanonicalSaveLock(lockPath: string | null): void {
+  if (!lockPath) {
+    return;
+  }
+  fsSync.rmSync(lockPath, { recursive: true, force: true });
 }
 
 function getPacketIdFromGraphMetadata(specFolderPath: string): string {
@@ -732,22 +768,28 @@ async function main(
     CONFIG.DATA_FILE = parsed.dataFile;
     CONFIG.SPEC_FOLDER_ARG = parsed.specFolderArg;
     validateArguments();
+    const lockedSpecFolder = resolveExistingSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
+    const canonicalSaveLock = acquireCanonicalSaveLock(lockedSpecFolder);
 
-    await runWorkflow({
-      dataFile: parsed.collectedData ? undefined : CONFIG.DATA_FILE ?? undefined,
-      specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined,
-      collectedData: parsed.collectedData ?? undefined,
-      loadDataFn: parsed.collectedData
-        ? undefined
-        : () => loadCollectedData({}),
-      collectSessionDataFn: collectSessionData,
-      sessionId: parsed.sessionId ?? undefined,
-      plannerMode: parsed.plannerMode,
-    });
+    try {
+      await runWorkflow({
+        dataFile: parsed.collectedData ? undefined : CONFIG.DATA_FILE ?? undefined,
+        specFolderArg: CONFIG.SPEC_FOLDER_ARG ?? undefined,
+        collectedData: parsed.collectedData ?? undefined,
+        loadDataFn: parsed.collectedData
+          ? undefined
+          : () => loadCollectedData({}),
+        collectSessionDataFn: collectSessionData,
+        sessionId: parsed.sessionId ?? undefined,
+        plannerMode: parsed.plannerMode,
+      });
 
-    const savedSpecFolder = resolveExistingSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
-    if (savedSpecFolder) {
-      updatePhaseParentPointersAfterSave(savedSpecFolder);
+      const savedSpecFolder = resolveExistingSpecFolderPath(CONFIG.SPEC_FOLDER_ARG);
+      if (savedSpecFolder) {
+        updatePhaseParentPointersAfterSave(savedSpecFolder);
+      }
+    } finally {
+      releaseCanonicalSaveLock(canonicalSaveLock);
     }
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);

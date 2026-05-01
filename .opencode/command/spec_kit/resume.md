@@ -63,7 +63,7 @@ EXECUTE THIS SINGLE CONSOLIDATED PROMPT:
    - IF --phase-folder=<path> provided → auto-resolve spec_path to that child folder
      Set spec_path = <path>, detection_method = "phase-folder"
      Validate path matches pattern: `{specs|.opencode/specs}/[###]-*/[0-9][0-9][0-9]-*/`
-   - IF --no-redirect is present → skip pointer redirect entirely; show the parent `spec.md` and child manifest when spec_path is a phase parent
+   - IF --no-redirect is present → skip pointer redirect entirely; show the parent `spec.md` and child list when spec_path is a phase parent
    - IF spec_path is a parent phase folder (contains numbered child folders like 001-*, 002-*):
      Unless --no-redirect is present, read `graph-metadata.json` first:
        - If `derived.last_active_child_id` is a non-null string AND `derived.last_active_at` parses as ISO-8601 within the last 24 hours, resolve that child under the parent and recurse directly into that child resume flow

@@ -1,0 +1,74 @@
+{
+  "topic": "Greenfield template-system redesign for spec-kit: eliminate Level 1/2/3/3+ taxonomy, replace with capability flags; classify each addon doc as author-scaffolded / command-owned-lazy / workflow-owned-packet; design a single manifest that drives both scaffolder AND validator; identify the MINIMUM anchor + frontmatter contract memory parsers actually require (probe-based, not assumed); score 5 candidate designs (Design F minimal-scaffold-lazy-addons / Design C+F hybrid / Design B single-manifest-full-doc-templates / Design D section-fragment-library / Design G schema-first); produce final chosen design with refactor plan. Backward-compat with 868 existing folders is OUT OF SCOPE — they are immutable git history, their provenance markers are descriptive comments. Sibling packet 010-template-levels rejected with PARTIAL recommendation; this is a fresh greenfield run.",
+  "maxIterations": 14,
+  "convergenceThreshold": 0.10,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+  "createdAt": "2026-05-01T11:00:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "2026-05-01-11-00-template-greenfield",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "deferredModes": ["fork", "completed-continue"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "resource_map": {
+    "emit": true,
+    "present": false
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research_archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  },
+  "_optimizerManaged": {
+    "description": "Fields managed by the offline loop optimizer (042.004).",
+    "manifestPath": ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
+    "tunableFields": ["convergenceThreshold", "stuckThreshold", "maxIterations"],
+    "lockedFields": ["lineage", "reducer", "fileProtection", "sessionId", "status"],
+    "promotionMode": "advisory-only"
+  }
+}

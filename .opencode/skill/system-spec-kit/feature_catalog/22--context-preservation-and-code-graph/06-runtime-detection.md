@@ -9,7 +9,7 @@ description: "Runtime detection identifies the active AI runtime and classifies 
 
 Runtime detection identifies the active AI runtime and classifies its hook policy as enabled, disabled_by_scope, unavailable, or unknown.
 
-Capability-based detection reads environment variables to identify claude-code, codex-cli, copilot-cli, or gemini-cli. It then inspects the current repo/config where needed: Copilot checks `.github/hooks/*.json` for repo hook wiring, including `sessionStart` and the `userPromptSubmitted` wrapper that refreshes the managed Copilot custom-instructions block; Gemini checks `.gemini/settings.json` for hooks. Returns both runtime ID and hookPolicy. `areHooksAvailable()` and `getRecoveryApproach()` helpers simplify usage. Copilot `hookPolicy: enabled` is a file-based context path, not SDK `additionalContext`.
+Runtime-signal detection reads environment variables to identify claude-code, codex-cli, copilot-cli, or gemini-cli. It then inspects the current repo/config where needed: Copilot checks `.github/hooks/*.json` for repo hook wiring, including `sessionStart` and the `userPromptSubmitted` wrapper that refreshes the managed Copilot custom-instructions block; Gemini checks `.gemini/settings.json` for hooks. Returns both runtime ID and hookPolicy. `areHooksAvailable()` and `getRecoveryApproach()` helpers simplify usage. Copilot `hookPolicy: enabled` is a file-based context path, not SDK `additionalContext`.
 
 ---
 

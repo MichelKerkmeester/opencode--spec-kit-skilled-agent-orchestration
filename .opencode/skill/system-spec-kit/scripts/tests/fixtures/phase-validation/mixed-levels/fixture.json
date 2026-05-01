@@ -3,5 +3,6 @@
   "phase_names": ["001-foundation", "002-implementation", "003-stabilization"],
   "mixed_levels": true,
   "broken_links": false,
-  "empty_child": false
+  "empty_child": false,
+  "parent_level_contract": "phase"
 }

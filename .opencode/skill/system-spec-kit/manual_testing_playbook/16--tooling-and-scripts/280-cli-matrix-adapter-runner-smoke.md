@@ -93,7 +93,7 @@ rm -rf "$OUT"
 
 ### Variant Scenarios
 
-- Run F11 with all executors and verify `F11-cli-gemini` records `NA` from the manifest applicability rule.
+- Run F11 with all executors and verify `F11-cli-gemini` records `NA` from the matrix definition applicability rule.
 - Run `--filter F5,F6` to prove multiple code-graph cells produce separate JSONL records.
 - Run with one missing CLI binary and verify the adapter records `BLOCKED` rather than crashing the meta-runner.
 
@@ -102,7 +102,7 @@ rm -rf "$OUT"
 ## 4. SOURCE FILES
 - Root playbook: [manual_testing_playbook.md](../manual_testing_playbook.md)
 - Runner docs: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/README.md`
-- Manifest: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-manifest.json`
+- Matrix definition: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/matrix-definition.json`
 - Adapter common: `.opencode/skill/system-spec-kit/mcp_server/matrix_runners/adapter-common.ts`
 
 ---

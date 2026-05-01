@@ -1,13 +1,13 @@
 ---
 title: "Skill Advisor affordance evidence"
-description: "Privacy-preserving affordance normalization feeds tool and resource hints into existing Skill Advisor derived and graph-causal scoring lanes without adding a scoring lane, entity kind, or relation type."
+description: "Privacy-preserving affordance normalization feeds tool and resource hints into existing Skill Advisor derived and graph-causal scoring lanes without adding a scoring lane, entity type, or relation type."
 ---
 
 # Skill Advisor affordance evidence
 
 ## 1. OVERVIEW
 
-Skill Advisor affordance evidence lets callers provide tool, resource, or MCP-resource hints as structured inputs. The scorer can use these hints to improve recall for prompts that match an available tool capability, while explicit author signals stay stronger than affordance-only evidence.
+Skill Advisor affordance evidence lets callers provide tool, resource, or MCP-resource hints as structured inputs. The scorer can use these hints to improve recall for prompts that match an available tool, while explicit author signals stay stronger than affordance-only evidence.
 
 The feature is deliberately narrow. Affordances pass through an allowlist normalizer, then contribute only to `derived_generated` and `graph_causal`. The public recommendation payload continues to omit raw matched phrases.
 
@@ -42,7 +42,7 @@ The Python graph compiler mirrors the same contract for derived metadata. It can
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/affordance-normalizer.test.ts` | Vitest | Allowlist, privacy, and no raw phrase attribution checks |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/lane-attribution.test.ts` | Vitest | Confirms affordance evidence appears through `derived_generated` and `graph_causal` only |
 | `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/routing-fixtures.affordance.test.ts` | Vitest | Recall improvement and explicit-trigger precedence fixtures |
-| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/test_skill_advisor.py` | Python | Compiler affordance normalization and entity-kind allowlist regression checks |
+| `.opencode/skill/system-spec-kit/mcp_server/skill_advisor/tests/python/test_skill_advisor.py` | Python | Compiler affordance normalization and entity-type allowlist regression checks |
 
 ---
 

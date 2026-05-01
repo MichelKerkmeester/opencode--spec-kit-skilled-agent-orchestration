@@ -1,0 +1,709 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "manifestVersion": "1.0.0",
+  "versions": {
+    "spec.md.tmpl": "v2.2",
+    "plan.md.tmpl": "v2.2",
+    "tasks.md.tmpl": "v2.2",
+    "implementation-summary.md.tmpl": "v2.2",
+    "checklist.md.tmpl": "v2.2",
+    "decision-record.md.tmpl": "v2.2",
+    "phase-parent.spec.md.tmpl": "v2.2",
+    "resource-map.md.tmpl": "v2.2",
+    "context-index.md.tmpl": "v2.2",
+    "handover.md.tmpl": "v2.2",
+    "debug-delegation.md.tmpl": "v2.2",
+    "research.md.tmpl": "v2.2"
+  },
+  "privateTaxonomy": {
+    "kinds": [
+      "implementation",
+      "phase-parent"
+    ],
+    "capabilities": [
+      "qa-verification",
+      "architecture-decisions",
+      "governance-expansion"
+    ],
+    "presets": {
+      "1": [
+        "implementation"
+      ],
+      "2": [
+        "implementation",
+        "qa-verification"
+      ],
+      "3": [
+        "implementation",
+        "qa-verification",
+        "architecture-decisions"
+      ],
+      "3+": [
+        "implementation",
+        "qa-verification",
+        "architecture-decisions",
+        "governance-expansion"
+      ],
+      "phase": [
+        "phase-parent"
+      ]
+    }
+  },
+  "documents": {
+    "spec.md": {
+      "template": "spec.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "plan.md": {
+      "template": "plan.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "tasks.md": {
+      "template": "tasks.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "implementation-summary.md": {
+      "template": "implementation-summary.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "checklist.md": {
+      "template": "checklist.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "decision-record.md": {
+      "template": "decision-record.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "phase-parent.spec.md": {
+      "template": "phase-parent.spec.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "phase-scaffold",
+      "absenceBehavior": "hard-error"
+    },
+    "resource-map.md": {
+      "template": "resource-map.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "explicit-option",
+      "absenceBehavior": "warn"
+    },
+    "context-index.md": {
+      "template": "context-index.md.tmpl",
+      "owner": "author",
+      "creationTrigger": "explicit-option",
+      "absenceBehavior": "warn"
+    },
+    "handover.md": {
+      "template": "handover.md.tmpl",
+      "owner": "command",
+      "creationTrigger": "memory-save",
+      "absenceBehavior": "silent-skip"
+    },
+    "debug-delegation.md": {
+      "template": "debug-delegation.md.tmpl",
+      "owner": "agent",
+      "creationTrigger": "debug-dispatch",
+      "absenceBehavior": "silent-skip"
+    },
+    "research/research.md": {
+      "template": "research.md.tmpl",
+      "owner": "workflow",
+      "creationTrigger": "deep-research",
+      "absenceBehavior": "silent-skip"
+    }
+  },
+  "levels": {
+    "1": {
+      "publicLabel": "Level 1",
+      "privatePreset": "simple-change",
+      "frontmatterMarkerLevel": 1,
+      "requiredCoreDocs": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "implementation-summary.md"
+      ],
+      "requiredAddonDocs": [],
+      "lazyAddonDocs": [
+        "handover.md",
+        "debug-delegation.md",
+        "research/research.md"
+      ],
+      "sectionGates": {
+        "spec.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "problem": ["1", "2", "3", "3+"],
+          "scope": ["1", "2", "3", "3+"],
+          "requirements": ["1", "2", "3", "3+"],
+          "success-criteria": ["1", "2", "3", "3+"],
+          "risks": ["1", "2", "3", "3+"],
+          "questions": ["1", "2", "3", "3+"]
+        },
+        "plan.md": {
+          "summary": ["1", "2", "3", "3+"],
+          "quality-gates": ["1", "2", "3", "3+"],
+          "architecture": ["1", "2", "3", "3+"],
+          "phases": ["1", "2", "3", "3+"],
+          "testing": ["1", "2", "3", "3+"],
+          "dependencies": ["1", "2", "3", "3+"],
+          "rollback": ["1", "2", "3", "3+"]
+        },
+        "tasks.md": {
+          "notation": ["1", "2", "3", "3+"],
+          "phase-1": ["1", "2", "3", "3+"],
+          "phase-2": ["1", "2", "3", "3+"],
+          "phase-3": ["1", "2", "3", "3+"],
+          "completion": ["1", "2", "3", "3+"],
+          "cross-refs": ["1", "2", "3", "3+"]
+        },
+        "implementation-summary.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "what-built": ["1", "2", "3", "3+"],
+          "how-delivered": ["1", "2", "3", "3+"],
+          "decisions": ["1", "2", "3", "3+"],
+          "verification": ["1", "2", "3", "3+"],
+          "limitations": ["1", "2", "3", "3+"]
+        },
+        "metadata": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "problem": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "scope": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "requirements": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "success-criteria": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "risks": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "questions": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ]
+      }
+    },
+    "2": {
+      "publicLabel": "Level 2",
+      "privatePreset": "validated-change",
+      "frontmatterMarkerLevel": 2,
+      "requiredCoreDocs": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "implementation-summary.md"
+      ],
+      "requiredAddonDocs": [
+        "checklist.md"
+      ],
+      "lazyAddonDocs": [
+        "handover.md",
+        "debug-delegation.md",
+        "research/research.md"
+      ],
+      "sectionGates": {
+        "spec.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "problem": ["1", "2", "3", "3+"],
+          "scope": ["1", "2", "3", "3+"],
+          "requirements": ["1", "2", "3", "3+"],
+          "success-criteria": ["1", "2", "3", "3+"],
+          "risks": ["1", "2", "3", "3+"],
+          "questions": ["1", "2", "3", "3+"],
+          "nfr": ["2", "3", "3+"],
+          "edge-cases": ["2", "3", "3+"],
+          "complexity": ["2", "3", "3+"]
+        },
+        "plan.md": {
+          "summary": ["1", "2", "3", "3+"],
+          "quality-gates": ["1", "2", "3", "3+"],
+          "architecture": ["1", "2", "3", "3+"],
+          "phases": ["1", "2", "3", "3+"],
+          "testing": ["1", "2", "3", "3+"],
+          "dependencies": ["1", "2", "3", "3+"],
+          "rollback": ["1", "2", "3", "3+"],
+          "phase-deps": ["2", "3", "3+"],
+          "effort": ["2", "3", "3+"],
+          "enhanced-rollback": ["2", "3", "3+"]
+        },
+        "tasks.md": {
+          "notation": ["1", "2", "3", "3+"],
+          "phase-1": ["1", "2", "3", "3+"],
+          "phase-2": ["1", "2", "3", "3+"],
+          "phase-3": ["1", "2", "3", "3+"],
+          "completion": ["1", "2", "3", "3+"],
+          "cross-refs": ["1", "2", "3", "3+"]
+        },
+        "implementation-summary.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "what-built": ["1", "2", "3", "3+"],
+          "how-delivered": ["1", "2", "3", "3+"],
+          "decisions": ["1", "2", "3", "3+"],
+          "verification": ["1", "2", "3", "3+"],
+          "limitations": ["1", "2", "3", "3+"]
+        },
+        "checklist.md": {
+          "protocol": ["2", "3", "3+"],
+          "pre-impl": ["2", "3", "3+"],
+          "code-quality": ["2", "3", "3+"],
+          "testing": ["2", "3", "3+"],
+          "security": ["2", "3", "3+"],
+          "docs": ["2", "3", "3+"],
+          "file-org": ["2", "3", "3+"],
+          "summary": ["2", "3", "3+"]
+        },
+        "metadata": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "problem": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "scope": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "requirements": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "success-criteria": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "risks": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "questions": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "non-functional-requirements": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "edge-cases": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "complexity-assessment": [
+          "2",
+          "3",
+          "3+"
+        ]
+      }
+    },
+    "3": {
+      "publicLabel": "Level 3",
+      "privatePreset": "arch-change",
+      "frontmatterMarkerLevel": 3,
+      "requiredCoreDocs": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "implementation-summary.md"
+      ],
+      "requiredAddonDocs": [
+        "checklist.md",
+        "decision-record.md"
+      ],
+      "lazyAddonDocs": [
+        "handover.md",
+        "debug-delegation.md",
+        "research/research.md"
+      ],
+      "sectionGates": {
+        "spec.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "problem": ["1", "2", "3", "3+"],
+          "scope": ["1", "2", "3", "3+"],
+          "requirements": ["1", "2", "3", "3+"],
+          "success-criteria": ["1", "2", "3", "3+"],
+          "risks": ["1", "2", "3", "3+"],
+          "questions": ["1", "2", "3", "3+"],
+          "nfr": ["2", "3", "3+"],
+          "edge-cases": ["2", "3", "3+"],
+          "complexity": ["2", "3", "3+"],
+          "risk-matrix": ["3", "3+"],
+          "user-stories": ["3", "3+"]
+        },
+        "plan.md": {
+          "summary": ["1", "2", "3", "3+"],
+          "quality-gates": ["1", "2", "3", "3+"],
+          "architecture": ["1", "2", "3", "3+"],
+          "phases": ["1", "2", "3", "3+"],
+          "testing": ["1", "2", "3", "3+"],
+          "dependencies": ["1", "2", "3", "3+"],
+          "rollback": ["1", "2", "3", "3+"],
+          "phase-deps": ["2", "3", "3+"],
+          "effort": ["2", "3", "3+"],
+          "enhanced-rollback": ["2", "3", "3+"],
+          "ai-execution": ["3", "3+"],
+          "architecture-overview": ["3", "3+"],
+          "risk-mitigation": ["3", "3+"]
+        },
+        "tasks.md": {
+          "notation": ["1", "2", "3", "3+"],
+          "phase-1": ["1", "2", "3", "3+"],
+          "phase-2": ["1", "2", "3", "3+"],
+          "phase-3": ["1", "2", "3", "3+"],
+          "completion": ["1", "2", "3", "3+"],
+          "cross-refs": ["1", "2", "3", "3+"],
+          "architecture-tasks": ["3", "3+"]
+        },
+        "implementation-summary.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "what-built": ["1", "2", "3", "3+"],
+          "how-delivered": ["1", "2", "3", "3+"],
+          "decisions": ["1", "2", "3", "3+"],
+          "verification": ["1", "2", "3", "3+"],
+          "limitations": ["1", "2", "3", "3+"],
+          "architecture-summary": ["3", "3+"]
+        },
+        "checklist.md": {
+          "protocol": ["2", "3", "3+"],
+          "pre-impl": ["2", "3", "3+"],
+          "code-quality": ["2", "3", "3+"],
+          "testing": ["2", "3", "3+"],
+          "security": ["2", "3", "3+"],
+          "docs": ["2", "3", "3+"],
+          "file-org": ["2", "3", "3+"],
+          "summary": ["2", "3", "3+"],
+          "arch-verify": ["3", "3+"],
+          "perf-verify": ["3", "3+"],
+          "deploy-ready": ["3", "3+"],
+          "compliance-verify": ["3", "3+"],
+          "docs-verify": ["3", "3+"],
+          "sign-off": ["3", "3+"]
+        },
+        "decision-record.md": {
+          "adr-001": ["3", "3+"],
+          "adr-001-context": ["3", "3+"],
+          "adr-001-decision": ["3", "3+"],
+          "adr-001-alternatives": ["3", "3+"],
+          "adr-001-consequences": ["3", "3+"],
+          "adr-001-five-checks": ["3", "3+"],
+          "adr-001-impl": ["3", "3+"]
+        },
+        "metadata": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "problem": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "scope": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "requirements": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "success-criteria": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "risks": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "questions": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "non-functional-requirements": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "edge-cases": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "complexity-assessment": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "risk-matrix": [
+          "3",
+          "3+"
+        ],
+        "user-stories": [
+          "3",
+          "3+"
+        ]
+      }
+    },
+    "3+": {
+      "publicLabel": "Level 3+",
+      "privatePreset": "governed-change",
+      "frontmatterMarkerLevel": 4,
+      "requiredCoreDocs": [
+        "spec.md",
+        "plan.md",
+        "tasks.md",
+        "implementation-summary.md"
+      ],
+      "requiredAddonDocs": [
+        "checklist.md",
+        "decision-record.md"
+      ],
+      "lazyAddonDocs": [
+        "handover.md",
+        "debug-delegation.md",
+        "research/research.md"
+      ],
+      "sectionGates": {
+        "spec.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "problem": ["1", "2", "3", "3+"],
+          "scope": ["1", "2", "3", "3+"],
+          "requirements": ["1", "2", "3", "3+"],
+          "success-criteria": ["1", "2", "3", "3+"],
+          "risks": ["1", "2", "3", "3+"],
+          "questions": ["1", "2", "3", "3+"],
+          "nfr": ["2", "3", "3+"],
+          "edge-cases": ["2", "3", "3+"],
+          "complexity": ["2", "3", "3+"],
+          "risk-matrix": ["3", "3+"],
+          "user-stories": ["3", "3+"],
+          "governance": ["3+"]
+        },
+        "plan.md": {
+          "summary": ["1", "2", "3", "3+"],
+          "quality-gates": ["1", "2", "3", "3+"],
+          "architecture": ["1", "2", "3", "3+"],
+          "phases": ["1", "2", "3", "3+"],
+          "testing": ["1", "2", "3", "3+"],
+          "dependencies": ["1", "2", "3", "3+"],
+          "rollback": ["1", "2", "3", "3+"],
+          "phase-deps": ["2", "3", "3+"],
+          "effort": ["2", "3", "3+"],
+          "enhanced-rollback": ["2", "3", "3+"],
+          "ai-execution": ["3", "3+"],
+          "architecture-overview": ["3", "3+"],
+          "risk-mitigation": ["3", "3+"],
+          "governance-plan": ["3+"]
+        },
+        "tasks.md": {
+          "notation": ["1", "2", "3", "3+"],
+          "phase-1": ["1", "2", "3", "3+"],
+          "phase-2": ["1", "2", "3", "3+"],
+          "phase-3": ["1", "2", "3", "3+"],
+          "completion": ["1", "2", "3", "3+"],
+          "cross-refs": ["1", "2", "3", "3+"],
+          "architecture-tasks": ["3", "3+"],
+          "governance-tasks": ["3+"]
+        },
+        "implementation-summary.md": {
+          "metadata": ["1", "2", "3", "3+"],
+          "what-built": ["1", "2", "3", "3+"],
+          "how-delivered": ["1", "2", "3", "3+"],
+          "decisions": ["1", "2", "3", "3+"],
+          "verification": ["1", "2", "3", "3+"],
+          "limitations": ["1", "2", "3", "3+"],
+          "architecture-summary": ["3", "3+"],
+          "governance-summary": ["3+"]
+        },
+        "checklist.md": {
+          "protocol": ["2", "3", "3+"],
+          "pre-impl": ["2", "3", "3+"],
+          "code-quality": ["2", "3", "3+"],
+          "testing": ["2", "3", "3+"],
+          "security": ["2", "3", "3+"],
+          "docs": ["2", "3", "3+"],
+          "file-org": ["2", "3", "3+"],
+          "summary": ["2", "3", "3+"],
+          "arch-verify": ["3", "3+"],
+          "perf-verify": ["3", "3+"],
+          "deploy-ready": ["3", "3+"],
+          "compliance-verify": ["3", "3+"],
+          "docs-verify": ["3", "3+"],
+          "sign-off": ["3", "3+"]
+        },
+        "decision-record.md": {
+          "adr-001": ["3", "3+"],
+          "adr-001-context": ["3", "3+"],
+          "adr-001-decision": ["3", "3+"],
+          "adr-001-alternatives": ["3", "3+"],
+          "adr-001-consequences": ["3", "3+"],
+          "adr-001-five-checks": ["3", "3+"],
+          "adr-001-impl": ["3", "3+"]
+        },
+        "metadata": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "problem": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "scope": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "requirements": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "success-criteria": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "risks": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "questions": [
+          "1",
+          "2",
+          "3",
+          "3+"
+        ],
+        "non-functional-requirements": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "edge-cases": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "complexity-assessment": [
+          "2",
+          "3",
+          "3+"
+        ],
+        "risk-matrix": [
+          "3",
+          "3+"
+        ],
+        "user-stories": [
+          "3",
+          "3+"
+        ],
+        "governance": [
+          "3+"
+        ]
+      }
+    },
+    "phase": {
+      "publicLabel": "phase-parent",
+      "privatePreset": "phase-parent",
+      "frontmatterMarkerLevel": 0,
+      "requiredCoreDocs": [
+        "spec.md"
+      ],
+      "requiredAddonDocs": [],
+      "lazyAddonDocs": [
+        "handover.md"
+      ],
+      "sectionGates": {
+        "spec.md": {
+          "metadata": ["phase"],
+          "problem": ["phase"],
+          "scope": ["phase"],
+          "phase-map": ["phase"],
+          "questions": ["phase"]
+        },
+        "metadata": [
+          "phase"
+        ],
+        "purpose": [
+          "phase"
+        ],
+        "phase-list": [
+          "phase"
+        ],
+        "phase-governance": [
+          "phase"
+        ]
+      }
+    }
+  }
+}

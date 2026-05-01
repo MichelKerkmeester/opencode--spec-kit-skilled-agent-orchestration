@@ -7,15 +7,15 @@ description: "Optional cross-cutting template that provides a lean, scannable ca
 
 ## 1. OVERVIEW
 
-`templates/resource-map.md` is the cross-cutting, any-level template for recording the file footprint of a packet in one flat, review-friendly place. It complements `implementation-summary.md` by focusing on paths instead of narrative, so reviewers can scan what was analyzed, created, updated, or removed without reconstructing that ledger from prose or git history.
+`resource-map.md` is the cross-cutting, any-level packet document for recording the file footprint of a packet in one flat, review-friendly place. It complements `implementation-summary.md` by focusing on paths instead of narrative, so reviewers can scan what was analyzed, created, updated, or removed without reconstructing that ledger from prose or git history.
 
-This rollout ties the template into the main template README, every level README, the skill and references surfaces, the feature catalog, the manual testing playbook, and the spec-doc classification list. That keeps discovery, copy guidance, and memory classification aligned around one optional template.
+This rollout ties the document into the Level template contract, the skill and references surfaces, the feature catalog, the manual testing playbook, and the spec-doc classification list. That keeps discovery, generation guidance, and memory classification aligned around one optional document.
 
 ---
 
 ## 2. CURRENT REALITY
 
-templates/resource-map.md plus the discovery and classification surfaces that expose it: templates/README.md, templates/level_1/README.md, templates/level_2/README.md, templates/level_3/README.md, templates/level_3+/README.md, SKILL.md, README.md, references/templates/level_specifications.md, mcp_server/lib/config/spec-doc-paths.ts
+Generated packet `resource-map.md` output plus the discovery and classification surfaces that expose it: Level template contract docs, SKILL.md, README.md, references/templates/level_specifications.md, and mcp_server/lib/config/spec-doc-paths.ts.
 
 ---
 
@@ -25,12 +25,8 @@ templates/resource-map.md plus the discovery and classification surfaces that ex
 
 | File | Layer | Role |
 |------|-------|------|
-| `templates/resource-map.md` | Template | Canonical optional path-ledger template |
-| `templates/README.md` | Template index | Main template architecture surface listing the cross-cutting template |
-| `templates/level_1/README.md` | Template guide | Level 1 optional-files surface for copying the template |
-| `templates/level_2/README.md` | Template guide | Level 2 optional-files surface for copying the template |
-| `templates/level_3/README.md` | Template guide | Level 3 optional-files surface for copying the template |
-| `templates/level_3+/README.md` | Template guide | Level 3+ optional-files surface for copying the template |
+| `resource-map.md` generated in a packet | Packet document | Optional path-ledger document rendered through the Level template contract |
+| Level template contract docs | Template guide | Describes when the optional path-ledger document is available |
 | `SKILL.md` | Skill | Canonical skill guidance listing the template as optional cross-cutting documentation |
 | `README.md` | Guide | Main system-spec-kit README surface describing the template architecture |
 | `references/templates/level_specifications.md` | Reference | Level-by-level and cross-cutting template reference for operators |

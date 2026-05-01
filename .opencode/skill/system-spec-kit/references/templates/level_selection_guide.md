@@ -122,10 +122,10 @@ Create spec folder with pre-expanded templates from level-specific folders:
 
 **Level Folders:**
 Templates are pre-expanded and ready to use in level-specific folders:
-- `templates/level_1/` - 5 files, ~455 LOC (spec.md, plan.md, tasks.md, implementation-summary.md, README.md)
-- `templates/level_2/` - 6 files, ~875 LOC (adds checklist.md)
-- `templates/level_3/` - 7 files, ~1090 LOC (adds decision-record.md)
-- `templates/level_3+/` - 7 files, ~1075 LOC (extended versions with AI protocols)
+- `Level 1 template contract` - 5 files, ~455 LOC (spec.md, plan.md, tasks.md, implementation-summary.md, README.md)
+- `Level 2 template contract` - 6 files, ~875 LOC (adds checklist.md)
+- `Level 3 template contract` - 7 files, ~1090 LOC (adds decision-record.md)
+- `Level 3+ template contract` - 7 files, ~1075 LOC (extended versions with AI protocols)
 
 > **Source of truth for template LOC counts:** [level_specifications.md](./level_specifications.md)
 
@@ -201,20 +201,19 @@ Templates are pre-expanded in level folders:
 
 | Level | Folder | Pre-expanded Content |
 |-------|--------|---------------------|
-| Level 1 | `templates/level_1/` | Baseline templates (spec, plan, tasks, implementation-summary) |
-| Level 2 | `templates/level_2/` | Level 1 + checklist |
-| Level 3 | `templates/level_3/` | Level 2 + decision-record, research |
-| Level 3+ | `templates/level_3+/` | Level 3 + AI protocol, extended checklist |
+| Level 1 | `Level 1 template contract` | Baseline templates (spec, plan, tasks, implementation-summary) |
+| Level 2 | `Level 2 template contract` | Level 1 + checklist |
+| Level 3 | `Level 3 template contract` | Level 2 + decision-record, research |
+| Level 3+ | `Level 3+ template contract` | Level 3 + AI protocol, extended checklist |
 
 **Example paths:**
-- `templates/level_1/spec.md` - Level 1 spec template
-- `templates/level_2/checklist.md` - Level 2 checklist template
-- `templates/level_3/decision-record.md` - Level 3 ADR template
-- `templates/level_3+/spec.md` - Level 3+ spec with AI protocol sections
+- `templates/manifest/spec.md.tmpl` - Level-gated spec template
+- `templates/manifest/checklist.md.tmpl` - Level-gated checklist template
+- `templates/manifest/decision-record.md.tmpl` - Level-gated ADR template
+- `templates/manifest/spec.md.tmpl` - Level 3+ spec sections are rendered by gate
 
 ### Reference Documentation
 - [level_specifications.md](./level_specifications.md) - Complete level requirements
 - [template_guide.md](./template_guide.md) - Template selection and adaptation
 
 ---
-

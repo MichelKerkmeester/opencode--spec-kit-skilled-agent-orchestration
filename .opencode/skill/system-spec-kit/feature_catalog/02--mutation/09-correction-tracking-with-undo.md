@@ -19,7 +19,7 @@ The corrections module (`lib/learning/corrections.ts`) implements inter-memory r
 
 Each correction adjusts the stability scores of both the original and correcting memories: the original receives a penalty while the correction receives a boost. Stability changes are tracked in a `StabilityChanges` structure for audit purposes. The feature is gated by `SPECKIT_RELATIONS` (default `true`). When disabled, relational learning corrections are skipped and no stability adjustments are applied.
 
-This module is implemented and tested, but it is **not** currently wired to any MCP tool endpoint or mutation-handler hot path. `record_correction()`, `undo_correction()`, and the correction history/stat helpers are exported through `lib/learning/index.ts`, yet no handler or tool dispatcher calls them today. Treat the behavior below as library capability rather than live end-user MCP behavior.
+This module is implemented and tested, but it is **not** currently wired to any MCP tool endpoint or mutation-handler hot path. `record_correction()`, `undo_correction()`, and the correction history/stat helpers are exported through `lib/learning/index.ts`, yet no handler or tool dispatcher calls them today. Treat the behavior below as library API behavior rather than live end-user MCP behavior.
 
 Undo logic exists in the module. `undo_correction()` runs inside a transaction with three steps:
 

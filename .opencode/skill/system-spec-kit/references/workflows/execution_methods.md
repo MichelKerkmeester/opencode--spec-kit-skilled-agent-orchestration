@@ -1,17 +1,17 @@
 ---
 title: Execution Methods Reference
-description: How to execute spec folder operations - validation, completion checking, context saving, and template composition
+description: How to execute spec folder operations - validation, completion checking, context saving, and template selection
 ---
 
 # Execution Methods Reference
 
-How to execute spec folder operations - validation, completion checking, context saving, and template composition.
+How to execute spec folder operations - validation, completion checking, context saving, and template selection.
 
 ---
 
 ## 1. OVERVIEW
 
-This document covers validation, completion checking, context saving, folder creation, and template composition operations.
+This document covers validation, completion checking, context saving, folder creation, and template selection operations.
 
 ---
 
@@ -153,26 +153,26 @@ bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --auth --ap
 
 ## 7. TEMPLATE COMPOSITION
 
-### compose.sh
+### Level contract resolver
 
-Composes level-specific templates from core + addendum source components. Ensures consistency between source templates and composed outputs.
+Composes level-specific templates through Level contract rendering source components. Ensures consistency between source templates and composed outputs.
 
 **Usage:**
 ```bash
 # Compose all level templates
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh
+bash Level contract resolver
 
 # Preview changes without writing files
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --dry-run
+bash Level contract resolver --dry-run
 
 # Verbose output during composition
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verbose
+bash Level contract resolver --verbose
 
 # Verify composed templates match sources
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh --verify
+bash Level contract resolver --verify
 
 # Compose specific levels only
-bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh 2 3
+bash Level contract resolver 2 3
 ```
 
 **Flags:**
@@ -193,8 +193,8 @@ bash .opencode/skill/system-spec-kit/scripts/templates/compose.sh 2 3
 | Level 3+ | Core + all addendums |
 
 **When to Use:**
-- After modifying `core/` templates
-- After modifying `addendum/` templates
+- After modifying Level contract templates
+- After modifying Level contract templates
 - To verify template consistency in CI/CD
 - Before releasing template updates
 

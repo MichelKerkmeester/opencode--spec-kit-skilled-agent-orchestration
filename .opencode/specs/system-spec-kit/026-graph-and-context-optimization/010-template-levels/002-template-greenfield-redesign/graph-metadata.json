@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/010-template-levels",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [],
+    "key_topics": [],
+    "importance_tier": "important",
+    "status": "planned",
+    "key_files": ["spec.md","plan.md","tasks.md"],
+    "entities": [],
+    "causal_summary": "Greenfield redesign of the spec-kit template backend: minimal scaffold + capability-flag manifest + lazy command-owned addons; eliminate level system",
+    "created_at": "2026-05-01T09:15:39Z",
+    "last_save_at": "2026-05-01T11:00:00Z",
+    "save_lineage": "graph_only",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md","plan.md","tasks.md","checklist.md","decision-record.md","implementation-summary.md"]
+  }
+}

@@ -21,6 +21,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly RULES_DIR="$SCRIPT_DIR/../rules"
 readonly VALIDATOR_REGISTRY_JSON="$SCRIPT_DIR/../lib/validator-registry.json"
 readonly SPEC_DOC_STRUCTURE_TS="$SCRIPT_DIR/../../mcp_server/lib/validation/spec-doc-structure.ts"
+readonly SPEC_DOC_STRUCTURE_JS="$SCRIPT_DIR/../../mcp_server/dist/lib/validation/spec-doc-structure.js"
 readonly CONTINUITY_FRESHNESS_TS="$SCRIPT_DIR/../validation/continuity-freshness.ts"
 readonly CONTINUITY_FRESHNESS_JS="$SCRIPT_DIR/../dist/validation/continuity-freshness.js"
 readonly EVIDENCE_MARKER_LINT_TS="$SCRIPT_DIR/../validation/evidence-marker-lint.ts"
@@ -101,7 +102,7 @@ OPTIONS:
     --recursive    Validate parent + all [0-9][0-9][0-9]-*/ child phase folders
     --no-recursive Disable auto-recursive validation when phase children exist
 
-EXIT CODES: 0=pass, 1=warnings, 2=errors
+EXIT CODES: 0=pass, 1=user error, 2=validation error, 3=system error
 
 $registry_rules
 
@@ -121,13 +122,13 @@ parse_args() {
             --quiet|-q) QUIET_MODE=true; shift ;;
             --recursive) RECURSIVE=true; shift ;;
             --no-recursive) RECURSIVE=false; RECURSIVE_OPT_OUT=true; shift ;;
-            -*) echo "ERROR: Unknown option '$1'" >&2; exit 2 ;;
-            *) [[ -z "$FOLDER_PATH" ]] && FOLDER_PATH="$1" || { echo "ERROR: Multiple paths" >&2; exit 2; }; shift ;;
+            -*) echo "ERROR: Unknown option '$1'" >&2; exit 1 ;;
+            *) [[ -z "$FOLDER_PATH" ]] && FOLDER_PATH="$1" || { echo "ERROR: Multiple paths" >&2; exit 1; }; shift ;;
         esac
     done
-    [[ -z "$FOLDER_PATH" ]] && { echo "ERROR: Folder path required" >&2; exit 2; }
+    [[ -z "$FOLDER_PATH" ]] && { echo "ERROR: Folder path required" >&2; exit 1; }
     FOLDER_PATH="${FOLDER_PATH%/}"
-    [[ ! -d "$FOLDER_PATH" ]] && { echo "ERROR: Folder not found: $FOLDER_PATH" >&2; exit 2; }
+    [[ ! -d "$FOLDER_PATH" ]] && { echo "ERROR: Folder not found: $FOLDER_PATH" >&2; exit 3; }
     return 0
 }
 
@@ -496,19 +497,34 @@ run_spec_doc_ts_rule() {
     RULE_DETAILS=()
     RULE_REMEDIATION=""
 
-    if [[ ! -f "$SPEC_DOC_STRUCTURE_TS" ]]; then
+    local bridge_path="$SPEC_DOC_STRUCTURE_TS"
+    local bridge_is_js=false
+    if [[ -f "$SPEC_DOC_STRUCTURE_JS" ]]; then
+        bridge_path="$SPEC_DOC_STRUCTURE_JS"
+        bridge_is_js=true
+    fi
+
+    if [[ ! -f "$bridge_path" ]]; then
         RULE_STATUS="fail"
-        RULE_MESSAGE="TS rule bridge missing: $SPEC_DOC_STRUCTURE_TS"
+        RULE_MESSAGE="TS rule bridge missing: $bridge_path"
         RULE_DETAILS=("Expected spec-doc validation bridge was not found on disk")
         return
     fi
 
     local cmd=()
-    if node --experimental-strip-types --eval "process.exit(0)" >/dev/null 2>&1; then
+    if [[ "$bridge_is_js" == "true" ]]; then
+        cmd=(
+            node
+            "$bridge_path"
+            --folder "$folder"
+            --level "$level"
+            --rule "$rule_name"
+        )
+    elif node --experimental-strip-types --eval "process.exit(0)" >/dev/null 2>&1; then
         cmd=(
             node
             --experimental-strip-types
-            "$SPEC_DOC_STRUCTURE_TS"
+            "$bridge_path"
             --folder "$folder"
             --level "$level"
             --rule "$rule_name"
@@ -526,7 +542,7 @@ run_spec_doc_ts_rule() {
             node
             --import
             "$tsx_loader"
-            "$SPEC_DOC_STRUCTURE_TS"
+            "$bridge_path"
             --folder "$folder"
             --level "$level"
             --rule "$rule_name"
@@ -817,6 +833,31 @@ run_strict_validators() {
     return 0
 }
 
+run_node_orchestrator() {
+    [[ "${SPECKIT_VALIDATE_LEGACY:-}" == "1" ]] && return 1
+
+    local orchestrator_js="$SCRIPT_DIR/../../mcp_server/dist/lib/validation/orchestrator.js"
+    local orchestrator_ts="$SCRIPT_DIR/../../mcp_server/lib/validation/orchestrator.ts"
+    local cmd=()
+    if [[ -f "$orchestrator_js" ]]; then
+        cmd=(node "$orchestrator_js")
+    elif [[ -f "$orchestrator_ts" ]]; then
+        local tsx_loader="$SCRIPT_DIR/../node_modules/tsx/dist/loader.mjs"
+        [[ -f "$tsx_loader" ]] || return 1
+        cmd=(node --import "$tsx_loader" "$orchestrator_ts")
+    else
+        return 1
+    fi
+
+    cmd+=(--folder "$FOLDER_PATH")
+    $STRICT_MODE && cmd+=(--strict)
+    $JSON_MODE && cmd+=(--json)
+    $QUIET_MODE && cmd+=(--quiet)
+    $VERBOSE && cmd+=(--verbose)
+    "${cmd[@]}"
+    exit $?
+}
+
 # ───────────────────────────────────────────────────────────────
 # 10. OUTPUT
 # ───────────────────────────────────────────────────────────────
@@ -975,6 +1016,7 @@ main() {
     apply_env_overrides
     detect_legacy_grandfathered "$FOLDER_PATH"
     detect_level "$FOLDER_PATH"
+    run_node_orchestrator
     validate_template_hashes "$FOLDER_PATH"
     print_header
     run_all_rules "$FOLDER_PATH" "$DETECTED_LEVEL"
@@ -989,7 +1031,7 @@ main() {
     if $JSON_MODE; then generate_json; else print_summary; fi
     if [[ $ERRORS -gt 0 ]]; then exit 2; fi
     if [[ $WARNINGS -gt 0 ]] && $STRICT_MODE && ! $LEGACY_GRANDFATHERED; then exit 2; fi
-    if [[ $WARNINGS -gt 0 ]]; then exit 1; fi
+    if [[ $WARNINGS -gt 0 ]]; then exit 0; fi
     exit 0
 }
 
@@ -997,4 +1039,6 @@ main "$@"
 
 # Exit codes:
 #   0 - Success
-#   1 - General error
+#   1 - User error
+#   2 - Validation error
+#   3 - System error

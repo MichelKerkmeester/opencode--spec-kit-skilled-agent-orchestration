@@ -2,16 +2,18 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation",
   "children_ids": [
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/002-deep-loop-workflow-state",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/009-test-reliability",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/008-search-quality-tuning",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/007-topology-build-boundary",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/002-deep-loop-workflow-state",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/003-advisor-quality",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors"
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/006-architecture-cleanup",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/007-topology-build-boundary",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/008-search-quality-tuning",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/009-test-reliability",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/010-cli-orchestrator-drift"
   ],
   "manual": {
     "depends_on": [],
@@ -19,26 +21,183 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
+    "trigger_phrases": [
+      "049 deep research finding remediation",
+      "F-001 through F-020 remediation",
+      "046 followup",
+      "phase parent 049"
+    ],
+    "key_topics": [
+      "049",
+      "deep",
+      "research",
+      "finding",
+      "remediation",
+      "f-001",
+      "f-020",
+      "046",
+      "followup",
+      "phase",
+      "parent",
+      "packet"
+    ],
     "importance_tier": "important",
     "status": "planned",
     "key_files": [
-      "spec.md",
-      "plan.md",
-      "tasks.md"
+      "mcp_server/code_graph/handlers/query.ts",
+      "scripts/memory/generate-context.ts",
+      "skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "mcp_server/lib/parsing/memory-parser.ts",
+      "mcp_server/handlers/causal-links-processor.ts",
+      "mcp_server/formatters/search-results.ts",
+      "mcp_server/lib/storage/checkpoints.ts",
+      "skill_advisor/lib/daemon/watcher.ts",
+      "skill_advisor/lib/scorer/projection.ts",
+      "mcp_server/lib/ops/file-watcher.ts",
+      "mcp_server/lib/spec/is-phase-parent.ts",
+      ".opencode/plugins/spec-kit-skill-advisor.js",
+      "scripts/evals/check-source-dist-alignment.ts",
+      "mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs",
+      "mcp_server/skill_advisor/lib/daemon/watcher.ts",
+      "spec.md"
     ],
-    "entities": [],
-    "causal_summary": "Phase parent: close 78 remaining findings (27 P1 + 51 P2) from packet 046 deep research across 10 sub-phases",
+    "entities": [
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "generate-context.ts",
+        "kind": "code",
+        "path": "scripts/memory/generate-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": "skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-links-processor.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/causal-links-processor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "watcher.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/daemon/watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "projection.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/scorer/projection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "file-watcher.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/ops/file-watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "is-phase-parent.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/spec/is-phase-parent.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-skill-advisor.js",
+        "kind": "code",
+        "path": ".opencode/plugins/spec-kit-skill-advisor.js",
+        "source": "derived"
+      },
+      {
+        "name": "check-source-dist-alignment.ts",
+        "kind": "code",
+        "path": "scripts/evals/check-source-dist-alignment.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-skill-advisor-bridge.mjs",
+        "kind": "file",
+        "path": "mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Research Finding Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Land",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 046's 20-iteration deep research surfaced 82 findings (0 P0, 31 P1, 51 P2) across daemon concurrency, code-graph consistency, advisor quality, validators, deep-loop workflows, search tuning, tests, architecture, topology, and CLI orchestrator skills. Packet 048 closed 4 findings (F-001-A1-01..04). The remaining 78 findings (27 P1 + 51 P2) need to be addressed without dropping product correctness, stress-test reliability, or the strict spec-validation contract.",
     "created_at": "2026-05-01T05:18:33Z",
-    "last_save_at": "2026-05-01T07:55:32.393Z",
+    "last_save_at": "2026-05-01T09:02:33.512Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
     "source_docs": [
-      "spec.md",
-      "plan.md",
-      "tasks.md"
+      "spec.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
-    "last_active_at": "2026-05-01T07:55:32.393Z"
+    "last_active_child_id": null,
+    "last_active_at": "2026-05-01T09:02:33.512Z"
   }
 }

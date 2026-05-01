@@ -220,7 +220,7 @@ Please specify the full path: parent/child
 
 ### Reference Files
 - [template_guide.md](../templates/template_guide.md) - Template selection, adaptation, and quality standards
-- [level_specifications.md](../templates/level_specifications.md) - Complete Level 1-3 requirements and migration
+- level specifications reference - Complete Level 1-3 requirements and migration
 - [quick_reference.md](../workflows/quick_reference.md) - Commands, checklists, and troubleshooting
 
 ### Related Skills

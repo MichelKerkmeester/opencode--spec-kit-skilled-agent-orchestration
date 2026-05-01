@@ -6,7 +6,7 @@
 // 1. GENERATE DESCRIPTION
 // ───────────────────────────────────────────────────────────────
 // CLI: Generate Per-Folder description.json
-// Usage: node generate-description.js <folder-path> <base-path> [--description "text"]
+// Usage: node generate-description.js <folder-path> <base-path> [--description "text"] [--level N]
 //
 // If --description is provided, uses it directly + keyword extraction.
 // Otherwise reads spec.md via generatePerFolderDescription().
@@ -30,7 +30,7 @@ export type { LoadResult };
 function main(): void {
   const args = process.argv.slice(2);
   if (args.length < 2) {
-    console.error('Usage: generate-description.js <folder-path> <base-path> [--description "text"]');
+    console.error('Usage: generate-description.js <folder-path> <base-path> [--description "text"] [--level N]');
     process.exit(1);
   }
 
@@ -60,6 +60,8 @@ function main(): void {
   if (descIdx !== -1 && args[descIdx + 1]) {
     explicitDescription = args[descIdx + 1];
   }
+  const levelIdx = args.indexOf('--level');
+  const explicitLevel = levelIdx !== -1 && args[levelIdx + 1] ? args[levelIdx + 1] : null;
 
   let desc: PerFolderDescription | null;
 
@@ -88,10 +90,14 @@ function main(): void {
       parentChain,
       memorySequence: existingData?.memorySequence ?? 0,
       memoryNameHistory: existingData?.memoryNameHistory ?? [],
+      ...(explicitLevel ? { level: explicitLevel } : {}),
     };
   } else {
     // Generate from spec.md
     desc = generatePerFolderDescription(folderPath, basePath);
+    if (desc && explicitLevel) {
+      (desc as PerFolderDescription & { level?: string }).level = explicitLevel;
+    }
   }
 
   if (!desc) {

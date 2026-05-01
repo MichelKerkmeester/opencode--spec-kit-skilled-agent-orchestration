@@ -9,7 +9,7 @@ description: "Atomic-save parity ensures `atomicSaveMemory()` returns the same `
 
 Atomic-save parity ensures `atomicSaveMemory()` returns the same `postMutationHooks` envelope and UX hint payloads as the primary save path.
 
-The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
+The system has two ways to save memories: a standard path and a faster "atomic" path. This feature made them return the same feedback type so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
 
 ---
 

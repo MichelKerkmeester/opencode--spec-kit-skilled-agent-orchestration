@@ -1,0 +1,49 @@
+{
+  "trigger_phrases": [
+    "057 spec kit ux",
+    "spar-kit comparison",
+    "spec kit ux upgrade",
+    "system-spec-kit improvements",
+    "external spec kit research",
+    "057 deep research",
+    "cmd-spec-kit-ux-upgrade"
+  ],
+  "name": "057-cmd-spec-kit-ux-upgrade",
+  "version": "1.0.0",
+  "importance_tier": "high",
+  "level": 2,
+  "status": "in_progress",
+  "completion_pct": 0,
+  "key_files": [
+    ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/spec.md",
+    ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/external/README.md",
+    ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/external/technicalBrief.md",
+    ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/external/install-root/skills",
+    ".opencode/skill/system-spec-kit/SKILL.md",
+    ".opencode/skill/system-spec-kit/templates",
+    ".opencode/command/spec_kit",
+    ".opencode/command/memory",
+    ".opencode/command/create",
+    ".opencode/agent"
+  ],
+  "specFolder": "skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade",
+  "description": "Deep research: compare external SPAR-Kit project against internal system-spec-kit, surface adoptable UX/orchestration patterns. 10-iteration cli-codex gpt-5.5 high fast run.",
+  "keywords": [
+    "research",
+    "spec-kit",
+    "ux",
+    "spar-kit",
+    "comparison",
+    "orchestration",
+    "improvements",
+    "templates",
+    "commands",
+    "agents"
+  ],
+  "lastUpdated": "2026-05-01T07:30:00Z",
+  "specId": "057",
+  "folderSlug": "cmd-spec-kit-ux-upgrade",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ]
+}

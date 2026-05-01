@@ -38,6 +38,7 @@ source "${SCRIPT_DIR}/../lib/shell-common.sh"
 # ───────────────────────────────────────────────────────────────
 
 # Template directories (SCRIPT_DIR is scripts/spec/, templates is at ../../templates)
+# Upgrade addendum fragments are transition-only inputs; scaffold creation uses the Level resolver.
 TEMPLATES_DIR="$(cd "${SCRIPT_DIR}/../../templates" 2>/dev/null && pwd)" || {
     echo "Error: Templates directory not found at ${SCRIPT_DIR}/../../templates" >&2
     exit 2

@@ -283,7 +283,7 @@ AI: Loading context for specs/009-notification-system/
 
 | File | Purpose |
 |------|---------|
-| [level_specifications.md](../templates/level_specifications.md) | Detailed level requirements and thresholds |
+| level specifications reference | Detailed level requirements and thresholds |
 | [template_guide.md](../templates/template_guide.md) | Template usage and customization |
 | [folder_structure.md](../structure/folder_structure.md) | Spec folder organization |
 

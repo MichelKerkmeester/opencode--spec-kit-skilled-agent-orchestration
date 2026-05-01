@@ -1631,8 +1631,8 @@ Prompt: `Verify feature flag sunset audit outcomes. Capture the evidence needed 
 Documented dispositions match code state; inert compatibility flags remain no-op; retired topics are not treated as live runtime checks
 
 #### Test Execution
-> **Feature File:** [064](17--governance/_deprecated/064-feature-flag-sunset-audit.md)
-> **Catalog:** [17--governance/_deprecated/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/_deprecated/02-feature-flag-sunset-audit.md)
+> **Feature File:** retired feature-flag sunset audit manual record
+> **Catalog:** retired feature-flag sunset audit record
 
 ### 065 | Database and schema safety
 
@@ -2455,20 +2455,20 @@ Governed save requires provenance; ephemeral save requires deleteAfter; scope mi
 > **Feature File:** [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md)
 > **Catalog:** [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md)
 
-### 125 | Memory roadmap capability flags
+### 125 | Memory roadmap flags
 
 #### Description
 Verify runtime roadmap resolvers stay distinct from live runtime flags while keeping adaptive ranking default-off until explicitly enabled.
 
 #### Scenario Contract
-Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove First snapshot remains phase:"scope-governance" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false even when SPECKIT_GRAPH_UNIFIED=false is set; second snapshot uses SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report phase:"graph" with capabilities.graphUnified:false; third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports capabilities.adaptiveRanking:true; fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false and reports capabilities.adaptiveRanking:false again. Return a concise user-facing pass/fail verdict with the main reason.`
+Prompt: `Validate memory roadmap flag resolution without changing live graph-channel defaults. Work locally in the system-spec-kit mcp_server package, capture the exact commands and outputs, and summarize the result in user language. Capture the evidence needed to prove the first snapshot keeps scope-governance phase with graph-unified metadata on and adaptive ranking off even when SPECKIT_GRAPH_UNIFIED=false is set; the second snapshot uses SPECKIT_MEMORY_ROADMAP_PHASE=graph and SPECKIT_MEMORY_GRAPH_UNIFIED=false to report graph phase with graph-unified metadata off; the third snapshot uses SPECKIT_MEMORY_ADAPTIVE_RANKING=true and reports adaptive ranking on; the fourth snapshot sets SPECKIT_MEMORY_ADAPTIVE_RANKING=false and reports adaptive ranking off again. Return a concise user-facing pass/fail verdict with the main reason.`
 
-First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms explicit canonical opt-out by returning `capabilities.adaptiveRanking:false` again
+First snapshot keeps `scope-governance` phase with graph-unified metadata on and adaptive ranking off; second snapshot reports `graph` phase with graph-unified metadata off; third snapshot reports adaptive ranking on; fourth snapshot confirms explicit canonical opt-out by returning adaptive ranking off again
 
 Adaptive-ranking roadmap metadata now stays default-off until explicitly enabled. This keeps roadmap snapshots aligned with the live runtime gate while preserving explicit opt-in and opt-out behavior.
 
 #### Test Execution
-> **Feature File:** [125](19--feature-flag-reference/125-memory-roadmap-capability-flags.md)
+> **Feature File:** 125 memory roadmap flags
 > **Catalog:** [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md)
 
 ### 126 | Memory roadmap baseline snapshot
@@ -3426,7 +3426,7 @@ These 30 catalog entries are explicitly documented here even when validation is 
 | `15--retrieval-enhancements/09-contextual-tree-injection.md` | Manual + automated | Covered directly by 145 and `hybrid-search-context-headers.vitest.ts` |
 | `16--tooling-and-scripts/02-architecture-boundary-enforcement.md` | Build-time only | Enforced by build/test tooling rather than runtime playbook steps |
 | `16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md` | Automated only | Covered by `mcp_server/tests/file-watcher.vitest.ts`; no dedicated manual operator scenario yet |
-| `18--ux-hooks/01-shared-post-mutation-hook-wiring.md` | Indirect scenario coverage | Covered by 085, 103, and 104 |
+| Shared post-mutation hook wiring | Indirect scenario coverage | Covered by 085, 103, and 104 |
 | `18--ux-hooks/02-memory-health-autorepair-metadata.md` | Automated only | Covered by `handler-memory-health-edge.vitest.ts` and `memory-crud-extended.vitest.ts` (autoRepair, confirmation-only, partialSuccess). EX-013 covers basic health diagnostics only |
 | `18--ux-hooks/04-schema-and-type-contract-synchronization.md` | Indirect scenario coverage | Covered by 107 (confirmName enforcement) and hook-contract tests. 095 covers strict-param rejection only |
 | `18--ux-hooks/06-mutation-hook-result-contract-expansion.md` | Indirect scenario coverage | Covered by 103 |
@@ -3664,7 +3664,7 @@ This split playbook keeps automated coverage references in three places:
 | 061 | Features | Tree thinning for spec folder consolidation (PI-B1) | [061](16--tooling-and-scripts/061-tree-thinning-for-spec-folder-consolidation-pi-b1.md) | [16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md](../feature_catalog/16--tooling-and-scripts/01-tree-thinning-for-spec-folder-consolidation.md) |
 | 062 | Features | Progressive validation for spec documents (PI-B2) | [062](16--tooling-and-scripts/062-progressive-validation-for-spec-documents-pi-b2.md) | [16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md](../feature_catalog/16--tooling-and-scripts/03-progressive-validation-for-spec-documents.md) |
 | 063 | Features | Feature flag governance | [063](17--governance/063-feature-flag-governance.md) | [17--governance/01-feature-flag-governance.md](../feature_catalog/17--governance/01-feature-flag-governance.md) |
-| 064 | Features | Feature flag sunset audit | [064](17--governance/_deprecated/064-feature-flag-sunset-audit.md) | [17--governance/_deprecated/02-feature-flag-sunset-audit.md](../feature_catalog/17--governance/_deprecated/02-feature-flag-sunset-audit.md) |
+| 064 | Features | Feature flag sunset audit | retired manual record | retired feature-flag sunset audit record |
 | 065 | Features | Database and schema safety | [065](08--bug-fixes-and-data-integrity/065-database-and-schema-safety.md) | [08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md](../feature_catalog/08--bug-fixes-and-data-integrity/05-database-and-schema-safety.md) |
 | 066 | Features | Scoring and ranking corrections | [066](11--scoring-and-calibration/066-scoring-and-ranking-corrections.md) | [11--scoring-and-calibration/11-scoring-and-ranking-corrections.md](../feature_catalog/11--scoring-and-calibration/11-scoring-and-ranking-corrections.md) |
 | 067 | Features | Search pipeline safety | [067](14--pipeline-architecture/067-search-pipeline-safety.md) | [14--pipeline-architecture/07-search-pipeline-safety.md](../feature_catalog/14--pipeline-architecture/07-search-pipeline-safety.md) |
@@ -3724,7 +3724,7 @@ This split playbook keeps automated coverage references in three places:
 | 121 | Features | Adaptive shadow proposal and rollback (Phase 4) | [121](11--scoring-and-calibration/121-adaptive-shadow-proposal-and-rollback-phase-4.md) | [11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md](../feature_catalog/11--scoring-and-calibration/18-adaptive-shadow-ranking-bounded-proposals-and-rollback.md) |
 | 122 | Features | Governed ingest and scope isolation (Phase 5) | [122](17--governance/122-governed-ingest-and-scope-isolation-phase-5.md) | [17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md](../feature_catalog/17--governance/03-hierarchical-scope-governance-governed-ingest-retention-and-audit.md) |
 | 124 | Features | Automatic archival lifecycle coverage | [124](05--lifecycle/124-automatic-archival-lifecycle-coverage.md) | [05--lifecycle/07-automatic-archival-subsystem.md](../feature_catalog/05--lifecycle/07-automatic-archival-subsystem.md) |
-| 125 | Features | Memory roadmap capability flags | [125](19--feature-flag-reference/125-hydra-roadmap-capability-flags.md) | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) <br> Cross-cutting roadmap test - maps to umbrella flag reference. |
+| 125 | Features | Memory roadmap flags | 125 memory roadmap flags | [19--feature-flag-reference/01-1-search-pipeline-features-speckit.md](../feature_catalog/19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) <br> Cross-cutting roadmap test - maps to umbrella flag reference. |
 | 126 | Features | Memory roadmap baseline snapshot | [126](09--evaluation-and-measurement/126-memory-roadmap-baseline-snapshot.md) | [09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md](../feature_catalog/09--evaluation-and-measurement/17-memory-roadmap-baseline-snapshot.md) |
 | 127 | Features | Migration checkpoint scripts | [127](16--tooling-and-scripts/127-migration-checkpoint-scripts.md) | [16--tooling-and-scripts/09-migration-checkpoint-scripts.md](../feature_catalog/16--tooling-and-scripts/09-migration-checkpoint-scripts.md) |
 | 128 | Features | Schema compatibility validation | [128](16--tooling-and-scripts/128-schema-compatibility-validation.md) | [16--tooling-and-scripts/10-schema-compatibility-validation.md](../feature_catalog/16--tooling-and-scripts/10-schema-compatibility-validation.md) |
@@ -3819,7 +3819,7 @@ This split playbook keeps automated coverage references in three places:
 | 206 | Features | Architecture boundary enforcement | [206](16--tooling-and-scripts/206-architecture-boundary-enforcement.md) | [16--tooling-and-scripts/02-architecture-boundary-enforcement.md](../feature_catalog/16--tooling-and-scripts/02-architecture-boundary-enforcement.md) |
 | 207 | Features | Watcher delete/rename cleanup | [207](16--tooling-and-scripts/207-watcher-delete-rename-cleanup.md) | [16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md](../feature_catalog/16--tooling-and-scripts/08-watcher-delete-rename-cleanup.md) |
 | 208 | Features | Template compliance contract enforcement | [208](16--tooling-and-scripts/208-template-compliance-contract-enforcement.md) | [16--tooling-and-scripts/18-template-compliance-contract-enforcement.md](../feature_catalog/16--tooling-and-scripts/18-template-compliance-contract-enforcement.md) |
-| 209 | Features | Shared post-mutation hook wiring | [209](18--ux-hooks/209-shared-post-mutation-hook-wiring.md) | [18--ux-hooks/01-shared-post-mutation-hook-wiring.md](../feature_catalog/18--ux-hooks/01-shared-post-mutation-hook-wiring.md) |
+| 209 | Features | Shared post-mutation hook wiring | consolidated manual record | consolidated into successor UX hook records |
 | 210 | Features | Memory health autoRepair metadata | [210](18--ux-hooks/210-memory-health-autorepair-metadata.md) | [18--ux-hooks/02-memory-health-autorepair-metadata.md](../feature_catalog/18--ux-hooks/02-memory-health-autorepair-metadata.md) |
 | 211 | Features | Schema and type contract sync | [211](18--ux-hooks/211-schema-and-type-contract-synchronization.md) | [18--ux-hooks/04-schema-and-type-contract-synchronization.md](../feature_catalog/18--ux-hooks/04-schema-and-type-contract-synchronization.md) |
 | 212 | Features | Mutation hook result contract expansion | [212](18--ux-hooks/212-mutation-hook-result-contract-expansion.md) | [18--ux-hooks/06-mutation-hook-result-contract-expansion.md](../feature_catalog/18--ux-hooks/06-mutation-hook-result-contract-expansion.md) |

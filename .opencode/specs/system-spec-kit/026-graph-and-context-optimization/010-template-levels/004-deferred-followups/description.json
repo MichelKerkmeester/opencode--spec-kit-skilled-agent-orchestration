@@ -1,0 +1,14 @@
+{
+  "specFolder": "004-deferred-followups",
+  "description": "deferred-followups",
+  "keywords": [
+    "deferred-followups"
+  ],
+  "lastUpdated": "2026-05-01T20:32:55.710Z",
+  "specId": "004",
+  "folderSlug": "deferred-followups",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "3"
+}

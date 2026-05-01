@@ -153,7 +153,7 @@ describe('thin continuity record', () => {
       recent_action: 'Completed continuity normalization pass',
       next_safe_action: 'Inspect routing audit',
       blockers: [' none ', 'N/A', ''],
-      key_files: ['./templates//level_3+/spec.md', 'templates/level_1/spec.md'],
+      key_files: ['./templates//manifest/spec.md.tmpl', 'templates/manifest/plan.md.tmpl'],
       completion_pct: 15,
       open_questions: ['q10', 'Q2', 'Q10'],
       answered_questions: ['q1', 'Q3'],
@@ -164,7 +164,7 @@ describe('thin continuity record', () => {
       packet_pointer: 'specs/system-spec-kit/026-graph-and-context-optimization/006-canonical-continuity-refactor',
       last_updated_at: '2026-04-11T16:48:59Z',
       blockers: [],
-      key_files: ['templates/level_3+/spec.md', 'templates/level_1/spec.md'],
+      key_files: ['templates/manifest/spec.md.tmpl', 'templates/manifest/plan.md.tmpl'],
       open_questions: ['Q2', 'Q10'],
       answered_questions: ['Q1', 'Q3'],
     });

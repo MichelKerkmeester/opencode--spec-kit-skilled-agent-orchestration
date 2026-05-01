@@ -39,7 +39,7 @@ This document is the current feature inventory for the Spec Kit Memory system. I
 
 ## 1. OVERVIEW
 
-Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by capability area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
+Use this catalog as the canonical inventory for both current behavior and delivered refinements. The numbered sections below group the live system by feature area so operators can move from the top-level reference into the per-feature files without losing implementation, validation, or rollout context.
 
 ### Audit Phase Coverage Notes (020-022)
 
@@ -47,7 +47,7 @@ Use this catalog as the canonical inventory for both current behavior and delive
 |---|---|
 | `020-feature-flag-reference` | Covered by [`19--feature-flag-reference/`](19--feature-flag-reference/01-1-search-pipeline-features-speckit.md) via slug match (`feature-flag-reference`). See [`19--feature-flag-reference/08-audit-phase-020-mapping-note.md`](19--feature-flag-reference/08-audit-phase-020-mapping-note.md). |
 | `021-remediation-revalidation` | Covered as cross-category remediation records (for example: [08--bug-fixes-and-data-integrity/06](08--bug-fixes-and-data-integrity/06-guards-and-edge-cases.md), [14--pipeline-architecture/07](14--pipeline-architecture/07-search-pipeline-safety.md), [16--tooling-and-scripts/05](16--tooling-and-scripts/05-code-standards-alignment.md)). See [`20--remediation-revalidation/01-category-stub.md`](20--remediation-revalidation/01-category-stub.md). |
-| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), [17--governance/_deprecated/02](17--governance/_deprecated/02-feature-flag-sunset-audit.md)). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
+| `022-implement-and-remove-deprecated-features` | Covered by implementation/deprecation closure records ([16--tooling-and-scripts/04](16--tooling-and-scripts/04-dead-code-removal.md), retired feature-flag sunset audit record). See [`21--implement-and-remove-deprecated-features/01-category-stub.md`](21--implement-and-remove-deprecated-features/01-category-stub.md). |
 
 ### Hook contract coverage map
 
@@ -78,7 +78,7 @@ The Spec Kit Memory MCP server exposes **54 tools** overall across the 7-layer M
 
 **Owns** means the command is the primary home for those tools. **Shared** means the command borrows tools whose primary home is another command (typically `/memory:search` or `/memory:manage`).
 
-Current catalog entries include three surfaced capabilities: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix_runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
+Current catalog entries include three surfaced features: `memory_retention_sweep` for governed `delete_after` closure, CLI matrix adapter runners under `mcp_server/matrix_runners/`, and the Codex `freshness-smoke-check` helper. The Skill Advisor catalog owns the detailed `advisor_rebuild` MCP entry; it is included in the 54-tool server count through `TOOL_DEFINITIONS`.
 
 ---
 
@@ -88,7 +88,7 @@ Current catalog entries include three surfaced capabilities: `memory_retention_s
 
 #### Description
 
-When you ask the system a question, it figures out what kind of help you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
+When you ask the system a question, it figures out the help type you need and automatically picks the best way to find the answer. Think of it like a smart librarian who reads your request, decides whether you need a quick lookup or a deep research session and then fetches the right materials for you. Without this, you would have to manually tell the system how to search every time.
 
 #### Current Reality
 
@@ -138,7 +138,7 @@ See [`01--retrieval/02-semantic-and-lexical-search-memorysearch.md`](01--retriev
 
 #### Description
 
-This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. It works like a preset: you provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
+This is the lightweight search entry point for callers that want the main semantic search behavior without having to set a large option surface themselves. You provide a query and optional governed-scope boundaries, and the server forwards the request to the full search tool using sensible retrieval defaults.
 
 #### Current Reality
 
@@ -252,7 +252,7 @@ This planned feature would let you pull out a single section from a large docume
 
 **ROADMAP ONLY.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is still deferred until spec docs routinely exceed ~1000 lines. Existing anchor-aware thinning remains the current approach, so this is not part of the current runtime surface.
 
-**Status: PLANNED / NOT YET IMPLEMENTED** — This tool is documented as a planned capability but is not registered in the live MCP tool registry (`tool-schemas.ts`). It does not appear in the exported tool list.
+**Status: PLANNED / NOT YET IMPLEMENTED** — This tool is documented as a planned feature but is not registered in the live MCP tool registry (`tool-schemas.ts`). It does not appear in the exported tool list.
 
 #### Source Files
 
@@ -1466,7 +1466,7 @@ Before rolling out a big upgrade, you want to take a "before" photo so you can c
 
 `captureMemoryStateBaselineSnapshot()` records a small Phase 1 readiness baseline for the spec-doc record-roadmap rollout slice. It reads retrieval-volume metrics from the eval database (`eval_queries`, `eval_channel_results`, `eval_final_results`) and isolation/schema metrics from the target context database (`memory_index`, `schema_version`), then returns a single snapshot with timestamp, eval run ID, metrics map and metadata.
 
-When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved spec-doc record-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
+When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved spec-doc record-roadmap phase, the compatibility-supported roadmap flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
 The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated. The path switch is also wrapped in `try/finally`, so even if `initEvalDb()` fails after closing the previous singleton, the prior eval DB handle is restored instead of leaving global eval state clobbered for later calls.
 
@@ -1870,7 +1870,7 @@ See [`11--scoring-and-calibration/03-interference-scoring.md`](11--scoring-and-c
 
 #### Description
 
-Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on what kind of memory they are and how important they were marked. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between.
+Not all memories should fade at the same speed. A key decision made months ago is still important, but a quick scratch note from last week probably is not. This feature adjusts how fast memories lose relevance based on memory class and importance. Critical decisions never fade. Temporary notes fade quickly. Everything else falls somewhere in between.
 
 #### Current Reality
 
@@ -2992,7 +2992,7 @@ See [`14--pipeline-architecture/03-chunk-ordering-preservation.md`](14--pipeline
 
 #### Description
 
-Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It just adds useful tags so that later steps in the pipeline know what kind of content they are looking at.
+Memory files contain hidden markers that label sections as things like "decision" or "summary." This feature reads those markers and attaches the labels to search results as extra information. It does not change how results are ranked. It adds useful tags so that later steps in the pipeline know what content type they are looking at.
 
 #### Current Reality
 
@@ -3295,7 +3295,7 @@ See [`14--pipeline-architecture/19-embedding-retry-orchestrator.md`](14--pipelin
 
 #### Description
 
-The system has many different tools, and each one needs to know how much response space it is allowed to use and what kind of task it is best suited for. This feature organizes all tools into seven layers with budgets and guidance, like assigning departments in a company. It does not control how tools are called at runtime but helps recommend the right tool for the job.
+The system has many different tools, and each one needs to know how much response space it is allowed to use and which task type it is best suited for. This feature organizes all tools into seven layers with budgets and guidance, like assigning departments in a company. It does not control how tools are called at runtime but helps recommend the right tool for the job.
 
 #### Current Reality
 
@@ -3896,7 +3896,7 @@ The CLI matrix adapter runners turn the F1-F14 executor matrix into runnable cel
 
 #### Current Reality
 
-`mcp_server/matrix_runners/` ships a manifest-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
+`mcp_server/matrix_runners/` ships a definition-driven meta-runner, one adapter per CLI executor, and prompt templates for F1-F14. The meta-runner filters cells by feature and executor, runs applicable cells with bounded concurrency, writes one JSONL record per cell, and emits a tab-separated summary. Adapter failures are normalized to `PASS`, `FAIL`, `TIMEOUT_CELL`, `NA`, or `BLOCKED`.
 
 Local/native matrix status is covered separately. This entry covers the external CLI adapter surface now present in the repo.
 
@@ -3966,7 +3966,7 @@ The current active flag-helper inventory in `search-flags.ts` is 24 exported `is
 
 No dedicated source files. This describes governance process controls.
 
-See [`17--governance/_deprecated/02-feature-flag-sunset-audit.md`](17--governance/_deprecated/02-feature-flag-sunset-audit.md) for the archival disposition record.
+The retired feature-flag sunset audit record holds the archival disposition.
 
 ---
 
@@ -4014,7 +4014,7 @@ introduced a shared post-mutation hook path across mutation handlers. The same h
 
 #### Source Files
 
-See [`18--ux-hooks/01-shared-post-mutation-hook-wiring.md`](18--ux-hooks/01-shared-post-mutation-hook-wiring.md) for full implementation and test file listings.
+The shared post-mutation hook wiring record was consolidated; implementation and test coverage are tracked by the successor UX hook records in this section.
 
 ---
 
@@ -4157,7 +4157,7 @@ See [`18--ux-hooks/09-duplicate-save-no-op-feedback-hardening.md`](18--ux-hooks/
 
 #### Description
 
-The system has two ways to save a spec-doc record: a standard path and a faster "atomic" path. This feature made them return the same kind of feedback so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
+The system has two ways to save a spec-doc record: a standard path and a faster "atomic" path. This feature made them return the same feedback type so you do not get different information depending on which path ran. It is like making sure both the express and regular checkout lanes at a store give you the same receipt format.
 
 #### Current Reality
 

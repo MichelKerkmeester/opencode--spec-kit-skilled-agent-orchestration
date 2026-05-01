@@ -1,0 +1,74 @@
+{
+  "topic": "Investigate consolidating the system-spec-kit templates folder: can we remove the per-level output directories (level_1, level_2, level_3, level_3+) and replace them with on-demand generation from core/ + addendum/ manifests, while preserving the validator (check-files.sh), ~800 existing spec folders that contain SPECKIT_TEMPLATE_SOURCE markers, the phase_parent lean trio, ANCHOR-tag semantics consumed by memory-frontmatter parsers, and cross-cutting templates (handover.md, debug-delegation.md, research.md, resource-map.md, context-index.md). Output a concrete recommendation (CONSOLIDATE / PARTIAL / STATUS QUO) with refactor steps, risk mitigations, file-count and LOC deltas, generator design choice (extend compose.sh / TS rewrite / JSON-driven), and a backward-compatibility path.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 240,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/010-template-levels",
+  "createdAt": "2026-05-01T07:55:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "2026-05-01-07-55-00-template-consolidation",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "deferredModes": ["fork", "completed-continue"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "resource_map": {
+    "emit": true,
+    "present": false
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research_archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  },
+  "_optimizerManaged": {
+    "description": "Fields managed by the offline loop optimizer (042.004). See optimizer-manifest.json for the canonical tunable/locked field registry.",
+    "manifestPath": ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
+    "tunableFields": ["convergenceThreshold", "stuckThreshold", "maxIterations"],
+    "lockedFields": ["lineage", "reducer", "fileProtection", "sessionId", "status"],
+    "promotionMode": "advisory-only"
+  }
+}

@@ -210,7 +210,7 @@ specs/<###-feature-name>/
 └── scratch/                     # Temporary workspace files
 ```
 
-`resource-map.md` is optional at any level — copy it from the shared template under `.opencode/skill/system-spec-kit/templates/resource-map.md` when a packet wants a lean, central listing of the files, scripts, and external resources it interacts with. Deep-research and deep-review loops emit it automatically next to `review-report.md`.
+`resource-map.md` is optional at any level. Render it from `.opencode/skill/system-spec-kit/templates/manifest/resource-map.md.tmpl` when a packet wants a lean, central listing of the files, scripts, and external resources it interacts with. Deep-research and deep-review loops emit it automatically next to `review-report.md`.
 
 &nbsp;
 #### Checklist Priority System
@@ -327,7 +327,7 @@ TypeScript sources compile to `scripts/dist/`. The runtime entry point for memor
 - **VALUE** - Does this change behavior or just refactor?
 - **SCOPE** - Does solution complexity match problem size?
 
-For the full spec folder workflow, template architecture (CORE + ADDENDUM v2.2), gate definitions, and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
+For the full spec folder workflow, Level contract template architecture, gate definitions, and anti-pattern detection rules, see the [→ Spec Kit README](.opencode/skill/system-spec-kit/README.md) and [→ AGENTS.md](AGENTS.md).
 
 ---
 
@@ -701,9 +701,9 @@ For details, see the [Skill Advisor README](.opencode/skill/system-spec-kit/mcp_
 
 **system-spec-kit**
 - Mandatory orchestrator for all file modifications - activates automatically for any code file change
-- Creates numbered spec folders with CORE + ADDENDUM template architecture across 4 levels (1-3+)
+- Creates numbered spec folders with manifest templates rendered through Level contracts across 4 levels (1-3+)
 - Integrates the 54-tool memory and code-graph surface with constitutional-tier support, session bootstrap, and hybrid 5-channel retrieval
-- Manages the CORE + ADDENDUM v2.2 template set, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
+- Manages the manifest template source, 20 validation rules, the spec-kit script suite, and the feature-catalog / testing-playbook documentation surfaces
 
 **sk-doc**
 - Unified markdown specialist with DQI quality scoring (Structure 40%, Content 35%, Style 25%)
@@ -1308,7 +1308,7 @@ A: The feature catalog is a 294-entry reference across 22 categories documenting
 **Internal Documentation:**
 
 - **[→ AGENTS.md](AGENTS.md)** - Agent routing, gate definitions, behavior rules
-- **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, CORE + ADDENDUM v2.2 template set, validation rules
+- **[→ Spec Kit README](.opencode/skill/system-spec-kit/README.md)** - Spec folder workflow, Level contract template set, validation rules
 - **[→ MCP Server README](.opencode/skill/system-spec-kit/mcp_server/README.md)** - Memory and code-graph API reference (54 tools, 7 memory layers + L8 graph/advisor + L9 coverage)
 - **[→ Install Guide](.opencode/skill/system-spec-kit/mcp_server/INSTALL_GUIDE.md)** - MCP server setup, embedding providers
 - **[→ Deployment Notes](DEPLOYMENT.md)** - Docker anti-patterns, Copilot notes, and session-resume auth flag

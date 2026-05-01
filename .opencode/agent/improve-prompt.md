@@ -43,7 +43,7 @@ Read-only prompt-engineering specialist for high-stakes external CLI prompt cons
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Skills
 

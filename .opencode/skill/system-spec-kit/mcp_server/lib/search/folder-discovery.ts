@@ -53,6 +53,7 @@ export interface PerFolderDescription extends FolderDescription {
   type?: string;
   trigger_phrases?: string[];
   path?: string;
+  level?: number | string;
 }
 
 export type LoadResult =

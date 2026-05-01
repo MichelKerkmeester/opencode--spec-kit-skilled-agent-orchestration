@@ -18,7 +18,8 @@
       "Bash(mv .agents/agents/agent-improver.md .agents/agents/improve-agent.md)",
       "Bash(mv .agents/commands/improve/agent-improver.toml .agents/commands/improve/improve-agent.toml)",
       "Skill(cli-codex)",
-      "Bash(codex exec *)"
+      "Bash(codex exec *)",
+      "Bash(git *)"
     ]
   },
   "hooks": {

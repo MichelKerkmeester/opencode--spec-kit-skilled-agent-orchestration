@@ -156,7 +156,7 @@ All template files follow this consistent structure:
 | HOW IT WORKS      | 🔍     | `## 3. 🔍 HOW IT WORKS`      |
 | RULES             | 📋     | `## 4. 📋 RULES`             |
 | CORE WORKFLOW     | 🔄     | `## 1. 🔄 CORE WORKFLOW`     |
-| CAPABILITY SCAN   | 🔍     | `## 3. 🔍 CAPABILITY SCAN`   |
+| ROUTING SCAN   | 🔍     | `## 3. 🔍 ROUTING SCAN`   |
 | ANTI-PATTERNS     | 🚫     | `## 9. 🚫 ANTI-PATTERNS`     |
 | RELATED RESOURCES | 🔗     | `## N. 🔗 RELATED RESOURCES` |
 
@@ -164,7 +164,7 @@ All template files follow this consistent structure:
 
 ---
 
-## 3. CAPABILITY SCAN
+## 3. ROUTING SCAN
 
 ### Skills
 

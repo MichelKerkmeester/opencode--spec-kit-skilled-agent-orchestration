@@ -1,0 +1,26 @@
+{
+  "sessionId": "2026-05-01-07-55-00-template-consolidation",
+  "parentSessionId": null,
+  "lineageMode": "new",
+  "generation": 1,
+  "continuedFromRun": null,
+  "terminalStop": null,
+  "openQuestions": [],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "blockedStopHistory": [],
+  "graphConvergenceScore": 0,
+  "graphDecision": null,
+  "graphBlockers": [],
+  "metrics": {
+    "iterationsCompleted": 10,
+    "openQuestions": 0,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0.04,
+    "coverageBySources": {}
+  },
+  "corruptionWarnings": [],
+  "status": "INITIALIZED"
+}

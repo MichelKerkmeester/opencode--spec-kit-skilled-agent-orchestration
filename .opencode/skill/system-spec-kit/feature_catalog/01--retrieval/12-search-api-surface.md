@@ -11,7 +11,7 @@ description: "Covers the stable public search barrel that re-exports hybrid sear
 ## 1. OVERVIEW
 `mcp_server/api/search.ts` is the stable script-facing entrypoint for retrieval code. It does not implement search itself. Instead, it freezes a supported API boundary so scripts can import search features from one place without reaching into `lib/search/*` internals, which is consistent with the file header comments marking it as the public ARCH-1 surface.
 
-That public surface groups three distinct concerns. First, it exposes hybrid-search initialization and the main enhanced retrieval entrypoint. Second, it exposes the SQLite FTS5 utility functions for direct lexical search and capability detection. Third, it re-exports the entire vector-index facade as a namespace, giving callers access to the underlying schema, mutation, query, cache, and store helpers through one import path. In practice this file is less about new runtime logic and more about controlling which search internals are considered safe to import directly.
+That public surface groups three distinct concerns. First, it exposes hybrid-search initialization and the main enhanced retrieval entrypoint. Second, it exposes the SQLite FTS5 utility functions for direct lexical search and feature detection. Third, it re-exports the entire vector-index facade as a namespace, giving callers access to the underlying schema, mutation, query, cache, and store helpers through one import path. In practice this file is less about new runtime logic and more about controlling which search internals are considered safe to import directly.
 
 ---
 ## 2. CURRENT REALITY

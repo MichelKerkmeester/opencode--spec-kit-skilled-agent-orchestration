@@ -307,15 +307,15 @@ These flags are managed via `isFeatureEnabled()` in `rollout-policy.ts` with 100
 
 | Flag | Default | Sprint | Purpose |
 |------|---------|--------|---------|
-| `SPECKIT_MEMORY_LINEAGE_STATE` | ON | S7 | Capability flag for the lineage-state milestone |
+| `SPECKIT_MEMORY_LINEAGE_STATE` | ON | S7 | Support flag for the lineage-state milestone |
 | `SPECKIT_MEMORY_ADAPTIVE_RANKING` | OFF | S7 | Enables shadow adaptive ranking. Default OFF; set `true` to activate feedback-driven, SQLite-persisted score adjustments in the reranking stage. Pair with `SPECKIT_MEMORY_ADAPTIVE_MODE` to control rollout stage. |
-| `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Capability flag for the unified-graph milestone |
+| `SPECKIT_MEMORY_GRAPH_UNIFIED` | ON | S7 | Support flag for the unified-graph milestone |
 | `SPECKIT_MEMORY_ROADMAP_PHASE` | `scope-governance` | S7 | Canonical phase label for roadmap tracking |
 | `SPECKIT_MEMORY_ADAPTIVE_MODE` | `shadow` | S7 | Adaptive ranking mode when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`: `shadow` (default; proposals run silently alongside production) or `promoted` (score adjustments applied to live results). No effect when ranking is disabled. |
 | ~~`SPECKIT_MEMORY_SCOPE_ENFORCEMENT`~~ | - | - | Removed in commit `6f2c2c939` |
 | ~~`SPECKIT_MEMORY_GOVERNANCE_GUARDRAILS`~~ | - | - | Removed in commit `6f2c2c939` |
 
-> **Adaptive ranking capabilities (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a spec-doc record is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.
+> **Adaptive ranking support (when `SPECKIT_MEMORY_ADAPTIVE_RANKING=true`):** Three signal types accumulate: `access` (+0.005), `outcome` (+0.020), `correction` (−0.030). Score deltas are bounded at ±0.08 (tunable range 0.02–0.12). Thresholds persist to SQLite (`adaptive_thresholds` table) with `last_tune_watermark` idempotency to prevent duplicate tuning passes. Feedback events carry an optional `query` field for relevance filtering. Minimum 3 signals required before a spec-doc record is promotion-eligible. Implementation: `lib/cognitive/adaptive-ranking.ts`.
 
 #### Runtime Configuration Parameters
 

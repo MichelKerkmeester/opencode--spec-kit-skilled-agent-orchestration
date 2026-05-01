@@ -1,6 +1,17 @@
+import fs from 'node:fs';
+import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import { validateMemoryTemplateContract } from '../../shared/parsing/memory-template-contract';
+import { renderInlineGates } from '../templates/inline-gate-renderer';
+
+const MANIFEST_DIR = path.resolve(__dirname, '../../templates/manifest');
+
+function readRenderedManifestSourceComment(templateName: string): string {
+  const templatePath = path.join(MANIFEST_DIR, templateName);
+  const rendered = renderInlineGates(fs.readFileSync(templatePath, 'utf8'), '1');
+  return rendered.match(/<!-- SPECKIT_TEMPLATE_SOURCE: [^\n]+ -->/)?.[0] ?? '';
+}
 
 function buildValidMemory(overrides: { triggerBlock?: string; bodyTail?: string } = {}): string {
   return [
@@ -75,6 +86,24 @@ function buildValidMemory(overrides: { triggerBlock?: string; bodyTail?: string 
 }
 
 describe('memory template contract validator', () => {
+  it('accepts the parser-contract probe when seeded from a rendered manifest template', () => {
+    const sourceComment = readRenderedManifestSourceComment('implementation-summary.md.tmpl');
+    const result = validateMemoryTemplateContract(
+      buildValidMemory({
+        bodyTail: [
+          '',
+          sourceComment,
+          '',
+          'Manifest probe: implementation-summary.md.tmpl',
+        ].join('\n'),
+      })
+    );
+
+    expect(sourceComment).toContain('SPECKIT_TEMPLATE_SOURCE');
+    expect(result.valid).toBe(true);
+    expect(result.violations).toEqual([]);
+  });
+
   it('accepts a structurally compliant memory', () => {
     const result = validateMemoryTemplateContract(buildValidMemory());
 

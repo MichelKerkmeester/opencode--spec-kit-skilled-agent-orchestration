@@ -238,7 +238,7 @@ newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal
 
 ---
 
-## 2. CAPABILITY SCAN
+## 2. ROUTING SCAN
 
 ### Tools
 

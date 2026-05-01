@@ -9,7 +9,7 @@ description: "The 7-layer tool architecture defines token budgets, priorities an
 
 The 7-layer tool architecture defines token budgets, priorities and use-case guidance for each MCP tool layer (L1-L7) as governance metadata.
 
-The system has many different tools, and each one needs to know how much response space it is allowed to use and what kind of task it is best suited for. This feature organizes all tools into seven layers with budgets and guidance, like assigning departments in a company. It does not control how tools are called at runtime but helps recommend the right tool for the job.
+The system has many different tools, and each one needs to know how much response space it is allowed to use and which task type it is best suited for. This feature organizes all tools into seven layers with budgets and guidance, like assigning departments in a company. It does not control how tools are called at runtime but helps recommend the right tool for the job.
 
 ---
 

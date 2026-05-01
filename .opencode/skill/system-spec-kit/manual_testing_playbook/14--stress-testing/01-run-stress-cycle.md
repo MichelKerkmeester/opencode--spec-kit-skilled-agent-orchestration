@@ -126,7 +126,7 @@ Use the packet that owns the cycle artifacts as `<path>`. If the validator repor
 
 ### Step 10: Update Parent Packet's PHASE MAP
 
-Add the new cycle to the parent packet's PHASE MAP or phase manifest. Keep the update minimal: folder name, focus, and status. Do not narrate migration history in phase-parent specs.
+Add the new cycle to the parent packet's PHASE MAP. Keep the update minimal: folder name, focus, and status. Do not narrate migration history in phase-parent specs.
 
 ## 4. VERIFICATION
 
@@ -157,4 +157,3 @@ Success criteria: a future investigator can read `findings.md`, `findings-rubric
 - Playbook ID: 01
 - Canonical root source: `manual_testing_playbook.md`
 - Feature file path: `14--stress-testing/01-run-stress-cycle.md`
-

@@ -17,7 +17,7 @@ Before rolling out a big upgrade, you want to take a "before" photo so you can c
 
 `captureMemoryStateBaselineSnapshot()` records a small Phase 1 readiness baseline for the spec-doc record-roadmap rollout slice. It reads retrieval-volume metrics from the eval database (`eval_queries`, `eval_channel_results`, `eval_final_results`) and isolation/schema metrics from the target context database (`memory_index`, `schema_version`), then returns a single snapshot with timestamp, eval run ID, metrics map and metadata.
 
-When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved spec-doc record-roadmap phase, the compatibility-supported roadmap capability flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
+When `persist: true`, every metric is written into `eval_metric_snapshots` with `channel = 'memory-state-baseline'`. The metadata attached to each persisted row includes the resolved spec-doc record-roadmap phase, the compatibility-supported roadmap flags, `scopeDimensionsTracked` and the resolved `contextDbPath`. Missing or unreadable context databases are non-fatal: retrieval metrics still record and context-backed metrics fall back to zero.
 
 The baseline path now initializes the eval database beside the context database under test instead of silently writing to the default eval location. That keeps ad-hoc migration and rollout checks scoped to the database actually being evaluated. The path switch is also wrapped in `try/finally`, so even if `initEvalDb()` fails after closing the previous singleton, the prior eval DB handle is restored instead of leaving global eval state clobbered for later calls.
 
@@ -31,7 +31,7 @@ The baseline path now initializes the eval database beside the context database 
 |------|-------|------|
 | `mcp_server/lib/eval/memory-state-baseline.ts` | Lib | Baseline metric capture and optional persistence |
 | `mcp_server/lib/eval/eval-db.ts` | Lib | Eval DB initialization and schema support for persisted snapshots |
-| `mcp_server/lib/config/capability-flags.ts` | Lib | Memory-roadmap phase/capability metadata snapshot |
+| `mcp_server/lib/config/capability-flags.ts` | Lib | Memory-roadmap phase and flag metadata snapshot |
 
 ### Validation And Tests
 

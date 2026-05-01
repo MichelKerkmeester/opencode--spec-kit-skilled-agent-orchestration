@@ -67,7 +67,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 ---
 
-## 3. CAPABILITY SCAN
+## 3. ROUTING SCAN
 
 ### Skills
 

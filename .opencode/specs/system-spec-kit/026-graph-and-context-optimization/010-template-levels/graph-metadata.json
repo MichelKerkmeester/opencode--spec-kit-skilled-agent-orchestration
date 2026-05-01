@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "packet_id": "system-spec-kit/026-graph-and-context-optimization/010-template-levels",
+  "spec_folder": "system-spec-kit/026-graph-and-context-optimization/010-template-levels",
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization",
+  "children_ids": [
+    "system-spec-kit/026-graph-and-context-optimization/010-template-levels/001-template-consolidation-investigation",
+    "system-spec-kit/026-graph-and-context-optimization/010-template-levels/002-template-greenfield-redesign",
+    "system-spec-kit/026-graph-and-context-optimization/010-template-levels/003-template-greenfield-impl",
+    "system-spec-kit/026-graph-and-context-optimization/010-template-levels/004-deferred-followups"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "010 template levels",
+      "template levels phase parent",
+      "template system rework",
+      "spec-kit template phases"
+    ],
+    "key_topics": ["template-system rework", "phase-parent", "manifest-driven design", "workflow invariance"],
+    "importance_tier": "important",
+    "status": "in-progress",
+    "key_files": ["spec.md", "description.json", "graph-metadata.json"],
+    "entities": [],
+    "causal_summary": "Phase parent for the spec-kit template-system rework. 001 = consolidation investigation (PARTIAL recommendation, REJECTED). 002 = greenfield redesign (C+F hybrid manifest-driven, ACCEPTED, 5 ADRs). 003 = 4-phase implementation plan with file-by-file blast radius.",
+    "created_at": "2026-05-01T16:30:00Z",
+    "last_save_at": "2026-05-01T16:30:00Z",
+    "save_lineage": "graph_only",
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/010-template-levels/004-deferred-followups",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md"]
+  }
+}

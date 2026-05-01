@@ -1,0 +1,72 @@
+{
+  "topic": "Compare external SPAR-Kit project at .opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade/external/ (Specify -> Plan -> Act -> Retain workflow kit by jed-tech, npm @spar-kit/install Beta1) against internal system-spec-kit (.opencode/skill/system-spec-kit/SKILL.md, .opencode/skill/system-spec-kit/templates/, .opencode/command/spec_kit/, .opencode/command/memory/, .opencode/command/create/, .opencode/agent/). Produce 10-20 ranked, evidence-backed UX and orchestration patterns we should adopt-as-is, adapt, take inspiration from, or reject-with-rationale. For each finding: cite at least one path in external/ AND one path in internal surface; note adoption risk; name the follow-on packet (058-* through 06X-*) that would land it. Cover all 6 axes: (1) installer/multi-target distribution, (2) instruction-file management (managed blocks, brevity caps), (3) command/skill granularity (4 SPAR phases vs 6 spec_kit commands + flag suffixes), (4) template architecture (declarative asset policies vs core/addendum), (5) tool-discovery UX (.spar-kit/.local/tools.yaml vs skill-advisor + MCP), (6) personas/UX tone in skill prompts (5 SPAR personas, Key vs Optional follow-up split, teammate tone). Flag any axis where evidence is thin.",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 180,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 15,
+  "progressiveSynthesis": true,
+  "specFolder": ".opencode/specs/skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade",
+  "resource_map_present": false,
+  "resource_map": { "emit": true },
+  "createdAt": "2026-05-01T08:26:08.402Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "kind": "cli-codex",
+    "model": "gpt-5.5",
+    "reasoningEffort": "high",
+    "serviceTier": "fast",
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "a383574c-2a8d-47ef-a6a9-81ab0eb6d99b",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "deferredModes": ["fork", "completed-continue"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "capabilityMatrixPath": ".opencode/skill/sk-deep-research/assets/runtime_capabilities.json",
+  "capabilityMatrixDocPath": ".opencode/skill/sk-deep-research/references/capability_matrix.md",
+  "runtimeCapabilityResolver": ".opencode/skill/sk-deep-research/scripts/runtime-capabilities.cjs",
+  "reducerScriptPath": ".opencode/skill/sk-deep-research/scripts/reduce-state.cjs",
+  "pauseSentinelPath": "research/.deep-research-pause",
+  "archiveRoot": "research/archive",
+  "migrationWindowDays": 28,
+  "fileProtection": {
+    "deep-research-config.json": "immutable",
+    "deep-research-state.jsonl": "append-only",
+    "deep-research-strategy.md": "mutable",
+    "deep-research-dashboard.md": "auto-generated",
+    "findings-registry.json": "auto-generated",
+    "iteration-*.md": "write-once",
+    "research/research.md": "mutable"
+  },
+  "_optimizerManaged": {
+    "description": "Fields managed by the offline loop optimizer (042.004). See optimizer-manifest.json for the canonical tunable/locked field registry.",
+    "manifestPath": ".opencode/skill/system-spec-kit/scripts/optimizer/optimizer-manifest.json",
+    "tunableFields": ["convergenceThreshold", "stuckThreshold", "maxIterations"],
+    "lockedFields": ["lineage", "reducer", "fileProtection", "sessionId", "status"],
+    "promotionMode": "advisory-only"
+  }
+}

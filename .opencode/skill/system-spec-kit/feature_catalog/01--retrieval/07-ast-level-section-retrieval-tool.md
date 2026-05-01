@@ -17,7 +17,7 @@ This planned feature would let you pull out a single section from a large docume
 
 **PLANNED (Sprint 019): DEFERRED.** `read_spec_section(filePath, heading)` via Markdown AST parsing (`remark`) is deferred until spec docs routinely exceed ~1000 lines. Existing R7 anchor-aware thinning remains the current approach. Estimated effort: M (5-7 days).
 
-**Status: PLANNED / NOT YET IMPLEMENTED** — This tool is documented as a planned capability but is not registered in the live MCP tool registry (`tool-schemas.ts`). It does not appear in the exported tool list.
+**Status: PLANNED / NOT YET IMPLEMENTED** — This tool is documented as a planned feature but is not registered in the live MCP tool registry (`tool-schemas.ts`). It does not appear in the exported tool list.
 
 ---
 

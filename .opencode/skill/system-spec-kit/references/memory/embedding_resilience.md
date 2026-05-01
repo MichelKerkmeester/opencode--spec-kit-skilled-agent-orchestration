@@ -116,7 +116,7 @@ When all embedding providers fail, the system degrades to keyword-based search (
 
 ### Degradation Levels
 
-| Level | Condition | Search Capability |
+| Level | Condition | Search Support |
 |-------|-----------|-------------------|
 | **Full** | Primary provider healthy | Vector similarity + keyword + FTS5 |
 | **Reduced** | Fallback provider active | Vector similarity (different model) + keyword |

@@ -1,19 +1,19 @@
 ---
-title: "125: Memory roadmap capability flags"
-description: "Manual-testing reference for validating the live memory roadmap capability resolvers."
+title: "125: Memory roadmap flags"
+description: "Manual-testing reference for validating the live memory roadmap resolvers."
 audited_post_018: true
-phase_018_change: updated to use the dedicated roadmap-capability catalog reference and corrected the snapshot count
+phase_018_change: updated to use the dedicated roadmap-flag catalog reference and corrected the snapshot count
 ---
 
-# 125: Memory roadmap capability flags
+# 125: Memory roadmap flags
 
-This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for the 125 memory roadmap capability flags scenario.
+This document captures the realistic user-testing contract, current behavior, execution flow, source anchors, and metadata for the 125 memory roadmap flags scenario.
 
 ---
 
 ## 1. OVERVIEW
 
-This scenario validates memory roadmap capability flags for `125`. It focuses on verifying that the runtime resolvers use the canonical `SPECKIT_MEMORY_*` keys, keep roadmap metadata distinct from live runtime graph flags, and leave adaptive-ranking roadmap defaults off until explicitly enabled.
+This scenario validates memory roadmap flags for `125`. It focuses on verifying that the runtime resolvers use the canonical `SPECKIT_MEMORY_*` keys, keep roadmap metadata distinct from live runtime graph flags, and leave adaptive-ranking roadmap defaults off until explicitly enabled.
 
 ### Why This Matters
 
@@ -26,11 +26,11 @@ A real user does not ask for raw environment-variable proofs. They ask the orche
 
 - Objective: Verify runtime roadmap resolvers use the canonical `SPECKIT_MEMORY_*` keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled.
 - Real user request: `Check whether the spec-doc record roadmap flags still stay separate from live runtime defaults, prove that adaptive ranking stays off by default in roadmap snapshots, and show that the canonical SPECKIT_MEMORY_* flags behave correctly when toggled.`
-- RCAF Prompt: `As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify first snapshot remains phase:\"scope-governance\" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false; second snapshot reports phase:\"graph\" with capabilities.graphUnified:false; third snapshot reports capabilities.adaptiveRanking:true; fourth snapshot confirms canonical opt-out by returning capabilities.adaptiveRanking:false. Return a concise pass/fail verdict with the main reason and cited evidence.`
+- RCAF Prompt: `As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify the first snapshot keeps the scope-governance phase with graph-unified metadata on and adaptive ranking off; the second snapshot reports graph phase with graph-unified metadata off; the third snapshot reports adaptive ranking on; the fourth snapshot confirms canonical opt-out by returning adaptive ranking off. Return a concise pass/fail verdict with the main reason and cited evidence.`
 - Expected execution process: Run the documented TEST EXECUTION command sequence, capture the transcript and evidence, compare the observed output against the expected signals, and return the pass/fail verdict.
-- Expected signals: First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot reports `capabilities.adaptiveRanking:false` after the canonical opt-out
+- Expected signals: first snapshot keeps the `scope-governance` phase with graph-unified metadata on and adaptive ranking off; second snapshot reports `graph` phase with graph-unified metadata off; third snapshot reports adaptive ranking on; fourth snapshot reports adaptive ranking off after the canonical opt-out
 - Desired user-visible outcome: The final response explains that roadmap defaults still stay distinct from live runtime flags and adaptive ranking remains dormant by default until explicitly enabled.
-- Pass/fail: PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata, adaptive ranking stays off by default in roadmap snapshots, and explicit canonical env vars can opt roadmap capabilities in and out as expected
+- Pass/fail: PASS if the runtime `SPECKIT_GRAPH_UNIFIED` flag does not flip roadmap metadata, adaptive ranking stays off by default in roadmap snapshots, and explicit canonical env vars can opt roadmap flags in and out as expected
 
 ---
 
@@ -47,7 +47,7 @@ A real user does not ask for raw environment-variable proofs. They ask the orche
 ### Prompt
 
 ```
-As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify first snapshot remains phase:\"scope-governance\" with capabilities.graphUnified:true and capabilities.adaptiveRanking:false; second snapshot reports phase:\"graph\" with capabilities.graphUnified:false; third snapshot reports capabilities.adaptiveRanking:true; fourth snapshot confirms canonical opt-out by returning capabilities.adaptiveRanking:false. Return a concise pass/fail verdict with the main reason and cited evidence.
+As a feature-flag validation operator, verify runtime roadmap resolvers use the canonical SPECKIT_MEMORY_* keys, remain distinct from live runtime flags, and keep adaptive-ranking defaults off until explicitly enabled against cd .opencode/skill/system-spec-kit/mcp_server. Verify the first snapshot keeps the scope-governance phase with graph-unified metadata on and adaptive ranking off; the second snapshot reports graph phase with graph-unified metadata off; the third snapshot reports adaptive ranking on; the fourth snapshot confirms canonical opt-out by returning adaptive ranking off. Return a concise pass/fail verdict with the main reason and cited evidence.
 ```
 
 ### Commands
@@ -60,7 +60,7 @@ As a feature-flag validation operator, verify runtime roadmap resolvers use the 
 
 ### Expected
 
-First snapshot remains `phase:\"scope-governance\"` with `capabilities.graphUnified:true` and `capabilities.adaptiveRanking:false`; second snapshot reports `phase:\"graph\"` with `capabilities.graphUnified:false`; third snapshot reports `capabilities.adaptiveRanking:true`; fourth snapshot confirms canonical opt-out by returning `capabilities.adaptiveRanking:false`
+First snapshot keeps the `scope-governance` phase with graph-unified metadata on and adaptive ranking off; second snapshot reports `graph` phase with graph-unified metadata off; third snapshot reports adaptive ranking on; fourth snapshot confirms canonical opt-out by returning adaptive ranking off
 
 ### Evidence
 
@@ -77,14 +77,14 @@ Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the list
 
 ## 4. SOURCE FILES
 
-- Feature catalog: [19--feature-flag-reference/11-memory-roadmap-capability-flags.md](../../feature_catalog/19--feature-flag-reference/11-memory-roadmap-capability-flags.md)
+- Feature catalog: 19--feature-flag-reference/11-memory-roadmap-flags.md
 
 ### Playbook Sources
 
 | File | Role |
 |---|---|
 | [manual_testing_playbook.md](../manual_testing_playbook.md) | Root directory page and scenario summary |
-| [19--feature-flag-reference/11-memory-roadmap-capability-flags.md](../../feature_catalog/19--feature-flag-reference/11-memory-roadmap-capability-flags.md) | Feature-catalog source describing the roadmap-flag contract |
+| 19--feature-flag-reference/11-memory-roadmap-flags.md | Feature-catalog source describing the roadmap-flag contract |
 
 ### Implementation And Test Anchors
 
@@ -100,4 +100,4 @@ Inspect `capability-flags.ts`; verify dist build is fresh; confirm only the list
 - Group: Feature Flag Reference
 - Playbook ID: 125
 - Canonical root source: `manual_testing_playbook.md`
-- Feature file path: `19--feature-flag-reference/125-memory-roadmap-capability-flags.md`
+- Feature file path: `19--feature-flag-reference/125-memory-roadmap-flags.md`

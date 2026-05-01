@@ -150,10 +150,10 @@ spec_creation_parallel:
 
 ### Reference Files
 - [quick_reference.md](../references/workflows/quick_reference.md) - Commands, checklists, and troubleshooting
-- [level_specifications.md](../references/templates/level_specifications.md) - Complete Level 1-3+ requirements
+- level specifications reference - Complete Level 1-3+ requirements
 
 ### Scripts
-- [compose.sh](../scripts/templates/compose.sh) - Template composition from core + addendum
+- Level contract resolver - Level contract rendering
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

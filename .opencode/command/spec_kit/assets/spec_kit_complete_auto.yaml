@@ -82,8 +82,8 @@ optional_workflows:
         activities: ["Load phase-parent-section.md addendum", "Fill parent Phase Documentation Map", "Load phase-child-header.md addendum", "Fill child back-references and scope boundaries"]
         output: populated_specs
     templates:
-      phase_parent_section: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-parent-section.md
-      phase_child_header: .opencode/skill/system-spec-kit/templates/addendum/phase/phase-child-header.md
+      phase_parent_section: Level template contract
+      phase_child_header: Level template contract
     post_decomposition:
       action: "Update spec_path to first child phase folder, continue with normal workflow"
       validation: "bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --recursive {parent_folder}"
@@ -164,35 +164,35 @@ documentation_levels:
 available_templates:
   default_level: level_2
   level_1:
-    spec: .opencode/skill/system-spec-kit/templates/level_1/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_1/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_1/tasks.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    implementation_summary: level_contract_implementation-summary.md
   level_2:
-    spec: .opencode/skill/system-spec-kit/templates/level_2/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_2/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3:
-    spec: .opencode/skill/system-spec-kit/templates/level_3/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_3/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_3/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3/checklist.md
-    decision_record: .opencode/skill/system-spec-kit/templates/level_3/decision-record.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    decision_record: level_contract_decision-record.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3_plus:
-    spec: .opencode/skill/system-spec-kit/templates/level_3+/spec.md
-    plan: .opencode/skill/system-spec-kit/templates/level_3+/plan.md
-    tasks: .opencode/skill/system-spec-kit/templates/level_3+/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3+/checklist.md
-    decision_record: .opencode/skill/system-spec-kit/templates/level_3+/decision-record.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md
+    spec: level_contract_spec.md
+    plan: level_contract_plan.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    decision_record: level_contract_decision-record.md
+    implementation_summary: level_contract_implementation-summary.md
   shared:
-    research: .opencode/skill/system-spec-kit/templates/research.md
-    handover: .opencode/skill/system-spec-kit/templates/handover.md
-    debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
-    resource_map: .opencode/skill/system-spec-kit/templates/resource-map.md
+    research: level_contract_optional_research.md
+    handover: level_contract_optional_handover.md
+    debug_delegation: level_contract_optional_debug-delegation.md
+    resource_map: level_contract_optional_resource-map.md
 
 template_compliance:
   strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
@@ -602,9 +602,9 @@ workflow:
     outputs:
     - spec.md: acceptance_criteria
     - location: "[SPEC_FOLDER]/spec.md"
-    template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+    template: level_contract_spec.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/spec.md
+      canonical_template: level_contract_spec.md
       inline_scaffold_key: spec_md
       writing_rule: "Embed template_compliance.inline_scaffolds.spec_md in the prompt before writing spec.md and preserve the required anchors/headers in order."
     post_write_validation:
@@ -647,9 +647,9 @@ workflow:
     - location: "[SPEC_FOLDER]/checklist.md"
     - checklist_status: pass_or_fail
     - p0_status: "all_complete or blocked"
-    template: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
+    template: level_contract_checklist.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
+      canonical_template: level_contract_checklist.md
       inline_scaffold_key: checklist_md
       writing_rule: "Embed template_compliance.inline_scaffolds.checklist_md in the prompt before writing checklist.md and preserve CHK-NNN [P0/P1/P2] format."
     post_write_validation:
@@ -739,11 +739,11 @@ workflow:
       # Narrative trigger label (T-YML-CMP-01 / S7): moved from `when:` because this is a
       # content-generation trigger tag, not a mechanical BooleanExpr predicate.
       trigger_reason: significant_technical_decision_needs_documentation
-      template: .opencode/skill/system-spec-kit/templates/level_3/decision-record.md
+      template: level_contract_decision-record.md
       inline_scaffold_key: decision_record_md
-    template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+    template: level_contract_plan.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/plan.md
+      canonical_template: level_contract_plan.md
       inline_scaffold_key: plan_md
       writing_rule: "Embed template_compliance.inline_scaffolds.plan_md in the prompt before writing plan.md and keep custom sections after the required template structure."
     confidence_checkpoint:
@@ -792,9 +792,9 @@ workflow:
     - Validate task format and coverage
     outputs:
     - tasks.md: implementation_breakdown
-    template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+    template: level_contract_tasks.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+      canonical_template: level_contract_tasks.md
       inline_scaffold_key: tasks_md
       writing_rule: "Embed template_compliance.inline_scaffolds.tasks_md in the prompt before writing tasks.md and preserve the required anchors/headers in order."
     post_write_validation:
@@ -976,7 +976,7 @@ workflow:
     summary_document:
       location: "[SPEC_FOLDER]/implementation-summary.md"
       required_sections: [files_modified_created, verification_steps_taken, deviations_from_plan, skill_updates, recommended_next_steps, browser_testing_results]
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+      canonical_template: level_contract_implementation-summary.md
       inline_scaffold_key: implementation_summary_md
       writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
     nested_changelog:

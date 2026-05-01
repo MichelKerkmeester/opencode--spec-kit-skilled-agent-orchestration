@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import { resolveLevelContract, type SpecKitLevel } from '../templates/level-contract-resolver.js';
 
 export type SpecDocRuleName =
   | 'FRONTMATTER_MEMORY_BLOCK'
@@ -78,6 +79,7 @@ interface AnchorOccurrence {
 interface ParsedFrontmatter {
   rawBlock: string | null;
   error: string | null;
+  memoryError: string | null;
   memoryBlock: string | null;
   continuityBlock: string | null;
   fingerprint: string | null;
@@ -105,6 +107,8 @@ export const RULE_FAILURE_CODES: Readonly<Record<SpecDocRuleName, readonly strin
     'SPECDOC_FRONTMATTER_005',
     'SPECDOC_FRONTMATTER_006',
     'SPECDOC_FRONTMATTER_007',
+    'MEMORY_BLOCK_INVALID',
+    'SESSION_LINEAGE_BROKEN',
   ],
   MERGE_LEGALITY: [
     'SPECDOC_MERGE_001',
@@ -131,15 +135,6 @@ export const RULE_FAILURE_CODES: Readonly<Record<SpecDocRuleName, readonly strin
     'SPECDOC_FINGERPRINT_004',
   ],
 } as const;
-
-const SPEC_DOC_BASENAMES = [
-  'spec.md',
-  'plan.md',
-  'tasks.md',
-  'checklist.md',
-  'decision-record.md',
-  'implementation-summary.md',
-] as const;
 
 const ROUTE_CATEGORY_ALIASES: Record<string, string> = {
   what_built: 'narrative_progress',
@@ -168,33 +163,33 @@ function normalizeRuleName(raw: string | undefined): SpecDocRuleName {
   return normalized as SpecDocRuleName;
 }
 
-function collectDocuments(folder: string): DocumentRecord[] {
-  const documents: DocumentRecord[] = [];
+function normalizeSpecKitLevel(raw: string): SpecKitLevel {
+  if (raw === '3+') return '3+';
+  if (raw === 'phase' || raw === 'phase-parent') return 'phase';
+  if (raw === '1') return '1';
+  if (raw === '2') return '2';
+  if (raw === '3') return '3';
+  throw new Error(`Unsupported spec kit level: ${raw || '(empty)'}`);
+}
 
-  for (const basename of SPEC_DOC_BASENAMES) {
+function collectDocuments(folder: string, level: string): DocumentRecord[] {
+  const documents: DocumentRecord[] = [];
+  const contract = resolveLevelContract(normalizeSpecKitLevel(level));
+  const contractDocs = new Set([
+    ...contract.requiredCoreDocs,
+    ...contract.requiredAddonDocs,
+    ...contract.lazyAddonDocs,
+    'resource-map.md',
+    'context-index.md',
+  ]);
+
+  for (const basename of contractDocs) {
     const docPath = path.join(folder, basename);
     if (fs.existsSync(docPath)) {
       documents.push({
         basename,
         path: docPath,
         content: fs.readFileSync(docPath, 'utf8'),
-      });
-    }
-  }
-
-  const optionalDocs = [
-    { basename: 'handover.md', path: path.join(folder, 'handover.md') },
-    { basename: 'research.md', path: path.join(folder, 'research.md') },
-    { basename: 'research/research.md', path: path.join(folder, 'research', 'research.md') },
-    { basename: 'resource-map.md', path: path.join(folder, 'resource-map.md') },
-  ];
-
-  for (const candidate of optionalDocs) {
-    if (fs.existsSync(candidate.path)) {
-      documents.push({
-        basename: candidate.basename,
-        path: candidate.path,
-        content: fs.readFileSync(candidate.path, 'utf8'),
       });
     }
   }
@@ -212,11 +207,14 @@ function countLeadingSpaces(value: string): number {
 
 function extractFrontmatter(content: string): ParsedFrontmatter {
   const normalized = content.replace(/\r\n/g, '\n');
-  const match = normalized.match(/^(?:\uFEFF)?---\n([\s\S]*?)\n---(?:\n|$)/);
-  if (/^(?:\uFEFF)?---\n/.test(normalized) && !match) {
+  const frontmatterPattern = /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\n([\s\S]*?)\n---(?:\n|$)/;
+  const frontmatterOpeningPattern = /^(?:\uFEFF)?(?:\s*<!--[\s\S]*?-->\s*)*---\n/;
+  const match = normalized.match(frontmatterPattern);
+  if (frontmatterOpeningPattern.test(normalized) && !match) {
     return {
       rawBlock: null,
       error: 'frontmatter opening delimiter is missing a closing ---',
+      memoryError: null,
       memoryBlock: null,
       continuityBlock: null,
       fingerprint: null,
@@ -226,6 +224,7 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
     return {
       rawBlock: null,
       error: null,
+      memoryError: null,
       memoryBlock: null,
       continuityBlock: null,
       fingerprint: null,
@@ -243,6 +242,7 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
       return {
         rawBlock,
         error: `invalid top-level YAML mapping at line ${index + 1}`,
+        memoryError: null,
         memoryBlock: null,
         continuityBlock: null,
         fingerprint: null,
@@ -258,6 +258,7 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
   }
 
   let memoryBlock: string | null = null;
+  let memoryError: string | null = null;
   let continuityBlock: string | null = null;
   let fingerprint: string | null = null;
 
@@ -272,6 +273,11 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
       blockLines.push(line);
     }
     memoryBlock = blockLines.join('\n');
+    try {
+      validateMemoryYamlBlock(memoryBlock);
+    } catch (error) {
+      memoryError = (error as Error).message;
+    }
 
     let continuityStart = -1;
     const childLines = blockLines.slice(1);
@@ -282,7 +288,7 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
       }
       const fingerprintMatch = childLines[childIndex].match(/^\s{2}fingerprint:\s*(.+?)\s*$/);
       if (fingerprintMatch) {
-        fingerprint = stripYamlComment(fingerprintMatch[1]).trim();
+        fingerprint = normalizeYamlScalar(fingerprintMatch[1]);
       }
     }
 
@@ -296,16 +302,74 @@ function extractFrontmatter(content: string): ParsedFrontmatter {
         continuityLines.push(line);
       }
       continuityBlock = continuityLines.join('\n');
+      const sessionFingerprintMatch = continuityBlock.match(/^\s{6}fingerprint:\s*(.+?)\s*$/m);
+      if (sessionFingerprintMatch) {
+        fingerprint = normalizeYamlScalar(sessionFingerprintMatch[1]);
+      }
     }
   }
 
   return {
     rawBlock,
     error: null,
+    memoryError,
     memoryBlock,
     continuityBlock,
     fingerprint,
   };
+}
+
+function validateMemoryYamlBlock(block: string): void {
+  const lines = block.split('\n');
+  if (!/^_memory:\s*(?:#.*)?$/.test(lines[0] ?? '')) {
+    throw new Error('_memory block must start with _memory:');
+  }
+
+  for (let index = 0; index < lines.length; index += 1) {
+    const line = lines[index];
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) {
+      continue;
+    }
+    if (/^\s*\t/.test(line)) {
+      throw new Error(`line ${index + 1}: tabs are not valid indentation`);
+    }
+    if (countLeadingSpaces(line) % 2 !== 0) {
+      throw new Error(`line ${index + 1}: indentation must use two-space steps`);
+    }
+    const mappingMatch = line.match(/^\s*([A-Za-z_][A-Za-z0-9_-]*):(?:\s*(.*))?$/);
+    const listMatch = line.match(/^\s*-\s+.+$/);
+    if (!mappingMatch && !listMatch) {
+      throw new Error(`line ${index + 1}: expected a YAML mapping or list item`);
+    }
+    if (mappingMatch) {
+      validateYamlScalar(mappingMatch[2] ?? '', index + 1);
+    }
+  }
+}
+
+function validateYamlScalar(rawValue: string, lineNumber: number): void {
+  const value = stripYamlComment(rawValue).trim();
+  if (!value) {
+    return;
+  }
+
+  const quote = value[0];
+  if (quote === '"' || quote === "'") {
+    if (value.length === 1 || value[value.length - 1] !== quote) {
+      throw new Error(`line ${lineNumber}: unterminated quoted scalar`);
+    }
+    return;
+  }
+
+  const pairs: Array<[string, string]> = [['[', ']'], ['{', '}']];
+  for (const [open, close] of pairs) {
+    const openCount = Array.from(value).filter((ch) => ch === open).length;
+    const closeCount = Array.from(value).filter((ch) => ch === close).length;
+    if (openCount !== closeCount) {
+      throw new Error(`line ${lineNumber}: unbalanced ${open}${close} scalar`);
+    }
+  }
 }
 
 function stripYamlComment(value: string): string {
@@ -342,6 +406,17 @@ function stripYamlComment(value: string): string {
   return value;
 }
 
+function normalizeYamlScalar(value: string): string {
+  const raw = stripYamlComment(value).trim();
+  if (
+    (raw.startsWith('"') && raw.endsWith('"'))
+    || (raw.startsWith("'") && raw.endsWith("'"))
+  ) {
+    return raw.slice(1, -1);
+  }
+  return raw;
+}
+
 function extractContinuityField(block: string | null, field: string): string | null {
   if (!block) {
     return null;
@@ -352,14 +427,20 @@ function extractContinuityField(block: string | null, field: string): string | n
     return null;
   }
 
-  const raw = stripYamlComment(match[1]).trim();
-  if (
-    (raw.startsWith('"') && raw.endsWith('"'))
-    || (raw.startsWith("'") && raw.endsWith("'"))
-  ) {
-    return raw.slice(1, -1);
+  return normalizeYamlScalar(match[1]);
+}
+
+function extractSessionDedupField(block: string | null, field: string): string | null {
+  if (!block) {
+    return null;
   }
-  return raw;
+  const regex = new RegExp(`^\\s{6}${field}:\\s*(.+?)\\s*$`, 'm');
+  const match = block.match(regex);
+  if (!match) {
+    return null;
+  }
+
+  return normalizeYamlScalar(match[1]);
 }
 
 function isEmptyYamlScalar(value: string | null): boolean {
@@ -509,10 +590,12 @@ function createResult(rule: SpecDocRuleName, diagnostics: RuleDiagnostic[], pass
   };
 }
 
-function validateFrontmatterMemoryBlock(folder: string): RuleResult {
+function validateFrontmatterMemoryBlock(folder: string, level: string): RuleResult {
   const diagnostics: RuleDiagnostic[] = [];
+  const knownSessionIds = new Set<string>();
+  const parentSessionRefs: Array<{ basename: string; parentSessionId: string }> = [];
 
-  for (const document of collectDocuments(folder)) {
+  for (const document of collectDocuments(folder, level)) {
     const parsed = extractFrontmatter(document.content);
 
     if (parsed.error) {
@@ -537,6 +620,15 @@ function validateFrontmatterMemoryBlock(folder: string): RuleResult {
       continue;
     }
 
+    if (parsed.memoryError) {
+      diagnostics.push({
+        code: 'MEMORY_BLOCK_INVALID',
+        severity: 'error',
+        detail: `${document.basename}: invalid _memory YAML (${parsed.memoryError})`,
+      });
+      continue;
+    }
+
     if (parsed.fingerprint && !/^sha256:[a-f0-9]{64}$/.test(parsed.fingerprint)) {
       diagnostics.push({
         code: 'SPECDOC_FRONTMATTER_005',
@@ -552,6 +644,15 @@ function validateFrontmatterMemoryBlock(folder: string): RuleResult {
         detail: `${document.basename}: _memory.continuity is missing`,
       });
       continue;
+    }
+
+    const sessionId = extractSessionDedupField(parsed.continuityBlock, 'session_id');
+    const parentSessionId = extractSessionDedupField(parsed.continuityBlock, 'parent_session_id');
+    if (sessionId) {
+      knownSessionIds.add(sessionId);
+    }
+    if (parentSessionId && parentSessionId !== 'null') {
+      parentSessionRefs.push({ basename: document.basename, parentSessionId });
     }
 
     const packetPointer = extractContinuityField(parsed.continuityBlock, 'packet_pointer');
@@ -650,6 +751,16 @@ function validateFrontmatterMemoryBlock(folder: string): RuleResult {
         code: 'SPECDOC_FRONTMATTER_007',
         severity: 'warning',
         detail: `${document.basename}: _memory.continuity is ${Buffer.byteLength(parsed.continuityBlock, 'utf8')} bytes (> 2048)`,
+      });
+    }
+  }
+
+  for (const { basename, parentSessionId } of parentSessionRefs) {
+    if (!knownSessionIds.has(parentSessionId)) {
+      diagnostics.push({
+        code: 'SESSION_LINEAGE_BROKEN',
+        severity: 'warning',
+        detail: `${basename}: parent_session_id '${parentSessionId}' does not match a session_id in this packet`,
       });
     }
   }
@@ -794,10 +905,10 @@ function looksLikeCitation(text: string): boolean {
   return /\[[^\]]+\]\([^)]+\)|`[^`]+(?:\/[^`]+)?`|https?:\/\/|iteration-\d+|source:/i.test(text);
 }
 
-function validateSpecDocSufficiency(folder: string): RuleResult {
+function validateSpecDocSufficiency(folder: string, level: string): RuleResult {
   const diagnostics: RuleDiagnostic[] = [];
 
-  for (const document of collectDocuments(folder)) {
+  for (const document of collectDocuments(folder, level)) {
     const parsed = parseAnchors(document.content);
 
     // T113 FIX: Anchor-parse failures must cause SPEC_DOC_SUFFICIENCY to fail.
@@ -1024,11 +1135,11 @@ function validatePostSaveFingerprint(folder: string, postSavePlan: PostSavePlan 
 export function runSpecDocStructureRule(options: SpecDocRuleOptions): RuleResult {
   switch (options.rule) {
     case 'FRONTMATTER_MEMORY_BLOCK':
-      return validateFrontmatterMemoryBlock(options.folder);
+      return validateFrontmatterMemoryBlock(options.folder, options.level);
     case 'MERGE_LEGALITY':
       return validateMergeLegality(options.folder, options.mergePlan);
     case 'SPEC_DOC_SUFFICIENCY':
-      return validateSpecDocSufficiency(options.folder);
+      return validateSpecDocSufficiency(options.folder, options.level);
     case 'CROSS_ANCHOR_CONTAMINATION':
       return validateCrossAnchorContamination(options.contaminationPlan);
     case 'POST_SAVE_FINGERPRINT':

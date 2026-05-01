@@ -1,6 +1,6 @@
 ---
 title: "CLI matrix adapter runners"
-description: "Manifest-driven F1-F14 matrix runner package for cli-codex, cli-copilot, cli-gemini, cli-claude-code, and cli-opencode executor cells."
+description: "Definition-driven F1-F14 matrix runner package for cli-codex, cli-copilot, cli-gemini, cli-claude-code, and cli-opencode executor cells."
 trigger_phrases:
   - "matrix_runners"
   - "CLI matrix adapters"
@@ -29,7 +29,7 @@ The package is intentionally separate from native/local matrix checks. Local sta
 
 ## 2. CURRENT REALITY
 
-The matrix runner has a frozen `matrix-manifest.json`, prompt templates for F1-F14, one adapter per supported CLI executor, and a meta-runner that filters by feature or executor. It writes one JSONL file per cell plus `summary.tsv`, records per-cell status and evidence, and treats non-applicable cells as `NA`.
+The matrix runner has a frozen matrix definition file, prompt templates for F1-F14, one adapter per supported CLI executor, and a meta-runner that filters by feature or executor. It writes one JSONL file per cell plus `summary.tsv`, records per-cell status and evidence, and treats non-applicable cells as `NA`.
 
 Each adapter maps a normalized `AdapterInput` into the target CLI's argv/stdin contract. Spawn failures such as missing binaries, permission failures, `EAGAIN`, and `ENOSPC` return `BLOCKED`; timeouts return `TIMEOUT_CELL`; zero exit without the expected stdout signal returns `FAIL`.
 
@@ -42,9 +42,9 @@ Each adapter maps a normalized `AdapterInput` into the target CLI's argv/stdin c
 | File | Layer | Role |
 |---|---|---|
 | `mcp_server/matrix_runners/README.md:8-10` | Docs | Defines the package as CLI-only matrix adapter runners and distinguishes local-runner coverage |
-| `mcp_server/matrix_runners/README.md:31-45` | Docs | Documents manifest fields and applicability rules |
+| `mcp_server/matrix_runners/README.md:31-45` | Docs | Documents matrix definition fields and applicability rules |
 | `mcp_server/matrix_runners/README.md:54-71` | Docs | Documents adapter status vocabulary and smoke verification command |
-| `mcp_server/matrix_runners/run-matrix.ts:21-45` | Meta-runner | Defines executor, manifest, and CLI option contracts |
+| `mcp_server/matrix_runners/run-matrix.ts:21-45` | Meta-runner | Defines executor, matrix definition, and CLI option contracts |
 | `mcp_server/matrix_runners/run-matrix.ts:63-73` | Meta-runner | Registers the five supported CLI executors |
 | `mcp_server/matrix_runners/run-matrix.ts:134-147` | Meta-runner | Routes each executor to its adapter |
 | `mcp_server/matrix_runners/run-matrix.ts:172-190` | Meta-runner | Writes JSONL cell records and TSV summary rows |

@@ -108,24 +108,24 @@ prerequisites:
 available_templates:
   default_level: level_2
   level_1:
-    tasks: .opencode/skill/system-spec-kit/templates/level_1/tasks.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_1/implementation-summary.md
+    tasks: level_contract_tasks.md
+    implementation_summary: level_contract_implementation-summary.md
   level_2:
-    tasks: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_2/checklist.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3:
-    tasks: .opencode/skill/system-spec-kit/templates/level_3/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3/checklist.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3/implementation-summary.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    implementation_summary: level_contract_implementation-summary.md
   level_3_plus:
-    tasks: .opencode/skill/system-spec-kit/templates/level_3+/tasks.md
-    checklist: .opencode/skill/system-spec-kit/templates/level_3+/checklist.md
-    implementation_summary: .opencode/skill/system-spec-kit/templates/level_3+/implementation-summary.md
+    tasks: level_contract_tasks.md
+    checklist: level_contract_checklist.md
+    implementation_summary: level_contract_implementation-summary.md
   shared:
-    handover: .opencode/skill/system-spec-kit/templates/handover.md
-    debug_delegation: .opencode/skill/system-spec-kit/templates/debug-delegation.md
-    resource_map: .opencode/skill/system-spec-kit/templates/resource-map.md
+    handover: level_contract_optional_handover.md
+    debug_delegation: level_contract_optional_debug-delegation.md
+    resource_map: level_contract_optional_resource-map.md
 
 template_compliance:
   strict_validation_command: ".opencode/skill/system-spec-kit/scripts/spec/validate.sh [SPEC_FOLDER] --strict"
@@ -354,9 +354,9 @@ workflow:
     - Mark parallel-executable tasks with [P], define phases, generate estimates
     - Create/validate tasks.md
     outputs: [tasks.md]
-    template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+    template: level_contract_tasks.md
     template_prompt_contract:
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/tasks.md
+      canonical_template: level_contract_tasks.md
       inline_scaffold_key: tasks_md
       writing_rule: "Embed template_compliance.inline_scaffolds.tasks_md in the prompt before writing tasks.md and preserve the required anchors/headers in order."
     post_write_validation:
@@ -512,7 +512,7 @@ workflow:
     summary_document:
       location: "[SPEC_FOLDER]/implementation-summary.md"
       required_sections: [files_modified_created, verification_steps_taken, deviations_from_plan, skill_updates, recommended_next_steps, browser_testing_results]
-      canonical_template: .opencode/skill/system-spec-kit/templates/level_2/implementation-summary.md
+      canonical_template: level_contract_implementation-summary.md
       inline_scaffold_key: implementation_summary_md
       writing_rule: "Embed template_compliance.inline_scaffolds.implementation_summary_md in the prompt before writing implementation-summary.md."
     nested_changelog:

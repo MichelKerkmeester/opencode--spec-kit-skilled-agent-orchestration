@@ -170,11 +170,11 @@ When debugging becomes prolonged or repetitive:
 ### Reference Files
 
 - [validation_rules.md](../validation/validation_rules.md) - Automated validation rules
-- [level_specifications.md](../templates/level_specifications.md) - Level requirements
+- level specifications reference - Level requirements
 
 ### Templates
 
-- [checklist.md](../../templates/level_2/checklist.md) - Checklist template for spec folders (Level 2+)
+- [checklist.md](../../templates/manifest/checklist.md.tmpl) - Checklist template for spec folders (Level 2+)
 
 ### Skills
 

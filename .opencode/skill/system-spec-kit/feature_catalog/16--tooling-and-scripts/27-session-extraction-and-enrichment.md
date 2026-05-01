@@ -1,6 +1,6 @@
 ---
 title: "Session Extraction and Enrichment"
-description: "Extractor-layer session enrichment for files, diagrams, and activity signals, plus the barrel exports that expose those capabilities to the rest of the session-capturing pipeline."
+description: "Extractor-layer session enrichment for files, diagrams, and activity signals, plus the barrel exports that expose those helpers to the rest of the session-capturing pipeline."
 ---
 
 # Session Extraction and Enrichment

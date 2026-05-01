@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/058-spec-kit-ux-adoptions",
+  "spec_folder": "skilled-agent-orchestration/058-spec-kit-ux-adoptions",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "058 spec kit ux",
+      "spec kit ux adoptions",
+      "spec kit ux implementation",
+      "spar adoptions",
+      "058 ux upgrade",
+      "058 plan",
+      "058 tasks",
+      "058 checklist"
+    ],
+    "key_topics": [
+      "spec-kit",
+      "ux",
+      "adoptions",
+      "templates",
+      "command-taxonomy",
+      "personas",
+      "gate-copy",
+      "question-budget",
+      "phase-boundaries"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "../057-cmd-spec-kit-ux-upgrade/research/research.md",
+      ".opencode/command/spec_kit/plan.md",
+      ".opencode/command/spec_kit/README.txt",
+      ".opencode/skill/system-spec-kit/templates",
+      ".opencode/skill/system-spec-kit/SKILL.md"
+    ],
+    "causal_summary": "Implement 5 approved UX adoptions from packet 057 deep-research: gate copy split, phase boundary headers, four-axis command taxonomy doc, template inventory plus source manifest, and persona evaluation fixtures.",
+    "created_at": "2026-05-01T11:00:00Z",
+    "last_save_at": "2026-05-01T11:00:00Z",
+    "save_lineage": "same_pass",
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md"
+    ]
+  }
+}

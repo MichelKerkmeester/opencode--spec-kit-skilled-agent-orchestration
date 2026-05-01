@@ -1,0 +1,20 @@
+{
+  "specFolder": "026-graph-and-context-optimization/010-template-levels",
+  "description": "Feature Specification: Template Levels — Phase Parent",
+  "keywords": [
+    "feature",
+    "specification",
+    "template",
+    "levels",
+    "phase",
+    "parent"
+  ],
+  "lastUpdated": "2026-05-01T14:16:16.199Z",
+  "specId": "010",
+  "folderSlug": "template-levels",
+  "parentChain": [
+    "026-graph-and-context-optimization"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

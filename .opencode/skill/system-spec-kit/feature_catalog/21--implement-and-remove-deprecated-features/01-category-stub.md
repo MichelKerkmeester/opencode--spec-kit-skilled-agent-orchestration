@@ -53,7 +53,7 @@ Taken together, these shims show the post-remediation pattern for deprecated run
 | `mcp_server/tests/lazy-loading.vitest.ts` | MCP runtime test | Verifies `shouldEagerWarmup()` stays false by default and the eager/lazy compatibility flags remain non-restorative. |
 | `mcp_server/tests/scoring-observability.vitest.ts` | MCP runtime test | Verifies novelty telemetry stays at `0` / not applied even when `SPECKIT_NOVELTY_BOOST` is set. |
 | `mcp_server/tests/graph-flags.vitest.ts` | MCP runtime test | Verifies the legacy graph-flag shim still exposes the unified graph gate surface. |
-| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Docs/barrel test | Verifies the public API barrel still exports rollout metadata and capability-flag helpers used by shim-era documentation. |
+| `mcp_server/tests/feature-flag-reference-docs.vitest.ts` | Docs/barrel test | Verifies the public API barrel still exports rollout metadata and roadmap-flag helpers used by shim-era documentation. |
 
 ---
 

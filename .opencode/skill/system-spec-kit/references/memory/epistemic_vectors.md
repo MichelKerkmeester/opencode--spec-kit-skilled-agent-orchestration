@@ -33,7 +33,7 @@ But this misses a critical dimension: "How much don't I know?"
 | **Confidence** | Certainty about known information (0-100%) |
 | **Uncertainty** | Measure of unknown factors and gaps (0.0-1.0) |
 | **Epistemic Gap** | Something I don't know that I don't know |
-| **Model Boundary** | Edge of capability or competence |
+| **Model Boundary** | Edge of support or competence |
 | **Dual-Threshold** | Requirement to pass BOTH confidence AND uncertainty checks |
 
 ---
@@ -71,7 +71,7 @@ This is the most dangerous factor because by definition, you cannot directly obs
 
 ### Factor 2: Model Boundaries (Weight: 0.25)
 
-**Question:** "Am I at or near the limits of my capabilities?"
+**Question:** "Am I at or near the limits of my support?"
 
 Every agent has boundaries of competence. Operating near these boundaries increases the chance of errors that the agent cannot detect.
 
@@ -86,8 +86,8 @@ Every agent has boundaries of competence. Operating near these boundaries increa
 
 | Score | Interpretation |
 |-------|----------------|
-| 0.0-0.2 | Well within capabilities, high reliability |
-| 0.3-0.5 | Near capability edge, some degradation expected |
+| 0.0-0.2 | Well within support, high reliability |
+| 0.3-0.5 | Near support edge, some degradation expected |
 | 0.6-0.8 | At boundary, significant error risk |
 | 0.9-1.0 | Beyond boundaries, unreliable output |
 
@@ -270,7 +270,7 @@ Before acting on any significant task, evaluate:
 ```
 UNCERTAINTY ASSESSMENT:
 ├─ Epistemic gaps: [0.0-1.0] - [what's unknown]
-├─ Model boundaries: [0.0-1.0] - [capability concerns]
+├─ Model boundaries: [0.0-1.0] - [support concerns]
 ├─ Temporal variability: [0.0-1.0] - [knowledge freshness]
 ├─ Situational completeness: [0.0-1.0] - [context gaps]
 └─ TOTAL: [weighted average] → [LOW/MEDIUM/HIGH]
