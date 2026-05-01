@@ -7,7 +7,9 @@
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/002-deep-loop-workflow-state",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/009-test-reliability",
     "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/008-search-quality-tuning",
-    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory"
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/007-topology-build-boundary",
+    "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency"
   ],
   "manual": {
     "depends_on": [],
@@ -27,14 +29,14 @@
     "entities": [],
     "causal_summary": "Phase parent: close 78 remaining findings (27 P1 + 51 P2) from packet 046 deep research across 10 sub-phases",
     "created_at": "2026-05-01T05:18:33Z",
-    "last_save_at": "2026-05-01T06:25:06.604Z",
+    "last_save_at": "2026-05-01T07:08:59.306Z",
     "last_accessed_at": null,
     "source_docs": [
       "spec.md",
       "plan.md",
       "tasks.md"
     ],
-    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
-    "last_active_at": "2026-05-01T06:25:06.604Z"
+    "last_active_child_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
+    "last_active_at": "2026-05-01T07:08:59.306Z"
   }
 }

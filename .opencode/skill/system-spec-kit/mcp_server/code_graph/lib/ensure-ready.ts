@@ -7,6 +7,7 @@
 
 import { execSync } from 'node:child_process';
 import { existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { getDb, getLastGitHead, setLastGitHead, ensureFreshFiles } from './code-graph-db.js';
 import { indexFiles } from './structural-indexer.js';
 import { getDefaultConfig } from './indexer-types.js';
@@ -69,6 +70,141 @@ function getCurrentGitHead(rootDir: string): string | null {
   } catch {
     return null;
   }
+}
+
+/**
+ * F-014-C4-02: return the file-paths touched by `git diff` between two HEAD
+ * shas. Returns null on git failure (caller falls back to the existing
+ * full-scan behavior — no regression). Returns an empty array when both shas
+ * are valid but no files changed between them.
+ *
+ * The diff is `--name-only` and includes added/modified/deleted/renamed paths
+ * so the caller can intersect against `getTrackedFiles()` to determine
+ * whether a HEAD pointer change actually affects the indexed set.
+ */
+function getGitDiffFilePaths(rootDir: string, fromSha: string, toSha: string): string[] | null {
+  try {
+    const out = execSync(`git diff --name-only ${fromSha}..${toSha}`, {
+      cwd: rootDir,
+      encoding: 'utf-8',
+      timeout: 5_000,
+      stdio: ['ignore', 'pipe', 'pipe'],
+    });
+    return out.split('\n').map((line) => line.trim()).filter((line) => line.length > 0);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * F-014-C4-02: Decide whether a raw HEAD pointer change actually touches the
+ * indexed file set. Returns:
+ *   - 'unknown' if git is unavailable or one sha is missing (caller keeps
+ *     existing full-scan behavior so we never silently downgrade safety)
+ *   - 'in-scope' if the diff touches at least one tracked file
+ *   - 'out-of-scope' if the diff touches no tracked files (HEAD pointer can be
+ *     advanced without a full reindex)
+ */
+function classifyHeadDriftScope(
+  rootDir: string,
+  storedHead: string | null,
+  currentHead: string | null,
+  trackedFiles: string[],
+): 'unknown' | 'in-scope' | 'out-of-scope' {
+  if (!storedHead || !currentHead || storedHead === currentHead) {
+    return 'unknown';
+  }
+  const diffPaths = getGitDiffFilePaths(rootDir, storedHead, currentHead);
+  if (diffPaths === null) {
+    return 'unknown';
+  }
+  if (diffPaths.length === 0) {
+    return 'out-of-scope';
+  }
+  // Intersect with tracked files. Compare against both bare paths (relative
+  // to rootDir) and absolute paths since `getTrackedFiles()` may store either.
+  const trackedSet = new Set(trackedFiles);
+  for (const candidate of diffPaths) {
+    if (trackedSet.has(candidate)) return 'in-scope';
+    // Try absolute resolution (rootDir + candidate)
+    const absCandidate = candidate.startsWith('/') ? candidate : `${rootDir.replace(/\/$/, '')}/${candidate}`;
+    if (trackedSet.has(absCandidate)) return 'in-scope';
+  }
+  return 'out-of-scope';
+}
+
+// ─── F-014-C4-03: Candidate manifest for untracked indexable file discovery ───
+//
+// Rationale: `detectState()` only looks at files already in `code_files`, so a
+// brand-new `src/new.ts` is invisible until something else triggers a full
+// scan. We persist a compact `{count, digest}` manifest of the indexable file
+// universe in `code_graph_metadata.candidate_manifest`; on `detectState()`,
+// if the on-disk indexable count or digest diverges, we flip to stale +
+// full_scan. The manifest is bounded (no per-path storage) so monorepos with
+// 10k+ files don't bloat the metadata table.
+
+const CANDIDATE_MANIFEST_KEY = 'candidate_manifest';
+
+interface CandidateManifest {
+  readonly count: number;
+  readonly digest: string;
+  readonly recordedAt: string;
+}
+
+/**
+ * Load the persisted candidate manifest. Returns null if no manifest exists
+ * (first run) or if the stored value is malformed.
+ */
+function loadCandidateManifest(): CandidateManifest | null {
+  // F-014-C4-03: bounded read of the persisted manifest
+  const raw = graphDb.getCodeGraphMetadata(CANDIDATE_MANIFEST_KEY);
+  if (!raw) return null;
+  try {
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isRecord(parsed)) return null;
+    if (typeof parsed.count !== 'number' || typeof parsed.digest !== 'string' || typeof parsed.recordedAt !== 'string') {
+      return null;
+    }
+    return { count: parsed.count, digest: parsed.digest, recordedAt: parsed.recordedAt };
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Persist a candidate manifest. Called after any successful full or selective
+ * scan so the next `detectState()` has a baseline to compare against.
+ */
+function recordCandidateManifest(filePaths: string[]): void {
+  // F-014-C4-03: persist {count, digest} only — no per-path storage.
+  const sorted = [...filePaths].sort();
+  const digest = createHash('sha256').update(sorted.join('\n'), 'utf-8').digest('hex').slice(0, 16);
+  const manifest: CandidateManifest = {
+    count: sorted.length,
+    digest,
+    recordedAt: new Date().toISOString(),
+  };
+  graphDb.setCodeGraphMetadata(CANDIDATE_MANIFEST_KEY, JSON.stringify(manifest));
+}
+
+/**
+ * Compare on-disk tracked file paths against the stored candidate manifest.
+ * Returns true when divergence is detected (count differs OR digest differs);
+ * false when the manifest matches OR no manifest exists yet.
+ *
+ * Bounded compare: no filesystem walk happens here — we use the same
+ * `getTrackedFiles()` set that `detectState()` already loads, plus existence
+ * checks already performed by `partitionTrackedFiles()`. The manifest just
+ * pins the cardinality + digest so a rebuild that adds N untracked files at
+ * once flips to stale even if the per-file mtime check would miss them.
+ */
+function detectCandidateManifestDrift(filePaths: string[]): boolean {
+  const stored = loadCandidateManifest();
+  if (!stored) return false; // no baseline = no drift signal yet
+  const sorted = [...filePaths].sort();
+  if (sorted.length !== stored.count) return true;
+  const digest = createHash('sha256').update(sorted.join('\n'), 'utf-8').digest('hex').slice(0, 16);
+  return digest !== stored.digest;
 }
 
 function partitionTrackedFiles(filePaths: string[]): { existingFiles: string[]; deletedFiles: string[] } {
@@ -168,10 +304,25 @@ function detectState(rootDir: string): {
     return { freshness: 'empty', action: 'full_scan', staleFiles: [], deletedFiles: [], reason: 'no tracked files in code_files table' };
   }
 
+  // F-014-C4-02: Classify HEAD drift by index scope. Raw HEAD drift no longer
+  // triggers full_scan if the diff touches no path in `getTrackedFiles()`.
+  // 'unknown' means git was unavailable or shas are missing — we keep the
+  // existing safe behavior (treat headChanged as significant).
+  const headScope = headChanged
+    ? classifyHeadDriftScope(rootDir, storedHead, currentHead, trackedFiles)
+    : 'unknown';
+  const headChangedSignificant = headChanged && headScope !== 'out-of-scope';
+
   const { existingFiles, deletedFiles } = partitionTrackedFiles(trackedFiles);
   const { stale } = ensureFreshFiles(existingFiles);
+
+  // F-014-C4-03: Detect untracked-indexable drift via the candidate manifest.
+  // If the on-disk indexable cardinality or digest diverges from the stored
+  // baseline, flip to stale + full_scan even when individual mtimes look fine.
+  const manifestDrift = detectCandidateManifestDrift(trackedFiles);
+
   if (stale.length === 0) {
-    if (headChanged) {
+    if (headChangedSignificant) {
       return {
         freshness: 'stale',
         action: 'full_scan',
@@ -180,6 +331,16 @@ function detectState(rootDir: string): {
         reason: deletedFiles.length > 0
           ? `${headChangedReason}; tracked files appear up-to-date on disk; ${deletedFiles.length} tracked file(s) no longer exist on disk`
           : `${headChangedReason}; tracked files appear up-to-date on disk`,
+      };
+    }
+
+    if (manifestDrift) {
+      return {
+        freshness: 'stale',
+        action: 'full_scan',
+        staleFiles: [],
+        deletedFiles,
+        reason: 'candidate manifest drift: indexable file set has changed since last scan',
       };
     }
 
@@ -193,6 +354,11 @@ function detectState(rootDir: string): {
       };
     }
 
+    // F-014-C4-02: HEAD pointer may have advanced without touching tracked
+    // files. Update the stored HEAD so we don't re-classify on every probe.
+    if (headChanged && headScope === 'out-of-scope' && currentHead) {
+      setLastGitHead(currentHead);
+    }
     return { freshness: 'fresh', action: 'none', staleFiles: [], deletedFiles: [], reason: 'all tracked files are up-to-date' };
   }
 
@@ -267,22 +433,32 @@ async function indexWithTimeout(
  *
  * T-ENR-02 (R5-002): Stage `file_mtime_ms=0`, write nodes/edges, then finalize
  * with the real mtime so persistence failures leave the file stale for retry.
+ *
+ * F-002-A2-01: Wrap the four storage operations (stage upsert, replaceNodes,
+ * replaceEdges, finalize upsert) in a single per-file transaction so a crash
+ * mid-persistence rolls all four back atomically. Per-file scope keeps the
+ * lock window short (3-4 statements) so concurrent readers/writers on the
+ * same DB are not starved during a long scan.
  */
 export function persistIndexedFileResult(result: ParseResult): void {
-  const fileId = graphDb.upsertFile(
-    result.filePath, result.language, result.contentHash,
-    result.nodes.length, result.edges.length,
-    result.parseHealth, result.parseDurationMs,
-    { fileMtimeMs: 0 },
-  );
-  graphDb.replaceNodes(fileId, result.nodes);
-  const sourceIds = result.nodes.map((node) => node.symbolId);
-  graphDb.replaceEdges(sourceIds, result.edges);
-  graphDb.upsertFile(
-    result.filePath, result.language, result.contentHash,
-    result.nodes.length, result.edges.length,
-    result.parseHealth, result.parseDurationMs,
-  );
+  // F-002-A2-01: atomic per-file persistence boundary
+  const tx = graphDb.getDb().transaction(() => {
+    const fileId = graphDb.upsertFile(
+      result.filePath, result.language, result.contentHash,
+      result.nodes.length, result.edges.length,
+      result.parseHealth, result.parseDurationMs,
+      { fileMtimeMs: 0 },
+    );
+    graphDb.replaceNodes(fileId, result.nodes);
+    const sourceIds = result.nodes.map((node) => node.symbolId);
+    graphDb.replaceEdges(sourceIds, result.edges);
+    graphDb.upsertFile(
+      result.filePath, result.language, result.contentHash,
+      result.nodes.length, result.edges.length,
+      result.parseHealth, result.parseDurationMs,
+    );
+  });
+  tx();
 }
 
 // ───────────────────────────────────────────────────────────────
@@ -345,6 +521,13 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
       // Update stored git HEAD after full scan
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
+      // F-014-C4-03: refresh candidate manifest after a full scan so the next
+      // detectState() has a current baseline to compare against.
+      try {
+        recordCandidateManifest(graphDb.getTrackedFiles());
+      } catch {
+        // Best-effort: manifest recording must never block a successful scan
+      }
 
       const refreshedState = detectState(rootDir);
       return {
@@ -365,6 +548,13 @@ export async function ensureCodeGraphReady(rootDir: string, options: EnsureReady
 
       const head = getCurrentGitHead(rootDir);
       if (head) setLastGitHead(head);
+      // F-014-C4-03: refresh candidate manifest after a selective reindex too
+      // (the tracked-file set may have grown if the scan added new files).
+      try {
+        recordCandidateManifest(graphDb.getTrackedFiles());
+      } catch {
+        // Best-effort: manifest recording must never block a successful scan
+      }
 
       const refreshedState = detectState(rootDir);
       const selfHealResult = refreshedState.freshness === 'fresh' && refreshedState.action === 'none'

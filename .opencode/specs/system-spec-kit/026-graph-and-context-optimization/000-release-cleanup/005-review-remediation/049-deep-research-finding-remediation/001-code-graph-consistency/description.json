@@ -5,12 +5,14 @@
     "phase",
     "code-graph-consistency"
   ],
-  "lastUpdated": "2026-05-01T05:18:47.728Z",
+  "lastUpdated": "2026-05-01T07:08:22.831Z",
   "specId": "001",
   "folderSlug": "code-graph-consistency",
   "parentChain": [
     "049-deep-research-finding-remediation"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-05-26_08-08__049-001-code-graph-consistency-remediation.md"
+  ]
 }

@@ -97,10 +97,17 @@ workflow:
       - "Empty repo → STATUS=OK with message 'no source files to analyze'"
 
   phase_1_analysis:
-    purpose: Compute stale + missed + bloat sets via detect_changes + glob comparison
+    # F-014-C4-04: redefined to use existing handler outputs. Previously this
+    # phase called `detect_changes({})` expecting stale/missed file lists, but
+    # detect_changes is a diff-driven handler (input: unified diff; output:
+    # affectedSymbols) — calling it with {} produces an empty/unhelpful result.
+    # The fallback path that was already implemented below now becomes the
+    # primary path. Stale comes from code_graph_status freshness + git status;
+    # missed comes from filesystem walk minus index; bloat is unchanged.
+    purpose: Compute stale + missed + bloat sets via code_graph_status + git status + filesystem walk
     activities:
-      - "If detect_changes available: invoke detect_changes({}) to obtain stale set"
-      - "Fallback: derive stale set from `git status --porcelain` + index timestamps"
+      - "Read freshness flags from Phase 0's code_graph_status({}) result (already invoked)"
+      - "Derive stale set from `git status --porcelain` + index timestamps (files modified-on-disk-since-indexed_at)"
       - "Compute missed set: files-on-disk minus files-in-index (filter by language scope)"
       - "Compute bloat set: bloat_candidates intersected with files-in-index (i.e., currently indexed bloat)"
       - "If scope filter active: filter to scope's specific subset"
@@ -113,7 +120,7 @@ workflow:
       - analysis_report: structured map of findings per category
     validation: analysis_complete
     fail_fast:
-      - "Both detect_changes and git unavailable → STATUS=FAIL (cannot compute stale set)"
+      - "Both code_graph_status and git unavailable → STATUS=FAIL (cannot compute stale set)"
       - "Filesystem walk error → STATUS=FAIL with diagnostic"
 
   phase_2_proposal:
@@ -170,7 +177,10 @@ confidence_framework:
 error_recovery:
   empty_repo: "Report 'no source files to analyze', exit STATUS=OK"
   code_graph_unavailable: "Continue with filesystem-only diagnosis, mark report as partial"
-  detect_changes_unavailable: "Fallback to git status + index-timestamp comparison"
+  # F-014-C4-04: detect_changes was retired from this workflow because its
+  # contract is diff-driven, not index-health-driven. The git-status +
+  # index-timestamp path is now the primary, not the fallback.
+  git_unavailable: "Fall back to filesystem-walk + indexed_at comparison only; mark report as partial"
   packet_scratch_full: "Surface diagnostic, suggest cleanup, exit STATUS=FAIL"
   permission_denied_on_report_path: "Try alternate path, surface to operator"
 

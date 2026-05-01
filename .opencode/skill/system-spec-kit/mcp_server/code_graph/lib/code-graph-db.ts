@@ -157,6 +157,11 @@ export function initDb(dbDir: string): Database.Database {
   try {
     dbPath = join(dbDir, 'code-graph.sqlite');
     db = new Database(dbPath);
+    // F-002-A2-02: explicit busy_timeout so concurrent writers wait up to 5s
+    // for the writer lock instead of throwing SQLITE_BUSY immediately. Set
+    // BEFORE journal_mode/foreign_keys so any incidental contention during
+    // PRAGMA setup also benefits from the wait.
+    db.pragma('busy_timeout = 5000');
     db.pragma('journal_mode = WAL'); // WAL enables concurrent readers without locks
     db.pragma('foreign_keys = ON');
     db.exec(SCHEMA_SQL);
@@ -245,16 +250,54 @@ export function setLastDetectorProvenance(provenance: DetectorProvenance): void 
 }
 
 export function getLastDetectorProvenanceSummary(): DetectorProvenanceSummary | null {
+  const result = getLastDetectorProvenanceSummaryWithDiagnostics();
+  // F-004-A4-03: backward-compat — caller-visible API still returns null on
+  // any non-resolved state; corrupt/invalid state is observable via the
+  // *WithDiagnostics() companion below.
+  return result.kind === 'resolved' ? result.value : null;
+}
+
+/**
+ * F-004-A4-03: Discriminated metadata read result so callers can distinguish
+ * - 'absent': the row does not exist (first-write hasn't happened yet)
+ * - 'resolved': the row exists, parsed cleanly, and matches the expected shape
+ * - 'corrupt': the row exists but is not valid JSON (write-side bug or
+ *   storage corruption)
+ * - 'invalid-shape': the row parsed as JSON but does not match the expected
+ *   shape (schema-version drift or write-side type bug)
+ *
+ * The original API (returns `null` on absent / corrupt / invalid-shape) is
+ * preserved; new callers use these companions to react differently to corrupt
+ * state vs absent state (e.g. quarantine the row instead of silently rebuilding).
+ */
+export type MetadataReadResult<T> =
+  | { kind: 'absent' }
+  | { kind: 'resolved'; value: T }
+  | { kind: 'corrupt'; raw: string }
+  | { kind: 'invalid-shape'; raw: string };
+
+export function getLastDetectorProvenanceSummaryWithDiagnostics(): MetadataReadResult<DetectorProvenanceSummary> {
+  // F-004-A4-03: typed read — distinguish absent vs corrupt vs invalid
   const value = getMetadata('last_detector_provenance_summary');
   if (!value) {
-    return null;
+    return { kind: 'absent' };
   }
-
+  let parsed: unknown;
   try {
-    return JSON.parse(value) as DetectorProvenanceSummary;
+    parsed = JSON.parse(value);
   } catch {
-    return null;
+    return { kind: 'corrupt', raw: value };
   }
+  // Shape guard: must be an object with `dominant` and `counts` properties.
+  if (
+    typeof parsed !== 'object'
+    || parsed === null
+    || !('dominant' in parsed)
+    || !('counts' in parsed)
+  ) {
+    return { kind: 'invalid-shape', raw: value };
+  }
+  return { kind: 'resolved', value: parsed as DetectorProvenanceSummary };
 }
 
 export function setLastDetectorProvenanceSummary(summary: DetectorProvenanceSummary): void {
@@ -262,16 +305,33 @@ export function setLastDetectorProvenanceSummary(summary: DetectorProvenanceSumm
 }
 
 export function getLastGraphEdgeEnrichmentSummary(): GraphEdgeEnrichmentSummary | null {
+  const result = getLastGraphEdgeEnrichmentSummaryWithDiagnostics();
+  // F-004-A4-03: backward-compat null on any non-resolved state
+  return result.kind === 'resolved' ? result.value : null;
+}
+
+export function getLastGraphEdgeEnrichmentSummaryWithDiagnostics(): MetadataReadResult<GraphEdgeEnrichmentSummary> {
+  // F-004-A4-03: typed read — distinguish absent vs corrupt vs invalid
   const value = getMetadata('last_graph_edge_enrichment_summary');
   if (!value) {
-    return null;
+    return { kind: 'absent' };
   }
-
+  let parsed: unknown;
   try {
-    return JSON.parse(value) as GraphEdgeEnrichmentSummary;
+    parsed = JSON.parse(value);
   } catch {
-    return null;
+    return { kind: 'corrupt', raw: value };
   }
+  // Shape guard: must have `edgeEvidenceClass` and `numericConfidence`.
+  if (
+    typeof parsed !== 'object'
+    || parsed === null
+    || !('edgeEvidenceClass' in parsed)
+    || !('numericConfidence' in parsed)
+  ) {
+    return { kind: 'invalid-shape', raw: value };
+  }
+  return { kind: 'resolved', value: parsed as GraphEdgeEnrichmentSummary };
 }
 
 export function setLastGraphEdgeEnrichmentSummary(
@@ -285,16 +345,30 @@ export function clearLastGraphEdgeEnrichmentSummary(): void {
 }
 
 export function getLastGoldVerification(): object | null {
+  const result = getLastGoldVerificationWithDiagnostics();
+  // F-004-A4-03: backward-compat null on any non-resolved state
+  return result.kind === 'resolved' ? result.value : null;
+}
+
+export function getLastGoldVerificationWithDiagnostics(): MetadataReadResult<object> {
+  // F-004-A4-03: typed read — distinguish absent vs corrupt vs invalid
   const value = getCodeGraphMetadata('last_gold_verification');
   if (!value) {
-    return null;
+    return { kind: 'absent' };
   }
-
+  let parsed: unknown;
   try {
-    return JSON.parse(value) as object;
+    parsed = JSON.parse(value);
   } catch {
-    return null;
+    return { kind: 'corrupt', raw: value };
   }
+  // Shape guard: gold verification must be an object (it's a free-form
+  // record but never a primitive). The detailed shape check stays at the
+  // call sites that already use isRecord() etc.
+  if (typeof parsed !== 'object' || parsed === null) {
+    return { kind: 'invalid-shape', raw: value };
+  }
+  return { kind: 'resolved', value: parsed as object };
 }
 
 export function setLastGoldVerification(json: object): void {
@@ -420,9 +494,12 @@ export function isFileStale(filePath: string, options?: { currentContentHash?: s
   if (!row) return true;
   const currentMtimeMs = getCurrentFileMtimeMs(filePath);
   if (currentMtimeMs === null) return true;
-  if (row.file_mtime_ms !== currentMtimeMs) return true;
   if (!row.content_hash) return true;
 
+  // F-014-C4-01: hash content on mtime drift before declaring stale. A touch
+  // (mtime drift, content unchanged) used to force reindex; now it stays
+  // fresh as long as the content hash matches. Avoids gratuitous full-scans
+  // on `git checkout` of unchanged files.
   const currentContentHash = options?.currentContentHash ?? getCurrentFileContentHash(filePath);
   if (currentContentHash === null) return true;
   return row.content_hash !== currentContentHash;
@@ -455,7 +532,7 @@ export function ensureFreshFiles(filePaths: string[]): FreshFilesResult {
   for (const filePath of uniquePaths) {
     const storedFile = storedFiles.get(filePath);
     const currentMtimeMs = getCurrentFileMtimeMs(filePath);
-    if (storedFile === undefined || currentMtimeMs === null || storedFile.file_mtime_ms !== currentMtimeMs) {
+    if (storedFile === undefined || currentMtimeMs === null) {
       stale.push(filePath);
       continue;
     }
@@ -463,6 +540,9 @@ export function ensureFreshFiles(filePaths: string[]): FreshFilesResult {
       stale.push(filePath);
       continue;
     }
+    // F-014-C4-01: hash on mtime drift before declaring stale. Touch-only
+    // changes (mtime drift, content unchanged) stay fresh; only real content
+    // changes flip the file to stale.
     const currentContentHash = getCurrentFileContentHash(filePath);
     if (currentContentHash === null || storedFile.content_hash !== currentContentHash) {
       stale.push(filePath);

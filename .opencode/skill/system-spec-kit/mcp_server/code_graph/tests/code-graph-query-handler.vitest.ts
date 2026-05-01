@@ -102,6 +102,10 @@ function createDb({
         return undefined;
       }),
     })),
+    // F-002-A2-03: snapshot-stable read transactions in query handler.
+    // Mock transaction() to invoke the callback synchronously (better-sqlite3
+    // semantics: returns a function that runs the callback in a transaction).
+    transaction: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
   };
 }
 
@@ -1073,6 +1077,8 @@ describe('code-graph-query handler', () => {
 
   it('filters blast-radius traversal by minConfidence', async () => {
     mocks.getDb.mockReturnValue({
+      // F-002-A2-03: identity transaction mock so snapshot-stable wraps don't trip
+      transaction: vi.fn((fn: (...args: unknown[]) => unknown) => fn),
       prepare: vi.fn((sql: string) => ({
         all: vi.fn(() => {
           if (sql.includes('FROM code_edges edge')) {

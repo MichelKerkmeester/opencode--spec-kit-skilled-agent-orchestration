@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/001-code-graph-consistency",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,213 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 1: code-graph-consistency",
+    "trigger_phrases": [
+      "F-002-A2",
+      "F-014-C4",
+      "F-004-A4-02",
+      "F-004-A4-03",
+      "code graph consistency",
+      "atomic per-file persistence",
+      "sqlite busy timeout",
+      "candidate manifest",
+      "doctor code graph workflow",
+      "F-002-A2 plan",
+      "F-014-C4 plan",
+      "F-004-A4 plan"
+    ],
+    "key_topics": [
+      "f-002-a2",
+      "f-014-c4",
+      "f-004-a4-02",
+      "f-004-a4-03",
+      "code",
+      "graph",
+      "consistency",
+      "atomic",
+      "per-file",
+      "persistence",
+      "sqlite",
+      "busy"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/code_graph/lib/ensure-ready.ts",
+      "mcp_server/code_graph/lib/code-graph-db.ts",
+      "mcp_server/code_graph/handlers/query.ts",
+      ".opencode/command/doctor/assets/doctor_code-graph_auto.yaml",
+      "mcp_server/code_graph/lib/code-graph-context.ts",
+      "mcp_server/code_graph/tests/code-graph-atomic-persistence.vitest.ts",
+      "mcp_server/code_graph/tests/code-graph-busy-timeout.vitest.ts",
+      "mcp_server/code_graph/tests/code-graph-stale-mtime-vs-hash.vitest.ts",
+      "mcp_server/code_graph/tests/code-graph-candidate-manifest.vitest.ts",
+      "mcp_server/code_graph/tests/code-graph-metadata-shape.vitest.ts",
+      "mcp_server/code_graph/tests/code-graph-resolve-subject-typed.vitest.ts",
+      "skill_advisor/lib/daemon/watcher.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "ensure-ready.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/ensure-ready.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-db.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/code-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "query.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/handlers/query.ts",
+        "source": "derived"
+      },
+      {
+        "name": "doctor_code-graph_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/doctor/assets/doctor_code-graph_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-context.ts",
+        "kind": "code",
+        "path": "mcp_server/code_graph/lib/code-graph-context.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-atomic-persistence.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-atomic-persistence.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-busy-timeout.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-busy-timeout.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-stale-mtime-vs-hash.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-stale-mtime-vs-hash.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-candidate-manifest.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-candidate-manifest.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-metadata-shape.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-metadata-shape.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "code-graph-resolve-subject-typed.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/code_graph/tests/code-graph-resolve-subject-typed.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "watcher.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/daemon/watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Graph Consistency Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Nine",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Close",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Nine consistency-and-resilience defects across the code-graph indexing, query, and doctor-workflow surface area leak partial-write, contention, snapshot-skew, and silent-error bugs identified by packet 046's deep research:",
     "created_at": "2026-05-01T05:18:47Z",
-    "last_save_at": "2026-05-01T05:18:47Z",
+    "last_save_at": "2026-05-01T07:08:22.831Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

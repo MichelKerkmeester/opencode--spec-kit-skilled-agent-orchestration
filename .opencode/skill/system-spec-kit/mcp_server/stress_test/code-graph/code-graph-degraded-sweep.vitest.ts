@@ -235,27 +235,34 @@ describe('code_graph_query degraded stress sweep (packet 013)', () => {
 
     initDb(tempDir);
 
-    // Seed (threshold + 10) tracked files with stale mtimes so we are firmly
-    // above the boundary. +10 leaves slack so a future small bump in the
-    // production threshold (e.g., 50 -> 55) still trips the full-scan branch
-    // without rewriting the test.
+    // Seed (threshold + 10) tracked files with stale CONTENT (not just mtime)
+    // so we are firmly above the boundary. +10 leaves slack so a future small
+    // bump in the production threshold (e.g., 50 -> 55) still trips the full-
+    // scan branch without rewriting the test.
+    //
+    // F-014-C4-01: hash-on-mtime-drift-before-stale means mtime-only drift no
+    // longer flips a file to stale. The disk content must differ from the
+    // stored content_hash for the staleness signal to fire.
     const STALE_FILE_COUNT = SELECTIVE_REINDEX_THRESHOLD + 10;
     for (let i = 0; i < STALE_FILE_COUNT; i++) {
       const filePath = join(tempDir, `tracked-${i}.ts`);
-      const content = `export const sample${i} = ${i};\n`;
-      writeFileSync(filePath, content, 'utf8');
+      const onDiskContent = `export const sample${i} = ${i};\n`;
+      writeFileSync(filePath, onDiskContent, 'utf8');
       // Backdate stat AFTER write so disk mtime differs from the stored
       // file_mtime_ms below.
       const past = new Date(Date.now() - 86_400_000); // 24h ago on disk
       utimesSync(filePath, past, past);
 
-      // Insert a code_files row whose stored file_mtime_ms is "now" - but the
-      // disk file's mtime is 24h ago, so ensureFreshFiles() will mark it stale.
+      // Insert a code_files row whose stored content_hash represents an
+      // OLDER version of this file. ensureFreshFiles() hashes the on-disk
+      // content (post-F-014-C4-01) and finds it differs from the stored
+      // hash -> marks the file stale.
       const storedMtime = Date.now();
+      const olderContent = `export const sample${i} = ${i - 1000};\n`;
       const fileId = upsertFile(
         filePath,
         'typescript',
-        generateContentHash(content),
+        generateContentHash(olderContent),
         1, // node_count > 0 so empty-graph guard does not fire
         0,
         'clean',

@@ -1397,14 +1397,18 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
   // If includeTransitive, use BFS traversal instead of 1-hop
   if (args.includeTransitive) {
     const direction = operation.endsWith('from') ? 'from' : 'to';
-    const transitive = transitiveTraversal(
+    // F-002-A2-03: wrap the BFS multi-SELECT traversal in a snapshot-stable
+    // read transaction so a concurrent index pass cannot shift the result set
+    // between the per-depth queries. better-sqlite3 transactions in WAL mode
+    // observe a consistent snapshot for the lifetime of the transaction.
+    const transitive = graphDb.getDb().transaction(() => transitiveTraversal(
       symbolId,
       requestedEdgeType ?? 'CALLS',
       direction,
       maxDepth,
       limit,
       operation,
-    );
+    ))();
     const warnings = mergeWarnings(resolvedSubject.warnings, transitive.warnings);
     return {
       content: [{
@@ -1435,8 +1439,14 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     case 'calls_from':
     case 'imports_from': {
       const includeLine = operation === 'calls_from';
+      // F-002-A2-03: snapshot-stable read transaction. queryEdgesFrom issues
+      // the edge lookup AND a per-edge node lookup; wrapping in a transaction
+      // ensures both observe a consistent snapshot under concurrent writers.
+      const edges = graphDb.getDb().transaction(
+        () => graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
+      )();
       const { resolvedEntries, warnings } = excludeDanglingEdges(
-        graphDb.queryEdgesFrom(symbolId, requestedEdgeType),
+        edges,
         limit,
         operation,
         'target',
@@ -1457,8 +1467,12 @@ export async function handleCodeGraphQuery(args: QueryArgs): Promise<{ content: 
     case 'calls_to':
     case 'imports_to': {
       const includeLine = operation === 'calls_to';
+      // F-002-A2-03: snapshot-stable read transaction (see calls_from above).
+      const edges = graphDb.getDb().transaction(
+        () => graphDb.queryEdgesTo(symbolId, requestedEdgeType),
+      )();
       const { resolvedEntries, warnings } = excludeDanglingEdges(
-        graphDb.queryEdgesTo(symbolId, requestedEdgeType),
+        edges,
         limit,
         operation,
         'source',

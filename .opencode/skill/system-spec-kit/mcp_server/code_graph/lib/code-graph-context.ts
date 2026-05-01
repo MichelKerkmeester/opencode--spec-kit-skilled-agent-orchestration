@@ -496,8 +496,28 @@ function expandAnchor(anchor: ArtifactRef, mode: QueryMode, remainingMs?: number
   return finalize();
 }
 
-/** Resolve a subject string to an ArtifactRef */
-function resolveSubjectToRef(subject: string): ArtifactRef | null {
+/**
+ * F-004-A4-02: Discriminated result for subject resolution.
+ *
+ * - 'resolved': matched a row in code_nodes
+ * - 'unresolved': DB was queryable but no matching row exists
+ * - 'unavailable': DB threw during the resolution attempt (e.g. connection
+ *   broken, schema mismatch); the subject's actual existence is UNKNOWN, not
+ *   absent. Callers can distinguish this from 'unresolved' to render a
+ *   degraded-availability message instead of treating the subject as missing.
+ */
+export type ResolveSubjectResult =
+  | { kind: 'resolved'; ref: ArtifactRef }
+  | { kind: 'unresolved' }
+  | { kind: 'unavailable'; reason: string };
+
+/**
+ * Resolve a subject string to an ArtifactRef with typed unavailability.
+ * Internal helper used by `buildContext`; surfaces DB failures distinctly
+ * from "no matching row" so callers can react accordingly.
+ */
+// F-004-A4-02: typed resolution result
+function resolveSubjectToRefTyped(subject: string): ResolveSubjectResult {
   try {
     const d = graphDb.getDb();
     // Try as symbolId, fqName, or name
@@ -509,21 +529,49 @@ function resolveSubjectToRef(subject: string): ArtifactRef | null {
 
     if (row) {
       return {
-        filePath: row.file_path as string,
-        startLine: row.start_line as number,
-        endLine: row.end_line as number,
-        symbolId: row.symbol_id as string,
-        fqName: row.fq_name as string,
-        kind: row.kind as string,
-        confidence: 0.9,
-        resolution: 'exact',
-        score: null,
-        snippet: null,
-        range: null,
-        provider: 'code_graph',
+        kind: 'resolved',
+        ref: {
+          filePath: row.file_path as string,
+          startLine: row.start_line as number,
+          endLine: row.end_line as number,
+          symbolId: row.symbol_id as string,
+          fqName: row.fq_name as string,
+          kind: row.kind as string,
+          confidence: 0.9,
+          resolution: 'exact',
+          score: null,
+          snippet: null,
+          range: null,
+          provider: 'code_graph',
+        },
       };
     }
-  } catch { /* DB not available */ }
+    return { kind: 'unresolved' };
+  } catch (err: unknown) {
+    // F-004-A4-02: DB error is now distinct from unresolved. Previously
+    // swallowed silently as "unresolved subject"; now surfaces the reason.
+    return {
+      kind: 'unavailable',
+      reason: err instanceof Error ? err.message : String(err),
+    };
+  }
+}
+
+/**
+ * Backward-compatible wrapper: `null` when the subject is unresolved OR the
+ * DB is unavailable. New callers should use `resolveSubjectToRefTyped`.
+ * F-004-A4-02: a side-channel debug log surfaces the unavailable case so the
+ * silent-error path is auditable from logs even when callers only see null.
+ */
+function resolveSubjectToRef(subject: string): ArtifactRef | null {
+  const result = resolveSubjectToRefTyped(subject);
+  if (result.kind === 'resolved') return result.ref;
+  if (result.kind === 'unavailable') {
+    // F-004-A4-02: surface DB-failure path so it's not silently lost
+    console.warn(
+      `[code-graph-context] resolveSubjectToRef DB unavailable for subject "${subject}": ${result.reason}`,
+    );
+  }
   return null;
 }
 
