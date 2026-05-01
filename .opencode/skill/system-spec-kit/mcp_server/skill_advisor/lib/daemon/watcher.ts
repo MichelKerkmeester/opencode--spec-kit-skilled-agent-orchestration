@@ -72,6 +72,12 @@ export interface SkillGraphWatcher {
   readonly targets: readonly WatchTarget[];
   status: () => SkillGraphWatcherStatus;
   refreshTargets: () => void;
+  // F-001-A1-01: drain any queued reindex work without closing the watcher.
+  flush: () => Promise<void>;
+  // F-001-A1-02: lifecycle uses this to silence reindex generation writes
+  // during shutdown; pending flushes still run for hash bookkeeping but never
+  // call publishSkillGraphGeneration().
+  suppressGenerationPublication: (value: boolean) => void;
   close: () => Promise<void>;
 }
 
@@ -316,7 +322,13 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
   let debounceTimer: NodeJS.Timeout | null = null;
   let circuitOpenUntil = 0;
   let closed = false;
+  let suppressGenerationPublication = false;
   let lastReindexAt: string | null = null;
+  // Serialization primitive for F-001-A1-01: only one flush drain runs at a
+  // time, regardless of how many timers or close() calls fire concurrently.
+  // Events queued while a flush is running are picked up by the same drain
+  // loop after the active batch settles.
+  let flushPromise: Promise<void> | null = null;
 
   const defaultReindex = async (): Promise<ReindexResult> => indexSkillMetadata(skillsRoot);
   const reindexSkill = options.reindexSkill ?? defaultReindex;
@@ -405,29 +417,51 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
     for (const changedPath of missingChangedPaths) {
       fileHashes.delete(changedPath);
     }
-    publishSkillGraphGeneration({
-      workspaceRoot,
-      changedPaths,
-      reason: options.generationReason ?? 'skill-graph-daemon-reindex',
-      state: 'live',
-      sourceSignature: computeAdvisorSourceSignature(workspaceRoot),
-    });
+    // F-001-A1-02: shutdown() may have flipped suppression on while this flush
+    // was already running. Skip the live-state publication so the daemon does
+    // not overwrite the terminal `unavailable` generation.
+    if (!suppressGenerationPublication) {
+      publishSkillGraphGeneration({
+        workspaceRoot,
+        changedPaths,
+        reason: options.generationReason ?? 'skill-graph-daemon-reindex',
+        state: 'live',
+        sourceSignature: computeAdvisorSourceSignature(workspaceRoot),
+      });
+    }
     lastReindexAt = new Date().toISOString();
     refreshTargets();
   }
 
+  // F-001-A1-01: serialized drain. Only one drainPending() runs at a time,
+  // tracked via flushPromise. Concurrent triggers (debounce timer + close()
+  // for example) all await the same promise. After a batch finishes, if more
+  // events were queued while the batch was running, drain again on the same
+  // serialized chain — no parallel processSkill() calls for the same skill.
   async function flushPending(): Promise<void> {
-    const batch = [...pending.values()];
-    pending.clear();
-    for (const request of batch) {
-      try {
-        await processSkill(request);
-      } catch (error: unknown) {
-        const code = error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : null;
-        if (code === 'ENOENT') {
-          continue;
+    if (flushPromise) {
+      return flushPromise;
+    }
+    flushPromise = drainPending().finally(() => {
+      flushPromise = null;
+    });
+    return flushPromise;
+  }
+
+  async function drainPending(): Promise<void> {
+    while (pending.size > 0) {
+      const batch = [...pending.values()];
+      pending.clear();
+      for (const request of batch) {
+        try {
+          await processSkill(request);
+        } catch (error: unknown) {
+          const code = error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : null;
+          if (code === 'ENOENT') {
+            continue;
+          }
+          diagnostics.push(`REINDEX_FAILED:${request.skillSlug}:${errorMessage(error)}`);
         }
-        diagnostics.push(`REINDEX_FAILED:${request.skillSlug}:${errorMessage(error)}`);
       }
     }
   }
@@ -458,12 +492,24 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
       diagnostics: [...diagnostics],
     }),
     refreshTargets,
+    // F-001-A1-02: lifecycle.ts calls suppressGenerationPublication(true) before
+    // tearing the watcher down, so any queued processSkill() that runs during
+    // close()/flushPending() will not write a 'live' generation that would
+    // overwrite the terminal 'unavailable' state.
+    suppressGenerationPublication: (value: boolean) => {
+      suppressGenerationPublication = value;
+    },
+    // F-001-A1-01: public drain hook. Lifecycle.ts uses this to quiesce the
+    // queue before publishing the final terminal state.
+    flush: () => flushPending(),
     close: async () => {
       closed = true;
       if (debounceTimer) {
         clearTimeout(debounceTimer);
         debounceTimer = null;
       }
+      // Await any in-flight drain AND any newly enqueued work; the serialized
+      // flushPending() handles both.
       await flushPending();
       await watcher.close();
     },

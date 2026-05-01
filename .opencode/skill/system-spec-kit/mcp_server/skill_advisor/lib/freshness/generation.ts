@@ -2,6 +2,7 @@
 // MODULE: Advisor Freshness Generation
 // ───────────────────────────────────────────────────────────────
 
+import { randomBytes } from 'node:crypto';
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readFileSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { GenerationMetadataSchema, type GenerationMetadata } from '../../schemas/generation-metadata.js';
@@ -59,28 +60,83 @@ function writeJsonAtomic(filePath: string, payload: GenerationMetadata): void {
   }
 }
 
+// F-001-A1-03: token-checked lock release.
+//
+// The previous implementation stored only `pid:timestamp` and let any process
+// remove the lock file unconditionally. That meant publisher A could pause
+// past GENERATION_LOCK_STALE_MS, publisher B would reclaim the stale lock,
+// and when A resumed its release closure would happily delete B's lock,
+// allowing a third writer to enter while B still believed it owned the lock.
+//
+// Fix: every acquisition writes a random `token` into the lock file. Release
+// reads the file back and only removes the lock if the token still matches
+// the holder's. Stale reclamation also reads the persisted token before
+// deletion so concurrent reclaimers do not stomp on each other.
+//
+// Format: `${pid}:${acquiredAtMs}:${token}`
+//   - pid           — debugging only
+//   - acquiredAtMs  — staleness check
+//   - token         — 32 hex chars from crypto.randomBytes
+function readLockTokenAndAge(lockPath: string): { token: string | null; ageMs: number | null } {
+  try {
+    const raw = readFileSync(lockPath, 'utf8').trim();
+    const parts = raw.split(':');
+    if (parts.length < 3) {
+      // Legacy or corrupt lock contents — treat as un-owned.
+      return { token: null, ageMs: null };
+    }
+    const acquiredAtMs = Number(parts[1]);
+    const token = parts.slice(2).join(':');
+    if (!Number.isFinite(acquiredAtMs)) {
+      return { token, ageMs: null };
+    }
+    return { token, ageMs: Date.now() - acquiredAtMs };
+  } catch {
+    return { token: null, ageMs: null };
+  }
+}
+
 function acquireGenerationLock(filePath: string): () => void {
   const lockPath = `${filePath}.lock`;
   mkdirSync(dirname(filePath), { recursive: true });
   const startedAt = Date.now();
   while (true) {
+    const myToken = randomBytes(16).toString('hex');
     try {
       const fd = openSync(lockPath, 'wx');
-      writeFileSync(fd, `${process.pid}:${Date.now()}\n`, 'utf8');
+      writeFileSync(fd, `${process.pid}:${Date.now()}:${myToken}\n`, 'utf8');
       closeSync(fd);
       return () => {
-        rmSync(lockPath, { force: true });
+        // Only delete if the token still matches ours. Reading the file back
+        // is the cheapest available compare-and-swap on a POSIX directory.
+        const { token } = readLockTokenAndAge(lockPath);
+        if (token === myToken) {
+          rmSync(lockPath, { force: true });
+        }
+        // If the token does NOT match, another holder reclaimed the lock
+        // after we paused/lost ownership. We must not delete their lock.
       };
     } catch (error: unknown) {
       const code = error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : null;
       if (code !== 'EEXIST') throw error;
-      try {
-        const lockAgeMs = Date.now() - readFileSync(lockPath, 'utf8').split(':').map(Number)[1];
-        if (lockAgeMs > GENERATION_LOCK_STALE_MS) {
-          rmSync(lockPath, { force: true });
-          continue;
+      const { token: incumbentToken, ageMs } = readLockTokenAndAge(lockPath);
+      if (ageMs !== null && ageMs > GENERATION_LOCK_STALE_MS) {
+        // Compare-and-swap stale reclamation: re-read the token, confirm it
+        // is still the same incumbent that we just observed as stale, and
+        // only then remove. This narrows the window where two reclaimers
+        // both believe they cleared the same stale lock.
+        try {
+          const reread = readLockTokenAndAge(lockPath);
+          if (reread.token !== null && reread.token === incumbentToken) {
+            rmSync(lockPath, { force: true });
+          }
+        } catch {
+          // Lock vanished between our two reads — nothing to do.
         }
-      } catch {
+        continue;
+      }
+      if (incumbentToken === null) {
+        // Corrupt lock contents (legacy format or partial write). Reclaim it.
         rmSync(lockPath, { force: true });
         continue;
       }
@@ -142,3 +198,11 @@ export async function publishAfterCommit<T>(
     publication: publishSkillGraphGeneration(options),
   };
 }
+
+// Test-only surface: stress + unit tests need to drive the lock primitive
+// directly to verify the F-001-A1-03 token-ownership semantics. Production
+// code should always go through `publishSkillGraphGeneration`.
+export const __testables = {
+  acquireGenerationLock,
+  GENERATION_LOCK_STALE_MS,
+};

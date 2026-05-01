@@ -82,6 +82,30 @@ export async function startSkillGraphDaemon(options: SkillGraphDaemonOptions): P
       lastLiveAt: trustState.lastLiveAt,
     });
 
+    // F-001-A1-02: tear down the watcher BEFORE publishing the terminal
+    // unavailable generation. Otherwise an in-flight or queued reindex flush
+    // can race the shutdown and publish a 'live' generation after we've
+    // already published 'unavailable', leaving the on-disk state lying about
+    // a daemon that has stopped.
+    //
+    // Order of operations:
+    //   1. Suppress reindex-generation publication inside the watcher
+    //      (queued processSkill() runs still update bookkeeping but never
+    //      call publishSkillGraphGeneration()).
+    //   2. Drain the pending queue so any in-flight flush settles.
+    //   3. Close the file-system watcher.
+    //   4. Now and only now publish the terminal `unavailable` generation.
+    if (watcher) {
+      watcher.suppressGenerationPublication(true);
+      try {
+        await watcher.flush();
+      } catch {
+        // Drain failures are best-effort: shutdown must always make progress.
+      }
+      await watcher.close();
+      watcher = null;
+    }
+
     if (lease.acquired) {
       publishSkillGraphGeneration({
         workspaceRoot,
@@ -91,8 +115,6 @@ export async function startSkillGraphDaemon(options: SkillGraphDaemonOptions): P
       });
     }
 
-    await watcher?.close();
-    watcher = null;
     lease.close();
   }
 
