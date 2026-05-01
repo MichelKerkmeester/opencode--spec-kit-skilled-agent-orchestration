@@ -2,10 +2,12 @@
 // MODULE: advisor_validate Handler
 // ───────────────────────────────────────────────────────────────
 
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readFileSync, realpathSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { z } from 'zod';
 
 import { scoreAdvisorPrompt } from '../lib/scorer/fusion.js';
 import { runPromotionLatencyBench } from '../bench/latency-bench.js';
@@ -68,6 +70,34 @@ const HOLDOUT_THRESHOLD = 0.725;
 const PER_SKILL_THRESHOLD = 0.7;
 const UNKNOWN_TARGET_MAX = 10;
 
+// F-005-A5-02: Strict zod schemas for the JSONL fixtures consumed by
+// loadCorpus() and loadRegressionCases(). The shapes match the existing
+// CorpusRow / RegressionCase TS interfaces exactly so this is purely
+// runtime validation — no contract change to downstream consumers.
+// Exported for direct schema-shape testing.
+export const CorpusRowSchema = z.object({
+  id: z.string().min(1),
+  prompt: z.string().min(1),
+  skill_top_1: z.string().min(1),
+}).passthrough();
+
+export const RegressionCaseSchema = z.object({
+  id: z.string().min(1),
+  priority: z.string().optional(),
+  prompt: z.string().min(1),
+  confidence_only: z.boolean().optional(),
+  expect_result: z.boolean(),
+  expected_top_any: z.array(z.string()).optional(),
+  allow_command_bridge: z.boolean().optional(),
+}).passthrough();
+
+// F-005-A5-03: Validate Python parity stdout shape.
+// The Python script returns one entry per input prompt; each entry is
+// either the recommended skill id (string) or null. Schema enforces
+// exact array-of-string-or-null shape; length is validated against the
+// input row count separately at the call site.
+export const PythonTopSkillsSchema = z.array(z.string().nullable());
+
 const VALIDATION_THRESHOLD_SEMANTICS: AdvisorValidateThresholdSemantics = {
   aggregateValidation: {
     fullCorpusTop1: FULL_CORPUS_THRESHOLD,
@@ -113,15 +143,45 @@ function findWorkspaceRoot(start = dirname(fileURLToPath(import.meta.url))): str
   return existsSync(resolve(candidate, sentinel)) ? candidate : process.cwd();
 }
 
+// F-005-A5-01: Canonicalize a caller-supplied workspaceRoot via realpath.
+// The schema-level allowlist refinement runs against the canonical form, so
+// a caller passing /tmp/symlink-to-repo gets the real path post-symlink
+// before downstream code uses it.
+function canonicalizeWorkspaceRoot(input: string): string {
+  const resolved = resolve(input);
+  try {
+    return realpathSync.native(resolved);
+  } catch {
+    return resolved;
+  }
+}
+
 function loadCorpus(workspaceRoot: string): CorpusRow[] {
   const corpusPath = resolve(
     workspaceRoot,
     '.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/routing-accuracy/labeled-prompts.jsonl',
   );
-  return readFileSync(corpusPath, 'utf8')
-    .trim()
-    .split('\n')
-    .map((line) => JSON.parse(line) as CorpusRow);
+  const lines = readFileSync(corpusPath, 'utf8').trim().split('\n');
+  // F-005-A5-02: Validate each JSONL row against CorpusRowSchema with
+  // line-numbered errors so a fixture drift surfaces exactly which row
+  // failed.
+  return lines.map((line, index) => {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(line);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Corpus row ${index + 1}: invalid JSON (${message})`);
+    }
+    const result = CorpusRowSchema.safeParse(parsed);
+    if (!result.success) {
+      const issues = result.error.issues
+        .map((issue) => `${issue.path.join('.') || 'value'}: ${issue.message}`)
+        .join('; ');
+      throw new Error(`Corpus row ${index + 1}: ${issues}`);
+    }
+    return result.data as CorpusRow;
+  });
 }
 
 function loadRegressionCases(workspaceRoot: string): RegressionCase[] {
@@ -129,10 +189,26 @@ function loadRegressionCases(workspaceRoot: string): RegressionCase[] {
     workspaceRoot,
     '.opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl',
   );
-  return readFileSync(fixturePath, 'utf8')
-    .trim()
-    .split('\n')
-    .map((line) => JSON.parse(line) as RegressionCase);
+  const lines = readFileSync(fixturePath, 'utf8').trim().split('\n');
+  // F-005-A5-02: Validate each JSONL row against RegressionCaseSchema with
+  // line-numbered errors.
+  return lines.map((line, index) => {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(line);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      throw new Error(`Regression case row ${index + 1}: invalid JSON (${message})`);
+    }
+    const result = RegressionCaseSchema.safeParse(parsed);
+    if (!result.success) {
+      const issues = result.error.issues
+        .map((issue) => `${issue.path.join('.') || 'value'}: ${issue.message}`)
+        .join('; ');
+      throw new Error(`Regression case row ${index + 1}: ${issues}`);
+    }
+    return result.data as RegressionCase;
+  });
 }
 
 function goldSkill(row: CorpusRow): string | null {
@@ -229,7 +305,28 @@ print(json.dumps(out))
   if (result.status !== 0) {
     throw new Error(`Python parity scorer failed: ${result.stderr || result.stdout}`);
   }
-  return JSON.parse(result.stdout) as Array<string | null>;
+  // F-005-A5-03: Parse stdout via PythonTopSkillsSchema and assert exact
+  // length match against input rows so a schema/length drift surfaces
+  // immediately instead of propagating through the parity loop.
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(result.stdout);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    throw new Error(`Python parity scorer returned invalid JSON: ${message}`);
+  }
+  const validated = PythonTopSkillsSchema.safeParse(parsed);
+  if (!validated.success) {
+    throw new Error(
+      `Python parity scorer returned invalid shape: ${validated.error.issues.map((i) => i.message).join('; ')}`,
+    );
+  }
+  if (validated.data.length !== rows.length) {
+    throw new Error(
+      `Python parity scorer length mismatch: expected ${rows.length}, got ${validated.data.length}`,
+    );
+  }
+  return validated.data;
 }
 
 function parityRegressions(rows: readonly CorpusRow[], workspaceRoot: string): string[] {
@@ -373,7 +470,10 @@ function buildTelemetrySummary(args: AdvisorValidateInput, workspaceRoot: string
 
 export function validateAdvisor(input: AdvisorValidateInput = { confirmHeavyRun: true }): AdvisorValidateOutput {
   const args = AdvisorValidateInputSchema.parse(input);
-  const workspaceRoot = args.workspaceRoot ? resolve(args.workspaceRoot) : findWorkspaceRoot();
+  // F-005-A5-01: Canonicalize via realpath after the schema allowlist check.
+  const workspaceRoot = args.workspaceRoot
+    ? canonicalizeWorkspaceRoot(args.workspaceRoot)
+    : findWorkspaceRoot();
   const selectedSkillSlug = args.skillSlug ?? null;
   for (const outcomeEvent of args.outcomeEvents ?? []) {
     persistAdvisorHookOutcomeRecord(workspaceRoot, createAdvisorHookOutcomeRecord({

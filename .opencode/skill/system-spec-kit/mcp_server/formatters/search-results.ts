@@ -255,6 +255,31 @@ export function safeJsonParse<T>(str: string | null | undefined, fallback: T): T
   }
 }
 
+// F-005-A5-04: Typed parser for the `triggerPhrases` column on raw search
+// results. Replaces the previous `safeJsonParse<string[]>` cast which only
+// validated that the input was JSON and silently accepted non-string
+// elements (numbers, objects, mixed arrays). This validator returns [] on
+// any element-shape failure and preserves the existing fallback semantics.
+// Exported for direct shape-tests.
+export function parseTriggerPhrases(value: unknown): string[] {
+  // Already an array — element-validate.
+  if (Array.isArray(value)) {
+    return value.filter((item): item is string => typeof item === 'string');
+  }
+  // String — JSON-parse then element-validate.
+  if (typeof value === 'string') {
+    try {
+      const parsed = JSON.parse(value) as unknown;
+      if (Array.isArray(parsed)) {
+        return parsed.filter((item): item is string => typeof item === 'string');
+      }
+    } catch {
+      // fall through to []
+    }
+  }
+  return [];
+}
+
 function toNullableNumber(value: unknown): number | null {
   if (typeof value === 'number' && Number.isFinite(value)) return value;
   if (typeof value === 'string' && value.trim().length > 0) {
@@ -804,8 +829,8 @@ export async function formatSearchResults(
       similarity: rawResult.similarity ?? rawResult.averageSimilarity,
       isConstitutional: rawResult.isConstitutional || false,
       importanceTier: rawResult.importance_tier,
-      triggerPhrases: Array.isArray(rawResult.triggerPhrases) ? rawResult.triggerPhrases :
-                      safeJsonParse<string[]>(rawResult.triggerPhrases as string, []),
+      // F-005-A5-04: Use typed validator instead of safeJsonParse cast.
+      triggerPhrases: parseTriggerPhrases(rawResult.triggerPhrases),
       createdAt: rawResult.created_at,
       isChunk: rawResult.isChunk === true,
       parentId: toNullableNumber(rawResult.parentId ?? rawResult.parent_id),

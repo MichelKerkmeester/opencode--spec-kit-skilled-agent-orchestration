@@ -29,6 +29,12 @@ import {
   validateGraphMetadataContent,
 } from '../graph/graph-metadata-parser.js';
 import { GRAPH_METADATA_MIGRATED_QUALITY_FLAG } from '../graph/graph-metadata-schema.js';
+// F-005-A5-05: Reuse the canonical perFolderDescriptionSchema instead of
+// re-implementing per-field defensive coercion inline.
+import {
+  perFolderDescriptionSchema,
+  formatDescriptionSchemaIssues,
+} from '../description/description-schema.js';
 
 export { getCanonicalPathKey };
 
@@ -518,27 +524,45 @@ function parseDescriptionMetadataContent(
     throw new Error(`Invalid description metadata content for ${filePath}: ${message}`);
   }
 
-  const extractedSpecFolder = extractSpecFolder(filePath);
+  // F-005-A5-05: Run the parsed object through perFolderDescriptionSchema.
+  // The schema enforces canonical field shapes (string vs string[]); we
+  // surface a path-aware error message on validation failure so the caller
+  // sees exactly which fixture or stored description.json is malformed.
+  // The downstream return shape is preserved unchanged so memory-parser
+  // callers continue to work.
+  const validation = perFolderDescriptionSchema.safeParse(parsed);
+  if (!validation.success) {
+    const issues = formatDescriptionSchemaIssues(validation.error.issues);
+    throw new Error(
+      `Invalid description metadata in ${filePath}: ${issues.join('; ')}`,
+    );
+  }
 
+  const extractedSpecFolder = extractSpecFolder(filePath);
+  const validated = validation.data;
+
+  // F-005-A5-05: The schema validates field shapes; we keep the existing
+  // trim/normalize semantics here so consumers see the same DescriptionMetadataContent
+  // they did before (trimmed strings, deduped non-empty arrays).
   return {
-    specFolder: typeof parsed.specFolder === 'string' && parsed.specFolder.trim()
-      ? parsed.specFolder.trim()
+    specFolder: typeof validated.specFolder === 'string' && validated.specFolder.trim()
+      ? validated.specFolder.trim()
       : extractedSpecFolder,
-    description: typeof parsed.description === 'string' ? parsed.description.trim() : '',
-    keywords: Array.isArray(parsed.keywords)
-      ? parsed.keywords.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+    description: typeof validated.description === 'string' ? validated.description.trim() : '',
+    keywords: Array.isArray(validated.keywords)
+      ? validated.keywords.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
       : [],
-    lastUpdated: typeof parsed.lastUpdated === 'string' ? parsed.lastUpdated : '',
-    specId: typeof parsed.specId === 'string' ? parsed.specId.trim() : '',
-    folderSlug: typeof parsed.folderSlug === 'string' ? parsed.folderSlug.trim() : '',
-    parentChain: Array.isArray(parsed.parentChain)
-      ? parsed.parentChain.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+    lastUpdated: typeof validated.lastUpdated === 'string' ? validated.lastUpdated : '',
+    specId: typeof validated.specId === 'string' ? validated.specId.trim() : '',
+    folderSlug: typeof validated.folderSlug === 'string' ? validated.folderSlug.trim() : '',
+    parentChain: Array.isArray(validated.parentChain)
+      ? validated.parentChain.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
       : [],
-    memorySequence: typeof parsed.memorySequence === 'number' && Number.isFinite(parsed.memorySequence)
-      ? parsed.memorySequence
+    memorySequence: typeof validated.memorySequence === 'number' && Number.isFinite(validated.memorySequence)
+      ? validated.memorySequence
       : 0,
-    memoryNameHistory: Array.isArray(parsed.memoryNameHistory)
-      ? parsed.memoryNameHistory.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
+    memoryNameHistory: Array.isArray(validated.memoryNameHistory)
+      ? validated.memoryNameHistory.filter((value): value is string => typeof value === 'string').map((value) => value.trim()).filter(Boolean)
       : [],
   };
 }
@@ -878,8 +902,12 @@ export function extractCausalLinks(content: string): CausalLinks {
     related_to: []
   };
 
-  // Find the causal_links block in YAML metadata
-  const causalBlockMatch = content.match(/(?:^|\n)\s*causalLinks:\s*\n((?:\s+[a-z_]+:[\s\S]*?)*)(?=\n[a-z_]+:|\n```|\n---|\n\n|\n#|$)/i);
+  // F-008-B3-01: Accept both `causalLinks:` (camelCase) and `causal_links:`
+  // (snake_case) tokens. Other parts of the parser ecosystem already use
+  // snake_case (e.g. graph-metadata-parser.ts), so the regex is widened to
+  // a single source of truth that matches either form. Behavior is
+  // identical for existing camelCase callers.
+  const causalBlockMatch = content.match(/(?:^|\n)\s*(?:causalLinks|causal_links):\s*\n((?:\s+[a-z_]+:[\s\S]*?)*)(?=\n[a-z_]+:|\n```|\n---|\n\n|\n#|$)/i);
 
   if (!causalBlockMatch) {
     return causalLinks;

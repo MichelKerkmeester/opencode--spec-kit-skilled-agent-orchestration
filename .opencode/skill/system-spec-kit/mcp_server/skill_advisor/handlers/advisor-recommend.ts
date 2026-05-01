@@ -2,6 +2,7 @@
 // MODULE: advisor_recommend Handler
 // ───────────────────────────────────────────────────────────────
 
+import { realpathSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import { advisorPromptCache } from '../lib/prompt-cache.js';
@@ -30,6 +31,19 @@ type ShadowRecommendation = NonNullable<AdvisorRecommendOutput['_shadow']>['reco
 
 function findWorkspaceRoot(start = process.cwd()): string {
   return findAdvisorWorkspaceRoot(start, { maxDepth: 12 });
+}
+
+// F-005-A5-01: Canonicalize a caller-supplied workspaceRoot via realpath.
+// The schema-level allowlist refinement runs against the same canonical
+// form, so a caller passing /tmp/symlink-to-repo gets the real path
+// post-symlink before downstream code uses it.
+function canonicalizeWorkspaceRoot(input: string): string {
+  const resolved = resolve(input);
+  try {
+    return realpathSync.native(resolved);
+  } catch {
+    return resolved;
+  }
 }
 
 function cacheSourceSignature(status: AdvisorStatus): string {
@@ -205,7 +219,10 @@ function roundScore(value: number): number {
 }
 
 function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecommendOutput {
-  const workspaceRoot = input.workspaceRoot ? resolve(input.workspaceRoot) : findWorkspaceRoot();
+  // F-005-A5-01: Canonicalize via realpath after the schema allowlist check.
+  const workspaceRoot = input.workspaceRoot
+    ? canonicalizeWorkspaceRoot(input.workspaceRoot)
+    : findWorkspaceRoot();
   const effectiveThresholds = publicThresholds({
     confidenceThreshold: input.options?.confidenceThreshold,
     uncertaintyThreshold: input.options?.uncertaintyThreshold,
@@ -301,7 +318,10 @@ function computeRecommendationOutput(input: AdvisorRecommendInput): AdvisorRecom
 
 export async function handleAdvisorRecommend(args: unknown): Promise<HandlerResponse> {
   const input = AdvisorRecommendInputSchema.parse(args);
-  const workspaceRoot = input.workspaceRoot ? resolve(input.workspaceRoot) : findWorkspaceRoot();
+  // F-005-A5-01: Canonicalize via realpath after the schema allowlist check.
+  const workspaceRoot = input.workspaceRoot
+    ? canonicalizeWorkspaceRoot(input.workspaceRoot)
+    : findWorkspaceRoot();
   const effectiveThresholds = publicThresholds({
     confidenceThreshold: input.options?.confidenceThreshold,
     uncertaintyThreshold: input.options?.uncertaintyThreshold,

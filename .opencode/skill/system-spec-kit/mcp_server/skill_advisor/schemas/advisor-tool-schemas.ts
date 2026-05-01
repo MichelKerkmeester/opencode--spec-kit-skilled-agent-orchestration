@@ -3,10 +3,114 @@
 // ───────────────────────────────────────────────────────────────
 
 import { z } from 'zod';
+import { existsSync, realpathSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { tmpdir } from 'node:os';
 import { SCORER_LANE_IDS } from '../lib/scorer/lane-registry.js';
 
 export const AdvisorFreshnessSchema = z.enum(['live', 'stale', 'absent', 'unavailable']);
 export const AdvisorLaneSchema = z.enum(SCORER_LANE_IDS);
+
+// F-005-A5-01: Bound caller-supplied workspaceRoot inputs to a small
+// allowlist (repo root + os.tmpdir()) so handlers cannot be coerced into
+// resolving paths outside the workspace. resolve() canonicalizes the input
+// path; realpathSync follows symlinks; the prefix check rejects anything
+// that escapes the allowlist after canonicalization.
+//
+// Repo root is detected by walking up from process.cwd() looking for the
+// .opencode/skill sentinel — same shape as findAdvisorWorkspaceRoot but
+// inlined here to avoid a circular import between schemas/ and lib/.
+function detectRepoRoot(): string {
+  // F-005-A5-01: Use the same SKILL.md sentinel that
+  // findAdvisorWorkspaceRoot uses in advisor-validate.ts so the schema
+  // and the handler agree on which directory is the workspace root.
+  // A bare `.opencode/skill` sentinel can match nested mock directories
+  // created by other workflows (e.g. mcp_server/.opencode/skill).
+  const sentinel = '.opencode/skill/system-spec-kit/SKILL.md';
+  let current = resolve(process.cwd());
+  for (let index = 0; index < 14; index += 1) {
+    if (existsSync(resolve(current, sentinel))) return current;
+    const parent = resolve(current, '..');
+    if (parent === current) break;
+    current = parent;
+  }
+  return resolve(process.cwd());
+}
+
+function canonicalize(input: string): string {
+  const resolved = resolve(input);
+  try {
+    return realpathSync.native(resolved);
+  } catch {
+    // F-005-A5-01: Path may not exist yet (test fixtures created lazily,
+    // tmpdir mkdtemp paths probed before mkdir). Walk up and realpath the
+    // first existing ancestor, then re-join the unresolved tail. This
+    // resolves macOS-style symlinks like /tmp → /private/tmp even when
+    // the leaf doesn't exist.
+    let probe = resolved;
+    let tail = '';
+    for (let depth = 0; depth < 32; depth += 1) {
+      const parent = resolve(probe, '..');
+      if (parent === probe) break;
+      try {
+        const realParent = realpathSync.native(parent);
+        return tail
+          ? resolve(realParent, probe.slice(parent.length + 1) + tail)
+          : resolve(realParent, probe.slice(parent.length + 1));
+      } catch {
+        // Parent doesn't exist either — keep walking up.
+        const segment = probe.slice(parent.length + 1);
+        tail = tail ? `${segment}/${tail}` : segment;
+        probe = parent;
+      }
+    }
+    return resolved;
+  }
+}
+
+const ALLOWED_WORKSPACE_PREFIXES: readonly string[] = (() => {
+  const prefixes: string[] = [];
+  prefixes.push(canonicalize(detectRepoRoot()));
+  prefixes.push(canonicalize(tmpdir()));
+  // F-005-A5-01: Include the canonicalized /tmp prefix as well. On macOS
+  // os.tmpdir() returns the per-user temp dir under /var/folders/...; the
+  // /tmp symlink resolves to /private/tmp. Test fixtures and tools that
+  // hardcode /tmp/foo paths need both forms in the allowlist.
+  prefixes.push(canonicalize('/tmp'));
+  // Accept additional explicit allowlist via env (CI / test runners).
+  const envExtras = process.env.SPECKIT_ADVISOR_WORKSPACE_ALLOWLIST;
+  if (envExtras) {
+    for (const extra of envExtras.split(':')) {
+      const trimmed = extra.trim();
+      if (trimmed) prefixes.push(canonicalize(trimmed));
+    }
+  }
+  return Array.from(new Set(prefixes));
+})();
+
+/**
+ * F-005-A5-01: Validate that a caller-supplied workspaceRoot resolves under
+ * the repo root, os.tmpdir(), or an explicit allowlist entry after
+ * realpath canonicalization.
+ *
+ * Exported so handlers can re-canonicalize at call time and reuse the
+ * same bounding logic the schema applies at parse time.
+ */
+export function isAllowedWorkspaceRoot(input: string): boolean {
+  if (!input || typeof input !== 'string') return false;
+  const canonical = canonicalize(input);
+  return ALLOWED_WORKSPACE_PREFIXES.some(
+    (prefix) => canonical === prefix || canonical.startsWith(`${prefix}/`),
+  );
+}
+
+const BoundedWorkspaceRootSchema = z
+  .string()
+  .min(1)
+  .refine(isAllowedWorkspaceRoot, {
+    message:
+      'workspaceRoot must resolve under the repo root, os.tmpdir(), or an explicit SPECKIT_ADVISOR_WORKSPACE_ALLOWLIST entry',
+  });
 
 const laneBreakdownSchema = z.object({
   lane: AdvisorLaneSchema,
@@ -29,7 +133,8 @@ const laneBreakdownSchema = z.object({
 // Internal callers that need request-local affordance scoring should invoke
 // `scoreAdvisorPrompt` directly with `AdvisorScoringOptions.affordances`.
 export const AdvisorRecommendInputSchema = z.object({
-  workspaceRoot: z.string().min(1).optional(),
+  // F-005-A5-01: workspaceRoot must resolve under the allowed prefix set.
+  workspaceRoot: BoundedWorkspaceRootSchema.optional(),
   prompt: z.string().min(1).max(10_000),
   options: z.object({
     topK: z.number().int().min(1).max(10).optional(),
@@ -90,7 +195,8 @@ export const AdvisorRecommendOutputSchema = z.object({
 }).strict();
 
 export const AdvisorStatusInputSchema = z.object({
-  workspaceRoot: z.string().min(1),
+  // F-005-A5-01: bound workspaceRoot to allowed prefix set.
+  workspaceRoot: BoundedWorkspaceRootSchema,
   maxMetadataFiles: z.number().int().positive().max(10_000).optional(),
 }).strict();
 
@@ -114,7 +220,8 @@ export const AdvisorStatusOutputSchema = z.object({
 
 export const AdvisorRebuildInputSchema = z.object({
   force: z.boolean().optional(),
-  workspaceRoot: z.string().min(1).optional(),
+  // F-005-A5-01: bound workspaceRoot to allowed prefix set.
+  workspaceRoot: BoundedWorkspaceRootSchema.optional(),
 }).strict();
 
 export const AdvisorRebuildOutputSchema = z.object({
@@ -132,7 +239,8 @@ export const AdvisorRebuildOutputSchema = z.object({
 
 export const AdvisorValidateInputSchema = z.object({
   confirmHeavyRun: z.literal(true),
-  workspaceRoot: z.string().min(1).optional(),
+  // F-005-A5-01: bound workspaceRoot to allowed prefix set.
+  workspaceRoot: BoundedWorkspaceRootSchema.optional(),
   skillSlug: z.string().min(1).nullable().optional(),
   outcomeEvents: z.array(z.object({
     runtime: z.enum(['claude', 'gemini', 'copilot', 'codex']),

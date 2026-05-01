@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/004-validation-and-memory",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,215 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 4: validation-and-memory",
+    "trigger_phrases": [
+      "F-005-A5",
+      "F-008-B3",
+      "F-009-B4",
+      "validation and memory remediation",
+      "advisor schema bounding",
+      "causal links parser",
+      "check-spec-doc-integrity",
+      "check-evidence rule",
+      "check-template-headers",
+      "F-005-A5 plan",
+      "F-008-B3 plan",
+      "F-009-B4 plan"
+    ],
+    "key_topics": [
+      "f-005-a5",
+      "f-008-b3",
+      "f-009-b4",
+      "validation",
+      "memory",
+      "remediation",
+      "advisor",
+      "schema",
+      "bounding",
+      "causal",
+      "links",
+      "parser"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+      "mcp_server/skill_advisor/handlers/advisor-validate.ts",
+      "mcp_server/formatters/search-results.ts",
+      "mcp_server/lib/parsing/memory-parser.ts",
+      "lib/description/description-schema.ts",
+      "mcp_server/lib/storage/checkpoints.ts",
+      "mcp_server/handlers/causal-links-processor.ts",
+      "scripts/rules/check-spec-doc-integrity.sh",
+      "scripts/rules/check-evidence.sh",
+      "scripts/lib/check-priority-helper.sh",
+      "scripts/rules/check-template-headers.sh",
+      "mcp_server/skill_advisor/handlers/advisor-recommend.ts",
+      "mcp_server/tests/memory-parser-description-schema.vitest.ts",
+      "mcp_server/tests/memory-parser-causal-links-snake-case.vitest.ts",
+      "mcp_server/tests/causal-links-processor-null-insert.vitest.ts",
+      "mcp_server/tests/checkpoints-restore-snapshot-schema.vitest.ts",
+      "mcp_server/package.json",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "tests/memory-parser-extended.vitest.ts",
+      "skill_advisor/tests/handlers/advisor-validate.vitest.ts"
+    ],
+    "entities": [
+      {
+        "name": "advisor-tool-schemas.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/schemas/advisor-tool-schemas.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-validate.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/handlers/advisor-validate.ts",
+        "source": "derived"
+      },
+      {
+        "name": "search-results.ts",
+        "kind": "code",
+        "path": "mcp_server/formatters/search-results.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/parsing/memory-parser.ts",
+        "source": "derived"
+      },
+      {
+        "name": "description-schema.ts",
+        "kind": "code",
+        "path": "lib/description/description-schema.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints.ts",
+        "kind": "code",
+        "path": "mcp_server/lib/storage/checkpoints.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-links-processor.ts",
+        "kind": "code",
+        "path": "mcp_server/handlers/causal-links-processor.ts",
+        "source": "derived"
+      },
+      {
+        "name": "check-spec-doc-integrity.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-spec-doc-integrity.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-evidence.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-evidence.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-priority-helper.sh",
+        "kind": "script",
+        "path": "scripts/lib/check-priority-helper.sh",
+        "source": "derived"
+      },
+      {
+        "name": "check-template-headers.sh",
+        "kind": "script",
+        "path": "scripts/rules/check-template-headers.sh",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-recommend.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/handlers/advisor-recommend.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser-description-schema.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory-parser-description-schema.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser-causal-links-snake-case.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/memory-parser-causal-links-snake-case.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "causal-links-processor-null-insert.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/causal-links-processor-null-insert.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "checkpoints-restore-snapshot-schema.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/tests/checkpoints-restore-snapshot-schema.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "package.json",
+        "kind": "config",
+        "path": "mcp_server/package.json",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "memory-parser-extended.vitest.ts",
+        "kind": "test",
+        "path": "tests/memory-parser-extended.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-validate.vitest.ts",
+        "kind": "test",
+        "path": "skill_advisor/tests/handlers/advisor-validate.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Validation And Memory Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Thirteen validators and parsers across the advisor, memory, and spec-validation subsystems leak loose-typing, generic-parse, and false-positive bugs identified by packet 046's deep research:",
     "created_at": "2026-05-01T05:18:48Z",
-    "last_save_at": "2026-05-01T05:18:48Z",
+    "last_save_at": "2026-05-01T06:25:04.324Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

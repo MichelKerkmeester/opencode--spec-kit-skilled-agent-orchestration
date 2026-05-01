@@ -402,9 +402,32 @@ function processCausalLinks(database: BetterSqlite3.Database, memoryId: number, 
       const edgeTargetId = mapping.reverse ? memoryIdStr : String(resolvedId);
 
       try {
-        causalEdges.insertEdge(edgeSourceId, edgeTargetId, mapping.relation, 1.0, `Auto-extracted from ${link_type} in memory file`);
-        result.inserted++;
-        console.error(`[causal-links] Inserted edge: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
+        // F-008-B3-02: causalEdges.insertEdge returns `number | null`. The
+        // null path covers: database not initialized, self-loop rejected,
+        // edge bounds exceeded, contradiction detected, non-finite strength
+        // clamp. Previously the count incremented unconditionally, masking
+        // these skip reasons. We now gate on a real (non-null) return id
+        // and record the skip reason in `result.errors` when null is
+        // returned so downstream callers see exactly what was dropped.
+        const insertedRowId = causalEdges.insertEdge(
+          edgeSourceId,
+          edgeTargetId,
+          mapping.relation,
+          1.0,
+          `Auto-extracted from ${link_type} in memory file`,
+        );
+        if (insertedRowId !== null) {
+          result.inserted++;
+          console.error(`[causal-links] Inserted edge id=${insertedRowId}: ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
+        } else {
+          // F-008-B3-02: surface skipped reasons rather than masking them.
+          result.errors.push({
+            type: link_type,
+            reference,
+            error: 'edge insert returned null (db not ready, self-loop, edge cap, or contradiction)',
+          });
+          console.warn(`[causal-links] Edge insert returned null (skipped): ${edgeSourceId} -[${mapping.relation}]-> ${edgeTargetId}`);
+        }
       } catch (err: unknown) {
         const message = toErrorMessage(err);
         if (message.includes('UNIQUE constraint')) {

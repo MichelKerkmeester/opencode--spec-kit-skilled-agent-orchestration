@@ -56,12 +56,52 @@ resolve_markdown_reference_path() {
 }
 
 extract_markdown_link_targets() {
+    # F-009-B4-01: Markdown link extraction now covers four formats:
+    #
+    #   1. Inline parens:        [label](path.md)         [label](path.md#anchor)
+    #   2. Angle-bracket inline: [label](<path.md>)        — relative paths only
+    #                            [label](<path.md#anchor>)   (skip absolute URLs)
+    #   3. Reference definition: [label]: ./path.md          — at line start
+    #   4. (shortcut/full reference USE like [label][ref] is NOT a target;
+    #      the target lives in the matching reference definition (format 3))
+    #
+    # Absolute URL forms (`https://`, `http://`, `mailto:`) are excluded —
+    # they are not local files and the missing-file probe doesn't apply.
+    # The awk fence-skip passes through every non-fenced line; the parsing
+    # is then done line-by-line by mode.
     awk '
+        BEGIN { in_fence = 0 }
         /^[[:space:]]*(```|~~~)/ { in_fence = !in_fence; next }
         in_fence { next }
-        { print }
-    ' "$1" | grep -oE '\[[^]]+\]\([^)]+\.md([^)]*)?\)' 2>/dev/null \
-        | sed -E 's/^[^)]*\(([^)#?]+\.md)([#?][^)]*)?\)$/\1/' || true
+
+        # Format 3: Reference definition  [label]: ./path.md  (line start, optional title in quotes)
+        # Captures the target up to the first whitespace.
+        match($0, /^[[:space:]]*\[[^]]+\][[:space:]]*:[[:space:]]*[^[:space:]>]+\.md([#?][^[:space:]]*)?/) {
+            ref = substr($0, RSTART, RLENGTH)
+            sub(/^[[:space:]]*\[[^]]+\][[:space:]]*:[[:space:]]*/, "", ref)
+            sub(/[#?].*$/, "", ref)
+            # Skip absolute URLs.
+            if (ref !~ /^(https?:|mailto:)/) print ref
+        }
+
+        # Format 1+2: extract every inline link [label](target) and [label](<target>) on the line.
+        {
+            line = $0
+            while (match(line, /\[[^]]+\]\(<?[^)>]+\.md([^)>]*)?>?\)/)) {
+                token = substr(line, RSTART, RLENGTH)
+                line = substr(line, RSTART + RLENGTH)
+                # Strip the [label]( prefix and trailing ).
+                sub(/^\[[^]]+\]\(/, "", token)
+                sub(/\)$/, "", token)
+                # Strip optional <...> angle brackets.
+                sub(/^</, "", token)
+                sub(/>$/, "", token)
+                # Strip anchor / query fragment.
+                sub(/[#?].*$/, "", token)
+                if (token !~ /^(https?:|mailto:)/ && token != "") print token
+            }
+        }
+    ' "$1" 2>/dev/null || true
 }
 
 run_check() {

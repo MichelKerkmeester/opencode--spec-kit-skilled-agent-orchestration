@@ -9,6 +9,7 @@ import * as zlib from 'zlib';
 
 // External packages
 import type Database from 'better-sqlite3';
+import { z } from 'zod';
 
 // Internal utils
 import { toErrorMessage } from '../../utils/db-helpers.js';
@@ -245,6 +246,37 @@ interface CheckpointSnapshot {
   causalEdges?: Array<Record<string, unknown>>;
   timestamp: string;
 }
+
+// F-005-A5-06: Validate the decompressed checkpoint snapshot before
+// restore. Previously the gzipped blob was JSON.parsed and cast directly
+// to CheckpointSnapshot — malformed memory_index rows propagated through
+// `getMemoryIds()` and the INSERT loops. This schema validates the
+// outer envelope and the array shapes; individual row shapes are still
+// permissive (sqlite columns evolve over time) but each row must be a
+// non-null object so downstream column extraction doesn't NPE.
+const CheckpointTableSnapshotSchema = z.object({
+  columns: z.array(z.string()),
+  rows: z.array(z.record(z.string(), z.unknown())),
+});
+
+const CheckpointVectorRowSchema = z.object({
+  rowid: z.number(),
+  embedding: z.unknown(), // Buffer or null — preserved as-is
+});
+
+const CheckpointSnapshotSchema = z.object({
+  manifest: z.object({
+    snapshot: z.array(z.string()),
+    rebuild: z.array(z.string()),
+    skip: z.array(z.string()),
+  }).optional(),
+  tables: z.record(z.string(), CheckpointTableSnapshotSchema).optional(),
+  memories: z.array(z.record(z.string(), z.unknown())),
+  workingMemory: z.array(z.record(z.string(), z.unknown())),
+  vectors: z.array(CheckpointVectorRowSchema).optional(),
+  causalEdges: z.array(z.record(z.string(), z.unknown())).optional(),
+  timestamp: z.string(),
+}).passthrough();
 
 interface RestoreBarrierStatus {
   code: string;
@@ -1567,7 +1599,29 @@ function restoreCheckpoint(
 
     // Decompress snapshot
     const decompressed = zlib.gunzipSync(checkpoint.memory_snapshot);
-    const snapshot = JSON.parse(decompressed.toString()) as CheckpointSnapshot;
+    let parsedSnapshot: unknown;
+    try {
+      parsedSnapshot = JSON.parse(decompressed.toString());
+    } catch (parseError: unknown) {
+      const message = parseError instanceof Error ? parseError.message : String(parseError);
+      result.errors.push(`Invalid snapshot JSON: ${message}`);
+      return result;
+    }
+
+    // F-005-A5-06: Validate the snapshot envelope against
+    // CheckpointSnapshotSchema before restore. Failures route into
+    // `result.errors` as a single `Malformed snapshot row N: <reason>`
+    // entry per failing path so callers see exactly which structural
+    // expectation was violated instead of inheriting a runtime cast bug.
+    const snapshotValidation = CheckpointSnapshotSchema.safeParse(parsedSnapshot);
+    if (!snapshotValidation.success) {
+      for (const issue of snapshotValidation.error.issues) {
+        const pathStr = issue.path.length > 0 ? issue.path.join('.') : 'root';
+        result.errors.push(`Malformed snapshot row ${pathStr}: ${issue.message}`);
+      }
+      return result;
+    }
+    const snapshot = snapshotValidation.data as CheckpointSnapshot;
     const tableSnapshots = getSnapshotTables(snapshot);
     const memorySnapshot = tableSnapshots.memory_index;
     const memoryRows = memorySnapshot?.rows ?? snapshot.memories;
@@ -1898,6 +1952,8 @@ export {
   deleteCheckpoint,
   RESTORE_IN_PROGRESS_ERROR_CODE,
   RESTORE_IN_PROGRESS_ERROR_MESSAGE,
+  // F-005-A5-06: snapshot schema exposed for direct shape testing.
+  CheckpointSnapshotSchema,
 };
 
 /**
