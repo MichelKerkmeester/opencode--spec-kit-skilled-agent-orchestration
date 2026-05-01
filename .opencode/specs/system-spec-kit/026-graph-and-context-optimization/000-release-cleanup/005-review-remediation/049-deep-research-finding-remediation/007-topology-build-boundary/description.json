@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/007-topology-build-boundary",
+  "description": "Phase 7: topology-build-boundary",
+  "keywords": [
+    "phase",
+    "topology-build-boundary"
+  ],
+  "lastUpdated": "2026-05-01T05:18:48.642Z",
+  "specId": "007",
+  "folderSlug": "topology-build-boundary",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

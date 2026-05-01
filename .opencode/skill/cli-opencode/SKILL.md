@@ -291,18 +291,23 @@ The calling AI is the conductor. OpenCode distinguishes **primary agents** (dire
 
 #### Subagents — dispatched as Task subagents from a primary
 
-These live at `.opencode/agent/<slug>.md` with `mode: subagent` and are NOT directly invokable via `opencode run --agent`. They are dispatched from a primary agent (e.g., `orchestrate`) using the Task tool. To exercise their behavior via opencode CLI, route through `--agent orchestrate` and let it dispatch the relevant subagent.
+<!-- F-007-B2-01: clarified single-hop dispatch contract; deep-research/deep-review/improve-* are command-only -->
 
-| Task type | Subagent | Routed-via primary |
-|-----------|----------|---------------------|
+These live at `.opencode/agent/<slug>.md` with `mode: subagent` and are NOT directly invokable via `opencode run --agent`. Two dispatch surfaces are legal under the single-hop NDP contract:
+
+1. **Generic subagents** (`context`, `review`, `write`, `debug`) — dispatched by a primary (`orchestrate`) using the Task tool. To exercise via the opencode CLI, route through `--agent orchestrate` and let it dispatch the relevant subagent.
+2. **Command-owned loop executors** (`deep-research`, `deep-review`, `improve-agent`, `improve-prompt`) — dispatched ONLY by their parent commands (`/spec_kit:deep-research`, `/spec_kit:deep-review`, `/improve:agent`, `/improve:prompt`). Never dispatch these directly via `--agent <slug>` and never route them through `orchestrate`. The parent command owns iteration state, convergence detection, and continuity.
+
+| Task type | Subagent | Legal dispatch surface |
+|-----------|----------|------------------------|
 | Codebase exploration | `context` | `--agent orchestrate "Use the context subagent to map src/"` |
 | Code review | `review` | `--agent orchestrate "Use the review subagent on @src/auth.ts"` |
 | Documentation | `write` | `--agent orchestrate "Use the write subagent to generate README"` |
 | Fresh-perspective debugging | `debug` | `--agent orchestrate "Hand off via the debug subagent"` |
-| Iterative deep research | `deep-research` | `--agent orchestrate "Dispatch the deep-research subagent loop"` |
-| Iterative code review | `deep-review` | `--agent orchestrate "Dispatch the deep-review subagent loop"` |
-| Agent self-improvement | `improve-agent` | `--agent orchestrate "Use the improve-agent subagent"` |
-| Prompt engineering | `improve-prompt` | `--agent orchestrate "Use the improve-prompt subagent"` |
+| Iterative deep research | `deep-research` | `/spec_kit:deep-research` (parent command only) |
+| Iterative code review | `deep-review` | `/spec_kit:deep-review` (parent command only) |
+| Agent self-improvement | `improve-agent` | `/improve:agent` (parent command only) |
+| Prompt engineering | `improve-prompt` | `/improve:prompt` (parent command only) |
 
 See [agent_delegation.md](./references/agent_delegation.md) for the complete agent roster and dispatch patterns.
 

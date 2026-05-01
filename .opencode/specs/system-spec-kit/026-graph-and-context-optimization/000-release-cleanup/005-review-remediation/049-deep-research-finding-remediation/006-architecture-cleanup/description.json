@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/006-architecture-cleanup",
+  "description": "Phase 6: architecture-cleanup",
+  "keywords": [
+    "phase",
+    "architecture-cleanup"
+  ],
+  "lastUpdated": "2026-05-01T05:18:48.482Z",
+  "specId": "006",
+  "folderSlug": "architecture-cleanup",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

@@ -277,10 +277,18 @@ Copilot CLI supports 6 recommended models across 3 providers. **`gpt-5.4` is the
 | Claude models | low, medium, high | high |
 | Gemini models | low, medium, high | medium |
 
-**Setting reasoning effort**: copilot 1.0.36+ exposes `--effort` / `--reasoning-effort` as a CLI flag (preferred for scripted `-p` usage). For persistent default, edit `~/.copilot/config.json` (`"reasoning_effort": "xhigh"`) — also writable via the interactive `/model` flow. CLI flag takes precedence over config file when both are present.
+**Setting reasoning effort** <!-- F-007-B2-03: aligned example with stated precedence -->: copilot 1.0.36+ exposes `--effort` / `--reasoning-effort` as a CLI flag (preferred for scripted `-p` usage). For persistent default, edit `~/.copilot/config.json` (`"reasoning_effort": "xhigh"`) — also writable via the interactive `/model` flow. **CLI flag takes precedence over config file when both are present.**
+
+Two equivalent surfaces — pick one:
 
 ```bash
-# Step 1: Set reasoning effort in config (one-time)
+# Surface 1 (preferred for scripted use): CLI flag — no config edit needed
+copilot -p "prompt" --model gpt-5.4 --reasoning-effort xhigh --allow-all-tools 2>&1
+```
+
+```bash
+# Surface 2 (one-time default, no per-invocation flag):
+# Step 1: Set reasoning effort in config
 python3 -c "
 import json
 cfg_path = '$HOME/.copilot/config.json'
@@ -289,11 +297,11 @@ cfg['reasoning_effort'] = 'xhigh'
 with open(cfg_path, 'w') as f: json.dump(cfg, f, indent=2)
 "
 
-# Step 2: Invoke with model (reasoning_effort is read from config)
+# Step 2: Invoke (reasoning_effort is read from config)
 copilot -p "prompt" --model gpt-5.4 --allow-all-tools 2>&1
 ```
 
-Internally, Copilot reads `reasoning_effort` from `~/.copilot/config.json`, validates it against the model's supported levels, and passes it as `reasoning_effort` in the OpenAI API request body. Invalid values fall back to the model's default.
+Internally, Copilot resolves precedence as: CLI flag > config file > model default. Invalid values fall back to the model's default. The CLI flag is preferred for scripted `-p` usage because it is explicit at the call site and survives config rotation.
 
 ### Copilot CLI Agent Delegation
 

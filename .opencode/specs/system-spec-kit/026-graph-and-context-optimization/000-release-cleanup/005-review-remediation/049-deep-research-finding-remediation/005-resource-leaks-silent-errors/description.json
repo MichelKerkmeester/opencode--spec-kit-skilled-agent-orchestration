@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/005-resource-leaks-silent-errors",
+  "description": "Phase 5: resource-leaks-silent-errors",
+  "keywords": [
+    "phase",
+    "resource-leaks-silent-errors"
+  ],
+  "lastUpdated": "2026-05-01T05:18:48.334Z",
+  "specId": "005",
+  "folderSlug": "resource-leaks-silent-errors",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

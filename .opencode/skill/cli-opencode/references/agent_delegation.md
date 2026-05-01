@@ -221,10 +221,10 @@ Pick the agent that matches the task type. Default to `general` when no speciali
 | Documentation generation | `write` | `opencode run --agent write --variant high --format json --dir /repo "Generate README for the cli-opencode skill"` |
 | Code review | `review` | `opencode run --agent review --variant high --format json --dir /repo "Review @src/auth.ts for security issues"` |
 | Root cause debugging | `debug` | `opencode run --agent debug --variant high --format json --dir /repo "Debug this error: <error>"` |
-| Iterative research loop | `deep-research` | `opencode run --agent deep-research --variant high --format json --dir /repo "Run iteration 3 of the deep-research loop for the approved spec folder. State at scratch/iteration-3.jsonl."` |
-| Iterative code review loop | `deep-review` | `opencode run --agent deep-review --variant high --format json --dir /repo "Run iteration 5 of the deep-review loop for the approved spec folder. State at review/deep-review-state.jsonl."` |
+| Iterative research loop | `deep-research` | **Command-only.** Dispatch via `/spec_kit:deep-research` (or `/spec_kit:deep-research:auto`). Direct `opencode run --agent deep-research` is forbidden; the parent command owns iteration state, JSONL, and convergence. <!-- F-007-B2-02 --> |
+| Iterative code review loop | `deep-review` | **Command-only.** Dispatch via `/spec_kit:deep-review` (or `/spec_kit:deep-review:auto`). Direct `opencode run --agent deep-review` is forbidden; the parent command owns iteration state and severity-weighted convergence. <!-- F-007-B2-02 --> |
 | Multi-strategy planning | `ultra-think` | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan the authentication redesign — compare three strategies."` |
-| Agent improvement | `improve-agent` | `opencode run --agent improve-agent --variant high --format json --dir /repo "Evaluate the @debug agent on 5 dimensions. Propose improvements."` |
+| Agent improvement | `improve-agent` | **Command-only.** Dispatch via `/improve:agent`. Direct `opencode run --agent improve-agent` is forbidden; the parent command owns evaluation, candidates, and promotion. <!-- F-007-B2-02 --> |
 | Default / unspecified | `general` | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
 
 ## 5. THE `As @<agent>` PROMPT-TIME PATTERN

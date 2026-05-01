@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/001-code-graph-consistency",
+  "description": "Phase 1: code-graph-consistency",
+  "keywords": [
+    "phase",
+    "code-graph-consistency"
+  ],
+  "lastUpdated": "2026-05-01T05:18:47.728Z",
+  "specId": "001",
+  "folderSlug": "code-graph-consistency",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

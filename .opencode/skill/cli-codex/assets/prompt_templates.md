@@ -28,13 +28,13 @@ This asset provides structured, copy-paste ready prompt templates for invoking C
 
 | Flag                           | Purpose                                                                             |
 | ------------------------------ | ----------------------------------------------------------------------------------- |
-| `--model gpt-5.5`              | Skill model — used for every delegation (code generation, review, architecture, research) |
-| `-c model_reasoning_effort="<level>"` | Reasoning effort: `none`, `minimal`, `low`, `medium` (default), `high`, `xhigh` |
-| `-c service_tier="fast"`        | Fast service tier — always pass explicitly for reproducible delegation              |
+| `--model gpt-5.5`              | Skill model — used for every delegation (code generation, review, architecture, research). Required pin. |
+| `-c model_reasoning_effort="high"` | Reasoning effort. **Required pin for templates** (`high` is the skill default). Levels: `none`, `minimal`, `low`, `medium` (default), `high`, `xhigh`. |
+| `-c service_tier="fast"`        | Fast service tier — **opt-in only**. Project memory rule: never pass by default; pass explicitly per invocation when fast tier is intentional. <!-- F-007-B2-04 --> |
 | `--sandbox read-only`          | Safe mode: read files, no writes or shell commands                                  |
 | `--sandbox workspace-write`    | Allow file writes and build commands within workspace                               |
 | `--sandbox danger-full-access` | Full shell access — **requires explicit user approval**                             |
-| `--full-auto`                  | Low-friction mode (auto-approves all actions) — **requires explicit user approval** |
+| `--full-auto`                  | Equivalent to `--ask-for-approval never --sandbox workspace-write`. Non-interactive auto-approval mode for `codex exec`. <!-- F-007-B2-04: corrected description --> |
 | `--search`                     | Enable live web browsing during execution                                           |
 | `-i` / `--image`               | Attach an image file as visual input                                                |
 | `@./path`                      | Include file content in prompt                                                      |
@@ -51,14 +51,15 @@ Generate a complete single-file application from a description.
 
 ```bash
 codex exec "Create a [description] application in [language]. Requirements: [requirements]. Output a single complete file with all imports, error handling, and comments. Start immediately." \
-  --model gpt-5.5 --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox workspace-write
 ```
+<!-- F-007-B2-04: pinned model/effort; service_tier omitted per project policy (never default to fast) -->
 
 **Example:**
 
 ```bash
 codex exec "Create a REST API server application in TypeScript. Requirements: Express framework, CRUD endpoints for a 'tasks' resource, input validation with Zod, error middleware, health check endpoint. Output a single complete file with all imports, error handling, and comments. Start immediately." \
-  --model gpt-5.5 --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox workspace-write
 ```
 
 ### Multi-File Project
@@ -69,8 +70,10 @@ Generate a multi-file project structure with coordinated files.
 
 ```bash
 codex exec "Create a [description] project in [language] with the following structure: [features]. Generate all files including entry point, modules, configuration, and package manifest. Write files to [directory]. Start immediately." \
-  --model gpt-5.5 --sandbox workspace-write
+  --model gpt-5.5 -c model_reasoning_effort="high" --sandbox workspace-write
 ```
+<!-- F-007-B2-04: pinned model/effort -->
+
 
 **Example:**
 

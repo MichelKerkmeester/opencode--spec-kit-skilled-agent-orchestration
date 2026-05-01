@@ -51,14 +51,15 @@ Generate a complete single-file component or module.
 
 ```bash
 claude -p "Create a [language] [type] for [description]. Requirements: [requirements]. Follow the patterns in @./[reference-file]. Output complete code with imports, types, error handling." \
-  --output-format text 2>&1
+  --model claude-sonnet-4-6 --output-format text 2>&1
 ```
+<!-- F-007-B2-05: pinned default model -->
 
 **Example:**
 
 ```bash
 claude -p "Create a TypeScript middleware for rate limiting. Requirements: sliding window algorithm, per-user limits, Redis-backed storage, configurable thresholds. Follow the patterns in @./src/middleware/auth.ts. Output complete code with imports, types, error handling." \
-  --output-format text 2>&1
+  --model claude-sonnet-4-6 --output-format text 2>&1
 ```
 
 ### Multi-File Feature

@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/002-deep-loop-workflow-state",
+  "description": "Phase 2: deep-loop-workflow-state",
+  "keywords": [
+    "phase",
+    "deep-loop-workflow-state"
+  ],
+  "lastUpdated": "2026-05-01T05:18:47.890Z",
+  "specId": "002",
+  "folderSlug": "deep-loop-workflow-state",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

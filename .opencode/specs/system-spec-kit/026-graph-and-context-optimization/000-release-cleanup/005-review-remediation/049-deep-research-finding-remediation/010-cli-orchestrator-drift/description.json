@@ -1,0 +1,16 @@
+{
+  "specFolder": "049-deep-research-finding-remediation/010-cli-orchestrator-drift",
+  "description": "Phase 10: cli-orchestrator-drift",
+  "keywords": [
+    "phase",
+    "cli-orchestrator-drift"
+  ],
+  "lastUpdated": "2026-05-01T05:18:49.104Z",
+  "specId": "010",
+  "folderSlug": "cli-orchestrator-drift",
+  "parentChain": [
+    "049-deep-research-finding-remediation"
+  ],
+  "memorySequence": 0,
+  "memoryNameHistory": []
+}

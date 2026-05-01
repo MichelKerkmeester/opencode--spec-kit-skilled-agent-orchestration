@@ -42,14 +42,26 @@ Framework: RCAF
 
 Generate a complete single-file application from a description.
 
+<!-- F-007-B2-06: split safe vs explicitly-approved write templates -->
+
+**Safe (default) — interactive approval per write:**
+
 ```bash
+gemini "Create a [description] application in [language]. Requirements: [requirements]. Output a single complete file with all imports, error handling, and comments. Start immediately." --approval-mode interactive -o text
+```
+
+**Approved-write only (caller has confirmed sandbox/path safety):**
+
+```bash
+# REQUIRES: caller has explicitly approved auto-write to a known-safe sandbox/workspace path.
+# DO NOT use --yolo without that approval. --yolo bypasses per-write confirmation.
 gemini "Create a [description] application in [language]. Requirements: [requirements]. Output a single complete file with all imports, error handling, and comments. Start immediately." --yolo -o text
 ```
 
-**Example:**
+**Example (safe surface):**
 
 ```bash
-gemini "Create a REST API server application in TypeScript. Requirements: Express framework, CRUD endpoints for a 'tasks' resource, input validation with Zod, error middleware, health check endpoint. Output a single complete file with all imports, error handling, and comments. Start immediately." --yolo -o text
+gemini "Create a REST API server application in TypeScript. Requirements: Express framework, CRUD endpoints for a 'tasks' resource, input validation with Zod, error middleware, health check endpoint. Output a single complete file with all imports, error handling, and comments. Start immediately." --approval-mode interactive -o text
 ```
 
 ### Multi-File Project
