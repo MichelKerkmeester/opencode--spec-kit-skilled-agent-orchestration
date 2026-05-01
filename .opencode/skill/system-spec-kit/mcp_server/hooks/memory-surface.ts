@@ -13,7 +13,11 @@ import * as workingMemory from '../lib/cognitive/working-memory.js';
 import { buildStructuralBootstrapContract } from '../lib/session/session-snapshot.js';
 
 import type { Database } from '@spec-kit/shared/types';
-import type { StructuralBootstrapContract } from '../lib/session/session-snapshot.js';
+// F-017-D2-01: Import the type from the neutral seam module instead of from
+// session-snapshot (which itself transitively imports this file's value-level
+// helpers `isSessionPrimed` and `getLastActiveSessionId`). The type-only
+// import via the seam breaks the value-level cycle.
+import type { StructuralBootstrapContract } from '../lib/session/structural-bootstrap-contract.js';
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES

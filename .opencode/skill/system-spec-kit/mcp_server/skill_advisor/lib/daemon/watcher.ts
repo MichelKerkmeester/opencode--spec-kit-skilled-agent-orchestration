@@ -9,10 +9,17 @@ import chokidar from 'chokidar';
 import { indexSkillMetadata } from '../../../lib/skill-graph/skill-graph-db.js';
 import { runDaemonStateMutation } from './state-mutation.js';
 import { workspaceRelativeFilePath } from '../derived/provenance.js';
-import { computeAdvisorSourceSignature } from '../freshness.js';
-import { publishSkillGraphGeneration } from '../freshness/generation.js';
 import { errorMessage } from '../utils/error-format.js';
 import { findAdvisorWorkspaceRoot } from '../utils/workspace-root.js';
+// F-016-D1-06: per-skill reindex/generation orchestration is extracted into
+// a separate module so this file owns *watching* (chokidar wiring, debounce,
+// target discovery) while the orchestrator owns *processing* (hash
+// bookkeeping, generation publication, busy-retry). External API is
+// unchanged: every public symbol still exports from this path.
+import {
+  createWatcherOrchestrator,
+  type PendingSkill,
+} from './watcher-orchestrator.js';
 
 export interface WatchTarget {
   readonly path: string;
@@ -86,11 +93,10 @@ export interface SkillGraphWatcher {
   close: () => Promise<void>;
 }
 
-interface PendingSkill {
-  readonly skillSlug: string;
-  readonly skillDir: string;
-  readonly changedPaths: Set<string>;
-}
+// F-016-D1-06: PendingSkill is defined in watcher-orchestrator.ts (single
+// source of truth for the orchestrator contract) and imported as a type at
+// the top of this file. Local code references PendingSkill identically to
+// the previous module-private interface.
 
 const SKILL_MD = 'SKILL.md';
 const GRAPH_METADATA = 'graph-metadata.json';
@@ -392,8 +398,6 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
   let debounceTimer: NodeJS.Timeout | null = null;
   let circuitOpenUntil = 0;
   let closed = false;
-  let suppressGenerationPublication = false;
-  let lastReindexAt: string | null = null;
   // Serialization primitive for F-001-A1-01: only one flush drain runs at a
   // time, regardless of how many timers or close() calls fire concurrently.
   // Events queued while a flush is running are picked up by the same drain
@@ -402,6 +406,14 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
 
   const defaultReindex = async (): Promise<ReindexResult> => indexSkillMetadata(skillsRoot);
   const reindexSkill = options.reindexSkill ?? defaultReindex;
+
+  // F-016-D1-06: orchestrator owns per-skill processing (hash bookkeeping,
+  // generation publication, busy-retry). The factory is forward-declared and
+  // wired up below `refreshTargets` so the orchestrator can call into the
+  // refresh hook without a circular reference. Using a `let` lets us declare
+  // it now and assign after the helpers are in scope.
+  // eslint-disable-next-line prefer-const
+  let orchestrator: ReturnType<typeof createWatcherOrchestrator>;
 
   // F-003-A3-01: target refresh previously only added new paths; removed paths
   // stayed under chokidar's watch forever, leaking listeners + per-path file
@@ -479,60 +491,29 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
     }, delay);
   }
 
-  async function processSkill(request: PendingSkill): Promise<void> {
-    const skillMdPath = join(request.skillDir, SKILL_MD);
-    if (!hasValidSkillMarkdown(skillMdPath)) {
-      quarantineSkill(workspaceRoot, request.skillSlug, skillMdPath, 'MALFORMED_SKILL_MD', options.quarantineDbPath);
-      // F-003-A3-02: counter key 'QUARANTINED' tracks total quarantine events
-      // even after the ring buffer drops the per-skill string entries.
-      pushDiagnostic(`QUARANTINED:${request.skillSlug}`);
-      return;
-    }
-    recoverQuarantinedSkill(workspaceRoot, request.skillSlug, options.quarantineDbPath);
-
-    const changedPaths = [...request.changedPaths];
-    const missingChangedPaths = changedPaths.filter((changedPath) => !existsSync(changedPath));
-    const changedHashInputs = changedPaths
-      .map((changedPath) => [changedPath, hashFile(changedPath)] as const)
-      .filter(([, hash]) => hash !== null);
-    if (changedHashInputs.length === 0 && missingChangedPaths.length === 0) {
-      return;
-    }
-    const unchanged = missingChangedPaths.length === 0
-      && changedHashInputs.every(([changedPath, hash]) => fileHashes.get(changedPath) === hash);
-    if (unchanged) {
-      return;
-    }
-
-    await runWithBusyRetry(async () => {
-      await reindexSkill({
-        skillSlug: request.skillSlug,
-        skillDir: request.skillDir,
-        changedPaths,
-      });
-    }, busyRetryDelaysMs);
-
-    for (const [changedPath, hash] of changedHashInputs) {
-      if (hash) fileHashes.set(changedPath, hash);
-    }
-    for (const changedPath of missingChangedPaths) {
-      fileHashes.delete(changedPath);
-    }
-    // F-001-A1-02: shutdown() may have flipped suppression on while this flush
-    // was already running. Skip the live-state publication so the daemon does
-    // not overwrite the terminal `unavailable` generation.
-    if (!suppressGenerationPublication) {
-      publishSkillGraphGeneration({
-        workspaceRoot,
-        changedPaths,
-        reason: options.generationReason ?? 'skill-graph-daemon-reindex',
-        state: 'live',
-        sourceSignature: computeAdvisorSourceSignature(workspaceRoot),
-      });
-    }
-    lastReindexAt = new Date().toISOString();
-    refreshTargets();
-  }
+  // F-016-D1-06: per-skill processing now lives in WatcherOrchestrator.
+  // The orchestrator is parameterized with this watcher's closures so it
+  // can hash files, quarantine malformed markdown, and refresh targets
+  // identically to the previous inline implementation. External behavior
+  // is unchanged.
+  orchestrator = createWatcherOrchestrator({
+    workspaceRoot,
+    skillsRoot,
+    generationReason: options.generationReason,
+    busyRetryDelaysMs,
+    hashFile,
+    hasValidSkillMarkdown,
+    quarantineSkill: (skillSlug, filePath, reason) =>
+      quarantineSkill(workspaceRoot, skillSlug, filePath, reason, options.quarantineDbPath),
+    recoverQuarantinedSkill: (skillSlug) =>
+      recoverQuarantinedSkill(workspaceRoot, skillSlug, options.quarantineDbPath),
+    reindexSkill,
+    runWithBusyRetry,
+    refreshTargets,
+    pushDiagnostic,
+    fileHashes,
+    skillMdFilename: SKILL_MD,
+  });
 
   // F-001-A1-01: serialized drain. Only one drainPending() runs at a time,
   // tracked via flushPromise. Concurrent triggers (debounce timer + close()
@@ -555,7 +536,9 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
       pending.clear();
       for (const request of batch) {
         try {
-          await processSkill(request);
+          // F-016-D1-06: delegate to orchestrator; behavior identical to
+          // the previous inline processSkill() call.
+          await orchestrator.processSkill(request);
         } catch (error: unknown) {
           const code = error instanceof Error && 'code' in error ? (error as NodeJS.ErrnoException).code : null;
           if (code === 'ENOENT') {
@@ -606,7 +589,9 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
         pendingEvents: [...pending.values()].reduce((total, item) => total + item.changedPaths.size, 0),
         circuitOpen: now() < circuitOpenUntil,
         quarantinedSkills: countActiveQuarantines(workspaceRoot, options.quarantineDbPath),
-        lastReindexAt,
+        // F-016-D1-06: lastReindexAt is owned by the orchestrator now; the
+        // public status() shape is unchanged.
+        lastReindexAt: orchestrator.getLastReindexAt(),
         diagnostics: diagnosticLines,
       };
     },
@@ -615,8 +600,10 @@ export function createSkillGraphWatcher(options: SkillGraphWatcherOptions): Skil
     // tearing the watcher down, so any queued processSkill() that runs during
     // close()/flushPending() will not write a 'live' generation that would
     // overwrite the terminal 'unavailable' state.
+    // F-016-D1-06: routed through the orchestrator so the suppression flag
+    // is read by whichever module owns publishSkillGraphGeneration().
     suppressGenerationPublication: (value: boolean) => {
-      suppressGenerationPublication = value;
+      orchestrator.setSuppressGenerationPublication(value);
     },
     // F-001-A1-01: public drain hook. Lifecycle.ts uses this to quiesce the
     // queue before publishing the final terminal state.

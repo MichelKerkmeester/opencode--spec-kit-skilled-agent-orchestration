@@ -6,13 +6,11 @@ import type Database from 'better-sqlite3';
 
 import { isCommunitySummariesEnabled } from '../search/search-flags.js';
 import { getCommunities, storeCommunities } from './community-storage.js';
-
-export interface CommunityResult {
-  communityId: number;
-  memberIds: number[];
-  size: number;
-  density: number;
-}
+// F-017-D2-02: CommunityResult now lives in the neutral types seam so the
+// detection/storage/summaries triangle cannot reform a value cycle. The
+// re-export here keeps every existing consumer importing from this module.
+import type { CommunityResult } from './community-types.js';
+export type { CommunityResult };
 
 type WeightedAdjacencyList = Map<number, Map<number, number>>;
 type LegacyAdjacencyList = Map<string, Set<string>>;

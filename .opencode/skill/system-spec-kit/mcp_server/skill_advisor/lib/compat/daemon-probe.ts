@@ -5,7 +5,10 @@
 import { resolve } from 'node:path';
 
 import type { AdvisorFreshness, AdvisorStatusOutput } from '../../schemas/advisor-tool-schemas.js';
-import { readAdvisorStatus } from '../../handlers/advisor-status.js';
+// F-016-D1-04: Pull `readAdvisorStatus` through the advisor-lib seam so
+// compat code does not depend directly on a sibling handler module. The
+// handler keeps the implementation; this module is just the seam.
+import { readAdvisorStatus } from './advisor-status-reader.js';
 
 export interface AdvisorDaemonProbeInput {
   readonly workspaceRoot: string;

@@ -44,7 +44,20 @@ onCacheInvalidation(() => {
   advisorPromptCache.clear();
 });
 
-export type AdvisorRuntime = 'claude' | 'gemini' | 'copilot' | 'codex';
+// F-018-D3-03: AdvisorRuntime now derives from the canonical tuple in
+// advisor-runtime-values.ts. The local re-export keeps every existing
+// consumer importing from this module path unchanged; the local import
+// keeps the type usable inside this file's own interfaces.
+import {
+  ADVISOR_RUNTIME_VALUES,
+  isAdvisorRuntime,
+  type AdvisorRuntime,
+} from './advisor-runtime-values.js';
+export {
+  ADVISOR_RUNTIME_VALUES,
+  isAdvisorRuntime,
+  type AdvisorRuntime,
+};
 export type AdvisorHookStatus = AdvisorEnvelopeStatus;
 export type AdvisorHookFreshness = AdvisorEnvelopeFreshness;
 

@@ -5,14 +5,12 @@
 import type Database from 'better-sqlite3';
 
 import { isCommunitySummariesEnabled } from '../search/search-flags.js';
-import type { CommunityResult } from './community-detection.js';
-
-export interface CommunitySummary {
-  communityId: number;
-  summary: string;
-  memberCount: number;
-  memberIds: number[];
-}
+// F-017-D2-02: Both shared types now come from the neutral seam module so
+// the triangle cycle (detection -> storage -> summaries -> detection) is
+// fully broken at the type layer. The re-export keeps consumers using the
+// existing import path.
+import type { CommunityResult, CommunitySummary } from './community-types.js';
+export type { CommunitySummary };
 
 interface CommunityMemberRow {
   id: number;

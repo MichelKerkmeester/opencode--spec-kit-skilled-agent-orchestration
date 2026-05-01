@@ -295,11 +295,13 @@ function isMutationStatus(status: string | undefined): boolean {
 }
 
 let generatedCallIdCounter = 0;
+// F-017-D2-03: `getDetectedRuntime` was previously exported from this module
+// but had zero live consumers (only its own definition + the generated
+// `dist/context-server.d.ts` declaration). The variable still drives the
+// startup banner inside main(), so it stays as a module-private. Removing
+// the dead export keeps the public surface honest and unblocks future
+// refactors that touch the runtime detection path.
 let detectedRuntime: RuntimeInfo | null = null;
-
-export function getDetectedRuntime(): RuntimeInfo | null {
-  return detectedRuntime;
-}
 
 export function maybeStructuralNudge(
   task: string,

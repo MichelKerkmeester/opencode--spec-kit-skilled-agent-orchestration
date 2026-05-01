@@ -5,12 +5,14 @@
     "phase",
     "architecture-cleanup"
   ],
-  "lastUpdated": "2026-05-01T05:18:48.482Z",
+  "lastUpdated": "2026-05-01T08:29:24.609Z",
   "specId": "006",
   "folderSlug": "architecture-cleanup",
   "parentChain": [
     "049-deep-research-finding-remediation"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-05-26_09-29__049-sub-phase-006-architecture-cleanup.md"
+  ]
 }

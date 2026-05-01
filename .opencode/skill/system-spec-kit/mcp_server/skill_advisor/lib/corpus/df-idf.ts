@@ -3,7 +3,16 @@
 // ───────────────────────────────────────────────────────────────
 
 import { createHash } from 'node:crypto';
+// F-016-D1-08: Keep `filterCorpusStatEligible` as the default predicate so
+// existing callers see no behavioral change, but expose a `predicate`
+// parameter on `computeCorpusStats` so callers can pass a different filter
+// (or the eligible documents directly) without the corpus math module
+// reaching into the lifecycle subsystem.
 import { filterCorpusStatEligible } from '../lifecycle/archive-handling.js';
+
+export type CorpusEligibilityPredicate = <T extends { sourcePath: string }>(
+  entries: readonly T[],
+) => readonly T[];
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -41,8 +50,16 @@ function normalizeTerms(terms: readonly string[]): string[] {
   return [...new Set(terms.map((term) => term.toLowerCase().trim()).filter(Boolean))].sort();
 }
 
-export function computeCorpusStats(documents: readonly CorpusDocument[], now = new Date()): CorpusStats {
-  const activeDocuments = filterCorpusStatEligible(documents);
+export function computeCorpusStats(
+  documents: readonly CorpusDocument[],
+  now = new Date(),
+  // F-016-D1-08: predicate is opt-in; default keeps the existing
+  // lifecycle-aware behavior so callers that do not pass a predicate get
+  // the same result as before. Callers that already filter their documents
+  // upstream can pass `(entries) => entries` to skip the inner pass.
+  predicate: CorpusEligibilityPredicate = filterCorpusStatEligible,
+): CorpusStats {
+  const activeDocuments = predicate(documents);
   const documentFrequency = new Map<string, number>();
   for (const document of activeDocuments) {
     for (const term of normalizeTerms(document.terms)) {

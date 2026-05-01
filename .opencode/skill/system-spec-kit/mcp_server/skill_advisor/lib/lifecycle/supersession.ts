@@ -3,6 +3,9 @@
 // ───────────────────────────────────────────────────────────────
 
 import { sanitizeEnvelopeSkillLabel } from '../derived/sanitizer.js';
+// F-018-D3-02: derive lifecycle status from the canonical tuple in
+// status-values.ts so this module's hand-written union cannot drift.
+import type { SkillLifecycleStatus } from './status-values.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -10,7 +13,7 @@ import { sanitizeEnvelopeSkillLabel } from '../derived/sanitizer.js';
 
 export interface SupersessionEntry {
   readonly skillId: string;
-  readonly lifecycleStatus?: 'active' | 'deprecated' | 'archived' | 'future';
+  readonly lifecycleStatus?: SkillLifecycleStatus;
   readonly redirectTo?: string | null;
   readonly redirectFrom?: readonly string[];
   readonly score: number;

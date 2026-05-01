@@ -4,10 +4,22 @@
 
 import type { AffordanceInput } from '../affordance-normalizer.js';
 import type { ScorerLaneId } from './lane-registry.js';
+// F-018-D3-02: SkillLifecycleStatus now derives from the canonical tuple in
+// lifecycle/status-values.ts. The re-export here keeps every existing consumer
+// importing from `scorer/types.js`.
+import {
+  SKILL_LIFECYCLE_STATUS_VALUES,
+  isSkillLifecycleStatus,
+  type SkillLifecycleStatus,
+} from '../lifecycle/status-values.js';
 
 export type ScorerLane = ScorerLaneId;
 
-export type SkillLifecycleStatus = 'active' | 'deprecated' | 'archived' | 'future';
+export {
+  SKILL_LIFECYCLE_STATUS_VALUES,
+  isSkillLifecycleStatus,
+  type SkillLifecycleStatus,
+};
 
 export interface SkillProjection {
   readonly id: string;

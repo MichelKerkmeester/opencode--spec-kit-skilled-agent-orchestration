@@ -10,7 +10,11 @@ import { createHash } from 'node:crypto';
 import { existsSync, mkdirSync, readFileSync, readdirSync, renameSync, rmSync, statSync } from 'node:fs';
 import { basename, dirname, join, relative } from 'node:path';
 import { DATABASE_DIR } from '../../core/config.js';
-import { checkSqliteIntegrity } from '../../skill_advisor/lib/freshness/sqlite-integrity.js';
+// F-016-D1-01: Pull the SQLite integrity helper from the neutral utils seam
+// instead of reaching into advisor freshness internals. Storage callers
+// should depend inward on `lib/utils/`; the advisor freshness implementation
+// stays the source of truth.
+import { checkSqliteIntegrity } from '../utils/sqlite-integrity.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES

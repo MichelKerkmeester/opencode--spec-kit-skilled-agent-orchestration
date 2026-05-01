@@ -14,6 +14,12 @@ import {
   trustStateFromStructuralStatus,
   type SharedPayloadProvenance,
 } from '../context/shared-payload.js';
+// F-017-D2-01: StructuralBootstrapContract now lives in a neutral seam
+// module so memory-surface and session-snapshot can both depend on it
+// without creating a value-level dependency cycle. The re-export keeps every
+// existing consumer importing the type from this module path.
+import type { StructuralBootstrapContract } from './structural-bootstrap-contract.js';
+export type { StructuralBootstrapContract };
 
 /* ───────────────────────────────────────────────────────────────
    1. TYPES
@@ -28,20 +34,6 @@ export interface SessionSnapshot {
   lastToolCallAgoMs: number | null;
   primed: boolean;
   routingRecommendation: string;
-}
-
-/**
- * Phase 027: Structural Bootstrap Contract — shared by all non-hook surfaces.
- * Single source of truth for structural context in startup/recovery flows.
- * Token budget: 250-400 tokens (hard ceiling 500 including guidance).
- */
-export interface StructuralBootstrapContract {
-  status: 'ready' | 'stale' | 'missing';
-  summary: string;
-  highlights?: string[];
-  recommendedAction: string;
-  sourceSurface: 'auto-prime' | 'session_bootstrap' | 'session_resume' | 'session_health';
-  provenance?: SharedPayloadProvenance;
 }
 
 /* ───────────────────────────────────────────────────────────────

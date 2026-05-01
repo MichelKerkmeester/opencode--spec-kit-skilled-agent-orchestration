@@ -3,6 +3,10 @@
 // ───────────────────────────────────────────────────────────────
 
 import { isAuthorLane, type DerivedTrustLane } from '../derived/trust-lanes.js';
+// F-018-D3-02: derive lifecycle status from the canonical tuple instead of
+// hand-writing the union; new values added to status-values.ts surface here
+// as a compile error at the consumer site.
+import type { SkillLifecycleStatus } from './status-values.js';
 
 // ───────────────────────────────────────────────────────────────
 // 1. TYPES
@@ -12,7 +16,7 @@ export interface AgeHaircutOptions {
   readonly generatedAt: string | Date;
   readonly now?: Date;
   readonly halfLifeDays?: number;
-  readonly lifecycleStatus?: 'active' | 'deprecated' | 'archived' | 'future';
+  readonly lifecycleStatus?: SkillLifecycleStatus;
 }
 
 export interface LaneScore {

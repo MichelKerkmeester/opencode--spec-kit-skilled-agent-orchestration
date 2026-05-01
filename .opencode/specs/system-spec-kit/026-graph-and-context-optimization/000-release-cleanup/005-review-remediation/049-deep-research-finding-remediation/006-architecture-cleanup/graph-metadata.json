@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/006-architecture-cleanup",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/006-architecture-cleanup",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,215 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 6: architecture-cleanup",
+    "trigger_phrases": [
+      "F-016-D1",
+      "F-017-D2",
+      "F-018-D3",
+      "architecture cleanup remediation",
+      "boundary discipline",
+      "dependency graph cycle",
+      "schema duplication",
+      "watcher orchestrator split",
+      "trust state vocabulary",
+      "lifecycle status vocabulary",
+      "F-016-D1 plan",
+      "F-017-D2 plan"
+    ],
+    "key_topics": [
+      "f-016-d1",
+      "f-017-d2",
+      "f-018-d3",
+      "architecture",
+      "cleanup",
+      "remediation",
+      "boundary",
+      "discipline",
+      "dependency",
+      "graph",
+      "cycle",
+      "schema"
+    ],
+    "importance_tier": "normal",
+    "status": "in_progress",
+    "key_files": [
+      "lib/skill-graph/skill-graph-db.ts",
+      "lib/utils/sqlite-integrity.ts",
+      "lib/context/shared-payload.ts",
+      "lib/utils/skill-label-sanitizer.ts",
+      "lib/resume/resume-ladder.ts",
+      "lib/discovery/spec-document-finder.ts",
+      "skill_advisor/lib/compat/daemon-probe.ts",
+      "skill_advisor/lib/freshness/rebuild-from-source.ts",
+      "skill_advisor/lib/utils/busy-retry.ts",
+      "skill_advisor/lib/daemon/watcher.ts",
+      "skill_advisor/lib/scorer/lanes/derived.ts",
+      "skill_advisor/lib/corpus/df-idf.ts",
+      "lib/session/structural-bootstrap-contract.ts",
+      "hooks/memory-surface.ts",
+      "lib/graph/community-types.ts",
+      "skill_advisor/lib/freshness/trust-state-values.ts",
+      "skill_advisor/lib/lifecycle/status-values.ts",
+      "skill_advisor/lib/advisor-runtime-values.ts",
+      "skill_advisor/tools/advisor-contract-keys.ts",
+      "mcp_server/lib/utils/sqlite-integrity.ts"
+    ],
+    "entities": [
+      {
+        "name": "skill-graph-db.ts",
+        "kind": "code",
+        "path": "lib/skill-graph/skill-graph-db.ts",
+        "source": "derived"
+      },
+      {
+        "name": "sqlite-integrity.ts",
+        "kind": "code",
+        "path": "lib/utils/sqlite-integrity.ts",
+        "source": "derived"
+      },
+      {
+        "name": "shared-payload.ts",
+        "kind": "code",
+        "path": "lib/context/shared-payload.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill-label-sanitizer.ts",
+        "kind": "code",
+        "path": "lib/utils/skill-label-sanitizer.ts",
+        "source": "derived"
+      },
+      {
+        "name": "resume-ladder.ts",
+        "kind": "code",
+        "path": "lib/resume/resume-ladder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-document-finder.ts",
+        "kind": "code",
+        "path": "lib/discovery/spec-document-finder.ts",
+        "source": "derived"
+      },
+      {
+        "name": "daemon-probe.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/compat/daemon-probe.ts",
+        "source": "derived"
+      },
+      {
+        "name": "rebuild-from-source.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/freshness/rebuild-from-source.ts",
+        "source": "derived"
+      },
+      {
+        "name": "busy-retry.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/utils/busy-retry.ts",
+        "source": "derived"
+      },
+      {
+        "name": "watcher.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/daemon/watcher.ts",
+        "source": "derived"
+      },
+      {
+        "name": "derived.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/scorer/lanes/derived.ts",
+        "source": "derived"
+      },
+      {
+        "name": "df-idf.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/corpus/df-idf.ts",
+        "source": "derived"
+      },
+      {
+        "name": "structural-bootstrap-contract.ts",
+        "kind": "code",
+        "path": "lib/session/structural-bootstrap-contract.ts",
+        "source": "derived"
+      },
+      {
+        "name": "memory-surface.ts",
+        "kind": "code",
+        "path": "hooks/memory-surface.ts",
+        "source": "derived"
+      },
+      {
+        "name": "community-types.ts",
+        "kind": "code",
+        "path": "lib/graph/community-types.ts",
+        "source": "derived"
+      },
+      {
+        "name": "trust-state-values.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/freshness/trust-state-values.ts",
+        "source": "derived"
+      },
+      {
+        "name": "status-values.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/lifecycle/status-values.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-runtime-values.ts",
+        "kind": "code",
+        "path": "skill_advisor/lib/advisor-runtime-values.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-contract-keys.ts",
+        "kind": "code",
+        "path": "skill_advisor/tools/advisor-contract-keys.ts",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Architecture Cleanup Remediation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Fifteen",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Fifteen architectural findings across the advisor, memory, freshness, and graph subsystems leak boundary violations, value-level dependency cycles, dead exports, and schema duplication identified by packet 046's deep research:",
     "created_at": "2026-05-01T05:18:48Z",
-    "last_save_at": "2026-05-01T05:18:48Z",
+    "last_save_at": "2026-05-01T08:29:24.609Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

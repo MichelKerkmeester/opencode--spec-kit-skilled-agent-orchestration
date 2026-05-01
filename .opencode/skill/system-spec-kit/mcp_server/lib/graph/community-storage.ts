@@ -4,8 +4,10 @@
 
 import type Database from 'better-sqlite3';
 
-import type { CommunityResult } from './community-detection.js';
-import type { CommunitySummary } from './community-summaries.js';
+// F-017-D2-02: Source the shared types from the neutral seam instead of
+// reaching back through community-detection / community-summaries (which
+// historically formed a value-level triangle).
+import type { CommunityResult, CommunitySummary } from './community-types.js';
 
 export interface StoredCommunity extends CommunityResult {
   createdAt: string;

@@ -32,10 +32,22 @@
 // rather than carving out their own narrower unions.
 
 import { isSpeckitMetricsEnabled, speckitMetrics } from '../metrics.js';
+// F-018-D3-01: SkillGraphTrustState now derives from a canonical tuple in
+// trust-state-values.ts. The local re-export keeps every existing consumer
+// importing this path; the tuple is the single source of truth.
+import {
+  SKILL_GRAPH_TRUST_STATE_VALUES,
+  isSkillGraphTrustState,
+  type SkillGraphTrustState,
+} from './trust-state-values.js';
 
 export type { GraphFreshness, StructuralReadiness } from '../../../code_graph/lib/ops-hardening.js';
 
-export type SkillGraphTrustState = 'live' | 'stale' | 'absent' | 'unavailable';
+export {
+  SKILL_GRAPH_TRUST_STATE_VALUES,
+  isSkillGraphTrustState,
+  type SkillGraphTrustState,
+};
 export type StartupGraphState = 'ready' | 'stale' | 'empty' | 'missing' | 'error';
 
 let lastObservedTrustState: SkillGraphTrustState | null = null;

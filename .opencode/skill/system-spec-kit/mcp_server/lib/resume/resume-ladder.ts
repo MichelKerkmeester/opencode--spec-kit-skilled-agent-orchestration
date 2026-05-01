@@ -6,7 +6,10 @@ import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 
-import { findSpecDocuments } from '../../handlers/memory-index-discovery.js';
+// F-016-D1-03: Pull `findSpecDocuments` from the lib discovery seam instead
+// of reaching across into a handler module. Lib code depends inward on
+// other lib code; the handler implementation stays the source of truth.
+import { findSpecDocuments } from '../discovery/spec-document-finder.js';
 import {
   readThinContinuityRecord,
   type ThinContinuityRecord,

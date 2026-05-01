@@ -10,6 +10,14 @@
 
 import { z, ZodError } from 'zod';
 import { AdvisorToolInputSchemas } from '../skill_advisor/schemas/advisor-tool-schemas.js';
+// F-018-D3-04 (partial): Critical advisor contracts source their parameter
+// key tuples from a shared module so ALLOWED_PARAMETERS and the JSON Schema
+// descriptors cannot drift. See advisor-contract-keys.ts header for why the
+// broader MCP-tool surface remains deferred.
+import {
+  ADVISOR_RECOMMEND_PARAMETER_KEYS,
+  ADVISOR_VALIDATE_PARAMETER_KEYS,
+} from '../skill_advisor/tools/advisor-contract-keys.js';
 
 import type { ZodType } from 'zod';
 
@@ -742,10 +750,13 @@ const ALLOWED_PARAMETERS: Record<string, string[]> = {
   skill_graph_query: ['queryType', 'skillId', 'sourceSkillId', 'targetSkillId', 'family', 'minInbound', 'depth', 'limit'],
   skill_graph_status: [],
   skill_graph_validate: [],
-  advisor_recommend: ['prompt', 'options'],
+  // F-018-D3-04 (partial): keys for these two contracts derive from the
+  // single tuple in advisor-contract-keys.ts so the descriptor and this map
+  // cannot drift.
+  advisor_recommend: [...ADVISOR_RECOMMEND_PARAMETER_KEYS],
   advisor_rebuild: ['force'],
   advisor_status: ['workspaceRoot'],
-  advisor_validate: ['confirmHeavyRun', 'skillSlug'],
+  advisor_validate: [...ADVISOR_VALIDATE_PARAMETER_KEYS],
   ccc_status: [],
   ccc_reindex: ['full'],
   ccc_feedback: ['query', 'resultFile', 'rating', 'comment'],

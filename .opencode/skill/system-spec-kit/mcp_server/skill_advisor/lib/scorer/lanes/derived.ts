@@ -2,7 +2,11 @@
 // MODULE: Derived Generated Lane
 // ───────────────────────────────────────────────────────────────
 
-import { applyAgeHaircutToLane } from '../../lifecycle/age-haircut.js';
+// F-016-D1-07: Pull the age-haircut policy from the scorer-local seam
+// instead of reaching into the lifecycle subsystem directly. The lifecycle
+// implementation stays the source of truth; the seam keeps the scorer's
+// dependency direction inward.
+import { applyAgeHaircutToLane } from '../age-policy.js';
 import type { NormalizedAffordance } from '../../affordance-normalizer.js';
 import type { AdvisorProjection, LaneMatch } from '../types.js';
 import { matchesPhraseBoundary, phraseSpecificity, scoreTokenOverlap, tokenize } from '../text.js';
