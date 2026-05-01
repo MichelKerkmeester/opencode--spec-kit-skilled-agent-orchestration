@@ -180,6 +180,19 @@ workflow:
         action: "Acquire the advisory lock defined by the spec_check_protocol before session classification"
         command: "Open {state_paths.lock_file} with exclusive non-blocking advisory locking semantics; fail closed on contention."
         note: "macOS/BSD locking here is advisory. Stale-lock override is confirm-only or explicit recovery-only."
+        # <!-- F-010-B5-01 -->
+        # Lock-cleanup contract: the lock file MUST be released on every terminal exit path that follows acquisition.
+        # Runtimes honoring step_acquire_lock are required to perform this cleanup before halting or pausing.
+        on_halt:
+          action: "Release {state_paths.lock_file} before any terminal halt branch returns control"
+          applies_to: ["step_classify_session.on_invalid_state", "step_classify_session.on_completed_session", "step_preinit_spec_branch.conflict-detected"]
+          command: "Remove or close-with-release {state_paths.lock_file}; failures here are logged but do not block the halt"
+        on_cancel:
+          action: "Release {state_paths.lock_file} on user cancel or pause-sentinel detection before sentinel processing"
+          command: "Remove or close-with-release {state_paths.lock_file}; cancel completes regardless of cleanup result"
+        on_workflow_exit:
+          action: "Release {state_paths.lock_file} as the final step of any workflow exit path (success or failure)"
+          command: "Remove or close-with-release {state_paths.lock_file}; idempotent — safe to invoke when already released"
 
       step_classify_session:
         action: "Classify the session before writing files"
@@ -233,7 +246,10 @@ workflow:
           maxDurationMinutes: 120
           specFolder: "{spec_folder}"
           resource_map_present: "{resource_map_present}"
-          resource_map.emit: true
+          # <!-- F-010-B5-04 -->
+          # Honor the parsed --no-resource-map flag from deep-research.md:73 (default true; false when flag is set).
+          # The markdown command parses $ARGUMENTS and binds {resource_map_emit} before this step runs.
+          resource_map.emit: "{resource_map_emit}"
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           executionMode: "auto"
@@ -246,7 +262,9 @@ workflow:
 
       step_create_state_log:
         action: "Initialize JSONL state log with config record"
-        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"resource_map_present":{resource_map_present},"resource_map":{"emit":true},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        # <!-- F-010-B5-04 -->
+        # Same parsed --no-resource-map flag honored here so config and state_log agree from line 1.
+        content: '{"type":"config","topic":"{research_topic}","maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"resource_map_present":{resource_map_present},"resource_map":{"emit":{resource_map_emit}},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{state_paths.state_log}"
 
       step_create_strategy:
@@ -850,7 +868,10 @@ workflow:
           - latest_focus: "From latest JSONL iteration record"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
-          append_jsonl: '{"type":"iteration","run":{current_iteration},"status":"error","focus":"{next_focus}","findingsCount":0,"newInfoRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
+          # <!-- F-010-B5-02 -->
+          # Canonical iteration record: include mode, sessionId, generation, durationMs, keyQuestions, answeredQuestions
+          # so the reducer can persist the failure without dropping the iteration. Schema source: state_format.md §Iteration Records.
+          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"research","status":"error","focus":"{next_focus}","findingsCount":0,"newInfoRatio":0.0,"keyQuestions":[],"answeredQuestions":[],"durationMs":0,"timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
 
       step_generate_dashboard:
         action: "Generate or refresh the human-readable dashboard"

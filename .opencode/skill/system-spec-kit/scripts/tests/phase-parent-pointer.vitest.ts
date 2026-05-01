@@ -81,6 +81,28 @@ describe('phase-parent pointer writes after canonical save', () => {
     expect(parentDerived.last_active_at).toBe('2026-04-27T12:01:00.000Z');
   });
 
+  // F-019-D4-01: parent children_ids and last_save_at must refresh when a child save bubbles up.
+  it('refreshes parent children_ids and last_save_at on child save (F-019-D4-01)', () => {
+    updatePhaseParentPointersAfterSave(childFolder, '2026-04-27T12:03:00.000Z');
+
+    const parentMetadata = readGraphMetadata(parentFolder);
+    const parentDerived = parentMetadata.derived as Record<string, unknown>;
+    const childrenIds = parentMetadata.children_ids;
+
+    expect(Array.isArray(childrenIds)).toBe(true);
+    expect(childrenIds).toContain('specs/100-parent/001-child');
+    expect(parentDerived.last_save_at).toBe('2026-04-27T12:03:00.000Z');
+
+    // Idempotent: a second save with the same child must not duplicate the entry.
+    updatePhaseParentPointersAfterSave(childFolder, '2026-04-27T12:04:00.000Z');
+    const reread = readGraphMetadata(parentFolder);
+    const rereadChildren = reread.children_ids as string[];
+    const occurrences = rereadChildren.filter(
+      (entry) => entry === 'specs/100-parent/001-child',
+    ).length;
+    expect(occurrences).toBe(1);
+  });
+
   it('keeps concurrent child saves eventually consistent', async () => {
     const secondChild = path.join(parentFolder, '002-child');
     fs.mkdirSync(secondChild);

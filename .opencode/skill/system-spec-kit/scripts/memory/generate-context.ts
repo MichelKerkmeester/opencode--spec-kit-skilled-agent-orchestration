@@ -420,7 +420,23 @@ export function updatePhaseParentPointer(
     ...derived,
     last_active_child_id: activeChildId,
     last_active_at: timestamp,
+    // F-019-D4-01: bump parent's last_save_at when the bubble-up touches it,
+    // so consumers reading derived metadata see a current save timestamp.
+    last_save_at: timestamp,
   };
+
+  // F-019-D4-01: ensure children_ids contains the saved child's packet id
+  // (idempotent — only inserts when absent so concurrent saves stay safe).
+  if (activeChildId) {
+    const existingChildren = Array.isArray(metadata.children_ids)
+      ? (metadata.children_ids as unknown[]).filter(
+          (item): item is string => typeof item === 'string',
+        )
+      : [];
+    if (!existingChildren.includes(activeChildId)) {
+      metadata.children_ids = [...existingChildren, activeChildId];
+    }
+  }
 
   atomicWriteJson(graphFile, metadata);
 }

@@ -309,7 +309,10 @@ workflow:
           stuckThreshold: 2
           maxDurationMinutes: 120
           specFolder: "{spec_folder}"
-          resource_map.emit: true
+          # <!-- F-010-B5-04 -->
+          # Honor the parsed --no-resource-map flag from deep-review.md:71 (default true; false when flag is set).
+          # The markdown command parses $ARGUMENTS and binds {resource_map_emit} before this step runs.
+          resource_map.emit: "{resource_map_emit}"
           createdAt: "{ISO_8601_NOW}"
           status: "initialized"
           releaseReadinessState: "in-progress"
@@ -319,7 +322,9 @@ workflow:
       step_create_state_log:
         action: "Initialize JSONL state log with config record including review fields and lineage metadata"
         note: "Reuse review_dimensions_json from step_normalize_review_dimensions. Never re-normalize or wrap the raw template value."
-        content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":{review_dimensions_json},"resource_map_present":{resource_map_present},"resource_map":{"emit":true},"sessionId":"{ISO_8601_NOW}","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
+        # <!-- F-010-B5-04 -->
+        # Same parsed --no-resource-map flag honored here so config and state_log agree from line 1.
+        content: '{"type":"config","mode":"review","reviewTarget":"{review_target}","reviewTargetType":"{review_target_type}","reviewDimensions":{review_dimensions_json},"resource_map_present":{resource_map_present},"resource_map":{"emit":{resource_map_emit}},"sessionId":"{ISO_8601_NOW}","parentSessionId":null,"lineageMode":"new","generation":1,"continuedFromRun":null,"maxIterations":{max_iterations},"convergenceThreshold":{convergence_threshold},"createdAt":"{ISO_8601_NOW}","specFolder":"{spec_folder}"}'
         output: "{state_paths.state_log}"
 
       step_create_findings_registry:
@@ -811,7 +816,10 @@ workflow:
           - traceability_checks: "From latest JSONL iteration record when present"
         on_missing_outputs:
           action: "Mark iteration as 'error', continue to next"
-          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"timestamp":"{ISO_8601_NOW}"}'
+          # <!-- F-010-B5-03 -->
+          # Canonical iteration record: include sessionId, generation, durationMs so the reducer can persist
+          # the failure without dropping the iteration. Schema source: state_format.md §Iteration Records.
+          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"durationMs":0,"timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
 
       step_post_iteration_claim_adjudication:
         action: "Validate typed claim-adjudication packets for any new P0/P1 findings and persist the result to state.jsonl so the next iteration's claimAdjudicationGate can read it"
