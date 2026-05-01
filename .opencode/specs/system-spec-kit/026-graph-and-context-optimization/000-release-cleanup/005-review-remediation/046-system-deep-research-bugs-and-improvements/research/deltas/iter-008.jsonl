@@ -1,0 +1,3 @@
+{"type":"iteration","iteration":8,"newInfoRatio":0.85,"status":"insight","focus":"B3: Memory MCP round-trip integrity","angle":"B3"}
+{"type":"finding","id":"f-iter008-001","severity":"P1","label":"snake_case causal_links are not parsed by memory_save","file":".opencode/skill/system-spec-kit/mcp_server/lib/parsing/memory-parser.ts","line":872,"iteration":8,"angle":"B3"}
+{"type":"finding","id":"f-iter008-002","severity":"P1","label":"failed causal edge inserts are counted as inserted","file":".opencode/skill/system-spec-kit/mcp_server/handlers/causal-links-processor.ts","line":405,"iteration":8,"angle":"B3"}

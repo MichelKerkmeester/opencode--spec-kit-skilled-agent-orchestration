@@ -1,0 +1,4 @@
+{"type":"iteration","iteration":6,"newInfoRatio":0.74,"status":"insight","focus":"B1: Hook contract drift across runtimes","angle":"B1"}
+{"type":"finding","id":"f-iter006-001","severity":"P2","label":"Codex timeout fallback bypasses shared advisor renderer","file":".opencode/skill/system-spec-kit/mcp_server/hooks/codex/user-prompt-submit.ts","line":194,"iteration":6,"angle":"B1"}
+{"type":"finding","id":"f-iter006-002","severity":"P2","label":"OpenCode disabled mode injects a runtime-only advisor brief","file":".opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs","line":316,"iteration":6,"angle":"B1"}
+{"type":"finding","id":"f-iter006-003","severity":"P2","label":"OpenCode bridge retains dead alternate native renderer","file":".opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs","line":117,"iteration":6,"angle":"B1"}

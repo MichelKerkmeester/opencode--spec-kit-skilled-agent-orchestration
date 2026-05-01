@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":20,"newInfoRatio":0.85,"status":"insight","focus":"D5: Build / dist / runtime separation","angle":"D5"}
+{"type":"finding","id":"f-iter020-001","severity":"P2","label":"Plugin watches wrong compiled advisor compat path","file":".opencode/plugins/spec-kit-skill-advisor.js","line":40,"iteration":20,"angle":"D5"}
+{"type":"finding","id":"f-iter020-002","severity":"P2","label":"Source/dist alignment guard skips runtime dist areas","file":".opencode/skill/system-spec-kit/scripts/evals/check-source-dist-alignment.ts","line":95,"iteration":20,"angle":"D5"}
+{"type":"finding","id":"f-iter020-003","severity":"P2","label":"Stale search-quality test dist artifacts remain","file":".opencode/skill/system-spec-kit/mcp_server/dist/tests/search-quality/harness.js","line":11,"iteration":20,"angle":"D5"}
+{"type":"finding","id":"f-iter020-004","severity":"P2","label":"Source-of-truth plugin bridge JS is outside tsc build surface","file":".opencode/skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs","line":150,"iteration":20,"angle":"D5"}

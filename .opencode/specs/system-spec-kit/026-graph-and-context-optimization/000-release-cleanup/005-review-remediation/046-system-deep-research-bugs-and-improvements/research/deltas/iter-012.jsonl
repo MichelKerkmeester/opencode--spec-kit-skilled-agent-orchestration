@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":12,"newInfoRatio":0.85,"status":"insight","focus":"C2: Scorer fusion accuracy on edge cases","angle":"C2"}
+{"type":"finding","id":"f-iter012-001","severity":"P1","label":"Graph conflicts do not penalize fusion","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts","line":89,"iteration":12,"angle":"C2"}
+{"type":"finding","id":"f-iter012-002","severity":"P1","label":"Derived phrases are duplicated in projection","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts","line":146,"iteration":12,"angle":"C2"}
+{"type":"finding","id":"f-iter012-003","severity":"P1","label":"Task-intent floor enables token-stuffed false positives","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/fusion.ts","line":120,"iteration":12,"angle":"C2"}
+{"type":"finding","id":"f-iter012-004","severity":"P2","label":"Ambiguity ignores effective ranking score","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/ambiguity.ts","line":9,"iteration":12,"angle":"C2"}

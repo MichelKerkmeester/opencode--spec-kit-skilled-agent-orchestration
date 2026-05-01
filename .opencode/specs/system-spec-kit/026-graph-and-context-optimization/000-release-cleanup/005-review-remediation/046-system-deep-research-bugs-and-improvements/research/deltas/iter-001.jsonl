@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":1,"newInfoRatio":0.95,"status":"insight","focus":"A1: Daemon concurrency edge cases","angle":"A1"}
+{"type":"finding","id":"f-iter001-001","severity":"P1","label":"Watcher flush can reenter while async reindex is in flight","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts","line":361,"iteration":1,"angle":"A1"}
+{"type":"finding","id":"f-iter001-002","severity":"P1","label":"Shutdown can be overwritten by pending watcher live publication","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/lifecycle.ts","line":85,"iteration":1,"angle":"A1"}
+{"type":"finding","id":"f-iter001-003","severity":"P1","label":"Generation lock release is not owner-safe after stale reclamation","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/generation.ts","line":71,"iteration":1,"angle":"A1"}
+{"type":"finding","id":"f-iter001-004","severity":"P2","label":"Cache invalidation can be delivered out of generation order","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/generation.ts","line":123,"iteration":1,"angle":"A1"}

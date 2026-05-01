@@ -1,0 +1,4 @@
+{"type":"iteration","iteration":3,"newInfoRatio":0.85,"status":"insight","focus":"A3: Resource leaks across mcp_server","angle":"A3"}
+{"type":"finding","id":"f-iter003-001","severity":"P1","label":"Stale chokidar targets accumulate on watcher refresh","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts","line":336,"iteration":3,"angle":"A3"}
+{"type":"finding","id":"f-iter003-002","severity":"P2","label":"Advisor watcher diagnostics grow without bound","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts","line":321,"iteration":3,"angle":"A3"}
+{"type":"finding","id":"f-iter003-003","severity":"P2","label":"File watcher reindex slot queue is unbounded","file":".opencode/skill/system-spec-kit/mcp_server/lib/ops/file-watcher.ts","line":223,"iteration":3,"angle":"A3"}

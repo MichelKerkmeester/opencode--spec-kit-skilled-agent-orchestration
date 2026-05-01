@@ -1,0 +1,7 @@
+{"type":"iteration","iteration":7,"newInfoRatio":0.85,"status":"insight","focus":"B2: CLI orchestrator skill correctness","angle":"B2"}
+{"type":"finding","id":"f-iter007-001","severity":"P1","label":"OpenCode subagent contract contradicted in SKILL examples","file":".opencode/skill/cli-opencode/SKILL.md","line":292,"iteration":7,"angle":"B2"}
+{"type":"finding","id":"f-iter007-002","severity":"P1","label":"OpenCode deep-loop references directly invoke parent-command-only agents","file":".opencode/skill/cli-opencode/references/agent_delegation.md","line":202,"iteration":7,"angle":"B2"}
+{"type":"finding","id":"f-iter007-003","severity":"P1","label":"Copilot reasoning-effort flag contract contradicts reference","file":".opencode/skill/cli-copilot/SKILL.md","line":280,"iteration":7,"angle":"B2"}
+{"type":"finding","id":"f-iter007-004","severity":"P2","label":"Codex templates omit required effort/tier and misstate full-auto approval","file":".opencode/skill/cli-codex/assets/prompt_templates.md","line":52,"iteration":7,"angle":"B2"}
+{"type":"finding","id":"f-iter007-005","severity":"P2","label":"Claude Code templates omit explicit default model","file":".opencode/skill/cli-claude-code/assets/prompt_templates.md","line":52,"iteration":7,"angle":"B2"}
+{"type":"finding","id":"f-iter007-006","severity":"P2","label":"Gemini write templates embed yolo without approval precondition","file":".opencode/skill/cli-gemini/assets/prompt_templates.md","line":45,"iteration":7,"angle":"B2"}

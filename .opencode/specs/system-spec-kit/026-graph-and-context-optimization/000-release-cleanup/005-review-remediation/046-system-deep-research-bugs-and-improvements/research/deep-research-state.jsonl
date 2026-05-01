@@ -1,0 +1,22 @@
+{"type":"config","topic":"System Deep Research — Bugs and Improvements (20 iterations across system-spec-kit, mcp_server, code_graph, skill_advisor)","maxIterations":20,"convergenceThreshold":0.01,"resource_map_present":false,"resource_map":{"emit":true},"createdAt":"2026-05-01T06:00:00Z","specFolder":".opencode/specs/system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/046-system-deep-research-bugs-and-improvements"}
+{"type":"event","event":"session_started","mode":"research","sessionId":"046-deep-research-2026-05-01","parentSessionId":null,"lineageMode":"new","generation":1,"timestamp":"2026-05-01T06:00:00Z"}
+{"type":"iteration","iteration":1,"newInfoRatio":0.95,"status":"insight","focus":"A1: Daemon concurrency edge cases","angle":"A1"}
+{"type":"iteration","iteration":2,"newInfoRatio":0.85,"status":"insight","focus":"A2: Code-graph SQLite contention","angle":"A2"}
+{"type":"iteration","iteration":3,"newInfoRatio":0.85,"status":"insight","focus":"A3: Resource leaks across mcp_server","angle":"A3"}
+{"type":"iteration","iteration":4,"newInfoRatio":0.85,"status":"insight","focus":"A4: Silent error recovery patterns","angle":"A4"}
+{"type":"iteration","iteration":5,"newInfoRatio":0.85,"status":"insight","focus":"A5: Schema validation gaps","angle":"A5"}
+{"type":"iteration","iteration":6,"newInfoRatio":0.74,"status":"insight","focus":"B1: Hook contract drift across runtimes","angle":"B1"}
+{"type":"iteration","iteration":7,"newInfoRatio":0.85,"status":"insight","focus":"B2: CLI orchestrator skill correctness","angle":"B2"}
+{"type":"iteration","iteration":8,"newInfoRatio":0.85,"status":"insight","focus":"B3: Memory MCP round-trip integrity","angle":"B3"}
+{"type":"iteration","iteration":9,"newInfoRatio":0.85,"status":"insight","focus":"B4: Spec-kit validator correctness","angle":"B4"}
+{"type":"iteration","iteration":10,"newInfoRatio":0.85,"status":"insight","focus":"B5: Workflow command auto-routing","angle":"B5"}
+{"type":"iteration","iteration":11,"newInfoRatio":0.85,"status":"insight","focus":"C1: Search-quality W3-W13 latency and accuracy","angle":"C1"}
+{"type":"iteration","iteration":12,"newInfoRatio":0.85,"status":"insight","focus":"C2: Scorer fusion accuracy on edge cases","angle":"C2"}
+{"type":"iteration","iteration":13,"newInfoRatio":0.85,"status":"insight","focus":"C3: Skill advisor recommendation quality","angle":"C3"}
+{"type":"iteration","iteration":14,"newInfoRatio":0.85,"status":"insight","focus":"C4: Code-graph staleness detection accuracy","angle":"C4"}
+{"type":"iteration","iteration":15,"newInfoRatio":0.82,"status":"insight","focus":"C5: Test suite reliability and flake patterns","angle":"C5"}
+{"type":"iteration","iteration":16,"newInfoRatio":0.85,"status":"insight","focus":"D1: mcp_server/lib/ boundary discipline","angle":"D1"}
+{"type":"iteration","iteration":18,"newInfoRatio":0.85,"status":"insight","focus":"D3: Type / schema duplication","angle":"D3"}
+{"type":"iteration","iteration":17,"newInfoRatio":0.85,"status":"insight","focus":"D2: Module dependency graph health","angle":"D2"}
+{"type":"iteration","iteration":19,"newInfoRatio":0.85,"status":"insight","focus":"D4: Spec-kit folder topology sustainability","angle":"D4"}
+{"type":"iteration","iteration":20,"newInfoRatio":0.85,"status":"insight","focus":"D5: Build / dist / runtime separation","angle":"D5"}

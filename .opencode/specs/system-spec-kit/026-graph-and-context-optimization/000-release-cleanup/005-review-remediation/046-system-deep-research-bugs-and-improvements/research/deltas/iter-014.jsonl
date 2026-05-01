@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":14,"newInfoRatio":0.85,"status":"insight","focus":"C4: Code-graph staleness detection accuracy","angle":"C4"}
+{"type":"finding","id":"f-iter014-001","severity":"P2","label":"mtime-only drift forces reindex for unchanged content","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts","line":457,"iteration":14,"angle":"C4"}
+{"type":"finding","id":"f-iter014-002","severity":"P2","label":"HEAD drift forces full scan for non-graph changes","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts","line":156,"iteration":14,"angle":"C4"}
+{"type":"finding","id":"f-iter014-003","severity":"P1","label":"new untracked indexable files are freshness-invisible","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts","line":166,"iteration":14,"angle":"C4"}
+{"type":"finding","id":"f-iter014-004","severity":"P1","label":"doctor asks detect_changes for stale sets it cannot return","file":".opencode/command/doctor/assets/doctor_code-graph_auto.yaml","line":100,"iteration":14,"angle":"C4"}

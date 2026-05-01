@@ -1,0 +1,6 @@
+{"type":"iteration","iteration":9,"newInfoRatio":0.85,"status":"insight","focus":"B4: Spec-kit validator correctness","angle":"B4"}
+{"type":"finding","id":"f-iter009-001","severity":"P1","label":"SPEC_DOC_INTEGRITY mishandles Markdown link formats","file":".opencode/skill/system-spec-kit/scripts/rules/check-spec-doc-integrity.sh","line":63,"iteration":9,"angle":"B4"}
+{"type":"finding","id":"f-iter009-002","severity":"P1","label":"EVIDENCE_CITED treats second checkbox as evidence","file":".opencode/skill/system-spec-kit/scripts/rules/check-evidence.sh","line":78,"iteration":9,"angle":"B4"}
+{"type":"finding","id":"f-iter009-003","severity":"P2","label":"EVIDENCE_CITED priority parsing differs from priority rule","file":".opencode/skill/system-spec-kit/scripts/rules/check-evidence.sh","line":57,"iteration":9,"angle":"B4"}
+{"type":"finding","id":"f-iter009-004","severity":"P1","label":"TEMPLATE_HEADERS ignores detected extra headers","file":".opencode/skill/system-spec-kit/scripts/rules/check-template-headers.sh","line":73,"iteration":9,"angle":"B4"}
+{"type":"finding","id":"f-iter009-005","severity":"P2","label":"TEMPLATE_HEADERS misses uppercase checked bare-priority items","file":".opencode/skill/system-spec-kit/scripts/rules/check-template-headers.sh","line":91,"iteration":9,"angle":"B4"}

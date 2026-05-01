@@ -1,0 +1,2 @@
+{"type":"iteration","iteration":13,"newInfoRatio":0.85,"status":"insight","focus":"C3: Skill advisor recommendation quality","angle":"C3"}
+{"type":"finding","id":"f-iter013-001","severity":"P1","label":"mixed review/update prompt routes to read-only review skill","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl","line":26,"iteration":13,"angle":"C3"}

@@ -1,0 +1,4 @@
+{"type":"iteration","iteration":19,"newInfoRatio":0.85,"status":"insight","focus":"D4: Spec-kit folder topology sustainability","angle":"D4"}
+{"type":"finding","id":"f-iter019-001","severity":"P1","label":"phase parent child inventory stale after child saves","file":".opencode/skill/system-spec-kit/scripts/memory/generate-context.ts","line":419,"iteration":19,"angle":"D4"}
+{"type":"finding","id":"f-iter019-002","severity":"P2","label":"workflow path grammar lags nested packet topology","file":".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml","line":56,"iteration":19,"angle":"D4"}
+{"type":"finding","id":"f-iter019-003","severity":"P2","label":"large phase parents lack topology health threshold","file":".opencode/skill/system-spec-kit/mcp_server/lib/spec/is-phase-parent.ts","line":23,"iteration":19,"angle":"D4"}

@@ -1,0 +1,26 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/046-system-deep-research-bugs-and-improvements",
+  "description": "Research Charter: System Deep Research — Bugs and Improvements",
+  "keywords": [
+    "research",
+    "charter",
+    "system",
+    "deep",
+    "bugs",
+    "improvements"
+  ],
+  "lastUpdated": "2026-05-01T04:46:19.546Z",
+  "specId": "046",
+  "folderSlug": "system-deep-research-bugs-and-improvements",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "01-05-26_04-52__spec-scaffold-for-20-iteration-deep-research.md",
+    "01-05-26_05-46__20-iteration-deep-research-complete-82-findings-0.md"
+  ]
+}

@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":18,"newInfoRatio":0.85,"status":"insight","focus":"D3: Type / schema duplication","angle":"D3"}
+{"type":"finding","id":"f-iter018-001","severity":"P2","label":"Trust-state literals duplicated outside canonical module","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/freshness/trust-state.ts","line":38,"iteration":18,"angle":"D3"}
+{"type":"finding","id":"f-iter018-002","severity":"P2","label":"Skill lifecycle status union duplicated across scorer and Zod schemas","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/types.ts","line":10,"iteration":18,"angle":"D3"}
+{"type":"finding","id":"f-iter018-003","severity":"P2","label":"Advisor runtime and outcome labels repeated across types schemas and guards","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/skill-advisor-brief.ts","line":47,"iteration":18,"angle":"D3"}
+{"type":"finding","id":"f-iter018-004","severity":"P2","label":"MCP input contract duplicated between public JSON Schema and Zod validators","file":".opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts","line":50,"iteration":18,"angle":"D3"}

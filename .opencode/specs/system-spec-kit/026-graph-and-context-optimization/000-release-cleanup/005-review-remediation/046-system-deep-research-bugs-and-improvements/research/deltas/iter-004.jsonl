@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":4,"newInfoRatio":0.85,"status":"insight","focus":"A4: Silent error recovery patterns","angle":"A4"}
+{"type":"finding","id":"f-iter004-001","severity":"P1","label":"Advisor SQLite projection silently falls back to filesystem","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/scorer/projection.ts","line":237,"iteration":4,"angle":"A4"}
+{"type":"finding","id":"f-iter004-002","severity":"P2","label":"Code graph subject DB failure becomes empty context","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-context.ts","line":501,"iteration":4,"angle":"A4"}
+{"type":"finding","id":"f-iter004-003","severity":"P2","label":"Malformed code graph verification metadata becomes absent gate","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts","line":253,"iteration":4,"angle":"A4"}
+{"type":"finding","id":"f-iter004-004","severity":"P2","label":"Malformed advisor metadata drops derived key-file watches","file":".opencode/skill/system-spec-kit/mcp_server/skill_advisor/lib/daemon/watcher.ts","line":155,"iteration":4,"angle":"A4"}

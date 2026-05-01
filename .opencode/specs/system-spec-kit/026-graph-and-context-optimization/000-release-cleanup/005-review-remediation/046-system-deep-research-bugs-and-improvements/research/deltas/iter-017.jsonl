@@ -1,0 +1,4 @@
+{"type":"iteration","iteration":17,"newInfoRatio":0.85,"status":"insight","focus":"D2: Module dependency graph health","angle":"D2"}
+{"type":"finding","id":"f-iter017-001","severity":"P2","label":"Runtime circular import between session snapshot and memory surface","file":".opencode/skill/system-spec-kit/mcp_server/lib/session/session-snapshot.ts","line":9,"iteration":17,"angle":"D2"}
+{"type":"finding","id":"f-iter017-002","severity":"P2","label":"Type-level cycle across community graph modules","file":".opencode/skill/system-spec-kit/mcp_server/lib/graph/community-summaries.ts","line":8,"iteration":17,"angle":"D2"}
+{"type":"finding","id":"f-iter017-003","severity":"P2","label":"Undocumented dead exports in non-test module graph","file":".opencode/skill/system-spec-kit/mcp_server/context-server.ts","line":300,"iteration":17,"angle":"D2"}

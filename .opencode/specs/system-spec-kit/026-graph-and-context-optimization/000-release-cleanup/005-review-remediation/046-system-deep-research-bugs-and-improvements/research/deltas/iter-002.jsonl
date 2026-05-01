@@ -1,0 +1,4 @@
+{"type":"iteration","iteration":2,"newInfoRatio":0.85,"status":"insight","focus":"A2: Code-graph SQLite contention","angle":"A2"}
+{"type":"finding","id":"f-iter002-001","severity":"P1","label":"Per-file graph persistence is not atomic","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts","line":271,"iteration":2,"angle":"A2"}
+{"type":"finding","id":"f-iter002-002","severity":"P1","label":"SQLite writer contention lacks explicit policy","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts","line":159,"iteration":2,"angle":"A2"}
+{"type":"finding","id":"f-iter002-003","severity":"P2","label":"Logical graph reads are not snapshot-consistent","file":".opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/query.ts","line":1089,"iteration":2,"angle":"A2"}

@@ -1,0 +1,6 @@
+{"type":"iteration","iteration":11,"newInfoRatio":0.85,"status":"insight","focus":"C1: Search-quality W3-W13 latency and accuracy","angle":"C1"}
+{"type":"finding","id":"f-iter011-001","severity":"P2","label":"Harness lacks rank-sensitive NDCG metric","file":".opencode/skill/system-spec-kit/mcp_server/stress_test/search-quality/metrics.ts","line":10,"iteration":11,"angle":"C1"}
+{"type":"finding","id":"f-iter011-002","severity":"P1","label":"Rerank floor skips small ambiguous result sets","file":".opencode/skill/system-spec-kit/mcp_server/lib/search/rerank-gate.ts","line":42,"iteration":11,"angle":"C1"}
+{"type":"finding","id":"f-iter011-003","severity":"P1","label":"Cross-encoder provider document caps unused","file":".opencode/skill/system-spec-kit/mcp_server/lib/search/cross-encoder.ts","line":31,"iteration":11,"angle":"C1"}
+{"type":"finding","id":"f-iter011-004","severity":"P2","label":"CocoIndex overfetch remains telemetry-only by default","file":".opencode/skill/system-spec-kit/mcp_server/lib/search/cocoindex-calibration.ts","line":47,"iteration":11,"angle":"C1"}
+{"type":"finding","id":"f-iter011-005","severity":"P2","label":"Learned Stage 2 combiner is still shadow-only","file":".opencode/skill/system-spec-kit/mcp_server/lib/search/pipeline/stage2-fusion.ts","line":1270,"iteration":11,"angle":"C1"}

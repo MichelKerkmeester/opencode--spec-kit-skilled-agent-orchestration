@@ -1,0 +1,5 @@
+{"type":"iteration","iteration":10,"newInfoRatio":0.85,"status":"insight","focus":"B5: Workflow command auto-routing","angle":"B5"}
+{"type":"finding","id":"f-iter010-001","severity":"P1","label":"deep-research lock not released on halt","file":".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml","line":179,"iteration":10,"angle":"B5"}
+{"type":"finding","id":"f-iter010-002","severity":"P1","label":"deep-research fallback iteration schema invalid","file":".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml","line":851,"iteration":10,"angle":"B5"}
+{"type":"finding","id":"f-iter010-003","severity":"P1","label":"deep-review fallback iteration schema invalid","file":".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml","line":812,"iteration":10,"angle":"B5"}
+{"type":"finding","id":"f-iter010-004","severity":"P2","label":"no-resource-map flag ignored by YAML config","file":".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml","line":235,"iteration":10,"angle":"B5"}
