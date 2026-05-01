@@ -230,10 +230,11 @@ describe('sa-008..sa-011 — auto-indexing derived metadata stress behavior', ()
     }));
 
     expect(results.every((result) => result.changed)).toBe(true);
-    // FIXME(sa-011): sync provenance currently hashes graph-metadata.json itself,
-    // so repeated sync may report changed after the derived block rewrites the
-    // dependency hash. Stress the durable write invariants until product code
-    // separates source metadata dependencies from generated metadata output.
+    // Idempotence invariant: second sync over an unchanged SKILL.md must report
+    // changed=false. Fixed in packet 045 by excluding `generated_at` from the
+    // derived-block comparison and preserving the existing block on disk when
+    // content is stable.
+    expect(secondPass.every((result) => result.changed === false)).toBe(true);
     expect(secondPass).toHaveLength(skillDirs.length);
     for (const skillDir of skillDirs) {
       const graph = JSON.parse(readFileSync(join(skillDir, 'graph-metadata.json'), 'utf8')) as Record<string, unknown>;

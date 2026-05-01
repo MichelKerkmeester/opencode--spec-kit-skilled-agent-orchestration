@@ -90,9 +90,11 @@ describe('sa-037 — Python bench runner', () => {
         expect(Object.keys(parsed).length).toBeGreaterThan(0);
       }
 
-      // FIXME(sa-037): if the bench script's runtime contract evolves, tighten
-      // the assertions above to cover documented p95 envelopes once the bench
-      // can reliably run in the CI sandbox.
+      // The bench script's documented thresholds (cache-hit p95 ≤ 50ms,
+      // uncached p95 ≤ 60ms) are captured measurements from a stable workstation,
+      // not enforceable CI gates. The catalog (08--python-compat/03-bench-runner.md)
+      // documents this; the wrapper test here verifies the subprocess surface
+      // is reachable and the JSON envelope is well-formed.
     } finally {
       rmSync(tmpDir, { recursive: true, force: true });
     }

@@ -73,6 +73,18 @@ function isWithin(parent: string, child: string): boolean {
   return relativePath === '' || (!relativePath.startsWith(`..${sep}`) && relativePath !== '..' && !relativePath.startsWith('/'));
 }
 
+// Compare derived blocks ignoring `generated_at` so repeated syncs of an
+// unchanged SKILL.md are idempotent. `generated_at` is the only non-content
+// field — `provenance_fingerprint` is deterministic from the source bytes,
+// and every other field reflects extracted/normalized SKILL.md content.
+function stableDerivedJson(value: unknown): string {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return JSON.stringify(value);
+  }
+  const { generated_at: _ignored, ...rest } = value as Record<string, unknown>;
+  return JSON.stringify(rest);
+}
+
 // ───────────────────────────────────────────────────────────────
 // 3. CORE LOGIC
 // ───────────────────────────────────────────────────────────────
@@ -105,21 +117,29 @@ export function syncDerivedMetadata(options: SyncDerivedOptions): SyncDerivedRes
     redirect_from: options.redirectFrom ? sanitizeDerivedArray(options.redirectFrom, 'graph-metadata', 16) : undefined,
     redirect_to: options.redirectTo ? sanitizeDerivedArray([options.redirectTo], 'graph-metadata', 1)[0] : undefined,
   });
+  const before = stableDerivedJson(graphMetadata.derived ?? null);
+  const after = stableDerivedJson(derived);
+  const contentChanged = before !== after;
+  const schemaUpgrade = graphMetadata.schema_version !== 2;
+  const changed = contentChanged || schemaUpgrade;
+  // When content is unchanged, preserve the existing derived block (including its
+  // existing `generated_at`) so callers see a stable result and on-disk state
+  // remains byte-stable across repeated syncs.
+  const finalDerived = contentChanged
+    ? derived
+    : ((graphMetadata.derived as SkillDerivedV2) ?? derived);
   const nextGraphMetadata = {
     ...graphMetadata,
     schema_version: 2,
-    derived,
+    derived: finalDerived,
   };
-  const before = JSON.stringify(graphMetadata.derived ?? null);
-  const after = JSON.stringify(derived);
-  const changed = before !== after || graphMetadata.schema_version !== 2;
   if (changed) {
     writeJsonAtomic(graphMetadataPath, nextGraphMetadata);
   }
 
   return {
     graphMetadataPath,
-    derived,
+    derived: finalDerived,
     changed,
     diagnostics: [...extraction.diagnostics, ...antiStuffing.diagnostics],
   };

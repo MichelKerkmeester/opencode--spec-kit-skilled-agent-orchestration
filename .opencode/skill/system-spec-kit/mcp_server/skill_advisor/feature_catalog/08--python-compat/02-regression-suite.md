@@ -1,14 +1,14 @@
 ---
-title: "Python Regression Suite (52/52)"
+title: "Python Regression Suite (51/51)"
 description: "skill_advisor_regression.py harness that runs the P0 regression dataset and reports 52 of 52 cases passing."
 trigger_phrases:
   - "python regression suite"
-  - "52 of 52 pass"
+  - "51 of 51 pass"
   - "skill_advisor_regression.py"
   - "p0 regression dataset"
 ---
 
-# Python Regression Suite (52/52)
+# Python Regression Suite (51/51)
 
 <!-- ANCHOR:overview -->
 ## 1. OVERVIEW
@@ -20,7 +20,7 @@ Guarantee the Python compatibility surface does not regress on hand-curated P0 c
 <!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
-`scripts/skill_advisor_regression.py` reads the JSONL dataset at `scripts/fixtures/skill_advisor_regression_cases.jsonl` and exercises the Python scorer against each case. The current baseline is 52 of 52 cases passing with zero regressions under the ADR-007 parity rules. Exit code is 0 only when every case passes.
+`scripts/skill_advisor_regression.py` reads the JSONL dataset at `scripts/fixtures/skill_advisor_regression_cases.jsonl` and exercises the Python scorer against each case. The current baseline is 51 of 51 cases passing with zero regressions under the ADR-007 parity rules. Exit code is 0 only when every case passes.
 
 <!-- /ANCHOR:current-reality -->
 

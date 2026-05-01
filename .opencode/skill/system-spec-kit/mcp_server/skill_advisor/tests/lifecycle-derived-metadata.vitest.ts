@@ -143,8 +143,13 @@ describe('027/002 derived metadata acceptance', () => {
     expect(first.buckets.references).toContain('Reference Routing');
     expect(first.buckets.assets).toContain('lifecycle-diagram');
     expect(first.buckets.intent_signals).toContain('intent signal route');
-    expect(first.buckets.source_docs).toContain('references/guide.md');
-    expect(first.buckets.key_files.join(' ')).toContain('key-file.md');
+    // Prior derived source_docs / key_files now propagate into the output
+    // sourceDocs / keyFiles arrays (preserving stickiness) but NOT into the
+    // intermediate buckets — feeding them back into buckets would generate
+    // path-derived ngrams in trigger_phrases on every resync (sa-011 fix in
+    // packet 045).
+    expect(first.sourceDocs).toContain('references/guide.md');
+    expect(first.keyFiles.join(' ')).toContain('key-file.md');
     expect(first.keyFiles).toContain('.opencode/skill/alpha/docs/key-file.md');
   });
 
@@ -230,7 +235,10 @@ describe('027/002 derived metadata acceptance', () => {
     expect(first.keyFiles).not.toContain(outsideSecret);
     expect(first.keyFiles).not.toContain(relative(root, outsideSecret));
     expect(first.keyFiles).not.toContain('.opencode/skill/alpha/docs/outside-link.md');
-    expect(first.buckets.key_files).toEqual(['.opencode/skill/alpha/docs/key-file.md']);
+    // After packet 045, prior key_files no longer flow into buckets — escape
+    // protection is enforced by `workspaceKeyFiles` filtering at the entry
+    // point and by `addDep` deduplication in extract.ts. The provenance
+    // invariant on the next line is the authoritative escape check.
     expect(second.provenanceFingerprint).toBe(first.provenanceFingerprint);
   });
 

@@ -20,7 +20,7 @@ Keep latency visible from the Python surface so routing performance regressions 
 <!-- ANCHOR:current-reality -->
 ## 2. CURRENT REALITY
 
-`scripts/skill_advisor_bench.py` drives the bench measurements. The documented envelope is `cache-hit p95 <= 50 ms` and `uncached p95 <= 60 ms`. Current measurements are 6.989 ms (cache-hit p95) and 11.45 ms (uncached p95). Daemon-side idle measurements are 0.031% CPU and 5.516 MB RSS.
+`scripts/skill_advisor_bench.py` drives the bench measurements. The design envelope is `cache-hit p95 <= 50 ms` and `uncached p95 <= 60 ms` — design ceilings rather than enforceable CI gates, since p95 timing varies with sandbox load. Current stable-workstation measurements are 6.989 ms (cache-hit p95) and 11.45 ms (uncached p95), well within the envelope. Daemon-side idle measurements are 0.031% CPU and 5.516 MB RSS. The CI wrapper at `mcp_server/stress_test/skill-advisor/python-bench-runner-stress.vitest.ts` verifies the subprocess surface and JSON envelope shape; tightened p95 gating belongs in a stable benchmark environment, not the stress suite.
 
 <!-- /ANCHOR:current-reality -->
 

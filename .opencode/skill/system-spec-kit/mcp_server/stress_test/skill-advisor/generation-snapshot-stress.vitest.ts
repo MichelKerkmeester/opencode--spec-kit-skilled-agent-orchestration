@@ -56,15 +56,18 @@ describe('sa-004 — Generation snapshot atomicity', () => {
     expect(Math.max(...observed)).toBe(25);
   });
 
-  it('keeps corrupted generation files on a callable recovery path', async () => {
+  it('classifies corrupted counters per the catalog: recovered when writable, unavailable when not', async () => {
     publishSkillGraphGeneration({ workspaceRoot: tmpDir, reason: 'before-corruption' });
     writeFileSync(getSkillGraphGenerationPath(tmpDir), '{not-json', 'utf8');
 
-    // FIXME(sa-004): catalog expects unavailable trust state; current advisor generation recovers malformed counters.
+    // Catalog 01--daemon-and-freshness/04-generation.md §2 — "Corrupted
+    // counters are recovered when recoverable and reported as `unavailable`
+    // freshness when not." Writable filesystem here, so we expect `recovered`.
     const recovered = readAdvisorGeneration(tmpDir);
 
     expect(recovered.status).toBe('recovered');
     expect(recovered.recoveryPath).toBe('regenerate');
     expect(recovered.generation).toBeGreaterThan(1);
+    expect(recovered.reason).toBe('GENERATION_COUNTER_RECOVERED');
   });
 });

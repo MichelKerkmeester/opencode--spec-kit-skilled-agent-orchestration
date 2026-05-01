@@ -1,0 +1,23 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/045-drift-finding-fixes",
+  "description": "Spec: Drift Finding Fixes",
+  "keywords": [
+    "spec",
+    "drift",
+    "finding",
+    "fixes"
+  ],
+  "lastUpdated": "2026-05-01T03:43:33.084Z",
+  "specId": "045",
+  "folderSlug": "drift-finding-fixes",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "01-05-26_04-43__fixed-sa-011-non-idempotent-derived-sync-real-bug.md"
+  ]
+}

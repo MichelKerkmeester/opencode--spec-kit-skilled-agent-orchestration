@@ -181,8 +181,11 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
   const assetFiles = walkFiles(join(skillDir, 'assets'));
   buckets.assets.push(...assetFiles.map((file) => basename(file, extname(file))));
   buckets.intent_signals.push(...stringArray(graphMetadata.intent_signals));
-  buckets.source_docs.push(...stringArray(priorDerived.source_docs));
-  buckets.key_files.push(...priorKeyFiles);
+  // Note: priorDerived.source_docs and priorKeyFiles are merged into the final
+  // `sourceDocs` and `keyFiles` arrays below to preserve stickiness, but they
+  // are NOT pushed into the buckets here. Re-feeding them into the bucket
+  // pipeline produces path-derived ngrams in trigger_phrases/keywords on every
+  // resync, breaking idempotence for unchanged SKILL.md content.
 
   const rawTriggerCandidates = [
     ...buckets.frontmatter,
@@ -212,13 +215,28 @@ export function extractDerivedMetadata(options: ExtractDerivedOptions): DerivedE
   ], 'graph-metadata', 64);
 
   const antiStuffing = applyAntiStuffing(rawTriggerCandidates, rawKeywordCandidates);
-  const dependencies = [
-    fileDependency(workspaceRoot, relative(workspaceRoot, skillMdPath)),
-    fileDependency(workspaceRoot, relative(workspaceRoot, graphMetadataPath)),
-    ...referenceFiles.map((file) => fileDependency(workspaceRoot, relative(workspaceRoot, file))),
-    ...assetFiles.filter((file) => statSync(file).isFile()).map((file) => fileDependency(workspaceRoot, relative(workspaceRoot, file))),
-    ...priorKeyFiles.map((file) => fileDependency(workspaceRoot, file)),
-  ];
+  // graph-metadata.json is intentionally excluded from the provenance hash:
+  // syncDerivedMetadata writes the derived block back into it, so including
+  // its hash would break idempotence (the second sync would see a different
+  // hash because the first sync mutated the file). Authored graph-metadata
+  // content (e.g. intent_signals) is already represented in the buckets.
+  // Dependencies are deduplicated by path so priorKeyFiles entries that
+  // overlap with the explicit SKILL.md / reference / asset list don't
+  // double-count in the fingerprint.
+  const graphMetadataRel = relative(workspaceRoot, graphMetadataPath);
+  const dependencyMap = new Map<string, ReturnType<typeof fileDependency>>();
+  const addDep = (relPath: string): void => {
+    if (relPath === graphMetadataRel) return;
+    if (dependencyMap.has(relPath)) return;
+    dependencyMap.set(relPath, fileDependency(workspaceRoot, relPath));
+  };
+  addDep(relative(workspaceRoot, skillMdPath));
+  for (const file of referenceFiles) addDep(relative(workspaceRoot, file));
+  for (const file of assetFiles) {
+    if (statSync(file).isFile()) addDep(relative(workspaceRoot, file));
+  }
+  for (const file of priorKeyFiles) addDep(file);
+  const dependencies = [...dependencyMap.values()];
   const provenance = computeProvenanceFingerprint(buckets, dependencies);
 
   return {
