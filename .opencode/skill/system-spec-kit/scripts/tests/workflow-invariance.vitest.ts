@@ -88,6 +88,7 @@ function isAllowedHit(hit: SurfaceHit, filePath: string, isExtra: boolean): bool
   if (rel.endsWith('.opencode/skill/system-spec-kit/templates/manifest/EXTENSION_GUIDE.md')) return true;
   if (rel.endsWith('.opencode/skill/system-spec-kit/templates/manifest/MIGRATION.md')) return true;
   if (rel.endsWith('.opencode/skill/system-spec-kit/templates/manifest/spec-kit-docs.json')) return true;
+  if (rel.endsWith('.opencode/skill/system-spec-kit/templates/README.md')) return true;
   if (/mcp_server\/lib\/config\/capability-flags\.ts|lib\/config\/capability-flags\.ts|\bcapability-flags\.ts\b|from ['"][^'"]*capability-flags['"]|require\(['"][^'"]*capability-flags(?:\.js)?['"]\)/iu.test(hit.text)) return true;
   if (!isExtra && isLegacyPhaseCleanupDebt(filePath)) return true;
   return false;

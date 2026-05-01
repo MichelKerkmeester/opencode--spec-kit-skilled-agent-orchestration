@@ -264,7 +264,7 @@ Not every change needs the same amount of paperwork. A one-line bug fix does not
 | **2**  | 100 - 499      | Level 1 + checklist.md                                | Features needing QA verification, multi-file changes |
 | **3**  | 500+           | Level 2 + decision-record.md                          | Architecture changes, complex refactors              |
 | **3+** | Complexity 80+ | Level 3 + approval workflow, compliance, stakeholders  | High-complexity work needing review tracking          |
-| **Phase Parent** | n/a (manifest only) | spec.md, description.json, graph-metadata.json | Folder contains phase children (`[0-9]{3}-name/` subdirs with their own spec.md/description.json) |
+| **Phase Parent** | n/a (control file only) | spec.md, description.json, graph-metadata.json | Folder contains phase children (`[0-9]{3}-name/` subdirs with their own spec.md/description.json) |
 
 The LOC ranges are guidance, not hard rules. Risk, complexity and the number of affected files can push a task to a higher level. When in doubt, choose the higher level.
 
