@@ -90,10 +90,14 @@ interface RerankResult {
   provider: string;
   /**
    * P3-16: Discriminator for score origin.
-   *   'cross-encoder' — score from a neural reranker (Voyage / Cohere API or local model)
-   *   'fallback'      — synthetic positional score (0–0.5) when no provider is available
+   *   'cross-encoder'      — score from a neural reranker (Voyage / Cohere API or local model)
+   *   'cross-encoder-tail' — F-011-C1-03: candidate fell outside the provider
+   *                          maxDocuments window; original ordering preserved,
+   *                          synthetic positional score appended after the
+   *                          reranked head
+   *   'fallback'           — synthetic positional score (0–0.5) when no provider is available
    */
-  scoringMethod: 'cross-encoder' | 'fallback';
+  scoringMethod: 'cross-encoder' | 'cross-encoder-tail' | 'fallback';
   [key: string]: unknown;
 }
 
@@ -461,21 +465,54 @@ async function rerankResults(
 
   const start = Date.now();
 
+  // F-011-C1-03: enforce provider maxDocuments BEFORE the API call. The
+  // PROVIDER_CONFIG declared a per-provider cap (Voyage / Cohere = 100,
+  // local = 50) but the previous code never applied it — providers received
+  // the entire candidate list, inflating API quota usage and payload size.
+  // We split into head (top-N for the provider) and tail (remainder, kept
+  // in original order with `cross-encoder-tail` marker so callers can audit
+  // that those rows did NOT receive a neural score). Documents arrive in
+  // upstream-ranked order (Stage 3 sorts by effective score before calling),
+  // so the natural head is the higher-quality slice.
+  const providerCap = PROVIDER_CONFIG[provider]?.maxDocuments ?? documents.length;
+  const head = documents.length > providerCap
+    ? documents.slice(0, providerCap)
+    : documents;
+  const tail = documents.length > providerCap
+    ? documents.slice(providerCap)
+    : [];
+
   try {
     let results: RerankResult[];
 
     switch (provider) {
       case 'voyage':
-        results = await rerankVoyage(query, documents);
+        results = await rerankVoyage(query, head);
         break;
       case 'cohere':
-        results = await rerankCohere(query, documents);
+        results = await rerankCohere(query, head);
         break;
       case 'local':
-        results = await rerankLocal(query, documents);
+        results = await rerankLocal(query, head);
         break;
       default:
         throw new Error(`Unknown provider: ${provider}`);
+    }
+
+    // F-011-C1-03: append the un-reranked tail in original order. Tail rows
+    // get a deterministic positional score below the head's minimum so they
+    // sort cleanly after the reranked head when the caller slices to `limit`.
+    if (tail.length > 0) {
+      const tailBaseScore = 0.4; // below typical neural rerank scores (~0.5+)
+      const tailResults: RerankResult[] = tail.map((document, index) => ({
+        ...document,
+        rerankerScore: tailBaseScore - (index / (tail.length * 4)),
+        score: tailBaseScore - (index / (tail.length * 4)),
+        originalRank: providerCap + index,
+        provider,
+        scoringMethod: 'cross-encoder-tail' as const,
+      }));
+      results = [...results, ...tailResults];
     }
 
     // Apply length penalty only when requested

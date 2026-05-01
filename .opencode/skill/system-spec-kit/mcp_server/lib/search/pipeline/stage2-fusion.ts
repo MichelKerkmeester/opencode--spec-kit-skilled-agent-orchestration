@@ -155,6 +155,33 @@ function isShadowLearningModelLoadEnabled(): boolean {
   return process.env.SPECKIT_SHADOW_LEARNING?.toLowerCase().trim() === 'true';
 }
 
+// F-011-C1-05: learned blend weight. Reads SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT
+// (default 0.0 → identical to today's shadow-only behavior). Clamped to
+// [0, 0.05] so promotion stays a small guarded blend, never a flip. The
+// bound is intentional: even when opted in, the manual combiner remains the
+// dominant signal (>=95%) and the learned model acts as a tiebreaker, not a
+// steering wheel. NaN, negative, and out-of-range values clamp to the bound.
+const MAX_LEARNED_BLEND_WEIGHT = 0.05;
+let warnedLearnedBlendClamp = false;
+
+function resolveLearnedBlendWeight(env: NodeJS.ProcessEnv = process.env): number {
+  const raw = env.SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT;
+  if (raw === undefined || raw === '') return 0;
+  const parsed = Number.parseFloat(raw);
+  if (!Number.isFinite(parsed)) return 0;
+  if (parsed <= 0) return 0;
+  if (parsed > MAX_LEARNED_BLEND_WEIGHT) {
+    if (!warnedLearnedBlendClamp) {
+      warnedLearnedBlendClamp = true;
+      console.warn(
+        `[stage2-fusion] SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT=${raw} exceeds the ${MAX_LEARNED_BLEND_WEIGHT} guard; clamping. Promotion is a small guarded blend, not a flip.`
+      );
+    }
+    return MAX_LEARNED_BLEND_WEIGHT;
+  }
+  return parsed;
+}
+
 function resolveLearnedStage2ModelPath(): string {
   const configured = process.env.SPECKIT_LEARNED_STAGE2_MODEL?.trim();
   if (!configured) {
@@ -1271,10 +1298,18 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
   // REQ-D1-006: Runs the learned linear ranker in parallel with the manual combiner.
   // Shadow-only — scores are logged for comparison but never affect live ranking.
   // Gated behind SPECKIT_LEARNED_STAGE2_COMBINER (default ON, graduated).
+  // F-011-C1-05: when SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT is set in (0, 0.05],
+  // a small guarded blend `(1-w)*manual + w*learned` is applied to the live
+  // score. Default 0 preserves shadow-only behavior. The blend weight is
+  // clamped at the source by resolveLearnedBlendWeight().
   if (isLearnedStage2CombinerEnabled()) {
     try {
       const learnedShadowModel = await loadPersistedLearnedStage2Model();
-      for (const row of results) {
+      // F-011-C1-05: weight resolved once per pipeline run; flag-gated and
+      // clamped. Zero means shadow-only (today's behavior).
+      const learnedBlendWeight = resolveLearnedBlendWeight();
+      for (let rowIndex = 0; rowIndex < results.length; rowIndex++) {
+        const row = results[rowIndex];
         const features = extractFeatureVector({
           rrfScore: row.rrfScore,
           overlapScore: typeof row.overlapScore === 'number' ? row.overlapScore : undefined,
@@ -1299,6 +1334,16 @@ export async function executeStage2(input: Stage2Input): Promise<Stage2Output> {
           console.warn(
             `[stage2-fusion] shadow-learned id=${row.id} manual=${shadow.manualScore.toFixed(4)} learned=${shadow.learnedScore.toFixed(4)} delta=${shadow.delta.toFixed(4)}`
           );
+          // F-011-C1-05: apply the small guarded blend when weight > 0 AND a
+          // shadow result is available (model loaded successfully). Mutate
+          // the row through withSyncedScoreAliases so all score aliases stay
+          // aligned. When weight is 0 (default) or model failed to load, this
+          // branch is skipped and behavior is identical to pre-fix.
+          if (learnedBlendWeight > 0) {
+            const blendedScore = (1 - learnedBlendWeight) * shadow.manualScore
+              + learnedBlendWeight * shadow.learnedScore;
+            results[rowIndex] = withSyncedScoreAliases(row, blendedScore);
+          }
         }
       }
     } catch (err: unknown) {
@@ -1407,4 +1452,7 @@ export const __testables = {
   enrichResultsWithAnchorMetadata,
   enrichResultsWithValidationMetadata,
   applyValidationSignalScoring,
+  // F-011-C1-05: learned blend weight resolver, exposed for unit testing
+  // the env-var clamp and default-zero behavior.
+  resolveLearnedBlendWeight,
 };

@@ -92,4 +92,76 @@ describe('W4 conditional rerank gate', () => {
     expect(variant.summary.precisionAt3).toBeGreaterThan(baseline.summary.precisionAt3);
     expect(variant.summary.latency.p95).toBeLessThanOrEqual(5);
   });
+
+  // F-011-C1-02: lower the rerank-gate floor for weak-margin / disagreement
+  // triggers. Three-candidate ambiguous cases used to be blocked by the
+  // hard floor of 4 even when the gate had clear signals (weak margin or
+  // disagreement). The relaxed floor lets the rerank actually run for the
+  // exact cases where it has the highest payoff.
+  it('passes 3-candidate weak-margin case under relaxed floor (F-011-C1-02)', () => {
+    const queryPlan = createEmptyQueryPlan({
+      complexity: 'simple',
+      authorityNeed: 'low',
+      // Weak-margin trigger requires multi-channel + topScoreMargin <= 0.08;
+      // selectedChannels.length supplies channelCount fallback when the
+      // signal is omitted.
+      selectedChannels: ['memory_search', 'skill_graph_query'],
+    });
+
+    const decision = decideConditionalRerank({
+      queryPlan,
+      signals: { channelCount: 2, topScoreMargin: 0.02, candidateCount: 3 },
+    });
+
+    expect(decision).toMatchObject({
+      shouldRerank: true,
+    });
+    // Trigger surface must surface the weak-margin signal so the relaxed
+    // floor was used for the right reason — not by accident.
+    expect(decision.triggers).toContain('multi-channel-weak-margin');
+  });
+
+  it('still blocks 3-candidate case when only complex-query/high-authority triggers fire (no ambiguity)', () => {
+    // F-011-C1-02 backward-compat guard: complex-query / high-authority
+    // alone (no weak-margin or disagreement) still respect the original
+    // floor of 4. This protects the baseline cost contract for complex
+    // queries that don't actually have ambiguity signals.
+    const queryPlan = createEmptyQueryPlan({
+      complexity: 'complex',
+      authorityNeed: 'high',
+      selectedChannels: ['memory_search'],
+    });
+
+    expect(decideConditionalRerank({
+      queryPlan,
+      signals: { channelCount: 1, topScoreMargin: 0.5, candidateCount: 3 },
+    })).toMatchObject({
+      shouldRerank: false,
+      reason: 'candidate_count_below_rerank_floor',
+    });
+  });
+
+  it('passes 2-candidate case when a disagreement trigger fires', () => {
+    // F-011-C1-02: disagreement-reason triggers also count as ambiguity
+    // signals. Even with only 2 candidates, rerank should run when channels
+    // disagree about the top result.
+    const queryPlan = createEmptyQueryPlan({
+      complexity: 'simple',
+      authorityNeed: 'low',
+      selectedChannels: ['memory_search'],
+    });
+
+    const decision = decideConditionalRerank({
+      queryPlan,
+      signals: {
+        channelCount: 1,
+        topScoreMargin: 0.5,
+        candidateCount: 2,
+        disagreementReasons: ['top1_mismatch'],
+      },
+    });
+
+    expect(decision).toMatchObject({ shouldRerank: true });
+    expect(decision.triggers).toContain('disagreement:top1_mismatch');
+  });
 });

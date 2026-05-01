@@ -11,6 +11,9 @@ import {
   SCORER_LANE_IDS,
 } from '../../skill_advisor/lib/scorer/lane-registry.js';
 import { AdvisorRecommendOutputSchema } from '../../skill_advisor/schemas/advisor-tool-schemas.js';
+// F-011-C1-05: __testables exposes resolveLearnedBlendWeight so the env-clamp
+// behavior can be verified without spinning up the full pipeline.
+import { __testables as stage2Testables } from '../../lib/search/pipeline/stage2-fusion.js';
 import { runMeasurement } from './measurement-fixtures.js';
 
 describe('W5 advisor shadow learned weights', () => {
@@ -76,5 +79,52 @@ describe('W5 advisor shadow learned weights', () => {
     const variant = await runMeasurement({ workstream: 'W5', variant: 'variant' });
 
     expect(variant.summary.citationQuality).toBeGreaterThan(baseline.summary.citationQuality);
+  });
+
+  // F-011-C1-05: learned blend weight clamp. The env-controlled blend weight
+  // is parsed and clamped at the source so the live blend (1-w)*manual +
+  // w*learned can never exceed 5%. Default 0 means shadow-only behavior is
+  // preserved when the flag is unset.
+  describe('F-011-C1-05 learned blend weight clamp', () => {
+    it('returns 0 when SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT is unset', () => {
+      expect(stage2Testables.resolveLearnedBlendWeight({})).toBe(0);
+    });
+
+    it('returns the parsed weight when it falls within [0, 0.05]', () => {
+      expect(stage2Testables.resolveLearnedBlendWeight({
+        SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: '0.03',
+      })).toBeCloseTo(0.03, 5);
+    });
+
+    it('clamps weights above 0.05 down to the guard (no flip into a steering wheel)', () => {
+      expect(stage2Testables.resolveLearnedBlendWeight({
+        SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: '0.5',
+      })).toBe(0.05);
+    });
+
+    it('returns 0 when the env value is non-numeric (e.g. "abc")', () => {
+      expect(stage2Testables.resolveLearnedBlendWeight({
+        SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: 'abc',
+      })).toBe(0);
+    });
+
+    it('returns 0 when the env value is negative or zero', () => {
+      expect(stage2Testables.resolveLearnedBlendWeight({
+        SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: '-0.05',
+      })).toBe(0);
+      expect(stage2Testables.resolveLearnedBlendWeight({
+        SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: '0',
+      })).toBe(0);
+    });
+
+    it('result stays in [0, 0.05] across diverse env values (boundary guard)', () => {
+      const fixtures = ['0', '0.01', '0.04999', '0.05', '0.1', '999', 'NaN', '', undefined];
+      for (const value of fixtures) {
+        const env = value === undefined ? {} : { SPECKIT_LEARNED_STAGE2_BLEND_WEIGHT: value };
+        const weight = stage2Testables.resolveLearnedBlendWeight(env);
+        expect(weight).toBeGreaterThanOrEqual(0);
+        expect(weight).toBeLessThanOrEqual(0.05);
+      }
+    });
   });
 });

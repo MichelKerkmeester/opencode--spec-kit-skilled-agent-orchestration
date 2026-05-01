@@ -35,4 +35,83 @@ describe('W11 CocoIndex calibration telemetry', () => {
     expect(telemetry.scope?.tenantId).toBe('tenant-a');
     expect(envelope.cocoindexCalibration?.recommendedMultiplier).toBe(4);
   });
+
+  // F-011-C1-04: graduated-overfetch flag. The new
+  // SPECKIT_COCOINDEX_GRADUATED_OVERFETCH flag promotes the adaptive overfetch
+  // recommendation from telemetry-only to a live 2x multiplier (conservative
+  // bridge — the existing 4x adaptive flag still wins when both are set).
+  // CI / default-OFF behavior is unchanged.
+  it('applies graduated 2x multiplier when SPECKIT_COCOINDEX_GRADUATED_OVERFETCH=1 and duplicate density >= 0.35 (F-011-C1-04)', () => {
+    const telemetry = calibrateCocoIndexOverfetch({
+      requestedLimit: 5,
+      candidates: [
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+      ],
+      env: { SPECKIT_COCOINDEX_GRADUATED_OVERFETCH: '1' },
+    });
+
+    expect(telemetry.adaptiveOverfetchApplied).toBe(false);
+    expect(telemetry.graduatedOverfetchApplied).toBe(true);
+    expect(telemetry.overfetchMultiplier).toBe(2);
+    expect(telemetry.effectiveLimit).toBe(10);
+  });
+
+  it('graduated flag is a no-op when duplicate density is below the threshold', () => {
+    const telemetry = calibrateCocoIndexOverfetch({
+      requestedLimit: 5,
+      candidates: [
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+        { filePath: 'src/c.ts', pathClass: 'runtime' },
+        { filePath: 'src/d.ts', pathClass: 'runtime' },
+      ],
+      env: { SPECKIT_COCOINDEX_GRADUATED_OVERFETCH: '1' },
+    });
+
+    expect(telemetry.duplicateDensity).toBe(0);
+    expect(telemetry.graduatedOverfetchApplied).toBe(false);
+    expect(telemetry.overfetchMultiplier).toBe(1);
+  });
+
+  it('adaptive 4x flag wins when both flags are set (graduated 2x is suppressed)', () => {
+    const telemetry = calibrateCocoIndexOverfetch({
+      requestedLimit: 5,
+      candidates: [
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+      ],
+      env: {
+        SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH: '1',
+        SPECKIT_COCOINDEX_GRADUATED_OVERFETCH: '1',
+      },
+    });
+
+    expect(telemetry.adaptiveOverfetchApplied).toBe(true);
+    expect(telemetry.graduatedOverfetchApplied).toBe(false);
+    expect(telemetry.overfetchMultiplier).toBe(4);
+    expect(telemetry.effectiveLimit).toBe(20);
+  });
+
+  it('graduated flag default OFF preserves CI behavior (no behavior change without opt-in)', () => {
+    const telemetry = calibrateCocoIndexOverfetch({
+      requestedLimit: 5,
+      candidates: [
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/a.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+        { filePath: 'src/b.ts', pathClass: 'runtime' },
+      ],
+      env: {},
+    });
+
+    expect(telemetry.adaptiveOverfetchApplied).toBe(false);
+    expect(telemetry.graduatedOverfetchApplied).toBe(false);
+    expect(telemetry.overfetchMultiplier).toBe(1);
+    expect(telemetry.effectiveLimit).toBe(5);
+  });
 });

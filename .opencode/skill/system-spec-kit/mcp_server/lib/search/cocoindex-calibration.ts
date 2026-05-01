@@ -27,6 +27,13 @@ interface CocoIndexCalibrationTelemetry {
   duplicateCount: number;
   uniquePathCount: number;
   adaptiveOverfetchApplied: boolean;
+  // F-011-C1-04: surfaced when the graduated 2x flag fires. Independent of
+  // adaptiveOverfetchApplied — when both flags are set, adaptive (4x) wins
+  // and graduatedOverfetchApplied is false. Optional in the type so existing
+  // test literals and external constructors still typecheck; the calibrator
+  // always populates it (true | false), so consumers reading the field from
+  // calibrator output can rely on a boolean value.
+  graduatedOverfetchApplied?: boolean;
   overfetchMultiplier: number;
   pathClassCounts: Record<string, number>;
   scope?: {
@@ -41,12 +48,30 @@ function isAdaptiveCocoIndexOverfetchEnabled(env: NodeJS.ProcessEnv = process.en
     || env.SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH === 'true';
 }
 
+// F-011-C1-04: graduated overfetch flag. The existing 4x adaptive flag
+// (`SPECKIT_COCOINDEX_ADAPTIVE_OVERFETCH`) stays as the explicit power-user
+// opt-in. The graduated flag is a conservative bridge: 2x multiplier instead
+// of 4x, only kicks in when duplicate density >= 0.35, defaults OFF. The
+// adaptive flag wins when both are set (4x dominates 2x).
+function isGraduatedCocoIndexOverfetchEnabled(env: NodeJS.ProcessEnv = process.env): boolean {
+  return env.SPECKIT_COCOINDEX_GRADUATED_OVERFETCH === '1'
+    || env.SPECKIT_COCOINDEX_GRADUATED_OVERFETCH === 'true';
+}
+
 function calibrateCocoIndexOverfetch(input: CocoIndexCalibrationInput): CocoIndexCalibrationTelemetry {
   const requestedLimit = Math.max(1, Math.floor(input.requestedLimit));
   const duplicateStats = computeDuplicateDensity(input.candidates);
   const adaptiveOverfetchApplied = isAdaptiveCocoIndexOverfetchEnabled(input.env)
     && duplicateStats.duplicateDensity >= 0.35;
-  const overfetchMultiplier = adaptiveOverfetchApplied ? 4 : 1;
+  // F-011-C1-04: graduated overfetch only fires when adaptive is OFF. This
+  // keeps the flag interaction simple (adaptive 4x dominates) and ensures CI
+  // behavior is unchanged unless a user opts into one of the two flags.
+  const graduatedOverfetchApplied = !adaptiveOverfetchApplied
+    && isGraduatedCocoIndexOverfetchEnabled(input.env)
+    && duplicateStats.duplicateDensity >= 0.35;
+  const overfetchMultiplier = adaptiveOverfetchApplied
+    ? 4
+    : (graduatedOverfetchApplied ? 2 : 1);
   return {
     requestedLimit,
     effectiveLimit: requestedLimit * overfetchMultiplier,
@@ -54,6 +79,11 @@ function calibrateCocoIndexOverfetch(input: CocoIndexCalibrationInput): CocoInde
     duplicateCount: duplicateStats.duplicateCount,
     uniquePathCount: duplicateStats.uniquePathCount,
     adaptiveOverfetchApplied,
+    // F-011-C1-04: surface the new flag through telemetry so envelope auditors
+    // can distinguish a 2x graduated bump from the 4x adaptive bump. Field is
+    // additive — existing consumers reading `adaptiveOverfetchApplied` and
+    // `overfetchMultiplier` see the right values without any code change.
+    graduatedOverfetchApplied,
     overfetchMultiplier,
     pathClassCounts: countPathClasses(input.candidates),
     ...(input.tenantId || input.userId || input.agentId ? {
@@ -120,4 +150,6 @@ export {
   calibrateCocoIndexOverfetch,
   computeDuplicateDensity,
   isAdaptiveCocoIndexOverfetchEnabled,
+  // F-011-C1-04: graduated-overfetch flag helper for callers/tests
+  isGraduatedCocoIndexOverfetchEnabled,
 };

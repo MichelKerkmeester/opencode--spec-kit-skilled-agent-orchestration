@@ -16,6 +16,10 @@ import {
 import {
   precisionAtK,
   recallAtK,
+  // F-011-C1-01: NDCG@K and MRR are rank-sensitive metrics computed
+  // per-case so summarizeSearchQualityRun can average them.
+  ndcgAtK,
+  mrr,
 } from './metrics.js';
 import type { SearchDecisionEnvelope } from '../../lib/search/search-decision-envelope.js';
 import type { ShadowDeltaRecord } from '../../skill_advisor/lib/shadow/shadow-sink.js';
@@ -72,6 +76,12 @@ interface SearchQualityCaseResult {
     totalRelevant: number;
     precisionAt3: number;
     recallAt3: number;
+    // F-011-C1-01: rank-sensitive metrics added per-case so the summary
+    // can average them. Existing precision/recall/relevantRetrieved/
+    // totalRelevant fields are unchanged.
+    ndcgAt3: number;
+    ndcgAt10: number;
+    mrr: number;
   };
   citationPolicy: {
     expectedIds: string[];
@@ -178,6 +188,12 @@ async function runSearchQualityHarness(
         totalRelevant: testCase.expectedRelevantIds.length,
         precisionAt3: precisionAtK(finalCandidates, testCase.expectedRelevantIds, k),
         recallAt3: recallAtK(finalCandidates, testCase.expectedRelevantIds, k),
+        // F-011-C1-01: rank-sensitive metrics per-case. NDCG@3 lines up with
+        // precision@3 / recall@3 (k from options), NDCG@10 gives a longer-tail
+        // view, and MRR captures the first-relevant-hit position.
+        ndcgAt3: ndcgAtK(finalCandidates, testCase.expectedRelevantIds, k),
+        ndcgAt10: ndcgAtK(finalCandidates, testCase.expectedRelevantIds, 10),
+        mrr: mrr(finalCandidates, testCase.expectedRelevantIds),
       },
       citationPolicy: {
         expectedIds: expectedCitationIds,
