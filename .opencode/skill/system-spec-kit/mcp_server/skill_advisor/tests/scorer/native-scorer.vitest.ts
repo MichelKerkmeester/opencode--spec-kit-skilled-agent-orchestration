@@ -55,38 +55,44 @@ describe('027/003 native scorer units', () => {
   });
 
   it('AC-3 marks top-2-within-0.05 recommendations ambiguous', () => {
+    // F-012-C2-04: Ambiguity now compares ranking `score`, not `confidence`.
+    // The fixture sets distinct scores within margin (0.50 vs 0.48 = 0.02 diff)
+    // to exercise the new comparison surface.
     const base = {
       kind: 'skill' as const,
       uncertainty: 0.2,
       passes_threshold: true,
       reason: 'fixture',
-      score: 0.5,
+      confidence: 0.84,
       laneContributions: [],
       dominantLane: 'explicit_author' as const,
       lifecycleStatus: 'active' as const,
     };
     const result = applyAmbiguity([
-      { ...base, skill: 'alpha', confidence: 0.84 },
-      { ...base, skill: 'beta', confidence: 0.80 },
+      { ...base, skill: 'alpha', score: 0.50 },
+      { ...base, skill: 'beta', score: 0.48 },
     ] satisfies AdvisorScoredRecommendation[]);
     expect(result[0].ambiguousWith).toEqual(['beta']);
     expect(result[1].ambiguousWith).toEqual(['alpha']);
   });
 
-  it('does not mark top-two recommendations ambiguous when raw confidence is outside the margin', () => {
+  it('does not mark top-two recommendations ambiguous when raw score is outside the margin', () => {
+    // F-012-C2-04: Outside-margin example uses score (0.50 vs 0.40 = 0.10 diff,
+    // > AMBIGUITY_MARGIN of 0.05). Confidence is identical to keep the test
+    // focused on score-based behavior.
     const base = {
       kind: 'skill' as const,
       uncertainty: 0.2,
       passes_threshold: true,
       reason: 'fixture',
-      score: 0.5,
+      confidence: 0.85,
       laneContributions: [],
       dominantLane: 'explicit_author' as const,
       lifecycleStatus: 'active' as const,
     };
     const result = applyAmbiguity([
-      { ...base, skill: 'alpha', confidence: 0.8001 },
-      { ...base, skill: 'beta', confidence: 0.8502 },
+      { ...base, skill: 'alpha', score: 0.50 },
+      { ...base, skill: 'beta', score: 0.40 },
     ] satisfies AdvisorScoredRecommendation[]);
     expect(result[0].ambiguousWith).toBeUndefined();
     expect(result[1].ambiguousWith).toBeUndefined();
@@ -209,7 +215,11 @@ describe('027/003 native scorer units', () => {
     expect(result.unknown).toBe(true);
   });
 
-  it('projects derived keywords consistently from filesystem fallback', () => {
+  it('projects derived triggers and keywords from distinct sources via filesystem fallback', () => {
+    // F-012-C2-02: derivedTriggers come from `derived.trigger_phrases` and
+    // derivedKeywords come from `derived.key_topics + entities + key_files +
+    // source_docs`. Previously both fields aliased the union of all five
+    // sources; now they are distinct.
     const root = mkdtempSync(join(tmpdir(), 'advisor-projection-'));
     try {
       const skillDir = join(root, '.opencode', 'skill', 'alpha');
@@ -228,8 +238,10 @@ describe('027/003 native scorer units', () => {
       const projection = loadAdvisorProjection(root);
       const alpha = projection.skills.find((entry) => entry.id === 'alpha');
 
-      expect(alpha?.derivedTriggers).toEqual(expect.arrayContaining(['filesystem derived route', 'projection parity']));
-      expect(alpha?.derivedKeywords).toEqual(alpha?.derivedTriggers);
+      expect(alpha?.derivedTriggers).toEqual(expect.arrayContaining(['filesystem derived route']));
+      expect(alpha?.derivedKeywords).toEqual(expect.arrayContaining(['projection parity']));
+      // Distinct arrays: triggers contain trigger_phrases only; keywords contain key_topics only.
+      expect(alpha?.derivedTriggers).not.toEqual(alpha?.derivedKeywords);
     } finally {
       rmSync(root, { recursive: true, force: true });
     }

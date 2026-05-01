@@ -2,7 +2,7 @@
   "schema_version": 1,
   "packet_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/003-advisor-quality",
   "spec_folder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation/003-advisor-quality",
-  "parent_id": null,
+  "parent_id": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/049-deep-research-finding-remediation",
   "children_ids": [],
   "manual": {
     "depends_on": [],
@@ -10,16 +10,214 @@
     "related_to": []
   },
   "derived": {
-    "trigger_phrases": [],
-    "key_topics": [],
-    "importance_tier": "important",
-    "status": "planned",
-    "key_files": ["spec.md","plan.md","tasks.md"],
-    "entities": [],
-    "causal_summary": "Phase 3: advisor-quality",
+    "trigger_phrases": [
+      "F-006-B1",
+      "F-012-C2",
+      "F-013-C3",
+      "advisor quality",
+      "renderAdvisorBrief alignment",
+      "graph-causal conflict signal",
+      "projection trigger keyword duplication",
+      "task-intent confidence floor",
+      "ambiguity tie cluster",
+      "review and update disambiguation",
+      "F-006-B1 plan",
+      "F-012-C2 plan"
+    ],
+    "key_topics": [
+      "f-006-b1",
+      "f-012-c2",
+      "f-013-c3",
+      "advisor",
+      "quality",
+      "renderadvisorbrief",
+      "alignment",
+      "graph-causal",
+      "conflict",
+      "signal",
+      "projection",
+      "trigger"
+    ],
+    "importance_tier": "normal",
+    "status": "complete",
+    "key_files": [
+      "mcp_server/hooks/codex/user-prompt-submit.ts",
+      "mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs",
+      "mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts",
+      "mcp_server/skill_advisor/lib/scorer/projection.ts",
+      "mcp_server/skill_advisor/lib/scorer/fusion.ts",
+      "mcp_server/skill_advisor/lib/scorer/ambiguity.ts",
+      "mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts",
+      "mcp_server/skill_advisor/scripts/skill_advisor.py",
+      "mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+      "mcp_server/skill_advisor/lib/render.ts",
+      "mcp_server/skill_advisor/tests/scorer/advisor-quality-049-003.vitest.ts",
+      "mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts",
+      "mcp_server/skill_advisor/tests/compat/plugin-bridge.vitest.ts",
+      ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+      "checklist.md",
+      "implementation-summary.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md"
+    ],
+    "entities": [
+      {
+        "name": "user-prompt-submit.ts",
+        "kind": "code",
+        "path": "mcp_server/hooks/codex/user-prompt-submit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "spec-kit-skill-advisor-bridge.mjs",
+        "kind": "file",
+        "path": "mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs",
+        "source": "derived"
+      },
+      {
+        "name": "graph-causal.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/lanes/graph-causal.ts",
+        "source": "derived"
+      },
+      {
+        "name": "projection.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/projection.ts",
+        "source": "derived"
+      },
+      {
+        "name": "fusion.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/fusion.ts",
+        "source": "derived"
+      },
+      {
+        "name": "ambiguity.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/ambiguity.ts",
+        "source": "derived"
+      },
+      {
+        "name": "explicit.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/scorer/lanes/explicit.ts",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor.py",
+        "kind": "file",
+        "path": "mcp_server/skill_advisor/scripts/skill_advisor.py",
+        "source": "derived"
+      },
+      {
+        "name": "skill_advisor_regression_cases.jsonl",
+        "kind": "file",
+        "path": "mcp_server/skill_advisor/scripts/fixtures/skill_advisor_regression_cases.jsonl",
+        "source": "derived"
+      },
+      {
+        "name": "render.ts",
+        "kind": "code",
+        "path": "mcp_server/skill_advisor/lib/render.ts",
+        "source": "derived"
+      },
+      {
+        "name": "advisor-quality-049-003.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/scorer/advisor-quality-049-003.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "native-scorer.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/scorer/native-scorer.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "plugin-bridge.vitest.ts",
+        "kind": "test",
+        "path": "mcp_server/skill_advisor/tests/compat/plugin-bridge.vitest.ts",
+        "source": "derived"
+      },
+      {
+        "name": "validate.sh",
+        "kind": "script",
+        "path": ".opencode/skill/system-spec-kit/scripts/spec/validate.sh",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Advisor Quality",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Progress",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Parent Spec",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Eight",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Eight advisor-quality findings sit across the skill-advisor surface. (B1-01) The Codex hook timeout fallback emits a bespoke advisor brief that bypasses the shared `renderAdvisorBrief()` formatter, so a future format change drifts between runtimes. (B1-02) The OpenCode bridge surfaces `Advisor: disabled by SPECKIT_SKILL_ADVISOR_HOOK_DISABLED.` to the model when the disabled flag is set, while every other runtime fails open silently — disabled-state visibility is not aligned. (B1-03) The OpenCode bridge carries a dead `renderNativeBrief()` alternate renderer that is unreferenced and can drift out of sync with the shared formatter. (C2-01) Graph-causal conflict evidence (negative `EDGE_MULTIPLIER` for `conflicts_with`) is filtered out at lane emit (`value.score > 0`), so conflict signals never reach fusion. (C2-02) The SQLite projection assigns `derivedKeywords = derivedTriggers` (same value), duplicating the same evidence into two lane inputs. (C2-03) The fusion task-intent confidence floor (0.75) lets token-stuffed prompts pass for many unrelated skills as soon as ANY direct/normalized score scrap clears the threshold — there is no dispersion guard. (C2-04) `isAmbiguousTopTwo` compares only the top two `confidence` values, ignoring the larger ranking-score signal and any third-or-deeper tied candidates. (C3-01) Fixture row 26 expects `sk-code-review` for `\"review and update this\"`, but the prompt is a write/edit request — the fixture encodes a review-only routing that conflicts with the write-verb signal.",
     "created_at": "2026-05-01T05:18:47Z",
-    "last_save_at": "2026-05-01T05:18:47Z",
+    "last_save_at": "2026-05-01T07:20:53.058Z",
+    "save_lineage": "same_pass",
     "last_accessed_at": null,
-    "source_docs": ["spec.md","plan.md","tasks.md"]
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "implementation-summary.md"
+    ]
   }
 }

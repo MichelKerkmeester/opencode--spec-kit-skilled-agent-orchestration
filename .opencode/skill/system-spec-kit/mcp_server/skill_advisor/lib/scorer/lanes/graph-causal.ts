@@ -86,12 +86,19 @@ export function scoreGraphCausalLane(
     }
   }
 
+  // F-012-C2-01: Preserve negative graph contributions through lane emit.
+  // Previously the filter dropped any entry with `value.score <= 0`, which
+  // silently discarded suppressive evidence accumulated through `conflicts_with`
+  // edges (EDGE_MULTIPLIER = -0.35). The filter now keeps non-zero scores and
+  // the clamp covers the full signed range [-1, 1] so fusion sees both positive
+  // and negative contributions. The traversal queue above still only enqueues
+  // `signed > 0` neighbors, so negative signals stay local to the conflict edge.
   return [...scores.entries()]
-    .filter(([, value]) => value.score > 0)
+    .filter(([, value]) => value.score !== 0)
     .map(([skillId, value]) => ({
       skillId,
       lane: 'graph_causal' as const,
-      score: Math.min(value.score, 1),
+      score: Math.max(-1, Math.min(value.score, 1)),
       evidence: value.evidence.slice(0, 6),
     }));
 }

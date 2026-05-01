@@ -276,6 +276,22 @@ export function scoreExplicitLane(prompt: string, projection: AdvisorProjection)
   if (WRITE_VERBS.test(lower) && /\b(error classes|trigger gap|reporter|mismatches?|bucket|gate 3)\b/.test(lower)) {
     push(scores, 'sk-code-opencode', 0.6, 'write-routing-tool-surface');
   }
+  // F-013-C3-01: Review-plus-write disambiguation. When the prompt contains
+  // the word `review` AND any explicit write/edit verb (`update|edit|fix|modify`),
+  // the request is implementation work, not a code review. Nudge the explicit
+  // lane toward `sk-code` and away from `sk-code-review`. The magnitudes
+  // (+3.0 / -2.0) are calibrated to overcome the combined `review` signals
+  // (token boost + intent boost + name match + graph sibling/enhances edges
+  // to sk-code-review) that otherwise keep sk-code-review on top. The lane's
+  // emit clamps with `Math.min(value.score, 1)` so per-skill score stays
+  // within [-1, 1]; the wide raw magnitude is needed because graph boosts
+  // compound through downstream layers. Pure review prompts (no write verb)
+  // are unaffected — they keep routing to `sk-code-review` via the existing
+  // `review` token boost above.
+  if (/\breview\b/.test(lower) && /\b(update|edit|fix|modify)\b/.test(lower)) {
+    push(scores, 'sk-code', 3.0, 'review-plus-write-disambiguation');
+    push(scores, 'sk-code-review', -2.0, 'review-plus-write-disambiguation');
+  }
   if (/\b(continue|resume|launch|kick off|overnight|convergence|iteration)\b/.test(lower) && /\bresearch\b/.test(lower)) {
     push(scores, 'sk-deep-research', 0.85, 'research-loop');
   }

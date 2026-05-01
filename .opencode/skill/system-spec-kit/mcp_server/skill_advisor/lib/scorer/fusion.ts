@@ -120,7 +120,20 @@ function confidenceFor(args: {
   if (args.hasTaskIntent
     && (args.directScore >= C.taskIntentDirectScoreFloor
       || args.liveNormalized >= C.taskIntentLiveNormalizedFloor)) {
-    return Number(Math.max(base, C.taskIntentFloor).toFixed(4));
+    // F-012-C2-03: Token-stuffing dispersion guard. Without this, a prompt
+    // with task-intent + many weak signals (saturating liveNormalized) but
+    // no strong direct anchor would force confidence to taskIntentFloor for
+    // many unrelated skills. The guard fires when liveNormalized is near-
+    // saturated AND directScore is below the directScoreLiftThreshold —
+    // the precise signature of a token-stuffed prompt. Legitimate task-intent
+    // prompts have at least one strong direct hit and pass via directScore;
+    // they don't hit this branch. When the guard fires we fall through to
+    // the standard `base + directBonus` math below.
+    const dispersionGuardTripped = args.liveNormalized >= 0.95
+      && args.directScore < C.directScoreLiftThreshold;
+    if (!dispersionGuardTripped) {
+      return Number(Math.max(base, C.taskIntentFloor).toFixed(4));
+    }
   }
   if (args.directScore >= C.directScoreLiftThreshold) {
     return Number(Math.max(base, C.directScoreFloor).toFixed(4));

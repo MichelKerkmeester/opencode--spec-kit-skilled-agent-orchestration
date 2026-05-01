@@ -2785,6 +2785,23 @@ def analyze_request(
     _apply_graph_boosts(skill_boosts, boost_reasons)
     _apply_family_affinity(skill_boosts, boost_reasons)
 
+    # F-013-C3-01: Review-plus-write disambiguation (Python parity with the
+    # TypeScript explicit lane). Applied AFTER graph boosts so the
+    # sibling/enhances graph signal between sk-code-review and sk-code does
+    # not counter-boost sk-code-review back above sk-code. When the prompt
+    # contains the word `review` AND any explicit write/edit verb
+    # (`update|edit|fix|modify`), the request is implementation work, not a
+    # code review. Push the lane toward `sk-code` and away from
+    # `sk-code-review`. Magnitudes (+1.5 / -1.0) overcome the combined
+    # review token boost + graph-sibling/enhances signal. Pure review
+    # prompts (no write verb) keep routing to `sk-code-review` via the
+    # existing review token boost in INTENT_BOOSTERS.
+    if re.search(r"\breview\b", prompt_lower) and re.search(r"\b(update|edit|fix|modify)\b", prompt_lower):
+        skill_boosts["sk-code"] = skill_boosts.get("sk-code", 0.0) + 3.0
+        skill_boosts["sk-code-review"] = skill_boosts.get("sk-code-review", 0.0) - 2.0
+        boost_reasons.setdefault("sk-code", []).append("!review-plus-write-disambiguation")
+        boost_reasons.setdefault("sk-code-review", []).append("!review-plus-write-disambiguation")
+
     # Strongly prefer the explicitly named skill when users mention it directly.
     # This protects routing in mixed prompts that also contain broad terms like "opencode".
     for skill_name, config in skills.items():

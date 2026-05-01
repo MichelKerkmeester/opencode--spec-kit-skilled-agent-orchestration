@@ -23,7 +23,7 @@
 {"id":"P1-REVIEW-004","priority":"P1","prompt":":review:auto security audit","confidence_only":false,"expect_result":true,"expected_top_any":["sk-deep-review"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-REVIEW-005","priority":"P1","prompt":"auto review release readiness","confidence_only":false,"expect_result":true,"expected_top_any":["sk-deep-review"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-REVIEW-006","priority":"P1","prompt":"auto review this PR","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-review"],"expect_kind":"skill","allow_command_bridge":false}
-{"id":"P1-REVIEW-007","priority":"P1","prompt":"review and update this","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-review"],"expect_kind":"skill","allow_command_bridge":false}
+{"id":"P1-REVIEW-007","priority":"P1","prompt":"review and update this","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-WEB-001","priority":"P1","prompt":"implement responsive css layout fix","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-WEB-002","priority":"P1","prompt":"refactor frontend component and verify accessibility","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code"],"expect_kind":"skill","allow_command_bridge":false}
 {"id":"P1-OPENCODE-001","priority":"P1","prompt":"update python script following opencode standards","confidence_only":false,"expect_result":true,"expected_top_any":["sk-code-opencode"],"expect_kind":"skill","allow_command_bridge":false}

@@ -78,7 +78,12 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     expect(contract.defaults.uncertaintyThreshold).toBe(0.35);
     expect(source).toContain('const DEFAULT_CONFIDENCE_THRESHOLD = COMPAT_CONTRACT.defaults.confidenceThreshold;');
     expect(source).toContain('const DEFAULT_UNCERTAINTY_THRESHOLD = COMPAT_CONTRACT.defaults.uncertaintyThreshold;');
-    expect(source).toContain('${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.');
+    // F-006-B1-03: The dead `renderNativeBrief()` was removed; bridge output now
+    // flows exclusively through `renderAdvisorBrief()` loaded via
+    // `loadNativeAdvisorModules()`. The original literal-zero regression guard
+    // (against `${formatScore(top.confidence)}/0.00 pass.`) is preserved here
+    // since `renderAdvisorBrief()` in `lib/render.ts` is the live renderer.
+    expect(source).toContain('renderAdvisorBrief');
     expect(source).not.toContain('${formatScore(top.confidence)}/0.00 pass.');
   });
 
@@ -97,14 +102,21 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
     });
   });
 
-  it('returns a prompt-safe disabled brief for the shared disabled flag', () => {
+  it('returns a prompt-safe silent fail-open for the shared disabled flag', () => {
+    // F-006-B1-02: Disabled mode now silently fails open (brief is null), aligning
+    // OpenCode with every other runtime (Codex, Claude, Copilot, Gemini). Callers
+    // still detect the disabled state via metadata.route === 'disabled'. Privacy
+    // guard preserved: prompt content must not leak to stdout.
     const result = runBridge({ prompt: 'private@example.com should not appear' }, {
       SPECKIT_SKILL_ADVISOR_HOOK_DISABLED: '1',
     });
     expect(result.status).toBe(0);
     const parsed = parseBridge(result.stdout);
     expect(parsed.status).toBe('skipped');
-    expect(parsed.brief).toBe('Advisor: disabled by SPECKIT_SKILL_ADVISOR_HOOK_DISABLED.');
+    expect(parsed.brief).toBeNull();
+    expect(parsed.metadata.route).toBe('disabled');
+    expect(parsed.metadata.freshness).toBe('unavailable');
+    expect(parsed.metadata.recommendationCount).toBe(0);
     expect(result.stdout).not.toContain('private@example.com');
   });
 });

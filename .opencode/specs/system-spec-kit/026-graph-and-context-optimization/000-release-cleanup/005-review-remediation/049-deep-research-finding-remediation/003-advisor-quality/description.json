@@ -5,12 +5,15 @@
     "phase",
     "advisor-quality"
   ],
-  "lastUpdated": "2026-05-01T05:18:48.041Z",
+  "lastUpdated": "2026-05-01T07:20:53.058Z",
   "specId": "003",
   "folderSlug": "advisor-quality",
   "parentChain": [
     "049-deep-research-finding-remediation"
   ],
-  "memorySequence": 0,
-  "memoryNameHistory": []
+  "memorySequence": 2,
+  "memoryNameHistory": [
+    "01-05-26_08-18__closed-8-advisor-quality-findings-f-006-b1-01-03.md",
+    "01-05-26_08-20__closed-8-advisor-quality-findings-f-006-b1-01-03.md"
+  ]
 }

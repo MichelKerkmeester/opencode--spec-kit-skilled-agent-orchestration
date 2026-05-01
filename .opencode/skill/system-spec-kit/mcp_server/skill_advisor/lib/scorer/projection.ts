@@ -125,8 +125,19 @@ function projectionFromRow(row: SkillNodeRow): SkillProjection {
     ? graphMetadata.redirect_to
     : (typeof derived.redirect_to === 'string' ? derived.redirect_to : null);
   const redirectFrom = stringArray(graphMetadata.redirect_from ?? derived.redirect_from);
-  const derivedTriggers = unique([
-    ...stringArray(derived.trigger_phrases),
+  // F-012-C2-02: Distinguish derivedTriggers (intent-shaped phrases) from
+  // derivedKeywords (entity-shaped concepts). Previously both fields were
+  // assigned the same array (value-by-reference), which double-counted the
+  // same evidence into two scoring inputs. Triggers now come from
+  // `derived.trigger_phrases` only; keywords come from `derived.key_topics`
+  // + `derived.entities` + `derived.key_files` + `derived.source_docs`. Each
+  // pipeline still passes through `phraseVariants` and `unique`. The two
+  // arrays may overlap when authors duplicate entries, but they are no longer
+  // assigned the same value-by-reference.
+  const derivedTriggers = unique(
+    stringArray(derived.trigger_phrases).flatMap((entry) => phraseVariants(entry)),
+  );
+  const derivedKeywords = unique([
     ...stringArray(derived.key_topics),
     ...stringArray(derived.entities),
     ...stringArray(derived.key_files),
@@ -144,7 +155,7 @@ function projectionFromRow(row: SkillNodeRow): SkillProjection {
     domains: unique(jsonArray(row.domains).flatMap((entry) => phraseVariants(entry))),
     intentSignals: unique(jsonArray(row.intent_signals).flatMap((entry) => phraseVariants(entry))),
     derivedTriggers,
-    derivedKeywords: derivedTriggers,
+    derivedKeywords,
     derivedDemotion: boundedDemotion(derived.demotion),
     sourcePath: row.source_path,
     lifecycleStatus: lifecycle,
@@ -203,8 +214,13 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
     const derived = typeof metadata.derived === 'object' && metadata.derived !== null && !Array.isArray(metadata.derived)
       ? metadata.derived as Record<string, unknown>
       : {};
-    const derivedTriggers = unique([
-      ...stringArray(derived.trigger_phrases),
+    // F-012-C2-02: Same split applied here as in projectionFromRow above —
+    // derivedTriggers (from trigger_phrases) and derivedKeywords (from
+    // key_topics + entities + key_files + source_docs) are now distinct.
+    const derivedTriggers = unique(
+      stringArray(derived.trigger_phrases).flatMap((item) => phraseVariants(item)),
+    );
+    const derivedKeywords = unique([
       ...stringArray(derived.key_topics),
       ...stringArray(derived.entities),
       ...stringArray(derived.key_files),
@@ -221,7 +237,7 @@ function loadFilesystemProjection(workspaceRoot: string): AdvisorProjection {
       domains: unique(stringArray(metadata.domains).flatMap((item) => phraseVariants(item))),
       intentSignals: unique(stringArray(metadata.intent_signals).flatMap((item) => phraseVariants(item))),
       derivedTriggers,
-      derivedKeywords: derivedTriggers,
+      derivedKeywords,
       derivedDemotion: boundedDemotion(derived.demotion),
       sourcePath: metadataPath,
       lifecycleStatus: lifecycleStatus(metadata.lifecycle_status ?? derived.lifecycle_status, metadataPath),

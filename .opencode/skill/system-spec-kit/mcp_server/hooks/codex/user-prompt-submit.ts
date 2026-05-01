@@ -16,7 +16,7 @@ import {
   type AdvisorHookResult,
   type AdvisorHookStatus,
 } from '../../skill_advisor/lib/skill-advisor-brief.js';
-import { renderAdvisorBrief } from '../../skill_advisor/lib/render.js';
+import { renderAdvisorBrief, renderAdvisorTimeoutFallback } from '../../skill_advisor/lib/render.js';
 import {
   createAdvisorHookDiagnosticRecord,
   persistAdvisorHookDiagnosticRecord,
@@ -192,13 +192,15 @@ function emitTimeoutFallbackWarning(
 }
 
 function timeoutFallbackOutput(): CodexHookSpecificOutput {
+  // F-006-B1-01: Route the cold-start timeout fallback through the shared
+  // `renderAdvisorTimeoutFallback()` helper in lib/render.ts. The bespoke
+  // inline string previously lived here; centralizing it keeps any future
+  // runtime that needs a cold-start fallback aligned on the same contract
+  // (the `Fallback marker` JSON line is parsed by downstream telemetry).
   return {
     hookSpecificOutput: {
       hookEventName: 'UserPromptSubmit',
-      additionalContext: [
-        'Advisor: stale (cold-start timeout)',
-        'Fallback marker: {"stale":true,"reason":"timeout-fallback"}',
-      ].join('\n'),
+      additionalContext: renderAdvisorTimeoutFallback(),
     },
   };
 }
