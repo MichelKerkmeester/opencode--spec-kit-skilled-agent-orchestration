@@ -1,0 +1,25 @@
+{
+  "specFolder": "system-spec-kit/026-graph-and-context-optimization/000-release-cleanup/005-review-remediation/047-pre-existing-test-failure-remediation",
+  "description": "Spec: Pre-Existing Test Failure Remediation",
+  "keywords": [
+    "spec",
+    "pre-existing",
+    "test",
+    "failure",
+    "remediation",
+    "skill_advisor",
+    "snake_case",
+    "rename"
+  ],
+  "lastUpdated": "2026-05-01T04:14:00Z",
+  "specId": "047",
+  "folderSlug": "pre-existing-test-failure-remediation",
+  "parentChain": [
+    "system-spec-kit",
+    "026-graph-and-context-optimization",
+    "000-release-cleanup",
+    "005-review-remediation"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

@@ -208,7 +208,7 @@ SKILL_GRAPH_SQLITE_PATH = os.path.normpath(os.path.join(
     'skill-graph.sqlite',
 ))
 GRAPH_ADJACENCY_EDGE_TYPES = ("depends_on", "enhances", "siblings", "prerequisite_for")
-GRAPH_ONLY_SKILL_IDS = {"skill-advisor"}
+GRAPH_ONLY_SKILL_IDS = {"skill_advisor"}  # snake_case after commit 7dfd108 rename
 STRICT_TOPOLOGY_HEADERS = (
     ("DEPENDENCY CYCLE ERRORS", "dependency cycles"),
     ("SYMMETRY WARNINGS", "asymmetric edges"),

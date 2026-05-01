@@ -69,14 +69,16 @@ function goldSkill(row: CorpusRow): string | null {
   return row.skill_top_1 === 'none' ? null : row.skill_top_1;
 }
 
-describe('advisor 200-prompt corpus regression-protection parity', () => {
+describe('advisor 197-prompt corpus regression-protection parity', () => {
   it('preserves Python-correct top-1 decisions while allowing native improvements', async () => {
     const previousSemantic = process.env.SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC;
     process.env.SKILL_ADVISOR_DISABLE_BUILTIN_SEMANTIC = '1';
 
     try {
       const rows = loadCorpus();
-      expect(rows).toHaveLength(200);
+      // Packet 026/040 removed 3 mcp-clickup-related rows from the labeled corpus
+      // (rr-iter2-056, rr-iter3-181, plus one peer): 200 -> 197.
+      expect(rows).toHaveLength(197);
       const pythonTopSkills = directPythonTopSkills(rows);
       expect(pythonTopSkills).toHaveLength(rows.length);
 

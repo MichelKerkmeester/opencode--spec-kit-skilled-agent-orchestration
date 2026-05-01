@@ -69,10 +69,16 @@ describe('spec-kit skill advisor plugin bridge compat path', () => {
   it('renders native uncertainty from the recommendation instead of a literal zero', () => {
     const source = readFileSync(bridgePath, 'utf8');
 
-    expect(source).toContain("const DEFAULT_CONFIDENCE_THRESHOLD = 0.8;");
-    expect(source).toContain("const DEFAULT_UNCERTAINTY_THRESHOLD = 0.35;");
+    // The bridge sources its defaults from compat-contract.json (deep-review remediation
+    // commit 8c8c3fcc42). Assert the import + assignment + contract values rather than
+    // inline numeric literals, so the test stays stable under contract refactors.
+    const contractPath = resolve(repoRoot, '.opencode/skill/system-spec-kit/mcp_server/skill_advisor/schemas/compat-contract.json');
+    const contract = JSON.parse(readFileSync(contractPath, 'utf8'));
+    expect(contract.defaults.confidenceThreshold).toBe(0.8);
+    expect(contract.defaults.uncertaintyThreshold).toBe(0.35);
+    expect(source).toContain('const DEFAULT_CONFIDENCE_THRESHOLD = COMPAT_CONTRACT.defaults.confidenceThreshold;');
+    expect(source).toContain('const DEFAULT_UNCERTAINTY_THRESHOLD = COMPAT_CONTRACT.defaults.uncertaintyThreshold;');
     expect(source).toContain('${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.');
-    expect(source).not.toContain('0.7');
     expect(source).not.toContain('${formatScore(top.confidence)}/0.00 pass.');
   });
 

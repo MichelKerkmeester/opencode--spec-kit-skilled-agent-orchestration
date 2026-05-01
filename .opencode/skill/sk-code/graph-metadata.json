@@ -245,7 +245,7 @@
     "key_files": [
       ".opencode/skill/sk-code/SKILL.md",
       ".opencode/skill/sk-code/README.md",
-      ".opencode/skill/sk-code/changelog/v1.3.0.0.md",
+      ".opencode/skill/sk-code/changelog/v3.0.0.0.md",
       ".opencode/skill/sk-code/references/router/stack_detection.md",
       ".opencode/skill/sk-code/references/router/intent_classification.md",
       ".opencode/skill/sk-code/references/router/resource_loading.md",
@@ -262,8 +262,6 @@
       ".opencode/skill/sk-code/references/nextjs/implementation/implementation_workflows.md",
       ".opencode/skill/sk-code/references/go/README.md",
       ".opencode/skill/sk-code/references/go/implementation/implementation_workflows.md",
-      ".opencode/skill/sk-code/assets/nextjs",
-      ".opencode/skill/sk-code/assets/go",
       ".opencode/skill/sk-code/scripts/minify-webflow.mjs",
       ".opencode/skill/sk-code/scripts/verify-minification.mjs",
       ".opencode/skill/sk-code/scripts/test-minified-runtime.mjs"
@@ -316,7 +314,7 @@
     "source_docs": [
       "SKILL.md",
       "README.md",
-      "changelog/v1.3.0.0.md",
+      "changelog/v3.0.0.0.md",
       "references/router/stack_detection.md",
       "references/router/intent_classification.md",
       "references/router/cross_stack_pairing.md",

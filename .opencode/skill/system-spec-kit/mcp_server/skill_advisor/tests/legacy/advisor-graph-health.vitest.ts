@@ -55,6 +55,8 @@ describe('advisor graph health', () => {
     expect(payload.status).toBe('ok');
     expect(payload.inventory_parity.in_sync).toBe(true);
     expect(payload.inventory_parity.missing_in_discovery).toEqual([]);
-    expect(payload.inventory_parity.graph_only).toEqual(['skill-advisor']);
+    // Folder + skill_id are both snake_case after commit 7dfd108. GRAPH_ONLY_SKILL_IDS
+    // and the compiler's hardcoded injection were aligned to match in packet 047.
+    expect(payload.inventory_parity.graph_only).toEqual(['skill_advisor']);
   });
 });
