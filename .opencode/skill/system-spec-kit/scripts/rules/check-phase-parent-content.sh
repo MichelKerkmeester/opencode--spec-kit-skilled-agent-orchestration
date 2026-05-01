@@ -63,4 +63,24 @@ run_check() {
     while IFS= read -r finding; do
         [[ -n "$finding" ]] && RULE_DETAILS+=("$finding")
     done <<< "$findings"
+
+    # F-019-D4-03: append manifest-size health advisory using the dist
+    # is-phase-parent.js CLI. Emits child_count + threshold bucket so authors
+    # see manifest sprawl alongside content-discipline tokens. Soft-fails if
+    # node or the dist artifact is unavailable; never escalates final status.
+    local script_dir
+    script_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    local health_cli="$script_dir/../dist/spec/is-phase-parent.js"
+    if command -v node >/dev/null 2>&1 && [[ -f "$health_cli" ]]; then
+        local health_line
+        if health_line="$(node "$health_cli" health "$folder" 2>/dev/null)"; then
+            local health_status health_count health_message
+            health_status="$(printf '%s' "$health_line" | awk -F '\t' '{print $1}')"
+            health_count="$(printf '%s' "$health_line" | awk -F '\t' '{print $2}')"
+            health_message="$(printf '%s' "$health_line" | awk -F '\t' '{print $3}')"
+            if [[ "$health_status" == "warning" || "$health_status" == "error" ]]; then
+                RULE_DETAILS+=("phase-parent health: $health_status ($health_count children) — $health_message")
+            fi
+        fi
+    fi
 }

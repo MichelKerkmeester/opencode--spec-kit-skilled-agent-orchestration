@@ -35,9 +35,17 @@ const DEFAULT_MAX_CACHE_ENTRIES = 1000;
 const DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_HOOK_DISABLED';
 const LEGACY_DISABLED_ENV = 'SPECKIT_SKILL_ADVISOR_PLUGIN_DISABLED';
 const BRIDGE_PATH = fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/plugin_bridges/spec-kit-skill-advisor-bridge.mjs', import.meta.url));
+// F-020-D5-01: cache-signature path must match the actual dist layout used at
+// runtime by the bridge — `dist/skill_advisor/compat/index.js` (snake_case).
+// Previously this watched the kebab-case `dist/skill-advisor/compat/index.js`
+// path which has never existed on disk, so `advisorSourceSignature()` always
+// hashed a "missing" record for that entry and cache invalidation could not
+// react to changes in the compat module. Snake-case matches both the source
+// directory `mcp_server/skill_advisor/` and the import in
+// `plugin_bridges/spec-kit-skill-advisor-bridge.mjs`.
 const ADVISOR_SOURCE_PATHS = [
   BRIDGE_PATH,
-  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill-advisor/compat/index.js', import.meta.url)),
+  fileURLToPath(new URL('../skill/system-spec-kit/mcp_server/dist/skill_advisor/compat/index.js', import.meta.url)),
 ];
 
 // ─────────────────────────────────────────────────────────────────────────────

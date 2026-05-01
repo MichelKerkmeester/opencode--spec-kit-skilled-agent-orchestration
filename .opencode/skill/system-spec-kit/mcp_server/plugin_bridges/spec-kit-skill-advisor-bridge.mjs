@@ -1,4 +1,32 @@
 #!/usr/bin/env node
+// ╔══════════════════════════════════════════════════════════════════════════╗
+// ║ COMPONENT: Spec Kit Skill Advisor Plugin Bridge (MJS source-of-truth)   ║
+// ╠══════════════════════════════════════════════════════════════════════════╣
+// ║ PURPOSE: Subprocess bridge between `.opencode/plugins/spec-kit-skill-   ║
+// ║          advisor.js` and the native Node advisor compat surface in     ║
+// ║          mcp_server/dist/skill_advisor/compat/index.js. The plugin     ║
+// ║          spawns this script with stdin JSON; this script writes a      ║
+// ║          single stdout JSON response and exits.                         ║
+// ╚══════════════════════════════════════════════════════════════════════════╝
+//
+// F-020-D5-04: this file is the SOURCE-OF-TRUTH bridge. It lives outside the
+// TypeScript build tree on purpose:
+//   1. The OpenCode plugin host imports `.opencode/plugins/*.js` only — having
+//      the bridge as a sibling .mjs keeps the plugin entrypoint count to 1
+//      while letting the bridge use ESM and dynamic imports without TS
+//      compile coordination on every plugin reload.
+//   2. The bridge is a thin subprocess wrapper (parse stdin → call native
+//      compat handlers → emit stdout JSON) and benefits from being editable
+//      as plain JS for live diagnosis when the OpenCode plugin host misroutes.
+//   3. Migrating to TS would require either (a) building this file into the
+//      same dist tree the plugin watches, creating a chicken-and-egg with
+//      cache-signature freshness (see F-020-D5-01), or (b) maintaining a
+//      .ts → .mjs build step exclusive to this single file. Either path is
+//      a larger packet than the source/dist boundary fixes here.
+//
+// Smoke tests asserting the named exports (`buildBrief` / `loadNativeAdvisorModules`)
+// live at mcp_server/skill_advisor/tests/compat/plugin-bridge-smoke.vitest.ts
+// and run as part of the standard test suite.
 // Helper for packet 026/007/009. This file intentionally lives outside
 // `.opencode/plugins/` so OpenCode discovers only real plugin entrypoints.
 
@@ -114,38 +142,12 @@ function sanitizeLabel(value) {
   return cleaned;
 }
 
-function renderNativeBrief(data, maxTokens) {
-  if (!data || (data.freshness !== 'live' && data.freshness !== 'stale')) {
-    return null;
-  }
-  const recommendations = Array.isArray(data.recommendations) ? data.recommendations : [];
-  const top = recommendations[0];
-  const skillLabel = sanitizeLabel(top?.skillId);
-  if (!skillLabel) {
-    return null;
-  }
-
-  const parts = [
-    `Advisor: ${data.freshness}; use ${skillLabel} ${formatScore(top.confidence)}/${formatScore(top.uncertainty)} pass.`,
-  ];
-  const status = sanitizeLabel(top.status);
-  if (status && status !== 'active') {
-    parts.push(`status ${status}.`);
-  }
-  const redirectTo = sanitizeLabel(top.redirectTo);
-  if (redirectTo) {
-    parts.push(`redirect_to ${redirectTo}.`);
-  }
-  const redirectFrom = Array.isArray(top.redirectFrom)
-    ? top.redirectFrom.map(sanitizeLabel).filter(Boolean).join(',')
-    : null;
-  if (redirectFrom) {
-    parts.push(`redirect_from ${redirectFrom}.`);
-  }
-
-  const tokenCap = positiveInt(maxTokens, 80);
-  return parts.join(' ').slice(0, tokenCap * 4).trim();
-}
+// F-006-B1-03: The dead `renderNativeBrief()` alternate renderer was removed
+// here. It was unreferenced (verified via grep across mcp_server) and could
+// drift from the shared `renderAdvisorBrief()` formatter. Bridge output now
+// flows exclusively through `renderAdvisorBrief()` loaded via
+// `loadNativeAdvisorModules()`. Helpers `formatScore` and `sanitizeLabel`
+// stay because they are still used by `buildNativeBrief` and `buildLegacyBrief`.
 
 async function loadNativeAdvisorModules() {
   const compatModule = await import('../dist/skill_advisor/compat/index.js');
@@ -315,8 +317,14 @@ async function buildLegacyBrief(input) {
 
 async function buildBrief(input) {
   if (process.env[DISABLED_ENV] === '1') {
+    // F-006-B1-02: Silent fail-open in disabled mode. Previously this branch
+    // returned a model-visible `Advisor: disabled by ...` brief, but every
+    // other runtime (Codex, Claude, Copilot, Gemini) fails open silently when
+    // the disabled flag is set. Aligning OpenCode with the dominant pattern
+    // removes the runtime-specific surface inconsistency. Callers can still
+    // detect the disabled state via `metadata.route === 'disabled'`.
     return response({
-      brief: 'Advisor: disabled by SPECKIT_SKILL_ADVISOR_HOOK_DISABLED.',
+      brief: null,
       status: 'skipped',
       metadata: {
         route: 'disabled',

@@ -59,6 +59,20 @@ field_handling:
   phase_folder_awareness:
     note: "[SPEC_FOLDER] may be a phase child path (e.g., specs/003-name/001-phase/). When Option E is selected or --phase-folder is provided, spec_id derives from the parent folder NNN, not the child NNN. Also load parent spec.md for cross-reference context."
     path_pattern: "specs/{NNN-parent}/{NNN-phase}/"
+    # F-019-D4-02: phase_path_grammar (documentation-only, additive). The runtime
+    # parser already supports arbitrary nesting depth via is-phase-parent.ts
+    # walking each direct child. This grammar exists to make the supported shapes
+    # explicit for workflow authors and documentation consumers. Runtime behavior
+    # is unchanged.
+    phase_path_grammar:
+      note: "Phase folder paths are NOT limited to two levels. Any folder matching `^[0-9]{3}-[a-z0-9-]+$` whose direct child also matches that regex AND has spec.md OR description.json becomes a phase parent. Recursion is unbounded; depth is data, not policy."
+      shapes:
+        flat: "specs/{NNN-name}/" # leaf packet, no children
+        two_level: "specs/{NNN-parent}/{NNN-phase}/" # one layer of phases
+        three_level: "specs/{NNN-grandparent}/{NNN-parent}/{NNN-phase}/" # nested phases (e.g., 026/000/005)
+        deep: "specs/{NNN-A}/{NNN-B}/{NNN-C}/{NNN-D}/{NNN-E}/" # observed in 026/000/005/049/001 — packet 049 sub-phases of 005-review-remediation
+      detection_rule: "isPhaseParent(folder) — at .opencode/skill/system-spec-kit/mcp_server/lib/spec/is-phase-parent.ts and the shell mirror is_phase_parent in scripts/lib/shell-common.sh. Both must agree."
+      spec_id_derivation: "spec_id is the FIRST {NNN} segment under specs/. For deep nests, parent_chain accumulates from outermost to innermost, and graph-metadata.json.parent_id encodes the immediate parent."
   scope_policy: { default: "**", rule: "Implementation may edit any workspace file. Narrow to [FILES] scope when explicitly provided by the user." }
 
 # ─────────────────────────────────────────────────────────────────
