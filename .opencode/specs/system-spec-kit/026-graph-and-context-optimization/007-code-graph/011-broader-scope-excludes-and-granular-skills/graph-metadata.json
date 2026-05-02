@@ -1,0 +1,20 @@
+{
+  "spec_id": "026/007/011",
+  "level": 2,
+  "spec_kind": "implementation",
+  "status": "in-progress",
+  "importance_tier": "important",
+  "derived": {
+    "status": "in-progress",
+    "completion_pct": 5,
+    "last_updated_at": "2026-05-02T19:30:00Z"
+  },
+  "parent_id": "026/007",
+  "topology": "leaf",
+  "trigger_phrases": [
+    "broader default excludes",
+    "granular skill selection",
+    "per skill code graph",
+    "exclude opencode subdirs"
+  ]
+}

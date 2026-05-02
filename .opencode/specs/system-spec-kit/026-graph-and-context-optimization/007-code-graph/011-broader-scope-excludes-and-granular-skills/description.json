@@ -1,0 +1,19 @@
+{
+  "spec_id": "026/007/011",
+  "title": "Broader Default Excludes + Granular Per-Skill Selection for Code Graph",
+  "level": 2,
+  "spec_kind": "implementation",
+  "status": "in-progress",
+  "topic": "Extend code-graph default excludes to all .opencode/{skill,agent,command,specs,plugins}/** + per-folder opt-in env+per-call fields + granular skill name list",
+  "trigger_phrases": [
+    "broader default excludes",
+    "granular skill selection",
+    "per skill code graph",
+    "exclude opencode subdirs",
+    "include skills list",
+    "code graph scope expansion"
+  ],
+  "importance_tier": "important",
+  "created_at": "2026-05-02T19:30:00Z",
+  "last_updated_at": "2026-05-02T19:30:00Z"
+}
