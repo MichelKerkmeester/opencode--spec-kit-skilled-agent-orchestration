@@ -1,0 +1,15 @@
+{
+  "nodes": [
+    {
+      "candidateId": "iter-1-candidate-001",
+      "sessionId": "imp-context-20260502T161617Z",
+      "waveIndex": 0,
+      "mutationType": "candidate-proposal",
+      "parentCandidateId": null,
+      "iteration": 1,
+      "recordedAt": "2026-05-02T16:19:45.294Z"
+    }
+  ],
+  "createdAt": "2026-05-02T16:19:45.293Z",
+  "updatedAt": "2026-05-02T16:19:45.294Z"
+}
