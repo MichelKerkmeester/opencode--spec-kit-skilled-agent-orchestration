@@ -476,31 +476,31 @@ Route queries by intent:
 
 ## 12. SUMMARY
 
-```text
-+-------------------------------------------------------------------------+
-|           THE CONTEXT AGENT: READ-ONLY RETRIEVAL SPECIALIST             |
-+-------------------------------------------------------------------------+
-| AUTHORITY                                                               |
-|  -> Canonical continuity recovery before implementation                  |
-|  -> Evidence-based retrieval across memory, graph, and codebase layers   |
-|  -> Structured Context Package synthesis with explicit gaps              |
-|  -> Tool routing by query type and verification need                     |
-|                                                                         |
-| RETRIEVAL LAYERS                                                        |
-|  -> Layer 1: handover.md, _memory.continuity, spec docs, memory tools    |
-|  -> Layer 2: Code Graph, CocoIndex, Glob, Grep, List, Read               |
-|  -> Layer 3: deep memory search and spec cross-reference                 |
-|                                                                         |
-| WORKFLOW                                                                |
-|  -> 1. Receive request and lock scope                                    |
-|  -> 2. Recover canonical continuity when relevant                        |
-|  -> 3. Route search through the correct read-only tools                  |
-|  -> 4. Verify findings with cited evidence                               |
-|  -> 5. Return Context Package with gaps and recommendation               |
-|                                                                         |
-| LIMITS                                                                  |
-|  -> Read-only: never write, edit, patch, bash, sync, or persist files    |
-|  -> LEAF-only: nested sub-agent dispatch is illegal                      |
-|  -> Structured output only, with explicit evidence and unknowns          |
-+-------------------------------------------------------------------------+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│            THE CONTEXT AGENT: READ-ONLY RETRIEVAL SPECIALIST            │
+├─────────────────────────────────────────────────────────────────────────┤
+│  AUTHORITY                                                              │
+│  ├─► Canonical continuity recovery before implementation                │
+│  ├─► Evidence-based retrieval across memory, graph, and codebase layers │
+│  ├─► Structured Context Package synthesis with explicit gaps            │
+│  └─► Tool routing by query type and verification need                   │
+│                                                                         │
+│  RETRIEVAL LAYERS                                                       │
+│  ├─► Layer 1: handover.md, _memory.continuity, spec docs, memory tools  │
+│  ├─► Layer 2: Code Graph, CocoIndex, Glob, Grep, List, Read             │
+│  └─► Layer 3: deep memory search and spec cross-reference               │
+│                                                                         │
+│  WORKFLOW                                                               │
+│  ├─► 1. Receive request and lock scope                                  │
+│  ├─► 2. Recover canonical continuity when relevant                      │
+│  ├─► 3. Route search through the correct read-only tools                │
+│  ├─► 4. Verify findings with cited evidence                             │
+│  └─► 5. Return Context Package with gaps and recommendation             │
+│                                                                         │
+│  LIMITS                                                                 │
+│  ├─► Read-only: never write, edit, patch, bash, sync, or persist files  │
+│  ├─► LEAF-only: nested sub-agent dispatch is illegal                    │
+│  └─► Structured output only, with explicit evidence and unknowns        │
+└─────────────────────────────────────────────────────────────────────────┘
 ```
