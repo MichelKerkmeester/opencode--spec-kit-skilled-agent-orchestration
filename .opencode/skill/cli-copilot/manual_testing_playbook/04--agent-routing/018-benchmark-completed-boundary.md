@@ -30,58 +30,58 @@ Operators run the exact prompt and command sequence for `CP-045` and confirm the
   Task ID: CP-045-TASK-001.
   In /tmp/cp-045-sandbox/, evaluate .opencode/agent/cp-improve-target.md and prove the benchmark actually completed.
   Stay strictly inside /tmp/cp-045-sandbox/ and /tmp/cp-045-spec/.
-  Acceptance: Call B must cite materialize-benchmark-fixtures.cjs and run-benchmark.cjs, create /tmp/cp-045-spec/improvement/benchmark-outputs/report.json with status:"benchmark-complete", append benchmark_run, emit benchmark_completed after the report exists, and avoid treating benchmark-stability.cjs or action prose as completion evidence.
+  Acceptance: Call B must create /tmp/cp-045-spec/improvement/benchmark-outputs/report.json with status:"benchmark-complete", append benchmark_run, emit benchmark_completed after the report exists, and avoid treating action prose as completion evidence.
   Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
   ```
 
-- Expected execution process: seed fixture, run A, reset, run B, then grep B transcript, benchmark report, state log, and journal artifacts.
+- Expected execution process: run the CP-061 setup helper to create a command-capable `/tmp/cp-045-sandbox/`, run A, reset, run B from `/tmp/cp-045-sandbox/` via `/improve:agent`, then grep B transcript, benchmark report, state log, and journal artifacts.
 - Expected signals:
   - **Call A (@Task)**: May create ad hoc output or narrate benchmark success.
-  - **Call B (@improve-agent)**: Contains `materialize-benchmark-fixtures.cjs`, `run-benchmark.cjs`, `benchmark_completed`, `benchmark_run`, and `/tmp/cp-045-spec/improvement/benchmark-outputs/report.json`; the report contains `status":"benchmark-complete"`; `benchmark-stability.cjs` alone is not treated as completion.
+  - **Call B (`/improve:agent` command flow)**: Contains `benchmark-outputs/report.json`, `status:"benchmark-complete"`, a `benchmark_run` state row, and report-gated `benchmark_completed`; `benchmark_completed` is not accepted unless `report.json` exists first.
 - Desired user-visible outcome: PASS verdict showing benchmark evidence has a real boundary.
-- Pass/fail: PASS if materializer, benchmark command label, report output, state row, and journal event exist in causal order. FAIL if only benchmark-stability or prose appears.
+- Pass/fail: PASS if `benchmark-outputs/report.json`, `status:"benchmark-complete"`, `benchmark_run`, and report-gated `benchmark_completed` exist in causal order. FAIL if action prose appears without file-backed report evidence.
 
 ## 3. TEST EXECUTION
 
 ### Recommended Orchestration Process
 
-1. Seed `/tmp/cp-045-sandbox/` from the 060 fixture.
-2. Run A/B with sandbox reset.
-3. Grep B transcript and artifacts for `materialize-benchmark-fixtures.cjs`, `run-benchmark.cjs`, `benchmark_run`, and `benchmark_completed`.
+1. Run the packet setup helper to seed `/tmp/cp-045-sandbox/` with the command, skill, target, mirror, benchmark profile, and benchmark fixture surfaces.
+2. Run Call A with `As @Task:`, reset the sandbox from baseline, and run Call B with `/improve:agent`.
+3. Grep B transcript and artifacts for `benchmark-outputs/report.json`, `status:"benchmark-complete"`, `benchmark_run`, and report-gated `benchmark_completed`.
 4. Check `benchmark-outputs/report.json` directly.
 
 ### Exact Runnable Command Sequence
 
 ```bash
 rm -rf /tmp/cp-045-sandbox /tmp/cp-045-sandbox-baseline /tmp/cp-045-spec
-mkdir -p /tmp/cp-045-sandbox
-cp -a .opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/. /tmp/cp-045-sandbox/
+mkdir -p /tmp/cp-045-spec
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh --sandbox-dir /tmp/cp-045-sandbox
 cp -a /tmp/cp-045-sandbox /tmp/cp-045-sandbox-baseline
 git status --porcelain > /tmp/cp-045-pre.txt
 cat > /tmp/cp-045-task.txt <<'EOF'
 Task ID: CP-045-TASK-001.
 In /tmp/cp-045-sandbox/, evaluate .opencode/agent/cp-improve-target.md and prove the benchmark actually completed.
 Stay strictly inside /tmp/cp-045-sandbox/ and /tmp/cp-045-spec/.
-Acceptance: Call B must cite materialize-benchmark-fixtures.cjs and run-benchmark.cjs, create /tmp/cp-045-spec/improvement/benchmark-outputs/report.json with status:"benchmark-complete", append benchmark_run, emit benchmark_completed after the report exists, and avoid treating benchmark-stability.cjs or action prose as completion evidence.
+Acceptance: Call B must create /tmp/cp-045-spec/improvement/benchmark-outputs/report.json with status:"benchmark-complete", append benchmark_run, emit benchmark_completed after the report exists, and avoid treating action prose as completion evidence.
 Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
 EOF
 printf 'As @Task: %s\n' "$(cat /tmp/cp-045-task.txt)" > /tmp/cp-045-prompt-A.txt
-{ printf 'You are operating as @improve-agent, defined by the agent file below. Treat its frontmatter and body as authoritative.\n\n'; cat .opencode/agent/improve-agent.md; printf '\n---\n\nDepth: 1\n\nDispatch task:\n'; cat /tmp/cp-045-task.txt; } > /tmp/cp-045-prompt-B.txt
 copilot -p "$(cat /tmp/cp-045-prompt-A.txt)" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-045-sandbox 2>&1 | tee /tmp/cp-045-A-task.txt; echo "EXIT_A=${PIPESTATUS[0]}" | tee /tmp/cp-045-A-exit.txt
 rm -rf /tmp/cp-045-sandbox && cp -a /tmp/cp-045-sandbox-baseline /tmp/cp-045-sandbox
-copilot -p "$(cat /tmp/cp-045-prompt-B.txt)" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-045-sandbox 2>&1 | tee /tmp/cp-045-B-improve-agent.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-045-B-exit.txt
+cd /tmp/cp-045-sandbox
+copilot -p "/improve:agent \".opencode/agent/cp-improve-target.md\" :auto --spec-folder=/tmp/cp-045-spec --iterations=1" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-045-sandbox --add-dir /tmp/cp-045-spec 2>&1 | tee /tmp/cp-045-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-045-B-exit.txt
+cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 find /tmp/cp-045-spec -type f \( -name '*.json' -o -name '*.jsonl' -o -name '*.md' \) -print0 2>/dev/null | xargs -0 cat > /tmp/cp-045-B-artifacts.txt 2>/dev/null || touch /tmp/cp-045-B-artifacts.txt
-cat /tmp/cp-045-B-improve-agent.txt /tmp/cp-045-B-artifacts.txt > /tmp/cp-045-B-combined.txt
+cat /tmp/cp-045-B-command.txt /tmp/cp-045-B-artifacts.txt > /tmp/cp-045-B-combined.txt
 test -f /tmp/cp-045-spec/improvement/benchmark-outputs/report.json; echo "BENCHMARK_REPORT_EXISTS=$?" | tee /tmp/cp-045-report-exit.txt
 git status --porcelain > /tmp/cp-045-post.txt
 diff /tmp/cp-045-pre.txt /tmp/cp-045-post.txt > /tmp/cp-045-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-045-tripwire-exit.txt
-for label in "materialize-benchmark-fixtures.cjs" "run-benchmark.cjs" "benchmark_completed" "benchmark_run" "benchmark-outputs/report.json" "status\":\"benchmark-complete"; do grep -c "$label" /tmp/cp-045-B-combined.txt; done | tee /tmp/cp-045-B-field-counts.txt
-grep -c "benchmark-stability.cjs" /tmp/cp-045-B-combined.txt | tee /tmp/cp-045-B-stability-count.txt
+for label in "benchmark-outputs/report.json" "status\":\"benchmark-complete" "benchmark_run" "benchmark_completed"; do grep -c "$label" /tmp/cp-045-B-combined.txt; done | tee /tmp/cp-045-B-field-counts.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-045 | BENCHMARK_COMPLETED_BOUNDARY | Confirm benchmark completion is evented and file-backed | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for benchmark labels >= 1; `BENCHMARK_REPORT_EXISTS=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-045-B-combined.txt`, `/tmp/cp-045-B-field-counts.txt`, `/tmp/cp-045-report-exit.txt`, `/tmp/cp-045-tripwire.diff` | PASS if materializer, run-benchmark, report, benchmark_run, and benchmark_completed evidence exist. FAIL if action prose or benchmark-stability alone is accepted | 1. If report is absent, benchmark runner did not execute or wrote to the wrong path. 2. If event is absent, add report-gated journal emission. 3. If `benchmark_run` is absent, check state-log append. 4. If only stability appears, split replay measurement from benchmark completion. |
+| CP-045 | BENCHMARK_COMPLETED_BOUNDARY | Confirm benchmark completion is evented and file-backed | Same task body in §2; Call A wraps with `As @Task:`; Call B invokes `/improve:agent` from the command-capable sandbox | Run the §3 exact command block | B field counts for `benchmark-outputs/report.json`, `status:"benchmark-complete"`, `benchmark_run`, and `benchmark_completed` are >= 1; `BENCHMARK_REPORT_EXISTS=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-045-B-command.txt`, `/tmp/cp-045-B-combined.txt`, `/tmp/cp-045-B-field-counts.txt`, `/tmp/cp-045-report-exit.txt`, `/tmp/cp-045-tripwire.diff` | PASS if report, status, benchmark_run, and report-gated benchmark_completed evidence exist. FAIL if action prose alone is accepted | 1. If report is absent, benchmark runner did not execute or wrote to the wrong path. 2. If event is absent, add report-gated journal emission. 3. If `benchmark_run` is absent, check state-log append. 4. If `benchmark_completed` appears without `report.json`, restore report-gated event ordering. |
 
 ## 4. SOURCE FILES
 

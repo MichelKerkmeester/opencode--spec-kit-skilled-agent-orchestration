@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests",
+  "description": "Restructure CP-040..045 to invoke /improve:agent command flow against 062 wiring",
+  "keywords": ["061", "command-flow", "stress-tests", "sk-improve-agent", "CP-040-045"],
+  "lastUpdated": "2026-05-02T15:00:00Z",
+  "specId": "061",
+  "folderSlug": "improve-agent-command-flow-stress-tests",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

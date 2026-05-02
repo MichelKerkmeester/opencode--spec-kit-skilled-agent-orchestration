@@ -34,10 +34,10 @@ Operators run the exact prompt and command sequence for `CP-043` and confirm the
   Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
   ```
 
-- Expected execution process: seed fixture, run A, reset, run B, then grep transcript or journal output for complete legal-stop evidence.
+- Expected execution process: run the CP-061 setup helper to create a command-capable `/tmp/cp-043-sandbox/`, run A, reset, run B from `/tmp/cp-043-sandbox/` via `/improve:agent`, then grep transcript and journal output for complete legal-stop evidence.
 - Expected signals:
   - **Call A (@Task)**: May narrate success.
-  - **Call B (@improve-agent)**: Contains `legal_stop_evaluated`, nested `details.gateResults` with all five gate keys, `blocked_stop`, `failedGates`, and `evidenceGate`; does not contain `stopReason":"converged"` when a gate fails.
+  - **Call B (`/improve:agent` command flow)**: Contains `legal_stop_evaluated`, nested `details.gateResults` with all five gate keys, `blocked_stop`, `failedGates`, and `evidenceGate`; does not contain `stopReason":"converged"` when a gate fails.
 - Desired user-visible outcome: PASS verdict showing legal-stop blocking is grep-checkable.
 - Pass/fail: PASS if complete gate bundle and block signals appear with no converged stop. FAIL if only `gate_evaluation` appears or failed gates still end as `converged`.
 
@@ -45,8 +45,8 @@ Operators run the exact prompt and command sequence for `CP-043` and confirm the
 
 ### Recommended Orchestration Process
 
-1. Seed `/tmp/cp-043-sandbox/` from the 060 fixture.
-2. Run A/B with sandbox reset.
+1. Run the packet setup helper to seed `/tmp/cp-043-sandbox/` with the command, skill, target, and mirror surfaces.
+2. Run Call A with `As @Task:`, reset the sandbox from baseline, and run Call B with `/improve:agent`.
 3. Grep B transcript and `/tmp/cp-043-spec/improvement/improvement-journal.jsonl` if present.
 4. Treat missing journal evidence as FAIL, even if prose says the run blocked.
 
@@ -54,8 +54,8 @@ Operators run the exact prompt and command sequence for `CP-043` and confirm the
 
 ```bash
 rm -rf /tmp/cp-043-sandbox /tmp/cp-043-sandbox-baseline /tmp/cp-043-spec
-mkdir -p /tmp/cp-043-sandbox
-cp -a .opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/. /tmp/cp-043-sandbox/
+mkdir -p /tmp/cp-043-spec
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh --sandbox-dir /tmp/cp-043-sandbox
 cp -a /tmp/cp-043-sandbox /tmp/cp-043-sandbox-baseline
 git status --porcelain > /tmp/cp-043-pre.txt
 cat > /tmp/cp-043-task.txt <<'EOF'
@@ -66,12 +66,13 @@ Acceptance: Call B must emit legal_stop_evaluated with details.gateResults.contr
 Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
 EOF
 printf 'As @Task: %s\n' "$(cat /tmp/cp-043-task.txt)" > /tmp/cp-043-prompt-A.txt
-{ printf 'You are operating as @improve-agent, defined by the agent file below. Treat its frontmatter and body as authoritative.\n\n'; cat .opencode/agent/improve-agent.md; printf '\n---\n\nDepth: 1\n\nDispatch task:\n'; cat /tmp/cp-043-task.txt; } > /tmp/cp-043-prompt-B.txt
 copilot -p "$(cat /tmp/cp-043-prompt-A.txt)" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-043-sandbox 2>&1 | tee /tmp/cp-043-A-task.txt; echo "EXIT_A=${PIPESTATUS[0]}" | tee /tmp/cp-043-A-exit.txt
 rm -rf /tmp/cp-043-sandbox && cp -a /tmp/cp-043-sandbox-baseline /tmp/cp-043-sandbox
-copilot -p "$(cat /tmp/cp-043-prompt-B.txt)" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-043-sandbox 2>&1 | tee /tmp/cp-043-B-improve-agent.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-043-B-exit.txt
+cd /tmp/cp-043-sandbox
+copilot -p "/improve:agent \".opencode/agent/cp-improve-target.md\" :auto --spec-folder=/tmp/cp-043-spec --iterations=1" --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-043-sandbox --add-dir /tmp/cp-043-spec 2>&1 | tee /tmp/cp-043-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-043-B-exit.txt
+cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 test -f /tmp/cp-043-spec/improvement/improvement-journal.jsonl && cp /tmp/cp-043-spec/improvement/improvement-journal.jsonl /tmp/cp-043-B-journal.jsonl || touch /tmp/cp-043-B-journal.jsonl
-cat /tmp/cp-043-B-improve-agent.txt /tmp/cp-043-B-journal.jsonl > /tmp/cp-043-B-combined.txt
+cat /tmp/cp-043-B-command.txt /tmp/cp-043-B-journal.jsonl > /tmp/cp-043-B-combined.txt
 git status --porcelain > /tmp/cp-043-post.txt
 diff /tmp/cp-043-pre.txt /tmp/cp-043-post.txt > /tmp/cp-043-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-043-tripwire-exit.txt
 for label in "legal_stop_evaluated" "details.gateResults" "contractGate" "behaviorGate" "integrationGate" "evidenceGate" "improvementGate" "blocked_stop" "failedGates"; do grep -c "$label" /tmp/cp-043-B-combined.txt; done | tee /tmp/cp-043-B-field-counts.txt
@@ -81,7 +82,7 @@ grep -c "gate_evaluation" /tmp/cp-043-B-combined.txt | tee /tmp/cp-043-B-generic
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-043 | LEGAL_STOP_GATE_BUNDLE | Confirm all five legal-stop gates block convergence | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for nested legal-stop labels all >= 1; converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-043-B-combined.txt`, `/tmp/cp-043-B-field-counts.txt`, `/tmp/cp-043-B-converged-count.txt`, `/tmp/cp-043-tripwire.diff` | PASS if complete `details.gateResults` bundle and blocked stop appear. FAIL if generic gate evaluation substitutes for legal-stop evidence | 1. If `legal_stop_evaluated` is absent, wire producer event. 2. If `details.gateResults` or any gate key is missing, require full nested bundle. 3. If converged appears with failed gate, derive stop reason from legal-stop artifact. |
+| CP-043 | LEGAL_STOP_GATE_BUNDLE | Confirm all five legal-stop gates block convergence | Same task body in §2; Call A wraps with `As @Task:`; Call B invokes `/improve:agent` from the command-capable sandbox | Run the §3 exact command block | B field counts for `details.gateResults` and all five gate keys are >= 1; `blocked_stop` appears when any gate fails; converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-043-B-command.txt`, `/tmp/cp-043-B-combined.txt`, `/tmp/cp-043-B-field-counts.txt`, `/tmp/cp-043-B-converged-count.txt`, `/tmp/cp-043-tripwire.diff` | PASS if complete `details.gateResults` bundle and blocked stop appear. FAIL if generic gate evaluation substitutes for legal-stop evidence | 1. If `legal_stop_evaluated` is absent, verify command-flow legal-stop execution. 2. If `details.gateResults` or any gate key is missing, require the full nested bundle, not flat `gateResult`. 3. If converged appears with failed gate, derive stop reason from legal-stop artifact. |
 
 ## 4. SOURCE FILES
 

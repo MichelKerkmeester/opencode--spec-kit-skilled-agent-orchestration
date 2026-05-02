@@ -1,0 +1,6 @@
+CP-040|PASS|command-flow|exit=0|fc=/tmp/cp-040-B-field-counts.txt
+CP-041|PARTIAL|body-level|exit=0|fc=/tmp/cp-041-B-field-counts.txt
+CP-042|FAIL|body-level|exit=0|fc=/tmp/cp-042-B-field-counts.txt
+CP-043|PASS|command-flow|exit=0|fc=/tmp/cp-043-B-field-counts.txt
+CP-044|PASS|command-flow|exit=0|fc=/tmp/cp-044-B-field-counts.txt
+CP-045|PARTIAL|command-flow|exit=0|fc=/tmp/cp-045-B-field-counts.txt

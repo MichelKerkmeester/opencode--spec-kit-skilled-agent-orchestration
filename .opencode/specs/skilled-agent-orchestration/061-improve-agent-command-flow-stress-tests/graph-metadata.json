@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests",
+  "spec_folder": "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment"
+    ],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "061 command-flow stress tests",
+      "sk-improve-agent command-flow CP",
+      "command-capable temp root",
+      "CP-040 CP-043 CP-044 CP-045 rerun"
+    ],
+    "key_topics": [
+      "061",
+      "command-flow",
+      "stress-tests",
+      "sk-improve-agent",
+      "CP-040-045",
+      "command-capable-temp-root",
+      "per-CP-layer-partition"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md",
+      ".opencode/specs/skilled-agent-orchestration/062-improve-agent-executable-wiring/handover.md"
+    ],
+    "entities": [],
+    "causal_summary": "Reruns CP-040..045 stress tests with command-flow dispatch (per 060/003 layer partition) against 062 wiring. Restructures Call B for CP-040/043/044/045 to invoke /improve:agent command in command-capable temp root; keeps CP-041/042 body-level with required inputs materialized.",
+    "created_at": "2026-05-02T15:00:00Z",
+    "last_save_at": "2026-05-02T15:00:00Z",
+    "last_active_at": "2026-05-02T15:00:00Z",
+    "save_lineage": "manual_stub",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md"]
+  }
+}
