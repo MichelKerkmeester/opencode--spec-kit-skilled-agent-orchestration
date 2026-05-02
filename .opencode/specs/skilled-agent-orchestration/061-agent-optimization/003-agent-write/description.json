@@ -1,0 +1,19 @@
+{
+  "specFolder": "skilled-agent-orchestration/061-agent-optimization/003-agent-write",
+  "description": "Sub-phase: apply /improve:agent against @write.",
+  "keywords": [
+    "003",
+    "write",
+    "agent-optimization",
+    "sk-improve-agent-application"
+  ],
+  "lastUpdated": "2026-05-02T17:30:00Z",
+  "specId": "003",
+  "folderSlug": "agent-write",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "061-agent-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

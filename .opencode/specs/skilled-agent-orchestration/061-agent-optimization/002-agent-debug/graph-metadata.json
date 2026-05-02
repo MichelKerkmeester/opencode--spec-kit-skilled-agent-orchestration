@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/061-agent-optimization/002-agent-debug",
+  "spec_folder": "skilled-agent-orchestration/061-agent-optimization/002-agent-debug",
+  "parent_id": "skilled-agent-orchestration/061-agent-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/061-agent-optimization"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "002 optimize debug",
+      "improve debug agent",
+      "debug agent improvement",
+      "061/002"
+    ],
+    "key_topics": [
+      "002",
+      "agent-optimization",
+      "debug",
+      "sk-improve-agent-application"
+    ],
+    "status": "planned",
+    "completion_pct": 0,
+    "last_active_child_id": null,
+    "level": 1,
+    "is_phase_parent": false
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/061-agent-optimization/006-agent-multi-ai-council",
+  "spec_folder": "skilled-agent-orchestration/061-agent-optimization/006-agent-multi-ai-council",
+  "parent_id": "skilled-agent-orchestration/061-agent-optimization",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/061-agent-optimization"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "006 optimize ultra-think",
+      "improve ultra-think agent",
+      "ultra-think agent improvement",
+      "061/006",
+      "rename ultra-think to multi-ai-council",
+      "multi-ai-council rename"
+    ],
+    "key_topics": [
+      "006",
+      "agent-optimization",
+      "ultra-think",
+      "sk-improve-agent-application",
+      "rename",
+      "multi-ai-council"
+    ],
+    "status": "planned",
+    "completion_pct": 0,
+    "last_active_child_id": null,
+    "level": 1,
+    "is_phase_parent": false
+  }
+}

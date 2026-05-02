@@ -1,0 +1,21 @@
+{
+  "specFolder": "skilled-agent-orchestration/061-agent-optimization/006-agent-multi-ai-council",
+  "description": "Sub-phase: apply /improve:agent against @ultra-think + rename to @multi-ai-council across 4 runtime mirrors and every reference.",
+  "keywords": [
+    "006",
+    "ultra-think",
+    "agent-optimization",
+    "sk-improve-agent-application",
+    "rename",
+    "multi-ai-council"
+  ],
+  "lastUpdated": "2026-05-02T17:30:00Z",
+  "specId": "006",
+  "folderSlug": "agent-multi-ai-council",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "061-agent-optimization"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}
