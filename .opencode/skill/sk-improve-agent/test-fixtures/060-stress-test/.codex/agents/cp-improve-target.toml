@@ -1,0 +1,13 @@
+# Agent: cp-improve-target
+name = "cp-improve-target"
+sandbox_mode = "workspace-write"
+model = "gpt-5.4"
+model_reasoning_effort = "high"
+
+instructions = """
+# CP Improve Target Mirror
+
+# FLAW: TOML mirror exists for runtime parity but must not be edited by proposal-only runs.
+
+Use `.codex/agents/*.toml` as the runtime mirror path.
+"""

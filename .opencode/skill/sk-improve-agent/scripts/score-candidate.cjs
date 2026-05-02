@@ -1,6 +1,14 @@
 // ╔══════════════════════════════════════════════════════════════════════════╗
 // ║ Candidate Scorer — 5-Dimension Evaluation Framework                     ║
 // ╚══════════════════════════════════════════════════════════════════════════╝
+// Usage:
+//   node score-candidate.cjs --candidate=<path> [--baseline=<path>] [--output=<path>]
+//
+// When --baseline is present, the scorer evaluates both files and emits:
+//   baselineScore: weighted baseline score
+//   delta: total and per-dimension candidate-minus-baseline score deltas
+//   thresholdDelta: comparison threshold from --thresholdDelta, manifest scoring,
+//     or the default value of 2.
 'use strict';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -253,6 +261,26 @@ function scoreDynamic(candidateContent, agentName, profile, weights) {
   return { weightedScore, dimensions };
 }
 
+function dimensionDelta(candidateDimensions, baselineDimensions) {
+  const baselineByName = new Map((baselineDimensions || []).map((entry) => [entry.name, entry]));
+  return (candidateDimensions || []).map((entry) => {
+    const baseline = baselineByName.get(entry.name);
+    return {
+      name: entry.name,
+      score: entry.score,
+      baselineScore: baseline ? baseline.score : null,
+      delta: baseline ? entry.score - baseline.score : null,
+      weight: entry.weight,
+    };
+  });
+}
+
+function resolveThresholdDelta(args, manifest) {
+  const raw = args.thresholdDelta ?? manifest?.scoring?.thresholdDelta ?? manifest?.scoring?.minimumDelta ?? 2;
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : 2;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 6. MAIN
 // ─────────────────────────────────────────────────────────────────────────────
@@ -260,6 +288,7 @@ function scoreDynamic(candidateContent, agentName, profile, weights) {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   const candidatePath = args.candidate;
+  const baselinePath = args.baseline;
   const manifestPath = args.manifest;
   const targetPath = args.target || candidatePath;
   const outputPath = args.output;
@@ -344,6 +373,66 @@ function main() {
   }
   const dynamicResult = scoreDynamic(candidateContent, agentName, profile, weightsOverride);
 
+  let baselineResult = null;
+  let delta = null;
+  let baselineScore = null;
+  const thresholdDelta = resolveThresholdDelta(args, manifest);
+
+  if (baselinePath) {
+    const baselineContent = safeRead(baselinePath);
+    if (typeof baselineContent !== 'string') {
+      const failure = {
+        status: 'infra_failure',
+        profileId: args.profile || null,
+        family: null,
+        evaluationMode: 'dynamic-5d',
+        target: targetPath,
+        candidate: candidatePath,
+        baseline: baselinePath,
+        error: baselineContent.error,
+        failureModes: ['baseline-read-failure'],
+      };
+      if (outputPath) {
+        writeJson(outputPath, failure);
+      } else {
+        process.stdout.write(`${JSON.stringify(failure, null, 2)}\n`);
+      }
+      process.exit(1);
+    }
+
+    const baselineProfile = runScript('generate-profile.cjs', [`--agent=${baselinePath}`]);
+    if (!baselineProfile || !baselineProfile.id) {
+      const failure = {
+        status: 'infra_failure',
+        evaluationMode: 'dynamic-5d',
+        target: targetPath,
+        candidate: candidatePath,
+        baseline: baselinePath,
+        error: 'Failed to generate dynamic profile for baseline',
+        failureModes: ['baseline-profile-generation-failure'],
+      };
+      if (outputPath) {
+        writeJson(outputPath, failure);
+      } else {
+        process.stdout.write(`${JSON.stringify(failure, null, 2)}\n`);
+      }
+      process.exit(1);
+    }
+
+    baselineResult = scoreDynamic(baselineContent, baselineProfile.id, baselineProfile, weightsOverride);
+    baselineScore = baselineResult.weightedScore;
+    delta = {
+      total: dynamicResult.weightedScore - baselineResult.weightedScore,
+      dimensions: dimensionDelta(dynamicResult.dimensions, baselineResult.dimensions),
+    };
+  }
+
+  const recommendation = baselineResult
+    ? (delta.total >= thresholdDelta
+        ? 'candidate-better'
+        : (dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'keep-baseline'))
+    : (dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement');
+
   const result = {
     status: 'scored',
     profileId: resolvedProfileId,
@@ -351,10 +440,14 @@ function main() {
     evaluationMode: 'dynamic-5d',
     target: targetPath,
     candidate: candidatePath,
+    baseline: baselinePath || null,
     score: dynamicResult.weightedScore,
+    baselineScore,
+    delta,
+    thresholdDelta,
     dimensions: dynamicResult.dimensions,
     legacyScore: null,
-    recommendation: dynamicResult.weightedScore >= 70 ? 'candidate-acceptable' : 'needs-improvement',
+    recommendation,
     failureModes: dynamicResult.dimensions
       .filter((d) => d.score < 60)
       .map((d) => `weak-${d.name}`),

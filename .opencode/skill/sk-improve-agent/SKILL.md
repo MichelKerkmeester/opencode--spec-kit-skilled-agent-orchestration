@@ -199,6 +199,17 @@ def route_recursive_agent_resources(task):
 6. Append score and benchmark results to the packet-local ledger.
 7. Run `scripts/reduce-state.cjs` to refresh the dashboard and experiment registry.
 
+### Mode 2A: Stress-Test Failure Paths Before Promotion Claims
+
+For changes that alter agent discipline, run at least one same-task A/B stress scenario before recommending promotion:
+
+1. Call A: a generic improvement attempt against an isolated sandbox copy of the target.
+2. Reset the sandbox to its baseline copy.
+3. Call B: the disciplined `/improve:agent` path against the identical prompt and files.
+4. Judge only grep/file/diff/exit-code signals: helper invocation, packet-local candidate boundary, no canonical or mirror mutation before promotion, benchmark journal boundary, legal-stop gate keys, and stop-reason correctness.
+
+Do not treat `Read(SKILL.md)` or `skill(sk-improve-agent)` as evidence that this protocol executed.
+
 ### 5-Dimension Evaluation Framework
 
 Dynamic mode is the only scoring path. Scoring evaluates five dimensions:
@@ -269,15 +280,15 @@ Event types: `session_start`, `session_initialized`, `integration_scanned`, `can
 
 A session may NOT claim `converged` unless ALL gate bundles pass:
 
-| Gate Bundle | Conditions |
-| --- | --- |
-| `contractGate` | structural >= 90 AND systemFitness >= 90 |
-| `behaviorGate` | ruleCoherence >= 85 AND outputQuality >= 85 |
-| `integrationGate` | integration >= 90 AND no drift ambiguity |
-| `evidenceGate` | benchmark pass AND repeatability pass |
-| `improvementGate` | weighted delta >= `scoring.thresholdDelta` |
+| Gate Bundle | Conditions | Required Evidence |
+| --- | --- | --- |
+| `contractGate` | structural >= 90 AND systemFitness >= 90 | score/legal-stop artifact includes both dimension values |
+| `behaviorGate` | ruleCoherence >= 85 AND outputQuality >= 85 | score/legal-stop artifact includes both dimension values |
+| `integrationGate` | integration >= 90 AND no drift ambiguity | integration report includes the expected runtime mirror manifest and no ambiguous drift |
+| `evidenceGate` | benchmark pass AND repeatability pass | `benchmark_completed` journal event plus repeatability output |
+| `improvementGate` | weighted delta >= `scoring.thresholdDelta` | `baselineScore`, current `score`, numeric `delta`, and `thresholdDelta` |
 
-Failed gates persist `blockedStop` with full gate results in the journal.
+The orchestrator MUST emit `legal_stop_evaluated` with all five gate keys before any `session_end` event. If any gate fails, it MUST emit `blocked_stop` with `failedGates[]` and use `stopReason:"blockedStop"`, not `converged`.
 
 ### Resume/Continuation Semantics (current release)
 
@@ -390,12 +401,14 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 - Preserve repeatability evidence when benchmark claims are made
 - Prefer the simpler candidate when scores tie
 - Keep benchmark evidence separate from mirror-drift packaging work
+- Require integration evidence to name each expected runtime mirror path explicitly (`.claude/agents`, `.codex/agents`, `.gemini/agents`, plus any manifest-declared extra mirrors) before trusting `integrationGate`
 
 ### ❌ NEVER
 
 - Mutate the canonical target during proposal-only mode
 - Broaden scope beyond the active manifest boundary
 - Treat runtime mirrors as experiment truth in the same phase as canonical evaluation
+- Treat a stale placeholder mirror path as equivalent to a real runtime mirror
 - Hide rejected runs, weak benchmark results, or infra failures
 - Promote non-canonical targets even if they benchmark well
 
@@ -459,4 +472,3 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 - `references/benchmark_operator_guide.md` for repeatable benchmark execution
 - `references/target_onboarding.md` for adding future bounded targets safely
 - `references/rollback_runbook.md` for promotion and rollback proof
-

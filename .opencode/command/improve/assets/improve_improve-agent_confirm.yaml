@@ -202,6 +202,9 @@ workflow:
       step_run_benchmark:
         description: "Run fixture tests against packet-local outputs"
         action: "Run profile fixtures against packet-local outputs under benchmark-runs/{target_profile}/"
+      step_emit_journal_event_benchmark_completed:
+        description: "Emit benchmark_completed journal event after benchmark output is written"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit benchmark_completed --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"benchmarkOutputPath\":\"{benchmark_output_path}\",\"targetProfile\":\"{target_profile}\"}'"
       step_measure_benchmark_stability:
         description: "Measure replay stability for the current scored candidate and emit a repeatability report"
         command: "node -e \"const fs=require('node:fs'); const stability=require('./.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const result=stability.measureStability([score],{minReplayCount:3,warningThreshold:0.95}); fs.writeFileSync('{spec_folder}/improvement/benchmark-runs/{target_profile}/iteration-{iteration}-repeatability.json',JSON.stringify(result,null,2)+'\\n');\""
@@ -223,9 +226,13 @@ workflow:
           A) Continue to next iteration
           B) Promote accepted candidate (handover only, requires evidence)
           C) Stop loop
-      step_emit_journal_event_gate_evaluation:
-        description: "Emit gate_evaluation journal event after the operator gate is evaluated"
-        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit gate_evaluation --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"gateName\":\"gate_after_score\",\"gateDecision\":\"{gate_after_score}\",\"stopReason\":\"{stop_reason}\"}'"
+      step_emit_journal_event_legal_stop_evaluated:
+        description: "Emit legal_stop_evaluated journal event with all five gate bundles after the operator gate is evaluated"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit legal_stop_evaluated --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"gateDecision\":\"{gate_after_score}\",\"contractGate\":\"{contractGate}\",\"behaviorGate\":\"{behaviorGate}\",\"integrationGate\":\"{integrationGate}\",\"evidenceGate\":\"{evidenceGate}\",\"improvementGate\":\"{improvementGate}\",\"baselineScore\":\"{baseline_score}\",\"score\":\"{weighted_score}\",\"delta\":\"{score_delta}\",\"thresholdDelta\":\"{threshold_delta}\"}'"
+      step_emit_journal_event_blocked_stop:
+        description: "Emit blocked_stop when any legal-stop gate fails"
+        condition: "contractGate.passed == false OR behaviorGate.passed == false OR integrationGate.passed == false OR evidenceGate.passed == false OR improvementGate.passed == false"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit blocked_stop --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"failedGates\":\"{failed_gates}\",\"stopReason\":\"blockedStop\"}'"
       step_promote_candidate:
         description: "Promote the accepted candidate to canonical target (guarded, requires score evidence)"
         condition: "gate_after_score == 'B' AND score_recommendation == 'candidate-better'"

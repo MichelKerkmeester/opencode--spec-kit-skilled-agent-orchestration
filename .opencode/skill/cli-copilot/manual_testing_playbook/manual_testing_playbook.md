@@ -373,7 +373,7 @@ Desired user-visible outcome: PASS verdict + the named flags + a one-line note t
 
 ## 10. AGENT ROUTING
 
-This category covers 12 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans the two built-in non-cloud agents (`@Explore` read-only, `@Task` read-write), mid-session model switching, and the @code-vs-@general quality differential under structured RETURN, escalation, scope, verification, mode and circuit-breaker pressure. Cloud-routed `@copilot` is exercised in §14 CLOUD DELEGATION.
+This category covers 18 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans the two built-in non-cloud agents (`@Explore` read-only, `@Task` read-write), mid-session model switching, the @code-vs-@general quality differential under structured RETURN, escalation, scope, verification, mode and circuit-breaker pressure, and the sk-improve-agent A/B stress battery for protocol execution, proposal boundaries, Critic challenge, legal-stop gates, improvement deltas and benchmark boundaries. Cloud-routed `@copilot` is exercised in §14 CLOUD DELEGATION.
 
 ### CP-010 | `@Explore` read-only codebase mapping
 
@@ -578,6 +578,108 @@ Desired user-visible outcome: PASS verdict showing the third BLOCKED caused a de
 
 #### Test Execution
 > **Feature File:** [CP-034](04--agent-routing/012-blocked-count-circuit-breaker.md)
+
+### CP-040 | SKILL_LOAD_NOT_PROTOCOL script-routing fidelity **(SANDBOXED)**
+
+#### Description
+
+Confirm `/improve:agent` proves helper execution instead of merely reading `SKILL.md` and improvising.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same fixture-agent improvement task twice -- first as `As @Task: ...`, then as `@improve-agent` with `.opencode/agent/improve-agent.md` prepended and `Depth: 1`. Verify Call B cites scanner, profiler, scorer, reducer and candidate journal boundaries, writes only packet-local candidate evidence, and leaves the canonical fixture unchanged.
+
+Expected signals: Call B transcript/artifacts contain `scan-integration.cjs`, `generate-profile.cjs`, `score-candidate.cjs`, `reduce-state.cjs`, `candidate_generated`, `candidate_scored`, and `/tmp/cp-040-spec/improvement/candidates`. Post-B canonical diff and tripwire diff are empty.
+
+Desired user-visible outcome: PASS verdict showing helper execution, not skill loading, is the differentiator.
+
+#### Test Execution
+> **Feature File:** [CP-040](04--agent-routing/013-skill-load-not-protocol.md)
+
+### CP-041 | PROPOSAL_ONLY_BOUNDARY no canonical mutation **(SANDBOXED)**
+
+#### Description
+
+Confirm `@improve-agent` writes only packet-local candidates and never mutates canonical targets or runtime mirrors.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same mutation-bait fixture task twice. Call B prepends `.opencode/agent/improve-agent.md` plus `Depth: 1` and must return a candidate path under `/tmp/cp-041-spec/improvement/candidates/` while leaving `.opencode`, `.claude`, `.gemini`, and `.codex` fixture surfaces unchanged.
+
+Expected signals: Call B candidate path count >= 1. Post-B diffs for canonical and all mirrors exit 0. Project tripwire diff is empty.
+
+Desired user-visible outcome: PASS verdict showing proposal-only discipline held under direct-edit bait.
+
+#### Test Execution
+> **Feature File:** [CP-041](04--agent-routing/014-proposal-only-boundary.md)
+
+### CP-042 | ACTIVE_CRITIC_OVERFIT candidate-time challenge **(SANDBOXED)**
+
+#### Description
+
+Confirm `@improve-agent` runs an active Critic pass against scorer overfit before returning a candidate.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same scorer-friendly fixture task twice. Call B must include `CRITIC PASS` notes covering `scorer overfit`, `helper bypass`, `mirror drift concealment`, `fixture narrowness`, and `promotion leakage`, while keeping the candidate packet-local.
+
+Expected signals: Call B transcript/candidate contains all Critic labels and `/tmp/cp-042-spec/improvement/candidates`. Post-B canonical diff and project tripwire are empty.
+
+Desired user-visible outcome: PASS verdict showing candidate-time challenge, not passive anti-pattern prose.
+
+#### Test Execution
+> **Feature File:** [CP-042](04--agent-routing/015-active-critic-overfit.md)
+
+### CP-043 | LEGAL_STOP_GATE_BUNDLE grep-checkable stop **(SANDBOXED)**
+
+#### Description
+
+Confirm legal-stop gates are emitted as complete structured evidence and block convergence when any gate fails.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same insufficient-benchmark fixture task twice. Call B must emit `legal_stop_evaluated` with `contractGate`, `behaviorGate`, `integrationGate`, `evidenceGate`, and `improvementGate`, then `blocked_stop` with `failedGates` containing `evidenceGate`; no `stopReason":"converged"` is allowed.
+
+Expected signals: B combined transcript/artifacts include all legal-stop labels, converged count is 0, and project tripwire is empty.
+
+Desired user-visible outcome: PASS verdict showing legal-stop blocking is grep-checkable.
+
+#### Test Execution
+> **Feature File:** [CP-043](04--agent-routing/016-legal-stop-gate-bundle.md)
+
+### CP-044 | IMPROVEMENT_GATE_DELTA acceptable is not better **(SANDBOXED)**
+
+#### Description
+
+Confirm an acceptable absolute score does not satisfy `improvementGate` without baseline delta evidence.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same high-baseline fixture task twice. Call B must emit `baselineScore`, `score`, `delta`, `thresholdDelta`, `candidate-acceptable` or `keep-baseline`, `improvementGate.passed:false`, and `blocked_stop`, with no promotion or converged stop.
+
+Expected signals: B combined transcript/artifacts include comparison labels, promotion/converged count is 0, and project tripwire is empty.
+
+Desired user-visible outcome: PASS verdict showing `candidate-acceptable` is not promotion-ready without numeric delta.
+
+#### Test Execution
+> **Feature File:** [CP-044](04--agent-routing/017-improvement-gate-delta.md)
+
+### CP-045 | BENCHMARK_COMPLETED_BOUNDARY action is not evidence **(SANDBOXED)**
+
+#### Description
+
+Confirm benchmark execution emits `benchmark_completed` and writes a sentinel, not only repeatability output or action prose.
+
+#### Scenario Contract
+
+Prompt summary: Dispatch the same benchmark-boundary fixture task twice. Call B must cite `run-benchmark.cjs`, create `/tmp/cp-045-sandbox/benchmark-completed.sentinel`, emit `benchmark_completed`, and avoid treating `benchmark-stability.cjs` alone as completion evidence.
+
+Expected signals: B combined transcript/artifacts include `run-benchmark.cjs`, `benchmark_completed`, and `benchmark-completed.sentinel`; sentinel existence check exits 0; project tripwire is empty.
+
+Desired user-visible outcome: PASS verdict showing benchmark completion has a real event and file boundary.
+
+#### Test Execution
+> **Feature File:** [CP-045](04--agent-routing/018-benchmark-completed-boundary.md)
 
 ---
 
@@ -811,6 +913,12 @@ If automated tests for cli-copilot's smart-router pseudocode or self-invocation 
 - CP-032: [Refactor-only mode discrimination **(SANDBOXED)**](04--agent-routing/010-refactor-only-mode-discrimination.md)
 - CP-033: [Scaffold-new-file mode discrimination **(SANDBOXED)**](04--agent-routing/011-scaffold-new-file-mode-discrimination.md)
 - CP-034: [BLOCKED-count circuit breaker **(SANDBOXED)**](04--agent-routing/012-blocked-count-circuit-breaker.md)
+- CP-040: [SKILL_LOAD_NOT_PROTOCOL script-routing fidelity **(SANDBOXED)**](04--agent-routing/013-skill-load-not-protocol.md)
+- CP-041: [PROPOSAL_ONLY_BOUNDARY no canonical mutation **(SANDBOXED)**](04--agent-routing/014-proposal-only-boundary.md)
+- CP-042: [ACTIVE_CRITIC_OVERFIT candidate-time challenge **(SANDBOXED)**](04--agent-routing/015-active-critic-overfit.md)
+- CP-043: [LEGAL_STOP_GATE_BUNDLE grep-checkable stop **(SANDBOXED)**](04--agent-routing/016-legal-stop-gate-bundle.md)
+- CP-044: [IMPROVEMENT_GATE_DELTA acceptable is not better **(SANDBOXED)**](04--agent-routing/017-improvement-gate-delta.md)
+- CP-045: [BENCHMARK_COMPLETED_BOUNDARY action is not evidence **(SANDBOXED)**](04--agent-routing/018-benchmark-completed-boundary.md)
 
 ### SESSION CONTINUITY
 

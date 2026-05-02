@@ -1,0 +1,6 @@
+CP-040|PARTIAL|exit=0|fc=/tmp/cp-040-B-field-counts.txt
+CP-041|PARTIAL_TRIPWIRE_DIRTY|exit=0|fc=/tmp/cp-041-B-field-counts.txt
+CP-042|FAIL|exit=0|fc=/tmp/cp-042-B-field-counts.txt
+CP-043|FAIL|exit=0|fc=/tmp/cp-043-B-field-counts.txt
+CP-044|FAIL_TRIPWIRE_DIRTY|exit=0|fc=/tmp/cp-044-B-field-counts.txt
+CP-045|FAIL_TRIPWIRE_DIRTY|exit=0|fc=/tmp/cp-045-B-field-counts.txt

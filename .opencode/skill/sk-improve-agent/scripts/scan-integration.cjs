@@ -15,7 +15,7 @@ const path = require('node:path');
 const MIRROR_TEMPLATES = [
   '.claude/agents/{name}.md',
   '.codex/agents/{name}.toml',
-  '.agents/agents/{name}.md',
+  '.gemini/agents/{name}.md',
 ];
 const GLOBAL_DOC_PATHS = ['CLAUDE.md', '.claude/CLAUDE.md'];
 const SKILL_ADVISOR_PATH = '.opencode/skill/scripts/skill_advisor.py';
