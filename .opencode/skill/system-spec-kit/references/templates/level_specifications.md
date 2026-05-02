@@ -23,27 +23,22 @@ templates/manifest/
 ├── tasks.md.tmpl            # Task breakdown
 ├── checklist.md.tmpl        # Verification gates
 ├── decision-record.md.tmpl  # Architecture decisions
-└── implementation-summary.md.tmpl
-├── Level extension                # Level-specific VALUE additions
-│   ├── level2-verify/       # +Verification (~185 LOC)
-│   ├── level3-arch/         # +Architecture (~220 LOC)
-│   └── level3-plus-govern/   # +Governance (~190 LOC)
-│
-├── Level 1 template contract                 # Composed Level 1: Core only (5 files incl. README)
-├── Level 2 template contract                 # Composed Level 2: Core + L2 (6 files incl. README)
-├── Level 3 template contract                 # Composed Level 3: Core + L2 + L3 (7 files incl. README)
-└── Level 3+ template contract                # Composed Level 3+: All addendums (7 files incl. README)
+├── implementation-summary.md.tmpl
+├── phase-parent.spec.md.tmpl
+├── handover.md.tmpl
+├── debug-delegation.md.tmpl
+└── resource-map.md.tmpl
 ```
 
 ### Template Paths - Quick Reference
 
 | Path | Purpose | When to Use |
 |------|---------|-------------|
-| `Level template contract` | Ready-to-use templates | **ALWAYS use this for new specs** (N = 1, 2, 3, or 3+) |
+| `templates/manifest/spec-kit-docs.json` | Level contract and document matrix | **ALWAYS use this through `create.sh` for new specs** |
 | Level source contract | Source components | Reference only (understanding architecture) |
 | Level extension contract | Level additions | Reference only (understanding architecture) |
 
-> **IMPORTANT:** Always copy templates from `Level template contract` (where N is 1, 2, 3, or 3+). The Level contract resolution selects and renders the correct template set for new spec folders.
+> **IMPORTANT:** Always scaffold from the manifest-backed Level contract. `create.sh` selects and renders the correct template set for new spec folders.
 
 ### Progressive Enhancement Model (Value-Based)
 
@@ -89,9 +84,9 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 ### Required Files (Baseline)
 
 - `spec.md` - Requirements and user stories (scaffolded from `templates/manifest/spec.md.tmpl`)
-- `plan.md` - Technical implementation plan (copy template from `level_contract_plan.md`)
-- `tasks.md` - Task breakdown by user story (copy template from `level_contract_tasks.md`)
-- `implementation-summary.md` - Post-implementation documentation (copy template from `level_contract_implementation-summary.md`)
+- `plan.md` - Technical implementation plan (rendered from `templates/manifest/plan.md.tmpl`)
+- `tasks.md` - Task breakdown by user story (rendered from `templates/manifest/tasks.md.tmpl`)
+- `implementation-summary.md` - Post-implementation documentation (rendered from `templates/manifest/implementation-summary.md.tmpl`)
 
 ### Optional Files
 
@@ -146,10 +141,10 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 - `templates/manifest/implementation-summary.md.tmpl`
 
 **Core source (for reference):**
-- `Level template contract`
-- `Level template contract`
-- `Level template contract`
-- `Level template contract`
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
+- `templates/manifest/implementation-summary.md.tmpl`
 
 ### Template Adaptation
 
@@ -230,9 +225,9 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 - `templates/manifest/checklist.md.tmpl`
 
 **Addendum source (+Verify):**
-- `Level template contract`
-- `Level template contract`
-- `Level template contract`
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
 
 ### Template Adaptation
 
@@ -341,12 +336,12 @@ Level 3+ (Extended):    +Enterprise governance, AI protocols (~1075 LOC)
 - `templates/manifest/implementation-summary.md.tmpl`
 
 **Addendum source (+Arch):**
-- `Level template contract`
-- `Level template contract`
-- `Level template contract`
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
 
 **Optional:**
-- `level_contract_optional_research.md` (copy into `research/research.md` from root templates/)
+- `templates/manifest/research.md.tmpl` (render into `research/research.md` when needed)
 
 ### Template Adaptation
 
@@ -473,15 +468,15 @@ Level 3+ is auto-detected via complexity scoring for highly complex tasks:
 - `templates/manifest/tasks.md.tmpl`
 - `templates/manifest/checklist.md.tmpl`
 - `templates/manifest/decision-record.md.tmpl`
-- `level_contract_implementation-summary.md`
+- `templates/manifest/implementation-summary.md.tmpl`
 
 **Addendum source (+Govern):**
-- `Level template contract`
-- `Level template contract`
-- `Level template contract`
+- `templates/manifest/spec.md.tmpl`
+- `templates/manifest/plan.md.tmpl`
+- `templates/manifest/tasks.md.tmpl`
 
 **Optional:**
-- `level_contract_optional_research.md` (copy into `research/research.md` from root templates/)
+- `templates/manifest/research.md.tmpl` (render into `research/research.md` when needed)
 
 ### Creating Level 3+ Spec Folder
 
@@ -563,9 +558,9 @@ If the script is unavailable, manually add the required files:
 
 | From   | To                         | Action                                                 | Files to Add |
 | ------ | -------------------------- | ------------------------------------------------------ | ------------ |
-| 1 → 2  | Add verification           | Copy `checklist.md` from `Level 2 template contract`          |              |
-| 2 → 3  | Add decision documentation | Copy `decision-record.md` from `Level 3 template contract`    |              |
-| 3 → 3+ | Add governance             | Copy extended sections from `Level 3+ template contract`      |              |
+| 1 → 2  | Add verification           | Render `templates/manifest/checklist.md.tmpl` for Level 2     |              |
+| 2 → 3  | Add decision documentation | Render `templates/manifest/decision-record.md.tmpl` for Level 3 |              |
+| 3 → 3+ | Add governance             | Re-render affected manifest templates for Level 3+             |              |
 
 **Changelog example:**
 
@@ -725,8 +720,8 @@ Some templates are not level-specific but can be used at any documentation level
 | `debug-delegation.md` | Debug task delegation | When stuck debugging (3+ failed attempts) | Task tool -> `@debug` |
 
 **Template Sources:**
-- `level_contract_optional_handover.md`
-- `level_contract_optional_debug-delegation.md`
+- `templates/manifest/handover.md.tmpl`
+- `templates/manifest/debug-delegation.md.tmpl`
 
 ### Summary Templates (REQUIRED for ALL Levels)
 
@@ -736,11 +731,11 @@ Some templates are not level-specific but can be used at any documentation level
 | `resource-map.md` | Lean path catalog | Any level, when reviewers need a scannable file ledger | Manual (optional) |
 
 **Template Sources:**
-- Level 1: `level_contract_implementation-summary.md`
-- Level 2: `level_contract_implementation-summary.md`
-- Level 3: `level_contract_implementation-summary.md`
-- Level 3+: `level_contract_implementation-summary.md`
-- `level_contract_optional_resource-map.md`
+- Level 1: `templates/manifest/implementation-summary.md.tmpl`
+- Level 2: `templates/manifest/implementation-summary.md.tmpl`
+- Level 3: `templates/manifest/implementation-summary.md.tmpl`
+- Level 3+: `templates/manifest/implementation-summary.md.tmpl`
+- `templates/manifest/resource-map.md.tmpl`
 
 **Why Required for ALL Levels:**
 - `implementation-summary.md` documents outcomes, lessons learned, and deviations from plan

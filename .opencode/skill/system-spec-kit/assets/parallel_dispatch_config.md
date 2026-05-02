@@ -153,7 +153,7 @@ spec_creation_parallel:
 - level specifications reference - Complete Level 1-3+ requirements
 
 ### Scripts
-- Level contract resolver - Level contract rendering
+- Level contract resolver - manifest-backed Level contract rendering
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

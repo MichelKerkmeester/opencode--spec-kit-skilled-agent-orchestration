@@ -29,8 +29,10 @@ This document provides comprehensive documentation for every validation rule enf
 | Severity | Exit Code | Strict Mode | Description                       |
 | -------- | --------- | ----------- | --------------------------------- |
 | ERROR    | 2         | 2           | Validation failed, must fix       |
-| WARNING  | 1         | 2           | Passed with issues, should fix    |
+| WARNING  | 0         | 2           | Passed with issues, should fix    |
 | INFO     | 0         | 0           | Informational, no action required |
+
+CLI taxonomy: `0` = success, `1` = user error, `2` = validation error, and `3` = system error. In non-strict mode, warnings are reported without changing the success exit code; in strict mode, warnings exit as validation errors.
 
 ---
 
@@ -138,9 +140,8 @@ Create the missing file(s) using the appropriate template:
 # Core files
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/007-feature --name feature-name
 
-# Implementation summary (required for all levels)
-# Create at end of implementation phase
-cp .opencode/skill/system-spec-kit/templates/implementation-summary.md specs/007-feature/
+# Implementation summary is scaffolded by create.sh for all levels
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/007-feature --name feature-name
 ```
 
 **Workflow:**
@@ -169,7 +170,7 @@ reorganization
 
 The scanner skips matches inside fenced code blocks (triple-backtick) and inside HTML comment blocks (`<!-- -->`), so legitimate examples in templates and reference docs do not trigger the rule.
 
-**Required content (mirrored from `phase-parent Level template contract`):** root purpose, sub-phase control file, what needs done. Migration history goes in an optional `context-index.md` (template at `level_contract_optional_context-index.md`).
+**Required content (mirrored from `templates/manifest/phase-parent.spec.md.tmpl`):** root purpose, sub-phase control file, what needs done. Migration history goes in an optional `context-index.md` rendered from `templates/manifest/context-index.md.tmpl`.
 
 **Implementation:** `.opencode/skill/system-spec-kit/scripts/rules/check-phase-parent-content.sh`. Registered as `PHASE_PARENT_CONTENT` in `scripts/lib/validator-registry.json` (severity: warn, category: authored_template).
 
@@ -640,8 +641,8 @@ mv specs/Feature specs/001-feature
 ```markdown
 ---
 title: My Feature Spec
-SPECKIT_TEMPLATE_SOURCE: Level 1 template contractspec.md
 ---
+<!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 
 # Content here
 ```
@@ -781,7 +782,7 @@ Add the AI Execution Protocol section to plan.md or tasks.md. Reference the Leve
 
 ```bash
 # See protocol examples in templates
-cat level_contract_plan.md
+cat .opencode/skill/system-spec-kit/templates/manifest/plan.md.tmpl
 ```
 
 ---
@@ -835,7 +836,7 @@ Present: decision-record.md (suggests Level 3)
 
 ```bash
 # Add checklist for Level 2
-cp level_contract_checklist.md specs/007-feature/
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path specs/007-feature --name feature-name
 ```
 
 ---
@@ -976,6 +977,9 @@ To validate phase links across parent and all children:
 | `SPECKIT_STRICT`     | false   | Set to `true` to fail on warnings |
 | `SPECKIT_JSON`       | false   | Set to `true` for JSON output     |
 | `SPECKIT_VERBOSE`    | false   | Set to `true` for verbose output  |
+| `SPECKIT_POST_VALIDATE` | unset | Set to `1` during scaffolding to run `validate.sh --quiet` after `create.sh` writes files |
+
+`validate.sh` delegates to the Node validation orchestrator by default. The strict path is designed for fast packet checks; packet 004 measured a fresh Level 3 strict validation at about 108ms on the local harness.
 
 ### Usage Examples
 

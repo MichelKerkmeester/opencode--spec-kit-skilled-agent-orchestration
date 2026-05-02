@@ -154,7 +154,7 @@ Choose the appropriate template **style** based on user experience and requireme
 
 | Style    | Lines  | Best For                              | Path                 |
 | -------- | ------ | ------------------------------------- | -------------------- |
-| **Core** | ~60-90 | Experienced users, clear requirements | `Level template contract` |
+| **Core** | ~60-90 | Experienced users, clear requirements | manifest-backed Level contract |
 
 ### Confidence Thresholds
 
@@ -235,7 +235,7 @@ This decision matrix addresses the following spec requirements:
 - [template_guide.md](../references/templates/template_guide.md) - Template selection and quality standards
 
 ### Scripts
-- Level contract resolver - Level contract rendering
+- Level contract resolver - manifest-backed Level contract rendering
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

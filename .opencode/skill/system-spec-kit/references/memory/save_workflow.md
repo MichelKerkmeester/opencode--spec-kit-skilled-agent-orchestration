@@ -248,6 +248,8 @@ The Phase 018 save path is packet-first. Retired `[spec]/memory/*.md` writes are
 
 After the save mutates indexed state, the MCP runtime touches `DB_UPDATED_FILE` so long-lived server processes can hot-rebind on the next `checkDatabaseUpdated()` pass instead of serving stale packet data.
 
+Before canonical continuity files are mutated, `generate-context.js` acquires a packet-local `.canonical-save.lock`. Parallel saves against the same folder fail fast while stale locks are removed with a warning, which keeps simultaneous handoff writes from interleaving.
+
 | Surface | Role |
 |---------|------|
 | `implementation-summary.md` | Primary continuity document carrying `_memory.continuity` in frontmatter |
@@ -298,7 +300,7 @@ specs/###-parent-feature/
 └── 002-phase/
 ```
 
-The parent has NO `implementation-summary.md`, NO `plan.md`, NO `tasks.md`, NO `checklist.md`, NO `decision-record.md`. Continuity for a phase parent is the pointer in `graph-metadata.json`, refreshed every save by the generator. The lean phase-parent template at `phase-parent Level template contract` is the canonical scaffold.
+The parent has NO `implementation-summary.md`, NO `plan.md`, NO `tasks.md`, NO `checklist.md`, NO `decision-record.md`. Continuity for a phase parent is the pointer in `graph-metadata.json`, refreshed every save by the generator. The lean phase-parent template at `templates/manifest/phase-parent.spec.md.tmpl` is the canonical scaffold.
 
 ---
 
@@ -607,4 +609,3 @@ node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js --h
 - [troubleshooting.md](../debugging/troubleshooting.md) - Troubleshooting guide for memory operations
 
 ---
-

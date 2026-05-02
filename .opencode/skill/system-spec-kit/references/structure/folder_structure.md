@@ -21,22 +21,19 @@ templates/
 │   ├── spec-core.md
 │   ├── plan-core.md
 │   ├── tasks-core.md
-│   └── impl-summary-core.md
+│   ├── implementation-summary.md.tmpl
+│   ├── phase-parent.spec.md.tmpl
+│   ├── handover.md.tmpl
+│   ├── debug-delegation.md.tmpl
+│   └── resource-map.md.tmpl
 │
-├── Level extension                # Level-specific additions
-│   ├── level2-verify/       # +Verification addendums
-│   ├── level3-arch/         # +Architecture addendums
-│   └── level3-plus-govern/   # +Governance addendums
-│
-├── Level 1 template contract                 # Pre-composed Level 1 (ALWAYS use for new specs)
-├── Level 2 template contract                 # Pre-composed Level 2
-├── Level 3 template contract                 # Pre-composed Level 3
-├── Level 3+ template contract                # Pre-composed Level 3+
-│
-└── [cross-level templates]  # handover.md, debug-delegation.md, research/research.md, resource-map.md
+├── examples/               # Rendered examples by Level
+├── changelog/              # Template history
+├── stress_test/            # Review/research rubric assets
+└── scratch/                # Local ignored render workspace
 ```
 
-> **IMPORTANT:** Always copy templates from `Level template contract` folders for new specs. The Level contract resolver owns template selection.
+> **IMPORTANT:** Always scaffold new specs from the manifest-backed Level contract. `create.sh` and the Level contract resolver share `templates/manifest/spec-kit-docs.json`.
 
 ---
 

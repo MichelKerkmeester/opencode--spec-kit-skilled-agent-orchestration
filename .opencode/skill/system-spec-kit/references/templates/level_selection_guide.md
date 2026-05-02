@@ -120,12 +120,12 @@ Create spec folder with pre-expanded templates from level-specific folders:
 ./scripts/spec/create.sh "Platform migration" --level 3+
 ```
 
-**Level Folders:**
-Templates are pre-expanded and ready to use in level-specific folders:
-- `Level 1 template contract` - 5 files, ~455 LOC (spec.md, plan.md, tasks.md, implementation-summary.md, README.md)
-- `Level 2 template contract` - 6 files, ~875 LOC (adds checklist.md)
-- `Level 3 template contract` - 7 files, ~1090 LOC (adds decision-record.md)
-- `Level 3+ template contract` - 7 files, ~1075 LOC (extended versions with AI protocols)
+**Template Source:**
+Templates are Level-gated manifest files rendered by `create.sh`:
+- Level 1 - spec.md, plan.md, tasks.md, implementation-summary.md
+- Level 2 - Level 1 plus checklist.md
+- Level 3 - Level 2 plus decision-record.md
+- Level 3+ - Level 3 file set with governance sections rendered by gate
 
 > **Source of truth for template LOC counts:** [level_specifications.md](./level_specifications.md)
 
@@ -195,16 +195,16 @@ Validates level consistency across all spec files:
 
 ## 7. RELATED RESOURCES
 
-### Templates (Level-Based Organization)
+### Templates (Manifest-Based Organization)
 
-Templates are pre-expanded in level folders:
+Templates are selected from `templates/manifest/spec-kit-docs.json`:
 
-| Level | Folder | Pre-expanded Content |
+| Level | Source | Rendered Content |
 |-------|--------|---------------------|
-| Level 1 | `Level 1 template contract` | Baseline templates (spec, plan, tasks, implementation-summary) |
-| Level 2 | `Level 2 template contract` | Level 1 + checklist |
-| Level 3 | `Level 3 template contract` | Level 2 + decision-record, research |
-| Level 3+ | `Level 3+ template contract` | Level 3 + AI protocol, extended checklist |
+| Level 1 | `templates/manifest/spec-kit-docs.json` | Baseline templates (spec, plan, tasks, implementation-summary) |
+| Level 2 | `templates/manifest/spec-kit-docs.json` | Level 1 + checklist |
+| Level 3 | `templates/manifest/spec-kit-docs.json` | Level 2 + decision-record, lazy research |
+| Level 3+ | `templates/manifest/spec-kit-docs.json` | Level 3 file set with governance sections |
 
 **Example paths:**
 - `templates/manifest/spec.md.tmpl` - Level-gated spec template

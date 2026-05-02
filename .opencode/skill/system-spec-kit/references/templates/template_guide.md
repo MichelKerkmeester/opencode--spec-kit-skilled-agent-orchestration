@@ -25,7 +25,7 @@ Level 3+ (Extended):    Level 3 + governance/AI protocol content
 
 ### Core Principles
 
-1. **Never create from scratch** - Always copy from `.opencode/skill/system-spec-kit/templates/`
+1. **Never create from scratch** - Always scaffold through `create.sh` or render from `.opencode/skill/system-spec-kit/templates/manifest/`
 2. **Always adapt to feature** - Templates are starting points, not final documents
 3. **Preserve structure** - Maintain numbering, emojis, and section organization
 4. **Remove placeholders** - Replace ALL `[PLACEHOLDER]` text with actual content
@@ -47,27 +47,24 @@ Level 3+ (Extended):    Level 3 + governance/AI protocol content
 
 ### Template Composition (Maintainer Reference)
 
-Templates in `Level template contract` folders are **composed** from the Level contract resolver:
+Templates are rendered from manifest-backed `*.md.tmpl` files. The same Level contract drives scaffolding and validation:
 
 ```bash
-# Compose all level templates
-Level contract resolver
-
-# Preview changes without writing
-Level contract resolver --dry-run
-
-# Verify templates are current
-Level contract resolver --verify
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir /tmp/spec-kit-render \
+  .opencode/skill/system-spec-kit/templates/manifest/spec.md.tmpl \
+  .opencode/skill/system-spec-kit/templates/manifest/plan.md.tmpl
 ```
 
 **Composition Rules:**
-- Level 1: Core only
-- Level 2: Core + level2-verify addendum
-- Level 3: Core + level2-verify + level3-arch addendums
-- Level 3+: Core + all addendums (level2-verify + level3-arch + level3-plus-govern)
+- Level 1: baseline sections only
+- Level 2: baseline + verification sections
+- Level 3: Level 2 + architecture sections
+- Level 3+: Level 3 + governance sections
 - Nested packet changelog templates live in `templates/changelog/` and are consumed directly by the generator, not by the composition pipeline.
 
-> **Note:** Maintainers should run `Level contract resolver` after modifying Level contract templates to regenerate the composed outputs.
+> **Note:** Maintainers should use `inline-gate-renderer --level N --out-dir DIR file...` after modifying manifest templates to inspect rendered output before running validation tests.
 
 ---
 
@@ -79,7 +76,7 @@ Level contract resolver --verify
 
 **Optional completion artifact:** packet-local changelog via `templates/changelog/root.md` when a durable spec-local history is useful
 
-**Copy commands:**
+**Scaffold command:**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/###-name --name feature-name
 ```
@@ -126,10 +123,9 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path spe
 
 **Required Templates:** Level 1 + `checklist.md`
 
-**Copy commands:**
+**Scaffold command:**
 ```bash
-# First copy all Level 1 files from Level 2 template contract, then add:
-cp level_contract_checklist.md specs/###-name/checklist.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path specs/###-name --name feature-name
 ```
 
 **When to use:**
@@ -165,17 +161,23 @@ cp level_contract_checklist.md specs/###-name/checklist.md
 
 **Recommended completion artifact for phased work:** packet-local changelog files generated from `templates/changelog/root.md` or `templates/changelog/phase.md`
 
-**Copy commands:**
+**Scaffold command:**
 ```bash
-# First copy all Level 2 files from Level 3 template contract, then add:
-cp level_contract_decision-record.md specs/###-name/decision-record.md
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3 --path specs/###-name --name feature-name
 ```
 
 **Optional Templates:**
 ```bash
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
-# Optional at any level — lean path catalog:
-cp level_contract_optional_resource-map.md specs/###-name/resource-map.md
+mkdir -p specs/###-name/research
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
+
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name \
+  .opencode/skill/system-spec-kit/templates/manifest/resource-map.md.tmpl
 ```
 
 **When to use:**
@@ -208,9 +210,9 @@ cp level_contract_optional_resource-map.md specs/###-name/resource-map.md
 
 ### Level 3+: Extended Governance (Complexity score: 80-100)
 
-**Required Templates:** Same file set as Level 3, using `Level 3+ template contract`
+**Required Templates:** Same file set as Level 3, rendered at Level 3+.
 
-**Copy commands:**
+**Scaffold command:**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path specs/###-name --name feature-name
 ```
@@ -326,7 +328,7 @@ submissions are duplicates.
 
 ### Step-by-Step Adaptation
 
-**Step 1: Copy Template**
+**Step 1: Scaffold or Render Template**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level <N> --path specs/###-name --name feature-name
 # Where <N> is 1, 2, 3, or 3+ matching your documentation level
@@ -389,7 +391,11 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level <N> --path s
 
 **Copy command:**
 ```bash
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
 ```
 
 **Sections to fill:**
@@ -426,8 +432,11 @@ mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs
 
 **Copy command:**
 ```bash
-cp level_contract_tasks.md specs/###-name/tasks.md
-# Or use Level 2 template contract or Level 3 template contract depending on documentation level
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 1 \
+  --out-dir specs/###-name \
+  .opencode/skill/system-spec-kit/templates/manifest/tasks.md.tmpl
+# Or render with --level 3 when the packet is Level 3
 ```
 
 **Sections to fill:**
@@ -453,8 +462,11 @@ cp level_contract_tasks.md specs/###-name/tasks.md
 
 **Copy command:**
 ```bash
-cp level_contract_checklist.md specs/###-name/checklist.md
-# Or use Level 3 template contract or Level 3+ template contract for higher levels
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 2 \
+  --out-dir specs/###-name \
+  .opencode/skill/system-spec-kit/templates/manifest/checklist.md.tmpl
+# Or render with --level 3+ when the packet is Level 3+
 ```
 
 **Sections to fill:**
@@ -481,7 +493,10 @@ cp level_contract_checklist.md specs/###-name/checklist.md
 
 **Copy command:**
 ```bash
-cp level_contract_decision-record.md specs/###-name/decision-record.md
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name \
+  .opencode/skill/system-spec-kit/templates/manifest/decision-record.md.tmpl
 ```
 
 **Required filename:** `decision-record.md` (topic-specific ADR files are supplemental)
@@ -525,7 +540,10 @@ These templates support session continuity, temporary workspaces, and context pr
 
 **Copy command:**
 ```bash
-cp level_contract_optional_handover.md specs/###-name/handover.md
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name \
+  .opencode/skill/system-spec-kit/templates/manifest/handover.md.tmpl
 ```
 
 **Sections to fill:**
@@ -695,7 +713,7 @@ Task tool -> @debug for specs/007-feature/
 
 **Non-negotiable:**
 
-1. **Always copy from `.opencode/skill/system-spec-kit/templates/`** - Never freehand
+1. **Always scaffold or render from `.opencode/skill/system-spec-kit/templates/manifest/`** - Never freehand
 2. **Preserve numbering and emojis** - Maintain visual scanning pattern
 3. **Fill every placeholder** - Replace `[PLACEHOLDER]` with actual content
 4. **Remove instructional comments** - Delete `<!-- SAMPLE -->` blocks
@@ -747,7 +765,7 @@ Verify placeholder cleanup before completion:
 .opencode/skill/system-spec-kit/scripts/spec/check-placeholders.sh specs/042-feature/
 ```
 
-For manual upgrades (fallback), copy the required templates from the target level folder and adapt them following the standard adaptation process above.
+For manual upgrades (fallback), render the required manifest template for the target level and adapt it following the standard adaptation process above.
 
 ---
 
@@ -1091,9 +1109,9 @@ When a specification is decomposed into phases, templates are applied at two lev
 ```bash
 # Create phase child folder with templates
 .opencode/skill/system-spec-kit/scripts/spec/create.sh \
-  --phase specs/###-parent-feature \
-  --topic foundation \
-  --level 3 \
+  --phase \
+  --phases 3 \
+  --phase-names foundation,implementation,integration \
   "Phase 1: Core data models"
 ```
 
@@ -1122,17 +1140,17 @@ See [phase_definitions.md](../structure/phase_definitions.md) for complete phase
 
 ### Templates
 
-**Core Templates (Level-Based):**
+**Manifest Templates (Level-Gated):**
 
-Templates are organized in level folders for pre-expanded, level-appropriate content:
+Templates are stored as `*.md.tmpl` files and rendered by Level:
 
 | Level | Folder | Contents |
 |-------|--------|----------|
-| Level 1 | `Level 1 template contract` | spec.md, plan.md, tasks.md, implementation-summary.md |
-| Level 2 | `Level 2 template contract` | Level 1 + checklist.md |
-| Level 3 | `Level 3 template contract` | Level 2 + decision-record.md (research/research.md at root) |
-| Level 3+ | `Level 3+ template contract` | Level 3 + AI protocol, extended checklist |
-| Root | `templates/` (root) | handover.md, debug-delegation.md, resource-map.md (cross-level) |
+| Level 1 | `templates/manifest/spec-kit-docs.json` | spec.md, plan.md, tasks.md, implementation-summary.md |
+| Level 2 | `templates/manifest/spec-kit-docs.json` | Level 1 + checklist.md |
+| Level 3 | `templates/manifest/spec-kit-docs.json` | Level 2 + decision-record.md and lazy research |
+| Level 3+ | `templates/manifest/spec-kit-docs.json` | Level 3 + governance sections |
+| Phase Parent | `templates/manifest/phase-parent.spec.md.tmpl` | lean parent spec.md |
 
 **Level 1 Templates:**
 - [spec template](../../templates/manifest/spec.md.tmpl) - Requirements and user stories template
@@ -1145,7 +1163,7 @@ Templates are organized in level folders for pre-expanded, level-appropriate con
 
 **Level 3 Templates (includes Level 2 content):**
 - [decision-record.md](../../templates/manifest/decision-record.md.tmpl) - Architecture Decision Records template
-- [research.md.tmpl](../../templates/manifest/research.md.tmpl) - Copy to `research/research.md` when Level 3 research is needed
+- [research.md.tmpl](../../templates/manifest/research.md.tmpl) - Render to `research/research.md` when Level 3 research is needed
 
 **Cross-Level Templates (at templates root):**
 - [handover.md.tmpl](../../templates/manifest/handover.md.tmpl) - Full session handover document (~100-150 lines)

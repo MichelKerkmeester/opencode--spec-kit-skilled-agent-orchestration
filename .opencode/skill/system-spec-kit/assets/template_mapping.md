@@ -1,11 +1,11 @@
 ---
 title: Template Mapping
-description: Complete mapping of documentation levels to templates with copy commands.
+description: Complete mapping of documentation levels to templates with scaffold and render commands.
 ---
 
 # Template Mapping - Level to File Assignments
 
-Maps documentation levels to required templates with ready-to-use copy commands.
+Maps documentation levels to required templates with ready-to-use scaffold and render commands.
 
 ---
 
@@ -20,7 +20,7 @@ For cross-phase campaigns, keep one template set per owning phase folder rather 
 ### Usage
 
 1. Determine your documentation level (1, 2, 3, or 3+)
-2. Copy the required templates using the provided bash commands
+2. Scaffold the required templates using the provided bash commands
 3. Follow the step-by-step template usage guide for proper folder setup
 4. Verify all placeholders are filled before proceeding
 5. When work spans multiple phases or multiple ownership branches, create or update the template set inside the owning phase folder and reference the sibling branches explicitly
@@ -49,43 +49,51 @@ Level 3 (Full):         Level 2 + decision-record.md + optional research/researc
 Level 3+ (Extended):    Level 3 + approval workflow + compliance + stakeholder tracking
 ```
 
-| Level               | Required Files                     | Adds To Previous        | Copy Commands              |
+| Level               | Required Files                     | Adds To Previous        | Scaffold Commands          |
 | ------------------- | ---------------------------------- | ----------------------- | -------------------------- |
 | **1: Baseline**     | `spec.md` + `plan.md` + `tasks.md` + `implementation-summary.md` | (foundation)            | See Level 1 commands below |
 | **2: Verification** | Level 1 + `checklist.md`           | QA checklist            | See Level 2 commands below |
 | **3: Full**         | Level 2 + `decision-record.md`     | ADR + optional research | See Level 3 commands below |
 | **3+: Extended**    | Level 3 + approval workflow + compliance + stakeholders | Review tracking + coordination | See Level 3+ commands below |
-| **Phase Parent**    | `spec.md` + `description.json` + `graph-metadata.json` (lean trio) | None (control file only) | `cp phase-parent Level template contract <parent>/spec.md` |
+| **Phase Parent**    | `spec.md` + `description.json` + `graph-metadata.json` (lean trio) | None (control file only) | `create.sh --phase --phases N --phase-names a,b,c <description>` |
 
 **Phase Parent** rows above apply when the target folder qualifies as a phase parent (≥1 direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND ≥1 such child has `spec.md` OR `description.json`). At a phase parent:
-- **Required:** `spec.md` (lean — sourced from `phase-parent Level template contract`), `description.json`, `graph-metadata.json`
+- **Required:** `spec.md` (lean, rendered from `templates/manifest/phase-parent.spec.md.tmpl`), `description.json`, `graph-metadata.json`
 - **Prohibited at parent (live in children only):** `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`
 - **Optional:** `templates/manifest/context-index.md.tmpl` (migration bridge, only if reorganized)
 
 Phase children continue to follow the normal Level 1–3+ rows above for their assigned level. Tolerant policy: legacy phase parents that retain heavy docs continue to validate without churn.
 
-**Level 1 Copy Commands (Baseline):**
+**Level 1 Scaffold Commands (Baseline):**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 1 --path specs/###-name --name feature-name
 ```
 
-**Level 2 Copy Commands (complete set):**
+**Level 2 Scaffold Commands (complete set):**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path specs/###-name --name feature-name
 ```
 
-**Level 3 Copy Commands (complete set):**
+**Level 3 Scaffold Commands (complete set):**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3 --path specs/###-name --name feature-name
 # Optional:
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
 ```
 
-**Level 3+ Copy Commands (complete set):**
+**Level 3+ Scaffold Commands (complete set):**
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path specs/###-name --name feature-name
 # Optional:
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3+ \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
 ```
 
 ---
@@ -94,13 +102,13 @@ mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs
 
 These templates are OPTIONAL and can be added at any documentation level:
 
-| Template File | Copy As       | When to Use                          | Copy Command                                                                          |
+| Template File | Render As     | When to Use                          | Render Command                                                                        |
 | ------------- | ------------- | ------------------------------------ | ------------------------------------------------------------------------------------- |
-| `research/research.md` | `research/research.md` | Comprehensive research documentation (Level 3+ typical) | `mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md` |
-| `resource-map.md` | `resource-map.md` | Lean path catalog of every file analyzed/created/updated/removed (any level) | `cp level_contract_optional_resource-map.md specs/###-name/resource-map.md` |
+| `research/research.md` | `research/research.md` | Comprehensive research documentation (Level 3+ typical) | Render `templates/manifest/research.md.tmpl` with `inline-gate-renderer --level N --out-dir specs/###-name/research` |
+| `resource-map.md` | `resource-map.md` | Lean path catalog of every file analyzed/created/updated/removed (any level) | Render `templates/manifest/resource-map.md.tmpl` with `inline-gate-renderer --level N --out-dir specs/###-name` |
 
 **Notes:**
-- These are OPTIONAL - only copy when the packet benefits from them
+- These are OPTIONAL - only render when the packet benefits from them
 - `decision-record.md` is REQUIRED at Level 3, not optional
 - Topic-specific ADR files can be added as supplemental artifacts, but the required canonical file is always `decision-record.md`
 - `resource-map.md` is level-agnostic and pairs well with `implementation-summary.md` when reviewers need a scannable blast-radius view
@@ -260,7 +268,7 @@ Content that will be indexed...
 
 **Non-negotiable rules:**
 
-1. **Always copy from `.opencode/skill/system-spec-kit/templates/`** - Never freehand documentation
+1. **Always scaffold or render from `.opencode/skill/system-spec-kit/templates/manifest/`** - Never freehand documentation
 2. **Preserve numbering and emojis** - Maintain visual scanning pattern
 3. **Fill every placeholder** - Replace `[PLACEHOLDER]` with actual content
 4. **Remove instructional comments** - Delete `<!-- SAMPLE -->` blocks
@@ -317,7 +325,11 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path sp
 
 ```bash
 # Comprehensive Research
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
+mkdir -p specs/###-name/research
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
 ```
 
 ### Step 6: Fill Templates
@@ -351,7 +363,7 @@ Get explicit "yes/go ahead/proceed" before ANY file changes.
 - [quick_reference.md](../references/workflows/quick_reference.md) - Commands, checklists, and troubleshooting
 
 ### Scripts
-- Level contract resolver - Level template selection
+- Level contract resolver - manifest-backed Level template selection
 
 ### Templates (Organized by Level)
 
@@ -385,7 +397,7 @@ Get explicit "yes/go ahead/proceed" before ANY file changes.
 - [decision-record.md](../templates/manifest/decision-record.md.tmpl) - Decision records with authority and review requirements
 
 **Optional Templates:**
-- [research.md.tmpl](../templates/manifest/research.md.tmpl) - Copy to `research/research.md` for Level 3 research packets
+- [research.md.tmpl](../templates/manifest/research.md.tmpl) - Render to `research/research.md` for Level 3 research packets
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

@@ -58,9 +58,9 @@ Status: ✅ This requirement applies immediately once file edits are requested.
 
 ### Distributed Governance Rule
 
-Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use templates from .opencode/skill/system-spec-kit/Level template contract for level-owned docs and the root cross-cutting templates where applicable. This is a workflow-required gate, not a runtime hook: run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` after authored spec-doc writes and before completion claims, then route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
+Any agent writing authored spec folder docs (`spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `implementation-summary.md`, `decision-record.md`, `handover.md`, `review-report.md`, `debug-delegation.md`, `resource-map.md` (optional)) MUST use manifest-backed templates from `.opencode/skill/system-spec-kit/templates/manifest/` through `create.sh` or the inline renderer. This is a workflow-required gate, not a runtime hook: run `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh <spec-folder> --strict` after authored spec-doc writes and before completion claims, then route continuity updates through /memory:save. Deep-research workflow-owned packet markdown (`research/iterations/*.md`, `research/deep-research-*.md`, and progressive `research/research.md` loop updates) is exempt from that generic per-write rule; `/spec_kit:deep-research` must instead run targeted strict validation after every `spec.md` mutation it performs. @deep-research retains exclusive write access for `research/research.md`; @debug retains exclusive write access for `debug-delegation.md`.
 
-- `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `level_contract_optional_handover.md` for initial creation.
+- `handover.md` stays in the canonical recovery ladder and is maintained through `/memory:save` handover_state routing using `templates/manifest/handover.md.tmpl` for initial creation.
 - `review-report.md` remains owned by `@deep-review` when deep review workflows synthesize findings.
 - `resource-map.md` is a peer cross-cutting template under `.opencode/skill/system-spec-kit/templates/`; it remains optional at any level and gives reviewers a lean file ledger alongside `implementation-summary.md`.
 
@@ -93,7 +93,7 @@ The router discovers markdown resources recursively from `references/` and `asse
 
 - Level definitions and template size guidance: level specifications reference
 - Template usage and composition rules: [template_guide.md](./references/templates/template_guide.md)
-- Use `Level template contract` for operational templates; the Level contract resolver owns template selection.
+- Use the manifest-backed Level contract for operational templates; `create.sh` and the Level contract resolver share `templates/manifest/spec-kit-docs.json`.
 - Use `templates/changelog/` for packet-local nested changelog generation at completion time.
 - Script architecture, build outputs, and runtime entrypoints: [scripts/README.md](./scripts/README.md)
 - Memory save JSON schema and workflow contracts: [save_workflow.md](./references/memory/save_workflow.md)
@@ -105,7 +105,7 @@ Primary operational scripts:
 - `spec/archive.sh`
 - `spec/check-completion.sh`
 - `spec/recommend-level.sh`
-- `Level contract resolver`
+- `mcp_server/lib/templates/level-contract-resolver.ts`
 
 CLI exit codes:
 - `0`: success.
@@ -358,13 +358,13 @@ When user selects **B) New**, AI estimates complexity and recommends a level:
 
 **Level Guidelines:**
 
-| LOC     | Level | Template Folder       |
+| LOC     | Level | Template Source       |
 | ------- | ----- | --------------------- |
-| <100    | 1     | `Level 1 template contract`  |
-| 100-499 | 2     | `Level 2 template contract`  |
-| ≥500    | 3     | `Level 3 template contract`  |
-| Complex | 3+    | `Level 3+ template contract` |
-| Phase Parent | n/a | `phase-parent Level template contract` |
+| <100    | 1     | `templates/manifest/spec-kit-docs.json` |
+| 100-499 | 2     | `templates/manifest/spec-kit-docs.json` |
+| ≥500    | 3     | `templates/manifest/spec-kit-docs.json` |
+| Complex | 3+    | `templates/manifest/spec-kit-docs.json` |
+| Phase Parent | n/a | `templates/manifest/phase-parent.spec.md.tmpl` |
 
 **Phase Parent Mode** — When a spec folder has phase children (≥1 direct child matching `^[0-9]{3}-[a-z0-9-]+$` AND that child has `spec.md` OR `description.json`), the validator detects it via `is_phase_parent()` (shell, in `scripts/lib/shell-common.sh`) and `isPhaseParent()` (TS at `mcp_server/lib/spec/is-phase-parent.ts`, ESM JS at `scripts/dist/spec/is-phase-parent.js`) — both must agree. The parent then requires ONLY the lean trio: `spec.md`, `description.json`, `graph-metadata.json`. All heavy docs (`plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`) live in the phase children where they stay accurate. Phase-parent `spec.md` content discipline: root purpose + sub-phase control file + what needs done; NEVER merge/consolidation/migration narratives (those rot fast and cause hallucinations during resume). Migration history goes into an optional `context-index.md` if needed. `/spec_kit:resume` on a phase parent lists children with statuses so the user picks which phase to continue. Tolerant policy preserves legacy phase parents that retain heavy docs.
 
@@ -833,7 +833,7 @@ Project-local Claude settings use nested Claude `hooks` groups per event. Keep t
 ### ✅ ALWAYS
 
 1. **Determine level (1/2/3/3+) before ANY file changes** - Count LOC, assess complexity/risk
-2. **Copy templates from `Level template contract`** - Use level folders, NEVER create from scratch
+2. **Scaffold from manifest-backed templates** - Use `create.sh` or `inline-gate-renderer`, NEVER create from scratch
 3. **Fill ALL placeholders** - Remove placeholder markers and sample content
 4. **Ask A/B/C/D/E when file modification detected** - Present options, wait for selection
 5. **Check for related specs before creating new folders** - Search keywords, review status
@@ -983,7 +983,7 @@ Canonical command lifecycle: `/spec_kit:plan --intake-only` establishes or repai
 
 | Resource          | Location                                                                   | Purpose                           |
 | ----------------- | -------------------------------------------------------------------------- | --------------------------------- |
-| Templates         | `Level 1 template contract` through Level 3+ template contract (see Resource Inventory above)    | Pre-merged level templates        |
+| Templates         | `templates/manifest/spec-kit-docs.json` plus `templates/manifest/*.md.tmpl` | Manifest-backed Level templates   |
 | Validation        | `scripts/spec/validate.sh`                                                 | Workflow-required validation gate |
 | Gates             | `AGENTS.md` Section 2                                                      | Gate definitions                  |
 | Memory gen        | runtime `scripts/dist/memory/generate-context.js` (source: `scripts/memory/generate-context.ts`) | Canonical continuity save entrypoint |

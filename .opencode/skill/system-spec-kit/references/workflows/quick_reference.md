@@ -38,7 +38,7 @@ Level 3+ (Extended):    Level 3 + governance/AI execution content
 | Any task (baseline) | 1 | spec.md + plan.md + tasks.md + implementation-summary.md | resource-map.md (any level) |
 | Needs QA validation | 2 | L1 + checklist.md | resource-map.md (any level) |
 | Complex/architectural | 3 | L2 + decision-record.md | research/research.md, resource-map.md |
-| Enterprise/governance heavy | 3+ | L3 file set from `Level 3+ template contract` | research/research.md, resource-map.md |
+| Enterprise/governance heavy | 3+ | L3 file set rendered at Level 3+ | research/research.md, resource-map.md |
 
 **LOC as soft guidance:**
 - <100 LOC suggests Level 1
@@ -78,7 +78,10 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 3+ --path sp
 
 ```bash
 ## Comprehensive Research (from root templates folder):
-mkdir -p specs/###-name/research && cp level_contract_optional_research.md specs/###-name/research/research.md
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir specs/###-name/research \
+  .opencode/skill/system-spec-kit/templates/manifest/research.md.tmpl
 ```
 
 ---
@@ -123,18 +126,15 @@ mkdir -p specs/###-short-name/
 ### Template Composition (Maintainer)
 
 ```bash
-# Compose all level templates through Level contract rendering
-Level contract resolver
-
-# Preview changes without writing
-Level contract resolver --dry-run
-
-# Verify templates are current
-Level contract resolver --verify
-
-# Compose specific levels
-Level contract resolver 2 3
+# Render one or more manifest templates for inspection
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir /tmp/spec-kit-render \
+  .opencode/skill/system-spec-kit/templates/manifest/spec.md.tmpl \
+  .opencode/skill/system-spec-kit/templates/manifest/plan.md.tmpl
 ```
+
+`create.sh --path` validates the resolved target before writing and rejects traversal outside the repository. Post-create validation is opt-in: set `SPECKIT_POST_VALIDATE=1` when CI or a strict local workflow should run `validate.sh --quiet` immediately after scaffolding.
 
 **Naming rules:**
 - 2-3 words (shorter is better)
@@ -166,12 +166,12 @@ Before making ANY file changes, verify:
 
 - [ ] Determined level (1/2/3/3+) or exempt (typo fix)
 - [ ] Created `/specs/[###-short-name]/`
-- [ ] Copied ALL REQUIRED templates for chosen level:
+- [ ] Scaffolded ALL REQUIRED templates for chosen level:
   - [ ] Level 1: spec.md + plan.md + tasks.md + implementation-summary.md
   - [ ] Level 2: Level 1 + checklist.md
   - [ ] Level 3: Level 2 + decision-record.md
-  - [ ] Level 3+: Use full Level 3 file set from `Level 3+ template contract`
-- [ ] Renamed templates correctly
+  - [ ] Level 3+: Use full Level 3 file set rendered at Level 3+
+- [ ] Rendered template output names are correct
 - [ ] Filled ALL template sections with actual content
 - [ ] Removed placeholder text and sample sections
 - [ ] Copied optional templates if needed (Level 3 only)
@@ -499,7 +499,8 @@ The pointer is maintained automatically by the generator: parent-level saves wri
 | Command | Description |
 |---------|-------------|
 | `/spec_kit:plan :with-phases` | Trigger phase decomposition as pre-workflow in plan or complete |
-| `create.sh --phase <parent> --topic <name>` | Create a new phase child folder under a parent spec |
+| `create.sh --phase --phases N --phase-names a,b,c <description>` | Create a phase parent and named child phase folders |
+| `create.sh --phase --parent <parent> --phases N --phase-names a,b <description>` | Add named child phases to an existing parent spec |
 | `validate.sh <parent> --recursive` | Validate parent and all child phase folders |
 | `node .../nested-changelog.js <spec-folder> --write` | Write a packet-local root or phase changelog into the parent packet `changelog/` folder |
 

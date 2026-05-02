@@ -101,6 +101,7 @@ The MCP server supports multiple embedding providers for semantic search. Provid
 | `SPECKIT_QUIET` | `false` | Suppress non-essential output |
 | `SPECKIT_TEMPLATES_DIR` | Auto-detected | Override templates directory |
 | `SPECKIT_TEMPLATE_STYLE` | `minimal` | Template style (currently only `minimal` supported) |
+| `SPECKIT_POST_VALIDATE` | unset | Set to `1` for `create.sh` to run `validate.sh --quiet` after scaffolding |
 
 ---
 
@@ -374,4 +375,3 @@ SPECKIT_RESPONSE_TRACE=true node mcp_server/dist/context-server.js
 MCP servers must keep stdout reserved for protocol traffic only. Send diagnostics, warnings and startup logs to stderr so clients such as Codex do not see extra stdout output as a broken transport handshake.
 
 ---
-

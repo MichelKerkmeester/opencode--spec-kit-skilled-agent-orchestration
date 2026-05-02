@@ -128,7 +128,7 @@ These factors can push you to a higher level even if LOC suggests lower:
 
 In addition to level, choose the appropriate template **style**:
 
-Templates are located at `Level template contract` (e.g., `Level 1 template contract`, `Level 2 template contract`, `Level 3 template contract`).
+Templates are selected by `templates/manifest/spec-kit-docs.json` and rendered through `create.sh`.
 
 ---
 
@@ -335,7 +335,7 @@ This decision matrix addresses the following spec requirements:
 - [template_guide.md](../references/templates/template_guide.md) - Template selection and quality standards
 
 ### Scripts
-- Level contract resolver - Level contract rendering
+- Level contract resolver - manifest-backed Level contract rendering
 
 ### Related Skills
 - `system-spec-kit` - Spec folder workflow orchestrator

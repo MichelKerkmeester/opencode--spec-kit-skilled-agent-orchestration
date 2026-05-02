@@ -1,0 +1,16 @@
+{
+  "specFolder": "005-skill-references-assets-alignment",
+  "description": "Audit and align SKILL.md, references, and Markdown assets with current manifest-backed template and validation behavior.",
+  "keywords": [
+    "skill-refs-assets-alignment",
+    "round 5 skill docs audit",
+    "manifest-backed templates"
+  ],
+  "lastUpdated": "2026-05-02T06:43:46.000Z",
+  "specId": "005",
+  "folderSlug": "skill-references-assets-alignment",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "3"
+}

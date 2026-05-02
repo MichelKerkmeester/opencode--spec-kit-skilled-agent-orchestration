@@ -36,9 +36,10 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh --json specs/001-f
 **Exit Codes:**
 | Code | Meaning |
 |------|---------|
-| 0 | Validation passed |
-| 1 | Warnings found (non-blocking) |
-| 2 | Errors found (blocking) |
+| 0 | Success |
+| 1 | User error such as bad flags or invalid input |
+| 2 | Validation error |
+| 3 | System error such as a missing folder or file I/O failure |
 
 ---
 
@@ -90,6 +91,8 @@ echo '{"specFolder":"001-feature","sessionSummary":"..."}' | node .opencode/skil
 | AUTO_SAVE_MODE | false | Skip alignment check |
 | SPECKIT_QUIET | false | Suppress non-essential output |
 
+The direct script acquires a packet-local `.canonical-save.lock` before mutating canonical continuity surfaces. A concurrent save fails fast while a stale lock older than the configured timeout is removed with a warning.
+
 ---
 
 ## 5. SPEC FOLDER CREATION
@@ -106,11 +109,19 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh
 # With arguments
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --name "feature-name"
 
+# With explicit path
+bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path specs/###-name --name "feature-name"
+
 # Sub-folder mode
 bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --subfolder specs/001-parent/ --topic "iteration-2"
 ```
 
-**Phase creation**: `bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --phase specs/022-feature/ --topic 'skill-review'`
+`--path` resolves and validates the target before writing; traversal outside the repository is rejected.
+
+Set `SPECKIT_POST_VALIDATE=1` to opt into immediate post-create `validate.sh --quiet` checks.
+
+**Phase creation**: `bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --phase --phases 3 --phase-names 'foundation,implementation,integration' 'OAuth2 flow'`
+**Append phases**: `bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --phase --parent specs/022-feature --phases 2 --phase-names 'stabilization,rollout' 'OAuth2 flow'`
 **Recursive validation**: `bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/022-feature/ --recursive`
 These commands create/validate direct-child phase packets
 under a coordination root.
@@ -120,8 +131,13 @@ under a coordination root.
 |------|---------|
 | `--level N` | Set documentation level (1-3) |
 | `--name NAME` | Feature name for folder |
+| `--path PATH` | Create at an explicit validated path |
 | `--subfolder PATH` | Create as sub-folder of existing spec |
 | `--topic NAME` | Topic name for sub-folder |
+| `--phase` | Create or append phase folders |
+| `--phases N` | Set phase count |
+| `--phase-names A,B` | Set comma-separated phase folder names |
+| `--parent PATH` | Append phases to an existing parent |
 | `--sharded` | Create sharded sections (Level 3) |
 
 ---
@@ -155,24 +171,15 @@ bash .opencode/skill/system-spec-kit/scripts/spec/recommend-level.sh --auth --ap
 
 ### Level contract resolver
 
-Composes level-specific templates through Level contract rendering source components. Ensures consistency between source templates and composed outputs.
+The resolver is the library that reads `templates/manifest/spec-kit-docs.json` for `create.sh`, `validate.sh`, and tests. For manual rendering, use the inline renderer.
 
 **Usage:**
 ```bash
-# Compose all level templates
-bash Level contract resolver
-
-# Preview changes without writing files
-bash Level contract resolver --dry-run
-
-# Verbose output during composition
-bash Level contract resolver --verbose
-
-# Verify composed templates match sources
-bash Level contract resolver --verify
-
-# Compose specific levels only
-bash Level contract resolver 2 3
+bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
+  --level 3 \
+  --out-dir /tmp/spec-kit-render \
+  .opencode/skill/system-spec-kit/templates/manifest/spec.md.tmpl \
+  .opencode/skill/system-spec-kit/templates/manifest/plan.md.tmpl
 ```
 
 **Flags:**
@@ -275,4 +282,3 @@ After the workflow completes, a **POST-SAVE QUALITY REVIEW** is emitted. This re
 - [Template Guide](../templates/template_guide.md)
 
 ---
-

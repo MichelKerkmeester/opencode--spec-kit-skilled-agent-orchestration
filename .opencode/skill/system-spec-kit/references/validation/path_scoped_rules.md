@@ -121,9 +121,10 @@ ENVIRONMENT OVERRIDES (runtime control)
 
 | Code | Meaning                          |
 | ---- | -------------------------------- |
-| 0    | Validation passed                |
-| 1    | Validation passed with warnings  |
-| 2    | Validation failed (errors found) |
+| 0    | Success                          |
+| 1    | User error such as bad flags     |
+| 2    | Validation error                 |
+| 3    | System error such as missing folder or file I/O failure |
 
 ---
 
@@ -166,4 +167,3 @@ Planned but not yet implemented:
 - `system-spec-kit` - Spec folder workflow orchestrator
 
 ---
-
