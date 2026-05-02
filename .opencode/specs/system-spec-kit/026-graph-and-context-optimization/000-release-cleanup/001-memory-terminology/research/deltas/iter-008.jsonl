@@ -1,7 +1,0 @@
-{"type":"iteration","run":8,"status":"insight","focus":"Glossary content draft preview (§0 + §6)","findingsCount":2,"newInfoRatio":0.15,"keyQuestions":[],"answeredQuestions":[],"focusTrack":"glossary-content-prep","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T08:36:00.000Z"}
-{"type":"node","kind":"FINDING","id":"f-008-1","name":"§0 PREAMBLE prose draft (~210w defensive 4-paragraph: scope + Anthropic + MCP-registry + legacy-alias rule)","iteration":8}
-{"type":"node","kind":"FINDING","id":"f-008-2","name":"§6 cognitive carve-out prose draft (~270w: KEEP loanwords + 5 CONDITIONAL by name with line-paths + canary cross-link rule)","iteration":8}
-{"type":"edge","relation":"INFORMS","sourceId":"f-008-1","targetId":"Q5","id":"e-008-1"}
-{"type":"edge","relation":"INFORMS","sourceId":"f-008-1","targetId":"Q6","id":"e-008-2"}
-{"type":"edge","relation":"INFORMS","sourceId":"f-008-2","targetId":"Q5","id":"e-008-3"}
-{"type":"edge","relation":"INFORMS","sourceId":"f-008-2","targetId":"Q7","id":"e-008-4"}

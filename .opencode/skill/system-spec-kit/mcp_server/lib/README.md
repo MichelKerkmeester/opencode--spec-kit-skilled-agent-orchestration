@@ -35,6 +35,84 @@ trigger_phrases:
 
 The MCP Server Library provides the core functionality for the Spec Kit Memory MCP server. It implements cognitive memory features including semantic search, attention decay, importance scoring and intelligent context retrieval. These modules work together to provide AI assistants with human-like memory recall and context awareness.
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                      MCP SERVER LIB ARCHITECTURE                      │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────────────────────────┐    ┌─────────────────────────────┐ │
+│  │        Handlers             │    │      External Clients        │ │
+│  │  ┌────────┬────────┬──────┐ │    │ ┌─────────┐ ┌────────────┐  │ │
+│  │  │ save   │ resume │search│ │───▶│ │ MCP     │ │ Scripts    │  │ │
+│  │  │ context│ boost  │tools │ │    │ │ callers │ │ (via api/) │  │ │
+│  │  └────────┴────────┴──────┘ │    │ └─────────┘ └────────────┘  │ │
+│  └──────────────┬───────────────┘    └───────────────┬─────────────┘ │
+│                 │                                    │               │
+│  ┌──────────────▼────────────────────────────────────▼─────────────┐ │
+│  │                         CORE SUBSYSTEMS                          │ │
+│  │  ┌──────────────────┐  ┌──────────────────┐  ┌───────────────┐ │ │
+│  │  │    search/       │  │   cognitive/     │  │  storage/     │ │ │
+│  │  │ ┌──────────────┐ │  │ ┌──────────────┐ │  │ ┌───────────┐ │ │ │
+│  │  │ │ vector-index │ │  │ │ attention    │ │  │ │ SQLite    │ │ │ │
+│  │  │ │ hybrid-search│ │  │ │ -decay       │ │  │ │ CRUD      │ │ │ │
+│  │  │ │ rrf-fusion   │ │  │ │ fsrs-        │ │  │ │ migrations│ │ │ │
+│  │  │ │ graph-search │ │  │ │ scheduler    │ │  │ │ indexes   │ │ │ │
+│  │  │ │ cross-encoder│ │  │ │ pe-gating    │ │  │ └───────────┘ │ │ │
+│  │  │ │ intent-class │ │  │ │ working-     │ │  └───────────────┘ │ │
+│  │  │ │ pipeline/    │ │  │ │ memory       │ │  ┌───────────────┐ │ │
+│  │  │ └──────────────┘ │  │ │ tier-class   │ │  │  scoring/     │ │ │
+│  │  └──────────────────┘  │ │ co-activation│ │  │ ┌───────────┐ │ │ │
+│  │  ┌──────────────────┐  │ └──────────────┘ │  │ │ composite │ │ │ │
+│  │  │   continuity/    │  │  ┌──────────────┐ │  │ │ ranking   │ │ │ │
+│  │  │ resume-ladder    │  │  │   graph/     │ │  │ │ folder    │ │ │ │
+│  │  │ thin-continuity  │  │  │ causal-graph │ │  │ │ -scoring  │ │ │ │
+│  │  │ -record          │  │  │ community    │ │  │ └───────────┘ │ │ │
+│  │  │ memory-patch     │  │  │ signals      │ │  └───────────────┘ │ │
+│  │  └──────────────────┘  │  └──────────────┘ │  ┌───────────────┐ │ │
+│  │  ┌──────────────────┐  │  ┌──────────────┐ │  │coverage-graph/│ │ │
+│  │  │   routing/       │  │  │  feedback/   │ │  │deep-loop      │ │ │
+│  │  │ content-router   │  │  │ implicit     │ │  │convergence    │ │ │
+│  │  │ category-proto   │  │  │ -feedback    │ │  └───────────────┘ │ │
+│  │  └──────────────────┘  │  │ shadow-eval  │ │  ┌───────────────┐ │ │
+│  │  ┌──────────────────┐  │  └──────────────┘ │  │    eval/      │ │ │
+│  │  │    merge/        │  │  ┌──────────────┐ │  │ ablations     │ │ │
+│  │  │ anchor-merge     │  │  │  learning/   │ │  │ dashboards    │ │ │
+│  │  │ -operation       │  │  │ pre/post     │ │  └───────────────┘ │ │
+│  │  └──────────────────┘  │  │ -flight      │ │  ┌───────────────┐ │ │
+│  │  ┌──────────────────┐  │  └──────────────┘ │  │  parsing/     │ │ │
+│  │  │   validation/    │  │                    │  │ quality-ext   │ │ │
+│  │  │ spec-doc         │  │                    │  │ frontmatter   │ │ │
+│  │  │ checkpoint       │  │                    │  └───────────────┘ │ │
+│  │  └──────────────────┘  │                    │  ┌───────────────┐ │ │
+│  └─────────────────────────────────────────────┘  │ governance/   │ │ │
+│                                                   │ spec limits   │ │ │
+│  ┌──────────────────────────────────────────────┐ └───────────────┘ │ │
+│  │              CROSS-CUTTING                    │                    │ │
+│  │ ┌──────────┐ ┌──────────┐ ┌───────────────┐ │ ┌───────────────┐ │ │
+│  │ │session/  │ │response/ │ │architecture/  │ │ │ enrichment/   │ │ │
+│  │ │cache/    │ │errors/   │ │context/       │ │ │ manage/       │ │ │
+│  │ │contracts │ │telemetry │ │extraction/    │ │ │ providers/    │ │ │
+│  │ └──────────┘ └──────────┘ └───────────────┘ │ └───────────────┘ │ │
+│  └──────────────────────────────────────────────┘                    │ │
+│                                                                      │ │
+│  ┌─────────────────────────────────────────────────────────────────┐│ │
+│  │                     SHARED PACKAGE                               ││ │
+│  │  ┌──────────────────┐  ┌──────────────┐  ┌─────────────────────┐││ │
+│  │  │ embeddings/      │  │ algorithms/  │  │ parsing/            │││ │
+│  │  │ trigger-extractor│  │ scoring/     │  │ utils/              │││ │
+│  │  └──────────────────┘  └──────────────┘  └─────────────────────┘││ │
+│  └─────────────────────────────────────────────────────────────────┘│ │
+│  └──────────────────────────────┬────────────────────────────────────┤ │
+│                                 │                                    │ │
+│  Data flow:  handlers ──▶ core subsystems ──▶ storage/index          │ │
+│              handlers ◄── core subsystems ◄── search results         │ │
+│              core subsystems ──▶ shared/ (embeddings, algorithms)    │ │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
 Gate E keeps that retrieval in a supporting role: `/spec_kit:resume` is the operator-facing recovery surface, and packet continuity is rebuilt from `handover.md` -> `_memory.continuity` -> spec docs. Generated continuity support artifacts are not the primary continuity source.
 
 ### Key Statistics

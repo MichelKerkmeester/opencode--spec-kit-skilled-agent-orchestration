@@ -24,43 +24,90 @@ trigger_phrases:
 
 These handlers can support indexed retrieval and generated artifacts, but canonical packet continuity still belongs to `/spec_kit:resume` and packet docs. Recovery order remains `handover.md`, then `_memory.continuity`, then the remaining spec docs.
 
-Primary MCP handler modules:
+### Architecture Diagram
 
-- `memory-context.ts` - L1 orchestration entry point for intent-aware context assembly.
-- `memory-search.ts` - L2 hybrid search handler with telemetry and profile support.
-- `memory-triggers.ts` - Trigger phrase matching, tiered content injection, and session-aware matching.
-- `memory-save.ts` - Save pipeline entry point delegating to `handlers/save/`.
-- `memory-ingest.ts` - Async ingestion job start, status, and cancel handlers.
-- `memory-crud.ts` - Stable CRUD facade backed by focused CRUD submodules.
-- `memory-bulk-delete.ts` - Bulk deletion by importance tier with checkpoint guardrails.
-- `memory-retention-sweep.ts` - Manual and startup-triggered retention enforcement for governed rows whose `delete_after` has expired.
-- `memory-index.ts` - Scan, re-index, alias discovery, and spec-doc indexing entry point.
-- `checkpoints.ts` - Checkpoint lifecycle plus `memory_validate`.
-- `session-learning.ts` - Task preflight, postflight, and learning history handlers.
-- `causal-graph.ts` - Causal link, unlink, stats, and drift-why handlers.
-- `eval-reporting.ts` - Ablation, k-sensitivity, and dashboard handlers.
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                    HANDLER LAYER ARCHITECTURE                         │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │   TOOLS/ DISPATCH LAYER ──▶ dispatchTool(name) ──▶ handlers/   ││
+│  └───────────────────────────┬─────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐│
+│  │                       MEMORY HANDLERS                            ││
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            ││
+│  │  │ L1: Context  │ │ L2: Search   │ │ L2: Triggers │            ││
+│  │  │ memory-      │ │ memory-      │ │ memory-      │            ││
+│  │  │ context.ts   │ │ search.ts    │ │ triggers.ts  │            ││
+│  │  └──────────────┘ └──────────────┘ └──────────────┘            ││
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            ││
+│  │  │ SAVE PIPELINE│ │ LIFECYCLE    │ │ CAUSAL GRAPH │            ││
+│  │  │ memory-save  │ │ ingest       │ │ causal-graph │            ││
+│  │  │ .ts → save/  │ │ bulk-delete  │ │ link/unlink  │            ││
+│  │  │              │ │ retention    │ │ stats/why    │            ││
+│  │  └──────────────┘ └──────────────┘ └──────────────┘            ││
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐            ││
+│  │  │ CRUD         │ │ CHECKPOINTS  │ │ INDEX        │            ││
+│  │  │ list/delete  │ │ + validate   │ │ scan/alias   │            ││
+│  │  │ update/stats │ │              │ │ discovery     │            ││
+│  │  │ health       │ │              │ │              │            ││
+│  │  └──────────────┘ └──────────────┘ └──────────────┘            ││
+│  │  ┌──────────────┐ ┌──────────────┐                              ││
+│  │  │ EVAL         │ │ SESSION      │                              ││
+│  │  │ eval-reporting│ │ session-     │                              ││
+│  │  │ ablation/    │ │ learning.ts  │                              ││
+│  │  │ dashboard    │ │ pre/post-    │                              ││
+│  │  └──────────────┘ │ flight       │                              ││
+│  │                   └──────────────┘                              ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                   INTERNAL HELPERS                               ││
+│  │ ┌────────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐  ││
+│  │ │save/       │ │handler-  │ │mutation- │ │ pe-gating.ts    │  ││
+│  │ │(decomposed)│ │ utils.ts │ │ hooks.ts │ │ quality-loop.ts │  ││
+│  │ └────────────┘ └──────────┘ └──────────┘ └──────────────────┘  ││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
 
-Code graph handlers (`code_graph/` subdirectory):
+### Directory Tree
 
-- `code_graph/scan.ts` - `code_graph_scan`: index workspace files, build structural graph.
-- `code_graph/query.ts` - `code_graph_query`: query structural relationships (outline, calls, imports).
-- `code_graph/status.ts` - `code_graph_status`: report graph health and statistics.
-- `code_graph/context.ts` - `code_graph_context`: LLM-oriented compact graph neighborhoods.
-- `code_graph/verify.ts` - `code_graph_verify`: run graph verification checks.
-- `code_graph/detect-changes.ts` - `detect_changes`: stale-safe unified-diff preflight.
-
-Internal helpers in this folder:
-
-- `memory-crud-delete.ts`, `memory-crud-update.ts`, `memory-crud-list.ts`, `memory-crud-stats.ts`, `memory-crud-health.ts` - Focused CRUD implementations behind `memory-crud.ts`.
-- `memory-crud-types.ts`, `memory-crud-utils.ts` - Shared CRUD types and helpers.
-- `memory-index-alias.ts`, `memory-index-discovery.ts` - Alias conflict discovery, spec-doc discovery, and constitutional file detection.
-- `handler-utils.ts`, `types.ts` - Shared handler helpers and domain typing.
-- `mutation-hooks.ts` - Post-mutation cache invalidation and feedback wiring.
-- `pe-gating.ts` - Prediction-error save arbitration helpers, document weighting, and lineage-aware update paths.
-- `quality-loop.ts` - Verify-fix-verify scoring and auto-fix loop used by `memory-save.ts`.
-- `v-rule-bridge.ts` - Runtime bridge to validation scripts for memory quality checks.
-- `causal-links-processor.ts`, `chunking-orchestrator.ts` - Save/index support helpers.
-- `save/` - Decomposed save pipeline modules.
+```
+mcp_server/handlers/
+├── memory-context.ts              # L1: intent-aware context assembly (auto, deep, focused, resume)
+├── memory-search.ts               # L2: hybrid search with telemetry and profile support
+├── memory-triggers.ts             # L2: trigger matching with tiered content injection
+├── memory-save.ts                 # Save pipeline entry → decomposes to save/
+├── memory-crud.ts                 # Stable CRUD facade → focused submodules
+│   ├── memory-crud-delete.ts      #   Single-record delete
+│   ├── memory-crud-update.ts      #   Metadata corrections
+│   ├── memory-crud-list.ts        #   Browse stored records
+│   ├── memory-crud-stats.ts       #   Indexed-continuity statistics
+│   └── memory-crud-health.ts      #   System health diagnostics
+├── memory-bulk-delete.ts          # Bulk delete by importance tier
+├── memory-retention-sweep.ts      # Retention enforcement for expired records
+├── memory-index.ts                # Scan, re-index, alias discovery
+├── memory-ingest.ts               # Async ingestion lifecycle
+├── checkpoints.ts                 # Checkpoint create/list/restore/delete + validate
+├── session-learning.ts            # Preflight/postflight + learning history
+├── causal-graph.ts                # Causal link/unlink/stats + drift-why
+├── eval-reporting.ts              # Ablation analysis + dashboard reports
+├── index.ts                       # Lazy-loading handler registry
+├── types.ts                       # Shared handler types
+├── handler-utils.ts               # Shared handler helpers
+├── mutation-hooks.ts              # Post-mutation cache invalidation
+├── pe-gating.ts                   # Prediction-error save arbitration
+├── quality-loop.ts                # Verify-fix-verify scoring loop
+├── v-rule-bridge.ts               # Bridge to validation scripts
+├── causal-links-processor.ts      # Save-time causal edge processing
+├── chunking-orchestrator.ts       # Save/index chunking orchestration
+├── save/                          # Decomposed save pipeline modules
+└── README.md
+```
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->

@@ -30,6 +30,71 @@ importance_tier: "normal"
 `matrix_runners/` turns the F1-F14 x CLI-executor matrix into executable cells for the five external CLI executors: `cli-codex`, `cli-copilot`, `cli-gemini`, `cli-claude-code`, and `cli-opencode`.
 
 It does not run native or inline cells. Those surfaces are covered by focused local runners.
+
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                   MATRIX RUNNER ARCHITECTURE                          │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                  matrix-manifest.json                           ││
+│  │  F1-F14 × {cli-codex, cli-copilot, cli-gemini,                 ││
+│  │            cli-claude-code, cli-opencode}                       ││
+│  └───────────────────────────┬─────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐│
+│  │                    run-matrix.ts                                ││
+│  │  ┌────────────────────────────────────────────────────────────┐││
+│  │  │ Parses manifest → filters cells → spawns per executor      │││
+│  │  │ Adapter resolves: PASS | FAIL | TIMEOUT | NA | BLOCKED     │││
+│  │  └────────────────────────────────────────────────────────────┘││
+│  └───────────────────────────┬─────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐│
+│  │                    ADAPTERS (5 files)                            ││
+│  │  ┌──────────────┐ ┌──────────────┐ ┌──────────────┐           ││
+│  │  │ codex-       │ │ copilot-     │ │ gemini-      │           ││
+│  │  │ adapter.ts   │ │ adapter.ts   │ │ adapter.ts   │           ││
+│  │  │ spawn codex  │ │ spawn copilot│ │ spawn gemini │           ││
+│  │  └──────────────┘ └──────────────┘ └──────────────┘           ││
+│  │  ┌──────────────┐ ┌──────────────┐                              ││
+│  │  │ claude-code- │ │ opencode-    │                              ││
+│  │  │ adapter.ts   │ │ adapter.ts   │                              ││
+│  │  │ spawn claude │ │ spawn opencd │                              ││
+│  │  └──────────────┘ └──────────────┘                              ││
+│  └───────────────────────────┬─────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐│
+│  │                    OUTPUT                                       ││
+│  │  ┌────────────────────┐ ┌──────────────────────────────────────┐││
+│  │  │ Per-cell JSONL     │ │ summary.tsv                          │││
+│  │  │ F1-cli-gemini.jsonl│ │ (aggregated PASS/FAIL/TIMEOUT/NA)   │││
+│  │  └────────────────────┘ └──────────────────────────────────────┘││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Status codes: PASS = stdout match | FAIL = no match | TIMEOUT      │
+│                NA = not applicable | BLOCKED = spawn/permission err │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+mcp_server/matrix_runners/
+├── run-matrix.ts                   # Main runner: parse manifest → filter → spawn → aggregate
+├── matrix-manifest.json            # Frozen cell list (F1-F14 x 5 executors)
+├── adapter-base.ts                 # Shared adapter logic (spawn, status codes, error handling)
+├── codex-adapter.ts                # Codex CLI adapter
+├── copilot-adapter.ts              # Copilot CLI adapter
+├── gemini-adapter.ts               # Gemini CLI adapter
+├── claude-code-adapter.ts          # Claude Code adapter
+├── opencode-adapter.ts             # OpenCode adapter
+├── templates/                      # Prompt templates per cell
+└── README.md
+```
 <!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:quick-start -->

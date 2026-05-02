@@ -24,14 +24,58 @@ trigger_phrases:
 
 The `stress_test/` directory holds MCP server stress coverage that is intentionally separate from the default `tests/` suite. Use it for load-style checks, high-volume write/read behavior, matrix-cell remediations, degraded-state sweeps, and performance or capacity validation that operators may want to run explicitly.
 
-Current stress suites:
+### Architecture Diagram
 
-- `search-quality/` - full W3-W13 search-quality harness, corpus, metrics, baseline, telemetry export, and degraded-readiness cells.
-- `memory/` - memory search and trigger fast-path latency/throughput benchmarks.
-- `skill-advisor/` - skill graph rebuild concurrency stress coverage.
-- `code-graph/` - degraded-readiness sweep and large-input/DoS-cap coverage.
-- `session/` - session-manager entry-limit stress and Gate D resume benchmarks.
-- `matrix/` - synthetic matrix and routing latency comparison coverage.
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                   STRESS TEST ARCHITECTURE                            │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                    TEST SUITES (6 domains)                       ││
+│  │  ┌────────────────┐ ┌────────────────┐ ┌──────────────────────┐ ││
+│  │  │search-quality/ │ │  memory/       │ │ skill-advisor/      │ ││
+│  │  │W3-W13 harness  │ │ search latency │ │ rebuild concurrency │ ││
+│  │  │corpus/metrics  │ │ trigger perf   │ │ graph stress        │ ││
+│  │  │baseline/tele.  │ │                │ │                     │ ││
+│  │  └────────────────┘ └────────────────┘ └──────────────────────┘ ││
+│  │  ┌────────────────┐ ┌────────────────┐ ┌──────────────────────┐ ││
+│  │  │ code-graph/    │ │  session/      │ │   matrix/            │ ││
+│  │  │ degraded-state │ │ entry-limit    │ │ routing latency      │ ││
+│  │  │ DoS-cap sweeps │ │ Gate D resume  │ │ synthetic comparison │ ││
+│  │  └────────────────┘ └────────────────┘ └──────────────────────┘ ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │               ISOLATION FROM DEFAULT TEST SUITE                  ││
+│  │  ┌─────────────────────────┐  ┌────────────────────────────────┐││
+│  │  │ npm test                │  │ npm run stress                 │││
+│  │  │ (vitest.config.ts)      │  │ (vitest.stress.config.ts)      │││
+│  │  │ excludes stress_test/** │  │ includes stress_test/** only   │││
+│  │  └─────────────────────────┘  └────────────────────────────────┘││
+│  │  ┌─────────────────────────────────────────────────────────────┐││
+│  │  │ Stress slices: npm run stress:harness | stress:matrix       │││
+│  │  └─────────────────────────────────────────────────────────────┘││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Rules: Self-contained (temp DB, no live mutation), document cost   │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+mcp_server/stress_test/
+├── search-quality/                 # W3-W13 search quality: harness, corpus, metrics, baseline
+├── memory/                         # Memory search + trigger pathway latency/throughput
+├── skill-advisor/                  # Skill graph rebuild concurrency stress
+├── code-graph/                     # Degraded readiness + large-input/DoS sweeps
+├── session/                        # Session entry-limit + Gate D resume benchmarks
+├── matrix/                         # Synthetic search routing + latency comparison
+├── vitest.stress.config.ts         # Stress-specific vitest config (excluded from default)
+└── README.md
+```
 <!-- /ANCHOR:overview -->
 
 ---

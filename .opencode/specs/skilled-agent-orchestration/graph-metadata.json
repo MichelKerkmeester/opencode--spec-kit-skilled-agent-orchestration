@@ -1,6 +1,10 @@
 {
   "derived": {
-    "last_active_child_id": "skilled-agent-orchestration/057-cmd-spec-kit-ux-upgrade",
-    "last_active_at": "2026-05-01T07:30:00Z"
-  }
+    "last_active_child_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+    "last_active_at": "2026-05-02T08:57:37.883Z",
+    "last_save_at": "2026-05-02T08:57:37.883Z"
+  },
+  "children_ids": [
+    "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment"
+  ]
 }

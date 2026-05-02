@@ -30,9 +30,105 @@ trigger_phrases:
 2. **Prompt-time skill-advisor hooks** — external hook scripts that fire on each user prompt, call the native advisor, and deliver the advisor brief through the runtime's `additionalContext` or managed-instructions surface.
 3. **In-process helper modules** — helpers exported via `index.ts` for memory surfacing, mutation UX feedback, and response-hint injection.
 
-Each concern has its own subsection below. The helper modules are a utility layer; the runtime startup and prompt-time hooks are standalone external processes registered with the host runtime.
+### Architecture Diagram
 
-For packet work, hook output should align with `/spec_kit:resume` and the canonical continuity chain `handover.md -> _memory.continuity -> spec docs`, with generated memory artifacts treated as supporting context only.
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                      HOOK SYSTEM ARCHITECTURE                        │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                    AI RUNTIMES                                   ││
+│  │  ┌────────┐  ┌────────┐  ┌────────┐  ┌────────┐               ││
+│  │  │Claude  │  │Gemini  │  │Copilot │  │ Codex  │               ││
+│  │  └───┬────┘  └───┬────┘  └───┬────┘  └───┬────┘               ││
+│  └──────┼───────────┼───────────┼───────────┼──────────────────────┘│
+│         │           │           │           │                        │
+│  ┌──────▼───────────▼───────────▼───────────▼──────────────────────┐│
+│  │                    HOOK SCRIPTS (External Processes)            ││
+│  │  ┌──────────────────────┐  ┌──────────────────────────────────┐││
+│  │  │   STARTUP HOOKS      │  │   PROMPT-TIME ADVISOR HOOKS      │││
+│  │  │ ┌──────────────────┐ │  │ ┌──────────────────────────────┐ │││
+│  │  │ │claude/           │ │  │ │claude/user-prompt-submit.ts │ │││
+│  │  │ │ session-prime.ts │ │  │ │gemini/user-prompt-submit.ts │ │││
+│  │  │ │gemini/           │ │  │ │copilot/user-prompt-submit.ts│ │││
+│  │  │ │ session-prime.ts │ │  │ │codex/user-prompt-submit.ts  │ │││
+│  │  │ │copilot/          │ │  │ └──────────────────────────────┘ │││
+│  │  │ │ session-prime.ts │ │  └──────────────────────────────────┘││
+│  │  │ │codex/            │ │                                       ││
+│  │  │ │ session-start.ts │ │  ┌──────────────────────────────────┐││
+│  │  │ └──────────────────┘ │  │   COMPACTION HOOKS               │││
+│  │  └──────────────────────┘  │ ┌──────────────────────────────┐ │││
+│  │                            │ │claude/compact-inject.ts     │ │││
+│  │                            │ │gemini/compact-inject.ts     │ │││
+│  │                            │ │gemini/compact-cache.ts      │ │││
+│  │                            │ │copilot/compact-cache.ts     │ │││
+│  │                            │ └──────────────────────────────┘ │││
+│  │                            └──────────────────────────────────┘││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │              IN-PROCESS HELPER MODULES (index.ts exports)       ││
+│  │  ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐ ││
+│  │  │ memory-surface.ts│ │ mutation-feedback│ │ response-hints.ts│ ││
+│  │  │ context extract  │ │ post-mutation    │ │ auto-surface     │ ││
+│  │  │ constitutional   │ │ UX payloads     │ │ hint injection   │ ││
+│  │  │ trigger matching │ │ cache invalidation│ token-count sync │ ││
+│  │  └──────────────────┘ └──────────────────┘ └──────────────────┘ ││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │             SHARED INFRASTRUCTURE                                ││
+│  │ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────────┐││
+│  │ │index.ts  │ │memory-   │ │response- │ │shared-provenance.ts  │││
+│  │ │          │ │surface.ts│ │hints.ts  │ │                      │││
+│  │ └──────────┘ └──────────┘ └──────────┘ └──────────────────────┘││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Transport: Claude/Gemini → stdout context injection                │
+│             Copilot → managed custom-instructions file refresh      │
+│             Codex → native hook injection                           │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+mcp_server/hooks/
+├── claude/                        # Claude runtime hooks
+│   ├── session-prime.ts           #   SessionStart: compact shared-payload injection
+│   ├── user-prompt-submit.ts      #   BeforeAgent: skill-advisor brief delivery
+│   ├── compact-inject.ts          #   Compact: context injection on compaction
+│   ├── claude-transcript.ts       #   Transcript handling
+│   ├── session-stop.ts            #   SessionStop: cleanup and metadata capture
+│   └── README.md
+├── gemini/                        # Gemini runtime hooks
+│   ├── session-prime.ts           #   SessionStart: startup brief injection
+│   ├── user-prompt-submit.ts      #   BeforeAgent: skill-advisor brief delivery
+│   ├── compact-inject.ts          #   Compact: context injection
+│   ├── compact-cache.ts           #   Compact: cache management
+│   ├── session-stop.ts            #   SessionStop: cleanup
+│   └── README.md
+├── copilot/                       # Copilot runtime hooks
+│   ├── session-prime.ts           #   SessionStart: custom-instructions refresh
+│   ├── user-prompt-submit.ts       #   Prompt-time: advisor brief
+│   ├── compact-cache.ts           #   Compact: cache management
+│   ├── custom-instructions.ts     #   Managed instructions file handler
+│   └── README.md
+├── codex/                         # Codex runtime hooks
+│   ├── session-start.ts           #   SessionStart: native hook injection
+│   ├── user-prompt-submit.ts      #   Prompt-time: advisor brief
+│   ├── pre-tool-use.ts            #   Pre-execution tool routing
+│   ├── prompt-wrapper.ts          #   Prompt wrapping for advisor integration
+│   └── README.md
+├── index.ts                       # Public helper exports
+├── memory-surface.ts              # Context extraction + constitutional cache
+├── mutation-feedback.ts           # Post-mutation UX feedback payloads
+├── response-hints.ts              # Auto-surface hints + token count sync
+├── shared-provenance.ts           # Provenance-wrapped transport
+└── README.md
+```
 
 ### 1.1 Runtime Startup Hooks
 

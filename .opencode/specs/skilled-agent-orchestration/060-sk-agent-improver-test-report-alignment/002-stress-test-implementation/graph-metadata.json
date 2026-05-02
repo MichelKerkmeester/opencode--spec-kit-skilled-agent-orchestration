@@ -1,0 +1,226 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation",
+  "spec_folder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation",
+  "parent_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "060 phase 002",
+      "sk-improve-agent stress test implementation",
+      "CP-040 CP-045 implementation",
+      "060/002 plan",
+      "stress test implementation plan",
+      "060/002 tasks",
+      "060/002 checklist",
+      "060/002 ADRs",
+      "060/002 implementation summary",
+      "060/002 handover",
+      "060/002 resume",
+      "060/002 resource map"
+    ],
+    "key_topics": [
+      "060",
+      "phase",
+      "002",
+      "sk-improve-agent",
+      "stress",
+      "test",
+      "implementation",
+      "cp-040",
+      "cp-045",
+      "plan",
+      "tasks",
+      "checklist"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/agent/improve-agent.md",
+      ".opencode/skill/sk-improve-agent/SKILL.md",
+      ".opencode/command/improve/assets/improve_improve-agent_auto.yaml",
+      ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/scan-integration.cjs",
+      ".claude/agents/improve-agent.md",
+      ".gemini/agents/improve-agent.md",
+      ".codex/agents/improve-agent.toml",
+      ".opencode/command/improve/assets/improve_improve-agent_confirm.yaml",
+      ".opencode/skill/cli-copilot/manual_testing_playbook/manual_testing_playbook.md",
+      "implementation-summary.md",
+      "handover.md",
+      ".opencode/command/improve/agent.md",
+      "spec.md",
+      "decision-record.md",
+      "tasks.md",
+      "plan.md",
+      "checklist.md",
+      "resource-map.md"
+    ],
+    "entities": [
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".opencode/agent/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve_improve-agent_auto.yaml",
+        "kind": "config",
+        "path": ".opencode/command/improve/assets/improve_improve-agent_auto.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "score-candidate.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/score-candidate.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "scan-integration.cjs",
+        "kind": "file",
+        "path": ".opencode/skill/sk-improve-agent/scripts/scan-integration.cjs",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.toml",
+        "kind": "file",
+        "path": ".codex/agents/improve-agent.toml",
+        "source": "derived"
+      },
+      {
+        "name": "improve_improve-agent_confirm.yaml",
+        "kind": "config",
+        "path": ".opencode/command/improve/assets/improve_improve-agent_confirm.yaml",
+        "source": "derived"
+      },
+      {
+        "name": "manual_testing_playbook.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/manual_testing_playbook/manual_testing_playbook.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent.md",
+        "kind": "doc",
+        "path": ".opencode/command/improve/agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Implementation",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Execute",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase 001 produced 854 lines of research synthesizing 10 cli-copilot iterations into prioritized improvement recommendations for the sk-improve-agent triad. Phase 002 turns those recommendations into shipped behavior:",
+    "created_at": "2026-05-02T09:47:05.342Z",
+    "last_save_at": "2026-05-02T09:47:05.342Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md",
+      "resource-map.md"
+    ]
+  }
+}

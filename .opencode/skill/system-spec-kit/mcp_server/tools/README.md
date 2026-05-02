@@ -23,15 +23,63 @@ trigger_phrases:
 `tools/` is the MCP dispatch layer. It maps runtime tool names to validated handler calls and keeps the handler modules grouped by domain.
 For continuity recovery, `/spec_kit:resume` remains the canonical operator surface; these dispatchers enrich the packet-first chain `handover.md -> _memory.continuity -> spec docs` rather than replacing it.
 
-Files in this directory:
+### Architecture Diagram
 
-- `context-tools.ts` - dispatch for `memory_context`.
-- `memory-tools.ts` - dispatch for search, quick search, triggers, save, CRUD, stats, health, validate, bulk delete, and retention sweep.
-- `causal-tools.ts` - dispatch for causal graph operations.
-- `checkpoint-tools.ts` - dispatch for checkpoints and learning-history style lifecycle helpers.
-- `lifecycle-tools.ts` - dispatch for ingestion jobs and lifecycle tools.
-- `types.ts` - shared MCP response type aliases and typed arg shapes.
-- `index.ts` - exports `ALL_DISPATCHERS` and `dispatchTool()`.
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                    TOOL DISPATCH ARCHITECTURE                         │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────────────┐    ┌──────────────────┐    ┌────────────────┐ │
+│  │   MCP Client     │───▶│  dispatchTool()   │───▶│  handlers/    │ │
+│  │   (tool call)    │    │  (index.ts)       │    │  (lazy load)  │ │
+│  └──────────────────┘    └─────────┬──────────┘    └────────────────┘ │
+│                                    │                                  │
+│  ┌─────────────────────────────────▼───────────────────────────────┐│
+│  │                      DISPATCHER MODULES                         ││
+│  │  ┌────────────────┐ ┌──────────────────┐ ┌─────────────────┐   ││
+│  │  │context-tools.ts│ │ memory-tools.ts  │ │ causal-tools.ts │   ││
+│  │  │memory_context  │ │ memory_search    │ │ memory_causal_  │   ││
+│  │  │(L1 orchestrat.)│ │ memory_quick_srch│ │ link/unlink/    │   ││
+│  │  │                │ │ memory_save      │ │ stats/drift_why│   ││
+│  │  │                │ │ memory_*_crud    │ │                 │   ││
+│  │  │                │ │ memory_*_stats   │ │                 │   ││
+│  │  │                │ │ memory_validate  │ │                 │   ││
+│  │  │                │ │ memory_bulk_del  │ │                 │   ││
+│  │  │                │ │ memory_retention │ │                 │   ││
+│  │  └────────────────┘ └──────────────────┘ └─────────────────┘   ││
+│  │  ┌──────────────────┐ ┌──────────────────┐                     ││
+│  │  │checkpoint-tools.ts│ │lifecycle-tools.ts│                     ││
+│  │  │memory_checkpoint*│ │memory_ingest*    │                     ││
+│  │  │memory_*_history  │ │(async lifecycle) │                     ││
+│  │  └──────────────────┘ └──────────────────┘                     ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                   INFRASTRUCTURE                                 ││
+│  │  ┌──────────────────┐ ┌──────────────────┐ ┌──────────────────┐ ││
+│  │  │ types.ts         │ │ validateToolArgs │ │ ALL_DISPATCHERS  │ ││
+│  │  │ response aliases │ │ schemas/         │ │ (fixed order     │ ││
+│  │  │ typed arg shapes │ │ schema-validation│ │  resolution)     │ ││
+│  │  └──────────────────┘ └──────────────────┘ └──────────────────┘ ││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+mcp_server/tools/
+├── context-tools.ts               # Dispatch: memory_context (L1 orchestration)
+├── memory-tools.ts                # Dispatch: search, triggers, save, CRUD, stats, validate
+├── causal-tools.ts                # Dispatch: causal link, unlink, stats, drift_why
+├── checkpoint-tools.ts            # Dispatch: checkpoint lifecycle + learning history
+├── lifecycle-tools.ts             # Dispatch: async ingest start/status/cancel
+├── types.ts                       # Shared MCP response type aliases + arg shapes
+├── index.ts                       # ALL_DISPATCHERS, dispatchTool() → handler resolution
+└── README.md
+```
 
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:implemented-state -->

@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "spec_folder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "parent_id": null,
+  "children_ids": [
+    "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/001-deep-research-recommendations",
+    "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation"
+  ],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/059-agent-implement-code"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "060 root",
+      "060 phase parent",
+      "sk-improve-agent test report alignment",
+      "060 sk-improve-agent test report alignment"
+    ],
+    "key_topics": [
+      "060",
+      "phase parent",
+      "sk-improve-agent",
+      "test-report alignment",
+      "059 methodology meta-application",
+      "stress-test"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/001-deep-research-recommendations/research/research.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/001-deep-research-recommendations/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md",
+      ".opencode/skill/sk-improve-agent/SKILL.md",
+      ".opencode/agent/improve-agent.md",
+      ".opencode/command/improve/agent.md"
+    ],
+    "entities": [
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "research.md",
+        "kind": "doc",
+        "path": "001-deep-research-recommendations/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "001 spec.md",
+        "kind": "doc",
+        "path": "001-deep-research-recommendations/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "002 spec.md",
+        "kind": "doc",
+        "path": "002-stress-test-implementation/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "059 test-report.md",
+        "kind": "doc",
+        "path": ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active Child",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reference Packet",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Phase parent for 060 — sk-improve-agent Test-Report Alignment. Two children: 001-deep-research-recommendations (COMPLETE — 854-line research.md synthesis from 10 cli-copilot iterations covering all 7 RQs with diff sketches, scenario sketches, and fixture-target recommendation) and 002-stress-test-implementation (SCAFFOLDED — 5-stage plan to apply diffs, author CP-040..CP-045, build fixture, run R0/R1/R2 stress, produce test-report.md mirroring packet 059). Root purpose: apply 059's @code stress-test methodology reflexively to the agent-improver triad.",
+    "created_at": "2026-05-02T11:47:00Z",
+    "last_save_at": "2026-05-02T11:47:50Z",
+    "last_active_at": "2026-05-02T11:47:50Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "last_active_child_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation",
+    "source_docs": [
+      "spec.md"
+    ]
+  }
+}

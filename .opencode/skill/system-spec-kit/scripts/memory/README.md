@@ -30,6 +30,75 @@ The `memory/` directory contains the CLI entrypoints for the Spec Kit memory pip
 This is the **canonical location** for reindex and memory operations documentation.
 Other locations point here: `mcp_server/scripts/README.md`, `mcp_server/database/README.md`
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                   MEMORY PIPELINE ARCHITECTURE                       │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────────────┐                                               │
+│  │   generate-      │──────────── Canonical Save Entrypoint         │
+│  │   context.ts     │                                               │
+│  └─────────┬────────┘                                               │
+│            │                                                        │
+│  ┌─────────▼──────────────────────────────────────────────────────┐ │
+│  │                       PIPELINE FLOW                            │ │
+│  │  ┌──────────┐    ┌──────────┐    ┌──────────┐    ┌──────────┐ │ │
+│  │  │ core/    │───▶│extractors│───▶│ loaders/ │───▶│renderers│ │ │
+│  │  │workflow  │    │semantic  │    │ data-    │    │template  │ │ │
+│  │  │modules   │    │signals   │    │ loader   │    │ render   │ │ │
+│  │  └──────────┘    └──────────┘    └──────────┘    └──────────┘ │ │
+│  └──────────────────────────────┬─────────────────────────────────┘ │
+│                                 ▼                                   │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                      OUTPUT & VALIDATION                        ││
+│  │  ┌────────────────────┐   ┌──────────────────────────────────┐ ││
+│  │  │validate-memory-    │   │ Contract Enforcement:             │ ││
+│  │  │ quality.ts         │   │ • Missing frontmatter → reject   │ ││
+│  │  │3-layer gate:       │   │ • Missing anchors → reject       │ ││
+│  │  │ 1. Structure       │   │ • Template leakage → reject      │ ││
+│  │  │ 2. Semantic        │   │ • Under-evidenced → abort        │ ││
+│  │  │ 3. Duplicate       │   └──────────────────────────────────┘ ││
+│  │  └────────────────────┘                                        ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  ┌──────────────────────────────────────────────────────────────────┐│
+│  │                    MAINTENANCE TOOLS                             ││
+│  │  ┌────────────────────┐  ┌──────────────────┐  ┌──────────────┐ ││
+│  │  │backfill-           │  │reindex-          │  │cleanup-      │ ││
+│  │  │ frontmatter.ts     │  │ embeddings.ts    │  │ orphaned-    │ ││
+│  │  │normalize metadata  │  │force full reindex│  │ vectors.ts   │ ││
+│  │  │manage keys: title, │  │of all embeddings │  │stale vectors │ ││
+│  │  │description, tier   │  └──────────────────┘  └──────────────┘ ││
+│  │  └────────────────────┘  ┌──────────────────┐  ┌──────────────┐ ││
+│  │  ┌────────────────────┐  │cleanup-index-    │  │rebuild-auto- │ ││
+│  │  │rank-memories.ts    │  │ scope-           │  │ entities.ts  │ ││
+│  │  │rank candidates by  │  │ violations        │  │rebuild auto- │ ││
+│  │  │scoring rules       │  │z_future/external │  │entity meta   │ ││
+│  │  └────────────────────┘  └──────────────────┘  └──────────────┘ ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+scripts/memory/
+├── generate-context.ts             # Canonical save: update packet continuity + context artifacts
+├── rank-memories.ts                # Rank memory candidates by scoring rules
+├── cleanup-orphaned-vectors.ts     # Remove stale vector rows
+├── cleanup-index-scope-violations.ts # Purge z_future/external pollution
+├── validate-memory-quality.ts      # Post-render 3-layer quality gate (structure, semantic, duplicate)
+├── reindex-embeddings.ts           # Force full embedding reindex
+├── ast-parser.ts                   # Parse markdown into heading/code/table-aware sections
+├── backfill-frontmatter.ts         # Bulk frontmatter normalization (title, description, tier, triggers)
+├── rebuild-auto-entities.ts        # Rebuild auto-entity metadata from indexed content
+├── fix-memory-h1.mjs               # One-shot migration: fix H1 format in older artifacts
+└── README.md
+```
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY

@@ -1,0 +1,24 @@
+{
+  "specFolder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "description": "Feature Specification: Apply 059 Stress-Test Methodology to sk-improve-agent Triad",
+  "keywords": [
+    "feature",
+    "specification",
+    "apply",
+    "059",
+    "stress-test",
+    "methodology",
+    "sk-improve-agent",
+    "triad"
+  ],
+  "lastUpdated": "2026-05-02T08:57:14.987Z",
+  "specId": "060",
+  "folderSlug": "sk-agent-improver-test-report-alignment",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "02-05-26_09-57__060-packet-is-research-only-implementation-of.md"
+  ]
+}

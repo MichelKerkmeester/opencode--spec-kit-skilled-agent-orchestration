@@ -51,6 +51,68 @@ The server works across sessions, models and tools. Switch from Claude to GPT to
 
 Code-graph handlers share one readiness contract, session-resume auth binds to transport caller context by default, and Copilot compact-cache uses the same provenance-wrapped recovery path as Claude and Gemini.
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                  SPEC KIT MEMORY MCP SERVER                           │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────────────┐ │
+│  │  Claude  │  │  Gemini  │  │ Copilot  │  │  Codex / OpenCode    │ │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────────┬───────────┘ │
+│       │             │             │                    │             │
+│  ┌────▼─────────────▼─────────────▼────────────────────▼───────────┐ │
+│  │                        HOOK LAYER                               │ │
+│  │  session-prime / user-prompt-submit / compact-inject / cache    │ │
+│  │  Transport: stdout injection (Claude/Gemini) | managed file     │ │
+│  │  (Copilot) | native hooks (Codex) | plugin bridge (OpenCode)    │ │
+│  └───────────────────────────┬─────────────────────────────────────┘ │
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐ │
+│  │                    TOOL DISPATCH LAYER                           │ │
+│  │  dispatchTool() → 54 MCP tools across 5 dispatcher modules      │ │
+│  └───────────────────────────┬──────────────────────────────────────┘ │
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐ │
+│  │                    HANDLER LAYER                                 │ │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐   │ │
+│  │  │ Context/ │ │  Save    │ │  CRUD    │ │ Causal Graph     │   │ │
+│  │  │ Search   │ │ Pipeline │ │ Checkpts │ │ Pre/Post-flight  │   │ │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘   │ │
+│  │  lazy-loaded via async import(), index.ts re-exports            │ │
+│  └───────────────────────────┬─────────────────────────────────────┘ │
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐ │
+│  │                    CORE LIBRARY (219+ modules)                  │ │
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────┐   │ │
+│  │  │ search/  │ │cognitive │ │storage/  │ │graph/scoring/    │   │ │
+│  │  │hybrid    │ │ FSRS     │ │SQLite    │ │continuity/       │   │ │
+│  │  │4-stage   │ │attention │ │migrations│ │routing/merge/    │   │ │
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────┘   │ │
+│  │  ┌──────────────────────────────────────────────────────────┐   │ │
+│  │  │  CONSUMED SUBSYSTEMS                                      │   │ │
+│  │  │  skill_advisor/         code_graph/                       │   │ │
+│  │  │  5-lane fusion scorer   structural indexer + CCC bridge   │   │ │
+│  │  │  matrix_runners/        stress_test/                      │   │ │
+│  │  └──────────────────────────────────────────────────────────┘   │ │
+│  └───────────────────────────┬─────────────────────────────────────┘ │
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐ │
+│  │                    DATA LAYER                                    │ │
+│  │  ┌──────────────────┐  ┌──────────────────────────────────┐     │ │
+│  │  │ speckit_memory.db│  │ code-graph.sqlite                │     │ │
+│  │  │ (spec-doc records)│  │ (structural nodes/edges)        │     │ │
+│  │  │ + vector index   │  │                                  │     │ │
+│  │  └──────────────────┘  └──────────────────────────────────┘     │ │
+│  └──────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│  Recovery: /spec_kit:resume → handover.md → _memory.continuity →    │
+│            spec docs (generated memories are supporting context)     │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
 > Note: When this server says "memory," it means our local indexed-continuity store — the SQLite-backed spec-doc record index that ships with this skill. It is **not** Anthropic Claude Memory (the managed product surfaced in claude.ai) and it is **not** the MCP reference `memory` server (the upstream community example). Identifiers (`memory_*` MCP tools, `memory_*` SQL tables, `memory-*.ts` handlers, `MEMORY_*` constants) are frozen by REQ-001; the disambiguation lives in operator-facing prose only.
 
 ### Key Numbers

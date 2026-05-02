@@ -1,7 +1,0 @@
-{"type":"iteration","run":10,"status":"insight","focus":"Final synthesis prep + STOP verdict","findingsCount":3,"newInfoRatio":0.15,"keyQuestions":[],"answeredQuestions":[],"focusTrack":"synthesis-prep","sessionId":"e3fb01be-3a22-481a-be85-76d57a297857","generation":1,"timestamp":"2026-04-26T09:00:00.000Z"}
-{"type":"node","kind":"FINDING","id":"f-010-1","name":"research.md 17-section outline with load-bearing iter-N findings per section","iteration":10}
-{"type":"node","kind":"FINDING","id":"f-010-2","name":"Implementation handover note (~250w) with Q1-Q10 summary + 6-row contract + 4-PR roadmap + R1/R4 HIGH risks + glossary drafts pointers + next safe action","iteration":10}
-{"type":"node","kind":"FINDING","id":"f-010-3","name":"Final STOP verdict: all 10 questions answered with primary-source citations; 0 contradictions; 5 risks mitigated; newInfoRatio decay 0.85→0.15 canonical","iteration":10}
-{"type":"edge","relation":"INFORMS","sourceId":"f-010-1","targetId":"synthesis-phase","id":"e-010-1"}
-{"type":"edge","relation":"INFORMS","sourceId":"f-010-2","targetId":"implementation-phase","id":"e-010-2"}
-{"type":"edge","relation":"INFORMS","sourceId":"f-010-3","targetId":"workflow-stop","id":"e-010-3"}

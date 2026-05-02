@@ -1,0 +1,1915 @@
+[11:04:30] Starting deep-research loop for packet 060 (10 iterations max)
+[11:04:30] Repo: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
+[11:04:30] Packet: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment
+
+[11:04:30] Building prompt for iteration 1...
+[11:04:30] Dispatching copilot for iteration 1 (model=gpt-5.5)...
+I’ll run this as a single research iteration: first locate the packet/report and target surfaces, then read only the sections needed for RQ-1 and RQ-3 before writing the required iteration file.
+
+● skill(sk-deep-research)
+
+I’ve loaded the deep-research protocol and will keep this bounded to one iteration. I’m checking the 059 lessons and the sk-improve-agent surfaces for script invocation and stress-test analogs before writing the iteration artifact.
+
+● Search (grep)
+  │ "stress|failure path|script|\.cjs|Run|invoke|score|journal|contractGate|beha
+  │ viorGate|integrationGate|evidenceGate|improvementGate|critic|Critic"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 105 lines found
+
+● Search (grep)
+  │ "§9|Lessons|Single-task structural|Anti-patterns|tool-routing
+  │ fidelity|Multi-model baseline|skill\(X\)|CP-027|CP-028" in
+  │ **/059-*/test-report.md (.opencode/specs)
+  └ 28 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/*.cjs"
+  └ 13 files found
+
+● Search (glob)
+  │ "research/**"
+  └ No matches found
+
+● Search (glob)
+  │ ".opencode/specs/**/059-*/test-report.md"
+  └ 1 file found
+
+The first pass shows the relevant 059 lessons and that the sk-improve-agent script count in the checked-in `scripts/*.cjs` directory appears to be 13, not 14. I’m narrowing to the command workflow and exact line ranges now so the write-up can cite only concrete evidence.
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L449:466 (17 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L91:140 (49 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L24:40 (17 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L389:442 (54 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L185:221 (37 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L262:351 (90 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L155:184 (30 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L188:303 (116 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L400:406 (7 lines read)
+
+● Search (glob)
+  │ ".opencode/command/improve/assets/*"
+  └ 2 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/**/*.cjs"
+  └ 13 files found
+
+The target command has explicit workflow steps and YAML asset references; the skill file itself only describes the scripts. I’m checking the actual auto workflow now to distinguish “documented helper” from “wired execution.”
+
+● Read improve_improve-agent_auto.yaml
+  └ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L1:220 (204 lines read)
+
+● Search (grep)
+  │ "scan-integration|generate-profile|score-candidate|run-benchmark|reduce-stat
+  │ e|improvement-journal|check-mirror-drift|mutation-coverage|trade-off-detecto
+  │ r|candidate-lineage|benchmark-stability|promote-candidate|rollback-candidate
+  │ " (.opencode/command/improve/assets/improve_improve-agent_auto.yaml,
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml)
+  └ 43 lines found
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate|bloc
+  │ kedStop|legal_stop|legal-stop|gate_evaluation"
+  │ (.opencode/skill/sk-improve-agent/scripts, .opencode/command/improve/assets)
+  └ 15 lines found
+
+✗ Search (grep)
+  │ "score-candidate|multi-model|model|gpt|opus|sonnet|attribution|benchmark"
+  │ (.opencode/skill/sk-improve-agent,  .opencode/command/improve/agent.md)
+  └ rg:  .opencode/command/improve/agent.md: No such file or directory (os error
+    2)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:90 (90 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L880:904 (25 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L190:220 (31 lines read)
+
+● Search (grep)
+  │ "CP-[0-9]|stress|failure path|fail-closed|baseline|Call A|Call
+  │ B|same-task|grep-only|grepable|grep-able|multi-model|gpt-5\.5|opus|sonnet"
+  │ (.opencode/skill/sk-improve-agent)
+  └ 36 lines found
+
+● List sk-improve-agent scripts (shell)
+  │ find .opencode/skill/sk-improve-agent/scripts -maxdepth 1 -type f -name
+  │ '*.cjs' -print | sort | nl -ba
+  └ 14 lines...
+
+I have enough evidence for RQ-1/RQ-3 and a useful partial-to-answerable RQ-7 finding: the command workflow wires some scripts, but not merely from skill load, and the legal-stop journal path is only partly explicit. I’m creating the iteration output in the requested research packet path now.
+
+● Create research iterations directory (shell)
+  │ mkdir -p research/iterations
+  └ 1 line...
+
+● Edit
+  └ Create research/iterations/iteration-001.md
+
+Wrote the iteration findings to `research/iterations/iteration-001.md`.
+
+The iteration focuses on RQ-1, RQ-3, and RQ-7, with cited evidence, sketched diffs, and CP-style stress-test scenarios.
+
+
+Changes   +148 -0
+Requests  7.5 Premium (2m 10s)
+Tokens    ↑ 450.9k • ↓ 8.6k • 376.3k (cached) • 2.7k (reasoning)
+[11:06:41] Iteration 1 copilot exit=0
+[11:06:41] WARNING: copilot did not write /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-001.md
+[11:06:41] Building prompt for iteration 2...
+[11:06:41] Dispatching copilot for iteration 2 (model=gpt-5.5)...
+I’ll run this as a single research iteration: target the open RQs, read only the specific methodology and sk-improve-agent surfaces needed, then write the iteration report to the requested path.
+
+● skill(sk-deep-research)
+
+I’m narrowing this to grep-checkable protocol gaps across the improve skill, agent, command, and supporting scripts so the iteration adds evidence instead of broad rereads.
+
+● Search (grep)
+  │ "L[1-5]:|stress-test|failure paths|Critic|multi-model|Call A|Call
+  │ B|grep|CP-027|CP-028|5/2/1|6/2/0|8/0/0" (.opencode/specs/skilled-agent-orche
+  │ stration/059-agent-implement-code/test-report.md)
+  └ 7 lines found
+
+● Search (grep)
+  │ "stress|failure path|failure-path|Critic|challenge|anti-pattern|script|scrip
+  │ ts/|model|baseline|Call A|Call B|mirror|runtime|contractGate|behaviorGate|in
+  │ tegrationGate|evidenceGate|improvementGate|journal|grep|transcript"
+  │ (.opencode/skill/sk-improve-agent, .opencode/agent/improve-agent.md,
+  │ .opencode/command/improve/agent.md)
+  └ 10 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/references/*.md"
+  └ 10 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/*.cjs"
+  └ 13 files found
+
+● Search (glob)
+  │ "research/iterations/*"
+  └ 1 file found
+
+The first pass confirmed the support surface is broad and the initial grep was too noisy, so I’m switching to targeted line-range reads around the methodology lessons and the specific improve-agent protocol hooks.
+
+● Search (grep)
+  │ "Lessons Learned|Framework Lessons|L1:|Single-task structural|Critic
+  │ challenges|tool-routing fidelity|Multi-model
+  │ baseline|skill\(X\)|same-task|grep-only|score progression|CP-027|CP-028"
+  │ (.opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-r
+  │ eport.md)
+  └ 8 lines found
+
+● Search (grep)
+  │ "Critic|challenge|anti-pattern|red team|red-team|adversarial"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ No matches found
+
+● Search (grep)
+  │ "mirror|drift|runtime|\.claude|\.gemini|\.codex|\.opencode"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ 9 lines found
+
+● Search (grep)
+  │ "baseline|Call A|Call B|multi-model|model|attribution|benchmark|score
+  │ progression|grep" (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/scripts)
+  └ 12 lines found
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate|LEGA
+  │ L_STOP|legal-stop|legal stop|journal" (.opencode/skill/sk-improve-agent,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 11 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/**/*.cjs"
+  └ 13 files found
+
+● Search (grep)
+  │ "^##|^###" (.opencode/specs/skilled-agent-orchestration/059-agent-implement-
+  │ code/test-report.md)
+  └ 45 lines found
+
+● Search (grep)
+  │ "^## 9|^### 9|^## .*Lessons|^### .*Lessons|^## .*Framework|^### .*Framework"
+  │ (.opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-r
+  │ eport.md)
+  └ 1 line found
+
+● Search (grep)
+  │ "^##|^###" (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 90 lines found
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate"
+  │ (.opencode/skill/sk-improve-agent, .opencode/agent/improve-agent.md,
+  │ .opencode/command/improve/agent.md)
+  └ 18 lines found
+
+● Search (grep)
+  │ "^\s*node .*scripts/|scripts/[a-zA-Z0-9_.-]+\.cjs|check-mirror-drift|scan-in
+  │ tegration|score-candidate|run-benchmark|improvement-journal|reduce-state"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/command/improve/agent.md, .opencode/agent/improve-agent.md)
+  └ 44 lines found
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L332:360 (29 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L174:220 (47 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L79:121 (42 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L1:155 (154 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L183:221 (39 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L320:442 (123 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L32:173 (142 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L234:278 (45 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L238:306 (69 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L445:487 (42 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L154:176 (22 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L420:456 (36 lines read)
+
+● Read benchmark_operator_guide.md
+  │ .opencode/skill/sk-improve-agent/references/benchmark_operator_guide.md
+  └ L1:220 (99 lines read)
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-improve-agent/references/loop_protocol.md
+  └ L1:220 (93 lines read)
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L1:220 (135 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L306:337 (31 lines read)
+
+● Read mirror_drift_policy.md
+  │ .opencode/skill/sk-improve-agent/references/mirror_drift_policy.md
+  └ L1:220 (75 lines read)
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 28-legal-stop-gates.md
+  └ L1:80 (79 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L175:196 (21 lines read)
+
+● Search (grep)
+  │ "\.opencode/agent|\.claude/agents|\.gemini/agents|\.codex/agents|mirror"
+  │ (.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs,
+  │ .opencode/skill/sk-improve-agent/scripts/check-mirror-drift.cjs)
+  └ 98 lines found
+
+● Search (grep)
+  │ "Call A|Call B|baseline|disciplined|same-task|A/B|grep"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 19 lines found
+
+● Search (grep)
+  │ "model|gpt|sonnet|opus|multi-model|attribution"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/scripts,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 3 lines found
+
+● Search (grep)
+  │ "Critic|SELF-CHECK|challenge|anti-pattern|failure path|stress|scenario"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 8 lines found
+
+● Read check-mirror-drift.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/check-mirror-drift.cjs
+  └ L51:143 (93 lines read)
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L1:110 (110 lines read)
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L190:231 (41 lines read)
+
+● Search (grep)
+  │ "gpt|sonnet|opus|multi-model|attribution|--model"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/scripts)
+  └ No matches found
+
+● Search (grep)
+  │ "failure path|stress-test|stress test|stress|CP-|scenario battery|same-task
+  │ A/B|Call A|Call B|grep-only|LLM-as-judge"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 1 line found
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L400:406 (7 lines read)
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L1:40 (40 lines read)
+
+● Search (grep)
+  │ "^#|^##|^###" (.opencode/skill/sk-improve-agent/manual_testing_playbook/manu
+  │ al_testing_playbook.md)
+  └ 120 lines found
+
+● Search (grep)
+  │ "manual-testing orchestrator|Validate|Expected
+  │ signals|Pass/fail|grep|terminal transcript|command output|PASS/FAIL verdict"
+  │ (.opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 32 files found
+
+● Search (grep)
+  │ "scan-integration|generate-profile|score-candidate|run-benchmark|reduce-stat
+  │ e|promote-candidate|rollback-candidate|check-mirror-drift|improvement-journa
+  │ l|mutation-coverage|trade-off-detector|candidate-lineage|benchmark-stability
+  │ " (.opencode/command/improve/assets)
+  └ 43 lines found
+
+● Search (grep)
+  │ "step_record_baseline|step_generate_candidate|Task|@improve-agent|score-cand
+  │ idate|run-benchmark|reduce-state|legal_stop|gateResults|blocked_stop|improve
+  │ ment-journal"
+  │ (.opencode/command/improve/assets/improve_improve-agent_auto.yaml,
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml)
+  └ 123 lines found
+
+● Search (glob)
+  │ ".opencode/command/improve/assets/*improve-agent*.yaml"
+  └ 2 files found
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L126:185 (60 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L186:205 (19 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L193:245 (53 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L84:94 (10 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L90:100 (10 lines read)
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L47:120 (73 lines read)
+
+● Read 020-full-pipeline.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop
+  │ /020-full-pipeline.md
+  └ L20:50 (30 lines read)
+
+● Read 002-scan-missing-agent.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-sca
+  │ nner/002-scan-missing-agent.md
+  └ L20:50 (30 lines read)
+
+● Read 013-missing-candidate.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/03--5d-scorer/013-m
+  │ issing-candidate.md
+  └ L20:50 (30 lines read)
+
+I’ve got enough evidence now: the key pattern is that sk-improve-agent already has deterministic script/playbook coverage, but it does not yet have the 059-style A/B stress harness or an active Critic challenge inside the mutator loop.
+
+● Edit
+  └ Create research/iterations/iteration-002.md
+
+Wrote `research/iterations/iteration-002.md` with 7 new findings covering RQ-1 through RQ-7.
+
+Key outcome: sk-improve-agent has deterministic playbook/script coverage, but not yet a 059-style A/B failure-path stress harness; the strongest concrete gaps are missing active Critic challenges, incomplete legal-stop journal emission, no multi-model attribution layer, and mirror scanner/runtime path drift around `.gemini`.
+
+
+Changes   +185 -0
+Requests  7.5 Premium (2m 44s)
+Tokens    ↑ 1.0m • ↓ 11.7k • 908.3k (cached) • 2.3k (reasoning)
+[11:09:28] Iteration 2 copilot exit=0
+[11:09:28] WARNING: copilot did not write /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-002.md
+[11:09:28] Building prompt for iteration 3...
+[11:09:28] Dispatching copilot for iteration 3 (model=gpt-5.5)...
+I’ll run this as one focused research iteration: first load the deep-research/spec workflow context and target only the packet 059 lessons plus the improve-agent surfaces needed to answer the open RQs, then write the single required iteration file.
+
+● skill(sk-deep-research)
+
+I’m narrowing this to the seven RQs with emphasis on executable evidence: stress-test analogs, critic placement, script invocation, multi-model attribution, A/B differential, runtime mirroring, and legal-stop gate auditability.
+
+● Search (grep)
+  │ "L1|L2|L3|L4|L5|CP-027|CP-028|grep|multi-model|Call A|Call
+  │ B|stress-test|failure paths|skill\(" (.opencode/specs/skilled-agent-orchestr
+  │ ation/059-agent-implement-code/test-report.md)
+  └ 7 lines found
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate|crit
+  │ ic|Critic|stress|failure|Call A|Call B|baseline|multi-model|model|mirror|run
+  │ time|\.claude|\.gemini|\.codex|script|scripts|journal|grep|judge"
+  │ (.opencode/skill/sk-improve-agent, .opencode/agent/improve-agent.md,
+  │ .opencode/command/improve/agent.md)
+  └ 9 lines found
+
+● Search (glob)
+  │ "research/**"
+  └ 2 files found
+
+The broad grep confirmed there is enough signal but was too noisy, so I’m switching to targeted line reads around the exact sections and terms needed for citable findings.
+
+● Search (grep)
+  │ "^## 9|Lessons|L1|L2|L3|L4|L5|CP-027|CP-028|Call A|Call
+  │ B|multi-model|grep-only|same-task" (.opencode/specs/skilled-agent-orchestrat
+  │ ion/059-agent-implement-code/test-report.md)
+  └ 43 lines found
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 23 lines found
+
+● Search (grep)
+  │ "Critic|critic|anti-pattern|challenge|challenge prompt|red-team|red team"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ No matches found
+
+● Search (grep)
+  │ "script|scripts/|node .*\.cjs|\.cjs|npm|Bash|MUST run|Run "
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 8 lines found
+
+● Search (grep)
+  │ "model|multi-model|baseline|attribution|A/B|Call A|Call
+  │ B|differential|grep|journal|transcript"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ 7 lines found
+
+● Search (grep)
+  │ "mirror|runtime|\.opencode|\.claude|\.gemini|\.codex|cross-runtime|adapter"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ 7 lines found
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L49:113 (65 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L127:164 (38 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L445:477 (33 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L1:95 (95 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L240:285 (45 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L140:210 (71 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L250:340 (91 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L1:105 (105 lines read)
+
+● Read test-report.md
+  │ .opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-re
+  │ port.md
+  └ L226:256 (30 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L1:80 (80 lines read)
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/*.cjs"
+  └ 13 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/references/*"
+  └ 10 files found
+
+● Read mirror_drift_policy.md
+  │ .opencode/skill/sk-improve-agent/references/mirror_drift_policy.md
+  └ L1:220 (75 lines read)
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L1:220 (135 lines read)
+
+● Read no_go_conditions.md
+  │ .opencode/skill/sk-improve-agent/references/no_go_conditions.md
+  └ L1:220 (55 lines read)
+
+● Search (grep)
+  │ "contractGate|behaviorGate|integrationGate|evidenceGate|improvementGate|lega
+  │ l_stop|legal-stop|blockedStop|gateResults|gate_evaluation|legal_stop_evaluat
+  │ ed" (.opencode/skill/sk-improve-agent/scripts)
+  └ 55 lines found
+
+● Search (grep)
+  │ "process\.argv|commander|yargs|--|Usage|require\.main|module\.exports|functi
+  │ on main|if \(require\.main" (.opencode/skill/sk-improve-agent/scripts)
+  └ 9 lines found
+
+● Search (grep)
+  │ "model|models|gpt|sonnet|opus|multi-model|attribution|baseline|A/B|Call
+  │ A|Call B" (.opencode/skill/sk-improve-agent,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md)
+  └ 7 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/*.cjs"
+  └ 13 files found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/assets/*"
+  └ 5 files found
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L210:249 (39 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L1:140 (140 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L204:220 (17 lines read)
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L1:170 (170 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L880:898 (19 lines read)
+
+● Read benchmark_operator_guide.md
+  │ .opencode/skill/sk-improve-agent/references/benchmark_operator_guide.md
+  └ L1:180 (99 lines read)
+
+● Read promotion_rules.md
+  │ .opencode/skill/sk-improve-agent/references/promotion_rules.md
+  └ L1:180 (88 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:125 (125 lines read)
+
+A key discrepancy surfaced: the docs describe `.gemini` as a mirror surface, but the scanner’s hard-coded mirror list uses `.agents/agents` instead. I’m checking whether that affects the legal-stop and integration evidence paths before writing the iteration file.
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L136:230 (94 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L300:390 (71 lines read)
+
+● Read iteration-001.md
+  │ research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read check-mirror-drift.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/check-mirror-drift.cjs
+  └ L1:180 (147 lines read)
+
+● Read run-benchmark.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+  └ L1:140 (139 lines read)
+
+● Read run-benchmark.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+  └ L220:320 (77 lines read)
+
+● Read iteration-002.md
+  │ research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Search (grep)
+  │ "Critic|critic|challenge|red-team|red team|Call A|Call
+  │ B|A/B|multi-model|stress-test|stress test|failure path|CP-0"
+  │ (.opencode/skill/sk-improve-agent/SKILL.md,
+  │ .opencode/agent/improve-agent.md, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/assets)
+  └ No matches found
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L390:456 (66 lines read)
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L386:443 (58 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L84:205 (121 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L217:245 (29 lines read)
+
+✗ Search (grep)
+  │ "gateResults|contractGate|behaviorGate|integrationGate|evidenceGate|improvem
+  │ entGate|legal_stop_evaluated|blocked_stop"
+  │ (.opencode/skill/sk-improve-agent/scripts/*.cjs,
+  │ .opencode/command/improve/assets/*.yaml)
+  └ rg: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.openc
+    ode/skill/sk-improve-agent/scripts/*.cjs: No such file or directory (os
+    error 2)
+    rg: /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.openc
+    ode/command/improve/assets/*.yaml: No such file or directory (os error 2)
+
+● Search (grep)
+  │ "model|gpt|sonnet|opus|claude|codex|gemini|executor"
+  │ (.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs,
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs,
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml,
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml)
+  └ No matches found
+
+I’ve got enough evidence for a non-duplicative iteration: the strongest new value is in the executable layer—deterministic scorer/benchmark shape, missing model dimension, mirror-template mismatch, and legal-stop event schema gaps. I’m writing the required iteration file now.
+
+● Edit
+  └ Create research/iterations/iteration-003.md
+
+Wrote `research/iterations/iteration-003.md` with focused findings for iteration 3.
+
+The iteration adds new evidence on the executable layer: no multi-model attribution in the scorer/benchmark pipeline, a `.gemini` mirror mismatch in scanner defaults, under-specified legal-stop journal validation, no active Critic challenge in the triad, and a grep-checkable Call A/Call B stress-test shape.
+
+
+Changes   +161 -0
+Requests  7.5 Premium (2m 44s)
+Tokens    ↑ 651.2k • ↓ 11.1k • 572.9k (cached) • 2.8k (reasoning)
+[11:12:14] Iteration 3 copilot exit=0
+[11:12:14] WARNING: copilot did not write /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-003.md
+[11:12:14] Convergence detected at iteration 3 (3 consecutive yes signals). Stopping early.
+[11:12:14] Loop complete. 3 iterations written.
+[11:12:14] Next step: synthesize 3 iterations into research/research.md (separate dispatch)
+
+[11:15:36] === RESUMING with v2 runner: iterations 4..10 ===
+[11:15:36] Building prompt for iteration 4 (v2 absolute paths)...
+[11:15:36] Dispatching copilot for iteration 4 (model=gpt-5.5)...
+I’ll run this as a single focused research iteration: first load the prior iteration notes, then target only the weakest gaps and write the requested iteration file.
+
+● skill(sk-deep-research)
+
+I’ve loaded the deep-research protocol and am reading the three previous iteration notes now so this pass targets only uncaptured gaps.
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+The prior notes already answer every RQ at prose level, so I’m narrowing this pass to the executable evidence gap they left: whether the manual/runtime truth checks are actually enforced by scripts or only described.
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop|gateResults|failedGates|run-benchmark\.cj
+  │ s|candidate_scored|model|executor" (.opencode/command/improve,
+  │ .opencode/agent/improve-agent.md)
+  └ 11 lines found
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop|gateResults|failedGates|manual_testing_pl
+  │ aybook|run-benchmark\.cjs|model|executor|Call A|Call
+  │ B|stress|Critic|challenge" (.opencode/skill/sk-improve-agent)
+  └ 6 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/**/*"
+  └ 98 files found
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ 233 lines read
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L1:120 (119 lines read)
+
+● Read 032-journal-wiring.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 32-journal-wiring.md
+  └ 88 lines read
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 28-legal-stop-gates.md
+  └ 86 lines read
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:130 (130 lines read)
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L117:220 (104 lines read)
+
+● Read run-benchmark.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+  └ L1:170 (170 lines read)
+
+● Read run-benchmark.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
+  └ L210:290 (81 lines read)
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop|gateResults|failedGates"
+  │ (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ No matches found
+
+● Search (grep)
+  │ "run-benchmark\.cjs|benchmark_completed|benchmark-results|model|executor|gpt
+  │ |opus|sonnet|claude" (.opencode/skill/sk-improve-agent/scripts,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth)
+  └ 7 lines found
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L460:560 (100 lines read)
+
+● Read benchmark-stability.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ L1:160 (160 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L150:166 (16 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L150:205 (55 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L185:245 (61 lines read)
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L551:680 (70 lines read)
+
+● Search (glob)
+  │ ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repo
+  │ rt-alignment/research/iterations/iteration-004.md"
+  └ No matches found
+
+● Get current UTC timestamp (shell)
+  │ date -u +%Y-%m-%dT%H:%M:%SZ
+  └ 2 lines...
+
+I found a sharper gap than the earlier passes: the docs describe runtime-truth checks, but the automated/helper layer mainly validates weaker journal boundaries, so I’m writing that as iteration 4’s net-new evidence.
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-004.md
+
+Wrote iteration 4 findings to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-004.md`
+
+
+Changes   +166 -0
+Requests  7.5 Premium (1m 46s)
+Tokens    ↑ 685.7k • ↓ 7.3k • 616.4k (cached) • 1.9k (reasoning)
+[11:17:25] Iteration 4 copilot exit=0
+[11:17:25] Building prompt for iteration 5 (v2 absolute paths)...
+[11:17:25] Dispatching copilot for iteration 5 (model=gpt-5.5)...
+I’ll run this as a single focused research iteration: first load the prior iteration outputs and route through the relevant deep-research/spec workflow, then target only the weakest remaining evidence and write the required iteration file.
+
+● skill(sk-deep-research)
+
+I’ve loaded the deep-research workflow context. Next I’m reading the four prior iteration files together so this pass can avoid duplicating already-settled RQs.
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+The earlier passes have all RQs broadly answerable, so I’m narrowing iteration 5 to the remaining implementation-design gap: where the five legal-stop gate booleans should be computed and whether any existing reducer/helper already has enough state to own them.
+
+● Search (grep)
+  │ "session_ended|session_end|gate_evaluation|legal_stop|blocked|converged|plat
+  │ eau|max_iterations|operator_stop|score|recommendation|promotion"
+  │ (.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs)
+  └ 40 lines found
+
+● Search (grep)
+  │ "legal_stop_evaluated|blocked_stop|gateResults|failedGates|contractGate|beha
+  │ viorGate|integrationGate|evidenceGate|improvementGate|stop_status|stopReason
+  │ |shouldStop" (.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs,
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs,
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml,
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml,
+  │ .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md)
+  └ 46 lines found
+
+● Search (grep)
+  │ "LEGAL|legal stop|Legal Stop|Stop
+  │ Conditions|Stop|gate|Gate|blocked_stop|legal_stop_evaluated"
+  │ (.opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 6 lines found
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L170:240 (70 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L860:905 (45 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L650:740 (91 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L180:206 (25 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L400:455 (56 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L296:330 (35 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L49:110 (62 lines read)
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L31:101 (71 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L86:160 (75 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L480:640 (161 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L347:361 (15 lines read)
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 28-legal-stop-gates.md
+  └ L20:45 (26 lines read)
+
+● Read reduce-state.cjs
+  └ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+
+✗ Read improvement-state-template.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement-state-template.json
+  └ Path does not exist
+
+● Read benchmark-stability.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs
+  └ L1:220 (219 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L1:220 (220 lines read)
+
+● Search (grep)
+  │ "delta|threshold|minimum|improvement|repeatability|benchmark-pass|benchmark_
+  │ completed|gateResults|contractGate|behaviorGate|evidenceGate|improvementGate
+  │ " (.opencode/skill/sk-improve-agent/scripts,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/assets, .opencode/command/improve/assets)
+  └ 8 lines found
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ L1:220 (121 lines read)
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L1:80 (80 lines read)
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/assets/*"
+  └ 5 files found
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L1000:1077 (39 lines read)
+
+● Read improvement_config_reference.md
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config_reference.md
+  └ L1:130 (70 lines read)
+
+● Search (grep)
+  │ "agent-improvement-state|experiment-registry|journalSummary|evaluateStopStat
+  │ us|mirrorDriftReport|writeUtf8|agent-improvement-config|benchmark-stability|
+  │ repeatability" (.opencode/skill/sk-improve-agent/scripts/reduce-state.cjs)
+  └ 16 lines found
+
+I found the new seam: the reducer already has the right aggregate inputs to decide stop status, but it only computes convergence mechanics today, not the five legal-stop gate bundle. I’m writing iteration 5 with that ownership recommendation and a new CP scenario.
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-005.md
+
+Wrote iteration 5 to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-005.md`
+
+It focuses on the remaining legal-stop ownership gap and recommends reducer-adjacent gate computation after `reduce-state.cjs`, with a new CP-064 stress-test scenario.
+
+
+Changes   +124 -0
+Requests  7.5 Premium (1m 49s)
+Tokens    ↑ 652.6k • ↓ 7.2k • 590.8k (cached) • 1.6k (reasoning)
+[11:19:16] Iteration 5 copilot exit=0
+[11:19:16] Building prompt for iteration 6 (v2 absolute paths)...
+[11:19:16] Dispatching copilot for iteration 6 (model=gpt-5.5)...
+I’ll run this as the requested single deep-research iteration: first load the prior iteration evidence, then do targeted reads for the weakest gap and write only the iteration-006 report.
+
+● skill(sk-deep-research)
+
+I have the deep-research constraints loaded. I’m reading the five prior iteration reports together now so this pass can target a real evidence gap instead of repeating earlier conclusions.
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+● Read iteration-005.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-005.md
+  └ 123 lines read
+
+The prior reports have all RQs broadly answerable; the remaining useful gap is the improvement-gate baseline/delta path from iteration 5. I’m tracing only the reducer/scorer/lineage/config surfaces needed to see whether that gate can be computed deterministically.
+
+● Read candidate-lineage.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/candidate-lineage.cjs
+  └ 180 lines read
+
+● Read reduce-state.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
+  └ L450:760 (311 lines read)
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ 121 lines read
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L1:130 (130 lines read)
+
+● Search (grep)
+  │ "thresholdDelta|weightedDelta|baseline|delta|improvementGate|bestPromptRecor
+  │ d|candidateId|candidate_id" (.opencode/skill/sk-improve-agent/scripts,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/assets, .opencode/command/improve)
+  └ 8 lines found
+
+The delta path is narrower than expected: config requires a baseline and threshold, but the reducer tracks “best” records rather than explicit baseline-vs-current semantics. I’m checking the YAML initialization and scoring outputs to confirm whether baseline recording is real or only operator prose.
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ 331 lines read
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L110:210 (95 lines read)
+
+● Read improve_improve-agent_confirm.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_confirm.yaml
+  └ L110:240 (131 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L300:380 (71 lines read)
+
+● Search (grep)
+  │ "baselineRequired|Record baseline|recording
+  │ baseline|baseline|thresholdDelta|candidate-better|keep-baseline|tie"
+  │ (.opencode/command/improve/assets, .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/scripts,
+  │ .opencode/skill/sk-improve-agent/references)
+  └ 55 lines found
+
+● Read promote-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+  └ L70:180 (111 lines read)
+
+● Read target_onboarding.md
+  │ .opencode/skill/sk-improve-agent/references/target_onboarding.md
+  └ L45:80 (34 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L1:90 (90 lines read)
+
+● Read promotion_rules.md
+  │ .opencode/skill/sk-improve-agent/references/promotion_rules.md
+  └ 88 lines read
+
+● Search (grep)
+  │ "baseline|candidate-better|thresholdDelta|score\.score|threshold"
+  │ (.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs,
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs,
+  │ .opencode/skill/sk-improve-agent/references/promotion_rules.md,
+  │ .opencode/skill/sk-improve-agent/references/loop_protocol.md,
+  │ .opencode/skill/sk-improve-agent/references/target_onboarding.md)
+  └ 12 lines found
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L260:300 (41 lines read)
+
+● Read agent-improvement-state.jsonl
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /agent-improvement-state.jsonl
+  └ 3 lines read
+
+● Read promote-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+  └ L180:205 (9 lines read)
+
+● Read improvement-journal.jsonl
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /improvement-journal.jsonl
+  └ 8 lines read
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-improve-agent/references/loop_protocol.md
+  └ L31:85 (54 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L30:110 (81 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L300:320 (21 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:29 (29 lines read)
+
+I found a new cross-cutting issue: the legal-stop `improvementGate` depends on score delta, but the shipped path doesn’t produce a reliable delta source. I’m writing iteration 6 now with that as the focused contribution.
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-006.md
+
+Done — wrote iteration 6 to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-006.md`
+
+The new focus is the baseline/delta evidence gap for `improvementGate`, with CP-065 proposed as the next grep-checkable stress scenario.
+
+
+Changes   +178 -0
+Requests  7.5 Premium (1m 49s)
+Tokens    ↑ 814.8k • ↓ 7.5k • 743.9k (cached) • 1.6k (reasoning)
+[11:21:06] Iteration 6 copilot exit=0
+[11:21:06] Building prompt for iteration 7 (v2 absolute paths)...
+[11:21:06] Dispatching copilot for iteration 7 (model=gpt-5.5)...
+I’ll run this as a single focused research iteration: first load the prior iteration findings and routing context, then inspect only the targeted gaps before writing the requested iteration file.
+
+● skill(sk-deep-research)
+
+I’ve got the deep-research contract loaded and will keep this to one LEAF-style iteration: prior findings first, then a small targeted read set and a single write to iteration-007.
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+● Read iteration-006.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-006.md
+  └ 177 lines read
+
+● Read iteration-005.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-005.md
+  └ 123 lines read
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+The prior six iterations already cover all RQs broadly; the remaining high-leverage gap is whether the baseline/delta mismatch from iteration 6 is protected by tests or silently untested. I’m narrowing to scorer/promotion test coverage and related fixtures now.
+
+● Read improvement-journal.jsonl
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /improvement-journal.jsonl
+  └ 8 lines read
+
+● Read agent-improvement-state.jsonl
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /agent-improvement-state.jsonl
+  └ 3 lines read
+
+● Search (glob)
+  │ "**/*{score,promote,candidate,benchmark}*.vitest.ts" in
+  │ .opencode/skill/sk-improve-agent/scripts/tests
+  └ 2 files found
+
+● Search (grep)
+  │ "score-candidate|promote-candidate|candidate-better|delta|baseline|threshold
+  │ Delta|keep-baseline" (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 8 lines found
+
+● Read mutation-coverage.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/mutation-coverage.vitest.ts
+  └ L1:90 (89 lines read)
+
+● Read promote-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+  └ L130:190 (59 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L250:370 (121 lines read)
+
+● Search (grep)
+  │ "low-sample-benchmark|insufficientSample|keptBaseline|converged|candidate-ac
+  │ ceptable|candidate-better|promote"
+  │ (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 25 lines found
+
+● Read benchmark-stability.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ L198:212 (14 lines read)
+
+● Read README.md
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /README.md
+  └ 14 lines read
+
+● Read benchmark-stability.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/benchmark-stability.vitest.ts
+  └ L80:115 (36 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L35:118 (84 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L198:218 (20 lines read)
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L112:150 (39 lines read)
+
+● Read trade-off-detector.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/trade-off-detector.vitest.ts
+  └ L232:256 (24 lines read)
+
+● Read trade-off-detector.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs
+  └ L1:90 (89 lines read)
+
+● Read improvement-journal.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
+  └ L1:115 (115 lines read)
+
+● Search (glob)
+  │ "**/*.vitest.ts" in .opencode/skill/sk-improve-agent/scripts/tests
+  └ 5 files found
+
+● Search (grep)
+  │ "baselineScore|candidate-better|delta|thresholdDelta|promote-candidate|score
+  │ -candidate" (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 2 lines found
+
+● Search (grep)
+  │ "low-sample|insufficientDataIterations|insufficientSampleIterations|imp-low-
+  │ sample-fixture|benchmarkPlateau"
+  │ (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ 13 lines found
+
+● Read improvement-journal.vitest.ts
+  │ .opencode/skill/sk-improve-agent/scripts/tests/improvement-journal.vitest.ts
+  └ L219:232 (14 lines read)
+
+● Read mutation-coverage.json
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /mutation-coverage.json
+  └ L1:35 (21 lines read)
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /improvement_config.json
+  └ 7 lines read
+
+● Read benchmark-results.json
+  │ .opencode/skill/sk-improve-agent/scripts/tests/fixtures/low-sample-benchmark
+  │ /benchmark-results.json
+  └ L1:60 (16 lines read)
+
+I found one narrower seam that prior iterations had not fully captured: the existing tests already know low-sample evidence is insufficient, but the checked-in fixture still records a successful-looking `converged` session, and there are no dedicated scorer/promotion tests for the `candidate-better`/`delta` contract. I’m writing that as the iteration-007 contribution now.
+
+● Get ISO timestamp (shell)
+  │ date -Iseconds
+  └ 2 lines...
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-007.md
+
+Wrote iteration 7 findings to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-007.md`
+
+The new contribution focuses on the untested scorer/promoter `candidate-better` + `delta` contract and the low-sample fixture currently ending as `converged` despite insufficient evidence.
+
+
+Changes   +128 -0
+Requests  7.5 Premium (2m 7s)
+Tokens    ↑ 759.9k • ↓ 7.9k • 695.8k (cached) • 2.0k (reasoning)
+[11:23:14] Iteration 7 copilot exit=0
+[11:23:15] Building prompt for iteration 8 (v2 absolute paths)...
+[11:23:15] Dispatching copilot for iteration 8 (model=gpt-5.5)...
+I’ll treat this as one bounded deep-research iteration: first I’ll load the prior iteration notes, then target the weakest remaining evidence and write only the requested iteration file.
+
+● skill(sk-deep-research)
+
+I’m loading the seven prior notes now so this iteration can focus on an actual evidence gap instead of repeating settled answers.
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+● Read iteration-005.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-005.md
+  └ 123 lines read
+
+● Read iteration-006.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-006.md
+  └ 177 lines read
+
+● Read iteration-007.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-007.md
+  └ 127 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+The main unanswered seam is now documentation/fixture drift around promotion language: earlier passes found executable `candidate-better`/`delta` requirements, but not whether the human-facing references still tell operators `candidate-acceptable` is enough.
+
+● Read promotion_rules.md
+  │ .opencode/skill/sk-improve-agent/references/promotion_rules.md
+  └ 88 lines read
+
+● Read 020-full-pipeline.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop
+  │ /020-full-pipeline.md
+  └ 84 lines read
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L55:115 (60 lines read)
+
+● Search (grep)
+  │ "candidate-acceptable|candidate-better|thresholdDelta|keep-baseline|baseline
+  │ Score|delta" (.opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/skill/sk-improve-agent/scripts/tests,
+  │ .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/SKILL.md, .opencode/agent/improve-agent.md)
+  └ 8 lines found
+
+I found the likely new value: promotion guidance and E2E playbook checks appear to stop at “artifact exists / candidate acceptable,” while the executable promotion path requires `candidate-better` plus `delta`. I’m pulling the narrow script and playbook lines to make that drift concrete.
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L250:365 (116 lines read)
+
+● Read promote-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+  └ L145:190 (44 lines read)
+
+● Read manual_testing_playbook.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/manual_testing_play
+  │ book.md
+  └ L110:135 (26 lines read)
+
+● Search (grep)
+  │ "candidate-acceptable|candidate-better|thresholdDelta|delta|baseline|promoti
+  │ on" (.opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 5 lines found
+
+● Search (glob)
+  │ ".opencode/skill/sk-improve-agent/scripts/tests/*{score,promote}*.vitest.ts"
+  └ No matches found
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L300:318 (19 lines read)
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 28-legal-stop-gates.md
+  └ L18:47 (30 lines read)
+
+● Search (grep)
+  │ "thresholdDelta|delta" (.opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/SKILL.md)
+  └ 23 lines found
+
+● Search (grep)
+  │ "candidate-better" (.opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/skill/sk-improve-agent/scripts/tests,
+  │ .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/SKILL.md, .opencode/agent/improve-agent.md)
+  └ 3 lines found
+
+● Search (grep)
+  │ "candidate-acceptable" (.opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/skill/sk-improve-agent/scripts/tests,
+  │ .opencode/command/improve/agent.md,
+  │ .opencode/skill/sk-improve-agent/SKILL.md, .opencode/agent/improve-agent.md)
+  └ 2 lines found
+
+● Read loop_protocol.md
+  │ .opencode/skill/sk-improve-agent/references/loop_protocol.md
+  └ L28:72 (44 lines read)
+
+● Read 017-no-dimensions.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensi
+  │ ons/017-no-dimensions.md
+  └ L40:47 (8 lines read)
+
+● Read rollback_runbook.md
+  │ .opencode/skill/sk-improve-agent/references/rollback_runbook.md
+  └ L28:42 (14 lines read)
+
+● Read 018-with-dimensions.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/05--reducer-dimensi
+  │ ons/018-with-dimensions.md
+  └ L40:47 (8 lines read)
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ L1:60 (60 lines read)
+
+I have enough evidence for a non-duplicative iteration: this pass will frame the new gap as “promotion semantics drift,” especially where docs/playbooks/fixtures accept shapes that the promotion script can never promote.
+
+● Search (glob)
+  │ ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repo
+  │ rt-alignment/research/iterations/iteration-008.md"
+  └ No matches found
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-008.md
+
+Iteration 8 is written; I’m doing a quick file check only to confirm the requested artifact exists at the exact path.
+
+● Read iteration-008.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-008.md
+  └ L1:24 (24 lines read)
+
+Wrote **Iteration 8** to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-008.md`
+
+It adds new evidence on promotion-semantics drift: `candidate-acceptable` is documented in places as promotion-adjacent, while the executable promotion path requires `candidate-better` plus `delta`.
+
+
+Changes   +164 -0
+Requests  7.5 Premium (1m 50s)
+Tokens    ↑ 729.2k • ↓ 7.2k • 660.5k (cached) • 1.3k (reasoning)
+[11:25:06] Iteration 8 copilot exit=0
+[11:25:06] Building prompt for iteration 9 (v2 absolute paths)...
+[11:25:06] Dispatching copilot for iteration 9 (model=gpt-5.5)...
+I’ll run this as the requested single deep-research iteration: first load the existing iteration notes, then target only the weakest remaining gap and write the iteration 009 markdown at the exact path.
+
+● skill(sk-deep-research)
+
+I’m going to read the loop state plus the eight prior iteration notes in one batch, then I’ll choose a narrow gap rather than re-covering settled questions.
+
+● Read deep-research-state.jsonl
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/deep-research-state.jsonl
+  └ 12 lines read
+
+● Read deep-research-strategy.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/deep-research-strategy.md
+  └ 104 lines read
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Read iteration-005.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-005.md
+  └ 123 lines read
+
+● Read iteration-006.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-006.md
+  └ 177 lines read
+
+● Read iteration-008.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-008.md
+  └ 163 lines read
+
+● Read iteration-007.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-007.md
+  └ 127 lines read
+
+The prior notes have all RQs broadly answered; the freshest gap is the runtime mirror seam: `.gemini` versus `.agents`, and whether references/tests/playbooks make that drift detectable.
+
+● Search (grep)
+  │ "scan-integration|check-mirror-drift|\.gemini|\.agents|mirror"
+  │ (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ No matches found
+
+● Search (grep)
+  │ "\.gemini|\.agents|MIRROR_TEMPLATES|runtime parity|mirror drift|mirror"
+  │ (.opencode/skill/sk-improve-agent, .opencode/command/improve/agent.md,
+  │ .opencode/agent/improve-agent.md)
+  └ 8 lines found
+
+● Search (grep)
+  │ "\.gemini|\.agents|mirror|runtime"
+  │ (.opencode/skill/sk-improve-agent/manual_testing_playbook)
+  └ 7 lines found
+
+● Search (glob)
+  │ ".{opencode,claude,codex,gemini}/agents/*"
+  └ 36 files found
+
+I found the repository really does have `.gemini/agents/*` mirrors, while the broad search output points at command/scanner language still mentioning `.agents`; I’m narrowing to the scanner constants, mirror policy, and scanner tests now.
+
+● Read check-mirror-drift.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/check-mirror-drift.cjs
+  └ L1:160 (147 lines read)
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L1:90 (90 lines read)
+
+● Read mirror_drift_policy.md
+  │ .opencode/skill/sk-improve-agent/references/mirror_drift_policy.md
+  └ L1:110 (75 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L390:410 (21 lines read)
+
+● Search (glob)
+  │ "**/*mirror*.md" in .opencode/skill/sk-improve-agent/manual_testing_playbook
+  └ No matches found
+
+● Search (glob)
+  │ "**/*scan*integration*.vitest.ts" in
+  │ .opencode/skill/sk-improve-agent/scripts/tests
+  └ No matches found
+
+The scanner constants confirm the drift: scan-integration hard-codes `.agents/agents`, while the policy says `.gemini/agents`; no obvious mirror-specific playbook filenames or scan-integration test file showed up. I’m checking the scanner output path and test inventory to make the recommendation precise.
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L87:230 (144 lines read)
+
+● Search (glob)
+  │ "*.vitest.ts" in .opencode/skill/sk-improve-agent/scripts/tests
+  └ 5 files found
+
+● Search (grep)
+  │ "\.agents/agents|\.gemini/agents|runtime parity|Runtime mirrors|mirror
+  │ drift|scanner checks" (.opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/skill/sk-improve-agent/SKILL.md)
+  └ 17 lines found
+
+● Search (grep)
+  │ "scan-integration|MIRROR_TEMPLATES|\.agents/agents|\.gemini/agents|check-mir
+  │ ror-drift|mirror" (.opencode/skill/sk-improve-agent/scripts/tests)
+  └ No matches found
+
+There’s a stronger contradiction now: the integration reference still documents `.agents/agents`, but the manual scenario’s troubleshooting/resource map mentions `.gemini/agents`. I’ll capture those exact lines and then write the iteration note.
+
+● Read integration_scanning.md
+  │ .opencode/skill/sk-improve-agent/references/integration_scanning.md
+  └ L1:95 (95 lines read)
+
+● Read no_go_conditions.md
+  │ .opencode/skill/sk-improve-agent/references/no_go_conditions.md
+  └ L25:45 (20 lines read)
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L90:105 (16 lines read)
+
+● Read 001-scan-known-agent.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/01--integration-sca
+  │ nner/001-scan-known-agent.md
+  └ L35:85 (51 lines read)
+
+● Read improve-agent.md
+  │ .gemini/agents/improve-agent.md
+  └ L1:20 (20 lines read)
+
+● Read improve-agent.md
+  │ .claude/agents/improve-agent.md
+  └ L1:20 (20 lines read)
+
+● Read improve-agent.toml
+  │ .codex/agents/improve-agent.toml
+  └ L1:20 (19 lines read)
+
+● Check scanner mirror output (shell)
+  │ node .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  │ --agent=improve-agent | node -e 'const fs=require("fs"); const
+  │ d=JSON.parse(fs.readFileSync(0,"utf8"));
+  │ console.log(JSON.stringify(d.surfaces.mirrors,null,2));' && date -Iseconds
+  └ 19 lines...
+
+I have enough new evidence for iteration 9: the mirror mismatch is no longer just a policy note; it affects the scanner’s actual output and a weighted evaluator dimension. I’m writing the iteration file now.
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-009.md
+
+Wrote iteration 9 to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-009.md`
+
+It focuses on the remaining mirror-runtime gap (`.gemini` vs `.agents`) and adds CP-068 plus concrete scanner/playbook/doc diff sketches.
+
+
+Changes   +152 -0
+Requests  7.5 Premium (1m 55s)
+Tokens    ↑ 661.3k • ↓ 7.9k • 590.8k (cached) • 1.9k (reasoning)
+[11:27:02] Iteration 9 copilot exit=0
+[11:27:02] Building prompt for iteration 10 (v2 absolute paths)...
+[11:27:02] Dispatching copilot for iteration 10 (model=gpt-5.5)...
+I’ll run this as a single deep-research iteration: first load the prior iteration evidence and skill routing, then target only the weakest remaining gap before writing the required iteration file.
+
+● skill(sk-deep-research)
+
+I’ll first read the nine prior iteration files together, then choose a narrow gap to avoid duplicating already-settled findings.
+
+● Read iteration-001.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-001.md
+  └ 147 lines read
+
+● Read iteration-002.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-002.md
+  └ 184 lines read
+
+● Read iteration-005.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-005.md
+  └ 123 lines read
+
+● Read iteration-008.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-008.md
+  └ 163 lines read
+
+● Read iteration-007.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-007.md
+  └ 127 lines read
+
+● Read iteration-006.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-006.md
+  └ 177 lines read
+
+● Read iteration-009.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-009.md
+  └ 151 lines read
+
+● Read iteration-003.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-003.md
+  └ 160 lines read
+
+● Read iteration-004.md
+  │ .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-repor
+  │ t-alignment/research/iterations/iteration-004.md
+  └ 165 lines read
+
+The prior iterations already answer every RQ, so I’m using the last pass to add a cross-cutting implementation-order insight: which prose/action placeholders block a grep-checkable disciplined Call B.
+
+● Read SKILL.md
+  │ .opencode/skill/sk-improve-agent/SKILL.md
+  └ L260:281 (21 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L286:318 (33 lines read)
+
+● Read agent.md
+  │ .opencode/command/improve/agent.md
+  └ L386:408 (23 lines read)
+
+● Read improve_improve-agent_auto.yaml
+  │ .opencode/command/improve/assets/improve_improve-agent_auto.yaml
+  └ L120:205 (85 lines read)
+
+● Read improve-agent.md
+  │ .opencode/agent/improve-agent.md
+  └ L145:174 (29 lines read)
+
+● Read improvement_config.json
+  │ .opencode/skill/sk-improve-agent/assets/improvement_config.json
+  └ L1:60 (60 lines read)
+
+● Search (grep)
+  │ "action:|command:|legal_stop_evaluated|blocked_stop|benchmark_completed|cand
+  │ idate-better|candidate-acceptable|\.agents/agents|\.gemini/agents"
+  │ (.opencode/command/improve/assets/improve_improve-agent_auto.yaml,
+  │ .opencode/skill/sk-improve-agent/references,
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook,
+  │ .opencode/skill/sk-improve-agent/scripts)
+  └ 7 lines found
+
+I’ve narrowed the final contribution to a blocker dependency chain rather than another per-RQ re-answer: mirror inventory affects integration score, baseline/delta affects improvementGate, and legal-stop emission depends on both.
+
+● Read scan-integration.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
+  └ L1:25 (25 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L130:165 (36 lines read)
+
+● Read promote-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/promote-candidate.cjs
+  └ L150:185 (36 lines read)
+
+● Read score-candidate.cjs
+  │ .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+  └ L255:365 (111 lines read)
+
+● Read evaluator_contract.md
+  │ .opencode/skill/sk-improve-agent/references/evaluator_contract.md
+  └ L89:101 (13 lines read)
+
+● Read 028-legal-stop-gates.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/07--runtime-truth/0
+  │ 28-legal-stop-gates.md
+  └ L20:46 (26 lines read)
+
+● Read 020-full-pipeline.md
+  │ .opencode/skill/sk-improve-agent/manual_testing_playbook/06--end-to-end-loop
+  │ /020-full-pipeline.md
+  └ L20:46 (26 lines read)
+
+I have enough line-level evidence; I’m getting the exact timestamp, then I’ll write only the required iteration file.
+
+● Get current ISO timestamp (shell)
+  │ date -Iseconds
+  └ 2 lines...
+
+● Edit
+  └ Create .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-tes
+    t-report-alignment/research/iterations/iteration-010.md
+
+Wrote iteration 10 to:
+
+`.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/iterations/iteration-010.md`
+
+It adds a final cross-cutting implementation-order finding and CP-069 stress-test scenario tying mirror truth, baseline/delta evidence, benchmark/journal boundaries, and legal-stop gating into one grep-checkable Call B chain.
+
+
+Changes   +218 -0
+Requests  7.5 Premium (1m 46s)
+Tokens    ↑ 500.1k • ↓ 8.5k • 430.1k (cached) • 1.7k (reasoning)
+[11:28:50] Iteration 10 copilot exit=0
+[11:28:50] Loop v2 complete. 10 total iterations on disk.

@@ -1,0 +1,224 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "spec_folder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "060 sk-improve-agent test report alignment",
+      "improve agent improver",
+      "sk-improve-agent stress test",
+      "059 methodology meta-application",
+      "060 plan",
+      "sk-improve-agent research plan",
+      "060 tasks",
+      "sk-improve-agent research tasks",
+      "060 checklist",
+      "060 ADRs",
+      "060 decision record",
+      "060 implementation summary"
+    ],
+    "key_topics": [
+      "060",
+      "sk-improve-agent",
+      "test",
+      "report",
+      "alignment",
+      "improve",
+      "agent",
+      "improver",
+      "stress",
+      "059",
+      "methodology",
+      "meta-application"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/skill/sk-improve-agent/SKILL.md",
+      ".opencode/agent/improve-agent.md",
+      ".opencode/command/improve/agent.md",
+      "implementation-summary.md",
+      ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md",
+      ".opencode/skill/sk-deep-research/changelog/v1.9.0.0.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "handover.md",
+      "resource-map.md",
+      ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/decision-record.md",
+      ".opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/004-code-vs-general-agent-perf-comparison.md",
+      ".opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/005-unknown-stack-escalation-discipline.md"
+    ],
+    "entities": [
+      {
+        "name": "SKILL.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-improve-agent/SKILL.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".opencode/agent/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "agent.md",
+        "kind": "doc",
+        "path": ".opencode/command/improve/agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "test-report.md",
+        "kind": "doc",
+        "path": ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "v1.9.0.0.md",
+        "kind": "doc",
+        "path": ".opencode/skill/sk-deep-research/changelog/v1.9.0.0.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "004-code-vs-general-agent-perf-comparison.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/004-code-vs-general-agent-perf-comparison.md",
+        "source": "derived"
+      },
+      {
+        "name": "005-unknown-stack-escalation-discipline.md",
+        "kind": "doc",
+        "path": ".opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/005-unknown-stack-escalation-discipline.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Test Methodology",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Critical Dependencies",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement The",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Produce",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Implementation Plan",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Report Alignment",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "Signposted Only",
+        "kind": "proper_noun",
+        "path": "plan.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 059 produced a stress-test methodology that surfaced two real design gaps in `@code` after a single round of failure-path scenarios — gaps that the pre-merge structural smoke test (CP-026) had missed entirely. The methodology is reusable: same-task A/B dispatch, sandboxed isolation, grep-only verdict signals, multi-round iterative edits with measurable score progression, and a smart-router audit asking \"does the skill *actually fire its routing logic*, or does the agent just read SKILL.md and stop?\"",
+    "created_at": "2026-05-02T08:57:14.987Z",
+    "last_save_at": "2026-05-02T08:57:14.987Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md",
+      "resource-map.md"
+    ]
+  }
+}

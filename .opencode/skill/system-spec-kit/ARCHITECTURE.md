@@ -62,6 +62,63 @@ The package no longer treats generated memory notes as the primary continuity ar
 
 Generated memory artifacts are supporting context only.
 
+### Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SYSTEM-SPEC-KIT PACKAGE                          │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────────┐     ┌─────────────────┐     ┌───────────────┐ │
+│  │   CLI Runtimes   │     │    Plugins      │     │  AI Agents    │ │
+│  │Claude/Gemini/    │────▶│skill-advisor.js │────▶│(Gate 2/Skill  │ │
+│  │Copilot/Codex     │     │code-graph.js    │     │ Routing)      │ │
+│  └────────┬─────────┘     └────────┬────────┘     └───────────────┘ │
+│           │                        │                                │
+│  ┌────────▼────────────────────────▼──────────────────────────────┐ │
+│  │                        mcp_server/                             │ │
+│  │  ┌──────────┐ ┌──────────┐ ┌───────────────────────────────────│ │
+│  │  │ hooks/   │ │handlers/ │ │           lib/                    │ │
+│  │  │ claude/  │ │save/     │ │ ┌──────────┐ ┌─────────────┐      │ │
+│  │  │ gemini/  │ │resume/   │ │ │ search/  │ │ resume/     │      │ │
+│  │  │ copilot/ │ │search/   │ │ │ graph/   │ │ routing/    │      │ │
+│  │  │ codex/   │ │context/  │ │ │ merge/   │ │ continuity/ │      │ │
+│  │  └──────────┘ └──────────┘ │ └──────────┘ └─────────────┘      │ │
+│  │  ┌─────────────────────────┴─────────────────────────────┐     │ │
+│  │  │              Consumed Subsystems                      │     │ │
+│  │  │ ┌────────────────────┐ ┌────────────────────────────┐ │     │ │
+│  │  │ │  skill_advisor/    │ │     code_graph/            │ │     │ │
+│  │  │ │ ┌────────────────┐ │ │ ┌────────────────────────┐ │ │     │ │
+│  │  │ │ │5-lane fusion   │ │ │ │indexer, readiness,     │ │ │     │ │
+│  │  │ │ │scorer daemon   │ │ │ │seed resolver, budget   │ │ │     │ │
+│  │  │ │ │compat bridge   │ │ │ │Tree-sitter, CCC facade │ │ │     │ │
+│  │  │ │ └────────────────┘ │ │ └────────────────────────┘ │ │     │ │
+│  │  │ └────────────────────┘ └────────────────────────────┘ │     │ │
+│  │  │   matrix_runners/       stress_test/                  │     │ │
+│  │  └───────────────────────────────────────────────────────┘     │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│           ▲                       ▲                                 │
+│  ┌────────┴────────┐     ┌────────┴────────┐                        │
+│  │   scripts/      │     │    shared/      │                        │
+│  │ ┌──────────────┐│     │ ┌──────────────┐│                        │
+│  │ │ create.sh    ││────▶│ │ embeddings.ts││◄─────────────────      │
+│  │ │ validate.sh  ││     │ │ trigger-     ││                        │
+│  │ │ generate-    ││     │ │ extractor.ts ││                        │
+│  │ │ context.ts   ││     │ │ chunking.ts  ││                        │
+│  │ │ evals/       ││     │ │ algorithms/  ││                        │
+│  │ └──────────────┘│     │ │ parsing/     ││                        │
+│  │(import via api) │     │ │ scoring/     ││                        │
+│  └─────────────────┘     │ └──────────────┘│                        │
+│                          └─────────────────┘                        │
+│                                                                     │
+│  Dependency direction: scripts/ ──▶ mcp_server/api/                 │
+│                         mcp_server/ ──▶ shared/                     │
+│                         scripts/ ──▶ shared/                        │
+│                         Plugin ──▶ skill_advisor/compat/            │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
 <!-- /ANCHOR:overview -->
 
 <!-- ANCHOR:topology -->

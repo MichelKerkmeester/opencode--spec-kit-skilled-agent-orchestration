@@ -1,0 +1,51 @@
+{
+  "topic": "Apply 059 stress-test methodology to sk-improve-agent triad — produce gap analysis, sketched stress-test scenarios, prioritized diff sketches, and recommended fixture-target design",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": "specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "createdAt": "2026-05-02T11:01:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "type": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "claude-2026-05-02-060-research",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "deferredModes": ["fork", "completed-continue"],
+    "generation": 1,
+    "continuedFromRun": null
+  },
+  "reducer": {
+    "enabled": true,
+    "version": "1.0",
+    "registryFile": "research/findings-registry.json",
+    "dashboardFile": "research/deep-research-dashboard.md",
+    "strategyFile": "research/deep-research-strategy.md",
+    "machineOwnedSections": [
+      "key-questions",
+      "answered-questions",
+      "what-worked",
+      "what-failed",
+      "exhausted-approaches",
+      "ruled-out-directions",
+      "next-focus"
+    ]
+  },
+  "manualOrchestration": {
+    "note": "This packet's iterations are dispatched via a manual shell loop (.opencode/specs/.../060-.../research/run-iterations.sh) rather than through the YAML workflow runner. Each iteration spawns copilot with a prompt that reads prior iteration summaries to preserve fresh-context-per-iteration discipline. Convergence is checked via diminishing-returns heuristic on findings-registry.json.",
+    "rationale": "YAML workflow runner is agent-driven; manual dispatch gives a clean shell-script loop suitable for monitoring and resumption."
+  }
+}

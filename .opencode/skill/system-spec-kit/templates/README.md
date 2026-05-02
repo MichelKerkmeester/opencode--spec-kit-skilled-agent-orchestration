@@ -38,6 +38,8 @@ trigger_phrases:
 
 ## 1. OVERVIEW
 
+<!-- ANCHOR:overview -->
+
 ### What is This Directory?
 
 This directory is the source of truth for every document that `create.sh` writes into a new spec folder. It contains the template files, the manifest that describes which documents each Level needs, rendered examples and maintainer guides. If you are trying to understand where a `spec.md` or `plan.md` came from, you are in the right place.
@@ -77,9 +79,72 @@ This directory is the source of truth for every document that `create.sh` writes
 | Node.js | 18+ |
 | The scaffolder, validator and renderer are all bash-callable. No extra install steps needed beyond the workspace. |
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                    TEMPLATE SYSTEM ARCHITECTURE                       │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │              SOURCE OF TRUTH: manifest/                         ││
+│  │  ┌──────────────────────┐  ┌──────────────────────────────────┐ ││
+│  │  │ spec-kit-docs.json   │  │ *.md.tmpl (12 files)             │ ││
+│  │  │ • levels: doc lists  │  │ spec.md.tmpl                     │ ││
+│  │  │ • documents: registry│  │ plan.md.tmpl                     │ ││
+│  │  │ • versions: semver   │  │ tasks.md.tmpl                    │ ││
+│  │  │ • sectionGates: per  │  │ implementation-summary           │ ││
+│  │  │   level sections     │  │ checklist, decision-record,      │ ││
+│  │  └──────────┬───────────┘  │ handover, debug-delegation,      │ ││
+│  └─────────────┼──────────────┤ resource-map, research,          │ ││
+│                │              │ context-index                    │ ││
+│                │              └──────────────────────────────────┘ ││
+│                │                                                    ││
+│  ┌─────────────▼───────────────────────────────────────────────────┐│
+│  │                  RESOLVER                                       ││
+│  │  resolveLevelContract("3")   →   LevelContract                  ││
+│  │  • requiredCoreDocs    ["spec.md", "plan.md", ...]              ││
+│  │  • requiredAddonDocs   ["checklist.md", "decision-record.md"]   ││
+│  │  • lazyAddonDocs       ["handover.md", "debug-delegation.md"]   ││
+│  │  • sectionGates        {metadata:[1,2,3], problem:[1,2,3], ...} ││
+│  │  • templateVersions    {"spec.md.tmpl": "v2.2", ...}            ││
+│  └─────────┬──────────────────┬────────────────────────────────────┘│
+│            │                  │                                      │
+│  ┌─────────▼────────┐  ┌──────▼──────────────────────────────────┐  │
+│  │   RENDERER       │  │   VALIDATOR                             │  │
+│  │ inline-gate-     │  │ validate.sh                             │  │
+│  │ renderer.ts      │  │ reads same contract                     │  │
+│  │ strips/blocks by │→→│ checks: missing files, sections,        │  │
+│  │ <!-- IF level:N│    │ anchors, placeholders, links            │  │
+│  └─────────┬────────┘  └─────────────────────────────────────────┘  │
+│            │                                                        │
+│  ┌─────────▼──────────────────────────────────────────────────────┐ │
+│  │                   SCAFFOLDER (create.sh)                        │ │
+│  │  --level N --path specs/XXX --name "name"                      │ │
+│  │                                                                 │ │
+│  │  Output: rendered .md files + description.json +                │ │
+│  │          graph-metadata.json                                    │ │
+│  └────────────────────────────────────────────────────────────────┘ │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │            SUPPORTING FOLDERS                                    ││
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────────────┐││
+│  │  │examples/ │ │changelog/│ │scratch/  │ │ stress_test/         │││
+│  │  │pre-rend. │ │version hx│ │debug (git│ │ deep review grader   │││
+│  │  │packets   │ │          │ │ignored)  │ │ (maintainers only)   │││
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────────────────┘││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+<!-- /ANCHOR:overview -->
+
 ---
 
 ## 2. QUICK START
+
+<!-- ANCHOR:quick-start -->
 
 ### Scaffold a Packet
 
@@ -110,9 +175,13 @@ bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh specs/123-my-featu
 
 Read `manifest/spec-kit-docs.json` and look at `levels["3"].requiredCoreDocs` and `requiredAddonDocs`. Or call `resolveLevelContract("3")` from the resolver module.
 
+<!-- /ANCHOR:quick-start -->
+
 ---
 
 ## 3. FEATURES
+
+<!-- ANCHOR:features -->
 
 ### 3.1 HOW IT WORKS
 
@@ -376,9 +445,13 @@ A test file (`workflow-invariance.vitest.ts`) scans all non-allowlisted files on
 - `templates/README.md` (this file)
 - `mcp_server/lib/templates/level-contract-resolver.ts`
 
+<!-- /ANCHOR:features -->
+
 ---
 
 ## 4. STRUCTURE
+
+<!-- ANCHOR:structure -->
 
 ```
 templates/
@@ -418,9 +491,13 @@ templates/
 | `manifest/MIGRATION.md` | Legacy format handling and backward compatibility policy |
 | `examples/level-*/` | Pre-rendered packets showing finished output for each Level |
 
+<!-- /ANCHOR:structure -->
+
 ---
 
 ## 5. CONFIGURATION
+
+<!-- ANCHOR:configuration -->
 
 The template system's configuration lives in `manifest/spec-kit-docs.json`. There are no environment variables or config files to set up. The manifest is the only knob.
 
@@ -453,9 +530,13 @@ The scaffolder writes the current version into each rendered file as:
 |----------|---------|
 | `SPECKIT_VERBOSE_RESOLVER` | Set to `1` to see stack traces on resolver errors |
 
+<!-- /ANCHOR:configuration -->
+
 ---
 
 ## 6. USAGE EXAMPLES
+
+<!-- ANCHOR:usage-examples -->
 
 ### Example 1: Render a Template by Hand
 
@@ -498,9 +579,13 @@ These five steps add a document to the manifest so that `create.sh` scaffolds it
 
 After these changes, run `npm test`. The resolver tests and golden snapshot tests will tell you if anything is misaligned.
 
+<!-- /ANCHOR:usage-examples -->
+
 ---
 
 ## 7. TROUBLESHOOTING
+
+<!-- ANCHOR:troubleshooting -->
 
 ### Common Issues
 
@@ -538,9 +623,13 @@ bash .opencode/skill/system-spec-kit/scripts/templates/inline-gate-renderer.sh \
   --template templates/manifest/spec.md.tmpl
 ```
 
+<!-- /ANCHOR:troubleshooting -->
+
 ---
 
 ## 8. FAQ
+
+<!-- ANCHOR:faq -->
 
 ### General Questions
 
@@ -598,9 +687,13 @@ A: Files not scaffolded by default. They are created on demand by specific comma
 
 A: The resolver reads them to identify the template version. Readers must accept any marker version they encounter. There is no planned sunset date for legacy marker support. See `manifest/MIGRATION.md` for details.
 
+<!-- /ANCHOR:faq -->
+
 ---
 
 ## 9. RELATED DOCUMENTS
+
+<!-- ANCHOR:related-documents -->
 
 ### Internal Documentation
 
@@ -622,6 +715,8 @@ A: The resolver reads them to identify the template version. Readers must accept
 |----------|-------------|
 | [SKILL.md](../SKILL.md) | Parent system-spec-kit skill documentation |
 | [Spec folder workflow](./../SKILL.md) | Template system role in the spec folder workflow |
+
+<!-- /ANCHOR:related-documents -->
 
 ---
 

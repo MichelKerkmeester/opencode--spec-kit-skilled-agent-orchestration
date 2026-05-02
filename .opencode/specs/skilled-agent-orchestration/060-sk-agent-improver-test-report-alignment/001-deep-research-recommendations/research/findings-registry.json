@@ -1,0 +1,22 @@
+{
+  "openQuestions": [
+    {"id": "RQ-1", "text": "sk-improve-agent stress-test analog?", "status": "open"},
+    {"id": "RQ-2", "text": "Active Critic challenge location?", "status": "open"},
+    {"id": "RQ-3", "text": "14 scripts actually fire?", "status": "open"},
+    {"id": "RQ-4", "text": "Multi-model attribution?", "status": "open"},
+    {"id": "RQ-5", "text": "A/B differential grep-checkable?", "status": "open"},
+    {"id": "RQ-6", "text": "4-runtime mirror discipline?", "status": "open"},
+    {"id": "RQ-7", "text": "5 legal-stop gates grep-checkable?", "status": "open"}
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 7,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}

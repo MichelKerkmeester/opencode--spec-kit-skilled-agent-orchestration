@@ -26,6 +26,96 @@ trigger_phrases:
 
 This directory contains the shell and TypeScript tooling that powers spec creation, upgrades, validation, memory save, packet graph metadata refresh/backfill, context indexing, and targeted Vitest regressions around hardened script behavior.
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                      SCRIPTS ARCHITECTURE                            │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │                     ENTRYPOINT LAYER                             ││
+│  │  ┌────────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐  ││
+│  │  │ spec/      │  │ memory/  │  │ evals/   │  │ spec-folder/ │  ││
+│  │  │ create.sh  │  │ generate │  │ ablation │  │ generate-    │  ││
+│  │  │ validate.sh│  │ -context │  │ health   │  │ description  │  ││
+│  │  │ upgrade.sh │  │ rank-    │  │ boundary │  │              │  ││
+│  │  │ archive.sh │  │ memories │  │ checks   │  │              │  ││
+│  │  └────────────┘  │ reindex  │  └──────────┘  └──────────────┘  ││
+│  │                  └──────────┘                                    ││
+│  └───────────────────────────┬──────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼──────────────────────────────────────┐│
+│  │                     PIPELINE LAYER                               ││
+│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌───────┐ ││
+│  │  │core/     │ │extractors│ │loaders/  │ │renderers│ │utils/ │ ││
+│  │  │workflow  │ │semantic  │ │data-     │ │template  │ │retry  │ ││
+│  │  │modules   │ │extraction│ │loader.ts │ │renderer  │ │jsonc  │ ││
+│  │  │(17 ts)   │ │(12 ts)   │ │          │ │          │ │token  │ ││
+│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └───────┘ ││
+│  └───────────┬─────────────────────────────────┬────────────────────┘│
+│              │                                 │                     │
+│  ┌───────────▼─────────┐           ┌───────────▼───────────────────┐ │
+│  │    LIBRARY LAYER    │           │      INFRASTRUCTURE           │ │
+│  │ ┌─────────────────┐ │           │ ┌──────────┐ ┌─────────────┐ │ │
+│  │ │ lib/            │ │           │ │setup/    │ │ test-fixt/  │ │ │
+│  │ │ (17 ts + 3 sh)  │ │           │ │prereq    │ │ (62 dirs)   │ │ │
+│  │ │ anchor-gen.ts   │ │           │ │native    │ │             │ │ │
+│  │ │ flowchart-gen   │ │           │ │rebuild   │ │             │ │ │
+│  │ │ embeddings.ts   │─┼──────────▶│ │installer │ │             │ │ │
+│  │ │ trigger-ext.ts  │ │           │ └──────────┘ └─────────────┘ │ │
+│  │ └─────────────────┘ │           │ ┌──────────┐ ┌─────────────┐ │ │
+│  │ ┌─────────────────┐ │           │ │ops/      │ │   graph/    │ │ │
+│  │ │ rules/          │ │           │ │healing   │ │  backfill   │ │ │
+│  │ │ check-anchor.sh │─┼──────────▶│ │scripts   │ │  -graph.ts  │ │ │
+│  │ │ check-links.sh  │ │           │ └──────────┘ └─────────────┘ │ │
+│  │ └─────────────────┘ │           └──────────────────────────────┘ │
+│  └─────────────────────┘                                            │
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │              EXTERNAL INTERFACES                                 ││
+│  │  ┌───────────────────┐   ┌──────────────────────────────────┐   ││
+│  │  │ mcp_server/api/   │   │   shared/ (via @spec-kit/shared) │   ││
+│  │  │ (runtime imports) │   │   embeddings, trigger-           │   ││
+│  │  │                   │   │   extractor, algorithms          │   ││
+│  │  └───────────────────┘   └──────────────────────────────────┘   ││
+│  └─────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Flow: Env → spec/{create,upgrade} → AI population → validate →     │
+│        completion check → generate-context (memory save)            │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+scripts/
+├── spec/                         # Lifecycle: create, validate, upgrade, archive
+├── spec-folder/                  # TS modules: description generation, folder detection
+├── memory/                       # Memory pipeline: generate-context, rank, reindex
+├── evals/                        # Evaluations: ablations, boundary checks, dashboards
+├── core/                         # Workflow modules (17 TypeScript files)
+├── extractors/                   # Semantic extraction (12 TypeScript files)
+├── loaders/                      # Data loading (1 TypeScript file)
+├── renderers/                    # Template rendering (1 TypeScript file)
+├── utils/                        # Utility modules (19 TypeScript files)
+├── lib/                          # Shared libs: TS (17) + shell (3)
+├── rules/                        # Validation rules (20 shell files)
+├── graph/                        # Graph backfill CLI
+├── setup/                        # Environment setup and prerequisites
+├── ops/                          # Healing and runbook scripts
+├── config/                       # Configuration module
+├── types/                        # TypeScript type definitions
+├── tests/                        # JS, shell, Python test suites
+├── templates/                    # Inline-gate-renderer TS and shell
+├── kpi/                          # Quality KPI scripts
+├── scratch/                      # Temporary workspace (gitignored)
+├── scripts-registry.json         # Registry of all scripts and entrypoints
+├── package.json                  # Package manifest (ESM, type: module)
+└── README.md
+```
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:inventory-snapshot -->
 ## 2. INVENTORY SNAPSHOT

@@ -25,6 +25,86 @@ trigger_phrases:
 The `lib/` directory provides 20 reusable helper libraries: 17 TypeScript modules compiled to `dist/lib/` and 3 shell helper scripts used by system-spec-kit workflows.
 These helpers support capture, rendering, and indexing around the canonical recovery path `/spec_kit:resume` -> `handover.md -> _memory.continuity -> spec docs`.
 
+### Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                   SCRIPTS LIB ARCHITECTURE                           │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │  CONSUMERS: scripts/spec/*.sh, scripts/memory/*.ts,             ││
+│  │  scripts/core/*.ts, scripts/evals/*.ts                          ││
+│  └───────────────────────────────┬─────────────────────────────────┘│
+│                                  │                                   │
+│  ┌───────────────────────────────▼─────────────────────────────────┐│
+│  │                     scripts/lib/                                ││
+│  │  ┌──────────────────────────┐  ┌──────────────────────────────┐││
+│  │  │   TypeScript Modules     │  │    Shell Helpers             │││
+│  │  │   (17 files → dist/lib)  │  │    (3 files)                 │││
+│  │  │ ┌──────────────────────┐ │  │ ┌──────────────────────────┐ │││
+│  │  │ │ Rendering / Output   │ │  │ │ git-branch.sh            │ │││
+│  │  │ │ ascii-boxes.ts       │ │  │ │ shell-common.sh          │ │││
+│  │  │ │ anchor-generator.ts  │ │  │ │ template-utils.sh        │ │││
+│  │  │ │ flowchart-gen.ts     │ │  │ └──────────────────────────┘ │││
+│  │  │ │ decision-tree-gen.ts │ │  └──────────────────────────────┘││
+│  │  │ └──────────────────────┘ │                                    ││
+│  │  │ ┌──────────────────────┐ │  ┌──────────────────────────────┐ ││
+│  │  │ │ Semantic Extraction  │ │  │   External Dependencies     │ ││
+│  │  │ │ trigger-extractor.ts │─┼──│ ┌──────────────────────────┐│ ││
+│  │  │ │ semantic-signal.ts   │ │  │ │@spec-kit/shared          ││ ││
+│  │  │ │ semantic-summary.ts  │ │  │ │  embeddings.ts           ││ ││
+│  │  │ │ topic-keywords.ts    │ │  │ └──────────────────────────┘│ ││
+│  │  │ └──────────────────────┘ │  └──────────────────────────────┘ ││
+│  │  │ ┌──────────────────────┐ │                                    ││
+│  │  │ │ Memory / Frontmatter │ │                                    ││
+│  │  │ │ memory-frontmatter.ts│ │                                    ││
+│  │  │ │ frontmatter-mig.ts   │ │                                    ││
+│  │  │ │ validate-mem-q.ts    │ │                                    ││
+│  │  │ │ content-filter.ts    │ │                                    ││
+│  │  │ └──────────────────────┘ │                                    ││
+│  │  │ ┌──────────────────────┐ │                                    ││
+│  │  │ │ Session / Activity   │ │                                    ││
+│  │  │ │ session-activity.ts  │ │                                    ││
+│  │  │ │ phase-classifier.ts  │ │                                    ││
+│  │  │ └──────────────────────┘ │                                    ││
+│  │  └──────────────────────────┘                                    ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Compile: `npm run build` → dist/lib/ (17 .js + .d.ts + .js.map)   │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+### Directory Tree
+
+```
+scripts/lib/
+├── TypeScript modules (17 files)
+│   ├── anchor-generator.ts          # Stable anchor ID generation
+│   ├── ascii-boxes.ts               # Terminal-friendly box layouts
+│   ├── cli-capture-shared.ts        # CLI capture payload helpers
+│   ├── content-filter.ts            # Pre-processing content filter
+│   ├── decision-tree-generator.ts   # Decision tree structures
+│   ├── embeddings.ts                # Shared embedding wrapper
+│   ├── flowchart-generator.ts       # Flowchart output generation
+│   ├── frontmatter-migration.ts     # Safe frontmatter normalization
+│   ├── memory-frontmatter.ts        # Memory doc frontmatter handling
+│   ├── phase-classifier.ts          # Workflow phase classification
+│   ├── semantic-signal-extractor.ts # Semantic signal extraction
+│   ├── semantic-summarizer.ts       # Semantic content summarization
+│   ├── session-activity-signal.ts   # Session activity signals
+│   ├── simulation-factory.ts        # Simulation inputs and fixtures
+│   ├── topic-keywords.ts            # Lexical topic extraction
+│   ├── trigger-extractor.ts         # Trigger phrase extraction
+│   └── validate-memory-quality.ts   # Post-render quality validation
+├── Shell helpers (3 files)
+│   ├── git-branch.sh
+│   ├── shell-common.sh
+│   └── template-utils.sh
+└── README.md
+```
+
 <!-- /ANCHOR:overview -->
 <!-- ANCHOR:current-inventory -->
 ## 2. CURRENT INVENTORY

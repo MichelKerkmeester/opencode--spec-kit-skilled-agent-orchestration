@@ -4,7 +4,63 @@ MCP tool handlers for the structural code graph system.
 
 Code graph handlers can enrich recovery, but they do not own packet continuity. For Spec Kit packet work, `/spec_kit:resume` remains canonical and recovery still flows through `handover.md`, then `_memory.continuity`, then the remaining spec docs.
 
-## Handlers
+## Architecture Diagram
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│              CODE GRAPH HANDLER ARCHITECTURE                          │
+├──────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌─────────────────────────────────────────────────────────────────┐│
+│  │  TOOL DISPATCH  (tools/code-graph-tools.ts → ALL_DISPATCHERS)  ││
+│  └───────────────────────────┬─────────────────────────────────────┘│
+│                              │                                       │
+│  ┌───────────────────────────▼─────────────────────────────────────┐│
+│  │                     9 HANDLERS                                  ││
+│  │  ┌──────────────────────┐  ┌──────────────────────────────────┐││
+│  │  │ STRUCTURAL GRAPH     │  │   COCOINDEX BRIDGE (CCC)         │││
+│  │  │ scan.ts              │  │   ccc-status.ts                  │││
+│  │  │ query.ts             │  │   ccc-reindex.ts                 │││
+│  │  │ status.ts            │  │   ccc-feedback.ts                │││
+│  │  │ context.ts           │  │  Spawns: ccc binary              │││
+│  │  │ verify.ts            │  │  (.opencode/skill/mcp-coco-     │││
+│  │  │ detect-changes.ts    │  │   index/mcp_server/.venv/)       │││
+│  │  └──────────┬───────────┘  └──────────────────────────────────┘││
+│  └─────────────┼───────────────────────────────────────────────────┘│
+│                │                                                     │
+│  ┌─────────────▼───────────────────────────────────────────────────┐│
+│  │                      UNDERLYING LIB                              ││
+│  │  ┌──────────────────────┐  ┌──────────────────────────────────┐ ││
+│  │  │ ../lib/              │  │ ../lib/readiness-contract.ts     │ ││
+│  │  │ structural-indexer   │  │ (trust states: live|stale|      │ ││
+│  │  │ code-graph-db        │  │  absent|unavailable)            │ ││
+│  │  │ seed-resolver        │  │                                  │ ││
+│  │  │ code-graph-context   │  │                                  │ ││
+│  │  └──────────────────────┘  └──────────────────────────────────┘ ││
+│  └──────────────────────────────────────────────────────────────────┘│
+│                                                                      │
+│  Readiness gating: query/context return blocked payloads when        │
+│  full scan is required (false-safe, not silently incomplete)         │
+│                                                                      │
+└──────────────────────────────────────────────────────────────────────┘
+```
+
+## Directory Tree
+
+```
+mcp_server/code_graph/handlers/
+├── scan.ts                         # code_graph_scan: index workspace, build structural graph
+├── query.ts                        # code_graph_query: outline, calls, imports, blast_radius
+├── status.ts                       # code_graph_status: probe freshness, totals, parse health
+├── context.ts                      # code_graph_context: LLM neighborhoods from seeds
+├── verify.ts                       # code_graph_verify: run verification checks
+├── detect-changes.ts               # detect_changes: stale-safe unified-diff preflight
+├── ccc-status.ts                   # ccc_status: CocoIndex bridge availability
+├── ccc-reindex.ts                  # ccc_reindex: trigger CocoIndex reindexing
+├── ccc-feedback.ts                 # ccc_feedback: submit CocoIndex search feedback
+├── index.ts                        # Barrel re-export
+└── README.md
+```
 
 | File | MCP Tool | Purpose |
 |------|----------|---------|
