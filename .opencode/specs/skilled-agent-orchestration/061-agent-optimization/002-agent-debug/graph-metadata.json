@@ -31,10 +31,17 @@
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": "keptBaseline",
+    "session_outcome": "promoted",
     "stop_reason": "blockedStop",
     "iterations_run": 1,
     "final_score": "100/100/100/100/100 (baseline at ceiling, same as 001)",
-    "operator_review_pending": true
+    "promotion_decision": "operator_override",
+    "promotion_rationale": "two new HARD BLOCK sections (0A invocation boundary, 0B debug-delegation write boundary) directly enforce memory rules; phase boundary rules + phase trace tighten methodology discipline",
+    "mirrors_synced": [
+      ".opencode/agent/debug.md",
+      ".claude/agents/debug.md",
+      ".gemini/agents/debug.md",
+      ".codex/agents/debug.toml"
+    ]
   }
 }

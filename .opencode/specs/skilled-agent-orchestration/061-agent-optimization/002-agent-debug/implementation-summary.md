@@ -156,3 +156,42 @@ Same 9-step flow as 001/agent-context:
 | `.gemini/agents/debug.md` | UNCHANGED |
 | `.codex/agents/debug.toml` | UNCHANGED |
 | `improvement/` (new) | Full runtime + candidate + score + benchmark + journal + dashboard |
+
+---
+
+## 7. POST-IMPLEMENTATION PROMOTION (operator override)
+
+After review, operator approved promotion. Same operator-override path as 001/agent-context.
+
+### Changes promoted
+
+| Change | Type | Why valuable |
+|---|---|---|
+| §0A INVOCATION BOUNDARY (HARD BLOCK) | New rule block | Hardens user-invoked-only rule. `failure_count >= 3` may only OFFER @debug to operator, never invoke. Directly enforces memory rule "Debug agent must stay user-invoked, never auto-dispatched". |
+| §0B DEBUG-DELEGATION WRITE BOUNDARY (HARD BLOCK) | New rule block | Locks `debug-delegation.md` as @debug's exclusive write surface. Other agents read-only. Preserves prior findings. |
+| Invocation Approval subsection | New workflow step | Operator opt-in confirmation at top of CORE WORKFLOW. |
+| Phase Boundary Rules subsection | New rule block | Ordered phase enforcement: no source edits before Phase 5; probes ≠ fixes; prior failures used as evidence not starting hypothesis. |
+| Phase Trace subsection | Output template | Tabular per-phase result template required in handover output. |
+| Frontmatter description tightening | Cosmetic | "prompted offer" → "prompted opt-in offer" (consistent with §0A). |
+
+### Style preservation verified
+
+Unlike 001 (where Unicode box-drawing was flattened to ASCII and required a fix-up commit), the 002 dispatch prompt explicitly instructed "preserve Unicode box-drawing". Verified: §SUMMARY in all 4 mirrors retains `┌─┐ ├─► │ └─┘` characters.
+
+### Mirror sync
+
+| Runtime | Path | Promoted | Lines |
+|---|---|---|---|
+| OpenCode | `.opencode/agent/debug.md` | ✓ | 605 |
+| Claude | `.claude/agents/debug.md` | ✓ | 605 |
+| Gemini | `.gemini/agents/debug.md` | ✓ | 605 |
+| Codex | `.codex/agents/debug.toml` | ✓ | 594 (TOML wrapper) |
+
+### Rollback path
+
+Pre-promote snapshots at `improvement/pre-promote-backup/` (4 files).
+
+### Outcome update
+
+- `session_outcome`: `keptBaseline` → `promoted`
+- `promotion_decision`: `operator_override`
