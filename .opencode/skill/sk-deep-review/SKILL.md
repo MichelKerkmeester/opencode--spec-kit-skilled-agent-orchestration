@@ -90,7 +90,7 @@ Each CLI executor operates inside its own sandbox / permissions layer (codex `wo
 **Invariants** the executor MUST satisfy regardless of kind:
 
 1. Produce an iteration markdown file at `{state_paths.iteration_pattern}` (non-empty).
-2. Append a JSONL delta record to `{state_paths.state_log}` with required fields: `type`, `iteration`, `dimensions`, `filesReviewed`, `findingsSummary`, `newFindingsRatio`.
+2. Append a JSONL delta record to `{state_paths.state_log}` with required fields: `type`, `iteration`, `dimensions`, `filesReviewed`, `findingsSummary`, `findingsNew`, `findingDetails`, `newFindingsRatio`.
 3. Respect the LEAF-agent constraint: no sub-dispatch, no nested loops. Max 12 tool calls per iteration.
 
 **Failure modes**:
@@ -422,7 +422,7 @@ Reducer contract:
 8. **Use generate-context.js for memory saves** — Never manually create memory files; always use the script.
 9. **Review target files are read-only** — Never modify any file under review; observation and reporting only.
 10. **Run adversarial self-check on P0 findings** — Re-read the cited code before recording a P0 finding to confirm severity is genuine.
-11. **Report severity counts in every JSONL record** — `findingsSummary` (cumulative) and `findingsNew` (this iteration) are required fields.
+11. **Report severity counts and finding detail in every JSONL record** — `findingsSummary` (cumulative), `findingsNew` (this iteration), and `findingDetails` (per-finding `findingClass`, `scopeProof`, and `affectedSurfaceHints`) are required fields.
 12. **Quality guards must pass before convergence** — Evidence completeness, scope alignment, no inference-only findings, severity coverage, and cross-reference checks must all pass (see `references/convergence.md` Section 10.4) before STOP can trigger.
 
 ### NEVER

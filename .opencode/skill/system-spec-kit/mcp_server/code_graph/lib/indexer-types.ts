@@ -3,7 +3,6 @@
 // ───────────────────────────────────────────────────────────────
 import { createHash } from 'node:crypto';
 import {
-  CODE_GRAPH_SKILL_EXCLUDE_GLOBS,
   resolveIndexScopePolicy,
   type IndexScopePolicy,
   type ResolveIndexScopePolicyInput,
@@ -142,8 +141,10 @@ export function getDefaultConfig(
   rootDir: string,
   policyInput?: IndexScopePolicy | ResolveIndexScopePolicyInput,
 ): IndexerConfig {
-  const scopePolicy = resolveIndexScopePolicy(policyInput);
-  // Default scope excludes skill internals unless the caller opts in.
+  const scopePolicy = policyInput && 'fingerprint' in policyInput
+    ? policyInput
+    : resolveIndexScopePolicy(policyInput);
+  // Default scope excludes internal-heavy .opencode folders unless the caller opts in.
   const excludeGlobs = [
     '**/node_modules/**',
     '**/dist/**',
@@ -153,7 +154,11 @@ export function getDefaultConfig(
     '**/z_future/**',
     '**/z_archive/**',
     '**/mcp-coco-index/mcp_server/**',
-    ...CODE_GRAPH_SKILL_EXCLUDE_GLOBS.filter(() => !scopePolicy.includeSkills),
+    ...scopePolicy.excludedSkillGlobs,
+    ...scopePolicy.excludedAgentGlobs,
+    ...scopePolicy.excludedCommandGlobs,
+    ...scopePolicy.excludedSpecGlobs,
+    ...scopePolicy.excludedPluginGlobs,
   ];
 
   return {

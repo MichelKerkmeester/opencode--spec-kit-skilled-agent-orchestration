@@ -60,6 +60,11 @@ export interface StoredCodeGraphScope {
   fingerprint: string | null;
   label: string | null;
   includeSkills: boolean | null;
+  includedSkillsList: IndexScopePolicy['includedSkillsList'] | null;
+  includeAgents: boolean | null;
+  includeCommands: boolean | null;
+  includeSpecs: boolean | null;
+  includePlugins: boolean | null;
   source: IndexScopePolicySource | null;
 }
 
@@ -255,6 +260,11 @@ export function getStoredCodeGraphScope(): StoredCodeGraphScope {
     fingerprint,
     label,
     includeSkills: policy?.includeSkills ?? null,
+    includedSkillsList: policy?.includedSkillsList ?? null,
+    includeAgents: policy?.includeAgents ?? null,
+    includeCommands: policy?.includeCommands ?? null,
+    includeSpecs: policy?.includeSpecs ?? null,
+    includePlugins: policy?.includePlugins ?? null,
     source: policy?.source ?? null,
   };
 }

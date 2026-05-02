@@ -53,6 +53,8 @@ const SKILL_ROOT = findSkillRoot(MODULE_DIR);
 const TEMPLATE_ROOT = path.join(SKILL_ROOT, 'templates', 'manifest');
 const VALID_LEVELS = new Set<SpecKitLevel>(['1', '2', '3', '3+', 'phase']);
 const REQUIRED_FRONTMATTER_KEYS = ['packet_pointer', 'last_updated_at', 'last_updated_by', 'recent_action', 'next_safe_action'];
+const OPTIONAL_TEMPLATE_HEADER_RE = /^(?:L(?:2|3\+?)|FIX ADDENDUM)\s*:/iu;
+const OPTIONAL_TEMPLATE_ANCHORS = new Set(['affected-surfaces']);
 
 function normalizeLevel(raw: string): SpecKitLevel {
   if (raw === '3+') return '3+';
@@ -217,7 +219,7 @@ function validateTemplateShape(folder: string, level: SpecKitLevel, scope: 'head
 
     if (scope === 'headers') {
       const actualHeaders = h2Headers(actual);
-      const expectedHeaders = h2Headers(expected).filter((header) => !/^L(?:2|3\+?)\s*:/iu.test(header));
+      const expectedHeaders = h2Headers(expected).filter((header) => !OPTIONAL_TEMPLATE_HEADER_RE.test(header));
       let cursor = 0;
       for (const expectedHeader of expectedHeaders) {
         const foundAt = expectedHeader === 'ADR-001:'
@@ -228,7 +230,7 @@ function validateTemplateShape(folder: string, level: SpecKitLevel, scope: 'head
       }
     } else {
       const actualAnchors = new Set(anchors(actual));
-      const expectedAnchors = anchors(expected);
+      const expectedAnchors = anchors(expected).filter((anchor) => !OPTIONAL_TEMPLATE_ANCHORS.has(anchor));
       for (const expectedAnchor of expectedAnchors) {
         if (!actualAnchors.has(expectedAnchor)) findings.push(`${docName}: missing required anchor '${expectedAnchor}'`);
       }

@@ -12,10 +12,14 @@ import {
   initDb,
   replaceNodes,
   setCodeGraphScope,
+  setCodeGraphMetadata,
   upsertFile,
 } from '../lib/code-graph-db.js';
 import {
   CODE_GRAPH_INDEX_SKILLS_ENV,
+  CODE_GRAPH_SCOPE_FINGERPRINT_KEY,
+  CODE_GRAPH_SCOPE_LABEL_KEY,
+  CODE_GRAPH_SCOPE_SOURCE_KEY,
   resolveIndexScopePolicy,
 } from '../lib/index-scope-policy.js';
 import {
@@ -80,9 +84,14 @@ describe('code graph scope readiness', () => {
       setCodeGraphScope(policy);
 
       expect(getStoredCodeGraphScope()).toEqual({
-        fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
-        label: 'end-user code plus .opencode/skill opt-in; mcp-coco-index/mcp_server excluded',
+        fingerprint: 'code-graph-scope:v2:skills=all:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
+        label: 'end-user code only; opted-in .opencode folders: skills; mcp-coco-index/mcp_server excluded',
         includeSkills: true,
+        includedSkillsList: 'all',
+        includeAgents: false,
+        includeCommands: false,
+        includeSpecs: false,
+        includePlugins: false,
         source: 'scan-argument',
       });
     } finally {
@@ -96,6 +105,43 @@ describe('code graph scope readiness', () => {
       initDb(tempDir);
       writeTrackedNode(tempDir);
       setCodeGraphScope(resolveIndexScopePolicy({ includeSkills: true, env: {} }));
+
+      const snapshot = getGraphReadinessSnapshot(tempDir);
+      expect(snapshot).toMatchObject({
+        freshness: 'stale',
+        action: 'full_scan',
+      });
+      expect(snapshot.reason).toContain('code graph scope changed');
+
+      const readiness = await ensureCodeGraphReady(tempDir, {
+        allowInlineIndex: true,
+        allowInlineFullScan: false,
+      });
+      expect(readiness).toMatchObject({
+        freshness: 'stale',
+        action: 'full_scan',
+        inlineIndexPerformed: false,
+      });
+      expect(readiness.reason).toContain('inline full scan skipped for read path');
+    } finally {
+      rmSync(tempDir, { recursive: true, force: true });
+    }
+  });
+
+  it('treats stored v1 fingerprints as a scope migration requiring a blocked read', async () => {
+    const tempDir = mkdtempSync(join(tmpdir(), 'code-graph-scope-v1-migration-'));
+    try {
+      initDb(tempDir);
+      writeTrackedNode(tempDir);
+      setCodeGraphMetadata(
+        CODE_GRAPH_SCOPE_FINGERPRINT_KEY,
+        'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      );
+      setCodeGraphMetadata(
+        CODE_GRAPH_SCOPE_LABEL_KEY,
+        'end-user code only; .opencode/skill and mcp-coco-index/mcp_server excluded',
+      );
+      setCodeGraphMetadata(CODE_GRAPH_SCOPE_SOURCE_KEY, 'default');
 
       const snapshot = getGraphReadinessSnapshot(tempDir);
       expect(snapshot).toMatchObject({

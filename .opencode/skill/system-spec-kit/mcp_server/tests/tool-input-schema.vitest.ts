@@ -542,6 +542,17 @@ describe('code_graph schema coverage', () => {
         excludeGlobs: ['**/*.test.ts'],
         incremental: true,
         includeSkills: true,
+        includeAgents: true,
+        includeCommands: false,
+        includeSpecs: true,
+        includePlugins: false,
+      },
+    },
+    {
+      name: 'code_graph_scan accepts granular skill list selection',
+      toolName: 'code_graph_scan',
+      args: {
+        includeSkills: ['sk-code-review'],
       },
     },
     {
@@ -618,6 +629,13 @@ describe('code_graph schema coverage', () => {
       toolName: 'code_graph_scan',
       args: {
         includeSkills: 'true',
+      },
+    },
+    {
+      name: 'code_graph_scan rejects invalid granular skill names',
+      toolName: 'code_graph_scan',
+      args: {
+        includeSkills: ['invalid-name'],
       },
     },
     {

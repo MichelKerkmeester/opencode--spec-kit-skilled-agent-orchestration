@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const OPTIONAL_TEMPLATE_PREFIX_RE = /^L(?:2|3\+?)\s*:/i;
+const OPTIONAL_TEMPLATE_PREFIX_RE = /^(?:L(?:2|3\+?)|FIX ADDENDUM)\s*:/i;
 const NUMBERED_HEADER_RE = /^\d+\.\s*/;
 const PLACEHOLDER_RE = /\[[^\]]+\]/g;
 const H2_RE = /^##\s+(.+)$/gm;

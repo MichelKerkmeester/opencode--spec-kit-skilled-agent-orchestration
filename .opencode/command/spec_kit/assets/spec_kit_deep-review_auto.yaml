@@ -782,7 +782,7 @@ workflow:
           validator: ".opencode/skill/system-spec-kit/mcp_server/lib/deep-loop/post-dispatch-validate.ts#validateIterationOutputs"
           assert_exists: "{state_paths.iteration_pattern}"
           assert_appended: "{state_paths.state_log}"
-          assert_jsonl_fields: [type, iteration, mode, run, status, focus, dimensions, filesReviewed, findingsCount, findingsSummary, findingsNew, newFindingsRatio, sessionId, generation, lineageMode, timestamp, durationMs]
+          assert_jsonl_fields: [type, iteration, mode, run, status, focus, dimensions, filesReviewed, findingsCount, findingsSummary, findingsNew, findingDetails, newFindingsRatio, sessionId, generation, lineageMode, timestamp, durationMs]
           assert_canonical_type: "iteration"
           assert_delta_file_exists: "{state_paths.delta_pattern}"
           assert_delta_file_has_iteration_record: true
@@ -831,7 +831,7 @@ workflow:
           # <!-- F-010-B5-03 -->
           # Canonical iteration record: include sessionId, generation, durationMs so the reducer can persist
           # the failure without dropping the iteration. Schema source: state_format.md §Iteration Records.
-          append_jsonl: '{"type":"iteration","run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"durationMs":0,"timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation}}'
+          append_jsonl: '{"type":"iteration","iteration":{current_iteration},"run":{current_iteration},"mode":"review","status":"error","focus":"{next_dimension}","dimensions":["{next_dimension}"],"filesReviewed":[],"findingsCount":0,"findingsSummary":{"P0":0,"P1":0,"P2":0},"findingsNew":{"P0":0,"P1":0,"P2":0},"findingDetails":[],"traceabilityChecks":{"summary":{"required":0,"executed":0,"pass":0,"partial":0,"fail":0,"blocked":0,"notApplicable":0,"gatingFailures":0},"results":[]},"newFindingsRatio":0.0,"durationMs":0,"timestamp":"{ISO_8601_NOW}","sessionId":"{config.lineage.sessionId}","generation":{config.lineage.generation},"lineageMode":"{config.lineage.lineageMode}"}'
 
       step_post_iteration_claim_adjudication:
         action: "Validate typed claim-adjudication packets for any new P0/P1 findings and persist the result to state.jsonl so the next iteration's claimAdjudicationGate can read it"
@@ -1048,10 +1048,11 @@ workflow:
              - State whether `/spec_kit:plan` is required
              - Include a fenced `json` block labeled `Planning Packet`
              - The packet MUST include: `triggered`, `verdict`, `hasAdvisories`, `activeFindings`, `remediationWorkstreams`, `specSeed`, `planSeed`, `findingClasses`, `affectedSurfacesSeed`, `fixCompletenessRequired`
+             - Build `activeFindings`, `findingClasses`, and `affectedSurfacesSeed` from reducer-owned state plus iteration JSONL `findingDetails`; if a field is missing, mark it `UNKNOWN` instead of inferring it from prose
 
           3. **Active Finding Registry**
              - Unified registry for active P0/P1/P2 findings
-             - For each: ID, severity, title, dimension, file:line, evidence, impact, fix recommendation, disposition, findingClass, scopeProofNeeded, affectedSurfaceHints
+             - For each: ID, severity, title, dimension, file:line, evidence, impact, fix recommendation, disposition, findingClass, scopeProof, affectedSurfaceHints
 
           4. **Remediation Workstreams**
              - Ordered action groups: P0 first, then P1, with P2 advisories separated

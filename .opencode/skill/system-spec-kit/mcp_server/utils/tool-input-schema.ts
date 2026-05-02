@@ -7,9 +7,13 @@ interface JsonSchemaProperty {
   type?: string;
   enum?: unknown[];
   items?: JsonSchemaProperty;
+  anyOf?: JsonSchemaProperty[];
+  allOf?: JsonSchemaProperty[];
+  oneOf?: JsonSchemaProperty[];
   minimum?: number;
   maximum?: number;
   const?: unknown;
+  pattern?: string;
   minLength?: number;
   maxLength?: number;
   minItems?: number;
@@ -77,6 +81,40 @@ function validateType(field: string, value: unknown, expectedType: string): void
 }
 
 function validateProperty(field: string, value: unknown, schema: JsonSchemaProperty): void {
+  if (Array.isArray(schema.allOf) && schema.allOf.length > 0) {
+    for (const entry of schema.allOf) {
+      validateProperty(field, value, entry);
+    }
+  }
+
+  if (Array.isArray(schema.anyOf) && schema.anyOf.length > 0) {
+    const matched = schema.anyOf.some((entry) => {
+      try {
+        validateProperty(field, value, entry);
+        return true;
+      } catch {
+        return false;
+      }
+    });
+    if (!matched) {
+      throw new Error(`Invalid value for '${field}': does not match any allowed schema`);
+    }
+  }
+
+  if (Array.isArray(schema.oneOf) && schema.oneOf.length > 0) {
+    const matchedCount = schema.oneOf.filter((entry) => {
+      try {
+        validateProperty(field, value, entry);
+        return true;
+      } catch {
+        return false;
+      }
+    }).length;
+    if (matchedCount !== 1) {
+      throw new Error(`Invalid value for '${field}': must match exactly one allowed schema`);
+    }
+  }
+
   if (schema.const !== undefined && value !== schema.const) {
     throw new Error(`Invalid value for '${field}': expected constant ${String(schema.const)}`);
   }
@@ -101,6 +139,9 @@ function validateProperty(field: string, value: unknown, schema: JsonSchemaPrope
     }
     if (schema.maxLength !== undefined && value.length > schema.maxLength) {
       throw new Error(`Invalid value for '${field}': length must be <= ${schema.maxLength}`);
+    }
+    if (schema.pattern !== undefined && !new RegExp(schema.pattern).test(value)) {
+      throw new Error(`Invalid value for '${field}': must match pattern ${schema.pattern}`);
     }
   }
 

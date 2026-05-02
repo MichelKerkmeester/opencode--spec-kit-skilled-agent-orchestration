@@ -272,11 +272,20 @@ export async function handleCodeGraphStatus(): Promise<{ content: Array<{ type: 
               fingerprint: activeScopePolicy.fingerprint,
               label: activeScopePolicy.label,
               includeSkills: activeScopePolicy.includeSkills,
+              includedSkills: activeScopePolicy.includedSkillsList,
+              includedAgents: activeScopePolicy.includeAgents ? 'all' : 'none',
+              includedCommands: activeScopePolicy.includeCommands ? 'all' : 'none',
+              includedSpecs: activeScopePolicy.includeSpecs ? 'all' : 'none',
+              includedPlugins: activeScopePolicy.includePlugins ? 'all' : 'none',
+              includeAgents: activeScopePolicy.includeAgents,
+              includeCommands: activeScopePolicy.includeCommands,
+              includeSpecs: activeScopePolicy.includeSpecs,
+              includePlugins: activeScopePolicy.includePlugins,
               source: activeScopePolicy.source,
             },
             storedScope,
             scopeMismatch,
-            excludedTrackedFiles: activeScopePolicy.includeSkills
+            excludedTrackedFiles: activeScopePolicy.includedSkillsList === 'all'
               ? 0
               : graphDb.countTrackedSkillFiles(),
             readiness: readinessBlock,

@@ -75,6 +75,7 @@ const REVIEW_ITERATION_FIELDS = [
   'findingsCount',
   'findingsSummary',
   'findingsNew',
+  'findingDetails',
   'newFindingsRatio',
   'sessionId',
   'generation',
@@ -181,6 +182,13 @@ export function validateIterationOutputs(input: PostDispatchValidateInput): Post
         ok: false,
         reason: 'jsonl_missing_fields',
         details: 'dimensions must be an array',
+      };
+    }
+    if (requiredFields.has('findingDetails') && !Array.isArray(parsedRecord.findingDetails)) {
+      return {
+        ok: false,
+        reason: 'jsonl_missing_fields',
+        details: 'findingDetails must be an array',
       };
     }
     if (requiredFields.has('newFindingsRatio') && typeof parsedRecord.newFindingsRatio !== 'number') {

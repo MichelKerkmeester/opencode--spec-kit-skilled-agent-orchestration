@@ -1,10 +1,5 @@
 {
-  "spec_id": "026/007/011",
   "title": "Broader Default Excludes + Granular Per-Skill Selection for Code Graph",
-  "level": 2,
-  "spec_kind": "implementation",
-  "status": "in-progress",
-  "topic": "Extend code-graph default excludes to all .opencode/{skill,agent,command,specs,plugins}/** + per-folder opt-in env+per-call fields + granular skill name list",
   "trigger_phrases": [
     "broader default excludes",
     "granular skill selection",
@@ -13,7 +8,27 @@
     "include skills list",
     "code graph scope expansion"
   ],
+  "level": 2,
+  "spec_id": "026/007/011",
+  "spec_kind": "implementation",
+  "status": "complete",
+  "topic": "Extend code-graph default excludes to all .opencode/{skill,agent,command,specs,plugins}/** + per-folder opt-in env+per-call fields + granular skill name list",
   "importance_tier": "important",
   "created_at": "2026-05-02T19:30:00Z",
-  "last_updated_at": "2026-05-02T19:30:00Z"
+  "last_updated_at": "2026-05-02T19:50:00Z",
+  "specFolder": "011-broader-scope-excludes-and-granular-skills",
+  "description": "Broader scope excludes and granular skills",
+  "keywords": [
+    "broader",
+    "scope",
+    "excludes",
+    "granular",
+    "skills"
+  ],
+  "lastUpdated": "2026-05-02T19:50:00.000Z",
+  "specId": "011",
+  "folderSlug": "broader-scope-excludes-and-granular-skills",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": []
 }

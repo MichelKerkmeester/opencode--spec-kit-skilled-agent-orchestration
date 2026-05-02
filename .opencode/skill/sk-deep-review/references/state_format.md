@@ -182,12 +182,27 @@ Append-only JSON Lines file. One JSON object per line.
   "findingsCount": 4,
   "findingsSummary": { "P0": 0, "P1": 1, "P2": 3 },
   "findingsNew": { "P0": 0, "P1": 1, "P2": 1 },
+  "findingDetails": [
+    {
+      "id": "P1-001",
+      "severity": "P1",
+      "title": "Missing consumer update",
+      "dimension": "correctness",
+      "file": "path/to/file.ts:42",
+      "evidence": "Observed consumer still reads the old field.",
+      "recommendation": "Update the consumer and add verification.",
+      "disposition": "active",
+      "findingClass": "cross-consumer",
+      "scopeProof": "rg evidence covering producers and consumers",
+      "affectedSurfaceHints": ["producer/helper", "consumer/status"]
+    }
+  ],
   "newFindingsRatio": 0.32,
   "timestamp": "2026-03-24T14:30:00Z", "durationMs": 52000
 }
 ```
 
-**Required fields:** `type`, `mode`, `run`, `status`, `focus`, `dimensions`, `filesReviewed`, `findingsCount`, `findingsSummary`, `findingsNew`, `newFindingsRatio`, `sessionId`, `generation`, `lineageMode`, `timestamp`, `durationMs`
+**Required fields:** `type`, `mode`, `run`, `status`, `focus`, `dimensions`, `filesReviewed`, `findingsCount`, `findingsSummary`, `findingsNew`, `findingDetails`, `newFindingsRatio`, `sessionId`, `generation`, `lineageMode`, `timestamp`, `durationMs`
 
 **Optional fields:** `parentSessionId`, `continuedFromRun`, `findingsRefined`, `findingRefs`, `traceabilityChecks`, `coverage`, `noveltyJustification`, `ruledOut`, `focusTrack`, `scoreEstimate`, `segment`, `convergenceSignals`, `graphEvents`
 
@@ -201,6 +216,7 @@ Append-only JSON Lines file. One JSON object per line.
 | lineageMode | string | Lifecycle mode used for this run |
 | findingsSummary | object | Total active findings: `{ P0, P1, P2 }` |
 | findingsNew | object | Net-new findings this iteration: `{ P0, P1, P2 }` |
+| findingDetails | array | Active findings with `id`, `severity`, `title`, `dimension`, `file`, `evidence`, `recommendation`, `disposition`, `findingClass`, `scopeProof`, and `affectedSurfaceHints`; use `[]` when there are no findings |
 | newFindingsRatio | number | Severity-weighted new findings ratio (0.0-1.0) |
 
 ### Convergence Signals
@@ -433,6 +449,7 @@ When `activeP2 > 0` on PASS, set `hasAdvisories: true`.
 - `mode` must be `"review"` on all iteration and synthesis records
 - `run` values must be sequential; `newFindingsRatio` must be 0.0-1.0
 - `findingsSummary` and `findingsNew` must each contain `P0`, `P1`, `P2` keys
+- `findingDetails` must be an array; each active item must include `findingClass`, `scopeProof`, and `affectedSurfaceHints`
 
 ---
 
@@ -802,4 +819,3 @@ Severity for `resource-map-coverage` findings is calibrated to the coverage-gate
 All three gates must pass before STOP. Gate failure forces `verdict: "FAIL"` regardless of finding counts.
 
 ---
-

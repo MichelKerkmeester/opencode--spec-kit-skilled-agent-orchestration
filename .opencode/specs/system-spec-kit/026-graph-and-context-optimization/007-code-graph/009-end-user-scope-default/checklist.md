@@ -79,6 +79,20 @@ _memory:
 
 ---
 
+<!-- ANCHOR:fix-completeness -->
+## Fix Completeness
+
+- [x] CHK-FIX-001 [P0] Finding classes are covered by remediation sections: same-class scope policy, cross-consumer status/readiness, path sanitization, matrix evidence, and env isolation.
+- [x] CHK-FIX-002 [P0] Same-class producer inventory completed; evidence: CHK-G1-02 through CHK-G1-06 and CHK-G-V2-05 cover the scan, indexer, config, schema, and shared literals.
+- [x] CHK-FIX-003 [P0] Consumer inventory completed; evidence: CHK-G2-01 through CHK-G2-06 cover readiness, context/query blocked response shape, status, and startup.
+- [x] CHK-FIX-004 [P0] Security/path/parser/redaction fixes include adversarial table coverage; evidence: CHK-G-V2-03 and CHK-G-V3-01 cover precedence plus delimiter cases.
+- [x] CHK-FIX-005 [P1] Matrix axes and row counts are listed before completion; evidence: CHK-G-V2-03 records the six-case precedence matrix.
+- [x] CHK-FIX-006 [P1] Hostile env/global-state variants executed where process env is read; evidence: CHK-G1-08, CHK-G-NEW-01, and CHK-G-V2-04 cover env true/false and restore behavior.
+- [x] CHK-FIX-007 [P1] Evidence is pinned to explicit file/line references in remediation gates rather than only moving branch-relative ranges.
+<!-- /ANCHOR:fix-completeness -->
+
+---
+
 <!-- ANCHOR:security -->
 ## Security
 
@@ -113,8 +127,8 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 29 | 29/29 |
-| P1 Items | 24 | 24/24 |
+| P0 Items | 33 | 33/33 |
+| P1 Items | 27 | 27/27 |
 | P2 Items | 11 | 11/11 |
 
 **Verification Date**: 2026-05-02 - implementation complete, gates passed

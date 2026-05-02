@@ -1038,7 +1038,7 @@ Suggested section:
 ```markdown
 ---
 
-<!-- ANCHOR:affected-surfaces -->
+&lt;!-- ANCHOR:affected-surfaces --&gt;
 ## FIX ADDENDUM: AFFECTED SURFACES
 
 Use this section when `research_intent=fix_bug`, when planning from a deep-review FAIL/CONDITIONAL verdict, or when any finding touches security, path handling, env precedence, schema boundaries, persistence, public responses, or shared policy.
@@ -1053,7 +1053,7 @@ Required inventories:
 - Consumers of changed symbols: `rg -n '<changedSymbol>|<changedConstant>|<changedPublicField>' . --glob '*.ts' --glob '*.js' --glob '*.md'`.
 - Matrix axes: list every independent input axis and the required rows before implementation.
 - Algorithm invariant: for path/redaction/parser/resolver/security fixes, state the invariant and adversarial cases.
-<!-- /ANCHOR:affected-surfaces -->
+&lt;!-- /ANCHOR:affected-surfaces --&gt;
 ```
 
 **WHY**
@@ -1162,7 +1162,8 @@ Also update the plan inline scaffold:
 Add an optional custom section after the required seven anchors rather than renumbering existing required anchors:
 
 ```yaml
-      <!-- ANCHOR:affected-surfaces --> ## FIX ADDENDUM: AFFECTED SURFACES
+      &lt;!-- ANCHOR:affected-surfaces --&gt; ## FIX ADDENDUM: AFFECTED SURFACES
+      &lt;!-- /ANCHOR:affected-surfaces --&gt;
 ```
 
 **WHY**

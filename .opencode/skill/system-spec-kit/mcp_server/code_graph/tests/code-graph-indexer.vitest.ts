@@ -18,7 +18,12 @@ import {
   DEFAULT_EDGE_WEIGHTS,
 } from '../lib/indexer-types.js';
 import {
+  CODE_GRAPH_INDEX_AGENTS_ENV,
+  CODE_GRAPH_INDEX_COMMANDS_ENV,
+  CODE_GRAPH_INDEX_PLUGINS_ENV,
   CODE_GRAPH_INDEX_SKILLS_ENV,
+  CODE_GRAPH_INDEX_SPECS_ENV,
+  parseIndexScopePolicyFromFingerprint,
   resolveIndexScopePolicy,
 } from '../lib/index-scope-policy.js';
 import {
@@ -47,7 +52,15 @@ import {
 } from '../lib/structural-indexer.js';
 import type { ParseResult } from '../lib/indexer-types.js';
 
-let originalIndexSkillsEnv: string | undefined;
+const INDEX_SCOPE_ENV_KEYS = [
+  CODE_GRAPH_INDEX_SKILLS_ENV,
+  CODE_GRAPH_INDEX_AGENTS_ENV,
+  CODE_GRAPH_INDEX_COMMANDS_ENV,
+  CODE_GRAPH_INDEX_SPECS_ENV,
+  CODE_GRAPH_INDEX_PLUGINS_ENV,
+] as const;
+
+let originalIndexScopeEnv: Partial<Record<(typeof INDEX_SCOPE_ENV_KEYS)[number], string | undefined>> = {};
 
 function writeWorkspaceFile(rootDir: string, relativePath: string, content: string): string {
   const filePath = join(rootDir, relativePath);
@@ -101,15 +114,22 @@ function persistIndexResults(results: ParseResult[]): void {
 }
 
 beforeEach(() => {
-  originalIndexSkillsEnv = process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
-  delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+  originalIndexScopeEnv = Object.fromEntries(
+    INDEX_SCOPE_ENV_KEYS.map((key) => [key, process.env[key]]),
+  );
+  for (const key of INDEX_SCOPE_ENV_KEYS) {
+    delete process.env[key];
+  }
 });
 
 afterEach(() => {
-  if (originalIndexSkillsEnv === undefined) {
-    delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
-  } else {
-    process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = originalIndexSkillsEnv;
+  for (const key of INDEX_SCOPE_ENV_KEYS) {
+    const originalValue = originalIndexScopeEnv[key];
+    if (originalValue === undefined) {
+      delete process.env[key];
+    } else {
+      process.env[key] = originalValue;
+    }
   }
   try {
     closeDb();
@@ -265,30 +285,41 @@ describe('indexer-types', () => {
       expect(config.maxFileSizeBytes).toBe(102400);
     });
 
-    it('excludes .opencode/skill by default and exposes the active scope fingerprint', () => {
+    it('excludes .opencode default folders by default and exposes the active scope fingerprint', () => {
       const config = getDefaultConfig('/root');
 
       expect(config.scopePolicy.includeSkills).toBe(false);
-      expect(config.scopePolicy.fingerprint).toBe('code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded');
+      expect(config.scopePolicy.includedSkillsList).toBe('none');
+      expect(config.scopePolicy.fingerprint).toBe('code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded');
       expect(config.excludeGlobs).toContain('**/.opencode/skill/**');
-      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(false);
+      expect(config.excludeGlobs).toContain('**/.opencode/agent/**');
+      expect(config.excludeGlobs).toContain('**/.opencode/command/**');
+      expect(config.excludeGlobs).toContain('**/.opencode/specs/**');
+      expect(config.excludeGlobs).toContain('**/.opencode/plugins/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/example.ts', config.scopePolicy)).toBe(false);
+      expect(shouldIndexForCodeGraph('/root/.opencode/agent/code.md', config.scopePolicy)).toBe(false);
+      expect(shouldIndexForCodeGraph('/root/.opencode/command/spec_kit/run.yaml', config.scopePolicy)).toBe(false);
+      expect(shouldIndexForCodeGraph('/root/.opencode/specs/example/spec.md', config.scopePolicy)).toBe(false);
+      expect(shouldIndexForCodeGraph('/root/.opencode/plugins/example/plugin.json', config.scopePolicy)).toBe(false);
     });
 
     describe('resolveIndexScopePolicy precedence matrix', () => {
       it.each([
-        [undefined, undefined, false, 'default'],
-        [undefined, true, true, 'scan-argument'],
-        [undefined, false, false, 'scan-argument'],
-        ['true', undefined, true, 'env'],
-        ['true', true, true, 'scan-argument'],
-        ['true', false, false, 'scan-argument'],
+        [undefined, undefined, false, 'none', 'default'],
+        [undefined, true, true, 'all', 'scan-argument'],
+        [undefined, false, false, 'none', 'scan-argument'],
+        ['true', undefined, true, 'all', 'env'],
+        ['sk-code-review,sk-doc', undefined, true, ['sk-code-review', 'sk-doc'], 'env'],
+        ['true', true, true, 'all', 'scan-argument'],
+        ['true', false, false, 'none', 'scan-argument'],
       ] as const)(
-        'env=%j, includeSkills=%j -> includeSkills=%j source=%j',
-        (envValue, includeSkills, expectedIncludeSkills, expectedSource) => {
+        'env=%j, includeSkills=%j -> includeSkills=%j includedSkillsList=%j source=%j',
+        (envValue, includeSkills, expectedIncludeSkills, expectedIncludedSkillsList, expectedSource) => {
           const env = envValue === undefined ? {} : { [CODE_GRAPH_INDEX_SKILLS_ENV]: envValue };
           const result = resolveIndexScopePolicy({ includeSkills, env });
 
           expect(result.includeSkills).toBe(expectedIncludeSkills);
+          expect(result.includedSkillsList).toEqual(expectedIncludedSkillsList);
           expect(result.source).toBe(expectedSource);
         },
       );
@@ -301,11 +332,12 @@ describe('indexer-types', () => {
 
       expect(config.scopePolicy).toMatchObject({
         includeSkills: true,
+        includedSkillsList: 'all',
         source: 'env',
-        fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
+        fingerprint: 'code-graph-scope:v2:skills=all:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
       });
       expect(config.excludeGlobs).not.toContain('**/.opencode/skill/**');
-      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(true);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/example.ts', config.scopePolicy)).toBe(true);
     });
 
     it('uses the per-call opt-in without depending on process env', () => {
@@ -325,10 +357,10 @@ describe('indexer-types', () => {
       expect(config.scopePolicy).toMatchObject({
         includeSkills: false,
         source: 'scan-argument',
-        fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+        fingerprint: 'code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
       });
       expect(config.excludeGlobs).toContain('**/.opencode/skill/**');
-      expect(shouldIndexForCodeGraph('/root/.opencode/skill/example.ts', config.scopePolicy)).toBe(false);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/example.ts', config.scopePolicy)).toBe(false);
     });
 
     it('keeps mcp-coco-index/mcp_server excluded even when skill indexing is enabled', () => {
@@ -336,6 +368,96 @@ describe('indexer-types', () => {
 
       expect(config.excludeGlobs).toContain('**/mcp-coco-index/mcp_server/**');
       expect(shouldIndexForCodeGraph('/root/.opencode/skill/mcp-coco-index/mcp_server/index.ts', config.scopePolicy)).toBe(false);
+    });
+
+    it.each([
+      ['agents', CODE_GRAPH_INDEX_AGENTS_ENV, 'includeAgents', '**/.opencode/agent/**', '/root/.opencode/agent/code.md'],
+      ['commands', CODE_GRAPH_INDEX_COMMANDS_ENV, 'includeCommands', '**/.opencode/command/**', '/root/.opencode/command/spec_kit/run.yaml'],
+      ['specs', CODE_GRAPH_INDEX_SPECS_ENV, 'includeSpecs', '**/.opencode/specs/**', '/root/.opencode/specs/example/spec.md'],
+      ['plugins', CODE_GRAPH_INDEX_PLUGINS_ENV, 'includePlugins', '**/.opencode/plugins/**', '/root/.opencode/plugins/example/plugin.json'],
+    ] as const)(
+      'excludes .opencode/%s by default and includes it through env or per-call opt-in',
+      (_name, envKey, inputKey, glob, filePath) => {
+        const defaultConfig = getDefaultConfig('/root');
+        expect(defaultConfig.excludeGlobs).toContain(glob);
+        expect(shouldIndexForCodeGraph(filePath, defaultConfig.scopePolicy)).toBe(false);
+
+        const envConfig = getDefaultConfig('/root', { env: { [envKey]: 'true' } });
+        expect(envConfig.scopePolicy[inputKey]).toBe(true);
+        expect(envConfig.scopePolicy.source).toBe('env');
+        expect(envConfig.excludeGlobs).not.toContain(glob);
+        expect(shouldIndexForCodeGraph(filePath, envConfig.scopePolicy)).toBe(true);
+
+        const perCallConfig = getDefaultConfig('/root', { [inputKey]: true, env: { [envKey]: 'false' } });
+        expect(perCallConfig.scopePolicy[inputKey]).toBe(true);
+        expect(perCallConfig.scopePolicy.source).toBe('scan-argument');
+        expect(perCallConfig.excludeGlobs).not.toContain(glob);
+        expect(shouldIndexForCodeGraph(filePath, perCallConfig.scopePolicy)).toBe(true);
+      },
+    );
+
+    it('supports granular per-call skill selection with one, two and zero skills', () => {
+      const oneSkill = getDefaultConfig('/root', { includeSkills: ['sk-doc'], env: {} });
+      expect(oneSkill.scopePolicy.includedSkillsList).toEqual(['sk-doc']);
+      expect(oneSkill.excludeGlobs).not.toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/SKILL.md', oneSkill.scopePolicy)).toBe(true);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-code-review/SKILL.md', oneSkill.scopePolicy)).toBe(false);
+
+      const twoSkills = getDefaultConfig('/root', { includeSkills: ['sk-code-review', 'sk-doc'], env: {} });
+      expect(twoSkills.scopePolicy.includedSkillsList).toEqual(['sk-code-review', 'sk-doc']);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-code-review/SKILL.md', twoSkills.scopePolicy)).toBe(true);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/SKILL.md', twoSkills.scopePolicy)).toBe(true);
+
+      const noSkills = getDefaultConfig('/root', { includeSkills: [], env: { [CODE_GRAPH_INDEX_SKILLS_ENV]: 'true' } });
+      expect(noSkills.scopePolicy.includedSkillsList).toBe('none');
+      expect(noSkills.scopePolicy.source).toBe('scan-argument');
+      expect(noSkills.excludeGlobs).toContain('**/.opencode/skill/**');
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/SKILL.md', noSkills.scopePolicy)).toBe(false);
+    });
+
+    it('supports granular skill selection from csv env', () => {
+      const config = getDefaultConfig('/root', { env: { [CODE_GRAPH_INDEX_SKILLS_ENV]: 'sk-doc,sk-code-review' } });
+
+      expect(config.scopePolicy).toMatchObject({
+        includeSkills: true,
+        includedSkillsList: ['sk-code-review', 'sk-doc'],
+        source: 'env',
+      });
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-doc/SKILL.md', config.scopePolicy)).toBe(true);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-code-review/SKILL.md', config.scopePolicy)).toBe(true);
+      expect(shouldIndexForCodeGraph('/root/.opencode/skill/sk-deep-review/SKILL.md', config.scopePolicy)).toBe(false);
+    });
+
+    it('round-trips deterministic v2 fingerprints and rejects v1 fingerprints for migration', () => {
+      const policy = resolveIndexScopePolicy({
+        includeSkills: ['sk-doc', 'sk-code-review'],
+        includeAgents: true,
+        includePlugins: true,
+        env: {},
+      });
+      const policyReordered = resolveIndexScopePolicy({
+        includeSkills: ['sk-code-review', 'sk-doc'],
+        includeAgents: true,
+        includePlugins: true,
+        env: {},
+      });
+
+      expect(policy.fingerprint).toBe(policyReordered.fingerprint);
+      expect(policy.fingerprint).toBe('code-graph-scope:v2:skills=list[sk-code-review,sk-doc]:agents=all:commands=none:specs=none:plugins=all:mcp-coco-index=excluded');
+      expect(parseIndexScopePolicyFromFingerprint({
+        fingerprint: policy.fingerprint,
+        source: policy.source,
+      })).toMatchObject({
+        includedSkillsList: ['sk-code-review', 'sk-doc'],
+        includeAgents: true,
+        includeCommands: false,
+        includeSpecs: false,
+        includePlugins: true,
+        source: 'scan-argument',
+      });
+      expect(parseIndexScopePolicyFromFingerprint({
+        fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
+      })).toBeNull();
     });
   });
 });

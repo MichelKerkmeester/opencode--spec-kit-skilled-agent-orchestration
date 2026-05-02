@@ -28,7 +28,11 @@ export interface ScanArgs {
   includeGlobs?: string[];
   excludeGlobs?: string[];
   incremental?: boolean;
-  includeSkills?: boolean;
+  includeSkills?: boolean | string[];
+  includeAgents?: boolean;
+  includeCommands?: boolean;
+  includeSpecs?: boolean;
+  includePlugins?: boolean;
   verify?: boolean;
   persistBaseline?: boolean;
 }
@@ -245,7 +249,13 @@ export async function handleCodeGraphScan(args: ScanArgs): Promise<{ content: Ar
     };
   }
 
-  const scopePolicy = resolveIndexScopePolicy({ includeSkills: args.includeSkills });
+  const scopePolicy = resolveIndexScopePolicy({
+    includeSkills: args.includeSkills,
+    includeAgents: args.includeAgents,
+    includeCommands: args.includeCommands,
+    includeSpecs: args.includeSpecs,
+    includePlugins: args.includePlugins,
+  });
   const config = getDefaultConfig(canonicalRootDir, scopePolicy);
   if (args.includeGlobs) config.includeGlobs = args.includeGlobs;
   if (args.excludeGlobs) config.excludeGlobs = [...config.excludeGlobs, ...args.excludeGlobs];

@@ -1,0 +1,1 @@
+{"mode":"review","sessionId":"2026-05-02T19:37:23Z","generation":1,"reviewTarget":"010 R1-R8 + FIX-010-v1","maxIterations":5,"convergenceThreshold":0.05,"specFolder":".opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research","executor":{"kind":"cli-copilot","model":"gpt-5.5"}}

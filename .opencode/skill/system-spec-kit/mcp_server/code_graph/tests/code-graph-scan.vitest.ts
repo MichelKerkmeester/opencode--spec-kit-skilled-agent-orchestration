@@ -4,7 +4,13 @@
 
 import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { basename, join, resolve } from 'node:path';
-import { CODE_GRAPH_INDEX_SKILLS_ENV } from '../lib/index-scope-policy.js';
+import {
+  CODE_GRAPH_INDEX_AGENTS_ENV,
+  CODE_GRAPH_INDEX_COMMANDS_ENV,
+  CODE_GRAPH_INDEX_PLUGINS_ENV,
+  CODE_GRAPH_INDEX_SKILLS_ENV,
+  CODE_GRAPH_INDEX_SPECS_ENV,
+} from '../lib/index-scope-policy.js';
 
 const mocks = vi.hoisted(() => ({
   execSyncMock: vi.fn(),
@@ -141,11 +147,22 @@ describe('relativizeScanError multi-path safety', () => {
 });
 
 describe('handleCodeGraphScan', () => {
-  let originalIndexSkillsEnv: string | undefined;
+  const indexScopeEnvKeys = [
+    CODE_GRAPH_INDEX_SKILLS_ENV,
+    CODE_GRAPH_INDEX_AGENTS_ENV,
+    CODE_GRAPH_INDEX_COMMANDS_ENV,
+    CODE_GRAPH_INDEX_SPECS_ENV,
+    CODE_GRAPH_INDEX_PLUGINS_ENV,
+  ] as const;
+  let originalIndexScopeEnv: Partial<Record<(typeof indexScopeEnvKeys)[number], string | undefined>> = {};
 
   beforeEach(() => {
-    originalIndexSkillsEnv = process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
-    delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
+    originalIndexScopeEnv = Object.fromEntries(
+      indexScopeEnvKeys.map((key) => [key, process.env[key]]),
+    );
+    for (const key of indexScopeEnvKeys) {
+      delete process.env[key];
+    }
     vi.clearAllMocks();
 
     mocks.execSyncMock.mockReturnValue('new-head\n');
@@ -177,8 +194,8 @@ describe('handleCodeGraphScan', () => {
     });
     mocks.getCodeGraphMetadataMock.mockReturnValue(null);
     mocks.getStoredCodeGraphScopeMock.mockReturnValue({
-      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
-      label: 'end-user code only; .opencode/skill and mcp-coco-index/mcp_server excluded',
+      fingerprint: 'code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
+      label: 'end-user code only; .opencode skill, agent, command, specs and plugins excluded; mcp-coco-index/mcp_server excluded',
     });
     mocks.countTrackedSkillFilesMock.mockReturnValue(0);
     mocks.getGraphFreshnessMock.mockReturnValue('fresh');
@@ -240,10 +257,13 @@ describe('handleCodeGraphScan', () => {
   });
 
   afterEach(() => {
-    if (originalIndexSkillsEnv === undefined) {
-      delete process.env[CODE_GRAPH_INDEX_SKILLS_ENV];
-    } else {
-      process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = originalIndexSkillsEnv;
+    for (const key of indexScopeEnvKeys) {
+      const originalValue = originalIndexScopeEnv[key];
+      if (originalValue === undefined) {
+        delete process.env[key];
+      } else {
+        process.env[key] = originalValue;
+      }
     }
   });
 
@@ -302,7 +322,7 @@ describe('handleCodeGraphScan', () => {
     });
     expect(mocks.setLastGitHeadMock).toHaveBeenCalledWith('new-head');
     expect(mocks.setCodeGraphScopeMock).toHaveBeenCalledWith(expect.objectContaining({
-      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+      fingerprint: 'code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
       includeSkills: false,
     }));
   });
@@ -322,7 +342,7 @@ describe('handleCodeGraphScan', () => {
         scopePolicy: expect.objectContaining({
           includeSkills: true,
           source: 'scan-argument',
-          fingerprint: 'code-graph-scope:v1:skills=included:mcp-coco-index=excluded',
+          fingerprint: 'code-graph-scope:v2:skills=all:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
         }),
         excludeGlobs: expect.not.arrayContaining(['**/.opencode/skill/**']),
       }),
@@ -350,7 +370,7 @@ describe('handleCodeGraphScan', () => {
         scopePolicy: expect.objectContaining({
           includeSkills: false,
           source: 'scan-argument',
-          fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
+          fingerprint: 'code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
         }),
         excludeGlobs: expect.arrayContaining(['**/.opencode/skill/**']),
       }),
@@ -361,6 +381,78 @@ describe('handleCodeGraphScan', () => {
       source: 'scan-argument',
     }));
   });
+
+  it('passes granular includeSkills lists through to the indexer config', async () => {
+    mocks.execSyncMock.mockReturnValue('same-head\n');
+    mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+    await handleCodeGraphScan({
+      rootDir: process.cwd(),
+      incremental: false,
+      includeSkills: ['sk-doc', 'sk-code-review'],
+    });
+
+    expect(mocks.indexFilesMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        scopePolicy: expect.objectContaining({
+          includeSkills: true,
+          includedSkillsList: ['sk-code-review', 'sk-doc'],
+          source: 'scan-argument',
+          fingerprint: 'code-graph-scope:v2:skills=list[sk-code-review,sk-doc]:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
+        }),
+        excludeGlobs: expect.not.arrayContaining(['**/.opencode/skill/**']),
+      }),
+      expect.any(Object),
+    );
+  });
+
+  it.each([
+    ['agents', CODE_GRAPH_INDEX_AGENTS_ENV, 'includeAgents', '**/.opencode/agent/**'],
+    ['commands', CODE_GRAPH_INDEX_COMMANDS_ENV, 'includeCommands', '**/.opencode/command/**'],
+    ['specs', CODE_GRAPH_INDEX_SPECS_ENV, 'includeSpecs', '**/.opencode/specs/**'],
+    ['plugins', CODE_GRAPH_INDEX_PLUGINS_ENV, 'includePlugins', '**/.opencode/plugins/**'],
+  ] as const)(
+    'passes .opencode/%s env and per-call inclusion through to the indexer config',
+    async (_name, envKey, inputKey, glob) => {
+      process.env[envKey] = 'true';
+      mocks.execSyncMock.mockReturnValue('same-head\n');
+      mocks.getLastGitHeadMock.mockReturnValue('same-head');
+
+      await handleCodeGraphScan({
+        rootDir: process.cwd(),
+        incremental: false,
+      });
+
+      expect(mocks.indexFilesMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          scopePolicy: expect.objectContaining({
+            [inputKey]: true,
+            source: 'env',
+          }),
+          excludeGlobs: expect.not.arrayContaining([glob]),
+        }),
+        expect.any(Object),
+      );
+
+      mocks.indexFilesMock.mockClear();
+      await handleCodeGraphScan({
+        rootDir: process.cwd(),
+        incremental: false,
+        [inputKey]: false,
+      });
+
+      expect(mocks.indexFilesMock).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          scopePolicy: expect.objectContaining({
+            [inputKey]: false,
+            source: 'scan-argument',
+          }),
+          excludeGlobs: expect.arrayContaining([glob]),
+        }),
+        expect.any(Object),
+      );
+    },
+  );
 
   it('reports status activeScope from the stored scan scope after an env override scan', async () => {
     process.env[CODE_GRAPH_INDEX_SKILLS_ENV] = 'true';
@@ -378,6 +470,11 @@ describe('handleCodeGraphScan', () => {
       fingerprint: storedPolicy.fingerprint,
       label: storedPolicy.label,
       includeSkills: storedPolicy.includeSkills,
+      includedSkillsList: storedPolicy.includedSkillsList,
+      includeAgents: storedPolicy.includeAgents,
+      includeCommands: storedPolicy.includeCommands,
+      includeSpecs: storedPolicy.includeSpecs,
+      includePlugins: storedPolicy.includePlugins,
       source: storedPolicy.source,
     });
     mocks.getStatsMock.mockReturnValue({
@@ -402,12 +499,26 @@ describe('handleCodeGraphScan', () => {
       data: {
         activeScope: {
           includeSkills: boolean;
+          includedSkills: 'all' | 'none' | string[];
+          includedAgents: 'all' | 'none';
+          includedCommands: 'all' | 'none';
+          includedSpecs: 'all' | 'none';
+          includedPlugins: 'all' | 'none';
+          includeAgents: boolean;
+          includeCommands: boolean;
+          includeSpecs: boolean;
+          includePlugins: boolean;
           source: string;
           fingerprint: string;
           label: string;
         };
         storedScope: {
           includeSkills: boolean;
+          includedSkillsList: 'all' | 'none' | string[];
+          includeAgents: boolean;
+          includeCommands: boolean;
+          includeSpecs: boolean;
+          includePlugins: boolean;
           source: string;
           fingerprint: string;
           label: string;
@@ -417,8 +528,23 @@ describe('handleCodeGraphScan', () => {
     };
 
     expect(payload.data.activeScope.includeSkills).toBe(false);
+    expect(payload.data.activeScope.includedSkills).toBe('none');
+    expect(payload.data.activeScope.includedAgents).toBe('none');
+    expect(payload.data.activeScope.includedCommands).toBe('none');
+    expect(payload.data.activeScope.includedSpecs).toBe('none');
+    expect(payload.data.activeScope.includedPlugins).toBe('none');
     expect(payload.data.activeScope.source).toBe('scan-argument');
-    expect(payload.data.storedScope).toEqual(payload.data.activeScope);
+    expect(payload.data.storedScope).toMatchObject({
+      fingerprint: payload.data.activeScope.fingerprint,
+      label: payload.data.activeScope.label,
+      includeSkills: payload.data.activeScope.includeSkills,
+      includedSkillsList: payload.data.activeScope.includedSkills,
+      includeAgents: payload.data.activeScope.includeAgents,
+      includeCommands: payload.data.activeScope.includeCommands,
+      includeSpecs: payload.data.activeScope.includeSpecs,
+      includePlugins: payload.data.activeScope.includePlugins,
+      source: payload.data.activeScope.source,
+    });
     expect(payload.data.scopeMismatch).toBe(false);
   });
 

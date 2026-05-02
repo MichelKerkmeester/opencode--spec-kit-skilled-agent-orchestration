@@ -149,6 +149,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - P0/P1 findings require concrete file:line evidence and counterevidence review.
 - P2 findings require actionable evidence and may include documented inference.
 - Low confidence downgrades severity; vague cleanup claims are not active findings.
+- Every actionable finding includes `findingClass`, `scopeProof`, and `affectedSurfaceHints` so synthesis can build the Planning Packet from state instead of prose inference.
 - Every new P0/P1 includes typed claim-adjudication fields: `type`, `claim`, `evidenceRefs`, `counterevidenceSought`, `alternativeExplanation`, `finalSeverity`, `confidence`, `downgradeTrigger`.
 - **P0 candidate** -- run full Hunter/Skeptic/Referee in THIS iteration BEFORE writing to JSONL.
 - **Gate-relevant P1** -- run compact skeptic/referee pass in-iteration and document it in the finding.
@@ -160,6 +161,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - Include sections: Dispatcher, Files Reviewed, Findings - New, Traceability Checks, Integration Evidence, Edge Cases, Confirmed-Clean Surfaces, Ruled Out, Next Focus.
 - Inside findings, use `### P0 Findings`, `### P1 Findings`, and `### P2 Findings`.
 - Findings use numbered bullets: `N. **Title** -- file:line -- Description`.
+- Each finding includes three fix-completeness lines: `Finding class: ...`, `Scope proof: ...`, and `Affected surface hints: ...`.
 - P0/P1 findings include claim-adjudication JSON directly below the finding.
 - `## Next Focus` keeps only these fields: dimension, focus area, reason, rotation status, blocked/productive carry-forward, required evidence, recovery note when applicable.
 - The reducer reads both legacy section names and the live section names above.
@@ -178,7 +180,8 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 
 - Append exactly ONE `type:"iteration"` line to `review/deep-review-state.jsonl`.
 - Allowed `status`: `complete | timeout | error | stuck | insight | thought`.
-- Required fields include run, status, focus, dimension(s), findings counts, `newFindingsRatio`, `noveltyJustification`, files reviewed, scores, finding refs, traceability checks, edge cases, coverage, `ruledOut`, `budgetProfile`, timestamp, and duration.
+- Required fields include run, status, focus, dimension(s), findings counts, `findingDetails`, `newFindingsRatio`, `noveltyJustification`, files reviewed, scores, finding refs, traceability checks, edge cases, coverage, `ruledOut`, `budgetProfile`, timestamp, and duration.
+- `findingDetails` is an array of active findings with ID, severity, title, dimension, file:line, evidence, recommendation, disposition, `findingClass`, `scopeProof`, and `affectedSurfaceHints`; use an empty array when there are no findings.
 - Optional fields: `focusTrack` and `integrationEvidence` when actually inspected.
 - The orchestrator may enrich with `segment` and `convergenceSignals`; this agent does not write them.
 - `newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal` with weights P0=10, P1=5, P2=1 and refinement at 0.5x.
@@ -189,7 +192,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - Verify iteration file exists and contains focus, finding severity sections, traceability checks, edge cases, ruled-out section, and next focus.
 - Verify strategy contains updated dimension status, running counts, edge-case carry-forward when applicable, and next focus.
 - Verify JSONL has exactly one new `type:"iteration"` line for the current run.
-- Verify JSONL `run`, `status`, `focus`, `dimension`, `findingsSummary`, `newFindingsRatio`, `ruledOut`, `budgetProfile`, and `edgeCases` match the iteration artifact.
+- Verify JSONL `run`, `status`, `focus`, `dimension`, `findingsSummary`, `findingDetails`, `newFindingsRatio`, `ruledOut`, `budgetProfile`, and `edgeCases` match the iteration artifact.
 - Verify `integrationEvidence` appears only when exact integration surfaces were reviewed.
 - Verify no review target, config, registry, reducer output, dashboard, report, command, skill, canonical agent, or runtime mirror file was modified.
 - If verification fails, fix safely or return `status: "error"` with the failed verification item.

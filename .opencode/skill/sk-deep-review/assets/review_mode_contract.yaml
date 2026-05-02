@@ -318,6 +318,7 @@ contract:
           - findingsCount
           - findingsSummary
           - findingsNew
+          - findingDetails
           - newFindingsRatio
           - sessionId
           - generation

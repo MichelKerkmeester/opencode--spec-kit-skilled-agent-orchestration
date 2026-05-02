@@ -247,27 +247,59 @@ z_future
 z_archive
 mcp-coco-index/mcp_server
 .opencode/skill/**
+.opencode/agent/**
+.opencode/command/**
+.opencode/specs/**
+.opencode/plugins/**
 ```
 
-Maintainers working on Spec Kit internals can include skill files in two ways:
+### Broader Default Excludes
+
+The `.opencode/skill`, `.opencode/agent`, `.opencode/command`, `.opencode/specs` and `.opencode/plugins` folders are skipped by default. Maintainers working on Spec Kit internals can opt folders back in with env vars:
 
 ```bash
 SPECKIT_CODE_GRAPH_INDEX_SKILLS=true
+SPECKIT_CODE_GRAPH_INDEX_AGENTS=true
+SPECKIT_CODE_GRAPH_INDEX_COMMANDS=true
+SPECKIT_CODE_GRAPH_INDEX_SPECS=true
+SPECKIT_CODE_GRAPH_INDEX_PLUGINS=true
 ```
 
-or for one scan:
+or for one scan with per-folder arguments:
 
 ```json
-{ "incremental": false, "includeSkills": true }
+{
+  "incremental": false,
+  "includeSkills": true,
+  "includeAgents": true,
+  "includeCommands": true,
+  "includeSpecs": true,
+  "includePlugins": true
+}
+```
+
+### Granular Skill Selection
+
+`includeSkills` also accepts a list of `sk-*` skill names. This scans only the selected skill folders while keeping other `.opencode/skill/**` folders out:
+
+```bash
+SPECKIT_CODE_GRAPH_INDEX_SKILLS=sk-code-review,sk-doc
+```
+
+```json
+{
+  "incremental": false,
+  "includeSkills": ["sk-code-review", "sk-doc"]
+}
 ```
 
 ### Precedence
 
-When both are present, `includeSkills` on the scan call takes precedence over `SPECKIT_CODE_GRAPH_INDEX_SKILLS`. Use the env var for a process-wide default; use the per-call arg for one-off overrides.
+When both are present, scan-call arguments take precedence over env vars. Use env vars for process-wide defaults; use per-call args for one-off overrides.
 
 ### Symlink Semantics
 
-`rootDir` is canonicalized via realpath before the default skill-exclusion guard runs. Symlinked roots that resolve into `.opencode/skill/**` are still excluded from default scans.
+`rootDir` is canonicalized via realpath before the default exclusion guard runs. Symlinked roots that resolve into excluded `.opencode/**` folders are still excluded from default scans.
 
 `mcp-coco-index/mcp_server` stays excluded even when skill indexing is enabled.
 

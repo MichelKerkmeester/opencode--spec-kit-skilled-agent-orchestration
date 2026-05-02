@@ -3,7 +3,6 @@
 // ───────────────────────────────────────────────────────────────
 
 import {
-  CODE_GRAPH_SKILL_EXCLUDE_GLOBS,
   resolveIndexScopePolicy,
   type IndexScopePolicy,
   type ResolveIndexScopePolicyInput,
@@ -14,14 +13,6 @@ const SEGMENT_END = '(/|$)';
 
 function compileSegmentPattern(segment: string): RegExp {
   return new RegExp(`${SEGMENT_BOUNDARY}${segment}${SEGMENT_END}`, 'i');
-}
-
-function compileGlobSegmentPattern(glob: string): RegExp {
-  const segment = glob
-    .replace(/^\*\*\//, '')
-    .replace(/\/\*\*$/, '')
-    .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return compileSegmentPattern(segment);
 }
 
 function normalizeIndexScopePath(filePath: string | null | undefined): string {
@@ -54,9 +45,25 @@ export const EXCLUDED_FOR_CODE_GRAPH = [
   /(^|\/)mcp-coco-index\/mcp_server(\/|$)/i,
 ] as const;
 
-const EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH = [
-  ...CODE_GRAPH_SKILL_EXCLUDE_GLOBS.map(compileGlobSegmentPattern),
-] as const;
+function getCodeGraphPolicy(
+  policyInput?: IndexScopePolicy | ResolveIndexScopePolicyInput,
+): IndexScopePolicy {
+  if (policyInput && 'fingerprint' in policyInput) {
+    return policyInput;
+  }
+  return resolveIndexScopePolicy(policyInput);
+}
+
+function matchOpencodeSkillPath(filePath: string): string | null | undefined {
+  const normalizedPath = normalizeIndexScopePath(filePath);
+  const match = normalizedPath.match(/(?:^|\/)\.opencode\/skill(?:\/([^/]+))?(?:\/|$)/i);
+  return match ? (match[1] ?? null) : undefined;
+}
+
+function matchesOpencodeFolder(filePath: string, folder: string): boolean {
+  const normalizedPath = normalizeIndexScopePath(filePath);
+  return new RegExp(`(?:^|/)\\.opencode/${folder}(?:/|$)`, 'i').test(normalizedPath);
+}
 
 export function shouldIndexForMemory(absolutePath: string): boolean {
   return !matchesAnyPattern(absolutePath, EXCLUDED_FOR_MEMORY);
@@ -69,8 +76,18 @@ export function shouldIndexForCodeGraph(
   if (matchesAnyPattern(absolutePath, EXCLUDED_FOR_CODE_GRAPH)) {
     return false;
   }
-  const policy = resolveIndexScopePolicy(policyInput);
-  return policy.includeSkills || !matchesAnyPattern(absolutePath, EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH);
+  const policy = getCodeGraphPolicy(policyInput);
+  const skillName = matchOpencodeSkillPath(absolutePath);
+  if (skillName !== undefined) {
+    if (policy.includedSkillsList === 'none') return false;
+    if (policy.includedSkillsList === 'all') return true;
+    return skillName === null || policy.includedSkillsList.includes(skillName);
+  }
+  if (matchesOpencodeFolder(absolutePath, 'agent') && !policy.includeAgents) return false;
+  if (matchesOpencodeFolder(absolutePath, 'command') && !policy.includeCommands) return false;
+  if (matchesOpencodeFolder(absolutePath, 'specs') && !policy.includeSpecs) return false;
+  if (matchesOpencodeFolder(absolutePath, 'plugins') && !policy.includePlugins) return false;
+  return true;
 }
 
 export function isConstitutionalPath(absolutePath: string): boolean {

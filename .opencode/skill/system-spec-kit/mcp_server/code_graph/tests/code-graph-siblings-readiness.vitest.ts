@@ -215,8 +215,15 @@ describe('code-graph sibling readiness emission', () => {
     mocks.getLastGitHead.mockReturnValue('head');
     mocks.getLastGoldVerification.mockReturnValue(null);
     mocks.getStoredCodeGraphScope.mockReturnValue({
-      fingerprint: 'code-graph-scope:v1:skills=excluded:mcp-coco-index=excluded',
-      label: 'end-user code only; .opencode/skill and mcp-coco-index/mcp_server excluded',
+      fingerprint: 'code-graph-scope:v2:skills=none:agents=none:commands=none:specs=none:plugins=none:mcp-coco-index=excluded',
+      label: 'end-user code only; .opencode skill, agent, command, specs and plugins excluded; mcp-coco-index/mcp_server excluded',
+      includeSkills: false,
+      includedSkillsList: 'none',
+      includeAgents: false,
+      includeCommands: false,
+      includeSpecs: false,
+      includePlugins: false,
+      source: 'default',
     });
     mocks.getStats.mockReturnValue(createStats());
     mocks.getTrackedFiles.mockReturnValue([]);
