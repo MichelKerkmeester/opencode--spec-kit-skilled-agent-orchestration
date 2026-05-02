@@ -2,7 +2,7 @@
 // MODULE: Code Graph Scan Tests
 // ───────────────────────────────────────────────────────────────
 
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, test, vi } from 'vitest';
 import { basename, join, resolve } from 'node:path';
 import { CODE_GRAPH_INDEX_SKILLS_ENV } from '../lib/index-scope-policy.js';
 
@@ -93,8 +93,52 @@ vi.mock('../lib/code-graph-db.js', () => ({
   countTrackedSkillFiles: mocks.countTrackedSkillFilesMock,
 }));
 
-import { handleCodeGraphScan } from '../handlers/scan.js';
+import { handleCodeGraphScan, relativizeScanError } from '../handlers/scan.js';
 import { handleCodeGraphStatus } from '../handlers/status.js';
+
+describe('relativizeScanError multi-path safety', () => {
+  const workspaceRoot = '/workspace';
+  const absA = join(workspaceRoot, 'src', 'a.ts');
+  const absB = join(workspaceRoot, 'src', 'b.ts');
+  const absC = join(workspaceRoot, 'src', 'c.ts');
+
+  test.each([
+    [
+      'colon-delimited two paths',
+      `${absA}:${absB}: parse error`,
+      expect.stringMatching(/^src\/a\.ts:src\/b\.ts: parse error$/),
+    ],
+    [
+      'NUL-delimited two paths',
+      `${absA}\x00${absB}`,
+      expect.stringMatching(/^src\/a\.ts\x00src\/b\.ts$/),
+    ],
+    [
+      'quoted path',
+      `failed to parse "${absA}" — see "${absB}"`,
+      expect.stringMatching(/^failed to parse "src\/a\.ts" — see "src\/b\.ts"$/),
+    ],
+    [
+      'bracketed path list',
+      `[${absA}, ${absB}, ${absC}]`,
+      expect.stringMatching(/^\[src\/a\.ts, src\/b\.ts, src\/c\.ts\]$/),
+    ],
+    [
+      'mixed delimiters',
+      `${absA}:${absB}\x00 (${absC})`,
+      expect.stringMatching(/^src\/a\.ts:src\/b\.ts\x00 \(src\/c\.ts\)$/),
+    ],
+    [
+      'no abs paths',
+      'simple error message',
+      'simple error message',
+    ],
+  ])('relativizeScanError handles %s', (_description, input, expected) => {
+    const result = relativizeScanError(input, workspaceRoot);
+    expect(result).toEqual(expected);
+    expect(result).not.toMatch(new RegExp(workspaceRoot.replace(/\//g, '\\/')));
+  });
+});
 
 describe('handleCodeGraphScan', () => {
   let originalIndexSkillsEnv: string | undefined;

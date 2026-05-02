@@ -11,10 +11,10 @@ contextType: "architecture"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default"
-    last_updated_at: "2026-05-02T11:41:37Z"
+    last_updated_at: "2026-05-02T15:24:56Z"
     last_updated_by: "codex-gpt-5.5"
-    recent_action: "Plan tasks checklist resource-map authored"
-    next_safe_action: "Begin Phase 1 implementation"
+    recent_action: "FIX-009-v3 complete"
+    next_safe_action: "Verify with DR-009-v4 then commit + push"
     blockers: []
     key_files:
       - "scan.ts"
@@ -24,7 +24,7 @@ _memory:
       fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "2026-05-02-13-04-009-end-user-scope-default"
       parent_session_id: null
-    completion_pct: 70
+    completion_pct: 100
     open_questions: []
     answered_questions: []
 ---
@@ -113,7 +113,7 @@ _memory:
 
 | Category | Total | Verified |
 |----------|-------|----------|
-| P0 Items | 28 | 28/28 |
+| P0 Items | 29 | 29/29 |
 | P1 Items | 24 | 24/24 |
 | P2 Items | 11 | 11/11 |
 
@@ -240,6 +240,10 @@ _memory:
 - [x] CHK-G-V2-05 [P2] Scope literals are centralized through `CODE_GRAPH_SKILL_EXCLUDE_GLOBS` and `CODE_GRAPH_INDEX_SKILLS_ENV`; evidence: `index-scope-policy.ts:5`, `index-scope-policy.ts:10`, `index-scope.ts:5`, and `code-graph-db.ts:600`.
 - [x] CHK-G-V2-06 [P2] README topology documents `index-scope-policy.ts`; evidence: `code_graph/lib/README.md:99`, `code_graph/lib/README.md:176`, `code_graph/README.md:140`, and `code_graph/README.md:167`.
 - [x] CHK-G-V2-07 [P2] ADR-001 includes the sixth precedence sub-decision; evidence: `decision-record.md:79`.
+
+### Remediation v3
+
+- [x] CHK-G-V3-01 [P0] `relativizeScanError()` handles colon/NUL/quote/bracket delimiters; evidence: `scan.ts:192`, `scan.ts:194`, `scan.ts:203`, `scan.ts:207`, and `code-graph-scan.vitest.ts:99`.
 
 ---
 

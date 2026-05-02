@@ -1,90 +1,30 @@
-## Dimension: maintainability
+## Dimension: security
 
-## Files Reviewed (path:line list)
+## Files Reviewed
 
-- `.opencode/skill/system-spec-kit/mcp_server/lib/utils/index-scope.ts:1-82`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/index-scope-policy.ts:1-52`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/indexer-types.ts:1-167`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1-130`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1292-1305`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/structural-indexer.ts:1451-1475`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:1-180`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:230-255`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/code-graph-db.ts:580-600`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:1-190`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:260-320`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/ensure-ready.ts:520-570`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/lib/startup-brief.ts:1-140`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:180-405`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/status.ts:1-260`
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:1-150`
-- `.opencode/skill/system-spec-kit/mcp_server/tool-schemas.ts:559-576`
-- `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:1-130`
-- `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:489-496`
-- `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:679-686`
-- `.opencode/skill/system-spec-kit/mcp_server/schemas/tool-input-schemas.ts:742-748`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-indexer.vitest.ts:250-310`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts:1-180`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts:230-560`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scope-readiness.vitest.ts:1-170`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-siblings-readiness.vitest.ts:215-222`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts:520-570`
-- `.opencode/skill/system-spec-kit/mcp_server/tests/tool-input-schema.vitest.ts:614-632`
-- `.opencode/skill/system-spec-kit/mcp_server/code_graph/README.md:232-280`
-- `.opencode/skill/system-spec-kit/mcp_server/ENV_REFERENCE.md:258-264`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/spec.md:1-180`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/plan.md:1-180`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/decision-record.md:1-170`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/checklist.md:1-160`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/implementation-summary.md:1-154`
-- `.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default/resource-map.md:1-126`
+- `.opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts`
+- `.opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts`
 
-## Findings by Severity
-
-### P0
+## Findings (P0/P1/P2 — say "None." if empty)
 
 None.
 
-### P1
+## Closed-Finding Regression Check (PASS/FAIL per check)
 
-None.
-
-### P2
-
-#### R2-I1-P2-001: Skill-scope path literals still have multiple source-code representations
-
-The central policy exports `CODE_GRAPH_SKILL_EXCLUDE_GLOBS` for the default glob exclusion, and most callers reuse that for config-level behavior. However, the same `.opencode/skill` scope is still represented independently as a private regex in `index-scope.ts` and as a SQL `LIKE` literal in `code-graph-db.ts`. That leaves three source-code encodings of the same scope contract: the exported glob, the path-level regex guard, and the status/count SQL predicate. If this scope expands beyond `.opencode/skill/**`, future maintainers must update multiple representations manually, which weakens the "single consistent policy" design called out in the plan.
-
-Evidence:
-
-- `index-scope-policy.ts:9` exports `CODE_GRAPH_SKILL_EXCLUDE_GLOBS = ['**/.opencode/skill/**']`.
-- `index-scope.ts:48-50` defines a separate `EXCLUDED_SKILL_INTERNALS_FOR_CODE_GRAPH` regex for `\.opencode/skill`.
-- `index-scope.ts:63-64` applies that separate regex through `shouldIndexForCodeGraph()`.
-- `code-graph-db.ts:586-592` counts tracked skill files with `WHERE file_path LIKE '%.opencode/skill/%'`.
-- `plan.md:127-129` describes the intended architecture as one consistent policy applied at both scope layers.
-
-Severity: P2. This is a maintainability drift risk, not a current behavior failure: tests show default exclusion, env opt-in, per-call opt-in, and per-call false precedence are covered, and the current literals agree for the present `.opencode/skill/**` scope.
-
-Suggested remediation: keep `CODE_GRAPH_SKILL_EXCLUDE_GLOBS` as the public glob surface, but add a policy-owned helper/constant for path-segment matching and SQL/status counting so `index-scope.ts` and `code-graph-db.ts` do not each hand-code the same path contract.
-
-## Traceability Checks
-
-- `spec_code`: PASS. `spec.md:119-121` requires default exclusion plus opt-in; `indexer-types.ts:145-157`, `index-scope.ts:56-65`, `scan.ts:233-236`, and `tool-schemas.ts:563-576` implement that contract.
-- `checklist_evidence`: PASS. CHK-022 and CHK-032 are supported by tests covering default false, env true, per-call true, per-call false overriding env, and strict schema rejection (`code-graph-indexer.vitest.ts:257-300`, `code-graph-scan.vitest.ts:253-310`, `tool-input-schema.vitest.ts:617-628`).
-- `skill_agent`: PASS. The implementation keeps the structural code graph default end-user scoped while leaving separate advisor/skill graph surfaces out of scope, matching `decision-record.md:101-105`.
-- `feature_catalog_code`: PASS. The code exposes readiness/status scope mismatch through existing full-scan recovery paths rather than inventing a new response family (`ensure-ready.ts:293-303`, `status.ts:168-172`, `README.md:272-278`).
-
-## Run-1 Regression Check
-
-- PASS — R1-P1-001 precedence: re-verified `includeSkills:false` overrides env in `index-scope-policy.ts:30-39`, with tests in `code-graph-indexer.vitest.ts:291-300` and `code-graph-scan.vitest.ts:280-310`.
-- PASS — R3-P1-001 symlink rootDir bypass: re-verified canonical root flows into `getDefaultConfig()` in `scan.ts:201-234`, with regression test coverage in `code-graph-scan.vitest.ts:312-346`.
-- PASS — R1-P2-001/R2-P2-001/R4-P2-002 resource-map drift: re-verified `resource-map.md:58-88` now matches the implementation file set and notes the FIX-009 updates.
-- PASS — R4-P2-001 absolute path leakage: re-verified `relativize()` and warning rewriting in `scan.ts:180-194` and `scan.ts:343-344`, with tests in `code-graph-scan.vitest.ts:348-415`.
+- PASS — RUN3-I3-P0-001 remains fixed: `relativizeScanMessage()` uses split-then-relativize with captured delimiters (`PATH_DELIMITERS`) and only relativizes segments that begin with `/`, then rejoins the original delimiter stream. This covers multi-path messages without relying on one regex replacement span. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:192-200]
+- PASS — both public helper surfaces use the shared split-then-relativize path: `relativizeScanWarning()` and `relativizeScanError()` both call `relativizeScanMessage()`. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:203-208]
+- PASS — final scan response production applies the hardened helper to errors and warnings before returning user-facing payloads. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/code_graph/handlers/scan.ts:345-360]
+- PASS — call-site enumeration found only the intended helper definitions and response-boundary mappings:
+  - `203:function relativizeScanWarning(...)`
+  - `207:export function relativizeScanError(...)`
+  - `351:errors: errors.slice(0, 10).map(error => relativizeScanError(...))`
+  - `360:warnings: (results.warnings ?? []).map(warning => relativizeScanWarning(...))`
+- PASS — regression tests cover colon-delimited two paths, NUL-delimited two paths, quoted paths, bracketed path lists, mixed delimiters, and a no-absolute-path no-op case. Every absolute-path case expects only relative output and the shared assertion rejects any remaining `/workspace` prefix. [SOURCE: .opencode/skill/system-spec-kit/mcp_server/code_graph/tests/code-graph-scan.vitest.ts:105-140]
+- PASS — focused regression execution passed: `vitest run mcp_server/code_graph/tests/code-graph-scan.vitest.ts -t "relativizeScanError multi-path safety"` reported 6 passed tests.
+- PASS — Windows-style or other colon-containing non-POSIX path fragments do not become newly exposed by this helper because only split segments beginning with `/` are treated as absolute paths. POSIX absolute paths containing a legitimate colon inside a filename are split at the colon but the absolute prefix segment is still relativized before rejoining, so the workspace root is not retained.
 
 ## Verdict — PASS
 
-No P0/P1 findings. One P2 maintainability advisory was recorded for future cleanup of duplicated skill-scope path literals.
+No P0/P1/P2 findings. The RUN3-I3-P0-001 regression target is covered by implementation, call sites, and tests; no absolute workspace path remnant was identified in the reviewed cases.
 
-## Next Dimension
-
-Maintainability, iteration 2: focus on readability of readiness/status plumbing and whether scope policy naming stays clear across scan, status, and docs.
+## Confidence — 0.94

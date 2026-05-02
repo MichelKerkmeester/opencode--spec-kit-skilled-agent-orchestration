@@ -1,104 +1,20 @@
 {
-  "sessionId": "2026-05-02T14:00:34.910Z",
-  "generation": 2,
+  "sessionId": "2026-05-02T15:26:09.113Z",
+  "generation": 4,
   "lineageMode": "restart",
-  "parentSessionId": "2026-05-02T12:34:30.068Z",
-  "openFindings": [
-    {
-      "id": "R2-I1-P2-001",
-      "severity": "P2",
-      "cluster": "maintainability",
-      "file": null,
-      "title": "Skill-scope path literals still have multiple source-code representations",
-      "iteration": 1
-    },
-    {
-      "id": "R2-I2-P2-001",
-      "severity": "P2",
-      "cluster": "maintainability",
-      "file": null,
-      "title": "README topology omits the scope policy module that now owns the include-skills contract",
-      "iteration": 2
-    },
-    {
-      "id": "R2-I3-P2-001",
-      "severity": "P2",
-      "cluster": "maintainability",
-      "file": null,
-      "title": "Readiness stale reason leaks internal manifest vocabulary",
-      "iteration": 3
-    },
-    {
-      "id": "R2-I4-P1-001",
-      "severity": "P1",
-      "cluster": "maintainability",
-      "file": null,
-      "title": "Default-scope scan test inherits maintainer env opt-in and fails under documented shell state",
-      "iteration": 4
-    },
-    {
-      "id": "R2-I5-P1-001",
-      "severity": "P1",
-      "cluster": "correctness",
-      "file": null,
-      "title": "code-graph-indexer regression tests do not cover the full six-case scope precedence matrix",
-      "iteration": 5
-    },
-    {
-      "id": "R2-I7-P0-001",
-      "severity": "P0",
-      "cluster": "security",
-      "file": null,
-      "title": "REGRESSION: R4-P2-001 scan data.errors still expose absolute indexed file paths",
-      "iteration": 7
-    },
-    {
-      "id": "R2-I8-P0-001",
-      "severity": "P0",
-      "cluster": "traceability",
-      "file": null,
-      "title": "REGRESSION: R1-P2-001/R2-P2-001/R4-P2-002 resource-map §2 no longer matches the required main~1..HEAD in-scope diff",
-      "iteration": 8
-    },
-    {
-      "id": "R2-I8-P2-001",
-      "severity": "P2",
-      "cluster": "traceability",
-      "file": null,
-      "title": "ADR-001 still has five sub-decisions; precedence is only recorded in ADR-002",
-      "iteration": 8
-    },
-    {
-      "id": "R2-I8-P2-002",
-      "severity": "P2",
-      "cluster": "traceability",
-      "file": null,
-      "title": "Remediation summary names six fixes but does not provide file:line evidence",
-      "iteration": 8
-    },
-    {
-      "id": "R2-I9-P1-001",
-      "severity": "P1",
-      "cluster": "correctness",
-      "file": null,
-      "title": "code_graph_status cannot evaluate the per-call scan scope and reports env-only active scope after one-off overrides",
-      "iteration": 9
-    }
-  ],
+  "openFindings": [],
   "resolvedFindings": [],
   "repeatedFindings": [],
   "dimensionCoverage": {
     "correctness": true,
-    "security": true,
-    "traceability": true,
-    "maintainability": true
+    "security": true
   },
   "findingsBySeverity": {
-    "P0": 2,
-    "P1": 3,
-    "P2": 5
+    "P0": 0,
+    "P1": 0,
+    "P2": 0
   },
-  "openFindingsCount": 10,
+  "openFindingsCount": 0,
   "resolvedFindingsCount": 0,
   "convergenceScore": 0
 }

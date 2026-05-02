@@ -1,0 +1,30 @@
+{
+  "sessionId": "2026-05-02T15:03:06.606Z",
+  "generation": 3,
+  "lineageMode": "restart",
+  "parentSessionId": "2026-05-02T14:00:34.910Z",
+  "openFindings": [
+    {
+      "id": "RUN3-I3-P0-001",
+      "severity": "P0",
+      "cluster": "security",
+      "file": null,
+      "title": "",
+      "iteration": 3
+    }
+  ],
+  "resolvedFindings": [],
+  "repeatedFindings": [],
+  "dimensionCoverage": {
+    "correctness": true,
+    "security": true
+  },
+  "findingsBySeverity": {
+    "P0": 1,
+    "P1": 0,
+    "P2": 0
+  },
+  "openFindingsCount": 1,
+  "resolvedFindingsCount": 0,
+  "convergenceScore": 0
+}

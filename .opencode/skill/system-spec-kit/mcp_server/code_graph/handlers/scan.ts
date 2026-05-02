@@ -189,12 +189,23 @@ function relativize(absPath: string, workspaceRoot: string): string {
   return basename(resolvedPath);
 }
 
-function relativizeScanWarning(warning: string, workspaceRoot: string): string {
-  return warning.replace(/\/[^\s'"`{}\[\],)]+/g, match => relativize(match, workspaceRoot));
+const PATH_DELIMITERS = /([\s:'"`{}\[\],()\x00]+)/;
+
+function relativizeScanMessage(message: string, workspaceRoot: string): string {
+  return message.split(PATH_DELIMITERS).map(segment => {
+    if (segment.startsWith('/')) {
+      return relativize(segment, workspaceRoot);
+    }
+    return segment;
+  }).join('');
 }
 
-function relativizeScanError(error: string, workspaceRoot: string): string {
-  return error.replace(/\/[^\s'"`{}\[\],)]+/g, match => relativize(match, workspaceRoot));
+function relativizeScanWarning(warning: string, workspaceRoot: string): string {
+  return relativizeScanMessage(warning, workspaceRoot);
+}
+
+export function relativizeScanError(error: string, workspaceRoot: string): string {
+  return relativizeScanMessage(error, workspaceRoot);
 }
 
 /** Handle code_graph_scan tool call */

@@ -11,10 +11,10 @@ contextType: "general"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/007-code-graph/009-end-user-scope-default"
-    last_updated_at: "2026-05-02T14:43:53Z"
+    last_updated_at: "2026-05-02T15:24:56Z"
     last_updated_by: "codex-gpt-5.5"
-    recent_action: "FIX-009-v2 complete"
-    next_safe_action: "Re-run deep-review v3 or commit + push"
+    recent_action: "FIX-009-v3 complete"
+    next_safe_action: "Verify with DR-009-v4 then commit + push"
     blockers: []
     key_files:
       - "scan.ts"
@@ -96,6 +96,10 @@ Remediated the seven DR-009-v2 findings targeted by this packet and downgraded t
 - `R2-I8-P2-001`: ADR-001 now has the sixth precedence sub-decision and cross-links ADR-002. Evidence: `decision-record.md:79`.
 - `R2-I8-P0-001`: review report severity was downgraded to P2 with the FIX-009 SHA note. Evidence: `review/review-report.md:14`, `review/review-report.md:42`.
 - Verification support: the exact broad `-t "precedence matrix"` gate now loads unrelated suites cleanly. Evidence: `crash-recovery.vitest.ts:15`, `spec-kit-skill-advisor.js:20`, and `spec-kit-compact-code-graph.js:24`.
+
+### Remediation v3
+
+Remediated `RUN3-I3-P0-001` by replacing regex-token redaction with split-then-relativize message handling for scan errors and warnings. Evidence: `scan.ts:192`, `scan.ts:194`, `scan.ts:203`, `scan.ts:207`, and `code-graph-scan.vitest.ts:99`.
 <!-- /ANCHOR:what-built -->
 
 ---
