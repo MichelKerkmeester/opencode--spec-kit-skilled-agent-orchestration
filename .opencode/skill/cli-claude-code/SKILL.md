@@ -29,7 +29,7 @@ Orchestrate Anthropic's Claude Code CLI from external AI assistants (Gemini CLI,
 - **Code Editing** — surgical diff-based edits, pattern-preserving refactors, multi-file coordinated changes, deep-context modifications.
 - **Structured Output** — `--json-schema`-validated output, machine-readable analysis, guaranteed-structure data extraction, pipeline integration.
 - **Code Review** — second-AI security audits, extended-thinking architecture review, cross-AI validation, pre-merge quality gates.
-- **Agent-Delegated Tasks** — specialized `.claude/agents/*.md` matches, `--permission-mode plan` read-only exploration, `@ultra-think` planning, session continuity (`--continue`, `--resume`).
+- **Agent-Delegated Tasks** — specialized `.claude/agents/*.md` matches, `--permission-mode plan` read-only exploration, `@multi-ai-council` planning, session continuity (`--continue`, `--resume`).
 - **Background Processing** — long-running offloaded analysis, parallel generation/docs, batch processing with `--max-budget-usd` cost control.
 
 ### When NOT to Use
@@ -271,7 +271,7 @@ The calling AI is the conductor; Claude Code agents in `.claude/agents/*.md` sha
 | Evidence gathering | `research` | `claude -p "Research best practices for [topic]" --agent research --output-format text 2>&1` |
 | Code review / audit | `review` | `claude -p "Review @src/auth.ts for security issues" --agent review --permission-mode plan --output-format text 2>&1` |
 | Spec documentation | `speckit` | `claude -p "Create spec folder for [feature]" --agent speckit --output-format text 2>&1` |
-| Multi-strategy planning | `ultra-think` | `claude -p "Plan the authentication redesign" --agent ultra-think --permission-mode plan --output-format text 2>&1` |
+| Multi-strategy planning | `multi-ai-council` | `claude -p "Plan the authentication redesign" --agent multi-ai-council --permission-mode plan --output-format text 2>&1` |
 | Documentation generation | `write` | `claude -p "Generate README for this project" --agent write --output-format text 2>&1` |
 
 See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster.

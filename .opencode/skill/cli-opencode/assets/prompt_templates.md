@@ -158,7 +158,7 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-Common slugs: `general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `ultra-think`, `improve-agent`.
+Common slugs: `general`, `context`, `orchestrate`, `write`, `review`, `debug`, `deep-research`, `deep-review`, `multi-ai-council`, `improve-agent`.
 
 ## 6. TEMPLATE 5 — CODE REVIEW
 
@@ -330,10 +330,10 @@ opencode run \
   "<prompt>" 2>&1
 ```
 
-## 11. TEMPLATE 10 — MULTI-STRATEGY PLANNING VIA @ULTRA-THINK
+## 11. TEMPLATE 10 — MULTI-STRATEGY PLANNING VIA @MULTI-AI COUNCIL
 
 **Framework:** CRAFT
-**Agent:** `ultra-think`
+**Agent:** `multi-ai-council`
 **Use case:** 1 or 3
 
 ```text
@@ -349,7 +349,7 @@ Target: an implementation-ready plan that another agent can execute.
 ```bash
 opencode run \
   --model opencode-go/deepseek-v4-pro \
-  --agent ultra-think \
+  --agent multi-ai-council \
   --variant high \
   --format json \
   --dir /repo \

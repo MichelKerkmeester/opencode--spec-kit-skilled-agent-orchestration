@@ -119,7 +119,7 @@ opencode run \
 
 ### What it does
 
-The `--agent <slug>` flag loads an agent definition from `.opencode/agent/<slug>.md`. The frontmatter pins the model, tool permissions, and system prompt. Specialized agents (`deep-research`, `deep-review`, `context`, `review`, `ultra-think`, etc.) provide domain-specific behavior the calling AI can target.
+The `--agent <slug>` flag loads an agent definition from `.opencode/agent/<slug>.md`. The frontmatter pins the model, tool permissions, and system prompt. Specialized agents (`deep-research`, `deep-review`, `context`, `review`, `multi-ai-council`, etc.) provide domain-specific behavior the calling AI can target.
 
 ### Why it matters
 

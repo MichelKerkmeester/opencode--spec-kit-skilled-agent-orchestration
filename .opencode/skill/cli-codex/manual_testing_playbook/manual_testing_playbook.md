@@ -55,7 +55,7 @@ Canonical package artifacts:
 
 This playbook provides 28 deterministic scenarios across 9 categories validating the `cli-codex` skill surface. Each feature keeps its global `CX-NNN` ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-26): Covers the canonical default invocation (`gpt-5.5` + `medium` reasoning + `service_tier="fast"`), every documented sandbox mode, every reasoning-effort level, every agent profile (`review`, `context`, `research`, `write`, `debug`, `ultra-think`), session continuity surfaces (`--full-auto`, native hooks, resume, fork), unique built-in capabilities (`/review`, `--search`, `--image`, `codex mcp`), prompt-template usage with the CLEAR quality card and cross-AI delegation patterns. Self-invocation refusal is enforced upstream by the skill's detection guard and is not retested here.
+Coverage note (2026-04-26): Covers the canonical default invocation (`gpt-5.5` + `medium` reasoning + `service_tier="fast"`), every documented sandbox mode, every reasoning-effort level, every agent profile (`review`, `context`, `research`, `write`, `debug`, `multi-ai-council`), session continuity surfaces (`--full-auto`, native hooks, resume, fork), unique built-in capabilities (`/review`, `--search`, `--image`, `codex mcp`), prompt-template usage with the CLEAR quality card and cross-AI delegation patterns. Self-invocation refusal is enforced upstream by the skill's detection guard and is not retested here.
 
 ### Realistic Test Model
 
@@ -414,7 +414,7 @@ Desired user-visible outcome: An audit-quality output the operator can hand to a
 
 ## 10. AGENT ROUTING (`CX-012..CX-015`, `CX-026..CX-027`)
 
-This category covers 6 scenario summaries while the linked feature files remain the canonical execution contract. CX-012 through CX-015 cover the four primary profiles (review, context, debug, ultra-think). CX-026 and CX-027 close the deferred surface gap by exercising the research and write profiles.
+This category covers 6 scenario summaries while the linked feature files remain the canonical execution contract. CX-012 through CX-015 cover the four primary profiles (review, context, debug, multi-ai-council). CX-026 and CX-027 close the deferred surface gap by exercising the research and write profiles.
 
 ### CX-012 | @review profile (read-only)
 
@@ -470,23 +470,23 @@ Desired user-visible outcome: A working corrected file plus a root-cause sentenc
 
 > **Feature File:** [CX-014](04--agent-routing/003-debug-profile.md)
 
-### CX-015 | @ultra-think profile (multi-strategy planning)
+### CX-015 | @multi-ai-council profile (multi-strategy planning)
 
 #### Description
 
-Verify `codex exec -p ultra-think` routes to the read-only multi-strategy planning profile and returns at least 3 distinct strategies for an architecture decision.
+Verify `codex exec -p multi-ai-council` routes to the read-only multi-strategy planning profile and returns at least 3 distinct strategies for an architecture decision.
 
 #### Scenario Contract
 
-Prompt: `As a cross-AI orchestrator running an architecture review, dispatch codex exec -p ultra-think "Plan three caching strategies for a small Express API: in-memory, Redis, and CDN edge. Score each on correctness, maintainability, and performance, then recommend one." with --model gpt-5.5 -c model_reasoning_effort="xhigh" --sandbox read-only -c service_tier="fast". Verify the dispatch routes via -p ultra-think, exits 0, returns at least three distinct labeled strategies with scores and a final recommendation, makes no file modifications, and the dispatched command line includes -p ultra-think. Return a verdict naming the recommended strategy and the score breakdown.`
+Prompt: `As a cross-AI orchestrator running an architecture review, dispatch codex exec -p multi-ai-council "Plan three caching strategies for a small Express API: in-memory, Redis, and CDN edge. Score each on correctness, maintainability, and performance, then recommend one." with --model gpt-5.5 -c model_reasoning_effort="xhigh" --sandbox read-only -c service_tier="fast". Verify the dispatch routes via -p multi-ai-council, exits 0, returns at least three distinct labeled strategies with scores and a final recommendation, makes no file modifications, and the dispatched command line includes -p multi-ai-council. Return a verdict naming the recommended strategy and the score breakdown.`
 
-Expected signals: `codex exec -p ultra-think` exits 0. Stdout names at least 3 strategies (in-memory, Redis, CDN). Each strategy carries a score on the three axes (correctness, maintainability, performance). A single recommendation is named. No file modifications. Dispatch line includes `-p ultra-think`.
+Expected signals: `codex exec -p multi-ai-council` exits 0. Stdout names at least 3 strategies (in-memory, Redis, CDN). Each strategy carries a score on the three axes (correctness, maintainability, performance). A single recommendation is named. No file modifications. Dispatch line includes `-p multi-ai-council`.
 
 Desired user-visible outcome: A planning brief the operator can hand to an architect or paste into a spec folder's `decision-record.md`.
 
 #### Test Execution
 
-> **Feature File:** [CX-015](04--agent-routing/004-ultra-think-profile.md)
+> **Feature File:** [CX-015](04--agent-routing/004-multi-ai-council-profile.md)
 
 ### CX-026 | @research profile (web-grounded investigation)
 
@@ -796,7 +796,7 @@ There is no automated coverage for default-invocation, sandbox-mode, reasoning-e
 - CX-012: [@review profile (read-only)](04--agent-routing/001-review-profile.md)
 - CX-013: [@context profile (architecture mapping)](04--agent-routing/002-context-profile.md)
 - CX-014: [@debug profile (workspace-write fix)](04--agent-routing/003-debug-profile.md)
-- CX-015: [@ultra-think profile (multi-strategy planning)](04--agent-routing/004-ultra-think-profile.md)
+- CX-015: [@multi-ai-council profile (multi-strategy planning)](04--agent-routing/004-multi-ai-council-profile.md)
 - CX-026: [@research profile (web-grounded investigation)](04--agent-routing/005-research-profile.md)
 - CX-027: [@write profile (documentation-only edits)](04--agent-routing/006-write-profile.md)
 

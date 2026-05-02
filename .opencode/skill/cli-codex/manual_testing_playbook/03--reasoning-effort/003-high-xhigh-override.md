@@ -15,7 +15,7 @@ This scenario validates the `high` and `xhigh` reasoning overrides for `CX-011`.
 
 ### Why This Matters
 
-SKILL.md §3 + `integration_patterns.md` §5 explicitly recommend `high` / `xhigh` for architecture, security and complex planning. If these levels silently degrade to `medium` behavior, every routing recommendation that depends on depth (`@review`, `@ultra-think`, `@deep-research`) loses its quality edge.
+SKILL.md §3 + `integration_patterns.md` §5 explicitly recommend `high` / `xhigh` for architecture, security and complex planning. If these levels silently degrade to `medium` behavior, every routing recommendation that depends on depth (`@review`, `@multi-ai-council`, `@deep-research`) loses its quality edge.
 
 ---
 

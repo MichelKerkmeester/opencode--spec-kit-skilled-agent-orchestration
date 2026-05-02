@@ -23,7 +23,7 @@ Documents the active Claude Code agents in `.opencode/agent/` and how external A
 
 - Delegating supplementary implementation or analysis tasks to Claude Code agents
 - Cross-AI code review or architectural second opinion via `@review`
-- Deep reasoning and extended thinking via `@ultra-think`
+- Deep reasoning and extended thinking via `@multi-ai-council`
 - Fresh-perspective debugging after the calling AI's attempts fail via Task-tool dispatch to `@debug`
 - Codebase exploration in read-only mode via `@context`
 
@@ -65,7 +65,7 @@ claude -p "Review src/auth.ts for security issues" \
 
 # Agent with specific model
 claude -p "Plan the authentication redesign with multi-strategy analysis" \
-  --agent ultra-think --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
+  --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
 
 # Agent with file context
 claude -p "Debug this error in @src/auth/handler.ts: [paste error]" \
@@ -91,7 +91,7 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 ├── orchestrate.md    # Multi-agent coordination
 ├── research.md       # Evidence gathering
 ├── review.md         # Code review, security audits
-├── ultra-think.md    # Multi-strategy planning
+├── multi-ai-council.md    # Multi-strategy planning
 └── write.md          # Documentation generation
 ```
 
@@ -108,7 +108,7 @@ Each agent is defined in a `.md` file in `.opencode/agent/`:
 | `orchestrate` | `plan` (read-only) | Multi-agent coordination, complex workflow decomposition | Running multiple Claude Code agents for interconnected tasks |
 | `research` | default | Evidence gathering, feasibility analysis, technical investigation | Need current best practices, technical comparisons, or feasibility assessment |
 | `review` | `plan` (read-only) | Code review, security audits, quality scoring, architecture review | Second opinion on generated code, architecture, or security posture |
-| `ultra-think` | `plan` (read-only) | Multi-strategy planning, diverse reasoning strategies, scored rubric | Complex planning requiring multiple perspectives scored by quality dimensions |
+| `multi-ai-council` | `plan` (read-only) | Multi-strategy planning, diverse reasoning strategies, scored rubric | Complex planning requiring multiple perspectives scored by quality dimensions |
 | `write` | default | Documentation generation, README creation, guide writing | Creating or updating technical documentation, guides, READMEs |
 
 ---
@@ -221,7 +221,7 @@ claude -p "Score the code quality of @src/utils.ts on: readability (1-10), maint
 
 ---
 
-### @ultra-think — Multi-Strategy Planner
+### @multi-ai-council — Multi-Strategy Planner
 
 **Purpose:** Multi-strategy planning with diverse reasoning approaches, scored by quality dimensions.
 
@@ -232,11 +232,11 @@ claude -p "Score the code quality of @src/utils.ts on: readability (1-10), maint
 ```bash
 # Multi-strategy architecture planning
 claude -p "Plan the authentication system redesign. Consider: session-based vs JWT vs OAuth2. Evaluate each strategy across security, scalability, complexity, and team expertise." \
-  --agent ultra-think --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
+  --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
 
 # Complex migration planning
 claude -p "Plan the database migration from MongoDB to PostgreSQL. Evaluate strategies: big-bang, gradual, dual-write. Score each on risk, downtime, complexity, rollback ability." \
-  --agent ultra-think --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
+  --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
 ```
 
 ---
@@ -273,7 +273,7 @@ What is the primary need?
 UNDERSTAND CODE       → @context (with --permission-mode plan)
 FIX A BUG            → @debug
 REVIEW CODE          → @review (with --permission-mode plan)
-PLAN ARCHITECTURE    → @ultra-think (with --model claude-opus-4-6)
+PLAN ARCHITECTURE    → @multi-ai-council (with --model claude-opus-4-6)
 RESEARCH A TOPIC     → @deep-research
 GENERATE DOCS        → @write
 COORDINATE AGENTS    → @orchestrate (with --permission-mode plan)
@@ -287,7 +287,7 @@ SAVE CONTINUITY      → `/memory:save`
 |----------|-------|-------|-------|
 | Quick code review | `review` | sonnet (default) | `--permission-mode plan` |
 | Deep security audit | `review` | `claude-opus-4-6` | `--permission-mode plan --effort high` |
-| Architecture planning | `ultra-think` | `claude-opus-4-6` | `--permission-mode plan --effort high` |
+| Architecture planning | `multi-ai-council` | `claude-opus-4-6` | `--permission-mode plan --effort high` |
 | Fast codebase scan | `context` | `claude-haiku-4-5-20251001` | `--permission-mode plan` |
 | Research + write | `deep-research` | sonnet (default) | (default) |
 | Emergency debugging | `debug` | `claude-opus-4-6` | `--effort high` |
@@ -299,7 +299,7 @@ SAVE CONTINUITY      → `/memory:save`
 ### Do
 
 - **Match agent to task** — Use the routing guide above instead of generic prompts
-- **Use `--permission-mode plan`** for all read-only agents (context, review, orchestrate, ultra-think)
+- **Use `--permission-mode plan`** for all read-only agents (context, review, orchestrate, multi-ai-council)
 - **Include file references** with `@` for targeted analysis instead of broad prompts
 - **Capture output** to files for multi-step workflows: `> /tmp/output.txt`
 - **Use Opus for deep reasoning** but Sonnet for standard tasks to manage costs

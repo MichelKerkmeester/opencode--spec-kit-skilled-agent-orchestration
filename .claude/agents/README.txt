@@ -17,5 +17,5 @@ Agents:
   improve-prompt — Prompt engineering
   orchestrate    — Multi-agent coordination
   review         — Code review (read-only)
-  ultra-think    — Multi-strategy planning
+  multi-ai-council    — Multi-strategy planning
   write          — Documentation generation

@@ -248,7 +248,7 @@ The calling AI is the conductor; Gemini agents in `.gemini/agents/` shape HOW Ge
 | Technical research | `@deep-research` | `gemini "As @deep-research agent: Research latest Express.js security advisories" -o text` |
 | Documentation generation | `@write` | `gemini "As @write agent: Generate README for this project" -o text` |
 | Fresh-perspective debugging | `@debug` | `Task tool -> @debug`, then run the Gemini CLI prompt with the packaged context |
-| Multi-strategy planning | `@ultra-think` | `gemini "As @ultra-think agent: Plan the authentication redesign" -m gemini-3.1-pro-preview -o text` |
+| Multi-strategy planning | `@multi-ai-council` | `gemini "As @multi-ai-council agent: Plan the authentication redesign" -m gemini-3.1-pro-preview -o text` |
 
 See [agent_delegation.md](./references/agent_delegation.md) for complete agent roster.
 

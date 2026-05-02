@@ -52,7 +52,7 @@ The skill includes a self-invocation guard: if you are already running inside Cl
 | Category | Value | Details |
 |----------|-------|---------|
 | **Models** | 3 | Opus 4.6, Sonnet 4.6, Haiku 4.5 |
-| **Agents** | 9 | context, debug, handover, orchestrate, research, review, speckit, ultra-think, write |
+| **Agents** | 9 | context, debug, handover, orchestrate, research, review, speckit, multi-ai-council, write |
 | **Permission Modes** | 3 | plan (read-only), default (ask), bypassPermissions (auto-approve) |
 | **Output Formats** | 3 | text, json, stream-json |
 | **References** | 4 | cli_reference, claude_tools, agent_delegation, integration_patterns |
@@ -178,7 +178,7 @@ The agent system adds specialization on top of these foundations. Nine agents co
 | `research` | Evidence gathering | `--agent research` |
 | `review` | Code review and audit | `--agent review --permission-mode plan` |
 | `speckit` | Spec documentation | `--agent speckit` |
-| `ultra-think` | Multi-strategy planning | `--agent ultra-think --permission-mode plan` |
+| `multi-ai-council` | Multi-strategy planning | `--agent multi-ai-council --permission-mode plan` |
 | `write` | Documentation generation | `--agent write` |
 
 <!-- /ANCHOR:features -->

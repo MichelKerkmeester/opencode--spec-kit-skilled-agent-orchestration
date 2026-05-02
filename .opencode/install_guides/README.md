@@ -1186,7 +1186,7 @@ The Agent System provides specialized AI personas with defined authorities, tool
 | **orchestrate** | Task decomposition & delegation | Parallel delegation (up to 20 agents) |
 | **review**      | Code review & quality gates     | Pattern validation, quality scoring   |
 | **speckit**     | Spec folder creation            | Level 1-3+ documentation, templates  |
-| **ultra-think** | Multi-strategy planning         | Compare and score alternative solution paths |
+| **multi-ai-council** | Multi-strategy planning         | Compare and score alternative solution paths |
 | **write**       | Documentation creation          | Template-first, DQI scoring           |
 
 **Quick Verification:**

@@ -184,7 +184,7 @@ The free tier removes the cost barrier for exploratory use. Google OAuth gives y
 | `@deep-research` | Technical research | `gemini "As @deep-research agent: Research X" -o text` |
 | `@write` | Documentation generation | `gemini "As @write agent: Generate README" -o text` |
 | `@debug` | Fresh-perspective debugging via Task-tool dispatch | `gemini "As @debug agent: Debug error X" -o text` |
-| `@ultra-think` | Multi-strategy planning | `gemini "As @ultra-think agent: Plan redesign" -o text` |
+| `@multi-ai-council` | Multi-strategy planning | `gemini "As @multi-ai-council agent: Plan redesign" -o text` |
 
 <!-- /ANCHOR:features -->
 

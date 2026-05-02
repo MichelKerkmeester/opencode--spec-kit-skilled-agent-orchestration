@@ -421,7 +421,7 @@ Thought 1 → Thought 2 → Branch A: Thought 3a → ...
 | **Multi-step debugging**        | Standard approaches failed. Systematic analysis needed |
 | **Architectural decisions**     | Significant trade-offs require structured evaluation   |
 | **Complex refactoring**         | Changes span 3+ files with dependencies                |
-| **User requests deep analysis** | Keywords: "think hard", "ultrathink", "analyze deeply" |
+| **User requests deep analysis** | Keywords: "think hard", "multiaicouncil", "analyze deeply" |
 | **Unfamiliar territory**        | Need to explore options before committing              |
 
 ### When to Skip Sequential Thinking

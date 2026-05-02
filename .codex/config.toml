@@ -69,7 +69,7 @@ model_reasoning_effort = "high"
 sandbox_mode = "read-only"
 model_reasoning_effort = "high"
 
-[profiles.ultra-think]
+[profiles.multi-ai-council]
 sandbox_mode = "read-only"
 model_reasoning_effort = "high"
 
@@ -110,9 +110,9 @@ config_file = "agents/improve-prompt.toml"
 description = "Code review specialist focused on correctness, risk, and tests."
 config_file = "agents/review.toml"
 
-[agents.ultra-think]
+[agents.multi-ai-council]
 description = "Multi-strategy planning architect for diverse reasoning and optimal plans."
-config_file = "agents/ultra-think.toml"
+config_file = "agents/multi-ai-council.toml"
 
 [agents.write]
 description = "Documentation specialist for project-level docs and guides."

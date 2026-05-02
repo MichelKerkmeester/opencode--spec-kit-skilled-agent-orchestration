@@ -494,14 +494,14 @@ codex exec "Based on best practices for [topic], implement [description] in @./[
   --model gpt-5.5 --sandbox workspace-write
 ```
 
-### Agent-Delegated Ultra-Think
+### Agent-Delegated Multi-AI Council
 
 Framework: CRAFT
 
-Use the ultra-think agent for multi-strategy planning.
+Use the multi-ai-council agent for multi-strategy planning.
 
 ```bash
-codex exec -p ultra-think "Plan the implementation of [feature]. Generate and evaluate at least 3 different approaches. Score each on: correctness, maintainability, performance, and implementation effort. Recommend the best approach with detailed rationale." \
+codex exec -p multi-ai-council "Plan the implementation of [feature]. Generate and evaluate at least 3 different approaches. Score each on: correctness, maintainability, performance, and implementation effort. Recommend the best approach with detailed rationale." \
   --model gpt-5.5 -s read-only
 ```
 
@@ -691,7 +691,7 @@ codex exec "Perform a thorough security audit of @./[file]. Check OWASP Top 10, 
   --model gpt-5.5 -c model_reasoning_effort="high" --sandbox read-only
 
 # Complex planning
-codex exec -p ultra-think "Design 3 alternative caching strategies for this API. Score each on correctness, maintainability, and performance." \
+codex exec -p multi-ai-council "Design 3 alternative caching strategies for this API. Score each on correctness, maintainability, and performance." \
   --model gpt-5.5 -c model_reasoning_effort="xhigh" -s read-only
 ```
 

@@ -366,7 +366,7 @@ Expected signals: Every input error message receives a category label. Response 
 
 ## 10. AGENT ROUTING
 
-This category covers 9 scenario summaries while the linked feature files remain the canonical execution contract. Claude Code agents are defined in `.opencode/agent/<name>.md` and dispatched via the `--agent` flag. The cli-claude-code skill documents 9 agent slots (context, debug, handover, orchestrate, research, review, speckit, ultra-think, write) and this section covers all 9.
+This category covers 9 scenario summaries while the linked feature files remain the canonical execution contract. Claude Code agents are defined in `.opencode/agent/<name>.md` and dispatched via the `--agent` flag. The cli-claude-code skill documents 9 agent slots (context, debug, handover, orchestrate, research, review, speckit, multi-ai-council, write) and this section covers all 9.
 
 ### CC-011 | Context agent codebase exploration
 
@@ -420,17 +420,17 @@ Expected signals: Each checklist item (XSS, CSRF, injection, auth bypass, hardco
 
 #### Description
 
-Verify `--agent ultra-think --model claude-opus-4-6 --permission-mode plan` produces multiple distinct strategies scored across at least 3 dimensions for a complex planning task.
+Verify `--agent multi-ai-council --model claude-opus-4-6 --permission-mode plan` produces multiple distinct strategies scored across at least 3 dimensions for a complex planning task.
 
 #### Scenario Contract
 
-Prompt summary: As an external-AI conductor planning a complex migration (for example MongoDB to PostgreSQL) and wanting multiple strategies evaluated by rubric, dispatch `claude -p --agent ultra-think --model claude-opus-4-6 --permission-mode plan` and capture the structured plan. Verify the response generates at least 3 distinct strategies (for example big-bang, gradual, dual-write), scores each across risk/effort/timeline/rollback and recommends one with rationale. Return a concise user-facing pass/fail verdict with the main reason.
+Prompt summary: As an external-AI conductor planning a complex migration (for example MongoDB to PostgreSQL) and wanting multiple strategies evaluated by rubric, dispatch `claude -p --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan` and capture the structured plan. Verify the response generates at least 3 distinct strategies (for example big-bang, gradual, dual-write), scores each across risk/effort/timeline/rollback and recommends one with rationale. Return a concise user-facing pass/fail verdict with the main reason.
 
 Expected signals: Response presents at least 3 distinct strategies. Each strategy scored across at least 3 dimensions (risk/effort/timeline/rollback). Explicit recommendation with rationale. Uses `--effort high` style depth (multi-paragraph reasoning per strategy).
 
 #### Test Execution
 
-> **Feature File:** [CC-014](04--agent-routing/004-ultra-think-multi-strategy-planning.md)
+> **Feature File:** [CC-014](04--agent-routing/004-multi-ai-council-multi-strategy-planning.md)
 
 ### CC-021 | Handover agent context transfer
 
@@ -456,7 +456,7 @@ Verify `--agent orchestrate --permission-mode plan` decomposes a complex task in
 
 #### Scenario Contract
 
-Prompt summary: As an external-AI conductor facing a complex task that requires multiple Claude Code specializations in sequence, dispatch `claude -p --agent orchestrate --permission-mode plan` and ask for a decomposition naming at least 3 specialist agents (for example context, review, debug, ultra-think) and explicit handoffs between them. Verify the plan reads as a sequenced workflow rather than monolithic analysis. Return a verdict naming the agents in the planned order and confirming no file writes occur.
+Prompt summary: As an external-AI conductor facing a complex task that requires multiple Claude Code specializations in sequence, dispatch `claude -p --agent orchestrate --permission-mode plan` and ask for a decomposition naming at least 3 specialist agents (for example context, review, debug, multi-ai-council) and explicit handoffs between them. Verify the plan reads as a sequenced workflow rather than monolithic analysis. Return a verdict naming the agents in the planned order and confirming no file writes occur.
 
 Expected signals: Response names at least 3 distinct Claude Code agents. Sequences them in a clear order (Step 1, Step 2, Step 3 or equivalent). Describes handoff content between steps. No file mtimes change.
 
@@ -707,7 +707,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 - CC-011: [Context agent codebase exploration](04--agent-routing/001-context-agent-codebase-exploration.md)
 - CC-012: [Debug agent fresh-perspective root cause](04--agent-routing/002-debug-agent-fresh-perspective-root-cause.md)
 - CC-013: [Review agent security audit](04--agent-routing/003-review-agent-security-audit.md)
-- CC-014: [Ultra-think multi-strategy planning](04--agent-routing/004-ultra-think-multi-strategy-planning.md)
+- CC-014: [Ultra-think multi-strategy planning](04--agent-routing/004-multi-ai-council-multi-strategy-planning.md)
 - CC-021: [Handover agent context transfer](04--agent-routing/005-handover-agent-context-transfer.md)
 - CC-022: [Orchestrate agent multi-step coordination](04--agent-routing/006-orchestrate-agent-multi-step.md)
 - CC-023: [Research agent deep investigation](04--agent-routing/007-research-agent-investigation.md)

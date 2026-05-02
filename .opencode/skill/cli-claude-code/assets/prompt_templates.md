@@ -376,14 +376,14 @@ Framework: CRAFT
 
 ```bash
 claude -p "Plan [task]. Generate 3 different strategies. For each, analyze: feasibility, risk, effort, timeline. Score each 1-10 across dimensions. Recommend the best with reasoning." \
-  --agent ultra-think --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
+  --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
 ```
 
 **Example:**
 
 ```bash
 claude -p "Plan the migration from monolith to microservices. Generate 3 different strategies. For each, analyze: feasibility, risk, effort, timeline. Score each 1-10 across dimensions. Recommend the best with reasoning." \
-  --agent ultra-think --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
+  --agent multi-ai-council --model claude-opus-4-6 --permission-mode plan --output-format text 2>&1
 ```
 
 ### Codebase Exploration

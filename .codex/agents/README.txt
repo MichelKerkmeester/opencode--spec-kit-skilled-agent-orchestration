@@ -17,6 +17,6 @@ Agents:
   orchestrate   — Multi-agent coordination
   review        — Code review (read-only)
   speckit       — Spec folder documentation
-  ultra-think   — Multi-strategy planning
+  multi-ai-council   — Multi-strategy planning
   write         — Documentation generation
   improve-prompt — Prompt engineering

@@ -55,7 +55,7 @@ The skill includes a self-invocation guard: if you are already running inside Co
 | **Default Dispatch** | `gpt-5.5` · `medium` · `fast` | Zero-input default; user can override explicitly ("Use gpt 5.5 high fast") |
 | **Sandbox Modes** | 3 | read-only, workspace-write, danger-full-access |
 | **Reasoning Levels** | 6 | none, minimal, low, medium, high, xhigh |
-| **Agent Profiles** | 7 | review, context, research, write, debug, ultra-think, speckit |
+| **Agent Profiles** | 7 | review, context, research, write, debug, multi-ai-council, speckit |
 | **References** | 4 | cli_reference, codex_tools, agent_delegation, integration_patterns |
 | **Version** | 1.4.0.0 | |
 
@@ -217,7 +217,7 @@ The reasoning effort system adds another dimension. GPT-5.5 supports six effort 
 | `research` | Technical research with web | `codex exec -p research "Research X" -m gpt-5.5 --search` |
 | `write` | Documentation generation | `codex exec -p write "Generate README" -m gpt-5.5` |
 | `debug` | Fresh-perspective debugging | `codex exec -p debug "Debug error: X" -m gpt-5.5` |
-| `ultra-think` | Multi-strategy planning | `codex exec -p ultra-think "Plan redesign" -m gpt-5.5` |
+| `multi-ai-council` | Multi-strategy planning | `codex exec -p multi-ai-council "Plan redesign" -m gpt-5.5` |
 | `speckit` | Spec documentation | `codex exec -p speckit "Create spec folder" -m gpt-5.5` |
 
 <!-- /ANCHOR:features -->

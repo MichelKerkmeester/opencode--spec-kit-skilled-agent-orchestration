@@ -1,0 +1,261 @@
+{
+  "id": "ultra-think",
+  "family": "derived",
+  "targetPath": ".opencode/agent/ultra-think.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T17:00:37.534Z",
+  "agentMeta": {
+    "name": "ultra-think",
+    "mode": "all",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "grep",
+        "glob",
+        "webfetch",
+        "memory",
+        "task",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "write",
+        "edit",
+        "bash",
+        "chrome_devtools",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Dispatch at least 2 distinct strategies (never a single approach)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "Use the formal scoring rubric for synthesis, not subjective picking",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Include the comparison table in the Ultra-Think Report",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Preserve context via `memory_context` before dispatching strategies",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Cite which strategy contributed each element of the final plan",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Modify ANY files. This is a planning agent. Output plans only, never apply changes directly.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Use Edit, Write, or Bash tools. These permissions are denied by design.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Run identical subagent attempts (the Multi-Think anti-pattern)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Skip the synthesis step by applying the first result that \"looks good\"",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-4",
+        "rule": "Dispatch more than 3 strategies (context waste, diminishing returns)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-5",
+        "rule": "Ignore a returned strategy result. Score all returned strategies and mark timeouts as N/A",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-6",
+        "rule": "Nest Ultra-Think within Ultra-Think (recursive dispatch is illegal)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "escalate-0",
+        "rule": "All strategies score below 50. Task may need reframing",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-1",
+        "rule": "Two strategies produce contradictory solutions with similar scores",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-2",
+        "rule": "A strategy subagent fails or times out and N drops below 2",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-3",
+        "rule": "The task type is ambiguous and auto-selection confidence is low",
+        "type": "escalate",
+        "weight": 3
+      }
+    ],
+    "outputChecks": [
+      {
+        "id": "checklist-0",
+        "check": "All dispatched strategies returned results (or timeouts noted)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-1",
+        "check": "Scoring rubric applied to ALL strategies, not subjective picking",
+        "weight": 5
+      },
+      {
+        "id": "checklist-2",
+        "check": "Comparison table included with per-dimension scores",
+        "weight": 5
+      },
+      {
+        "id": "checklist-3",
+        "check": "Winning solution identified with clear rationale",
+        "weight": 5
+      },
+      {
+        "id": "checklist-4",
+        "check": "Complementary elements from other strategies considered",
+        "weight": 5
+      },
+      {
+        "id": "checklist-5",
+        "check": "Confidence score justified with evidence",
+        "weight": 5
+      },
+      {
+        "id": "checklist-6",
+        "check": "Plan is technically feasible (no hallucinated APIs/functions)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-7",
+        "check": "Implementation steps are ordered with correct dependencies",
+        "weight": 5
+      },
+      {
+        "id": "checklist-8",
+        "check": "All strategies scored and comparison table complete",
+        "weight": 5
+      },
+      {
+        "id": "checklist-9",
+        "check": "Risk mitigations proposed for each identified risk",
+        "weight": 5
+      },
+      {
+        "id": "checklist-10",
+        "check": "Plan integrates with existing codebase architecture",
+        "weight": 5
+      },
+      {
+        "id": "checklist-11",
+        "check": "No file modifications attempted (planning only)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-12",
+        "check": "All claims have citations (file:line OR strategy source)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-13",
+        "check": "No placeholder content (\"[TODO]\", \"[TBD]\")",
+        "weight": 5
+      },
+      {
+        "id": "checklist-14",
+        "check": "Dropped alternatives summarized with scores",
+        "weight": 5
+      }
+    ],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [
+        "/memory:save"
+      ],
+      "skills": [
+        "system-spec-kit",
+        "sk-code-*"
+      ],
+      "agents": [
+        "orchestrate",
+        "context",
+        "deep-research",
+        "review",
+        "debug"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

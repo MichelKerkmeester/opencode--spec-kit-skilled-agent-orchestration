@@ -278,7 +278,7 @@ The calling AI is the conductor; Codex profiles in `config.toml` `[profiles.<nam
 | Technical research | research | `codex exec -p research "Research latest Express.js security advisories" -m gpt-5.5 --search` |
 | Documentation generation | write | `codex exec -p write "Generate README for this project" -m gpt-5.5` |
 | Fresh-perspective debugging | debug | `codex exec -p debug "Debug this error: [error]" -m gpt-5.5` |
-| Multi-strategy planning | ultra-think | `codex exec -p ultra-think "Plan the authentication redesign" -m gpt-5.5` |
+| Multi-strategy planning | multi-ai-council | `codex exec -p multi-ai-council "Plan the authentication redesign" -m gpt-5.5` |
 
 **Profile setup**: Defined in `.codex/config.toml` under `[profiles.<name>]`. Each profile can override `model`, `model_reasoning_effort`, `sandbox_mode`, and `approval_policy`. The `.codex/agents/*.toml` files provide agent definitions for the interactive multi-agent TUI feature.
 

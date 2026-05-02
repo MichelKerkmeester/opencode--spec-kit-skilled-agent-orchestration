@@ -55,7 +55,7 @@ Canonical package artifacts:
 
 This playbook provides 34 deterministic scenarios across 9 categories validating the `cli-opencode` skill surface. Each feature keeps its global `CO-NNN` ID and links to a dedicated feature file with the full execution contract.
 
-Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-go/deepseek-v4-pro` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (opencode-go default with full variant range, deepseek direct API), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / ultra-think), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
+Coverage note (2026-04-26): Covers the canonical default invocation (`opencode-go/deepseek-v4-pro` + `--variant high` + `--agent general` + `--format json`), the three documented use cases (external dispatch, parallel detached, cross-AI handback per ADR-002), the multi-provider matrix (opencode-go default with full variant range, deepseek direct API), the 8-agent routing surface (general / context / orchestrate / write / review / debug / deep-research / deep-review / multi-ai-council), session continuity surfaces (`-c`, `-s <id>`, `--fork`, `--share` gate), the 13-template inventory plus CLEAR quality card, the parallel-detached exception path with `</dev/null` worker farms, cross-repo dispatch via `--dir` and cross-server dispatch via `--attach`. Self-invocation refusal (ADR-001) is enforced upstream by the skill's layered detection guard and is exercised in CO-008 (refusal path) and CO-031 (cross-repo nested guard) respectively. Destructive scenarios are limited to operator-confirmed `--share` flows (CHK-033). The playbook never publishes share URLs without explicit operator approval.
 
 ### Realistic Test Model
 
@@ -380,7 +380,7 @@ Expected signals: Both exit 0. Max-variant byte count >= 2x minimal-variant byte
 
 ## 10. AGENT ROUTING (`CO-013..CO-017`, `CO-032..CO-034`)
 
-This category covers 8 scenario summaries while the linked feature files remain the canonical execution contract. cli-opencode distinguishes 4 primary agents (directly invokable via --agent: general + plan as OpenCode built-ins; orchestrate + ultra-think as repo-defined primaries) from N subagents (context, review, write, debug, deep-research, deep-review, improve-agent, improve-prompt) which dispatch as Task subagents from a primary. CO-013..CO-017 + CO-032..CO-034 exercise both surfaces — direct primary invocation and primary-dispatches-subagent routing.
+This category covers 8 scenario summaries while the linked feature files remain the canonical execution contract. cli-opencode distinguishes 4 primary agents (directly invokable via --agent: general + plan as OpenCode built-ins; orchestrate + multi-ai-council as repo-defined primaries) from N subagents (context, review, write, debug, deep-research, deep-review, improve-agent, improve-prompt) which dispatch as Task subagents from a primary. CO-013..CO-017 + CO-032..CO-034 exercise both surfaces — direct primary invocation and primary-dispatches-subagent routing.
 
 ### CO-013 | General agent default route
 
@@ -450,17 +450,17 @@ Expected signals: Exit 0. Write tool.call for the README path. README file exist
 
 #### Description
 
-Verify `--agent ultra-think` produces at least 3 distinct solution strategies scored across at least 3 dimensions with an explicit recommendation, AND respects the planning-only constraint (no file modifications).
+Verify `--agent multi-ai-council` produces at least 3 distinct solution strategies scored across at least 3 dimensions with an explicit recommendation, AND respects the planning-only constraint (no file modifications).
 
 #### Scenario Contract
 
-Prompt summary: As an external-AI conductor planning a CommonJS-to-ESM migration of a single hypothetical module, dispatch --agent ultra-think to compare three strategies (big-bang rewrite, incremental wrapper, dual-build). Verify the response presents three distinct strategies, scores each across risk/effort/timeline/reversibility, recommends one with rationale and does NOT modify any files in the repo.
+Prompt summary: As an external-AI conductor planning a CommonJS-to-ESM migration of a single hypothetical module, dispatch --agent multi-ai-council to compare three strategies (big-bang rewrite, incremental wrapper, dual-build). Verify the response presents three distinct strategies, scores each across risk/effort/timeline/reversibility, recommends one with rationale and does NOT modify any files in the repo.
 
 Expected signals: Exit 0. Sentinel mtimes unchanged. Zero Edit/Write tool.calls. >=3 distinct strategies. >=3 dimensions scored. Explicit recommendation.
 
 #### Test Execution
 
-> **Feature File:** [CO-017](04--agent-routing/005-ultra-think-multi-strategy.md)
+> **Feature File:** [CO-017](04--agent-routing/005-multi-ai-council-multi-strategy.md)
 
 ### CO-032 | Deep-research agent iteration loop
 
@@ -502,7 +502,7 @@ Verify `--agent orchestrate` produces a sequenced multi-agent plan naming at lea
 
 #### Scenario Contract
 
-Prompt summary: As an external-AI conductor facing a complex task that requires multiple OpenCode specializations in sequence, dispatch `opencode run --agent orchestrate --variant high --format json --dir <repo-root>` and ask for a decomposition naming at least 3 specialist agents (for example context, review, write, ultra-think) and explicit handoffs. Verify the response names at least 3 distinct agent slugs in sequence with handoffs and that zero nested opencode-run tool.calls appear. Return a verdict naming the agents in planned order and confirming the no-nested-run constraint.
+Prompt summary: As an external-AI conductor facing a complex task that requires multiple OpenCode specializations in sequence, dispatch `opencode run --agent orchestrate --variant high --format json --dir <repo-root>` and ask for a decomposition naming at least 3 specialist agents (for example context, review, write, multi-ai-council) and explicit handoffs. Verify the response names at least 3 distinct agent slugs in sequence with handoffs and that zero nested opencode-run tool.calls appear. Return a verdict naming the agents in planned order and confirming the no-nested-run constraint.
 
 Expected signals: Exit 0. >= 3 distinct agent slugs in sequence. Handoffs described. Zero nested `opencode run` tool.call events. Working tree clean. Dispatch line includes `--agent orchestrate`.
 
@@ -809,7 +809,7 @@ Validator support: the shared `validate_document.py` validates this root playboo
 - CO-014: [Context LEAF agent (read-only)](04--agent-routing/002-context-leaf-agent.md)
 - CO-015: [Review agent security audit](04--agent-routing/003-review-agent-security-audit.md)
 - CO-016: [Write agent documentation generation](04--agent-routing/004-write-agent-doc-generation.md)
-- CO-017: [Ultra-think multi-strategy planning](04--agent-routing/005-ultra-think-multi-strategy.md)
+- CO-017: [Ultra-think multi-strategy planning](04--agent-routing/005-multi-ai-council-multi-strategy.md)
 - CO-032: [Deep-research agent iteration loop](04--agent-routing/006-deep-research-agent-iterations.md)
 - CO-033: [Deep-review agent audit loop](04--agent-routing/007-deep-review-agent-audit.md)
 - CO-034: [Orchestrate agent multi-agent coordination](04--agent-routing/008-orchestrate-agent-multi-agent.md)

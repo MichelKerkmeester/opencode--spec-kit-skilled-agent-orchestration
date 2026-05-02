@@ -192,7 +192,7 @@ gemini "As @review agent: Review these files for security vulnerabilities and co
 
 ---
 
-### @ultra-think — Multi-Strategy Planner
+### @multi-ai-council — Multi-Strategy Planner
 
 | Property | Value |
 |----------|-------|
@@ -207,7 +207,7 @@ gemini "As @review agent: Review these files for security vulnerabilities and co
 **Delegate when:** You need a fundamentally different planning approach from a different model, or want to compare Gemini's architectural thinking with the calling AI's plan.
 
 ```bash
-gemini "As @ultra-think agent: Design the caching strategy for this API. Consider Redis, in-memory, and CDN approaches." -o json
+gemini "As @multi-ai-council agent: Design the caching strategy for this API. Consider Redis, in-memory, and CDN approaches." -o json
 ```
 
 ---
@@ -241,7 +241,7 @@ gemini "As @write agent: Generate a comprehensive README.md for this project bas
 | Codebase exploration | @context | (none) | Read-only, structured Context Packages |
 | Cross-AI code review | @review | @context | Second opinion on quality |
 | Web/API research | @deep-research | @write | Google Search grounding |
-| Architecture planning | @ultra-think | @deep-research | Multi-lens analysis |
+| Architecture planning | @multi-ai-council | @deep-research | Multi-lens analysis |
 | Bug investigation | @debug | @context | Fresh perspective methodology |
 | Documentation generation | @write | (none) | Non-spec documentation and guides |
 | Spec folder docs | Main agent + `/spec_kit:plan --intake-only` | `/spec_kit:plan` | Distributed governance for packet docs |

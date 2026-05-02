@@ -1,0 +1,87 @@
+{
+  "status": "complete",
+  "agent": "ultra-think",
+  "timestamp": "2026-05-02T17:00:37.491Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/ultra-think.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "ultra-think",
+        "description": "Multi-strategy planning architect that dispatches diverse thinking strategies for optimal plans. Outputs plans only, never modifies files.",
+        "mode": "all",
+        "temperature": "0.1",
+        "permission": "",
+        "read": "allow",
+        "write": "deny",
+        "edit": "deny",
+        "bash": "deny",
+        "grep": "allow",
+        "glob": "allow",
+        "webfetch": "allow",
+        "memory": "allow",
+        "chrome_devtools": "deny",
+        "task": "allow",
+        "list": "allow",
+        "patch": "deny",
+        "external_directory": "allow",
+        "mcpServers": ""
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/ultra-think.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/ultra-think.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/ultra-think.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [],
+    "yamlWorkflows": [],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "referenceCount": 3
+      },
+      {
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 5
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 1
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 9,
+    "existingCount": 9,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 0,
+    "skillCount": 4
+  }
+}

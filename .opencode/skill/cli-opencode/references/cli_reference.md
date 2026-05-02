@@ -214,7 +214,7 @@ Default skill behavior: pass `--variant high` for cross-AI dispatches. Operators
 | `debug` | Fresh-perspective debugging |
 | `deep-research` | Iterative research loop executor |
 | `deep-review` | Iterative code review loop executor |
-| `ultra-think` | Multi-strategy planning |
+| `multi-ai-council` | Multi-strategy planning |
 | `improve-agent` | Agent improvement proposal mutator |
 
 The cli-opencode skill defers to the calling AI on agent selection — see `references/agent_delegation.md` for the routing matrix and `assets/prompt_templates.md` for canonical invocation shapes.

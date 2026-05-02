@@ -81,7 +81,7 @@ The skill includes a layered self-invocation guard. Three checks (env var lookup
 | **Full MCP runtime** | Spec Kit Memory's 40+ tools, CocoIndex semantic search, Code Mode, sequential thinking — all callable |
 | **Parallel detached sessions** | `--share --port N` spawns a separate session id with independent state |
 | **Structured event stream** | `--format json` emits typed JSON events the calling AI parses incrementally |
-| **Agent dispatch** | `--agent <slug>` loads project agents (deep-research, deep-review, review, ultra-think, etc.) |
+| **Agent dispatch** | `--agent <slug>` loads project agents (deep-research, deep-review, review, multi-ai-council, etc.) |
 | **Cross-repo dispatch** | `--dir <path>` targets a different repo's plugin / skill / MCP runtime |
 | **Self-invocation guard** | Three-layer detection refuses circular dispatch when already inside OpenCode |
 | **Memory handback** | `MEMORY_HANDBACK` delimiters preserve session context through `generate-context.js` |
@@ -212,7 +212,7 @@ The skill ships with two providers — `opencode-go` (DEFAULT) and `deepseek`. R
 | `debug` | Fresh-perspective debugging | Exclusive write access for `debug-delegation.md` |
 | `deep-research` | Iterative research loop | LEAF — single iteration |
 | `deep-review` | Iterative code review loop | LEAF — single iteration |
-| `ultra-think` | Multi-strategy planning | PLANNING-ONLY |
+| `multi-ai-council` | Multi-strategy planning | PLANNING-ONLY |
 | `improve-agent` | Agent improvement proposals | Proposal-only |
 
 <!-- /ANCHOR:features -->
@@ -450,7 +450,7 @@ A: `--continue` resumes the last session in the project. `--session <id>` resume
 ### Agents
 
 **Q: How do I pick the right agent?**
-A: Match the task type to the agent roster in Section 3.2. For routine work, use `general`. For research loops, `deep-research`. For code review, `review`. For multi-strategy planning, `ultra-think`.
+A: Match the task type to the agent roster in Section 3.2. For routine work, use `general`. For research loops, `deep-research`. For code review, `review`. For multi-strategy planning, `multi-ai-council`.
 
 **Q: Can the dispatched session spawn its own sub-agents?**
 A: Yes via the dispatched session's native Task tool — but NOT via nested `opencode run` invocations. Nested CLI calls break the orchestration tree. Use `--agent orchestrate` for the entry-point dispatch and let the orchestrator handle sub-agent dispatch internally.

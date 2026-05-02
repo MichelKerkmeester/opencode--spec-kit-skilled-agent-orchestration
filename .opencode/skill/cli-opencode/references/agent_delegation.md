@@ -117,7 +117,7 @@ The repo ships these agents under `.opencode/agent/`. The cli-opencode skill can
 | `debug` | Fresh-perspective debugging | Root cause analysis after 3+ failed debug attempts. Exclusive write access for `debug-delegation.md` |
 | `deep-research` | Iterative research loop executor | Single research-cycle dispatches. State externalized to JSONL + strategy.md. Dispatched only by `/spec_kit:deep-research` command |
 | `deep-review` | Iterative code review loop executor | Single review-cycle dispatches. P0/P1/P2 findings, severity-weighted convergence. Dispatched only by `/spec_kit:deep-review` command |
-| `ultra-think` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies. PLANNING-ONLY |
+| `multi-ai-council` | Multi-strategy planning architect | Complex planning that benefits from comparing multiple solution strategies. PLANNING-ONLY |
 | `improve-agent` | Proposal-only mutator for bounded agent improvement | Agent evaluation via `/improve:agent` command loop |
 
 ---
@@ -184,7 +184,7 @@ The repo ships these agents under `.opencode/agent/`. The cli-opencode skill can
 
 ---
 
-### @ultra-think — Multi-Strategy Planning Architect
+### @multi-ai-council — Multi-Strategy Planning Architect
 
 | Property | Value |
 |----------|-------|
@@ -223,7 +223,7 @@ Pick the agent that matches the task type. Default to `general` when no speciali
 | Root cause debugging | `debug` | `opencode run --agent debug --variant high --format json --dir /repo "Debug this error: <error>"` |
 | Iterative research loop | `deep-research` | **Command-only.** Dispatch via `/spec_kit:deep-research` (or `/spec_kit:deep-research:auto`). Direct `opencode run --agent deep-research` is forbidden; the parent command owns iteration state, JSONL, and convergence. <!-- F-007-B2-02 --> |
 | Iterative code review loop | `deep-review` | **Command-only.** Dispatch via `/spec_kit:deep-review` (or `/spec_kit:deep-review:auto`). Direct `opencode run --agent deep-review` is forbidden; the parent command owns iteration state and severity-weighted convergence. <!-- F-007-B2-02 --> |
-| Multi-strategy planning | `ultra-think` | `opencode run --agent ultra-think --variant high --format json --dir /repo "Plan the authentication redesign — compare three strategies."` |
+| Multi-strategy planning | `multi-ai-council` | `opencode run --agent multi-ai-council --variant high --format json --dir /repo "Plan the authentication redesign — compare three strategies."` |
 | Agent improvement | `improve-agent` | **Command-only.** Dispatch via `/improve:agent`. Direct `opencode run --agent improve-agent` is forbidden; the parent command owns evaluation, candidates, and promotion. <!-- F-007-B2-02 --> |
 | Default / unspecified | `general` | `opencode run --agent general --variant high --format json --dir /repo "<prompt>"` |
 
@@ -287,7 +287,7 @@ Some agents are LEAF agents by design. They MUST NOT dispatch sub-agents, use th
 | `context` | LEAF — no sub-dispatches, no writes. All results returned to the caller |
 | `deep-research` | LEAF — single iteration, externalized state, no nested dispatches |
 | `deep-review` | LEAF — single iteration, externalized state, no nested dispatches |
-| `ultra-think` | PLANNING-ONLY — no file modifications |
+| `multi-ai-council` | PLANNING-ONLY — no file modifications |
 
 The calling AI must NOT request a write or sub-dispatch from a LEAF agent. If the prompt would require either, route to `general` or `orchestrate` instead.
 

@@ -30,10 +30,23 @@
       "rename",
       "multi-ai-council"
     ],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
-    "is_phase_parent": false
+    "is_phase_parent": false,
+    "session_outcome": "promoted",
+    "promotion_decision": "campaign_intent",
+    "promotion_rationale": "rename + improve completed atomically; integration recovered after mirror+reference sweep",
+    "mirrors_synced": [
+      ".opencode/agent/multi-ai-council.md",
+      ".claude/agents/multi-ai-council.md",
+      ".gemini/agents/multi-ai-council.md",
+      ".codex/agents/multi-ai-council.toml"
+    ],
+    "rename_completed": true,
+    "active_files_swept": 46,
+    "filename_renames": 4,
+    "historical_refs_left_frozen": 321
   }
 }
