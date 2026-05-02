@@ -31,9 +31,17 @@
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": "keptBaseline",
+    "session_outcome": "promoted",
     "stop_reason": "blockedStop",
     "iterations_run": 1,
-    "final_score": "100/100/100/100/100 (baseline already at ceiling)"
+    "final_score": "100/100/100/100/100 (baseline already at ceiling)",
+    "promotion_decision": "operator_override",
+    "promotion_rationale": "qualitative improvements (write-boundary hardening, query routing matrix, tool selection flow) not measurable by structural-presence dimensions; explicit user approval",
+    "mirrors_synced": [
+      ".opencode/agent/context.md",
+      ".claude/agents/context.md",
+      ".gemini/agents/context.md",
+      ".codex/agents/context.toml"
+    ]
   }
 }

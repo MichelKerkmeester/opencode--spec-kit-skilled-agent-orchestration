@@ -155,3 +155,40 @@ Not applicable — no canonical change to verify against.
 | `.gemini/agents/context.md` | UNCHANGED |
 | `.codex/agents/context.toml` | UNCHANGED |
 | `improvement/` (new) | Full runtime + candidate + score + benchmark + journal + dashboard |
+
+---
+
+## 7. POST-IMPLEMENTATION PROMOTION (operator override)
+
+After review of the candidate's qualitative changes, operator approved promotion despite the substrate's `blockedStop` verdict. Rationale: scorer's structural-presence dimensions cannot measure the candidate's actual qualitative improvements, but the operator (with full visibility) judged them valuable.
+
+### Changes promoted
+
+| Change | Type | Why valuable |
+|---|---|---|
+| Section 0 expanded: "ILLEGAL NESTING AND WRITE BOUNDARY" | Hardened constraint | Original blocked nested dispatch only; new version also blocks Write/Edit/Patch/Bash and "save this to..." path leakage in output. Closes a real loophole. |
+| New "Denied Capability Guard" subsection | New rule block | Explicit rules for each denied tool (no shell commands in output, no delegation to compensate for denied tools). |
+| New "Query Routing Matrix" (8-row table) | Decision aid | Maps query intent → first tool → verification path. Reduces wrong-tool guessing. |
+| New "Tool Selection Flow" (ASCII tree) | Decision aid | Visual decision tree for the same routing logic. |
+| Header cleanup | Cosmetic | Removed emoji decorations for plain ASCII. |
+| Renamed "CWB Compliance" → "Context Window Budget Compliance" | Clarity | De-acronymed for self-explanatory headers. |
+| "Layer 2" expanded to "Codebase **and Graph** Discovery" | Scope clarity | Names code_graph_* explicitly as Layer 2 tooling. |
+
+### Mirror sync
+
+| Runtime | Path | Promoted |
+|---|---|---|
+| OpenCode | `.opencode/agent/context.md` | ✓ 506 lines |
+| Claude | `.claude/agents/context.md` | ✓ 506 lines |
+| Gemini | `.gemini/agents/context.md` | ✓ 506 lines |
+| Codex | `.codex/agents/context.toml` | ✓ 492 lines (TOML wrapper) |
+
+### Rollback path
+
+Pre-promote snapshots saved at `improvement/pre-promote-backup/` (4 files). Rollback: `cp pre-promote-backup/.opencode-agent-context.md .opencode/agent/context.md` (and analog for the other 3).
+
+### Outcome update
+
+- `session_outcome`: `keptBaseline` → `promoted`
+- `promotion_decision`: `operator_override`
+- Substrate's `blockedStop` verdict was correct (delta=0 by structural scorer); operator override was made on cross-layer qualitative grounds.
