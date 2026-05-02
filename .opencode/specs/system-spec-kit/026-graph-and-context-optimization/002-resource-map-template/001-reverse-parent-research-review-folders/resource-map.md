@@ -18,7 +18,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs"
       - ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs"
     session_dedup:
-      fingerprint: "sha256:reverse-parent-research-review-folders-resource-map"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "reverse-parent-research-review-folders-resource-map"
       parent_session_id: null
     completion_pct: 100
@@ -29,7 +29,7 @@ _memory:
 ---
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

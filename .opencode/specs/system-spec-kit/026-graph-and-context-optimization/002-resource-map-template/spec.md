@@ -24,7 +24,7 @@ _memory:
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/checklist.md"
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/decision-record.md"
     session_dedup:
-      fingerprint: "sha256:011-resource-map-template-root-spec"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "011-resource-map-template-root-scaffold"
       parent_session_id: null
     completion_pct: 100

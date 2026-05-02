@@ -29,9 +29,9 @@ _memory:
       - "decision-record.md"
       - "implementation-summary.md"
     session_dedup:
-      fingerprint: "sha256:012-external-project-adoption-2026-04-25"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "scaffold-session-012"
-      parent_session_id: "dr-2026-04-25T08-56-40Z-44122292"
+      parent_session_id: null
     completion_pct: 5
     open_questions:
       - "Diff-hunk parser library choice for sub-phase 002 detect_changes implementation"

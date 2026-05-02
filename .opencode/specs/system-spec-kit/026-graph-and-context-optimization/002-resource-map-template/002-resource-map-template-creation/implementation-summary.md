@@ -21,7 +21,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/SKILL.md"
       - ".opencode/skill/system-spec-kit/templates/README.md"
     session_dedup:
-      fingerprint: "sha256:resource-map-template-v1-026-012"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "claude-opus-4-7-2026-04-24"
       parent_session_id: null
     completion_pct: 92

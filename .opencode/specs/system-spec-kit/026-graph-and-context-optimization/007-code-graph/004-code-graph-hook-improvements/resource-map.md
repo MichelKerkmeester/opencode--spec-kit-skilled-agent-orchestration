@@ -24,7 +24,7 @@ _memory:
 ---
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 A `resource-map.md` is a **lean** companion to `implementation-summary.md`. Where the summary narrates *what was done and why*, the resource map simply lists **every file path touched** during the packet — grouped by category and easy to scan.
 

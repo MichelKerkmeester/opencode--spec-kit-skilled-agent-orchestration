@@ -1,7 +1,7 @@
 ---
 title: "Resource Map: Template Greenfield Implementation — All Affected system-spec-kit Files"
 description: "Comprehensive blast-radius inventory for the C+F hybrid manifest-driven greenfield implementation per packet 002's recommendation. Lists every file in .opencode/skill/system-spec-kit/ that gets ADDED, MODIFIED, DELETED, or LEFT UNTOUCHED across the 4 implementation phases."
-template_source: "SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1"
+template_source: "SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2"
 trigger_phrases:
   - "012 resource map"
   - "template greenfield blast radius"
@@ -27,7 +27,7 @@ _memory:
 ---
 # Resource Map: Template Greenfield Implementation
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

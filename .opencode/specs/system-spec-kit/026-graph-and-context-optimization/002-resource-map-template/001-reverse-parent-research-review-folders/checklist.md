@@ -20,7 +20,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs"
       - ".opencode/specs/system-spec-kit/026-graph-and-context-optimization/002-resource-map-template/001-reverse-parent-research-review-folders/implementation-summary.md"
     session_dedup:
-      fingerprint: "sha256:reverse-parent-research-review-folders-checklist"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "reverse-parent-research-review-folders-checklist"
       parent_session_id: null
     completion_pct: 100

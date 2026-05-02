@@ -7,7 +7,7 @@ trigger_phrases:
   - "path catalog 006-graph-impact-and-affordance-uplift"
 importance_tier: "normal"
 contextType: "general"
-template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->"
+template_source_hint: "<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->"
 _memory:
   continuity:
     packet_pointer: "system-spec-kit/026-graph-and-context-optimization/006-graph-impact-and-affordance-uplift"
@@ -19,7 +19,7 @@ _memory:
 ---
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

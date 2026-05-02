@@ -19,7 +19,7 @@ _memory:
       - ".opencode/skill/system-spec-kit/shared/review-research-paths.cjs"
       - ".opencode/skill/system-spec-kit/scripts/migrate-deep-loop-local-owner.cjs"
     session_dedup:
-      fingerprint: "sha256:reverse-parent-research-review-folders-tasks"
+      fingerprint: "sha256:0000000000000000000000000000000000000000000000000000000000000000"
       session_id: "reverse-parent-research-review-folders-tasks"
       parent_session_id: null
     completion_pct: 100

@@ -1,4 +1,4 @@
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 ---
 title: "Resource Map: 059 @code Sub-Agent [template:resource-map.md]"
 description: "Lean path catalog for packet 059-agent-implement-code; pairs with implementation-summary.md."

@@ -11,7 +11,7 @@ contextType: "general"
 
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.1 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

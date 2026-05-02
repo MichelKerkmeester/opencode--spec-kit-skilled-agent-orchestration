@@ -21,7 +21,7 @@ _memory:
 ---
 # Resource Map
 
-<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: resource-map | v2.2 -->
 
 ---
 

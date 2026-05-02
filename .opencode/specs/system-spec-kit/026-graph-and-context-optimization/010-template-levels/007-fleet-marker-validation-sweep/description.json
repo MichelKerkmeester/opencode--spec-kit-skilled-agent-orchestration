@@ -1,0 +1,14 @@
+{
+  "specFolder": "007-fleet-marker-validation-sweep",
+  "description": "fleet-marker-validation-sweep",
+  "keywords": [
+    "fleet-marker-validation-sweep"
+  ],
+  "lastUpdated": "2026-05-02T08:52:27.248Z",
+  "specId": "007",
+  "folderSlug": "fleet-marker-validation-sweep",
+  "parentChain": [],
+  "memorySequence": 0,
+  "memoryNameHistory": [],
+  "level": "3"
+}

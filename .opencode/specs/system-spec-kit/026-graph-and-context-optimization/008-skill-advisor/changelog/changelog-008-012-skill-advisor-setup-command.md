@@ -10,7 +10,7 @@ contextType: "implementation"
 ---
 # Changelog
 
-<!-- SPECKIT_TEMPLATE_SOURCE: changelog/phase.md | v1.0 -->
+<!-- SPECKIT_TEMPLATE_SOURCE: changelog/phase.md | v2.2 -->
 
 ## 2026-04-25
 
