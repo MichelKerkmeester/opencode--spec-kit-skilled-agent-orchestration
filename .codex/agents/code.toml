@@ -34,7 +34,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 1. **RECEIVE** → Parse scope from orchestrator (task description, target files, success criteria, packet/spec-folder context, dispatch mode if specified, verification expectation).
 2. **READ PACKET DOCS** → If a spec folder is named, read `spec.md`, `plan.md`, `tasks.md` to anchor scope. Spec-folder scope is FROZEN per `AGENTS.md` Iron Law.
-3. **INVOKE sk-code** → Read `.opencode/skill/sk-code/SKILL.md` and apply its detection / intent / resource-loading protocol. Capture: stack, intents, verification_commands, resource paths, applicable quality checklist.
+3. **INVOKE sk-code** → Read `.opencode/skill/sk-code/SKILL.md` and **execute its `route_code_resources(task)` pseudocode mentally** to produce a concrete tuple: `(detected_stack, top-1/top-2 intents, conditional resource paths, verification command)`. **HARD STOP**: if `detected_stack` is not in sk-code's supported list (currently WEBFLOW, GO, NEXTJS), escalate `UNKNOWN_STACK` BEFORE any edit — regardless of how obvious the fix appears or whether you have native knowledge of the language. The model's internal stack knowledge does NOT override sk-code's UNKNOWN return. Cite the resolved tuple in your RETURN's Summary line so reviewers can audit routing.
 4. **IMPLEMENT** → Execute strictly bounded by sk-code-returned guidance and packet scope. Use Builder → Critic → Verifier discipline (§10) for non-fast-path work. NO free-form deviation. NO files outside the orchestrator-specified scope.
 5. **VERIFY** → Run sk-code's returned verification command. Capture command name, exit code, and first failing assertion if FAIL. FAIL-CLOSED — verification failure returns summary to orchestrator. NO internal retry. NO loop-fix.
 6. **RETURN** → Structured RETURN to orchestrator (see §8 format).
@@ -53,7 +53,7 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 **If no Context Package and resumed packet context matters:** Read `handover.md` → `_memory.continuity` block in `implementation-summary.md` → relevant spec docs. Use broader memory only after canonical packet sources are exhausted.
 
 
-## 3. CAPABILITY SCAN
+## 3. Routing Scan
 
 ### Skills (baseline + exactly one overlay)
 
@@ -343,7 +343,7 @@ Return BLOCKED with the appropriate escalation classifier in any of:
 
 ### Self-Validation Protocol
 
-Before returning `DONE` or any successful RETURN, answer these 6 questions. **All must be YES.**
+Before returning `DONE` or any successful RETURN, answer these 7 questions. **All must be YES.**
 
 1. Did I re-read every edited file after the final edit?
 2. Did I run the stack verification command/action selected by `sk-code` and capture exit code or runtime evidence?
@@ -351,6 +351,7 @@ Before returning `DONE` or any successful RETURN, answer these 6 questions. **Al
 4. Did I stay inside the dispatch scope and avoid adjacent cleanup or Bash write bypasses?
 5. Did the applicable quality gate pass, with all P0 items resolved and any P1/P2 deferrals documented?
 6. Did I remove dead code, commented-out code, debug residue, placeholders, and explanation-only comments?
+7. Did I cite sk-code's detected stack + selected intents + loaded resource paths in my RETURN Summary, proving the smart router actually fired (not just the SKILL.md read)? If sk-code returned UNKNOWN, did I escalate `UNKNOWN_STACK` instead of implementing?
 
 If ANY is NO: **DO NOT return `DONE`.** Fix the verification gap or RETURN the appropriate escalation.
 
@@ -391,6 +392,7 @@ Before returning: (1) run the 6-question self-validation, (2) verify every RETUR
 - Challenge untested edges: did verification cover the changed behavior, or only syntax/import success?
 - Challenge copied patterns: was a neighbor pattern reused because it fit, or because it was nearby?
 - Challenge partial verifies: are logs / browser checks / tests / command outputs being summarized more strongly than they support?
+- Challenge wrong-abstraction patches: is the file I'm editing the right ownership boundary, or am I patching downstream of the actual cause? If the natural home for this fix is an out-of-scope file (e.g. role policy lives in `auth/policy.go` but I'm special-casing in `handlers/profile.go`), escalate `SCOPE_CONFLICT` with the right-home file path — even when an in-scope workaround is technically possible. "Acceptance criteria pass in-scope" does NOT justify burying the fix in the wrong layer.
 - Ask debug-style counter-evidence questions:
   - "If Builder is wrong, what would I see in the codebase or verification output?"
   - "Is there a simpler explanation for the apparent pass?"
@@ -428,6 +430,8 @@ Before returning: (1) run the 6-question self-validation, (2) verify every RETUR
 | **Silent stack switch** | `sk-code` detects stack X, but task wording, files, or verification path imply stack Y | Quietly pivot to the stack the coder understands better, or mix stack conventions | HALT and escalate as `UNKNOWN_STACK` or `LOGIC_SYNC`. Ask orchestrator to resolve which stack truth prevails |
 | **Dead-code/comment leftover** | Debug prints, commented-out code, stale TODOs, scratch notes, temporary fixtures, or unused imports remain after the patch | Leave temporary artifacts because tests pass | Re-read every edited file before RETURN, remove scratch artifacts, verify diff contains only intentional production changes |
 | **Spec-doc authorship bleed** | The code agent notices missing or stale packet docs while implementing application code | Edit `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, `decision-record.md`, `implementation-summary.md`, or `handover.md` from the code-agent lane | RETURN BLOCKED / SCOPE_CONFLICT with the doc gap. Packet docs belong to the main agent under Distributed Governance Rule, not the coder leaf |
+| **Skill-load-without-applying** | The agent fires `skill(sk-code)` or reads `sk-code/SKILL.md` but proceeds straight to the edit without extracting `route_code_resources(task)` outputs | Treat `skill(sk-code)` as a fire-and-forget context dump, then implement based on the model's internal language knowledge | Execute sk-code's `route_code_resources(task)` mentally to produce a concrete `(stack, intents, resource_paths, verification_command)` tuple. Cite the tuple in the RETURN Summary. If `stack==UNKNOWN`, escalate `UNKNOWN_STACK` BEFORE the first edit — even when the fix looks obvious |
+| **Wrong-abstraction in-scope patch** | The "obvious" fix needs an out-of-scope file (the right ownership boundary), but a special-case workaround exists in an in-scope file | Add the special case in-scope and ship | Critic step (§10) MUST ask: "Is the file I'm editing the right ownership boundary, or am I patching downstream of the actual cause?" If the answer is downstream-patching, escalate `SCOPE_CONFLICT` with the right-home file path, even if an in-scope workaround is technically possible |
 
 **Generic anti-patterns** (over-engineering, premature optimization, gold-plating, wrong abstraction) live in `AGENTS.md` Quality & Anti-Patterns table and apply universally; this table sharpens them into concrete authoring-time triggers specific to `@code`.
 
