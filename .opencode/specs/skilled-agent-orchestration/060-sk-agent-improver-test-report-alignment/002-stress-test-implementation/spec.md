@@ -142,12 +142,12 @@ Execute the 001/research §8 hand-off plan: apply diffs, author scenarios, build
 | `.opencode/command/improve/assets/improve_improve-agent_confirm.yaml` | Modify | Same legal-stop emission |
 | `.opencode/skill/sk-improve-agent/scripts/score-candidate.cjs` | Modify | Actually use `--baseline`, emit `delta` (P0) |
 | `.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs` | Modify | Fix `.gemini/agents` mirror path (P1) |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` | Create | CP-040 |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/014-proposal-only-boundary.md` | Create | CP-041 |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/015-active-critic-overfit.md` | Create | CP-042 |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | Create | CP-043 |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | Create | CP-044 |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | Create | CP-045 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md` | Create | CP-040 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/014-proposal-only-boundary.md` | Create | CP-041 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/015-active-critic-overfit.md` | Create | CP-042 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/016-legal-stop-gate-bundle.md` | Create | CP-043 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/017-improvement-gate-delta.md` | Create | CP-044 |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md` | Create | CP-045 |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/manual_testing_playbook.md` | Modify | Add CP-040..045 to root index (§10 + §16) |
 | Fixture-target file(s) | Create | Path TBD per ADR-3 (likely `.opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/`) |
 | `.opencode/specs/.../060-.../002-.../test-report.md` | Create | Mirror 059 test-report structure |

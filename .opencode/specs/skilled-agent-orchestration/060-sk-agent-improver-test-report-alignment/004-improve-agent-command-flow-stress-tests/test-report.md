@@ -20,8 +20,8 @@ _memory:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
-      - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md
-      - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md
+      - .opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md
+      - .opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md
     completion_pct: 100
     open_questions:
       - "Is CP-042's remaining PARTIAL a body-discipline gap or scenario-bait weakness? Either way it's a follow-on packet, not a 061 blocker."
@@ -230,12 +230,12 @@ The scoped source change was 7 files: 6 playbook scenarios modified plus 1 sandb
 
 | File | Change |
 |---|---:|
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` | 29 lines touched |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/014-proposal-only-boundary.md` | 24 lines touched |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/015-active-critic-overfit.md` | 32 lines touched |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | 21 lines touched |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | 27 lines touched |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | 32 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md` | 29 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/014-proposal-only-boundary.md` | 24 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/015-active-critic-overfit.md` | 32 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/016-legal-stop-gate-bundle.md` | 21 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/017-improvement-gate-delta.md` | 27 lines touched |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md` | 32 lines touched |
 | `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | 80 lines added |
 
 **Stat:** 169 insertions, 76 deletions.
@@ -298,12 +298,12 @@ No sk-improve-agent runtime source was changed in 061. The point of this packet 
 ### Scenario specs
 
 ```text
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/014-proposal-only-boundary.md
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/015-active-critic-overfit.md
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md
-.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/014-proposal-only-boundary.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/015-active-critic-overfit.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/016-legal-stop-gate-bundle.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/017-improvement-gate-delta.md
+.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md
 ```
 
 ### Sandbox helper and generated roots

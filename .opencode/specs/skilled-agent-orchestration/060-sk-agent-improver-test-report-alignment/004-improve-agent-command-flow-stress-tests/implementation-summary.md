@@ -57,12 +57,12 @@ The implementation commit modified six active playbook scenario files and added 
 
 | File | Purpose |
 |---|---|
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` | CP-040 command-flow dispatch and helper/journal grep contract |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/014-proposal-only-boundary.md` | CP-041 body-level input materialization |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/015-active-critic-overfit.md` | CP-042 body-level input materialization and Critic grep contract |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | CP-043 command-flow dispatch and nested gate grep contract |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | CP-044 command-flow dispatch and baseline/delta grep contract |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | CP-045 command-flow dispatch and benchmark-boundary grep contract |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md` | CP-040 command-flow dispatch and helper/journal grep contract |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/014-proposal-only-boundary.md` | CP-041 body-level input materialization |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/015-active-critic-overfit.md` | CP-042 body-level input materialization and Critic grep contract |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/016-legal-stop-gate-bundle.md` | CP-043 command-flow dispatch and nested gate grep contract |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/017-improvement-gate-delta.md` | CP-044 command-flow dispatch and baseline/delta grep contract |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md` | CP-045 command-flow dispatch and benchmark-boundary grep contract |
 | `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | Command-capable temp root setup |
 
 Diff stat for those files: 169 insertions, 76 deletions.

@@ -87,12 +87,12 @@ Shipped across **3 commits**:
 
 | File | Layer | What changed |
 |---|---|---|
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` | command-flow | Call B → `/improve:agent` dispatch in `/tmp/cp-040-sandbox/` |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/014-proposal-only-boundary.md` | body-level | Required 5 inputs materialized; R2 added `--add-dir /tmp/cp-041-spec` + pre-create candidates dir |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/015-active-critic-overfit.md` | body-level | Same 5-inputs treatment; R2 added `--add-dir /tmp/cp-042-spec` |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | command-flow | Call B → command-flow; greps for nested `details.gateResults` + 5 gate keys |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | command-flow | Call B → command-flow; greps for `--baseline`, delta, recommendation |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | command-flow | Call B → command-flow; R2 replaced whitespace-sensitive grep with `node -e` JSON parse of report.json |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md` | command-flow | Call B → `/improve:agent` dispatch in `/tmp/cp-040-sandbox/` |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/014-proposal-only-boundary.md` | body-level | Required 5 inputs materialized; R2 added `--add-dir /tmp/cp-041-spec` + pre-create candidates dir |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/015-active-critic-overfit.md` | body-level | Same 5-inputs treatment; R2 added `--add-dir /tmp/cp-042-spec` |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/016-legal-stop-gate-bundle.md` | command-flow | Call B → command-flow; greps for nested `details.gateResults` + 5 gate keys |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/017-improvement-gate-delta.md` | command-flow | Call B → command-flow; greps for `--baseline`, delta, recommendation |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/018-benchmark-completed-boundary.md` | command-flow | Call B → command-flow; R2 replaced whitespace-sensitive grep with `node -e` JSON parse of report.json |
 
 (Note: these same 6 files were modified by 060/002 (created) and 062 (signal-shape updates). 061 only changed Call B dispatch + R2 mechanics.)
 

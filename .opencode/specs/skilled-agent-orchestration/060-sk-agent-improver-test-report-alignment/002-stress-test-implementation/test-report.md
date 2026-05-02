@@ -235,7 +235,7 @@ The source implementation landed as scoped changes to 9 files:
 
 ### Scenario and fixture artifacts
 
-The six scenario files exist at `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-...md` through `018-...md`. The fixture exists at `.opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/` with `.opencode`, `.claude`, `.gemini`, `.codex`, README, and `benchmark/sentinel.js` surfaces. The root playbook index names CP-040 through CP-045 in both the routing section and the cross-reference index.
+The six scenario files exist at `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-...md` through `018-...md`. The fixture exists at `.opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/` with `.opencode`, `.claude`, `.gemini`, `.codex`, README, and `benchmark/sentinel.js` surfaces. The root playbook index names CP-040 through CP-045 in both the routing section and the cross-reference index.
 <!-- /ANCHOR:diff -->
 
 ---

@@ -132,7 +132,7 @@ Land all executable wirings so the command-flow pipeline produces evidence that 
 | `.opencode/command/improve/assets/improve_improve-agent_confirm.yaml` | Modify | Same as auto (lockstep parity) |
 | `.opencode/skill/sk-improve-agent/SKILL.md` | Modify | Document static-asset benchmark location, materializer ownership, nested gateResults shape, stop-reason enum truth |
 | `.opencode/skill/sk-improve-agent/test-fixtures/060-stress-test/` (or new path) | Modify if needed | Native RT-028/RT-032 fixture alignment if these reference 062-specific shapes |
-| `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-018*.md` | Modify | Update expected signal shapes for CP-040..045 to match 062's new shapes |
+| `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-018*.md` | Modify | Update expected signal shapes for CP-040..045 to match 062's new shapes |
 | Existing test files (journal, reducer, score-candidate) | Modify | Match new shapes |
 <!-- /ANCHOR:scope -->
 

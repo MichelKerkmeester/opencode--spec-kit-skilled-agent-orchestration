@@ -20,7 +20,7 @@ _memory:
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring/handover.md
-      - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md
+      - .opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md
     completion_pct: 5
     open_questions:
       - "Does the temp-root setup helper become a reusable script under sk-improve-agent or live in the packet?"
@@ -89,7 +89,7 @@ Switch the dispatch shape, run R1 against 062's wiring, document honest results,
 ### In Scope
 
 - **Build a command-capable temp project root setup helper** (e.g., `/tmp/cp-061-sandbox-setup.sh`) that creates `/tmp/cp-061-sandbox/` containing `.opencode/command/improve/`, `.opencode/skill/sk-improve-agent/`, `.opencode/agent/cp-improve-target.md` (fixture), mirrors, and benchmark assets — enough that `/improve:agent` resolves all its relative paths
-- **Modify CP-040, CP-043, CP-044, CP-045** in-place at `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013/016/017/018*.md`:
+- **Modify CP-040, CP-043, CP-044, CP-045** in-place at `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013/016/017/018*.md`:
   - Replace the Call B prepend-agent-body shape with `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1`
   - Update sandbox setup to include the command-capable temp-root copy
   - Adjust expected-signal grep contracts to match 062's emissions (most already done by 062's stage 6, but verify)
@@ -141,7 +141,7 @@ Switch the dispatch shape, run R1 against 062's wiring, document honest results,
 - **Predecessor (substrate):** `../005-improve-agent-executable-wiring/handover.md` — 062's hand-off pointer
 - **Methodology template:** `../059-agent-implement-code/test-report.md` — 11-section ANCHOR structure
 - **Existing CP scenarios to modify:**
-  - `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` (CP-040)
+  - `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/013-skill-load-not-protocol.md` (CP-040)
   - `014-proposal-only-boundary.md` (CP-041 — body-level)
   - `015-active-critic-overfit.md` (CP-042 — body-level)
   - `016-legal-stop-gate-bundle.md` (CP-043)
