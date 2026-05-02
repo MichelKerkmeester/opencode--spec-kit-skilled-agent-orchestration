@@ -25,10 +25,12 @@
       "command-flow-stress",
       "060-methodology"
     ],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
-    "is_phase_parent": false
+    "is_phase_parent": false,
+    "cps_authored": 6,
+    "sandbox_helper_authored": true
   }
 }
