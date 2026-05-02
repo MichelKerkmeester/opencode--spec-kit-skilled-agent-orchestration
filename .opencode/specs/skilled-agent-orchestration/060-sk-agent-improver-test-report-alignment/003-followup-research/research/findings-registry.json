@@ -1,0 +1,22 @@
+{
+  "openQuestions": [
+    {"id": "RQ-1", "text": "Of 6 P0/P1 diffs in 002, which need further iteration?", "status": "open"},
+    {"id": "RQ-2", "text": "Exact dispatch shape for 063 Call B?", "status": "open"},
+    {"id": "RQ-3", "text": "Grep contract for 063 Call B verdict?", "status": "open"},
+    {"id": "RQ-4", "text": "Other meta-agents with command-orchestrator pattern?", "status": "open"},
+    {"id": "RQ-5", "text": "Gaps 060/001 missed that R1 surfaced?", "status": "open"},
+    {"id": "RQ-6", "text": "Right rubric for meta-agent stress tests?", "status": "open"},
+    {"id": "RQ-7", "text": "Reusable test-layer-selection template?", "status": "open"}
+  ],
+  "resolvedQuestions": [],
+  "keyFindings": [],
+  "ruledOutDirections": [],
+  "metrics": {
+    "iterationsCompleted": 0,
+    "openQuestions": 7,
+    "resolvedQuestions": 0,
+    "keyFindings": 0,
+    "convergenceScore": 0,
+    "coverageBySources": {}
+  }
+}

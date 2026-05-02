@@ -1,0 +1,31 @@
+{
+  "topic": "Followup research on 060/002 R1 results — given 0/2/4 score + test-layer-selection meta-finding, how do we further improve sk-improve-agent + the testing methodology + downstream packets?",
+  "maxIterations": 10,
+  "convergenceThreshold": 0.05,
+  "stuckThreshold": 3,
+  "maxDurationMinutes": 120,
+  "maxToolCallsPerIteration": 12,
+  "maxMinutesPerIteration": 10,
+  "progressiveSynthesis": true,
+  "specFolder": "specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research",
+  "createdAt": "2026-05-02T13:00:00Z",
+  "status": "initialized",
+  "executionMode": "auto",
+  "executor": {
+    "type": "cli-copilot",
+    "model": "gpt-5.5",
+    "reasoningEffort": null,
+    "serviceTier": null,
+    "sandboxMode": null,
+    "timeoutSeconds": 900
+  },
+  "lineage": {
+    "sessionId": "claude-2026-05-02-060-003-followup",
+    "parentSessionId": null,
+    "lineageMode": "new",
+    "allowedModes": ["new", "resume", "restart"],
+    "deferredModes": ["fork", "completed-continue"],
+    "generation": 1,
+    "continuedFromRun": null
+  }
+}

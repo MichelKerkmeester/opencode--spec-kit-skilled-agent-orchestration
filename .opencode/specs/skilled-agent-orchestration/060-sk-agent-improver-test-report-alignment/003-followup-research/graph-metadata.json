@@ -1,0 +1,223 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research",
+  "spec_folder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research",
+  "parent_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [],
+    "supersedes": [],
+    "related_to": []
+  },
+  "derived": {
+    "trigger_phrases": [
+      "060/003",
+      "060 followup research",
+      "improve sk-improve-agent further",
+      "060/003 plan",
+      "060/003 tasks",
+      "060/003 checklist",
+      "060/003 ADRs",
+      "060/003 implementation summary",
+      "060/003 handover",
+      "060/003 resource map"
+    ],
+    "key_topics": [
+      "060",
+      "003",
+      "followup",
+      "research",
+      "improve",
+      "sk-improve-agent",
+      "plan",
+      "tasks",
+      "checklist",
+      "adrs",
+      "implementation",
+      "summary"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      "implementation-summary.md",
+      ".opencode/agent/improve-agent.md",
+      ".opencode/agent/write.md",
+      ".opencode/agent/improve-prompt.md",
+      ".opencode/agent/debug.md",
+      ".opencode/agent/deep-research.md",
+      ".opencode/agent/deep-review.md",
+      ".opencode/agent/context.md",
+      ".opencode/agent/orchestrate.md",
+      ".opencode/agent/review.md",
+      ".opencode/agent/code.md",
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "handover.md",
+      "resource-map.md"
+    ],
+    "entities": [
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-agent.md",
+        "kind": "doc",
+        "path": ".opencode/agent/improve-agent.md",
+        "source": "derived"
+      },
+      {
+        "name": "write.md",
+        "kind": "doc",
+        "path": ".opencode/agent/write.md",
+        "source": "derived"
+      },
+      {
+        "name": "improve-prompt.md",
+        "kind": "doc",
+        "path": ".opencode/agent/improve-prompt.md",
+        "source": "derived"
+      },
+      {
+        "name": "debug.md",
+        "kind": "doc",
+        "path": ".opencode/agent/debug.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-research.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-research.md",
+        "source": "derived"
+      },
+      {
+        "name": "deep-review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/deep-review.md",
+        "source": "derived"
+      },
+      {
+        "name": "context.md",
+        "kind": "doc",
+        "path": ".opencode/agent/context.md",
+        "source": "derived"
+      },
+      {
+        "name": "orchestrate.md",
+        "kind": "doc",
+        "path": ".opencode/agent/orchestrate.md",
+        "source": "derived"
+      },
+      {
+        "name": "review.md",
+        "kind": "doc",
+        "path": ".opencode/agent/review.md",
+        "source": "derived"
+      },
+      {
+        "name": "code.md",
+        "kind": "doc",
+        "path": ".opencode/agent/code.md",
+        "source": "derived"
+      },
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "handover.md",
+        "kind": "doc",
+        "path": "handover.md",
+        "source": "derived"
+      },
+      {
+        "name": "resource-map.md",
+        "kind": "doc",
+        "path": "resource-map.md",
+        "source": "derived"
+      },
+      {
+        "name": "Feature Specification",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Followup Research",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Key Decisions",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Problem Statement",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Purpose Run",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "In Scope",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
+    ],
+    "causal_summary": "Packet 060/002 ran R1 stress tests (CP-040..CP-045) and scored 0 PASS / 2 PARTIAL / 4 FAIL. The failures surfaced a methodology-level meta-finding: the 059 same-task A/B prepend-agent-body pattern works when discipline lives in the agent body (like @code) but breaks when discipline lives at the command/orchestrator layer above the agent body (like @improve-agent — proposal-only mutator per ADR-001).",
+    "created_at": "2026-05-02T11:15:18.846Z",
+    "last_save_at": "2026-05-02T11:15:18.846Z",
+    "save_lineage": "same_pass",
+    "last_accessed_at": null,
+    "source_docs": [
+      "spec.md",
+      "plan.md",
+      "tasks.md",
+      "checklist.md",
+      "decision-record.md",
+      "implementation-summary.md",
+      "handover.md",
+      "resource-map.md"
+    ]
+  }
+}

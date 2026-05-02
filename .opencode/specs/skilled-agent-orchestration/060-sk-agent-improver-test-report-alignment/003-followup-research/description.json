@@ -1,0 +1,24 @@
+{
+  "specFolder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research",
+  "description": "Feature Specification: Followup Research on 060/002 R1 Results",
+  "keywords": [
+    "feature",
+    "specification",
+    "followup",
+    "research",
+    "060",
+    "002",
+    "results"
+  ],
+  "lastUpdated": "2026-05-02T11:15:18.846Z",
+  "specId": "003",
+  "folderSlug": "followup-research",
+  "parentChain": [
+    "skilled-agent-orchestration",
+    "060-sk-agent-improver-test-report-alignment"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": [
+    "02-05-26_12-15__phase-003-of-060-research-only-follow-up-to-002.md"
+  ]
+}
