@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 ---
 title: "Implementation Summary: 060 — sk-improve-agent Test-Report Alignment"
-description: "Research-only packet completed. 10 cli-copilot iterations + 1 synthesis call produced 854-line research/research.md covering all 7 RQs with 11 sketched CP-XXX scenarios and prioritized diff sketches for the sk-improve-agent triad. Implementation deferred to packet 061."
+description: "Research-only packet completed. 10 cli-copilot iterations + 1 synthesis call produced 854-line research/research.md covering all 7 RQs with 11 sketched CP-XXX scenarios and prioritized diff sketches for the sk-improve-agent triad. Implementation deferred to packet 004 (was 061)."
 trigger_phrases:
   - "060 implementation summary"
   - "060 research findings"
@@ -13,7 +13,7 @@ _memory:
     last_updated_at: "2026-05-02T11:35:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Synthesis complete; research.md authored"
-    next_safe_action: "Hand off to packet 061 for implementation"
+    next_safe_action: "Hand off to packet 004 (was 061) for implementation"
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/research/research.md
@@ -24,9 +24,9 @@ _memory:
     open_questions: []
     answered_questions:
       - "All 7 RQs answered with file:line citations across 10 iterations"
-      - "11 CP-XXX scenarios sketched (CP-040 through CP-050+) for packet 061 to author as real playbook entries"
+      - "11 CP-XXX scenarios sketched (CP-040 through CP-050+) for packet 004 (was 061) to author as real playbook entries"
       - "Recommended fixture-target design: small controlled agent-under-improvement"
-      - "Top 3 recommendations identified: ordered evidence chain in Call B, active CRITIC pass in improve-agent.md, test-first packet 061"
+      - "Top 3 recommendations identified: ordered evidence chain in Call B, active CRITIC pass in improve-agent.md, test-first packet 004 (was 061)"
 ---
 
 # Implementation Summary: 060 — sk-improve-agent Test-Report Alignment
@@ -44,7 +44,7 @@ Packet 060 took the testing methodology from packet 059 (`@code` stress-test cam
 
 1. **Make Call B prove an ordered evidence chain, not just produce plausible artifacts.** Iteration 10's clearest framing: mirror inventory must be correct before `integrationGate` is trusted; baseline/delta evidence must exist before `improvementGate` is trusted; `benchmark_completed`, `legal_stop_evaluated`, `blocked_stop` must be journal events, not prose in a dashboard.
 2. **Add an active CRITIC pass to `.opencode/agent/improve-agent.md`** before "If ANY box is unchecked." The mutator currently has anti-pattern reference text but no adversarial challenge — packet 059 §9 L2's lesson directly applies (anti-patterns are reactive; Critic challenges are preventive).
-3. **Make packet 061 test-first.** Author CP-040 onward scenarios before broad rewrites, then run the same 059-style score progression against a small controlled agent-under-improvement.
+3. **Make packet 004 (was 061) test-first.** Author CP-040 onward scenarios before broad rewrites, then run the same 059-style score progression against a small controlled agent-under-improvement.
 
 **Iteration count:** 10 / 10 (max-cap reached; no early convergence)
 **Total research lines on disk:** ~1614 lines across iterations + 854 lines synthesis = 2468 lines
@@ -74,9 +74,9 @@ See `research/research.md` §3 for full evidence chains.
 ---
 
 <!-- ANCHOR:handoff-061 -->
-## Handoff to Packet 061
+## Handoff to Packet 004 (was 061)
 
-When packet 061 starts, read this packet's `research/research.md` first. The §8 "Hand-off Notes for Packet 061" section in research.md provides:
+When packet 004 (was 061) starts, read this packet's `research/research.md` first. The §8 "Hand-off Notes for Packet 004 (was 061)" section in research.md provides:
 
 - Recommended packet structure (suggested name: `061-sk-improve-agent-stress-test-implementation`)
 - Recommended task ordering (test-first: scenarios → fixture → diffs → multi-round runs → test-report.md)

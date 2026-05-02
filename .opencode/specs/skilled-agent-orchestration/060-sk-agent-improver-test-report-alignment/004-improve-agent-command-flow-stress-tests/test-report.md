@@ -10,16 +10,16 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T15:45:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "R2 cleanup complete via direct Bash dispatch; final composite PASS 5 / PARTIAL 1 / FAIL 0"
     next_safe_action: "Methodology campaign complete; consider follow-on packets for @deep-research/@deep-review command-flow stress"
     blockers: []
     key_files:
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
       - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md
       - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md
     completion_pct: 100
@@ -91,7 +91,7 @@ The suite used per-CP layer partition.
 | CP-044 | command-flow | `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-044-spec --iterations=1` |
 | CP-045 | command-flow | `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-045-spec --iterations=1` |
 
-The setup helper at `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` created command-capable temp roots. Each command-flow scenario got a local `.opencode/command/improve/`, `.opencode/skill/sk-improve-agent/`, target fixture, runtime mirrors, benchmark profiles, benchmark fixtures, and a per-CP spec folder under `/tmp/cp-NNN-spec`.
+The setup helper at `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` created command-capable temp roots. Each command-flow scenario got a local `.opencode/command/improve/`, `.opencode/skill/sk-improve-agent/`, target fixture, runtime mirrors, benchmark profiles, benchmark fixtures, and a per-CP spec folder under `/tmp/cp-NNN-spec`.
 
 The command-flow calls used both roots:
 
@@ -236,7 +236,7 @@ The scoped source change was 7 files: 6 playbook scenarios modified plus 1 sandb
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | 21 lines touched |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | 27 lines touched |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | 32 lines touched |
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | 80 lines added |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | 80 lines added |
 
 **Stat:** 169 insertions, 76 deletions.
 
@@ -279,9 +279,9 @@ No sk-improve-agent runtime source was changed in 061. The point of this packet 
 ### Stress run outputs
 
 ```text
-.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
-.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
-.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/raw-verdicts.txt
+.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
+.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
+.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/raw-verdicts.txt
 ```
 
 ### Per-scenario field counts
@@ -309,7 +309,7 @@ No sk-improve-agent runtime source was changed in 061. The point of this packet 
 ### Sandbox helper and generated roots
 
 ```text
-.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
+.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
 /tmp/cp-040-spec/improvement/
 /tmp/cp-041-spec/improvement/
 /tmp/cp-042-spec/improvement/

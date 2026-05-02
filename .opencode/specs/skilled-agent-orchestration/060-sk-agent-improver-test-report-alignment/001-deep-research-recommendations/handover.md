@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: handover-core | v2.2 -->
 ---
 title: "Handover: 060 — sk-improve-agent Test-Report Alignment"
-description: "Packet complete. Research synthesized. Hand-off to packet 061 for implementation."
+description: "Packet complete. Research synthesized. Hand-off to packet 004 (was 061) for implementation."
 trigger_phrases:
   - "060 handover"
   - "060 resume"
@@ -14,7 +14,7 @@ _memory:
     last_updated_at: "2026-05-02T11:35:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Packet complete; research.md synthesized"
-    next_safe_action: "Optionally commit + push to main; hand off to packet 061"
+    next_safe_action: "Optionally commit + push to main; hand off to packet 004 (was 061)"
     blockers: []
     key_files: []
     completion_pct: 100
@@ -33,7 +33,7 @@ _memory:
 
 **Phase:** COMPLETE
 **Last action:** research.md synthesized from 10 cli-copilot iterations
-**Next action:** Optionally commit + push to main; hand off to packet 061 for implementation
+**Next action:** Optionally commit + push to main; hand off to packet 004 (was 061) for implementation
 **Blockers:** None
 
 ### Phase 1 (scaffold + bootstrap) — COMPLETE
@@ -57,7 +57,7 @@ _memory:
 
 If resuming from a fresh session:
 
-> Packet 060 is COMPLETE. Read `research/research.md` for the synthesis. The next packet (061) should start by reading research.md §8 "Hand-off Notes for Packet 061" — it specifies recommended packet structure, task ordering, top-priority diff sketches, top scenarios to author first, and recommended fixture-target.
+> Packet 060 is COMPLETE. Read `research/research.md` for the synthesis. The next packet (061) should start by reading research.md §8 "Hand-off Notes for Packet 004 (was 061)" — it specifies recommended packet structure, task ordering, top-priority diff sketches, top scenarios to author first, and recommended fixture-target.
 
 If 061 is being scaffolded:
 
@@ -71,7 +71,7 @@ If 061 is being scaffolded:
 
 Files to read first when resuming or starting 061:
 
-1. **`research/research.md`** — 854-line synthesis with §1 Executive Summary, §3 Gap Analysis (per RQ), §4 Scenario Sketches (CP-040+), §5 Diff Sketches (per target file), §6 Fixture-Target, §7 Lessons Learned, §8 Hand-off Notes for Packet 061
+1. **`research/research.md`** — 854-line synthesis with §1 Executive Summary, §3 Gap Analysis (per RQ), §4 Scenario Sketches (CP-040+), §5 Diff Sketches (per target file), §6 Fixture-Target, §7 Lessons Learned, §8 Hand-off Notes for Packet 004 (was 061)
 2. **`implementation-summary.md`** — RQ-by-RQ headline findings + handoff highlights
 3. **`spec.md`** — original goal, scope, 7 research questions
 4. **`decision-record.md`** — 4 ADRs governing executor / cap / scope / target choice
@@ -112,16 +112,16 @@ Files to read first when resuming or starting 061:
 - §5 Diff Sketches (per target file: SKILL.md, improve-agent.md, /improve:agent.md, score-candidate.cjs, scan-integration.cjs)
 - §6 Fixture-Target Recommendation
 - §7 Lessons Learned (mirroring 059 §9 structure)
-- §8 Hand-off Notes for Packet 061
+- §8 Hand-off Notes for Packet 004 (was 061)
 - §9 Artifacts
 
 ### Top 3 recommendations summary
 
 1. Make Call B prove an ordered evidence chain (mirror inventory → baseline/delta → benchmark boundary → legal-stop) instead of just artifact presence
 2. Add active CRITIC pass to improve-agent.md before "If ANY box is unchecked"
-3. Make packet 061 test-first: author CP-040+ scenarios before broad rewrites; run 059-style multi-round score progression
+3. Make packet 004 (was 061) test-first: author CP-040+ scenarios before broad rewrites; run 059-style multi-round score progression
 
 ### Recommended next-packet (061) starting prompt
 
-> Start packet 061 at `specs/skilled-agent-orchestration/061-sk-improve-agent-stress-test-implementation/`. Apply the diff sketches from 060/research.md §5 (P0 first: §6.5 CRITIC PASS in improve-agent.md, `legal_stop_evaluated` 5-gate bundle in auto YAML, baseline/delta wiring in score-candidate.cjs, `.gemini/agents` mirror path fix in scan-integration.cjs). Author CP-040 through CP-045 as real playbook entries under `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/`. Mirror agent edits across 4 runtimes (.opencode/.claude/.gemini/.codex). Run multi-round stress tests using the fixture-target from 060/research.md §6. Produce `test-report.md` mirroring 059's structure (§9 lessons-learned, anchored sections, transcript pull-quotes).
+> Start packet 004 (was 061) at `specs/skilled-agent-orchestration/061-sk-improve-agent-stress-test-implementation/`. Apply the diff sketches from 060/research.md §5 (P0 first: §6.5 CRITIC PASS in improve-agent.md, `legal_stop_evaluated` 5-gate bundle in auto YAML, baseline/delta wiring in score-candidate.cjs, `.gemini/agents` mirror path fix in scan-integration.cjs). Author CP-040 through CP-045 as real playbook entries under `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/`. Mirror agent edits across 4 runtimes (.opencode/.claude/.gemini/.codex). Run multi-round stress tests using the fixture-target from 060/research.md §6. Produce `test-report.md` mirroring 059's structure (§9 lessons-learned, anchored sections, transcript pull-quotes).
 <!-- /ANCHOR:phase-2-handoff -->

@@ -7,17 +7,17 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T15:45:00Z"
     last_updated_by: "codex-gpt-5"
     recent_action: "R2 complete via direct Bash; final composite PASS 5 / PARTIAL 1 / FAIL 0"
     next_safe_action: "Methodology campaign complete; consider follow-on packets for @deep-research/@deep-review command-flow stress, or for CP-042 body-discipline gap"
     blockers: []
     key_files:
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/test-report.md
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
-      - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/test-report.md
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
     completion_pct: 100
     open_questions:
       - "Is CP-042's remaining PARTIAL a body-discipline gap or scenario-bait weakness? Either way it's a follow-on packet, not a 061 blocker."
@@ -44,7 +44,7 @@ _memory:
 | 061 R1 score | PASS 3 / PARTIAL 2 / FAIL 1 |
 | 061 R2 score (CP-041/042/045) | PASS 2 / PARTIAL 1 / FAIL 0 |
 | **Final composite score** | **PASS 5 / PARTIAL 1 / FAIL 0** (CP-040, CP-041, CP-043, CP-044, CP-045 PASS; CP-042 PARTIAL — body-discipline gap) |
-| test-report.md path | `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/test-report.md` |
+| test-report.md path | `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/test-report.md` |
 | Close-out commit | `1203b345f` |
 <!-- /ANCHOR:metadata -->
 
@@ -63,7 +63,7 @@ The implementation commit modified six active playbook scenario files and added 
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/016-legal-stop-gate-bundle.md` | CP-043 command-flow dispatch and nested gate grep contract |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/017-improvement-gate-delta.md` | CP-044 command-flow dispatch and baseline/delta grep contract |
 | `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/018-benchmark-completed-boundary.md` | CP-045 command-flow dispatch and benchmark-boundary grep contract |
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | Command-capable temp root setup |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh` | Command-capable temp root setup |
 
 Diff stat for those files: 169 insertions, 76 deletions.
 <!-- /ANCHOR:what-built -->
@@ -101,17 +101,17 @@ Evidence files:
 
 | Artifact | Purpose |
 |---|---|
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md` | R1 score and per-scenario verdicts |
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r2-summary.md` | R2 source fixes and auth-blocked rerun status |
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r2-raw-verdicts.txt` | Exact R2 exit codes and field counts |
-| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt` | Full scenario transcript log |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md` | R1 score and per-scenario verdicts |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r2-summary.md` | R2 source fixes and auth-blocked rerun status |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r2-raw-verdicts.txt` | Exact R2 exit codes and field counts |
+| `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt` | Full scenario transcript log |
 | `/tmp/cp-04?-B-field-counts.txt` | Per-scenario grep count evidence |
 | `/tmp/cp-045-spec/improvement/benchmark-outputs/report.json` | Direct benchmark status artifact for CP-045 |
 
 Strict validation was run with:
 
 ```bash
-bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests --strict --verbose
+bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests --strict --verbose
 ```
 
 It still fails on pre-existing packet template scaffold issues in `spec.md`, `plan.md`, `tasks.md`, `checklist.md`, and `decision-record.md`, plus checklist priority warnings. The close-out files have no `[TBD]` placeholders, and `test-report.md` has 11 opening and 11 closing ANCHOR pairs.

@@ -99,8 +99,8 @@ The renumbering commit (`f061a654d`) updated forward-looking references (063→0
 ## Outputs of this packet (consumed by 062 + 061)
 
 - `research/research.md` §3 — Per-RQ findings (validated all 7 RQs)
-- `research/research.md` §4 — Packet 061 sketch (command-flow Call B shape)
-- `research/research.md` §5 — Packet 062 sketch (5 P0 wirings; static skill assets decision)
+- `research/research.md` §4 — Packet 004 (was 061) sketch (command-flow Call B shape)
+- `research/research.md` §5 — Packet 005 (was 062) sketch (5 P0 wirings; static skill assets decision)
 - `research/research.md` §6 — Other meta-agent audit (@deep-research + @deep-review same pattern)
 - `research/research.md` §7 — Reusable 11-dimension rubric + 13-question authoring preflight
 - `research/research.md` §8 — Evidence matrix (which signal owned by which layer)

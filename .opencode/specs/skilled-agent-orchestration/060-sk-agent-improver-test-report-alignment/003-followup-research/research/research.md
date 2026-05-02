@@ -10,7 +10,7 @@ _memory:
     last_updated_at: "2026-05-02T13:41:52+02:00"
     last_updated_by: "codex-gpt-5"
     recent_action: "Synthesized 10 cli-copilot deep-research iterations into final research.md"
-    next_safe_action: "Use handover.md to start packet 061 or 062"
+    next_safe_action: "Use handover.md to start packet 004 (was 061) or 062"
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md
@@ -26,7 +26,7 @@ _memory:
 <!-- ANCHOR:synthesis -->
 ## 1. EXECUTIVE SUMMARY
 
-The main recommendation is to split the next work by proof layer. Packet 061 should prove the corrected command-flow harness and classify remaining failures honestly; packet 062 should wire the executable producers and consumers needed for a product GREEN. Iterations 6, 8, 9, and 10 converged on that split: 061 owns command-flow methodology and/or active CP contract correction, while 062 owns benchmark materialization, nested legal-stop shape, stop vocabulary, YAML parity, and native runtime-truth reconciliation [iteration-006.md:72-78; iteration-008.md:123-154; iteration-009.md:28-35; iteration-010.md:42-50].
+The main recommendation is to split the next work by proof layer. Packet 004 (was 061) should prove the corrected command-flow harness and classify remaining failures honestly; packet 005 (was 062) should wire the executable producers and consumers needed for a product GREEN. Iterations 6, 8, 9, and 10 converged on that split: 061 owns command-flow methodology and/or active CP contract correction, while 062 owns benchmark materialization, nested legal-stop shape, stop vocabulary, YAML parity, and native runtime-truth reconciliation [iteration-006.md:72-78; iteration-008.md:123-154; iteration-009.md:28-35; iteration-010.md:42-50].
 
 R1 did not show that `sk-improve-agent` is hopeless. It showed that CP-040..CP-045 used the wrong authority source for several claims. The old Call B prepended the `@improve-agent` body and hit the proposal-only mutator, while the expected evidence lived in `/improve:agent`, YAML steps, helper scripts, journals, reducers, and benchmark artifacts [002/test-report.md:75-98; 002/test-report.md:144-185; 002/test-report.md:246-253]. The follow-on test must therefore invoke the command layer when asserting command-owned evidence.
 
@@ -106,7 +106,7 @@ It must run from a command-capable temp project root containing `.opencode/comma
 
 ## 4. PACKET 061 SKETCH (Command-Flow Stress Tests)
 
-- **Packet name suggestion:** `061-improve-agent-command-flow-stress-tests` for the follow-on named in 002. If the packet is methodology-only, use a subtitle such as "spec-local RED/PARTIAL command-flow proof" to avoid implying product GREEN [002/test-report.md:373-383; iteration-009.md:28-35].
+- **Packet name suggestion:** `004-improve-agent-command-flow-stress-tests` for the follow-on named in 002. If the packet is methodology-only, use a subtitle such as "spec-local RED/PARTIAL command-flow proof" to avoid implying product GREEN [002/test-report.md:373-383; iteration-009.md:28-35].
 - **Spec scope:** In scope: command-capable temp root, `/improve:agent` Call B, artifact-root checks, layer-specific CP lanes, RED/PARTIAL classification for known executable seams, and handoff to 062. Out of scope unless explicitly expanded: benchmark materializer, YAML auto/confirm parity patches, stop enum reconciliation, native RT repair, and GREEN rerun [iteration-006.md:72-78; iteration-009.md:134-148].
 - **Call B dispatch shape:** `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1`, run from a temp project root containing command files, skill scripts, target agent, mirrors, fixture data, and allowed external spec/log paths [iteration-003.md:22-34; iteration-003.md:97-117].
 - **CP IDs:** Reuse CP-040..CP-045 for active playbook corrections. Use CP-046..CP-051 only for a spec-local experimental suite or if CP-040..CP-045 are explicitly archived/deprecated from the active root index [iteration-007.md:47-65; iteration-007.md:100-115; iteration-009.md:22-35].
@@ -201,12 +201,12 @@ The authoring preflight every CP-XXX scenario author must answer BEFORE writing 
 
 ## 9. HAND-OFF NOTES
 
-### To packet 061 (command-flow stress tests)
+### To packet 004 (was 061) (command-flow stress tests)
 
 Recommended starting prompt:
 
 ```text
-Create 061-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing .opencode/command/improve, .opencode/skill/sk-improve-agent, and the cp-improve-target fixture. For command-owned scenarios, invoke:
+Create 004-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing .opencode/command/improve, .opencode/skill/sk-improve-agent, and the cp-improve-target fixture. For command-owned scenarios, invoke:
 
 /improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1
 
@@ -223,7 +223,7 @@ Use a layer-owned evidence matrix per CP. Keep expected-RED/PARTIAL methodology 
 
 Score-progression target: 061 methodology PASS with honest RED/PARTIAL product findings; 062 GREEN product PASS after wiring; optional 063 GREEN rerun if the 062 diff is large [iteration-006.md:72-78; iteration-008.md:147-154; iteration-010.md:44-48].
 
-### To packet 062 (further sk-improve-agent edits, if recommended)
+### To packet 005 (was 062) (further sk-improve-agent edits, if recommended)
 
 Recommended starting prompt:
 

@@ -1,5 +1,5 @@
 {
-  "specFolder": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+  "specFolder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring",
   "description": "Wire executable producers + consumers across sk-improve-agent's command-flow pipeline",
   "keywords": ["062", "sk-improve-agent", "executable-wiring", "benchmark", "legal-stop", "static-skill-assets"],
   "lastUpdated": "2026-05-02T14:00:00Z",

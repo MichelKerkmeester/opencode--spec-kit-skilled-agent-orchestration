@@ -7,7 +7,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/062-improve-agent-executable-wiring"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring"
     last_updated_at: "2026-05-02T14:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Stages 2-6 executable wiring completed"
@@ -28,7 +28,7 @@ _memory:
 
 ## Summary
 
-[062-improve-agent-executable-wiring] Stages 2-6 are implemented.
+[005-improve-agent-executable-wiring] Stages 2-6 are implemented.
 
 - Stages completed: 6 / 6 (Stage 1 pre-existing; Stages 2-6 landed here)
 - REQ status: REQ-001..REQ-007, REQ-101..REQ-103 complete. REQ-008 verified by helper/static RT checks; full command-flow scenario run deferred to 061. REQ-201 deferred to 061.

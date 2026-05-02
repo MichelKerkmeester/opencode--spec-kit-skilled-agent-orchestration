@@ -21,7 +21,7 @@ _memory:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/002-stress-test-implementation/stress-runs/stage4-summary.md
     completion_pct: 100
     open_questions:
-      - "Should follow-on packet 061 preserve CP-040..CP-045 IDs or clone them as command-flow variants?"
+      - "Should follow-on packet 004 (was 061) preserve CP-040..CP-045 IDs or clone them as command-flow variants?"
     answered_questions:
       - "Rounds run → 1 (R1 only)"
       - "Final score → PASS 0 / PARTIAL 2 / FAIL 4 out of 6"
@@ -92,7 +92,7 @@ Tripwire-dirty verdicts are false positives for scenario mutation. They reflect 
 <!-- ANCHOR:handoff -->
 ## Hand-off Notes
 
-Recommended follow-on packet: `061-improve-agent-command-flow-stress-tests`.
+Recommended follow-on packet: `004-improve-agent-command-flow-stress-tests`.
 
 The deferred work is not "fix CP-040..CP-045 wording." The real task is to restructure Call B so it invokes `/improve:agent` through the command/YAML workflow. Evidence should come from command logs, generated `improvement/` artifacts, scorer JSON, and `improvement-journal.jsonl`, not only the prepended agent-body transcript.
 

@@ -7,7 +7,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/062-improve-agent-executable-wiring"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring"
     last_updated_at: "2026-05-02T14:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Stages 2-6 implemented and verified"

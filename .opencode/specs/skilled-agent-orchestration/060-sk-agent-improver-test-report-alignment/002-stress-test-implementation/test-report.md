@@ -372,7 +372,7 @@ The six scenario files exist at `.opencode/skill/cli-copilot/manual_testing_play
 
 ### Recommended follow-on packet
 
-Create `061-improve-agent-command-flow-stress-tests`. Its job is to restructure CP-040 through CP-045 so Call B invokes `/improve:agent` through the command/YAML workflow, then re-run stress tests against the orchestrator-level flow.
+Create `004-improve-agent-command-flow-stress-tests`. Its job is to restructure CP-040 through CP-045 so Call B invokes `/improve:agent` through the command/YAML workflow, then re-run stress tests against the orchestrator-level flow.
 
 The follow-on should keep the same six scenario claims, but change the runner evidence:
 

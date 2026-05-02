@@ -7,7 +7,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/062-improve-agent-executable-wiring"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring"
     last_updated_at: "2026-05-02T14:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Stages 2-6 executable wiring completed"
@@ -36,7 +36,7 @@ _memory:
 **Next:** Start 061 and run command-flow CP stress tests against the new wiring
 
 ## Resume Prompt
-> Start 061-improve-agent-command-flow-stress-tests. The 062 wiring is in place: static benchmark profile/fixtures materialize to `{spec_folder}/improvement/benchmark-outputs`, `run-benchmark.cjs` writes `report.json` and appends `benchmark_run`, both YAML modes gate `benchmark_completed` on report existence, and `legal_stop_evaluated` now emits nested `details.gateResults`.
+> Start 004-improve-agent-command-flow-stress-tests. The 062 wiring is in place: static benchmark profile/fixtures materialize to `{spec_folder}/improvement/benchmark-outputs`, `run-benchmark.cjs` writes `report.json` and appends `benchmark_run`, both YAML modes gate `benchmark_completed` on report existence, and `legal_stop_evaluated` now emits nested `details.gateResults`.
 
 ## Gotchas (carried forward)
 - Stay on main; no feature branches
@@ -47,7 +47,7 @@ _memory:
 - v3.0.0 strict-validate template-shape errors are pre-existing, not blocking
 
 ## 061 Hand-Off (after 062 ships)
-> Start 061-improve-agent-command-flow-stress-tests. Restructure CP-040..045 to invoke `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1` from a command-capable temp project root. The producer/consumer wiring 062 just shipped means GREEN is now achievable instead of "expected RED methodology evidence."
+> Start 004-improve-agent-command-flow-stress-tests. Restructure CP-040..045 to invoke `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1` from a command-capable temp project root. The producer/consumer wiring 062 just shipped means GREEN is now achievable instead of "expected RED methodology evidence."
 
 061-specific notes:
 - CP-043 should grep `details.gateResults` plus all five gate keys, not flat `gateResult`.

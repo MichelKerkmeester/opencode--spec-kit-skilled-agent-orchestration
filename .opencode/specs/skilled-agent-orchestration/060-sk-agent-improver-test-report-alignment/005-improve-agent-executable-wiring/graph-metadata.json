@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "packet_id": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
-  "spec_folder": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+  "packet_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring",
+  "spec_folder": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring",
   "parent_id": null,
   "children_ids": [],
   "manual": {
@@ -10,7 +10,7 @@
     ],
     "supersedes": [],
     "related_to": [
-      "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     ]
   },
   "derived": {
@@ -32,7 +32,7 @@
     "importance_tier": "high",
     "status": "in_progress",
     "key_files": [
-      ".opencode/specs/skilled-agent-orchestration/062-improve-agent-executable-wiring/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring/spec.md",
       ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md",
       ".opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
       ".opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs",

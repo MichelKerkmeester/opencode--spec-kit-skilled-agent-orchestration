@@ -7,7 +7,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T16:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Resource map updated with full added/updated file inventory from R1 + R2 commits"
@@ -39,7 +39,7 @@ Shipped across **3 commits**:
 ### Spec docs (8 markdown + 2 JSON)
 
 ```
-.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/
+.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/
 ├── spec.md
 ├── plan.md
 ├── tasks.md
@@ -55,21 +55,21 @@ Shipped across **3 commits**:
 ### Sandbox setup helper
 
 ```
-.opencode/specs/.../061-improve-agent-command-flow-stress-tests/
+.opencode/specs/.../004-improve-agent-command-flow-stress-tests/
 └── setup-cp-061-sandbox.sh         (80 lines; idempotent build of /tmp/cp-NNN-sandbox/ with 4-runtime mirror skeleton)
 ```
 
 ### Test report
 
 ```
-.opencode/specs/.../061-improve-agent-command-flow-stress-tests/
+.opencode/specs/.../004-improve-agent-command-flow-stress-tests/
 └── test-report.md                  (356 lines, 11 ANCHOR pairs; mirrors 059 structure)
 ```
 
 ### Stress-runs evidence
 
 ```
-.opencode/specs/.../061-improve-agent-command-flow-stress-tests/stress-runs/
+.opencode/specs/.../004-improve-agent-command-flow-stress-tests/stress-runs/
 ├── r1-summary.md                   (R1 verdict table)
 ├── r1-run-log.txt                  (~2733-line full R1 transcript)
 ├── raw-verdicts.txt                (R1 raw per-CP verdicts)

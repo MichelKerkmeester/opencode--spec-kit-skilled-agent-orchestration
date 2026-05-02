@@ -44,7 +44,7 @@ Top recommendations:
 
 ## 061 Hand-Off Prompt
 
-> Create 061-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing `.opencode/command/improve`, `.opencode/skill/sk-improve-agent`, and the `cp-improve-target` fixture. For command-owned scenarios, invoke `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1`. Partition CP-040..CP-045 by owning layer: CP-041/042 may remain leaf/body tests with full required inputs; CP-040/043/044/045 need command-flow lanes. Keep expected-RED/PARTIAL methodology evidence packet-local unless active playbook contracts can honestly pass under PASS/PARTIAL/FAIL/SKIP release rules. Reuse CP-040..CP-045 for active corrections; use successor IDs only for spec-local experiments or explicit archival.
+> Create 004-improve-agent-command-flow-stress-tests. Build a command-capable temp project root containing `.opencode/command/improve`, `.opencode/skill/sk-improve-agent`, and the `cp-improve-target` fixture. For command-owned scenarios, invoke `/improve:agent ".opencode/agent/cp-improve-target.md" :auto --spec-folder=/tmp/cp-061-spec --iterations=1`. Partition CP-040..CP-045 by owning layer: CP-041/042 may remain leaf/body tests with full required inputs; CP-040/043/044/045 need command-flow lanes. Keep expected-RED/PARTIAL methodology evidence packet-local unless active playbook contracts can honestly pass under PASS/PARTIAL/FAIL/SKIP release rules. Reuse CP-040..CP-045 for active corrections; use successor IDs only for spec-local experiments or explicit archival.
 
 ## 062 Hand-Off Prompt
 

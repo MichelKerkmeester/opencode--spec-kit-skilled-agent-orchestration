@@ -39,7 +39,7 @@ _memory:
 
 Packet 060/002 ran R1 stress tests (CP-040..CP-045) and scored 0 PASS / 2 PARTIAL / 4 FAIL. The failures surfaced a methodology-level meta-finding: the 059 same-task A/B prepend-agent-body pattern works when discipline lives in the agent body (like @code) but breaks when discipline lives at the command/orchestrator layer above the agent body (like @improve-agent — proposal-only mutator per ADR-001).
 
-Phase 003 takes those two artifacts (R1 scores + meta-finding) as the input to 10 cli-copilot deep-research iterations and produces concrete recommendations for: (a) how to actually improve sk-improve-agent further given what R1 showed, (b) how packet 061 should structure its command-flow stress tests, (c) whether other meta-agents in the system need the same treatment, (d) how to generalize the test-layer-selection lesson into a reusable testing template.
+Phase 003 takes those two artifacts (R1 scores + meta-finding) as the input to 10 cli-copilot deep-research iterations and produces concrete recommendations for: (a) how to actually improve sk-improve-agent further given what R1 showed, (b) how packet 004 (was 061) should structure its command-flow stress tests, (c) whether other meta-agents in the system need the same treatment, (d) how to generalize the test-layer-selection lesson into a reusable testing template.
 
 **Key Decisions:** ADR-1 cli-copilot+gpt-5.5 executor (matches 060/001+059 success pattern); ADR-2 10-iter cap with convergence; ADR-3 research-only scope (no source edits this packet); ADR-4 build on 060/002 R1 transcripts as primary evidence (don't re-run scenarios).
 <!-- /ANCHOR:executive-summary -->

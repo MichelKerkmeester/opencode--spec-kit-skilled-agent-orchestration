@@ -11,7 +11,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/062-improve-agent-executable-wiring"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring"
     last_updated_at: "2026-05-02T14:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Spec scaffolded"
@@ -47,7 +47,7 @@ Packet 060/003 research synthesized 10 cli-copilot iterations and identified the
 
 The decisions are locked from research.md §5: benchmark assets live as **static skill assets** under `.opencode/skill/sk-improve-agent/assets/benchmark-profiles/` + `assets/benchmark-fixtures/` (versioned with the skill, reused across runs); the materializer ships **alongside `run-benchmark.cjs`**; auto + confirm YAML are patched in lockstep; legal-stop emits **nested `details.gateResults`**; stop-reason vocabulary is reconciled across SKILL/helper/tests/docs.
 
-This packet does NOT include the cli-copilot stress rerun (that's packet 061's job — restructure CP-040..045 to invoke the command flow and verify GREEN against this packet's wiring). 062 ships executable wiring + native-RT validation only. If scope grows, the GREEN cli-copilot rerun spills to optional 063.
+This packet does NOT include the cli-copilot stress rerun (that's packet 004 (was 061)'s job — restructure CP-040..045 to invoke the command flow and verify GREEN against this packet's wiring). 062 ships executable wiring + native-RT validation only. If scope grows, the GREEN cli-copilot rerun spills to optional 063.
 
 **Critical Dependencies:** 060/003/research/research.md as source of truth; 060/002 already-shipped diffs (CRITIC PASS, scan-integration mirror fix, score-candidate baseline+delta) stay intact.
 <!-- /ANCHOR:executive-summary -->
@@ -66,7 +66,7 @@ This packet does NOT include the cli-copilot stress rerun (that's packet 061's j
 | **Branch** | `main` |
 | **Parent** | `specs/skilled-agent-orchestration/` |
 | **Predecessor** | `060-sk-agent-improver-test-report-alignment/003-followup-research/` |
-| **Sibling (planned)** | `061-improve-agent-command-flow-stress-tests/` |
+| **Sibling (planned)** | `004-improve-agent-command-flow-stress-tests/` |
 | **Estimated LOC** | 200-400 (YAML edits + helper additions + materializer + tests + docs) |
 <!-- /ANCHOR:metadata -->
 
@@ -112,7 +112,7 @@ Land all executable wirings so the command-flow pipeline produces evidence that 
 
 ### Out of Scope
 
-- **cli-copilot stress test rerun** — that's packet 061's job. 062 does NOT run CP-040..045 stress tests.
+- **cli-copilot stress test rerun** — that's packet 004 (was 061)'s job. 062 does NOT run CP-040..045 stress tests.
 - **Restructuring CP-040..045 to invoke command flow** — that's 061. 062 just updates expected signal shapes.
 - **Other meta-agents (@deep-research, @deep-review)** — separate packets if user wants them later
 - **GREEN rerun verification** — optional 063 if 062 grows too large; otherwise rolled into 062's wrap-up

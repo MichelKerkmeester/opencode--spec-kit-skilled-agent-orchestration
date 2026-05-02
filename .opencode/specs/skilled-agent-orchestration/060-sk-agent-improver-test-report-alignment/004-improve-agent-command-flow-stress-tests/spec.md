@@ -11,7 +11,7 @@ importance_tier: "high"
 contextType: "agent-architecture"
 _memory:
   continuity:
-    packet_pointer: "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+    packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T15:00:00Z"
     last_updated_by: "claude-opus-4-7-1m"
     recent_action: "Spec scaffolded"
@@ -19,7 +19,7 @@ _memory:
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md
-      - .opencode/specs/skilled-agent-orchestration/062-improve-agent-executable-wiring/handover.md
+      - .opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring/handover.md
       - .opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md
     completion_pct: 5
     open_questions:
@@ -39,7 +39,7 @@ _memory:
 <!-- ANCHOR:executive-summary -->
 ## EXECUTIVE SUMMARY
 
-Packet 060/002 ran R1 stress tests with the prepend-agent-body dispatch and scored 0/2/4 PASS/PARTIAL/FAIL. 060/003 research diagnosed the failure as test-layer-selection: @improve-agent's discipline lives in the `/improve:agent` command orchestrator, not in the agent body. Packet 062 just shipped the executable wiring (static benchmark assets, materializer, nested `legal_stop_evaluated.details.gateResults`, stop-reason enum reconciliation, both YAMLs in lockstep).
+Packet 060/002 ran R1 stress tests with the prepend-agent-body dispatch and scored 0/2/4 PASS/PARTIAL/FAIL. 060/003 research diagnosed the failure as test-layer-selection: @improve-agent's discipline lives in the `/improve:agent` command orchestrator, not in the agent body. Packet 005 (was 062) just shipped the executable wiring (static benchmark assets, materializer, nested `legal_stop_evaluated.details.gateResults`, stop-reason enum reconciliation, both YAMLs in lockstep).
 
 061 closes the loop: restructure CP-040..045 stress tests to invoke the command flow with a command-capable temp project root, run R1 against 062's wiring, and document honest GREEN/PARTIAL/FAIL results.
 
@@ -63,7 +63,7 @@ Packet 060/002 ran R1 stress tests with the prepend-agent-body dispatch and scor
 | **Created** | 2026-05-02 |
 | **Branch** | `main` |
 | **Predecessor** | 060 trilogy + 062 (just shipped) |
-| **Sibling** | 062-improve-agent-executable-wiring |
+| **Sibling** | 005-improve-agent-executable-wiring |
 | **Estimated LOC** | 100-200 (mainly playbook scenario rewrites + sandbox setup script) |
 <!-- /ANCHOR:metadata -->
 
@@ -138,7 +138,7 @@ Switch the dispatch shape, run R1 against 062's wiring, document honest results,
 ## 5. REFERENCES
 
 - **Source of recommendations:** `../060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md` (§4 062 sketch is what 062 implemented; §11 + §9 hand-off prompts are 061's contract)
-- **Predecessor (substrate):** `../062-improve-agent-executable-wiring/handover.md` — 062's hand-off pointer
+- **Predecessor (substrate):** `../005-improve-agent-executable-wiring/handover.md` — 062's hand-off pointer
 - **Methodology template:** `../059-agent-implement-code/test-report.md` — 11-section ANCHOR structure
 - **Existing CP scenarios to modify:**
   - `.opencode/skill/cli-copilot/manual_testing_playbook/04--agent-routing/013-skill-load-not-protocol.md` (CP-040)

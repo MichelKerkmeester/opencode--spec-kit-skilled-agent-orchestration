@@ -51,7 +51,7 @@ _memory:
 
 If resuming from a fresh session:
 
-> 060/002 is complete. Read `test-report.md`, `implementation-summary.md`, and `stress-runs/stage4-summary.md`. Do not rerun R2 with the same prepended-agent-body shape. If continuing validation, create `061-improve-agent-command-flow-stress-tests` and restructure CP-040..CP-045 so Call B invokes `/improve:agent` through the command/YAML workflow.
+> 060/002 is complete. Read `test-report.md`, `implementation-summary.md`, and `stress-runs/stage4-summary.md`. Do not rerun R2 with the same prepended-agent-body shape. If continuing validation, create `004-improve-agent-command-flow-stress-tests` and restructure CP-040..CP-045 so Call B invokes `/improve:agent` through the command/YAML workflow.
 <!-- /ANCHOR:resume-prompt -->
 
 ---
@@ -93,5 +93,5 @@ R1 summary: CP-040 was PARTIAL, CP-041 was PARTIAL_TRIPWIRE_DIRTY, CP-042 and CP
 
 Lessons-learned highlight: the 059 same-task A/B pattern only works when Call B enters the layer that owns the discipline. `@code` owns its discipline in the agent body; `@improve-agent` intentionally does not. The sk-improve-agent discipline lives in `/improve:agent` command orchestration, helper scripts, journal events, and legal-stop gates.
 
-Follow-on hand-off: create `061-improve-agent-command-flow-stress-tests`. Reuse CP-040..CP-045 claims, but invoke `/improve:agent` in Call B and verify command artifacts: generated candidates, score JSON, benchmark output, `improvement-journal.jsonl`, `legal_stop_evaluated`, `blocked_stop`, and stop-reason taxonomy.
+Follow-on hand-off: create `004-improve-agent-command-flow-stress-tests`. Reuse CP-040..CP-045 claims, but invoke `/improve:agent` in Call B and verify command artifacts: generated candidates, score JSON, benchmark output, `improvement-journal.jsonl`, `legal_stop_evaluated`, `blocked_stop`, and stop-reason taxonomy.
 <!-- /ANCHOR:close-out -->
