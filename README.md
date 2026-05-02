@@ -248,10 +248,11 @@ Use `create.sh --phase` to create a parent with its first child in one step. Run
 The `validate.sh` script runs 20 rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency.
 
 - **Exit 0** - All rules pass. Ready to proceed.
-- **Exit 1** - Warnings found. Review and fix if practical.
-- **Exit 2** - Errors found. Must fix before claiming completion.
+- **Exit 1** - User error (bad flags or invalid input).
+- **Exit 2** - Validation error. Must fix before claiming completion.
+- **Exit 3** - System error (file I/O failure, missing manifest, or other environment problem).
 
-Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders.
+Run with `--verbose` to see details behind each rule or `--recursive` to validate a parent and all child phase folders. Strict validation of a Level 3 packet runs in ~108 ms via a single-orchestrator design. The default scaffold path skips post-create validation; set `SPECKIT_POST_VALIDATE=1` to enable it for strict CI workflows. Path traversal inputs (e.g. `--path "../etc/passwd"`) are rejected before any filesystem write. Parallel `/memory:save` calls for the same packet are serialized by an advisory lock on `description.json` and `graph-metadata.json`.
 
 &nbsp;
 #### Scripts and Validation
@@ -260,7 +261,7 @@ Run with `--verbose` to see details behind each rule or `--recursive` to validat
 
 - **`create.sh`** - Create spec folders with level-appropriate templates. Use `--phase` for parent + child
 - **`validate.sh`** - Run 20 validation rules. Use `--recursive` for phase folders
-- **`upgrade-level.sh`** - Inject addendum templates to upgrade a folder to a higher level
+- **`upgrade-level.sh`** - Upgrade a spec folder to a higher level by injecting new sections
 - **`recommend-level.sh`** - Analyze scope and risk to recommend the right documentation level
 - **`calculate-completeness.sh`** - Calculate spec folder completeness as a percentage
 - **`check-completion.sh`** - Verify all completion criteria are met

@@ -220,7 +220,7 @@ The system reads your question, figures out you are looking for a past decision 
 bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh \
   .opencode/specs/[project]/042-my-feature/
 
-# Exit 0 = pass, Exit 1 = warnings, Exit 2 = errors (must fix)
+# Exit 0 = success, Exit 1 = user error, Exit 2 = validation error, Exit 3 = system error
 ```
 
 ### Verify the MCP Is Running
@@ -331,11 +331,12 @@ Tolerant migration policy: legacy phase parents that retain heavy docs continue 
 
 The `validate.sh` script runs 20+ rules against a spec folder and reports what passes and what needs fixing. Rules check for required files, template compliance, placeholder detection, anchor markers and cross-reference consistency. The new `PHASE_PARENT_CONTENT` rule (severity: warn) scans phase-parent `spec.md` for forbidden migration-history tokens (consolidation/merge/rename narratives) and is code-fence + HTML-comment aware. In strict flows, the validation surface includes `_memory.continuity` freshness checks plus strict `EVIDENCE` marker linting, with the bracket-depth audit script available for repair sweeps before rerunning validation.
 
-| Exit Code | Meaning        | Action                              |
-| --------- | -------------- | ----------------------------------- |
-| 0         | All rules pass | Ready to proceed                    |
-| 1         | Warnings found | Review and fix if practical         |
-| 2         | Errors found   | Must fix before claiming completion |
+| Exit Code | Meaning          | Action                              |
+| --------- | ---------------- | ----------------------------------- |
+| 0         | All rules pass   | Ready to proceed                    |
+| 1         | User error       | Fix the flag or input and retry     |
+| 2         | Validation error | Fix the spec folder before claiming completion |
+| 3         | System error     | Check file I/O, missing manifest, or environment |
 
 Run with `--verbose` to see the details behind each rule, or `--recursive` to validate a parent and all child phase folders.
 
@@ -514,6 +515,10 @@ bash .opencode/skill/system-spec-kit/scripts/spec/create.sh --level 2 --path /tm
 ```
 
 Set `SPECKIT_POST_VALIDATE=1` when a strict workflow should run full validation immediately after scaffolding. The default path skips full post-create validation so normal scaffolds stay fast.
+
+`create.sh` rejects `--path` values that traverse outside the repository (for example `--path "../etc/foo"`) with a clear error before any filesystem write happens.
+
+A `mkdir`-based advisory lock protects `description.json` and `graph-metadata.json` writes during canonical save, so two parallel `/memory:save` calls for the same packet do not race.
 
 #### Template Compliance
 
@@ -1041,7 +1046,7 @@ A: Constitutional memories are rules that always surface in every retrieval, reg
 
 **Q: How do I upgrade a Level 1 folder to Level 2 after the fact?**
 
-A: Run `upgrade-level.sh` with the target level. It injects the addendum templates into the existing folder. Then run `check-placeholders.sh` to find all new placeholder values that need filling in.
+A: Run `upgrade-level.sh` with the target level. It renders and injects the additional Level contract sections into the existing folder. Then run `check-placeholders.sh` to find all new placeholder values that need filling in.
 
 ```bash
 bash .opencode/skill/system-spec-kit/scripts/spec/upgrade-level.sh \
