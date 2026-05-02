@@ -47,6 +47,8 @@
     "rename_completed": true,
     "active_files_swept": 46,
     "filename_renames": 4,
-    "historical_refs_left_frozen": 321
+    "historical_refs_left_frozen": 321,
+    "iterations_run": 5,
+    "iter_2_5_backfill_complete": true
   }
 }

@@ -33,7 +33,7 @@
     "is_phase_parent": false,
     "session_outcome": "promoted",
     "stop_reason": "blockedStop",
-    "iterations_run": 1,
+    "iterations_run": 5,
     "final_score": "100/100/100/100/100 (baseline already at ceiling)",
     "promotion_decision": "operator_override",
     "promotion_rationale": "qualitative improvements (write-boundary hardening, query routing matrix, tool selection flow) not measurable by structural-presence dimensions; explicit user approval",
@@ -42,6 +42,7 @@
       ".claude/agents/context.md",
       ".gemini/agents/context.md",
       ".codex/agents/context.toml"
-    ]
+    ],
+    "iter_2_5_backfill_complete": true
   }
 }
