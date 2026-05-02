@@ -144,7 +144,7 @@ After Phase 2 converges:
 1. Update `implementation-summary.md`:
    - completion_pct = 100
    - recent_action = "Research synthesis complete; X iterations run; recommendations cited"
-   - next_safe_action = "Hand off to packet 061 for implementation"
+   - next_safe_action = "Hand off to packet 060/004 (originally planned as 061; absorbed into 060)"
 2. Update `handover.md` with the continuation prompt for packet 061
 3. Run `/memory:save` to refresh continuity surfaces
 4. (Optional) Commit + push to main if user directs

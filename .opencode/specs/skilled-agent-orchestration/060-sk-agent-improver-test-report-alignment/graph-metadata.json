@@ -53,26 +53,84 @@
       ".opencode/command/improve/agent.md"
     ],
     "entities": [
-      {"name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived"},
-      {"name": "001 research.md", "kind": "doc", "path": "001-deep-research-recommendations/research/research.md", "source": "derived"},
-      {"name": "002 test-report.md", "kind": "doc", "path": "002-stress-test-implementation/test-report.md", "source": "derived"},
-      {"name": "003 research.md", "kind": "doc", "path": "003-followup-research/research/research.md", "source": "derived"},
-      {"name": "004 test-report.md", "kind": "doc", "path": "004-improve-agent-command-flow-stress-tests/test-report.md", "source": "derived"},
-      {"name": "005 spec.md", "kind": "doc", "path": "005-improve-agent-executable-wiring/spec.md", "source": "derived"},
-      {"name": "059 test-report.md", "kind": "doc", "path": ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md", "source": "derived"},
-      {"name": "Phase Parent", "kind": "proper_noun", "path": "spec.md", "source": "derived"},
-      {"name": "Active Child", "kind": "proper_noun", "path": "spec.md", "source": "derived"},
-      {"name": "End-to-End Result", "kind": "proper_noun", "path": "spec.md", "source": "derived"},
-      {"name": "Reusable Artifacts", "kind": "proper_noun", "path": "spec.md", "source": "derived"}
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "001 research.md",
+        "kind": "doc",
+        "path": "001-deep-research-recommendations/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "002 test-report.md",
+        "kind": "doc",
+        "path": "002-stress-test-implementation/test-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "003 research.md",
+        "kind": "doc",
+        "path": "003-followup-research/research/research.md",
+        "source": "derived"
+      },
+      {
+        "name": "004 test-report.md",
+        "kind": "doc",
+        "path": "004-improve-agent-command-flow-stress-tests/test-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "005 spec.md",
+        "kind": "doc",
+        "path": "005-improve-agent-executable-wiring/spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "059 test-report.md",
+        "kind": "doc",
+        "path": ".opencode/specs/skilled-agent-orchestration/059-agent-implement-code/test-report.md",
+        "source": "derived"
+      },
+      {
+        "name": "Phase Parent",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Active Child",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "End-to-End Result",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "Reusable Artifacts",
+        "kind": "proper_noun",
+        "path": "spec.md",
+        "source": "derived"
+      }
     ],
-    "causal_summary": "Phase parent for 060 — sk-improve-agent Test-Report Alignment. Five children, all COMPLETE: 001-deep-research-recommendations (854-line synthesis from 10 cli-copilot iterations), 002-stress-test-implementation (R1 0/2/4 surfaced test-layer-selection meta-finding), 003-followup-research (11-dim rubric + 13-question authoring preflight + sketches for 004 + 005), 004-improve-agent-command-flow-stress-tests (was 061; restructured CP-040..045 around per-CP layer partition; R1 3/2/1 → R2 5/1/0 final), 005-improve-agent-executable-wiring (was 062; static skill assets + materializer + nested gateResults + stop-reason reconciled; 91 tests pass). Root purpose: apply 059's @code stress-test methodology reflexively to the agent-improver triad. End-to-end result: 0/2/4 → 5/1/0; methodology empirically validated; 11-dim rubric + 13-question preflight reusable for any future meta-agent stress-test packet.",
+    "causal_summary": "Phase parent for 060 \u2014 sk-improve-agent Test-Report Alignment. Five children, all COMPLETE: 001-deep-research-recommendations (854-line synthesis from 10 cli-copilot iterations), 002-stress-test-implementation (R1 0/2/4 surfaced test-layer-selection meta-finding), 003-followup-research (11-dim rubric + 13-question authoring preflight + sketches for 004 + 005), 004-improve-agent-command-flow-stress-tests (was 061; restructured CP-040..045 around per-CP layer partition; R1 3/2/1 \u2192 R2 5/1/0 final), 005-improve-agent-executable-wiring (was 062; static skill assets + materializer + nested gateResults + stop-reason reconciled; 91 tests pass). Root purpose: apply 059's @code stress-test methodology reflexively to the agent-improver triad. End-to-end result: 0/2/4 \u2192 5/1/0; methodology empirically validated; 11-dim rubric + 13-question preflight reusable for any future meta-agent stress-test packet.",
     "created_at": "2026-05-02T11:47:00Z",
     "last_save_at": "2026-05-02T16:30:00Z",
     "last_active_at": "2026-05-02T16:30:00Z",
     "save_lineage": "phase_parent_restructure",
     "last_accessed_at": null,
-    "last_active_child_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests",
-    "source_docs": ["spec.md"]
+    "last_active_child_id": "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/005-improve-agent-executable-wiring",
+    "source_docs": [
+      "spec.md"
+    ],
+    "completion_pct": 100
   },
   "importance_tier": "high"
 }

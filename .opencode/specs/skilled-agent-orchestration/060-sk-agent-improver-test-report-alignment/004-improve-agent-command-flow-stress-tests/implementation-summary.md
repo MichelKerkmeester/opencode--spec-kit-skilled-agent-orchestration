@@ -1,6 +1,6 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 ---
-title: "Implementation Summary: 061"
+title: "Implementation Summary: 060/004"
 description: "Close-out summary for the sk-improve-agent command-flow stress packet. R1 validated the 060/003 test-layer-selection finding by moving 060/002's PASS 0 / PARTIAL 2 / FAIL 4 to PASS 3 / PARTIAL 2 / FAIL 1. R2 applied targeted cleanup but stress rerun was blocked by invalid Copilot/GitHub auth."
 trigger_phrases: ["061 implementation summary"]
 importance_tier: "high"
@@ -28,7 +28,7 @@ _memory:
       - "Was the test-layer-selection finding empirically validated? - YES: command-flow lane 100% PASS; body-level lane 50% PASS (1/2)."
 ---
 
-# Implementation Summary: 061
+# Implementation Summary: 060/004
 
 <!-- SPECKIT_LEVEL: 3 -->
 

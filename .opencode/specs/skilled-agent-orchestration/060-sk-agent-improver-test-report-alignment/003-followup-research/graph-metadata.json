@@ -37,7 +37,7 @@
       "summary"
     ],
     "importance_tier": "high",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       "implementation-summary.md",
       ".opencode/agent/improve-agent.md",
@@ -204,7 +204,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Packet 060/002 ran R1 stress tests (CP-040..CP-045) and scored 0 PASS / 2 PARTIAL / 4 FAIL. The failures surfaced a methodology-level meta-finding: the 059 same-task A/B prepend-agent-body pattern works when discipline lives in the agent body (like @code) but breaks when discipline lives at the command/orchestrator layer above the agent body (like @improve-agent — proposal-only mutator per ADR-001).",
+    "causal_summary": "Packet 060/002 ran R1 stress tests (CP-040..CP-045) and scored 0 PASS / 2 PARTIAL / 4 FAIL. The failures surfaced a methodology-level meta-finding: the 059 same-task A/B prepend-agent-body pattern works when discipline lives in the agent body (like @code) but breaks when discipline lives at the command/orchestrator layer above the agent body (like @improve-agent \u2014 proposal-only mutator per ADR-001).",
     "created_at": "2026-05-02T11:15:18.846Z",
     "last_save_at": "2026-05-02T11:15:18.846Z",
     "save_lineage": "same_pass",
@@ -218,6 +218,7 @@
       "implementation-summary.md",
       "handover.md",
       "resource-map.md"
-    ]
+    ],
+    "completion_pct": 100
   }
 }

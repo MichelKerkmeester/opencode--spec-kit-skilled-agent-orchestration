@@ -29,7 +29,7 @@
       "per-CP-layer-partition"
     ],
     "importance_tier": "high",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/spec.md",
       ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md",
@@ -42,6 +42,9 @@
     "last_active_at": "2026-05-02T15:00:00Z",
     "save_lineage": "manual_stub",
     "last_accessed_at": null,
-    "source_docs": ["spec.md"]
+    "source_docs": [
+      "spec.md"
+    ],
+    "completion_pct": 100
   }
 }

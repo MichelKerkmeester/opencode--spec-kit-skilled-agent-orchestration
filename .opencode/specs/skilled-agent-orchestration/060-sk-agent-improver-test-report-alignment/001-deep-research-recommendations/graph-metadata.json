@@ -39,7 +39,7 @@
       "meta-application"
     ],
     "importance_tier": "high",
-    "status": "in_progress",
+    "status": "complete",
     "key_files": [
       ".opencode/skill/sk-improve-agent/SKILL.md",
       ".opencode/agent/improve-agent.md",
@@ -219,7 +219,8 @@
       "implementation-summary.md",
       "handover.md",
       "resource-map.md"
-    ]
+    ],
+    "completion_pct": 100
   },
   "importance_tier": "normal"
 }
