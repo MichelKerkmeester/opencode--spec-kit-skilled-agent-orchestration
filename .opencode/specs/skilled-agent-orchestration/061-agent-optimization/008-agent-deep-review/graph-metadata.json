@@ -31,12 +31,20 @@
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": "keptBaseline",
+    "session_outcome": "promoted",
     "stop_reason": "blockedStop",
     "iterations_run": 5,
     "best_iter": 1,
     "best_weighted_score": 0,
     "best_delta": 0,
-    "operator_review_pending": true
+    "promotion_decision": "operator_override",
+    "promoted_iter": "iter-5-trimmed",
+    "promotion_rationale": "iter-5 synthesis additions valuable beyond scorer's structural-presence dimensions; trim_to_<600 applied",
+    "mirrors_synced": [
+      ".opencode/agent/deep-review.md",
+      ".claude/agents/deep-review.md",
+      ".gemini/agents/deep-review.md",
+      ".codex/agents/deep-review.toml"
+    ]
   }
 }

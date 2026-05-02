@@ -31,12 +31,20 @@
     "last_active_child_id": null,
     "level": 1,
     "is_phase_parent": false,
-    "session_outcome": "keptBaseline",
+    "session_outcome": "promoted",
     "stop_reason": "blockedStop",
     "iterations_run": 5,
     "best_iter": 1,
     "best_weighted_score": 0,
     "best_delta": 0,
-    "operator_review_pending": true
+    "promotion_decision": "operator_override",
+    "promoted_iter": "iter-5",
+    "promotion_rationale": "iter-5 synthesis additions; under 600 line limit",
+    "mirrors_synced": [
+      ".opencode/agent/deep-research.md",
+      ".claude/agents/deep-research.md",
+      ".gemini/agents/deep-research.md",
+      ".codex/agents/deep-research.toml"
+    ]
   }
 }
