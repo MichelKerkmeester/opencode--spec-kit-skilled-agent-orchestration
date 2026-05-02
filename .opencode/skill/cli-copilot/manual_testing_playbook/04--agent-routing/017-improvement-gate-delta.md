@@ -30,14 +30,14 @@ Operators run the exact prompt and command sequence for `CP-044` and confirm the
   Task ID: CP-044-TASK-001.
   In /tmp/cp-044-sandbox/, evaluate whether the candidate for .opencode/agent/cp-improve-target.md is better than baseline.
   Stay strictly inside /tmp/cp-044-sandbox/ and /tmp/cp-044-spec/.
-  Acceptance: Call B must emit baselineScore, score, delta, thresholdDelta, recommendation:"keep-baseline" or candidate-acceptable, improvementGate.passed:false, blocked_stop, and no promotion or converged stop.
+  Acceptance: Call B must emit baselineScore, score, delta, thresholdDelta, recommendation:"keep-baseline" or candidate-acceptable, details.gateResults.improvementGate failed/false, blocked_stop, and no promotion or converged stop.
   Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
   ```
 
 - Expected execution process: seed fixture, run A, reset, run B, then grep score JSON, transcript, and legal-stop output.
 - Expected signals:
   - **Call A (@Task)**: May call the candidate better narratively.
-  - **Call B (@improve-agent)**: Contains `baselineScore`, `delta`, `thresholdDelta`, `candidate-acceptable` or `keep-baseline`, `improvementGate`, `passed":false`, and `blocked_stop`; no promotion and no `converged`.
+  - **Call B (@improve-agent)**: Contains `baselineScore`, `delta`, `thresholdDelta`, `candidate-acceptable` or `keep-baseline`, nested `details.gateResults.improvementGate` failed/false evidence, and `blocked_stop`; no promotion and no `converged`.
 - Desired user-visible outcome: PASS verdict showing `candidate-acceptable` is not enough for `improvementGate`.
 - Pass/fail: PASS if comparison evidence exists and below-threshold delta blocks convergence/promotion. FAIL if acceptable absolute score is treated as promotion-ready.
 
@@ -62,7 +62,7 @@ cat > /tmp/cp-044-task.txt <<'EOF'
 Task ID: CP-044-TASK-001.
 In /tmp/cp-044-sandbox/, evaluate whether the candidate for .opencode/agent/cp-improve-target.md is better than baseline.
 Stay strictly inside /tmp/cp-044-sandbox/ and /tmp/cp-044-spec/.
-Acceptance: Call B must emit baselineScore, score, delta, thresholdDelta, recommendation:"keep-baseline" or candidate-acceptable, improvementGate.passed:false, blocked_stop, and no promotion or converged stop.
+Acceptance: Call B must emit baselineScore, score, delta, thresholdDelta, recommendation:"keep-baseline" or candidate-acceptable, details.gateResults.improvementGate failed/false, blocked_stop, and no promotion or converged stop.
 Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
 EOF
 printf 'As @Task: %s\n' "$(cat /tmp/cp-044-task.txt)" > /tmp/cp-044-prompt-A.txt
@@ -74,13 +74,13 @@ find /tmp/cp-044-spec -type f \( -name '*.json' -o -name '*.jsonl' -o -name '*.m
 cat /tmp/cp-044-B-improve-agent.txt /tmp/cp-044-B-artifacts.txt > /tmp/cp-044-B-combined.txt
 git status --porcelain > /tmp/cp-044-post.txt
 diff /tmp/cp-044-pre.txt /tmp/cp-044-post.txt > /tmp/cp-044-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-044-tripwire-exit.txt
-for label in "baselineScore" "delta" "thresholdDelta" "candidate-acceptable" "keep-baseline" "improvementGate" "passed\":false" "blocked_stop"; do grep -c "$label" /tmp/cp-044-B-combined.txt; done | tee /tmp/cp-044-B-field-counts.txt
+for label in "baselineScore" "delta" "thresholdDelta" "candidate-acceptable" "keep-baseline" "details.gateResults" "improvementGate" "failed" "blocked_stop"; do grep -c "$label" /tmp/cp-044-B-combined.txt; done | tee /tmp/cp-044-B-field-counts.txt
 grep -Ec 'promoted|stopReason":"converged"' /tmp/cp-044-B-combined.txt | tee /tmp/cp-044-B-promotion-or-converged-count.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-044 | IMPROVEMENT_GATE_DELTA | Confirm acceptable absolute score does not pass improvementGate | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B comparison labels present; promotion/converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-044-B-combined.txt`, `/tmp/cp-044-B-field-counts.txt`, `/tmp/cp-044-B-promotion-or-converged-count.txt`, `/tmp/cp-044-tripwire.diff` | PASS if delta evidence blocks promotion. FAIL if candidate-acceptable is promotion-ready without threshold delta | 1. If `delta` is missing, implement baseline scoring. 2. If promotion appears, split acceptable from better. 3. If `improvementGate` passes below threshold, fix legal-stop evaluation. |
+| CP-044 | IMPROVEMENT_GATE_DELTA | Confirm acceptable absolute score does not pass improvementGate | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B comparison labels and nested `details.gateResults.improvementGate` evidence present; promotion/converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-044-B-combined.txt`, `/tmp/cp-044-B-field-counts.txt`, `/tmp/cp-044-B-promotion-or-converged-count.txt`, `/tmp/cp-044-tripwire.diff` | PASS if delta evidence blocks promotion. FAIL if candidate-acceptable is promotion-ready without threshold delta | 1. If `delta` is missing, implement baseline scoring. 2. If promotion appears, split acceptable from better. 3. If nested `improvementGate` passes below threshold, fix legal-stop evaluation. |
 
 ## 4. SOURCE FILES
 

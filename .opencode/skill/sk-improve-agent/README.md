@@ -89,7 +89,7 @@ For packet recovery around an improvement run, `/spec_kit:resume` remains the ca
 
 ```text
 # Evaluate any agent (dynamic profile is the only mode)
-/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
 ### Standalone Script Usage
@@ -293,7 +293,7 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 ### Example 1: Evaluate Any Agent (Dynamic Mode)
 
 ```text
-/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
 Generates a scoring profile on-the-fly from the debug agent's own rules and structure, then produces 5-dimension scores. Dynamic mode is the only evaluation path; promotion requires explicit per-target approval.
@@ -334,7 +334,7 @@ The skill runs across all supported runtimes. Path resolution uses the active ru
 | Codex | `.codex/agents/` | (uses agent mirror) |
 | .agents | `.agents/agents/` | `.agents/commands/spec_kit/` |
 
-The `@improve-agent` agent and `/improve:improve-agent` command are mirrored across all runtimes. The integration scanner checks mirror parity automatically.
+The `@improve-agent` agent and `/improve:agent` command are mirrored across all runtimes. The integration scanner checks mirror parity automatically.
 
 ---
 

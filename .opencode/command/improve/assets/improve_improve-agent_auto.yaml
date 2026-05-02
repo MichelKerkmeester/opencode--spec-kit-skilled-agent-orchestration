@@ -88,6 +88,7 @@ skill_reference:
     scanner: .opencode/skill/sk-improve-agent/scripts/scan-integration.cjs
     profiler: .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs
     scorer: .opencode/skill/sk-improve-agent/scripts/score-candidate.cjs
+    benchmark_materializer: .opencode/skill/sk-improve-agent/scripts/materialize-benchmark-fixtures.cjs
     benchmark: .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs
     journal: .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs
     reducer: .opencode/skill/sk-improve-agent/scripts/reduce-state.cjs
@@ -106,7 +107,7 @@ state_paths:
   dashboard: "{spec_folder}/improvement/agent-improvement-dashboard.md"
   registry: "{spec_folder}/improvement/experiment-registry.json"
   integration_report: "{spec_folder}/improvement/integration-report.json"
-  benchmark_root: "{spec_folder}/improvement/benchmark-runs/{target_profile}"
+  benchmark_root: "{spec_folder}/improvement/benchmark-outputs"
 
 # ─────────────────────────────────────────────────────────────────
 # WORKFLOW
@@ -168,15 +169,18 @@ workflow:
       step_record_mutation_coverage:
         description: "Record mutation coverage and per-dimension trajectory from the scored candidate"
         command: "node -e \"const fs=require('node:fs'); const coverage=require('./.opencode/skill/sk-improve-agent/scripts/mutation-coverage.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const dimensions=Array.isArray(score.dimensions)?score.dimensions:[]; const scores=Object.fromEntries(dimensions.map((entry)=>[entry.name,entry.score])); coverage.recordMutation('{spec_folder}/improvement/mutation-coverage.json',{dimension:'composite',mutationType:'candidate-proposal',candidateId:'{candidate_id}',iteration:Number('{iteration}'),outcome:score.recommendation||'scored'}); coverage.recordTrajectory('{spec_folder}/improvement/mutation-coverage.json',{iteration:Number('{iteration}'),scores,weightedScore:Number('{weighted_score}')});\""
+      step_materialize_benchmark_fixtures:
+        description: "Materialize static benchmark fixtures into packet-local markdown outputs"
+        command: "node .opencode/skill/sk-improve-agent/scripts/materialize-benchmark-fixtures.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir {spec_folder}/improvement/benchmark-outputs"
       step_run_benchmark:
         description: "Run fixture tests against packet-local outputs"
-        action: "Run profile fixtures against packet-local outputs under benchmark-runs/{target_profile}/"
+        command: "node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir {spec_folder}/improvement/benchmark-outputs"
       step_emit_journal_event_benchmark_completed:
-        description: "Emit benchmark_completed journal event after benchmark output is written"
-        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit benchmark_completed --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"benchmarkOutputPath\":\"{benchmark_output_path}\",\"targetProfile\":\"{target_profile}\"}'"
+        description: "Emit benchmark_completed journal event after report.json exists"
+        command: "test -f {spec_folder}/improvement/benchmark-outputs/report.json && node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit benchmark_completed --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"candidateId\":\"{candidate_id}\",\"benchmarkOutputPath\":\"{spec_folder}/improvement/benchmark-outputs/report.json\",\"targetProfile\":\"{target_profile}\"}'"
       step_measure_benchmark_stability:
         description: "Measure replay stability for the current scored candidate and emit a repeatability report"
-        command: "node -e \"const fs=require('node:fs'); const stability=require('./.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const result=stability.measureStability([score],{minReplayCount:3,warningThreshold:0.95}); fs.writeFileSync('{spec_folder}/improvement/benchmark-runs/{target_profile}/iteration-{iteration}-repeatability.json',JSON.stringify(result,null,2)+'\\n');\""
+        command: "node -e \"const fs=require('node:fs'); const stability=require('./.opencode/skill/sk-improve-agent/scripts/benchmark-stability.cjs'); const score=JSON.parse(fs.readFileSync('{score_output_path}','utf8')); const result=stability.measureStability([score],{minReplayCount:3,warningThreshold:0.95}); fs.mkdirSync('{spec_folder}/improvement/benchmark-outputs',{recursive:true}); fs.writeFileSync('{spec_folder}/improvement/benchmark-outputs/iteration-{iteration}-repeatability.json',JSON.stringify(result,null,2)+'\\n');\""
       step_detect_trade_offs:
         description: "Analyze the scored trajectory for Pareto trade-offs before reduction"
         command: "node -e \"const fs=require('node:fs'); const detector=require('./.opencode/skill/sk-improve-agent/scripts/trade-off-detector.cjs'); const trajectory=detector.getTrajectory('{spec_folder}/improvement/improvement-journal.jsonl'); const tradeOffs=detector.detectTradeOffs(trajectory); fs.writeFileSync('{spec_folder}/improvement/trade-off-report.json',JSON.stringify({iteration:Number('{iteration}'),tradeOffs},null,2)+'\\n');\""
@@ -191,7 +195,7 @@ workflow:
         action: "Stop if experiment-registry.json reports stopStatus.shouldStop: true"
       step_emit_journal_event_legal_stop_evaluated:
         description: "Emit legal_stop_evaluated journal event with all five gate bundles after stop-condition evaluation"
-        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit legal_stop_evaluated --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"contractGate\":\"{contractGate}\",\"behaviorGate\":\"{behaviorGate}\",\"integrationGate\":\"{integrationGate}\",\"evidenceGate\":\"{evidenceGate}\",\"improvementGate\":\"{improvementGate}\",\"baselineScore\":\"{baseline_score}\",\"score\":\"{weighted_score}\",\"delta\":\"{score_delta}\",\"thresholdDelta\":\"{threshold_delta}\"}'"
+        command: "node .opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs --emit legal_stop_evaluated --journal {spec_folder}/improvement/improvement-journal.jsonl --details '{\"sessionId\":\"{session_id}\",\"iteration\":\"{iteration}\",\"gateResults\":{\"contractGate\":\"{contract_gate}\",\"behaviorGate\":\"{behavior_gate}\",\"integrationGate\":\"{integration_gate}\",\"evidenceGate\":\"{evidence_gate}\",\"improvementGate\":\"{improvement_gate}\"},\"stopReason\":\"{stop_reason}\"}'"
       step_emit_journal_event_blocked_stop:
         description: "Emit blocked_stop when any legal-stop gate fails"
         condition: "contractGate.passed == false OR behaviorGate.passed == false OR integrationGate.passed == false OR evidenceGate.passed == false OR improvementGate.passed == false"

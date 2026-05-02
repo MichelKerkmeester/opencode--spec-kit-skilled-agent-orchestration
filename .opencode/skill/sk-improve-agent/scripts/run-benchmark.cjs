@@ -16,12 +16,20 @@ const path = require('node:path');
 
 function parseArgs(argv) {
   const args = {};
-  for (const entry of argv) {
+  for (let index = 0; index < argv.length; index += 1) {
+    const entry = argv[index];
     if (!entry.startsWith('--')) {
       continue;
     }
     const [key, ...rest] = entry.slice(2).split('=');
-    args[key] = rest.length > 0 ? rest.join('=') : true;
+    if (rest.length > 0) {
+      args[key] = rest.join('=');
+    } else if (argv[index + 1] && !argv[index + 1].startsWith('--')) {
+      args[key] = argv[index + 1];
+      index += 1;
+    } else {
+      args[key] = true;
+    }
   }
   return args;
 }
@@ -47,9 +55,52 @@ function listJsonFiles(dir) {
     .map((entry) => path.join(dir, entry));
 }
 
-function loadProfile(profileId, profilesDir) {
-  const profilePath = path.join(profilesDir, `${profileId}.json`);
-  return readJson(profilePath);
+function resolveMaybeRelative(value, baseDir) {
+  if (path.isAbsolute(value)) {
+    return value;
+  }
+  const fromCwd = path.resolve(process.cwd(), value);
+  if (fs.existsSync(fromCwd)) {
+    return fromCwd;
+  }
+  return path.resolve(baseDir, value);
+}
+
+function loadProfile(profileArg, profilesDir) {
+  const directPath = path.resolve(process.cwd(), profileArg);
+  const profilePath = fs.existsSync(directPath)
+    ? directPath
+    : path.join(profilesDir, `${profileArg}.json`);
+  return {
+    data: readJson(profilePath),
+    path: profilePath,
+  };
+}
+
+function fixturePathFor(fixtureRef, fixtureDir) {
+  const fileName = fixtureRef.endsWith('.json') ? fixtureRef : `${fixtureRef}.json`;
+  return path.join(fixtureDir, fileName);
+}
+
+function loadFixtures(profile, profilePath) {
+  const profileDir = path.dirname(profilePath);
+  const fixtureDir = resolveMaybeRelative(profile.fixtureDir || profile.benchmark?.fixtureDir, profileDir);
+  const fixtureRefs = profile.fixtures || profile.benchmark?.fixtures || null;
+  const fixtureFiles = Array.isArray(fixtureRefs)
+    ? fixtureRefs.map((fixtureRef) => fixturePathFor(fixtureRef, fixtureDir))
+    : listJsonFiles(fixtureDir);
+  return fixtureFiles.map((filePath) => readJson(filePath));
+}
+
+function inferStateLogPath(outputsDir) {
+  let current = path.resolve(process.cwd(), outputsDir);
+  while (current !== path.dirname(current)) {
+    if (path.basename(current) === 'improvement') {
+      return path.join(current, 'agent-improvement-state.jsonl');
+    }
+    current = path.dirname(current);
+  }
+  return null;
 }
 
 function compilePatterns(patterns) {
@@ -201,47 +252,62 @@ function scoreIntegration(integrationReportPath) {
 
 function main() {
   const args = parseArgs(process.argv.slice(2));
-  const profileId = args.profile;
+  const profileArg = args.profile;
   const outputsDir = args['outputs-dir'];
-  const outputPath = args.output;
-  const stateLogPath = args['state-log'];
-  const label = args.label || `${profileId}-benchmark`;
+  const outputPath = args.output || (outputsDir ? path.join(outputsDir, 'report.json') : null);
   const profilesDir = args['profiles-dir'] || '.opencode/skill/sk-improve-agent/assets/target-profiles';
   const integrationReportPath = args['integration-report'] || null;
 
-  if (!profileId || !outputsDir || !outputPath) {
-    process.stderr.write('Usage: node run-benchmark.cjs --profile=ID --outputs-dir=PATH --output=PATH [--state-log=PATH] [--label=STRING] [--profiles-dir=PATH] [--integration-report=PATH]\n');
+  if (!profileArg || !outputsDir || !outputPath) {
+    process.stderr.write('Usage: node run-benchmark.cjs --profile <path-or-id> --outputs-dir <path> [--output <path>] [--state-log <path>] [--label <string>] [--profiles-dir <path>] [--integration-report <path>]\n');
     process.exit(2);
   }
 
+  let profileId = profileArg;
+  const stateLogPath = args['state-log'] || inferStateLogPath(outputsDir);
+  const label = args.label || `${path.basename(profileArg, '.json')}-benchmark`;
+
   try {
-    const profile = loadProfile(profileId, profilesDir);
-    const fixtureFiles = listJsonFiles(profile.benchmark.fixtureDir);
-    const fixtures = fixtureFiles.map((filePath) => readJson(filePath));
+    const loadedProfile = loadProfile(profileArg, profilesDir);
+    const profile = loadedProfile.data;
+    profileId = profile.profileId || profile.id || profileId;
+    const fixtures = loadFixtures(profile, loadedProfile.path);
     const results = fixtures.map((fixture) => scoreFixture(fixture, path.join(outputsDir, `${fixture.id}.md`)));
     const aggregateScore = results.length === 0
       ? 0
       : Math.round(results.reduce((sum, entry) => sum + entry.score, 0) / results.length);
-    const minimumFixtureScore = profile.benchmark.minimumFixtureScore;
-    const aggregateThreshold = profile.benchmark.requiredAggregateScore;
+    const minimumFixtureScore = profile.benchmark?.minimumFixtureScore ?? 70;
+    const aggregateThreshold = profile.benchmark?.requiredAggregateScore ?? 80;
+    const passCount = results.filter((entry) => entry.passed).length;
+    const passRate = results.length === 0 ? 0 : passCount / results.length;
+    const delta = aggregateScore / 100 - Number(profile.thresholdDelta || 0);
     const recommendation =
       aggregateScore >= aggregateThreshold && results.every((entry) => entry.score >= minimumFixtureScore)
         ? 'benchmark-pass'
         : 'benchmark-fail';
     const report = {
       status: 'benchmark-complete',
-      profileId: profile.id,
+      profileId,
       family: profile.family,
       target: profile.targetPath,
       label,
       aggregateScore,
       maxScore: 100,
+      totals: {
+        score: aggregateScore,
+        delta,
+        pass_rate: passRate,
+        fixtures: results.length,
+        passed: passCount,
+      },
       recommendation,
       thresholds: {
         requiredAggregateScore: aggregateThreshold,
         minimumFixtureScore,
-        repeatabilityTolerance: profile.benchmark.repeatabilityTolerance,
+        repeatabilityTolerance: profile.benchmark?.repeatabilityTolerance ?? 0,
+        thresholdDelta: Number(profile.thresholdDelta || 0),
       },
+      rows: results,
       fixtures: results,
       failureModes: aggregateFailureModes(results),
     };
@@ -257,13 +323,15 @@ function main() {
     if (stateLogPath) {
       appendJsonl(stateLogPath, {
         type: 'benchmark_run',
-        profileId: profile.id,
+        profileId,
         family: profile.family,
         target: profile.targetPath,
         label,
         outputDir: outputsDir,
         report: outputPath,
         aggregateScore,
+        totals: report.totals,
+        rows: results,
         recommendation,
         failureModes: report.failureModes,
       });

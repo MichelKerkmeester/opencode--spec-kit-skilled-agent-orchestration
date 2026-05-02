@@ -11,4 +11,4 @@ For Gate E continuity, this fixture remains supporting evidence only. Broader pa
 Notes:
 
 - The journal uses validator-accepted enum values from `improvement-journal.cjs`.
-- The requested plateau stop is represented as `stopReason: "converged"` with a note because `benchmarkPlateau` is not an accepted stop-reason enum.
+- The requested plateau stop is represented as `stopReason: "converged"` with a note because benchmark-plateau aliases are not accepted stop-reason enums.

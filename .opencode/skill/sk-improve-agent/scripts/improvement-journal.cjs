@@ -20,8 +20,6 @@ const path = require('node:path');
  */
 const STOP_REASONS = Object.freeze({
   converged: 'converged',
-  benchmarkPlateau: 'benchmarkPlateau',
-  plateau: 'plateau',
   maxIterationsReached: 'maxIterationsReached',
   blockedStop: 'blockedStop',
   manualStop: 'manualStop',
@@ -68,6 +66,14 @@ const VALID_EVENT_TYPES = Object.freeze([
   'session_end',
 ]);
 
+const LEGAL_STOP_GATES = Object.freeze([
+  'contractGate',
+  'behaviorGate',
+  'integrationGate',
+  'evidenceGate',
+  'improvementGate',
+]);
+
 // ─────────────────────────────────────────────────────────────────────────────
 // 3. HELPERS
 // ─────────────────────────────────────────────────────────────────────────────
@@ -100,6 +106,19 @@ function validateEvent(event) {
       errors.push('session_ended/session_end events MUST include details.sessionOutcome');
     } else if (!Object.values(SESSION_OUTCOMES).includes(event.details.sessionOutcome)) {
       errors.push(`Invalid sessionOutcome: "${event.details.sessionOutcome}". Valid outcomes: ${Object.values(SESSION_OUTCOMES).join(', ')}`);
+    }
+  }
+
+  if (event.eventType === 'legal_stop_evaluated') {
+    const gateResults = event.details && event.details.gateResults;
+    if (!gateResults || typeof gateResults !== 'object' || Array.isArray(gateResults)) {
+      errors.push('legal_stop_evaluated events MUST include details.gateResults object');
+    } else {
+      for (const gateName of LEGAL_STOP_GATES) {
+        if (!Object.prototype.hasOwnProperty.call(gateResults, gateName)) {
+          errors.push(`legal_stop_evaluated details.gateResults missing ${gateName}`);
+        }
+      }
     }
   }
 
@@ -213,6 +232,7 @@ module.exports = {
   STOP_REASONS,
   SESSION_OUTCOMES,
   VALID_EVENT_TYPES,
+  LEGAL_STOP_GATES,
   validateEvent,
   emitEvent,
   readJournal,

@@ -16,6 +16,7 @@ const journal = require(path.join(
   STOP_REASONS: Readonly<Record<string, string>>;
   SESSION_OUTCOMES: Readonly<Record<string, string>>;
   VALID_EVENT_TYPES: readonly string[];
+  LEGAL_STOP_GATES: readonly string[];
   validateEvent: (event: object) => { valid: boolean; errors: string[] };
   emitEvent: (journalPath: string, event: object) => { success: boolean; errors?: string[] };
   readJournal: (journalPath: string) => object[];
@@ -41,7 +42,6 @@ describe('improvement-journal', () => {
       expect(journal.STOP_REASONS).toBeDefined();
       expect(Object.isFrozen(journal.STOP_REASONS)).toBe(true);
       expect(journal.STOP_REASONS.converged).toBe('converged');
-      expect(journal.STOP_REASONS.plateau).toBe('plateau');
       expect(journal.STOP_REASONS.maxIterationsReached).toBe('maxIterationsReached');
       expect(journal.STOP_REASONS.blockedStop).toBe('blockedStop');
       expect(journal.STOP_REASONS.manualStop).toBe('manualStop');
@@ -65,6 +65,17 @@ describe('improvement-journal', () => {
       expect(journal.VALID_EVENT_TYPES).toContain('candidate_scored');
       expect(journal.VALID_EVENT_TYPES).toContain('session_ended');
       expect(journal.VALID_EVENT_TYPES).toContain('trade_off_detected');
+    });
+
+    it('exports the five legal-stop gate keys', () => {
+      expect(journal.LEGAL_STOP_GATES).toEqual([
+        'contractGate',
+        'behaviorGate',
+        'integrationGate',
+        'evidenceGate',
+        'improvementGate',
+      ]);
+      expect(Object.isFrozen(journal.LEGAL_STOP_GATES)).toBe(true);
     });
   });
 
@@ -101,20 +112,52 @@ describe('improvement-journal', () => {
       expect(invalid.valid).toBe(false);
     });
 
-    it('accepts the plateau stop reason on session_ended events', () => {
+    it('rejects deprecated stop aliases on session_ended events', () => {
       const result = journal.validateEvent({
         eventType: 'session_ended',
-        details: { stopReason: 'plateau', sessionOutcome: 'keptBaseline' },
+        details: { stopReason: 'deprecatedStopAlias', sessionOutcome: 'keptBaseline' },
       });
-      expect(result.valid).toBe(true);
+      expect(result.valid).toBe(false);
+      expect(result.errors[0]).toContain('Invalid stopReason');
     });
 
     it('accepts the session_end alias with stop reason and outcome', () => {
       const result = journal.validateEvent({
         eventType: 'session_end',
-        details: { stopReason: 'benchmarkPlateau', sessionOutcome: 'advisoryOnly' },
+        details: { stopReason: 'maxIterationsReached', sessionOutcome: 'advisoryOnly' },
       });
       expect(result.valid).toBe(true);
+    });
+
+    it('accepts legal_stop_evaluated events with nested five-gate results', () => {
+      const result = journal.validateEvent({
+        eventType: 'legal_stop_evaluated',
+        details: {
+          gateResults: {
+            contractGate: 'passed',
+            behaviorGate: 'passed',
+            integrationGate: 'passed',
+            evidenceGate: 'failed',
+            improvementGate: 'passed',
+          },
+        },
+      });
+      expect(result.valid).toBe(true);
+    });
+
+    it('rejects legal_stop_evaluated events without a complete nested gate bundle', () => {
+      const result = journal.validateEvent({
+        eventType: 'legal_stop_evaluated',
+        details: {
+          contractGate: 'passed',
+          gateResults: {
+            contractGate: 'passed',
+          },
+        },
+      });
+      expect(result.valid).toBe(false);
+      expect(result.errors).toContain('legal_stop_evaluated details.gateResults missing behaviorGate');
+      expect(result.errors).toContain('legal_stop_evaluated details.gateResults missing improvementGate');
     });
   });
 
@@ -220,13 +263,13 @@ describe('improvement-journal', () => {
       journal.emitEvent(journalPath, {
         eventType: 'session_end',
         details: {
-          stopReason: 'benchmarkPlateau',
+          stopReason: 'maxIterationsReached',
           sessionOutcome: 'advisoryOnly',
         },
       });
 
       const result = journal.getSessionResult(journalPath);
-      expect(result.stopReason).toBe('benchmarkPlateau');
+      expect(result.stopReason).toBe('maxIterationsReached');
       expect(result.sessionOutcome).toBe('advisoryOnly');
     });
   });

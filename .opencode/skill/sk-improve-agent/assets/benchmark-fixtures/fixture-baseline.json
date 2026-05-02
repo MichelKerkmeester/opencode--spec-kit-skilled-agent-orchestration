@@ -1,0 +1,14 @@
+{
+  "id": "fixture-baseline",
+  "title": "Baseline Evidence Contract",
+  "description": "A minimal candidate evaluation artifact with the evidence fields command-flow consumers expect.",
+  "requiredHeadings": ["# Baseline Evidence Contract", "## Candidate", "## Evidence"],
+  "requiredPatterns": ["candidateId", "baselineScore", "thresholdDelta", "recommendation"],
+  "forbiddenPatterns": ["TBD", "TODO", "placeholder"],
+  "content": [
+    "candidateId: fixture-baseline",
+    "baselineScore: 0.72",
+    "thresholdDelta: 0.05",
+    "recommendation: keep-baseline"
+  ]
+}

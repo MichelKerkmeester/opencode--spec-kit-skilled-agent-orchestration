@@ -33,12 +33,13 @@ The copied runtime templates use the `improvement_*` asset names, but the packet
 ## 2. RUNNER COMMAND
 
 ```text
+node .opencode/skill/sk-improve-agent/scripts/materialize-benchmark-fixtures.cjs \
+  --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json \
+  --outputs-dir {spec_folder}/improvement/benchmark-outputs
+
 node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
-  --profile={agent-name} \
-  --outputs-dir={spec_folder}/improvement/benchmark-runs/{agent-name}/baseline \
-  --output={spec_folder}/improvement/benchmark-runs/{agent-name}/run-001.json \
-  --state-log={spec_folder}/improvement/agent-improvement-state.jsonl \
-  --label={agent-name}-baseline-run-001
+  --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json \
+  --outputs-dir {spec_folder}/improvement/benchmark-outputs
 ```
 
 ### Integration Benchmark
@@ -46,7 +47,7 @@ node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs \
 When running with an integration report, add the `--integration-report` flag:
 
 ```text
-node scripts/run-benchmark.cjs --profile={agent-name} --outputs-dir=... --output=... --integration-report=integration-report.json
+node scripts/run-benchmark.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir=... --integration-report=integration-report.json
 ```
 
 The integration report adds `integrationScore` and `integrationDetails` to the benchmark output:
@@ -60,11 +61,11 @@ The integration report adds `integrationScore` and `integrationDetails` to the b
 ## 3. REQUIRED LAYOUT
 
 ```text
-{spec_folder}/improvement/benchmark-runs/
-  {agent-name}/
-    baseline/
-    candidate-weak/
-    candidate-strong/
+{spec_folder}/improvement/benchmark-outputs/
+  fixture-baseline.md
+  fixture-improved.md
+  fixture-edge.md
+  report.json
 ```
 
 ---
@@ -97,4 +98,3 @@ Benchmark success does not mean:
 - `evaluator_contract.md`
 - `loop_protocol.md`
 - `promotion_rules.md`
-

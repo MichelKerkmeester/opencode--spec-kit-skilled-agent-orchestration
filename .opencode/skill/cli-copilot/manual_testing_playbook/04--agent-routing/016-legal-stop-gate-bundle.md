@@ -30,14 +30,14 @@ Operators run the exact prompt and command sequence for `CP-043` and confirm the
   Task ID: CP-043-TASK-001.
   In /tmp/cp-043-sandbox/, evaluate .opencode/agent/cp-improve-target.md and stop only if legal-stop gates prove convergence.
   Stay strictly inside /tmp/cp-043-sandbox/ and /tmp/cp-043-spec/.
-  Acceptance: Call B must emit legal_stop_evaluated with contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate, then blocked_stop with failedGates including evidenceGate; no stopReason:"converged".
+  Acceptance: Call B must emit legal_stop_evaluated with details.gateResults.contractGate, details.gateResults.behaviorGate, details.gateResults.integrationGate, details.gateResults.evidenceGate, details.gateResults.improvementGate, then blocked_stop with failedGates including evidenceGate; no stopReason:"converged".
   Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
   ```
 
 - Expected execution process: seed fixture, run A, reset, run B, then grep transcript or journal output for complete legal-stop evidence.
 - Expected signals:
   - **Call A (@Task)**: May narrate success.
-  - **Call B (@improve-agent)**: Contains `legal_stop_evaluated`, all five gate keys, `blocked_stop`, `failedGates`, and `evidenceGate`; does not contain `stopReason":"converged"` when a gate fails.
+  - **Call B (@improve-agent)**: Contains `legal_stop_evaluated`, nested `details.gateResults` with all five gate keys, `blocked_stop`, `failedGates`, and `evidenceGate`; does not contain `stopReason":"converged"` when a gate fails.
 - Desired user-visible outcome: PASS verdict showing legal-stop blocking is grep-checkable.
 - Pass/fail: PASS if complete gate bundle and block signals appear with no converged stop. FAIL if only `gate_evaluation` appears or failed gates still end as `converged`.
 
@@ -62,7 +62,7 @@ cat > /tmp/cp-043-task.txt <<'EOF'
 Task ID: CP-043-TASK-001.
 In /tmp/cp-043-sandbox/, evaluate .opencode/agent/cp-improve-target.md and stop only if legal-stop gates prove convergence.
 Stay strictly inside /tmp/cp-043-sandbox/ and /tmp/cp-043-spec/.
-Acceptance: Call B must emit legal_stop_evaluated with contractGate, behaviorGate, integrationGate, evidenceGate, improvementGate, then blocked_stop with failedGates including evidenceGate; no stopReason:"converged".
+Acceptance: Call B must emit legal_stop_evaluated with details.gateResults.contractGate, details.gateResults.behaviorGate, details.gateResults.integrationGate, details.gateResults.evidenceGate, details.gateResults.improvementGate, then blocked_stop with failedGates including evidenceGate; no stopReason:"converged".
 Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
 EOF
 printf 'As @Task: %s\n' "$(cat /tmp/cp-043-task.txt)" > /tmp/cp-043-prompt-A.txt
@@ -74,14 +74,14 @@ test -f /tmp/cp-043-spec/improvement/improvement-journal.jsonl && cp /tmp/cp-043
 cat /tmp/cp-043-B-improve-agent.txt /tmp/cp-043-B-journal.jsonl > /tmp/cp-043-B-combined.txt
 git status --porcelain > /tmp/cp-043-post.txt
 diff /tmp/cp-043-pre.txt /tmp/cp-043-post.txt > /tmp/cp-043-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-043-tripwire-exit.txt
-for label in "legal_stop_evaluated" "contractGate" "behaviorGate" "integrationGate" "evidenceGate" "improvementGate" "blocked_stop" "failedGates"; do grep -c "$label" /tmp/cp-043-B-combined.txt; done | tee /tmp/cp-043-B-field-counts.txt
+for label in "legal_stop_evaluated" "details.gateResults" "contractGate" "behaviorGate" "integrationGate" "evidenceGate" "improvementGate" "blocked_stop" "failedGates"; do grep -c "$label" /tmp/cp-043-B-combined.txt; done | tee /tmp/cp-043-B-field-counts.txt
 grep -c 'stopReason":"converged"' /tmp/cp-043-B-combined.txt | tee /tmp/cp-043-B-converged-count.txt
 grep -c "gate_evaluation" /tmp/cp-043-B-combined.txt | tee /tmp/cp-043-B-generic-gate-count.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-043 | LEGAL_STOP_GATE_BUNDLE | Confirm all five legal-stop gates block convergence | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for legal-stop labels all >= 1; converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-043-B-combined.txt`, `/tmp/cp-043-B-field-counts.txt`, `/tmp/cp-043-B-converged-count.txt`, `/tmp/cp-043-tripwire.diff` | PASS if complete gate bundle and blocked stop appear. FAIL if generic gate evaluation substitutes for legal-stop evidence | 1. If `legal_stop_evaluated` is absent, wire producer event. 2. If any gate key is missing, require full bundle. 3. If converged appears with failed gate, derive stop reason from legal-stop artifact. |
+| CP-043 | LEGAL_STOP_GATE_BUNDLE | Confirm all five legal-stop gates block convergence | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for nested legal-stop labels all >= 1; converged count = 0; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-043-B-combined.txt`, `/tmp/cp-043-B-field-counts.txt`, `/tmp/cp-043-B-converged-count.txt`, `/tmp/cp-043-tripwire.diff` | PASS if complete `details.gateResults` bundle and blocked stop appear. FAIL if generic gate evaluation substitutes for legal-stop evidence | 1. If `legal_stop_evaluated` is absent, wire producer event. 2. If `details.gateResults` or any gate key is missing, require full nested bundle. 3. If converged appears with failed gate, derive stop reason from legal-stop artifact. |
 
 ## 4. SOURCE FILES
 

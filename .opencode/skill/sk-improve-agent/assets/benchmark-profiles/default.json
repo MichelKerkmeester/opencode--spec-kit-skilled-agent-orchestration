@@ -1,0 +1,19 @@
+{
+  "profileId": "default",
+  "id": "default",
+  "version": "1.0",
+  "family": "sk-improve-agent",
+  "targetPath": ".opencode/agent/improve-agent.md",
+  "fixtureDir": ".opencode/skill/sk-improve-agent/assets/benchmark-fixtures",
+  "fixtures": ["fixture-baseline", "fixture-improved", "fixture-edge"],
+  "outputsDir": "{spec_folder}/improvement/benchmark-outputs",
+  "metrics": ["score", "delta", "pass_rate"],
+  "thresholdDelta": 0.05,
+  "benchmark": {
+    "fixtureDir": ".opencode/skill/sk-improve-agent/assets/benchmark-fixtures",
+    "fixtures": ["fixture-baseline", "fixture-improved", "fixture-edge"],
+    "requiredAggregateScore": 80,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0
+  }
+}

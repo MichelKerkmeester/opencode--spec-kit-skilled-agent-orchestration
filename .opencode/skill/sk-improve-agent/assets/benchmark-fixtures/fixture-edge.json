@@ -1,0 +1,14 @@
+{
+  "id": "fixture-edge",
+  "title": "Blocked Stop Edge Contract",
+  "description": "An edge artifact that proves failed gates remain visible to reducer and journal consumers.",
+  "requiredHeadings": ["# Blocked Stop Edge Contract", "## Candidate", "## Evidence", "## Legal Stop"],
+  "requiredPatterns": ["blockedStop", "failedGates", "evidenceGate", "sessionOutcome"],
+  "forbiddenPatterns": ["TBD", "TODO", "placeholder"],
+  "content": [
+    "candidateId: fixture-edge",
+    "stopReason: blockedStop",
+    "failedGates: evidenceGate",
+    "sessionOutcome: advisoryOnly"
+  ]
+}

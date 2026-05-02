@@ -34,7 +34,7 @@ The workflow copies `improvement_*` assets into the runtime, but the packet-loca
 
 ```text
 # Dynamic mode (the only evaluation path; works for any agent)
-/improve:improve-agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
+/improve:agent ".opencode/agent/debug.md" :confirm --spec-folder={spec_folder}
 ```
 
 ### Standalone Scripts
@@ -48,6 +48,10 @@ node scripts/generate-profile.cjs --agent=.opencode/agent/debug.md
 
 # 5-dimension scoring (dynamic mode, the only supported path)
 node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
+
+# Static benchmark fixtures
+node .opencode/skill/sk-improve-agent/scripts/materialize-benchmark-fixtures.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir {spec_folder}/improvement/benchmark-outputs
+node .opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir {spec_folder}/improvement/benchmark-outputs
 ```
 
 ### Dimension Weights (Dynamic Mode)
@@ -72,7 +76,7 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
   agent-improvement-dashboard.md
   experiment-registry.json
   candidates/
-  benchmark-runs/
+  benchmark-outputs/
 ```
 
 ---
@@ -96,4 +100,3 @@ node scripts/score-candidate.cjs --candidate=.opencode/agent/debug.md
 - `benchmark_operator_guide.md`
 - `promotion_rules.md`
 - `../README.md`
-

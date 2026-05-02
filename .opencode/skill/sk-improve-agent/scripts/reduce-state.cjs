@@ -867,6 +867,22 @@ function renderEventTypeCounts(eventTypeCounts) {
   return rows.map(([eventType, count]) => `- ${eventType}: ${count}`).join('\n');
 }
 
+function renderGateResults(gateResults) {
+  const rows = Object.entries(gateResults || {});
+  if (rows.length === 0) {
+    return '- none';
+  }
+  return [
+    '| Gate | Result |',
+    '| --- | --- |',
+    ...rows
+      .sort((left, right) => left[0].localeCompare(right[0]))
+      .map(([gateName, result]) => `| ${gateName} | ${formatDashboardValue(
+        isPlainObject(result) ? JSON.stringify(result) : result
+      )} |`),
+  ].join('\n');
+}
+
 function renderJournalSummarySection(summary) {
   if (!summary) {
     return `## Journal Summary
@@ -894,6 +910,8 @@ ${renderEventTypeCounts(summary.eventTypeCounts)}
 ${summary.latestLegalStop ? `### Latest legal-stop evaluation
 
 - Gates: ${formatDashboardValue(Object.keys(summary.latestLegalStop.gateResults || {}).sort().join(', ') || 'none')}
+
+${renderGateResults(summary.latestLegalStop.gateResults)}
 ` : ''}
 ${summary.latestBlockedStop ? `### Latest blocked stop
 

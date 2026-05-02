@@ -1,0 +1,14 @@
+{
+  "id": "fixture-improved",
+  "title": "Improved Candidate Contract",
+  "description": "A candidate artifact that includes improvement evidence and legal-stop gate references.",
+  "requiredHeadings": ["# Improved Candidate Contract", "## Candidate", "## Evidence", "## Legal Stop"],
+  "requiredPatterns": ["candidateId", "delta", "details.gateResults", "improvementGate", "benchmark-pass"],
+  "forbiddenPatterns": ["TBD", "TODO", "placeholder"],
+  "content": [
+    "candidateId: fixture-improved",
+    "delta: 0.08",
+    "details.gateResults.improvementGate: passed",
+    "benchmark-pass: true"
+  ]
+}

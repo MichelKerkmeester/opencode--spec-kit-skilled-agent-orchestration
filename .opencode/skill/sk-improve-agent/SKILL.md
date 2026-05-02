@@ -276,6 +276,19 @@ All journal emission is orchestrator-only (ADR-001). The journal (`improvement-j
 
 Event types: `session_start`, `session_initialized`, `integration_scanned`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, `gate_evaluation`, `legal_stop_evaluated`, `blocked_stop`, `promotion_attempt`, `promotion_result`, `rollback`, `rollback_result`, `trade_off_detected`, `mutation_proposed`, `mutation_outcome`, `session_ended`, `session_end`
 
+### Static Benchmark Assets
+
+The reusable benchmark contract ships with the skill, not with each spec packet:
+
+- Profile: `assets/benchmark-profiles/default.json`
+- Fixtures: `assets/benchmark-fixtures/*.json`
+- Materializer: `scripts/materialize-benchmark-fixtures.cjs`
+- Runner: `scripts/run-benchmark.cjs`
+
+The command workflow first materializes static fixture JSON into packet-local markdown under `{spec_folder}/improvement/benchmark-outputs/{fixture.id}.md`, then runs `run-benchmark.cjs --profile .opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json --outputs-dir {spec_folder}/improvement/benchmark-outputs`. The runner writes `{spec_folder}/improvement/benchmark-outputs/report.json` with `status:"benchmark-complete"` and appends a `benchmark_run` row to `{spec_folder}/improvement/agent-improvement-state.jsonl`.
+
+`benchmark_completed` may be emitted only after `benchmark-outputs/report.json` exists. Repeatability output from `benchmark-stability.cjs` is separate evidence and does not by itself prove benchmark completion.
+
 ### Legal-Stop Gate Bundles
 
 A session may NOT claim `converged` unless ALL gate bundles pass:
@@ -288,7 +301,25 @@ A session may NOT claim `converged` unless ALL gate bundles pass:
 | `evidenceGate` | benchmark pass AND repeatability pass | `benchmark_completed` journal event plus repeatability output |
 | `improvementGate` | weighted delta >= `scoring.thresholdDelta` | `baselineScore`, current `score`, numeric `delta`, and `thresholdDelta` |
 
-The orchestrator MUST emit `legal_stop_evaluated` with all five gate keys before any `session_end` event. If any gate fails, it MUST emit `blocked_stop` with `failedGates[]` and use `stopReason:"blockedStop"`, not `converged`.
+The orchestrator MUST emit `legal_stop_evaluated` with all five gate keys before any `session_end` event. The required journal shape is nested:
+
+```json
+{
+  "eventType": "legal_stop_evaluated",
+  "details": {
+    "gateResults": {
+      "contractGate": "...",
+      "behaviorGate": "...",
+      "integrationGate": "...",
+      "evidenceGate": "...",
+      "improvementGate": "..."
+    },
+    "stopReason": "blockedStop"
+  }
+}
+```
+
+Flat fields such as `details.gateName`, `details.gateResult`, or top-level `details.contractGate` are not the command-flow contract. If any gate fails, the orchestrator MUST emit `blocked_stop` with `failedGates[]` and use `stopReason:"blockedStop"`, not `converged`.
 
 ### Resume/Continuation Semantics (current release)
 
@@ -355,7 +386,7 @@ The helper validates event type plus `session_end` or `session_ended` details, a
 - `STOP_REASONS`: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, `stuckRecovery`
 - `SESSION_OUTCOMES`: `keptBaseline`, `promoted`, `rolledBack`, `advisoryOnly`
 
-Keep session-end emissions aligned to those helper-owned values until the helper contract itself changes. Labels such as `convergedImprovement`, `benchmarkPlateau`, `rejected`, `deferred`, `blocked`, or `errored` are not accepted by the current CLI validator.
+Keep session-end emissions aligned to those helper-owned values until the helper contract itself changes. Labels such as `convergedImprovement`, `plateau`, `benchmarkPlateau`, `rejected`, `deferred`, `blocked`, or `errored` are not accepted by the current CLI validator. Plateau detection is a reducer/stop-rule condition; it must reconcile to one of the canonical stop reasons above when emitted as `details.stopReason`.
 
 ### Orchestrator Ownership
 
@@ -372,6 +403,8 @@ The reducer is the consumer for replay artifacts on refresh. Every `scripts/redu
 - `mutation-coverage.json`
 
 These inputs remain optional. Missing files do not fail the reducer; the corresponding registry field is set to `null` so dashboard and registry refreshes still complete.
+
+For legal-stop replay, the reducer consumes `details.gateResults` from the latest `legal_stop_evaluated` event and surfaces it as `journalSummary.latestLegalStop.gateResults` in `experiment-registry.json` plus the dashboard's latest legal-stop table.
 
 ## ADR-002: Journal Replay Consumer
 
@@ -440,6 +473,9 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 | `assets/improvement_config.json` | Runtime configuration template |
 | `assets/improvement_config_reference.md` | Field-level config documentation |
 | `assets/target_manifest.jsonc` | Surface classification and guardrail manifest |
+| `assets/benchmark-profiles/default.json` | Static benchmark profile consumed by materializer and runner |
+| `assets/benchmark-fixtures/*.json` | Static benchmark fixture definitions |
+| `scripts/materialize-benchmark-fixtures.cjs` | Converts static benchmark fixture JSON into packet-local markdown outputs |
 | `scripts/run-benchmark.cjs` | Deterministic benchmark runner |
 | `scripts/score-candidate.cjs` | Deterministic prompt-surface scorer |
 | `scripts/reduce-state.cjs` | Ledger reducer and dashboard generator |
@@ -459,7 +495,7 @@ The dashboard now also includes a dedicated **Sample Quality** section. This sep
 
 ## 7. INTEGRATION POINTS
 
-- `/improve:improve-agent` initializes and runs the bounded workflow
+- `/improve:agent` initializes and runs the bounded workflow
 - `.opencode/agent/improve-agent.md` provides the mutator surface for improve-agent runs
 - `sk-doc` validators enforce package-shape, README, and markdown document consistency
 - `system-spec-kit` packet validation proves phase records remain truthful

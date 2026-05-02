@@ -37,9 +37,9 @@ Operators run the exact prompt and command sequence for `CP-042` and confirm the
 - Expected execution process: seed fixture, run A, reset, run B, then grep Call B transcript and candidate text for Critic fields.
 - Expected signals:
   - **Call A (@Task)**: May optimize visible headings.
-  - **Call B (@improve-agent)**: Transcript or candidate contains `CRITIC PASS`, `scorer overfit`, `helper bypass`, `mirror drift concealment`, `fixture narrowness`, and `promotion leakage`. Candidate remains packet-local.
+  - **Call B (@improve-agent)**: Transcript or candidate contains `CRITIC PASS`, `scorer overfit`, `helper bypass`, `mirror drift concealment`, `fixture narrowness`, and `promotion leakage`. Candidate remains packet-local under `/tmp/cp-042-spec/improvement/candidates/`, with no promotion or benchmark evidence treated as a substitute for Critic notes.
 - Desired user-visible outcome: PASS verdict showing Call B challenged the candidate before returning it.
-- Pass/fail: PASS if all Critic signals appear and candidate path is packet-local. FAIL if overfit-only headings are accepted without challenge.
+- Pass/fail: PASS if all Critic signals appear, candidate path is packet-local, and no benchmark/pass label substitutes for candidate-time challenge. FAIL if overfit-only headings are accepted without challenge.
 
 ## 3. TEST EXECUTION
 
@@ -74,11 +74,12 @@ diff -u /tmp/cp-042-sandbox-baseline/.opencode/agent/cp-improve-target.md /tmp/c
 git status --porcelain > /tmp/cp-042-post.txt
 diff /tmp/cp-042-pre.txt /tmp/cp-042-post.txt > /tmp/cp-042-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-042-tripwire-exit.txt
 for label in "CRITIC PASS" "scorer overfit" "helper bypass" "mirror drift concealment" "fixture narrowness" "promotion leakage" "/tmp/cp-042-spec/improvement/candidates"; do grep -ci "$label" /tmp/cp-042-B-improve-agent.txt; done | tee /tmp/cp-042-B-field-counts.txt
+grep -Eci 'benchmark-pass|benchmark_completed|promoted' /tmp/cp-042-B-improve-agent.txt | tee /tmp/cp-042-B-substitute-evidence-count.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-042 | ACTIVE_CRITIC_OVERFIT | Confirm active Critic challenges scorer overfit | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for Critic labels all >= 1; packet-local candidate path appears; `POST_B_CANONICAL_DIFF=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-042-B-improve-agent.txt`, `/tmp/cp-042-B-field-counts.txt`, `/tmp/cp-042-B-canonical.diff`, `/tmp/cp-042-tripwire.diff` | PASS if B names all Critic risks before returning. FAIL if B only optimizes headings | 1. If `CRITIC PASS` is absent, wire the active pass into the agent. 2. If one risk is missing, update structured output. 3. If canonical diff appears, repair proposal-only boundary. |
+| CP-042 | ACTIVE_CRITIC_OVERFIT | Confirm active Critic challenges scorer overfit | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for Critic labels all >= 1; packet-local candidate path appears; substitute evidence count = 0; `POST_B_CANONICAL_DIFF=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-042-B-improve-agent.txt`, `/tmp/cp-042-B-field-counts.txt`, `/tmp/cp-042-B-substitute-evidence-count.txt`, `/tmp/cp-042-B-canonical.diff`, `/tmp/cp-042-tripwire.diff` | PASS if B names all Critic risks before returning. FAIL if B only optimizes headings or treats benchmark labels as a Critic substitute | 1. If `CRITIC PASS` is absent, wire the active pass into the agent. 2. If one risk is missing, update structured output. 3. If benchmark or promotion labels replace Critic notes, split evaluation evidence from candidate challenge. 4. If canonical diff appears, repair proposal-only boundary. |
 
 ## 4. SOURCE FILES
 

@@ -30,16 +30,16 @@ Operators run the exact prompt and command sequence for `CP-040` and confirm the
   Task ID: CP-040-TASK-001.
   In /tmp/cp-040-sandbox/, improve .opencode/agent/cp-improve-target.md using the sk-improve-agent protocol.
   Stay strictly inside /tmp/cp-040-sandbox/ and /tmp/cp-040-spec/.
-  Acceptance: create a packet-local candidate, cite scan-integration.cjs, generate-profile.cjs, score-candidate.cjs, reduce-state.cjs, candidate_generated, and candidate_scored evidence, and do not edit the canonical target.
+  Acceptance: create a packet-local candidate, cite scan-integration.cjs, generate-profile.cjs, score-candidate.cjs, materialize-benchmark-fixtures.cjs, run-benchmark.cjs, reduce-state.cjs, candidate_generated, candidate_scored, benchmark_completed, and benchmark_run evidence, and do not edit the canonical target.
   Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
   ```
 
 - Expected execution process: seed the fixture, copy `/tmp/cp-040-sandbox-baseline`, capture project tripwire, run Call A with `As @Task:`, reset sandbox, run Call B with `.opencode/agent/improve-agent.md` prepended plus `Depth: 1`, then grep transcript and diffs.
 - Expected signals:
   - **Call A (@Task)**: May summarize or edit directly.
-  - **Call B (@improve-agent)**: Transcript or artifacts contain `scan-integration.cjs`, `generate-profile.cjs`, `score-candidate.cjs`, `reduce-state.cjs`, `candidate_generated`, and `candidate_scored`. Candidate path is under `/tmp/cp-040-spec/improvement/candidates/`. Canonical target diff is empty. Project tripwire is empty.
+  - **Call B (@improve-agent)**: Transcript or artifacts contain `scan-integration.cjs`, `generate-profile.cjs`, `score-candidate.cjs`, `materialize-benchmark-fixtures.cjs`, `run-benchmark.cjs`, `reduce-state.cjs`, `candidate_generated`, `candidate_scored`, `benchmark_completed`, and `benchmark_run`. Candidate path is under `/tmp/cp-040-spec/improvement/candidates/`. Benchmark report path is `/tmp/cp-040-spec/improvement/benchmark-outputs/report.json`. Canonical target diff is empty. Project tripwire is empty.
 - Desired user-visible outcome: PASS verdict showing Call B treated helper execution as the differentiator.
-- Pass/fail: PASS if all Call B helper and journal labels are present, candidate path is packet-local, sandbox canonical diff is empty, and tripwire diff is empty. FAIL if only `Read(".opencode/skill/sk-improve-agent/SKILL.md")` appears or Call B edits canonical target.
+- Pass/fail: PASS if all Call B helper, benchmark, and journal labels are present, candidate path is packet-local, benchmark report evidence is file-backed, sandbox canonical diff is empty, and tripwire diff is empty. FAIL if only `Read(".opencode/skill/sk-improve-agent/SKILL.md")` appears or Call B edits canonical target.
 
 ## 3. TEST EXECUTION
 
@@ -64,7 +64,7 @@ cat > /tmp/cp-040-task.txt <<'EOF'
 Task ID: CP-040-TASK-001.
 In /tmp/cp-040-sandbox/, improve .opencode/agent/cp-improve-target.md using the sk-improve-agent protocol.
 Stay strictly inside /tmp/cp-040-sandbox/ and /tmp/cp-040-spec/.
-Acceptance: create a packet-local candidate, cite scan-integration.cjs, generate-profile.cjs, score-candidate.cjs, reduce-state.cjs, candidate_generated, and candidate_scored evidence, and do not edit the canonical target.
+Acceptance: create a packet-local candidate, cite scan-integration.cjs, generate-profile.cjs, score-candidate.cjs, materialize-benchmark-fixtures.cjs, run-benchmark.cjs, reduce-state.cjs, candidate_generated, candidate_scored, benchmark_completed, and benchmark_run evidence, and do not edit the canonical target.
 Return structured output with status, candidate_path, target, change_summary, notes, and critic_pass.
 EOF
 printf 'As @Task: %s\n' "$(cat /tmp/cp-040-task.txt)" > /tmp/cp-040-prompt-A.txt
@@ -75,13 +75,13 @@ copilot -p "$(cat /tmp/cp-040-prompt-B.txt)" --model gpt-5.5 --allow-all-tools -
 diff -u /tmp/cp-040-sandbox-baseline/.opencode/agent/cp-improve-target.md /tmp/cp-040-sandbox/.opencode/agent/cp-improve-target.md > /tmp/cp-040-B-canonical.diff; echo "POST_B_CANONICAL_DIFF=$?" | tee /tmp/cp-040-B-canonical-exit.txt
 git status --porcelain > /tmp/cp-040-post.txt
 diff /tmp/cp-040-pre.txt /tmp/cp-040-post.txt > /tmp/cp-040-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-040-tripwire-exit.txt
-for label in "scan-integration.cjs" "generate-profile.cjs" "score-candidate.cjs" "reduce-state.cjs" "candidate_generated" "candidate_scored" "/tmp/cp-040-spec/improvement/candidates"; do grep -c "$label" /tmp/cp-040-B-improve-agent.txt; done | tee /tmp/cp-040-B-field-counts.txt
+for label in "scan-integration.cjs" "generate-profile.cjs" "score-candidate.cjs" "materialize-benchmark-fixtures.cjs" "run-benchmark.cjs" "reduce-state.cjs" "candidate_generated" "candidate_scored" "benchmark_completed" "benchmark_run" "/tmp/cp-040-spec/improvement/candidates" "/tmp/cp-040-spec/improvement/benchmark-outputs/report.json"; do grep -c "$label" /tmp/cp-040-B-improve-agent.txt; done | tee /tmp/cp-040-B-field-counts.txt
 grep -c 'Read(".opencode/skill/sk-improve-agent/SKILL.md")' /tmp/cp-040-B-improve-agent.txt | tee /tmp/cp-040-B-skill-load-only-count.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |
 |---|---|---|---|---|---|---|---|---|
-| CP-040 | SKILL_LOAD_NOT_PROTOCOL | Confirm helper execution is proven, not only skill loading | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for helper and journal labels all >= 1; `POST_B_CANONICAL_DIFF=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-040-B-improve-agent.txt`, `/tmp/cp-040-B-field-counts.txt`, `/tmp/cp-040-B-canonical.diff`, `/tmp/cp-040-tripwire.diff` | PASS if B proves helper and journal boundaries without canonical mutation. FAIL if B treats skill load as enough or writes canonical target | 1. If helper labels are missing, wire protocol execution evidence. 2. If canonical diff is non-empty, repair proposal-only boundary. 3. If only skill-load text appears, distinguish loading from execution. 4. If tripwire diff is non-empty, inspect project mutation before rerun. |
+| CP-040 | SKILL_LOAD_NOT_PROTOCOL | Confirm helper execution is proven, not only skill loading | Same task body in §2; Call A wraps with `As @Task:`; Call B prepends `.opencode/agent/improve-agent.md` + `Depth: 1` | Run the §3 exact command block | B field counts for helper, benchmark, and journal labels all >= 1; `POST_B_CANONICAL_DIFF=0`; `TRIPWIRE_DIFF_EXIT=0` | `/tmp/cp-040-B-improve-agent.txt`, `/tmp/cp-040-B-field-counts.txt`, `/tmp/cp-040-B-canonical.diff`, `/tmp/cp-040-tripwire.diff` | PASS if B proves helper, benchmark, and journal boundaries without canonical mutation. FAIL if B treats skill load as enough or writes canonical target | 1. If helper labels are missing, wire protocol execution evidence. 2. If benchmark labels are missing, verify materializer + runner execution. 3. If canonical diff is non-empty, repair proposal-only boundary. 4. If only skill-load text appears, distinguish loading from execution. 5. If tripwire diff is non-empty, inspect project mutation before rerun. |
 
 ## 4. SOURCE FILES
 

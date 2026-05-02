@@ -486,7 +486,7 @@ Expected signals: `improvement-journal.jsonl` file created at the configured jou
 ### RT-027 | Fresh-Session Continuation After Archive
 
 #### Description
-the current release uses standalone `new`-mode sessions, so continuation happens by archiving the previous run and starting a fresh `/improve:improve-agent` session.
+the current release uses standalone `new`-mode sessions, so continuation happens by archiving the previous run and starting a fresh `/improve:agent` session.
 
 #### Scenario Contract
 Prompt summary: As a manual-testing orchestrator, validate current-release continuation guidance against the sk-improve-agent session model and journal behavior. Verify archived evidence stays intact, each new invocation starts in `new` mode with a fresh session id, and iteration numbering restarts at 1. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`improvement/` directory is preserved under `improvement_archive/` before the next run begins. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`new` mode with a fresh session id, and iteration numbering restarts at 1. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`new` mode with a fresh session id, and iteration numbering restarts at 1. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.`new` mode with a fresh session id, and iteration numbering restarts at 1. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.
@@ -502,9 +502,9 @@ Expected signals: The archived `improvement/` directory is preserved under `impr
 when convergence math signals stop but one or more of the 5 gate bundles fail, the session records a `blockedStop` rather than `converged`, and the blocked-stop event includes the failing gate details.
 
 #### Scenario Contract
-Prompt summary: As a manual-testing orchestrator, validate that when convergence math signals stop but one or more of the 5 gate bundles fail, the session records a blockedStop rather than converged, and the blocked-stop event includes the failing gate details against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `legal_stop_evaluated` event emitted with `gateResults` containing all 5 gate bundles:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.
+Prompt summary: As a manual-testing orchestrator, validate that when convergence math signals stop but one or more of the 5 gate bundles fail, the session records a blockedStop rather than converged, and the blocked-stop event includes the failing gate details against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `legal_stop_evaluated` event emitted with nested `details.gateResults` containing all 5 gate bundles. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.
 
-Expected signals: `legal_stop_evaluated` event emitted with `gateResults` containing all 5 gate bundles:
+Expected signals: `legal_stop_evaluated` event emitted with nested `details.gateResults` containing all 5 gate bundles:
 
 #### Test Execution
 > **Feature File:** [RT-028](07--runtime-truth/028-legal-stop-gates.md)
@@ -551,12 +551,12 @@ Expected signals: `improvement_config.json` has `parallelWaves.enabled: false` b
 ### RT-032 | Journal Wiring Boundary Coverage
 
 #### Description
-the `/improve:improve-agent` autonomous workflow wires `improvement-journal.cjs` at every required boundary: `session_start`, per-iteration lifecycle checkpoints, and `session_end`.
+the `/improve:agent` autonomous workflow wires `improvement-journal.cjs` at every required boundary: `session_start`, per-iteration lifecycle checkpoints, nested `legal_stop_evaluated.details.gateResults`, benchmark completion, and `session_end`.
 
 #### Scenario Contract
-Prompt summary: As a manual-testing orchestrator, validate that the /improve:improve-agent autonomous workflow wires improvement-journal.cjs at every required boundary: session_start, per-iteration lifecycle checkpoints, and session_end against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.
+Prompt summary: As a manual-testing orchestrator, validate that the /improve:agent autonomous workflow wires improvement-journal.cjs at every required boundary: session_start, per-iteration lifecycle checkpoints, nested legal_stop_evaluated.details.gateResults, benchmark_completed, and session_end against the current sk-improve-agent command, runtime artifacts, and validation scripts. Verify `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:. Return a concise operator-facing PASS/FAIL verdict with the decisive evidence.
 
-Expected signals: `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for:
+Expected signals: `.opencode/command/improve/assets/improve_improve-agent_auto.yaml` contains `improvement-journal.cjs` emission steps for session_start, candidate_generated, candidate_scored, benchmark_completed, nested legal_stop_evaluated.details.gateResults, and session_end:
 
 #### Test Execution
 > **Feature File:** [RT-032](07--runtime-truth/032-journal-wiring.md)

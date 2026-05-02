@@ -1,0 +1,11 @@
+{
+  "specFolder": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+  "description": "Wire executable producers + consumers across sk-improve-agent's command-flow pipeline",
+  "keywords": ["062", "sk-improve-agent", "executable-wiring", "benchmark", "legal-stop", "static-skill-assets"],
+  "lastUpdated": "2026-05-02T14:00:00Z",
+  "specId": "062",
+  "folderSlug": "improve-agent-executable-wiring",
+  "parentChain": ["skilled-agent-orchestration"],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

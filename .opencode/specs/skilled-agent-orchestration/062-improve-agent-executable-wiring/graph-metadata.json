@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+  "spec_folder": "skilled-agent-orchestration/062-improve-agent-executable-wiring",
+  "parent_id": null,
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "062 executable wiring",
+      "sk-improve-agent benchmark wiring",
+      "legal-stop nested gateResults",
+      "benchmark materializer static assets"
+    ],
+    "key_topics": [
+      "062",
+      "sk-improve-agent",
+      "executable-wiring",
+      "benchmark-materializer",
+      "static-skill-assets",
+      "legal-stop-nested",
+      "stop-reason-enum"
+    ],
+    "importance_tier": "high",
+    "status": "in_progress",
+    "key_files": [
+      ".opencode/specs/skilled-agent-orchestration/062-improve-agent-executable-wiring/spec.md",
+      ".opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/003-followup-research/research/research.md",
+      ".opencode/skill/sk-improve-agent/scripts/run-benchmark.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/improvement-journal.cjs",
+      ".opencode/skill/sk-improve-agent/scripts/reduce-state.cjs",
+      ".opencode/command/improve/assets/improve_improve-agent_auto.yaml",
+      ".opencode/command/improve/assets/improve_improve-agent_confirm.yaml",
+      ".opencode/skill/sk-improve-agent/SKILL.md"
+    ],
+    "entities": [],
+    "causal_summary": "Executable wiring follow-on to 060 trilogy: lands benchmark materializer (static skill assets), nested legal_stop_evaluated.details.gateResults, stop-reason enum reconciliation, auto+confirm YAML lockstep parity, native RT-028/RT-032 alignment. Produces real producer/consumer compatibility so 061 command-flow stress tests can return GREEN against fixed code.",
+    "created_at": "2026-05-02T14:00:00Z",
+    "last_save_at": "2026-05-02T14:00:00Z",
+    "last_active_at": "2026-05-02T14:00:00Z",
+    "save_lineage": "manual_stub",
+    "last_accessed_at": null,
+    "source_docs": ["spec.md"]
+  }
+}
