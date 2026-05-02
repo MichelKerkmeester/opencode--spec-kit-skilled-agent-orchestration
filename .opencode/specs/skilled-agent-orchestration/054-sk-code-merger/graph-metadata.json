@@ -7,7 +7,9 @@
   "manual": {
     "depends_on": [],
     "supersedes": [],
-    "related_to": ["skilled-agent-orchestration/053-cli-skill-removal-mcp-clickup"]
+    "related_to": [
+      "skilled-agent-orchestration/053-cli-skill-removal-mcp-clickup"
+    ]
   },
   "derived": {
     "trigger_phrases": [
@@ -90,14 +92,44 @@
       "implementation-summary.md"
     ],
     "entities": [
-      { "name": "spec.md", "kind": "doc", "path": "spec.md", "source": "derived" },
-      { "name": "plan.md", "kind": "doc", "path": "plan.md", "source": "derived" },
-      { "name": "tasks.md", "kind": "doc", "path": "tasks.md", "source": "derived" },
-      { "name": "checklist.md", "kind": "doc", "path": "checklist.md", "source": "derived" },
-      { "name": "decision-record.md", "kind": "doc", "path": "decision-record.md", "source": "derived" },
-      { "name": "implementation-summary.md", "kind": "doc", "path": "implementation-summary.md", "source": "derived" }
+      {
+        "name": "spec.md",
+        "kind": "doc",
+        "path": "spec.md",
+        "source": "derived"
+      },
+      {
+        "name": "plan.md",
+        "kind": "doc",
+        "path": "plan.md",
+        "source": "derived"
+      },
+      {
+        "name": "tasks.md",
+        "kind": "doc",
+        "path": "tasks.md",
+        "source": "derived"
+      },
+      {
+        "name": "checklist.md",
+        "kind": "doc",
+        "path": "checklist.md",
+        "source": "derived"
+      },
+      {
+        "name": "decision-record.md",
+        "kind": "doc",
+        "path": "decision-record.md",
+        "source": "derived"
+      },
+      {
+        "name": "implementation-summary.md",
+        "kind": "doc",
+        "path": "implementation-summary.md",
+        "source": "derived"
+      }
     ],
-    "causal_summary": "Two parallel code skills (sk-code-web and sk-code-full-stack) overlap in phase model and intent vocabulary, causing advisor routing ambiguity (0.87 vs 0.86 tie). This packet creates a new umbrella skill `sk-code` with stack-detection-first smart routing — web stack live (carried verbatim from sk-code-web), non-web stacks (React/Node/Go/Swift/React-Native) scaffolded as empty templated stubs pointing back to sk-code-full-stack for canonical content. Legacy skills preserved on disk untouched per user directive 'I dont want you to overwrite the 2 skills' — deprecation enforced via additive frontmatter keys plus a code-level DEPRECATED_SKILLS exclusion list in skill_advisor.py and explicit.ts that survives doctor:skill-advisor :confirm rebuilds. ~40 active cross-repo references retargeted across 7 tiers (advisor scoring, graph metadata, sister SKILL.md cross-refs, root instruction files, agent definitions, READMEs, deprecation markers); ~268 archival references in specs/, .opencode/changelog/, observability/ remain untouched. Five ADRs document routing ordering (stack-first), naming (bare sk-code), placeholder strategy (templated stubs), deprecation strategy (exclusion list), and universal/ namespace scoping (tight, no browser-coupled content).",
+    "causal_summary": "Two parallel code skills (sk-code-web and sk-code-full-stack) overlap in phase model and intent vocabulary, causing advisor routing ambiguity (0.87 vs 0.86 tie). This packet creates a new umbrella skill `sk-code` with stack-detection-first smart routing \u2014 web stack live (carried verbatim from sk-code-web), non-web stacks (React/Node/Go/Swift/React-Native) scaffolded as empty templated stubs pointing back to sk-code-full-stack for canonical content. Legacy skills preserved on disk untouched per user directive 'I dont want you to overwrite the 2 skills' \u2014 deprecation enforced via additive frontmatter keys plus a code-level DEPRECATED_SKILLS exclusion list in skill_advisor.py and explicit.ts that survives doctor:skill-advisor :confirm rebuilds. ~40 active cross-repo references retargeted across 7 tiers (advisor scoring, graph metadata, sister SKILL.md cross-refs, root instruction files, agent definitions, READMEs, deprecation markers); ~268 archival references in specs/, .opencode/changelog/, observability/ remain untouched. Five ADRs document routing ordering (stack-first), naming (bare sk-code), placeholder strategy (templated stubs), deprecation strategy (exclusion list), and universal/ namespace scoping (tight, no browser-coupled content).",
     "created_at": "2026-04-30T08:30:00Z",
     "last_save_at": "2026-04-30T08:30:00Z",
     "save_lineage": "same_pass",
@@ -110,5 +142,6 @@
       "decision-record.md",
       "implementation-summary.md"
     ]
-  }
+  },
+  "importance_tier": "normal"
 }

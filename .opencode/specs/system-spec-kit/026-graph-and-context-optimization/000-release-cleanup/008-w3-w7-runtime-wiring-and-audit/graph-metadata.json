@@ -55,5 +55,6 @@
       "checklist.md",
       "implementation-summary.md"
     ]
-  }
+  },
+  "importance_tier": "normal"
 }

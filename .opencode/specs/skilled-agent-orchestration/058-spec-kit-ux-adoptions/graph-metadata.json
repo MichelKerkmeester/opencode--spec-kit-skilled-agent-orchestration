@@ -56,5 +56,6 @@
       "tasks.md",
       "checklist.md"
     ]
-  }
+  },
+  "importance_tier": "normal"
 }

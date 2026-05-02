@@ -205,7 +205,7 @@
         "source": "derived"
       }
     ],
-    "causal_summary": "Packet 059 produced a stress-test methodology that surfaced two real design gaps in `@code` after a single round of failure-path scenarios — gaps that the pre-merge structural smoke test (CP-026) had missed entirely. The methodology is reusable: same-task A/B dispatch, sandboxed isolation, grep-only verdict signals, multi-round iterative edits with measurable score progression, and a smart-router audit asking \"does the skill *actually fire its routing logic*, or does the agent just read SKILL.md and stop?\"",
+    "causal_summary": "Packet 059 produced a stress-test methodology that surfaced two real design gaps in `@code` after a single round of failure-path scenarios \u2014 gaps that the pre-merge structural smoke test (CP-026) had missed entirely. The methodology is reusable: same-task A/B dispatch, sandboxed isolation, grep-only verdict signals, multi-round iterative edits with measurable score progression, and a smart-router audit asking \"does the skill *actually fire its routing logic*, or does the agent just read SKILL.md and stop?\"",
     "created_at": "2026-05-02T08:57:14.987Z",
     "last_save_at": "2026-05-02T08:57:14.987Z",
     "save_lineage": "same_pass",
@@ -220,5 +220,6 @@
       "handover.md",
       "resource-map.md"
     ]
-  }
+  },
+  "importance_tier": "normal"
 }

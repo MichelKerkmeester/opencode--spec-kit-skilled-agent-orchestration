@@ -216,5 +216,6 @@
       "decision-record.md",
       "implementation-summary.md"
     ]
-  }
+  },
+  "importance_tier": "normal"
 }
