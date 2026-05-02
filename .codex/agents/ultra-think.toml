@@ -1,6 +1,7 @@
 # Agent: ultra-think
 # Converted from: .opencode/agent/ultra-think.md
 name = "ultra-think"
+description = "Multi-strategy planning architect that dispatches diverse thinking strategies for optimal plans. Outputs plans only, never modifies files."
 sandbox_mode = "read-only"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

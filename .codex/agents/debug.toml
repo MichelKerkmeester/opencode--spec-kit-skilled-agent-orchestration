@@ -1,6 +1,7 @@
 # Agent: debug
 # Converted from: .opencode/agent/debug.md
 name = "debug"
+description = "User-invoked fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Surfaced as a prompted offer when an implementation workflow detects 3+ task failures (operator-judgment threshold), or invoked explicitly by the user via the Task tool. Never auto-dispatched."
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

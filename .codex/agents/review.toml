@@ -1,6 +1,7 @@
 # Agent: review
 # Converted from: .opencode/agent/review.md
 name = "review"
+description = "Code review specialist with pattern validation, quality scoring, and standards enforcement for PRs and code changes"
 sandbox_mode = "read-only"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

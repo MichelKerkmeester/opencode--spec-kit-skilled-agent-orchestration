@@ -1,6 +1,7 @@
 # Agent: code
 # Converted from: .opencode/agent/code.md
 name = "code"
+description = "Application-code implementation specialist using sk-code for stack-aware execution. Dispatched ONLY by @orchestrate (orchestrator-only convention; not harness-enforced — see §0)."
 sandbox_mode = "workspace-write"
 model = "gpt-5.4"
 model_reasoning_effort = "high"

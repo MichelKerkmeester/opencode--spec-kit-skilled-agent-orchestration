@@ -1,6 +1,7 @@
 # Agent: orchestrate
 # Converted from: .opencode/agent/orchestrate.md
 name = "orchestrate"
+description = "Senior orchestration agent with full authority over task decomposition, delegation, quality evaluation, and unified delivery synthesis"
 profile = "orchestrate"
 sandbox_mode = "read-only"
 model = "gpt-5.4"

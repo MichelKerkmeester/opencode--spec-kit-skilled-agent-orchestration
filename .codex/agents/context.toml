@@ -1,6 +1,7 @@
 # Agent: context
 # Converted from: .opencode/agent/context.md
 name = "context"
+description = "Production context agent — comprehensive retrieval with canonical continuity recovery and structured Context Packages"
 sandbox_mode = "read-only"
 model = "gpt-5.4"
 model_reasoning_effort = "high"
