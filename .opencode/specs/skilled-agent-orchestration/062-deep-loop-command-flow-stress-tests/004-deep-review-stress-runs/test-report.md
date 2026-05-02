@@ -104,3 +104,37 @@ This sub-phase reached methodology-application-complete but NOT PASS 6/0/0. The 
 - `sessionOutcome`: `keptBaseline` (no canonical changes to @deep-review or sk-deep-review made by this packet — only CPs authored under skill's manual_testing_playbook)
 - `iterations_run`: 2 (R1 + R2)
 - `r3_deferred`: True (recommended for follow-on packet with Category A+B fixes; substrate work for Category C is separate)
+
+---
+
+## 8. Recommendations Applied (Post-Test-Report)
+
+After authoring this report, operator approved applying the recommendations from §5. Status of each:
+
+### Category A: Tripwire scope fix — APPLIED
+- All 6 deep-review CPs (CP-052..057) now use `git status --porcelain -- /tmp/cp-NNN-sandbox /tmp/cp-NNN-spec` instead of full-repo `git status --porcelain`. Eliminates the parallelism-noise interpretation but more importantly bounds the signal to the actual blast radius.
+
+### Category B: Regex loosening — APPLIED
+- **CP-053 `delta_jsonl`**: now also matches `deltaCount`, `newFindings`, `delta-001`, `delta record`, `deltas directory` (canonical synonyms for the delta-iteration contract).
+- **CP-057 `target_read_only_named`**: now also matches `targets are read-only`, `never modify.*target`, `never edit.*target`, `target.*read.only` (paraphrase tolerance).
+- **CP-057 `allowed_surfaces_named`**: now also matches `review/iterations/`, `deep-review-strategy`, `allowed surfaces`, `writable surface`, `allowed write` (paraphrase tolerance).
+
+### Category C: Substrate updates — APPLIED
+- **sk-deep-review SKILL.md ALWAYS rules**: added rule 13 (BINDING emission contract) and rule 14 (canonical REFUSE wording). Both rules are grep-checkable contracts that machines and operators can verify.
+- **@deep-review canonical agent body** (`.opencode/agent/deep-review.md`):
+  - §0 ILLEGAL NESTING: added "Canonical Refusal Wording (mandatory)" subsection requiring exact verbatim emission of `REFUSE: nested Task tool dispatch is forbidden for LEAF agents. Returning partial findings instead.`
+  - §0b INPUT + SCOPE GATES: added "Setup BINDING Emission" subsection requiring 6 canonical `BINDING:` lines before any state read.
+- **4-runtime mirror sync**: changes mirrored to `.claude/agents/`, `.gemini/agents/`, `.codex/agents/` (TOML wrapper). All parse cleanly. File size: 596/596/596/590 lines (all under the 600-line cap).
+
+### Category D: phase_synthesis YAML audit — DEFERRED
+- Investigated `spec_kit_deep-review_auto.yaml` `phase_synthesis` section. No obvious unbounded loops; structure is linear (hydrate → read iterations → build registry → adversarial selfcheck → emit resource map → coverage gate → compile report).
+- `step_adversarial_selfcheck` iterates per-finding (`For each active P0/P1 finding`) without explicit cap. This is a likely contributor to CP-055's 900s opencode timeout when run with many findings.
+- **Deferred** because the YAML file is currently modified by parallel work tracks; adding a BOUNDED_CAP edit here would conflict. Recommended fix to apply once the parallel work merges:
+  - In `step_adversarial_selfcheck`, add bounded cap (default BOUNDED_CAP=20, severity-priority + file:line ordering) and emit a `synthesisNote` when the cap is applied.
+
+### Effects on R3 expected outcome (not re-run yet)
+- A+B fixes should bring CP-053+054+057 to PASS on next R3.
+- C fixes (BINDING + REFUSE) should bring CP-052 + CP-056 closer to PASS, contingent on the LLM faithfully emitting the new canonical strings during stress runs.
+- D deferred — CP-055 timeout may still recur until the bounded-cap is applied.
+
+**R3 not run** in this cycle (executor budget conservation + recommendations applied are deterministic CP-edits + skill+agent edits whose effects are best confirmed on a future R3 dispatch when budget permits).

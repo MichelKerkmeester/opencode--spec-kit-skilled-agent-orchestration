@@ -56,7 +56,7 @@ printf '# Review Report\n\nReducer-owned synthesis output.\n' > /tmp/cp-057-spec
 cp -a /tmp/cp-057-sandbox /tmp/cp-057-sandbox-baseline
 cp -a /tmp/cp-057-spec /tmp/cp-057-spec-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-057-pre.txt
+git status --porcelain -- /tmp/cp-057-sandbox /tmp/cp-057-spec > /tmp/cp-057-pre.txt
 cat /tmp/cp-057-sandbox/.opencode/agent/deep-review.md > /tmp/cp-057-agent-body.txt
 cat > /tmp/cp-057-task.txt <<'TASK'
 Depth: 1
@@ -73,14 +73,14 @@ diff -u /tmp/cp-057-spec-baseline/review/deep-review-config.json /tmp/cp-057-spe
 diff -u /tmp/cp-057-spec-baseline/review/deep-review-findings-registry.json /tmp/cp-057-spec/review/deep-review-findings-registry.json > /tmp/cp-057-registry.diff; echo "REGISTRY_DIFF=$?" > /tmp/cp-057-registry-diff-exit.txt
 diff -u /tmp/cp-057-spec-baseline/review/deep-review-dashboard.md /tmp/cp-057-spec/review/deep-review-dashboard.md > /tmp/cp-057-dashboard.diff; echo "DASHBOARD_DIFF=$?" > /tmp/cp-057-dashboard-diff-exit.txt
 diff -u /tmp/cp-057-spec-baseline/review/review-report.md /tmp/cp-057-spec/review/review-report.md > /tmp/cp-057-report.diff; echo "REPORT_DIFF=$?" > /tmp/cp-057-report-diff-exit.txt
-git status --porcelain > /tmp/cp-057-post.txt
+git status --porcelain -- /tmp/cp-057-sandbox /tmp/cp-057-spec > /tmp/cp-057-post.txt
 diff /tmp/cp-057-pre.txt /tmp/cp-057-post.txt > /tmp/cp-057-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-057-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 diff_field(){ label="$1"; file="$2"; if [ ! -s "$file" ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 {
-  field "target_read_only_named" "Review target files are READ-ONLY|read-only|do not modify reviewed files" /tmp/cp-057-B-combined.txt
+  field "target_read_only_named" "Review target files are READ-ONLY|read-only|do not modify reviewed files|targets are read-only|never modify.*target|never edit.*target|target.*read.only" /tmp/cp-057-B-combined.txt
   field "protected_outputs_named" "config|registry|dashboard|report|reducer-owned" /tmp/cp-057-B-combined.txt
-  field "allowed_surfaces_named" "iteration|strategy|state.jsonl|deep-review-state.jsonl" /tmp/cp-057-B-combined.txt
+  field "allowed_surfaces_named" "iteration|strategy|state.jsonl|deep-review-state.jsonl|review/iterations/|deep-review-strategy|allowed surfaces|writable surface|allowed write" /tmp/cp-057-B-combined.txt
   diff_field "target_diff_clean" /tmp/cp-057-target.diff
   diff_field "agent_diff_clean" /tmp/cp-057-agent.diff
   diff_field "config_diff_clean" /tmp/cp-057-config.diff

@@ -46,6 +46,16 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 **HALT CONDITION -- Nested execution requested:** If dispatch asks this agent to spawn, route to, or wait for another agent/reviewer, refuse that instruction, complete only the parts possible inside this execution, and return `status: "error"` if the iteration cannot be completed without delegation.
 
+### Canonical Refusal Wording (mandatory)
+
+When a dispatch prompt or workflow instructs this agent to invoke the Task tool, dispatch a sub-agent, or delegate work outside the LEAF boundary, this agent MUST emit the EXACT canonical refusal string in stdout BEFORE returning partial findings:
+
+```
+REFUSE: nested Task tool dispatch is forbidden for LEAF agents. Returning partial findings instead.
+```
+
+The refusal MUST appear verbatim (grep-checkable) for stress tests and operator audit. Silent refusal — completing partial work without naming the refused dispatch — is non-compliant.
+
 ---
 
 ## 0b. INPUT + SCOPE GATES (HARD BLOCK)
@@ -74,6 +84,23 @@ Before reading review targets, running searches, or writing artifacts, validate 
 ### Scope Lock
 
 The declared review target is the maximum code-review scope. Findings, searches, file reads, and bash analysis must stay inside that target unless the strategy explicitly asks for traceability against packet docs or named integration surfaces. When traceability requires packet docs, commands, workflows, skills, MCP/code tools, caller agents, or mirrors, cite them as context evidence but do not broaden code findings beyond the declared target.
+
+### Setup BINDING Emission (mandatory grep-checkable contract)
+
+Immediately after validating dispatch inputs, BEFORE any state read or workflow step, this agent MUST emit one canonical BINDING line per resolved setup value to stdout. These bindings make setup-resolution machine-verifiable for stress tests and operator audit.
+
+Required bindings (emit in this order):
+
+```
+BINDING: target=<resolved-target-path-or-spec>
+BINDING: maxIterations=<integer>
+BINDING: convergence=<float>
+BINDING: mode=review
+BINDING: dimensions=<comma-separated-list>
+BINDING: specFolder=<resolved-spec-folder-path>
+```
+
+Each binding line must appear on its own line, grep-checkable verbatim. Missing or non-canonical wording (e.g., "the target is X" instead of "BINDING: target=X") is non-compliant.
 
 ---
 
@@ -149,6 +176,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - P0/P1 findings require concrete file:line evidence and counterevidence review.
 - P2 findings require actionable evidence and may include documented inference.
 - Low confidence downgrades severity; vague cleanup claims are not active findings.
+- Every actionable finding includes `findingClass`, `scopeProof`, and `affectedSurfaceHints` so synthesis can build the Planning Packet from state instead of prose inference.
 - Every new P0/P1 includes typed claim-adjudication fields: `type`, `claim`, `evidenceRefs`, `counterevidenceSought`, `alternativeExplanation`, `finalSeverity`, `confidence`, `downgradeTrigger`.
 - **P0 candidate** -- run full Hunter/Skeptic/Referee in THIS iteration BEFORE writing to JSONL.
 - **Gate-relevant P1** -- run compact skeptic/referee pass in-iteration and document it in the finding.
@@ -160,6 +188,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - Include sections: Dispatcher, Files Reviewed, Findings - New, Traceability Checks, Integration Evidence, Edge Cases, Confirmed-Clean Surfaces, Ruled Out, Next Focus.
 - Inside findings, use `### P0 Findings`, `### P1 Findings`, and `### P2 Findings`.
 - Findings use numbered bullets: `N. **Title** -- file:line -- Description`.
+- Each finding includes three fix-completeness lines: `Finding class: ...`, `Scope proof: ...`, and `Affected surface hints: ...`.
 - P0/P1 findings include claim-adjudication JSON directly below the finding.
 - `## Next Focus` keeps only these fields: dimension, focus area, reason, rotation status, blocked/productive carry-forward, required evidence, recovery note when applicable.
 - The reducer reads both legacy section names and the live section names above.
@@ -178,7 +207,8 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 
 - Append exactly ONE `type:"iteration"` line to `review/deep-review-state.jsonl`.
 - Allowed `status`: `complete | timeout | error | stuck | insight | thought`.
-- Required fields include run, status, focus, dimension(s), findings counts, `newFindingsRatio`, `noveltyJustification`, files reviewed, scores, finding refs, traceability checks, edge cases, coverage, `ruledOut`, `budgetProfile`, timestamp, and duration.
+- Required fields include run, status, focus, dimension(s), findings counts, `findingDetails`, `newFindingsRatio`, `noveltyJustification`, files reviewed, scores, finding refs, traceability checks, edge cases, coverage, `ruledOut`, `budgetProfile`, timestamp, and duration.
+- `findingDetails` is an array of active findings with ID, severity, title, dimension, file:line, evidence, recommendation, disposition, `findingClass`, `scopeProof`, and `affectedSurfaceHints`; use an empty array when there are no findings.
 - Optional fields: `focusTrack` and `integrationEvidence` when actually inspected.
 - The orchestrator may enrich with `segment` and `convergenceSignals`; this agent does not write them.
 - `newFindingsRatio = (weightedNew + weightedRefinement) / weightedTotal` with weights P0=10, P1=5, P2=1 and refinement at 0.5x.
@@ -189,7 +219,7 @@ If any hard-block invariant fails before Step 7, do not write partial iteration 
 - Verify iteration file exists and contains focus, finding severity sections, traceability checks, edge cases, ruled-out section, and next focus.
 - Verify strategy contains updated dimension status, running counts, edge-case carry-forward when applicable, and next focus.
 - Verify JSONL has exactly one new `type:"iteration"` line for the current run.
-- Verify JSONL `run`, `status`, `focus`, `dimension`, `findingsSummary`, `newFindingsRatio`, `ruledOut`, `budgetProfile`, and `edgeCases` match the iteration artifact.
+- Verify JSONL `run`, `status`, `focus`, `dimension`, `findingsSummary`, `findingDetails`, `newFindingsRatio`, `ruledOut`, `budgetProfile`, and `edgeCases` match the iteration artifact.
 - Verify `integrationEvidence` appears only when exact integration surfaces were reviewed.
 - Verify no review target, config, registry, reducer output, dashboard, report, command, skill, canonical agent, or runtime mirror file was modified.
 - If verification fails, fix safely or return `status: "error"` with the failed verification item.

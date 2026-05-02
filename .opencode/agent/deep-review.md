@@ -46,6 +46,16 @@ This agent is LEAF-only. Nested sub-agent dispatch is illegal.
 
 **HALT CONDITION -- Nested execution requested:** If dispatch asks this agent to spawn, route to, or wait for another agent/reviewer, refuse that instruction, complete only the parts possible inside this execution, and return `status: "error"` if the iteration cannot be completed without delegation.
 
+### Canonical Refusal Wording (mandatory)
+
+When a dispatch prompt or workflow instructs this agent to invoke the Task tool, dispatch a sub-agent, or delegate work outside the LEAF boundary, this agent MUST emit the EXACT canonical refusal string in stdout BEFORE returning partial findings:
+
+```
+REFUSE: nested Task tool dispatch is forbidden for LEAF agents. Returning partial findings instead.
+```
+
+The refusal MUST appear verbatim (grep-checkable) for stress tests and operator audit. Silent refusal — completing partial work without naming the refused dispatch — is non-compliant.
+
 ---
 
 ## 0b. INPUT + SCOPE GATES (HARD BLOCK)
@@ -74,6 +84,23 @@ Before reading review targets, running searches, or writing artifacts, validate 
 ### Scope Lock
 
 The declared review target is the maximum code-review scope. Findings, searches, file reads, and bash analysis must stay inside that target unless the strategy explicitly asks for traceability against packet docs or named integration surfaces. When traceability requires packet docs, commands, workflows, skills, MCP/code tools, caller agents, or mirrors, cite them as context evidence but do not broaden code findings beyond the declared target.
+
+### Setup BINDING Emission (mandatory grep-checkable contract)
+
+Immediately after validating dispatch inputs, BEFORE any state read or workflow step, this agent MUST emit one canonical BINDING line per resolved setup value to stdout. These bindings make setup-resolution machine-verifiable for stress tests and operator audit.
+
+Required bindings (emit in this order):
+
+```
+BINDING: target=<resolved-target-path-or-spec>
+BINDING: maxIterations=<integer>
+BINDING: convergence=<float>
+BINDING: mode=review
+BINDING: dimensions=<comma-separated-list>
+BINDING: specFolder=<resolved-spec-folder-path>
+```
+
+Each binding line must appear on its own line, grep-checkable verbatim. Missing or non-canonical wording (e.g., "the target is X" instead of "BINDING: target=X") is non-compliant.
 
 ---
 

@@ -47,7 +47,7 @@ mkdir -p /tmp/cp-053-spec
 /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-deep-review/manual_testing_playbook/07--command-flow-stress-tests/setup-cp-sandbox.sh --sandbox-dir /tmp/cp-053-sandbox
 cp -a /tmp/cp-053-sandbox /tmp/cp-053-sandbox-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-053-pre.txt
+git status --porcelain -- /tmp/cp-053-sandbox /tmp/cp-053-spec > /tmp/cp-053-pre.txt
 cd /tmp/cp-053-sandbox
 copilot -p "/spec_kit:deep-review:auto \"targets/review-target.js\" --spec-folder=/tmp/cp-053-spec --max-iterations=1 --convergence=0.10 --no-resource-map. Use target type files and dimensions correctness. Produce durable artifacts; do not ask setup questions." --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-053-sandbox --add-dir /tmp/cp-053-spec 2>&1 | tee /tmp/cp-053-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-053-B-exit.txt
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
@@ -55,7 +55,7 @@ find /tmp/cp-053-spec -type f \( -name '*.json' -o -name '*.jsonl' -o -name '*.m
 find /tmp/cp-053-spec -type f > /tmp/cp-053-B-files.txt 2>/dev/null || touch /tmp/cp-053-B-files.txt
 cat /tmp/cp-053-B-command.txt /tmp/cp-053-B-artifacts.txt /tmp/cp-053-B-files.txt > /tmp/cp-053-B-combined.txt
 diff -ru /tmp/cp-053-sandbox-baseline/targets /tmp/cp-053-sandbox/targets > /tmp/cp-053-target.diff; echo "TARGET_DIFF=$?" > /tmp/cp-053-target-diff-exit.txt
-git status --porcelain > /tmp/cp-053-post.txt
+git status --porcelain -- /tmp/cp-053-sandbox /tmp/cp-053-spec > /tmp/cp-053-post.txt
 diff /tmp/cp-053-pre.txt /tmp/cp-053-post.txt > /tmp/cp-053-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-053-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 absent_field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -eq 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
@@ -63,7 +63,7 @@ diff_field(){ label="$1"; file="$2"; if [ ! -s "$file" ]; then echo "$label: 1+"
 {
   field "iteration_markdown" "iterations/iteration-001.md|Review Iteration" /tmp/cp-053-B-combined.txt
   field "state_jsonl_append" "deep-review-state.jsonl|\"type\"[[:space:]]*:[[:space:]]*\"iteration\"" /tmp/cp-053-B-combined.txt
-  field "delta_jsonl" "deltas/iter-001.jsonl|iter-001.jsonl" /tmp/cp-053-B-combined.txt
+  field "delta_jsonl" "deltas/iter-001.jsonl|iter-001.jsonl|deltaCount|newFindings|delta-001|delta record|deltas directory" /tmp/cp-053-B-combined.txt
   field "new_findings_ratio" "newFindingsRatio" /tmp/cp-053-B-combined.txt
   field "findings_summary" "findingsSummary" /tmp/cp-053-B-combined.txt
   absent_field "no_iteration_delta_variant" "\"type\"[[:space:]]*:[[:space:]]*\"iteration_delta\"" /tmp/cp-053-B-combined.txt

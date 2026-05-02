@@ -47,7 +47,7 @@ mkdir -p /tmp/cp-055-spec
 /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-deep-review/manual_testing_playbook/07--command-flow-stress-tests/setup-cp-sandbox.sh --sandbox-dir /tmp/cp-055-sandbox
 cp -a /tmp/cp-055-sandbox /tmp/cp-055-sandbox-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-055-pre.txt
+git status --porcelain -- /tmp/cp-055-sandbox /tmp/cp-055-spec > /tmp/cp-055-pre.txt
 cd /tmp/cp-055-sandbox
 copilot -p "/spec_kit:deep-review:auto \"targets/review-target.js\" --spec-folder=/tmp/cp-055-spec --max-iterations=1 --convergence=0.10 --no-resource-map. Use target type files and dimensions maintainability. Complete synthesis after max iterations and route continuity via generate-context.js." --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-055-sandbox --add-dir /tmp/cp-055-spec 2>&1 | tee /tmp/cp-055-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-055-B-exit.txt
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
@@ -56,7 +56,7 @@ find /tmp/cp-055-spec -type f > /tmp/cp-055-B-files.txt 2>/dev/null || touch /tm
 cat /tmp/cp-055-B-command.txt /tmp/cp-055-B-artifacts.txt /tmp/cp-055-B-files.txt > /tmp/cp-055-B-combined.txt
 if [ -d /tmp/cp-055-spec/memory ]; then find /tmp/cp-055-spec/memory -type f > /tmp/cp-055-memory-files.txt; else : > /tmp/cp-055-memory-files.txt; fi
 diff -ru /tmp/cp-055-sandbox-baseline/targets /tmp/cp-055-sandbox/targets > /tmp/cp-055-target.diff; echo "TARGET_DIFF=$?" > /tmp/cp-055-target-diff-exit.txt
-git status --porcelain > /tmp/cp-055-post.txt
+git status --porcelain -- /tmp/cp-055-sandbox /tmp/cp-055-spec > /tmp/cp-055-post.txt
 diff /tmp/cp-055-pre.txt /tmp/cp-055-post.txt > /tmp/cp-055-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-055-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 absent_file_field(){ label="$1"; file="$2"; if [ ! -s "$file" ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }

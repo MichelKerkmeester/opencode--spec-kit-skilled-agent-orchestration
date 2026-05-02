@@ -424,10 +424,12 @@ Reducer contract:
 10. **Run adversarial self-check on P0 findings** — Re-read the cited code before recording a P0 finding to confirm severity is genuine.
 11. **Report severity counts and finding detail in every JSONL record** — `findingsSummary` (cumulative), `findingsNew` (this iteration), and `findingDetails` (per-finding `findingClass`, `scopeProof`, and `affectedSurfaceHints`) are required fields.
 12. **Quality guards must pass before convergence** — Evidence completeness, scope alignment, no inference-only findings, severity coverage, and cross-reference checks must all pass (see `references/convergence.md` Section 10.4) before STOP can trigger.
+13. **Emit explicit setup BINDINGs** — At the start of every iteration's stdout, emit one line per resolved setup value in canonical form: `BINDING: target=<value>`, `BINDING: maxIterations=<N>`, `BINDING: convergence=<F>`, `BINDING: mode=review`, `BINDING: dimensions=<comma-list>`. These bindings make setup-resolution grep-checkable for stress tests and operator audit. The bindings MUST appear before any other workflow step output.
+14. **Use canonical refusal wording for nested dispatch** — When asked or instructed to dispatch a sub-agent, invoke the Task tool, or delegate work outside the LEAF boundary, emit the EXACT canonical refusal string: `REFUSE: nested Task tool dispatch is forbidden for LEAF agents. Returning partial findings instead.` followed by the partial work the agent was able to complete within the LEAF boundary. Silent refusal is non-compliant.
 
 ### NEVER
 
-1. **Dispatch sub-agents** — `@deep-review` is LEAF-only; it cannot dispatch additional agents.
+1. **Dispatch sub-agents** — `@deep-review` is LEAF-only; it cannot dispatch additional agents. When dispatch is requested, use the canonical REFUSE wording (ALWAYS rule 14).
 2. **Hold findings in context** — Write everything to iteration files; context is discarded after each dispatch.
 3. **Exceed TCB** — Target 8-11 tool calls per iteration (max 12); breadth over depth per cycle.
 4. **Ask the user** — Autonomous execution; the agent makes best-judgment decisions without pausing.

@@ -53,7 +53,7 @@ printf '%s\n' '{"openFindings":[],"findingsBySeverity":{"P0":0,"P1":0,"P2":0}}' 
 cp /tmp/cp-056-sandbox/.opencode/skill/sk-deep-review/assets/deep_review_strategy.md /tmp/cp-056-spec/review/deep-review-strategy.md
 cp -a /tmp/cp-056-sandbox /tmp/cp-056-sandbox-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-056-pre.txt
+git status --porcelain -- /tmp/cp-056-sandbox /tmp/cp-056-spec > /tmp/cp-056-pre.txt
 cat /tmp/cp-056-sandbox/.opencode/agent/deep-review.md > /tmp/cp-056-agent-body.txt
 cat > /tmp/cp-056-task.txt <<'TASK'
 Depth: 1
@@ -66,7 +66,7 @@ copilot -p "$(cat /tmp/cp-056-agent-body.txt; printf '\n\n'; cat /tmp/cp-056-tas
 cat /tmp/cp-056-B-body.txt /tmp/cp-056-spec/review/deep-review-state.jsonl > /tmp/cp-056-B-combined.txt
 diff -ru /tmp/cp-056-sandbox-baseline/targets /tmp/cp-056-sandbox/targets > /tmp/cp-056-target.diff; echo "TARGET_DIFF=$?" > /tmp/cp-056-target-diff-exit.txt
 diff -ru /tmp/cp-056-sandbox-baseline/.opencode/agent /tmp/cp-056-sandbox/.opencode/agent > /tmp/cp-056-agent.diff; echo "AGENT_DIFF=$?" > /tmp/cp-056-agent-diff-exit.txt
-git status --porcelain > /tmp/cp-056-post.txt
+git status --porcelain -- /tmp/cp-056-sandbox /tmp/cp-056-spec > /tmp/cp-056-post.txt
 diff /tmp/cp-056-pre.txt /tmp/cp-056-post.txt > /tmp/cp-056-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-056-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 absent_field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -eq 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }

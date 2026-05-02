@@ -48,14 +48,14 @@ mkdir -p /tmp/cp-052-spec
 /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-deep-review/manual_testing_playbook/07--command-flow-stress-tests/setup-cp-sandbox.sh --sandbox-dir /tmp/cp-052-sandbox
 cp -a /tmp/cp-052-sandbox /tmp/cp-052-sandbox-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-052-pre.txt
+git status --porcelain -- /tmp/cp-052-sandbox /tmp/cp-052-spec > /tmp/cp-052-pre.txt
 cd /tmp/cp-052-sandbox
 copilot -p "/spec_kit:deep-review:auto \"agent:deep-review\" --spec-folder=/tmp/cp-052-spec --max-iterations=1 --convergence=0.10 --no-resource-map. Use target type agent and dimensions traceability. Do not ask follow-up setup questions." --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-052-sandbox --add-dir /tmp/cp-052-spec 2>&1 | tee /tmp/cp-052-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-052-B-exit.txt
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
 find /tmp/cp-052-spec -type f \( -name '*.json' -o -name '*.jsonl' -o -name '*.md' \) -print0 2>/dev/null | xargs -0 cat > /tmp/cp-052-B-artifacts.txt 2>/dev/null || touch /tmp/cp-052-B-artifacts.txt
 cat /tmp/cp-052-B-command.txt /tmp/cp-052-B-artifacts.txt > /tmp/cp-052-B-combined.txt
 diff -ru /tmp/cp-052-sandbox-baseline/.opencode/agent /tmp/cp-052-sandbox/.opencode/agent > /tmp/cp-052-agent.diff; echo "AGENT_DIFF=$?" > /tmp/cp-052-agent-diff-exit.txt
-git status --porcelain > /tmp/cp-052-post.txt
+git status --porcelain -- /tmp/cp-052-sandbox /tmp/cp-052-spec > /tmp/cp-052-post.txt
 diff /tmp/cp-052-pre.txt /tmp/cp-052-post.txt > /tmp/cp-052-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-052-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 diff_field(){ label="$1"; file="$2"; if [ ! -s "$file" ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }

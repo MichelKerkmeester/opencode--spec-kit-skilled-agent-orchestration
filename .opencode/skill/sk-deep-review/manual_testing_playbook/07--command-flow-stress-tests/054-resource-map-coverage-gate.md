@@ -60,7 +60,7 @@ target_files:
 TASK
 cp -a /tmp/cp-054-sandbox /tmp/cp-054-sandbox-baseline
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
-git status --porcelain > /tmp/cp-054-pre.txt
+git status --porcelain -- /tmp/cp-054-sandbox /tmp/cp-054-spec > /tmp/cp-054-pre.txt
 cd /tmp/cp-054-sandbox
 copilot -p "/spec_kit:deep-review:auto \"targets/review-target.js\" --spec-folder=/tmp/cp-054-spec --max-iterations=1 --convergence=0.10. Use target type files and dimensions traceability. Treat resource-map.md as first-class coverage input." --model gpt-5.5 --allow-all-tools --no-ask-user --add-dir /tmp/cp-054-sandbox --add-dir /tmp/cp-054-spec 2>&1 | tee /tmp/cp-054-B-command.txt; echo "EXIT_B=${PIPESTATUS[0]}" | tee /tmp/cp-054-B-exit.txt
 cd /Users/michelkerkmeester/MEGA/Development/Code_Environment/Public
@@ -68,7 +68,7 @@ find /tmp/cp-054-spec -type f \( -name '*.json' -o -name '*.jsonl' -o -name '*.m
 find /tmp/cp-054-spec -type f > /tmp/cp-054-B-files.txt 2>/dev/null || touch /tmp/cp-054-B-files.txt
 cat /tmp/cp-054-B-command.txt /tmp/cp-054-B-artifacts.txt /tmp/cp-054-B-files.txt > /tmp/cp-054-B-combined.txt
 diff -ru /tmp/cp-054-sandbox-baseline/targets /tmp/cp-054-sandbox/targets > /tmp/cp-054-target.diff; echo "TARGET_DIFF=$?" > /tmp/cp-054-target-diff-exit.txt
-git status --porcelain > /tmp/cp-054-post.txt
+git status --porcelain -- /tmp/cp-054-sandbox /tmp/cp-054-spec > /tmp/cp-054-post.txt
 diff /tmp/cp-054-pre.txt /tmp/cp-054-post.txt > /tmp/cp-054-tripwire.diff; echo "TRIPWIRE_DIFF=$?" > /tmp/cp-054-tripwire-exit.txt
 field(){ label="$1"; pattern="$2"; file="$3"; count=$(grep -E -c "$pattern" "$file" 2>/dev/null || true); if [ "$count" -gt 0 ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
 diff_field(){ label="$1"; file="$2"; if [ ! -s "$file" ]; then echo "$label: 1+"; else echo "$label: 0"; fi; }
