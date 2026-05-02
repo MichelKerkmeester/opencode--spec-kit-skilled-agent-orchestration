@@ -241,13 +241,15 @@ A weighted score >= 70 produces a `candidate-acceptable` recommendation. Below 7
 |   |-- 02--integration-scanning/     Surface discovery, runtime mirrors, dispatch
 |   `-- 03--scoring-system/           5-dim rubric, dynamic profiling, plateau detection
 `-- manual_testing_playbook/
-    |-- manual_testing_playbook.md     Test matrix root (21 scenarios)
-    |-- 01--integration-scanner/       Scanner test scenarios
-    |-- 02--profile-generator/         Profile generator tests
-    |-- 03--5d-scorer/                 5-dimension scoring tests
-    |-- 04--benchmark-integration/     Benchmark integration tests
-    |-- 05--reducer-dimensions/        Reducer dimensional tests
-    `-- 06--end-to-end-loop/           Full pipeline tests
+    |-- manual_testing_playbook.md     Test matrix root (37 scenarios)
+    |-- 01--integration-scanner/       Scanner test scenarios (4)
+    |-- 02--profile-generator/         Profile generator tests (4)
+    |-- 03--5d-scorer/                 5-dimension scoring tests (3)
+    |-- 04--benchmark-integration/     Benchmark integration tests (2)
+    |-- 05--reducer-dimensions/        Reducer dimensional tests (3)
+    |-- 06--end-to-end-loop/           Full pipeline tests (5)
+    |-- 07--runtime-truth/             Stop-reasons, journal events, legal-stop gates, replay (10)
+    `-- 08--agent-discipline-stress-tests/ CP-040..045 agent-discipline stress battery + setup-cp-sandbox.sh (6)
 ```
 
 ---
@@ -406,4 +408,4 @@ Each dimension score (0-100) is multiplied by its weight, then summed: `structur
 
 ### Testing
 
-- [manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) — 21-scenario validation matrix
+- [manual_testing_playbook.md](./manual_testing_playbook/manual_testing_playbook.md) — 37-scenario validation matrix (incl. CP-040..045 agent-discipline stress battery in §08)
