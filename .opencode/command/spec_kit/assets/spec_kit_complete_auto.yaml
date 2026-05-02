@@ -79,7 +79,7 @@ optional_workflows:
         output: parent_and_child_folders
       - id: P4
         name: Populate Templates
-        activities: ["Load phase-parent-section.md addendum", "Fill parent Phase Documentation Map", "Load phase-child-header.md addendum", "Fill child back-references and scope boundaries"]
+        activities: ["Load phase-parent Level template contract", "Fill parent Phase Documentation Map", "Load phase-child Level template contract", "Fill child back-references and scope boundaries"]
         output: populated_specs
     templates:
       phase_parent_section: Level template contract

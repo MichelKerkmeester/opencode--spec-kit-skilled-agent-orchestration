@@ -165,6 +165,10 @@ Run the 9-step implementation workflow: plan review, task breakdown, quality val
 
 Missing prerequisites -> guide user to `/spec_kit:plan` first.
 
+### Completion Validation
+
+`validate.sh --strict` uses the current SpecKit exit taxonomy: 0 = success, 1 = user error, 2 = validation error, 3 = system error. Strict warnings exit as validation errors, so implementation cannot close on a warning-only packet without repairing or explicitly documenting the validation state.
+
 ---
 
 ## 3. WORKFLOW OVERVIEW

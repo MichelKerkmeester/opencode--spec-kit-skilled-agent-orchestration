@@ -421,7 +421,7 @@ Runs after setup, before Step 1:
 |----------|------|---------|---------|
 | P1 | Analyze Scope | Run `recommend-level.sh --recommend-phases` | phase_recommendation |
 | P2 | Define Decomposition | Generate phase names, boundaries, dependencies | phase_plan |
-| P3 | Create Folders | Run `create.sh --phase --phases N` | parent + child folders |
+| P3 | Create Folders | Run `create.sh --phase --phases N --phase-names "a,b,c"` when names are supplied | parent + child folders |
 | P4 | Populate Templates | Fill parent Phase Documentation Map + child back-references | populated specs |
 
 ### After Phase Creation
@@ -446,6 +446,8 @@ Continue planning first child (001-[name]/)? [Y/n/review]
 |------|-------------|---------|
 | `--phases N` | Number of child phases | 3 |
 | `--phase-names "a,b,c"` | Comma-separated phase names | Auto-generated |
+
+`create.sh --path` rejects targets outside the repository and paths containing traversal segments before writing. Use normal spec roots or phase child paths; do not rely on shell path normalization to make unsafe paths acceptable.
 
 ### Examples
 

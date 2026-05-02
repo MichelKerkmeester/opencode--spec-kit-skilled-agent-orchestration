@@ -328,7 +328,7 @@ If source context is insufficient for a section, write "N/A - insufficient sourc
 
 **Step 11.5 (POSTFLIGHT):** Execute after Step 11, before Step 12. Skip if: quick fix (<10 LOC) or no PREFLIGHT at Step 9.5. Call `task_postflight()` with: specFolder, taskId, knowledgeScore, uncertaintyScore, contextScore, gapsClosed, newGapsDiscovered. Learning Index = (Knowledge Delta x 0.4) + (Uncertainty Reduction x 0.35) + (Context Improvement x 0.25).
 
-**Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically (exit 0=pass, 1=warnings, 2=errors must fix). Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
+**Step 12 (Completion - MANDATORY Level 1+):** Validation runs automatically. Current taxonomy: exit 0=success, 1=user error such as bad flags or invalid input, 2=validation error, 3=system error. In strict mode, warnings are validation errors. Verify all tasks show `[x]`. Create implementation-summary.md with: files modified/created, verification steps, deviations from plan, testing results. When the target is a spec root or phase child, also generate the packet-local changelog with `node .opencode/skill/system-spec-kit/scripts/dist/spec-folder/nested-changelog.js [spec-folder-path] --write`.
 
 **Step 13 (Save Context):** Use `node .opencode/skill/system-spec-kit/scripts/dist/memory/generate-context.js /tmp/save-context-data-<session-id>.json [spec-folder-path]`. DO NOT use Write/Edit tools to author continuity update in canonical spec docss directly; the script refreshes the indexed canonical spec document and the packet's `graph-metadata.json` while the canonical resume path stays in `handover.md`, `_memory.continuity`, and the packet spec docs.
 
@@ -386,7 +386,9 @@ Validation runs automatically on the spec folder before marking complete.
 
 **7 Rules:** FILE_EXISTS, PLACEHOLDER_FILLED, SECTIONS_PRESENT, LEVEL_DECLARED, PRIORITY_TAGS, EVIDENCE_CITED, ANCHORS_VALID
 
-**Exit codes:** 0 = pass, 1 = warnings, 2 = errors (must fix)
+**Exit codes:** 0 = success, 1 = user error, 2 = validation error, 3 = system error. Non-strict warnings report without changing the success exit code; strict warnings exit as validation errors.
+
+**Post-create validation:** `create.sh` does not run full validation by default. Set `SPECKIT_POST_VALIDATE=1` when a strict workflow or CI run should execute `validate.sh --quiet` immediately after scaffolding. Explicit `create.sh --path` targets are hardened: paths outside the repository or containing traversal segments are rejected before writes.
 
 ---
 
@@ -482,6 +484,7 @@ Required at Planning Gate for Level 3/3+ (optional Level 2). Record in decision-
 | Review agent P0 FAIL | BLOCK completion; user must fix |
 | Agent unavailable | Fall back to `general` with warning |
 | Validation errors (exit 2) | Fix before proceeding |
+| System errors (exit 3) | Diagnose tooling, missing folders, or file I/O before proceeding |
 | Incomplete session detected | Offer: Resume / Restart / Cancel |
 
 ---

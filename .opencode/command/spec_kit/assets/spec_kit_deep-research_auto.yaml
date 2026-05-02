@@ -357,7 +357,7 @@ workflow:
         action: "Run targeted strict validation after any deep-research pre-init spec.md mutation"
         condition: "validate_spec_doc"
         command: "SPECKIT_RULES=FRONTMATTER_VALID,LEVEL_DECLARED,TEMPLATE_SOURCE,TEMPLATE_HEADERS,PLACEHOLDER_FILLED,SECTIONS_PRESENT,ANCHORS_VALID,SPEC_DOC_INTEGRITY,TOC_POLICY bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh {spec_folder} --strict"
-        note: "This enforces the authored-spec markdown structural contract without applying full-packet required-file or completeness checks to workflow-owned research artifacts."
+        note: "This enforces the authored-spec markdown structural contract without applying full-packet required-file or completeness checks to workflow-owned research artifacts. It uses the Node validation orchestrator, whose strict path was measured at about 108ms for a fresh Level 3 packet on the local harness."
 
       step_init_complete:
         log: "Initialization complete. Config, state, and strategy files created."
@@ -993,7 +993,7 @@ workflow:
       step_validate_post_synthesis_spec_doc:
         action: "Run targeted strict validation after deep-research writes back into spec.md"
         command: "SPECKIT_RULES=FRONTMATTER_VALID,LEVEL_DECLARED,TEMPLATE_SOURCE,TEMPLATE_HEADERS,PLACEHOLDER_FILLED,SECTIONS_PRESENT,ANCHORS_VALID,SPEC_DOC_INTEGRITY,TOC_POLICY bash .opencode/skill/system-spec-kit/scripts/spec/validate.sh {spec_folder} --strict"
-        note: "Fail closed before completion if the deep-research spec.md sync breaks the authored-spec structural contract."
+        note: "Fail closed before completion if the deep-research spec.md sync breaks the authored-spec structural contract. This targeted check uses the fast Node validation orchestrator."
 
       step_update_config_status:
         action: "Mark config as complete"

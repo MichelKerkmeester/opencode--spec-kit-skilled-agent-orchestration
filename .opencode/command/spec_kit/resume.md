@@ -373,6 +373,7 @@ Call MCP tools directly — NEVER through Code Mode.
 - handover.md takes priority; if it is absent or thin, read `_memory.continuity` from `implementation-summary.md` next
 - supporting spec docs are the next canonical layer before any MCP enrichment
 - use `session_bootstrap()` or `memory_context({ mode: "resume", profile: "resume" })` only when the canonical packet is still thin
+- Parallel continuity saves are serialized by the spec-folder advisory lock in the memory-save path; if a save is busy, retry after the active save completes rather than writing around it.
 - Older handovers preserved for audit trail
 
 ### Compaction Continuation Safety

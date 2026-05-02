@@ -470,7 +470,7 @@ workflow:
     activities: [Run validation on spec folder, Verify all tasks completed, Validate tests pass, Confirm plan followed, Generate implementation-summary.md, Generate packet-local nested changelog when the target is a spec root or phase child, Update all task status]
     pre_completion_validation:
       enforcement: MANDATORY
-      outcomes: { pass: "continue", warnings: "continue with caution", errors: "STOP and fix" }
+      outcomes: { success: "continue", user_error: "STOP and fix invocation", validation_error: "STOP and fix", system_error: "STOP and diagnose tooling or file I/O" }
     summary_document:
       location: "[SPEC_FOLDER]/implementation-summary.md"
       required_sections: [files_modified_created, verification_steps_taken, deviations_from_plan, skill_updates, recommended_next_steps, browser_testing_results]
