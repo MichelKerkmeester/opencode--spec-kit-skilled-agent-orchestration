@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: spec-core | v2.2 -->
 ---
 title: "Phase Parent Spec: 060 — sk-improve-agent Test-Report Alignment"
-description: "Phase-parent root spec. Five-phase end-to-end methodology campaign on the sk-improve-agent triad — research → initial implementation + R1 → followup research → command-flow stress tests → executable wiring. Final composite stress score PASS 5 / PARTIAL 1 / FAIL 0 against the substrate built across phases."
+description: "Phase-parent root spec. Five-phase end-to-end methodology campaign on the sk-improve-agent triad — research → initial implementation + R1 → followup research → command-flow stress tests → executable wiring. Final composite stress score PASS 6 / PARTIAL 0 / FAIL 0 against the substrate built across phases."
 trigger_phrases:
   - "060 root"
   - "060 phase parent"
@@ -30,7 +30,7 @@ _memory:
       - "Phase 001 (deep research): COMPLETE — 854-line research.md synthesis from 10 cli-copilot iterations"
       - "Phase 002 (initial implementation + R1): COMPLETE — 0/2/4 score surfaced test-layer-selection meta-finding"
       - "Phase 003 (followup research): COMPLETE — 11-dim rubric + 13-question authoring preflight + packet 004/005 sketches"
-      - "Phase 004 (command-flow stress tests, was 061): COMPLETE — final composite PASS 5 / PARTIAL 1 / FAIL 0"
+      - "Phase 004 (command-flow stress tests, was 061): COMPLETE — final composite PASS 6 / PARTIAL 0 / FAIL 0"
       - "Phase 005 (executable wiring, was 062): COMPLETE — static skill assets + materializer + nested gateResults + stop-reason reconciled; 91 tests pass"
 ---
 
@@ -94,7 +94,7 @@ Output: `003-followup-research/research/research.md` (275 lines + 1582 lines acr
 
 ### 004 — Command-Flow Stress Tests (was 061)
 
-Status: COMPLETE — final composite PASS 5 / PARTIAL 1 / FAIL 0
+Status: COMPLETE — final composite PASS 6 / PARTIAL 0 / FAIL 0
 Output: `004-improve-agent-command-flow-stress-tests/test-report.md`
 
 Restructured CP-040..045 around per-CP layer partition: CP-040/043/044/045 invoke `/improve:agent` command in a command-capable temp project root; CP-041/042 stay body-level with 5 required runtime/control inputs materialized. R1 = 3/2/1; R2 (direct Bash to inherit copilot keyring auth) = 5/1/0. All FAILs eliminated. CP-042 PARTIAL is a documented body-discipline gap, not scenario mechanics.
@@ -130,9 +130,10 @@ If a follow-on packet is started:
 |---|---|---|---|
 | 060/002 R1 baseline | **0 PASS / 2 PARTIAL / 4 FAIL** | Pre-005 (no benchmark wiring, flat legal-stop) | Prepend agent body |
 | 060/004 R1 (post-005 substrate) | **3 PASS / 2 PARTIAL / 1 FAIL** | 005 wiring | Per-CP layer partition |
-| **060/004 R2 final** | **5 PASS / 1 PARTIAL / 0 FAIL** | 005 wiring | Per-CP partition + sandbox-helper + JSON-aware verification |
+| 060/004 R2 | 5 PASS / 1 PARTIAL / 0 FAIL | 005 wiring | Per-CP partition + sandbox-helper + JSON-aware verification |
+| **060/004 R3 final** | **6 PASS / 0 PARTIAL / 0 FAIL** | 005 wiring + 060/006 cleanup | CRITIC PASS verbatim emission requirement (R3) closed CP-042 PARTIAL → PASS |
 
-**Net:** 5 scenarios moved from FAIL/PARTIAL to PASS. All FAILs eliminated. The test-layer-selection meta-finding from 003 is empirically validated: command-flow lane scored 4/4 PASS (100%); body-level lane 1/2 PASS.
+**Net:** all 6 scenarios PASS. **0 FAIL / 0 PARTIAL** — perfect score. The test-layer-selection meta-finding from 003 is empirically validated: command-flow lane 4/4 PASS (100%); body-level lane 2/2 PASS (100% after R3 CRITIC PASS verbatim fix).
 <!-- /ANCHOR:end-to-end-result -->
 
 ---

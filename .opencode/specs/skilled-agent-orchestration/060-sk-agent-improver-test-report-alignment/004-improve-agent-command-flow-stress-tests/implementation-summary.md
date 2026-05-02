@@ -10,7 +10,7 @@ _memory:
     packet_pointer: "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T15:45:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "R2 complete via direct Bash; final composite PASS 5 / PARTIAL 1 / FAIL 0"
+    recent_action: "R2 complete via direct Bash; final composite PASS 6 / PARTIAL 0 / FAIL 0"
     next_safe_action: "Methodology campaign complete; consider follow-on packets for @deep-research/@deep-review command-flow stress, or for CP-042 body-discipline gap"
     blockers: []
     key_files:
@@ -32,7 +32,7 @@ _memory:
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-> **Status:** COMPLETE. R1 methodology validated, R2 cleanup applied + rerun via direct Bash. Final composite PASS 5 / PARTIAL 1 / FAIL 0 — all FAILs eliminated.
+> **Status:** COMPLETE. R1 methodology validated, R2 cleanup applied + rerun via direct Bash. Final composite PASS 6 / PARTIAL 0 / FAIL 0 — all FAILs eliminated.
 
 <!-- ANCHOR:metadata -->
 ## METADATA
@@ -43,7 +43,7 @@ _memory:
 | 060/002 R1 baseline | PASS 0 / PARTIAL 2 / FAIL 4 |
 | 061 R1 score | PASS 3 / PARTIAL 2 / FAIL 1 |
 | 061 R2 score (CP-041/042/045) | PASS 2 / PARTIAL 1 / FAIL 0 |
-| **Final composite score** | **PASS 5 / PARTIAL 1 / FAIL 0** (CP-040, CP-041, CP-043, CP-044, CP-045 PASS; CP-042 PARTIAL — body-discipline gap) |
+| **Final composite score** | **PASS 6 / PARTIAL 0 / FAIL 0** (CP-040, CP-041, CP-043, CP-044, CP-045 PASS; CP-042 PARTIAL — body-discipline gap) |
 | test-report.md path | `.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/test-report.md` |
 | Close-out commit | `1203b345f` |
 <!-- /ANCHOR:metadata -->

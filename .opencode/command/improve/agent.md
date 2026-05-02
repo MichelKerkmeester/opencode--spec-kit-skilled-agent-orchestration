@@ -197,8 +197,8 @@ Run a bounded evaluator-first loop that:
 3. Proposes packet-local candidates without mutating the canonical target
 4. Scores candidates across 5 weighted dimensions (structural, ruleCoherence, integration, outputQuality, systemFitness)
 5. Runs fixture benchmarks against target-specific test sets
-6. Reduces evidence into a dimensional dashboard with plateau detection
-7. Stops when improvement plateaus, max iterations reached, or operator decides
+6. Reduces evidence into a dimensional dashboard with convergence detection (per SKILL canonical stopReason enum: converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery)
+7. Stops on canonical stopReason: `converged`, `maxIterationsReached`, `blockedStop`, `manualStop`, `error`, or `stuckRecovery`
 
 ---
 
@@ -259,7 +259,7 @@ node .opencode/skill/sk-improve-agent/scripts/generate-profile.cjs --agent={targ
 
 Create the improvement directory structure and copy templates:
 ```bash
-mkdir -p {spec_folder}/improvement/candidates {spec_folder}/improvement/benchmark-runs/{target_profile}
+mkdir -p {spec_folder}/improvement/candidates {spec_folder}/improvement/benchmark-outputs
 ```
 Copy config, strategy, charter, and manifest from skill assets into runtime root.
 
@@ -276,7 +276,7 @@ Execute the YAML workflow step by step. Each iteration:
 4. Run benchmark fixtures
 5. Append results to JSONL ledger
 6. Reduce state, refresh dashboard
-7. Check stop conditions (plateau, max iterations, infra failure)
+7. Check stop conditions (converged via legal-stop bundle, maxIterationsReached, blockedStop, manualStop, error, stuckRecovery)
 
 ### Step 6: Review Results
 
@@ -332,7 +332,7 @@ Do **not** document or attempt journal replay, iteration carry-forward, or `resu
 - Completed normally: `STATUS=OK ITERATIONS={N} BEST_SCORE={score}`
 - User cancelled: `STATUS=CANCELLED`
 - Max iterations: `STATUS=OK REASON="max_iterations_reached"`
-- Plateau: `STATUS=OK REASON="all_dimensions_plateaued"`
+- Converged: `STATUS=OK REASON="converged"` (when all 5 legal-stop gates pass)
 - Error: `STATUS=FAIL ERROR="{message}"`
 
 ---
@@ -385,14 +385,14 @@ Dimensional Scores (final):
   System Fitness: 100 (best: 100, trend: ->)
 
 Weighted Score: 97/100
-Stop Reason: All dimensions plateaued after 3 iterations
+Stop Reason: converged (all 5 legal-stop gates passed) after 3 iterations
 
 Artifacts:
   Dashboard: specs/041/008/improvement/agent-improvement-dashboard.md
   Registry:  specs/041/008/improvement/experiment-registry.json
   Candidates: 3 written to specs/041/008/improvement/candidates/
 
-STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
+STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="converged"
 ```
 
 ---
@@ -402,8 +402,12 @@ STATUS=OK ITERATIONS=3 BEST_SCORE=97 REASON="all_dimensions_plateaued"
 - **Skill dependency**: Requires `sk-improve-agent` at `.opencode/skill/sk-improve-agent/`
 - **Promotion**: Promotion remains guarded by evidence, repeatability, and operator approval.
 - **Scoring**: All 5 dimensions are deterministic (regex, string matching, file existence). No LLM-as-judge.
-- **Stop rules**: Loop stops on dimension plateau (3+ identical scores), max iterations, or infra failure threshold.
-- **Runtime parity**: Agent exists across 4 runtimes (.opencode, .claude, .codex, .agents). Scanner checks all.
+- **Stop rules**: Loop stops on `converged` (legal-stop bundle pass + stable trajectory), max iterations, or infra failure threshold.
+- **Runtime parity**: Agent exists across 4 runtimes (.opencode, .claude, .gemini, .codex). Scanner checks all (`.gemini/agents/` path corrected in 060/002).
+- **Benchmark assets** (post-060/005): static at `.opencode/skill/sk-improve-agent/assets/benchmark-profiles/default.json` + `assets/benchmark-fixtures/*.json`. Materializer at `.opencode/skill/sk-improve-agent/scripts/materialize-benchmark-fixtures.cjs` writes fixture markdown to `{spec_folder}/improvement/benchmark-outputs/` before `run-benchmark.cjs` consumes them. `benchmark_completed` event is gated on `report.json` existing.
+- **Legal-stop emission** (post-060/005): YAML emits nested `legal_stop_evaluated.details.gateResults.{contractGate,behaviorGate,integrationGate,evidenceGate,improvementGate}` matching the reducer consumer shape. Flat `gateResult/gateName` is retired.
+- **Stop-reason enum** (post-060/005): canonical values are `converged | maxIterationsReached | blockedStop | manualStop | error | stuckRecovery`. Old `plateau`/`benchmarkPlateau` retired.
+- **CRITIC PASS verbatim emission** (post-060/006): `@improve-agent` body now mandates the 6 challenge labels appear verbatim in candidate JSON `critic_pass` field. Reviewers and stress tests grep for the exact strings.
 
 ---
 

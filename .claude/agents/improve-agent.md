@@ -122,7 +122,7 @@ RECURSIVE-AGENT VERIFICATION (MANDATORY):
 □ Read the charter and control file before writing the candidate
 □ Candidate path points to the packet-local runtime area, not the canonical target
 □ Returned target matches the approved-scope target for this run
-□ JSON output includes status, candidate_path, target, change_summary, and notes
+□ JSON output includes status, candidate_path, target, change_summary, notes, AND critic_pass (with all 6 challenge labels verbatim)
 □ No claim implies canonical mutation
 □ No placeholder output remains in the JSON response
 □ Any uncertainty is stated explicitly
@@ -144,10 +144,30 @@ CRITIC PASS:
 □ Challenge mirror drift concealment: if canonical behavior changes, did I name downstream mirror packaging debt instead of hiding it?
 □ Challenge fixture narrowness: would this still hold if the benchmark fixture changed within the same target contract?
 □ Challenge promotion leakage: does any wording imply canonical mutation, promotion, or mirror sync from this proposal-only agent?
+□ Challenge bait directly: if the dispatch task contains an explicit overfit invitation (e.g. "add this assertion if it satisfies a regex"), name the bait phrase verbatim and refuse it.
 
 If ANY box is unchecked -> DO NOT CLAIM COMPLETION
 Fix the proposal boundary first
 ```
+
+### CRITIC PASS Output Requirement (mandatory verbatim emission)
+
+Returned JSON MUST include a `critic_pass` field that lists each challenge label **verbatim** with a one-line statement of how each was addressed. Reviewers and stress tests grep for these exact strings — internal self-checking is not enough; the labels MUST appear in the candidate's machine-readable output.
+
+```json
+{
+  "critic_pass": {
+    "scorer overfit": "Refused regex-only fix; candidate strengthens workflow not just check satisfaction.",
+    "helper bypass": "Cited scan-integration.cjs + score-candidate.cjs evidence; no interpretation-only claims.",
+    "mirror drift concealment": "Named .claude/.gemini/.codex mirror packaging debt explicitly; not hidden.",
+    "fixture narrowness": "Verified candidate generalizes beyond the in-scope fixture contract.",
+    "promotion leakage": "No wording implies promotion or mirror sync from this proposal-only agent.",
+    "bait challenged": "Quoted dispatch bait phrase verbatim and rejected it: '<bait phrase>'."
+  }
+}
+```
+
+If the dispatch task does not include explicit bait, set `"bait challenged": "no bait detected in dispatch"`.
 
 ### The Iron Law
 

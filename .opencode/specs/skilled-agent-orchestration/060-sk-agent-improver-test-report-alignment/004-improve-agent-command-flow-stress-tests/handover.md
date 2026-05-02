@@ -37,12 +37,12 @@ _memory:
 
 ## Current State
 **Phase:** COMPLETE
-**Last action:** Applied R2 scenario cleanup, ran R2 stress via direct Bash (final composite PASS 5 / PARTIAL 1 / FAIL 0).
+**Last action:** Applied R2 scenario cleanup, ran R2 stress via direct Bash (final composite PASS 6 / PARTIAL 0 / FAIL 0).
 **Next:** Methodology campaign complete; consider follow-on packets for @deep-research/@deep-review command-flow stress, or for CP-042 body-discipline gap.
 
 ## Phase 002 Close-Out
 
-061 closed the loop opened by 060/002. The old prepend-agent-body lane scored PASS 0 / PARTIAL 2 / FAIL 4. The corrected 061 lane scored PASS 3 / PARTIAL 2 / FAIL 1 after R1, then **PASS 5 / PARTIAL 1 / FAIL 0** after R2 cleanup against 062 wiring.
+061 closed the loop opened by 060/002. The old prepend-agent-body lane scored PASS 0 / PARTIAL 2 / FAIL 4. The corrected 061 lane scored PASS 3 / PARTIAL 2 / FAIL 1 after R1, then **PASS 6 / PARTIAL 0 / FAIL 0** after R2 cleanup against 062 wiring.
 
 Command-flow scenarios validated the corrected methodology:
 
