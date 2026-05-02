@@ -1,0 +1,201 @@
+{
+  "id": "review",
+  "family": "derived",
+  "targetPath": ".opencode/agent/review.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T17:51:40.873Z",
+  "agentMeta": {
+    "name": "review",
+    "mode": "subagent",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "bash",
+        "grep",
+        "glob",
+        "memory",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "write",
+        "edit",
+        "webfetch",
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Load `sk-code` baseline first, then exactly one overlay skill and apply precedence rules",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "Perform manual security review on security-sensitive code (auth, input handling, data exposure)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Provide file:line references for all issues",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Explain WHY something is an issue, not just WHAT",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Include positive observations alongside criticism",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-5",
+        "rule": "Score consistently using the rubric (no gut-feel scoring)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-6",
+        "rule": "Return structured output for orchestrator gates",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-7",
+        "rule": "Adapt to project-specific patterns when discoverable",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-8",
+        "rule": "Run adversarial self-check on P0/P1 findings before finalizing severity",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Modify files (read-only access by design)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Approve code with P0 blockers",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Skip security review for auth/input handling code",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Provide vague feedback (\"looks wrong\")",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-4",
+        "rule": "Ignore project patterns in favor of general best practices (when patterns exist)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-5",
+        "rule": "Gate without explicit rubric justification",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-6",
+        "rule": "Assume specific project structure without verification",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "escalate-0",
+        "rule": "Multiple P0 security vulnerabilities found",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-1",
+        "rule": "Score consistently below 50 from same agent (circuit breaker signal)",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-2",
+        "rule": "Unable to understand code intent (request context)",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-3",
+        "rule": "Pattern compliance unclear (request pattern documentation)",
+        "type": "escalate",
+        "weight": 3
+      }
+    ],
+    "outputChecks": [],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [],
+      "skills": [],
+      "agents": [
+        "orchestrate",
+        "general"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

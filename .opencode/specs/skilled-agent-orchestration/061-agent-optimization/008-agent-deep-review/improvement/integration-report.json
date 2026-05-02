@@ -1,0 +1,113 @@
+{
+  "status": "complete",
+  "agent": "deep-review",
+  "timestamp": "2026-05-02T18:03:49.211Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/deep-review.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "deep-review",
+        "description": "LEAF review agent for sk-deep-review. Performs single review iteration: reads state, reviews one dimension with P0/P1/P2 findings, updates strategy and JSONL.",
+        "mode": "subagent",
+        "temperature": "0.1",
+        "permission": "",
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "webfetch": "deny",
+        "memory": "allow",
+        "code_graph_query": "allow",
+        "code_graph_context": "allow",
+        "chrome_devtools": "deny",
+        "task": "deny",
+        "list": "allow",
+        "patch": "deny"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/deep-review.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/deep-review.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/deep-review.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [
+      {
+        "path": ".opencode/command/spec_kit/deep-review.md",
+        "references": [
+          "@deep-review"
+        ]
+      }
+    ],
+    "yamlWorkflows": [
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "references": [
+          "deep-review",
+          "@deep-review"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "references": [
+          "deep-review",
+          "@deep-review"
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 10
+      },
+      {
+        "path": ".opencode/skill/sk-code-review/SKILL.md",
+        "referenceCount": 1
+      },
+      {
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/sk-deep-review/SKILL.md",
+        "referenceCount": 51
+      },
+      {
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "referenceCount": 1
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 6
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 13,
+    "existingCount": 13,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 1,
+    "skillCount": 5
+  }
+}

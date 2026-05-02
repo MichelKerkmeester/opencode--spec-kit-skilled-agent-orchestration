@@ -1,0 +1,164 @@
+{
+  "status": "complete",
+  "agent": "deep-research",
+  "timestamp": "2026-05-02T18:08:03.390Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/deep-research.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "deep-research",
+        "description": "Autonomous deep research agent executing single iteration cycles with externalized state",
+        "mode": "subagent",
+        "temperature": "0.1",
+        "permission": "",
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "webfetch": "allow",
+        "memory": "allow",
+        "code_graph_query": "allow",
+        "code_graph_context": "allow",
+        "chrome_devtools": "deny",
+        "task": "deny",
+        "list": "allow",
+        "patch": "deny",
+        "external_directory": "allow"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/deep-research.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/deep-research.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/deep-research.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [
+      {
+        "path": ".opencode/command/spec_kit/complete.md",
+        "references": [
+          "@deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/deep-research.md",
+        "references": [
+          "@deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/plan.md",
+        "references": [
+          "@deep-research"
+        ]
+      }
+    ],
+    "yamlWorkflows": [
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_auto.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-research_confirm.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_auto.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_deep-review_confirm.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_plan_auto.yaml",
+        "references": [
+          "deep-research"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_plan_confirm.yaml",
+        "references": [
+          "deep-research"
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 14
+      },
+      {
+        "path": ".opencode/skill/sk-code/SKILL.md",
+        "referenceCount": 1
+      },
+      {
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "referenceCount": 48
+      },
+      {
+        "path": ".opencode/skill/sk-deep-review/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "referenceCount": 10
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 12
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 22,
+    "existingCount": 22,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 3,
+    "skillCount": 6
+  }
+}

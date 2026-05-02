@@ -1,0 +1,194 @@
+{
+  "id": "improve-prompt",
+  "family": "derived",
+  "targetPath": ".opencode/agent/improve-prompt.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T18:03:22.111Z",
+  "agentMeta": {
+    "name": "improve-prompt",
+    "mode": "subagent",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "grep",
+        "glob",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "write",
+        "edit",
+        "bash",
+        "webfetch",
+        "memory",
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Read `.opencode/skill/sk-improve-prompt/SKILL.md` plus the key references before composing the final prompt package.",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "Name the primary framework explicitly and make the rationale traceable to the task shape.",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Keep scope, constraints, non-goals, and verification requirements explicit in the enhanced prompt.",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Return the exact structured output contract with no extra wrapper prose inside the result block.",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Retry at most once if the first draft misses the CLEAR floor.",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Never dispatch sub-agents or recurse with a task/delegation tool.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Never edit files, propose that you edited files, or imply code changes were applied.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Never fabricate missing repo, policy, or compliance details; surface them as assumptions or escalation notes.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Never return a vague “improved prompt” without framework selection and CLEAR validation context.",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "escalate-0",
+        "rule": "Required inputs are missing or contradictory in a way that changes the recommendation.",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-1",
+        "rule": "Policy, compliance, or stakeholder constraints remain ambiguous after reading the provided inputs.",
+        "type": "escalate",
+        "weight": 3
+      },
+      {
+        "id": "escalate-2",
+        "rule": "CLEAR cannot be brought above the minimum floor after one retry.",
+        "type": "escalate",
+        "weight": 3
+      }
+    ],
+    "outputChecks": [
+      {
+        "id": "checklist-0",
+        "check": "Read the canonical `sk-improve-prompt` sources before selecting a framework",
+        "weight": 5
+      },
+      {
+        "id": "checklist-1",
+        "check": "The chosen framework matches the task shape and rationale",
+        "weight": 5
+      },
+      {
+        "id": "checklist-2",
+        "check": "The enhanced prompt includes task, context, constraints, output, and verification expectations",
+        "weight": 5
+      },
+      {
+        "id": "checklist-3",
+        "check": "CLEAR score includes total plus per-dimension breakdown",
+        "weight": 5
+      },
+      {
+        "id": "checklist-4",
+        "check": "All repo-specific claims are grounded in files actually read",
+        "weight": 5
+      },
+      {
+        "id": "checklist-5",
+        "check": "No placeholder content remains (\"[TODO]\", \"[TBD]\")",
+        "weight": 5
+      },
+      {
+        "id": "checklist-6",
+        "check": "Output follows the structured prompt package format exactly",
+        "weight": 5
+      }
+    ],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [
+        "/improve:prompt"
+      ],
+      "skills": [
+        "sk-improve-prompt",
+        "sk-doc"
+      ],
+      "agents": [
+        "general",
+        "write"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

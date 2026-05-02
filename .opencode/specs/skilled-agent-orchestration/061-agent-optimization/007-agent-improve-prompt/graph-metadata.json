@@ -26,10 +26,27 @@
       "improve-prompt",
       "sk-improve-agent-application"
     ],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
-    "is_phase_parent": false
+    "is_phase_parent": false,
+    "session_outcome": "promoted",
+    "stop_reason": "converged",
+    "iterations_run": 5,
+    "best_iter": 1,
+    "best_weighted_score": 0,
+    "best_delta": 3,
+    "operator_review_pending": false,
+    "actual_promotion_complete": true,
+    "promoted_iter": 5,
+    "promotion_decision": "orchestrator_recommended_operator_confirmed",
+    "promotion_rationale": "iter-5 synthesis +3 delta with rich integration-touchpoint additions; substrate-recommended promotion",
+    "mirrors_synced": [
+      ".opencode/agent/improve-prompt.md",
+      ".claude/agents/improve-prompt.md",
+      ".gemini/agents/improve-prompt.md",
+      ".codex/agents/improve-prompt.toml"
+    ]
   }
 }

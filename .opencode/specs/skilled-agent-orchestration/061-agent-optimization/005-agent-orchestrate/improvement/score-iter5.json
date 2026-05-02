@@ -1,0 +1,211 @@
+{
+  "status": "scored",
+  "profileId": "orchestrate",
+  "family": "orchestrate",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/orchestrate.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/005-agent-orchestrate/improvement/candidates/iter-5-candidate-001.md",
+  "baseline": ".opencode/agent/orchestrate.md",
+  "score": 90,
+  "baselineScore": 90,
+  "delta": {
+    "total": 0,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 80,
+        "baselineScore": 80,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 70,
+        "baselineScore": 70,
+        "delta": 0,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 96,
+        "baselineScore": 96,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-rules",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": []
+    },
+    {
+      "name": "integration",
+      "score": 80,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": false,
+          "count": 0
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 7
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 70,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "checklist-0",
+          "pass": true,
+          "check": "Output matches requested scope (no scope drift or additions)"
+        },
+        {
+          "id": "checklist-1",
+          "pass": true,
+          "check": "Scope Lock honored (allowed paths/actions only; forbidden paths/actions untouched)"
+        },
+        {
+          "id": "checklist-2",
+          "pass": true,
+          "check": "Files claimed to be created/modified actually exist"
+        },
+        {
+          "id": "checklist-3",
+          "pass": true,
+          "check": "Content quality meets standards (no placeholder text like [TODO], [PLACEHOLDER])"
+        },
+        {
+          "id": "checklist-4",
+          "pass": true,
+          "check": "No hallucinated paths or references (verify file paths exist)"
+        },
+        {
+          "id": "checklist-5",
+          "pass": true,
+          "check": "Evidence provided for claims (sources cited, not fabricated)"
+        },
+        {
+          "id": "checklist-6",
+          "pass": true,
+          "check": "Quality score ≥ 70 (see Scoring Dimensions below)"
+        },
+        {
+          "id": "checklist-7",
+          "pass": true,
+          "check": "Success criteria met (from task decomposition)"
+        },
+        {
+          "id": "checklist-8",
+          "pass": true,
+          "check": "Pre-Delegation Reasoning documented for each task dispatch"
+        },
+        {
+          "id": "checklist-9",
+          "pass": true,
+          "check": "Context Package includes all 6 sections (if from @context — includes Nested Dispatch Status section)"
+        },
+        {
+          "id": "checklist-10",
+          "pass": true,
+          "check": "Integration Touchpoints are named when agents, skills, commands, MCP tools, or mirrors are involved"
+        },
+        {
+          "id": "checklist-11",
+          "pass": true,
+          "check": "Edge states are labeled explicitly (`ambiguous`, `contradicted`, `blocked`, `partial`, or `none`)"
+        },
+        {
+          "id": "checklist-12",
+          "pass": true,
+          "check": "Verification Plan executed, or marked impossible with impact"
+        }
+      ]
+    },
+    {
+      "name": "systemFitness",
+      "score": 96,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": false,
+          "valid": 6,
+          "total": 7
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-acceptable",
+  "failureModes": []
+}

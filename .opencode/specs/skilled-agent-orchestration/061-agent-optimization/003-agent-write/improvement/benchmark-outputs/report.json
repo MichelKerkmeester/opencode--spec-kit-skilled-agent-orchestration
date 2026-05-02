@@ -1,0 +1,168 @@
+{
+  "status": "benchmark-complete",
+  "profileId": "default",
+  "family": "sk-improve-agent",
+  "target": ".opencode/agent/improve-agent.md",
+  "label": "default-benchmark",
+  "aggregateScore": 0,
+  "maxScore": 100,
+  "totals": {
+    "score": 0,
+    "delta": -0.05,
+    "pass_rate": 0,
+    "fixtures": 3,
+    "passed": 0
+  },
+  "recommendation": "benchmark-fail",
+  "thresholds": {
+    "requiredAggregateScore": 80,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0,
+    "thresholdDelta": 0.05
+  },
+  "rows": [
+    {
+      "id": "fixture-baseline",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-baseline.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Baseline Evidence Contract",
+        "## Candidate",
+        "## Evidence"
+      ],
+      "missingPatterns": [
+        "candidateId",
+        "baselineScore",
+        "thresholdDelta",
+        "recommendation"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    },
+    {
+      "id": "fixture-improved",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-improved.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Improved Candidate Contract",
+        "## Candidate",
+        "## Evidence",
+        "## Legal Stop"
+      ],
+      "missingPatterns": [
+        "candidateId",
+        "delta",
+        "details.gateResults",
+        "improvementGate",
+        "benchmark-pass"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    },
+    {
+      "id": "fixture-edge",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-edge.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Blocked Stop Edge Contract",
+        "## Candidate",
+        "## Evidence",
+        "## Legal Stop"
+      ],
+      "missingPatterns": [
+        "blockedStop",
+        "failedGates",
+        "evidenceGate",
+        "sessionOutcome"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "fixture-baseline",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-baseline.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Baseline Evidence Contract",
+        "## Candidate",
+        "## Evidence"
+      ],
+      "missingPatterns": [
+        "candidateId",
+        "baselineScore",
+        "thresholdDelta",
+        "recommendation"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    },
+    {
+      "id": "fixture-improved",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-improved.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Improved Candidate Contract",
+        "## Candidate",
+        "## Evidence",
+        "## Legal Stop"
+      ],
+      "missingPatterns": [
+        "candidateId",
+        "delta",
+        "details.gateResults",
+        "improvementGate",
+        "benchmark-pass"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    },
+    {
+      "id": "fixture-edge",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/003-agent-write/improvement/benchmark-outputs/fixture-edge.md",
+      "score": 0,
+      "maxScore": 100,
+      "passed": false,
+      "missingHeadings": [
+        "# Blocked Stop Edge Contract",
+        "## Candidate",
+        "## Evidence",
+        "## Legal Stop"
+      ],
+      "missingPatterns": [
+        "blockedStop",
+        "failedGates",
+        "evidenceGate",
+        "sessionOutcome"
+      ],
+      "forbiddenMatches": [],
+      "failureModes": [
+        "missing-output"
+      ]
+    }
+  ],
+  "failureModes": [
+    "missing-output"
+  ]
+}

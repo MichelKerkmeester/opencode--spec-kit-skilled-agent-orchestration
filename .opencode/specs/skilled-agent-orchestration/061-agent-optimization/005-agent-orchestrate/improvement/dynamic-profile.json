@@ -1,0 +1,127 @@
+{
+  "id": "orchestrate",
+  "family": "derived",
+  "targetPath": ".opencode/agent/orchestrate.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T17:51:40.874Z",
+  "agentMeta": {
+    "name": "orchestrate",
+    "mode": "primary",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read"
+      ],
+      "denied": [
+        "list",
+        "glob",
+        "grep",
+        "write",
+        "edit",
+        "bash",
+        "patch",
+        "webfetch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [],
+    "outputChecks": [
+      {
+        "id": "checklist-0",
+        "check": "Output matches requested scope (no scope drift or additions)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-1",
+        "check": "Files claimed to be created/modified actually exist",
+        "weight": 5
+      },
+      {
+        "id": "checklist-2",
+        "check": "Content quality meets standards (no placeholder text like [TODO], [PLACEHOLDER])",
+        "weight": 5
+      },
+      {
+        "id": "checklist-3",
+        "check": "No hallucinated paths or references (verify file paths exist)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-4",
+        "check": "Evidence provided for claims (sources cited, not fabricated)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-5",
+        "check": "Quality score ≥ 70 (see Scoring Dimensions below)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-6",
+        "check": "Success criteria met (from task decomposition)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-7",
+        "check": "Pre-Delegation Reasoning documented for each task dispatch",
+        "weight": 5
+      },
+      {
+        "id": "checklist-8",
+        "check": "Context Package includes all 6 sections (if from @context — includes Nested Dispatch Status section)",
+        "weight": 5
+      }
+    ],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [],
+      "skills": [
+        "system-spec-kit",
+        "sk-code",
+        "sk-code-*",
+        "sk-git",
+        "sk-doc",
+        "mcp-chrome-devtools",
+        "mcp-code-mode"
+      ],
+      "agents": []
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

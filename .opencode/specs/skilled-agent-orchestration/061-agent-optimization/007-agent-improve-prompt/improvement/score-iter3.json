@@ -1,0 +1,333 @@
+{
+  "status": "scored",
+  "profileId": "improve-prompt",
+  "family": "improve-prompt",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/improve-prompt.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/007-agent-improve-prompt/improvement/candidates/iter-3-candidate-001.md",
+  "baseline": ".opencode/agent/improve-prompt.md",
+  "score": 97,
+  "baselineScore": 97,
+  "delta": {
+    "total": 0,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 80,
+        "baselineScore": 80,
+        "delta": 0,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-rules",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "always-rule-0",
+          "type": "always",
+          "rule": "Read `.opencode/skill/sk-improve-prompt/SKILL.md` plus the key references before composing the final prompt package.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-1",
+          "type": "always",
+          "rule": "Name the primary framework explicitly and make the rationale traceable to the task shape.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-2",
+          "type": "always",
+          "rule": "Classify unresolved edge cases before final delivery: ambiguity, contradiction, missing dependency, or partial success.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-3",
+          "type": "always",
+          "rule": "Keep scope, constraints, non-goals, and verification requirements explicit in the enhanced prompt.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-4",
+          "type": "always",
+          "rule": "Distinguish missing evidence from contradictory evidence; do not merge both into a generic caveat.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-5",
+          "type": "always",
+          "rule": "Return the exact structured output contract with no extra wrapper prose inside the result block.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-6",
+          "type": "always",
+          "rule": "Retry at most once if the first draft misses the CLEAR floor.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-0",
+          "type": "never",
+          "rule": "Never dispatch sub-agents or recurse with a task/delegation tool.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-1",
+          "type": "never",
+          "rule": "Never edit files, propose that you edited files, or imply code changes were applied.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-2",
+          "type": "never",
+          "rule": "Never fabricate missing repo, policy, or compliance details; surface them as assumptions or escalation notes.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-3",
+          "type": "never",
+          "rule": "Never treat an unread required source as if it was verified.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-4",
+          "type": "never",
+          "rule": "Never present partial success as clean success when assumptions, missing dependencies, or unresolved contradictions remain.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-5",
+          "type": "never",
+          "rule": "Never return a vague “improved prompt” without framework selection and CLEAR validation context.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-0",
+          "type": "escalate",
+          "rule": "Required inputs are missing or contradictory in a way that changes the recommendation.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-1",
+          "type": "escalate",
+          "rule": "Policy, compliance, or stakeholder constraints remain ambiguous after reading the provided inputs.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-2",
+          "type": "escalate",
+          "rule": "Required `sk-improve-prompt` source material or a directly referenced contract cannot be read.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-3",
+          "type": "escalate",
+          "rule": "Optional dependencies are missing and the resulting prompt would rely on assumptions the caller may reject.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-4",
+          "type": "escalate",
+          "rule": "CLEAR cannot be brought above the minimum floor after one retry.",
+          "pass": true,
+          "matchRatio": 1
+        }
+      ]
+    },
+    {
+      "name": "integration",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": true,
+          "count": 1
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 6
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 80,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "checklist-0",
+          "pass": true,
+          "check": "Read the canonical `sk-improve-prompt` sources before selecting a framework"
+        },
+        {
+          "id": "checklist-1",
+          "pass": true,
+          "check": "The chosen framework matches the task shape and rationale"
+        },
+        {
+          "id": "checklist-2",
+          "pass": true,
+          "check": "The enhanced prompt includes task, context, constraints, output, and verification expectations"
+        },
+        {
+          "id": "checklist-3",
+          "pass": true,
+          "check": "CLEAR score includes total plus per-dimension breakdown"
+        },
+        {
+          "id": "checklist-4",
+          "pass": true,
+          "check": "Ambiguous inputs are named rather than silently resolved"
+        },
+        {
+          "id": "checklist-5",
+          "pass": true,
+          "check": "Contradictory facts are stated as conflicts, not softened into assumptions"
+        },
+        {
+          "id": "checklist-6",
+          "pass": true,
+          "check": "Missing required dependencies produce a blocked response"
+        },
+        {
+          "id": "checklist-7",
+          "pass": true,
+          "check": "Missing optional dependencies are labeled as assumptions or partial-success limitations"
+        },
+        {
+          "id": "checklist-8",
+          "pass": true,
+          "check": "Partial-success responses remain dispatch-ready within their stated assumptions"
+        },
+        {
+          "id": "checklist-9",
+          "pass": true,
+          "check": "All repo-specific claims are grounded in files actually read"
+        },
+        {
+          "id": "checklist-10",
+          "pass": true,
+          "check": "No placeholder content remains (\"[TODO]\", \"[TBD]\")"
+        },
+        {
+          "id": "checklist-11",
+          "pass": true,
+          "check": "Output follows the structured prompt package format exactly"
+        }
+      ]
+    },
+    {
+      "name": "systemFitness",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": true,
+          "valid": 3,
+          "total": 3
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-acceptable",
+  "failureModes": []
+}

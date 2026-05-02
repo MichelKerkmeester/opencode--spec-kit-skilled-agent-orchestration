@@ -1,0 +1,12 @@
+{
+  "session_id": "imp-review-20260502T175140Z",
+  "started_at": "2026-05-02T17:51:40Z",
+  "target_path": ".opencode/agent/review.md",
+  "agent_name": "review",
+  "spec_folder": "specs/skilled-agent-orchestration/061-agent-optimization/004-agent-review",
+  "executor": "cli-copilot",
+  "executor_model": "gpt-5.5",
+  "execution_mode": "AUTONOMOUS",
+  "max_iterations": 5,
+  "scoring_mode": "dynamic"
+}

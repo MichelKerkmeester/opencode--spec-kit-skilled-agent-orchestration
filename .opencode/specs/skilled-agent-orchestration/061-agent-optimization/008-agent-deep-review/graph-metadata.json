@@ -26,10 +26,17 @@
       "deep-review",
       "sk-improve-agent-application"
     ],
-    "status": "planned",
-    "completion_pct": 0,
+    "status": "complete",
+    "completion_pct": 100,
     "last_active_child_id": null,
     "level": 1,
-    "is_phase_parent": false
+    "is_phase_parent": false,
+    "session_outcome": "keptBaseline",
+    "stop_reason": "blockedStop",
+    "iterations_run": 5,
+    "best_iter": 1,
+    "best_weighted_score": 0,
+    "best_delta": 0,
+    "operator_review_pending": true
   }
 }

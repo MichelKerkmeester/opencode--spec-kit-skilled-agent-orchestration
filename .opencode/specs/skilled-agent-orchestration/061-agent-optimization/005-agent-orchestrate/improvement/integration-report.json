@@ -1,0 +1,94 @@
+{
+  "status": "complete",
+  "agent": "orchestrate",
+  "timestamp": "2026-05-02T17:51:40.826Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/orchestrate.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "orchestrate",
+        "description": "Senior orchestration agent with full authority over task decomposition, delegation, quality evaluation, and unified delivery synthesis",
+        "mode": "primary",
+        "temperature": "0.1",
+        "permission": "",
+        "read": "allow",
+        "list": "deny",
+        "glob": "deny",
+        "grep": "deny",
+        "write": "deny",
+        "edit": "deny",
+        "bash": "deny",
+        "patch": "deny",
+        "webfetch": "deny"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/orchestrate.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/orchestrate.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/orchestrate.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [],
+    "yamlWorkflows": [],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "referenceCount": 4
+      },
+      {
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 16
+      },
+      {
+        "path": ".opencode/skill/mcp-code-mode/SKILL.md",
+        "referenceCount": 1
+      },
+      {
+        "path": ".opencode/skill/sk-deep-research/SKILL.md",
+        "referenceCount": 2
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 3
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 12,
+    "existingCount": 12,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 0,
+    "skillCount": 7
+  }
+}

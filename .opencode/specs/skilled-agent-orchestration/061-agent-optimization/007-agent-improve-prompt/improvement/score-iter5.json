@@ -1,0 +1,434 @@
+{
+  "status": "scored",
+  "profileId": "improve-prompt",
+  "family": "improve-prompt",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/improve-prompt.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/007-agent-improve-prompt/improvement/candidates/iter-5-candidate-001.md",
+  "baseline": ".opencode/agent/improve-prompt.md",
+  "score": 100,
+  "baselineScore": 97,
+  "delta": {
+    "total": 3,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 100,
+        "baselineScore": 80,
+        "delta": 20,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-rules",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "always-rule-0",
+          "type": "always",
+          "rule": "Confirm `raw_task` is present and within prompt-construction scope before selecting a framework.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-1",
+          "type": "always",
+          "rule": "Read `.opencode/skill/sk-improve-prompt/SKILL.md` plus the key references before composing the final prompt package.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-2",
+          "type": "always",
+          "rule": "Name the primary framework explicitly and make the rationale traceable to the task shape.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-3",
+          "type": "always",
+          "rule": "Classify unresolved edge cases before final delivery: ambiguity, contradiction, missing dependency, integration gap, blocked state, or partial success.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-4",
+          "type": "always",
+          "rule": "Keep scope, constraints, non-goals, integration requirements, and verification requirements explicit in the enhanced prompt.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-5",
+          "type": "always",
+          "rule": "Preserve caller-supplied constraints unless they are contradictory; if changed or excluded, explain why in `ESCALATION_NOTES`.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-6",
+          "type": "always",
+          "rule": "Treat caller-supplied MCP tool names as downstream constraints only; include them in the prompt or `ESCALATION_NOTES`, but never imply this agent invoked them.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-7",
+          "type": "always",
+          "rule": "Return the exact structured output contract with no wrapper prose inside the result block.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-8",
+          "type": "always",
+          "rule": "Verify the package against the pre-delivery checklist before claiming completion.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-9",
+          "type": "always",
+          "rule": "Retry at most once if the first draft misses the CLEAR floor.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-0",
+          "type": "never",
+          "rule": "Never dispatch sub-agents or recurse with a task/delegation tool.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-1",
+          "type": "never",
+          "rule": "Never edit files, propose that you edited files, or imply code changes were applied.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-2",
+          "type": "never",
+          "rule": "Never execute, test, or claim completion of the enhanced prompt's underlying task.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-3",
+          "type": "never",
+          "rule": "Never invoke, simulate, or claim results from `/improve:prompt`, target CLIs, skills, MCP tools, or caller agents.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-4",
+          "type": "never",
+          "rule": "Never widen the task beyond `raw_task` and explicit caller constraints.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-5",
+          "type": "never",
+          "rule": "Never fabricate missing repo, policy, stakeholder, integration, MCP, compliance, or runtime details; surface them as assumptions or escalation notes.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-6",
+          "type": "never",
+          "rule": "Never treat an unread required source as if it was verified.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-7",
+          "type": "never",
+          "rule": "Never present partial success as clean success when assumptions, missing dependencies, or unresolved contradictions remain.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-8",
+          "type": "never",
+          "rule": "Never treat runtime mirrors as canonical prompt authority or as proof that a prompt package is valid.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-9",
+          "type": "never",
+          "rule": "Never return a vague \"improved prompt\" without framework selection and CLEAR validation context.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-0",
+          "type": "escalate",
+          "rule": "Required inputs are missing or contradictory in a way that changes the recommendation.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-1",
+          "type": "escalate",
+          "rule": "Policy, compliance, stakeholder, integration, or MCP constraints remain ambiguous after reading the provided inputs.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-2",
+          "type": "escalate",
+          "rule": "Required `sk-improve-prompt` source material or a directly referenced contract cannot be read.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-3",
+          "type": "escalate",
+          "rule": "A named command, skill, caller agent, target CLI, or MCP tool is required for dispatch but absent, unknown, or contradictory.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-4",
+          "type": "escalate",
+          "rule": "Optional dependencies are missing and the resulting prompt would rely on assumptions the caller may reject.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-5",
+          "type": "escalate",
+          "rule": "CLEAR cannot be brought above the minimum floor after one retry.",
+          "pass": true,
+          "matchRatio": 1
+        }
+      ]
+    },
+    {
+      "name": "integration",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": true,
+          "count": 1
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 6
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "checklist-0",
+          "pass": true,
+          "check": "Read the canonical `sk-improve-prompt` sources before selecting a framework"
+        },
+        {
+          "id": "checklist-1",
+          "pass": true,
+          "check": "The chosen framework matches the task shape and rationale, or the response uses the blocked shape"
+        },
+        {
+          "id": "checklist-2",
+          "pass": true,
+          "check": "The enhanced prompt includes task, context, constraints, output, and verification expectations when a prompt is generated"
+        },
+        {
+          "id": "checklist-3",
+          "pass": true,
+          "check": "CLEAR score includes total plus per-dimension breakdown"
+        },
+        {
+          "id": "checklist-4",
+          "pass": true,
+          "check": "`raw_task` was present, or the response used the blocked shape"
+        },
+        {
+          "id": "checklist-5",
+          "pass": true,
+          "check": "The package does not claim file edits, tool execution, agent dispatch, or task completion"
+        },
+        {
+          "id": "checklist-6",
+          "pass": true,
+          "check": "The prompt does not expand beyond caller-provided scope and constraints"
+        },
+        {
+          "id": "checklist-7",
+          "pass": true,
+          "check": "Any missing repo, policy, compliance, stakeholder, integration, or MCP detail is labeled as an assumption or escalation note"
+        },
+        {
+          "id": "checklist-8",
+          "pass": true,
+          "check": "Relevant caller agents, commands, skills, target CLIs, and MCP tools are named exactly when supplied"
+        },
+        {
+          "id": "checklist-9",
+          "pass": true,
+          "check": "Known integration points map to Integration IDs when they materially affect the prompt"
+        },
+        {
+          "id": "checklist-10",
+          "pass": true,
+          "check": "Unknown or missing integration details appear in ESCALATION_NOTES instead of being invented"
+        },
+        {
+          "id": "checklist-11",
+          "pass": true,
+          "check": "Runtime mirrors are treated only as downstream packaging surfaces, not canonical prompt authority"
+        },
+        {
+          "id": "checklist-12",
+          "pass": true,
+          "check": "Ambiguous inputs are named rather than silently resolved"
+        },
+        {
+          "id": "checklist-13",
+          "pass": true,
+          "check": "Contradictory facts are stated as conflicts, not softened into assumptions"
+        },
+        {
+          "id": "checklist-14",
+          "pass": true,
+          "check": "Missing required dependencies produce a blocked response"
+        },
+        {
+          "id": "checklist-15",
+          "pass": true,
+          "check": "Missing optional dependencies are labeled as assumptions or partial-success limitations"
+        },
+        {
+          "id": "checklist-16",
+          "pass": true,
+          "check": "Partial-success responses remain dispatch-ready within their stated assumptions"
+        },
+        {
+          "id": "checklist-17",
+          "pass": true,
+          "check": "All repo-specific claims are grounded in files actually read"
+        },
+        {
+          "id": "checklist-18",
+          "pass": true,
+          "check": "No unresolved placeholder tokens remain"
+        },
+        {
+          "id": "checklist-19",
+          "pass": true,
+          "check": "Output follows the structured prompt package format exactly"
+        },
+        {
+          "id": "checklist-20",
+          "pass": true,
+          "check": "No wrapper prose appears outside the structured package"
+        }
+      ]
+    },
+    {
+      "name": "systemFitness",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": true,
+          "valid": 3,
+          "total": 3
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-better",
+  "failureModes": []
+}

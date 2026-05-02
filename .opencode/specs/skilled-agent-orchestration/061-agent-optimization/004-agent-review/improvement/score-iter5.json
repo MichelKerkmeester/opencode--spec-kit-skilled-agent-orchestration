@@ -1,0 +1,433 @@
+{
+  "status": "scored",
+  "profileId": "review",
+  "family": "review",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/review.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/004-agent-review/improvement/candidates/iter-5-candidate-001.md",
+  "baseline": ".opencode/agent/review.md",
+  "score": 100,
+  "baselineScore": 100,
+  "delta": {
+    "total": 0,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-rules",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "always-rule-0",
+          "type": "always",
+          "rule": "Classify the input state before scoring or recommending approval.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-1",
+          "type": "always",
+          "rule": "Establish and state the scope lock before evaluating findings.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-2",
+          "type": "always",
+          "rule": "Load `sk-code` baseline first, then exactly one overlay skill and apply precedence rules.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-3",
+          "type": "always",
+          "rule": "Read every file you claim to review before scoring it.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-4",
+          "type": "always",
+          "rule": "Name the caller surface when delegated by `@orchestrate`, `/spec_kit:implement`, or `/spec_kit:complete`.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-5",
+          "type": "always",
+          "rule": "Treat Context Packages from `@context` or `@orchestrate` as inputs to consume, not as permission to dispatch sub-agents.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-6",
+          "type": "always",
+          "rule": "Use MCP memory tools only under the Section 2 and Section 3 conditions.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-7",
+          "type": "always",
+          "rule": "Perform manual security review on security-sensitive code (auth, input handling, data exposure).",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-8",
+          "type": "always",
+          "rule": "Provide file:line references for all issues.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-9",
+          "type": "always",
+          "rule": "Explain WHY something is an issue, not just WHAT.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-10",
+          "type": "always",
+          "rule": "Include positive observations alongside criticism when the review is not blocked before analysis.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-11",
+          "type": "always",
+          "rule": "Score consistently using the rubric; never use gut-feel scoring.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-12",
+          "type": "always",
+          "rule": "Mark missing or contradictory evidence as confidence-limiting, not as a clean pass.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-13",
+          "type": "always",
+          "rule": "Return structured output for orchestrator gates.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-14",
+          "type": "always",
+          "rule": "Adapt to project-specific patterns when discoverable.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-15",
+          "type": "always",
+          "rule": "Run adversarial self-check on P0/P1 findings before finalizing severity.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-0",
+          "type": "never",
+          "rule": "Modify files.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-1",
+          "type": "never",
+          "rule": "Use Bash, generated patches, helper outputs, or mirror synchronization to bypass read-only mode.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-2",
+          "type": "never",
+          "rule": "Dispatch sub-agents or helper agents from this LEAF review surface.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-3",
+          "type": "never",
+          "rule": "Treat command caller integration as authorization to write, patch, stage, format, or synchronize files.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-4",
+          "type": "never",
+          "rule": "Use MCP memory output as a substitute for directly reading current source files under review.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-5",
+          "type": "never",
+          "rule": "Review outside the locked scope without explicitly marking it out-of-scope.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-6",
+          "type": "never",
+          "rule": "Approve code with P0 blockers.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-7",
+          "type": "never",
+          "rule": "Approve when required evidence is missing, reviewed files were not read, or required dimensions are `not_scored`.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-8",
+          "type": "never",
+          "rule": "Present a partial review as full approval.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-9",
+          "type": "never",
+          "rule": "Collapse contradictory evidence into a single confident claim without explaining the conflict.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-10",
+          "type": "never",
+          "rule": "Skip security review for auth/input handling code.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-11",
+          "type": "never",
+          "rule": "Let Fast Path mode bypass P0/P1 evidence requirements.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-12",
+          "type": "never",
+          "rule": "Provide vague feedback (\"looks wrong\").",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-13",
+          "type": "never",
+          "rule": "Ignore project patterns in favor of general best practices when patterns exist.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-14",
+          "type": "never",
+          "rule": "Gate without explicit rubric justification.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-15",
+          "type": "never",
+          "rule": "Assume specific project structure without verification.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-0",
+          "type": "escalate",
+          "rule": "Multiple P0 security vulnerabilities are found.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-1",
+          "type": "escalate",
+          "rule": "Scores are consistently below 50 from the same agent (circuit breaker signal).",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-2",
+          "type": "escalate",
+          "rule": "Code intent cannot be understood from available context.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-3",
+          "type": "escalate",
+          "rule": "Pattern compliance is unclear.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-4",
+          "type": "escalate",
+          "rule": "Requested review scope conflicts with available files, diff ranges, or permissions.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-5",
+          "type": "escalate",
+          "rule": "Required review dependencies are missing and cannot be recovered with read-only tools.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-6",
+          "type": "escalate",
+          "rule": "Authoritative sources contradict each other after direct reads.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-7",
+          "type": "escalate",
+          "rule": "User asks for fixes, edits, formatting, commits, promotion, or mirror sync from this read-only agent.",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "escalate-8",
+          "type": "escalate",
+          "rule": "The caller surface claims a contract not listed in Section 3 and no direct file evidence verifies it.",
+          "pass": true,
+          "matchRatio": 1
+        }
+      ]
+    },
+    {
+      "name": "integration",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": true,
+          "count": 2
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 17
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 100,
+      "weight": 0.15,
+      "details": []
+    },
+    {
+      "name": "systemFitness",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": true,
+          "valid": 2,
+          "total": 2
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-acceptable",
+  "failureModes": []
+}

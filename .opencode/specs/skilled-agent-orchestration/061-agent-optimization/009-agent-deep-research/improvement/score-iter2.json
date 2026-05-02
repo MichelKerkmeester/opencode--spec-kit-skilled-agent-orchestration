@@ -1,0 +1,258 @@
+{
+  "status": "scored",
+  "profileId": "deep-research",
+  "family": "deep-research",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/deep-research.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/009-agent-deep-research/improvement/candidates/iter-2-candidate-001.md",
+  "baseline": ".opencode/agent/deep-research.md",
+  "score": 100,
+  "baselineScore": 100,
+  "delta": {
+    "total": 0,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-rules",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "always-rule-0",
+          "type": "always",
+          "rule": "Read state files BEFORE any research action",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-1",
+          "type": "always",
+          "rule": "Write ALL findings to files (iteration-NNN.md), not just in response",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-2",
+          "type": "always",
+          "rule": "Cite sources for every finding",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-3",
+          "type": "always",
+          "rule": "Report newInfoRatio honestly in JSONL record",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-4",
+          "type": "always",
+          "rule": "Record strategy recommendations in the iteration file so the reducer can sync them",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-5",
+          "type": "always",
+          "rule": "Respect \"Exhausted Approaches\" -- never retry them",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-6",
+          "type": "always",
+          "rule": "Stay within tool call budget (target 8-11, max 12)",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "always-rule-7",
+          "type": "always",
+          "rule": "Apply Tier 1-2 error recovery for tool/source failures before reporting errors",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-0",
+          "type": "never",
+          "rule": "Dispatch sub-agents or use Task tool (LEAF-only)",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-1",
+          "type": "never",
+          "rule": "Hold findings in context without writing to files",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-2",
+          "type": "never",
+          "rule": "Retry approaches listed in \"Exhausted Approaches\"",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-3",
+          "type": "never",
+          "rule": "Modify deep-research-config.json (read-only)",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-4",
+          "type": "never",
+          "rule": "Overwrite deep-research-state.jsonl (append-only)",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-5",
+          "type": "never",
+          "rule": "Ask the user questions (autonomous execution)",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-6",
+          "type": "never",
+          "rule": "Skip writing the iteration file",
+          "pass": true,
+          "matchRatio": 1
+        },
+        {
+          "id": "never-rule-7",
+          "type": "never",
+          "rule": "Fabricate sources or newInfoRatio",
+          "pass": true,
+          "matchRatio": 1
+        }
+      ]
+    },
+    {
+      "name": "integration",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": true,
+          "count": 3
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 6
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 100,
+      "weight": 0.15,
+      "details": []
+    },
+    {
+      "name": "systemFitness",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": true,
+          "valid": 4,
+          "total": 4
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-acceptable",
+  "failureModes": []
+}

@@ -1,0 +1,184 @@
+{
+  "id": "deep-research",
+  "family": "derived",
+  "targetPath": ".opencode/agent/deep-research.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T18:08:03.443Z",
+  "agentMeta": {
+    "name": "deep-research",
+    "mode": "subagent",
+    "temperature": 0.1,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "grep",
+        "glob",
+        "webfetch",
+        "memory",
+        "code_graph_query",
+        "code_graph_context",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-rules",
+        "description": "Agent has RULES section",
+        "weight": 10
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [
+      {
+        "id": "always-rule-0",
+        "rule": "Read state files BEFORE any research action",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-1",
+        "rule": "Write ALL findings to files (iteration-NNN.md), not just in response",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-2",
+        "rule": "Cite sources for every finding",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-3",
+        "rule": "Report newInfoRatio honestly in JSONL record",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-4",
+        "rule": "Record strategy recommendations in the iteration file so the reducer can sync them",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-5",
+        "rule": "Respect \"Exhausted Approaches\" -- never retry them",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-6",
+        "rule": "Stay within tool call budget (target 8-11, max 12)",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "always-rule-7",
+        "rule": "Apply Tier 1-2 error recovery for tool/source failures before reporting errors",
+        "type": "always",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-0",
+        "rule": "Dispatch sub-agents or use Task tool (LEAF-only)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-1",
+        "rule": "Hold findings in context without writing to files",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-2",
+        "rule": "Retry approaches listed in \"Exhausted Approaches\"",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-3",
+        "rule": "Modify deep-research-config.json (read-only)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-4",
+        "rule": "Overwrite deep-research-state.jsonl (append-only)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-5",
+        "rule": "Ask the user questions (autonomous execution)",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-6",
+        "rule": "Skip writing the iteration file",
+        "type": "never",
+        "weight": 8
+      },
+      {
+        "id": "never-rule-7",
+        "rule": "Fabricate sources or newInfoRatio",
+        "type": "never",
+        "weight": 8
+      }
+    ],
+    "outputChecks": [],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [
+        "/spec_kit:deep-research",
+        "/memory:save"
+      ],
+      "skills": [
+        "sk-deep-research",
+        "system-spec-kit"
+      ],
+      "agents": [
+        "orchestrate"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

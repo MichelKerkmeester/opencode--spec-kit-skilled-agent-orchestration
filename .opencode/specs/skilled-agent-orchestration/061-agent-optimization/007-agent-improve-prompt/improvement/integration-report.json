@@ -1,0 +1,101 @@
+{
+  "status": "complete",
+  "agent": "improve-prompt",
+  "timestamp": "2026-05-02T18:03:22.062Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/improve-prompt.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "improve-prompt",
+        "description": "Improve-prompt specialist for framework selection, CLEAR validation, and dispatch-ready prompt packages for high-stakes external CLI invocations",
+        "mode": "subagent",
+        "temperature": "0.1",
+        "permission": "",
+        "read": "allow",
+        "write": "deny",
+        "edit": "deny",
+        "bash": "deny",
+        "grep": "allow",
+        "glob": "allow",
+        "webfetch": "deny",
+        "memory": "deny",
+        "chrome_devtools": "deny",
+        "task": "deny",
+        "list": "allow",
+        "patch": "deny",
+        "external_directory": "allow"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/improve-prompt.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/improve-prompt.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/improve-prompt.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [
+      {
+        "path": ".opencode/command/improve/prompt.md",
+        "references": [
+          "@improve-prompt"
+        ]
+      }
+    ],
+    "yamlWorkflows": [],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-copilot/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 4
+      },
+      {
+        "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
+        "referenceCount": 5
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 2
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 12,
+    "existingCount": 12,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 1,
+    "skillCount": 6
+  }
+}

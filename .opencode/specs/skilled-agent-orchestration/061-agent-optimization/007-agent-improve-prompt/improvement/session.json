@@ -1,0 +1,12 @@
+{
+  "session_id": "imp-improve-prompt-20260502T180321Z",
+  "started_at": "2026-05-02T18:03:21Z",
+  "target_path": ".opencode/agent/improve-prompt.md",
+  "agent_name": "improve-prompt",
+  "spec_folder": "specs/skilled-agent-orchestration/061-agent-optimization/007-agent-improve-prompt",
+  "executor": "cli-copilot",
+  "executor_model": "gpt-5.5",
+  "execution_mode": "AUTONOMOUS",
+  "max_iterations": 5,
+  "scoring_mode": "dynamic"
+}
