@@ -1,0 +1,94 @@
+{
+  "status": "benchmark-complete",
+  "profileId": "default",
+  "family": "sk-improve-agent",
+  "target": ".opencode/agent/improve-agent.md",
+  "label": "default-benchmark",
+  "aggregateScore": 100,
+  "maxScore": 100,
+  "totals": {
+    "score": 100,
+    "delta": 0.95,
+    "pass_rate": 1,
+    "fixtures": 3,
+    "passed": 3
+  },
+  "recommendation": "benchmark-pass",
+  "thresholds": {
+    "requiredAggregateScore": 80,
+    "minimumFixtureScore": 70,
+    "repeatabilityTolerance": 0,
+    "thresholdDelta": 0.05
+  },
+  "rows": [
+    {
+      "id": "fixture-baseline",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-baseline.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    },
+    {
+      "id": "fixture-improved",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-improved.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    },
+    {
+      "id": "fixture-edge",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-edge.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "fixture-baseline",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-baseline.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    },
+    {
+      "id": "fixture-improved",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-improved.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    },
+    {
+      "id": "fixture-edge",
+      "outputPath": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/benchmark-outputs/fixture-edge.md",
+      "score": 100,
+      "maxScore": 100,
+      "passed": true,
+      "missingHeadings": [],
+      "missingPatterns": [],
+      "forbiddenMatches": [],
+      "failureModes": []
+    }
+  ],
+  "failureModes": []
+}

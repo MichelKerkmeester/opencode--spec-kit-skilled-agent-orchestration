@@ -1,0 +1,150 @@
+{
+  "status": "complete",
+  "agent": "debug",
+  "timestamp": "2026-05-02T16:51:24.510Z",
+  "surfaces": {
+    "canonical": {
+      "path": ".opencode/agent/debug.md",
+      "exists": true,
+      "frontmatter": {
+        "name": "debug",
+        "description": "User-invoked fresh-perspective debugging specialist with 5-phase methodology for root cause analysis. Surfaced as a prompted offer when an implementation workflow detects 3+ task failures (operator-judgment threshold), or invoked explicitly by the user via the Task tool. Never auto-dispatched.",
+        "mode": "subagent",
+        "temperature": "0.2",
+        "permission": "",
+        "read": "allow",
+        "write": "allow",
+        "edit": "allow",
+        "bash": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "memory": "allow",
+        "webfetch": "deny",
+        "chrome_devtools": "deny",
+        "task": "deny",
+        "list": "allow",
+        "patch": "deny",
+        "external_directory": "allow"
+      }
+    },
+    "mirrors": [
+      {
+        "path": ".claude/agents/debug.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".codex/agents/debug.toml",
+        "exists": true,
+        "syncStatus": "aligned"
+      },
+      {
+        "path": ".gemini/agents/debug.md",
+        "exists": true,
+        "syncStatus": "aligned"
+      }
+    ],
+    "commands": [
+      {
+        "path": ".opencode/command/spec_kit/complete.md",
+        "references": [
+          "@debug"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/implement.md",
+        "references": [
+          "@debug"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/resume.md",
+        "references": [
+          "@debug"
+        ]
+      }
+    ],
+    "yamlWorkflows": [
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_auto.yaml",
+        "references": [
+          "debug",
+          "@debug"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_complete_confirm.yaml",
+        "references": [
+          "debug",
+          "@debug"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_implement_auto.yaml",
+        "references": [
+          "debug",
+          "@debug"
+        ]
+      },
+      {
+        "path": ".opencode/command/spec_kit/assets/spec_kit_implement_confirm.yaml",
+        "references": [
+          "debug",
+          "@debug"
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "path": ".opencode/skill/cli-claude-code/SKILL.md",
+        "referenceCount": 3
+      },
+      {
+        "path": ".opencode/skill/cli-codex/SKILL.md",
+        "referenceCount": 3
+      },
+      {
+        "path": ".opencode/skill/cli-gemini/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/cli-opencode/SKILL.md",
+        "referenceCount": 5
+      },
+      {
+        "path": ".opencode/skill/sk-code/SKILL.md",
+        "referenceCount": 2
+      },
+      {
+        "path": ".opencode/skill/sk-code-opencode/SKILL.md",
+        "referenceCount": 1
+      },
+      {
+        "path": ".opencode/skill/sk-improve-prompt/SKILL.md",
+        "referenceCount": 1
+      },
+      {
+        "path": ".opencode/skill/system-spec-kit/SKILL.md",
+        "referenceCount": 11
+      }
+    ],
+    "globalDocs": [
+      {
+        "path": "CLAUDE.md",
+        "referenceCount": 7
+      }
+    ],
+    "skillAdvisor": {
+      "path": ".opencode/skill/scripts/skill_advisor.py",
+      "matched": false
+    }
+  },
+  "summary": {
+    "totalSurfaces": 20,
+    "existingCount": 20,
+    "missingCount": 0,
+    "mirrorSyncStatus": "all-aligned",
+    "commandCount": 3,
+    "skillCount": 8
+  }
+}

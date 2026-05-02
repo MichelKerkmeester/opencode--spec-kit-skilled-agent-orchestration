@@ -1,0 +1,12 @@
+{
+  "session_id": "imp-debug-20260502T165124Z",
+  "started_at": "2026-05-02T16:51:24Z",
+  "target_path": ".opencode/agent/debug.md",
+  "agent_name": "debug",
+  "spec_folder": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug",
+  "executor": "cli-copilot",
+  "executor_model": "gpt-5.5",
+  "execution_mode": "AUTONOMOUS",
+  "max_iterations": 5,
+  "scoring_mode": "dynamic"
+}

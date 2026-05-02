@@ -1,0 +1,119 @@
+{
+  "id": "debug",
+  "family": "derived",
+  "targetPath": ".opencode/agent/debug.md",
+  "outputKind": "markdown",
+  "promotionEligible": false,
+  "generated": true,
+  "generatedAt": "2026-05-02T16:51:24.553Z",
+  "agentMeta": {
+    "name": "debug",
+    "mode": "subagent",
+    "temperature": 0.2,
+    "permissionSummary": {
+      "allowed": [
+        "read",
+        "write",
+        "edit",
+        "bash",
+        "grep",
+        "glob",
+        "memory",
+        "list",
+        "external_directory"
+      ],
+      "denied": [
+        "webfetch",
+        "chrome_devtools",
+        "task",
+        "patch"
+      ]
+    }
+  },
+  "derivedChecks": {
+    "structural": [
+      {
+        "id": "has-core-workflow",
+        "description": "Agent has CORE WORKFLOW section",
+        "weight": 10
+      },
+      {
+        "id": "has-output-verification",
+        "description": "Agent has OUTPUT VERIFICATION section",
+        "weight": 10
+      },
+      {
+        "id": "has-anti-patterns",
+        "description": "Agent has ANTI section",
+        "weight": 5
+      },
+      {
+        "id": "has-related-resources",
+        "description": "Agent has RELATED RESOURCES section",
+        "weight": 10
+      }
+    ],
+    "ruleCoherence": [],
+    "outputChecks": [
+      {
+        "id": "checklist-0",
+        "check": "Root cause identified with evidence (not guessed)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-1",
+        "check": "Fix is minimal and targeted (not over-engineered)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-2",
+        "check": "Tests pass (actual output shown, not assumed)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-3",
+        "check": "No regression introduced (checked related functionality)",
+        "weight": 5
+      },
+      {
+        "id": "checklist-4",
+        "check": "Response follows structured format",
+        "weight": 5
+      },
+      {
+        "id": "checklist-5",
+        "check": "Error category correctly identified",
+        "weight": 5
+      },
+      {
+        "id": "checklist-6",
+        "check": "Explanation connects cause to fix",
+        "weight": 5
+      },
+      {
+        "id": "checklist-7",
+        "check": "Each hypothesis adversarially challenged before testing (Phase 4)",
+        "weight": 5
+      }
+    ],
+    "forbiddenBehaviors": [],
+    "integrationPoints": {
+      "commands": [
+        "/spec_kit:complete"
+      ],
+      "skills": [],
+      "agents": [
+        "general",
+        "deep-research",
+        "orchestrate"
+      ]
+    },
+    "capabilityMismatches": []
+  },
+  "benchmark": {
+    "fixtureDir": null,
+    "requiredAggregateScore": 75,
+    "minimumFixtureScore": 60,
+    "repeatabilityTolerance": 0
+  }
+}

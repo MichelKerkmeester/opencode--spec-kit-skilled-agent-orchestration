@@ -1,0 +1,201 @@
+{
+  "status": "scored",
+  "profileId": "debug",
+  "family": "debug",
+  "evaluationMode": "dynamic-5d",
+  "target": ".opencode/agent/debug.md",
+  "candidate": "specs/skilled-agent-orchestration/061-agent-optimization/002-agent-debug/improvement/candidates/iter-1-candidate-001.md",
+  "baseline": ".opencode/agent/debug.md",
+  "score": 100,
+  "baselineScore": 100,
+  "delta": {
+    "total": 0,
+    "dimensions": [
+      {
+        "name": "structural",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.2
+      },
+      {
+        "name": "ruleCoherence",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "integration",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.25
+      },
+      {
+        "name": "outputQuality",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      },
+      {
+        "name": "systemFitness",
+        "score": 100,
+        "baselineScore": 100,
+        "delta": 0,
+        "weight": 0.15
+      }
+    ]
+  },
+  "thresholdDelta": 2,
+  "dimensions": [
+    {
+      "name": "structural",
+      "score": 100,
+      "weight": 0.2,
+      "details": [
+        {
+          "id": "has-core-workflow",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-output-verification",
+          "pass": true,
+          "weight": 10
+        },
+        {
+          "id": "has-anti-patterns",
+          "pass": true,
+          "weight": 5
+        },
+        {
+          "id": "has-related-resources",
+          "pass": true,
+          "weight": 10
+        }
+      ]
+    },
+    {
+      "name": "ruleCoherence",
+      "score": 100,
+      "weight": 0.25,
+      "details": []
+    },
+    {
+      "name": "integration",
+      "score": 100,
+      "weight": 0.25,
+      "details": [
+        {
+          "id": "mirror-parity",
+          "pass": true,
+          "score": 100
+        },
+        {
+          "id": "command-coverage",
+          "pass": true,
+          "count": 3
+        },
+        {
+          "id": "skill-coverage",
+          "pass": true,
+          "count": 8
+        }
+      ]
+    },
+    {
+      "name": "outputQuality",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "checklist-0",
+          "pass": true,
+          "check": "Invocation was explicit user opt-in or operator-approved handoff"
+        },
+        {
+          "id": "checklist-1",
+          "pass": true,
+          "check": "Root cause identified with evidence (not guessed)"
+        },
+        {
+          "id": "checklist-2",
+          "pass": true,
+          "check": "5 phases were completed in order or explicitly re-entered after new evidence"
+        },
+        {
+          "id": "checklist-3",
+          "pass": true,
+          "check": "Phase 4 adversarial validation re-ranked hypotheses before Phase 5"
+        },
+        {
+          "id": "checklist-4",
+          "pass": true,
+          "check": "Fix is minimal and targeted (not over-engineered)"
+        },
+        {
+          "id": "checklist-5",
+          "pass": true,
+          "check": "Tests pass (actual output shown, not assumed)"
+        },
+        {
+          "id": "checklist-6",
+          "pass": true,
+          "check": "No regression introduced (checked related functionality)"
+        },
+        {
+          "id": "checklist-7",
+          "pass": true,
+          "check": "Response follows structured format"
+        },
+        {
+          "id": "checklist-8",
+          "pass": true,
+          "check": "Error category correctly identified"
+        },
+        {
+          "id": "checklist-9",
+          "pass": true,
+          "check": "Explanation connects cause to fix"
+        },
+        {
+          "id": "checklist-10",
+          "pass": true,
+          "check": "Each hypothesis adversarially challenged before testing (Phase 4)"
+        },
+        {
+          "id": "checklist-11",
+          "pass": true,
+          "check": "debug-delegation.md was written only by @debug if it was created or updated"
+        }
+      ]
+    },
+    {
+      "name": "systemFitness",
+      "score": 100,
+      "weight": 0.15,
+      "details": [
+        {
+          "id": "perm-capability-align",
+          "pass": true
+        },
+        {
+          "id": "resource-refs-valid",
+          "pass": true,
+          "valid": 1,
+          "total": 1
+        },
+        {
+          "id": "frontmatter-complete",
+          "pass": true,
+          "score": 30
+        }
+      ]
+    }
+  ],
+  "legacyScore": null,
+  "recommendation": "candidate-acceptable",
+  "failureModes": []
+}
