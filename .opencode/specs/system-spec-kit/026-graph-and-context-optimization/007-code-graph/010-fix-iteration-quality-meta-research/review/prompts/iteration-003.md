@@ -1,11 +1,11 @@
-# Deep-Review v3 (cycle 3 verify) Iter 1/5
+# Deep-Review v3 (cycle 3 verify) Iter 3/5
 
 Mode: review (RUN 3 verify after FIX-010-cycle-3)
-Dimension: correctness
+Dimension: traceability
 SessionId: 2026-05-02T21:41:11Z
 
 ## Focus
-Iter 1 — verify cycle 3 fixed P1-A (live deep-review-strategy.md restored), P1-B (command injection blocked), P1-C (affectedSurfaceHints in R4 schema). For each: read the fix's claimed location and confirm content.
+Iter 3 — traceability: did the claimed fixes actually land where claimed? Cross-check by file:line against the cycle-3 codex summary.
 
 ## Apply R5 fix-completeness-checklist
 Read `.opencode/skill/sk-code-review/references/fix-completeness-checklist.md` first.
@@ -13,11 +13,11 @@ Apply protocol: classify each suspected issue, run same-class producer inventory
 check cross-consumer flow, check matrix completeness.
 
 ## Output
-Write narrative to: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research/review/iterations/iteration-001.md`
+Write narrative to: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research/review/iterations/iteration-003.md`
 Append iteration record to: `/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/system-spec-kit/026-graph-and-context-optimization/007-code-graph/010-fix-iteration-quality-meta-research/review/deep-review-state.jsonl`
 
 Iteration narrative structure:
-- ## Dimension: correctness
+- ## Dimension: traceability
 - ## Files Reviewed (path:line list)
 - ## Findings by Severity (### P0 / ### P1 / ### P2 — say "None." if empty)
 - ## Verdict — PASS / CONDITIONAL / FAIL with one-line reason

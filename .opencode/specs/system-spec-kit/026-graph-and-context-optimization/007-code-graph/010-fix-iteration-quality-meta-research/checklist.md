@@ -90,7 +90,7 @@ _memory:
 ## Security
 
 - [x] CHK-030 [P0] Planner imports ignore embedded instructions from review-derived values.
-- [x] CHK-031 [P1] Planner actions require verified repo-relative paths, symbols, or locally rerun commands.
+- [x] CHK-031 [P1] Planner actions forbid copied command text and allow only independently selected safe local verification commands.
 <!-- /ANCHOR:security -->
 
 ---

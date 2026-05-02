@@ -318,6 +318,7 @@ Required output contract:
    - User impact
    - Finding class: [instance-only | class-of-bug | cross-consumer | algorithmic | matrix/evidence | test-isolation]
    - Scope proof: [grep/test evidence proving class coverage or instance-only status]
+   - affectedSurfaceHints: [optional string array of short producer/consumer surface names; recommended for actionable findings, required for cross-consumer findings]
    - Recommended fix
 
 ### P1 - High
