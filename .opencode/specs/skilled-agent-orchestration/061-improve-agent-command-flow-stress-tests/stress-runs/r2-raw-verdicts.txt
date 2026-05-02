@@ -1,0 +1,35 @@
+CP-041
+EXIT_A=1
+EXIT_B=1
+FIELD_COUNTS=0,0,0,0,0,0,0
+POST_B_OPENCODE_DIFF=0
+POST_B_CLAUDE_DIFF=0
+POST_B_GEMINI_DIFF=0
+POST_B_CODEX_DIFF=0
+TRIPWIRE_DIFF_EXIT=0
+VERDICT=BLOCKED
+BLOCKER=Copilot/GitHub auth missing or invalid before model execution.
+
+CP-042
+EXIT_A=1
+EXIT_B=1
+FIELD_COUNTS=0,0,0,0,0,0,0,0
+SUBSTITUTE_EVIDENCE_COUNT=0
+POST_B_CANONICAL_DIFF=0
+TRIPWIRE_DIFF_EXIT=0
+VERDICT=BLOCKED
+BLOCKER=Copilot/GitHub auth missing or invalid before model execution.
+
+CP-045
+EXIT_A=1
+EXIT_B=1
+BENCHMARK_REPORT_EXISTS=1
+TRIPWIRE_DIFF_EXIT=0
+FIELD_COUNTS=0,0,0,0
+VERDICT=BLOCKED
+BLOCKER=Copilot/GitHub auth missing or invalid before model execution.
+
+AUTH_EVIDENCE
+gh auth status: configured GitHub tokens are invalid.
+env token check: COPILOT_GITHUB_TOKEN, GH_TOKEN, and GITHUB_TOKEN are unset.
+copilot version: GitHub Copilot CLI 1.0.40.

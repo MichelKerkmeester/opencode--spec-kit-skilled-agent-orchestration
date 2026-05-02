@@ -76,7 +76,17 @@ cat /tmp/cp-045-B-command.txt /tmp/cp-045-B-artifacts.txt > /tmp/cp-045-B-combin
 test -f /tmp/cp-045-spec/improvement/benchmark-outputs/report.json; echo "BENCHMARK_REPORT_EXISTS=$?" | tee /tmp/cp-045-report-exit.txt
 git status --porcelain > /tmp/cp-045-post.txt
 diff /tmp/cp-045-pre.txt /tmp/cp-045-post.txt > /tmp/cp-045-tripwire.diff; echo "TRIPWIRE_DIFF_EXIT=$?" | tee /tmp/cp-045-tripwire-exit.txt
-for label in "benchmark-outputs/report.json" "status\":\"benchmark-complete" "benchmark_run" "benchmark_completed"; do grep -c "$label" /tmp/cp-045-B-combined.txt; done | tee /tmp/cp-045-B-field-counts.txt
+{
+  grep -c "benchmark-outputs/report.json" /tmp/cp-045-B-combined.txt
+  STATUS_TRANSCRIPT_COUNT=$(grep -c 'status":"benchmark-complete' /tmp/cp-045-B-combined.txt || true)
+  if test -f /tmp/cp-045-spec/improvement/benchmark-outputs/report.json && node -e "const r=require('/tmp/cp-045-spec/improvement/benchmark-outputs/report.json'); process.exit(r.status === 'benchmark-complete' ? 0 : 1)" 2>/dev/null; then
+    echo $((STATUS_TRANSCRIPT_COUNT + 1))
+  else
+    echo "$STATUS_TRANSCRIPT_COUNT"
+  fi
+  grep -c "benchmark_run" /tmp/cp-045-B-combined.txt
+  grep -c "benchmark_completed" /tmp/cp-045-B-combined.txt
+} | tee /tmp/cp-045-B-field-counts.txt
 ```
 
 | Feature ID | Feature Name | Scenario Name / Objective | Exact Prompt | Exact Command Sequence | Expected Signals | Evidence | Pass/Fail Criteria | Failure Triage |

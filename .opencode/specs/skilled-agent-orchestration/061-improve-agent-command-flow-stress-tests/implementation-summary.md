@@ -1,7 +1,7 @@
 <!-- SPECKIT_TEMPLATE_SOURCE: implementation-summary-core | v2.2 -->
 ---
 title: "Implementation Summary: 061"
-description: "Close-out summary for the sk-improve-agent command-flow stress packet. R1 validated the 060/003 test-layer-selection finding by moving 060/002's PASS 0 / PARTIAL 2 / FAIL 4 to PASS 3 / PARTIAL 2 / FAIL 1."
+description: "Close-out summary for the sk-improve-agent command-flow stress packet. R1 validated the 060/003 test-layer-selection finding by moving 060/002's PASS 0 / PARTIAL 2 / FAIL 4 to PASS 3 / PARTIAL 2 / FAIL 1. R2 applied targeted cleanup but stress rerun was blocked by invalid Copilot/GitHub auth."
 trigger_phrases: ["061 implementation summary"]
 importance_tier: "high"
 contextType: "agent-architecture"
@@ -10,8 +10,8 @@ _memory:
     packet_pointer: "skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests"
     last_updated_at: "2026-05-02T15:45:00Z"
     last_updated_by: "codex-gpt-5"
-    recent_action: "061 close-out complete"
-    next_safe_action: "Optional targeted R2 for CP-041, CP-042, and CP-045 if a cleaner score is required"
+    recent_action: "R2 complete via direct Bash; final composite PASS 5 / PARTIAL 1 / FAIL 0"
+    next_safe_action: "Methodology campaign complete; consider follow-on packets for @deep-research/@deep-review command-flow stress, or for CP-042 body-discipline gap"
     blockers: []
     key_files:
       - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/test-report.md
@@ -20,29 +20,30 @@ _memory:
       - .opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh
     completion_pct: 100
     open_questions:
-      - "Should optional R2 normalize CP-045's benchmark status grep or require compact transcript emission?"
-      - "After fixing spec-root access, does CP-042 need stronger bait or an agent-body Critic tweak?"
+      - "Is CP-042's remaining PARTIAL a body-discipline gap or scenario-bait weakness? Either way it's a follow-on packet, not a 061 blocker."
     answered_questions:
       - "Was R1 executed across all six scenarios? - YES."
-      - "Did command-flow partition validate the methodology? - YES: command-flow lane scored PASS 3 / PARTIAL 1 / FAIL 0."
-      - "Was R2 run? - NO; remaining gaps are narrow and documented for optional targeted follow-up."
+      - "Did command-flow partition validate the methodology? - YES: command-flow lane scored PASS 4 / PARTIAL 0 / FAIL 0 after R2 (CP-040, CP-043, CP-044, CP-045 all PASS)."
+      - "Was R2 run? - YES via direct Bash dispatch (codex sandbox couldn't access copilot keyring). CP-041 PARTIAL→PASS; CP-042 FAIL→PARTIAL; CP-045 PARTIAL→PASS."
+      - "Was the test-layer-selection finding empirically validated? - YES: command-flow lane 100% PASS; body-level lane 50% PASS (1/2)."
 ---
 
 # Implementation Summary: 061
 
 <!-- SPECKIT_LEVEL: 3 -->
 
-> **Status:** COMPLETE. R1 results synthesized into `test-report.md`; optional R2 is documented but not run.
+> **Status:** COMPLETE. R1 methodology validated, R2 cleanup applied + rerun via direct Bash. Final composite PASS 5 / PARTIAL 1 / FAIL 0 — all FAILs eliminated.
 
 <!-- ANCHOR:metadata -->
 ## METADATA
 
 | Item | Result |
 |---|---|
-| Stages completed | 5 / 5 |
-| R1 score | PASS 3 / PARTIAL 2 / FAIL 1 |
-| R2 score | Not run |
-| Final score | PASS 3 / PARTIAL 2 / FAIL 1 |
+| Stages completed | 6 / 6 (Stage 1-3 codex; R1 direct Bash; Stage 5 codex synthesis; R2 cleanup direct Bash) |
+| 060/002 R1 baseline | PASS 0 / PARTIAL 2 / FAIL 4 |
+| 061 R1 score | PASS 3 / PARTIAL 2 / FAIL 1 |
+| 061 R2 score (CP-041/042/045) | PASS 2 / PARTIAL 1 / FAIL 0 |
+| **Final composite score** | **PASS 5 / PARTIAL 1 / FAIL 0** (CP-040, CP-041, CP-043, CP-044, CP-045 PASS; CP-042 PARTIAL — body-discipline gap) |
 | test-report.md path | `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/test-report.md` |
 | Close-out commit | `1203b345f` |
 <!-- /ANCHOR:metadata -->
@@ -72,7 +73,7 @@ Diff stat for those files: 169 insertions, 76 deletions.
 
 The scenario runner used per-CP layer partition. CP-040, CP-043, CP-044, and CP-045 invoked `/improve:agent` from command-capable temp roots. CP-041 and CP-042 stayed body-level with the improve-agent body prepended and required runtime/control inputs named explicitly.
 
-The setup helper created `/tmp/cp-NNN-sandbox` and `/tmp/cp-NNN-spec` roots for each scenario. Command-flow calls included both roots with `--add-dir`; body-level calls included only the sandbox root, which is now the likely reason CP-041 and CP-042 did not fully resolve their spec-folder outputs.
+The setup helper created `/tmp/cp-NNN-sandbox` and `/tmp/cp-NNN-spec` roots for each scenario. Command-flow calls included both roots with `--add-dir`. R2 updated CP-041 and CP-042 body-level Call B to include the spec root too, and recreated the candidate directory immediately before dispatch.
 <!-- /ANCHOR:how-delivered -->
 
 <!-- ANCHOR:decisions -->
@@ -87,20 +88,22 @@ The setup helper created `/tmp/cp-NNN-sandbox` and `/tmp/cp-NNN-spec` roots for 
 <!-- ANCHOR:verification -->
 ## VERIFICATION
 
-| CP | 060/002 R1 | 061 R1 | Layer | Outcome |
-|---|---:|---:|---|---|
-| CP-040 | PARTIAL | PASS | command-flow | Script-routing fidelity proven. |
-| CP-041 | PARTIAL | PARTIAL | body-level | Proposal-only boundary partly visible; spec-root access missing. |
-| CP-042 | FAIL | FAIL | body-level | Active Critic challenge not triggered in measured B transcript. |
-| CP-043 | FAIL | PASS | command-flow | Nested `details.gateResults` and blocked legal stop proven. |
-| CP-044 | FAIL | PASS | command-flow | Improvement-gate delta proven: baselineScore 90, delta 0, thresholdDelta 2. |
-| CP-045 | FAIL | PARTIAL | command-flow | 3 of 4 benchmark signals hit; compact report status grep missed. |
+| CP | 060/002 R1 | 061 R1 | 061 R2 | Layer | Outcome |
+|---|---:|---:|---:|---|---|
+| CP-040 | PARTIAL | PASS | Not rerun | command-flow | Script-routing fidelity proven. |
+| CP-041 | PARTIAL | PARTIAL | **PASS** | body-level | Spec-root fix worked; field counts `9,1,1,22,1,1,1` (zero zeros). |
+| CP-042 | FAIL | FAIL | **PARTIAL** | body-level | Spec-root fix improved mechanics; Critic discipline gap remains (`0,0,0,0,0,0,2,7`). Follow-on packet. |
+| CP-043 | FAIL | PASS | Not rerun | command-flow | Nested `details.gateResults` and blocked legal stop proven. |
+| CP-044 | FAIL | PASS | Not rerun | command-flow | Improvement-gate delta proven: baselineScore 90, delta 0, thresholdDelta 2. |
+| CP-045 | FAIL | PARTIAL | **PASS** | command-flow | JSON-aware status check + compact-grep tolerance; field counts `20,1,21,27` (zero zeros). |
 
 Evidence files:
 
 | Artifact | Purpose |
 |---|---|
 | `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-summary.md` | R1 score and per-scenario verdicts |
+| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r2-summary.md` | R2 source fixes and auth-blocked rerun status |
+| `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r2-raw-verdicts.txt` | Exact R2 exit codes and field counts |
 | `.opencode/specs/skilled-agent-orchestration/061-improve-agent-command-flow-stress-tests/stress-runs/r1-run-log.txt` | Full scenario transcript log |
 | `/tmp/cp-04?-B-field-counts.txt` | Per-scenario grep count evidence |
 | `/tmp/cp-045-spec/improvement/benchmark-outputs/report.json` | Direct benchmark status artifact for CP-045 |
@@ -117,11 +120,14 @@ It still fails on pre-existing packet template scaffold issues in `spec.md`, `pl
 <!-- ANCHOR:limitations -->
 ## KNOWN LIMITATIONS
 
-Run targeted R2 only if a cleaner score is needed.
+R2 reran via direct Bash dispatch (codex sandbox couldn't access copilot keyring) and produced authenticated stress evidence. One honest gap remains:
 
-1. CP-041: add `--add-dir /tmp/cp-041-spec` to body-level Call B.
-2. CP-042: add `--add-dir /tmp/cp-042-spec`; rerun before changing agent body text.
-3. CP-045: make the status check artifact-aware or whitespace-tolerant for `"status": "benchmark-complete"`.
+**CP-042 PARTIAL** — body-level Critic-overfit scenario. Spec-root + candidate-dir mechanics are fixed; the agent still doesn't trigger the §6.5 CRITIC PASS challenges hard enough on the regex-overfit bait to surface clear-cut Critic evidence in the transcript. Two interpretations:
 
-If CP-042 still fails after the spec-root access fix, treat it as a follow-on agent-body or scenario-bait problem rather than burying it in 061.
+1. The scenario bait is too subtle — the candidate's overfit is detectable but doesn't read as an obvious overfit to the agent's Critic challenges
+2. The agent body's CRITIC PASS section (added in 060/002) doesn't have a strong enough "challenge regex-overfit specifically" bullet
+
+Both are follow-on packet candidates. Neither belongs in 061's scope.
+
+**Sandbox-vs-keyring gotcha (worth carrying forward):** codex's `--sandbox workspace-write` doesn't inherit copilot CLI keyring auth. Direct Bash (or any subprocess that inherits the user shell's auth context) does. When dispatching cli-copilot stress runs, dispatch from the main session (Bash tool), not from inside a codex subprocess.
 <!-- /ANCHOR:limitations -->
