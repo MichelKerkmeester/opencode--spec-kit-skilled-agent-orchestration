@@ -1,0 +1,20 @@
+{
+  "specFolder": "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests",
+  "description": "Apply 060/004 command-flow stress methodology (proven PASS 6/0/0 against @improve-agent) to @deep-research and @deep-review. 4 sub-phases: CP authoring + stress runs per agent.",
+  "keywords": [
+    "062",
+    "deep-loop",
+    "command-flow-stress",
+    "deep-research",
+    "deep-review",
+    "060-methodology"
+  ],
+  "lastUpdated": "2026-05-02T19:30:00Z",
+  "specId": "062",
+  "folderSlug": "deep-loop-command-flow-stress-tests",
+  "parentChain": [
+    "skilled-agent-orchestration"
+  ],
+  "memorySequence": 1,
+  "memoryNameHistory": []
+}

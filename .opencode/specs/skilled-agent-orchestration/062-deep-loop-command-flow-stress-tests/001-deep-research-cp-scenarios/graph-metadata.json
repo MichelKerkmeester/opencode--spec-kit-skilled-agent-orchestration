@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "packet_id": "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests/001-deep-research-cp-scenarios",
+  "spec_folder": "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests/001-deep-research-cp-scenarios",
+  "parent_id": "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests",
+  "children_ids": [],
+  "manual": {
+    "depends_on": [
+      "skilled-agent-orchestration/062-deep-loop-command-flow-stress-tests"
+    ],
+    "supersedes": [],
+    "related_to": [
+      "skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests"
+    ]
+  },
+  "derived": {
+    "trigger_phrases": [
+      "001 deep-research stress",
+      "CP-XXX scenario authoring for /spec_kit:deep-resea",
+      "001-deep-research-cp-scenarios"
+    ],
+    "key_topics": [
+      "001",
+      "deep-research",
+      "command-flow-stress",
+      "060-methodology"
+    ],
+    "status": "planned",
+    "completion_pct": 0,
+    "last_active_child_id": null,
+    "level": 1,
+    "is_phase_parent": false
+  }
+}
