@@ -2,11 +2,11 @@
 set -euo pipefail
 
 REPO_ROOT="/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public"
-SANDBOX_DIR="/tmp/cp-061-sandbox"
+SANDBOX_DIR="/tmp/cp-improve-sandbox"
 FIXTURE_ROOT="${REPO_ROOT}/.opencode/skill/sk-improve-agent/test-fixtures/060-stress-test"
 
 usage() {
-  echo "Usage: setup-cp-061-sandbox.sh [--sandbox-dir PATH]"
+  echo "Usage: setup-cp-sandbox.sh [--sandbox-dir PATH]"
 }
 
 while [[ $# -gt 0 ]]; do
@@ -77,4 +77,4 @@ copy_file "${FIXTURE_ROOT}/.claude/agents/cp-improve-target.md" "${SANDBOX_DIR}/
 copy_file "${FIXTURE_ROOT}/.gemini/agents/cp-improve-target.md" "${SANDBOX_DIR}/.gemini/agents/cp-improve-target.md"
 copy_file "${FIXTURE_ROOT}/.codex/agents/cp-improve-target.toml" "${SANDBOX_DIR}/.codex/agents/cp-improve-target.toml"
 
-echo "Created CP-061 sandbox at ${SANDBOX_DIR}"
+echo "Created improve-agent sandbox at ${SANDBOX_DIR}"

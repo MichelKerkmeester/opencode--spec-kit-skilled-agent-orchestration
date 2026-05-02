@@ -58,7 +58,7 @@ Operators run the exact prompt and command sequence for `CP-041` and confirm the
 ```bash
 rm -rf /tmp/cp-041-sandbox /tmp/cp-041-sandbox-baseline /tmp/cp-041-spec
 mkdir -p /tmp/cp-041-spec/improvement/control /tmp/cp-041-spec/improvement/candidates
-/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh --sandbox-dir /tmp/cp-041-sandbox
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/setup-cp-sandbox.sh --sandbox-dir /tmp/cp-041-sandbox
 cp /tmp/cp-041-sandbox/.opencode/skill/sk-improve-agent/assets/improvement_charter.md /tmp/cp-041-spec/improvement/control/improvement-charter.md
 cp /tmp/cp-041-sandbox/.opencode/skill/sk-improve-agent/assets/target_manifest.jsonc /tmp/cp-041-spec/improvement/control/target-manifest.jsonc
 node /tmp/cp-041-sandbox/.opencode/skill/sk-improve-agent/scripts/scan-integration.cjs --agent=cp-improve-target --repo-root=/tmp/cp-041-sandbox --output=/tmp/cp-041-spec/improvement/integration-report.json

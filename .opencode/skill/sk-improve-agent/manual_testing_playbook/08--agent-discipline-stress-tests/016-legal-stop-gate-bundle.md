@@ -55,7 +55,7 @@ Operators run the exact prompt and command sequence for `CP-043` and confirm the
 ```bash
 rm -rf /tmp/cp-043-sandbox /tmp/cp-043-sandbox-baseline /tmp/cp-043-spec
 mkdir -p /tmp/cp-043-spec
-/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/specs/skilled-agent-orchestration/060-sk-agent-improver-test-report-alignment/004-improve-agent-command-flow-stress-tests/setup-cp-061-sandbox.sh --sandbox-dir /tmp/cp-043-sandbox
+/Users/michelkerkmeester/MEGA/Development/Code_Environment/Public/.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/setup-cp-sandbox.sh --sandbox-dir /tmp/cp-043-sandbox
 cp -a /tmp/cp-043-sandbox /tmp/cp-043-sandbox-baseline
 git status --porcelain > /tmp/cp-043-pre.txt
 cat > /tmp/cp-043-task.txt <<'EOF'

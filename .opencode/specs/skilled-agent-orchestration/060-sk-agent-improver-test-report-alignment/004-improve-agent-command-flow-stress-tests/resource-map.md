@@ -56,7 +56,7 @@ Shipped across **3 commits**:
 
 ```
 .opencode/specs/.../004-improve-agent-command-flow-stress-tests/
-└── setup-cp-061-sandbox.sh         (80 lines; idempotent build of /tmp/cp-NNN-sandbox/ with 4-runtime mirror skeleton)
+└── setup-cp-sandbox.sh         (80 lines; idempotent build of /tmp/cp-NNN-sandbox/ with 4-runtime mirror skeleton)
 ```
 
 ### Test report
