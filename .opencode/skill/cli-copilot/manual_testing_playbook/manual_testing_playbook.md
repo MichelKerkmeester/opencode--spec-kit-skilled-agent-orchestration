@@ -373,7 +373,7 @@ Desired user-visible outcome: PASS verdict + the named flags + a one-line note t
 
 ## 10. AGENT ROUTING
 
-This category covers 18 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans the two built-in non-cloud agents (`@Explore` read-only, `@Task` read-write), mid-session model switching, the @code-vs-@general quality differential under structured RETURN, escalation, scope, verification, mode and circuit-breaker pressure, and the sk-improve-agent A/B stress battery for protocol execution, proposal boundaries, Critic challenge, legal-stop gates, improvement deltas and benchmark boundaries. Cloud-routed `@copilot` is exercised in §14 CLOUD DELEGATION.
+This category covers 12 scenario summaries while the linked feature files remain the canonical execution contract. Coverage spans the two built-in non-cloud agents (`@Explore` read-only, `@Task` read-write), mid-session model switching, the @code-vs-@general quality differential under structured RETURN, and escalation/scope/verification/mode/circuit-breaker pressure tests for `@code`. Cloud-routed `@copilot` is exercised in §14 CLOUD DELEGATION. (CP-040..045 sk-improve-agent stress battery moved to `.opencode/skill/sk-improve-agent/manual_testing_playbook/08--agent-discipline-stress-tests/`.)
 
 ### CP-010 | `@Explore` read-only codebase mapping
 
